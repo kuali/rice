@@ -4,52 +4,8 @@
 	<classpathentry kind="src" path="test/src"/>
 	<classpathentry kind="src" path="sampleapp/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/xstream-1.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/xpp3_min-1.1.3.4.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/xmlsec-1.3.0.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/xml-apis-1.3.02.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/xalan-serializer-2.7.0.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/xalan-2.7.0.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/wss4j-1.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/wsdl4j-1.5.1.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/velocity-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/saaj-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/quartz-1.6.0.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/oscache-2.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/opensaml-1.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/log4j-1.2.9.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/jdom-beta8.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/jaxrpc-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/javamail-1.3.2.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/jakarta-oro-2.0.8.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/fop-0.20.5.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/dwr-1.1.4.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/displaytag-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/db-ojb-1.0.4-kuali-mods-debug.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/commons-pool-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/commons-logging-1.0.4.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/commons-fileupload-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/commons-discovery-0.2.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/commons-digester-1.7.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/commons-dbcp-1.2.1.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/commons-configuration-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/commons-collections-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/commons-codec-1.3.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/commons-betwixt-0.8-dev.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/commons-beanutils-1.7.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/cglib-2.1.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/casfilter.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/bcprov-jdk15-133.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/batik-1.6.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/backport-util-concurrent-2.1.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/axis-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/avalon-framework-cvs-20020806.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/asm-1.5.3-ojb-1.0.4.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/antlr-2.7.4.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/activation-1.0.2.jar"/>
 	<classpathentry sourcepath="/head_kuali_project" kind="lib" path="lib/kuali/kuali.jar"/>
 	<classpathentry kind="lib" path="lib/p6spy/p6spy-1.3-patched.jar"/>
-	<classpathentry kind="lib" path="lib/commons-fileupload-1.1.1/commons-fileupload-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-6.1.1/lib/jsp-2.1/core-3.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-6.1.1/lib/servlet-api-2.5-6.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-6.1.1/lib/jetty-util-6.1.1.jar"/>
@@ -84,15 +40,54 @@
 	<classpathentry kind="lib" path="lib/jetty-6.1.1/lib/jsp-2.1/jsp-api-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-6.1.1/lib/jsp-2.1/jsp-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/unit-test-lib/htmlunit-1.10/lib/js.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/xercesImpl-2.7.1.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/workflow-client-2.3.1.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/struts-el-1.2.9.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/struts-1.2.9.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/itext-1.4.8.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/commons-lang-2.2.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/commons-fileupload-1.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/spring-modules-ojb-0.6.jar"/>
-	<classpathentry kind="lib" path="lib/kuali-lib/spring-mock-2.0.1.jar"/>
-	<classpathentry sourcepath="lib/spring-framework-2.0.1/spring-src.zip" kind="lib" path="lib/kuali-lib/spring-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/activation-1.0.2/activation-1.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/antlr-2.7.4/antlr-2.7.4.jar"/>
+	<classpathentry kind="lib" path="lib/asm-1.5.3-ojb-1.0.4/asm-1.5.3-ojb-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/avalon-framework-cvs-20020806/avalon-framework-cvs-20020806.jar"/>
+	<classpathentry kind="lib" path="lib/backport-util-concurrent-2.1/backport-util-concurrent-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/batik-1.6/batik-1.6.jar"/>
+	<classpathentry kind="lib" path="lib/bcprov-jdk15-133/bcprov-jdk15-133.jar"/>
+	<classpathentry kind="lib" path="lib/casfilter/casfilter.jar"/>
+	<classpathentry kind="lib" path="lib/cglib-2.1/cglib-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-beanutils-1.7/commons-beanutils-1.7.jar"/>
+	<classpathentry kind="lib" path="lib/commons-betwixt-0.8-dev/commons-betwixt-0.8-dev.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.3/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections-3.1/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-configuration-1.1/commons-configuration-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-dbcp-1.2.1/commons-dbcp-1.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-digester-1.7/commons-digester-1.7.jar"/>
+	<classpathentry kind="lib" path="lib/commons-discovery-0.2/commons-discovery-0.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-fileupload-1.1.1/commons-fileupload-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.2/commons-lang-2.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.0.4/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/commons-pool-1.2/commons-pool-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/db-ojb-1.0.4-kuali-mods-debug/db-ojb-1.0.4-kuali-mods-debug.jar"/>
+	<classpathentry kind="lib" path="lib/displaytag-1.1/displaytag-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/dwr-1.1.4/dwr-1.1.4.jar"/>
+	<classpathentry kind="lib" path="lib/fop-0.20.5/fop-0.20.5.jar"/>
+	<classpathentry kind="lib" path="lib/itext-1.4.8/itext-1.4.8.jar"/>
+	<classpathentry kind="lib" path="lib/jakarta-oro-2.0.8/jakarta-oro-2.0.8.jar"/>
+	<classpathentry kind="lib" path="lib/javamail-1.3.2/javamail-1.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/jaxrpc-1.1/jaxrpc-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/jdom-beta8/jdom-beta8.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.9/log4j-1.2.9.jar"/>
+	<classpathentry kind="lib" path="lib/opensaml-1.0.1/opensaml-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/oscache-2.1.1/oscache-2.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/quartz-1.6.0/quartz-1.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/saaj-1.2/saaj-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/spring-framework-2.0.1/spring-mock-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/spring-framework-2.0.1/spring-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/spring-modules-ojb-0.6/spring-modules-ojb-0.6.jar"/>
+	<classpathentry kind="lib" path="lib/struts-1.2.9/struts-1.2.9.jar"/>
+	<classpathentry kind="lib" path="lib/velocity-1.4/velocity-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/workflow-client-2.3.1/workflow-client-2.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/wsdl4j-1.5.1/wsdl4j-1.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/xalan-2.7.0/xalan-2.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/xalan-serializer-2.7.0/xalan-serializer-2.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/xercesImpl-2.7.1/xercesImpl-2.7.1.jar"/>
+	<classpathentry kind="lib" path="lib/xml-apis-1.3.02/xml-apis-1.3.02.jar"/>
+	<classpathentry kind="lib" path="lib/xmlsec-1.3.0/xmlsec-1.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/xpp3_min-1.1.3.4/xpp3_min-1.1.3.4.jar"/>
+	<classpathentry kind="lib" path="lib/xstream-1.1.1/xstream-1.1.1.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

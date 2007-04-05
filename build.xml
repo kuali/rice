@@ -110,11 +110,6 @@
 
 	<target name="jar-kuali" depends="init" description="Jars kuali and brings over any kuali dependencies.  Assumes kuali project is checked out and built">
 		<delete file="${lib.dir}/kuali/kuali.jar"></delete>
-		<delete>
-			<fileset dir="${lib.dir}/kuali-lib">
-				<include name="*" />
-			</fileset>
-		</delete>
 		<jar destfile="${lib.dir}/kuali/kuali.jar">
 			<fileset dir="${kuali.classes.dir}" includes="org/kuali/core/**/*">
 				<exclude name="org/kuali/core/batch/**/*" />
@@ -127,13 +122,6 @@
 				<include name="org/kuali/workflow/postprocessor/KualiPostProcessor.class" />
 			</fileset>
 		</jar>
-		<copy todir="${lib.dir}/kuali-lib">
-			<fileset dir="${kuali.lib.dir}">
-				<exclude name="**/*taglibs-standard-1.1.2.jar"/>
-				<exclude name="**/*taglibs-jstl-1.1.2.jar"/>
-				<!-- <exclude name="**/*spring*.jar"/> -->
-			</fileset>
-		</copy>
 	</target>
 
 	<target name="run-tests" depends="compile-tests" description="runs the tests">

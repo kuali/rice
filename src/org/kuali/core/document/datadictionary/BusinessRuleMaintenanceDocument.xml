@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2007 The Kuali Foundation.
+ 
+ Licensed under the Educational Community License, Version 1.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl1.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!DOCTYPE dictionaryEntry PUBLIC
+    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
+    "../../../../core/datadictionary/dataDictionary-1_0.dtd">
+<dictionaryEntry>
+    <maintenanceDocument>
+        <businessObjectClass>org.kuali.core.bo.BusinessRule</businessObjectClass>
+        <maintainableClass>org.kuali.core.maintenance.KualiMaintainableImpl</maintainableClass>
+        <businessRulesClass>org.kuali.core.maintenance.rules.MaintenanceDocumentRuleBase</businessRulesClass>
+        <documentAuthorizerClass>org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase</documentAuthorizerClass>
+        <authorizations>
+            <authorization action="initiate">
+                <workgroups>
+                    <workgroup>KUALI_ROLE_MAINTENANCE</workgroup>
+                </workgroups>
+            </authorization>
+        </authorizations>
+        <documentTypeName>KualiBusinessRuleMaintenanceDocument</documentTypeName>
+        <documentTypeCode>BR</documentTypeCode>
+        <label>Business Rule Maintenance Document</label>
+        <shortLabel>Bus. Rl. Maint. Doc.</shortLabel>
+        <summary>Business Rule Maintenance Document</summary>
+        <description>This document can be used to create or update Business Rule configuration.</description>
+        <help securityGroupName="Kuali.NervousSystem.Help" parameterName="NERVOUS_SYSTEM_HELP_BUSINESS_RULE" />
+
+        <allowsCopy>true</allowsCopy>
+
+        <lockingKeys>
+            <field attributeName="ruleGroupName" />
+            <field attributeName="ruleName" />
+        </lockingKeys>
+        <maintainableSections>
+            <maintainableSection title="Edit Business Rule">
+                <maintainableItems>
+                    <maintainableField name="ruleGroupName" required="true" />
+                    <maintainableField name="ruleName" required="true" />
+                    <maintainableField name="ruleText" />
+                    <maintainableField name="ruleDescription" required="true" />
+                    <maintainableField name="ruleOperatorCode" required="true"/>
+                    <maintainableField name="financialSystemMultipleValueIndicator" required="true"/>
+                    <maintainableField name="financialSystemParameterActiveIndicator" required="true"/>
+                    <maintainableField name="versionNumber" />
+                </maintainableItems>
+            </maintainableSection>
+        </maintainableSections>
+    </maintenanceDocument>
+</dictionaryEntry>

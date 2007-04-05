@@ -1,0 +1,57 @@
+<config>
+	<param name="log4j.settings.path">/opt/j2ee/dev/edu/iu/uis/settings/en/log4j.properties</param>
+	<param name="message.entity">TRAVEL</param>
+
+	<param name="TRAVEL.driver.platform">Oracle9i</param>
+	<param name="TRAVEL.driver.classname">oracle.jdbc.driver.OracleDriver</param>
+<!--  
+	<param name="TRAVEL.url">jdbc:oracle:thin:@es01.uits.indiana.edu:1521:GEN2DEV</param>
+	<param name="TRAVEL.username">SIT</param>
+	<param name="TRAVEL.password">r1c3</param>
+	-->	
+	
+	<param name="TRAVEL.url">jdbc:oracle:thin:@es01.uits.indiana.edu:1521:GEN2DEV</param>	
+	<param name="TRAVEL.username">SIT02</param>
+	<param name="TRAVEL.password">r1c3</param>
+
+	
+	<param name="TRAVEL.pool.validationQuery">select 1 from dual</param>
+	<param name="TRAVEL.pool.maxSize">50</param>
+	<param name="TRAVEL.pool.minSize">1</param>
+	<param name="TRAVEL.pool.maxWait">5000</param>
+	<param name="TRAVEL.ojb.platform">Oracle9i</param>	
+	<!--
+	<param name="TRAVEL.url">jdbc:oracle:thin:@129.79.44.172:1521:XE</param>	
+	<param name="TRAVEL.username">en</param>
+	<param name="TRAVEL.password">dev</param>
+ 
+	<param name="TRAVEL.url">jdbc:oracle:thin:@192.168.1.102:1521:XE</param>	
+	<param name="TRAVEL.username">en</param>
+	<param name="TRAVEL.password">dev</param>
+	 -->
+	<param name="KEW.keystore.alias">onestartsharedservices-devandtst</param>
+	<param name="KEW.keystore.location">/opt/sa_forms/java/dev/edu/iu/uis/security/en/onestartsharedservices-devandtst_keystore</param>
+	<param name="KEW.keystore.password">s1t0spss!xX-tst</param>
+	<param name="TRAVEL.serviceServletUrl">http://localhost:9912/SampleRiceClient/remoting/</param>
+	
+	<!-- XML ingester directories -->
+	<param name="data.xml.root.location">/opt/ears/${environment}/en/xml</param>
+	<param name="data.xml.pending.location">${data.xml.root.location}pending</param>
+	<param name="data.xml.loaded.location">${data.xml.root.location}loaded</param>
+	<param name="data.xml.problem.location">${data.xml.root.location}problem</param>
+	<param name="attachment.dir.location">/opt/ears/</param>
+	<param name="data.xml.pollIntervalSecs">30</param>
+	<param name="initialDelaySecs">10</param>
+	<param name="workgroup.url">Workgroup.do</param>
+	<param name="workgroup.report.url">Workgroup.do</param>
+	<param name="user.url">WorkflowUser.do</param>
+	<param name="user.report.url">WorkflowUserReport.do</param>
+	
+		<!-- Kuali parameters -->
+	<param name="mail.relay.server">mail.relay.server</param>
+	<param name="mailing.list.batch">mailing.list.batch</param>
+	<param name="encryption.key">encrypstion.key</param>
+
+	<param name="kfsLocator.useAppContext">true</param>
+
+</config>

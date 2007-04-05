@@ -1,0 +1,26 @@
+package edu.sampleu.travel.workflow;
+
+import edu.iu.uis.eden.actionitem.ActionItem;
+import edu.iu.uis.eden.actionlist.DisplayParameters;
+import edu.iu.uis.eden.actions.ActionSet;
+import edu.iu.uis.eden.plugin.attributes.CustomActionListAttribute;
+import edu.iu.uis.eden.web.session.UserSession;
+
+public class CustomActionListAttributeImpl implements CustomActionListAttribute {
+
+	private static final long serialVersionUID = 6129615406164385616L;
+
+	public DisplayParameters getDocHandlerDisplayParameters(UserSession userSession, ActionItem actionItem) throws Exception {
+		return new DisplayParameters(new Integer(400));
+	}
+
+	public ActionSet getLegalActions(UserSession userSession, ActionItem actionItem) throws Exception {
+		ActionSet actionSet = new ActionSet();
+		actionSet.addAcknowledge();
+		actionSet.addApprove();
+		actionSet.addFyi();
+		actionSet.addComplete();
+		return actionSet;
+	}
+
+}

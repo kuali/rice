@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2006 The Kuali Foundation.
+ 
+ Licensed under the Educational Community License, Version 1.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl1.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!--
+    DTD for the Procurment Card transaction input file, version 1.0
+
+    To support validation of your configuration file, include the following
+    DOCTYPE element at the beginning (after the "xml" declaration):
+
+    <!DOCTYPE procurementCardTransactions PUBLIC
+        "-//Kuali Project//DTD Procurement Card Transactions 1.0//EN"
+        "http://kuali.org/dtds/procurementCardTransactions-1_0.dtd">
+-->
+
+<!ELEMENT procurementCardTransactions (transaction*)>
+
+  <!ELEMENT transaction (transactionCreditCardNumber,financialDocumentTotalAmount,transactionDebitCreditCode,chartOfAccountsCode,accountNumber,
+  subAccountNumber?,financialObjectCode,financialSubObjectCode?,projectCode?,transactionCycleStartDate?,transactionCycleEndDate?,cardHolderName?,transactionDate,
+  transactionReferenceNumber?,transactionVendorName?,transactionMerchantCategoryCode?,transactionPostingDate?,transactionOriginalCurrencyCode?,
+  transactionBillingCurrencyCode?,transactionOriginalCurrencyAmount?,transactionCurrencyExchangeRate?,transactionSettlementAmount?,
+  transactionSalesTaxAmount?,transactionTaxExemptIndicator?,transactionPurchaseIdentifierIndicator?,transactionPurchaseIdentifierDescription?,
+  transactionUnitContactName?,transactionTravelAuthorizationCode?,transactionPointOfSaleCode?,vendorName?,vendorLine1Address?,vendorLine2Address?,vendorCityName?,vendorStateCode?,
+  vendorZipCode?,vendorOrderNumber?,visaVendorIdentifier?,cardHolderAlternateName?,cardHolderLine1Address?,cardHolderLine2Address?,cardHolderCityName?,
+  cardHolderStateCode?,cardHolderZipCode?,cardHolderWorkPhoneNumber?,cardLimit?,cardCycleAmountLimit?,cardCycleVolumeLimit?,cardStatusCode?,cardNoteText?)>
+
+    <!ELEMENT transactionCreditCardNumber (#PCDATA)>
+    
+    <!ELEMENT financialDocumentTotalAmount (#PCDATA)>
+    
+    <!ELEMENT transactionDebitCreditCode (#PCDATA)>
+    
+    <!ELEMENT chartOfAccountsCode (#PCDATA)>
+    
+    <!ELEMENT accountNumber (#PCDATA)>
+    
+    <!ELEMENT subAccountNumber (#PCDATA)>
+    
+    <!ELEMENT financialObjectCode (#PCDATA)>
+        
+    <!ELEMENT financialSubObjectCode (#PCDATA)>
+    
+    <!ELEMENT projectCode (#PCDATA)>
+    
+    <!ELEMENT transactionCycleStartDate (#PCDATA)>
+    
+    <!ELEMENT transactionCycleEndDate (#PCDATA)>
+    
+    <!ELEMENT cardHolderName (#PCDATA)>
+    
+    <!ELEMENT transactionDate (#PCDATA)>
+    
+    <!ELEMENT transactionReferenceNumber (#PCDATA)>
+    
+    <!ELEMENT transactionVendorName (#PCDATA)>
+    
+    <!ELEMENT transactionMerchantCategoryCode (#PCDATA)>
+
+    <!ELEMENT transactionPostingDate (#PCDATA)>
+    
+    <!ELEMENT transactionOriginalCurrencyCode (#PCDATA)>
+    
+    <!ELEMENT transactionBillingCurrencyCode (#PCDATA)>
+    
+    <!ELEMENT transactionOriginalCurrencyAmount (#PCDATA)>
+    
+    <!ELEMENT transactionCurrencyExchangeRate (#PCDATA)>
+    
+    <!ELEMENT transactionSettlementAmount (#PCDATA)>
+    
+    <!ELEMENT transactionSalesTaxAmount (#PCDATA)>
+    
+    <!ELEMENT transactionTaxExemptIndicator (#PCDATA)>
+    
+    <!ELEMENT transactionPurchaseIdentifierIndicator (#PCDATA)>
+    
+    <!ELEMENT transactionPurchaseIdentifierDescription (#PCDATA)>
+    
+    <!ELEMENT transactionUnitContactName (#PCDATA)>
+    
+    <!ELEMENT transactionTravelAuthorizationCode (#PCDATA)>
+    
+    <!ELEMENT transactionPointOfSaleCode (#PCDATA)>
+    
+    <!ELEMENT vendorName (#PCDATA)>
+    
+    <!ELEMENT vendorLine1Address (#PCDATA)>
+    
+    <!ELEMENT vendorLine2Address (#PCDATA)>
+    
+    <!ELEMENT vendorCityName (#PCDATA)>
+    
+    <!ELEMENT vendorStateCode (#PCDATA)>
+    
+    <!ELEMENT vendorZipCode (#PCDATA)>
+    
+    <!ELEMENT vendorOrderNumber (#PCDATA)>
+    
+    <!ELEMENT visaVendorIdentifier (#PCDATA)>
+    
+    <!ELEMENT cardHolderAlternateName (#PCDATA)>
+    
+    <!ELEMENT cardHolderLine1Address (#PCDATA)>
+    
+    <!ELEMENT cardHolderLine2Address (#PCDATA)>
+    
+    <!ELEMENT cardHolderCityName (#PCDATA)>
+    
+    <!ELEMENT cardHolderStateCode (#PCDATA)>
+    
+    <!ELEMENT cardHolderZipCode (#PCDATA)>
+    
+    <!ELEMENT cardHolderWorkPhoneNumber (#PCDATA)>
+    
+    <!ELEMENT cardLimit (#PCDATA)>
+    
+    <!ELEMENT cardCycleAmountLimit (#PCDATA)>
+    
+    <!ELEMENT cardCycleVolumeLimit (#PCDATA)>
+    
+    <!ELEMENT cardStatusCode (#PCDATA)>
+    
+    <!ELEMENT cardNoteText (#PCDATA)>

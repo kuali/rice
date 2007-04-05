@@ -1,0 +1,334 @@
+<?xml version="1.0"?>
+<project name="rice" default="dist" basedir=".">
+
+	<target name="init" description="sets up the build properties">
+		<echo level="info">RICE - init: initing tests... Anthill pro deploy dir = ${deployDir}</echo>
+		<property file="${user.home}/rice-build.properties" />
+
+		<!-- compilation properties -->
+		<property name="compile.debug" value="true" />
+		<property name="compile.deprecation" value="false" />
+		<property name="compile.optimize" value="false" />
+		<property name="compile.nowarn" value="true" />
+		<property name="compile.source" value="1.5" />
+		<property name="compile.target" value="1.5" />
+		<property name="compile.fork" value="yes" />
+
+		<!-- Specify the compilation target, defaulting this explicitly allows for overridding in the build.properties -->
+		<dirname property="jre.parent.dir" file="${java.home}" />
+		<!-- sigh, we must default to a "special" location if we are on Mac OS X -->
+		<condition property="compilation.target" value="${jre.parent.dir}/Home/bin/javac">
+			<and>
+				<os family="mac" />
+				<os family="unix" />
+			</and>
+		</condition>
+		<property name="compilation.target" value="${jre.parent.dir}/bin/javac" />
+
+		<property name="temp.dir" value="work" />
+		<property name="tests.classes.dir" value="${temp.dir}/test/classes" />
+		<property name="src.tests.dir" value="test/src" />
+		<property name="src.dir" value="src" />
+		<property name="classes.dir" value="classes" />
+		<property name="lib.dir" value="lib" />
+		<property name="sampleapp.src.dir" value="sampleapp/src" />
+		<property name="sampleapp.webroot" value="sampleapp/web-root" />
+		<property name="sampleapp.classes.dir" value="${temp.dir}/sampleapp/WEB-INF/classes" />
+
+		<property name="kuali.dir" value="/java/projects/head_kuali_project" />
+		<property name="kuali.classes.dir" value="${kuali.dir}/build/war/WEB-INF/classes" />
+		<property name="kuali.lib.dir" value="${kuali.dir}/build/war/WEB-INF/lib" />
+		<property name="kuali.src.dir" value="${kuali.dir}/work/src" />
+
+
+		<fileset id="lib" dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+
+		<path id="compile.classpath">
+			<fileset refid="lib" />
+		</path>
+
+		<property name="tests.includes" value="**/*Test.class" />
+		<property name="tests.memory" value="256M" />
+		<property name="tests.permsize" value="128M" />
+		
+		<!-- Anthill deployment directory -->
+		<property name="deployDir" location="${temp.dir}" />
+		
+		
+	</target>
+
+
+	<target name="compile-tests" depends="compile-sample-app" description="compiles test source for automated testing">
+		<echo level="info">RICE - compile-tests: compiling tests...</echo>
+		<mkdir dir="${tests.classes.dir}" />
+
+		<javac destdir="${tests.classes.dir}" srcdir="${src.tests.dir}" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}" nowarn="${compile.nowarn}" executable="${compilation.target}" source="${compile.source}" target="${compile.target}" fork="${compile.fork}">
+			<classpath refid="compile.classpath" />
+			<classpath>
+				<pathelement location="${classes.dir}" />
+				<pathelement location="${sampleapp.classes.dir}" />
+			</classpath>
+		</javac>
+
+		<copy todir="${tests.classes.dir}">
+			<fileset dir="${src.tests.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="compile" depends="init" description="compile source">
+		<echo level="info">RICE - compile: compiling...</echo>
+		<mkdir dir="${classes.dir}" />
+		<javac destdir="${classes.dir}" srcdir="${src.dir}" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}" nowarn="${compile.nowarn}" executable="${compilation.target}" source="${compile.source}" target="${compile.target}" fork="${compile.fork}">
+			<classpath refid="compile.classpath" />
+		</javac>
+		<copy todir="${classes.dir}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="compile-sample-app" depends="compile" description="compiles the sample app source">
+		<echo level="info">RICE - compile-sample-app:  compiling sample application</echo>
+		<mkdir dir="${sampleapp.classes.dir}" />
+		<javac destdir="${sampleapp.classes.dir}" srcdir="${sampleapp.src.dir}" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}" nowarn="${compile.nowarn}" executable="${compilation.target}" source="${compile.source}" target="${compile.target}" fork="${compile.fork}">
+			<classpath refid="compile.classpath" />
+			<classpath>
+				<pathelement location="${classes.dir}" />
+			</classpath>
+		</javac>
+		<copy todir="${sampleapp.classes.dir}">
+			<fileset dir="${sampleapp.src.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="jar-kuali" depends="init" description="Jars kuali and brings over any kuali dependencies.  Assumes kuali project is checked out and built">
+		<delete file="${lib.dir}/kuali/kuali.jar"></delete>
+		<delete>
+			<fileset dir="${lib.dir}/kuali-lib">
+				<include name="*" />
+			</fileset>
+		</delete>
+		<jar destfile="${lib.dir}/kuali/kuali.jar">
+			<fileset dir="${kuali.classes.dir}" includes="org/kuali/core/**/*">
+				<exclude name="org/kuali/core/batch/**/*" />
+			</fileset>
+			<fileset dir="${kuali.classes.dir}" includes="org/kuali/rice/**/*" />
+			<fileset dir="${kuali.classes.dir}">
+				<include name="org/kuali/Constants*.class" />
+				<include name="org/kuali/KeyConstants.class" />
+				<include name="org/kuali/PropertyConstants.class" />
+				<include name="org/kuali/workflow/postprocessor/KualiPostProcessor.class" />
+			</fileset>
+		</jar>
+		<copy todir="${lib.dir}/kuali-lib">
+			<fileset dir="${kuali.lib.dir}">
+				<exclude name="**/*taglibs-standard-1.1.2.jar"/>
+				<exclude name="**/*taglibs-jstl-1.1.2.jar"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="run-tests" depends="compile-tests" description="runs the tests">
+		<echo level="info">Rice - run-tests: running tests</echo>
+		<echo>Anthill pro deploy dir = ${deployDir}</echo>
+		<taskdef resource="emma_ant.properties" classpathref="compile.classpath" />
+		<property name="tests.data.dir" value="${temp.dir}/tests-data" />
+		<property name="dist.tests.dir" value="${deployDir}/results" />
+		<property name="inst.out.dir" value="${temp.dir}/instrumented-classes" />
+		<property name="dist.coverage.dir" value="${deployDir}/coverage" />
+
+		<echo>Test Results dir = ${dist.tests.dir}</echo>
+		<echo>Coverage Results dir = ${dist.coverage.dir}</echo>
+		
+		<mkdir dir="${tests.data.dir}" />
+		<mkdir dir="${dist.tests.dir}" />
+		<mkdir dir="${inst.out.dir}" />
+		<mkdir dir="${dist.coverage.dir}"/>
+
+		<path id="instr.path">
+			<!--
+			<pathelement location="${classes.dir}" />
+			-->
+			<pathelement location="${lib.dir}/kuali/kuali.jar" />
+		</path>
+
+		<property name="emma.enabled" value="true" />
+		<emma verbosity="verbose" enabled="${emma.enabled}">
+			<instr mode="fullcopy" instrpathref="instr.path" outfile="${tests.data.dir}/coverage.emma" outdir="${inst.out.dir}" merge="no" />
+		</emma>
+		
+		<!-- copy the sample app classes into the instrumented -->
+		<copy todir="${classes.dir}">
+			<fileset dir="${sampleapp.classes.dir}"></fileset>
+		</copy>
+		
+		<path id="tests.classpath">
+			<fileset dir="${lib.dir}">
+				<include name="**/*.jar" />
+				<exclude name="kuali/kuali.jar" />
+			</fileset>
+			<!--
+			<pathelement location="${inst.out.dir}/classes" />
+			-->
+			<pathelement location="${classes.dir}" />
+			<pathelement location="${inst.out.dir}/lib/kuali.jar" />
+			<pathelement location="${tests.classes.dir}" />
+			<pathelement location="${sampleapp.classes.dir}" />
+		</path>
+
+		<junit printsummary="on" haltonfailure="false" fork="true" showoutput="yes">
+			<classpath refid="tests.classpath" />
+			<formatter type="plain" usefile="false" />
+			<formatter type="xml" />
+			<batchtest todir="${tests.data.dir}">
+				<fileset dir="${tests.classes.dir}" includes="${tests.includes}" />
+			</batchtest>
+			<jvmarg value="-Demma.coverage.out.file=${tests.data.dir}/coverage.emma" />
+			<jvmarg value="-Demma.coverage.out.merge=true" />
+			<jvmarg value="-Xmx${tests.memory}" />
+			<jvmarg value="-XX:MaxPermSize=${tests.permsize}" />
+		</junit>
+
+		<junitreport todir="${dist.tests.dir}">
+			<fileset dir="${tests.data.dir}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${dist.tests.dir}" />
+		</junitreport>
+
+		<emma enabled="${emma.enabled}">
+			<report sourcepath="${src.dir}">
+				<fileset dir="${tests.data.dir}">
+					<include name="*.emma" />
+				</fileset>
+				<txt outfile="${dist.coverage.dir}/coverage.txt" />
+				<html outfile="${dist.coverage.dir}/index.html" />
+			</report>
+		</emma>
+	</target>
+
+	<target name="refresh-kuali-src" depends="init" description="takes source from kuali and brings it into rice minus excluded files.">
+		<!--
+		<delete dir="${sampleapp.webroot}/kuali" />
+        <delete dir="${sampleapp.webroot}/images" />
+        <delete dir="${sampleapp.webroot}/scripts" />
+        <delete dir="${sampleapp.webroot}/WEB-INF/tags" />
+        <delete file="${sampleapp.webroot}/css/edoclite.css" />
+        <delete file="${sampleapp.webroot}/css/kuali.css" />
+        <delete file="${sampleapp.webroot}/css/portal.css" />
+        <delete file="${sampleapp.webroot}/css/screen.css" />
+        -->
+		<!--
+        <delete file="${src.dir}/Core-OJB-repository.xml" />
+		<delete file="${src.dir}/CoreSpringBeans.xml" />
+		-->
+		<delete>
+			<fileset dir="${src.dir}/org/kuali/core/bo/datadictionary" includes="*.xml"/>
+		</delete>
+		<delete>
+			<fileset dir="${src.dir}/org/kuali/core/document/datadictionary" includes="*.xml"/>
+		</delete>
+		<!--
+        <mkdir dir="${sampleapp.webroot}/kuali" />
+        <mkdir dir="${sampleapp.webroot}/images" />
+        <mkdir dir="${sampleapp.webroot}/scripts" />
+        <mkdir dir="${sampleapp.webroot}/WEB-INF/tags" />
+        <copy todir="${sampleapp.webroot}/kuali">
+            <fileset dir="${kuali.dir}/build/war">
+            	<exclude name="**/*/lib/**/*" />
+                <exclude name="**/*/classes/**/*" />
+                <exclude name="**/*/web.xml" />
+            </fileset>
+        </copy>
+        <copy todir="${sampleapp.webroot}/css">
+        	<fileset dir="${kuali.dir}/build/war/css"/>
+        </copy>
+        <copy todir="${sampleapp.webroot}/images">
+        	<fileset dir="${kuali.dir}/build/war/images"/>
+        </copy>
+        <copy todir="${sampleapp.webroot}/scripts">
+        	<fileset dir="${kuali.dir}/build/war/scripts"/>
+        </copy>
+        <copy todir="${sampleapp.webroot}/WEB-INF/tags">
+        	<fileset dir="${kuali.dir}/build/war/WEB-INF/tags"/>
+        </copy>
+        -->
+		<!--
+        <copy todir="${src.dir}">
+        	<fileset file="${kuali.src.dir}/org/kuali/core/OJB-repository.xml"/>        	
+        </copy>        
+		<copy tofile="${src.dir}/Core-OJB-repository.xml" file="${kuali.src.dir}/org/kuali/core/OJB-repository.xml"/>        	
+		<copy tofile="${src.dir}/CoreSpringBeans.xml" file="${kuali.src.dir}/org/kuali/core/SpringBeans.xml"/>        			
+		-->
+		<copy todir="${src.dir}/org/kuali/core/bo/datadictionary">
+			<fileset dir="${kuali.src.dir}/org/kuali/core/bo/datadictionary" includes="*.xml"/>
+		</copy>
+		<copy todir="${src.dir}/org/kuali/core/document/datadictionary">
+			<fileset dir="${kuali.src.dir}/org/kuali/core/document/datadictionary" includes="*.xml"/>
+		</copy>
+	</target>
+	
+	<target name="refresh-kuali-web-content" depends="init" description="copies kuali web content and brings it into the rice project">
+
+		<delete dir="${sampleapp.webroot}/kuali" />
+        <delete dir="${sampleapp.webroot}/images" />
+        <delete dir="${sampleapp.webroot}/scripts" />
+        <delete dir="${sampleapp.webroot}/WEB-INF/tags" />
+        <delete file="${sampleapp.webroot}/css/edoclite.css" />
+        <delete file="${sampleapp.webroot}/css/kuali.css" />
+        <delete file="${sampleapp.webroot}/css/portal.css" />
+        <delete file="${sampleapp.webroot}/css/screen.css" />
+        <mkdir dir="${sampleapp.webroot}/kuali" />
+        <mkdir dir="${sampleapp.webroot}/images" />
+        <mkdir dir="${sampleapp.webroot}/scripts" />
+        <mkdir dir="${sampleapp.webroot}/WEB-INF/tags" />
+        <copy todir="${sampleapp.webroot}/kuali">
+            <fileset dir="${kuali.dir}/build/war">
+            	<exclude name="**/*/lib/**/*" />
+                <exclude name="**/*/classes/**/*" />
+                <exclude name="**/*/web.xml" />
+            </fileset>
+        </copy>
+        <copy todir="${sampleapp.webroot}/css">
+        	<fileset dir="${kuali.dir}/build/war/css"/>
+        </copy>
+        <copy todir="${sampleapp.webroot}/images">
+        	<fileset dir="${kuali.dir}/build/war/images"/>
+        </copy>
+        <copy todir="${sampleapp.webroot}/scripts">
+        	<fileset dir="${kuali.dir}/build/war/scripts"/>
+        </copy>
+        <copy todir="${sampleapp.webroot}/WEB-INF/tags">
+        	<fileset dir="${kuali.dir}/build/war/WEB-INF/tags"/>
+        </copy>
+	</target>
+	
+	
+	<target name="refresh-from-kuali_project" depends="jar-kuali, refresh-kuali-src, refresh-kuali-web-content" description="Bring in kuali content.  Assumes kuali project is checked out and built.">
+	</target>
+	
+	<target name="clean" depends="init" description="deletes all class files and distributions of rice">
+		<echo level="info">Workflow - clean: cleaning dirs ${temp.dir}, ${classes.dir}, ${tests.classes.dir}</echo>
+		<delete dir="${temp.dir}" />
+		<delete dir="${classes.dir}" verbose="true" />
+		<delete dir="${test.classes.dir}" />
+	</target>
+
+	<target name="dist" depends="compile" description="builds rice.jar and sample app.war">
+		<echo level="info">Workflow - builds rice.jar and sample app.war</echo>
+	</target>
+
+	<target name="copy-new-workflow-content" description="copy the kew client jar into classpath">
+		<copy todir="work/lib/kuali-lib" file="/java/projects/workflow/dist/workflow-client-2.3.0.jar" overwrite="true" />
+		<delete dir="sampleapp/web-root/en" />
+		<unzip dest="sampleapp/web-root" src="/java/projects/workflow/dist/workflow-embedded-content.zip">
+		</unzip>
+	</target>
+</project>

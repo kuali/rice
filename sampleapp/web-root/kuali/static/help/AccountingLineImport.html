@@ -1,0 +1,558 @@
+<!--
+ Copyright 2007 The Kuali Foundation.
+ 
+ Licensed under the Educational Community License, Version 1.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl1.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 11 (filtered)">
+<title>Rules</title>
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h1
+	{margin-right:0in;
+	margin-left:0in;
+	font-size:24.0pt;
+	font-family:"Times New Roman";}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in .5in 1.0in .5in;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h1><u><span style='font-size:20.0pt"'>ACCOUNTING
+LINES IMPORT HELP</span></u></h1>
+
+<h2>Rules</h2>
+
+<ol>
+	<li>
+		The imported file must be in standard comma delimited format. The templates are Excel documents, but you must save your files in the .CSV format.
+	</li>
+	<li>
+		There is no minimum or maximum number of accounting lines that can be added at one time.
+	</li>
+	<li>
+		Imported lines are appended to the end of any current accounting lines in the section.
+	</li>
+	<li>
+		Current accounting lines in the section are not affected.
+	</li>
+	<li>
+		Lines with errors are not imported. The errors are displayed, however.
+	</li>
+	<li>
+		Templates contain instructions and column headings at the top (2 or 3 lines).  These rows must be deleted prior to saving the file in .CSV format.
+	</li>
+	<li>
+		The Override Code is a required field for all import files.  This field is different because on the web interface the overrides appear as separate checkboxes when needed. On an import line they are combined into a single code which is always needed. The following are the various choices for override codes, depending on the reason the override is needed.  If no override is needed then the code for that accounting line should be N.
+	</li>
+	<li>
+		If any
+field in the accounting string requires a preceding zero (object code
+0703 or Ref. Origin Code 01, for example), the data must be entered into
+the excel file with an apostrophe preceding the number (entered as '0703
+or '01) in order to capture/display the preceding zero properly for the
+import.  Your entry will show just the number (0703 or 01), you won't
+see the apostrophe displayed.
+	</li>
+</ol>
+<br/>
+<br/>
+<table>
+	<tr>
+		<th style="width:20%;text-align:left;border-bottom-width:3;border-bottom-style:solid">
+			Override Code
+		</th>
+		<th style="text-align:left;border-bottom-width:3;border-bottom-style:solid">
+			Meaning
+		</th>
+	</tr>
+	<tr>
+		<td>
+			N
+		</td>
+		<td>
+			None (no overrides)
+		</td>
+	</tr>
+	<tr>
+		<td>
+			1
+		</td>
+		<td>
+			Expired Account
+		</td>
+	</tr>
+	<tr>
+		<td>
+			2
+		</td>
+		<td>
+			Non Budgeted Object
+		</td>
+	</tr>
+	<tr>
+		<td>
+			3
+		</td>
+		<td>
+			Transaction Exceeds Remaining Budget
+		</td>
+	</tr>
+	<tr>
+		<td>
+			4
+		</td>
+		<td>
+			Expired Account and Non Budgeted Object
+		</td>
+	</tr>
+	<tr>
+		<td>
+			5
+		</td>
+		<td>
+			Non Budgeted Object and Transaction Exceeds Remaining Budget
+		</td>
+	</tr>
+	<tr>
+		<td>
+			6
+		</td>
+		<td>
+			Expired Account and Transaction Exceeds Remaining Budget
+		</td>
+	</tr>
+	<tr>
+		<td>
+			7
+		</td>
+		<td>
+			Expired Account, Non Budgeted Object and Transaction Exceeds Remaining Budget
+		</td>
+	</tr>
+	<tr>
+		<td>
+			8
+		</td>
+		<td>
+			Non Fringe Account Used
+		</td>
+	</tr>
+	<tr>
+		<td>
+			9
+		</td>
+		<td>
+			Expired Account and Non Fringe Account Used
+		</td>
+	</tr>
+</table>
+<h1><span style='font-size:16.0pt'>Instructions</span></h1>
+
+<p>The content allowed in some import fields depends on the type of eDoc, but is consistent with what can be input manually via the web interface.</p>
+<p>The lines in the imported file must have specific fields in an exact order, based on the document type as indicated below.  Required fields are noted with and asterisk (*).</p>
+
+<p><b>Step-by-step Instructions:</b></p>
+<ol>
+	<li>
+		Open the template file that corresponds to the Financial Transaction document type you are working on. There is a template for each document type (there may be multiple document types that use the same template).
+	<li>
+		Save the template to your computer as an excel workbook.
+	<li>
+		Add data to the file.  Note required field headings are marked with an asterisk (*) and appear in red.
+	<li>
+		If the file is to be used again in the future, save the file as an excel workbook (don't delete the headers yet).  If the file is not to be used again skip this step.
+	<li>
+		Delete the header rows at the top.
+	<li>
+		Save the file again, with a new name, in .CSV format.
+	<li>
+		Import the .CSV file to your eDoc:
+	<ol style='list-style-type:lower-alpha'>
+		<li>
+			From your eDoc, click BROWSE (Accounting Lines tab, top right area)
+		<li>
+			From the Choose file window, select the .CSV file to be imported and click OPEN
+		<li>
+			The name of the file you selected will appear next to the BROWSE button
+		<li>
+			Click ADD
+	</ol>
+	<li>
+		When finished, archive or delete the .CSV file. <br>
+</ol>
+<br>
+When the file is needed again: <br>
+<ol>
+	<li>Open the saved Excel workbook with the data from step 4 above.
+	<li>Edit the file as necessary.
+	<li>Follow steps 4-8 above.
+</ol>
+<br/>
+<br/>
+<h2>Templates &amp; Format Information</h2>
+<pre>________________________________________________________________</pre>
+<h3><u>DOCUMENT TYPE(S):</u></h3>
+<ul>
+	<li>Distribution of Income and Expense</li>
+	<li>Internal Billing</li>
+	<li>Pre-Encumbrance (encumbrance lines only)</li>
+	<li>Transfer of Funds</li>
+	<li>Year End Distribution of Income and Expense </li>
+	<li>Year End Transfer of Funds</li>
+</ul>
+<br/>
+<b>TEMPLATE:  </b><a href="templates/DI_YEDI_IB_TF_PE_Encumbrance_only_Import.xls">DI_YEDI_IB_TF_PE_Encumbrance_only_Import.xls</a>
+<br/>
+<br/>
+<b>Utilize the format:</b>
+<ol>
+	<li>Chart Code*</li>
+	<li>Account Number*</li>
+	<li>Sub-Account Number</li>
+	<li>Object Code*</li>
+	<li>Sub-Object Code</li>
+	<li>Project Code</li>
+	<li>Organization Reference Id</li>
+	<li>Override Code*</li>
+	<li>Amount*</li>
+</ol>
+<br/>
+<pre>________________________________________________________________</pre>
+<h3><u>DOCUMENT TYPE(S)</u></h3>
+<ul>
+	<li>Indirect Cost Adjustment (object code is automatically populated by an APC value)</li>
+</ul>
+<br/>
+<b>TEMPLATE:  </b><a href="templates/ICA_Import.xls">ICA_Import.xls</a>
+<br/>
+<br/>
+<b>Utilize the format:</b>
+<ol>
+	<li>Chart Code*</li>
+	<li>Account Number*</li>
+	<li>Sub-Account Number</li>
+	<li>Sub-Object Code</li>
+	<li>Project Code</li>
+	<li>Organization Reference Id</li>
+	<li>Override Code*</li>
+	<li>Amount*</li>
+</ol>
+<br/>
+<pre>________________________________________________________________</pre>
+<h3><u>DOCUMENT TYPE(S):</u></h3>
+<ul>
+	<li>Advanced Deposits Document</li>
+	<li>Cash Receipt</li>
+	<li>Credit Card Receipts</li>
+	<li>Disbursement Voucher</li>
+	<li>Service Billing</li>
+</ul>
+<br/>
+<b>TEMPLATE:  </b><a href="templates/AD_CR_CCR_DV_SB_Import.xls">AD_CR_CCR_DV_SB_Import.xls</a>
+<br/>
+<br/>
+<b>Utilize the format:</b>
+<ol>
+	<li>Chart Code*</li>
+	<li>Account Number*</li>
+	<li>Sub-Account Number</li>
+	<li>Object Code*</li>
+	<li>Sub-Object Code</li>
+	<li>Project Code</li>
+	<li>Organization Reference Id</li>
+	<li>Line Description</li>
+	<li>Override Code*</li>
+	<li>Amount*</li>
+</ol>
+<br/>
+<pre>________________________________________________________________</pre>
+<h3><u>DOCUMENT TYPE(S):</u></h3>
+<ul>
+	<li>Non-Check Disbursement</li>
+</ul>
+<br/>
+<b>TEMPLATE:  </b><a href="templates/ND_Import.xls">ND_Import.xls</a>
+<br/>
+<br/>
+<b>Utilize the format:</b>
+<ol>
+	<li>Chart Code*</li>
+	<li>Account Number*</li>
+	<li>Sub-Account Number</li>
+	<li>Object Code*</li>
+	<li>Sub-Object Code</li>
+	<li>Project Code</li>
+	<li>Organization Reference Id</li>
+	<li>Reference Number*</li>
+	<li>Line Description</li>
+	<li>Override Code*</li>
+	<li>Amount*</li>
+</ol>
+<br/>
+<pre>________________________________________________________________</pre>
+<h3><u>DOCUMENT TYPE(S):</u></h3>
+<ul>
+	<li>Pre-Encumbrance (disencumbrance lines only)</li>
+</ul>
+<br/>
+<b>TEMPLATE:  </b><a href="templates/PE_Disencumbrance_only_Import.xls">PE_Disencumbrance_only_Import.xls</a>
+<br/>
+<br/>
+<b>Utilize the format:</b>
+<ol>
+	<li>Chart Code*</li>
+	<li>Account Number*</li>
+	<li>Sub-Account Number</li>
+	<li>Object Code*</li>
+	<li>Sub-Object Code</li>
+	<li>Project Code</li>
+	<li>Organization Reference Id</li>
+	<li>Reference Number*</li>
+	<li>Override Code*</li>
+	<li>Amount*</li>
+</ol>
+<br/>
+<pre>________________________________________________________________</pre>
+<h3><u>DOCUMENT TYPE(S):</u></h3>
+<ul>
+	<li>General Error Correction</li>
+	<li>Year End General Error Correction</li>
+</ul>
+<br/>
+<b>TEMPLATE:  </b><a href="templates/GEC_YEGEC_Import.xls">GEC_YEGEC_Import.xls</a>
+<br/>
+<br/>
+<b>Utilize the format:</b>
+<ol>
+	<li>Chart Code*</li>
+	<li>Account Number*</li>
+	<li>Sub-Account Number</li>
+	<li>Object Code*</li>
+	<li>Sub-Object Code</li>
+	<li>Project Code</li>
+	<li>Organization Reference Id</li>
+	<li>Reference Origin Code*</li>
+	<li>Reference Number*</li>
+	<li>Line Description</li>
+	<li>Override Code*</li>
+	<li>Amount*</li>
+</ol>
+<br/>
+<pre>________________________________________________________________</pre>
+<h3><u>DOCUMENT TYPE(S):</u></h3>
+<ul>
+	<li>Auxiliary Voucher</li>
+</ul>
+<br/>
+<b>TEMPLATE:  </b><a href="templates/AV_Import.xls">AV_Import.xls</a>
+<br/>
+<b>Utilize the format:</b>
+<ol>
+	<li>Chart Code*</li>
+	<li>Account Number*</li>
+	<li>Sub-Account Number</li>
+	<li>Object Code*</li>
+	<li>Sub-Object Code</li>
+	<li>Project Code</li>
+	<li>Organization Reference Id</li>
+	<li>Override Code*</li>
+	<li>Debit*</li>
+	<li>Credit*</li>
+</ol>
+<br/>
+<b><i>Note:  Unused Debit or Credit Amount fields for each accounting line must be blank.  Do not enter zero in the unused field.</i></b>
+<pre>________________________________________________________________</pre>
+<h3><u>DOCUMENT TYPE(S):</u></h3>
+<ul>
+	<li>Budget Adjustment</li>
+	<li>Year End Budget Adjustment</li>
+</ul>
+<br/>
+<b>TEMPLATE:  </b><a href="templates/BA_YEBA_Import.xls">BA_YEBA_Import.xls</a>
+<br/>
+<br/>
+<b>Utilize the format:</b>
+<ol>
+	<li>Chart Code*</li>
+	<li>Account Number*</li>
+	<li>Sub-Account Number</li>
+	<li>Object Code*</li>
+	<li>Sub-Object Code</li>
+	<li>Project Code</li>
+	<li>Organization Reference Id</li>
+	<li>Override Code*</li>
+	<li>Current Budget Adjustment Amount*</li>
+	<li>Base Budget Adjustment Amount</li>
+	<li>Month 1 Budget Amount*</li>
+	<li>Month 2 Budget Amount*</li>
+	<li>Month 4 Budget Amount*</li>
+	<li>Month 5 Budget Amount*</li>
+	<li>Month 6 Budget Amount*</li>
+	<li>Month 7 Budget Amount*</li>
+	<li>Month 8 Budget Amount*</li>
+	<li>Month 9 Budget Amount*</li>
+	<li>Month 10 Budget Amount*</li>
+	<li>Month 11 Budget Amount*</li>
+	<li>Month 12 Budget Amount*</li>
+</ol>
+<br/>
+<b><i>Notes:  Monthly Budget Amount fields may not be blank.  Either an amount or zero must be entered in each of the 12 monthly budget amount columns for each accounting line in the import file.
+Base Budget Amount field may not be zero.  If you are not adjusting the base budget, leave this field blank on each accounting line in the import file</i></b>
+<br/>
+<pre>________________________________________________________________</pre>
+<h3><u>DOCUMENT TYPE(S):</u></h3>
+<ul>
+<li>Journal Voucher</li>
+</ul>
+<br/>
+<i>A Journal Voucher has three different accounting line formats, depending on its Balance Type. You must choose the Balance Type before importing.</i>
+<br/>
+<br/>
+<b>TEMPLATE:  </b><a href="templates/JV_NonOffset_Bal_Type_Import.xls">JV_NonOffset_Bal_Type_Import.xls</a>
+<br/>
+Single amount entry, used for Non-offset balance types
+<ul style="margin-top:0">
+	<li>ACTUAL STATISTICS</li>
+	<li>ADJUSTED BASE BUDGET</li>
+	<li>BUDGET STATISTICS</li>
+	<li>CURRENT BUDGET</li>
+	<li>JULY 1 BUDGET</li>
+	<li>MONTHLY BUDGET</li>
+	<li>YEAR END BUDGET REVERSION</li>
+</ul>
+<br/>
+<b>Utilize the format:</b>
+<ol>
+	<li>Chart Code*</li>
+	<li>Account Number*</li>
+	<li>Sub-Account Number</li>
+	<li>Object Code*</li>
+	<li>Sub-Object Code</li>
+	<li>Project Code</li>
+	<li>Object Type Code*</li>
+	<li>Organization Reference Id</li>
+	<li>Override Code*</li>
+	<li>Amount*</li>
+</ol>
+<br/>
+<b>TEMPLATE:  </b><a href="templates/JV_Offset_Bal_Type_Import.xls">JV_Offset_Bal_Type_Import.xls</a>
+<br/>
+Debit/Credit amount entry, used for Offset balance types
+<ul style="margin-top:0">
+	<li>A21 BALANCES - LABOR LEDGER ONLY</li>
+	<li>ACTUALS (BALANCE SHEET)</li>
+	<li>COST SHARE ENCUMBRANCES</li>
+	<li>INTERNAL ENCUMBRANCE</li>
+	<li>CLOSE NOMINAL BALANCE</li>
+	<li>PRE-ENCUMBRANCE</li>
+	<li>TRANSFERS</li>
+</ul>
+<br/>
+<b>Utilize the format:</b>
+<ol>
+	<li>Chart Code*</li>
+	<li>Account Number*</li>
+	<li>Sub-Account Number</li>
+	<li>Object Code*</li>
+	<li>Sub-Object Code</li>
+	<li>Project Code</li>
+	<li>Object Type Code*</li>
+	<li>Organization Reference Id</li>
+	<li>Override Code*</li>
+	<li>Debit*</li>
+	<li>Credit*</li>
+</ol>
+<br/>
+<b><i>Notes: CREDIT amount field may not be blank. Either an amount or zero must be entered in the CREDIT field for each accounting line in the import file.
+Unused DEBIT field must be blank. Do not enter zero in unused DEBIT fields in the import file. </i></b>
+<br/>
+<br/>
+<b>TEMPLATE:  </b><a href="templates/JV_Ext_Encumbr_Import.xls">JV_Ext_Encumbr_Import.xls</a>
+<br/>Debit/Credit amount entry, used for External Encumbrance balance types
+<ul style="margin-top:0">
+	<li>EXTERNAL ENCUMBRANCE </li>
+</ul>
+<br/>
+<b>Utilize the format:</b>
+<ol>
+	<li>Chart Code*</li>
+	<li>Account Number*</li>
+	<li>Sub-Account Number</li>
+	<li>Object Code*</li>
+	<li>Sub-Object Code</li>
+	<li>Project Code</li>
+	<li>Object Type Code*</li>
+	<li>Organization Reference Id</li>
+	<li>Reference Origin Code*</li>
+	<li>Reference Type Code*</li>
+	<li>Reference Number*</li>
+	<li>Override Code*</li>
+	<li>Debit*</li>
+	<li>Credit*</li>
+</ol>
+<br/>
+<b><i>Notes: CREDIT amount field may not be blank. Either an amount or zero must be entered in the CREDIT field for each accounting line in the import file.
+Unused DEBIT field must be blank. Do not enter zero in unused DEBIT fields in the import file. </i></b>
+<br/>
+<pre>________________________________________________________________</pre>
+ 
+<h3><u>DOCUMENT TYPE(S):</u></h3>
+ 
+<ul><li>Salary Transfer of Expense</li></ul>
+<br>
+ 
+<b>TEMPLATE:  </b><a href="templates/Salary_Expense_Import.xls">Salary_Expense_Import.xls</a> 
+<br>
+ 
+<br>
+ 
+<b>Utilize the format:</b> 
+<ol><li>Chart Code*</li><li>Account Number*</li><li>Sub-Account Number</li><li>Object Code*</li><li>Sub-Object Code</li><li>Project Codes</li><li>Organization Reference Id</li><li>Position Number</li><li>Payroll End Date Fiscal Year</li><li>Payroll End Date Fiscal Period Code</li><li>Payrol lTotal Hours</li><li>Amount<br>
+  </li></ol>
+<br>
+ 
+<b><i>Notes: None Yet</i></b>
+</div>
+
+</body>
+
+</html>

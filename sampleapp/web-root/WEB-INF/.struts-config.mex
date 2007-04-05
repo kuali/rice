@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/travelDocument.do" location="350,150" dimension="308,88" />
+  <StrutsActivity path="/workflowDocHandler.do" location="950,150" dimension="308,88" />
+  <StrutsActivity path="/maintenanceScreen.do" location="650,450" dimension="338,88" />
+  <StrutsActivity path="/serviceCall.do" location="350,650" dimension="338,88" />
+  <StrutsActivity path="error;6" location="50,250" dimension="103,75" />
+  <StrutsActivity path="/jsp/travelDocument.jsp" location="350,350" dimension="145,49" />
+  <StrutsActivity path="/jsp/TravelRequestDocHandler.jsp" location="650,350" dimension="194,49" />
+  <StrutsActivity path="/jsp/saved.jsp" location="950,350" dimension="98,49" />
+  <StrutsActivity path="/jsp/DocHandlerActionTaken.jsp" location="50,450" dimension="183,49" />
+  <StrutsActivity path="/jsp/MaintenanceTable.jsp" location="50,650" dimension="174,49" />
+  <StrutsActivity path="/jsp/ServiceCall.jsp" location="950,850" dimension="136,49" />
+  <StrutsActivity path="/jsp/error.jsp" location="350,450" dimension="93,49" />
+  <StrutsActivity path="/search.jsp" location="950,650" dimension="83,49" />
+  <StrutsActivity path="/add.jsp" location="950,750" dimension="69,49" />
+  <StrutsActivity path="/update.jsp" location="50,850" dimension="85,49" />
+  <StrutsActivity path="/results.jsp" location="350,850" dimension="83,49" />
+  <StrutsActivity path="/success.jsp" location="650,850" dimension="88,49" />
+  <StrutsTransition id="/travelDocument.do,docHandler,/jsp/TravelRequestDocHandler.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="510,238" />
+      <AbsolutePoint location="510,374" />
+      <AbsolutePoint location="650,374" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/workflowDocHandler.do,actionTaken,/jsp/DocHandlerActionTaken.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1104,238" />
+      <AbsolutePoint location="1104,574" />
+      <AbsolutePoint location="150,574" />
+      <AbsolutePoint location="150,499" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/travelDocument.do,saved,/jsp/saved.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="540,238" />
+      <AbsolutePoint location="540,295" />
+      <AbsolutePoint location="999,295" />
+      <AbsolutePoint location="999,350" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/serviceCall.do,view,/jsp/ServiceCall.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="0,0" />
+      <AbsolutePoint location="0,0" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/maintenanceScreen.do,view,/jsp/MaintenanceTable.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="0,0" />
+      <AbsolutePoint location="0,0" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/travelDocument.do,display,/jsp/travelDocument.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="480,238" />
+      <AbsolutePoint location="480,350" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="error;6,null,/jsp/error.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="153,295" />
+      <AbsolutePoint location="278,295" />
+      <AbsolutePoint location="278,474" />
+      <AbsolutePoint location="350,474" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+

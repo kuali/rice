@@ -131,6 +131,7 @@
 			<fileset dir="${kuali.lib.dir}">
 				<exclude name="**/*taglibs-standard-1.1.2.jar"/>
 				<exclude name="**/*taglibs-jstl-1.1.2.jar"/>
+				<!-- <exclude name="**/*spring*.jar"/> -->
 			</fileset>
 		</copy>
 	</target>

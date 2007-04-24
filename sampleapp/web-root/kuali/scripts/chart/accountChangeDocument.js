@@ -15,24 +15,7 @@
  */
 function loadAccountName( acctField ) {
     var elPrefix = findElPrefix( acctField.name );
-	var coaCode = getElementValue( elPrefix + ".chartOfAccountsCode" );
-	var accountCode = getElementValue( acctField.name );
-	var nameFieldName = elPrefix + ".accountName";
-	
-	if ( accountCode != "" && coaCode != "" ) {
-		var dwrReply = {
-			callback:function(data) {
-			if ( data != null && typeof data == 'object' ) {
-				setRecipientValue( nameFieldName, data.accountName );
-			} else {
-				setRecipientValue( nameFieldName, wrapError( "account not found" ), true );			
-			} },
-			errorHandler:function( errorMessage ) { 
-				setRecipientValue( nameFieldName, wrapError( "account not found" ), true );
-			}
-		};
-		AccountService.getByPrimaryIdWithCaching( coaCode, accountCode, dwrReply );
-	} else {
-		setRecipientValue( nameFieldName, "" );
-	}
+    var nameFieldName = elPrefix + ".account.accountName";
+
+    loadAccountInfo( acctField.name, nameFieldName );
 }

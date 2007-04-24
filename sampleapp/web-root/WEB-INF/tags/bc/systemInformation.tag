@@ -31,7 +31,7 @@
 
 <kul:tab tabTitle="System Information" defaultOpen="true" tabErrorKey="${Constants.BUDGET_CONSTRUCTION_SYSTEM_INFORMATION_TAB_ERRORS}">
 <div class="tab-container" align=center>
-	<table cellpadding="0" cellspacing="0" class="datatable" title="view system information" summary="view system information">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="datatable" title="view system information" summary="view system information">
     	<tr>
 		    <td colspan="4" class="subhead">
 			<span class="subhead-left">System Information</span>
@@ -351,6 +351,17 @@
 			<span class="subhead-left">Controls</span>
 		    </td>
 	    </tr>
+
+    	<tr>
+          <td colspan="4" class="datacell" nowrap>
+            <div align="center">
+              <html:image property="methodToCall.performAccountPullup.anchorsystemControlsAnchor" src="images/buttonsmall_pullup.gif" title="Account Pull Up" alt="Account Pull Up" styleClass="tinybutton"/>&nbsp;&nbsp;&nbsp;
+              <html:image property="methodToCall.performAccountPushdown.anchorsystemControlsAnchor" src="images/buttonsmall_pushdown.gif" title="Account Push Down" alt="Account Push Down" styleClass="tinybutton" />&nbsp;&nbsp;&nbsp;
+              <html:image property="methodToCall.performReportDump.anchorsystemControlsAnchor" src="images/buttonsmall_reportdump.gif" title="Account Report/Dump" alt="Account Report/Dump" styleClass="tinybutton"/>
+            </div>
+          </td>
+	    </tr>
+	    
 	</table>
 </div>
 </kul:tab>

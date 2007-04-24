@@ -14,13 +14,13 @@
  limitations under the License.
 --%>
 <%@ taglib prefix="c" uri="/tlds/c.tld" %>
+<%@ taglib uri="/tlds/struts-bean-el.tld" prefix="bean-el"%>
 
 <%@ attribute name="boClassName" required="true" %>
 <%@ attribute name="tabindexOverride" required="false" %>
 <%@ attribute name="anchor" required="false" %>
-<%@ attribute name="fieldLabel" required="false" description="this value is used in the icon's alt and title attributes to provide more descriptive information" %>
-<%@ attribute name="iconLabel" required="false" description="the value of this String will be rendered before the icon itself" %>
-<%@ attribute name="lookedUpCollectionName" required="true" description="the name of the collection being looked up, this value will be returned to the calling document" %>
+<%@ attribute name="lookedUpBODisplayName" required="false" description="this value is the human readable name of the BO being looked up" %>
+<%@ attribute name="lookedUpCollectionName" required="true" description="the name of the collection being looked up (perhaps on a document collection), this value will be returned to the calling document" %>
 
 <c:choose>
   <c:when test="${!empty tabindexOverride}">
@@ -31,9 +31,9 @@
   </c:otherwise>
 </c:choose>
 
-<c:if test="${!empty iconLabel}">
-	<c:out value="${iconLabel}"/>
+<c:if test="${!empty lookedUpBODisplayName}">
+  <bean-el:message key="multiple.value.lookup.icon.label" arg0="${lookedUpBODisplayName}"/>
 </c:if>
 
 <input type="image" tabindex="${tabindex}" name="methodToCall.performLookup.(!!${boClassName}!!).(:;${lookedUpCollectionName};:).((%true%)).anchor${anchor}"
-   src="images/searchicon.gif" border="0" class="tinybutton" valign="middle" alt="Multiple Value Search ${fieldLabel}" title="Multiple Value Search ${fieldLabel}" />
+   src="images/searchicon.gif" border="0" class="tinybutton" valign="middle" alt="Multiple Value Search on ${lookedUpBODisplayName}" title="Multiple Value Search on ${lookedUpBODisplayName}" />

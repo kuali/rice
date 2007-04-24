@@ -21,6 +21,10 @@
     htmlFormAction="purapPurchaseOrder" renderMultipart="true"
     showTabButtons="true">
 
+    <c:if test="${!empty KualiForm.editingMode['fullEntry']}">
+        <c:set var="fullEntryMode" value="true" scope="request" />
+    </c:if>
+
     <kul:hiddenDocumentFields excludePostingYear="true" />
 
     <purap:hiddenPurapFields />
@@ -39,6 +43,12 @@
             detailSectionLabel="Purchase Order Detail" />
     </kul:documentOverview>
 
+    <c:if test="${KualiForm.editingMode['displayRetransmitTab']}" >
+        <purap:purchaseOrderRetransmit documentAttributes="${DataDictionary.KualiPurchaseOrderDocument.attributes}"
+            displayPurchaseOrderFields="true" />
+    </c:if>
+    	 		 
+<c:if test="${not KualiForm.editingMode['displayRetransmitTab']}" >
     <purap:vendor
         documentAttributes="${DataDictionary.KualiPurchaseOrderDocument.attributes}" 
         displayPurchaseOrderFields="true" />
@@ -46,9 +56,11 @@
     <purap:stipulationsAndInfo
         documentAttributes="${DataDictionary.KualiPurchaseOrderDocument.attributes}" />
 
-    <!-- purap:items
-        documentAttributes="${DataDictionary.KualiPurchaseOrderDocument.attributes}/ -->
 
+    <purap:puritems itemAttributes="${DataDictionary.PurchaseOrderItem.attributes}"
+        accountingLineAttributes="${DataDictionary.PurchaseOrderAccountingLine.attributes}"/> 
+
+     
     <purap:paymentinfo
         documentAttributes="${DataDictionary.KualiPurchaseOrderDocument.attributes}" 
         displayPurchaseOrderFields="true"/>
@@ -60,32 +72,31 @@
         documentAttributes="${DataDictionary.KualiPurchaseOrderDocument.attributes}" />
 
     <purap:statushistory 
-        documentAttributes="${DataDictionary.PurchaseOrderStatusHistory.attributes}" />
+        documentAttributes="${DataDictionary.PurchaseOrderStatusHistory.attributes}">
+          <html:messages id="warnings" property="statusHistoryWarning" message="true">
+            &nbsp;&nbsp;&nbsp;<bean:write name="warnings"/><br><br>
+          </html:messages>       
+    </purap:statushistory>
 
-    <kul:notes />
+    <kul:notes notesBo="${KualiForm.document.documentBusinessObject.boNotes}" noteType="${Constants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE}" >
+          <html:messages id="warnings" property="noteWarning" message="true">
+            &nbsp;&nbsp;&nbsp;<bean:write name="warnings"/><br><br>
+          </html:messages>
+    </kul:notes> 
 
     <kul:adHocRecipients />
 
     <kul:routeLog />
 
+</c:if>
     <kul:panelFooter />
 
-
-  	<c:set var="extraButtonSource" value="images/buttonsmall_openorder.gif"/>
-  	<c:set var="extraButtonProperty" value="methodToCall.reopenPo"/>
-  	<c:set var="extraButtonAlt" value="Reopen"/>
+    <c:set var="extraButtons" value="${KualiForm.extraButtons}"/>  	
   	
-<%-- 
-  	<c:set var="extraButtonSource" value="images/buttonsmall_closeorder.gif"/>
-  	<c:set var="extraButtonProperty" value="methodToCall.closePO"/>
-  	<c:set var="extraButtonAlt" value="Close PO"/>
-
---%>  	
     <kul:documentControls 
         transactionalDocument="true" 
-        extraButtonSource="${extraButtonSource}"
-        extraButtonProperty="${extraButtonProperty}"
-        extraButtonAlt="${extraButtonAlt}"
+        extraButtons="${extraButtons}"
         />
+
 
 </kul:documentPage>

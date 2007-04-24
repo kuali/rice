@@ -15,12 +15,13 @@
 --%>
 <%@ include file="/jsp/core/tldHeader.jsp"%>
 
+<c:set var="routingFormAttributes" value="${DataDictionary.KualiRoutingFormDocument.attributes}" />
 <c:set var="routingFormPersonnel" value="${DataDictionary.RoutingFormPersonnel.attributes}" />
 <c:set var="routingFormOrganizationCreditPercent" value="${DataDictionary.RoutingFormOrganizationCreditPercent.attributes}" />
 <c:set var="viewOnly" value="${KualiForm.editingMode['viewOnly']}"/>
 <c:set var="budgetLinked" value="${KualiForm.editingMode['budgetLinked']}"/>
 
-<kul:tab tabTitle="Personnel and Units/Orgs" defaultOpen="true" tabErrorKey="newRoutingFormPerson*,document.routingFormPersonnel*,newRoutingFormOrganizationCreditPercent*,document.routingFormOrganizationCreditPercent*" auditCluster="mainPageAuditErrors" tabAuditKey="document.routingFormPersonnel*,document.routingFormOrganizationCreditPercent*">
+<kul:tab tabTitle="Personnel and Units/Orgs" defaultOpen="true" tabErrorKey="newRoutingFormPerson*,document.routingFormPersonnel*,newRoutingFormOrganizationCreditPercent*,document.routingFormOrganizationCreditPercent*,document.routingFormFellowFullName" auditCluster="mainPageAuditErrors" tabAuditKey="document.routingFormPersonnel*,document.routingFormOrganizationCreditPercent*">
 
   <html:hidden property="document.personnelNextSequenceNumber" />
 
@@ -148,11 +149,20 @@
 					<c:if test="${hasErrors==true}">
 					  <c:set var="personRoleCodeTextStyle" value="background-color: red"/>
 					</c:if>
-	                <html:select property="document.routingFormPersonnel[${status.index}].personRoleCode" style="${personRoleCodeTextStyle}" disabled="${viewOnly}"> 
-	                  <html:option value="">select:</html:option> 
-	                  <c:set var="routingFormPersonRoles" value="${KualiForm.document.routingFormPersonRoles}"/> 
-	                  <html:options collection="routingFormPersonRoles" property="personRoleCode" labelProperty="personRole.personRoleDescription"/> 
-	                </html:select>
+                    <c:choose>
+                      <c:when test="${!viewOnly}">
+    	                <html:select property="document.routingFormPersonnel[${status.index}].personRoleCode" style="${personRoleCodeTextStyle}" disabled="${viewOnly}"> 
+      	                  <html:option value="">select:</html:option> 
+      	                  <c:set var="routingFormPersonRoles" value="${KualiForm.document.routingFormPersonRoles}"/> 
+      	                  <html:options collection="routingFormPersonRoles" property="personRoleCode" labelProperty="personRole.personRoleDescription"/> 
+       	                </html:select>
+	                  </c:when>
+  		              <c:otherwise>
+                        <html:hidden property="document.routingFormPersonnel[${status.index}].personRoleCode" />
+                        <html:hidden property="document.routingFormPersonnel[${status.index}].personRole.personRoleDescription" />
+                        ${person.personRole.personRoleDescription}
+  		              </c:otherwise>
+  		            </c:choose>
                   </td>
                   <td><kul:htmlControlAttribute property="document.routingFormPersonnel[${status.index}].personRoleText" attributeEntry="${routingFormPersonnel.personRoleText}" readOnly="${viewOnly or (budgetLinked and isProjectDirector)}"/></td>
                   <td>
@@ -253,6 +263,14 @@
                   <td><div align=center>&nbsp;<c:if test="${!viewOnly}"><html:image property="methodToCall.deleteOrganizationCreditPercentLine.line${status.index}.anchor${currentTabIndex}" src="images/tinybutton-delete1.gif" styleClass="tinybutton" alt="delete person line"/></c:if></div></td>
                 </tr>
               </c:forEach>
+              
+              <tr>
+                <td colspan=9 class="tab-subhead"><span class="left"><kul:htmlAttributeLabel attributeEntry="${routingFormAttributes.routingFormFellowFullName}" skipHelpUrl="true" noColon="true" /></span></td>
+              </tr>
+              <tr>
+                <th>&nbsp;</th>
+                <td class="infoline" colspan=8><kul:htmlControlAttribute property="document.routingFormFellowFullName" attributeEntry="${routingFormAttributes.routingFormFellowFullName}" readOnly="${viewOnly}"/></td>
+              </tr>
               
               <tr>
                 <td colspan=9 class="tab-subhead"><span class="left">Summary</span></td>

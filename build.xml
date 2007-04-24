@@ -35,7 +35,7 @@
 		<property name="sampleapp.webroot" value="sampleapp/web-root" />
 		<property name="sampleapp.classes.dir" value="${temp.dir}/sampleapp/WEB-INF/classes" />
 
-		<property name="kuali.dir" value="/java/projects/head_kuali_project" />
+		<property name="kuali.dir" value="/java/projects/kuali_project" />
 		<property name="kuali.classes.dir" value="${kuali.dir}/build/war/WEB-INF/classes" />
 		<property name="kuali.lib.dir" value="${kuali.dir}/build/war/WEB-INF/lib" />
 		<property name="kuali.src.dir" value="${kuali.dir}/work/src" />

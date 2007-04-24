@@ -39,8 +39,6 @@
         <summary>Campus Type Maintenance Document</summary>
         <description>Maintenance document which allows you to create new Campus Types, or modify existing Campus Types.</description>
 
-        <allowsCopy>true</allowsCopy>
-
         <lockingKeys>
             <field attributeName="campusTypeCode" />
         </lockingKeys>

@@ -190,6 +190,8 @@ function setRecipientValue(recipientBase, value, isError ) {
 		}
 	}
     if (containerHidden) {
+    	// get rid of HTML in the value
+    	value = value.replace(/(<([^>]+)>)/ig,"");
 		DWRUtil.setValue( recipientBase, value );
 	}
 }

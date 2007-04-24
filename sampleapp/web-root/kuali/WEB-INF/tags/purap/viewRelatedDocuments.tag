@@ -26,7 +26,7 @@
 <c:set var="notesAttributes" value="${DataDictionary.DocumentNote.attributes}" />
 
 
-<kul:tab tabTitle="View Related Documents" defaultOpen="true" tabErrorKey="${PurapConstants.ADDITIONAL_TAB_ERRORS}">
+<kul:tab tabTitle="View Related Documents" defaultOpen="false" tabErrorKey="${PurapConstants.ADDITIONAL_TAB_ERRORS}">
     <div class="tab-container" align=center>
         <div class="h2-container">
             <h2>Related Documents</h2>

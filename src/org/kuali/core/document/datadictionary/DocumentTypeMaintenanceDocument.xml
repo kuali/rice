@@ -43,8 +43,6 @@
         <description>Document used to create or update a document types in the system.</description>
         <help securityGroupName="ChartMaintenanceEDoc" parameterName="CHART_HELP_DOCUMENT_TYPE" />
 
-        <allowsCopy>true</allowsCopy>
-
         <lockingKeys>
             <field attributeName="financialDocumentTypeCode" />
         </lockingKeys>

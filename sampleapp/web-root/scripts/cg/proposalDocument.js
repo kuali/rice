@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 function onblur_proposalDirectCostAmount( directAmountField ) {
-    updateProposalTotalAmount( directAmountField.name, findElPrefix( directAmountField.name ) + ".proposalIndirectCostAmount" );
+    updateTotalAmount( directAmountField.name, findElPrefix( directAmountField.name ) + ".proposalIndirectCostAmount", "proposalTotalAmount" );
 }
 
 function onblur_proposalIndirectCostAmount( indirectAmountField ) {
-    updateProposalTotalAmount( findElPrefix( indirectAmountField.name ) + ".proposalDirectCostAmount", indirectAmountField.name );
+    updateTotalAmount( findElPrefix( indirectAmountField.name ) + ".proposalDirectCostAmount", indirectAmountField.name, "proposalTotalAmount" );
 }
 
 function onblur_proposalStatusCode( proposalStatusCodeField ) {
@@ -36,16 +36,100 @@ function onblur_proposalStatusCode( proposalStatusCodeField ) {
     }
 }
 
+function onblur_subcontractorNumber( subcontractorNumberField ) {
+    singleKeyLookup( SubcontractorService.getByPrimaryId, subcontractorNumberField, "subcontractor", "subcontractorName" );
+}
+
+function onblur_agencyNumber( agencyNumberField ) {
+    singleKeyLookup( AgencyService.getByPrimaryId, agencyNumberField, "agency", "fullName" );
+}
+
+function onblur_federalPassThroughAgencyNumber( federalPassThroughAgencyNumberField ) {
+    singleKeyLookup( AgencyService.getByPrimaryId, federalPassThroughAgencyNumberField, "federalPassThroughAgency", "fullName" );
+}
+
+function singleKeyLookup( dwrFunction, primaryKeyField, boName, propertyName ) {
+    var primaryKeyValue = DWRUtil.getValue( primaryKeyField.name ).trim();
+    var targetFieldName = findElPrefix( primaryKeyField.name ) + "." + boName + "." + propertyName;
+    if (primaryKeyValue == "") {
+        clearRecipients( targetFieldName );
+    } else {
+        dwrFunction( primaryKeyValue, makeDwrSingleReply( boName, propertyName, targetFieldName));
+    }
+}
+
+function makeDwrSingleReply( boName, propertyName, targetFieldName ) {
+    var friendlyBoName = boName.replace(/([A-Z])/g, ' $1').toLowerCase();
+    return {
+        callback:function(data) {
+            if (data != null && typeof data == 'object') {
+                setRecipientValue( targetFieldName, data[propertyName] );
+            } else {
+                setRecipientValue( targetFieldName, wrapError( friendlyBoName + " not found" ), true );
+            }
+        },
+        errorHandler:function(errorMessage) {
+            setRecipientValue( targetFieldName, wrapError( friendlyBoName + " not found" ), true );
+        }
+    };
+}
+
+function organizationNameLookup( anyFieldOnProposalOrganization ) {
+    var elPrefix = findElPrefix( anyFieldOnProposalOrganization.name );
+    var chartOfAccountsCode = DWRUtil.getValue( elPrefix + ".chartOfAccountsCode" ).toUpperCase().trim();
+    var organizationCode = DWRUtil.getValue( elPrefix + ".organizationCode" ).toUpperCase().trim();
+    var targetFieldName = elPrefix + ".organization.organizationName";
+    if (chartOfAccountsCode == "" || organizationCode == "") {
+        clearRecipients( targetFieldName );
+    } else {
+        var dwrReply = makeDwrSingleReply( "organization", "organizationName", targetFieldName);
+        OrganizationService.getByPrimaryIdWithCaching( chartOfAccountsCode, organizationCode, dwrReply);
+    }
+}
+
+function proposalDirectorIDLookup( userIdField ) {
+    var elPrefix = findElPrefix( userIdField.name );
+	var userNameFieldName = elPrefix + ".personName";
+	var universalIdFieldName = findElPrefix( elPrefix ) + ".personUniversalIdentifier";
+	
+	loadDirectorInfo( userIdField.name, universalIdFieldName, userNameFieldName );
+}
+
+function loadDirectorInfo( userIdFieldName, universalIdFieldName, userNameFieldName ) {
+    var userId = DWRUtil.getValue( userIdFieldName ).trim();
+
+    if (userId == "") {
+        clearRecipients( universalIdFieldName );
+        clearRecipients( userNameFieldName );
+    } else {
+        var dwrReply = {
+            callback:function(data) {
+                if ( data != null && typeof data == 'object' ) {
+                    setRecipientValue( universalIdFieldName, data.personUniversalIdentifier );
+                    setRecipientValue( userNameFieldName, data.personName );
+                } else {
+                    clearRecipients( universalIdFieldName );
+                    setRecipientValue( userNameFieldName, wrapError( "director not found" ), true );
+                } },
+            errorHandler:function( errorMessage ) {
+                clearRecipients( universalIdFieldName );
+                setRecipientValue( userNameFieldName, wrapError( "director not found" ), true );
+            }
+        };
+        ProjectDirectorService.getByPersonUserIdentifier( userId, dwrReply );
+    }
+}
+
 function today() {
     var now = new Date();
     // Kuali's DateFormatter requires this format, regardless of Locale.
     return (1 + now.getMonth()) + "/" + now.getDate() + "/" + now.getFullYear();
 }
 
-function updateProposalTotalAmount( directAmountFieldName, indirectAmountFieldName ) {
+function updateTotalAmount( directAmountFieldName, indirectAmountFieldName, totalAmountFieldName ) {
     var directAmount = getElementValue( directAmountFieldName );
     var indirectAmount = getElementValue( indirectAmountFieldName );
-    var totalFieldName = findElPrefix( directAmountFieldName ) + ".proposalTotalAmount";
+    var totalFieldName = findElPrefix( directAmountFieldName ) + "."+ totalAmountFieldName;
     if ( isCurrencyNumber( directAmount ) && isCurrencyNumber( indirectAmount ) ) {
         var totalValue = formatCurrency( parseCurrency( directAmount ) + parseCurrency( indirectAmount ) );
         setRecipientValue( totalFieldName, totalValue );
@@ -80,4 +164,12 @@ function formatCurrency( amount ) {
     }
     // Kuali's CurrencyFormatter is not displaying the $ symbol, so this function doesn't either.
     return (negative ? "(" : "") + groups.join(",") + "." + fraction + (negative ? ")" : "");
+}
+
+function onblur_awardDirectCostAmount( directAmountField ) {
+    updateTotalAmount( directAmountField.name, findElPrefix( directAmountField.name ) + ".awardIndirectCostAmount", "awardTotalAmount" );
+}
+
+function onblur_awardIndirectCostAmount( indirectAmountField ) {
+    updateTotalAmount( findElPrefix( indirectAmountField.name ) + ".awardDirectCostAmount", indirectAmountField.name, "awardTotalAmount" );
 }

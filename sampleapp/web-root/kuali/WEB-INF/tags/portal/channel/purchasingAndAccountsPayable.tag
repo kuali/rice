@@ -31,7 +31,7 @@
 	    <li>Process an Invoice</li>
 	    <li>Process a Credit Memo</li>
 	    <li>Search for Documents</li>
-        <li><portal:portalLink displayTitle="true" title="Vendor" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.purap.bo.VendorDetail&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
+        <li><portal:portalLink displayTitle="true" title="Vendor" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.vendor.bo.VendorDetail&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
     </ul>
     </div>
 <channel:portalChannelBottom />

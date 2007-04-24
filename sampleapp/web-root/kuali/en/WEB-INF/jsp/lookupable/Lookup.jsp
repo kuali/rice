@@ -78,7 +78,7 @@
         
         <tr align=center>
           <td height=30 colspan=3 class="thnormal">
-              <input type="image" src="images/buttonsmall_search.gif" onclick="javascript:clearValues('search', 'LookupForm', 'Lookup.do')" value="Search" alt="search" border=0 align=absmiddle style='font-family:verdana,arial,helvetica,sans-serif;font-size:10px;font-weight:bold;background:#cccccc;color:#333399'/>
+              <input type="image" src="images/buttonsmall_search.gif" onclick="javascript:clearValues('search', 'LookupForm', 'Lookup.do')" value="Search" alt="search" border=0 align=absmiddle/>
               &nbsp;&nbsp;
               <a href="javascript:clearValues('clearValues', 'LookupForm', 'Lookup.do')"><img src="images/buttonsmall_clear.gif" alt="clear" align=absmiddle></a>
           </td>

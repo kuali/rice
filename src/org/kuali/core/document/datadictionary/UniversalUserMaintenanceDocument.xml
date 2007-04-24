@@ -43,8 +43,6 @@
         <description>Document used to create or update User objects</description>
         <help securityGroupName="Kuali.User.Help" parameterName="USER_HELP_UNIVERSAL_USER" />
 
-        <allowsCopy>true</allowsCopy>
-
         <lockingKeys>
             <field attributeName="personUniversalIdentifier" />
         </lockingKeys>

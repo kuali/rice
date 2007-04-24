@@ -42,7 +42,7 @@
 <c:set var="isInquiry" value="${maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY}" />
 
 <%-- Is the screen a view of a mantenance document? --%>
-<c:set var="isMaintenance" value="${KualiForm.class.name eq 'org.kuali.core.web.struts.form.KualiMaintenanceForm' || maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE}" />
+<c:set var="isMaintenance" value="${KualiForm.class.name eq 'org.kuali.kfs.web.struts.form.KfsMaintenanceForm' || maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE}" />
 
 <%-- Is the screen a lookup? --%>
 <c:set var="isLookup" value="${maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_LOOKUP}" />
@@ -241,7 +241,8 @@
 
 						<%-- Only show the show/hide button on collection entries that
 						contain data (i.e. those that aren't adding --%>
-						<kul:subtab noShowHideButton="${isFieldAddingToACollection or empty field.containerRows}" subTabTitle="${kfunc:scrubWhitespace(subTabTitle)}" buttonAlt="${kfunc:scrubWhitespace(subTabButtonAlt)}" width="${width}" highlightTab="${tabHighlight}">
+						<kul:subtab noShowHideButton="${isFieldAddingToACollection or empty field.containerRows}" subTabTitle="${kfunc:scrubWhitespace(subTabTitle)}" buttonAlt="${kfunc:scrubWhitespace(subTabButtonAlt)}" width="${width}" highlightTab="${tabHighlight}"
+								boClassName="${field.multipleValueLookupClassName}" lookedUpBODisplayName="${field.multipleValueLookupClassLabel}" lookedUpCollectionName="${field.multipleValueLookedUpCollectionName}" >
 							<table style="width: ${width}; text-align: left; margin-left: auto; margin-right: auto;" class="datatable" cellpadding="0" cellspacing="0" align="center">
 
 								<%--<c:out value="numberOfColumns is ${numberOfColumns}, field.numberOfColumnsForCollection is ${field.numberOfColumnsForCollection}<br/>" escapeXml="false" />--%>
@@ -425,6 +426,7 @@
 								<input type="checkbox" name="${field.propertyName}" 
 									${field.propertyValue eq 'Yes' || field.propertyValue eq 'YES' ? 'checked="checked"' : ''}
 									${onblurcall} />
+								<input type="hidden" name="${field.propertyName}${Constants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION}" value="present"/>
 									
 							</c:otherwise>
 					
@@ -581,7 +583,8 @@
 								  lookupParameters="${field.lookupParameters}"
 								  hasErrors="${hasErrors}"
 								  readOnly="${universalIdField.keyField || isFieldReadOnly}"
-								  onblur="${onblur}">
+								  onblur="${onblur}"
+								  highlight="${addHighlighting && field.highlightField}">
 							<jsp:attribute name="helpLink" trim="true">
 								<kul:help
 									businessObjectClassName="${field.businessObjectClassName}"
@@ -666,34 +669,22 @@
 				</c:when>
 
 				<c:when test="${field.fieldType eq field.IMAGE_SUBMIT && not isFormReadOnly}">
-					<c:if test="${empty field.multipleValueLookupClassLabel}">                    	
-						<%-- Might need something in here to show conditionally based upon isFieldReadOnly. --%>
-                                                <c:set var="imageCellSpan" value="2" />
-                                                <c:if test="${!isFieldAddingToACollection && isActionEdit}" >
-                                                   <c:set var="imageCellSpan" value="4" />
-                                                </c:if>
-						<th class="grid" colspan="${imageCellSpan}" align="center">
-	                        
-							<input type="image" 
-								name='${field.propertyName}.${KualiForm.currentTabIndex}'
-								src='<c:out value="${fieldValue}"/>'/>
-		                        
-							<kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="false"/>
-		                        
-						</th>
-					</c:if>
-					<c:if test="${!empty field.multipleValueLookupClassLabel}">                    	
-						<%-- This icon is for a multiple value lookup.  Might need something in here to show conditionally based upon isFieldReadOnly. --%>
-						<th class="grid" colspan="${numberOfColumns * 2}" align="center">
-	                        <bean:message key="multiple.value.lookup.icon.label" arg0="${field.multipleValueLookupClassLabel}"/>
-							<input type="image" 
-								name='${field.propertyName}.${KualiForm.currentTabIndex}'
-								src='<c:out value="${fieldValue}"/>'/>
-		                        
-							<kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="false"/>
-		                        
-						</th>
-					</c:if>					
+					<%-- Might need something in here to show conditionally based upon isFieldReadOnly. --%>
+                    <c:set var="imageCellSpan" value="2" />
+                    <c:if test="${!isFieldAddingToACollection && isActionEdit}" >
+                        <c:set var="imageCellSpan" value="4" />
+                    </c:if>
+                    <c:set var="anchorTabIndex" value="${currentTabIndex}"/>
+                    <c:if test="${fn:contains(field.propertyName, Constants.DELETE_LINE_METHOD)}">
+                    	<%-- when deleting, we have to anchor back to the top level tab, rather than the sub tab that we were viewing --%>
+                    	<c:set var="anchorTabIndex" value="${topLevelTabIndex}"/>
+                    </c:if>
+					<th class="grid" colspan="${imageCellSpan}" align="center">
+						<input type="image" 
+							name='${field.propertyName}.${Constants.METHOD_TO_CALL_PARM13_LEFT_DEL}${currentTabIndex}${Constants.METHOD_TO_CALL_PARM13_RIGHT_DEL}.anchor${anchorTabIndex}'
+							src='<c:out value="${fieldValue}"/>'/>
+						<kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="false"/>
+					</th>
 				</c:when>
 	                
 			</c:choose>

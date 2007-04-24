@@ -19,10 +19,11 @@
 <%@ taglib uri="/tlds/struts-logic.tld" prefix="logic"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="kul"%>
 <%@ taglib tagdir="/WEB-INF/tags/dd" prefix="dd"%>
-
-
-<c:set var="itemAttributes" value="${DataDictionary.RequisitionItem.attributes}" />
-
+<%@ taglib tagdir="/WEB-INF/tags/fin" prefix="fin"%>
+<%@ attribute name="itemAttributes" required="true" type="java.util.Map" 
+              description="The DataDictionary entry containing attributes for this row's fields."%>
+<%@ attribute name="accountingLineAttributes" required="true" type="java.util.Map" 
+              description="The DataDictionary entry containing attributes for this row's fields."%>
 
 <kul:tab tabTitle="Items" defaultOpen="true">
     <div class="tab-container" align=center>
@@ -41,7 +42,7 @@
             <kul:htmlAttributeHeaderCell attributeEntry="${itemAttributes.itemDescription}"/>
             <kul:htmlAttributeHeaderCell attributeEntry="${itemAttributes.itemUnitPrice}"/>
 			<kul:htmlAttributeHeaderCell attributeEntry="${itemAttributes.extendedPrice}"/>			
-            <kul:htmlAttributeHeaderCell attributeEntry="${itemAttributes.itemRestrictedIndicator}"/>
+            <%--<kul:htmlAttributeHeaderCell attributeEntry="${itemAttributes.itemRestrictedIndicator}"/>--%>
             <kul:htmlAttributeHeaderCell attributeEntry="${itemAttributes.itemAssignedToTradeInIndicator}"/>
 			<kul:htmlAttributeHeaderCell literalLabel="Actions"/>
  		</tr>
@@ -55,11 +56,19 @@
 		<td class="infoline"><kul:htmlControlAttribute attributeEntry="${itemAttributes.itemDescription}" property="newPurchasingItemLine.itemDescription" /></td>
  		<td class="infoline"><kul:htmlControlAttribute attributeEntry="${itemAttributes.itemUnitPrice}" property="newPurchasingItemLine.itemUnitPrice" /></td>
  		<td class="infoline"><kul:htmlControlAttribute attributeEntry="${itemAttributes.extendedPrice}" property="newPurchasingItemLine.extendedPrice" /></td>
-        <td class="infoline"><kul:htmlControlAttribute attributeEntry="${itemAttributes.itemRestrictedIndicator}" property="newPurchasingItemLine.itemRestrictedIndicator" /></td>
+        <%--<td class="infoline"><kul:htmlControlAttribute attributeEntry="${itemAttributes.itemRestrictedIndicator}" property="newPurchasingItemLine.itemRestrictedIndicator" /></td>--%>
         <td class="infoline"><kul:htmlControlAttribute attributeEntry="${itemAttributes.itemAssignedToTradeInIndicator}" property="newPurchasingItemLine.itemAssignedToTradeInIndicator" /></td>
 		<td class="infoline"><div align="center"><html:image property="methodToCall.addItem" src="images/tinybutton-add1.gif" alt="Insert an Item" title="Add an Item" styleClass="tinybutton"/></div></td>
 		</tr>
-
+		<tr><td width="100%" colspan="12"><!-- begin accounting lines -->
+		<span align="center">
+		
+		<fin:accountingLines editingMode="${KualiForm.editingMode}"
+		editableAccounts="${KualiForm.editableAccounts}" sourceAccountingLinesOnly="true" optionalFields="accountLinePercent"
+		accountingLineAttributes="${accountingLineAttributes}" accountPrefix="newPurchasingItemLine." hideTotalLine="true" hideFields="amount" accountingAddLineIndex="-1"/>
+		
+		</span>
+		</tr></td><!-- end accounting line -->					
 		<logic:iterate indexId="ctr" name="KualiForm" property="document.items" id="itemLine">
 			<tr>
 			
@@ -77,10 +86,20 @@
 				<td class="infoline"><kul:htmlControlAttribute attributeEntry="${itemAttributes.itemDescription}" property="document.item[${ctr}].itemDescription" /></td>
  				<td class="infoline"><kul:htmlControlAttribute attributeEntry="${itemAttributes.itemUnitPrice}" property="document.item[${ctr}].itemUnitPrice" /></td>
  				<td class="infoline"><html:hidden write="true" property="document.item[${ctr}].extendedPrice" />&nbsp;</td>
-                <td class="infoline"><kul:htmlControlAttribute attributeEntry="${itemAttributes.itemRestrictedIndicator}" property="newPurchasingItemLine.itemRestrictedIndicator" /></td>
+                <%--<td class="infoline"><kul:htmlControlAttribute attributeEntry="${itemAttributes.itemRestrictedIndicator}" property="newPurchasingItemLine.itemRestrictedIndicator" /></td>--%>
                 <td class="infoline"><kul:htmlControlAttribute attributeEntry="${itemAttributes.itemAssignedToTradeInIndicator}" property="newPurchasingItemLine.itemAssignedToTradeInIndicator" /></td>
 				<td class="infoline"><div align="center"><html:image property="methodToCall.deleteItem.line${ctr}" src="images/tinybutton-delete1.gif" alt="Delete Item ${ctr+1}" title="Delete Item ${ctr+1}" styleClass="tinybutton"/></div></td>
 			</tr>
+			<tr>
+				<td width="100%" colspan="12">
+				
+					<fin:accountingLines editingMode="${KualiForm.editingMode}"
+						editableAccounts="${KualiForm.editableAccounts}" sourceAccountingLinesOnly="true" optionalFields="accountLinePercent" extraHiddenFields=",accountIdentifier,itemIdentifier"
+						accountingLineAttributes="${accountingLineAttributes}" accountPrefix="document.item[${ctr}]." hideTotalLine="true" hideFields="amount" accountingAddLineIndex="${ctr}"/>					
+		
+				</td>
+			</tr>
+				
 		</logic:iterate>
 
 <!-- BEGIN TOTAL SECTION -->
@@ -100,11 +119,13 @@
             <td align=left valign=middle colspan=4 class="datacell"><b>$${KualiForm.document.totalDollarAmount}</b><td>
         </tr>
 
-        <tr>
-            <th align=right width='75%' colspan=8 scope="row">APO Limit:</th>
-            <td align=left valign=middle colspan=4 class="datacell">$${KualiForm.document.organizationAutomaticPurchaseOrderLimit}<td>
-            <html:hidden property="document.organizationAutomaticPurchaseOrderLimit" />
-        </tr>
+        <c:if test="${KualiForm.document.documentHeader.workflowDocument.documentType == 'KualiRequisitionDocument'}">
+            <tr>
+                <th align=right width='75%' colspan=8 scope="row">APO Limit:</th>
+                <td align=left valign=middle colspan=4 class="datacell">$${KualiForm.document.organizationAutomaticPurchaseOrderLimit}<td>
+                <html:hidden property="document.organizationAutomaticPurchaseOrderLimit" />
+            </tr>
+        </c:if>
 <!-- END TOTAL SECTION -->
 
         </table>

@@ -27,7 +27,7 @@
         <c:forEach items="${field.fieldValidValues}" var="select">
           <c:if test="${field.propertyValue==select.key}">
             <c:out value="${select.label}" />
-            <c:set var="value_found" value="${value_found}" />
+            <c:set var="value_found" value="true" />
           </c:if>
         </c:forEach>
         <c:if test="${!value_found}">

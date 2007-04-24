@@ -26,7 +26,7 @@
 
     <ul class="chan">
 	    <li><portal:portalLink displayTitle="true" title="Account" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.chart.bo.Account&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
-	    <li><portal:portalLink displayTitle="true" title="Account Delegate" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.chart.bo.Delegate&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
+	    <li><portal:portalLink displayTitle="true" title="Account Delegate" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.chart.bo.Delegate&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /> / <portal:portalLink displayTitle="true" title="Model" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.chart.bo.OrganizationRoutingModelName&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
 	    <li><portal:portalLink displayTitle="true" title="Object Code" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.chart.bo.ObjectCode&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
 	    <li><portal:portalLink displayTitle="true" title="Organization Code" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.chart.bo.Org&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
 	    <li><portal:portalLink displayTitle="true" title="Project Code" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.chart.bo.ProjectCode&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
@@ -50,7 +50,7 @@
 	</ul>
     <strong>Vendor</strong><br />
     <ul class="chan">
-        <li><portal:portalLink displayTitle="true" title="Vendor" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.purap.bo.VendorDetail&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
+        <li><portal:portalLink displayTitle="true" title="Vendor" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.vendor.bo.VendorDetail&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
     </ul>
     </div>
 <channel:portalChannelBottom />

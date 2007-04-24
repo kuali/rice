@@ -1,8 +1,12 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans>	
+<beans>
 
-	<import resource="classpath:org/kuali/core/SpringBeans.xml"  />
-	
+	<bean id="dbPlatformDao" class="org.kuali.core.dbplatform.KualiDBPlatformOracle">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<import resource="classpath:org/kuali/core/SpringBeans.xml" />
+
 	<bean id="ksbConfigurer" class="edu.iu.uis.eden.config.spring.KSBSpringConfigurer" depends-on="transactionManagerFactoryInitializer">
 		<property name="environment" value="${environment}" />
 		<property name="messageEntity" value="TRAVEL" />
@@ -72,22 +76,20 @@
 		</property>
 		<property name="dataDictionaryPackages">
 			<list>
-				<value>edu/sampleu/travel/datadictionary</value>
+				<value>edu.sampleu.travel.datadictionary</value>
 			</list>
 		</property>
-		<property name="ojbMetadataLoader">
-			<bean class="org.kuali.rice.OjbMetadataLoader">
-				<property name="repositoryDescriptors">
-					<list>
-						<value>classpath:edu/sampleu/travel/resources/repository.xml</value>
-					</list>
-				</property>
-			</bean>
+		<!-- 
+		<property name="databaseRepositoryFilePaths">
+			<list>
+				<value>edu/sampleu/travel/resources/repository.xml</value>
+			</list>
 		</property>
+		 -->
 	</bean>
-	
+
 	<bean id="travUserService" class="edu.sampleu.travel.rice.TravelModuleUserService" parent="kualiModuleUserServiceBase" />
-	
+
 	<bean id="kualiGroupService" class="org.kuali.rice.web.RiceGroupServiceImpl">
 		<property name="workflowGroupService">
 			<ref bean="workflowGroupService" />
@@ -96,9 +98,9 @@
 			<ref bean="workflowInfoService" />
 		</property>
 	</bean>
+
 	<!-- 
 	<bean id="universalUserDao" class="org.kuali.rice.RiceKNSDefaultUserDAOImpl" />
 	<bean id="webAuthenticationService" class="org.kuali.rice.web.RiceRemoteUserWebAuthenticationServiceImpl" />
-	 -->
-	
+	-->
 </beans>

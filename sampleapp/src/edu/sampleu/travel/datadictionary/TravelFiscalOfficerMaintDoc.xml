@@ -39,10 +39,11 @@
 
         <summary>Travel Fiscal Officer Maintenance document</summary>
         <description>Document used to create or update Travel Fiscal Officer</description>
-        <allowsCopy>true</allowsCopy>
         <lockingKeys>
             <field attributeName="userName" />
         </lockingKeys>
+        <allowsNewOrCopy>true</allowsNewOrCopy>
+        
 
         <maintainableSections>
             <maintainableSection title="Edit Travel Fiscal Officer">

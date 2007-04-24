@@ -38,8 +38,6 @@
         <description>This document can be used to create or update Financial System Parameter Security groups.</description>
         <help securityGroupName="Kuali.NervousSystem.Help" parameterName="NERVOUS_SYSTEM_HELP_FINANCIAL_SYSTEM_PARAMETER_SECURITY" />
 
-        <allowsCopy>true</allowsCopy>
-
         <lockingKeys>
             <field attributeName="financialSystemScriptName" />
         </lockingKeys>

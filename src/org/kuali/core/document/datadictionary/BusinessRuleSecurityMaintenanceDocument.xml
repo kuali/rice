@@ -38,8 +38,6 @@
         <description>This document can be used to create or update Business Rule Groups.</description>
         <help securityGroupName="Kuali.NervousSystem.Help" parameterName="NERVOUS_SYSTEM_HELP_BUSINESS_RULE_SECURITY" />
 
-        <allowsCopy>true</allowsCopy>
-
         <lockingKeys>
             <field attributeName="ruleGroupName" />
         </lockingKeys>

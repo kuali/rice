@@ -43,13 +43,15 @@
 
         <summary>Travel Account Maintenance document</summary>
         <description>Document used to create or update Travel Accounts</description>
+        
         <!-- 
         <help securityGroupName="ChartMaintenanceEDoc" parameterName="CHART_HELP_PROJECT_CODE" />
  -->
-        <allowsCopy>true</allowsCopy>
-        <lockingKeys>
+         <lockingKeys>
             <field attributeName="number" />
         </lockingKeys>
+        <allowsNewOrCopy>true</allowsNewOrCopy>
+
 <!-- 
         <defaultExistenceChecks>
             <reference attributeName="chartOfAccounts" activeIndicatorAttributeName="finChartOfAccountActiveIndicator" attributeToHighlightOnFail="chartOfAccountsCode" />

@@ -23,7 +23,7 @@
 <c:set var="viewOnly" value="${KualiForm.editingMode['viewOnly']}"/>
 <c:set var="budgetLinked" value="${KualiForm.editingMode['budgetLinked']}"/>
 
-<kul:tab tabTitle="Submission Details" defaultOpen="true" tabErrorKey="document.contractGrantProposal*,document.projectAbstract,document.routingFormProjectTitle,document.routingFormBudget*" auditCluster="mainPageAuditErrors" tabAuditKey="document.routingFormBudget*,document.submissionTypeCode,document.previousFederalIdentifier,document.routingFormPurposeCode,document.researchTypeCode,document.routingFormOtherPurposeDescription,document.routingFormProjectTitle,document.projectAbstract,document.routingFormProjectTypes*,document.projectTypeOtherDescription,document.routingFormPriorGrantNumber,document.grantNumber">
+<kul:tab tabTitle="Submission Details" defaultOpen="true" tabErrorKey="document.contractGrantProposal*,document.projectAbstract,document.routingFormProjectTitle,document.routingFormLayDescription,document.routingFormBudget*" auditCluster="mainPageAuditErrors" tabAuditKey="document.routingFormBudget*,document.submissionTypeCode,document.previousFederalIdentifier,document.routingFormPurposeCode,document.researchTypeCode,document.routingFormOtherPurposeDescription,document.routingFormProjectTitle,document.routingFormLayDescription,document.projectAbstract,document.routingFormProjectTypes*,document.projectTypeOtherDescription,document.routingFormPriorGrantNumber,document.grantNumber">
 
           <div class="tab-container" align="center">
             <div class="h2-container">
@@ -47,7 +47,10 @@
                         <c:when test="${!viewOnly}">
                           <html:radio property="document.submissionTypeCode" value="${routingFormSubmissionType.submissionTypeCode}" disabled="${viewOnly}"/>
                         </c:when>
-                        <c:when test="${KualiForm.document.submissionTypeCode eq routingFormSubmissionType.submissionTypeCode}"> Yes </c:when>
+                        <c:when test="${KualiForm.document.submissionTypeCode eq routingFormSubmissionType.submissionTypeCode}">
+                          <html:hidden property="document.submissionTypeCode" />
+                          Yes
+                        </c:when>
     				    <c:otherwise> No </c:otherwise>
                       </c:choose>
 		              ${routingFormSubmissionType.submissionType.submissionTypeDescription}
@@ -138,7 +141,10 @@
                         <c:when test="${!viewOnly and !budgetLinked}">
                           <html:radio property="document.routingFormPurposeCode" value="${routingFormPurpose.purposeCode}" disabled="${viewOnly}"/>
                         </c:when>
-                        <c:when test="${KualiForm.document.routingFormPurposeCode eq routingFormPurpose.purposeCode}"> Yes </c:when>
+                        <c:when test="${KualiForm.document.routingFormPurposeCode eq routingFormPurpose.purposeCode}">
+                          <html:hidden property="document.routingFormPurposeCode" />
+                          Yes
+                        </c:when>
     				    <c:otherwise> No </c:otherwise>
                       </c:choose>
 		              ${routingFormPurpose.purpose.purposeDescription}
@@ -155,11 +161,20 @@
 						<c:if test="${hasErrors==true}">
 						  <c:set var="researchTypeCodeTextStyle" value="background-color: red"/>
 						</c:if>
-		                <html:select property="document.researchTypeCode" style="${researchTypeCodeTextStyle}" disabled="${viewOnly}"> 
-		                  <html:option value="">select:</html:option> 
-		                  <c:set var="routingFormResearchTypeCodes" value="${KualiForm.document.routingFormResearchTypeCodes}"/> 
-		                  <html:options collection="routingFormResearchTypeCodes" property="researchTypeCode" labelProperty="researchType.researchTypeDescription"/> 
-		                </html:select>
+                        <c:choose>
+                          <c:when test="${!viewOnly}">
+      		                <html:select property="document.researchTypeCode" style="${researchTypeCodeTextStyle}" disabled="${viewOnly}"> 
+      		                  <html:option value="">select:</html:option> 
+      		                  <c:set var="routingFormResearchTypeCodes" value="${KualiForm.document.routingFormResearchTypeCodes}"/> 
+      		                  <html:options collection="routingFormResearchTypeCodes" property="researchTypeCode" labelProperty="researchType.researchTypeDescription"/> 
+      		                </html:select>
+		                  </c:when>
+      		              <c:otherwise>
+                            <html:hidden property="document.researchTypeCode" />
+                            <html:hidden property="document.researchType.researchTypeDescription" />
+                            ${KualiForm.document.researchType.researchTypeDescription}
+      		              </c:otherwise>
+      		            </c:choose>
 		              </c:when>
 		              <c:when test="${routingFormPurpose.purposeCode eq KualiForm.systemParametersMap[KraConstants.PURPOSE_OTHER]}">
 		                &nbsp;<kul:htmlControlAttribute property="document.routingFormOtherPurposeDescription" attributeEntry="${routingFormAttributes.routingFormOtherPurposeDescription}" readOnly="${viewOnly}"/>
@@ -180,14 +195,26 @@
                 </td>
               </tr>
               <tr>
+                <th align=right valign=middle><kul:htmlAttributeLabel attributeEntry="${routingFormAttributes.routingFormLayDescription}" skipHelpUrl="true" /></th>
+
+                <td colspan="3" align=left valign=middle nowrap >
+                	<kul:htmlControlAttribute property="document.routingFormLayDescription" attributeEntry="${routingFormAttributes.routingFormLayDescription}" readOnly="${viewOnly}"/>
+                </td>
+              </tr>
+              <tr>
                 <th align=right valign=middle><kul:htmlAttributeLabel attributeEntry="${routingFormKeywordAttributes.routingFormKeywordDescription}" skipHelpUrl="true" /></th>
                 <td colspan="3" align=left valign=middle nowrap >
 
 		            <table cellpadding="0" cellspacing="0" class="nobord">
 		              <tr>
-		                <td class="nobord" colspan=2> <div align="left">
+		                <td class="nobord"> <div align="left">
 					    	<c:if test="${!viewOnly}">
-						    	<kul:multipleValueLookup boClassName="org.kuali.module.kra.routingform.bo.Keyword" lookedUpCollectionName="routingFormKeywords" fieldLabel="Keywords" iconLabel="Look Up/Add Multiple Keywords" anchor="${currentTabIndex}"/>
+						    	<kul:multipleValueLookup boClassName="org.kuali.module.kra.routingform.bo.Keyword" lookedUpCollectionName="routingFormKeywords" lookedUpBODisplayName="Keyword" anchor="${currentTabIndex}"/>
+		                	</c:if>
+		                </div></td>
+		                <td class="nobord"> <div align="center">
+					    	<c:if test="${!viewOnly && fn:length(KualiForm.document.routingFormKeywords) != 0}">
+						    	<html:image property="methodToCall.deleteAllRoutingFormKeyword.anchor${currentTabIndex}" styleClass="tinybutton" src="images/tinybutton-deleteall.gif" alt="delete all routing form keywords"/>
 		                	</c:if>
 		                </div></td>
 		              </tr>   
@@ -199,9 +226,9 @@
 				    		<html:hidden write="true" property="document.routingFormKeywords[${status.index}].routingFormKeywordDescription" />
 				    		<html:hidden property="document.routingFormKeywords[${status.index}].versionNumber" />
 		                </div></td>
-		                <td class="nobord"><div align="left">
+		                <td class="nobord"><div align="center">
 		                  <c:if test="${!viewOnly}">
-		                    <html:image property="methodToCall.deleteRoutingFormKeyword.line${status.index}.anchor${currentTabIndex}" styleClass="tinybutton" src="images/tinybutton-delete1.gif" alt="delete research risk"/>
+		                    <html:image property="methodToCall.deleteRoutingFormKeyword.line${status.index}.anchor${currentTabIndex}" styleClass="tinybutton" src="images/tinybutton-delete1.gif" alt="delete routing form keyword"/>
 		                  </c:if>
 		                </div></td>
 		              </tr>   

@@ -23,15 +23,15 @@
 <channel:portalChannelTop channelTitle="Labor Distribution" />
 <div class="body">
     <ul class="chan">
-        <li><portal:portalLink displayTitle="true" title="Benefits Calculation" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.BenefitsCalculation&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
-        <li><portal:portalLink displayTitle="true" title="Benefits Type" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.BenefitsType&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
+        <li><portal:portalLink displayTitle="true" title="Labor Benefits Calculation" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.BenefitsCalculation&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
+        <li><portal:portalLink displayTitle="true" title="Labor Benefits Type" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.BenefitsType&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
         <li><portal:portalLink displayTitle="true" title="Effort Certification Help Text" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.A21HelpText&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
 	    <li><portal:portalLink displayTitle="true" title="Effort Certification Report Period" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.A21ReportPeriod&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" />
         <li><portal:portalLink displayTitle="true" title="Effort Certification Report Period Status" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.A21ReportPeriodStatus&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
         <li><portal:portalLink displayTitle="true" title="Effort Certification Report Type" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.A21ReportType&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
         <li><portal:portalLink displayTitle="true" title="Labor Object" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.LaborObject&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
-        <li><portal:portalLink displayTitle="true" title="Position Object Benefits" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.PositionObjectBenefit&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>   
-        <li><portal:portalLink displayTitle="true" title="Position Object Group" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.PositionObjectGroup&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
+        <li><portal:portalLink displayTitle="true" title="Labor Position Object Benefits" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.PositionObjectBenefit&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>   
+        <li><portal:portalLink displayTitle="true" title="Labor Object Group" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.PositionObjectGroup&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
     </ul>    
     </div>
 <channel:portalChannelBottom />

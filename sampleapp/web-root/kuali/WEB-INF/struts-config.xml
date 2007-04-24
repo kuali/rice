@@ -63,6 +63,8 @@
    		<form-bean name="SalarySettingForm" type="org.kuali.module.budget.web.struts.form.SalarySettingForm" />
    		<form-bean name="BudgetConstructionForm" type="org.kuali.module.budget.web.struts.form.BudgetConstructionForm" />
    		<form-bean name="MonthlyBudgetForm" type="org.kuali.module.budget.web.struts.form.MonthlyBudgetForm" />
+   		<form-bean name="PositionSalarySettingForm" type="org.kuali.module.budget.web.struts.form.PositionSalarySettingForm" />
+   		<form-bean name="IncumbentSalarySettingForm" type="org.kuali.module.budget.web.struts.form.IncumbentSalarySettingForm" />
 
         <!-- KRA Module Bean Definitions -->
         <form-bean name="BudgetForm" type="org.kuali.module.kra.budget.web.struts.form.BudgetForm" />
@@ -76,7 +78,6 @@
         <form-bean name="AssignContractManagerForm" type="org.kuali.module.purap.web.struts.form.AssignContractManagerForm" />
         <form-bean name="RequisitionForm" type="org.kuali.module.purap.web.struts.form.RequisitionForm" />
         <form-bean name="PurchaseOrderForm" type="org.kuali.module.purap.web.struts.form.PurchaseOrderForm" />
-        <form-bean name="PurchaseOrderPrintForm" type="org.kuali.module.purap.web.struts.form.PurchaseOrderPrintForm" />
         <form-bean name="PaymentRequestForm" type="org.kuali.module.purap.web.struts.form.PaymentRequestForm" />
 
     </form-beans>

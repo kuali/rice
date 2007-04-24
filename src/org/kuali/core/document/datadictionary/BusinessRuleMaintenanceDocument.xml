@@ -38,12 +38,15 @@
         <description>This document can be used to create or update Business Rule configuration.</description>
         <help securityGroupName="Kuali.NervousSystem.Help" parameterName="NERVOUS_SYSTEM_HELP_BUSINESS_RULE" />
 
-        <allowsCopy>true</allowsCopy>
-
         <lockingKeys>
             <field attributeName="ruleGroupName" />
             <field attributeName="ruleName" />
         </lockingKeys>
+        
+        <defaultExistenceChecks>
+        	<reference attributeName="ruleGroup" attributeToHighlightOnFail="ruleGroupName" />
+        </defaultExistenceChecks>
+        
         <maintainableSections>
             <maintainableSection title="Edit Business Rule">
                 <maintainableItems>

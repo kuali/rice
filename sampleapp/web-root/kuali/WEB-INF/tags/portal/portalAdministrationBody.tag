@@ -24,6 +24,7 @@
 <td class="content" valign="top">
       <channel:messageOfTheDay />
       <channel:administrationChartOfAccounts />
+      <channel:administrationVendor />
       <channel:administrationPurchasingAccountsPayable />
 </td>
 <td class="content" valign="top">

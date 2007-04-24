@@ -16,9 +16,12 @@
 <%@ include file="tldHeader.jsp"%>
 
 <%--NOTE: DO NOT FORMAT THIS FILE, DISPLAY:COLUMN WILL NOT WORK CORRECTLY IF IT CONTAINS LINE BREAKS --%>
-
+<c:set var="headerMenu" value="" />
+<c:if test="${KualiForm.suppressActions!=true}">
+    <c:set var="headerMenu" value="${KualiForm.lookupable.createNewUrl}   ${KualiForm.lookupable.htmlMenuBar}" />
+</c:if>
 <kul:page lookup="true" showDocumentInfo="false"
-	headerMenuBar="${KualiForm.lookupable.createNewUrl}   ${KualiForm.lookupable.htmlMenuBar}"
+	headerMenuBar="${headerMenu}"
 	headerTitle="Lookup" docTitle="" transactionalDocument="false"
 	htmlFormAction="lookup">
 
@@ -52,7 +55,6 @@
 		<html-el:hidden name="KualiForm" property="extraButtons[${status.index}].extraButtonSource" />
 		<html-el:hidden name="KualiForm" property="extraButtons[${status.index}].extraButtonParams" />
 	</c:forEach>
-
 
 	<kul:errors errorTitle="Errors found in Search Criteria:" />
 	<kul:messages/>
@@ -117,7 +119,7 @@
 				<c:if
 					test="${KualiForm.formKey!='' && KualiForm.hideReturnLink != true && !KualiForm.multipleValues}">
 					<a
-						href='<c:out value="${KualiForm.backLocation}?methodToCall=refresh&docFormKey=${KualiForm.formKey}" />' title="return with no value">
+						href='<c:out value="${KualiForm.backLocation}?methodToCall=refresh&docFormKey=${KualiForm.formKey}&anchor=${KualiForm.lookupAnchor}" />' title="return with no value">
 					return with no value </a>
 				</c:if>
 			</logic-el:present></div>
@@ -139,27 +141,28 @@
 					<c:choose>
 						<%--NOTE: Check if exporting first, as this should be outputted without extra HTML formatting --%>
 						<c:when	test="${param['d-16544-e'] != null}">
-							<display:column class="${colClass}" sortable="${column.sortable}"
-								title="${column.columnTitle}" comparator="${column.comparator}"
-								maxLength="70"><c:out value="${column.propertyValue}" escapeXml="false" default="" /></display:column>
+								<display:column class="${colClass}" sortable="${column.sortable}"
+									title="${column.columnTitle}" comparator="${column.comparator}"
+									maxLength="${column.maxLength}"><c:out value="${column.propertyValue}" escapeXml="false" default="" /></display:column>
 						</c:when>
 						<c:when	test="${!empty column.propertyURL}">
 							<display:column class="${colClass}" sortable="${column.sortable}"
 								title="${column.columnTitle}" comparator="${column.comparator}">
 								<a href="<c:out value="${column.propertyURL}"/>" target="blank" title="${column.propertyValue}"><c:out
-									value="${column.propertyValue}" /></a> &nbsp;
+									value="${fn:substring(column.propertyValue, 0, column.maxLength)}"
+									/><c:if test="${column.maxLength gt 0 && fn:length(column.propertyValue) gt column.maxLength}">...</c:if></a> &nbsp;
                             </display:column>
 						</c:when>
 <%--NOTE: DO NOT FORMAT THIS FILE, DISPLAY:COLUMN WILL NOT WORK CORRECTLY IF IT CONTAINS LINE BREAKS --%>
 						<c:when test="${column.columnTitle == 'Project Code'}">
 							<display:column class="${colClass}" sortable="${column.sortable}"
 								title="${column.columnTitle}" comparator="${column.comparator}"
-								maxLength="70" decorator="org.kuali.core.web.ui.FormatAwareDecorator"><div style="white-space: nowrap"><c:out value="${column.propertyValue}" />&nbsp;</div></display:column>
+								maxLength="${column.maxLength}" decorator="org.kuali.core.web.ui.FormatAwareDecorator"><div style="white-space: nowrap"><c:out value="${column.propertyValue}" />&nbsp;</div></display:column>
                         </c:when>
 						<c:otherwise>
 							<display:column class="${colClass}" sortable="${column.sortable}"
 								title="${column.columnTitle}" comparator="${column.comparator}"
-								maxLength="70" decorator="org.kuali.core.web.ui.FormatAwareDecorator"><c:out value="${column.propertyValue}"/>&nbsp;</display:column>
+								maxLength="${column.maxLength}" decorator="org.kuali.core.web.ui.FormatAwareDecorator"><c:out value="${column.propertyValue}"/>&nbsp;</display:column>
                         </c:otherwise>
 					</c:choose>
 				</c:forEach>

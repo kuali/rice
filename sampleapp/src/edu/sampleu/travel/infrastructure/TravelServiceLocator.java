@@ -17,6 +17,9 @@ package edu.sampleu.travel.infrastructure;
 
 import static org.kuali.rice.KNSServiceLocator.getDataDictionaryService;
 
+import java.util.ArrayList;
+
+import org.kuali.core.KualiModule;
 import org.kuali.rice.KNSServiceLocator;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -46,7 +49,15 @@ public class TravelServiceLocator extends KNSServiceLocator {
     public static void initializeApplicationContext() throws Exception {
         getInstance().setApplicationContext(new ClassPathXmlApplicationContext(SPRING_BEANS));
         KNSServiceLocator.getInstance().setKnsApplicationContext(getInstance().getApplicationContext());
+        loadModules();
+        getPersistenceService().initialize();
         getDataDictionaryService().completeInitialization();
+    }
+    
+    private static void loadModules() {
+        for (Object module :  new ArrayList((getInstance().getApplicationContext()).getBeansOfType(KualiModule.class).values())) {
+            getKualiModuleService().getInstalledModules().add((KualiModule)module);
+        }
     }
 
     public ConfigurableApplicationContext getApplicationContext() {

@@ -18,15 +18,9 @@
 <%@ taglib uri="/tlds/struts-html.tld" prefix="html" %>
 <%@ taglib uri="/tlds/struts-logic.tld" prefix="logic" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="kul" %>
- 
 <kul:tab tabTitle="Route Log" defaultOpen="false">
-
 <div class="tab-container" align=center>
-RICE4EVA
-<%--
   <iframe onload="setRouteLogIframeDimensions();" name="routeLogIFrame" id="routeLogIFrame" src="${ConfigProperties.workflow.url}/RouteLog.do?routeHeaderId=${KualiForm.workflowDocument.routeHeaderId}" height="500" width="95%" hspace='0' vspace='0' frameborder='0' title='OneStart Workflow Route Log for document id: ${KualiForm.workflowDocument.routeHeaderId}'>
   </iframe>
-  --%>
 </kul:tab>
-
 </div>

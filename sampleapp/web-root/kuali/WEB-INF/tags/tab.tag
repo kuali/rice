@@ -34,6 +34,8 @@
 <%@ attribute name="highlightTab" required="false" %>
 
 <c:set var="currentTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
+<c:set var="topLevelTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
+
 <c:set var="currentTab" value="${KualiForm.tabStateJstl}"/>
 <c:choose>
     <c:when test="${empty currentTab}">

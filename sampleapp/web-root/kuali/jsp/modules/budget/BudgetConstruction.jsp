@@ -47,4 +47,13 @@
 
 	<kul:panelFooter />
 
+	<kul:documentControls transactionalDocument="false"
+		suppressRoutingControls="true" viewOnly="${KualiForm.editingMode['systemViewOnly'] || !KualiForm.editingMode['fullEntry']}" />
+
+<%-- Need these here to override and initialize vars used by objectinfo.js to BC specific --%>
+<SCRIPT type="text/javascript">
+  subObjectCodeNameSuffix = ".financialSubObject.financialSubObjectCdshortNm";
+  var kualiForm = document.forms['KualiForm'];
+  var kualiElements = kualiForm.elements;
+</SCRIPT>
 </kul:page>

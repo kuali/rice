@@ -23,6 +23,7 @@
 <channel:portalChannelTop channelTitle="Chart of Accounts" />
 <div class="body">
     <ul class="chan">
+        <li><portal:portalLink displayTitle="true" title="Account Category" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.chart.bo.AccountCategory&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
         <li><portal:portalLink displayTitle="true" title="Account Type" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.chart.bo.AcctType&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
         <li><portal:portalLink displayTitle="true" title="Accounting Period" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.chart.bo.AccountingPeriod&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
 		<li><portal:portalLink displayTitle="true" title="AICPA Function" url="lookup.do?methodToCall=start&businessObjectClassName=org.kuali.module.chart.bo.AicpaFunction&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>

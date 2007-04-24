@@ -2,33 +2,19 @@
 	<param name="log4j.settings.path">/opt/j2ee/dev/edu/iu/uis/settings/en/log4j.properties</param>
 	<param name="message.entity">TRAVEL</param>
 
-	<param name="TRAVEL.driver.platform">Oracle9i</param>
-	<param name="TRAVEL.driver.classname">oracle.jdbc.driver.OracleDriver</param>
-<!--  
-	<param name="TRAVEL.url">jdbc:oracle:thin:@es01.uits.indiana.edu:1521:GEN2DEV</param>
-	<param name="TRAVEL.username">SIT</param>
-	<param name="TRAVEL.password">r1c3</param>
-	-->	
-	
-	<param name="TRAVEL.url">jdbc:oracle:thin:@es01.uits.indiana.edu:1521:GEN2DEV</param>	
-	<param name="TRAVEL.username">SIT02</param>
-	<param name="TRAVEL.password">r1c3</param>
-
-	
-	<param name="TRAVEL.pool.validationQuery">select 1 from dual</param>
-	<param name="TRAVEL.pool.maxSize">50</param>
-	<param name="TRAVEL.pool.minSize">1</param>
-	<param name="TRAVEL.pool.maxWait">5000</param>
-	<param name="TRAVEL.ojb.platform">Oracle9i</param>	
-	<!--
-	<param name="TRAVEL.url">jdbc:oracle:thin:@129.79.44.172:1521:XE</param>	
-	<param name="TRAVEL.username">en</param>
-	<param name="TRAVEL.password">dev</param>
- 
-	<param name="TRAVEL.url">jdbc:oracle:thin:@192.168.1.102:1521:XE</param>	
-	<param name="TRAVEL.username">en</param>
-	<param name="TRAVEL.password">dev</param>
-	 -->
+	<param name="datasource.url">jdbc:oracle:thin:@esdb12-k.uits.indiana.edu:1521:KUALI</param>
+	<param name="datasource.username">KRREG</param>
+	<param name="datasource.ojb.platform">Oracle9i</param>
+	<param name="datasource.platform">edu.iu.uis.eden.database.platform.OraclePlatform</param>
+	<!--  
+	<param name="datasource.driver.name">com.p6spy.engine.spy.P6SpyDriver</param>
+	-->
+	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
+	<param name="datasource.pool.validationQuery">select 1 from dual</param>
+	<param name="datasource.pool.maxWait">30000</param>
+	<param name="datasource.pool.minSize">25</param>
+	<param name="datasource.pool.maxSize">50</param>
+	 
 	<param name="KEW.keystore.alias">onestartsharedservices-devandtst</param>
 	<param name="KEW.keystore.location">/opt/sa_forms/java/dev/edu/iu/uis/security/en/onestartsharedservices-devandtst_keystore</param>
 	<param name="KEW.keystore.password">s1t0spss!xX-tst</param>
@@ -53,5 +39,7 @@
 	<param name="encryption.key">encrypstion.key</param>
 
 	<param name="kfsLocator.useAppContext">true</param>
+	
+	<param name="config.location">/usr/local/bamboo/test-ci-overrides.xml</param>
 
 </config>

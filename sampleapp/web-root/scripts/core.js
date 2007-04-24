@@ -127,12 +127,12 @@ function setRouteLogIframeDimensions() {
 	    if ((Math.abs(frameDocHeight - currentHeight)) > 20 ) {
 	      if (safari > -1) {
 	        if ((Math.abs(docHt - currentHeight)) > 59 ) {
-	          currentHeight = frameDocHeight;
 	          routeLogFrame.style.height = currentHeight + 30 + "px";
+	          currentHeight = frameDocHeight;
 	        }
 	      } else {    
-	        currentHeight = frameDocHeight;
 	        routeLogFrame.style.height = currentHeight + 30 + "px";
+	        currentHeight = frameDocHeight;
 	      }
 	    }
 	  

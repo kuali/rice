@@ -27,9 +27,10 @@
 <%@ attribute name="addHighlighting" required="false"
               description="boolean indicating if this field should be highlighted (to indicate old/new change)" %>            
 
-<kul:fieldShowLookupIcon isReadOnly="${isReadOnly}" field="${field}" />
+<kul:fieldShowLookupIcon isReadOnly="${isReadOnly}" field="${field}" anchor="${currentTabIndex}"/>
 <kul:fieldShowHelpIcon isReadOnly="${isReadOnly}" field="${field}" />
 
-<c:if test="${addHighlighting && field.highlightField}">
+<%-- don't render the field changed icon if readonly since the fieldShowReadOnly tag will render it when the field is readonly --%>
+<c:if test="${addHighlighting && field.highlightField && !isReadOnly}">
   <kul:fieldShowChangedIcon />
 </c:if>

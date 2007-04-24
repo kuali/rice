@@ -21,6 +21,10 @@
 	htmlFormAction="purapRequisition" renderMultipart="true"
 	showTabButtons="true">
 
+    <c:if test="${!empty KualiForm.editingMode['fullEntry']}">
+        <c:set var="fullEntryMode" value="true" scope="request" />
+    </c:if>
+
 	<kul:hiddenDocumentFields excludePostingYear="true" />
 
     <purap:hiddenPurapFields />
@@ -34,15 +38,12 @@
 	    	detailSectionLabel="Requisition Detail" />
     </kul:documentOverview>
 	
-	<purap:viewRelatedDocuments
-	    	documentAttributes="${DataDictionary.SourceDocumentReference.attributes}"
-	    	/>
-	
     <purap:vendor
         documentAttributes="${DataDictionary.KualiRequisitionDocument.attributes}"
         displayRequisitionFields="true" />
 
-    <purap:items />
+    <purap:puritems itemAttributes="${DataDictionary.RequisitionItem.attributes}"
+    	accountingLineAttributes="${DataDictionary.RequisitionAccountingLine.attributes}"/>
 
     <purap:paymentinfo
         documentAttributes="${DataDictionary.KualiRequisitionDocument.attributes}" />
@@ -56,10 +57,14 @@
         documentAttributes="${DataDictionary.KualiRequisitionDocument.attributes}"
         displayRequisitionFields="true" />
 
+    <!-- purap:viewRelatedDocuments
+            documentAttributes="${DataDictionary.SourceDocumentReference.attributes}"
+            / -->
+    
 	<purap:statushistory 
 		documentAttributes="${DataDictionary.RequisitionStatusHistory.attributes}" />
 
-	<kul:notes />
+	<kul:notes notesBo="${KualiForm.document.documentBusinessObject.boNotes}" noteType="${Constants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE}" /> 
 
 	<kul:adHocRecipients />
 

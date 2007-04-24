@@ -57,7 +57,8 @@
 				<lookupField attributeName="personUserIdentifier" required="false" />
 				<lookupField attributeName="personUniversalIdentifier" required="false" />
 				<lookupField attributeName="personPayrollIdentifier" required="false" />
-				<lookupField attributeName="personName" required="false" />
+				<!-- uncomment if searching on the personName (as a single string is desired (see <attribute> for personName below) -->
+				<!-- lookupField attributeName="personName" required="false" /-->
 				<lookupField attributeName="personLastName" required="false" />
 				<lookupField attributeName="personFirstName" required="false" />
 				<lookupField attributeName="personEmailAddress" required="false" />
@@ -159,6 +160,7 @@
 				<control>
 					<hidden/>
 					<!-- enable if you want to be able to set the display name separate from the individual name fields
+					     see <lookupField> definition for personName above
 					<text size="40" />
 					-->
 				</control>
@@ -323,7 +325,7 @@
 				<label>Local Phone Number</label>
 				<shortLabel>Phn Nbr</shortLabel>
 
-				<maxLength>10</maxLength>
+				<maxLength>15</maxLength>
 				<validationPattern>
 					<anyCharacter />
 				</validationPattern>

@@ -136,8 +136,8 @@
             </attribute>
 
             <attribute name="explanation" forceUppercase="false">
-                <label>Justification</label>
-                <shortLabel>Justification</shortLabel>
+                <label>Explanation</label>
+                <shortLabel>Explanation</shortLabel>
 
                 <maxLength>400</maxLength>
                 <validationPattern>

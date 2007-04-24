@@ -1,5 +1,5 @@
 <%--
- Copyright 2006 The Kuali Foundation.
+ Copyright 2006-2007 The Kuali Foundation.
  
  Licensed under the Educational Community License, Version 1.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -24,9 +24,9 @@
               description="The DataDictionary entry containing attributes for this row's fields." %>
 
 <c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
-
-<kul:tab tabTitle="Status History" defaultOpen="true" tabErrorKey="${PurapConstants.ADDITIONAL_TAB_ERRORS}">
+<kul:tab tabTitle="Status History" defaultOpen="false" tabErrorKey="${PurapConstants.ADDITIONAL_TAB_ERRORS}">
     <div class="tab-container" align=center>
+        <p align=left><jsp:doBody/>
         <div class="h2-container">
             <h2>Status History</h2>
         </div>
@@ -43,9 +43,6 @@
                 	scope="col" />
     			<kul:htmlAttributeHeaderCell
                 	attributeEntry="${documentAttributes.newStatus}"
-                	scope="col" />
-            	<kul:htmlAttributeHeaderCell
-                	attributeEntry="${documentAttributes.noteIdentifier}"
                 	scope="col" />
                	<kul:htmlAttributeHeaderCell
                 	attributeEntry="${documentAttributes.statusHistoryUserIdentifier}"
@@ -69,10 +66,6 @@
 		        		<td align=left valign=middle class="datacell">
 		        			<kul:htmlControlAttribute attributeEntry="${documentAttributes.newStatus}" 
 		                    	property="document.statusHistories[${ctr}].newStatus.statusDescription" readOnly="true"/>
-		        		</td>
-		        		<td align=left valign=middle class="datacell">
-		        			<kul:htmlControlAttribute attributeEntry="${documentAttributes.noteIdentifier}" 
-		                    	property="document.statusHistories[${ctr}].noteIdentifier" readOnly="true"/>
 		        		</td>
 		        		<td align=left valign=middle class="datacell">
 		        			<kul:htmlControlAttribute attributeEntry="${documentAttributes.statusHistoryUserIdentifier}" 

@@ -58,11 +58,10 @@
 	<script language="JavaScript" type="text/javascript" src="scripts/jscalendar-1.0/lang/calendar-en.js"></script>
 	<script language="JavaScript" type="text/javascript" src="scripts/jscalendar-1.0/calendar-setup.js"></script>
 	<style type="text/css">@import url(scripts/jscalendar-1.0/calendar-win2k-1.css);</style>
-	<%-- DWR Support Scripts 
+	<%-- DWR Support Scripts --%>
 	<script language="JavaScript" src="dwr/engine.js" type="text/javascript"></script>
 	<script language="JavaScript" src="dwr/util.js" type="text/javascript"></script>
 	<script type='text/javascript' src="dwr/interface/UserService.js"></script>
-	--%>
 	<script language="JavaScript" src="scripts/objectInfo.js" type="text/javascript"></script>
 	<c:choose>
 		<c:when test="${lookup}" >
@@ -124,7 +123,7 @@
 		<c:if test="${not empty KualiForm.anchor }">
 			<c:set var="anchorScript" value="jumpToAnchor('${KualiForm.anchor}');" />
 		</c:if>
-		<body  onKeyPress="return isReturnKeyAllowed('${Constants.DISPATCH_REQUEST_PARAMETER}.' , event);">
+		<body onload="${anchorScript}" onKeyPress="return isReturnKeyAllowed('${Constants.DISPATCH_REQUEST_PARAMETER}.' , event);">
 		<kul:backdoor />${headerMenuBar}
 		
 	</c:otherwise>

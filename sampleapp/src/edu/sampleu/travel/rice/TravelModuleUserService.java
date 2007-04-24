@@ -15,13 +15,18 @@
  */
 package edu.sampleu.travel.rice;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.kuali.PropertyConstants;
 import org.kuali.core.bo.user.KualiModuleUser;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.service.impl.KualiModuleUserServiceBaseImpl;
 import org.kuali.rice.KNSServiceLocator;
+import org.springframework.beans.factory.InitializingBean;
 
-public class TravelModuleUserService extends KualiModuleUserServiceBaseImpl {
+public class TravelModuleUserService extends KualiModuleUserServiceBaseImpl implements InitializingBean {
     
     public static final String MODULE_ID = "tv";
 
@@ -38,6 +43,12 @@ public class TravelModuleUserService extends KualiModuleUserServiceBaseImpl {
 
     public void save(KualiModuleUser moduleUser) throws IllegalArgumentException {
 
+    }
+
+    public void afterPropertiesSet() throws Exception {
+        List<String> properties = new ArrayList<String>();
+        properties.add(PropertyConstants.ACTIVE);
+        super.setPropertyList(properties);
     }
 
 }

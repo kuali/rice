@@ -26,12 +26,18 @@
 <%@ attribute name="noShowHideButton" required="false"
               description="Boolean to hide the show/hide button (but the row is displayed anyway)." %>
 <%@ attribute name="highlightTab" required="false" %>
+<%@ attribute name="boClassName" required="false" %>
+<%@ attribute name="lookedUpBODisplayName" required="false" description="this value is the human readable name of the BO being looked up" %>
+<%@ attribute name="lookedUpCollectionName" required="true" description="the name of the collection being looked up (perhaps on a document collection), this value will be returned to the calling document" %>
 
 <table class="datatable" cellpadding="0" cellspacing="0" align="center"
        style="width: ${width}; text-align: left; margin-left: auto; margin-right: auto;">
     <tbody>
         <tr>
             <td class="tab-subhead">
+            	<c:if test="${!noShowHideButton}">
+                	<a name="${KualiForm.currentTabIndex}"></a>
+                </c:if>
                 <span class="left">
 <c:if test="${!noShowHideButton}">
     <c:set var="currentTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
@@ -53,6 +59,12 @@
                       &nbsp;<img src="images/asterisk_orange.png" alt="changed"/>
                     </c:if>
                 </span>
+                <c:if test="${!empty boClassName}">
+	                <span class="right">
+    	            	<kul:multipleValueLookup boClassName="${boClassName}" lookedUpBODisplayName="${lookedUpBODisplayName}"
+        	        			lookedUpCollectionName="${lookedUpCollectionName}" anchor="${currentTabIndex}" />
+            	    </span>
+            	</c:if>
             </td>
         </tr>
     </tbody>

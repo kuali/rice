@@ -39,6 +39,9 @@
 
 <%@ attribute name="helpLink" required="false" %>
 
+<%@ attribute name="highlight" required="false"
+              description="boolean indicating if this field is rendered as highlighted (to indicate old/new value change)" %> 
+
 <%-- set the border color when has errors --%>
 <c:if test="${hasErrors}">
 	<c:set var="textStyle" value="border-color: red" />
@@ -59,7 +62,8 @@
 					fieldConversions="${fieldConversions}" 
 					lookupParameters="${lookupParameters}" 
 					fieldLabel="${label}" 
-					referencesToRefresh="${referencesToRefresh}" />
+					referencesToRefresh="${referencesToRefresh}"
+					anchor="${currentTabIndex}" />
 	</c:otherwise>
 </c:choose>
 <c:choose>
@@ -80,4 +84,7 @@
 		<input type="hidden" name="${userNameFieldName}" value="${userName}" />
 	</c:if>
 </c:if>
-	
+
+<c:if test="${highlight}">
+<kul:fieldShowChangedIcon/>
+</c:if>

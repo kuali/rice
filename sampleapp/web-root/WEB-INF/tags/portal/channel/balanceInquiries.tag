@@ -34,17 +34,17 @@
     </ul>
     <strong>Labor Distribution</strong>
     <ul class="chan">
-	<li><portal:portalLink displayTitle="true" title="CSF Tracker View" url="${Constants.GL_MODIFIED_INQUIRY_ACTION}?methodToCall=start&businessObjectClassName=org.kuali.module.budget.bo.CalculatedSalaryFoundationTracker&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li> 
-    <li> Base Funds Account Status</li>
-    <li> Current Year Funds Account Status</li>
+	<li><portal:portalLink displayTitle="true" title="Base Funds Account Status" url="${Constants.GL_MODIFIED_INQUIRY_ACTION}?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.AccountStatusBaseFunds&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>    
+	<li><portal:portalLink displayTitle="true" title="CSF Tracker View" url="${Constants.GL_MODIFIED_INQUIRY_ACTION}?methodToCall=start&businessObjectClassName=org.kuali.module.budget.bo.CalculatedSalaryFoundationTracker&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
+	<li><portal:portalLink displayTitle="true" title="Current Year Funds Account Status" url="${Constants.GL_MODIFIED_INQUIRY_ACTION}?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.AccountStatusCurrentFunds&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>     
     <li> Effort Certification Document Print</li>
     <li> July 1 Funding</li>
 	<li><portal:portalLink displayTitle="true" title="Labor Ledger Balance" url="${Constants.GL_MODIFIED_INQUIRY_ACTION}?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.LedgerBalance&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>  
     <li> Labor Inquiry </li>
     <li> Labor Ledger Effort Certification View</li>
     <li> Labor Ledger View</li>
-	<li><portal:portalLink displayTitle="true" title="Labor Ledger View" url="${Constants.GL_MODIFIED_INQUIRY_ACTION}?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.LedgerEntry&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>  
-	<li><portal:portalLink displayTitle="true" title="Labor Ledger A21 View" url="${Constants.GL_MODIFIED_INQUIRY_ACTION}?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.LedgerEntry&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li> 
+	<li><portal:portalLink displayTitle="true" title="Labor Ledger View" url="${Constants.GL_BALANCE_INQUIRY_ACTION}?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.LedgerBalance&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true&financialBalanceTypeCode=AC" /></li>  
+	<li><portal:portalLink displayTitle="true" title="Labor Ledger A21 View" url="${Constants.GL_BALANCE_INQUIRY_ACTION}?methodToCall=start&businessObjectClassName=org.kuali.module.labor.bo.LedgerA21Balance&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true&financialBalanceTypeCode=A2" /></li> 
     <li> Labor Listing by Organization</li>
     <li> Organization Report Number Outstanding Effort Certification Forms</li>
     <li> Person Funding</li>

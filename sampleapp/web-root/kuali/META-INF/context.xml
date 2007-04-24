@@ -1,4 +1,4 @@
 <!DOCTYPE doc>
-<Context path="/kuali-dev" reloadable="true"  docBase="/java/projects/head_kuali_project/work/web-root">
+<Context path="/kuali-dev" reloadable="true"  docBase="/java/projects/kuali_project/work/web-root">
     <Manager className="org.apache.catalina.session.StandardManager" maxActiveSessions="250" />
 </Context>

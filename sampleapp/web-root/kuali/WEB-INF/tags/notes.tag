@@ -55,6 +55,7 @@
 <kul:tab tabTitle="Notes and Attachments" defaultOpen="${!empty notesBo or (not empty defaultOpen and defaultOpen)}" tabErrorKey="${Constants.DOCUMENT_NOTES_ERRORS}" tabItemCount="${fn:length(notesBo)}" transparentBackground="${transparentBackground}" >
     <c:set var="notesAttributes" value="${DataDictionary.Note.attributes}" />
     <div class="tab-container" align=center id="G4">
+    <p align=left><jsp:doBody/>
 	<div class="h2-container">
 	<h2>Notes and Attachments</h2>
 	</div>

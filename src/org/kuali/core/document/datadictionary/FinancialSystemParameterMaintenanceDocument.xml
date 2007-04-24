@@ -16,7 +16,7 @@
 -->
 <!DOCTYPE dictionaryEntry PUBLIC
     "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "../../../../core/datadictionary/dataDictionary-1_0.dtd">
+    "../../datadictionary/dataDictionary-1_0.dtd">
 <dictionaryEntry>
     <maintenanceDocument>
         <businessObjectClass>org.kuali.core.bo.FinancialSystemParameter</businessObjectClass>
@@ -38,12 +38,15 @@
         <description>This document can be used to create or update Financial System Parameters which are used to externalize key-value constants.</description>
         <help securityGroupName="Kuali.NervousSystem.Help" parameterName="NERVOUS_SYSTEM_HELP_FINANCIAL_SYSTEM_PARAMETER" />
 
-        <allowsCopy>true</allowsCopy>
-
         <lockingKeys>
             <field attributeName="financialSystemScriptName" />
             <field attributeName="financialSystemParameterName" />
         </lockingKeys>
+        
+        <defaultExistenceChecks>
+        	<reference attributeName="financialSystemParameterSecurity" attributeToHighlightOnFail="financialSystemScriptName" />
+        </defaultExistenceChecks>
+        
         <maintainableSections>
             <maintainableSection title="Edit Financial System Parameter">
                 <maintainableItems>

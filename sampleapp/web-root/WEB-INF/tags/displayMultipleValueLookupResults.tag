@@ -34,11 +34,12 @@
     </c:if>
 	<c:choose>
 		<c:when test="${param['d-16544-e'] == null}">
-			<kul:multipleValueLookupPagingBanner pageNumber="${KualiForm.viewedPageNumber}" totalPages="${KualiForm.totalNumberOfPages}"
+			<kul:tableRenderPagingBanner pageNumber="${KualiForm.viewedPageNumber}" totalPages="${KualiForm.totalNumberOfPages}"
 				firstDisplayedRow="${KualiForm.firstRowIndex}" lastDisplayedRow="${KualiForm.lastRowIndex}" resultsActualSize="${KualiForm.resultsActualSize}"
-				resultsLimitedSize="${KualiForm.resultsLimitedSize}"/>
+				resultsLimitedSize="${KualiForm.resultsLimitedSize}"
+				buttonExtraParams=".${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}"/>
 			<input type="hidden" name="${Constants.MULTIPLE_VALUE_LOOKUP_PREVIOUSLY_SELECTED_OBJ_IDS_PARAM}" value="${KualiForm.compositeSelectedObjectIds}"/>
-			<input type="hidden" name="${Constants.MULTIPLE_VALUE_LOOKUP_PREVIOUSLY_SORTED_COLUMN_INDEX_PARAM}" value="${KualiForm.columnToSortIndex}"/>
+			<input type="hidden" name="${Constants.TableRenderConstants.PREVIOUSLY_SORTED_COLUMN_INDEX_PARAM}" value="${KualiForm.columnToSortIndex}"/>
 			<p>
 				<input type="image" src="images/buttonsmall_selectall.gif" alt="Select all rows" title="Select all rows" class="tinybutton" name="methodToCall.selectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}.x" value="Select All Rows"/>
 				<input type="image" src="images/buttonsmall_unselall.gif" alt="Unselect all rows" title="Unselect all rows" class="tinybutton" name="methodToCall.unselectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}.x" value="Unselect All Rows"/>
@@ -73,12 +74,11 @@
 					</c:if>
 					<tr class="${rowclass}">
 						<c:forEach items="${row.columns}" var="column">
-							<td class="infocell">
+							<td class="infocell" title="${column.propertyValue}">
 								<c:if test="${!empty column.propertyURL}">
-									<a href="<c:out value="${column.propertyURL}"/>" target="blank" title="${column.propertyValue}">
+									<a href="<c:out value="${column.propertyURL}"/>" target="blank">
 								</c:if>
-								<c:out value="${column.propertyValue}"/><c:if test="${!empty column.propertyURL}"></a>
-								</c:if>
+								<c:out value="${fn:substring(column.propertyValue, 0, column.maxLength)}"/><c:if test="${column.maxLength gt 0 && fn:length(column.propertyValue) gt column.maxLength}">...</c:if><c:if test="${!empty column.propertyURL}"></a></c:if>
 								&nbsp;
 							</td>
 						</c:forEach>
@@ -95,8 +95,8 @@
 				</c:forEach>
 			</table>
 			<p>
-				<input type="submit" name="methodToCall.selectAll.x" value="Select All Rows"/>
-				<input type="submit" name="methodToCall.unselectAll.x" value="Unselect All Rows"/>
+				<input type="image" src="images/buttonsmall_selectall.gif" alt="Select all rows" title="Select all rows" class="tinybutton" name="methodToCall.selectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}.x" value="Select All Rows"/>
+				<input type="image" src="images/buttonsmall_unselall.gif" alt="Unselect all rows" title="Unselect all rows" class="tinybutton" name="methodToCall.unselectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}.x" value="Unselect All Rows"/>
 			</p>
 			<kul:multipleValueLookupExportBanner/>
 		</c:when>
@@ -107,7 +107,7 @@
 				<c:forEach items="${row.columns}" var="column" varStatus="loopStatus">
 					<display:column class="${colClass}" sortable="${column.sortable}"
 								title="${column.columnTitle}" comparator="${column.comparator}"
-								maxLength="70"><c:out value="${column.propertyValue}" escapeXml="false" default="" /></display:column>
+								maxLength="${column.maxLength}"><c:out value="${column.propertyValue}" escapeXml="false" default="" /></display:column>
 				</c:forEach>
 			</display:table>
 		</c:otherwise>

@@ -1,0 +1,72 @@
+/*
+ * Copyright 2006 The Kuali Foundation.
+ * 
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.opensource.org/licenses/ecl1.php
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.kuali.core.datadictionary.control;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+/**
+ * A single HTML text control.
+ * 
+ * 
+ */
+public class CurrencyControlDefinition extends ControlDefinitionBase {
+    // logger
+    private static Log LOG = LogFactory.getLog(CurrencyControlDefinition.class);
+    /**
+     * the maxLength for text that has been formatted. ie if maxLength=5. [12345]. but after going through the formatter the value
+     * is [12,345.00] and will no longer fit in a field whos maxLength=5. formattedMaxLength solves this problem.
+     */
+    private Integer formattedMaxLength;
+
+    public CurrencyControlDefinition() {
+        LOG.debug("creating new CurrencyControlDefinition");
+    }
+
+    /**
+     * 
+     * @see org.kuali.core.datadictionary.control.ControlDefinition#isCurrency()
+     */
+    public boolean isCurrency() {
+        return true;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        return "CurrencyControlDefinition";
+    }
+
+    /**
+     * @return Returns the formattedMaxLength parameter for currency controls.
+     */
+    public Integer getFormattedMaxLength() {
+        return formattedMaxLength;
+    }
+
+    /**
+     * Sets the formattedMaxLength parameter for currency controls.
+     * 
+     * @param formattedMaxLength.
+     */
+    public void setFormattedMaxLength(Integer formattedMaxLength) {
+        LOG.debug("calling setFormattedMaxLength '" + formattedMaxLength + "'");
+        this.formattedMaxLength = formattedMaxLength;
+    }
+
+}

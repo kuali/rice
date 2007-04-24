@@ -1,0 +1,82 @@
+<!--
+ Copyright 2005-2006 The Kuali Foundation.
+ 
+ Licensed under the Educational Community License, Version 1.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl1.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<pattern value="attributes">
+    <!--  attribute -->
+    <pattern value="attribute">
+        <object-create-rule classname="org.kuali.core.datadictionary.AttributeDefinition" />
+        <set-properties-rule />
+
+        <call-method-rule pattern="name" methodname="setName" paramcount="0" />
+        <call-method-rule pattern="label" methodname="setLabel" paramcount="0" />
+        <call-method-rule pattern="shortLabel" methodname="setShortLabel" paramcount="0" />
+
+        <call-method-rule pattern="maxLength" methodname="setMaxLength" paramcount="0" paramtypes="java.lang.Integer" />
+        <call-method-rule pattern="exclusiveMin" methodname="setExclusiveMin" paramcount="0" paramtypes="java.math.BigDecimal" />
+        <call-method-rule pattern="inclusiveMax" methodname="setInclusiveMax" paramcount="0" paramtypes="java.math.BigDecimal" />
+        <call-method-rule pattern="required" methodname="setRequired" paramcount="0" paramtypes="java.lang.Boolean" />
+
+        <include path="org/kuali/core/datadictionary/validationPatternRules.xml" />
+        <include path="org/kuali/core/datadictionary/controlRules.xml" />
+
+        <call-method-rule pattern="summary" methodname="setSummary" paramcount="0" />
+        <call-method-rule pattern="description" methodname="setDescription" paramcount="0" />
+
+        <call-method-rule pattern="formatterClass" methodname="setFormatterClass" paramcount="0" paramtypes="java.lang.Class" />
+
+        <set-next-rule methodname="addAttributeDefinition" />
+    </pattern>
+
+    <!--  attributeReference -->
+    <pattern value="attributeReference">
+        <object-create-rule classname="org.kuali.core.datadictionary.AttributeReferenceDefinition" />
+        <set-properties-rule />
+
+        <call-method-rule pattern="name" methodname="setName" paramcount="0" />
+        <call-method-rule pattern="label" methodname="setLabel" paramcount="0" />
+        <call-method-rule pattern="shortLabel" methodname="setShortLabel" paramcount="0" />
+
+        <call-method-rule pattern="maxLength" methodname="setMaxLength" paramcount="0" paramtypes="java.lang.Integer" />
+        <call-method-rule pattern="exclusiveMin" methodname="setExclusiveMin" paramcount="0" paramtypes="java.math.BigDecimal" />
+        <call-method-rule pattern="inclusiveMax" methodname="setInclusiveMax" paramcount="0" paramtypes="java.math.BigDecimal" />
+        <call-method-rule pattern="required" methodname="setRequired" paramcount="0" paramtypes="java.lang.Boolean" />
+
+        <include path="org/kuali/core/datadictionary/validationPatternRules.xml" />
+        <include path="org/kuali/core/datadictionary/controlRules.xml" />
+
+        <call-method-rule pattern="summary" methodname="setSummary" paramcount="0" />
+        <call-method-rule pattern="description" methodname="setDescription" paramcount="0" />
+
+        <call-method-rule pattern="formatterClass" methodname="setFormatterClass" paramcount="0" paramtypes="java.lang.Class" />
+
+        <set-next-rule methodname="addAttributeDefinition" />
+    </pattern>
+</pattern>
+
+<pattern value="collections">
+    <pattern value="collection">
+        <object-create-rule classname="org.kuali.core.datadictionary.CollectionDefinition" />
+        <set-properties-rule />
+
+        <call-method-rule pattern="name" methodname="setName" paramcount="0" />
+        <call-method-rule pattern="label" methodname="setLabel" paramcount="0" />
+        <call-method-rule pattern="shortLabel" methodname="setShortLabel" paramcount="0" />
+
+        <call-method-rule pattern="summary" methodname="setSummary" paramcount="0" />
+        <call-method-rule pattern="description" methodname="setDescription" paramcount="0" />
+
+        <set-next-rule methodname="addCollectionDefinition" />
+    </pattern>
+</pattern>

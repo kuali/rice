@@ -1,0 +1,92 @@
+/*
+ * Copyright 2006 The Kuali Foundation.
+ * 
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.opensource.org/licenses/ecl1.php
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.core.util;
+
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
+
+
+/**
+ * Provides access to a copy of an ErrorMap and information derived from it. Necessary because ErrorMap implements the Map
+ * interface, which for some reason makes JSTL unwilling to translate ErrorMap.errorCount into a call to the getErrorCount method of
+ * that ErrorMap instance.
+ * 
+ * Since I had to create this class to provide easy access to the error count (which must be computed as the sum of the sizes of the
+ * error message lists of all properties in the ErrorMap), I also moved in the existing code which massaged the contents of the
+ * ErrorMap for the purposes of export to the JSP.
+ * 
+ * 
+ */
+public class ErrorContainer implements Serializable {
+    private final ErrorMap errorMap;
+    private final int errorCount;
+
+    /**
+     * Constructs an ErrorContainer
+     * 
+     * @param errorMap
+     */
+    public ErrorContainer(ErrorMap errorMap) {
+        this.errorMap = errorMap;
+        this.errorCount = errorMap.getErrorCount();
+    }
+
+    /**
+     * @return number of errors in the ErrorMap used to initialize this container
+     */
+    public int getErrorCount() {
+        return errorCount;
+    }
+
+    /**
+     * @return simple List of all properies for which errorMessages exist in the ErrorMap used to initialize this container
+     */
+    public List getErrorPropertyList() {
+        List properties = new ArrayList();
+
+        for (Iterator iter = errorMap.keySet().iterator(); iter.hasNext();) {
+            properties.add(iter.next());
+        }
+
+        return properties;
+    }
+
+    /**
+     * @return ActionMessages instance containing error messages constructed from the contents of the ErrorMap with which this
+     *         container was initialized
+     */
+    public ActionMessages getRequestErrors() {
+        ActionMessages requestErrors = new ActionMessages();
+        for (Iterator iter = GlobalVariables.getErrorMap().keySet().iterator(); iter.hasNext();) {
+            String property = (String) iter.next();
+            List errorList = (List) GlobalVariables.getErrorMap().get(property);
+
+            for (Iterator iterator = errorList.iterator(); iterator.hasNext();) {
+                ErrorMessage errorMessage = (ErrorMessage) iterator.next();
+
+                // add ActionMessage with any parameters
+                requestErrors.add(property, new ActionMessage(errorMessage.getErrorKey(), errorMessage.getMessageParameters()));
+            }
+        }
+        return requestErrors;
+    }
+}

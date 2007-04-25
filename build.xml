@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
 <project name="rice" default="dist" basedir=".">
 
+	<target name="install-no-tests">
+  		<exec executable="mvn">
+    		<arg value="-Dmaven.test.skip=true"/>
+		    <arg value="install"/>
+		</exec>
+	</target>
+
 	<target name="init" description="sets up the build properties">
 		<echo level="info">RICE - init: initing tests... Anthill pro deploy dir = ${deployDir}</echo>
 		<property file="${user.home}/rice-build.properties" />

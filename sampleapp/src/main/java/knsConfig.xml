@@ -1,0 +1,36 @@
+<config>
+	<param name="institution">iu</param>
+	<param name="version">03/19/2007 01:59 PM</param>
+	<param name="environment">dev</param>
+	<param name="security.directory">/usr/local/rice/</param>
+	<param name="settings.directory">/usr/local/rice/</param>
+	<param name="workflow.xml.directory">/opt/</param>
+	<param name="workflow.environment">dev</param>
+	<param name="workflow.url">http://localhost:8080/kuali-dev/en</param>
+	<param name="transaction.timeout">3600</param>
+	<param name="log4j.reload.minutes">5</param>
+	<param name="memory.monitor.threshold">.85</param>
+	<param name="production.environment.code">prd</param>
+	<param name="maintain.users.locally">true</param>
+	
+	<param name="encryption.key">7IC64w6ksLU</param>
+	<param name="keystore.alias">kul</param>
+	<param name="keystore.password">kulpass</param>
+	<param name="mail.relay.server">mail-relay.iu.edu</param>
+	<param name="mailing.list.batch">rkirkend@indiana.edu</param>
+	
+	<param name="workflow.url">http://localhost:8080/SampleRiceClient/en</param>
+	<param name="application.url">http://localhost:8080/SampleRiceClient/</param>
+	
+	<param name="datasource.url">jdbc:oracle:thin:@esdb12-k.uits.indiana.edu:1521:KUALI</param>
+	<param name="datasource.username">KRDEV</param>
+	<param name="datasource.ojb.platform">Oracle9i</param>
+	<param name="datasource.platform">edu.iu.uis.eden.database.platform.OraclePlatform</param>
+	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
+	<param name="datasource.pool.validationQuery">select 1 from dual</param>
+	<param name="datasource.pool.maxWait">30000</param>
+	<param name="datasource.pool.minSize">2</param>
+	<param name="datasource.pool.maxSize">50</param>
+	
+	<param name="config.location">/usr/local/rice/knsSecure.xml</param>
+</config>

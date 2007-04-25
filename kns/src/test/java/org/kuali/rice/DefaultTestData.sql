@@ -4,35 +4,29 @@ insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (2, 'fran')
 ;
 insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (3, 'frank') 
 ;
-
 insert into TRV_ACCT values ('a1', 'a1', 'CAT', 1) 
 ;
 insert into TRV_ACCT values ('a2', 'a2', 'EAT', 2) 
 ;
 insert into TRV_ACCT values ('a3', 'a3', 'IAT', 3) 
 ;
-
 insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a1') 
 ;
 insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a2') 
 ;
 insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a3') 
 ;
-
 insert into en_wrkgrp_t values (1,1,'WorkflowAdmin',1,'W','Workflow Administrator Workgroup',1,-1,0) 
 ;
 insert into EN_WRKGRP_MBR_T values ('quickstart',1,1,0) 
 ;
-
 insert into FP_DOC_TYPE_T values ('TRVA', '1A6FEB2501C7607EE043814FD881607E', 1, 'TR',	'TRAV ACCNT', 'N', 'Y', 'N', 0, 'N', 'N')
 ;
 INSERT INTO FP_DOC_GROUP_T VALUES ('TR', '054EDFB3B260C8D2E043814FD881C8D2', 1,	'Travel Documents', null)
 ;
-
 insert into FP_DOC_TYPE_T values ('TRFO', '1A6FEB250342607EE043814FD881607E', 1, 'TR',	'TRAV FO', 'N', 'Y', 'N', 0, 'N', 'N')
 ;
 insert into FP_DOC_TYPE_T values ('TRD2', '1A6FEB250342607EE043814FD889607E', 1, 'TR',	'TRAV D2', 'N', 'Y', 'N', 0, 'N', 'N')
-
 ;
 INSERT INTO FS_PARM_T(FS_SCR_NM, FS_PARM_NM, OBJ_ID, VER_NBR, FS_PARM_TXT, FS_PARM_DESC, FS_MULT_VAL_IND) VALUES('SYSTEM','HELP_URL','07D71A3FF0D604D8E043814FD88104D8','1','http://www.fms.indiana.edu/fis/home.asp','','N')
 ;

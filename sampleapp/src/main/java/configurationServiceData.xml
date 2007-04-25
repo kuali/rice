@@ -17,7 +17,6 @@
 <!-- configuration file for KualiConfigurationService -->
 
 <configuration>
-    <properties fileName="configuration.properties" />
     <properties fileName="ApplicationResources.properties" />
 </configuration>
 

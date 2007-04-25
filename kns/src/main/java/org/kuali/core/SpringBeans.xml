@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright 2006-2007 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
+	Copyright 2006-2007 The Kuali Foundation.
+	
+	Licensed under the Educational Community License, Version 1.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	http://www.opensource.org/licenses/ecl1.php
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
 -->
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
@@ -36,21 +36,21 @@
 
 	<bean id="dataSource" class="edu.iu.uis.eden.database.WorkflowManagedDataSource">
 		<property name="transactionManager" ref="jotm" />
-		<property name="driverClassName" value="${dataSource.driverClassName}" />
-		<property name="maxSize" value="${dataSource.maxSize}" />
-		<property name="minSize" value="${dataSource.minSize}" />
-		<property name="maxWait" value="${dataSource.maxWait}" />
-		<property name="validationQuery" value="${dataSource.validationQuery}" />
-		<property name="url" value="${dataSource.url}" />
-		<property name="username" value="${dataSource.username}" />
-		<property name="password" value="${dataSource.password}" />
+		<property name="driverClassName" value="${datasource.driver.name}" />
+		<property name="maxSize" value="${datasource.pool.maxSize}" />
+		<property name="minSize" value="${datasource.pool.minSize}" />
+		<property name="maxWait" value="${datasource.pool.maxWait}" />
+		<property name="validationQuery" value="${datasource.pool.validationQuery}" />
+		<property name="url" value="${datasource.url}" />
+		<property name="username" value="${datasource.username}" />
+		<property name="password" value="${datasource.password}" />
 	</bean>
 
 	<bean class="org.kuali.core.util.spring.NamedOrderedListBean">
 		<property name="name" value="databaseRepositoryFilePaths" />
 		<property name="listItem" value="org/kuali/core/OJB-repository.xml" />
 	</bean>
-	
+
 	<bean class="org.kuali.core.util.spring.NamedOrderedListBean">
 		<property name="name" value="scriptConfigurationFilePaths" />
 		<property name="listItem" value="org/kuali/core/dwr-core.xml" />
@@ -121,8 +121,6 @@
 				<prop key="user.url">WorkflowUser.do</prop>
 				<prop key="user.report.url">WorkflowUserReport.do</prop>
 				<prop key="edl.config.loc">classpath:META-INF/EDLConfig.xml</prop>
-				<prop key="datasource.ojb.platform">${ojb.platform}</prop>
-				<prop key="datasource.platform">${workflow.database.platform.class}</prop>
 				<prop key="datasource.ojb.sequenceManager.className">${ojb.sequence.manager.class}</prop>
 			</props>
 		</property>
@@ -195,11 +193,11 @@
 	<bean id="methodLoggingPointcut" class="org.kuali.core.util.spring.ClassOrMethodAnnotationPointcut">
 		<constructor-arg value="org.kuali.core.util.spring.Logged" />
 	</bean>
-	
+
 	<bean id="platformAwareDao" abstract="true" class="org.kuali.core.dao.ojb.PlatformAwareDaoBaseOjb">
 		<property name="jcdAlias" value="dataSource" />
 		<property name="dbPlatform" ref="dbPlatformBean" />
-	</bean>    
+	</bean>
 
 	<bean id="validationCompletionUtils" class="org.kuali.core.datadictionary.ValidationCompletionUtils">
 		<property name="persistenceStructureService" ref="persistenceStructureService" />
@@ -219,15 +217,15 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="databaseImportExportService" class="org.kuali.core.service.impl.DatabaseImportExportServiceImpl">
-        <property name="dbPlatformDao" ref="dbPlatformDao" />
-        <property name="configService" ref="kualiConfigurationService" />
-        <property name="businessObjectService" ref="businessObjectService" />
-        <property name="encryptionService" ref="encryptionService" />
-    </bean>
-    
-    <bean id="businessObjectService" class="org.kuali.core.service.impl.BusinessObjectServiceImpl">
+		<property name="dbPlatformDao" ref="dbPlatformDao" />
+		<property name="configService" ref="kualiConfigurationService" />
+		<property name="businessObjectService" ref="businessObjectService" />
+		<property name="encryptionService" ref="encryptionService" />
+	</bean>
+
+	<bean id="businessObjectService" class="org.kuali.core.service.impl.BusinessObjectServiceImpl">
 		<property name="businessObjectDao">
 			<ref bean="businessObjectDao" />
 		</property>
@@ -241,10 +239,10 @@
 			<ref bean="universalUserService" />
 		</property>
 		<property name="businessObjectMetaDataService">
-			<ref bean="businessObjectMetaDataService"/>
+			<ref bean="businessObjectMetaDataService" />
 		</property>
 	</bean>
-	
+
 	<bean id="kualiConfigurationService" class="org.kuali.core.service.impl.KualiConfigurationServiceImpl">
 		<property name="businessObjectService">
 			<ref bean="businessObjectService" />
@@ -256,7 +254,7 @@
 			<ref bean="dataDictionaryService" />
 		</property>
 	</bean>
-	
+
 	<bean id="webAuthenticationService" class="org.kuali.rice.web.RiceRemoteUserWebAuthenticationServiceImpl" />
 
 	<bean id="kualiModuleService" class="org.kuali.core.service.impl.KualiModuleServiceImpl" />
@@ -271,7 +269,7 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="${mail.relay.server}" />
 	</bean>
-	
+
 	<alias name="dbPlatformDao" alias="dbPlatformBean" />
 
 	<bean id="workflowGroupService" class="org.kuali.core.workflow.service.impl.WorkflowGroupServiceImpl"></bean>
@@ -329,8 +327,7 @@
 	</bean>
 
 
-	<bean id="dateTimeService" class="org.kuali.core.service.impl.DateTimeServiceImpl">
-	</bean>
+	<bean id="dateTimeService" class="org.kuali.core.service.impl.DateTimeServiceImpl"></bean>
 
 	<bean id="businessObjectDictionaryService" class="org.kuali.core.service.impl.BusinessObjectDictionaryServiceImpl">
 		<property name="dataDictionaryService">
@@ -402,27 +399,27 @@
 	</bean>
 
 
-    <bean id="noteService" class="org.kuali.core.service.impl.NoteServiceImpl">
-        <property name="noteDao">
-            <ref bean="noteDao" />
-        </property>
-    </bean>
+	<bean id="noteService" class="org.kuali.core.service.impl.NoteServiceImpl">
+		<property name="noteDao">
+			<ref bean="noteDao" />
+		</property>
+	</bean>
 
- 	
+
 	<bean id="attachmentService" class="org.kuali.core.service.impl.AttachmentServiceImpl">
 		<property name="kualiConfigurationService">
 			<ref bean="kualiConfigurationService" />
 		</property>
 	</bean>
-	
-	
+
+
 	<bean id="persistenceStructureService" class="org.kuali.core.service.impl.PersistenceStructureServiceImpl" />
 
 	<bean id="persistenceService" class="org.kuali.core.service.impl.PersistenceServiceImpl">
 		<property name="persistenceDao" ref="persistenceDao" />
 		<property name="moduleService" ref="kualiModuleService" />
 	</bean>
-	
+
 	<bean id="persistenceDao" parent="platformAwareDao" class="org.kuali.core.dao.ojb.PersistenceDaoOjb" />
 
 	<bean id="dictionaryValidationService" class="org.kuali.core.service.impl.DictionaryValidationServiceImpl">
@@ -559,26 +556,26 @@
 			<ref bean="businessObjectMetaDataService" />
 		</property>
 		<property name="sequenceAccessorService">
-			<ref bean="sequenceAccessorService"/>
+			<ref bean="sequenceAccessorService" />
 		</property>
 		<property name="businessObjectService">
 			<ref bean="businessObjectService" />
 		</property>
 		<property name="lookupResultsService">
-			<ref bean="lookupResultsService"/>
+			<ref bean="lookupResultsService" />
 		</property>
 	</bean>
-	
+
 	<bean id="lookupResultsService" class="org.kuali.core.lookup.LookupResultsServiceImpl">
 		<property name="businessObjectService">
 			<ref bean="businessObjectService" />
 		</property>
 		<property name="persistedLookupMetadataDao">
-			<ref bean="persistedLookupMetadataDao"/>
+			<ref bean="persistedLookupMetadataDao" />
 		</property>
 	</bean>
-	
-	<bean id="persistedLookupMetadataDao" parent="platformAwareDao" class="org.kuali.core.dao.ojb.PersistedLookupMetadataDaoOjb" />	
+
+	<bean id="persistedLookupMetadataDao" parent="platformAwareDao" class="org.kuali.core.dao.ojb.PersistedLookupMetadataDaoOjb" />
 
 	<bean id="businessObjectMetaDataService" class="org.kuali.core.service.impl.BusinessObjectMetaDataServiceImpl">
 		<property name="businessObjectDictionaryService">
@@ -690,15 +687,15 @@
 			<ref bean="persistenceStructureService" />
 		</property>
 	</bean>
-	
+
 	<bean id="universalUserDao" class="org.kuali.rice.RiceKNSDefaultUserDAOImpl" />
 
-	<bean id="moduleUserPropertyDao" parent="platformAwareDao" class="org.kuali.core.dao.ojb.KualiModuleUserPropertyDaoOjb"/>
+	<bean id="moduleUserPropertyDao" parent="platformAwareDao" class="org.kuali.core.dao.ojb.KualiModuleUserPropertyDaoOjb" />
 
 	<bean id="maintenanceDocumentDao" parent="platformAwareDao" class="org.kuali.core.dao.ojb.MaintenanceDocumentDaoOjb" />
 
-    <bean id="noteDao" parent="platformAwareDao" class="org.kuali.core.dao.ojb.NoteDaoOjb" />
-    
+	<bean id="noteDao" parent="platformAwareDao" class="org.kuali.core.dao.ojb.NoteDaoOjb" />
+
 	<bean id="businessObjectDao" parent="platformAwareDao" class="org.kuali.core.dao.ojb.BusinessObjectDaoOjb">
 		<property name="persistenceStructureService">
 			<ref bean="persistenceStructureService" />

@@ -15,80 +15,35 @@
  */
 package org.kuali.rice;
 
+import java.util.Map;
 import java.util.Properties;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
 
-import edu.iu.uis.eden.util.ClassLoaderUtils;
+import edu.iu.uis.eden.config.BaseConfig;
 
-public class RiceConfigurer implements InitializingBean {
+public class RiceConfigurer extends BaseConfig implements InitializingBean {
     
-    private static String configurationFile;
-    public static final String DEFAULT_CONFIGURATION_FILE = "classpath:configuration.properties";
+	private static String configurationFile;
+    public static final String DEFAULT_CONFIGURATION_FILE = "classpath:knsConfig.xml";
+	
+    public RiceConfigurer() {
+		super(getConfigurationFile());
+	}
     
-    private String datasourcePropertiesLocation;
-    private String encryptionPropertiesLocation;
-    private String keystorePropertiesLocation;
-    private String mailProperties;
-    
-    private Properties properties;
-
-    public String getDatasourcePropertiesLocation() {
-        return datasourcePropertiesLocation;
-    }
-
-    public void setDatasourcePropertiesLocation(String datasourcePropertiesLocation) {
-        this.datasourcePropertiesLocation = datasourcePropertiesLocation;
-    }
-
-    public String getEncryptionPropertiesLocation() {
-        return encryptionPropertiesLocation;
-    }
-
-    public void setEncryptionPropertiesLocation(String encryptionPropertiesLocation) {
-        this.encryptionPropertiesLocation = encryptionPropertiesLocation;
-    }
-
-    public String getKeystorePropertiesLocation() {
-        return keystorePropertiesLocation;
-    }
-
-    public void setKeystorePropertiesLocation(String keystorePropertiesLocation) {
-        this.keystorePropertiesLocation = keystorePropertiesLocation;
-    }
-
-    public String getMailProperties() {
-        return mailProperties;
-    }
-
-    public void setMailProperties(String mailProperties) {
-        this.mailProperties = mailProperties;
-    }
-
-    public void afterPropertiesSet() throws Exception {
-        Properties props = getPropsFromFile(getConfigurationFile());
-        props.putAll(getPropsFromFile(props.getProperty("datasource.properties.file")));
-        props.putAll(getPropsFromFile(props.getProperty("encryption.properties.file")));
-        props.putAll(getPropsFromFile(props.getProperty("keystore.properties.file")));
-        props.putAll(getPropsFromFile(props.getProperty("mail.properties.file")));
-        this.setProperties(props);
-    }
-
-    private Properties getPropsFromFile(String fileName) throws Exception {
-        if (fileName == null) {
-            return new Properties();
-        }
-        if (fileName.indexOf("classpath:") == -1) {
-            fileName = "file:" + fileName;
-        }
-        DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
-        Properties props = new Properties();
-        props.load(resourceLoader.getResource(fileName).getInputStream());
-        return props;
-    }
-
+	@Override
+	public Map<String, Object> getBaseObjects() {
+		return null;
+	}
+	@Override
+	public Properties getBaseProperties() {
+		return null;
+	}
+	
+	public void afterPropertiesSet() throws Exception {
+		this.parseConfig();
+	}
+	
     public static String getConfigurationFile() {
         if (configurationFile == null) {
             return DEFAULT_CONFIGURATION_FILE;
@@ -99,13 +54,4 @@ public class RiceConfigurer implements InitializingBean {
     public static void setConfigurationFile(String overrideConfigurationFile) {
         RiceConfigurer.configurationFile = overrideConfigurationFile;
     }
-
-    public Properties getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Properties properties) {
-        this.properties = properties;
-    }
-    
 }

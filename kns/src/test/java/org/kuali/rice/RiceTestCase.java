@@ -31,6 +31,7 @@ import edu.iu.uis.eden.core.Core;
 import edu.iu.uis.eden.core.Lifecycle;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
+
 /**
  * Useful superclass for all Workflow test cases. Handles setup of test
  * utilities and a test environment. Configures the Spring test environment
@@ -47,7 +48,7 @@ public abstract class RiceTestCase extends Assert {
 	private List<Lifecycle> lifeCycles = new LinkedList<Lifecycle>();
 	private List<String> reports = new ArrayList<String>();
     
-    private static final String TEST_CONFIG_LOCATION = "classpath:rice-test-client-config.xml";
+//    private static final String TEST_CONFIG_LOCATION = "classpath:rice-test-client-config.xml";
 	
 	public RiceTestCase() {
 		super();
@@ -57,7 +58,7 @@ public abstract class RiceTestCase extends Assert {
 		beforeRun();
 		long startTime = System.currentTimeMillis();
         // TODO Fix this hack when we get the real config in rice 1.0
-        RiceConfigurer.setConfigurationFile("classpath:test_configuration.properties");
+        RiceConfigurer.setConfigurationFile("classpath:testknsConfig.xml");
         Config riceTestConfig = new RiceTestConfig("classpath:rice-test-client-config.xml");
         riceTestConfig.parseConfig();
 		Core.init(riceTestConfig);
@@ -277,9 +278,9 @@ public abstract class RiceTestCase extends Assert {
 	
 	public List<Lifecycle> getLifecycles() {
 		//set up an alternate workflow config file location so the workflow server will not load the default
-		System.setProperty(EdenConstants.DEFAULT_CONFIG_LOCATION_PARAM, TEST_CONFIG_LOCATION);
+//		System.setProperty(EdenConstants.DEFAULT_CONFIG_LOCATION_PARAM, TEST_CONFIG_LOCATION);
 		lifeCycles.add(new ClearDatabaseLifecycle());
-		lifeCycles.add(new TestHarnessWebApp());
+		lifeCycles.add(new JettyServer(9912));
 		return lifeCycles;
 	}
     

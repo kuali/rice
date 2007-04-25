@@ -179,11 +179,8 @@ public class KNSServiceLocator { //extends BaseLifecycle{
         return (WebAuthenticationService) getService(WEB_AUTHENTICATION_SERVICE);
     }
 
-    public static final String KUALI_CODE_SERVICE = "kualiCodeService";
 
-//    public static KualiCodeService getKualiCodeService() {
-//        return (KualiCodeService) getService(KUALI_CODE_SERVICE);
-//    }
+
     
     public static final String DATETIME_SERVICE = "dateTimeService";
 

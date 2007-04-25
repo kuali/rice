@@ -147,6 +147,26 @@
 					</fileset>				
 				</copy>
 	</target>
+	
+	<target name="delete-kns-from-kfs">
+		<delete>
+			<fileset dir="${kuali.src.dir}" includes="org/kuali/rice/**/*">
+				<exclude name="org/kuali/core/bo/KualiSystemCode.java" />
+				<exclude name="org/kuali/core/lookup/keyvalues/KualiSystemCodeValuesFinder.java" />
+			</fileset>
+			<fileset dir="${kuali.src.dir}">
+				<include name="org/kuali/Constants*.java" />
+				<include name="org/kuali/KeyConstants.java" />
+				<include name="org/kuali/PropertyConstants.java" />
+				<include name="org/kuali/workflow/postprocessor/KualiPostProcessor.java" />
+				<exclude name="**/*CVS"/>
+			</fileset>		
+			<fileset dir="${kuali.src.dir}">
+				<include name="org/kuali/workflow/attribute/WorkflowLookupableInvocationHandler.java" />
+				<include name="org/kuali/workflow/attribute/WorkflowLookupableResult.java" />
+			</fileset>
+		</delete>
+	</target>
 
 	<target name="run-tests" depends="compile-tests" description="runs the tests">
 		<echo level="info">Rice - run-tests: running tests</echo>

@@ -104,7 +104,7 @@
 		</property>
 		<property name="dataDictionaryPackages">
 			<list>
-				<value>edu.sampleu.travel.datadictionary</value>
+				<value>edu/sampleu/travel/datadictionary</value>
 			</list>
 		</property>
 		<!-- 

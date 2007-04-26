@@ -78,7 +78,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
      * @see org.kuali.core.service.DataDictionaryService#setBaselinePackages(java.lang.String)
      */
     public void setBaselinePackages(List baselinePackages) {
-        baselineDirectories = convertPackagesToDirectories(baselinePackages);
+        this.baselineDirectories = baselinePackages; //convertPackagesToDirectories(baselinePackages);
     }
 
     /**
@@ -880,7 +880,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
                 }
             }
             
-            List<String> moduleDirectories = convertPackagesToDirectories( kualiModuleService.getDataDictionaryPackages() );
+            List<String> moduleDirectories = kualiModuleService.getDataDictionaryPackages();
             for ( String dirName : moduleDirectories ) {
                 dataDictionaryBuilder.addUniqueEntries(dirName, true);
             }
@@ -901,21 +901,21 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         }
     }
 
-    /**
-     * Given a list of Java packages in String format, this method will parse each out and convert them into filesystem directory
-     * based notation.
-     * 
-     * @param packageList
-     * @return A List of filesystem directories.
-     */
-    private List<String> convertPackagesToDirectories(List<String> packageList) {
-        List<String> directoryList = new ArrayList<String>();
-        for (String packageName :  packageList ) {
-            directoryList.add( packageName.replace('.', '/') );
-        }
-
-        return directoryList;
-    }
+//    /**
+//     * Given a list of Java packages in String format, this method will parse each out and convert them into filesystem directory
+//     * based notation.
+//     * 
+//     * @param packageList
+//     * @return A List of filesystem directories.
+//     */
+//    private List<String> convertPackagesToDirectories(List<String> packageList) {
+//        List<String> directoryList = new ArrayList<String>();
+//        for (String packageName :  packageList ) {
+//            directoryList.add( packageName.replace('.', '/') );
+//        }
+//
+//        return directoryList;
+//    }
 
     
     /**
@@ -927,7 +927,10 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     private List<String> convertBaselineToOverrideDirectories(List<String> dirList) {
         List<String> directoryList = new ArrayList<String>();
         for (String dirName :  dirList ) {
-            directoryList.add( dirName + "/" + institutionId );
+        	//only allow directories to do the institutional overrides.
+        	if (dirName.indexOf("xml") < 0) {
+        		directoryList.add( dirName + "/" + institutionId );	
+        	}
         }
 
         return directoryList;

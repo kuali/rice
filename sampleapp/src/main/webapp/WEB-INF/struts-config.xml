@@ -5,9 +5,8 @@
     <data-sources />
   
     <form-beans >
-	    <!-- KNS beans 
+	    <!-- KNS beans -->
 	    <form-bean name="QuestionPromptForm" type="org.kuali.core.web.struts.form.QuestionPromptForm" />
-	    -->
 	    <form-bean name="LookupForm" type="org.kuali.core.web.struts.form.LookupForm" />
 	    <form-bean name="InquiryForm" type="org.kuali.core.web.struts.form.InquiryForm" />
 	    <form-bean name="KualiMaintenanceForm" type="org.kuali.core.web.struts.form.KualiMaintenanceForm" />

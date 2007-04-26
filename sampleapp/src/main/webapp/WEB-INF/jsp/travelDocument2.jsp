@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/kuali/jsp/core/tldHeader.jsp"%>
+<%@ include file="core/tldHeader.jsp"%>
 
 <c:set var="travelAttributes" value="${DataDictionary.TravelRequest.attributes}" />
 <c:set var="accountAttributes" value="${DataDictionary.TravelAccount.attributes}" />

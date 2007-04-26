@@ -15,14 +15,14 @@
  */
 package edu.sampleu.travel.infrastructure;
 
-import static org.kuali.rice.KNSServiceLocator.getDataDictionaryService;
-
 import java.util.ArrayList;
 
 import org.kuali.core.KualiModule;
 import org.kuali.rice.KNSServiceLocator;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import uk.ltd.getahead.dwr.create.SpringCreator;
 
 public class TravelServiceLocator extends KNSServiceLocator {
 
@@ -52,6 +52,7 @@ public class TravelServiceLocator extends KNSServiceLocator {
         loadModules();
         getPersistenceService().initialize();
         getDataDictionaryService().completeInitialization();
+        SpringCreator.setOverrideBeanFactory(KNSServiceLocator.getInstance().getKnsApplicationContext().getBeanFactory());
     }
     
     private static void loadModules() {

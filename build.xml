@@ -318,7 +318,9 @@
         <delete file="${sampleapp.webroot}/css/kuali.css" />
         <delete file="${sampleapp.webroot}/css/portal.css" />
         <delete file="${sampleapp.webroot}/css/screen.css" />
+		<!--
         <mkdir dir="${sampleapp.webroot}/kuali" />
+        -->
         <mkdir dir="${sampleapp.webroot}/images" />
         <mkdir dir="${sampleapp.webroot}/scripts" />
         <mkdir dir="${sampleapp.webroot}/WEB-INF/tags" />

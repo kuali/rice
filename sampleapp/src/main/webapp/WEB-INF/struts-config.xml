@@ -27,22 +27,20 @@
     <action-mappings>
 	    <!-- KNS Mappings -->
 	    <action path="/lookup" name="LookupForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.core.web.struts.action.KualiLookupAction">
-	        <forward name="basic" path="/kuali/jsp/core/KualiLookup.jsp" />
+	        <forward name="basic" path="/WEB-INF/jsp/core/KualiLookup.jsp" />
 	    </action>
 	    <action path="/inquiry" name="InquiryForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.core.web.struts.action.KualiInquiryAction">
-	        <forward name="basic" path="/kuali/jsp/core/KualiInquiry.jsp" />
+	        <forward name="basic" path="/WEB-INF/jsp/core/KualiInquiry.jsp" />
 	    </action>
 	    <action path="/maintenance" name="KualiMaintenanceForm" attribute="KualiForm" scope="request" parameter="methodToCall" validate="false" input="/jsp/core/KualiMaintenanceDocument.jsp" type="org.kuali.core.web.struts.action.KualiMaintenanceDocumentAction">
-	        <forward name="basic" path="/kuali/jsp/core/KualiMaintenanceDocument.jsp" />
+	        <forward name="basic" path="/WEB-INF/jsp/core/KualiMaintenanceDocument.jsp" />
 	    </action>    
 	    <action path="/help" name="KualiHelpForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.core.web.struts.action.KualiHelpAction">
-	        <forward name="basic" path="/kuali/jsp/core/KualiHelp.jsp" />
+	        <forward name="basic" path="/WEB-INF/jsp/core/KualiHelp.jsp" />
 	    </action>
-	    <!-- 
         <action path="/questionPrompt" name="QuestionPromptForm" scope="request" parameter="methodToCall" type="org.kuali.core.web.struts.action.QuestionPromptAction">
-            <forward name="basic" path="/kuali/jsp/core/KualiQuestion.jsp" />
+            <forward name="basic" path="/WEB-INF/jsp/core/KualiQuestion.jsp" />
         </action>
-         -->
 	    <!-- end KNS Mappings -->
 	
 		<!-- New TRD2 Doc Stuff -->

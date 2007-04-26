@@ -15,6 +15,9 @@
  */
 package org.kuali.core.web.servlet;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 
@@ -23,14 +26,29 @@ import org.kuali.Constants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.util.spring.NamedOrderedListBean;
 import org.kuali.rice.KNSServiceLocator;
+import org.springframework.core.io.DefaultResourceLoader;
+
+import edu.iu.uis.eden.util.ClassLoaderUtils;
 
 import uk.ltd.getahead.dwr.Configuration;
 import uk.ltd.getahead.dwr.DWRServlet;
 
 public class KualiDWRServlet extends DWRServlet {
-    private static final String CLASSPATH_RESOURCE_PREFIX = "WEB-INF/classes/";
-
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3903455224197903186L;
+	private static final String CLASSPATH_RESOURCE_PREFIX = "WEB-INF/classes/";
+
+	private Boolean springBasedConfigPath;
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		setSpringBasedConfigPath(new Boolean(config.getInitParameter("springpath")));
+		super.init(config);
+	}
+
+	/**
      * This method calls the super version then loads the dwr config file specified in the loaded module definitions.
      * 
      * @see uk.ltd.getahead.dwr.DWRServlet#configure(javax.servlet.ServletConfig, uk.ltd.getahead.dwr.Configuration)
@@ -39,7 +57,17 @@ public class KualiDWRServlet extends DWRServlet {
     public void configure(ServletConfig servletConfig, Configuration configuration) throws ServletException {
         for (NamedOrderedListBean namedOrderedListBean : KNSServiceLocator.getNamedOrderedListBeans(Constants.SCRIPT_CONFIGURATION_FILES_LIST_NAME)) {
             for (String scriptConfigurationFilePath : namedOrderedListBean.getList()) {
-                super.readFile(CLASSPATH_RESOURCE_PREFIX + scriptConfigurationFilePath, configuration);                
+            	if (getSpringBasedConfigPath()) {
+            		DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
+            		try {
+						InputStream is = resourceLoader.getResource(scriptConfigurationFilePath).getInputStream();
+						configuration.addConfig(is);
+					} catch (Exception e) {
+						throw new ServletException(e);
+					}
+            	} else {
+            		super.readFile(CLASSPATH_RESOURCE_PREFIX + scriptConfigurationFilePath, configuration);	
+            	}               
             }
         }
         for (KualiModule module : KNSServiceLocator.getKualiModuleService().getInstalledModules()) {
@@ -48,4 +76,12 @@ public class KualiDWRServlet extends DWRServlet {
             }
         }
     }
+
+	public Boolean getSpringBasedConfigPath() {
+		return springBasedConfigPath;
+	}
+
+	public void setSpringBasedConfigPath(Boolean springBasedConfigPath) {
+		this.springBasedConfigPath = springBasedConfigPath;
+	}
 }

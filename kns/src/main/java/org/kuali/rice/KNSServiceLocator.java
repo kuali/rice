@@ -82,32 +82,6 @@ public class KNSServiceLocator { //extends BaseLifecycle{
         return instance;
     }
     
-//    protected synchronized void initializeAppContext() {
-//        if (! initialized) {
-//            knsApplicationContext = new ClassPathXmlApplicationContext(getKNSApplicationContextLocation());    
-//            initialized = true;
-//        }
-//    }
-    
-//    String getKNSApplicationContextLocation() {
-//        return "classpath:org/kuali/core/SpringBeans.xml";
-//    }
-    
-//    public void start() throws Exception {
-//        initializeAppContext();
-//        super.start();
-//    }
-//
-//    public void stop() throws Exception {
-//        close();
-//        initialized = false;
-//        super.stop();
-//    }
-//
-//    protected void close() {
-//        knsApplicationContext.close();
-//    }
-    
     public ConfigurableApplicationContext getKnsApplicationContext() {
         return knsApplicationContext;
     }
@@ -417,25 +391,5 @@ public class KNSServiceLocator { //extends BaseLifecycle{
         return (TransactionTemplate) getService(TRANSACTION_TEMPLATE);
     } 
 
-//    public Object getChildService(String serviceName) {
-//        for (ConfigurableApplicationContext childContext : getChildren()) {
-//            if (childContext.containsBean(serviceName)) {
-//                return childContext.getBean(serviceName);
-//            }
-//        }
-//        throw new RuntimeException("Service " + serviceName + " not found in any child ApplicationContext");
-//    }
-//    
-//    public List<ConfigurableApplicationContext> getChildren() {
-//        return children;
-//    }
-//
-//    public void setChildren(List<ConfigurableApplicationContext> children) {
-//        this.children = children;
-//    }
-//
-//    public void registerChildApplicationContext(ConfigurableApplicationContext applicationContext) {
-//        this.getChildren().add(applicationContext);
-//    }
     
 }

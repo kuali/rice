@@ -2,13 +2,6 @@
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.4" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<display-name>Sample Workflow Client</display-name>
 
-<!-- 
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:edu/sampleu/travel/resources/SampleAppSpringBeans.xml</param-value>
-	</context-param>
- -->
- 
 	<context-param>
 		<param-name>default.config.location</param-name>
 		<param-value>classpath:rice-client-config.xml</param-value>
@@ -34,25 +27,14 @@
 		<servlet-name>action</servlet-name>
 	</filter-mapping>
 
-<!--
-	<listener>
-		<listener-class>org.kuali.rice.web.RiceConfigurationListener</listener-class>
-	</listener>
-
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-    <listener>
-        <listener-class>org.kuali.core.web.listener.SpringServiceLocatorInitListener</listener-class>
-    </listener>
--->
     <listener>
 		<listener-class>edu.sampleu.travel.web.SampleApplicationInitializationListener</listener-class>
 	</listener>
+
     <listener>
         <listener-class>org.kuali.core.web.listener.JstlConstantsInitListener</listener-class>
     </listener>
-	 
+
 	<servlet>
 		<servlet-name>action</servlet-name>
 		<servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
@@ -65,10 +47,6 @@
 			<param-value>/en/WEB-INF/struts-config.xml</param-value>
 		</init-param>
 		<init-param>
-			<param-name>config/kuali</param-name>
-			<param-value>/kuali/WEB-INF/struts-config.xml</param-value>		
-		</init-param>
-		<init-param>
 			<param-name>debug</param-name>
 			<param-value>3</param-value>
 		</init-param>
@@ -77,6 +55,19 @@
 			<param-value>3</param-value>
 		</init-param>
 		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet>
+  		<servlet-name>dwr-invoker</servlet-name>
+  		<servlet-class>org.kuali.core.web.servlet.KualiDWRServlet</servlet-class>
+  		<init-param>
+     		<param-name>debug</param-name>
+     		<param-value>true</param-value>
+  		</init-param>
+  		<init-param>
+  			<param-name>springpath</param-name>
+     		<param-value>true</param-value>
+  		</init-param>
 	</servlet>
 
 	<servlet>
@@ -108,6 +99,11 @@
 	<servlet-mapping>
 		<servlet-name>action</servlet-name>
 		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+  		<servlet-name>dwr-invoker</servlet-name>
+  		<url-pattern>/dwr/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

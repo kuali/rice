@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2005-2007 The Kuali Foundation.
+ 
+ Licensed under the Educational Community License, Version 1.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl1.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!DOCTYPE dictionaryEntry PUBLIC
+    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
+    "http://kuali.org/dtds/dataDictionary-1_0.dtd">
+
+<dictionaryEntry>
+    <businessObject businessObjectClass="org.kuali.module.chart.bo.Account">
+
+
+        <inquiry>
+            <title>Account inquiry</title>
+
+            <inquirySections><inquirySection title="Header Text"><inquiryFields>
+                <field attributeName="accountNumber" />
+                <field attributeName="accountCityName" />
+                <field attributeName="accountCreateDate" />
+            </inquiryFields></inquirySection></inquirySections>
+        </inquiry>
+
+        <lookup>
+            <title>Account lookup</title>
+
+            <menubar>some HTML stuff for the menubar</menubar>
+
+            <instructions>Lookup an account</instructions>
+
+            <defaultSort attributeName="accountNumber" sortAscending="false" />
+
+            <lookupFields>
+                <lookupField attributeName="accountNumber" required="true" />
+                <lookupField attributeName="accountCityName" />
+                <lookupField attributeName="accountCreateDate" />
+            </lookupFields>
+
+            <resultFields>
+                <field attributeName="accountNumber" />
+                <field attributeName="accountCityName" />
+                <field attributeName="accountCreateDate" />
+            </resultFields>
+        </lookup>
+
+        <attributes>
+            <attribute name="accountCityName" forceUppercase="false">
+                <label>City</label>
+                <shortLabel>City</shortLabel>
+                <!-- in real life, the shortLabel will default to the label if not set -->
+
+
+                <maxLength>40</maxLength>
+
+                <control>
+                    <text size="20" />
+                </control>
+
+                <summary>account city</summary>
+                <description>city associated with this account</description>
+            </attribute>
+
+            <attribute name="accountNumber" forceUppercase="true">
+                <label>Account number</label>
+                <shortLabel>Acct#</shortLabel>
+
+
+                <maxLength>99</maxLength>
+                <validationPattern>
+                    <numeric />
+                </validationPattern>
+
+                <control>
+                    <text size="10" />
+                </control>
+
+                <summary>account number</summary>
+                <description>number associated with this account</description>
+            </attribute>
+
+            <attribute name="accountCreateDate">
+                <label>Creation date</label>
+                <shortLabel>Created</shortLabel>
+
+
+                <maxLength>10</maxLength>
+                <validationPattern>
+                    <date />
+                </validationPattern>
+
+                <control>
+                    <text size="10" />
+                </control>
+
+                <summary>create date</summary>
+                <description>date on which this account was created</description>
+
+                <formatterClass>org.kuali.core.web.format.DateFormatter</formatterClass>
+            </attribute>
+        </attributes>
+
+        <collections>
+            <collection name="subAccounts">
+                <label>Sub Accounts</label>
+                <shortLabel>SubAccounts</shortLabel>
+
+                <summary>sub accounts</summary>
+                <description>accounts with some hierarchical subrelationship to this one</description>
+            </collection>
+        </collections>
+    </businessObject>

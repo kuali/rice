@@ -31,7 +31,6 @@ import edu.iu.uis.eden.core.Core;
 import edu.iu.uis.eden.core.Lifecycle;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
-
 /**
  * Useful superclass for all Workflow test cases. Handles setup of test
  * utilities and a test environment. Configures the Spring test environment
@@ -40,27 +39,40 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
  * handles automatic tear down of objects created inside the test environment.
  */
 public abstract class RiceTestCase extends Assert {
-    
-    private static final Logger LOG = Logger.getLogger(RiceTestCase.class);
+
+	private static final Logger LOG = Logger.getLogger(RiceTestCase.class);
 
 	private boolean isSetUp = false;
+
 	private boolean isTornDown = false;
+
 	private List<Lifecycle> lifeCycles = new LinkedList<Lifecycle>();
+
 	private List<String> reports = new ArrayList<String>();
-    
-//    private static final String TEST_CONFIG_LOCATION = "classpath:rice-test-client-config.xml";
-	
+
+	private boolean runLifeCyclesOnce;
+
+	private static boolean lifeCyclesStarted;
+
+	// private static final String TEST_CONFIG_LOCATION =
+	// "classpath:rice-test-client-config.xml";
+
 	public RiceTestCase() {
 		super();
 	}
 
-	@Before public void setUp() throws Exception {
+	public void setRunLifeCyclesOnce(boolean runLifeCyclesOnce) {
+		this.runLifeCyclesOnce = runLifeCyclesOnce;
+	}
+
+	@Before
+	public void setUp() throws Exception {
 		beforeRun();
 		long startTime = System.currentTimeMillis();
-        // TODO Fix this hack when we get the real config in rice 1.0
-        RiceConfigurer.setConfigurationFile("classpath:testknsConfig.xml");
-        Config riceTestConfig = new RiceTestConfig("classpath:rice-test-client-config.xml");
-        riceTestConfig.parseConfig();
+		// TODO Fix this hack when we get the real config in rice 1.0
+		RiceConfigurer.setConfigurationFile("classpath:testknsConfig.xml");
+		Config riceTestConfig = new RiceTestConfig("classpath:rice-test-client-config.xml");
+		riceTestConfig.parseConfig();
 		Core.init(riceTestConfig);
 		long initTime = System.currentTimeMillis();
 		report("Time to initialize Core: " + (initTime - startTime));
@@ -68,52 +80,54 @@ public abstract class RiceTestCase extends Assert {
 		try {
 			startLifecycles();
 		} catch (Exception e) {
-            e.printStackTrace();
+			e.printStackTrace();
 			stopLifecycles();
-            throw e;
+			throw e;
 		}
 		report("Time to start all Lifecycles: " + (System.currentTimeMillis() - initTime));
-		
+
 		try {
-            loadTestDataTransactionally();
+			loadTestDataTransactionally();
 		} catch (WrappedTransactionRuntimeException e) {
 			throw (Exception) e.getCause();
 		}
-		//this is to make testing against the queue easier.  Otherwise unprocessed cache clearing 
-		//can make queue counts off.
-//		waitForCacheNotificationsToClearFromQueue();
+		// this is to make testing against the queue easier. Otherwise
+		// unprocessed cache clearing
+		// can make queue counts off.
+		// waitForCacheNotificationsToClearFromQueue();
 		isSetUp = true;
 	}
-	
+
 	/**
-	 * Can be overridden to allow for specification of the client protocol to use in the test.  If none is specified, then the 
-	 * default protocol is embedded.
+	 * Can be overridden to allow for specification of the client protocol to
+	 * use in the test. If none is specified, then the default protocol is
+	 * embedded.
 	 */
 	protected String getClientProtocol() {
 		return null;
 	}
-	
 
 	protected void setUpTransaction() throws Exception {
-		// subclasses can override this method to do their setup within a
-		// transaction
+	// subclasses can override this method to do their setup within a
+	// transaction
 	}
 
-	@After public void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		stopLifecycles();
 		Core.destroy();
-		//super.tearDown();
+		// super.tearDown();
 		isTornDown = true;
 		afterRun();
 	}
 
 	protected void beforeRun() {
 		System.out.println("##############################################################");
-		System.out.println("# Starting test " + getClass().getSimpleName()+"...");
+		System.out.println("# Starting test " + getClass().getSimpleName() + "...");
 		System.out.println("# " + dumpMemory());
 		System.out.println("##############################################################");
 	}
-	
+
 	protected void afterRun() {
 		System.out.println("##############################################################");
 		System.out.println("# ...finished test " + getClass().getSimpleName());
@@ -123,57 +137,59 @@ public abstract class RiceTestCase extends Assert {
 		}
 		System.out.println("##############################################################\n\n\n");
 	}
-    
+
 	/**
 	 * By default this loads the "default" data set from the data/TestData.xml
 	 * file. Subclasses can override this to change this behaviour
 	 */
 	protected void loadDefaultTestData() throws Exception {
 		this.loadXmlFile(RiceTestCase.class, "DefaultTestData.xml");
-        new SQLDataLoader("DefaultTestData.sql").runSql();
+		new SQLDataLoader("DefaultTestData.sql").runSql();
 	}
 
-    protected void loadTestDataTransactionally() throws Exception {
-        getTransactionTemplate().execute(new TransactionCallbackWithoutResult() {
-            public void doInTransactionWithoutResult(final TransactionStatus status) {
-                getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
-                    public Object doInPersistenceBroker(PersistenceBroker broker) {
-                        try {
-                            long t1 = System.currentTimeMillis();
-                            //we need the messaging to be default of only sending message out with the transaction
-                            //otherwise the importing of constants can get messed up with the digital signature 
-                            //constant's notification of the other nodes.
-                            Core.getCurrentContextConfig().overrideProperty(EdenConstants.MESSAGE_PERSISTENCE, "default");
-                            loadDefaultTestData();
-                            Core.getCurrentContextConfig().overrideProperty(EdenConstants.MESSAGE_PERSISTENCE, EdenConstants.MESSAGING_SYNCHRONOUS);
-                            
-                            long t2 = System.currentTimeMillis();
-                            report("Time to load default test data: " + (t2-t1));
-                            
-                            loadTestData();
-                            
-                            long t3 = System.currentTimeMillis();
-                            report("Time to load test-specific test data: " + (t3-t2));
-                            
-                            setUpTransaction();
-                            
-                            long t4 = System.currentTimeMillis();
-                            report("Time to run test-specific setup: " + (t4-t3));
-                        } catch (Exception e) {
-                            throw new WrappedTransactionRuntimeException(e);
-                        }
-                        return null;
-                    }
-                });
-            }
-        });
-    }
-    
+	protected void loadTestDataTransactionally() throws Exception {
+		getTransactionTemplate().execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(final TransactionStatus status) {
+				getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
+					public Object doInPersistenceBroker(PersistenceBroker broker) {
+						try {
+							long t1 = System.currentTimeMillis();
+							// we need the messaging to be default of only
+							// sending message out with the transaction
+							// otherwise the importing of constants can get
+							// messed up with the digital signature
+							// constant's notification of the other nodes.
+							Core.getCurrentContextConfig().overrideProperty(EdenConstants.MESSAGE_PERSISTENCE, "default");
+							loadDefaultTestData();
+							Core.getCurrentContextConfig().overrideProperty(EdenConstants.MESSAGE_PERSISTENCE, EdenConstants.MESSAGING_SYNCHRONOUS);
+
+							long t2 = System.currentTimeMillis();
+							report("Time to load default test data: " + (t2 - t1));
+
+							loadTestData();
+
+							long t3 = System.currentTimeMillis();
+							report("Time to load test-specific test data: " + (t3 - t2));
+
+							setUpTransaction();
+
+							long t4 = System.currentTimeMillis();
+							report("Time to run test-specific setup: " + (t4 - t3));
+						} catch (Exception e) {
+							throw new WrappedTransactionRuntimeException(e);
+						}
+						return null;
+					}
+				});
+			}
+		});
+	}
+
 	/**
 	 * @Override
 	 */
 	protected void loadTestData() throws Exception {
-		// override this to load your own test data
+	// override this to load your own test data
 	}
 
 	protected void loadXmlFile(String fileName) {
@@ -204,11 +220,11 @@ public abstract class RiceTestCase extends Assert {
 					fail("Failed to ingest xml doc: " + doc.getName());
 				}
 			}
-//			Thread.sleep(4000);//let the cache catch up
+			// Thread.sleep(4000);//let the cache catch up
 		} catch (Exception e) {
 			throw new RuntimeException("Caught exception parsing xml file", e);
 		}
-		
+
 	}
 
 	protected FileXmlDocCollection getFileXmlDocCollection(InputStream xmlFile, String tempFileName) throws IOException {
@@ -240,54 +256,60 @@ public abstract class RiceTestCase extends Assert {
 	protected String getAltAppContextFile() {
 		return "TestSpring.xml";
 	}
-	
+
 	public String getOjbPropertyFileLoc() {
 		return "TestOJB.properties";
 	}
-	
+
 	public void startLifecycles() throws Exception {
-		for (Iterator iter = lifeCycles.iterator(); iter.hasNext();) {
-			long s = System.currentTimeMillis();
-			Lifecycle lifecycle = (Lifecycle) iter.next();
-            try {
-                lifecycle.start();    
-            } catch (Exception e) {
-                throw new Exception("Failed to start lifecycle " + lifecycle, e);
-            }
-			long e = System.currentTimeMillis();
-            LOG.info("Started lifecycle " + lifecycle + " in " + (e-s) + " ms.");
-			report("Time to start lifecycle " + lifecycle + ": " + (e-s));
+		if (!runLifeCyclesOnce || (runLifeCyclesOnce && !lifeCyclesStarted)) {
+			lifeCyclesStarted = true;
+			for (Iterator iter = lifeCycles.iterator(); iter.hasNext();) {
+				long s = System.currentTimeMillis();
+				Lifecycle lifecycle = (Lifecycle) iter.next();
+				try {
+					lifecycle.start();
+				} catch (Exception e) {
+					throw new Exception("Failed to start lifecycle " + lifecycle, e);
+				}
+				long e = System.currentTimeMillis();
+				LOG.info("Started lifecycle " + lifecycle + " in " + (e - s) + " ms.");
+				report("Time to start lifecycle " + lifecycle + ": " + (e - s));
+			}
 		}
 	}
-	
+
 	public void stopLifecycles() throws Exception {
 		Lifecycle lifeCycle;
 		ListIterator iter = lifeCycles.listIterator();
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			iter.next();
 		}
-		while(iter.hasPrevious()) {
+		while (iter.hasPrevious()) {
 			lifeCycle = (Lifecycle) iter.previous();
 			try {
 				lifeCycle.stop();
 			} catch (Exception e) {
-                LOG.warn("Failed to shutdown one of the lifecycles!", e);
+				LOG.warn("Failed to shutdown one of the lifecycles!", e);
 			}
 		}
 	}
-	
+
 	public List<Lifecycle> getLifecycles() {
-		//set up an alternate workflow config file location so the workflow server will not load the default
-//		System.setProperty(EdenConstants.DEFAULT_CONFIG_LOCATION_PARAM, TEST_CONFIG_LOCATION);
+		// set up an alternate workflow config file location so the workflow
+		// server will not load the default
+		// System.setProperty(EdenConstants.DEFAULT_CONFIG_LOCATION_PARAM,
+		// TEST_CONFIG_LOCATION);
+		lifeCycles = new LinkedList<Lifecycle>();
 		lifeCycles.add(new ClearDatabaseLifecycle());
 		lifeCycles.add(new JettyServer(9912));
 		return lifeCycles;
 	}
-    
+
 	protected void report(String report) {
 		reports.add(report);
 	}
-	
+
 	private String dumpMemory() {
 		long total = Runtime.getRuntime().totalMemory();
 		long free = Runtime.getRuntime().freeMemory();
@@ -295,47 +317,46 @@ public abstract class RiceTestCase extends Assert {
 		return "[Memory] max: " + max + ", total: " + total + ", free: " + free;
 	}
 
-
 	public boolean isSetUp() {
 		return isSetUp;
 	}
 
-
 	public boolean isTornDown() {
 		return isTornDown;
 	}
-    
-    public static PersistenceBrokerTemplate getPersistenceBrokerTemplate() {
-        return new PersistenceBrokerTemplate();
-    }
-    
-    /**
-     * wait until the route queue is empty because we may have some cache items to be picked up still.
-     * 
-     * @throws Exception
-     */
-    public static void waitForCacheNotificationsToClearFromQueue() throws Exception {
-        int iterations = 0;
-        while (true) {
-            int itemCount = KEWServiceLocator.getRouteQueueService().findAll().size();
-            if (itemCount == 0) {
-                break;
-            }
-            if (iterations > 20) {
-                throw new WorkflowRuntimeException("Waited too long for route queue to clear out cache notifications");
-            }
-            iterations++;
-            System.out.println("!!!Sleeping for 1 second to let cache notifications clear out");
-            Thread.sleep(1000);
-        }
-    }
-    
-    public static InputStream loadResource(Class packageClass, String resourceName) {
-        return packageClass.getResourceAsStream(resourceName);
-    }
 
-    protected TransactionTemplate getTransactionTemplate() {
-        return (TransactionTemplate) KNSServiceLocator.getTransactionTemplate();
-    }
-    
+	public static PersistenceBrokerTemplate getPersistenceBrokerTemplate() {
+		return new PersistenceBrokerTemplate();
+	}
+
+	/**
+	 * wait until the route queue is empty because we may have some cache items
+	 * to be picked up still.
+	 * 
+	 * @throws Exception
+	 */
+	public static void waitForCacheNotificationsToClearFromQueue() throws Exception {
+		int iterations = 0;
+		while (true) {
+			int itemCount = KEWServiceLocator.getRouteQueueService().findAll().size();
+			if (itemCount == 0) {
+				break;
+			}
+			if (iterations > 20) {
+				throw new WorkflowRuntimeException("Waited too long for route queue to clear out cache notifications");
+			}
+			iterations++;
+			System.out.println("!!!Sleeping for 1 second to let cache notifications clear out");
+			Thread.sleep(1000);
+		}
+	}
+
+	public static InputStream loadResource(Class packageClass, String resourceName) {
+		return packageClass.getResourceAsStream(resourceName);
+	}
+
+	protected TransactionTemplate getTransactionTemplate() {
+		return (TransactionTemplate) KNSServiceLocator.getTransactionTemplate();
+	}
+
 }

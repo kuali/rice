@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2005-2007 The Kuali Foundation.
+ 
+ Licensed under the Educational Community License, Version 1.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl1.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!DOCTYPE dictionaryEntry PUBLIC
+    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
+    "http://kuali.org/dtds/dataDictionary-1_0.dtd">
+
+<dictionaryEntry>
+    <maintenanceDocument>
+        <businessObjectClass>org.kuali.module.chart.bo.OrganizationReversion</businessObjectClass>
+        <maintainableClass>org.kuali.module.chart.maintenance.OrganizationReversionMaintainableImpl</maintainableClass>
+
+        <documentAuthorizerClass>org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase</documentAuthorizerClass>
+        <authorizations>
+            <authorization action="initiate">
+                <workgroups>
+                    <workgroup>KUALI_ROLE_MAINTENANCE</workgroup>
+                </workgroups>
+            </authorization>
+        </authorizations>
+
+        <documentTypeName>KualiOrganizationReversionMaintenanceDocument</documentTypeName>
+        <documentTypeCode>ORGR</documentTypeCode>
+        
+        <webScriptFile>dwr/interface/ObjectCodeService.js</webScriptFile>
+        <webScriptFile>scripts/chart/orgReversionDocument.js</webScriptFile>
+        
+        <label>Organization Reversion Maintenance Document</label>
+        <shortLabel>OrganizationRefersionMaintenanceDocument</shortLabel>
+        <summary>Organization Reversion Maintenance Document</summary>
+        <description>Maintenance document which allows you to create new Organization Reversions, remove exsiting Organization Reversions, or modify existing Organization Reversions.</description>
+
+        <lockingKeys>
+            <field attributeName="universityFiscalYear" />
+            <field attributeName="chartOfAccountsCode" />
+            <field attributeName="organizationCode" />
+        </lockingKeys>
+
+        <maintainableSections>
+           <maintainableSection title="Edit Organization Reversion Details">
+                <maintainableItems>
+                    <maintainableCollection name="" businessObjectClass="org.kuali.module.chart.bo.OrganizationReversionDetail"  includeAddLine="false">
+                        <maintainableField name="organizationReversionCategoryCode" required="true" readOnly="true"/>
+                        <maintainableField name="organizationReversionObjectCode" required="true" webUILeaveFieldFunction="updateObjectName" />
+                        <maintainableField name="organizationReversionObject.financialObjectCodeName" required="true" readOnly="true" />
+                        <maintainableField name="organizationReversionCode" required="true" />
+                        <maintainableField name="newCollectionRecord" />
+                        <maintainableField name="versionNumber" />
+                    </maintainableCollection>
+                </maintainableItems>
+            </maintainableSection>
+        </maintainableSections>
+    </maintenanceDocument>
+</dictionaryEntry>

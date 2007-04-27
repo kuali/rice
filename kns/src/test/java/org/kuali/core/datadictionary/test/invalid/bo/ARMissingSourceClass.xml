@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2005-2007 The Kuali Foundation.
+ 
+ Licensed under the Educational Community License, Version 1.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl1.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!DOCTYPE dictionaryEntry PUBLIC
+    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
+    "../dataDictionary-1_0.dtd">
+<!-- very loosely based on ObjectCode.xml-->
+<dictionaryEntry>
+    <businessObject businessObjectClass="org.kuali.module.chart.bo.ObjectCode">
+
+
+        <inquiry>
+            <title>Object Code Inquiry</title>
+
+            <inquirySections><inquirySection title="Header Text"><inquiryFields>
+                <field attributeName="financialObjectCode" />
+                <field attributeName="financialObjectCodeName" />
+                <field attributeName="financialObjectCodeShortName" />
+                <field attributeName="historicalFinancialObjectCode" />
+                <field attributeName="financialObjectActiveCode" />
+            </inquiryFields></inquirySection></inquirySections>
+        </inquiry>
+
+        <lookup>
+            <title>Object Code Lookup</title>
+
+            <menubar>
+                <![CDATA[<a href="maintenance.do?methodToCall=start&businessObjectClassName=org.kuali.module.chart.bo.ObjectCode">Create New</a>]]>
+            </menubar>
+
+            <instructions>Lookup an Object Code</instructions>
+
+            <defaultSort attributeName="financialObjectCode" sortAscending="true" />
+
+            <lookupFields>
+                <lookupField attributeName="financialObjectCode" required="false" />
+                <lookupField attributeName="financialObjectCodeName" required="false" />
+                <lookupField attributeName="financialObjectCodeShortName" required="false" />
+                <lookupField attributeName="financialObjectActiveCode" required="false" />
+            </lookupFields>
+
+            <resultFields>
+                <field attributeName="financialObjectCode" />
+                <field attributeName="financialObjectCodeName" />
+                <field attributeName="financialObjectCodeShortName" />
+                <field attributeName="financialObjectActiveCode" />
+            </resultFields>
+        </lookup>
+
+        <!--
+            Note that this has alot of items that should 
+            be converted to <attributeReference> tags, but until the 
+            underlying BO is updated to use real sub-objects rather 
+            than just strings, doing that will cause this DD to break.
+        -->
+        <attributes>
+
+            <attribute name="financialObjectCode" forceUppercase="false">
+                <label>Object Code</label>
+                <shortLabel>Object</shortLabel>
+
+                <maxLength>4</maxLength>
+                <validationPattern>
+                    <numeric />
+                </validationPattern>
+
+                <control>
+                    <text size="4" />
+                </control>
+
+                <summary>Object Code value.</summary>
+                <description>The Object Code value used.</description>
+            </attribute>
+
+            <attribute name="financialObjectCodeName" forceUppercase="false">
+                <label>Object Code Name</label>
+                <shortLabel>ObjCodeName</shortLabel>
+
+                <maxLength>40</maxLength>
+                <validationPattern>
+                    <anyCharacter allowWhitespace="true" />
+                </validationPattern>
+
+                <control>
+                    <text size="2" />
+                </control>
+
+                <summary>Object Code Name</summary>
+                <description>The name assigned to this object code.</description>
+            </attribute>
+
+            <attribute name="financialObjectCodeShortName" forceUppercase="false">
+                <label>Object Code Short Name</label>
+                <shortLabel>ObjCodeShortName</shortLabel>
+
+                <maxLength>12</maxLength>
+                <validationPattern>
+                    <anyCharacter allowWhitespace="true" />
+                </validationPattern>
+
+                <control>
+                    <text size="12" />
+                </control>
+
+                <summary>Object Code Short Name</summary>
+                <description>Object Code Short Name</description>
+            </attribute>
+
+            <attribute name="historicalFinancialObjectCode" forceUppercase="false">
+                <label>Historical Financial Object Code</label>
+                <shortLabel>HistFinObjCde</shortLabel>
+
+                <maxLength>4</maxLength>
+                <validationPattern>
+                    <anyCharacter />
+                </validationPattern>
+
+                <control>
+                    <text size="4" />
+                </control>
+
+                <summary>Historical Financial Object Code</summary>
+                <description>Historical Financial Object Code</description>
+            </attribute>
+
+            <attribute name="financialObjectActiveCode" forceUppercase="false">
+                <label>Active Code</label>
+                <shortLabel>Ac.</shortLabel>
+
+                <maxLength>1</maxLength>
+
+                <control>
+                    <checkbox />
+                </control>
+
+                <summary>Active Indicator</summary>
+                <description>Indicates if code is active or inactive.</description>
+                <formatterClass>org.kuali.core.web.format.BooleanFormatter</formatterClass>
+            </attribute>
+
+            <attributeReference name="accountClosedIndicator" sourceAttributeName="test">
+                <label>Account Closed Indicator</label>
+                <shortLabel>AcctClosed</shortLabel>
+                <summary>Account Closed Indicator</summary>
+                <description>Account Closed Indicator</description>
+            </attributeReference>
+
+        </attributes>
+    </businessObject>
+</dictionaryEntry>

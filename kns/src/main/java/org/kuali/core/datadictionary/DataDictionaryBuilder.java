@@ -27,7 +27,6 @@ import org.apache.commons.digester.xmlrules.DigesterLoader;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.core.datadictionary.exception.AttributeValidationException;
 import org.kuali.core.datadictionary.exception.CompletionException;
 import org.kuali.core.datadictionary.exception.DuplicateEntryException;
 import org.kuali.core.datadictionary.exception.InitException;
@@ -39,7 +38,6 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 import edu.iu.uis.eden.util.ClassLoaderUtils;
 
@@ -203,22 +201,19 @@ public class DataDictionaryBuilder {
 
 		dataDictionary.setAllowOverrides(allowOverrides);
 
+		
 		try {
 			listSourceFiles(sourceName, digester);
-		} catch (SAXException spe) {
-			if (spe.getCause() instanceof DataDictionaryException) {
-				throw (DataDictionaryException)spe.getCause();
-			}
-			throw new DataDictionaryException("Error parsing DD", spe);
-		} catch (DataDictionaryException de) {
-			throw de;	
+		} catch (DataDictionaryException dde) {
+			throw dde;
 		} catch (Exception e) {
-			throw new ParseException("Problems parsing DD", e);
+			throw new DataDictionaryException("Problems parsing DD", e);
 		} finally {
 			if (digester != null) {
 				digester.clear();
 			}
 		}
+
 		clearCurrentDigester();
 		clearCurrentFilename();
 	}
@@ -228,6 +223,8 @@ public class DataDictionaryBuilder {
 	 *            XML file, or package containing XML files (which, if a
 	 *            package, must end with the ".xml" extension)
 	 * @return List of XML Files located using the given sourceName
+	 * @throws SAXException 
+	 * @throws IOException 
 	 * @throws IOException
 	 * @throws IOException
 	 *             if there's a problem locating the named source
@@ -245,7 +242,7 @@ public class DataDictionaryBuilder {
 		} else {
 			InputStream is = resource.getInputStream();
 			if (is == null) {
-				throw new ParseException("Cannot find file: " + sourceName);
+				throw new DataDictionaryException("Cannot find file: " + sourceName);
 			}
 			LOG.debug("Adding file " + resource.getFilename() + " to DD.");
 			digest(is, sourceName, digester);
@@ -277,7 +274,7 @@ public class DataDictionaryBuilder {
 		digester.parse(inputStream);
 	}
 
-	protected void digest(File file, Digester digester) throws Exception {
+	protected void digest(File file, Digester digester) throws IOException, SAXException {
 		setupDigester(digester);
 		digester.setErrorHandler(new XmlErrorHandler(file.getName()));
 		setCurrentFilename(file.getName());

@@ -98,7 +98,7 @@ public class KNSServiceLocator { //extends BaseLifecycle{
     }
     
     public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName) {
-        List<NamedOrderedListBean> namedOrderedListBeans = new ArrayList();
+        List<NamedOrderedListBean> namedOrderedListBeans = new ArrayList<NamedOrderedListBean>();
         for (Object namedOrderedListBean : getInstance().getKnsApplicationContext().getBeansOfType(NamedOrderedListBean.class).values()) {
             if (((NamedOrderedListBean)namedOrderedListBean).getName().equals(listName)) {
                 namedOrderedListBeans.add((NamedOrderedListBean)namedOrderedListBean);

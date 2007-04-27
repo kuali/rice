@@ -17,14 +17,9 @@
 package org.kuali.core.datadictionary;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.Rules;
@@ -32,6 +27,7 @@ import org.apache.commons.digester.xmlrules.DigesterLoader;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.core.datadictionary.exception.AttributeValidationException;
 import org.kuali.core.datadictionary.exception.CompletionException;
 import org.kuali.core.datadictionary.exception.DuplicateEntryException;
 import org.kuali.core.datadictionary.exception.InitException;
@@ -43,9 +39,9 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import edu.iu.uis.eden.util.ClassLoaderUtils;
-import edu.iu.uis.eden.xml.ClassLoaderEntityResolver;
 
 /**
  * Assembles a DataDictionary from the contents of one or more specifed XML
@@ -203,112 +199,28 @@ public class DataDictionaryBuilder {
 			LOG.debug("addEntries(): Loading Digester Rules");
 			digesterRules.set(loadRules());
 		}
-		String logName = null;
 		Digester digester = buildDigester(digesterRules.get());
-		// try {
 
 		dataDictionary.setAllowOverrides(allowOverrides);
 
 		try {
 			listSourceFiles(sourceName, digester);
-		} catch (Exception e) {
-			if (e instanceof ParseException) {
-				throw new ParseException("Problems parsing DD", e);	
+		} catch (SAXException spe) {
+			if (spe.getCause() instanceof DataDictionaryException) {
+				throw (DataDictionaryException)spe.getCause();
 			}
-			throw (ParseException)e;
+			throw new DataDictionaryException("Error parsing DD", spe);
+		} catch (DataDictionaryException de) {
+			throw de;	
+		} catch (Exception e) {
+			throw new ParseException("Problems parsing DD", e);
+		} finally {
+			if (digester != null) {
+				digester.clear();
+			}
 		}
-
 		clearCurrentDigester();
 		clearCurrentFilename();
-		//			
-		// // setExceptionsOccurred(true);
-		//			
-		// // for (Map.Entry<String, InputStream> xmlFile : xmlFiles.entrySet())
-		// {
-		//				
-		//			
-		// // for (Iterator i = xmlFiles.iterator(); i.hasNext();) {
-		// // File xmlFile = (File) i.next();
-		// // logName = xmlFile.getAbsolutePath();
-		// boolean success = false;
-		// int tryCount = 0;
-		// // to handle exceptions caused by multi-threaded loading of the
-		// // DD
-		// // the Struts ActionServlet classes re-initialzes a static
-		// // variable
-		// // that removes the property converters (String -> int, etc...)
-		// //
-		// // if something calls
-		// // org.apache.commons.beanutils.ConvertUtils.deregister() while
-		// // the digester is parsing a file, a method within
-		// // ConvertUtilsBean throws an NPE when
-		// // it tries to convert a string from the XML file into the
-		// // appropriate type for the
-		// // cooresponding bean property. The deregister method
-		// // immediately puts the missing
-		// // converter back, but there are a few milliseconds during which
-		// // this problem can occur.
-		// //
-		// // The loop below attempts to handle this problem by allowing
-		// // the digester to retry a file once if
-		// // an NPE is thrown during digester parsing.
-		// while (!success && tryCount < 2) {
-		// try {
-		// tryCount++;
-		// digester.setErrorHandler(new XmlErrorHandler(xmlFile.getKey()));
-		// setCurrentDigester(digester);
-		// setCurrentFilename(xmlFile.getKey());
-		// digester.push(dataDictionary);
-		// // digester.setEntityResolver(new ClassLoaderEntityResolver());
-		//						
-		// success = true;
-		// } catch (SAXException ex) {
-		// if (tryCount < 2 && ex.getException() instanceof
-		// NullPointerException) {
-		// // suppress
-		// LOG.warn("Digester parsing error probably related to concurrency",
-		// ex.getCause());
-		// digester.clear();
-		// } else {
-		// throw ex;
-		// }
-		// } finally {
-		// clearCurrentDigester();
-		// clearCurrentFilename();
-		// if (xmlFile.getValue() != null) {
-		// xmlFile.getValue().close();
-		// }
-		// }
-		// }
-		// }
-		// setExceptionsOccurred(false);
-		// } catch (IOException e) {
-		// throw new SourceException("unable to load XML file '" + logName +
-		// "'", e);
-		// } catch (DuplicateEntryException e) {
-		// throw new DuplicateEntryException("duplicate entry parsing XML file
-		// '" + logName + "'", e);
-		// } catch (SAXException e) {
-		// Exception saxCause = e.getException();
-		// if (saxCause instanceof DuplicateEntryException) {
-		// DuplicateEntryException dee = (DuplicateEntryException) saxCause;
-		// String newMessage = "unable to parse XML file '" + logName + "': " +
-		// saxCause.getMessage();
-		//
-		// throw new DuplicateEntryException(newMessage, saxCause.getCause());
-		// } else if (saxCause instanceof DataDictionaryException) {
-		// throw (DataDictionaryException) saxCause;
-		// } else {
-		// LOG.fatal("unable to parse XML file '" + logName + "'", saxCause);
-		// throw new ParseException("unable to parse XML file '" + logName +
-		// "'", e);
-		// }
-		// } finally {
-		// if (digester != null) {
-		// digester.clear();
-		// }
-
-		// }
 	}
 
 	/**

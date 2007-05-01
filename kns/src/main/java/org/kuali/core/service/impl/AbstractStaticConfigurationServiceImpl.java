@@ -24,6 +24,8 @@ import org.kuali.core.util.properties.KualiPropertiesFactory;
 import org.kuali.core.util.properties.PropertyHolder;
 import org.kuali.core.util.spring.Cached;
 
+import edu.iu.uis.eden.core.Core;
+
 @Cached
 public abstract class AbstractStaticConfigurationServiceImpl {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiConfigurationServiceImpl.class);
@@ -46,6 +48,8 @@ public abstract class AbstractStaticConfigurationServiceImpl {
 
         KualiPropertiesFactory propertiesFactory = new KualiPropertiesFactory(configFileName);
         this.propertyHolder = propertiesFactory.getProperties(null);
+        //add properties in Core config
+        this.propertyHolder.getHeldProperties().putAll(Core.getCurrentContextConfig().getProperties());
     }
 
     /**

@@ -36,4 +36,5 @@
 	<param name="encryption.key">7IC64w6ksLU</param>
 	
 	<param name="kfsLocator.useAppContext">true</param>
+	<param name="production.environment.code">prd</param>
 </config>

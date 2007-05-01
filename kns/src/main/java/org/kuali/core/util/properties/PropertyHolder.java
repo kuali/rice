@@ -153,4 +153,14 @@ public class PropertyHolder {
             throw new IllegalArgumentException("invalid (null) value");
         }
     }
+
+
+	public Properties getHeldProperties() {
+		return heldProperties;
+	}
+
+
+	public void setHeldProperties(Properties heldProperties) {
+		this.heldProperties = heldProperties;
+	}
 }

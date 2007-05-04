@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="kul"%>
+<%@ taglib uri="http://rice.kuali.org/tagfiles/core" prefix="kul"%>
 <%@ include file="tldHeader.jsp"%>
 <kul:page showDocumentInfo="false"
 	headerTitle="Balance Inquiry Report Menu" docTitle=""

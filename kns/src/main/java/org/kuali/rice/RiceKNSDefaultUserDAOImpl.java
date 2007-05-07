@@ -51,6 +51,8 @@ public class RiceKNSDefaultUserDAOImpl implements UniversalUserDao {
             if (userId instanceof org.kuali.core.bo.user.UuId) {
                 return convertWorkflowUser(KEWServiceLocator.getUserService().getWorkflowUser(new UuIdVO(userId.toString())));
             }
+        } catch (EdenUserNotFoundException eunfe) {
+        	return null;
         }
         catch (Exception e) {
             LOG.error("Exception caught fetching user from workflow.", e);

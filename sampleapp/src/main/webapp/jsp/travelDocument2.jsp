@@ -26,17 +26,9 @@
 	showTabButtons="true" 
 	auditCount="0">
 
-	<%-- 
-	<html:hidden property="document.nextItemLineNumber" />
- 	--%>
  	<kul:hiddenDocumentFields isTransactionalDocument="false" isFinancialDocument="true" excludePostingYear="true"/>
 
 	<kul:documentOverview editingMode="${KualiForm.editingMode}" />
-	<%-- 
-	<fin:accountingLines editingMode="${KualiForm.editingMode}"
-		editableAccounts="${KualiForm.editableAccounts}" />
-	<kul:generalLedgerPendingEntries />
-	--%>
 	<kul:tab tabTitle="Travel Stuff" defaultOpen="true" tabErrorKey="bs">
 		<div class="tab-container" align="center">
 		<div class="h2-container">
@@ -48,33 +40,41 @@
             		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="datatable">
 				 		<tr>
 				 		<kul:htmlAttributeHeaderCell labelFor="document.traveler" attributeEntry="${travelAttributes.traveler}" align="left" />
-				 		<kul:htmlAttributeHeaderCell labelFor="document.origin" attributeEntry="${travelAttributes.origin}" align="left" />
-				 		<kul:htmlAttributeHeaderCell labelFor="document.destination" attributeEntry="${travelAttributes.destination}" align="left" />
-				 		<kul:htmlAttributeHeaderCell labelFor="document.requestType" attributeEntry="${travelAttributes.requestType}" align="left" />
-				 		</tr>
-						<tr>
 				 		<td><kul:htmlControlAttribute property="document.traveler" attributeEntry="${travelAttributes.traveler}" readOnly="false" /></td>
+				 		</tr>
+				 		<tr>
+				 		<kul:htmlAttributeHeaderCell labelFor="document.origin" attributeEntry="${travelAttributes.origin}" align="left" />
 				 		<td><kul:htmlControlAttribute property="document.origin" attributeEntry="${travelAttributes.origin}" readOnly="false" /></td>
+				 		</tr>
+				 		<tr>
+				 		<kul:htmlAttributeHeaderCell labelFor="document.destination" attributeEntry="${travelAttributes.destination}" align="left" />
 				 		<td><kul:htmlControlAttribute property="document.destination" attributeEntry="${travelAttributes.destination}" readOnly="false" /></td>
+				 		</tr>
+				 		<tr>
+				 		<kul:htmlAttributeHeaderCell labelFor="document.requestType" attributeEntry="${travelAttributes.requestType}" align="left" />
 				 		<td><kul:htmlControlAttribute property="document.requestType" attributeEntry="${travelAttributes.requestType}" readOnly="false" /></td>
 				 		</tr>
-			 		</table>
-			 	</td>
-			 </tr>
-		    <tr>
-        		<td colspan="4">
-            		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="datatable">
 						<tr>
-				 		<td class="infoline"><kul:htmlControlAttribute property="travelAccount.number" attributeEntry="${accountAttributes.number}" readOnly="false" />
-                            <kul:lookup boClassName="edu.sampleu.travel.bo.TravelAccount" fieldConversions="number:travelAccount.number" /></td>
-		                <td class="infoline"><div align="center"><html:image property="methodToCall.insertAccount" src="images/tinybutton-add1.gif" alt="Insert an Item" title="Insert an Item" styleClass="tinybutton"/></div></td>
+						<th align="left">
+				 		&nbsp;&nbsp;* Travel Account
+				 		</th>
+				 		<td>
+				 		<kul:htmlControlAttribute property="travelAccount.number" attributeEntry="${accountAttributes.number}" readOnly="false" />
+                        <kul:lookup boClassName="edu.sampleu.travel.bo.TravelAccount" fieldConversions="number:travelAccount.number" />
+						<html:image property="methodToCall.insertAccount" src="images/tinybutton-add1.gif" alt="Insert an Item" title="Insert an Item" styleClass="tinybutton"/>
+                        </td>
 				 		</tr>
 				 		<logic:iterate id="travAcct" name="KualiForm" property="document.travelAccounts" indexId="ctr">
 					 		<tr>
-					 			<td class="datacell"><kul:htmlControlAttribute attributeEntry="${accountAttributes.number}" property="document.travelAccount[${ctr}].number" readOnly="true"/></td>
-					 			<td class="datacell"><kul:htmlControlAttribute attributeEntry="${accountAttributes.name}" property="document.travelAccount[${ctr}].name" readOnly="true"/></td>
+					 			<th>&nbsp;</th>
+					 			<td class="datacell">
+					 			<kul:htmlControlAttribute attributeEntry="${accountAttributes.number}" property="document.travelAccount[${ctr}].number" readOnly="true"/>
+					 			&nbsp;&nbsp;-&nbsp;&nbsp;
+					 			<kul:htmlControlAttribute attributeEntry="${accountAttributes.name}" property="document.travelAccount[${ctr}].name" readOnly="true"/>
+					 			</td>
 					 		</tr>
 				 		</logic:iterate>
+				 		</tr>
 			 		</table>
 			 	</td>
 			 </tr>

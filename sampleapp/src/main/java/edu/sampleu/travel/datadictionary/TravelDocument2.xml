@@ -47,6 +47,8 @@
                 <maxLength>30</maxLength>
                 <validationPattern><anyCharacter /></validationPattern>
 
+                <required>true</required>
+
                 <control>
                     <text size="30" />
                 </control>
@@ -62,6 +64,8 @@
                 <maxLength>60</maxLength>
                 <validationPattern><anyCharacter /></validationPattern>
 
+                <required>true</required>
+
                 <control>
                     <text size="60" />
                 </control>
@@ -76,6 +80,8 @@
 
                 <maxLength>60</maxLength>
                 <validationPattern><anyCharacter /></validationPattern>
+
+                <required>true</required>
 
                 <control>
                     <text size="60" />

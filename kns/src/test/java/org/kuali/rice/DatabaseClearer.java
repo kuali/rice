@@ -15,7 +15,6 @@
  */
 package org.kuali.rice;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -30,7 +29,6 @@ import junit.framework.Assert;
 import org.apache.log4j.Logger;
 import org.objectweb.jotm.Current;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.StatementCallback;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -40,7 +38,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.clientapp.ClientConfig;
 import edu.iu.uis.eden.config.BaseConfig;
 import edu.iu.uis.eden.config.Config;
 import edu.iu.uis.eden.core.Core;

@@ -15,7 +15,6 @@
  */
 package org.kuali.core.web.servlet;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import javax.servlet.ServletConfig;
@@ -28,10 +27,9 @@ import org.kuali.core.util.spring.NamedOrderedListBean;
 import org.kuali.rice.KNSServiceLocator;
 import org.springframework.core.io.DefaultResourceLoader;
 
-import edu.iu.uis.eden.util.ClassLoaderUtils;
-
 import uk.ltd.getahead.dwr.Configuration;
 import uk.ltd.getahead.dwr.DWRServlet;
+import edu.iu.uis.eden.util.ClassLoaderUtils;
 
 public class KualiDWRServlet extends DWRServlet {
     /**

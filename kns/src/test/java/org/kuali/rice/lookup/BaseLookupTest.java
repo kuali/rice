@@ -15,17 +15,13 @@
  */
 package org.kuali.rice.lookup;
 
-import java.net.URL;
-
 import org.junit.Test;
 import org.kuali.rice.RiceTestCase;
 import org.kuali.rice.test.htmlunit.HtmlUnitUtil;
 
-import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.html.HtmlTableCell;
 import com.gargoylesoftware.htmlunit.html.HtmlTableRow;

@@ -40,13 +40,13 @@ public class TestUtils {
     private static final Log LOG = LogFactory.getLog(KualiTestBase.class);
 
 
-//    /**
-//     * Disables all scheduled tasks, to make debugging easier.
-//     */
-//    public static void disableScheduledTasks() {
+    /**
+     * Disables all scheduled tasks, to make debugging easier.
+     */
+    public static void disableScheduledTasks() {
 //        Timer timer = KNSServiceLocator.getTaskTimer();
 //        timer.cancel();
-//    }
+    }
 
 
     /**
@@ -271,10 +271,10 @@ public class TestUtils {
 
     /**
      * Mocks the FLEXIBLE_OFFSET_ENABLED_FLAG indicator of the {@link org.kuali.core.service.KualiConfigurationService} in
-     * SpringServiceLocator. The mock is backed by the current real service, so all other configurations appear unchanged.
+     * KNSServiceLocator. The mock is backed by the current real service, so all other configurations appear unchanged.
      * 
      * @param flexibleOffsetEnabled the mock value of the indicator
-     * @see SpringServiceLocator#mockService(String, Object)
+     * @see KNSServiceLocator#mockService(String, Object)
      */
     public static void mockConfigurationServiceForFlexibleOffsetEnabled(boolean flexibleOffsetEnabled) {
         Map<String, FinancialSystemParameter> params = KNSServiceLocator.getKualiConfigurationService().getParametersByGroup(Constants.ParameterGroups.SYSTEM);

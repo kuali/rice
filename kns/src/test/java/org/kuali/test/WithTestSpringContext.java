@@ -33,5 +33,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface WithTestSpringContext {
-//    UserNameFixture session() default UserNameFixture.NO_SESSION;
+    //UserNameFixture session() default UserNameFixture.NO_SESSION;
 }

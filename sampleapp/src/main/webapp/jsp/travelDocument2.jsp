@@ -17,7 +17,6 @@
 
 <c:set var="travelAttributes" value="${DataDictionary.TravelRequest.attributes}" />
 <c:set var="accountAttributes" value="${DataDictionary.TravelAccount.attributes}" />
-
 <kul:documentPage 
 	showDocumentInfo="true"
 	htmlFormAction="travelDocument2"
@@ -28,7 +27,7 @@
 
  	<kul:hiddenDocumentFields isTransactionalDocument="false" isFinancialDocument="true" excludePostingYear="true"/>
 
-	<kul:documentOverview editingMode="${KualiForm.editingMode}" />
+	<kul:documentOverview editingMode="${KualiForm.editingMode}" /> 
 	<kul:tab tabTitle="Travel Stuff" defaultOpen="true" tabErrorKey="bs">
 		<div class="tab-container" align="center">
 		<div class="h2-container">
@@ -56,7 +55,7 @@
 				 		</tr>
 						<tr>
 						<th align="left">
-				 		&nbsp;&nbsp;* Travel Account
+				 		&nbsp;&nbsp;* Travel Account  
 				 		</th>
 				 		<td>
 				 		<kul:htmlControlAttribute property="travelAccount.number" attributeEntry="${accountAttributes.number}" readOnly="false" />

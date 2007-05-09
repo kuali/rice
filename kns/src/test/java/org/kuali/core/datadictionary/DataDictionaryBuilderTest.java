@@ -23,8 +23,6 @@ import org.apache.log4j.Level;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.core.datadictionary.exception.ParseException;
-import org.kuali.core.datadictionary.exception.SourceException;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.test.KualiTestBase;
 import org.kuali.test.WithTestSpringContext;
@@ -191,29 +189,4 @@ public class DataDictionaryBuilderTest extends KualiTestBase {
 		assertTrue(failedAsExpected);
 	}
 
-	public final void testDataDictionaryBuilder_package_kuali() {
-		builder.addUniqueEntries(PACKAGE_CORE_BO, true);
-		builder.addUniqueEntries(PACKAGE_CORE_DOCUMENT, true);
-		builder.addUniqueEntries(PACKAGE_KFS, true);
-		builder.addUniqueEntries(PACKAGE_CHART, true);
-		builder.addUniqueEntries(PACKAGE_CG, true);
-		builder.addUniqueEntries(PACKAGE_KRA_BUDGET, true);
-		builder.addUniqueEntries(PACKAGE_KRA_ROUTINGFORM, true);
-		builder.completeInitialization();
-	}
-
-	public final void testDataDictionaryBuilder_multipleCompleteCalls() {
-		builder.addUniqueEntries(PACKAGE_CORE_BO, true);
-		builder.addUniqueEntries(PACKAGE_CORE_DOCUMENT, true);
-		builder.addUniqueEntries(PACKAGE_KFS, true);
-		builder.addUniqueEntries(PACKAGE_CHART, true);
-		builder.addUniqueEntries(PACKAGE_CG, true);
-		builder.addUniqueEntries(PACKAGE_KRA_BUDGET, true);
-		builder.addUniqueEntries(PACKAGE_KRA_ROUTINGFORM, true);
-		builder.completeInitialization();
-
-		// builder.addOverrideEntries(DataDictionaryBuilderTest.TESTPACKAGE_VALID
-		// + "ValidBusinessObject.xml", true);
-		builder.completeInitialization();
-	}
 }

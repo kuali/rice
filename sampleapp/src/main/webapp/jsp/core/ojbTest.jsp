@@ -67,5 +67,4 @@
     dao.save(doc);
 
     out.println("test3");
-
 %>

@@ -33,4 +33,6 @@
 	<param name="datasource.pool.maxSize">50</param>
 	
 	<param name="config.location">/usr/local/rice/knsSecure.xml</param>
+
+	<param name="dev.mode">true</param>
 </config>

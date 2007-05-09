@@ -22,7 +22,6 @@ import org.kuali.rice.test.htmlunit.HtmlUnitUtil;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 
 public class BaseMaintainableTest extends RiceTestCase {
     

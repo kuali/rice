@@ -60,7 +60,7 @@
 				<artifactId>maven-clover-plugin</artifactId>
 				<configuration>
 					<licenseLocation>
-						test-harness/clover/clover.license
+						kns/src/test/config/clover.license
 					</licenseLocation>
 				</configuration>
 				<executions>

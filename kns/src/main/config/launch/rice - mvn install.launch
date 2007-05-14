@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launchConfiguration type="org.maven.ide.eclipse.Maven2LaunchConfigurationType">
+<listAttribute key="M2_PROPERTIES">
+<listEntry value="maven.test.skip=true"/>
+</listAttribute>
+<stringAttribute key="M2_GOALS" value="install"/>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.ui.externaltools.launchGroup"/>
+</listAttribute>
+<stringAttribute key="M2_PROFILES" value=""/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:/rice}"/>
+</launchConfiguration>

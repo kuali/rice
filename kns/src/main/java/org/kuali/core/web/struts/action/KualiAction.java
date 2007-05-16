@@ -288,7 +288,7 @@ public abstract class KualiAction extends DispatchAction {
      */
     public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-
+        
         // parse out the important strings from our methodToCall parameter
         String fullParameter = (String) request.getAttribute(Constants.METHOD_TO_CALL_ATTRIBUTE);
 
@@ -407,10 +407,11 @@ public abstract class KualiAction extends DispatchAction {
         }
         
         parameters.put(Constants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
-        parameters.put(Constants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, boClassName);
-        parameters.put(Constants.RETURN_LOCATION_PARAMETER, basePath + mapping.getPath() + ".do");
-
-        String lookupUrl = UrlFactory.parameterizeUrl(basePath + "/" + lookupAction, parameters);
+        parameters.put(Constants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, boClassName);               
+        
+        parameters.put(Constants.RETURN_LOCATION_PARAMETER, basePath + ("/lookup".equals(mapping.getPath()) ? "/kr" : "") + mapping.getPath() + ".do");
+        
+        String lookupUrl = UrlFactory.parameterizeUrl(basePath + "/kr/" + lookupAction, parameters);
         return new ActionForward(lookupUrl, true);
     }
 
@@ -506,7 +507,7 @@ public abstract class KualiAction extends DispatchAction {
         parameters.put(Constants.QUESTION_INST_ATTRIBUTE_NAME, questionId);
         parameters.put(Constants.QUESTION_IMPL_ATTRIBUTE_NAME, questionType);
         parameters.put(Constants.QUESTION_TEXT_ATTRIBUTE_NAME, questionText);
-        parameters.put(Constants.RETURN_LOCATION_PARAMETER, basePath + mapping.getPath() + ".do");
+        parameters.put(Constants.RETURN_LOCATION_PARAMETER, basePath + ("/lookup".equals(mapping.getPath()) ? "/kr" : "") + mapping.getPath() + ".do");
         parameters.put(Constants.QUESTION_CONTEXT, context);
         parameters.put(Constants.QUESTION_SHOW_REASON_FIELD, Boolean.toString(showReasonField));
         parameters.put(Constants.QUESTION_REASON_ATTRIBUTE_NAME, reason);
@@ -519,7 +520,7 @@ public abstract class KualiAction extends DispatchAction {
             parameters.put(Constants.METHOD_TO_CALL_PATH, methodToCallAttribute);
         }
 
-        String questionUrl = UrlFactory.parameterizeUrl(basePath + "/" + Constants.QUESTION_ACTION, parameters);
+        String questionUrl = UrlFactory.parameterizeUrl(basePath + "/kr/" + Constants.QUESTION_ACTION, parameters);
         return new ActionForward(questionUrl, true);
     }
 
@@ -564,7 +565,6 @@ public abstract class KualiAction extends DispatchAction {
     public ActionForward headerTab(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         // header tab actions can do two things - 1, call into an action and perform what needs to happen in there and 2, forward to
         // a new location.
-        KualiForm kualiForm = (KualiForm) form;
         String headerTabDispatch = getHeaderTabDispatch(request);
         if (StringUtils.isNotEmpty(headerTabDispatch)) {
             ActionForward forward = this.dispatchMethod(mapping, form, request, response, headerTabDispatch);

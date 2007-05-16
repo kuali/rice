@@ -36,7 +36,7 @@ public class JettyServer implements Lifecycle {
 	}
 
 	public void stop() throws Exception {
-		server.stop();
+		server.stop(); 
 	}
 
 	public boolean isStarted() {

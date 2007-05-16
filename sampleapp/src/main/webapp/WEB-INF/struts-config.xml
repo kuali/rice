@@ -5,47 +5,18 @@
     <data-sources />
   
     <form-beans >
-	    <!-- KNS beans -->
-	    <form-bean name="QuestionPromptForm" type="org.kuali.core.web.struts.form.QuestionPromptForm" />
-	    <form-bean name="LookupForm" type="org.kuali.core.web.struts.form.LookupForm" />
-	    <form-bean name="InquiryForm" type="org.kuali.core.web.struts.form.InquiryForm" />
-	    <form-bean name="KualiMaintenanceForm" type="org.kuali.core.web.struts.form.KualiMaintenanceForm" />
-	    <form-bean name="KualiHelpForm" type="org.kuali.core.web.struts.form.KualiHelpForm" />
-	    <!-- end KNS beans -->
-	
-		<!-- New TRD2 Doc Stuff -->
 	    <form-bean name="TravelDocumentForm2" type="edu.sampleu.travel.web.form.TravelDocumentForm2" />
     </form-beans>
 
     <global-exceptions />
   
     <global-forwards >
-        <forward name="error" path="/jsp/error.jsp" />
     </global-forwards>
 
     <action-mappings>
-	    <!-- KNS Mappings -->
-	    <action path="/lookup" name="LookupForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.core.web.struts.action.KualiLookupAction">
-	        <forward name="basic" path="/jsp/core/KualiLookup.jsp" />
-	    </action>
-	    <action path="/inquiry" name="InquiryForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.core.web.struts.action.KualiInquiryAction">
-	        <forward name="basic" path="/jsp/core/KualiInquiry.jsp" />
-	    </action>
-	    <action path="/maintenance" name="KualiMaintenanceForm" attribute="KualiForm" scope="request" parameter="methodToCall" validate="false" input="/jsp/core/KualiMaintenanceDocument.jsp" type="org.kuali.core.web.struts.action.KualiMaintenanceDocumentAction">
-	        <forward name="basic" path="/jsp/core/KualiMaintenanceDocument.jsp" />
-	    </action>    
-	    <action path="/help" name="KualiHelpForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.core.web.struts.action.KualiHelpAction">
-	        <forward name="basic" path="/jsp/core/KualiHelp.jsp" />
-	    </action>
-        <action path="/questionPrompt" name="QuestionPromptForm" scope="request" parameter="methodToCall" type="org.kuali.core.web.struts.action.QuestionPromptAction">
-            <forward name="basic" path="/jsp/core/KualiQuestion.jsp" />
-        </action>
-	    <!-- end KNS Mappings -->
-	
-		<!-- New TRD2 Doc Stuff -->
 		<action path="/travelDocument2" name="TravelDocumentForm2" input="/WEB-INF/jsp/travelDocument2.jsp" type="edu.sampleu.travel.web.action.TravelDocumentAction2"
 			scope="request" parameter="methodToCall" validate="true" attribute="KualiForm">
-			<forward name="basic" path="/jsp/travelDocument2.jsp" />
+			<forward name="basic" path="/WEB-INF/jsp/travelDocument2.jsp" />
 		</action>
     </action-mappings>
 

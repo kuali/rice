@@ -30,7 +30,7 @@ public class BaseLookupTest extends RiceTestCase {
 
     @Test public void testLookupable() throws Exception {
         
-        HtmlPage lookupPage = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL + "/lookup.do?methodToCall=start&businessObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=portal.do&hideReturnLink=true&docFormKey=88888888");
+        HtmlPage lookupPage = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL + "/kr/lookup.do?methodToCall=start&businessObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=portal.do&hideReturnLink=true&docFormKey=88888888");
         assertEquals("Kuali :: Lookup", lookupPage.getTitleText());
         
         HtmlForm lookupForm = (HtmlForm)lookupPage.getFormByName("KualiForm");

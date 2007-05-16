@@ -47,7 +47,7 @@ public class Constants extends JstlConstants {
     public static final String HTDOCS_LOGS_URL_KEY = "htdocs.logs.url";
     public static final String HTDOCS_STAGING_URL_KEY = "htdocs.staging.url";
     public static final String EXTERNALIZABLE_HELP_URL_KEY = "externalizable.help.url";
-    public static final String EXTERNALIZABLE_IMAGES_URL_KEY = "externalizable.images.url";
+    public static final String EXTERNALIZABLE_IMAGES_URL_KEY = "kr.externalizable.images.url";
     public static final String REPORTS_DIRECTORY_KEY = "reports.directory";
     public static final String WORKFLOW_URL_KEY = "workflow.url";
     public static final String LOOKUP_RESULTS_LIMIT_URL_KEY = "lookup.results.limit";

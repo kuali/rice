@@ -44,7 +44,7 @@ function showTab(doc, tabIndex) {
     doc.getElementById('tab-' + tabIndex + '-div').style.display = '';
     doc.forms[0].elements['tabState[' + tabIndex + '].open'].value = 'true';
     var image = doc.getElementById('tab-' + tabIndex + '-imageToggle');
-    image.src = 'images/tinybutton-hide.gif';
+    image.src = jsContextPath + '/kr/images/tinybutton-hide.gif';
     image.alt = image.alt.replace(/^show/, 'hide');
     image.alt = image.alt.replace(/^open/, 'close');
     image.title = image.title.replace(/^show/, 'hide');
@@ -56,7 +56,7 @@ function hideTab(doc, tabIndex) {
     doc.getElementById('tab-' + tabIndex + '-div').style.display = 'none';
     doc.forms[0].elements['tabState[' + tabIndex + '].open'].value = 'false';
     var image = doc.getElementById('tab-' + tabIndex + '-imageToggle');
-    image.src = 'images/tinybutton-show.gif';
+    image.src = jsContextPath + '/kr/images/tinybutton-show.gif';
     image.alt = image.alt.replace(/^hide/, 'show');
     image.alt = image.alt.replace(/^close/, 'open');
     image.title = image.title.replace(/^hide/, 'show');

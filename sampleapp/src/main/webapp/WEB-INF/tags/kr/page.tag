@@ -45,6 +45,7 @@
 </c:if>
 
 <head>
+	<script>var jsContextPath = "${pageContext.request.contextPath}";</script>
 	<title><bean:message key="app.title" /> :: ${headerTitle}</title>
 	<link href="${pageContext.request.contextPath}/kr/css/kuali.css" rel="stylesheet" type="text/css" />
 	<script language="JavaScript" src="${pageContext.request.contextPath}/kr/scripts/core.js" type="text/javascript"></script>

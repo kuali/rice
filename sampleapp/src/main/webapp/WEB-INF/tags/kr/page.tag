@@ -99,6 +99,10 @@
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>
+	<link href="${pageContext.request.contextPath}/css/kuali_application.css" rel="stylesheet" type="text/css" />
+	<link href="${pageContext.request.contextPath}/css/kuali_overrides.css" rel="stylesheet" type="text/css" />
+	<script language="JavaScript" src="${pageContext.request.contextPath}/scripts/kuali_application.js" type="text/javascript"></script>
+	<script language="JavaScript" src="${pageContext.request.contextPath}/scripts/kuali_overrides.js" type="text/javascript"></script>	
 </head>
 
 <c:choose>

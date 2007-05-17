@@ -22,6 +22,5 @@
 
     <controller processorClass="org.kuali.core.web.struts.action.KualiRequestProcessor" />
     <message-resources parameter="edu.sampleu.travel.web.ApplicationResources" />
-    <plug-in className="org.springframework.web.struts.ContextLoaderPlugIn"/>
 </struts-config>
 

@@ -53,6 +53,5 @@
     </action-mappings>
 
     <controller processorClass="org.kuali.core.web.struts.action.KualiRequestProcessor" />
-    <plug-in className="org.springframework.web.struts.ContextLoaderPlugIn"/>
 </struts-config>
 

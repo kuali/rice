@@ -385,7 +385,7 @@ public class FieldBridge {
             String addButtonName = Constants.DISPATCH_REQUEST_PARAMETER + "." + Constants.ADD_LINE_METHOD + "." + parents + collectionDefinition.getName() + "." + Constants.METHOD_TO_CALL_BOPARM_LEFT_DEL + collectionDefinition.getBusinessObjectClass().getName() + Constants.METHOD_TO_CALL_BOPARM_RIGHT_DEL;
             field.setPropertyName(addButtonName);
             field.setFieldType(Field.IMAGE_SUBMIT);
-            field.setPropertyValue("kr/images/tinybutton-add1.gif");
+            field.setPropertyValue("images/tinybutton-add1.gif");
             // collFields.add(field);
             containerField.getContainerRows().add(new Row(field));
         }

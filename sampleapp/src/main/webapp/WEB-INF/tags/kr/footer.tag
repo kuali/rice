@@ -13,9 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ taglib prefix="c" uri="/kr/WEB-INF/tlds/c.tld" %>
-<%@ taglib uri="/kr/WEB-INF/tlds/struts-bean.tld" prefix="bean" %>
-<%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul"%>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <%@ attribute name="lookup" required="false" description="indicates whether the lookup specific footer should be shown" %>
 <%@ attribute name="feedbackKey" required="false" description="application resources key that contains feedback contact address only used when lookup attribute is false"%>

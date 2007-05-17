@@ -13,14 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ taglib prefix="c" uri="/kr/WEB-INF/tlds/c.tld"%>
-<%@ taglib prefix="fn" uri="/kr/WEB-INF/tlds/fn.tld"%>
-<%@ taglib uri="/kr/WEB-INF/tlds/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/kr/WEB-INF/tlds/struts-logic.tld" prefix="logic"%>
-<%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul"%>
-<%@ taglib uri="/tlds/struts-html-el.tld" prefix="html-el"%>
-<%@ taglib uri="/tlds/displaytag.tld" prefix="display"%>
-<%@ taglib uri="/kr/WEB-INF/tlds/struts-bean-el.tld" prefix="bean-el"%>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <%@ attribute name="resultsList" required="true" type="java.util.List" description="The rows of fields that we'll iterate to display." %>
 

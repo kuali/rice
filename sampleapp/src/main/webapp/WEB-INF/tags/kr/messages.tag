@@ -13,9 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ taglib prefix="c" uri="/kr/WEB-INF/tlds/c.tld"%>
-<%@ taglib prefix="fn" uri="/kr/WEB-INF/tlds/fn.tld"%>
-<%@ taglib uri="/kr/WEB-INF/tlds/struts-bean.tld" prefix="bean"%>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 
 <c:forEach items="${GlobalMessages}" var="message">

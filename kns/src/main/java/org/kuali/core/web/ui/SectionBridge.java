@@ -474,7 +474,7 @@ public class SectionBridge {
         String deleteButtonName = Constants.DISPATCH_REQUEST_PARAMETER + "." + Constants.DELETE_LINE_METHOD + "." + collectionName + "." + Constants.METHOD_TO_CALL_BOPARM_LEFT_DEL + ".line" + rowIndex;
         deleteButtonField.setPropertyName(deleteButtonName);
         deleteButtonField.setFieldType(Field.IMAGE_SUBMIT);
-        deleteButtonField.setPropertyValue("kr/images/tinybutton-delete1.gif");
+        deleteButtonField.setPropertyValue("images/tinybutton-delete1.gif");
 
         return deleteButtonField;
     }

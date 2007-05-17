@@ -13,8 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ taglib prefix="c" uri="/kr/WEB-INF/tlds/c.tld"%>
-<%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul"%>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
+
 
 <%@ attribute name="containerField" required="true" type="org.kuali.core.web.ui.Field"
               description="A Field.CONTAINER (element) type field." %>

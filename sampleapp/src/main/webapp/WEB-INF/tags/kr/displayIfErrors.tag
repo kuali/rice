@@ -15,8 +15,7 @@
 --%>
 <%@ tag body-content="scriptless" %> 
 
-<%@ taglib prefix="c" uri="/kr/WEB-INF/tlds/c.tld"%>
-<%@ taglib prefix="fn" uri="/kr/WEB-INF/tlds/fn.tld"%>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <%@ attribute name="keyMatch" required="true" %>
 

@@ -13,8 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ taglib prefix="c" uri="/kr/WEB-INF/tlds/c.tld"%>
-<%@ taglib tagdir="/WEB-INF/tags/kr/dd" prefix="dd" %>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
+
 <%@ attribute name="auditCount" required="false" %>
 
 <c:set var="errorCount" value="${ErrorContainer.errorCount + auditCount}" />

@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ taglib prefix="c" uri="/kr/WEB-INF/tlds/c.tld" %>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <%@ attribute name="fieldConversions" required="false" %>
 
 <input type="image" tabindex="-1" name="methodToCall.performWorkgroupLookup.(((${fieldConversions})))" title="Search Workgroup" alt="Search Workgroup" src="${ConfigProperties.kr.externalizable.images.url}searchicon.gif" border="0" class="tinybutton" />

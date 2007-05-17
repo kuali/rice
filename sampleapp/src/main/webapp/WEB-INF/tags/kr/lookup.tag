@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ taglib prefix="c" uri="/kr/WEB-INF/tlds/c.tld" %>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <%@ attribute name="boClassName" required="true" %>
 <%@ attribute name="fieldConversions" required="false" %>
 <%@ attribute name="lookupParameters" required="false" %>

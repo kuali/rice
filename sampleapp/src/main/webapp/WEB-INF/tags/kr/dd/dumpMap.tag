@@ -13,14 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ taglib prefix="c" uri="/kr/WEB-INF/tlds/c.tld" %>
-<%@ taglib prefix="fn" uri="/kr/WEB-INF/tlds/fn.tld" %>
-<%@ taglib tagdir="/WEB-INF/tags/kr/dd" prefix="dd"%>
-<%@ tag body-content="empty" %>
-<%@ attribute name="map" required="true" type="java.util.Map" %>
-<%@ attribute name="prefix" required="false" %>
-<%@ attribute name="title" required="false" %>
-<%@ attribute name="noTable" required="false" %>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:if test="${!empty prefix}">
     <c:set var="prefix" value="${prefix}." />

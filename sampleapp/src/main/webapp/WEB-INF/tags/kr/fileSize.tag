@@ -13,8 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ taglib prefix="c" uri="/kr/WEB-INF/tlds/c.tld" %>
-<%@ taglib prefix="fn" uri="/kr/WEB-INF/tlds/fn.tld" %>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <%@ tag body-content="scriptless" %>
 <%@ attribute name="byteSize" required="true" %>
 

@@ -13,12 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ taglib uri="/kr/WEB-INF/tlds/c.tld" prefix="c" %>
-<%@ taglib uri="/kr/WEB-INF/tlds/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/kr/WEB-INF/tlds/struts-logic.tld" prefix="logic" %>
-<%@ taglib uri="/kr/WEB-INF/tlds/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/kr/WEB-INF/tlds/fmt.tld" prefix="fmt" %>
-<%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul"%>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="isMaintenance" value="false" />
 <c:set var="showDocumentInfo" value="false" />

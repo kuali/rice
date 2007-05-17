@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var closed_file = "kr/images/tinybutton-show.gif";
-var open_file = "kr/images/tinybutton-hide.gif";
+var closed_file = "images/tinybutton-show.gif";
+var open_file = "images/tinybutton-hide.gif";
 img1 = new Image();
 img1.src = closed_file;
 img2 = new Image();

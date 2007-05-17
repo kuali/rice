@@ -13,8 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ taglib prefix="c" uri="/kr/WEB-INF/tlds/c.tld" %>
-<%@ taglib uri="/kr/WEB-INF/tlds/struts-bean.tld" prefix="bean" %>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <%@ attribute name="boClassName" required="true" %>
 <%@ attribute name="keyValues" required="true" %>
 <%@ attribute name="render" required="true"

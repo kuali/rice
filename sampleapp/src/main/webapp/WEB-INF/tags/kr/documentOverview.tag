@@ -13,12 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ taglib prefix="c" uri="/kr/WEB-INF/tlds/c.tld" %>
-<%@ taglib prefix="fn" uri="/kr/WEB-INF/tlds/fn.tld"%>
-<%@ taglib uri="/kr/WEB-INF/tlds/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/kr/WEB-INF/tlds/struts-logic.tld" prefix="logic" %>
-<%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul"%>
-<%@ taglib tagdir="/WEB-INF/tags/kr/dd" prefix="dd" %>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
+
 <%@ attribute name="editingMode" required="true" description="used to decide editability of overview fields" type="java.util.Map"%>
 <%@ attribute name="includePostingYear" required="false" description="set to true to include posting year in document overview" %>
 <%@ attribute name="postingYearOnChange" required="false" description="set to the value of the onchange event for the posting year control" %>

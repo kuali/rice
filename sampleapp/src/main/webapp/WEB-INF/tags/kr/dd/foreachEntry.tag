@@ -15,7 +15,7 @@
 --%>
 <%@ tag body-content="scriptless" %> 
 
-<%@ taglib prefix="c" uri="/kr/WEB-INF/tlds/c.tld" %>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <%@ attribute name="map" required="true" type="java.util.Map" %>
 <%@ attribute name="valueVar" required="true" rtexprvalue="false" %>

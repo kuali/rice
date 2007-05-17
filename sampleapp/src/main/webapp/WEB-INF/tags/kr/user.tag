@@ -13,11 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ taglib prefix="c" uri="/kr/WEB-INF/tlds/c.tld" %>
-<%@ taglib uri="/kr/WEB-INF/tlds/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/kr/WEB-INF/tlds/fn.tld" prefix="fn" %>
-<%@ taglib uri="/kr/WEB-INF/tlds/struts-logic.tld" prefix="logic" %>
-<%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul"%>
+<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <%@ attribute name="userIdFieldName" required="true" %>
 <%@ attribute name="universalIdFieldName" required="true" %>

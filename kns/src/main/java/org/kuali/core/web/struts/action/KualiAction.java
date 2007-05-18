@@ -409,7 +409,7 @@ public abstract class KualiAction extends DispatchAction {
         parameters.put(Constants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
         parameters.put(Constants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, boClassName);               
         
-        parameters.put(Constants.RETURN_LOCATION_PARAMETER, basePath + ("/lookup".equals(mapping.getPath()) ? "/kr" : "") + mapping.getPath() + ".do");
+        parameters.put(Constants.RETURN_LOCATION_PARAMETER, basePath + ("/lookup".equals(mapping.getPath()) || "/maintenance".equals(mapping.getPath()) ? "/kr" : "") + mapping.getPath() + ".do");
         
         String lookupUrl = UrlFactory.parameterizeUrl(basePath + "/kr/" + lookupAction, parameters);
         return new ActionForward(lookupUrl, true);
@@ -507,7 +507,7 @@ public abstract class KualiAction extends DispatchAction {
         parameters.put(Constants.QUESTION_INST_ATTRIBUTE_NAME, questionId);
         parameters.put(Constants.QUESTION_IMPL_ATTRIBUTE_NAME, questionType);
         parameters.put(Constants.QUESTION_TEXT_ATTRIBUTE_NAME, questionText);
-        parameters.put(Constants.RETURN_LOCATION_PARAMETER, basePath + ("/lookup".equals(mapping.getPath()) ? "/kr" : "") + mapping.getPath() + ".do");
+        parameters.put(Constants.RETURN_LOCATION_PARAMETER, basePath + ("/lookup".equals(mapping.getPath()) || "/maintenance".equals(mapping.getPath()) ? "/kr" : "") + mapping.getPath() + ".do");
         parameters.put(Constants.QUESTION_CONTEXT, context);
         parameters.put(Constants.QUESTION_SHOW_REASON_FIELD, Boolean.toString(showReasonField));
         parameters.put(Constants.QUESTION_REASON_ATTRIBUTE_NAME, reason);

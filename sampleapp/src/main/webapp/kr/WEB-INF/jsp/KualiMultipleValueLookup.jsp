@@ -22,9 +22,6 @@
 	headerTitle="Lookup" docTitle="" transactionalDocument="false"
 	htmlFormAction="multipleValueLookup">
 
-	<script type="text/javascript"> 
-    function setReportsToChartCode() {/* This function only needs to have a body on maintenance documents, not lookups*/} 
- </script>
 	<SCRIPT type="text/javascript">
     var kualiForm = document.forms['KualiForm'];
     var kualiElements = kualiForm.elements;

@@ -4,11 +4,7 @@
 	<param name="environment">dev</param>
 	<param name="security.directory">/usr/local/rice/</param>
 	<param name="settings.directory">/usr/local/rice/</param>
-	<!-- 
-	<param name="workflow.xml.directory">/opt/</param>
-	<param name="workflow.environment">dev</param>
-	 -->
-	
+
 	<param name="transaction.timeout">3600</param>
 	<param name="memory.monitor.threshold">.85</param>
 	<param name="production.environment.code">prd</param>
@@ -36,6 +32,7 @@
 	<param name="keystore.location">/opt/sa_forms/java/dev/edu/iu/uis/security/en/onestartsharedservices-devandtst_keystore</param>
 	<param name="keystore.password">s1t0spss!xX-tst</param>
 
+	
 	<param name="dev.mode">true</param>
 	<param name="message.persistence">synchronous</param>
 

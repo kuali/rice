@@ -1,8 +1,7 @@
 package org.kuali.rice;
 
+import org.kuali.rice.lifecycle.Lifecycle;
 import org.mortbay.jetty.Server;
-
-import edu.iu.uis.eden.core.Lifecycle;
 
 public abstract class BaseTestServer implements Lifecycle {
 

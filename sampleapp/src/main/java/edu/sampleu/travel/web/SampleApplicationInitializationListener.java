@@ -15,24 +15,12 @@
  */
 package edu.sampleu.travel.web;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.core.util.spring.ClassPathXmlApplicationContext;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import edu.iu.uis.eden.EdenConstants;
-import edu.iu.uis.eden.config.ServletConfigurer;
-import edu.iu.uis.eden.core.Core;
-import edu.iu.uis.eden.core.Lifecycle;
 import edu.sampleu.travel.infrastructure.TravelLifecycle;
 
 public class SampleApplicationInitializationListener implements ServletContextListener {

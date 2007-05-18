@@ -1,9 +1,8 @@
 package edu.sampleu.travel.infrastructure;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.lifecycle.BaseLifecycle;
 import org.springframework.context.ApplicationContext;
-
-import edu.iu.uis.eden.core.BaseLifecycle;
 
 /**
  * Core lifecycle for Travel application.  Initializes Spring and OJB.

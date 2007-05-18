@@ -23,10 +23,10 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.config.SimpleConfig;
+import org.kuali.rice.core.Core;
 
 import edu.iu.uis.eden.EdenConstants;
-import edu.iu.uis.eden.config.ServletConfigurer;
-import edu.iu.uis.eden.core.Core;
 
 public class RiceConfigurationListener implements ServletContextListener {
 
@@ -57,7 +57,7 @@ public class RiceConfigurationListener implements ServletContextListener {
         }
 
         try {
-            ServletConfigurer serverConfig = new ServletConfigurer(configLocations, sce.getServletContext());
+            SimpleConfig serverConfig = new SimpleConfig(configLocations);
             serverConfig.parseConfig();
             Core.init(serverConfig);
         }

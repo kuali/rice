@@ -1,9 +1,8 @@
 package org.kuali.rice;
 
+import org.kuali.rice.lifecycle.Lifecycle;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.webapp.WebAppContext;
-
-import edu.iu.uis.eden.core.Lifecycle;
 
 public class JettyServer implements Lifecycle {
 

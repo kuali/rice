@@ -23,8 +23,7 @@ import org.kuali.Constants;
 import org.kuali.core.util.properties.KualiPropertiesFactory;
 import org.kuali.core.util.properties.PropertyHolder;
 import org.kuali.core.util.spring.Cached;
-
-import edu.iu.uis.eden.core.Core;
+import org.kuali.rice.core.Core;
 
 @Cached
 public abstract class AbstractStaticConfigurationServiceImpl {

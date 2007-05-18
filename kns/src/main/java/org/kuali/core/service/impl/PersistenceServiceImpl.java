@@ -31,6 +31,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
+import org.apache.ojb.broker.metadata.ConnectionRepository;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.apache.ojb.broker.metadata.MetadataManager;
@@ -108,8 +109,13 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
     
     private void loadRepositoryDescriptor(ResourceLoader resourceLoader, String ojbRepositoryFilePath) throws IOException {
         InputStream is = resourceLoader.getResource(CLASSPATH_RESOURCE_PREFIX + ojbRepositoryFilePath).getInputStream();
+        ConnectionRepository cr = MetadataManager.getInstance().readConnectionRepository(is);
+        MetadataManager.getInstance().mergeConnectionRepository(cr);
+        
+        is = resourceLoader.getResource(CLASSPATH_RESOURCE_PREFIX + ojbRepositoryFilePath).getInputStream();
         DescriptorRepository dr = MetadataManager.getInstance().readDescriptorRepository(is);
         MetadataManager.getInstance().mergeDescriptorRepository(dr);
+        
         if (LOG.isDebugEnabled()) {
             LOG.debug("--------------------------------------------------------------------------");
             LOG.debug("Merging repository descriptor: " + ojbRepositoryFilePath);

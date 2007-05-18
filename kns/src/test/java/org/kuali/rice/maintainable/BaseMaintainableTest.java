@@ -16,7 +16,7 @@
 package org.kuali.rice.maintainable;
 
 import org.junit.Test;
-import org.kuali.rice.RiceTestCase;
+import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.htmlunit.HtmlUnitUtil;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;

@@ -30,11 +30,10 @@ import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.JettyServer;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.RiceTestCase;
+import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.test.RiceTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-
-import edu.iu.uis.eden.core.Lifecycle;
 
 /**
  * This class is the superclass for all test cases which may require the use of
@@ -134,7 +133,10 @@ public abstract class KualiTestBase extends RiceTestCase implements KualiTestCon
 
 	@Before 
 	public void setUp() throws Exception {
-		setRunLifeCyclesOnce(true);
+//		setRunLifeCyclesOnce(true);
+		if (true) {
+			throw new UnsupportedOperationException("");
+		}
 		super.setUp();
 		final boolean needsSpring = getClass().isAnnotationPresent(WithTestSpringContext.class);
 		hideSession();
@@ -157,9 +159,6 @@ public abstract class KualiTestBase extends RiceTestCase implements KualiTestCon
 		GlobalVariables.setErrorMap(new ErrorMap());
 		super.tearDown();
 	}
-
-	@Override
-	protected void loadTestDataTransactionally() throws Exception {}
 
 	@Override
 	public List<Lifecycle> getLifecycles() {

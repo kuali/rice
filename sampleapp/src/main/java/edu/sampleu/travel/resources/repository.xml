@@ -4,7 +4,7 @@
 	<descriptor-repository version="1.0">
 		<jdbc-connection-descriptor 
 			jcd-alias="dataSource"
-			default-connection="true" 
+			default-connection="false" 
 			platform="Oracle9i" 
 			jdbc-level="3.0"
 			useAutoCommit="0">

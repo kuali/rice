@@ -18,9 +18,8 @@ package org.kuali.rice;
 import java.util.Map;
 import java.util.Properties;
 
+import org.kuali.rice.config.BaseConfig;
 import org.springframework.beans.factory.InitializingBean;
-
-import edu.iu.uis.eden.config.BaseConfig;
 
 public class RiceConfigurer extends BaseConfig implements InitializingBean {
     

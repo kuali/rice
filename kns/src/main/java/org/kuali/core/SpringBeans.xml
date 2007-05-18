@@ -26,7 +26,7 @@
 		<property name="name" value="scriptConfigurationFilePaths" />
 		<property name="listItem" value="classpath:org/kuali/core/dwr-core.xml" />
 	</bean>
-
+<!-- 
 	<bean id="transactionManagerFactoryInitializer" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="staticMethod" value="edu.iu.uis.eden.database.WorkflowTransactionManagerFactory.setTransactionManager" />
 		<property name="arguments">
@@ -46,56 +46,24 @@
 		<property name="userTransaction" ref="jotm" />
 		<property name="transactionManager" ref="jotm" />
 	</bean>
-
-	<bean id="ksbConfigurer" class="edu.iu.uis.eden.config.spring.KSBSpringConfigurer" depends-on="transactionManagerFactoryInitializer">
-		<property name="environment" value="${environment}" />
-		<property name="messageEntity" value="KFS" />
-		<property name="serviceServletUrl" value="${application.url}/remoting/" />
-		<property name="clientProtocol" value="embedded" />
-		<!-- TODO this needs to be tokenized (pending the forward porting of the MySQL work) -->
-		<property name="platform" value="Oracle9i" />
-		<!-- END TODO -->
-		<property name="dataSource" ref="dataSource" />
+	
+		<bean id="userTransaction" class="org.kuali.rice.jta.UserTransactionFactoryBean" />
+	<bean id="jtaTransactionManager" class="org.kuali.rice.jta.TransactionManagerFactoryBean" />
+	 -->
+	
+	<bean id="ojbConfigurer" class="org.kuali.rice.ojb.JtaOjbConfigurer">
 		<property name="transactionManager" ref="jotm" />
-		<property name="userTransaction" ref="jotm" />
-		<property name="rootResourceLoader">
-			<bean class="org.kuali.core.workflow.KFSResourceLoader">
-				<!-- Define service names that are overridable -->
-				<property name="overridableServices">
-					<set>
-						<value>enUserService</value>
-						<value>enWebAuthenticationService</value>
-						<value>enEncryptionService</value>
-					</set>
-				</property>
-			</bean>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
+		<property name="userTransaction">
+			<ref bean="jotm" />
 		</property>
-		<property name="runEmbeddedServer" value="true" />
-		<property name="properties">
-			<props>
-				<prop key="transaction.timeout">${transaction.timeout}</prop>
-				<prop key="encryption.key">${encryption.key}</prop>
-				<prop key="keystore.file">${security.directory}/webservices-keystore</prop>
-				<prop key="keystore.alias">${keystore.alias}</prop>
-				<prop key="keystore.password">${keystore.password}</prop>
-				<prop key="kuali.docHandler.url.prefix">${application.url}</prop>
-				<prop key="kew.docHandler.url.prefix">${workflow.url}</prop>
-				<prop key="data.xml.root.location">${workflow.xml.directory}</prop>
-				<prop key="data.xml.pending.location">${workflow.xml.directory}/pending</prop>
-				<prop key="data.xml.loaded.location">${workflow.xml.directory}/loaded</prop>
-				<prop key="data.xml.problem.location">${workflow.xml.directory}/problem</prop>
-				<prop key="attachment.dir.location">/opt/ears/</prop>
-				<prop key="data.xml.pollIntervalSecs">30</prop>
-				<prop key="initialDelaySecs">10</prop>
-				<prop key="workgroup.url">Workgroup.do</prop>
-				<prop key="workgroup.report.url">Workgroup.do</prop>
-				<prop key="user.url">WorkflowUser.do</prop>
-				<prop key="user.report.url">WorkflowUserReport.do</prop>
-				<prop key="edl.config.loc">classpath:META-INF/EDLConfig.xml</prop>
-				<prop key="datasource.ojb.sequenceManager.className">${ojb.sequence.manager.class}</prop>
-			</props>
+		<property name="transactionManager">
+			<ref bean="jotm" />
 		</property>
 	</bean>
+
 
 	<alias name="universalUserService" alias="enUserService" />
 	<alias name="webAuthenticationService" alias="enWebAuthenticationService" />

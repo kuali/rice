@@ -21,8 +21,8 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.kuali.core.workflow.attribute.WorkflowLookupableImpl;
+import org.kuali.rice.resourceloader.SpringBeanFactoryResourceLoader;
 
-import edu.iu.uis.eden.plugin.SpringBeanFactoryResourceLoader;
 import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 
 /**

@@ -18,7 +18,7 @@ package org.kuali.rice.baseline;
 import java.net.URL;
 
 import org.junit.Test;
-import org.kuali.rice.RiceTestCase;
+import org.kuali.rice.test.RiceTestCase;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;

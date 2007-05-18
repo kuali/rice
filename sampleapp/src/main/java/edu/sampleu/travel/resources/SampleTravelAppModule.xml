@@ -1,23 +1,26 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
-	<bean id="ojbConfigurer" class="org.springmodules.orm.ojb.support.LocalOjbConfigurer" />
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" ref="configProperties" />
+	</bean>
 
-	<bean id="riceConfigurer" class="org.kuali.rice.RiceConfigurer" />
-
-	<bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
-		<property name="ignoreUnresolvablePlaceholders" value="true"></property>
-		<property name="properties">
-			<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-				<property name="targetObject" ref="riceConfigurer" />
-				<property name="targetMethod" value="getProperties" />
-			</bean>
+	<bean id="config" class="org.kuali.rice.config.spring.ConfigFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:knsConfig.xml</value>
+			</list>
 		</property>
+	</bean>
+
+	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="config" />
+		<property name="targetMethod" value="getProperties" />
 	</bean>
 
 	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean" />
 
-	<bean id="dataSource" class="edu.iu.uis.eden.database.WorkflowManagedDataSource">
+	<bean id="dataSource" class="org.kuali.rice.database.XAPoolDataSource">
 		<property name="transactionManager" ref="jotm" />
 		<property name="driverClassName" value="${datasource.driver.name}" />
 		<property name="maxSize" value="${datasource.pool.maxSize}" />
@@ -29,59 +32,37 @@
 		<property name="password" value="${datasource.password}" />
 	</bean>
 
+	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
+		<property name="dataSource" ref="dataSource" />
+		<property name="transactionManager" ref="jotm" />
+		<property name="userTransaction" ref="jotm" />
+		<property name="rootConfig" ref="config" />
+		<property name="messageEntity" value="TRAVEL" />
+		<property name="properties">
+			<props>
+				<prop key="kew.standalone.server">true</prop>
+			</props>
+		</property>
+		<property name="modules">
+			<list>
+				<bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
+					<property name="serviceServletUrl" value="${serviceServletUrl}" />
+				</bean>
+				<bean class="org.kuali.workflow.config.KEWConfigurer">
+					<property name="clientProtocol" value="local" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
 	<bean id="dbPlatformDao" class="org.kuali.core.dbplatform.KualiDBPlatformOracle">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
 	<import resource="classpath:org/kuali/core/SpringBeans.xml" />
 
-	<bean id="ksbConfigurer" class="edu.iu.uis.eden.config.spring.KSBSpringConfigurer" depends-on="transactionManagerFactoryInitializer">
-		<property name="environment" value="${environment}" />
-		<property name="messageEntity" value="TRAVEL" />
-		<property name="serviceServletUrl" value="${application.url}/remoting/" />
-		<property name="clientProtocol" value="embedded" />
-		<!-- TODO this needs to be tokenized (pending the forward porting of the MySQL work) -->
-		<property name="platform" value="Oracle9i" />
-		<!-- END TODO -->
-		<property name="dataSource" ref="dataSource" />
-		<property name="transactionManager" ref="jotm" />
-		<property name="userTransaction" ref="jotm" />
-		<property name="rootResourceLoader">
-			<bean class="org.kuali.core.workflow.KFSResourceLoader">
-				<!-- Define service names that are overridable -->
-				<property name="overridableServices">
-					<set>
-						<value>enWebAuthenticationService</value>
-					</set>
-				</property>
-			</bean>
-		</property>
-		<property name="runEmbeddedServer" value="true" />
-		<property name="properties">
-			<props>
-				<prop key="transaction.timeout">${transaction.timeout}</prop>
-				<prop key="encryption.key">${encryption.key}</prop>
-				<prop key="keystore.file">${security.directory}/webservices-keystore</prop>
-				<prop key="keystore.alias">${keystore.alias}</prop>
-				<prop key="keystore.password">${keystore.password}</prop>
-				<prop key="kuali.docHandler.url.prefix">${application.url}</prop>
-				<prop key="kew.docHandler.url.prefix">${workflow.url}</prop>
-				<prop key="data.xml.root.location">${workflow.xml.directory}</prop>
-				<prop key="data.xml.pending.location">${workflow.xml.directory}/pending</prop>
-				<prop key="data.xml.loaded.location">${workflow.xml.directory}/loaded</prop>
-				<prop key="data.xml.problem.location">${workflow.xml.directory}/problem</prop>
-				<prop key="attachment.dir.location">/opt/ears/</prop>
-				<prop key="data.xml.pollIntervalSecs">30</prop>
-				<prop key="initialDelaySecs">10</prop>
-				<prop key="workgroup.url">Workgroup.do</prop>
-				<prop key="workgroup.report.url">Workgroup.do</prop>
-				<prop key="user.url">WorkflowUser.do</prop>
-				<prop key="user.report.url">WorkflowUserReport.do</prop>
-				<prop key="edl.config.loc">classpath:META-INF/EDLConfig.xml</prop>
-			</props>
-		</property>
-	</bean>
 
+	
 	<bean id="travelAppModule" class="org.kuali.core.KualiModule">
 		<property name="moduleId" value="tv" />
 		<property name="moduleName" value="Sample Travel App" />
@@ -107,13 +88,11 @@
 				<value>edu/sampleu/travel/datadictionary</value>
 			</list>
 		</property>
-		<!-- 
 		<property name="databaseRepositoryFilePaths">
 			<list>
 				<value>edu/sampleu/travel/resources/repository.xml</value>
 			</list>
 		</property>
-		 -->
 	</bean>
 
 	<bean id="travUserService" class="edu.sampleu.travel.rice.TravelModuleUserService" parent="kualiModuleUserServiceBase" />
@@ -127,8 +106,4 @@
 		</property>
 	</bean>
 
-	<!-- 
-	<bean id="universalUserDao" class="org.kuali.rice.RiceKNSDefaultUserDAOImpl" />
-	<bean id="webAuthenticationService" class="org.kuali.rice.web.RiceRemoteUserWebAuthenticationServiceImpl" />
-	-->
 </beans>

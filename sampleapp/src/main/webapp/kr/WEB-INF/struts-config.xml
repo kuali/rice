@@ -7,6 +7,7 @@
     <form-beans >
 	    <form-bean name="QuestionPromptForm" type="org.kuali.core.web.struts.form.QuestionPromptForm" />
 	    <form-bean name="LookupForm" type="org.kuali.core.web.struts.form.LookupForm" />
+		<form-bean name="MultipleValueLookupForm" type="org.kuali.core.web.struts.form.MultipleValueLookupForm" />
 	    <form-bean name="InquiryForm" type="org.kuali.core.web.struts.form.InquiryForm" />
 	    <form-bean name="KualiMaintenanceForm" type="org.kuali.core.web.struts.form.KualiMaintenanceForm" />
 	    <form-bean name="KualiHelpForm" type="org.kuali.core.web.struts.form.KualiHelpForm" />
@@ -22,6 +23,10 @@
     </global-exceptions>  
     
     <global-forwards >
+        <forward name="save" path="/index.jsp" redirect="true" />
+        <forward name="cancel" path="/index.jsp" redirect="true" />
+        <forward name="close" path="/index.jsp" redirect="true" />
+        <forward name="portal" path="/index.jsp" redirect="true" />
     </global-forwards>
 
     <action-mappings>
@@ -38,6 +43,12 @@
    	    <action path="/lookup" name="LookupForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.core.web.struts.action.KualiLookupAction">
 	        <forward name="basic" path="/WEB-INF/jsp/KualiLookup.jsp" />
 	    </action>
+	     
+	     <action path="/multipleValueLookup" name="MultipleValueLookupForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.core.web.struts.action.KualiMultipleValueLookupAction">
+            <set-property property="cancellable" value="true" />
+            <forward name="basic" path="/WEB-INF/jsp/KualiMultipleValueLookup.jsp" />
+        </action>
+        
 	    <action path="/inquiry" name="InquiryForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.core.web.struts.action.KualiInquiryAction">
 	        <forward name="basic" path="/WEB-INF/jsp/KualiInquiry.jsp" />
 	    </action>

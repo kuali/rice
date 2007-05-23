@@ -39,7 +39,7 @@
   <font color="">${Constants.REQUIRED_FIELD_SYMBOL}&nbsp;</font></c:if
 ><c:if test="${not empty labelFor}"><label for="${labelFor}"></c:if
 ><c:if test="${!skipHelpUrl}"><a
-        href="help.do?methodToCall=getAttributeHelpText&amp;businessObjectClassName=${attributeEntry.fullClassName}&amp;attributeName=${attributeEntry.name}"
+        href="${ConfigProperties.kr.url}/help.do?methodToCall=getAttributeHelpText&amp;businessObjectClassName=${attributeEntry.fullClassName}&amp;attributeName=${attributeEntry.name}"
         tabindex="${KualiForm.nextArbitrarilyHighIndex}" target="helpWindow" title="[Help] ${attributeEntry.label}"></c:if
 ><c:if test="${useShortLabel == true}"><c:out value="${attributeEntry.shortLabel}" /></c:if
 ><c:if test="${useShortLabel != true}"><c:out value="${attributeEntry.label}" /></c:if

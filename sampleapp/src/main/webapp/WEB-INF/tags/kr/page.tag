@@ -55,9 +55,9 @@
 	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/kr/scripts/jscalendar-1.0/calendar-setup.js"></script>
 	<style type="text/css">@import url(scripts/jscalendar-1.0/calendar-win2k-1.css);</style>
 	<%-- DWR Support Scripts --%>
-	<script language="JavaScript" src="${pageContext.request.contextPath}/kr/dwr/engine.js" type="text/javascript"></script>
-	<script language="JavaScript" src="${pageContext.request.contextPath}/kr/dwr/util.js" type="text/javascript"></script>
-	<script type='text/javascript' src="${pageContext.request.contextPath}/kr/dwr/interface/UserService.js"></script>
+	<script language="JavaScript" src="${pageContext.request.contextPath}/dwr/engine.js" type="text/javascript"></script>
+	<script language="JavaScript" src="${pageContext.request.contextPath}/dwr/util.js" type="text/javascript"></script>
+	<script type='text/javascript' src="${pageContext.request.contextPath}/dwr/interface/UserService.js"></script>
 	<script language="JavaScript" src="${pageContext.request.contextPath}/kr/scripts/objectInfo.js" type="text/javascript"></script>
 	<c:choose>
 		<c:when test="${lookup}" >
@@ -100,10 +100,6 @@
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>
-	<link href="${pageContext.request.contextPath}/css/kuali_application.css" rel="stylesheet" type="text/css" />
-	<link href="${pageContext.request.contextPath}/css/kuali_overrides.css" rel="stylesheet" type="text/css" />
-	<script language="JavaScript" src="${pageContext.request.contextPath}/scripts/kuali_application.js" type="text/javascript"></script>
-	<script language="JavaScript" src="${pageContext.request.contextPath}/scripts/kuali_overrides.js" type="text/javascript"></script>	
 </head>
 
 <c:choose>

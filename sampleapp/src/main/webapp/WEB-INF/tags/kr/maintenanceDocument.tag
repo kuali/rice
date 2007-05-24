@@ -64,8 +64,12 @@
 
 						<kul:documentOverview editingMode="${KualiForm.editingMode}" />
 
-
-	<jsp:doBody />
+	<script type="text/javascript"><!--
+	    var kualiForm = document.forms['KualiForm'];
+	    var kualiElements = kualiForm.elements;
+	    // -->
+	</script>
+	
 
 <%-- Show the information about the business object. --%>
 

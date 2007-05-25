@@ -50,6 +50,7 @@
 	<link href="${pageContext.request.contextPath}/kr/css/kuali.css" rel="stylesheet" type="text/css" />
 	<script language="JavaScript" src="${pageContext.request.contextPath}/kr/scripts/core.js" type="text/javascript"></script>
 	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/kr/scripts/dhtml.js"></script>
+	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/kr/scripts/my_common.js"></script>
 	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/kr/scripts/jscalendar-1.0/calendar.js"></script>
 	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/kr/scripts/jscalendar-1.0/lang/calendar-en.js"></script>
 	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/kr/scripts/jscalendar-1.0/calendar-setup.js"></script>

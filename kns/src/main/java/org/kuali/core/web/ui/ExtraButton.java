@@ -15,6 +15,9 @@
  */
 package org.kuali.core.web.ui;
 
+import org.kuali.Constants;
+import org.kuali.rice.KNSServiceLocator;
+
 /**
  * Represents an extra button that may appear on the lookups or bottom of a document page.
  */
@@ -46,7 +49,7 @@ public class ExtraButton {
         return extraButtonSource;
     }
     public void setExtraButtonSource(String extraButtonSource) {
-        this.extraButtonSource = extraButtonSource;
+        this.extraButtonSource = extraButtonSource.replace("${kr.externalizable.images.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(Constants.EXTERNALIZABLE_IMAGES_URL_KEY)).replace("${externalizable.images.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(Constants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
     }
     
     

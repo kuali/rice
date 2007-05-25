@@ -21,7 +21,7 @@
               The body is rendered unconditionally." %>
 
 <c:if test="${render}">
-    <a href="inquiry.do?methodToCall=start&businessObjectClassName=${boClassName}&${keyValues}"  target="_blank">
+    <a href="${ConfigProperties.application.url}/kr/inquiry.do?methodToCall=start&businessObjectClassName=${boClassName}&${keyValues}"  target="_blank">
 </c:if>
         <jsp:doBody/>
 <c:if test="${render}">

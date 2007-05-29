@@ -38,6 +38,7 @@ import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.service.UniversalUserService;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.UrlFactory;
+import org.kuali.core.web.format.Formatter;
 import org.kuali.core.web.ui.Section;
 import org.kuali.core.web.ui.SectionBridge;
 import org.kuali.rice.KNSServiceLocator;
@@ -210,8 +211,12 @@ public class KualiInquirableImpl implements Inquirable {
 
             if (keyValue == null) {
                 keyValue = "";
-            }
-            else {
+            } else if (keyValue instanceof java.sql.Date) { //format the date for passing in url
+                if (Formatter.findFormatter(keyValue.getClass()) != null) {
+                    Formatter formatter = Formatter.getFormatter(keyValue.getClass());
+                    keyValue = (String) formatter.format(keyValue);
+                }
+            } else {
                 keyValue = keyValue.toString();
             }
 

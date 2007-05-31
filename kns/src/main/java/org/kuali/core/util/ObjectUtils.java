@@ -37,6 +37,7 @@ import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.kuali.Constants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.PersistableBusinessObject;
+import org.kuali.core.bo.PersistableBusinessObjectExtension;
 import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.cache.CacheException;
 import org.kuali.core.web.format.FormatException;
@@ -273,12 +274,19 @@ public class ObjectUtils {
             try {
 
                 // Try to simply use the default or simple way of getting the property type.
-                propertyType = easyGetPropertyType(object, propertyName);
-
+                propertyType = PropertyUtils.getPropertyType(object, propertyName);
+                
             } catch(NoSuchMethodException nsme) {
                 // swallow the exception, propertyType stays null
             }
 
+            // if the property type as determined from the object is PersistableBusinessObject,
+            // then this must be an extension attribute -- attempt to get the property type from the
+            // persistence structure service
+            if ( propertyType != null && propertyType.equals( PersistableBusinessObjectExtension.class ) ) {
+            	propertyType = persistenceStructureService.getBusinessObjectAttributeClass( ProxyHelper.getRealClass( object ), propertyName );
+            }
+            
             // If the easy way didn't work ...
             if (null == propertyType && -1 != propertyName.indexOf('.')) {
 

@@ -18,13 +18,18 @@ package org.kuali.core.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.apache.ojb.broker.metadata.MetadataManager;
+import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
+import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.exceptions.ClassNotPersistableException;
+import org.kuali.core.exceptions.ObjectNotABusinessObjectRuntimeException;
+import org.kuali.core.util.spring.Cached;
 
 public class PersistenceServiceStructureImplBase {
 
@@ -105,6 +110,37 @@ public class PersistenceServiceStructureImplBase {
         }
 
         return classDescriptor;
+    }
+
+    /**
+     * @see org.kuali.core.service.PersistenceStructureService#getBusinessObjectAttributeClass(java.lang.Class, java.lang.String)
+     */
+    @Cached
+    public Class getBusinessObjectAttributeClass(Class clazz, String attributeName) throws ObjectNotABusinessObjectRuntimeException {
+    	Class attributeClass = null;
+    	
+    	if ( clazz.isAssignableFrom( PersistableBusinessObject.class ) ) {
+    		throw new ObjectNotABusinessObjectRuntimeException( clazz.getName() + " is not a PersistableBusinessObject" );
+    	}
+    	String baseAttributeName = attributeName;
+    	String subAttributeString = null;
+    	if ( attributeName.contains( "." ) ) {
+    		baseAttributeName = attributeName.substring( 0, attributeName.indexOf( '.' ) );
+    		subAttributeString = attributeName.substring( attributeName.indexOf( '.' ) + 1 );
+    	}
+    	
+        ClassDescriptor classDescriptor = this.getClassDescriptor( clazz );
+    	ObjectReferenceDescriptor refDescriptor = classDescriptor.getObjectReferenceDescriptorByName( baseAttributeName );
+    	
+    	if ( refDescriptor != null ) {
+    		attributeClass = refDescriptor.getItemClass();
+    	}
+    	// recurse if necessary
+    	if ( subAttributeString != null ) {
+    		attributeClass = getBusinessObjectAttributeClass( attributeClass, subAttributeString );
+    	}
+    	
+    	return attributeClass;
     }
 
 

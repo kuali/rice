@@ -19,6 +19,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -206,7 +207,10 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         }
 
         // get the class of the attribute name
-        Class referenceClass = propertyDescriptor.getPropertyType();
+        Class referenceClass = ObjectUtils.getPropertyType( bo, referenceName, persistenceStructureService );
+        if ( referenceClass == null ) {
+        	referenceClass = propertyDescriptor.getPropertyType();
+        }
 
         /*
          * check for UniversalUser references in which case we can just get the reference through propertyutils
@@ -235,7 +239,13 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         // get the list of foreign-keys for this reference. if the reference
         // does not exist, or is not a reference-descriptor, an exception will
         // be thrown here.
-        Map fkMap = persistenceStructureService.getForeignKeysForReference(bo.getClass(), referenceName);
+        BusinessObjectRelationship boRel = businessObjectMetaDataService.getBusinessObjectRelationship( bo, referenceName );
+        Map<String,String> fkMap = null;
+        if ( boRel != null ) {
+        	fkMap = boRel.getParentToChildReferences();
+        } else {
+        	fkMap = Collections.EMPTY_MAP;
+        }
 
         // walk through the foreign keys, testing each one to see if it has a value
         Map pkMap = new HashMap();
@@ -246,7 +256,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
             // attempt to retrieve the value for the given field
             Object fkFieldValue;
             try {
-                fkFieldValue = PropertyUtils.getSimpleProperty(bo, fkFieldName);
+                fkFieldValue = PropertyUtils.getProperty(bo, fkFieldName);
             }
             catch (Exception e) {
                 throw new RuntimeException(e);

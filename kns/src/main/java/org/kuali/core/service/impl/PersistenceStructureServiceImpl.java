@@ -36,7 +36,6 @@ import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.exceptions.ClassNotPersistableException;
 import org.kuali.core.exceptions.IntrospectionException;
-import org.kuali.core.exceptions.ObjectNotABusinessObjectException;
 import org.kuali.core.exceptions.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.core.exceptions.ReferenceAttributeDoesntExistException;
 import org.kuali.core.exceptions.ReferenceAttributeNotAnOjbReferenceException;
@@ -314,31 +313,10 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
         }
 
         Map fkMap = new HashMap();
-        PropertyDescriptor propertyDescriptor = null;
-
-        // make an instance of the class passed
-        Object classInstance;
-        try {
-            classInstance = clazz.newInstance();
-        }
-        catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        // make sure the attribute exists at all, throw exception if not
-        try {
-            propertyDescriptor = PropertyUtils.getPropertyDescriptor(classInstance, attributeName);
-        }
-        catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        if (propertyDescriptor == null) {
-            throw new ReferenceAttributeDoesntExistException("Requested attribute: '" + attributeName + "' does not exist " + "on class: '" + clazz.getName() + "'. GFK");
-        }
-
+        
         // get the class of the attribute name
-        Class attributeClass = propertyDescriptor.getPropertyType();
-
+        Class attributeClass = getBusinessObjectAttributeClass( clazz, attributeName );
+        
         // make sure the class of the attribute descends from BusinessObject,
         // otherwise throw an exception
         if (!PersistableBusinessObject.class.isAssignableFrom(attributeClass)) {
@@ -348,8 +326,8 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
         // make sure the attribute designated is listed as a reference-descriptor
         // on the clazz specified, otherwise throw an exception (OJB); UniversalUser objects
         // will be excluded from this
-        ClassDescriptor classDescriptor = getClassDescriptor(clazz);
         if (!UniversalUser.class.equals(attributeClass)) {
+            ClassDescriptor classDescriptor = getClassDescriptor(clazz);
             ObjectReferenceDescriptor referenceDescriptor = classDescriptor.getObjectReferenceDescriptorByName(attributeName);
             if (referenceDescriptor == null) {
                 throw new ReferenceAttributeNotAnOjbReferenceException("Attribute requested (" + attributeName + ") is not listed " + "in OJB as a reference-descriptor for class: '" + clazz.getName() + "'");
@@ -473,53 +451,6 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
         return fkToPkMap;
     }
 
-
-    /**
-     * @see org.kuali.core.service.PersistenceStructureService#getAttributeBoSubclass(java.lang.Class, java.lang.String)
-     */
-    @Cached
-    public Class getAttributeBoSubclass(Class clazz, String attributeName) throws ObjectNotABusinessObjectException, IllegalAccessException, InstantiationException, InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-
-        PersistableBusinessObject boInstance;
-
-        // make sure the class of the attribute descends from BusinessObject,
-        // otherwise throw an exception
-        if (!PersistableBusinessObject.class.isAssignableFrom(clazz)) {
-            throw new ObjectNotABusinessObjectException("Class specified is of class: " + "'" + clazz.getName() + "' and is not a " + "descendent of BusinessObject.  Only descendents of BusinessObject " + "can be used.");
-        }
-
-        // attempt to get an instance of the class passed in
-        boInstance = (PersistableBusinessObject) clazz.newInstance();
-
-        return getAttributeBoSubclass(boInstance, attributeName);
-    }
-
-    /**
-     * @see org.kuali.core.service.PersistenceStructureService#getAttributeBoSubclass(org.kuali.core.bo.BusinessObject,
-     *      java.lang.String)
-     */
-    @Cached
-    public Class getAttributeBoSubclass(PersistableBusinessObject bo, String attributeName) throws ObjectNotABusinessObjectException, InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-
-        // make sure the attribute exists at all, throw exception if not
-        PropertyDescriptor propertyDescriptor;
-        propertyDescriptor = PropertyUtils.getPropertyDescriptor(bo, attributeName);
-        if (propertyDescriptor == null) {
-            throw new ReferenceAttributeDoesntExistException("Requested attribute: '" + attributeName + "' does not exist " + "on class: '" + bo.getClass().getName() + "'.");
-        }
-
-        // get the class of the attribute name
-        Class referenceClass = propertyDescriptor.getPropertyType();
-
-        // make sure the class of the attribute descends from BusinessObject,
-        // otherwise throw an exception
-        if (!PersistableBusinessObject.class.isAssignableFrom(referenceClass)) {
-            throw new ObjectNotABusinessObjectException("Attribute requested (" + attributeName + ") is of class: " + "'" + referenceClass.getName() + "' and is not a " + "descendent of BusinessObject.  Only descendents of BusinessObject " + "can be used.");
-        }
-
-        return referenceClass;
-
-    }
 
     /**
      * @see org.kuali.core.service.PersistenceService#getNestedForeignKeyMap(java.lang.Class)

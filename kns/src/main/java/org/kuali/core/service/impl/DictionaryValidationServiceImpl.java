@@ -483,14 +483,14 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         boolean exists;
         boolean active;
 
-        boolean fkFieldsPopulated = false;
+        boolean fkFieldsPopulated = true;
         // need to check for DD relationship FKs
         List<String> fkFields = getDataDictionaryService().getRelationshipSourceAttributes(bo.getClass().getName(), referenceName);
         if (fkFields != null) {
             for (String fkFieldName : fkFields) {
                 Object fkFieldValue = null;
                 try {
-                    fkFieldValue = PropertyUtils.getSimpleProperty(bo, fkFieldName);
+                    fkFieldValue = PropertyUtils.getProperty(bo, fkFieldName);
                 }
                 // if we cant retrieve the field value, then
                 // it doesnt have a value

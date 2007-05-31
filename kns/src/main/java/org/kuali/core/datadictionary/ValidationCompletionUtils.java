@@ -22,17 +22,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.kuali.core.util.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.core.bo.BusinessObject;
+import org.kuali.core.bo.PersistableBusinessObjectExtension;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
+import org.kuali.core.datadictionary.exception.CompletionException;
 import org.kuali.core.document.Document;
 import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.rule.PreRulesCheck;
 import org.kuali.core.service.PersistenceStructureService;
+import org.kuali.core.util.ObjectUtils;
 
 public class ValidationCompletionUtils {
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ValidationCompletionUtils.class);
+    //private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ValidationCompletionUtils.class);
     private PersistenceStructureService persistenceStructureService;
 
     public ValidationCompletionUtils() {
@@ -251,8 +253,11 @@ public class ValidationCompletionUtils {
 
                 if (propertyDescriptor != null) {
 
-                    Class type = propertyDescriptor.getPropertyType();
-                    if (Collection.class.isAssignableFrom(type)) {
+                    Class propertyType = propertyDescriptor.getPropertyType();
+                    if ( propertyType.equals( PersistableBusinessObjectExtension.class ) ) {
+                    	propertyType = persistenceStructureService.getBusinessObjectAttributeClass( currentClass, currentPropertyName );                    
+                	}
+                    if (Collection.class.isAssignableFrom(propertyType)) {
 
                         if (persistenceStructureService.isPersistable(currentClass)) {
 
@@ -270,7 +275,7 @@ public class ValidationCompletionUtils {
                     }
                     else {
 
-                        currentClass = propertyDescriptor.getPropertyType();
+                        currentClass = propertyType;
 
                     }
 

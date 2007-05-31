@@ -35,6 +35,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     protected Long versionNumber;
     private String objectId;
     private boolean newCollectionRecord;
+    private PersistableBusinessObjectExtension extension;
 
     // The following support notes on BusinessObjects (including DocumentHeader)
     private List boNotes = new ArrayList();
@@ -293,5 +294,24 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     public boolean deleteNote(Note note) {
         return this.getBoNotes().remove(note);
     }
+
+	public PersistableBusinessObjectExtension getExtension() {
+		if ( extension == null ) {
+			try {
+				Class extensionClass = KNSServiceLocator.getPersistenceStructureService()
+						.getBusinessObjectAttributeClass( this.getClass(), "extension" );
+				if ( extensionClass != null ) {
+					extension = (PersistableBusinessObjectExtension)extensionClass.newInstance();
+				}
+			} catch ( Exception ex ) {
+				LOG.error( "unable to create extension object", ex );
+			}
+		}
+		return extension;
+	}
+
+	public void setExtension(PersistableBusinessObjectExtension extension) {
+		this.extension = extension;
+	}
 
 }

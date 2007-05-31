@@ -15,13 +15,13 @@
  */
 package org.kuali.core.service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
 import org.kuali.core.bo.BusinessObjectRelationship;
 import org.kuali.core.bo.PersistableBusinessObject;
-import org.kuali.core.exceptions.ObjectNotABusinessObjectException;
+import org.kuali.core.exceptions.ClassNotPersistableException;
+import org.kuali.core.exceptions.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.core.util.ForeignKeyFieldsPopulationState;
 
 /**
@@ -139,39 +139,18 @@ public interface PersistenceStructureService {
 
     /**
      * 
-     * This method is a BusinessObject specifific utility method. If the Class clazz passed in is a descendent of BusinessObject,
-     * and if the attributeName specified exists on the object, and it is a descendent of BusinessObject, then the class of this
+     * This method is a PersistableBusinessObject specifific utility method. If the Class clazz passed in is a descendent of PersistableBusinessObject,
+     * and if the attributeName specified exists on the object, then the class of this
      * attribute named will be returned.
      * 
      * @param clazz - class to be examined for the attribute's class
      * @param attributeName - name of the class' attribute to be examined
      * @return the class of the named attribute, if no exceptions occur
-     * @throws ObjectNotABusinessObjectException - if the class specified is not a descendent of BusinessObject, or the class of the
-     *         named attribute is not descended from BusinessObject
-     * @throws IllegalAccessException - if a new instance of Class clazz cannot be created
-     * @throws InstantiationException - if a new instance of Class clazz cannot be created
-     * @throws InvocationTargetException - if the class of the attribute cannot be determined
-     * @throws IllegalAccessException - if the class of the attribute cannot be determined
-     * @throws NoSuchMethodException - if the class of the attribute cannot be determined
+     * @throws ObjectNotABusinessObjectRuntimeException - if the class specified is not a descendent of PersistableBusinessObject, or the class of the
+     *         named attribute is not descended from PersistableBusinessObject
      * 
      */
-    public Class getAttributeBoSubclass(Class clazz, String attributeName) throws ObjectNotABusinessObjectException, IllegalAccessException, InstantiationException, InvocationTargetException, IllegalAccessException, NoSuchMethodException;
-
-    /**
-     * 
-     * This method is a BusinessObject specific utility method. If the attributeName specified exists on the object, and it is a
-     * descendent of BusinessObject, then the class of this attribute named will be returned.
-     * 
-     * @param bo - BusinessObject instance which contains the attributeName to be examined
-     * @param attributeName - the name of the attribute to examine for its class
-     * @return the Class of the attribute, if no exceptions occur
-     * @throws ObjectNotABusinessObjectException
-     * @throws InvocationTargetException - if the class of the attribute cannot be determined
-     * @throws IllegalAccessException - if the class of the attribute cannot be determined
-     * @throws NoSuchMethodException - if the class of the attribute cannot be determined
-     * 
-     */
-    public Class getAttributeBoSubclass(PersistableBusinessObject bo, String attributeName) throws ObjectNotABusinessObjectException, InvocationTargetException, IllegalAccessException, NoSuchMethodException;
+    public Class getBusinessObjectAttributeClass(Class clazz, String attributeName) throws ObjectNotABusinessObjectRuntimeException;
 
     /**
      * Builds a map of reference pk attributes back to the foreign key.

@@ -106,4 +106,5 @@ public interface PersistableBusinessObject extends BusinessObject, PersistenceBr
 
     public boolean deleteNote(Note note);
 
+    public PersistableBusinessObjectExtension getExtension();
 }

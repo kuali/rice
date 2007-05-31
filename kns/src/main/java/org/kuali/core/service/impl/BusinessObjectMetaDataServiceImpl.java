@@ -18,7 +18,6 @@ package org.kuali.core.service.impl;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -152,17 +151,17 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
         return lookupable;
     }
     public BusinessObjectRelationship getBusinessObjectRelationship(BusinessObject bo, String attributeName ) {
-        return getBusinessObjectRelationship( bo, attributeName, "", true );
+        return getBusinessObjectRelationship( bo, bo.getClass(), attributeName, "", true );
     }
     
-    public BusinessObjectRelationship getBusinessObjectRelationship(RelationshipDefinition ddReference, BusinessObject bo, String attributeName, String attributePrefix, boolean keysOnly ) {
+    public BusinessObjectRelationship getBusinessObjectRelationship(RelationshipDefinition ddReference, BusinessObject bo, Class boClass, String attributeName, String attributePrefix, boolean keysOnly ) {
         
         BusinessObjectRelationship relationship = null;
         
         //if it is nested then replace the bo and attributeName with the sub-refs
         if(ObjectUtils.isNestedAttribute(attributeName)) {
             if ( ddReference != null ) {
-                relationship = new BusinessObjectRelationship(bo.getClass(), ddReference.getObjectAttributeName(), ddReference.getTargetClass() );
+                relationship = new BusinessObjectRelationship(boClass, ddReference.getObjectAttributeName(), ddReference.getTargetClass() );
                 for ( PrimitiveAttributeDefinition def : ddReference.getPrimitiveAttributes() ) {
                     if ( StringUtils.isNotBlank( attributePrefix ) ) {
                         relationship.getParentToChildReferences().put( attributePrefix + "." + def.getSourceName(), def.getTargetName() );
@@ -188,42 +187,21 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
                 return relationship;
             }
             // recurse down to the next object to find the relationship
-            try {
-                String localPrefix = StringUtils.substringBefore( attributeName, "." );
-                String localAttributeName = StringUtils.substringAfter(attributeName, ".");
-                Class nestedClass = PropertyUtils.getPropertyType( bo, localPrefix );
-                String fullPrefix = localPrefix;
-                if ( StringUtils.isNotBlank( attributePrefix ) ) {
-                    fullPrefix = attributePrefix + "." + localPrefix; 
-                }
-                if(BusinessObject.class.isAssignableFrom(nestedClass)) {
-                    relationship = getBusinessObjectRelationship( (BusinessObject)ObjectUtils.createNewObjectFromClass(nestedClass), localAttributeName, fullPrefix, keysOnly );                    
-                }
-                return relationship;
-            } catch ( NoSuchMethodException ex ) {
-                // do nothing
-            } catch ( InvocationTargetException ex ) {
-                // do nothing
-            } catch ( IllegalAccessException ex ) {
-                // do nothing
+
+            String localPrefix = StringUtils.substringBefore( attributeName, "." );
+            String localAttributeName = StringUtils.substringAfter(attributeName, ".");
+            if ( bo == null ) {
+            	bo = (BusinessObject)ObjectUtils.createNewObjectFromClass( boClass );
             }
-            // if it's still null, fall back to the original behavior
-            if ( relationship == null ) {
-                Class nestedClass = getNestedBOClass(bo, attributeName);
-                attributePrefix = StringUtils.substringBeforeLast( attributeName, "." );
-                attributeName = StringUtils.substringAfterLast(attributeName, ".");
-                if(nestedClass != null) {
-                    Object obj = null;
-                    if(BusinessObject.class.isAssignableFrom(nestedClass)) {
-                        obj = ObjectUtils.createNewObjectFromClass(nestedClass); 
-                    }
-                    if(obj != null) {
-                        bo = (BusinessObject)obj; 
-                    } else {
-                        return null;
-                    }
-                }
+            Class nestedClass = ObjectUtils.getPropertyType( bo, localPrefix, getPersistenceStructureService() );
+            String fullPrefix = localPrefix;
+            if ( StringUtils.isNotBlank( attributePrefix ) ) {
+                fullPrefix = attributePrefix + "." + localPrefix; 
             }
+            if(BusinessObject.class.isAssignableFrom(nestedClass)) {
+                relationship = getBusinessObjectRelationship( null, nestedClass, localAttributeName, fullPrefix, keysOnly );                    
+            }
+            return relationship;
         }
         
         //try persistable reference first
@@ -269,11 +247,12 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
         return getBusinessObjectRelationshipDefinition(bo.getClass(), attributeName);
     }
     
-    public BusinessObjectRelationship getBusinessObjectRelationship(BusinessObject bo, String attributeName, String attributePrefix, boolean keysOnly ) {
-        RelationshipDefinition ddReference = getBusinessObjectRelationshipDefinition(bo, attributeName);
-        return getBusinessObjectRelationship(ddReference, bo, attributeName, attributePrefix, keysOnly);
+    public BusinessObjectRelationship getBusinessObjectRelationship(BusinessObject bo, Class boClass, String attributeName, String attributePrefix, boolean keysOnly ) {
+        RelationshipDefinition ddReference = getBusinessObjectRelationshipDefinition(boClass, attributeName);
+        return getBusinessObjectRelationship(ddReference, bo, boClass, attributeName, attributePrefix, keysOnly);
     }
 
+    
 
     /**
      * Gets the dataDictionaryService attribute. 
@@ -364,60 +343,6 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
     
     
     
-    /**
-     * 
-     * This method retrieves a map of references for a primitive reference through
-     * the Persistence layer
-     * @param businessObject
-     * @param attributeName
-     * @return
-     */
-    
-    private Map.Entry<String, Class> getPersistablePrimitiveReferences(PersistableBusinessObject businessObject, String attributeName) {
-        Map chosenReferenceByKeySize = new HashMap();
-        Map chosenReferenceByFieldName = new HashMap();
-    
-        Map referenceClasses = getPersistenceStructureService().getReferencesForForeignKey(businessObject.getClass(), attributeName);
-    
-        // if field is not fk to any reference class, return field object w no quickfinder
-        if (referenceClasses == null || referenceClasses.isEmpty()) {
-            return null;
-        }
-    
-        /*
-         * if field is fk to more than one reference, take the class with the least # of pk fields, this should give the correct
-         * grain for the attribute
-         */
-        int minKeys = Integer.MAX_VALUE;
-        for (Iterator iter = referenceClasses.keySet().iterator(); iter.hasNext();) {
-            String attr = (String) iter.next();
-            Class clazz = (Class) referenceClasses.get(attr);
-            List pkNames = persistenceStructureService.listPrimaryKeyFieldNames(clazz);
-    
-            // Compare based on key size.
-            if (pkNames.size() < minKeys) {
-                minKeys = pkNames.size();
-                chosenReferenceByKeySize.clear();
-                chosenReferenceByKeySize.put(attr, clazz);
-            }
-    
-            // Compare based on field name.
-            if (attributeName.startsWith(attr)) {
-                chosenReferenceByFieldName.clear();
-                chosenReferenceByFieldName.put(attr, clazz);
-            }
-        }
-    
-        if(chosenReferenceByFieldName.isEmpty() && chosenReferenceByKeySize.isEmpty()) {
-            return null;
-        } else if(!chosenReferenceByFieldName.isEmpty()) {
-            return (Map.Entry<String, Class>) chosenReferenceByFieldName.entrySet().iterator().next();
-        } else if(!chosenReferenceByKeySize.isEmpty()) {
-            return (Map.Entry<String, Class>) chosenReferenceByKeySize.entrySet().iterator().next();
-        } else {
-            return null;
-        }
-    }
         
     public RelationshipDefinition getDDRelationship(Class c, String attributeName) {
         DataDictionaryEntryBase entryBase = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry(c);
@@ -462,33 +387,6 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
         return relationship;
     }
     
-    /**
-     * 
-     * This method mimics the <code>getPersistablePrimitiveReferences</code> except that it checks the 
-     * DataDictionary relationships for this information
-     * @param bo
-     * @param attributeName
-     * @return
-     */
-    private Map.Entry<String, Class> getDDPrimitiveReferences(BusinessObject bo, String attributeName) {
-        Map<String, Class> primitiveRefMap = new HashMap<String, Class>();
-
-        RelationshipDefinition relationship = getDDRelationship( bo.getClass(), attributeName );
-        if ( relationship != null ) {
-            for(PrimitiveAttributeDefinition primitive : relationship.getPrimitiveAttributes()) {
-                if(primitive.getSourceName().equals(attributeName)) {
-                    primitiveRefMap.clear();
-                    primitiveRefMap.put(primitive.getTargetName(), relationship.getTargetClass());
-                }
-            }
-        }
-
-        if(!primitiveRefMap.isEmpty()) {
-            return primitiveRefMap.entrySet().iterator().next();
-        }
-        return null;
-        
-    }
 
     public List<BusinessObjectRelationship> getBusinessObjectRelationships(BusinessObject bo) {
         if ( bo == null ) return null;

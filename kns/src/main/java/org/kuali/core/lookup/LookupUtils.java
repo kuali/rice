@@ -285,7 +285,7 @@ public class LookupUtils {
             LOG.debug( "setFieldQuickfinder("+businessObject.getClass().getName()+","+attributeName+","+field+","+displayedFieldNames+")" );
         }
 
-        relationship = businessObjectMetaDataService.getBusinessObjectRelationship(businessObject, attributeName, "", false);
+        relationship = businessObjectMetaDataService.getBusinessObjectRelationship(businessObject, businessObject.getClass(), attributeName, "", false);
 
         String collectionPrefix = "";
         if ( collectionName != null ) {
@@ -306,7 +306,7 @@ public class LookupUtils {
                 }
                 
                 RelationshipDefinition ddReference = businessObjectMetaDataService.getBusinessObjectRelationshipDefinition(businessObject, attributeName);
-                relationship = businessObjectMetaDataService.getBusinessObjectRelationship(ddReference, businessObject, attributeName, "", false);
+                relationship = businessObjectMetaDataService.getBusinessObjectRelationship(ddReference, businessObject, businessObject.getClass(), attributeName, "", false);
                 if(relationship!=null) {
                     field.setQuickFinderClassNameImpl(relationship.getRelatedClass().getName());
                     field.setFieldConversions(generateFieldConversions( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null));
@@ -395,23 +395,16 @@ public class LookupUtils {
         if (nestedAttributes.length > 1) {
             String attributeStringSoFar = "";
             for (int i = 0; i < nestedAttributes.length - 1; i++) {
-                try {
-                    // we need to build a string of the attribute names depending on which iteration we're in.
-                    // so if the original attributeName string we're using is "a.b.c.d.e", then first iteration would use
-                    // "a", 2nd "a.b", 3rd "a.b.c", etc.
-                    if (i != 0) {
-                        attributeStringSoFar = attributeStringSoFar + ".";  
-                    }
-                    attributeStringSoFar = attributeStringSoFar + nestedAttributes[i];
-                    
-                    clazz = ObjectUtils.easyGetPropertyType(bo, attributeStringSoFar);
-                } catch(InvocationTargetException ite) {
-                    LOG.info(ite);
-                } catch(NoSuchMethodException nsme) {
-                    LOG.info(nsme);
-                } catch(IllegalAccessException iae) {
-                    LOG.info(iae);
+                // we need to build a string of the attribute names depending on which iteration we're in.
+                // so if the original attributeName string we're using is "a.b.c.d.e", then first iteration would use
+                // "a", 2nd "a.b", 3rd "a.b.c", etc.
+                if (i != 0) {
+                    attributeStringSoFar = attributeStringSoFar + ".";  
                 }
+                attributeStringSoFar = attributeStringSoFar + nestedAttributes[i];
+                
+                clazz = ObjectUtils.getPropertyType( bo, attributeStringSoFar, persistenceStructureService );
+
                 if (clazz != null && BusinessObject.class.isAssignableFrom(clazz)) {
                     try {
                         childBO = (BusinessObject) clazz.newInstance();

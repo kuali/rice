@@ -15,7 +15,6 @@
  */
 package org.kuali.core.lookup;
 
-import java.beans.PropertyDescriptor;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,12 +23,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.Constants;
 import org.kuali.KeyConstants;
 import org.kuali.core.bo.BusinessObject;
-import org.kuali.core.bo.LookupResults;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.mask.Mask;
 import org.kuali.core.exceptions.ValidationException;
@@ -673,10 +670,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 // set comparator and formatter based on property type
                 Class propClass = null;
                 try {
-                   PropertyDescriptor propDescriptor = PropertyUtils.getPropertyDescriptor(element, col.getPropertyName());
-                   if (propDescriptor != null) {
-                       propClass = propDescriptor.getPropertyType();
-                   }
+                	propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
                 }
                 catch (Exception e) {
                     throw new RuntimeException("Cannot access PropertyType for property " + "'" + col.getPropertyName() + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);

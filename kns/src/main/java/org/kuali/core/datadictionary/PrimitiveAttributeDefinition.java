@@ -111,7 +111,7 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
             String sourcePath = sourceClassName + "." + sourceName;
             String targetPath = targetClassName + "." + targetName;
 
-            throw new AttributeValidationException("source attribute '" + sourcePath + "' and target attribute '" + targetPath + "' are of differing types (" + getParseLocation() + ")");
+            throw new AttributeValidationException("source attribute '" + sourcePath + "' (" + sourceClass + ") and target attribute '" + targetPath + "' (" + targetClass + ") are of differing types (" + getParseLocation() + ")");
         }
     }
 

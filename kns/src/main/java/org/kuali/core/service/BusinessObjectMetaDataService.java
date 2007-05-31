@@ -30,7 +30,7 @@ import org.kuali.core.datadictionary.RelationshipDefinition;
  */
 public interface BusinessObjectMetaDataService {
     
-    public BusinessObjectRelationship getBusinessObjectRelationship(RelationshipDefinition ddReference, BusinessObject bo, String attributeName, String attributePrefix, boolean keysOnly );
+    public BusinessObjectRelationship getBusinessObjectRelationship(RelationshipDefinition ddReference, BusinessObject bo, Class boClass, String attributeName, String attributePrefix, boolean keysOnly );
     public RelationshipDefinition getBusinessObjectRelationshipDefinition(Class c, String attributeName);    
     public RelationshipDefinition getBusinessObjectRelationshipDefinition(BusinessObject bo, String attributeName);
     
@@ -125,7 +125,7 @@ public interface BusinessObjectMetaDataService {
      */
     public BusinessObjectRelationship getBusinessObjectRelationship(BusinessObject bo, String attributeName);
     
-    public BusinessObjectRelationship getBusinessObjectRelationship(BusinessObject bo, String attributeName, String attributePrefix, boolean keysOnly );
+    public BusinessObjectRelationship getBusinessObjectRelationship(BusinessObject bo, Class boClass, String attributeName, String attributePrefix, boolean keysOnly );
     
     public List<BusinessObjectRelationship> getBusinessObjectRelationships( BusinessObject bo );
 

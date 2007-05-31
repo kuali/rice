@@ -361,7 +361,10 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
         }
 
         // get the class of the attribute name
-        Class referenceClass = propertyDescriptor.getPropertyType();
+        Class referenceClass = getBusinessObjectAttributeClass( bo.getClass(), referenceName );
+        if ( referenceClass == null ) {
+        	referenceClass = propertyDescriptor.getPropertyType();
+        }
 
         // make sure the class of the attribute descends from BusinessObject,
         // otherwise throw an exception

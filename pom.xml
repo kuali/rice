@@ -72,7 +72,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
 
@@ -95,12 +94,6 @@
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty</artifactId>
 			<version>6.1.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.mortbay.jetty</groupId>
-					<artifactId>servlet-api-2.5</artifactId>
-				</exclusion>
-			</exclusions>
 			<scope>compile</scope>
 		</dependency>
 
@@ -116,18 +109,6 @@
 			<version>1.1.2</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jsp-api-2.0</artifactId>
-			<version>6.0.0</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.mortbay.jetty</groupId>
-					<artifactId>servlet-api-2.5</artifactId>
-				</exclusion>
-			</exclusions>
-			<scope>compile</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>tomcat</groupId>
@@ -183,6 +164,14 @@
 					<groupId>javax.servlet</groupId>
 					<artifactId>servlet-api</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>javax.faces</groupId>
+					<artifactId>jsf-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 
@@ -202,6 +191,12 @@
 			<groupId>org.springmodules</groupId>
 			<artifactId>spring-modules-ojb</artifactId>
 			<version>0.8a</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -377,19 +372,19 @@
 
 	<repositories>
 		<repository>
-			<id>connector</id>
-			<layout>default</layout>
-			<name>Connector</name>
-			<url>http://julien.dubois.free.fr/maven2/</url>
-		</repository>
-
-		<repository>
 			<id>kuali</id>
 			<layout>default</layout>
 			<name>Kuali Repository</name>
 			<url>
 				https://onestart.iu.edu/dav/MY/maven-mirror/maven2
 			</url>
+        </repository>
+
+        <repository>
+            <id>connector</id>
+            <layout>default</layout>
+            <name>Connector</name>
+            <url>http://julien.dubois.free.fr/maven2/</url>
 		</repository>
 
 	</repositories>

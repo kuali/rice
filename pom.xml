@@ -13,7 +13,7 @@
 		<module>kns</module>
 		<module>sampleapp</module>
 	</modules>
-
+  
 	<build>
 		<resources>
 			<resource>

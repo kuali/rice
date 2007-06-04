@@ -54,7 +54,7 @@
 	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/kr/scripts/jscalendar-1.0/calendar.js"></script>
 	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/kr/scripts/jscalendar-1.0/lang/calendar-en.js"></script>
 	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/kr/scripts/jscalendar-1.0/calendar-setup.js"></script>
-	<style type="text/css">@import url(scripts/jscalendar-1.0/calendar-win2k-1.css);</style>
+	<link href="${pageContext.request.contextPath}/kr/scripts/jscalendar-1.0/calendar-win2k-1.css" rel="stylesheet" type="text/css" />
 	<%-- DWR Support Scripts --%>
 	<script language="JavaScript" src="${pageContext.request.contextPath}/dwr/engine.js" type="text/javascript"></script>
 	<script language="JavaScript" src="${pageContext.request.contextPath}/dwr/util.js" type="text/javascript"></script>

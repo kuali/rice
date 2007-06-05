@@ -96,6 +96,7 @@
                    name CDATA #REQUIRED 
                    businessObjectClass CDATA #REQUIRED
                    numberOfColumns CDATA '1'
+                   summaryTitle CDATA #IMPLIED
                >
 
                 <!--

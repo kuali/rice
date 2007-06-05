@@ -47,6 +47,7 @@ import org.kuali.core.util.Timer;
 import org.kuali.core.web.struts.pojo.PojoForm;
 import org.kuali.rice.KNSServiceLocator;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springmodules.orm.ojb.OjbOperationException;
@@ -289,7 +290,10 @@ public class KualiRequestProcessor extends RequestProcessor {
             ActionForward forward = (ActionForward)template.execute(new TransactionCallback() {
                 public Object doInTransaction(TransactionStatus status) {
                     try {
-                        return action.execute(mapping, form, request, response);
+                        Object actionResult = action.execute(mapping, form, request, response);
+                      //  KNSServiceLocator.getTransactionManager().
+                        return actionResult;
+                        
                     } catch (Exception e) {
                         // the doInTransaction method has no means for throwing exceptions, so we will wrap the exception in
                         // a RuntimeException and re-throw.  The one caveat here is that this will always result in the
@@ -298,11 +302,14 @@ public class KualiRequestProcessor extends RequestProcessor {
                     }
                 }
             });
+            
             publishErrorMessages(request);
             saveMessages(request);
             saveAuditErrors(request);
+            
             t0.log();
             return forward;
+            
         } catch (Exception e) {
             if (e instanceof WrappedRuntimeException) {
                 e = (Exception)e.getCause();
@@ -319,11 +326,12 @@ public class KualiRequestProcessor extends RequestProcessor {
                 t0.log();
                 return mapping.findForward(Constants.MAPPING_BASIC);
             }
+            
             publishErrorMessages(request);
+            
             t0.log();
             return (processException(request, response, e, form, mapping));
         }
-
     }
 
     /**

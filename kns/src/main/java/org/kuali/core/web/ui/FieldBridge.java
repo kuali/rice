@@ -140,7 +140,7 @@ public class FieldBridge {
                 
                 propValue = lookupFinderValue(fieldControl, prop, finder);
             } else {
-                if (prop != null) {
+                if (!ObjectUtils.isNull(prop)) {
                     if (formatter != null) {
                         propValue = (String) formatter.format(prop);
                     } else {

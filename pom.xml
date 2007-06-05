@@ -13,7 +13,7 @@
 		<module>kns</module>
 		<module>sampleapp</module>
 	</modules>
-  
+
 	<build>
 		<resources>
 			<resource>
@@ -95,6 +95,12 @@
 			<artifactId>jetty</artifactId>
 			<version>6.1.1</version>
 			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.mortbay.jetty</groupId>
+					<artifactId>servlet-api-2.5</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -136,12 +142,12 @@
 			<artifactId>kew</artifactId>
 			<version>2.4</version>
 		</dependency>
-		
+
 		<dependency>
-            <groupId>org.kuali.rice</groupId>
-            <artifactId>rice-ksb</artifactId>
-            <version>0.9-SNAPSHOT</version>
-        </dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-ksb</artifactId>
+			<version>0.9-SNAPSHOT</version>
+		</dependency>
 
 		<dependency>
 			<groupId>xalan</groupId>
@@ -378,13 +384,13 @@
 			<url>
 				https://onestart.iu.edu/dav/MY/maven-mirror/maven2
 			</url>
-        </repository>
+		</repository>
 
-        <repository>
-            <id>connector</id>
-            <layout>default</layout>
-            <name>Connector</name>
-            <url>http://julien.dubois.free.fr/maven2/</url>
+		<repository>
+			<id>connector</id>
+			<layout>default</layout>
+			<name>Connector</name>
+			<url>http://julien.dubois.free.fr/maven2/</url>
 		</repository>
 
 	</repositories>

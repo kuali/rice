@@ -80,6 +80,9 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug( "fromXml() : \n" + xml );
     	}
+    	if ( xml != null ) {
+    		xml = xml.replaceAll( "--EnhancerByCGLIB--[0-9a-f]{0,8}", "" );
+    	}
         return xstream.fromXML(xml);
     }
 

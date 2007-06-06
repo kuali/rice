@@ -276,6 +276,8 @@ public class ObjectUtils {
                 // Try to simply use the default or simple way of getting the property type.
                 propertyType = PropertyUtils.getPropertyType(object, propertyName);
                 
+            } catch(IllegalArgumentException ex) {
+                // swallow the exception, propertyType stays null
             } catch(NoSuchMethodException nsme) {
                 // swallow the exception, propertyType stays null
             }

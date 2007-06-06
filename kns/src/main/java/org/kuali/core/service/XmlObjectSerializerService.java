@@ -41,16 +41,6 @@ public interface XmlObjectSerializerService {
     public Object fromXml(String xml);
 
     /**
-     * This will serialize the XML without using the OJB Proxy Converter and following proxy object graphs.
-     */
-    public String toXmlForMaintainables(Object object);
-
-    /**
-     * This will deserialize the XML without using the OJB Proxy Converter and following proxy object graphs.
-     */
-    public Object fromXmlForMaintainables(String xml);
-
-    /**
      * Renders an org.w3c.Node to a String.
      */
     public String writeNode(org.w3c.dom.Node node, boolean indent) throws TransformerException;

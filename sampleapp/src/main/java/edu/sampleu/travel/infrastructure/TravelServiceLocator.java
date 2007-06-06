@@ -26,46 +26,48 @@ import uk.ltd.getahead.dwr.create.SpringCreator;
 
 public class TravelServiceLocator extends KNSServiceLocator {
 
-    public static final String SPRING_BEANS = "classpath:edu/sampleu/travel/resources/SampleTravelAppModule.xml";
+	public static final String SPRING_BEANS = "classpath:edu/sampleu/travel/resources/SampleTravelAppModule.xml";
 
-    private static TravelServiceLocator instance = new TravelServiceLocator();
-    private ConfigurableApplicationContext applicationContext;
+	private static TravelServiceLocator instance = new TravelServiceLocator();
 
-    private TravelServiceLocator() {
-    }
+	private ConfigurableApplicationContext applicationContext;
 
-    public static TravelServiceLocator getInstance() {
-        return instance;
-    }
+	private TravelServiceLocator() {
+	}
 
-    public void start() throws Exception {
-        initializeApplicationContext();
-    }
+	public static TravelServiceLocator getInstance() {
+		return instance;
+	}
 
-    public void stop() throws Exception {
-        getInstance().getApplicationContext().close();
-    }
+	public void start() throws Exception {
+		initializeApplicationContext();
+	}
 
-    public static void initializeApplicationContext() throws Exception {
-        getInstance().setApplicationContext(new ClassPathXmlApplicationContext(SPRING_BEANS));
-        KNSServiceLocator.getInstance().setKnsApplicationContext(getInstance().getApplicationContext());
-        loadModules();
-        getPersistenceService().initialize();
-        getDataDictionaryService().completeInitialization();
-        SpringCreator.setOverrideBeanFactory(KNSServiceLocator.getInstance().getKnsApplicationContext().getBeanFactory());
-    }
-    
-    private static void loadModules() {
-        for (Object module :  new ArrayList((getInstance().getApplicationContext()).getBeansOfType(KualiModule.class).values())) {
-            getKualiModuleService().getInstalledModules().add((KualiModule)module);
-        }
-    }
+	public void stop() throws Exception {
+		getInstance().getApplicationContext().close();
+	}
 
-    public ConfigurableApplicationContext getApplicationContext() {
-        return applicationContext;
-    }
+	public static void initializeApplicationContext() throws Exception {
+		getInstance().setApplicationContext(new ClassPathXmlApplicationContext(SPRING_BEANS));
+		KNSServiceLocator.getInstance().setKnsApplicationContext(getInstance().getApplicationContext());
+		loadModules();
+		getPersistenceService().initialize();
+		getDataDictionaryService().completeInitialization();
+		SpringCreator.setOverrideBeanFactory(KNSServiceLocator.getInstance().getKnsApplicationContext().getBeanFactory());
+	}
 
-    public void setApplicationContext(ConfigurableApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
+	private static void loadModules() {
+		for (Object module : new ArrayList((getInstance().getApplicationContext()).getBeansOfType(KualiModule.class).values())) {
+			getKualiModuleService().getInstalledModules().add((KualiModule) module);
+		}
+	}
+
+	public ConfigurableApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
+
+	public void setApplicationContext(ConfigurableApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
+
 }

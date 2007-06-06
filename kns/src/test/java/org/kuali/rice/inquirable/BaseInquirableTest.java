@@ -16,15 +16,15 @@
 package org.kuali.rice.inquirable;
 
 import org.junit.Test;
-import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.KNSTestCase;
 import org.kuali.rice.test.htmlunit.HtmlUnitUtil;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-public class BaseInquirableTest extends RiceTestCase {
+public class BaseInquirableTest extends KNSTestCase {
     
     @Test public void testInquiryFetch() throws Exception {
-        HtmlPage inquiryPage = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL + "/inquiry.do?businessObjectClassName=edu.sampleu.travel.bo.TravelAccount&number=a1&methodToCall=start");
+        HtmlPage inquiryPage = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL + "/kr/inquiry.do?businessObjectClassName=edu.sampleu.travel.bo.TravelAccount&number=a1&methodToCall=start");
         assertEquals("Kuali :: Inquiry", inquiryPage.getTitleText());
         assertTrue("Inquiry page should have 'Travel Account Inquiry' in title bar", HtmlUnitUtil.pageContainsText(inquiryPage, "Travel Account Inquiry"));
     }

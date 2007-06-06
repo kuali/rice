@@ -16,7 +16,7 @@
 package org.kuali.rice.transactiondocument;
 
 import org.junit.Test;
-import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.KNSTestCase;
 import org.kuali.rice.test.htmlunit.HtmlUnitUtil;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
@@ -24,7 +24,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTextArea;
 
-public class BaseTransactionDocumentTest extends RiceTestCase {
+public class BaseTransactionDocumentTest extends KNSTestCase {
 
     @Test public void testTransactionDocumentRoute() throws Exception {
         HtmlPage transDocPage = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL + "/travelDocument2.do?methodToCall=docHandler&command=initiate&docTypeName=TravelRequest");

@@ -16,7 +16,7 @@
 package org.kuali.rice.lookup;
 
 import org.junit.Test;
-import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.KNSTestCase;
 import org.kuali.rice.test.htmlunit.HtmlUnitUtil;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
@@ -26,7 +26,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.html.HtmlTableCell;
 import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 
-public class BaseLookupTest extends RiceTestCase {
+public class BaseLookupTest extends KNSTestCase {
 
     @Test public void testLookupable() throws Exception {
         

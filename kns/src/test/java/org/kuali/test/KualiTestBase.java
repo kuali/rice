@@ -30,8 +30,8 @@ import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.JettyServer;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.KNSTestCase;
 import org.kuali.rice.lifecycle.Lifecycle;
-import org.kuali.rice.test.RiceTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
@@ -72,7 +72,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
  * 
  */
 
-public abstract class KualiTestBase extends RiceTestCase implements KualiTestConstants {
+public abstract class KualiTestBase extends KNSTestCase implements KualiTestConstants {
 	//private static final Logger LOG = Logger.getLogger(KualiTestBase.class);
 
 	//private static final String HIDE_SPRING_FROM_TESTS_MESSAGE = "This test class needs the " + WithTestSpringContext.class.getSimpleName() + " annotation to access Spring.";

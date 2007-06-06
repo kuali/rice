@@ -8,6 +8,8 @@
 		<version>0.9-SNAPSHOT</version>
 	</parent>
 	<artifactId>sampleapp</artifactId>
+	
+
 
 	<build>
 		<resources>
@@ -16,6 +18,8 @@
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>
+				<filtering>true</filtering>
+				
 			</resource>
 		</resources>
 		<testResources>

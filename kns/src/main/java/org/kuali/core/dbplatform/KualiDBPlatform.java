@@ -15,8 +15,6 @@
  */
 package org.kuali.core.dbplatform;
 
-import java.util.List;
-
 import org.apache.ojb.broker.query.Criteria;
 
 /**

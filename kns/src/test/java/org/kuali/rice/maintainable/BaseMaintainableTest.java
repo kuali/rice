@@ -16,18 +16,18 @@
 package org.kuali.rice.maintainable;
 
 import org.junit.Test;
-import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.KNSTestCase;
 import org.kuali.rice.test.htmlunit.HtmlUnitUtil;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-public class BaseMaintainableTest extends RiceTestCase {
+public class BaseMaintainableTest extends KNSTestCase {
     
 
     @Test public void testMaintainable() throws Exception {
-        HtmlPage maintPage = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL + "/maintenance.do?businessObjectClassName=edu.sampleu.travel.bo.TravelAccount&methodToCall=start#topOfForm");
+        HtmlPage maintPage = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL + "/kr/maintenance.do?businessObjectClassName=edu.sampleu.travel.bo.TravelAccount&methodToCall=start#topOfForm");
         
         HtmlForm maintForm = (HtmlForm)maintPage.getFormByName("KualiForm");
         maintForm.getInputByName("document.documentHeader.financialDocumentDescription").setValueAttribute("description");

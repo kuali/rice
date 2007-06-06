@@ -40,6 +40,10 @@
 
 	<param name="kfsLocator.useAppContext">true</param>
 	
+	<!-- 
 	<param name="config.location">/usr/local/bamboo/test-ci-overrides.xml</param>
+	 -->
+	 
+	<param name="config.location">${alt.build.location}</param>
 
 </config>

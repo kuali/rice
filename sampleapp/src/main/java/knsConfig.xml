@@ -32,7 +32,6 @@
 	<param name="keystore.location">/opt/sa_forms/java/dev/edu/iu/uis/security/en/onestartsharedservices-devandtst_keystore</param>
 	<param name="keystore.password">s1t0spss!xX-tst</param>
 
-	
 	<param name="dev.mode">true</param>
 	<param name="message.persistence">synchronous</param>
 
@@ -58,4 +57,6 @@
 		
 	<param name="kfsLocator.useAppContext">true</param>
 	<param name="production.environment.code">prd</param>
+	
+	<param name="config.location">${alt.build.location}</param>
 </config>

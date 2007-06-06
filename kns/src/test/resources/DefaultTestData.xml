@@ -314,6 +314,7 @@
 			<lastName>employee</lastName>
 		</user>
 	</users>
+	<!-- 
 	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
 		<workgroup>
 			<id>2</id>
@@ -325,6 +326,7 @@
 			</members>
 		</workgroup>
 	</workgroups>
+	 -->
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>DestinationAttribute</name>

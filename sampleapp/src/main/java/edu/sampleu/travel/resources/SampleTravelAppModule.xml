@@ -54,8 +54,8 @@
 			</list>
 		</property>
 	</bean>
-
-	<bean id="dbPlatformDao" class="org.kuali.core.dbplatform.KualiDBPlatformOracle">
+	
+	<bean id="dbPlatformDao" class="org.kuali.rice.spring.config.KNSDBPlatformFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 

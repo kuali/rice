@@ -117,12 +117,13 @@
 		</c:if>  
     </c:when>
 	<c:otherwise>
-		<c:if test="${not empty KualiForm.anchor }">
-			<c:set var="anchorScript" value="jumpToAnchor('${KualiForm.anchor}');" />
+		<c:if test="${not empty KualiForm.anchor}">
+			<c:if test="${ConfigProperties.test.mode ne 'true'}">
+				<c:set var="anchorScript" value="jumpToAnchor('${KualiForm.anchor}');" />
+			</c:if>
 		</c:if>
 		<body onload="${anchorScript}" onKeyPress="return isReturnKeyAllowed('${Constants.DISPATCH_REQUEST_PARAMETER}.' , event);">
 		<kul:backdoor />${headerMenuBar}
-		
 	</c:otherwise>
 </c:choose>
 	

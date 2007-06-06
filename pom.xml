@@ -14,6 +14,8 @@
 		<module>sampleapp</module>
 	</modules>
 
+
+
 	<build>
 		<resources>
 			<resource>
@@ -21,8 +23,10 @@
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>
+				<filtering>true</filtering>
 			</resource>
 		</resources>
+		
 		<testResources>
 			<testResource>
 				<directory>src/test/java</directory>
@@ -72,6 +76,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 		</plugins>
 	</build>
 
@@ -142,12 +147,12 @@
 			<artifactId>kew</artifactId>
 			<version>2.4</version>
 		</dependency>
-
+		
 		<dependency>
-			<groupId>org.kuali.rice</groupId>
-			<artifactId>rice-ksb</artifactId>
-			<version>0.9-SNAPSHOT</version>
-		</dependency>
+            <groupId>org.kuali.rice</groupId>
+            <artifactId>rice-ksb</artifactId>
+            <version>0.9-SNAPSHOT</version>
+        </dependency>
 
 		<dependency>
 			<groupId>xalan</groupId>

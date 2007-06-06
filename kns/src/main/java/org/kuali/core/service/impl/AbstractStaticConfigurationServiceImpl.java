@@ -47,8 +47,10 @@ public abstract class AbstractStaticConfigurationServiceImpl {
 
         KualiPropertiesFactory propertiesFactory = new KualiPropertiesFactory(configFileName);
         this.propertyHolder = propertiesFactory.getProperties(null);
+        this.propertyHolder.getHeldProperties().put("testing", "a value");
         //add properties in Core config
         this.propertyHolder.getHeldProperties().putAll(Core.getCurrentContextConfig().getProperties());
+        int i = 0;
     }
 
     /**

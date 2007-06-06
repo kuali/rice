@@ -21,6 +21,7 @@ import org.apache.log4j.Level;
 import org.junit.Test;
 import org.kuali.core.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.KNSTestCase;
 import org.kuali.test.KualiTestBase;
 import org.kuali.test.WithTestSpringContext;
 
@@ -40,8 +41,8 @@ public class DataDictionaryBuilder_TransactionalDocumentTest extends KualiTestBa
         builder = new DataDictionaryBuilder(KNSServiceLocator.getValidationCompletionUtils());
         builder.addUniqueEntries(DataDictionaryBuilderTest.PACKAGE_CORE_BO, true);
         builder.addUniqueEntries(DataDictionaryBuilderTest.PACKAGE_CORE_DOCUMENT, true);
-        setLogLevel("org.apache.commons.digester", Level.FATAL);
-        setLogLevel("org.kuali.core.datadictionary.XmlErrorHandler", Level.FATAL);
+//        setLogLevel("org.apache.commons.digester", Level.FATAL);
+//        setLogLevel("org.kuali.core.datadictionary.XmlErrorHandler", Level.FATAL);
     }
 
     @Test

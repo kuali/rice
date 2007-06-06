@@ -134,9 +134,6 @@ public abstract class KualiTestBase extends KNSTestCase implements KualiTestCons
 	@Before 
 	public void setUp() throws Exception {
 //		setRunLifeCyclesOnce(true);
-		if (true) {
-			throw new UnsupportedOperationException("");
-		}
 		super.setUp();
 		final boolean needsSpring = getClass().isAnnotationPresent(WithTestSpringContext.class);
 		hideSession();
@@ -160,35 +157,6 @@ public abstract class KualiTestBase extends KNSTestCase implements KualiTestCons
 		super.tearDown();
 	}
 
-	@Override
-	public List<Lifecycle> getLifecycles() {
-		lifeCycles = new LinkedList<Lifecycle>();
-		lifeCycles.add(new JettyServer(9912));
-		return lifeCycles;
-	}
-	
-	public void stopLifecycles() throws Exception {
-	}
-	
-	//
-	// /**
-	// * @return the JIRA issues thought to relate to this test method and class
-	// */
-	// private Set<RelatesTo.JiraIssue> getRelatedJiraIssues() {
-	// HashSet<RelatesTo.JiraIssue> issues = new HashSet<RelatesTo.JiraIssue>();
-	// addJiraIssues(this.getClass().getAnnotation(RelatesTo.class), issues);
-	// // Test methods must be public, so we can use getMethod(), which handles
-	// inheritence. (I recommend not inheriting test methods, however.)
-	// try {
-	// addJiraIssues(this.getClass().getMethod(getName()).getAnnotation(RelatesTo.class),
-	// issues);
-	// }
-	// catch (NoSuchMethodException e) {
-	// throw new AssertionError("Impossible because tests are named after their
-	// test method.");
-	// }
-	// return issues;
-	// }
 
 	/**
 	 * Adds the JIRA issues of the given annotation to the given set.

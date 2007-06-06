@@ -27,7 +27,6 @@ import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.batch.FileXmlDocCollection;
 import edu.iu.uis.eden.batch.XmlDoc;
 import edu.iu.uis.eden.batch.XmlDocCollection;
-import edu.sampleu.travel.infrastructure.TravelServiceLocator;
 
 public class KNSTestCase extends RiceTestCase {
 	
@@ -40,7 +39,7 @@ public class KNSTestCase extends RiceTestCase {
 		ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = TEST_CONFIG_FILE;
 		
 		super.setUp();
-		new SQLDataLoader("classpath:DefaultTestData.sql", ";").runSql();
+		
 		
 		
 		//we should put this somewhere in the test harness...
@@ -58,6 +57,34 @@ public class KNSTestCase extends RiceTestCase {
 		
 		loadDefaultTestData();
 	}
+	
+	
+
+	@Override
+	public List<Lifecycle> getPerTestLifecycles() {
+		return new ArrayList<Lifecycle>();
+	}
+
+	@Override
+	protected List<Lifecycle> getSuiteLifecycles() {
+		List<Lifecycle> lifeCycles = super.getPerTestLifecycles();
+		lifeCycles.add(new Lifecycle() {
+			boolean started = false;
+			public boolean isStarted() {
+				return this.started;
+			}
+			public void start() throws Exception {
+			    new SQLDataLoader("classpath:DefaultTestData.sql", ";").runSql();
+				this.started = true;
+			}
+			public void stop() throws Exception {
+			    this.started = false;
+			}
+		});
+		return lifeCycles;
+	}
+
+
 
 	@Override
 	protected List<String> getConfigLocations() {

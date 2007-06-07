@@ -48,8 +48,6 @@ import org.springmodules.orm.ojb.OjbOperationException;
 
 /**
  * This class is the OJB implementation of the LookupDao interface.
- * 
- * 
  */
 public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupDaoOjb.class);
@@ -362,7 +360,6 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             return;
         }
 
-
         if (TypeUtils.isStringClass(propertyType)) {
             if (StringUtils.contains(propertyValue, Constants.NOT_LOGICAL_OPERATOR)) {
                 addNotCriteria(propertyName, propertyValue, propertyType, criteria);
@@ -422,32 +419,28 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         }
     }
 
+
     /**
-     * 
-     * <b>PRE:</b>
-     * 
-     * @param splitValue must be a logical opeator
-     * @param propertyName
-     * @param propertyValue
-     * @param propertyType
-     * @param criteria
-     * @param splitValue
+     * Builds a sub criteria object joined with an 'AND' or 'OR' (depending on splitValue) using the split values of propertyValue. Then joins back the
+     * sub criteria to the main criteria using an 'AND'.
      */
     private void addLogicalOperatorCriteria(String propertyName, String propertyValue, Class propertyType, Criteria criteria, String splitValue) {
         String[] splitPropVal = StringUtils.split(propertyValue, splitValue);
-        Criteria locCriteria = new Criteria();
+      
+        Criteria subCriteria = new Criteria();
         for (int i = 0; i < splitPropVal.length; i++) {
-            locCriteria = new Criteria();
+        	Criteria predicate = new Criteria();
 
-            addCriteria(propertyName, splitPropVal[i], propertyType, locCriteria);
+            addCriteria(propertyName, splitPropVal[i], propertyType, predicate);
             if (splitValue == Constants.OR_LOGICAL_OPERATOR) {
-                criteria.addOrCriteria(locCriteria);
+            	subCriteria.addOrCriteria(predicate);
             }
             if (splitValue == Constants.AND_LOGICAL_OPERATOR) {
-                criteria.addAndCriteria(locCriteria);
+            	subCriteria.addAndCriteria(predicate);
             }
-
         }
+       
+        criteria.addAndCriteria(subCriteria);
     }
 
 

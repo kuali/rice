@@ -55,7 +55,7 @@
 		<property name="transactionManager" ref="jotm" />
 	</bean>
 
-	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
+	<bean id="transactionManager" class="org.kuali.core.util.Spring.KualiTransactionManager" lazy-init="true">
 		<property name="userTransaction">
 			<ref bean="jotm" />
 		</property>

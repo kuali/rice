@@ -15,8 +15,11 @@
  */
 package org.kuali.core.util.spring;
 
-import org.springframework.transaction.UnexpectedRollbackException;
+import javax.transaction.Status;
+import javax.transaction.SystemException;
+
 import org.springframework.transaction.jta.JtaTransactionManager;
+import org.springframework.transaction.jta.JtaTransactionObject;
 import org.springframework.transaction.support.DefaultTransactionStatus;
 
 /**
@@ -27,17 +30,21 @@ public class KualiTransactionManager extends JtaTransactionManager {
 
 	/*
 	 * JtaTransactionManager will throw an exception on commit if the
-	 * transaction has already been rolled back. This is an override to catch
-	 * the exception and resume processing.
+	 * transaction has already been rolled back. This is an override to check
+	 * the status of the transaction before committing.
 	 * 
 	 * @see org.springframework.transaction.jta.JtaTransactionManager#doCommit(org.springframework.transaction.support.DefaultTransactionStatus)
 	 */
 	@Override
 	protected void doCommit(DefaultTransactionStatus status) {
+		JtaTransactionObject txObject = (JtaTransactionObject) status
+				.getTransaction();
 		try {
-			super.doCommit(status);
-		} catch (UnexpectedRollbackException ex) {
-			// resume
+			if (txObject.getUserTransaction().getStatus() != Status.STATUS_MARKED_ROLLBACK) {
+				super.doCommit(status);
+			}
+		} catch (SystemException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

@@ -145,7 +145,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         setupBaseConvenienceObjects(maintenanceDocument);
 
         // apply rules that are common across all maintenance documents, regardless of class
-        processGlobalSaveDocumentBusinessRules(maintenanceDocument);
+        // processGlobalSaveDocumentBusinessRules(maintenanceDocument);
 
         // the document must be in a valid state for saving. this does not include business
         // rules, but just enough testing that the document is populated and in a valid state

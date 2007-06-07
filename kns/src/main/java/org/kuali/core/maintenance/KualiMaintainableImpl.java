@@ -30,6 +30,7 @@ import java.util.Set;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.Constants;
+import org.kuali.PropertyConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.BusinessObjectRelationship;
 import org.kuali.core.bo.PersistableBusinessObject;
@@ -405,11 +406,20 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     public void processAfterRetrieve() {
     }
     
-    /**
-     * @see org.kuali.core.maintenance.Maintainable#processAfterCopy()
-     */
-    public void processAfterCopy() {
-    }
+	/** 
+     * Set the new collection records back to true so they can be deleted (copy should act like new)
+     * 
+	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterCopy()
+	 */
+	public void processAfterCopy() {
+        try {
+            ObjectUtils.setObjectPropertyDeep(businessObject, PropertyConstants.NEW_COLLECTION_RECORD, boolean.class, true, 2);
+        }
+        catch (Exception e) {
+            LOG.error("unable to set newCollectionRecord property: " + e.getMessage(), e);
+            throw new RuntimeException("unable to set newCollectionRecord property: " + e.getMessage(), e);
+        }
+	}
     
     /**
      * @see org.kuali.core.maintenance.Maintainable#processAfterEdit()
@@ -869,6 +879,8 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         }
         return references;
     }
+    
+    
     
     /*
     public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {

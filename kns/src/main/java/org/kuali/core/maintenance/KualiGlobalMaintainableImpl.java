@@ -34,9 +34,7 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiGlobalMaintainableImpl.class);
 
     /**
-     * 
      * @see org.kuali.core.maintenance.Maintainable#prepareForSave()
-     * 
      */
     @Override
     public void prepareForSave() {
@@ -46,7 +44,6 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
     }
 
     /**
-     * 
      * @see org.kuali.core.maintenance.Maintainable#processAfterRetrieve()
      */
     @Override
@@ -57,10 +54,8 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
     }
 
     /**
-     * 
      * This method does special-case handling for Globals, doing various tasks that need to be done to make a global doc valid after
      * its been loaded from the db/maintenance-system.
-     * 
      */
     protected void processGlobalsAfterRetrieve() {
 
@@ -127,9 +122,7 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
     }
 
     /**
-     * 
      * This method does special-case handling for Globals, filling out various fields that need to be filled, etc.
-     * 
      */
     protected void prepareGlobalsForSave() {
         GlobalBusinessObject gbo = (GlobalBusinessObject) businessObject;
@@ -152,7 +145,6 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
     public abstract List<MaintenanceLock> generateMaintenanceLocks();
 
     /**
-     * 
      * @see org.kuali.core.maintenance.Maintainable#saveBusinessObject()
      */
     @Override
@@ -177,5 +169,4 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
         }
 
     }
-
 }

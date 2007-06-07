@@ -74,7 +74,7 @@ public class DataDictionaryBuilder_TransactionalDocumentTest extends KualiTestBa
             builder.completeInitialization();
         }
         catch (DataDictionaryException e) {
-            if (DataDictionaryUtils.saxCause(e) instanceof DuplicateEntryException) {
+            if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
                 failedAsExpected = true;
             }
         }

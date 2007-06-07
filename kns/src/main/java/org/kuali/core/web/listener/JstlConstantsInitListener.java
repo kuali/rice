@@ -19,6 +19,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.log4j.Logger;
 import org.kuali.Constants;
 import org.kuali.PropertyConstants;
 import org.kuali.core.ConfigProperties;
@@ -32,12 +33,17 @@ import org.kuali.rice.KNSServiceLocator;
  */
 
 public class JstlConstantsInitListener implements ServletContextListener {
+	
+	private static final Logger LOG = Logger.getLogger(JstlConstantsInitListener.class);
+	
     public void contextInitialized(ServletContextEvent sce) {
+    	
+    	LOG.info("Starting " + JstlConstantsInitListener.class.getName() + "...");
         ServletContext context = sce.getServletContext();
 
         // publish application constants into JSP app context with name "Constants"
         context.setAttribute("Constants", new Constants());
-
+        
         // publish configuration properties into JSP app context with name "ConfigProperties"
         context.setAttribute("ConfigProperties", new ConfigProperties());
 

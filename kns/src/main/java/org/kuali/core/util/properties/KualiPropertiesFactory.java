@@ -77,6 +77,7 @@ public class KualiPropertiesFactory {
      * @throws PropertiesException if the config file can't be loaded, or if a PropertySource can't load its properties
      */
     public PropertyHolder getProperties(PropertyHolder startingProperties) {
+    	
         // open stream to configFile
         InputStream input = null;
         try {

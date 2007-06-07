@@ -45,7 +45,8 @@ public class JettyServer implements Lifecycle {
 	protected Server createServer() {
 		Server server = new Server(getPort());
 		try {
-			WebAppContext context = new WebAppContext("sampleapp/src/main/webapp", getContextName());
+			setBaseDirSystemProperty();
+			WebAppContext context = new WebAppContext(System.getProperty("basedir") + "/src/test/webapp", getContextName());
 			server.addHandler(context);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -77,6 +78,12 @@ public class JettyServer implements Lifecycle {
 			new JettyServer(8080, null).start();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	protected void setBaseDirSystemProperty() {
+		if (System.getProperty("basedir") == null) {
+			System.setProperty("basedir", System.getProperty("user.dir") + "/kns");
 		}
 	}
 

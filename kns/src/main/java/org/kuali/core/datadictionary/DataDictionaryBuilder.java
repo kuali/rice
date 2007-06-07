@@ -156,7 +156,7 @@ public class DataDictionaryBuilder {
 	 *             true
 	 */
 	protected void addEntriesWrapper(String sourceName, boolean sourceMustExist, boolean allowOverrides) {
-		LOG.debug("adding dataDictionary entries from source '" + sourceName + "'");
+		LOG.info("adding dataDictionary entries from source '" + sourceName + "'");
 		try {
 			addEntries(sourceName, allowOverrides);
 		} catch (SourceException e) {

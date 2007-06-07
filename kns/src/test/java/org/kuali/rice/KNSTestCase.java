@@ -33,32 +33,6 @@ public class KNSTestCase extends RiceTestCase {
 	private JettyServer jettyServer = new JettyServer(9912);
 	private static final String TEST_CONFIG_FILE = "classpath:META-INF/kns-test-config.xml";
 
-	@Override
-	public void setUp() throws Exception {
-		RiceConfigurer.setConfigurationFile(TEST_CONFIG_FILE);
-		ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = TEST_CONFIG_FILE;
-		
-		super.setUp();
-		
-		
-		
-		//we should put this somewhere in the test harness...
-		Map<ClassLoader, Config> configs = Core.getCONFIGS();
-		for (Map.Entry<ClassLoader, Config> configEntry : configs.entrySet()) {
-			if (configEntry.getKey() instanceof WebAppClassLoader) {
-				ResourceLoader rl = GlobalResourceLoader.getResourceLoader(configEntry.getKey());
-				if (rl == null) {
-					fail("didn't find resource loader for workflow test harness web app");
-				}
-				GlobalResourceLoader.addResourceLoader(rl);
-				configs.put(Thread.currentThread().getContextClassLoader(), configEntry.getValue());
-			}
-		}
-		
-		loadDefaultTestData();
-	}
-	
-	
 
 	@Override
 	public List<Lifecycle> getPerTestLifecycles() {
@@ -74,17 +48,33 @@ public class KNSTestCase extends RiceTestCase {
 				return this.started;
 			}
 			public void start() throws Exception {
-			    new SQLDataLoader("classpath:DefaultTestData.sql", ";").runSql();
+				RiceConfigurer.setConfigurationFile(TEST_CONFIG_FILE);
+				ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = TEST_CONFIG_FILE;
+
+				jettyServer.start();
+				//we should put this somewhere in the test harness...
+				Map<ClassLoader, Config> configs = Core.getCONFIGS();
+				for (Map.Entry<ClassLoader, Config> configEntry : configs.entrySet()) {
+					if (configEntry.getKey() instanceof WebAppClassLoader) {
+						ResourceLoader rl = GlobalResourceLoader.getResourceLoader(configEntry.getKey());
+						if (rl == null) {
+							fail("didn't find resource loader for workflow test harness web app");
+						}
+						GlobalResourceLoader.addResourceLoader(rl);
+						configs.put(Thread.currentThread().getContextClassLoader(), configEntry.getValue());
+					}
+				}
+				new SQLDataLoader("classpath:DefaultTestData.sql", ";").runSql();
+			    loadDefaultTestData();
 				this.started = true;
 			}
 			public void stop() throws Exception {
 			    this.started = false;
 			}
 		});
+		
 		return lifeCycles;
 	}
-
-
 
 	@Override
 	protected List<String> getConfigLocations() {
@@ -94,13 +84,6 @@ public class KNSTestCase extends RiceTestCase {
 	@Override
 	protected String getDerbySQLFileLocation() {
 		return "classpath:db/derby/kns.sql";
-	}
-
-	@Override
-	protected List<Lifecycle> getModuleLifecycles() {
-		List<Lifecycle> lifecycles = new ArrayList<Lifecycle>();
-		lifecycles.add(jettyServer);
-		return lifecycles;
 	}
 
 	@Override

@@ -54,6 +54,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
 				<configuration>
+					<jdk>1.5</jdk>
 					<licenseLocation>
 						kns/src/test/config/clover.license
 					</licenseLocation>

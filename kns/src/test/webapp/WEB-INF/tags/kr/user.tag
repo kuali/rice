@@ -74,10 +74,10 @@
 	
 <c:if test="${renderOtherFields}">
 	<c:if test="${!empty universalIdFieldName}">
-		<input type="hidden" name="${universalIdFieldName}" value="${universalId}" />
+		<input type="hidden" name="${universalIdFieldName}" id="${universalIdFieldName}" value="${universalId}" />
 	</c:if>
 	<c:if test="${!empty userNameFieldName}">
-		<input type="hidden" name="${userNameFieldName}" value="${userName}" />
+		<input type="hidden" name="${userNameFieldName}" id="${userNameFieldName}" value="${userName}" />
 	</c:if>
 </c:if>
 

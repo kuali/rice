@@ -19,6 +19,7 @@ import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.resourceloader.ResourceLoader;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.SQLDataLoader;
+import org.kuali.rice.web.jetty.JettyServer;
 import org.mortbay.jetty.webapp.WebAppClassLoader;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
@@ -30,7 +31,7 @@ import edu.iu.uis.eden.batch.XmlDocCollection;
 
 public class KNSTestCase extends RiceTestCase {
 	
-	private JettyServer jettyServer = new JettyServer(9912);
+	private JettyServer jettyServer = new JettyServer(9912, "/SampleRiceClient", "/src/test/webapp");
 	private static final String TEST_CONFIG_FILE = "classpath:META-INF/kns-test-config.xml";
 
 
@@ -49,7 +50,7 @@ public class KNSTestCase extends RiceTestCase {
 			}
 			public void start() throws Exception {
 				RiceConfigurer.setConfigurationFile(TEST_CONFIG_FILE);
-				ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = TEST_CONFIG_FILE;
+				ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = TEST_CONFIG_FILE; 
 
 				jettyServer.start();
 				//we should put this somewhere in the test harness...

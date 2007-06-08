@@ -17,7 +17,6 @@ package org.kuali.test;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,6 @@ import org.junit.Before;
 import org.kuali.core.UserSession;
 import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.GlobalVariables;
-import org.kuali.rice.JettyServer;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.KNSTestCase;
 import org.kuali.rice.lifecycle.Lifecycle;

@@ -158,7 +158,7 @@
 			<version>4.1</version>
 		</dependency>
 
-		<dependency>
+		<dependency> 
 			<groupId>org.springframework</groupId>
 			<artifactId>spring</artifactId>
 			<version>2.0.4</version>
@@ -194,12 +194,6 @@
 			<groupId>org.springmodules</groupId>
 			<artifactId>spring-modules-ojb</artifactId>
 			<version>0.8a</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>

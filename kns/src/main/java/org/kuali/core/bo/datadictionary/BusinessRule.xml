@@ -16,7 +16,7 @@
 -->
 <!DOCTYPE dictionaryEntry PUBLIC
     "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "../dataDictionary-1_0.dtd">
+    "../../datadictionary/dataDictionary-1_0.dtd">
 <dictionaryEntry>
     <businessObject businessObjectClass="org.kuali.core.bo.BusinessRule">
 
@@ -60,7 +60,7 @@
             <resultFields>
                 <field attributeName="ruleGroupName" />
                 <field attributeName="ruleName" />
-                <field attributeName="ruleText" />
+                <field attributeName="ruleText" maxLength="40" />
                 <field attributeName="ruleDescription" />
                 <field attributeName="ruleOperatorCode" />
                 <field attributeName="financialSystemMultipleValueIndicator" />
@@ -68,6 +68,8 @@
             </resultFields>
         </lookup>
 
+		<titleAttribute>ruleName</titleAttribute>
+		 
         <attributes>
 
             <attribute name="financialSystemMultipleValueIndicator" forceUppercase="false">

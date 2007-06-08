@@ -311,15 +311,7 @@
 				<exclusion>
 					<groupId>javax.servlet</groupId>
 					<artifactId>servlet-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>javax.servlet</groupId>
-					<artifactId>jstl</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>taglibs</groupId>
-					<artifactId>standard</artifactId>
-				</exclusion>
+				</exclusion> 
 			</exclusions>
 		</dependency>
 

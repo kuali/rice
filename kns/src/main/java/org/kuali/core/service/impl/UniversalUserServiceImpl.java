@@ -116,7 +116,7 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
                 return getUniversalUser(new UuId(sourcePersonUniversalIdentifier));
             }
             catch (UserNotFoundException unfe) {
-                return null;
+                return new UniversalUser();
             }
         }
         return currentSourceUniversalUser;

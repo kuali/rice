@@ -43,7 +43,7 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
 
     @Override
     public String getName() {
-        if ( universalUser == null || !universalUser.getPersonUserIdentifier().equalsIgnoreCase( getId() ) ) {
+        if ( universalUser == null || universalUser.getPersonUserIdentifier() == null || !universalUser.getPersonUserIdentifier().equalsIgnoreCase( getId() ) ) {
             universalUser = null;
             try {
                 universalUser = KNSServiceLocator.getUniversalUserService().getUniversalUser( new AuthenticationUserId( getId() ) );

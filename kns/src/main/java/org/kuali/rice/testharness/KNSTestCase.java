@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import lifecycles.JettyServerLifecycle;
-import lifecycles.KEWXmlDataLoaderLifecycle;
-import lifecycles.SQLDataLoaderLifecycle;
 
 import org.kuali.rice.RiceConfigurer;
 import org.kuali.rice.config.spring.ConfigFactoryBean;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
+import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
+import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 
 /**
  * Default test base for a full KNS enabled unit test.

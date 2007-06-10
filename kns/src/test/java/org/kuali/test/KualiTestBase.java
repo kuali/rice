@@ -17,21 +17,16 @@ package org.kuali.test;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
-import org.kuali.core.UserSession;
 import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.GlobalVariables;
-import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.testharness.KNSTestCase;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.kuali.rice.testharness.TransactionalLifecycle;
 
 
 /**
@@ -82,10 +77,12 @@ public abstract class KualiTestBase extends KNSTestCase implements KualiTestCons
 
 	private static final Map<String, Level> changedLogLevels = new HashMap<String, Level>();
 
-	private List<Lifecycle> lifeCycles;
+	//private List<Lifecycle> lifeCycles;
 	
 	// private static UserNameFixture userSessionUsername = null;
-	protected static UserSession userSession = null;
+	//protected static UserSession userSession = null;
+
+	private TransactionalLifecycle transactionalLifecycle;
 
 	static {
 		//PropertyConfigurator.configure(ResourceBundle.getBundle(Constants.CONFIGURATION_FILE_NAME).getString(Constants.LOG4J_SETTINGS_FILE_KEY));
@@ -128,7 +125,7 @@ public abstract class KualiTestBase extends KNSTestCase implements KualiTestCons
 		changedLogLevels.clear();
 	}
 
-	private TransactionStatus TRANSACTION_STATUS;
+//	private TransactionStatus TRANSACTION_STATUS;
 
 	@Before 
 	public void setUp() throws Exception {
@@ -138,9 +135,11 @@ public abstract class KualiTestBase extends KNSTestCase implements KualiTestCons
 		hideSession();
 		GlobalVariables.setErrorMap(new ErrorMap());
 		if (needsSpring) {
-			DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
-			defaultTransactionDefinition.setTimeout(30);
-			TRANSACTION_STATUS = KNSServiceLocator.getTransactionManager().getTransaction(defaultTransactionDefinition);
+			transactionalLifecycle = new TransactionalLifecycle();
+			transactionalLifecycle.start();
+//			DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
+//			defaultTransactionDefinition.setTimeout(30);
+//			TRANSACTION_STATUS = KNSServiceLocator.getTransactionManager().getTransaction(defaultTransactionDefinition);
 		}
 	}
 
@@ -149,7 +148,8 @@ public abstract class KualiTestBase extends KNSTestCase implements KualiTestCons
 		final boolean needsSpring = getClass().isAnnotationPresent(WithTestSpringContext.class);
 		resetLogLevels();
 		if (needsSpring) {
-			KNSServiceLocator.getTransactionManager().rollback(TRANSACTION_STATUS);
+			transactionalLifecycle.stop();
+//			KNSServiceLocator.getTransactionManager().rollback(TRANSACTION_STATUS);
 		}
 		hideSession();
 		GlobalVariables.setErrorMap(new ErrorMap());

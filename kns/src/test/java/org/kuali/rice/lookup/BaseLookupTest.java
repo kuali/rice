@@ -16,8 +16,8 @@
 package org.kuali.rice.lookup;
 
 import org.junit.Test;
-import org.kuali.rice.KNSTestCase;
 import org.kuali.rice.test.htmlunit.HtmlUnitUtil;
+import org.kuali.rice.testharness.KNSTestCase;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;

@@ -19,7 +19,6 @@ package org.kuali.core.web.format;
 // begin Kuali Foundation modification
 import org.apache.commons.lang.StringUtils;
 import org.kuali.KeyConstants;
-// end Kuali Foundation modification
 
 /**
  * This class is used to format Integer objects.

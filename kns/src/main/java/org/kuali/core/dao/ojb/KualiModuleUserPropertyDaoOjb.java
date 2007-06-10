@@ -24,7 +24,6 @@ import org.kuali.core.bo.user.KualiModuleUserProperty;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.dao.KualiModuleUserPropertyDao;
 import org.springmodules.orm.ojb.PersistenceBrokerTemplate;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 public class KualiModuleUserPropertyDaoOjb extends PlatformAwareDaoBaseOjb implements KualiModuleUserPropertyDao {
 

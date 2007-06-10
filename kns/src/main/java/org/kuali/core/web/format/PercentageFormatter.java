@@ -24,7 +24,6 @@ import java.text.ParseException;
 
 import org.kuali.KeyConstants;
 import org.kuali.core.util.KualiPercent;
-// end Kuali Foundation modification
 
 /**
  * begin Kuali Foundation modification

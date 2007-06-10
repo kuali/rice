@@ -17,6 +17,8 @@ package org.kuali.core.util;
 
 import java.math.BigDecimal;
 
+import org.apache.ojb.broker.accesslayer.conversions.FieldConversion;
+
 
 public class OjbKualiIntegerPercentageFieldConversion extends OjbDecimalPercentageFieldConversion {
 

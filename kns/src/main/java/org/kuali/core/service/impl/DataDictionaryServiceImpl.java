@@ -34,7 +34,6 @@ import org.kuali.core.datadictionary.DataDictionary;
 import org.kuali.core.datadictionary.DataDictionaryBuilder;
 import org.kuali.core.datadictionary.DataDictionaryEntryBase;
 import org.kuali.core.datadictionary.DocumentEntry;
-import org.kuali.core.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.core.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.core.datadictionary.RelationshipDefinition;
 import org.kuali.core.datadictionary.ValidationCompletionUtils;

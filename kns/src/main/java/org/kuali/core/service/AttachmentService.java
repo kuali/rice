@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.kuali.core.bo.Attachment;
 import org.kuali.core.bo.PersistableBusinessObject;
-import org.kuali.core.document.Document;
 
 /**
  * Defines the methods common to all AttachmentService implementations

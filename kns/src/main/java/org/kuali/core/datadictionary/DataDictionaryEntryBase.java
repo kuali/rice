@@ -23,6 +23,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.core.datadictionary.exception.CompletionException;
 import org.kuali.core.datadictionary.exception.DuplicateEntryException;
 import org.kuali.core.datadictionary.exception.OverrideEntryException;
 import org.kuali.core.exceptions.ValidationException;

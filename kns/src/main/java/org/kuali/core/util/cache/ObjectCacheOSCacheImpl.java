@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.apache.ojb.broker.Identity;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.cache.ObjectCacheInternal;
+import org.apache.ojb.broker.cache.ObjectCacheTwoLevelImpl;
 import org.apache.ojb.broker.cache.RuntimeCacheException;
 import org.kuali.rice.KNSServiceLocator;
 

@@ -3,11 +3,7 @@
 package edu.sampleu.travel.bo;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 
-import org.apache.ojb.broker.PersistenceBroker;
-import org.apache.ojb.broker.PersistenceBrokerException;
-import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 
 

@@ -19,6 +19,8 @@ import java.util.List;
 
 import org.kuali.core.bo.user.UniversalUser;
 
+import edu.iu.uis.eden.exception.EdenUserNotFoundException;
+import edu.iu.uis.eden.exception.ResourceUnavailableException;
 import edu.iu.uis.eden.exception.WorkflowException;
 
 /**

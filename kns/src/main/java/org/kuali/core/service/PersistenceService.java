@@ -18,8 +18,8 @@ package org.kuali.core.service;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ojb.broker.PersistenceBroker;
 import org.kuali.core.bo.PersistableBusinessObject;
+import org.kuali.core.exceptions.ClassNotPersistableException;
 
 public interface PersistenceService {
     public void initialize();

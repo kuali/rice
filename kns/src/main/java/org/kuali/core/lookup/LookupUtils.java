@@ -15,7 +15,6 @@
  */
 package org.kuali.core.lookup;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;

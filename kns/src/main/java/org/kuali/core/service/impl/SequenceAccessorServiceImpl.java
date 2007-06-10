@@ -17,7 +17,6 @@ package org.kuali.core.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.core.dao.KualiDBPlatformDao;
-import org.kuali.core.dao.SequenceAccessorDao;
 import org.kuali.core.service.SequenceAccessorService;
 import org.springframework.transaction.annotation.Transactional;
 

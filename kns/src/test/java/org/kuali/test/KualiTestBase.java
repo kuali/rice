@@ -28,10 +28,11 @@ import org.kuali.core.UserSession;
 import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.KNSTestCase;
 import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.testharness.KNSTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+
 
 /**
  * This class is the superclass for all test cases which may require the use of

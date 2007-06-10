@@ -18,20 +18,15 @@ package org.kuali.core.web.format;
 
 // begin Kuali Foundation modification
 import java.text.DecimalFormat;
-// end Kuali Foundation modification
 import java.text.NumberFormat;
 import java.text.ParseException;
-// begin Kuali Foundation modification
 import java.util.regex.Pattern;
-// end Kuali Foundation modification
 
-// begin Kuali Foundation modification
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.KeyConstants;
 import org.kuali.core.util.KualiDecimal;
 import org.kuali.core.util.KualiInteger;
-// end Kuali Foundation modification
 
 /**
  * begin Kuali Foundation modification

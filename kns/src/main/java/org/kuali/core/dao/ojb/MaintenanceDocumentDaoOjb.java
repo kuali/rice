@@ -27,7 +27,6 @@ import org.kuali.PropertyConstants;
 import org.kuali.core.dao.MaintenanceDocumentDao;
 import org.kuali.core.document.MaintenanceDocumentBase;
 import org.kuali.core.document.MaintenanceLock;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 /**
  * This class is the OJB implementation of the MaintenanceDocumentDao interface.

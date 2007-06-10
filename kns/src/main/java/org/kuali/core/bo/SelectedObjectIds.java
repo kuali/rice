@@ -15,9 +15,6 @@
  */
 package org.kuali.core.bo;
 
-import java.util.LinkedHashMap;
-
-import org.kuali.Constants;
 
 public class SelectedObjectIds extends MultipleValueLookupMetadata {
     private String selectedObjectIds;

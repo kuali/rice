@@ -15,6 +15,7 @@
  */
 package org.kuali.core.service;
 
+import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.ApcRuleDefinition;
 import org.kuali.core.datadictionary.ReferenceDefinition;

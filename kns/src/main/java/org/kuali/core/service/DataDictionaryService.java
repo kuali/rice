@@ -21,8 +21,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.kuali.core.datadictionary.DataDictionary;
-import org.kuali.core.datadictionary.DocumentEntry;
 import org.kuali.core.datadictionary.control.ControlDefinition;
+import org.kuali.core.datadictionary.exception.SourceException;
 import org.kuali.core.datadictionary.mask.Mask;
 
 

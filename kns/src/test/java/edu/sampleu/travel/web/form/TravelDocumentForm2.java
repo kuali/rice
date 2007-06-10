@@ -17,7 +17,6 @@ package edu.sampleu.travel.web.form;
 
 import org.kuali.core.web.struts.form.KualiDocumentFormBase;
 
-
 import edu.sampleu.travel.bo.TravelAccount;
 import edu.sampleu.travel.document.TravelDocument2;
 

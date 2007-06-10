@@ -34,7 +34,6 @@ import org.springframework.util.Assert;
 
 import com.opensymphony.oscache.base.Cache;
 import com.opensymphony.oscache.base.NeedsRefreshException;
-// end Kuali Foundation modification
 
 /**
  * begin Kuali Foundation modification

@@ -21,9 +21,7 @@ package org.kuali.core.web.format;
 import java.util.Arrays;
 import java.util.List;
 
-// begin Kuali Foundation modification
 import org.kuali.KeyConstants;
-// end Kuali Foundation modification
 
 /**
  * begin Kuali Foundation modification

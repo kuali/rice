@@ -1,5 +1,4 @@
 <config>
-
 	<param name="config.location">classpath:META-INF/common-derby-connection-config.xml</param>
 	<param name="config.location">classpath:META-INF/common-locations-test-config.xml</param>
 	
@@ -25,7 +24,7 @@
 	<param name="mail.relay.server">mail-relay.iu.edu</param>
 	<param name="mailing.list.batch">rkirkend@indiana.edu</param>
 	
-		<!-- XML ingester directories -->
+	<!-- XML ingester directories -->
 	<param name="data.xml.root.location">/opt/ears/${environment}/en/xml</param>
 	<param name="data.xml.pending.location">${data.xml.root.location}pending</param>
 	<param name="data.xml.loaded.location">${data.xml.root.location}loaded</param>
@@ -40,7 +39,6 @@
 	
 	<param name="test.mode">true</param>
 	
-	<!--  -->
 	<param name="datasource.url">jdbc:oracle:thin:@esdb12-k.uits.indiana.edu:1521:KUALI</param>
 	<param name="datasource.username">KRREG</param>
 	<param name="datasource.password">reg174kr</param>
@@ -51,5 +49,4 @@
 	<param name="datasource.pool.maxWait">30000</param>
 	<param name="datasource.pool.minSize">0</param>
 	<param name="datasource.pool.maxSize">5</param>
-	
 </config>

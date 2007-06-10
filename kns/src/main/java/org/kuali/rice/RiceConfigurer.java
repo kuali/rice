@@ -22,35 +22,38 @@ import org.kuali.rice.config.BaseConfig;
 import org.springframework.beans.factory.InitializingBean;
 
 public class RiceConfigurer extends BaseConfig implements InitializingBean {
-    
+
 	private static String configurationFile;
-    public static final String DEFAULT_CONFIGURATION_FILE = "classpath:knsConfig.xml";
-	
-    public RiceConfigurer() {
+
+	public static final String DEFAULT_CONFIGURATION_FILE = "classpath:knsConfig.xml";
+
+	public RiceConfigurer() {
 		super(getConfigurationFile());
 	}
-    
+
 	@Override
 	public Map<String, Object> getBaseObjects() {
 		return null;
 	}
+
 	@Override
 	public Properties getBaseProperties() {
 		return null;
 	}
-	
+
 	public void afterPropertiesSet() throws Exception {
 		this.parseConfig();
 	}
-	
-    public static String getConfigurationFile() {
-        if (configurationFile == null) {
-            return DEFAULT_CONFIGURATION_FILE;
-        }
-        return configurationFile;
-    }
 
-    public static void setConfigurationFile(String overrideConfigurationFile) {
-        RiceConfigurer.configurationFile = overrideConfigurationFile;
-    }
+	public static String getConfigurationFile() {
+		if (configurationFile == null) {
+			return DEFAULT_CONFIGURATION_FILE;
+		}
+		return configurationFile;
+	}
+
+	public static void setConfigurationFile(String overrideConfigurationFile) {
+		RiceConfigurer.configurationFile = overrideConfigurationFile;
+	}
+
 }

@@ -29,6 +29,7 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
@@ -46,7 +47,6 @@ import org.kuali.core.util.Timer;
 import org.kuali.core.web.format.EncryptionFormatter;
 import org.kuali.core.web.format.FormatException;
 import org.kuali.core.web.format.Formatter;
-// end Kuali Foundation modification
 
 /**
  * This class is the base form which implements the PojoForm interface.

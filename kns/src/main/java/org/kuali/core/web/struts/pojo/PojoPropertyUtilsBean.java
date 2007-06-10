@@ -34,8 +34,6 @@ import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.collections.FastHashMap;
 import org.apache.log4j.Logger;
 import org.kuali.core.web.format.Formatter;
-// modified imports
-// end Kuali Foundation modification
 
 
 /**

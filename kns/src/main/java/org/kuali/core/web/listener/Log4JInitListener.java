@@ -18,11 +18,7 @@ package org.kuali.core.web.listener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.NDC;
 import org.kuali.core.Log4jConfigurer;
-import org.kuali.core.util.log4j.StartupTimeStatsMailAppender;
-import org.kuali.core.util.log4j.NDCFilter;
 
 /**
  * This class is hte Log4J implementiion of the ServletContextListener.

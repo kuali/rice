@@ -19,6 +19,9 @@ import java.util.Collection;
 
 import edu.iu.uis.eden.clientapp.vo.UserIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
+import edu.iu.uis.eden.exception.EdenUserNotFoundException;
+import edu.iu.uis.eden.exception.InvalidWorkgroupException;
+import edu.iu.uis.eden.exception.ResourceUnavailableException;
 import edu.iu.uis.eden.exception.WorkflowException;
 
 

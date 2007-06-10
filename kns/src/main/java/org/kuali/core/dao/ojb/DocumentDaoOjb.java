@@ -34,7 +34,6 @@ import org.kuali.core.document.Document;
 import org.kuali.core.util.OjbCollectionAware;
 import org.kuali.rice.KNSServiceLocator;
 import org.springframework.dao.DataAccessException;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 /**
  * This class is the OJB implementation of the DocumentDao interface.

@@ -17,6 +17,8 @@ package org.kuali.core.util.properties;
 
 import java.util.Properties;
 
+import org.kuali.core.exceptions.PropertiesException;
+
 /**
  * This is an interface for a source for properties
  * 

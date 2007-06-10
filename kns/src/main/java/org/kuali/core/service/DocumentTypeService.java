@@ -16,6 +16,7 @@
 package org.kuali.core.service;
 
 import org.kuali.core.bo.DocumentType;
+import org.kuali.core.exceptions.UnknownDocumentTypeException;
 
 
 /**

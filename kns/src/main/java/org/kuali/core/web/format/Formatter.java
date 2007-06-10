@@ -19,11 +19,8 @@ package org.kuali.core.web.format;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
-// begin Kuali Foundation modification
-// removed java.math.BigInteger import, and Date import moved from below Collections import
 import java.sql.Date;
 import java.sql.Timestamp;
-// end Kuali Foundation modification
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,8 +30,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-// begin Kuali Foundation modification
-// removed some imports
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -42,7 +39,7 @@ import org.kuali.core.util.KualiDecimal;
 import org.kuali.core.util.KualiInteger;
 import org.kuali.core.util.KualiPercent;
 import org.kuali.core.web.struts.pojo.ArrayUtils;
-// end Kuali Foundation modification
+import org.kuali.core.web.struts.pojo.PojoPropertyUtilsBean;
 
 
 // begin Kuali Foundation modification

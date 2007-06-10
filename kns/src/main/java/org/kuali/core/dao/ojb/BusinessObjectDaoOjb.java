@@ -32,7 +32,6 @@ import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.OjbCollectionAware;
 import org.kuali.rice.KNSServiceLocator;
 import org.springframework.dao.DataAccessException;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 /**
  * This class is the OJB implementation of the BusinessObjectDao interface and should be used for generic business object unit

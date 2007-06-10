@@ -17,9 +17,7 @@
 package org.kuali.core.bo;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import org.kuali.Constants;
 import org.kuali.PropertyConstants;

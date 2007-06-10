@@ -23,7 +23,6 @@ import org.kuali.PropertyConstants;
 import org.kuali.core.bo.LookupResults;
 import org.kuali.core.bo.SelectedObjectIds;
 import org.kuali.core.dao.PersistedLookupMetadataDao;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 public class PersistedLookupMetadataDaoOjb extends PlatformAwareDaoBaseOjb implements PersistedLookupMetadataDao {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersistedLookupMetadataDaoOjb.class);

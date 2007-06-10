@@ -17,8 +17,6 @@ package org.kuali.core.authorization;
 
 import org.kuali.rice.KNSServiceLocator;
 
-import edu.iu.uis.eden.EdenConstants;
-
 /**
  * A list of standard authorization types used by the application as a whole.
  * 

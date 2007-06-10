@@ -19,9 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.core.bo.Note;
-import org.kuali.core.bo.NoteType;
 import org.kuali.core.bo.PersistableBusinessObject;
-import org.kuali.core.document.Document;
 
 /**
  * This interface defines methods that a Note service must provide

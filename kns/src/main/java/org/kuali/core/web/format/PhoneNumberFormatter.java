@@ -18,7 +18,6 @@ package org.kuali.core.web.format;
 
 // begin Kuali Foundation modification
 import org.kuali.KeyConstants;
-// end Kuali Foundation modification
 
 
 /**

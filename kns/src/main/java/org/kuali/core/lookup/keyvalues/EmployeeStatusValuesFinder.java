@@ -22,8 +22,8 @@ import java.util.List;
 
 import org.kuali.core.bo.EmployeeStatus;
 import org.kuali.core.service.KeyValuesService;
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.core.web.ui.KeyLabelPair;
+import org.kuali.rice.KNSServiceLocator;
 
 public class EmployeeStatusValuesFinder extends KeyValuesBase {
 

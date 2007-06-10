@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.kuali.rice</groupId>
 		<artifactId>rice</artifactId>
-		<version>0.9-SNAPSHOT</version>
+		<version>0.9-SNAPSHOT-M1</version>
 	</parent>
 	<artifactId>kns</artifactId>
 
@@ -25,7 +25,6 @@
 				</includes>
 				<filtering>true</filtering>
 			</testResource>
-
 			<testResource>
 				<directory>${basedir}/src/test/resources</directory>
 				<excludes>
@@ -33,7 +32,6 @@
 				</excludes>
 				<filtering>false</filtering>
 			</testResource>
-
 		</testResources>
 	</build>
 

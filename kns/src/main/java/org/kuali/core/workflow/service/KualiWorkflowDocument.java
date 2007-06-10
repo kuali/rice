@@ -23,6 +23,8 @@ import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 import edu.iu.uis.eden.clientapp.vo.UserIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
+import edu.iu.uis.eden.exception.InvalidActionTakenException;
+import edu.iu.uis.eden.exception.ResourceUnavailableException;
 import edu.iu.uis.eden.exception.WorkflowException;
 
 public interface KualiWorkflowDocument {

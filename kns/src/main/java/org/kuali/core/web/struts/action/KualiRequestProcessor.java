@@ -47,7 +47,6 @@ import org.kuali.core.util.Timer;
 import org.kuali.core.web.struts.pojo.PojoForm;
 import org.kuali.rice.KNSServiceLocator;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springmodules.orm.ojb.OjbOperationException;

@@ -46,7 +46,6 @@ import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.KNSServiceLocator;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
 import edu.iu.uis.eden.exception.WorkflowException;

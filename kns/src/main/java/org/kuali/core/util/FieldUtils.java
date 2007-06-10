@@ -28,7 +28,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.Constants;
 import org.kuali.core.authorization.FieldAuthorization;
 import org.kuali.core.bo.BusinessObject;
-import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.core.datadictionary.control.ApcSelectControlDefinition;
 import org.kuali.core.datadictionary.control.ControlDefinition;

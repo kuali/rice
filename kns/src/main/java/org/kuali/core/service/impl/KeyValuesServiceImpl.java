@@ -16,7 +16,6 @@
 package org.kuali.core.service.impl;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import org.kuali.PropertyConstants;
@@ -24,7 +23,6 @@ import org.kuali.core.dao.BusinessObjectDao;
 import org.kuali.core.service.KeyValuesService;
 import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.spring.Cached;
-import org.kuali.rice.KNSServiceLocator;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

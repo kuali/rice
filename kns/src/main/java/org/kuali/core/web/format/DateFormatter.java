@@ -26,7 +26,6 @@ import java.util.Calendar;
 
 import org.kuali.Constants;
 import org.kuali.KeyConstants;
-// end Kuali Foundation modification
 
 /**
  * begin Kuali Foundation modification

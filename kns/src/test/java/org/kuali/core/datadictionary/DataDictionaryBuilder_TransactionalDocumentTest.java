@@ -19,7 +19,6 @@ package org.kuali.core.datadictionary;
 import org.apache.commons.beanutils.ConversionException;
 import org.apache.log4j.Level;
 import org.junit.Test;
-import org.kuali.core.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.test.KualiTestBase;
 import org.kuali.test.WithTestSpringContext;

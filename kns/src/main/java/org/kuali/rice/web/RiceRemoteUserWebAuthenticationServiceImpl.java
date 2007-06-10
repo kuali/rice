@@ -15,11 +15,7 @@
  */
 package org.kuali.rice.web;
 
-import javax.servlet.http.HttpServletRequest;
-
 import edu.iu.uis.eden.web.RemoteUserWebAuthenticationService;
-import edu.iu.uis.eden.web.WebAuthenticationService;
-import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * 

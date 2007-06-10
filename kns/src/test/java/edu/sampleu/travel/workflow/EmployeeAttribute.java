@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.xpath.XPathExpressionException;
-
 import org.apache.commons.lang.StringUtils;
 
 import edu.iu.uis.eden.Id;
@@ -28,7 +26,6 @@ import edu.iu.uis.eden.user.UserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.user.WorkflowUserId;
 import edu.iu.uis.eden.util.KeyLabelPair;
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * An attribute implementation that can resolve organizational roles

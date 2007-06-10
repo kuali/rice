@@ -15,9 +15,7 @@
  */
 package org.kuali.core.web.struts.action;
 
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,10 +45,8 @@ import org.kuali.core.datadictionary.DataDictionary;
 import org.kuali.core.datadictionary.DocumentEntry;
 import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.core.datadictionary.MaintainableSectionDefinition;
-import org.kuali.core.document.Copyable;
 import org.kuali.core.document.Document;
 import org.kuali.core.document.MaintenanceDocument;
-import org.kuali.core.document.authorization.DocumentActionFlags;
 import org.kuali.core.document.authorization.MaintenanceDocumentAuthorizations;
 import org.kuali.core.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.core.exceptions.AuthorizationException;
@@ -66,9 +62,7 @@ import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.MaintenanceUtils;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.TabState;
-import org.kuali.core.web.format.FormatException;
 import org.kuali.core.web.format.Formatter;
-import org.kuali.core.web.struts.form.KualiDocumentFormBase;
 import org.kuali.core.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.KNSServiceLocator;
 

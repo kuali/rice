@@ -19,7 +19,6 @@ import org.apache.ojb.broker.Identity;
 import org.apache.ojb.broker.core.IdentityFactoryImpl;
 import org.apache.ojb.broker.core.proxy.IndirectionHandlerCGLIBImpl;
 import org.kuali.core.dao.PersistenceDao;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 public class PersistenceDaoOjb extends PlatformAwareDaoBaseOjb implements PersistenceDao {
 

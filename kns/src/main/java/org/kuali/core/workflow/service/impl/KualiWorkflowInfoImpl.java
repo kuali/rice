@@ -17,8 +17,6 @@ package org.kuali.core.workflow.service.impl;
 
 import org.apache.log4j.Logger;
 import org.kuali.Constants;
-import org.kuali.core.UserSession;
-import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.spring.Cached;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.springframework.transaction.annotation.Transactional;

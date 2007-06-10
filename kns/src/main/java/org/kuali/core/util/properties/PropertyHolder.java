@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.kuali.core.exceptions.DuplicateKeyException;
+import org.kuali.core.exceptions.PropertiesException;
 
 /**
  * This class is a Property container. It is able to load properties from various property-sources.

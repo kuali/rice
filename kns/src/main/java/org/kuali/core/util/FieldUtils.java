@@ -634,7 +634,12 @@ public class FieldUtils {
 
             if (Field.KUALIUSER.equals(field.getFieldType())) {
                 // prefix the personNameAttributeName
-                field.setPersonNameAttributeName(namePrefix + field.getPersonNameAttributeName());
+            	int suffixIndex = field.getPropertyName().indexOf( field.getUserIdAttributeName() );
+            	if ( suffixIndex != -1 ) {
+            		field.setPersonNameAttributeName( field.getPropertyName().substring( 0, suffixIndex ) + field.getPersonNameAttributeName() );
+            	} else {
+            		field.setPersonNameAttributeName(namePrefix + field.getPersonNameAttributeName());
+            	}
                 
                 // TODO: do we need to prefix the universalIdAttributeName in Field as well?
             }

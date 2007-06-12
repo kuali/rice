@@ -26,6 +26,7 @@ import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
+import edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO;
 import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 import edu.iu.uis.eden.clientapp.vo.RouteTemplateEntryVO;
 import edu.iu.uis.eden.clientapp.vo.UserIdVO;
@@ -216,6 +217,18 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         }
         else {
             return true;
+        }
+    }
+    
+    /**
+     *  @see org.kuali.core.workflow.service.KualiWorkflowInfo#documentWillHaveAtLeastOneActionRequest(java.lang.Long, java.lang.String, java.lang.String[])
+     */
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes) throws WorkflowException {
+        try {
+            return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, actionRequestedCodes);
+        }
+        catch (Exception e) {
+            throw new WorkflowException(e);
         }
     }
 }

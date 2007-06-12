@@ -18,6 +18,7 @@ package org.kuali.core.workflow.service;
 import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
+import edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO;
 import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 import edu.iu.uis.eden.clientapp.vo.RouteTemplateEntryVO;
 import edu.iu.uis.eden.clientapp.vo.UserIdVO;
@@ -83,4 +84,14 @@ public interface KualiWorkflowInfo {
      */
     public abstract boolean routeHeaderExists(Long routeHeaderId);
 
+    /**
+     * Determines if a document generated (or retrieved) using the given criteria has (or will have) an action request using
+     * one of the given action request codes.  User may or may not pass in a target node name inside the ReportCriteriaVO object.
+     * 
+     * @param reportCriteriaVO  - Holds either a document type name or a document id as well as other data to help simulate routing
+     * @param actionRequestedCodes - List of Action Request Codes from the Workflow system
+     * @return true if the document has or will have at least one request that matches the criteria and has a requested code that matches one of the given codes
+     * @throws WorkflowException
+     */
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes) throws WorkflowException;
 }

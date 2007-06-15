@@ -157,7 +157,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
         Map combinedFieldConversions = null;
         if ((this.fieldConversions != null) && !"null".equals(this.fieldConversions.trim())) {
             if (this.fieldConversions.startsWith(LOOKUPABLE_IMPL_NAME_PREFIX)) {
-                realFieldConversions = LookupUtils.translateFieldConversions(this.fieldConversions.substring(this.fieldConversions.lastIndexOf("-") + 1));
+                realFieldConversions = LookupUtils.translateFieldConversions(this.fieldConversions.replaceAll(LOOKUPABLE_IMPL_NAME_PREFIX, ""));
                 combinedFieldConversions = new HashMap();
                 Iterator realFieldConversionsEntryItr = realFieldConversions.entrySet().iterator();
                 while (realFieldConversionsEntryItr.hasNext()) {

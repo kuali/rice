@@ -446,6 +446,7 @@ public class KualiDocumentActionBase extends KualiAction {
 //        String workflowRouteReportUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(Constants.WORKFLOW_BASE_URL_KEY) + "/RoutingReport.do?documentTypeParam=" + documentTypeName + "&initiatorNetworkId=" + initiatorNetworkId + "&documentContent=";
         String workflowRouteReportUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(Constants.WORKFLOW_URL_KEY) + "/RoutingReport.do";
         // at this point we need to get the document content xml to the jsp so we can post to URL above
+        // TODO delyea - make this a map for ease of expansion later.... use Workflow constants for attribute names?
         request.setAttribute("workflowRouteReportUrl", workflowRouteReportUrl);
         request.setAttribute("initiatorNetworkId", initiatorNetworkId);
         request.setAttribute("documentTypeName", documentTypeName);
@@ -454,7 +455,7 @@ public class KualiDocumentActionBase extends KualiAction {
 //        GlobalVariables.getMessageList().add(KeyConstants.MESSAGE_ROUTE_SUCCESSFUL);
 //        kualiDocumentFormBase.setAnnotation("");
 
-        return mapping.findForward("route_report");
+        return mapping.findForward(Constants.MAPPING_ROUTE_REPORT);
     }
 
     /**

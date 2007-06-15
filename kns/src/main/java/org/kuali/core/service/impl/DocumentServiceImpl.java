@@ -228,6 +228,9 @@ public class DocumentServiceImpl implements DocumentService {
         if (!getDocumentActionFlags(document).getCanFYI()) {
             throw buildAuthorizationException("clear FYI", document);
         }
+        // TODO delyea - added this here
+        // populate document content so searchable attributes will be indexed properly
+        document.populateDocumentForRouting();
         workflowDocumentService.clearFyi(document.getDocumentHeader().getWorkflowDocument(), adHocRecipients);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         return document;
@@ -557,6 +560,10 @@ public class DocumentServiceImpl implements DocumentService {
      * @throws WorkflowException
      */
     public void prepareWorkflowDocument(Document document) throws WorkflowException {
+        // TODO delyea - added this here
+        // populate document content so searchable attributes will be indexed properly
+        document.populateDocumentForRouting();
+        
         // make sure we push the document title into the FlexDoc
         populateDocumentTitle(document);
 

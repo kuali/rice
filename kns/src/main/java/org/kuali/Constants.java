@@ -310,6 +310,7 @@ public class Constants extends JstlConstants {
     public static final String MAPPING_MULTIPLE_VALUE_LOOKUP = "multipleValueLookup";
     public static final String MAPPING_BALANCE_INQUIRY_REPORT_MENU = "balanceInquiryReportMenu";
     public static final String MAPPING_DV_PER_DIEM_LINKS = "dvPerDiemLinks";
+    public static final String MAPPING_ROUTE_REPORT = "route_report";
     public static final String MAXLENGTH_SUFFIX = ".maxLength";
     public static final String METHOD_TO_CALL_ATTRIBUTE = "methodToCallAttribute";
     public static final String METHOD_TO_CALL_PATH = "methodToCallPath";

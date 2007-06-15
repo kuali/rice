@@ -40,6 +40,7 @@ import org.kuali.core.datadictionary.ValidationCompletionUtils;
 import org.kuali.core.datadictionary.control.ControlDefinition;
 import org.kuali.core.datadictionary.exporter.DataDictionaryMap;
 import org.kuali.core.datadictionary.mask.Mask;
+import org.kuali.core.datadictionary.spring.DataDictionaryLocationConfigurer;
 import org.kuali.core.document.Document;
 import org.kuali.core.exceptions.UnknownBusinessClassAttributeException;
 import org.kuali.core.service.AuthorizationService;
@@ -47,6 +48,7 @@ import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.service.KualiGroupService;
 import org.kuali.core.service.KualiModuleService;
+import org.kuali.rice.config.ConfigurationException;
 
 /**
  * This class is the service implementation for a DataDictionary. It is a thin wrapper around creating, initializing, and returning
@@ -57,7 +59,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     private static Log LOG = LogFactory.getLog(DataDictionaryServiceImpl.class);
 
     private DataDictionaryBuilder dataDictionaryBuilder;
-    private List<String> baselineDirectories;
+//    private List<String> baselineDirectories;
     private DataDictionaryMap dataDictionaryMap = new DataDictionaryMap( this );
 
     private KualiConfigurationService kualiConfigurationService;
@@ -77,7 +79,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
      * @see org.kuali.core.service.DataDictionaryService#setBaselinePackages(java.lang.String)
      */
     public void setBaselinePackages(List baselinePackages) {
-        this.baselineDirectories = baselinePackages; //convertPackagesToDirectories(baselinePackages);
+    	this.addDataDictionaryLocations(baselinePackages);
     }
 
     /**
@@ -391,7 +393,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         if (collectionDefinition != null) {
             elementLabel = collectionDefinition.getElementLabel();
             if(StringUtils.isEmpty(elementLabel)) {
-                BusinessObjectEntry boe = getDataDictionary().getBusinessObjectEntry(businessObjectClass);
+                BusinessObjectEntry boe = getDataDictionary().getBusinessObjectEntry(businessObjectClass.getName());
                 if(boe!=null){
                     elementLabel = boe.getObjectLabel();
                 }
@@ -744,19 +746,19 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
     }
 
-    /**
-     * @see org.kuali.core.service.DataDictionaryService#getDocumentObjectClassnames()
-     */
-    public List getDocumentObjectClassnames() {
-        return getDataDictionary().getDocumentObjectClassNames();
-    }
+//    /**
+//     * @see org.kuali.core.service.DataDictionaryService#getDocumentObjectClassnames()
+//     */
+//    public List getDocumentObjectClassnames() {
+//        return getDataDictionary().getDocumentObjectClassNames();
+//    }
     
     /**
      * @see org.kuali.core.service.DataDictionaryService#getDocumentLabelByClass(java.lang.Class)
      */
     public String getDocumentLabelByClass(Class documentOrBusinessObjectClass) {
         String label = null;
-        DocumentEntry documentEntry = getDataDictionary().getDocumentEntry(documentOrBusinessObjectClass);
+        DocumentEntry documentEntry = getDataDictionary().getDocumentEntry(documentOrBusinessObjectClass.getName());
         if (documentEntry != null) {
             label = documentEntry.getLabel();
         }
@@ -788,7 +790,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         String documentTypeName = null;
 
-        DocumentEntry documentEntry = getDataDictionary().getDocumentEntry(documentClass);
+        DocumentEntry documentEntry = getDataDictionary().getDocumentEntry(documentClass.getName());
         if (documentEntry != null) {
             documentTypeName = documentEntry.getDocumentTypeName();
         }
@@ -823,16 +825,16 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
 
-    /**
-     * @see org.kuali.core.service.DataDictionaryService#getDocumentTypeNameByTypeCode(java.lang.String)
-     */
-    public String getDocumentTypeNameByTypeCode(String documentTypeCode) {
-        DocumentEntry documentEntry = getDataDictionary().getDocumentEntryByCode(documentTypeCode);
-        if (documentEntry != null) {
-            return documentEntry.getDocumentTypeName();
-        }
-        return null;
-    }
+//    /**
+//     * @see org.kuali.core.service.DataDictionaryService#getDocumentTypeNameByTypeCode(java.lang.String)
+//     */
+//    public String getDocumentTypeNameByTypeCode(String documentTypeCode) {
+//        DocumentEntry documentEntry = getDataDictionary().getDocumentEntryByCode(documentTypeCode);
+//        if (documentEntry != null) {
+//            return documentEntry.getDocumentTypeName();
+//        }
+//        return null;
+//    }
 
     /**
      * @see org.kuali.core.service.DataDictionaryService#getPreRulesCheckClass(java.lang.String)
@@ -852,68 +854,62 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     private CountDownLatch ddLoadLatch = new CountDownLatch(1);
     
     private void waitForDDInitCompletion() {
-        try {
-            ddLoadLatch.await();
-        } catch ( InterruptedException ex ) {
-            // do nothing
+//        try {
+////            ddLoadLatch.await();
+//        } catch ( InterruptedException ex ) {
+//            // do nothing
+//        }
         }
-    }
     
-    /**
-     * @see org.kuali.core.service.DataDictionaryService#completeInitialization()
-     */
-    public void completeInitialization() {
-        try {
-            dataDictionaryBuilder.setKualiConfigurationService(getKualiConfigurationService());
-            dataDictionaryBuilder.setKualiGroupService(getKualiGroupService());
-    
-            LOG.info( "starting background DataDictionary init" );
-            if (baselineDirectories != null) {
-                for ( String dirName : baselineDirectories ) {
-                    dataDictionaryBuilder.addUniqueEntries(dirName, true);
+    public void addDataDictionaryLocation(String location) {
+    	dataDictionaryBuilder.addOverrideEntries(location, true);
                 }
                 
-                List<String> overrideDirectories = convertBaselineToOverrideDirectories( baselineDirectories );
-                for (String dirName : overrideDirectories ) {
-                    dataDictionaryBuilder.addOverrideEntries(dirName, false);
+    public void addDataDictionaryLocations(List<String> locations) {
+    	for (String location : locations) {
+			addDataDictionaryLocation(location);
                 }
             }
             
-            List<String> moduleDirectories = kualiModuleService.getDataDictionaryPackages();
-            for ( String dirName : moduleDirectories ) {
-                dataDictionaryBuilder.addUniqueEntries(dirName, true);
-            }
-            
-            List<String> overrideDirectories = convertBaselineToOverrideDirectories( moduleDirectories );
-            for (String dirName : overrideDirectories ) {
-                dataDictionaryBuilder.addOverrideEntries(dirName, false);
-            }
-    
-    
-            dataDictionaryBuilder.completeInitialization();
-            // need to pass in the DD to the authorization service since the latch has not been released yet
-            authorizationService.completeInitialization( dataDictionaryBuilder.getDataDictionary() );
-            LOG.info( "completed DataDictionary init - releasing latch" );
-        } finally {
-            // ensure that the latch gets released, even if there is a problem
-            ddLoadLatch.countDown();
-        }
-    }
-
 //    /**
-//     * Given a list of Java packages in String format, this method will parse each out and convert them into filesystem directory
-//     * based notation.
-//     * 
-//     * @param packageList
-//     * @return A List of filesystem directories.
+//     * @see org.kuali.core.service.DataDictionaryService#completeInitialization()
 //     */
-//    private List<String> convertPackagesToDirectories(List<String> packageList) {
-//        List<String> directoryList = new ArrayList<String>();
-//        for (String packageName :  packageList ) {
-//            directoryList.add( packageName.replace('.', '/') );
+//    public void completeInitialization() {
+//        try {
+//            dataDictionaryBuilder.setKualiConfigurationService(getKualiConfigurationService());
+//            dataDictionaryBuilder.setKualiGroupService(getKualiGroupService());
+//    
+//            LOG.info( "starting background DataDictionary init" );
+//            if (baselineDirectories != null) {
+//                for ( String dirName : baselineDirectories ) {
+//                    dataDictionaryBuilder.addUniqueEntries(dirName, true);
 //        }
 //
-//        return directoryList;
+//                List<String> overrideDirectories = convertBaselineToOverrideDirectories( baselineDirectories );
+//                for (String dirName : overrideDirectories ) {
+//                    dataDictionaryBuilder.addOverrideEntries(dirName, false);
+//    }
+//            }
+//            
+//            List<String> moduleDirectories = kualiModuleService.getDataDictionaryPackages();
+//            for ( String dirName : moduleDirectories ) {
+//                dataDictionaryBuilder.addUniqueEntries(dirName, true);
+//            }
+//            
+//            List<String> overrideDirectories = convertBaselineToOverrideDirectories( moduleDirectories );
+//            for (String dirName : overrideDirectories ) {
+//                dataDictionaryBuilder.addOverrideEntries(dirName, false);
+//            }
+//    
+//    
+//            dataDictionaryBuilder.completeInitialization();
+//            // need to pass in the DD to the authorization service since the latch has not been released yet
+//            authorizationService.completeInitialization( dataDictionaryBuilder.getDataDictionary() );
+//            LOG.info( "completed DataDictionary init - releasing latch" );
+//        } finally {
+//            // ensure that the latch gets released, even if there is a problem
+//            ddLoadLatch.countDown();
+//        }
 //    }
 
     
@@ -940,10 +936,10 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
     
 
-    public void addUniqueEntries(String sourceName, boolean sourceMustExist) {
-        dataDictionaryBuilder.addUniqueEntries(sourceName, sourceMustExist);
-
-    }
+//    public void addUniqueEntries(String sourceName, boolean sourceMustExist) {
+//        dataDictionaryBuilder.addUniqueEntries(sourceName, sourceMustExist);
+//
+//    }
 
     public void setKualiGroupService(KualiGroupService kualiGroupService) {
         this.kualiGroupService = kualiGroupService;

@@ -254,16 +254,6 @@
 			<lastName>director</lastName>
 		</user>
 		<user>
-			<workflowId>quickstart</workflowId>
-			<emplId>quickstart</emplId>
-			<authenticationId>quickstart</authenticationId>
-			<uuId>quickstart</uuId>
-			<emailAddress>quickstart@indiana.edu</emailAddress>
-			<displayName>quickstart</displayName>
-			<givenName>quickstart</givenName>
-			<lastName>quickstart</lastName>
-		</user>
-		<user>
 			<workflowId>KULUSER</workflowId>
 			<emplId>KULUSER</emplId>
 			<authenticationId>KULUSER</authenticationId>
@@ -314,19 +304,32 @@
 			<lastName>employee</lastName>
 		</user>
 	</users>
-	<!-- 
 	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
 		<workgroup>
 			<id>2</id>
-			<workgroupName>WorkflowAdmin</workgroupName>
-			<description>WorkflowAdmin</description>
+			<workgroupName>KUALI_PED</workgroupName>
+			<description>KUALI_PED</description>
 			<members>
-				<authenticationId>user4</authenticationId>
-				<authenticationId>quickstart</authenticationId>
+				<authenticationId>employee</authenticationId>
 			</members>
 		</workgroup>
+		<workgroup>
+			<id>3</id>
+			<workgroupName>KUALI_OPERATIONS</workgroupName>
+			<description>KUALI_OPERATIONS</description>
+			<members>
+				<authenticationId>employee</authenticationId>
+			</members>
+		</workgroup>
+		<workgroup>
+			<id>4</id>
+			<workgroupName>KUALI_ROLE_MAINTENANCE</workgroupName>
+			<description>KUALI_ROLE_MAINTENANCE</description>
+			<members>
+				<authenticationId>employee</authenticationId>
+			</members>
+		</workgroup>		
 	</workgroups>
-	 -->
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
 			<name>DestinationAttribute</name>

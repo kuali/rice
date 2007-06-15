@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
-import org.kuali.rice.RiceConfigurer;
 import org.kuali.rice.config.spring.ConfigFactoryBean;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.test.RiceTestCase;
@@ -46,7 +44,7 @@ public class KNSTestCase extends RiceTestCase {
 			}
 
 			public void start() throws Exception {
-				RiceConfigurer.setConfigurationFile(getTestConfigFilename());
+//				RiceConfigurer.setConfigurationFile(getTestConfigFilename());
 				ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();
 
 				new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();

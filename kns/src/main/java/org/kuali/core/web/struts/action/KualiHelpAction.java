@@ -81,8 +81,8 @@ public class KualiHelpAction extends KualiAction {
      * @param businessObjectClassName
      * @return DataDictionaryEntry
      */
-    private DataDictionaryEntry getDataDictionaryEntry(String businessObjectClassName) throws ClassNotFoundException {
-        return getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(Class.forName(businessObjectClassName));
+    private DataDictionaryEntry getDataDictionaryEntry(String businessObjectClassName) {
+        return getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(businessObjectClassName);
     }
 
     /**

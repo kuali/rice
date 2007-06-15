@@ -32,7 +32,7 @@
             </authorization>
         </authorizations>
 
-        <documentTypeName>KualiCampusTypeMaintenanceDocument</documentTypeName>
+        <documentTypeName>DocAuthInvalid</documentTypeName>
         <documentTypeCode>CTYP</documentTypeCode>
         <label>Campus Type Maintenance Document</label>
         <shortLabel>CampusTypeMaintDoc</shortLabel>

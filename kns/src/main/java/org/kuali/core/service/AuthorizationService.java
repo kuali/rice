@@ -19,6 +19,7 @@ import java.util.Set;
 
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.datadictionary.DataDictionary;
+import org.kuali.core.datadictionary.DocumentEntry;
 
 
 /**
@@ -49,5 +50,7 @@ public interface AuthorizationService {
      */
     public boolean isAuthorizedToViewAttribute(UniversalUser user, String entryName, String attributeName);
     
-    public void completeInitialization( DataDictionary dataDictionary );
+//    public void completeInitialization( DataDictionary dataDictionary );
+    
+    public void setupAuthorizations(DocumentEntry documentEntry) ;
 }

@@ -31,52 +31,42 @@ public class KualiDBPlatformDerby extends AbstractDBPlatformDaoJdbc {
 	}
 
 	public String getStrToDateFunction() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public void createIndex(String ddl) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void createSequence(String ddl) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void createTable(String ddl) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void createView(String ddl) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void dropSequence(String sequenceName) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void dropTable(String tableName) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void dropView(String viewName) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void dumpSequence(String sequenceName, String exportDirectory) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public String escapeSingleQuotes(String value) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -91,12 +81,10 @@ public class KualiDBPlatformDerby extends AbstractDBPlatformDaoJdbc {
 	}
 
 	public void setDefaultDateFormatToYYYYMMDD() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void setSequenceStart(String sequenceName, Long value) {
-		// TODO Auto-generated method stub
 		
 	}
 

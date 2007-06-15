@@ -145,7 +145,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
 
         MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(maintainable.getBusinessObject().getClass());
         if (entry != null) {
-            businessRulesClass = getDataDictionary().getBusinessRulesClass(entry.getDocumentTypeName());
+            businessRulesClass = entry.getBusinessRulesClass();
         }
 
         if (businessRulesClass == null) {
@@ -233,12 +233,12 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
      * @param docTypeName
      * @return
      */
-    private MaintenanceDocumentEntry getMaintenanceDocumentEntry(String docTypeName) {
+    public MaintenanceDocumentEntry getMaintenanceDocumentEntry(String docTypeName) {
         if (StringUtils.isBlank(docTypeName)) {
             throw new IllegalArgumentException("invalid (blank) docTypeName");
         }
 
-        MaintenanceDocumentEntry entry = getDataDictionary().getMaintenanceDocumentEntry(docTypeName);
+        MaintenanceDocumentEntry entry = (MaintenanceDocumentEntry)getDataDictionary().getDocumentEntry(docTypeName);
         return entry;
     }
 

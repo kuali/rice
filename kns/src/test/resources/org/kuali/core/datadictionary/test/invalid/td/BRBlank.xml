@@ -20,10 +20,10 @@
 
 <dictionaryEntry>
     <transactionalDocument>
-        <documentClass>org.kuali.module.financial.document.InternalBillingDocument</documentClass>
+        <documentClass>org.kuali.core.impls.RiceTestTransactionalDocument</documentClass>
         <businessRulesClass></businessRulesClass>
+        <documentAuthorizerClass>org.kuali.core.impls.RiceTestTransactionalDocumentAuthorizer</documentAuthorizerClass>
 
-        <documentAuthorizerClass>org.kuali.kfs.document.authorization.AccountingDocumentAuthorizerBase</documentAuthorizerClass>
         <authorizations>
             <authorization action="initiate">
                 <workgroups>
@@ -32,7 +32,7 @@
             </authorization>
         </authorizations>
 
-        <documentTypeName>KualiInternalBillingDocument</documentTypeName>
+        <documentTypeName>BRBlank</documentTypeName>
         <documentTypeCode>IB</documentTypeCode>
 
         <label>Interal Billing Document</label>

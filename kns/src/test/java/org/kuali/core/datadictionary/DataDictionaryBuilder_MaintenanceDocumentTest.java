@@ -56,7 +56,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("BlankBusinessObjectClass", true);
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
 		}
@@ -72,7 +72,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("BlankFieldName", true);
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
 		}
@@ -88,7 +88,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("BlankMaintainableClass", true);
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
 		}
@@ -104,26 +104,9 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("BlankSectionTitle", true);
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
-		}
-
-		assertTrue(failedAsExpected);
-	}
-
-	@Test
-	public final void testDataDictionaryBuilder_maintenanceDocument_duplicateEntries() {
-		boolean failedAsExpected = false;
-
-		try {
-			builder.addUniqueEntries("org/kuali/core/bo/datadictionary/AttributeReferenceDummy.xml", true);
-			builder.addUniqueEntries("org/kuali/core/bo/datadictionary/AttributeReferenceDummy.xml", true);
-			builder.completeInitialization();
-		} catch (DataDictionaryException e) {
-			if (DataDictionaryUtils.saxCause(e) instanceof DuplicateEntryException) {
-				failedAsExpected = true;
-			}
 		}
 
 		assertTrue(failedAsExpected);
@@ -137,7 +120,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("DuplicateFieldName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof DuplicateEntryException) {
 				failedAsExpected = true;
@@ -155,7 +138,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("DuplicateSectionTitle", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof DuplicateEntryException) {
 				failedAsExpected = true;
@@ -173,7 +156,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("InvalidMaintenanceDocument", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof IllegalArgumentException) {
 				failedAsExpected = true;
@@ -191,7 +174,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("InvalidBusinessObjectClass", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ClassValidationException) {
 				failedAsExpected = true;
@@ -209,7 +192,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("InvalidMaintainableClass", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ClassValidationException) {
 				failedAsExpected = true;
@@ -227,7 +210,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("UnknownBusinessObjectClass", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -245,7 +228,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("UnknownMaintainableClass", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -256,13 +239,6 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 	}
 
 	@Test
-	public final void testDataDictionaryBuilder_maintenanceDocument_valid() {
-		builder.addUniqueEntries("org/kuali/core/bo/datadictionary/", true);
-		builder.addUniqueEntries("org/kuali/core/document/datadictionary/", true);
-		builder.completeInitialization();
-	}
-
-	@Test
 	public final void testDataDictionaryBuilder_maintenanceDocument_MCBlankCollectionName() {
 		String INPUT_FILE = DataDictionaryBuilderTest.TESTPACKAGE_INVALID + "md/MCBlankCollectionName.xml";
 
@@ -270,7 +246,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("MCBlankCollectionName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -288,7 +264,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("MCBlankBusinessObjectClass", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -306,7 +282,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("MCBlankFieldName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -324,7 +300,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("MCDuplicateCollectionName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -342,7 +318,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("MCInvalidBusinessObjectClass", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -360,7 +336,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("MCMissingFields", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -378,7 +354,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("MCUnknownBusinessObjectClass", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -396,7 +372,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("MCUnknownField", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -414,7 +390,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("MCInvalidField", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -432,7 +408,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("BRBlank", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -450,7 +426,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("BRInvalid", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ClassValidationException) {
 				failedAsExpected = true;
@@ -468,7 +444,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("AuthBlankAction", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof IllegalArgumentException) {
 				failedAsExpected = true;
@@ -486,7 +462,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("AuthBlankWorkgroup", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof IllegalArgumentException) {
 				failedAsExpected = true;
@@ -504,7 +480,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("AuthEmptyAuthorization", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCaused(e)) {
 				failedAsExpected = true;
@@ -522,7 +498,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("AuthEmptyAuthorizationsSection", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCaused(e)) {
 				failedAsExpected = true;
@@ -540,7 +516,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("AuthEmptyWorkgroupsList", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCaused(e)) {
 				failedAsExpected = true;
@@ -558,7 +534,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("AuthMissingAction", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCaused(e)) {
 				failedAsExpected = true;
@@ -576,7 +552,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("AuthMissingAuthorizationsSection", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCaused(e)) {
 				failedAsExpected = true;
@@ -594,7 +570,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("DocAuthMissing", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCaused(e)) {
 				failedAsExpected = true;
@@ -612,7 +588,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("DocAuthBlank", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -630,7 +606,7 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("DocAuthUnknown", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -648,9 +624,9 @@ public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseDocument("DocAuthInvalid", true);
 		} catch (DataDictionaryException e) {
-			if (e instanceof ClassValidationException) {
+			if (DataDictionaryUtils.saxCause(e)  instanceof ClassValidationException) {
 				failedAsExpected = true;
 			}
 		}

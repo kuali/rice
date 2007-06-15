@@ -20,7 +20,7 @@
 
 <dictionaryEntry>
     <transactionalDocument>
-        <documentClass>org.kuali.module.financial.document.InternalBillingDocument</documentClass>
+        <documentClass>org.kuali.core.impls.RiceTestTransactionalDocument</documentClass>
 
         <documentAuthorizerClass>org.kuali.Foo</documentAuthorizerClass>
         <authorizations>
@@ -31,7 +31,7 @@
             </authorization>
         </authorizations>
 
-        <documentTypeName>KualiInternalBillingDocument</documentTypeName>
+        <documentTypeName>DocAuthUnknown</documentTypeName>
         <documentTypeCode>IB</documentTypeCode>
 
         <label>Interal Billing Document</label>

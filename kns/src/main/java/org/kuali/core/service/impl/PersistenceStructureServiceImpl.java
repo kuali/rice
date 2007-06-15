@@ -316,7 +316,11 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
         
         // get the class of the attribute name
         Class attributeClass = getBusinessObjectAttributeClass( clazz, attributeName );
+        if (attributeClass == null) {
+        	throw new ReferenceAttributeDoesntExistException("Requested attribute: '" + attributeName + "' does not exist " + "on class: '" + clazz.getName() + "'.");
+        }
         
+
         // make sure the class of the attribute descends from BusinessObject,
         // otherwise throw an exception
         if (!PersistableBusinessObject.class.isAssignableFrom(attributeClass)) {

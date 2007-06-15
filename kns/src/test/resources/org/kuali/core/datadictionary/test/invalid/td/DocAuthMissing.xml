@@ -20,7 +20,7 @@
 
 <dictionaryEntry>
     <transactionalDocument>
-        <documentClass>org.kuali.module.financial.document.InternalBillingDocument</documentClass>
+        <documentClass>org.kuali.core.impls.RiceTestTransactionalDocument</documentClass>
 
         <authorizations>
             <authorization action="initiate">
@@ -30,7 +30,7 @@
             </authorization>
         </authorizations>
 
-        <documentTypeName>KualiInternalBillingDocument</documentTypeName>
+        <documentTypeName>DocAuthMissing</documentTypeName>
         <documentTypeCode>IB</documentTypeCode>
 
         <label>Interal Billing Document</label>

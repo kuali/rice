@@ -134,7 +134,8 @@ public class BeanPropertyComparator implements Comparator, Serializable {
                 // compare the values
                 Object value1 = PropertyUtils.getProperty(o1, currentProperty);
                 Object value2 = PropertyUtils.getProperty(o2, currentProperty);
-
+                if ( value1 == null ) value1 = "";
+                if ( value2 == null ) value2 = "";
                 compared = currentComparator.compare(value1, value2);
             }
         }

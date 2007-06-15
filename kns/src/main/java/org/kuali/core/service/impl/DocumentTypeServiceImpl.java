@@ -77,7 +77,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
             throw new IllegalArgumentException("invalid (non-Document) documentClass");
         }
 
-        DocumentEntry documentEntry = dataDictionaryService.getDataDictionary().getDocumentEntry(documentClass);
+        DocumentEntry documentEntry = dataDictionaryService.getDataDictionary().getDocumentEntry(documentClass.getName());
         if (null == documentEntry) {
             throw new UnknownDocumentTypeException("unable to get documentTypeCode for unknown documentClass '" + documentClass.getName() + "'");
         }

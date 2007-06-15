@@ -22,7 +22,7 @@
     <transactionalDocument>
         <documentClass>java.lang.String</documentClass>
 
-        <documentAuthorizerClass>org.kuali.kfs.document.authorization.AccountingDocumentAuthorizerBase</documentAuthorizerClass>
+        <documentAuthorizerClass>org.kuali.core.impls.RiceTestTransactionalDocumentAuthorizer</documentAuthorizerClass>
         <authorizations>
             <authorization action="initiate">
                 <workgroups>
@@ -31,7 +31,7 @@
             </authorization>
         </authorizations>
 
-        <documentTypeName>KualiInternalBillingDocument</documentTypeName>
+        <documentTypeName>InvalidDocumentClass</documentTypeName>
         <documentTypeCode>IB</documentTypeCode>
 
         <label>Interal Billing Document</label>

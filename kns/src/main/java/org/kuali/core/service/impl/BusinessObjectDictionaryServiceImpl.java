@@ -424,7 +424,7 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
     private BusinessObjectEntry getBusinessObjectEntry(Class businessObjectClass) {
         validateBusinessObjectClass(businessObjectClass);
 
-        BusinessObjectEntry entry = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClass);
+        BusinessObjectEntry entry = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClass.getName());
         return entry;
     }
 

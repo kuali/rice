@@ -122,7 +122,7 @@ public class TransactionalDocumentDictionaryServiceImpl implements Transactional
         String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
         TransactionalDocumentEntry entry = getTransactionalDocumentEntryBydocumentTypeName(docTypeName);
         if (entry != null) {
-            businessRulesClass = getDataDictionary().getBusinessRulesClass(entry.getDocumentTypeName());
+            businessRulesClass = entry.getBusinessRulesClass();
         }
 
         return businessRulesClass;
@@ -157,7 +157,7 @@ public class TransactionalDocumentDictionaryServiceImpl implements Transactional
             throw new IllegalArgumentException("invalid (null) document");
         }
 
-        TransactionalDocumentEntry entry = getDataDictionary().getTransactionalDocumentEntry(document.getClass());
+        TransactionalDocumentEntry entry = (TransactionalDocumentEntry)getDataDictionary().getDocumentEntry(document.getClass().getName());
 
         return entry;
     }
@@ -173,7 +173,7 @@ public class TransactionalDocumentDictionaryServiceImpl implements Transactional
             throw new IllegalArgumentException("invalid (null) document type name");
         }
 
-        TransactionalDocumentEntry entry = getDataDictionary().getTransactionalDocumentEntry(documentTypeName);
+        TransactionalDocumentEntry entry = (TransactionalDocumentEntry) getDataDictionary().getDocumentEntry(documentTypeName);
 
         return entry;
     }

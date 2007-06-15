@@ -1,0 +1,401 @@
+<!--
+	Copyright 2006-2007 The Kuali Foundation.
+	
+	Licensed under the Educational Community License, Version 1.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	http://www.opensource.org/licenses/ecl1.php
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+
+<descriptor-repository version="1.0">
+
+
+	<descriptor-repository version="1.0">
+		<jdbc-connection-descriptor jcd-alias="knsDataSource" default-connection="false" platform="Oracle9i" jdbc-level="3.0" useAutoCommit="0">
+			<sequence-manager className="org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl" />
+			<object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
+		</jdbc-connection-descriptor>
+	</descriptor-repository>
+
+	<class-descriptor class="org.kuali.core.bo.user.UniversalUser" table="FS_UNIVERSAL_USR_T">
+		<field-descriptor name="personUniversalIdentifier" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="personUserIdentifier" column="PERSON_USER_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="personPayrollIdentifier" column="PRSN_PYRL_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="personTaxIdentifier" column="PRSN_TAX_ID" jdbc-type="VARCHAR"
+			conversion="org.kuali.core.util.OjbKualiEncryptDecryptFieldConversion" />
+		<field-descriptor name="personTaxIdentifierTypeCode" column="PRSN_TAX_ID_TYP_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="personFirstName" column="PRSN_1ST_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="personLastName" column="PRSN_LST_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="personMiddleName" column="PRSN_MID_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="personName" column="PERSON_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="personEmailAddress" column="PRSN_EMAIL_ADDR" jdbc-type="VARCHAR" />
+		<field-descriptor name="campusCode" column="CAMPUS_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="primaryDepartmentCode" column="EMP_PRM_DEPT_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="personCampusAddress" column="PRSN_CMP_ADDR" jdbc-type="VARCHAR" />
+		<field-descriptor name="personLocalPhoneNumber" column="PRSN_LOC_PHN_NBR" jdbc-type="VARCHAR" />
+		<field-descriptor name="employeeStatusCode" column="EMP_STAT_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="employeeTypeCode" column="EMP_TYPE_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="student" column="PRSN_STU_IND" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+		<field-descriptor name="staff" column="PRSN_STAFF_IND" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+		<field-descriptor name="faculty" column="PRSN_FAC_IND" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+		<field-descriptor name="affiliate" column="PRSN_AFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+		<field-descriptor name="personBaseSalaryAmount" column="PRSN_BASE_SLRY_AMT" jdbc-type="DECIMAL"
+			conversion="org.kuali.core.util.OjbKualiDecimalFieldConversion" />
+		<field-descriptor name="financialSystemsEncryptedPasswordText" column="FS_ENCRPTD_PWD_TXT" jdbc-type="VARCHAR"
+			conversion="org.kuali.core.util.OjbKualiHashFieldConversion" />
+
+		<reference-descriptor name="campus" class-ref="org.kuali.core.bo.Campus" auto-retrieve="true" auto-update="none" auto-delete="none"
+			proxy="true">
+			<foreignkey field-ref="campusCode" />
+		</reference-descriptor>
+
+		<reference-descriptor name="employeeStatus" class-ref="org.kuali.core.bo.EmployeeStatus" auto-retrieve="true" auto-update="none"
+			auto-delete="none" proxy="true">
+			<foreignkey field-ref="employeeStatusCode" />
+		</reference-descriptor>
+
+		<reference-descriptor name="employeeType" class-ref="org.kuali.core.bo.EmployeeType" auto-retrieve="true" auto-update="none"
+			auto-delete="none" proxy="true">
+			<foreignkey field-ref="employeeTypeCode" />
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.workflow.bo.WorkflowUser" table="FS_UNIVERSAL_USR_T">
+		<field-descriptor name="uuId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="workflowUserId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="authenticationUserId" column="PERSON_USER_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="emplId" column="PRSN_PYRL_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="givenName" column="PRSN_1ST_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="lastName" column="PRSN_LST_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="displayName" column="PERSON_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="emailAddress" column="PRSN_EMAIL_ADDR" jdbc-type="VARCHAR" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.user.KualiModuleUserProperty" table="SH_USR_PROP_T">
+		<field-descriptor name="personUniversalIdentifier" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="moduleId" column="APPL_MOD_ID" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="name" column="USR_PROP_NM" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="value" column="USR_PROP_VAL" jdbc-type="VARCHAR" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+	</class-descriptor>
+
+	<!--  DOCUMENT MAPPINGS -->
+	<!--
+		NOTE:  we are not relating from document header to the other document
+		specific tables, we are relating in the other direction in order
+		to minimize the number of relations to the document header object
+		since if we map everything to doc header we would have at least 250
+		objects that relate to document header.
+	-->
+
+	<!--  MAINTENANCE/REFERENCE TABLE DOCUMENT MAPPING -->
+	<class-descriptor class="org.kuali.core.document.MaintenanceDocumentBase" table="FP_MAINTENANCE_DOCUMENT_T">
+		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="xmlDocumentContents" column="DOCUMENT_CONTENTS" jdbc-type="CLOB"
+			conversion="org.kuali.core.util.OjbKualiEncryptDecryptFieldConversion" />
+		<!--  object references -->
+		<reference-descriptor name="documentHeader" class-ref="org.kuali.core.bo.DocumentHeader" auto-retrieve="true" auto-update="object"
+			auto-delete="object">
+			<foreignkey field-ref="documentNumber" />
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.document.MaintenanceLock" table="FP_MAINT_LOCK_T">
+		<field-descriptor name="lockingRepresentation" column="LOCK_REPRESENTATION_TXT" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" index="true" />
+	</class-descriptor>
+
+	<!--  DOCUMENT CORE MAPPINGS -->
+	<class-descriptor class="org.kuali.core.bo.DocumentHeader" table="FP_DOC_HEADER_T">
+		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="financialDocumentStatusCode" column="FDOC_STATUS_CD" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="financialDocumentDescription" column="FDOC_DESC" jdbc-type="VARCHAR" />
+		<field-descriptor name="financialDocumentTotalAmount" column="FDOC_TOTAL_AMT" jdbc-type="DECIMAL"
+			conversion="org.kuali.core.util.OjbKualiDecimalFieldConversion" />
+		<field-descriptor name="organizationDocumentNumber" column="ORG_DOC_NBR" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="financialDocumentInErrorNumber" column="FDOC_IN_ERR_NBR" jdbc-type="VARCHAR" />
+		<field-descriptor name="financialDocumentTemplateNumber" column="FDOC_TMPL_NBR" jdbc-type="VARCHAR" />
+		<!-- TODO: remove following field from here, BO, and database after workflow API to retrieve this is implemented -->
+		<field-descriptor name="documentFinalDate" column="TEMP_DOC_FNL_DT" jdbc-type="DATE" />
+		<field-descriptor name="explanation" column="FDOC_EXPLAIN_TXT" jdbc-type="VARCHAR" />
+		<reference-descriptor name="documentStatus" class-ref="org.kuali.core.bo.DocumentStatus" auto-retrieve="true" auto-update="none"
+			auto-delete="none" proxy="true">
+			<foreignkey field-ref="financialDocumentStatusCode" />
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.DocumentStatus" table="FP_DOC_STATUS_T">
+		<field-descriptor name="financialDocumentStatusCode" column="FDOC_STATUS_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="financialDocumentStatusName" column="FDOC_STATUS_NM" jdbc-type="VARCHAR" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.Note" table="SH_NTE_T">
+		<field-descriptor name="noteIdentifier" column="NTE_ID" jdbc-type="BIGINT" primarykey="true" index="true" autoincrement="true"
+			sequence-name="NTE_ID_SEQ" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="remoteObjectIdentifier" column="RMT_OBJ_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="authorUniversalIdentifier" column="NTE_AUTH_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="notePostedTimestamp" column="NTE_POST_TS" jdbc-type="TIMESTAMP" />
+		<field-descriptor name="noteTypeCode" column="NTE_TYP_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="noteText" column="NTE_TXT" jdbc-type="VARCHAR" />
+		<field-descriptor name="notePurgeCode" column="NTE_PRG_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="noteTopicText" column="NTE_TPC_TXT" jdbc-type="VARCHAR" />
+		<reference-descriptor name="noteType" class-ref="org.kuali.core.bo.NoteType" auto-retrieve="true" auto-update="none" auto-delete="none">
+			<foreignkey field-ref="noteTypeCode" />
+		</reference-descriptor>
+		<!-- fdocAttachmentIdentifier ABOVE AND REFERENCE BELOW ARE TEMPORARY B/C THIS SHOULD BE 1 TO MANY -->
+		<reference-descriptor name="attachment" class-ref="org.kuali.core.bo.Attachment" auto-retrieve="true" auto-update="object"
+			auto-delete="object">
+			<foreignkey field-ref="noteIdentifier" />
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.NoteType" table="SH_NTE_TYP_T">
+		<field-descriptor name="noteTypeCode" column="NTE_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="noteTypeDescription" column="NTE_TYP_DESC" jdbc-type="VARCHAR" />
+		<field-descriptor name="noteTypeActiveIndicator" column="NTE_TYP_ACTV_IND" jdbc-type="VARCHAR"
+			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.Attachment" table="SH_ATT_T">
+		<field-descriptor name="noteIdentifier" column="NTE_ID" jdbc-type="BIGINT" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="attachmentMimeTypeCode" column="ATT_MIME_TYP_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="attachmentFileName" column="ATT_FL_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="attachmentIdentifier" column="ATT_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="attachmentFileSize" column="ATT_FL_SZ" jdbc-type="BIGINT" />
+		<field-descriptor name="attachmentTypeCode" column="ATT_TYP_CD" jdbc-type="VARCHAR" />
+		<reference-descriptor name="note" class-ref="org.kuali.core.bo.Note" auto-retrieve="true" auto-update="none" auto-delete="none">
+			<foreignkey field-ref="noteIdentifier" />
+		</reference-descriptor>
+	</class-descriptor>
+
+
+	<class-descriptor class="org.kuali.core.bo.DocumentType" table="FP_DOC_TYPE_T">
+		<field-descriptor name="financialDocumentTypeCode" column="FDOC_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="financialDocumentGroupCode" column="FDOC_GRP_CD" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="financialDocumentName" column="FDOC_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="finEliminationsEligibilityIndicator" column="FIN_ELIM_ELGBL_CD" jdbc-type="VARCHAR"
+			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+		<field-descriptor name="finDocumentTypeActiveIndicator" column="FDOC_TYP_ACTIVE_CD" jdbc-type="VARCHAR"
+			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+		<field-descriptor name="finDocumentRoutingRuleCode" column="FDOC_RTNG_RULE_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="finDocAutomaticApprovalDays" column="FDOC_AUTOAPRV_DAYS" jdbc-type="INTEGER" />
+		<field-descriptor name="financialDocumentBalancedIndicator" column="FDOC_BALANCED_CD" jdbc-type="VARCHAR"
+			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+		<field-descriptor name="transactionScrubberOffsetGenerationIndicator" column="TRN_SCRBBR_OFST_GEN_IND" jdbc-type="CHAR"
+			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+		<reference-descriptor name="documentGroup" class-ref="org.kuali.core.bo.DocumentGroup" auto-retrieve="true" auto-update="none"
+			auto-delete="none" proxy="true">
+			<foreignkey field-ref="financialDocumentGroupCode" />
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.DocumentGroup" table="FP_DOC_GROUP_T">
+		<field-descriptor name="financialDocumentGroupCode" column="FDOC_GRP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="financialDocumentGroupName" column="FDOC_GRP_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="financialDocumentClassCode" column="FDOC_CLASS_CD" jdbc-type="VARCHAR" />
+	</class-descriptor>
+
+	<!--  APPLICATION PARAMETERS TABLE MAPPINGS -->
+	<class-descriptor class="org.kuali.core.bo.FinancialSystemParameterSecurity" table="FS_PARM_SEC_T">
+		<field-descriptor name="financialSystemScriptName" column="FS_SCR_NM" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="workgroupName" column="WRKGRP_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="financialSystemScriptDescription" column="FS_SCR_DESC" jdbc-type="VARCHAR" />
+
+		<collection-descriptor name="financialSystemParameters" element-class-ref="org.kuali.core.bo.FinancialSystemParameter"
+			collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
+			<orderby name="financialSystemParameterName" sort="ASC" />
+			<inverse-foreignkey field-ref="financialSystemScriptName" />
+		</collection-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.FinancialSystemParameter" table="FS_PARM_T">
+		<field-descriptor name="financialSystemScriptName" column="FS_SCR_NM" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="financialSystemParameterName" column="FS_PARM_NM" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="financialSystemParameterText" column="FS_PARM_TXT" jdbc-type="VARCHAR" />
+		<field-descriptor name="financialSystemParameterDescription" column="FS_PARM_DESC" jdbc-type="VARCHAR" />
+		<field-descriptor name="financialSystemMultipleValueIndicator" column="FS_MULT_VAL_IND" jdbc-type="VARCHAR"
+			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+
+		<reference-descriptor name="financialSystemParameterSecurity" class-ref="org.kuali.core.bo.FinancialSystemParameterSecurity"
+			auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+			<foreignkey field-ref="financialSystemScriptName" />
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.ConcurrentLock" table="SH_LOCK_T">
+		<field-descriptor name="transactionSemaphoreTypeCode" column="TRN_SMPHR_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="transactionSemaphoreId" column="TRN_SMPHR_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="personUniversalIdentifier" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="transactionLocktimeTimestamp" column="TRN_LCKTM_TS" jdbc-type="TIMESTAMP" />
+		<reference-descriptor name="lockTypeDescription" class-ref="org.kuali.core.bo.LockTypeDescription" auto-retrieve="true" auto-update="none"
+			auto-delete="none" proxy="true">
+			<foreignkey field-ref="transactionSemaphoreTypeCode" />
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.LockTypeDescription" table="SH_LOCK_TYP_DESC_T">
+		<field-descriptor name="transactionSemaphoreTypeCode" column="TRN_SMPHR_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="personUpdateAbilityNumber" column="PRSN_UPDTABLTY_NBR" jdbc-type="BIGINT" />
+		<field-descriptor name="transactionSemaphoreDescription" column="TRN_SMPHR_DESC" jdbc-type="VARCHAR" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.BatchReport" table="FS_BATCH_RPT_T">
+		<field-descriptor name="scriptName" column="FS_SCRIPT_NM" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="storedProcedureName" column="FS_STORED_PROC_NM" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="reportCode" column="FS_RPT_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="reportLineNumber" column="FS_RPT_LN_NBR" jdbc-type="INTEGER" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="reportCreateDate" column="FS_RPT_CRT_DT" jdbc-type="DATE" />
+		<field-descriptor name="reportText" column="FS_RPT_TXT" jdbc-type="VARCHAR" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.BusinessRuleSecurity" table="FS_BSNS_RULE_SEC_T">
+		<field-descriptor name="ruleGroupName" column="FS_RULE_GRP_NM" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="workgroupName" column="WRKGRP_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="ruleGroupDescription" column="FS_RULE_GRP_DESC" jdbc-type="VARCHAR" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.BusinessRule" table="FS_BSNS_RULE_T">
+		<field-descriptor name="ruleGroupName" column="FS_RULE_GRP_NM" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="ruleName" column="FS_RULE_NM" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="ruleText" column="FS_RULE_TXT" jdbc-type="VARCHAR" />
+		<field-descriptor name="ruleDescription" column="FS_RULE_DESC" jdbc-type="VARCHAR" />
+		<field-descriptor name="ruleOperatorCode" column="FS_RULE_OPR_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="financialSystemMultipleValueIndicator" column="FS_MULT_VAL_IND" jdbc-type="VARCHAR"
+			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+		<field-descriptor name="financialSystemParameterActiveIndicator" column="FS_ACTIVE_IND" jdbc-type="VARCHAR"
+			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+
+		<reference-descriptor name="ruleGroup" class-ref="org.kuali.core.bo.BusinessRuleSecurity" auto-retrieve="true" auto-update="none"
+			auto-delete="none">
+			<foreignkey field-ref="ruleGroupName" />
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.AdHocRouteRecipient" table="FS_ADHOC_RTE_ACTN_RECP_T">
+		<field-descriptor name="type" column="ACTN_RQST_RECP_TYP_CD" jdbc-type="INTEGER" primarykey="true" index="true" />
+		<field-descriptor name="actionRequested" column="ACTN_RQST_CD" jdbc-type="CHAR" primarykey="true" index="true" />
+		<field-descriptor name="id" column="ACTN_RQST_RECP_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" />
+		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" index="true" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.AdHocRoutePerson" table="FS_ADHOC_RTE_ACTN_RECP_T">
+		<field-descriptor name="type" column="ACTN_RQST_RECP_TYP_CD" jdbc-type="INTEGER" primarykey="true" index="true" />
+		<field-descriptor name="actionRequested" column="ACTN_RQST_CD" jdbc-type="CHAR" primarykey="true" index="true" />
+		<field-descriptor name="id" column="ACTN_RQST_RECP_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" />
+		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" index="true" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.AdHocRouteWorkgroup" table="FS_ADHOC_RTE_ACTN_RECP_T">
+		<field-descriptor name="type" column="ACTN_RQST_RECP_TYP_CD" jdbc-type="INTEGER" primarykey="true" index="true" />
+		<field-descriptor name="actionRequested" column="ACTN_RQST_CD" jdbc-type="CHAR" primarykey="true" index="true" />
+		<field-descriptor name="id" column="ACTN_RQST_RECP_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" />
+		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" index="true" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.LookupResults" table="FS_LOOKUP_RESULTS_MT">
+		<field-descriptor name="lookupResultsSequenceNumber" column="LOOKUP_RESULT_SEQUENCE_NBR" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="lookupUniversalUserId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="lookupDate" column="LOOKUP_DATE" jdbc-type="TIMESTAMP" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="serializedLookupResults" column="SERIALIZED_LOOKUP_RESULTS" jdbc-type="CLOB"
+			conversion="org.kuali.core.util.OjbKualiEncryptDecryptFieldConversion" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.SelectedObjectIds" table="FS_LOOKUP_SELECTIONS_MT">
+		<field-descriptor name="lookupResultsSequenceNumber" column="LOOKUP_RESULT_SEQUENCE_NBR" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="lookupUniversalUserId" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="lookupDate" column="LOOKUP_DATE" jdbc-type="TIMESTAMP" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="selectedObjectIds" column="SELECTED_OBJ_IDS" jdbc-type="CLOB" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.EmployeeType" table="SH_EMP_TYP_T">
+		<field-descriptor name="code" column="EMP_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="name" column="EMP_TYP_DESC" jdbc-type="VARCHAR" />
+		<field-descriptor name="rowActiveIndicator" column="ROW_ACTV_IND" jdbc-type="VARCHAR"
+			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.EmployeeStatus" table="SH_EMP_STAT_T">
+		<field-descriptor name="code" column="EMP_STAT_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="name" column="EMP_STAT_DESC" jdbc-type="VARCHAR" />
+		<field-descriptor name="rowActiveIndicator" column="ROW_ACTV_IND" jdbc-type="VARCHAR"
+			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.Campus" table="SH_CAMPUS_T">
+		<field-descriptor name="campusCode" column="CAMPUS_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="campusName" column="CAMPUS_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="campusShortName" column="CAMPUS_SHRT_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="campusTypeCode" column="CAMPUS_TYP_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+
+		<reference-descriptor name="campusType" class-ref="org.kuali.core.bo.CampusType" auto-retrieve="true" auto-update="none" auto-delete="none">
+			<foreignkey field-ref="campusTypeCode" />
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.bo.CampusType" table="SH_CMP_TYP_T">
+		<field-descriptor name="campusTypeCode" column="CAMPUS_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="dataObjectMaintenanceCodeActiveIndicator" column="DOBJ_MAINT_CD_ACTV_IND" jdbc-type="VARCHAR"
+			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
+		<field-descriptor name="campusTypeName" column="CMP_TYP_NM" jdbc-type="VARCHAR" />
+	</class-descriptor>
+</descriptor-repository>

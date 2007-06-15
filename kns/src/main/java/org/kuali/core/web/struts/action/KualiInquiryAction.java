@@ -125,7 +125,7 @@ public class KualiInquiryAction extends KualiAction {
         Class customInquirableClass = null;
 
         try {
-            customInquirableClass = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClass).getInquiryDefinition().getInquirableClass();
+            customInquirableClass = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryForm.getBusinessObjectClassName()).getInquiryDefinition().getInquirableClass();
         }
         catch (Exception e) {
             LOG.error("Unable to correlate business object class with maintenance document entry");

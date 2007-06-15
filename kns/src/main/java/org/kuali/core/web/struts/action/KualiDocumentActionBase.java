@@ -914,7 +914,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         DataDictionary dataDictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
-        DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass());
+        DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass().getName());
 
         if(entry.getDisplayTopicFieldInNotes()) {
             String topicText = kualiDocumentFormBase.getNewNote().getNoteTopicText();
@@ -995,7 +995,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
 
         DataDictionary dataDictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
-        DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass());
+        DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass().getName());
 
         // check authorization for adding notes
         DocumentActionFlags flags = getDocumentActionFlags(document);

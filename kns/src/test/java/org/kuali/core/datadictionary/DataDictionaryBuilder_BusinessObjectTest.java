@@ -74,7 +74,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/EmployeeTypeMaintenanceDocument.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/FinancialSystemParameterSecurityMaintenanceDocument.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/FinancialSystemParameterMaintenanceDocument.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/UniversalUserMaintenanceDocument.xml", true);
+		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/KualiUniversityUserMaintenanceDocument.xml", true);
 		
 		// quieten things down a bit
 		setLogLevel("org.apache.commons.digester", Level.FATAL);
@@ -95,7 +95,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("BlankFormatterClass", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -113,7 +113,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("BlankValidatingRegex", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -132,7 +132,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		try {
 			builder.getDataDictionary().setAllowOverrides(true);
 			builder.addOverrideEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("InvalidFormatterClass", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -151,7 +151,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		try {
 			builder.getDataDictionary().setAllowOverrides(true);
 			builder.addOverrideEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("InvalidValidatingRegex", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -169,7 +169,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("UnknownFormatterClass", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -187,7 +187,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("ARBlankAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -205,7 +205,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("ARBlankSourceAttribute", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -223,7 +223,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("ARBlankSourceClass", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -241,7 +241,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("ARDuplicateAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -260,7 +260,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		try {
 			builder.getDataDictionary().setAllowOverrides(true);
 			builder.addOverrideEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("ARInvalidAttributeReference", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -279,7 +279,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		try {
 			builder.getDataDictionary().setAllowOverrides(true);
 			builder.addOverrideEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("ARMissingSourceAttribute", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -297,7 +297,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("ARMissingSourceClass", true);
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
 		}
@@ -314,7 +314,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		try {
 			builder.getDataDictionary().setAllowOverrides(true);
 			builder.addOverrideEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("ARUnknownAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -333,7 +333,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		try {
 			builder.getDataDictionary().setAllowOverrides(true);
 			builder.addOverrideEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("ARUnknownSourceAttribute", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -352,7 +352,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		try {
 			builder.getDataDictionary().setAllowOverrides(true);
 			builder.addOverrideEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("ARUnknownSourceClass", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -370,7 +370,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("BlankAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -388,7 +388,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("BlankBusinessObjectClass", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -406,7 +406,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("BlankCollectionName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -424,7 +424,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("DefaultSortBlankAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -443,7 +443,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		try {
 			builder.getDataDictionary().setAllowOverrides(true);
 			builder.addOverrideEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("DefaultSortUnknownAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -461,7 +461,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("DuplicateAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -479,7 +479,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("IFBlankAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -497,7 +497,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("IFDuplicateAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -516,7 +516,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		try {
 			builder.getDataDictionary().setAllowOverrides(true);
 			builder.addOverrideEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("IFUnknownAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -535,7 +535,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		try {
 			builder.getDataDictionary().setAllowOverrides(true);
 			builder.addOverrideEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("InvalidBusinessObject", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -553,7 +553,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("LFBlankAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -571,7 +571,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("LFDuplicateAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -590,7 +590,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		try {
 			builder.getDataDictionary().setAllowOverrides(true);
 			builder.addOverrideEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("LFUnknownAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -608,7 +608,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("RKBlankAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -626,7 +626,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("RKDuplicateAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -645,7 +645,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		try {
 			builder.getDataDictionary().setAllowOverrides(true);
 			builder.addOverrideEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("RKUnknownAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -664,7 +664,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		try {
 			builder.getDataDictionary().setAllowOverrides(true);
 			builder.addOverrideEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("UnknownAttributeName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -682,7 +682,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("UnknownBusinessObjectClass", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -701,7 +701,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		try {
 			builder.getDataDictionary().setAllowOverrides(true);
 			builder.addOverrideEntries(INPUT_FILE, true);
-			builder.completeInitialization();
+			builder.parseBO("UnknownCollectionName", true);
 		} catch (DataDictionaryException e) {
 			if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
 				failedAsExpected = true;
@@ -710,18 +710,4 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		assertTrue(failedAsExpected);
 	}
-
-	// public final void testDataDictionaryBuilder_exclusiveMin_valid() {
-	// String INPUT_FILE =
-	// "org/kuali/module/financial/datadictionary/InternalBillingItem.xml";
-	//
-	// builder.addUniqueEntries(INPUT_FILE, true);
-	// builder.completeInitialization();
-	// BusinessObjectEntry businessObjectEntry =
-	// builder.getDataDictionary().getBusinessObjectEntry(InternalBillingItem.class);
-	// assertEquals(new BigDecimal("0"),
-	// businessObjectEntry.getAttributeDefinition("itemQuantity").getExclusiveMin());
-	// assertNull(businessObjectEntry.getAttributeDefinition("total").getExclusiveMin());
-	// }
-
 }

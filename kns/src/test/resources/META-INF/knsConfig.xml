@@ -26,7 +26,7 @@
 	<param name="datasource.pool.maxWait">30000</param>
 	<param name="datasource.pool.minSize">2</param>
 	<param name="datasource.pool.maxSize">50</param>
-	<param name="datasource.password">r1c3</param>	
+	<param name="datasource.password">r1c3</param>
 	
 	<param name="keystore.alias">onestartsharedservices-devandtst</param>
 	<param name="keystore.location">/opt/sa_forms/java/dev/edu/iu/uis/security/en/onestartsharedservices-devandtst_keystore</param>
@@ -58,5 +58,5 @@
 	<param name="kfsLocator.useAppContext">true</param>
 	<param name="production.environment.code">prd</param>
 	
-	<param name="config.location">${alt.build.location}</param>
+	<param name="config.location">/opt/kuali/rice/kns.xml</param>
 </config>

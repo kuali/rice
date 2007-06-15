@@ -26,8 +26,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.BusinessObjectRelationship;
 import org.kuali.core.bo.PersistableBusinessObject;
+import org.kuali.core.datadictionary.BusinessObjectEntry;
 import org.kuali.core.datadictionary.CollectionDefinition;
-import org.kuali.core.datadictionary.DataDictionaryEntryBase;
 import org.kuali.core.datadictionary.FieldDefinition;
 import org.kuali.core.datadictionary.InquirySectionDefinition;
 import org.kuali.core.datadictionary.PrimitiveAttributeDefinition;
@@ -56,7 +56,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 
     public Collection<String> getCollectionNames(BusinessObject bo) {
         Map<String, CollectionDefinition> collections = dataDictionaryService.getDataDictionary()
-            .getBusinessObjectEntry(bo.getClass()).getCollections();
+            .getBusinessObjectEntry(bo.getClass().getName()).getCollections();
         
         return collections.keySet();
     }
@@ -204,8 +204,8 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
         }
         
         //try persistable reference first
-        if(bo instanceof PersistableBusinessObject) {
-            Map<String,BusinessObjectRelationship> rels = persistenceStructureService.getRelationshipMetadata( bo.getClass(), attributeName, attributePrefix );
+        if(PersistableBusinessObject.class.isAssignableFrom( boClass )) {
+            Map<String,BusinessObjectRelationship> rels = persistenceStructureService.getRelationshipMetadata( boClass, attributeName, attributePrefix );
             if ( rels.size() > 0 ) {
                 int maxSize = 255;
                 for ( BusinessObjectRelationship rel : rels.values() ) {
@@ -344,7 +344,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
     
         
     public RelationshipDefinition getDDRelationship(Class c, String attributeName) {
-        DataDictionaryEntryBase entryBase = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry(c);
+        BusinessObjectEntry entryBase = dataDictionaryService.getDataDictionary().getBusinessObjectEntry(c.getName());
         if(entryBase ==null) {
             return null;
         }
@@ -394,7 +394,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
         if ( bo instanceof PersistableBusinessObject ) {
             referenceClasses = getPersistenceStructureService().listReferenceObjectFields( bo.getClass() );
         }
-        Map<String, RelationshipDefinition> ddRelationships = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry(bo.getClass()).getRelationships();
+        Map<String, RelationshipDefinition> ddRelationships = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry(bo.getClass().getName()).getRelationships();
         List<BusinessObjectRelationship> relationships = new ArrayList<BusinessObjectRelationship>();
         
         // loop over all relationships

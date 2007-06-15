@@ -132,7 +132,7 @@ public abstract class KualiTestBase extends KNSTestCase implements KualiTestCons
 //		setRunLifeCyclesOnce(true);
 		super.setUp();
 		final boolean needsSpring = getClass().isAnnotationPresent(WithTestSpringContext.class);
-		hideSession();
+//		hideSession();
 		GlobalVariables.setErrorMap(new ErrorMap());
 		if (needsSpring) {
 			transactionalLifecycle = new TransactionalLifecycle();
@@ -151,7 +151,7 @@ public abstract class KualiTestBase extends KNSTestCase implements KualiTestCons
 			transactionalLifecycle.stop();
 //			KNSServiceLocator.getTransactionManager().rollback(TRANSACTION_STATUS);
 		}
-		hideSession();
+//		hideSession();
 		GlobalVariables.setErrorMap(new ErrorMap());
 		super.tearDown();
 	}

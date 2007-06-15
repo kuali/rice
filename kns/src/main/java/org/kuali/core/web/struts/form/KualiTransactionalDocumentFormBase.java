@@ -29,7 +29,11 @@ import org.kuali.rice.KNSServiceLocator;
  * This class is the base action form for all transactional documents.
  */
 public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
-    protected Map forcedReadOnlyFields;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6463383454050206811L;
+	protected Map forcedReadOnlyFields;
 
     /**
      * This constructor sets up empty instances for the dependent objects...
@@ -58,7 +62,7 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
      * @return
      */
     protected String discoverDocumentTypeName() {
-        return ((DataDictionaryService) KNSServiceLocator.getDataDictionaryService()).getDataDictionary().getTransactionalDocumentEntry(getDocument().getClass()).getDocumentTypeName();
+        return ((DataDictionaryService) KNSServiceLocator.getDataDictionaryService()).getDataDictionary().getDocumentEntry(getDocument().getClass().getName()).getDocumentTypeName();
     }
 
     /**

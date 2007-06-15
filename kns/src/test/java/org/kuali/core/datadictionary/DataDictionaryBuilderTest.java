@@ -77,8 +77,7 @@ public class DataDictionaryBuilderTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(null, true);
-			builder.completeInitialization();
-		} catch (IllegalArgumentException e) {
+		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
 		}
 
@@ -93,11 +92,8 @@ public class DataDictionaryBuilderTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
 		} catch (DataDictionaryException e) {
-			if (e.getCause() instanceof FileNotFoundException) {
-				failedAsExpected = true;
-			}
+			failedAsExpected = true;
 		}
 
 		assertTrue(failedAsExpected);
@@ -111,49 +107,12 @@ public class DataDictionaryBuilderTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(UNKNOWN_PACKAGE, true);
-			builder.completeInitialization();
-		} catch (DataDictionaryException e) {
-			failedAsExpected = true;
-		}
-
-        // This is because we are currently ignoring the invalid packages/directories
-        // so that the institutional extensions do not blow up the framework if not in use
-		assertTrue(failedAsExpected == false);
-	}
-
-	// @Test
-	// public final void testDataDictionaryBuilder_source_emptyPackage() throws
-	// Exception {
-	// String EMPTY_PACKAGE = TESTPACKAGE_EMPTY;
-	//
-	// builder.addUniqueEntries(EMPTY_PACKAGE, true);
-	// builder.completeInitialization();
-	// }
-
-	@Test
-	public final void testDataDictionaryBuilder_source_knownPackage_invalidFiles() {
-		String INPUT_PACKAGE = TESTPACKAGE_INVALID;
-
-		boolean failedAsExpected = false;
-
-		try {
-			builder.addUniqueEntries(INPUT_PACKAGE, true);
-			builder.completeInitialization();
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
 		}
 
 		assertTrue(failedAsExpected);
 	}
-
-	// @Test
-	// public final void
-	// testDataDictionaryBuilder_source_knownPackage_validFiles() {
-	// String INPUT_PACKAGE = TESTPACKAGE_VALID_SIMPLE;
-	//
-	// builder.addUniqueEntries(INPUT_PACKAGE, true);
-	// builder.completeInitialization();
-	// }
 
 	@Test
 	public final void testDataDictionaryBuilder_invalidXml() {
@@ -163,12 +122,10 @@ public class DataDictionaryBuilderTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
-        } catch (DataDictionaryException e) {
-            if (DataDictionaryUtils.saxCause(e) instanceof ConversionException) {
-                failedAsExpected = true;
-            }
-        }
+			builder.parseBO("InvalidXml", true);
+		} catch (DataDictionaryException e) {
+			failedAsExpected = true;
+		}
 
 		assertTrue(failedAsExpected);
 	}
@@ -181,11 +138,11 @@ public class DataDictionaryBuilderTest extends KualiTestBase {
 
 		try {
 			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.completeInitialization();
-        } catch (DataDictionaryException e) {
-            failedAsExpected = true;
+			builder.parseBO("InvalidXml", true);
+		} catch (DataDictionaryException e) {
+			failedAsExpected = true;
 		}
-        
+
 		assertTrue(failedAsExpected);
 	}
 

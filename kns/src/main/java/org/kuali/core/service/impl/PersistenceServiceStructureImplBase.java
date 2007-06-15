@@ -18,6 +18,7 @@ package org.kuali.core.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
@@ -34,16 +35,32 @@ public class PersistenceServiceStructureImplBase {
 
     private DescriptorRepository descriptorRepository;
 
+	// This is repeated in BaseOjbConfigurer
+	private static final String OJB_PROPERTIES_PROP = "OJB.properties";
+
+	private static final String DEFAULT_OJB_PROPERTIES = "org/kuali/rice/ojb/RiceOJB.properties";
+
     /**
      * Constructs a PersistenceServiceImpl instance.
      */
     public PersistenceServiceStructureImplBase() {
+		String currentValue = System.getProperty(OJB_PROPERTIES_PROP);
+		System.setProperty(OJB_PROPERTIES_PROP, DEFAULT_OJB_PROPERTIES);
+		try {
         MetadataManager metadataManager = MetadataManager.getInstance();
         descriptorRepository = metadataManager.getGlobalRepository();
+		} finally {
+			if (currentValue == null) {
+				System.getProperties().remove(OJB_PROPERTIES_PROP);
+			} else {
+				System.setProperty(OJB_PROPERTIES_PROP, currentValue);
     }
+		}
+	}
 
     /**
-     * @return DescriptorRepository containing everything OJB knows about persistable classes
+	 * @return DescriptorRepository containing everything OJB knows about
+	 *         persistable classes
      */
     protected DescriptorRepository getDescriptorRepository() {
         return descriptorRepository;
@@ -71,7 +88,8 @@ public class PersistenceServiceStructureImplBase {
 
     /**
      * @param classDescriptor
-     * @return name of the database table associated with given classDescriptor, stripped of its leading schemaName
+	 * @return name of the database table associated with given classDescriptor,
+	 *         stripped of its leading schemaName
      */
     protected String getTableName(ClassDescriptor classDescriptor) {
         String schemaName = classDescriptor.getSchema();
@@ -91,8 +109,10 @@ public class PersistenceServiceStructureImplBase {
     /**
      * @param persistableClass
      * @return ClassDescriptor for the given Class
-     * @throws IllegalArgumentException if the given Class is null
-     * @throws ClassNotPersistableException if the given Class is unknown to OJB
+	 * @throws IllegalArgumentException
+	 *             if the given Class is null
+	 * @throws ClassNotPersistableException
+	 *             if the given Class is unknown to OJB
      */
     protected ClassDescriptor getClassDescriptor(Class persistableClass) {
         if (persistableClass == null) {
@@ -103,8 +123,7 @@ public class PersistenceServiceStructureImplBase {
         DescriptorRepository globalRepository = getDescriptorRepository();
         try {
             classDescriptor = globalRepository.getDescriptorFor(persistableClass);
-        }
-        catch (ClassNotPersistenceCapableException e) {
+		} catch (ClassNotPersistenceCapableException e) {
             throw new ClassNotPersistableException("class '" + persistableClass.getName() + "' is not persistable", e);
         }
 
@@ -128,19 +147,18 @@ public class PersistenceServiceStructureImplBase {
     		subAttributeString = attributeName.substring( attributeName.indexOf( '.' ) + 1 );
     	}
     	
-        ClassDescriptor classDescriptor = this.getClassDescriptor( clazz );
-    	ObjectReferenceDescriptor refDescriptor = classDescriptor.getObjectReferenceDescriptorByName( baseAttributeName );
-    	
-    	if ( refDescriptor != null ) {
-    		attributeClass = refDescriptor.getItemClass();
-    	}
-    	// recurse if necessary
-    	if ( subAttributeString != null ) {
-    		attributeClass = getBusinessObjectAttributeClass( attributeClass, subAttributeString );
-    	}
-    	
-    	return attributeClass;
-    }
+		ClassDescriptor classDescriptor = this.getClassDescriptor(clazz);
+		ObjectReferenceDescriptor refDescriptor = classDescriptor.getObjectReferenceDescriptorByName(baseAttributeName);
 
+		if (refDescriptor != null) {
+			attributeClass = refDescriptor.getItemClass();
+		}
+		// recurse if necessary
+		if (subAttributeString != null) {
+			attributeClass = getBusinessObjectAttributeClass(attributeClass, subAttributeString);
+		}
+
+		return attributeClass;
+	}
 
 }

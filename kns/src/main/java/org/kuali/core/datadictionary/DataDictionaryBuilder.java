@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.Rules;
@@ -27,7 +29,6 @@ import org.apache.commons.digester.xmlrules.DigesterLoader;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.core.datadictionary.exception.CompletionException;
 import org.kuali.core.datadictionary.exception.DuplicateEntryException;
 import org.kuali.core.datadictionary.exception.InitException;
 import org.kuali.core.datadictionary.exception.ParseException;
@@ -64,13 +65,15 @@ public class DataDictionaryBuilder {
 
 	private boolean exceptionsOccurred;
 
+	private static Map<String, String> fileLocationMap = new HashMap<String, String>();
+
 	/**
 	 * Default constructor
 	 */
 	public DataDictionaryBuilder(ValidationCompletionUtils validationCompletionUtils) {
 		LOG.info("created DataDictionaryBuilder");
 
-		dataDictionary = new DataDictionary(validationCompletionUtils);
+		dataDictionary = new DataDictionary(validationCompletionUtils, this);
 		setExceptionsOccurred(false);
 	}
 
@@ -111,7 +114,12 @@ public class DataDictionaryBuilder {
 	 *             if sourceMustExist is true and the source can't be found
 	 */
 	public void addUniqueEntries(String sourceName, boolean sourceMustExist) {
-		addEntriesWrapper(sourceName, sourceMustExist, false);
+		// addEntriesWrapper(sourceName, sourceMustExist, false);
+		try {
+			indexSource(sourceName, sourceMustExist);
+		} catch (IOException ioe) {
+			throw new DataDictionaryException("Error indexing " + sourceName, ioe);
+	}
 	}
 
 	/**
@@ -131,20 +139,118 @@ public class DataDictionaryBuilder {
 	 *             if sourceMustExist is true and the source can't be found
 	 */
 	public void addOverrideEntries(String sourceName, boolean sourceMustExist) {
-		addEntriesWrapper(sourceName, sourceMustExist, true);
+		// addEntriesWrapper(sourceName, sourceMustExist, true);
+		try {
+			indexSource(sourceName, sourceMustExist);
+		} catch (IOException ioe) {
+			throw new DataDictionaryException("Error indexing " + sourceName, ioe);
+	}
 	}
 
-	/**
-	 * Asks the current dataDictionary to perform whatever post-construction
-	 * cleanup it needs to do before being ready for public consumption.
-	 * 
-	 * @throws CompletionException
-	 *             if the dataDictionry runs into problems
-	 */
-	public void completeInitialization() {
-		LOG.info("completing dataDictionary initialization");
-		dataDictionary.completeInitialization(getKualiGroupService(), getKualiConfigurationService());
-		LOG.info("completed dataDictionary initialization");
+	protected void indexSource(String sourceName, boolean sourceMustExist) throws IOException {
+		
+		if (sourceName == null) {
+			throw new DataDictionaryException("Source Name given is null");
+	}
+
+		if (sourceName.indexOf(".xml") < 0) {
+			Resource resource = getFileResource(sourceName);
+			if (resource.exists()) {
+				indexSource(resource.getFile());
+			} else {
+				if (sourceMustExist) {
+					throw new DataDictionaryException("DD Resource " + sourceName + " not found");
+				}
+				LOG.debug("Could not find " + sourceName);
+			}
+		} else {
+			LOG.debug("adding sourceName " + sourceName + " ");
+			if (sourceMustExist) {
+				Resource resource = getFileResource(sourceName);
+				if (! resource.exists()) {
+					throw new DataDictionaryException("DD Resource " + sourceName + " not found");	
+				}
+			}
+			String indexName = sourceName.substring(sourceName.lastIndexOf("/") + 1, sourceName.indexOf(".xml"));
+			fileLocationMap.put( indexName, sourceName);
+			// FIXME: JHK: stupid hack until we can fix the document type name to match the business object name 
+			if ( indexName.contains( "UniversalUser" ) ) {
+				fileLocationMap.put( indexName.replace( "UniversalUser", "UniversityUser" ), "file:" + sourceName);
+			}
+		}
+	}
+	
+	private Resource getFileResource(String sourceName)	{
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
+		return resourceLoader.getResource(sourceName);
+	}
+
+	protected void indexSource(File dir) {
+		for (File file : dir.listFiles()) {
+			if (file.isDirectory()) {
+				indexSource(file);
+			} else if (file.getName().indexOf(".xml") > 0) {
+				String indexName = file.getName().substring(file.getName().lastIndexOf("/") + 1, file.getName().indexOf(".xml"));
+				fileLocationMap.put( indexName, "file:" + file.getAbsolutePath());
+				// FIXME: JHK: stupid hack until we can fix the document type name to match the business object name 
+				if ( indexName.contains( "UniversalUser" ) ) {
+					fileLocationMap.put( indexName.replace( "UniversalUser", "UniversityUser" ), "file:" + file.getAbsolutePath());
+				}
+			} else {
+				LOG.debug("Skipping non xml file " + file.getAbsolutePath() + " in DD load");
+			}
+		}
+	}
+
+	public void parseBO(String boName, boolean allowsOverrides) {
+		String boKey = boName.substring(boName.lastIndexOf(".") + 1);
+		String boFileName = fileLocationMap.get(boKey);
+		if (boFileName == null) {
+			return;
+		}
+		addEntriesWrapper(boFileName, true, allowsOverrides);
+	}
+
+	public void parseDocument(String documentTypeDDKey, boolean allowsOverrides) {
+		// String className = documentTypeClass.getName();
+		// String documentKey = documentTypeName;
+
+		String documentFileName = fileLocationMap.get(documentTypeDDKey);
+
+		if (documentFileName == null) {
+			documentFileName = fileLocationMap.get(documentTypeDDKey + "MaintenanceDocument");
+			if (documentFileName == null) {
+				if (documentTypeDDKey.indexOf(".") > -1) {
+					documentTypeDDKey = documentTypeDDKey.substring(documentTypeDDKey.lastIndexOf(".") + 1);
+				}
+				documentFileName = fileLocationMap.get(documentTypeDDKey + "MaintenanceDocument");
+				// handle the global documents, whose business object ends with the work document, but where the DD file name does not contain the suffix
+				// e.g., BO: AccountChangeDocument, BO Maint Doc XML: AccountChangeMaintenanceDocument
+				if ( documentFileName == null && documentTypeDDKey.endsWith( "Document" ) ) {
+					// reduce the key to the BO name (strip Kuali and Document off the ends)
+					documentTypeDDKey = documentTypeDDKey.replace( "Document", "" ).replace( "Kuali", "" );
+					documentFileName = fileLocationMap.get(documentTypeDDKey + "MaintenanceDocument");
+				}
+				if (documentFileName == null) {					
+					documentFileName = fileLocationMap.get(documentTypeDDKey + "Document");
+					if (documentFileName == null) {
+						documentFileName = fileLocationMap.get("Kuali" + documentTypeDDKey + "Document");
+						if (documentFileName == null  ) {
+							if (documentTypeDDKey.indexOf("Document") > -1) {
+								documentFileName = fileLocationMap.get("Kuali" + documentTypeDDKey);	
+							}
+							if (documentFileName == null) {
+								documentFileName = fileLocationMap.get("Kuali" + documentTypeDDKey + "MaintenanceDocument");
+								if (documentFileName == null) {
+									return;	
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		addEntriesWrapper(documentFileName, true, allowsOverrides);
 	}
 
 	/**
@@ -203,7 +309,12 @@ public class DataDictionaryBuilder {
 
 		
 		try {
-			listSourceFiles(sourceName, digester);
+			DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
+			if (sourceName.indexOf("classpath:") > -1) {
+				digest(resourceLoader.getResource(sourceName).getInputStream(), sourceName, digester);
+			} else {
+				digest(resourceLoader.getResource(sourceName).getFile(), digester);
+			}
 		} catch (DataDictionaryException dde) {
 			throw dde;
 		} catch (Exception e) {
@@ -218,48 +329,52 @@ public class DataDictionaryBuilder {
 		clearCurrentFilename();
 	}
 
-	/**
-	 * @param source
-	 *            XML file, or package containing XML files (which, if a
-	 *            package, must end with the ".xml" extension)
-	 * @return List of XML Files located using the given sourceName
-	 * @throws SAXException 
-	 * @throws IOException 
-	 * @throws IOException
-	 * @throws IOException
-	 *             if there's a problem locating the named source
-	 */
-	protected void listSourceFiles(String sourceName, Digester digester) throws Exception {
-		DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
-		Resource resource = resourceLoader.getResource(sourceName);
-
-		if (sourceName.indexOf(".xml") < 0) {
-			if (resource.exists()) {
-				listSources(resource.getFile(), digester);
-			} else {
-				LOG.debug("Could not find " + sourceName);
-			}
-		} else {
-			InputStream is = resource.getInputStream();
-			if (is == null) {
-				throw new DataDictionaryException("Cannot find file: " + sourceName);
-			}
-			LOG.debug("Adding file " + resource.getFilename() + " to DD.");
-			digest(is, sourceName, digester);
-		}
-	}
-
-	protected void listSources(File sourceDir, Digester digester) throws Exception {
-		for (File file : sourceDir.listFiles()) {
-			if (file.isDirectory()) {
-				listSources(file, digester);
-			} else if (file.getName().indexOf(".xml") > 0) {
-				digest(file, digester);
-			} else {
-				LOG.info("Skipping non xml file " + file.getAbsolutePath() + " in DD load");
-			}
-		}
-	}
+	// /**
+	// * @param source
+	// * XML file, or package containing XML files (which, if a
+	// * package, must end with the ".xml" extension)
+	// * @return List of XML Files located using the given sourceName
+	// * @throws SAXException
+	// * @throws IOException
+	// * @throws IOException
+	// * @throws IOException
+	// * if there's a problem locating the named source
+	// */
+	// protected void listSourceFiles(String sourceName, Digester digester)
+	// throws Exception {
+	// DefaultResourceLoader resourceLoader = new
+	// DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
+	// Resource resource = resourceLoader.getResource(sourceName);
+	//
+	// if (sourceName.indexOf(".xml") < 0) {
+	// if (resource.exists()) {
+	// listSources(resource.getFile(), digester);
+	// } else {
+	// LOG.debug("Could not find " + sourceName);
+	// }
+	// } else {
+	// InputStream is = resource.getInputStream();
+	// if (is == null) {
+	// throw new DataDictionaryException("Cannot find file: " + sourceName);
+	// }
+	// LOG.debug("Adding file " + resource.getFilename() + " to DD.");
+	// digest(is, sourceName, digester);
+	// }
+	// }
+	//
+	// protected void listSources(File sourceDir, Digester digester) throws
+	// Exception {
+	// for (File file : sourceDir.listFiles()) {
+	// if (file.isDirectory()) {
+	// listSources(file, digester);
+	// } else if (file.getName().indexOf(".xml") > 0) {
+	// digest(file, digester);
+	// } else {
+	// LOG.info("Skipping non xml file " + file.getAbsolutePath() + " in DD
+	// load");
+	// }
+	// }
+	// }
 
 	protected void setupDigester(Digester digester) {
 		setCurrentDigester(digester);

@@ -47,12 +47,13 @@ public interface DataDictionaryService {
      */
     public DataDictionary getDataDictionary();
 
+    public void addDataDictionaryLocations(List<String> locations);
 
-    /**
-     * Hook to allow the dataDictionary service to perform any post-build initialization tasks needed before the dataDictionary
-     * itself will be publicly available.
-     */
-    public void completeInitialization();
+//    /**
+//     * Hook to allow the dataDictionary service to perform any post-build initialization tasks needed before the dataDictionary
+//     * itself will be publicly available.
+//     */
+//    public void completeInitialization();
 
     /**
      * the html control type used to render the field
@@ -369,12 +370,12 @@ public interface DataDictionaryService {
      */
     public List<String> getRelationshipNames(String entryName);
     
-    /**
-     * Returns the list of document class names
-     * 
-     * @return
-     */
-    public List getDocumentObjectClassnames();
+//    /**
+//     * Returns the list of document class names
+//     * 
+//     * @return
+//     */
+//    public List getDocumentObjectClassnames();
     
     /**
      * This method returns the user friendly label based on the workflow doc type name
@@ -414,13 +415,13 @@ public interface DataDictionaryService {
      */
     public String getDocumentTypeCodeByTypeName(String documentTypeName);
 
-    /**
-     * Returns the document type name declared in the dd for the given document type code.
-     * 
-     * @param documentTypeName
-     * @return documentTypeCode if the documentTypeName is registered, otherwise returns Null
-     */
-    public String getDocumentTypeNameByTypeCode(String documentTypeCode);
+//    /**
+//     * Returns the document type name declared in the dd for the given document type code.
+//     * 
+//     * @param documentTypeName
+//     * @return documentTypeCode if the documentTypeName is registered, otherwise returns Null
+//     */
+//    public String getDocumentTypeNameByTypeCode(String documentTypeCode);
 
     /**
      * @param document
@@ -433,7 +434,7 @@ public interface DataDictionaryService {
      * 
      * @return
      */
-    public void addUniqueEntries(String sourceName, boolean sourceMustExist);
+//    public void addUniqueEntries(String sourceName, boolean sourceMustExist);
 
     public Map getDataDictionaryMap();
 }

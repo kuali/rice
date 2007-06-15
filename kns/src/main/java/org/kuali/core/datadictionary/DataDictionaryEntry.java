@@ -17,6 +17,7 @@
 package org.kuali.core.datadictionary;
 
 import java.io.Serializable;
+import java.util.Map;
 
 
 /**
@@ -47,4 +48,9 @@ public interface DataDictionaryEntry extends Serializable {
      * Returns the full class name of the underlying object.
      */
     public String getFullClassName();
+    
+    /**
+     * @return a Map containing all RelationshipDefinitions associated with this BusinessObjectEntry, indexed by relationshipName
+     */
+    public Map<String, RelationshipDefinition> getRelationships();
 }

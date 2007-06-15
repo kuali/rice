@@ -52,31 +52,48 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         authorizationStore = new AuthorizationStore();
     }
 
-    /**
-     * Creates and initializes the authorizationStore which will be used by the authorizationService
-     */
-    public void completeInitialization( DataDictionary dataDictionary ) {
-        LOG.info("loading authorization data");
+//    /**
+//     * Creates and initializes the authorizationStore which will be used by the authorizationService
+//     */
+//    public void completeInitialization( DataDictionary dataDictionary ) {
+//        LOG.info("loading authorization data");
+//
+//        Map documentEntries = dataDictionary.getDocumentEntries();
+//        for (Iterator i = documentEntries.entrySet().iterator(); i.hasNext();) {
+//            DocumentEntry documentEntry = (DocumentEntry) ((Map.Entry) i.next()).getValue();
+//
+//            String documentType = documentEntry.getDocumentTypeName();
+//            Map authorizationDefinitions = documentEntry.getAuthorizationDefinitions();
+//            for (Iterator j = authorizationDefinitions.entrySet().iterator(); j.hasNext();) {
+//                AuthorizationDefinition auth = (AuthorizationDefinition) ((Map.Entry) j.next()).getValue();
+//
+//                String authorizedAction = auth.getAction();
+//                Set authorizedGroups = auth.getGroupNames();
+//                for (Iterator k = authorizedGroups.iterator(); k.hasNext();) {
+//                    String authorizedGroup = (String) k.next();
+//
+//                    authorizationStore.addAuthorization(authorizedGroup, authorizedAction, documentType);
+//                }
+//            }
+//        }
+//        LOG.info("completed loading authorization data");
+//    }
+    
+    public void setupAuthorizations(DocumentEntry documentEntry) {
 
-        Map documentEntries = dataDictionary.getDocumentEntries();
-        for (Iterator i = documentEntries.entrySet().iterator(); i.hasNext();) {
-            DocumentEntry documentEntry = (DocumentEntry) ((Map.Entry) i.next()).getValue();
+        String documentType = documentEntry.getDocumentTypeName();
+        Map authorizationDefinitions = documentEntry.getAuthorizationDefinitions();
+        for (Iterator j = authorizationDefinitions.entrySet().iterator(); j.hasNext();) {
+            AuthorizationDefinition auth = (AuthorizationDefinition) ((Map.Entry) j.next()).getValue();
 
-            String documentType = documentEntry.getDocumentTypeName();
-            Map authorizationDefinitions = documentEntry.getAuthorizationDefinitions();
-            for (Iterator j = authorizationDefinitions.entrySet().iterator(); j.hasNext();) {
-                AuthorizationDefinition auth = (AuthorizationDefinition) ((Map.Entry) j.next()).getValue();
+            String authorizedAction = auth.getAction();
+            Set authorizedGroups = auth.getGroupNames();
+            for (Iterator k = authorizedGroups.iterator(); k.hasNext();) {
+                String authorizedGroup = (String) k.next();
 
-                String authorizedAction = auth.getAction();
-                Set authorizedGroups = auth.getGroupNames();
-                for (Iterator k = authorizedGroups.iterator(); k.hasNext();) {
-                    String authorizedGroup = (String) k.next();
-
-                    authorizationStore.addAuthorization(authorizedGroup, authorizedAction, documentType);
-                }
+                authorizationStore.addAuthorization(authorizedGroup, authorizedAction, documentType);
             }
         }
-        LOG.info("completed loading authorization data");
     }
 
     /**

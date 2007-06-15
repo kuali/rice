@@ -46,6 +46,8 @@ public class KFSResourceLoader extends SpringBeanFactoryResourceLoader {
             return super.getService(serviceName);
         } else if (isKualiLookupable(serviceName)) {
             return fetchKualiLookupable(serviceName);
+        } else if (serviceName.getLocalPart().indexOf("Lookupable") > -1) {
+        	return super.getService(serviceName);
         }
         return null;
     }

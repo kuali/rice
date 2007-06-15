@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.4"
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.4"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<display-name>Sample Workflow Client</display-name>
 
@@ -11,9 +10,7 @@
 
 	<filter>
 		<filter-name>LoginFilter</filter-name>
-		<filter-class>
-			edu.iu.uis.eden.web.DummyLoginFilter
-		</filter-class>
+		<filter-class>edu.iu.uis.eden.web.DummyLoginFilter</filter-class>
 	</filter>
 
 	<filter>
@@ -32,22 +29,17 @@
 	</filter-mapping>
 
 	<listener>
-		<listener-class>
-			edu.sampleu.travel.web.SampleApplicationInitializationListener
-		</listener-class>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-
+	
 	<listener>
-		<listener-class>
-			org.kuali.core.web.listener.JstlConstantsInitListener
-		</listener-class>
+		<listener-class>org.kuali.core.web.listener.JstlConstantsInitListener</listener-class>
 	</listener>
+	
 
 	<servlet>
 		<servlet-name>action</servlet-name>
-		<servlet-class>
-			org.apache.struts.action.ActionServlet
-		</servlet-class>
+		<servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
 		<init-param>
 			<param-name>config</param-name>
 			<param-value>/WEB-INF/struts-config.xml</param-value>
@@ -73,9 +65,7 @@
 
 	<servlet>
 		<servlet-name>dwr-invoker</servlet-name>
-		<servlet-class>
-			org.kuali.core.web.servlet.KualiDWRServlet
-		</servlet-class>
+		<servlet-class>org.kuali.core.web.servlet.KualiDWRServlet</servlet-class>
 		<init-param>
 			<param-name>debug</param-name>
 			<param-value>true</param-value>
@@ -89,24 +79,18 @@
 
 	<servlet>
 		<servlet-name>remoting</servlet-name>
-		<servlet-class>
-			edu.iu.uis.eden.messaging.servlet.KSBDispatcherServlet
-		</servlet-class>
+		<servlet-class>edu.iu.uis.eden.messaging.servlet.KSBDispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet>
 		<servlet-name>export</servlet-name>
-		<servlet-class>
-			edu.iu.uis.eden.export.web.ExportServlet
-		</servlet-class>
+		<servlet-class>edu.iu.uis.eden.export.web.ExportServlet</servlet-class>
 	</servlet>
 
 	<servlet>
 		<servlet-name>attachment</servlet-name>
-		<servlet-class>
-			edu.iu.uis.eden.notes.AttachmentServlet
-		</servlet-class>
+		<servlet-class>edu.iu.uis.eden.notes.AttachmentServlet</servlet-class>
 	</servlet>
 
 	<servlet>

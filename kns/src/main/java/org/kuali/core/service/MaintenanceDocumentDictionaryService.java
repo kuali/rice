@@ -23,6 +23,7 @@ import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.core.datadictionary.MaintainableFieldDefinition;
 import org.kuali.core.datadictionary.MaintainableItemDefinition;
 import org.kuali.core.datadictionary.MaintainableSectionDefinition;
+import org.kuali.core.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.core.document.MaintenanceDocument;
 
 /**
@@ -269,4 +270,6 @@ public interface MaintenanceDocumentDictionaryService {
     public void validateMaintainableCollectionsForDuplicateEntries(MaintenanceDocument document);
 
     public void validateMaintainableCollectionsAddLineRequiredFields(MaintenanceDocument document, PersistableBusinessObject businessObject, String collectionName );
+    
+    public MaintenanceDocumentEntry getMaintenanceDocumentEntry(String docTypeName);
 }

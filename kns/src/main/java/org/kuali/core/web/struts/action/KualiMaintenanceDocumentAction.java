@@ -268,8 +268,8 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         }
 
         // Retrieve notes topic display flag from data dictionary and add to document
-        DataDictionary dd = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
-        DocumentEntry entry = dd.getMaintenanceDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+//      
+        DocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
         document.setDisplayTopicFieldInNotes(entry.getDisplayTopicFieldInNotes());
 
         return mapping.findForward(Constants.MAPPING_BASIC);

@@ -18,140 +18,174 @@ package org.kuali.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.kuali.core.authorization.KualiModuleAuthorizer;
+import org.kuali.core.datadictionary.spring.DataDictionaryLocationConfigurer;
 import org.kuali.core.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.core.rules.PreRulesContinuationBase;
 import org.kuali.core.service.KualiModuleUserService;
+import org.kuali.core.service.impl.KualiModuleUserServiceDefaultImpl;
+import org.kuali.rice.KNSServiceLocator;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
  * This class is used for determining which modules are installed
  */
 public class KualiModule implements InitializingBean {
-    private static final Logger LOG = Logger.getLogger(KualiModule.class);
+//	private static final Logger LOG = Logger.getLogger(KualiModule.class);
 
-    private String moduleId;
-    private String moduleName;
-    private String moduleCode;
-    private KualiModuleUserService moduleUserService;
-    private MaintenanceDocumentRuleBase moduleUserRule;
-    private PreRulesContinuationBase moduleUserPreRules;
-    private KualiModuleAuthorizer moduleAuthorizer;
-    private List<String> databaseRepositoryFilePaths;
-    private List<String> dataDictionaryPackages;
-    private List<String> scriptConfigurationFilePaths;
-    private List<String> jobNames;
-    private List<String> triggerNames;
-    
-    public KualiModule() {
-        databaseRepositoryFilePaths = new ArrayList();
-        dataDictionaryPackages = new ArrayList();
-        scriptConfigurationFilePaths = new ArrayList();
-        jobNames = new ArrayList();
-        triggerNames = new ArrayList();
-    }
-    
-    public void afterPropertiesSet() throws Exception {
-        if ( moduleUserService != null ) {
-            moduleUserService.setModule( this );
-        }
-    }
+	private String moduleId;
 
-    public String getModuleId() {
-        return moduleId;
-    }
+	private String moduleName;
 
-    public void setModuleId(String moduleId) {
-        this.moduleId = moduleId;
-    }
+	private String moduleCode;
 
-    public String getModuleName() {
-        return moduleName;
-    }
+	private KualiModuleUserService moduleUserService;
 
-    public void setModuleName(String moduleName) {
-        this.moduleName = moduleName;
-    }
+	private MaintenanceDocumentRuleBase moduleUserRule;
 
-    public KualiModuleUserService getModuleUserService() {
-        return moduleUserService;
-    }
+	private PreRulesContinuationBase moduleUserPreRules;
 
-    public void setModuleUserService(KualiModuleUserService moduleUserService) {
-        this.moduleUserService = moduleUserService;
-    }
+	private KualiModuleAuthorizer moduleAuthorizer;
 
-    public KualiModuleAuthorizer getModuleAuthorizer() {
-        return moduleAuthorizer;
-    }
+	private List<String> databaseRepositoryFilePaths;
 
-    public void setModuleAuthorizer(KualiModuleAuthorizer moduleAuthorizer) {
-        this.moduleAuthorizer = moduleAuthorizer;
-        this.moduleAuthorizer.setModule(this); // link in the module for reference
-    }
+	private List<String> dataDictionaryPackages;
 
-    public PreRulesContinuationBase getModuleUserPreRules() {
-        return moduleUserPreRules;
-    }
+	private List<String> scriptConfigurationFilePaths;
 
-    public void setModuleUserPreRules(PreRulesContinuationBase moduleUserPreRules) {
-        this.moduleUserPreRules = moduleUserPreRules;
-    }
+	private List<String> jobNames;
 
-    public MaintenanceDocumentRuleBase getModuleUserRule() {
-        return moduleUserRule;
-    }
+	private List<String> triggerNames;
+	
+	private boolean initializeDataDictionary;
 
-    public void setModuleUserRule(MaintenanceDocumentRuleBase moduleUserRule) {
-        this.moduleUserRule = moduleUserRule;
-    }
+	public KualiModule() {
+		databaseRepositoryFilePaths = new ArrayList<String>();
+		dataDictionaryPackages = new ArrayList<String>();
+		scriptConfigurationFilePaths = new ArrayList<String>();
+		jobNames = new ArrayList<String>();
+		triggerNames = new ArrayList<String>();
+	}
 
-    public List<String> getDataDictionaryPackages() {
-        return dataDictionaryPackages;
-    }
+	public void afterPropertiesSet() throws Exception {
+		if (moduleUserService == null) {
+			this.moduleUserService = new KualiModuleUserServiceDefaultImpl(this.getModuleId());
+		}
+		moduleUserService.setModule(this);
+		KNSServiceLocator.getKualiModuleService().getInstalledModules().add(this);
+		if (isInitializeDataDictionary()) {
+			DataDictionaryLocationConfigurer ddl = new DataDictionaryLocationConfigurer();
+			ddl.setDataDictionaryPackages(getDataDictionaryPackages());
+			ddl.afterPropertiesSet();
+		}
+		for (String repositoryLocation : getDatabaseRepositoryFilePaths()) {
+			KNSServiceLocator.getPersistenceService().loadRepositoryDescriptor(repositoryLocation);
+		}
+	}
 
-    public void setDataDictionaryPackages(List<String> dataDictionaryPackages) {
-        this.dataDictionaryPackages = dataDictionaryPackages;
-    }
+	public String getModuleId() {
+		return moduleId;
+	}
 
-    public String getModuleCode() {
-        return moduleCode;
-    }
+	public void setModuleId(String moduleId) {
+		this.moduleId = moduleId;
+	}
 
-    public void setModuleCode(String moduleCode) {
-        this.moduleCode = moduleCode;
-    }
+	public String getModuleName() {
+		return moduleName;
+	}
 
-    public List<String> getDatabaseRepositoryFilePaths() {
-        return databaseRepositoryFilePaths;
-    }
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
 
-    public void setDatabaseRepositoryFilePaths(List<String> databaseRepositoryFilePaths) {
-        this.databaseRepositoryFilePaths = databaseRepositoryFilePaths;
-    }
+	public KualiModuleUserService getModuleUserService() {
+		return moduleUserService;
+	}
 
-    public List<String> getJobNames() {
-        return jobNames;
-    }
+	public void setModuleUserService(KualiModuleUserService moduleUserService) {
+		this.moduleUserService = moduleUserService;
+	}
 
-    public void setJobNames(List<String> jobNames) {
-        this.jobNames = jobNames;
-    }
+	public KualiModuleAuthorizer getModuleAuthorizer() {
+		return moduleAuthorizer;
+	}
 
-    public List<String> getScriptConfigurationFilePaths() {
-        return scriptConfigurationFilePaths;
-    }
+	public void setModuleAuthorizer(KualiModuleAuthorizer moduleAuthorizer) {
+		this.moduleAuthorizer = moduleAuthorizer;
+		this.moduleAuthorizer.setModule(this); // link in the module for
+		// reference
+	}
 
-    public void setScriptConfigurationFilePaths(List<String> scriptConfigurationFilePaths) {
-        this.scriptConfigurationFilePaths = scriptConfigurationFilePaths;
-    }
+	public PreRulesContinuationBase getModuleUserPreRules() {
+		return moduleUserPreRules;
+	}
 
-    public List<String> getTriggerNames() {
-        return triggerNames;
-    }
+	public void setModuleUserPreRules(PreRulesContinuationBase moduleUserPreRules) {
+		this.moduleUserPreRules = moduleUserPreRules;
+	}
 
-    public void setTriggerNames(List<String> triggerNames) {
-        this.triggerNames = triggerNames;
-    }
+	public MaintenanceDocumentRuleBase getModuleUserRule() {
+		return moduleUserRule;
+	}
+
+	public void setModuleUserRule(MaintenanceDocumentRuleBase moduleUserRule) {
+		this.moduleUserRule = moduleUserRule;
+	}
+
+	public List<String> getDataDictionaryPackages() {
+		return dataDictionaryPackages;
+	}
+
+	public void setDataDictionaryPackages(List<String> dataDictionaryPackages) {
+		this.dataDictionaryPackages = dataDictionaryPackages;
+	}
+
+	public String getModuleCode() {
+		return moduleCode;
+	}
+
+	public void setModuleCode(String moduleCode) {
+		this.moduleCode = moduleCode;
+	}
+
+	public List<String> getDatabaseRepositoryFilePaths() {
+		return databaseRepositoryFilePaths;
+	}
+
+	public void setDatabaseRepositoryFilePaths(List<String> databaseRepositoryFilePaths) {
+		this.databaseRepositoryFilePaths = databaseRepositoryFilePaths;
+	}
+
+	public List<String> getJobNames() {
+		return jobNames;
+	}
+
+	public void setJobNames(List<String> jobNames) {
+		this.jobNames = jobNames;
+	}
+
+	public List<String> getScriptConfigurationFilePaths() {
+		return scriptConfigurationFilePaths;
+	}
+
+	public void setScriptConfigurationFilePaths(List<String> scriptConfigurationFilePaths) {
+		this.scriptConfigurationFilePaths = scriptConfigurationFilePaths;
+	}
+
+	public List<String> getTriggerNames() {
+		return triggerNames;
+	}
+
+	public void setTriggerNames(List<String> triggerNames) {
+		this.triggerNames = triggerNames;
+	}
+
+	public boolean isInitializeDataDictionary() {
+		return initializeDataDictionary;
+	}
+
+	public void setInitializeDataDictionary(boolean initializeDataDictionary) {
+		this.initializeDataDictionary = initializeDataDictionary;
+	}
 }

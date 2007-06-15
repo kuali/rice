@@ -37,8 +37,6 @@ import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.apache.ojb.broker.metadata.MetadataManager;
 import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
 import org.apache.ojb.broker.metadata.fieldaccess.PersistentField;
-import org.kuali.Constants;
-import org.kuali.core.KualiModule;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.dao.PersistenceDao;
@@ -49,18 +47,18 @@ import org.kuali.core.exceptions.ReferenceAttributeNotAnOjbReferenceException;
 import org.kuali.core.service.KualiModuleService;
 import org.kuali.core.service.PersistenceService;
 import org.kuali.core.util.ObjectUtils;
-import org.kuali.core.util.spring.NamedOrderedListBean;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.exceptions.RiceRuntimeException;
 import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.iu.uis.eden.util.ClassLoaderUtils;
 
 
 /**
- * This class is the service implementation for the Persistence structure. OjbRepositoryExplorer provides functions for extracting
- * information from the OJB repository at runtime. This is the default implementation, that is delivered with Kuali.
+ * This class is the service implementation for the Persistence structure.
+ * OjbRepositoryExplorer provides functions for extracting information from the
+ * OJB repository at runtime. This is the default implementation, that is
+ * delivered with Kuali.
  */
 @Transactional
 public class PersistenceServiceImpl extends PersistenceServiceImplBase implements PersistenceService {
@@ -71,7 +69,9 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
     
     /**
      * Sets the moduleService attribute value.
-     * @param moduleService The moduleService to set.
+	 * 
+	 * @param moduleService
+	 *            The moduleService to set.
      */
     public void setModuleService(KualiModuleService moduleService) {
         this.moduleService = moduleService;
@@ -85,30 +85,35 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
         return persistenceDao.resolveProxy(o);
     }
 
-    public void initialize() {
-        String filePathBeingProcessed = null;
-        try {
+//	public void initialize() {
+//		String filePathBeingProcessed = null;
+//		try {
+//			DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
+//			for (NamedOrderedListBean namedOrderedListBean : KNSServiceLocator.getNamedOrderedListBeans(Constants.DATABASE_REPOSITORY_FILES_LIST_NAME)) {
+//				for (String databaseRepositoryFilePath : namedOrderedListBean.getList()) {
+//					filePathBeingProcessed = databaseRepositoryFilePath;
+//					if (!StringUtils.isBlank(filePathBeingProcessed))
+//						loadRepositoryDescriptor(resourceLoader, filePathBeingProcessed);
+//				}
+//			}
+//			for (KualiModule module : moduleService.getInstalledModules()) {
+//				for (String databaseRepositoryFilePath : module.getDatabaseRepositoryFilePaths()) {
+//					filePathBeingProcessed = databaseRepositoryFilePath;
+//					if (!StringUtils.isBlank(filePathBeingProcessed))
+//						loadRepositoryDescriptor(resourceLoader, filePathBeingProcessed);
+//				}
+//			}
+//		} catch (IOException e) {
+//			throw new RuntimeException("PersistenceServiceImpl encountered exception while trying to process file " + filePathBeingProcessed, e);
+//		}
+//	}
+
+	public void loadRepositoryDescriptor(String ojbRepositoryFilePath) {
             DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
-            for (NamedOrderedListBean namedOrderedListBean : KNSServiceLocator.getNamedOrderedListBeans(Constants.DATABASE_REPOSITORY_FILES_LIST_NAME)) {
-                for (String databaseRepositoryFilePath : namedOrderedListBean.getList()) {
-                    filePathBeingProcessed = databaseRepositoryFilePath;
-                    if (!StringUtils.isBlank(filePathBeingProcessed)) loadRepositoryDescriptor(resourceLoader, filePathBeingProcessed);
-                }
-            }
-            for (KualiModule module : moduleService.getInstalledModules()) {
-                for (String databaseRepositoryFilePath : module.getDatabaseRepositoryFilePaths()) {
-                    filePathBeingProcessed = databaseRepositoryFilePath;
-                    if (!StringUtils.isBlank(filePathBeingProcessed)) loadRepositoryDescriptor(resourceLoader, filePathBeingProcessed);
-                }
-            }
-        }
-        catch (IOException e) {
-            throw new RuntimeException("PersistenceServiceImpl encountered exception while trying to process file " + filePathBeingProcessed, e);
-        }
-    }
+		InputStream is = null;
     
-    private void loadRepositoryDescriptor(ResourceLoader resourceLoader, String ojbRepositoryFilePath) throws IOException {
-        InputStream is = resourceLoader.getResource(CLASSPATH_RESOURCE_PREFIX + ojbRepositoryFilePath).getInputStream();
+		try {
+			is = resourceLoader.getResource(CLASSPATH_RESOURCE_PREFIX + ojbRepositoryFilePath).getInputStream();
         ConnectionRepository cr = MetadataManager.getInstance().readConnectionRepository(is);
         MetadataManager.getInstance().mergeConnectionRepository(cr);
         
@@ -121,12 +126,26 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
             LOG.debug("Merging repository descriptor: " + ojbRepositoryFilePath);
             LOG.debug("--------------------------------------------------------------------------");
         }
+		} catch (IOException ioe) {
+			if (is != null) {
         try {
             is.close();
-        } catch (Exception e) {
-            LOG.warn("Failed to close stream to file " + ojbRepositoryFilePath, e);
+				} catch (IOException e) {
+					LOG.info("Failed to close InputStream on OJB repository path " + ojbRepositoryFilePath, e);
         }
     }
+			throw new RiceRuntimeException(ioe);
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					LOG.info("Failed to close InputStream on OJB repository path " + ojbRepositoryFilePath, e);
+				}
+			}
+		}
+
+	}
 
     /**
      * @see org.kuali.core.service.PersistenceService#retrieveNonKeyFields(java.lang.Object)
@@ -141,7 +160,8 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
     }
 
     /**
-     * @see org.kuali.core.service.PersistenceService#retrieveReferenceObject(java.lang.Object, String referenceObjectName)
+	 * @see org.kuali.core.service.PersistenceService#retrieveReferenceObject(java.lang.Object,
+	 *      String referenceObjectName)
      */
     public void retrieveReferenceObject(Object persistableObject, String referenceObjectName) {
         if (persistableObject == null) {
@@ -153,7 +173,8 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
     }
 
     /**
-     * @see org.kuali.core.service.PersistenceService#retrieveReferenceObject(java.lang.Object, String referenceObjectName)
+	 * @see org.kuali.core.service.PersistenceService#retrieveReferenceObject(java.lang.Object,
+	 *      String referenceObjectName)
      */
     public void retrieveReferenceObjects(Object persistableObject, List referenceObjectNames) {
         if (persistableObject == null) {
@@ -178,7 +199,8 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
     }
 
     /**
-     * @see org.kuali.core.service.PersistenceService#retrieveReferenceObject(java.lang.Object, String referenceObjectName)
+	 * @see org.kuali.core.service.PersistenceService#retrieveReferenceObject(java.lang.Object,
+	 *      String referenceObjectName)
      */
     public void retrieveReferenceObjects(List persistableObjects, List referenceObjectNames) {
         if (persistableObjects == null) {
@@ -256,8 +278,8 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
                 // recursively link object
                 linkObjectsWithCircularReferenceCheck(referenceObject, referenceSet);
 
-
-                // iterate through the keys for the reference object and set value
+				// iterate through the keys for the reference object and set
+				// value
                 FieldDescriptor[] refFkNames = referenceDescriptor.getForeignKeyFieldDescriptors(classDescriptor);
                 ClassDescriptor refCld = getClassDescriptor(referenceDescriptor.getItemClass());
                 FieldDescriptor[] refPkNames = refCld.getPkFields();
@@ -271,7 +293,8 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
                     FieldDescriptor fkField = refFkNames[i];
                     String fkName = fkField.getAttributeName();
 
-                    // if the fk from object and use if main object does not have value
+					// if the fk from object and use if main object does not
+					// have value
                     Object fkValue = null;
                     if (objFkValues.containsKey(fkName)) {
                         fkValue = objFkValues.get(fkName);
@@ -281,9 +304,9 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
                     Object mainFkValue = ObjectUtils.getPropertyValue(persistableObject, fkName);
                     if (ObjectUtils.isNotNull(mainFkValue) && StringUtils.isNotBlank(mainFkValue.toString())) {
                         fkValue = mainFkValue;
-                    }
-                    else if (ObjectUtils.isNull(fkValue) || StringUtils.isBlank(fkValue.toString())) {
-                        // find the value from one of the other reference objects
+					} else if (ObjectUtils.isNull(fkValue) || StringUtils.isBlank(fkValue.toString())) {
+						// find the value from one of the other reference
+						// objects
                         for (Iterator iter2 = objectReferences.iterator(); iter2.hasNext();) {
                             ObjectReferenceDescriptor checkDescriptor = (ObjectReferenceDescriptor) iter2.next();
 
@@ -306,22 +329,22 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
                     }
                 }
             }
-        }
-        catch (NoSuchMethodException e) {
+		} catch (NoSuchMethodException e) {
             throw new IntrospectionException("no setter for property '" + className + "." + fieldName + "'", e);
-        }
-        catch (IllegalAccessException e) {
+		} catch (IllegalAccessException e) {
             throw new IntrospectionException("problem accessing property '" + className + "." + fieldName + "'", e);
-        }
-        catch (InvocationTargetException e) {
+		} catch (InvocationTargetException e) {
             throw new IntrospectionException("problem invoking getter for property '" + className + "." + fieldName + "'", e);
         }
     }
 
     /**
-     * For each reference object to the parent persistableObject, sets the key values for that object. First, if the reference
-     * object already has a value for the key, the value is left unchanged. Otherwise, for non-anonymous keys, the value is taken
-     * from the parent object. For anonymous keys, all other persistableObjects are checked until a value for the key is found.
+	 * For each reference object to the parent persistableObject, sets the key
+	 * values for that object. First, if the reference object already has a
+	 * value for the key, the value is left unchanged. Otherwise, for
+	 * non-anonymous keys, the value is taken from the parent object. For
+	 * anonymous keys, all other persistableObjects are checked until a value
+	 * for the key is found.
      * 
      * @see org.kuali.core.service.PersistenceService#getReferencedObject(java.lang.Object,
      *      org.apache.ojb.broker.metadata.ObjectReferenceDescriptor)
@@ -352,8 +375,7 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
         // make sure the attribute exists at all, throw exception if not
         try {
             propertyDescriptor = PropertyUtils.getPropertyDescriptor(bo, referenceName);
-        }
-        catch (Exception e) {
+		} catch (Exception e) {
             throw new RuntimeException(e);
         }
         if (propertyDescriptor == null) {
@@ -369,11 +391,14 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
         // make sure the class of the attribute descends from BusinessObject,
         // otherwise throw an exception
         if (!PersistableBusinessObject.class.isAssignableFrom(referenceClass)) {
-            throw new ObjectNotABusinessObjectRuntimeException("Attribute requested (" + referenceName + ") is of class: " + "'" + referenceClass.getName() + "' and is not a " + "descendent of BusinessObject.  Only descendents of BusinessObject " + "can be used.");
+			throw new ObjectNotABusinessObjectRuntimeException("Attribute requested (" + referenceName + ") is of class: " + "'" + referenceClass.getName() + "' and is not a " + "descendent of BusinessObject.  Only descendents of BusinessObject "
+					+ "can be used.");
         }
 
-        // make sure the attribute designated is listed as a reference-descriptor
-        // on the clazz specified, otherwise throw an exception (OJB); UniversalUser objects
+		// make sure the attribute designated is listed as a
+		// reference-descriptor
+		// on the clazz specified, otherwise throw an exception (OJB);
+		// UniversalUser objects
         // will be excluded from this
         ClassDescriptor classDescriptor = getClassDescriptor(bo.getClass());
         if (! UniversalUser.class.equals(referenceClass)) {
@@ -382,7 +407,8 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
                 throw new ReferenceAttributeNotAnOjbReferenceException("Attribute requested (" + referenceName + ") is not listed " + "in OJB as a reference-descriptor for class: '" + bo.getClass().getName() + "'");
             }
 
-            // get the list of the foreign-keys for this reference-descriptor (OJB)
+			// get the list of the foreign-keys for this reference-descriptor
+			// (OJB)
             Vector fkFields = referenceDescriptor.getForeignKeyFields();
             Iterator fkIterator = fkFields.iterator();
 
@@ -402,19 +428,16 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
                 // it doesnt have a value
                 catch (IllegalAccessException e) {
                     return false;
-                }
-                catch (InvocationTargetException e) {
+				} catch (InvocationTargetException e) {
                     return false;
-                }
-                catch (NoSuchMethodException e) {
+				} catch (NoSuchMethodException e) {
                     return false;
                 }
 
                 // test the value
                 if (fkFieldValue == null) {
                     return false;
-                }
-                else if (String.class.isAssignableFrom(fkFieldValue.getClass())) {
+				} else if (String.class.isAssignableFrom(fkFieldValue.getClass())) {
                     if (StringUtils.isBlank((String) fkFieldValue)) {
                         return false;
                     }
@@ -452,7 +475,9 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
 
     /**
      * Sets the persistenceDao attribute value.
-     * @param persistenceDao The persistenceDao to set.
+	 * 
+	 * @param persistenceDao
+	 *            The persistenceDao to set.
      */
     public void setPersistenceDao(PersistenceDao persistenceDao) {
         this.persistenceDao = persistenceDao;

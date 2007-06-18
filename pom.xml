@@ -141,7 +141,7 @@
 		<dependency>
 			<groupId>org.kuali.rice</groupId>
 			<artifactId>rice-ksb</artifactId>
-			<version>0.9-SNAPSHOT</version>
+			<version>0.9-M2</version>
 		</dependency>
 
 		<dependency>

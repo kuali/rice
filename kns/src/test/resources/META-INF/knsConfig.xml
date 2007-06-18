@@ -59,4 +59,10 @@
 	<param name="production.environment.code">prd</param>
 	
 	<param name="config.location">/opt/kuali/rice/kns.xml</param>
+	
+	<param name="production.environment.code">PRD</param>
+	<param name="externalizable.help.url">/SampleRiceClient/kr/static/help/</param>
+	<param name="externalizable.images.url">/SampleRiceClient/kr/static/images/</param>
+	<param name="kr.externalizable.images.url">/SampleRiceClient/kr/static/images/</param>
+	<param name="kr.url">/SampleRiceClient/kr</param>
 </config>

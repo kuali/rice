@@ -1,0 +1,15 @@
+CREATE TABLE EN_ACTN_TKN_T (
+       ACTN_TKN_ID                   NUMBER(14) NOT NULL,
+       DOC_HDR_ID                    NUMBER(14) NOT NULL,
+       ACTN_TKN_PRSN_EN_ID           VARCHAR2(30) NOT NULL,
+       ACTN_TKN_DLGTR_PRSN_EN_ID     VARCHAR2(30) NULL,
+       ACTN_TKN_DLGTR_WRKGRP_ID 	 NUMBER(14) NULL,
+       ACTN_TKN_CD                   CHAR(1) NOT NULL,
+       ACTN_TKN_DT                   DATE NOT NULL,
+       DOC_VER_NBR                   NUMBER(8) NOT NULL,
+       ACTN_TKN_ANNOTN_TXT           VARCHAR2(2000) NULL,
+       ACTN_TKN_CUR_IND              NUMBER(1) DEFAULT 1,
+       DB_LOCK_VER_NBR               NUMBER(8) DEFAULT 0,
+       CONSTRAINT EN_ACTN_TKN_T_PK PRIMARY KEY (ACTN_TKN_ID) USING INDEX
+)
+/

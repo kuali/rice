@@ -37,7 +37,7 @@
 <c:set var="isInquiry" value="${maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY}" />
 
 <%-- Is the screen a view of a mantenance document? --%>
-<c:set var="isMaintenance" value="${KualiForm.class.name eq 'org.kuali.kfs.web.struts.form.KfsMaintenanceForm' || maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE}" />
+<c:set var="isMaintenance" value="${KualiForm.class.name eq 'org.kuali.core.web.struts.form.KualiMaintenanceForm' || maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE}" />
 
 <%-- Is the screen a lookup? --%>
 <c:set var="isLookup" value="${maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_LOOKUP}" />

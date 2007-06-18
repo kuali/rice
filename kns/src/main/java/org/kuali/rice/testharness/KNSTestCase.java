@@ -14,8 +14,8 @@ import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 /**
  * Default test base for a full KNS enabled unit test.
  * 
- * @author rkirkend
  * @author natjohns
+ * @author rkirkend
  */
 public class KNSTestCase extends RiceTestCase {
 
@@ -44,7 +44,6 @@ public class KNSTestCase extends RiceTestCase {
 			}
 
 			public void start() throws Exception {
-//				RiceConfigurer.setConfigurationFile(getTestConfigFilename());
 				ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();
 
 				new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
@@ -59,7 +58,6 @@ public class KNSTestCase extends RiceTestCase {
 			}
 
 		});
-
 		return lifeCycles;
 	}
 
@@ -77,7 +75,7 @@ public class KNSTestCase extends RiceTestCase {
 	protected String getModuleName() {
 		return "kns";
 	}
-
+	
 	protected String getTestConfigFilename() {
 		return testConfigFilename;
 	}

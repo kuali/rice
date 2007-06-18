@@ -47,9 +47,6 @@
 			<td><a href="Lookup.do?lookupableImplServiceName=DocumentTypeLookupableImplService" target="<c:out value="${BackdoorForm.targetName}" />">Document Type</a></td>
 		</tr>
 		<tr>
-			<td><a href="Lookup.do?lookupableImplServiceName=ChartOrgLookupableImplService" target="<c:out value="${BackdoorForm.targetName}" />">Chart Org Lookup</a></td>
-		</tr>
-		<tr>
 			<td><a href="Preferences.do" target="<c:out value="${BackdoorForm.targetName}" />">Preferences</a></td>
 		</tr>
 		<tr>

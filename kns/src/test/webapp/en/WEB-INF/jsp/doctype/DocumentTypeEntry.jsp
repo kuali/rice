@@ -19,6 +19,7 @@
 	<html-el:hidden property="documentType.documentTypeId" />
 	<html-el:hidden property="documentType.lockVerNbr" />
 	<html-el:hidden property="methodToCall" />
+	<html-el:hidden property="documentType.routeLevelsInherited" />
 	<html-el:hidden property="editingRouteLevelInd" />
 	<html-el:hidden property="routeLevelIndex" />
 	<html-el:hidden property="moveRouteLevel" />

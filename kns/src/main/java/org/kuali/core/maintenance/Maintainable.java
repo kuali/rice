@@ -26,8 +26,6 @@ import org.kuali.core.lookup.SelectiveReferenceRefresher;
 
 /**
  * This interface defines basic methods that all maintainable objects must provide.
- * 
- * 
  */
 public interface Maintainable extends java.io.Serializable, SelectiveReferenceRefresher {
 
@@ -71,9 +69,10 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
     /**
      * Returns a list of Section objects that specify how to render the view for the maintenance object.
      * 
+     * @param oldMaintainable - If this is the new maintainable, the old is passed in for reference
      * @return
      */
-    public List getSections();
+    public List getSections(Maintainable oldMaintainable);
 
 
     /**
@@ -204,6 +203,28 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * (Please see VendorMaintainableImpl.java)
      */
     public void setupNewFromExisting();
+    
+    /**
+     * Indicates whether inactive records for the given collection should be display.
+     * 
+     * @param collectionName - name of the collection (or sub-collection) to check inactive record display setting
+     * @return true if inactive records should be displayed, false otherwise
+     */
+    public boolean getShowInactiveRecords(String collectionName);
+    
+    /**
+     * Returns the Map used to control the state of inactive record collection display. Exposed for setting from the
+     * maintenance jsp.
+     */
+    public Map<String, Boolean> getInactiveRecordDisplay();
+    
+    /**
+     * Indicates to maintainble whether or not inactive records should be displayed for the given collection name.
+     * 
+     * @param collectionName - name of the collection (or sub-collection) to set inactive record display setting
+     * @param showInactive - true to display inactive, false to not display inactive records
+     */
+    public void setShowInactiveRecords(String collectionName, boolean showInactive);
     
     public void overrideDataDictionarySectionConfiguration(DataDictionaryDefinitionBase definition);
     public void overrideDataDictionaryFieldConfiguration(DataDictionaryDefinitionBase definition);

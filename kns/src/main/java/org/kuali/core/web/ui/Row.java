@@ -21,20 +21,26 @@ import java.util.List;
 /**
  * This class represents a row of fields on the ui.
  */
-
 public class Row implements java.io.Serializable {
     
     private static final long serialVersionUID = 5920833652172097098L;
     private List<Field> fields;
+    private boolean hidden;
 
-    public Row() {fields = new ArrayList<Field>();};
+    public Row() {
+        fields = new ArrayList<Field>();
+        hidden = false;
+    }
+
     public Row(List<Field> fields) {
         this.fields = fields;
+        hidden = false;
     }
 
     public Row(Field field) {
         this.fields = new ArrayList<Field>();
         fields.add(field);
+        hidden = false;
     }
 
     /**
@@ -49,6 +55,20 @@ public class Row implements java.io.Serializable {
      */
     public void setFields(List<Field> fields) {
         this.fields = fields;
+    }
+
+    /**
+     * @return the hidden
+     */
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    /**
+     * @param hidden the hidden to set
+     */
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
     
 }

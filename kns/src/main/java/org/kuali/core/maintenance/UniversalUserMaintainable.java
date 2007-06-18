@@ -59,15 +59,15 @@ public class UniversalUserMaintainable extends KualiMaintainableImpl {
     private static KualiModuleUserPropertyService moduleUserPropertyService;
     
     @Override
-    public List getSections() {
+    public List getSections(Maintainable oldMaintainable) {
         List sections = new ArrayList();
-        sections.addAll(getCoreSections());
-        sections.addAll(getModuleUserSections());
+        sections.addAll(getCoreSections(oldMaintainable));
+        sections.addAll(getModuleUserSections(oldMaintainable));
         return sections;
     }
 
 
-    private List getModuleUserSections() {
+    private List getModuleUserSections(Maintainable oldMaintainable) {
         initStatics();
         List<Section> sections = new ArrayList<Section>();
         UniversalUser universalUser = (UniversalUser)getBusinessObject();
@@ -107,7 +107,7 @@ public class UniversalUserMaintainable extends KualiMaintainableImpl {
             }
             
             try {
-                Section section = SectionBridge.toSection(sectionDef, moduleUser, this, getMaintenanceAction(), isGenerateDefaultValues(), isGenerateBlankRequiredValues(), userPropertyNames);
+                Section section = SectionBridge.toSection(sectionDef, moduleUser, this, oldMaintainable, getMaintenanceAction(), isGenerateDefaultValues(), isGenerateBlankRequiredValues(), userPropertyNames);
 
                 // update the property names for the form (to map into moduleUser Map property)
                 for ( Row row : section.getRows() ) {

@@ -29,6 +29,7 @@
 <%@ attribute name="rightSideHtmlAttribute" required="false" type="java.util.Map"%>
 <%@ attribute name="transparentBackground" required="false" %>
 <%@ attribute name="highlightTab" required="false" %>
+<%@ attribute name="extraButtonSource" required="false" %>
 
 <c:set var="currentTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
 <c:set var="topLevelTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
@@ -84,6 +85,10 @@
       		
             <c:if test="${not empty rightSideHtmlProperty and not empty rightSideHtmlAttribute}">
               <td class="tabtable1-mid1"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" align="absmiddle" height="29" width="1" /><kul:htmlControlAttribute property="${rightSideHtmlProperty}" attributeEntry="${rightSideHtmlAttribute}" /></td>
+      		</c:if>
+      		
+      		<c:if test="${not empty extraButtonSource}">
+      		  <td class="tabtable1-mid1">${extraButtonSource}</td>
       		</c:if>
 
             <td class="${midTabClass}">

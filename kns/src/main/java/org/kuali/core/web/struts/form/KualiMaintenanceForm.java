@@ -192,11 +192,11 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         // sections for maintenance document
         Maintainable oldMaintainable = ((MaintenanceDocumentBase) getDocument()).getOldMaintainableObject();
         oldMaintainable.setMaintenanceAction(getMaintenanceAction());
-        List oldMaintSections = oldMaintainable.getSections();
+        List oldMaintSections = oldMaintainable.getSections(null);
         
         Maintainable newMaintainable = ((MaintenanceDocumentBase) getDocument()).getNewMaintainableObject();
         newMaintainable.setMaintenanceAction(getMaintenanceAction());
-        List newMaintSections = newMaintainable.getSections();
+        List newMaintSections = newMaintainable.getSections(oldMaintainable);
 
         // mesh sections for proper jsp display
         List meshedSections = FieldUtils.meshSections(oldMaintSections, newMaintSections, keyFieldNames, getMaintenanceAction(), isReadOnly(), authorizations);

@@ -67,19 +67,16 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     protected String maintenanceAction;
     protected boolean generateDefaultValues;
     protected boolean generateBlankRequiredValues;
+    
     protected Map<String,PersistableBusinessObject> newCollectionLines = new HashMap<String,PersistableBusinessObject>();
-    // unable to add this since the service is not serializable
-    //private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+    protected Map<String, Boolean> inactiveRecordDisplay = new HashMap<String, Boolean>();
+    
     private String docTypeName;
 
     /**
      * Default empty constructor
      */
     public KualiMaintainableImpl() {
-        //maintenanceDocumentDictionaryService = SpringServiceLocator.getMaintenanceDocumentDictionaryService();
-        //if ( LOG.isDebugEnabled() ) {
-        //    LOG.debug( "KualiMaintainableImpl instantiated - actual class: " + this.getClass().getName(), new Exception("exception for stack trace") );
-        //}
     }
 
     /**
@@ -116,7 +113,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 
         //NOTE: KualiGlobalMaintainableImpl overrides this method and forces all globals to override that, so they each do their own thing
         
-        List<MaintenanceLock> maintenanceLocks = new ArrayList();
+        List<MaintenanceLock> maintenanceLocks = new ArrayList<MaintenanceLock>();
         StringBuffer lockRepresentation = new StringBuffer(boClass.getName());
         lockRepresentation.append(Constants.Maintenance.AFTER_CLASS_DELIM);
 
@@ -207,9 +204,9 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * 
      * @return List of org.kuali.ui.Section objects
      */
-    public List getSections() {
-        List sections = new ArrayList();
-        sections.addAll(getCoreSections());
+    public List getSections(Maintainable oldMaintainable) {
+        List<Section> sections = new ArrayList<Section>();
+        sections.addAll(getCoreSections(oldMaintainable));
 
         return sections;
     }
@@ -221,9 +218,9 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * 
      * @return List of org.kuali.ui.Section objects
      */
-    public List getCoreSections() {
+    public List<Section> getCoreSections(Maintainable oldMaintainable) {
         
-        List sections = new ArrayList();
+        List<Section> sections = new ArrayList<Section>();
 
         List<MaintainableSectionDefinition> sectionDefinitions = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
 
@@ -233,7 +230,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 
                 MaintainableSectionDefinition maintSectionDef = (MaintainableSectionDefinition) iter.next();
 
-                List<String> displayedFieldNames = new ArrayList();
+                List<String> displayedFieldNames = new ArrayList<String>();
                 
                 for (Iterator iter2 = maintSectionDef.getMaintainableItems().iterator(); iter2.hasNext();) {
                     
@@ -243,7 +240,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                     }
                 }
                 
-                Section section = SectionBridge.toSection(maintSectionDef, getBusinessObject(), this, getMaintenanceAction(), isGenerateDefaultValues(), isGenerateBlankRequiredValues(), displayedFieldNames);
+                Section section = SectionBridge.toSection(maintSectionDef, getBusinessObject(), this, oldMaintainable, getMaintenanceAction(), isGenerateDefaultValues(), isGenerateBlankRequiredValues(), displayedFieldNames);
                 
                 // add to section list
                 sections.add(section);
@@ -519,8 +516,47 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     }
 
     public void processAfterAddLine(String colName, Class colClass) {
-        // TODO Auto-generated method stub
+    }
+    
+    /**
+     * @see org.kuali.core.maintenance.Maintainable#getShowInactiveRecords(java.lang.String)
+     */
+    public boolean getShowInactiveRecords(String collectionName) {
+        boolean showInactive = false;
         
+        if (collectionName == null) {
+            throw new IllegalArgumentException("collection name cannot be null");
+        }
+        
+        if (inactiveRecordDisplay.containsKey(collectionName)) {
+            Object inactiveSetting = inactiveRecordDisplay.get(collectionName);
+            if (inactiveSetting instanceof Boolean) {
+                showInactive = ((Boolean) inactiveSetting).booleanValue();
+            }
+            else {
+                showInactive = Boolean.parseBoolean(((String[]) inactiveSetting)[0]);
+            }
+        }
+        
+        return showInactive;
+    }
+
+    /**
+     * @see org.kuali.core.maintenance.Maintainable#setShowInactiveRecords(java.lang.String, boolean)
+     */
+    public void setShowInactiveRecords(String collectionName, boolean showInactive) {
+        if (collectionName == null) {
+            throw new IllegalArgumentException("collection name cannot be null");
+        }
+        
+        inactiveRecordDisplay.put(collectionName, new Boolean(showInactive));
+    }
+    
+    /**
+     * @return the inactiveRecordDisplay
+     */
+    public Map<String, Boolean> getInactiveRecordDisplay() {
+        return inactiveRecordDisplay;
     }
 
     public void addNewLineToCollection( String collectionName ) {
@@ -753,8 +789,6 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         if (baseBO == null) {
             return new ArrayList<String>();
         }
-        
-        Set<String> allAffectedReferences = new HashSet<String>();
         
         Map<String, Class> referenceNameToClassFromPSS = LookupUtils.getPrimitiveReference(baseBO, attributeName);
         if (referenceNameToClassFromPSS.size() > 1) {

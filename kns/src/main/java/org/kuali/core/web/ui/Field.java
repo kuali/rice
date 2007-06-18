@@ -123,6 +123,8 @@ public class Field implements java.io.Serializable {
     private boolean isDatePicker;
     private String referencesToRefresh;
     private int numberOfColumnsForCollection;
+    public String cellAlign;
+    
     /**
      * For container fields (i.e. fieldType.equals(CONTAINER)) with MV lookups enabled, the DD defined objectLabel of the class on which a multiple value lookup is performed.
      * The user friendly name
@@ -1208,4 +1210,22 @@ public class Field implements java.io.Serializable {
     public void setMultipleValueLookupClassName(String multipleValueLookupClassName) {
         this.multipleValueLookupClassName = multipleValueLookupClassName;
     }
+
+    /**
+     * The td alignment to use for the Field.
+     * @return the cellAlign
+     */
+    public String getCellAlign() {
+        return cellAlign;
+    }
+
+    /**
+     * Sets the td alignment for the Field.
+     * @param cellAlign the cellAlign to set
+     */
+    public void setCellAlign(String cellAlign) {
+        this.cellAlign = cellAlign;
+    }
+    
+    
 }

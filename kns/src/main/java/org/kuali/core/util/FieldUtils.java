@@ -807,7 +807,7 @@ public class FieldUtils {
      * @return List of Row objects
      */
     public static List meshRows(List oldRows, List newRows, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentAuthorizations auths) {
-        List meshedRows = new ArrayList();
+        List<Row> meshedRows = new ArrayList<Row>();
 
         for (int j = 0; j < newRows.size(); j++) {
             Row sectionRow = (Row) newRows.get(j);
@@ -822,7 +822,12 @@ public class FieldUtils {
 
             List meshedFields = meshFields(oldRowFields, rowFields, keyFieldNames, maintenanceAction, readOnly, auths);
             if (meshedFields.size() > 0) {
-                meshedRows.add(new Row(meshedFields));
+                Row meshedRow = new Row(meshedFields);
+                if (sectionRow.isHidden()) {
+                    meshedRow.setHidden(true);
+                }
+                
+                meshedRows.add(meshedRow);
             }
         }
 

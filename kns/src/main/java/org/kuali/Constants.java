@@ -109,6 +109,7 @@ public class Constants extends JstlConstants {
     public static final String DEBIT_AMOUNT_PROPERTY_NAME = "newSourceLineDebit";
     public static final String DEFAULT_RETURN_LOCATION = "lookup.do";
     public static final String DELETE_LINE_METHOD = "deleteLine";
+    public static final String TOGGLE_INACTIVE_METHOD = "toggleInactiveRecordDisplay";
     public static final String DICTIONARY_BO_NAME = "dictionaryBusinessObjectName";
     public static final String DISENCUMBRANCE = "Disencumbrance";
     public static final String DISPATCH_REQUEST_PARAMETER = "methodToCall";
@@ -348,7 +349,7 @@ public class Constants extends JstlConstants {
     public static final String ANCHOR_TOP_OF_FORM = "topOfForm";
     public static final String QUESTION_ANCHOR = "questionAnchor";
     public static final String NOT_AVAILABLE_STRING = "N/A";
-    public static final int NEGATIVE_ONE = -1;
+    public static final int    NEGATIVE_ONE = -1;
     public static final String OBJECT_CODE_STATUS_ACTIVE = "Y";
     public static final String OBJECT_TYPE_CODE_PROPERTY_NAME = "objectTypeCode";
     public static final String CONTEXT_PATH = "contextPath";

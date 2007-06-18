@@ -516,18 +516,14 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         Maintainable oldMaintainable = document.getOldMaintainableObject();
         Maintainable newMaintainable = document.getNewMaintainableObject();
 
-
         String collectionName = extractCollectionName(request, Constants.ADD_LINE_METHOD);
         if (collectionName == null) {
             LOG.error("Unable to get find collection name and class in request.");
             throw new RuntimeException("Unable to get find collection name and class in request.");
         }
 
-        String collectionPos = "";
         // if dealing with sub collection it will have a "["
         if ((StringUtils.lastIndexOf(collectionName, "]") + 1) == collectionName.length()) {
-            collectionPos = StringUtils.substring(collectionName, StringUtils.lastIndexOf(collectionName, "["), collectionName.length());
-            // strip from collectionName
             collectionName = StringUtils.substringBeforeLast(collectionName, "[");
         }
 
@@ -556,10 +552,12 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         // if the rule evaluation passed, let's add it
         if (rulePassed) {
 
-            // if edit action, just add empty instance to old maintainable
+            // if edit or copy action, just add empty instance to old maintainable
             boolean isEdit = Constants.MAINTENANCE_EDIT_ACTION.equals(maintenanceForm.getMaintenanceAction());
-
-            if (isEdit) {
+            boolean isCopy = Constants.MAINTENANCE_COPY_ACTION.equals(maintenanceForm.getMaintenanceAction());
+            
+            
+            if (isEdit || isCopy) {
                 PersistableBusinessObject oldBo = oldMaintainable.getBusinessObject();
                 Collection oldMaintCollection = (Collection) ObjectUtils.getPropertyValue(oldBo, collectionName);
 
@@ -663,8 +661,8 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
         String collectionName = extractCollectionName(request, Constants.DELETE_LINE_METHOD);
         if (collectionName == null) {
-            LOG.error("Unable to get find collection name and class in request.");
-            throw new RuntimeException("Unable to get find collection name and class in request.");
+            LOG.error("Unable to get find collection name in request.");
+            throw new RuntimeException("Unable to get find collection class in request.");
         }
 
         PersistableBusinessObject bo = newMaintainable.getBusinessObject();
@@ -704,6 +702,30 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         int index = Integer.parseInt(indexStr);
         maintenanceForm.removeTabState(index);
 
+        return mapping.findForward(Constants.MAPPING_BASIC);
+    }
+    
+    /**
+     * Turns on (or off) the inactive record display for a maintenance collection.
+     */
+    public ActionForward toggleInactiveRecordDisplay(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) form;
+        MaintenanceDocument document = (MaintenanceDocument) maintenanceForm.getDocument();
+        Maintainable oldMaintainable = document.getOldMaintainableObject();
+        Maintainable newMaintainable = document.getNewMaintainableObject();
+        
+        String collectionName = extractCollectionName(request, Constants.TOGGLE_INACTIVE_METHOD);
+        if (collectionName == null) {
+            LOG.error("Unable to get find collection name in request.");
+            throw new RuntimeException("Unable to get find collection class in request.");
+        }  
+        
+        String parameterName = (String) request.getAttribute(Constants.METHOD_TO_CALL_ATTRIBUTE);
+        boolean showInactive = Boolean.parseBoolean(StringUtils.substringBetween(parameterName, Constants.METHOD_TO_CALL_BOPARM_LEFT_DEL, "."));
+
+        oldMaintainable.setShowInactiveRecords(collectionName, showInactive);
+        newMaintainable.setShowInactiveRecords(collectionName, showInactive);
+        
         return mapping.findForward(Constants.MAPPING_BASIC);
     }
 

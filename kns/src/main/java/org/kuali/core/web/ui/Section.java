@@ -27,6 +27,7 @@ public class Section implements java.io.Serializable {
     String errorKey = "";
     int numberOfColumns;
     boolean isCollapsible;
+    String extraButtonSource;
     
     Class sectionClass;
     List<Row> rows;
@@ -160,6 +161,20 @@ public class Section implements java.io.Serializable {
      */
     public void setContainedCollectionNames(List<String> containedCollectionNames) {
         this.containedCollectionNames = containedCollectionNames;
+    }
+    
+    /**
+     * @return the extraButtonSource
+     */
+    public String getExtraButtonSource() {
+        return extraButtonSource;
+    }
+
+    /**
+     * @param extraButtonSource the extraButtonSource to set
+     */
+    public void setExtraButtonSource(String extraButtonSource) {
+        this.extraButtonSource = extraButtonSource;
     }
 
     /**

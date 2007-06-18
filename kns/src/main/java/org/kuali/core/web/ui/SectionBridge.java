@@ -21,11 +21,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.Constants;
 import org.kuali.core.bo.BusinessObject;
+import org.kuali.core.bo.Inactivateable;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.CollectionDefinitionI;
 import org.kuali.core.datadictionary.DataDictionaryDefinitionBase;
@@ -45,6 +47,7 @@ import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.util.FieldUtils;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
+import org.kuali.core.util.UrlFactory;
 import org.kuali.rice.KNSServiceLocator;
 
 public class SectionBridge {
@@ -77,7 +80,7 @@ public class SectionBridge {
                 InquiryCollectionDefinition inquiryCollectionDefinition = (InquiryCollectionDefinition) fieldDefinition;
 
                 List<Row> sectionRows = new ArrayList();
-                sectionRows = getContainerRows(section, inquiryCollectionDefinition, o, null, new ArrayList(), new StringBuffer(section.getErrorKey()), Integer.parseInt(inquiryCollectionDefinition.getNumberOfColumns()));
+                sectionRows = getContainerRows(section, inquiryCollectionDefinition, o, null, null, new ArrayList(), new StringBuffer(section.getErrorKey()), Integer.parseInt(inquiryCollectionDefinition.getNumberOfColumns()));
                 section.setRows(sectionRows);
             }
             else if (fieldDefinition instanceof InquirySubSectionHeaderDefinition) {
@@ -105,7 +108,7 @@ public class SectionBridge {
      * 
      * @param sd The DD definition of the Section.
      * @param o The BusinessObject from which the Section will be populated.
-     * @param m
+     * @param maintainable
      * @param maintenanceAction The action (new, newwithexisting, copy, edit, etc) requested from the UI.
      * @param autoFillDefaultValues Should default values be auto-filled?
      * @param autoFillBlankRequiredValues Should required values left blank on the UI be auto-filled?
@@ -114,10 +117,10 @@ public class SectionBridge {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public static final Section toSection(MaintainableSectionDefinition sd, BusinessObject o, Maintainable m, String maintenanceAction, boolean autoFillDefaultValues, boolean autoFillBlankRequiredValues, List<String> displayedFieldNames) throws InstantiationException, IllegalAccessException {
-        if (null != m) {
+    public static final Section toSection(MaintainableSectionDefinition sd, BusinessObject o, Maintainable maintainable, Maintainable oldMaintainable, String maintenanceAction, boolean autoFillDefaultValues, boolean autoFillBlankRequiredValues, List<String> displayedFieldNames) throws InstantiationException, IllegalAccessException {
+        if (null != maintainable) {
             sd = (MaintainableSectionDefinition) ObjectUtils.deepCopy(sd);
-            m.overrideDataDictionarySectionConfiguration(sd);
+            maintainable.overrideDataDictionarySectionConfiguration(sd);
         }
 
         Section section = new Section();
@@ -127,12 +130,12 @@ public class SectionBridge {
 
         // iterate through section maint items and contruct Field UI objects
         Collection maintItems = sd.getMaintainableItems();
-        List<Row> sectionRows = new ArrayList();
-        List<Field> sectionFields = new ArrayList();
+        List<Row> sectionRows = new ArrayList<Row>();
+        List<Field> sectionFields = new ArrayList<Field>();
 
         for (Iterator iterator = maintItems.iterator(); iterator.hasNext();) {
             MaintainableItemDefinition item = (MaintainableItemDefinition) iterator.next();
-            Field field = FieldBridge.toField(item, sd, o, m, section, autoFillDefaultValues, autoFillBlankRequiredValues, displayedFieldNames);
+            Field field = FieldBridge.toField(item, sd, o, maintainable, section, autoFillDefaultValues, autoFillBlankRequiredValues, displayedFieldNames);
             boolean skipAdd = false;
 
             // if CollectionDefiniton, then have a many section
@@ -141,7 +144,7 @@ public class SectionBridge {
                 section.getContainedCollectionNames().add(((MaintainableCollectionDefinition) item).getName());
 
                 StringBuffer containerRowErrorKey = new StringBuffer();
-                sectionRows = getContainerRows(section, definition, o, m, displayedFieldNames, containerRowErrorKey, Constants.DEFAULT_NUM_OF_COLUMNS);
+                sectionRows = getContainerRows(section, definition, o, maintainable, oldMaintainable, displayedFieldNames, containerRowErrorKey, Constants.DEFAULT_NUM_OF_COLUMNS);
             }
             else if (item instanceof MaintainableSubSectionHeaderDefinition) {
                 MaintainableSubSectionHeaderDefinition definition = (MaintainableSubSectionHeaderDefinition) item;
@@ -179,8 +182,8 @@ public class SectionBridge {
      * @see #getContainerRows(Section, CollectionDefinitionI, BusinessObject, Maintainable, List<String>, StringBuffer, String,
      *      boolean, int)
      */
-    public static final List getContainerRows(Section s, CollectionDefinitionI collectionDefinition, BusinessObject o, Maintainable m, List<String> displayedFieldNames, StringBuffer containerRowErrorKey, int numberOfColumns) {
-        return getContainerRows(s, collectionDefinition, o, m, displayedFieldNames, containerRowErrorKey, "", false, numberOfColumns);
+    public static final List<Row> getContainerRows(Section s, CollectionDefinitionI collectionDefinition, BusinessObject o, Maintainable m, Maintainable oldMaintainable, List<String> displayedFieldNames, StringBuffer containerRowErrorKey, int numberOfColumns) {
+        return getContainerRows(s, collectionDefinition, o, m, oldMaintainable, displayedFieldNames, containerRowErrorKey, "", false, numberOfColumns);
     }
 
     /**
@@ -197,15 +200,20 @@ public class SectionBridge {
      * @param numberOfColumns In how many columns in the UI will the fields in the Container/Collection be shown?
      * @return
      */
-     public static final List getContainerRows(Section s, CollectionDefinitionI collectionDefinition, BusinessObject o, Maintainable m, List<String> displayedFieldNames, StringBuffer containerRowErrorKey, String parents, boolean hideAdd, int numberOfColumns) {
-
-        List containerRows = new ArrayList();
-        List collFields = new ArrayList();
-        String collName = collectionDefinition.getName();
+     public static final List<Row> getContainerRows(Section s, CollectionDefinitionI collectionDefinition, BusinessObject o, Maintainable m, Maintainable oldMaintainable, List<String> displayedFieldNames, StringBuffer containerRowErrorKey, String parents, boolean hideAdd, int numberOfColumns) {
+        List<Row> containerRows = new ArrayList<Row>();
+        List<Field> collFields = new ArrayList<Field>();
+        
+        String collectionName = collectionDefinition.getName();
 
         if (m != null && collectionDefinition instanceof DataDictionaryDefinitionBase) {
             collectionDefinition = (CollectionDefinitionI) ObjectUtils.deepCopy((DataDictionaryDefinitionBase) collectionDefinition);
             m.overrideDataDictionaryFieldConfiguration((DataDictionaryDefinitionBase) collectionDefinition);
+        }
+        
+        // add the toggle inactive record display button for the collection
+        if (Inactivateable.class.isAssignableFrom(collectionDefinition.getBusinessObjectClass()) && StringUtils.isBlank(parents)) {
+            addShowInactiveButtonField(s, collectionName, !m.getShowInactiveRecords(collectionName));
         }
         
         // first need to populate the containerRows with the "new" form if available
@@ -230,14 +238,14 @@ public class SectionBridge {
                 }
             }
             // no colNum for add rows
-            containerRows.addAll(getContainerRows(s, subCollectionDefinition, o, m, displayedFieldNames, containerRowErrorKey, parents + collectionDefinition.getName() + ".", true, subCollectionNumberOfColumn));
+            containerRows.addAll(getContainerRows(s, subCollectionDefinition, o, m, oldMaintainable, displayedFieldNames, containerRowErrorKey, parents + collectionDefinition.getName() + ".", true, subCollectionNumberOfColumn));
         }
 
         // then we need to loop through the existing collection and add those fields
         Collection collectionFields = collectionDefinition.getFields();
         // get label for collection
         String collectionLabel = KNSServiceLocator.getDataDictionaryService().getCollectionLabel(o.getClass(), collectionDefinition.getName());
-
+        
         // retrieve the summary label either from the override or from the DD
         String collectionElementLabel = collectionDefinition.getSummaryTitle();
         if (StringUtils.isEmpty(collectionElementLabel)) {
@@ -246,22 +254,46 @@ public class SectionBridge {
 
         if (o != null) {
             if (PropertyUtils.isWriteable(o, collectionDefinition.getName()) && ObjectUtils.getPropertyValue(o, collectionDefinition.getName()) != null) {
-
-                String collectionName = collectionDefinition.getName();
-
                 Object obj = ObjectUtils.getPropertyValue(o, collectionName);
+                
+                Object oldObj = null;
+                if (oldMaintainable != null && oldMaintainable.getBusinessObject() != null) {
+                    oldObj = ObjectUtils.getPropertyValue(oldMaintainable.getBusinessObject(), collectionName);
+                }
+
                 if (obj instanceof List) {
                     Map summaryFields = new HashMap();
                     for (int i = 0; i < ((List) obj).size(); i++) {
                         BusinessObject lineBusinessObject = (BusinessObject) ((List) obj).get(i);
+                        
+                        /*
+                         * Handle display of inactive records. The old maintainable is used to compare the old side (if it exists). If the row should not be displayed, it is set as
+                         * hidden and will be handled in the maintenance rowDisplay.tag.
+                         */  
+                        boolean setRowHidden = false;
+                        BusinessObject oldLineBusinessObject = null;
+                        if (oldObj != null) {
+                            oldLineBusinessObject = (BusinessObject) ((List) oldObj).get(i);
+                        }
+                        
+                        if (lineBusinessObject instanceof Inactivateable && !m.getShowInactiveRecords(collectionName) && !((Inactivateable) lineBusinessObject).isActive()) {
+                            if (oldLineBusinessObject != null) {
+                                if (!((PersistableBusinessObject) lineBusinessObject).isNewCollectionRecord() && !((Inactivateable) oldLineBusinessObject).isActive()) {
+                                    setRowHidden = true;
+                                }
+                            }
+                            else {
+                                setRowHidden = true;
+                            }
+                        }
 
-                        collFields = new ArrayList();
+                        collFields = new ArrayList<Field>();
                         for (Iterator iterator = collectionFields.iterator(); iterator.hasNext();) {
                             FieldDefinitionI fieldDefinition = (FieldDefinitionI) iterator.next();
 
                             // construct Field UI object from definition
                             Field collField = FieldUtils.getPropertyField(collectionDefinition.getBusinessObjectClass(), fieldDefinition.getName(), false);
-
+                            
                             FieldBridge.setupField(collField, fieldDefinition);
                             setPrimaryKeyFieldsReadOnly(collectionDefinition.getBusinessObjectClass(), collField);
 
@@ -298,7 +330,6 @@ public class SectionBridge {
                                 collField.setPropertyValue(propertyValue);
                             }
 
-
                             // the the field as read only (if appropriate)
                             if (fieldDefinition.isReadOnlyAfterAdd()) {
                                 collField.setReadOnly(true);
@@ -317,10 +348,8 @@ public class SectionBridge {
                         // why is this only on collections and not subcollections any significance or just oversight?
                         containerField.setContainerName(collectionDefinition.getName() + "[" + (new Integer(i)).toString() + "].");
 
-                        // If the collection line is pending (meaning added by this document) the isNewCollectionRecord will be set
-                        // to true. In this
-                        // case we give an option to delete the line. The parameters for the delete action method are embedded into
-                        // the button name.
+                        /* If the collection line is pending (meaning added by this document) the isNewCollectionRecord will be set to true. In this
+                           case we give an option to delete the line. The parameters for the delete action method are embedded into the button name. */
                         if (lineBusinessObject instanceof PersistableBusinessObject && ((PersistableBusinessObject) lineBusinessObject).isNewCollectionRecord()) {
                             containerField.getContainerRows().add(new Row(getDeleteRowButtonField(parents + collectionDefinition.getName(), (new Integer(i)).toString())));
                         }
@@ -331,13 +360,17 @@ public class SectionBridge {
                             List orderedSummaryFields = getSummaryFields(summaryFields, collectionDefinition);
                             containerField.setContainerDisplayFields(orderedSummaryFields);
                         }
-                        containerRows.add(new Row(containerField));
+                        
+                        Row containerRow = new Row(containerField);
+                        if (setRowHidden) {
+                            containerRow.setHidden(true);
+                        }
+                        containerRows.add(containerRow);
+                        
+                        
 
-
-                        // TODO: Chris: Hack alert - fix code below, it should be factored out with above into helper method
-                        // update the name in the subCollections and add rows here.
                         Collection subCollections = collectionDefinition.getCollections();
-                        List subCollFields = new ArrayList();
+                        List<Field> subCollFields = new ArrayList<Field>();
 
                         summaryFields = new HashMap();
                         // iterate over the subCollections directly on this collection
@@ -368,17 +401,36 @@ public class SectionBridge {
 
                             String subCollectionName = subCollectionDefinition.getName();
                             Object subObj = ObjectUtils.getPropertyValue(lineBusinessObject, subCollectionName);
+                            
+                            Object oldSubObj = null;
+                            if (oldLineBusinessObject != null) {
+                                oldSubObj = ObjectUtils.getPropertyValue(oldLineBusinessObject, subCollectionName);
+                            }
+                            
                             if (subObj instanceof List) {
-                                // recursively call this method to get the add row and exisiting members of the subCollections
-                                // subcollections
-                                // containerRows.addAll(getContainerRows(subCollectionDefinition,
-                                // displayedFieldNames,containerRowErrorKey,
-                                // parents+collectionDefinition.getName()+"["+i+"]"+".","[0]",false, subCollectionNumberOfColumn));
-                                containerField.getContainerRows().addAll(getContainerRows(s, subCollectionDefinition, o, m, displayedFieldNames, containerRowErrorKey, parents + collectionDefinition.getName() + "[" + i + "]" + ".", false, subCollectionNumberOfColumns));
+                                /* recursively call this method to get the add row and exisiting members of the subCollections subcollections containerRows.addAll(getContainerRows(subCollectionDefinition,
+                                   displayedFieldNames,containerRowErrorKey, parents+collectionDefinition.getName()+"["+i+"]"+".","[0]",false, subCollectionNumberOfColumn)); */
+                                containerField.getContainerRows().addAll(getContainerRows(s, subCollectionDefinition, o, m, oldMaintainable, displayedFieldNames, containerRowErrorKey, parents + collectionDefinition.getName() + "[" + i + "]" + ".", false, subCollectionNumberOfColumns));
+                             
                                 // iterate over the fields
                                 for (int j = 0; j < ((List) subObj).size(); j++) {
                                     BusinessObject lineSubBusinessObject = (BusinessObject) ((List) subObj).get(j);
-                                    subCollFields = new ArrayList();
+                                    
+                                    // determine if sub collection line is inactive and should be hidden
+                                    boolean setSubRowHidden = false;
+                                    if (lineSubBusinessObject instanceof Inactivateable && !m.getShowInactiveRecords(collectionName) && !((Inactivateable) lineSubBusinessObject).isActive()) {
+                                        if (oldSubObj != null) {
+                                            BusinessObject oldLineSubBusinessObject = (BusinessObject) ((List) oldSubObj).get(i);
+                                            if (!((PersistableBusinessObject) lineSubBusinessObject).isNewCollectionRecord() && !((Inactivateable) oldLineSubBusinessObject).isActive()) {
+                                                setSubRowHidden = true;
+                                            }
+                                        }
+                                        else {
+                                            setSubRowHidden = true;
+                                        }
+                                    }
+                                    
+                                    subCollFields = new ArrayList<Field>();
                                     // construct field objects based on fields
                                     for (Iterator iterator = subCollectionFields.iterator(); iterator.hasNext();) {
                                         FieldDefinitionI fieldDefinition = (FieldDefinitionI) iterator.next();
@@ -388,7 +440,7 @@ public class SectionBridge {
 
                                         FieldBridge.setupField(subCollField, fieldDefinition);
                                         setPrimaryKeyFieldsReadOnly(subCollectionDefinition.getBusinessObjectClass(), subCollField);
-                                        
+                                       
                                         // save the simple property name
                                         String name = subCollField.getPropertyName();
 
@@ -396,7 +448,6 @@ public class SectionBridge {
                                         subCollField.setPropertyName(collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionDefinition.getName() + "[" + j + "]." + subCollField.getPropertyName());
 
                                         // commenting out codes for sub-collections show/hide for now
-
                                         LookupUtils.setFieldQuickfinder(lineSubBusinessObject, collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionDefinition.getName() + "[" + j + "].", false, i, name, subCollField, displayedFieldNames);
 
                                         Object propertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject, fieldDefinition.getName());
@@ -416,14 +467,8 @@ public class SectionBridge {
 
                                         }
                                         else {
-
                                             subCollField.setPropertyValue(propertyValue);
                                         }
-
-                                        // Map fieldConversion = new HashMap();
-                                        // String conversionName=collectionName+"["+j+"]"+"."+name;
-                                        // fieldConversion.put(name,collField.getPropertyName());
-                                        // collField.setFieldConversions(fieldConversion);
 
                                         // check if this is a summary field
                                         if (subCollectionDefinition.hasSummaryField(fieldDefinition.getName())) {
@@ -448,8 +493,12 @@ public class SectionBridge {
                                         List orderedSummaryFields = getSummaryFields(summaryFields, subCollectionDefinition);
                                         subContainerField.setContainerDisplayFields(orderedSummaryFields);
                                     }
-                                    containerField.getContainerRows().add(new Row(subContainerField));
-                                    // containerRows.add(new Row(subContainerField));
+                                    
+                                    Row subContainerRow = new Row(subContainerField);
+                                    if (setRowHidden || setSubRowHidden) {
+                                        subContainerRow.setHidden(true);
+                                    }
+                                    containerField.getContainerRows().add(subContainerRow);
                                 }
                             }
                         }
@@ -457,6 +506,7 @@ public class SectionBridge {
                 }
             }
         }
+        
         return containerRows;
     }
 
@@ -480,11 +530,32 @@ public class SectionBridge {
     }
     
     /**
-     * Retrieves the primary key property names for the given class. If the field's property is one of those
-     * keys, makes the field read-only.
-     * This is called for collection lines. Since deletion is not allowed for existing lines, the pk fields must
-     * be read-only, otherwise a user could change the pk value which would be equivalent to deleting the line and 
-     * adding a new line.
+     * Helper method to build up the show inactive button source and place in the section.
+     * 
+     * @param section - section that will display the button
+     * @param collectionName - name of the collection to toggle setting
+     * @param showInactive - boolean indicating whether inactive rows should be displayed
+     * @return Field - of type IMAGE_SUBMIT
+     */
+    private static final void addShowInactiveButtonField(Section section, String collectionName, boolean showInactive) {
+        String showInactiveButton = "<a name=\"showInactive" + collectionName + "\"><input type=\"image\" name=\"" + Constants.DISPATCH_REQUEST_PARAMETER + "." + Constants.TOGGLE_INACTIVE_METHOD + "." + collectionName;
+        showInactiveButton += "." + Constants.METHOD_TO_CALL_BOPARM_LEFT_DEL + showInactive  + ".anchorshowInactive" + collectionName + "\" src=\"";
+        
+        if (showInactive) {
+            showInactiveButton += "images/tinybutton-showinact.gif";
+        }
+        else {
+            showInactiveButton += "images/tinybutton-hideinact.gif";
+        }
+
+        showInactiveButton += "\" alt=\"show(hide) inactive\" class=\"tinybutton\" /></a>";
+        section.setExtraButtonSource(showInactiveButton);
+    }
+    
+    /**
+     * Retrieves the primary key property names for the given class. If the field's property is one of those keys, makes the field
+     * read-only. This is called for collection lines. Since deletion is not allowed for existing lines, the pk fields must be
+     * read-only, otherwise a user could change the pk value which would be equivalent to deleting the line and adding a new line.
      */
     private static final void setPrimaryKeyFieldsReadOnly(Class businessObjectClass, Field field) {
         List primaryKeyPropertyNames = KNSServiceLocator.getPersistenceStructureService().getPrimaryKeys(businessObjectClass);
@@ -500,8 +571,8 @@ public class SectionBridge {
      * @param collectionDefinition
      * @return
      */
-    private static final List getSummaryFields(Map collSummaryFields, CollectionDefinitionI collectionDefinition) {
-        List orderedSummaryFields = new ArrayList();
+    private static final List<Field> getSummaryFields(Map collSummaryFields, CollectionDefinitionI collectionDefinition) {
+        List<Field> orderedSummaryFields = new ArrayList<Field>();
         for (FieldDefinitionI summaryField : collectionDefinition.getSummaryFields()) {
             String name = summaryField.getName();
             boolean found = false;

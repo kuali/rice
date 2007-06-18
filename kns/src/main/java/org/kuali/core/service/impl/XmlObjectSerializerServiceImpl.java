@@ -59,12 +59,19 @@ import com.thoughtworks.xstream.mapper.Mapper;
 public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerService {
 	private static final Log LOG = LogFactory.getLog(XmlObjectSerializerServiceImpl.class);
 	
+	private PersistenceService persistenceService;
+	
+	private XStream xstream;
+	
+	public XmlObjectSerializerServiceImpl() {
+		xstream = new XStream(new ProxyAwareJavaReflectionProvider());
+		xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
+	}
+	
     /**
      * @see org.kuali.core.service.XmlObjectSerializer#toXml(java.lang.Object)
      */
     public String toXml(Object object) {
-    	XStream xstream = new XStream(new ProxyAwareJavaReflectionProvider());
-    	xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug( "toXml(" + object + ") : \n" + xstream.toXML(object) );
     	}
@@ -75,8 +82,6 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
      * @see org.kuali.core.service.XmlObjectSerializer#fromXml(java.lang.String)
      */
     public Object fromXml(String xml) {
-        XStream xstream = new XStream(new ProxyAwareJavaReflectionProvider());
-        xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug( "fromXml() : \n" + xml );
     	}
@@ -100,20 +105,16 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
     }
 
 
-    public static class ProxyConverter extends ReflectionConverter {
-    	private static PersistenceService persistenceService;
+    public class ProxyConverter extends ReflectionConverter {
         public ProxyConverter(Mapper mapper, ReflectionProvider reflectionProvider) {
             super(mapper, reflectionProvider);
-            if ( persistenceService == null ) {
-            	persistenceService = KNSServiceLocator.getPersistenceService();
-            }
         }
         public boolean canConvert(Class clazz) {
             return clazz.getName().indexOf("CGLIB") > -1;// || type.getName().equals("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
         }
 
         public void marshal(Object obj, HierarchicalStreamWriter writer, MarshallingContext context) {
-            super.marshal(persistenceService.resolveProxy(obj), writer, context);
+            super.marshal(getPersistenceService().resolveProxy(obj), writer, context);
         }
 
         public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
@@ -121,14 +122,10 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
         }
     }
     
-    public static class ProxyAwareJavaReflectionProvider extends PureJavaReflectionProvider {
-    	private static PersistenceService persistenceService;
+    public class ProxyAwareJavaReflectionProvider extends PureJavaReflectionProvider {
 
     	public ProxyAwareJavaReflectionProvider() {
     		super();
-            if ( persistenceService == null ) {
-            	persistenceService = KNSServiceLocator.getPersistenceService();
-            }
     	}
         /**
          * @see com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider#visitSerializableFields(java.lang.Object, com.thoughtworks.xstream.converters.reflection.ReflectionProvider.Visitor)
@@ -145,7 +142,7 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
                 try {
                     value = field.get(object);
                     if (value != null && ProxyHelper.isProxy(value)) {
-                        value = persistenceService.resolveProxy(value);
+                        value = getPersistenceService().resolveProxy(value);
                     }
                 } catch (IllegalArgumentException e) {
                     throw new ObjectAccessException("Could not get field " + field.getClass() + "." + field.getName(), e);
@@ -157,5 +154,12 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
         }
         
     }
+
+	public PersistenceService getPersistenceService() {
+		if ( persistenceService == null ) {
+			persistenceService = KNSServiceLocator.getPersistenceService();
+		}
+		return persistenceService;
+	}
     
 }

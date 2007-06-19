@@ -37,12 +37,28 @@
 	<class-descriptor class="edu.sampleu.travel.bo.TravelAccount" table="TRV_ACCT">
 		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="acct_name" jdbc-type="VARCHAR" />
-		<field-descriptor name="accountType" column="acct_type" jdbc-type="VARCHAR" />
 		<field-descriptor name="foId" column="acct_fo_id" jdbc-type="BIGINT" nillable="false" />
 
 		<reference-descriptor name="fiscalOfficer" class-ref="edu.sampleu.travel.bo.FiscalOfficer">
 			<foreignkey field-ref="foId" />
 		</reference-descriptor>
+
+		<reference-descriptor name="extension" class-ref="edu.sampleu.travel.bo.TravelAccountExtension" auto-delete="object" auto-retrieve="true" auto-update="object" proxy="false">
+			<foreignkey field-ref="number" />
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="edu.sampleu.travel.bo.TravelAccountExtension" table="TRV_ACCT_EXT">
+		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="accountTypeCode" column="acct_type" jdbc-type="VARCHAR" />
+		<reference-descriptor name="accountType" class-ref="edu.sampleu.travel.bo.TravelAccountType" auto-delete="none" auto-retrieve="true" auto-update="none" proxy="true">
+			<foreignkey field-ref="accountTypeCode" />
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="edu.sampleu.travel.bo.TravelAccountType" table="TRV_ACCT_TYPE">
+		<field-descriptor name="accountTypeCode" column="acct_type" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="name" column="acct_type_name" jdbc-type="VARCHAR" />
 	</class-descriptor>
 
 	<class-descriptor class="edu.sampleu.travel.bo.FiscalOfficer" table="TRV_ACCT_FO">

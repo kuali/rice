@@ -26,7 +26,7 @@
             <inquirySections><inquirySection title="Header Text"><inquiryFields>
                 <field attributeName="number" forceInquiry="true" />
                 <field attributeName="name" />
-                <field attributeName="accountType" />
+                <field attributeName="extension.accountType.codeAndDescription" />
                 <field attributeName="foId" forceInquiry="true" />
             </inquiryFields></inquirySection></inquirySections>
         </inquiry>
@@ -47,14 +47,14 @@
             <lookupFields>
                 <lookupField attributeName="number" required="false" />
                 <lookupField attributeName="name" required="false" />
-                <lookupField attributeName="accountType" required="false"/>
+                <lookupField attributeName="extension.accountTypeCode" required="false"/>
                 <lookupField attributeName="foId" required="false" forceLookup="true" />
             </lookupFields>
 
             <resultFields>
                 <field attributeName="number" forceInquiry="true" />
                 <field attributeName="name" forceInquiry="true"/>
-                <field attributeName="accountType" forceInquiry="true"/>
+                <field attributeName="extension.accountType.codeAndDescription" forceInquiry="true"/>
                 <field attributeName="foId" forceInquiry="true" />
             </resultFields>
         </lookup>
@@ -94,31 +94,24 @@
                 <description>Account Name</description>
 			</attribute>
 
-            <attribute name="accountType">
-                <label>Account Type</label>
-                <shortLabel>Account Type</shortLabel>
-
-                <maxLength>40</maxLength>
-                <validationPattern>
-                    <alphaNumeric allowWhitespace="true" />
-                </validationPattern>
-
+            <attributeReference name="extension.accountTypeCode" sourceClassName="edu.sampleu.travel.bo.TravelAccountType" sourceAttributeName="accountTypeCode">
                 <required>true</required>
-
                 <control>
                     <select valuesFinderClass="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues" />
                 </control>
+            </attributeReference>
 
-                <summary>
-                    <![CDATA[&nbsp;]]>
-                </summary>
-                <description>
-                    Account Type
-                </description>
-            </attribute>
+            <attributeReference name="extension.accountType.codeAndDescription" sourceClassName="edu.sampleu.travel.bo.TravelAccountType" sourceAttributeName="codeAndDescription" />
             		
 		    <attributeReference name="foId" sourceClassName="edu.sampleu.travel.bo.FiscalOfficer" sourceAttributeName="id"/>
 		</attributes>				
+		<relationships>
+			<relationship objectAttributeName="extension">
+				<primitiveAttribute sourceName="number" targetName="number" />
+			</relationship>
+			<relationship objectAttributeName="extension.accountType">
+				<primitiveAttribute sourceName="extension.accountTypeCode" targetName="accountTypeCode" />
+			</relationship>
+		</relationships>    
     </businessObject>
-    
 </dictionaryEntry>

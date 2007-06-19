@@ -12,7 +12,6 @@ public class TravelAccount extends PersistableBusinessObjectBase {
     
     private String number;
     private String name;
-    private String accountType;
     private Long foId;
     private FiscalOfficer fiscalOfficer;    
     
@@ -55,14 +54,5 @@ public class TravelAccount extends PersistableBusinessObjectBase {
     public void setFoId(Long foId) {
         this.foId = foId;
     }
-
-    public String getAccountType() {
-        return accountType;
-    }
-
-    public void setAccountType(String accountType) {
-        this.accountType = accountType;
-    }
-
  
 }

@@ -52,6 +52,8 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/Attachment.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/AttributeReferenceDummy.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/BusinessObjectAttributeEntry.xml", true);
+		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/BusinessRule.xml", true);
+		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/BusinessRuleSecurity.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/Campus.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/CampusType.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/DocumentGroup.xml", true);
@@ -75,6 +77,12 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/FinancialSystemParameterSecurityMaintenanceDocument.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/FinancialSystemParameterMaintenanceDocument.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/UniversalUserMaintenanceDocument.xml", true);
+		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/TravelAccount.xml", true);
+		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/TravelAccountType.xml", true);
+		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/TravelAccountMaintenanceDocument.xml", true);
+		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/TravelAccountExtension.xml", true);
+		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/FiscalOfficer.xml", true);
+		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/FiscalOfficerMaintenanceDocument.xml", true);
 		
 		// quieten things down a bit
 		setLogLevel("org.apache.commons.digester", Level.FATAL);
@@ -710,4 +718,5 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 
 		assertTrue(failedAsExpected);
 	}
+	
 }

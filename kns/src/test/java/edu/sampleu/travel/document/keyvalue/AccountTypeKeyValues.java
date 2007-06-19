@@ -16,20 +16,26 @@
 package edu.sampleu.travel.document.keyvalue;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.kuali.core.lookup.keyvalues.KeyValuesBase;
 import org.kuali.core.web.ui.KeyLabelPair;
+import org.kuali.rice.KNSServiceLocator;
+
+import edu.sampleu.travel.bo.TravelAccountType;
 
 public class AccountTypeKeyValues extends KeyValuesBase {
-
+	
     public List getKeyValues() {
         List keyValues = new ArrayList();
 
+        Collection<TravelAccountType> bos = KNSServiceLocator.getBusinessObjectService().findAll( TravelAccountType.class );
+        
         keyValues.add(new KeyLabelPair("", ""));
-        keyValues.add(new KeyLabelPair("CAT", "Clearing Account Type"));
-        keyValues.add(new KeyLabelPair("EAT", "Expense Account Type"));
-        keyValues.add(new KeyLabelPair("IAT", "Income Account Type"));
+        for ( TravelAccountType typ : bos ) {
+        	keyValues.add(new KeyLabelPair(typ.getAccountTypeCode(), typ.getName()));
+        }
 
         return keyValues;
     }

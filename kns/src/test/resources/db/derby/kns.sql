@@ -1339,6 +1339,22 @@ create table trv_acct (
 
 ;
 
+create table trv_acct_ext (
+    acct_num  varchar2(10) not null,
+    acct_type varchar2(100),
+    constraint trv_acct_ext_pk primary key(acct_num)
+) 
+
+;
+
+create table trv_acct_type (
+    acct_type  varchar2(3) not null,
+    acct_type_name varchar2(50),
+    constraint trv_acct_type_pk primary key(acct_type)
+) 
+
+;
+
 create table trv_doc_acct (
     doc_hdr_id  BIGINT not null,
     acct_num    varchar(10) not null,

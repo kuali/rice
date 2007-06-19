@@ -49,13 +49,18 @@
         </lockingKeys>
         <allowsNewOrCopy>true</allowsNewOrCopy>
 
+		<defaultExistenceChecks>
+			<reference attributeName="extension.accountType" attributeToHighlightOnFail="extension.accountTypeCode" />
+		</defaultExistenceChecks>
+		
+
         <maintainableSections>
             <maintainableSection title="Edit Travel Account ">
                 <maintainableItems>
                     <maintainableField name="number" required="true" />
                     <maintainableField name="name" required="true" />
                     <maintainableField name="foId" required="true" />
-                    <maintainableField name="accountType" required="true" />
+                    <maintainableField name="extension.accountTypeCode" required="true" />
                 </maintainableItems>
             </maintainableSection>
         </maintainableSections>

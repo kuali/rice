@@ -1,0 +1,115 @@
+package org.kuali.rice.database;
+
+import java.sql.SQLException;
+
+import javax.transaction.TransactionManager;
+
+import org.enhydra.jdbc.pool.StandardXAPoolDataSource;
+import org.enhydra.jdbc.standard.StandardXADataSource;
+import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.lifecycle.Lifecycle;
+
+/**
+ * StandardXAPoolDataSource subclass that adds some convienance getters and setters and implements our Lifecycle interface.
+ */
+public class XAPoolDataSource extends StandardXAPoolDataSource implements Lifecycle {
+
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(XAPoolDataSource.class);
+
+    private static final long serialVersionUID = -3698043954102287887L;
+    public static final String DRIVER_CLASS_NAME = "driverClassName";
+    public static final String URL = "url";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+    public static final String MAX_SIZE = "maxSize";
+    public static final String MIN_SIZE = "minSize";
+    public static final String MAX_WAIT = "maxWait";
+    public static final String VALIDATION_QUERY = "validationQuery";
+
+    private StandardXADataSource dataSource = new StandardXADataSource();
+    private boolean started = false;
+
+    public XAPoolDataSource() {
+    	setDataSource(this.dataSource);
+    }
+
+    public void start() {
+        // NOTE: the following line prevents a bug in XAPool from manifesting itself where
+        // prepared statements aren't closed resulting in a "maximum open cursors exceeded" message
+        // from the Oracle JDBC driver
+        this.dataSource.setPreparedStmtCacheSize(0);
+        setCheckLevelObject(2);
+        this.started = true;
+    }
+
+    public void stop() {
+    	LOG.info("Destroying WorkflowManagedDatasource.");
+        shutdown(true);
+        this.started = false;
+    }
+
+    public boolean isStarted() {
+    	return this.started;
+    }
+
+    public String getDriverClassName() throws SQLException {
+		return this.dataSource.getDriverName();
+	}
+
+	public long getMaxWait() {
+		return super.getDeadLockMaxWait();
+	}
+
+	public String getUrl() {
+		return this.dataSource.getUrl();
+	}
+
+    public String getUsername() {
+		return this.dataSource.getUser();
+	}
+
+    public String getValidationQuery() {
+    	return super.getJdbcTestStmt();
+	}
+
+    public void setBeanName(String dataSourceName) {
+        this.dataSourceName = dataSourceName;
+    }
+
+    public void setDriverClassName(String driverClassName) {
+		try {
+		    this.dataSource.setDriverName(driverClassName);
+		} catch (SQLException e) {
+			throw new RiceRuntimeException("Problem setting the driver name to: " + driverClassName, e);
+		}
+    }
+
+    public void setMaxWait(long maxWait) {
+        super.setDeadLockMaxWait(maxWait);
+    }
+
+    public void setPassword(String password) {
+    	// passwrd needs to be set in both places or else there will be an error
+        this.dataSource.setPassword(password);
+        super.setPassword(password);
+    }
+
+	public void setTransactionManager(TransactionManager transactionManager) {
+	    this.dataSource.setTransactionManager(transactionManager);
+    }
+
+	public void setUrl(String url) {
+	    this.dataSource.setUrl(url);
+    }
+
+	public void setUsername(String username) {
+    	// username needs to be set in both places or else there will be an error
+	    this.dataSource.setUser(username);
+        super.setUser(username);
+    }
+
+	public void setValidationQuery(String validationQuery) {
+        super.setJdbcTestStmt(validationQuery);
+    }
+
+}

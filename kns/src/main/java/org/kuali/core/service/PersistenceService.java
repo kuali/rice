@@ -20,7 +20,6 @@ import java.util.Map;
 
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.exceptions.ClassNotPersistableException;
-import org.springframework.core.io.ResourceLoader;
 
 public interface PersistenceService {
 //    public void initialize();

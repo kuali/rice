@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -47,7 +46,6 @@ import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.util.FieldUtils;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
-import org.kuali.core.util.UrlFactory;
 import org.kuali.rice.KNSServiceLocator;
 
 public class SectionBridge {

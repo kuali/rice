@@ -8,7 +8,7 @@
 	<bean id="config" class="org.kuali.rice.config.spring.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
-				<value>classpath:META-INF/knsConfig.xml</value>
+				<value>classpath:META-INF/kns-config.xml</value>
 			</list>
 		</property>
 	</bean>

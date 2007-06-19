@@ -30,7 +30,7 @@ public class KNSResourceLoaderFactory {
 	public static ResourceLoader createRootKNSResourceLoader() {
 		initialize();
 		ResourceLoader resourceLoader = new SpringResourceLoader(getSpringResourceLoaderName(), 
-				"org/kuali/kns/resources/KNSSpringBeans.xml");
+				"KNSSpringBeans.xml");
 		GlobalResourceLoader.addResourceLoaderFirst(resourceLoader);
 		return resourceLoader;
 	}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<name>testharness</name>
+	<parent>
+		<groupId>org.kuali.rice</groupId>
+		<artifactId>rice</artifactId>
+		<version>0.9-RC1</version>
+	</parent>
+	<artifactId>rice-testharness</artifactId>
+
+	<build>
+		<testResources>
+			<testResource>
+				<directory>${basedir}/src/test/resources</directory>
+				<includes><include>META-INF/testharness-test-config.xml</include></includes>
+				<filtering>true</filtering>
+			</testResource>
+
+			<testResource>
+				<directory>${basedir}/src/test/resources</directory>
+				<excludes><exclude>testharness-test-config.xml</exclude></excludes>
+				<filtering>false</filtering>
+			</testResource>
+
+		</testResources>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-shared</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.1</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>kew</groupId>
+			<artifactId>kew</artifactId>
+			<version>2.4</version>
+		</dependency>		
+
+	</dependencies>
+</project>
+

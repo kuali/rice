@@ -67,26 +67,13 @@ import org.kuali.rice.testharness.TransactionalLifecycle;
  */
 
 public abstract class KualiTestBase extends KNSTestCase implements KualiTestConstants {
-	//private static final Logger LOG = Logger.getLogger(KualiTestBase.class);
-
-	//private static final String HIDE_SPRING_FROM_TESTS_MESSAGE = "This test class needs the " + WithTestSpringContext.class.getSimpleName() + " annotation to access Spring.";
-
-	private static final String HIDE_SESSION_FROM_TESTS_MESSAGE = "this test class needs the " + WithTestSpringContext.class.getSimpleName() + " annotation with its 'session' element to initialize the user in the session.";
 
 	public static final String SKIP_OPEN_OR_IN_PROGRESS_OR_REOPENED_JIRA_ISSUES = "org.kuali.test.KualiTestBase.skipOpenOrInProgressOrReopenedJiraIssues";
 
 	private static final Map<String, Level> changedLogLevels = new HashMap<String, Level>();
 
-	//private List<Lifecycle> lifeCycles;
-	
-	// private static UserNameFixture userSessionUsername = null;
-	//protected static UserSession userSession = null;
-
 	private TransactionalLifecycle transactionalLifecycle;
 
-	static {
-		//PropertyConfigurator.configure(ResourceBundle.getBundle(Constants.CONFIGURATION_FILE_NAME).getString(Constants.LOG4J_SETTINGS_FILE_KEY));
-	}
 
 	/**
 	 * Changes the logging-level associated with the given loggerName to the
@@ -125,21 +112,14 @@ public abstract class KualiTestBase extends KNSTestCase implements KualiTestCons
 		changedLogLevels.clear();
 	}
 
-//	private TransactionStatus TRANSACTION_STATUS;
-
 	@Before 
 	public void setUp() throws Exception {
-//		setRunLifeCyclesOnce(true);
 		super.setUp();
 		final boolean needsSpring = getClass().isAnnotationPresent(WithTestSpringContext.class);
-//		hideSession();
 		GlobalVariables.setErrorMap(new ErrorMap());
 		if (needsSpring) {
 			transactionalLifecycle = new TransactionalLifecycle();
 			transactionalLifecycle.start();
-//			DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
-//			defaultTransactionDefinition.setTimeout(30);
-//			TRANSACTION_STATUS = KNSServiceLocator.getTransactionManager().getTransaction(defaultTransactionDefinition);
 		}
 	}
 
@@ -149,144 +129,8 @@ public abstract class KualiTestBase extends KNSTestCase implements KualiTestCons
 		resetLogLevels();
 		if (needsSpring) {
 			transactionalLifecycle.stop();
-//			KNSServiceLocator.getTransactionManager().rollback(TRANSACTION_STATUS);
 		}
-//		hideSession();
 		GlobalVariables.setErrorMap(new ErrorMap());
 		super.tearDown();
-	}
-
-
-	/**
-	 * Adds the JIRA issues of the given annotation to the given set.
-	 * 
-	 * @param annotation
-	 *            listing related JIRA issues, or {@code null} if none
-	 * @param issues
-	 *            to be added to
-	 */
-	// private static void addJiraIssues(RelatesTo annotation,
-	// HashSet<RelatesTo.JiraIssue> issues) {
-	// if (annotation != null) {
-	// issues.addAll(Arrays.asList(annotation.value()));
-	// }
-	// }
-	/**
-	 * Prevents tests that do not declare a session from using the session. This
-	 * includes subsequent non-KualiTestBase tests. This eases maintenance by
-	 * making those tests able to run individually and not depend on a session
-	 * left from the previous test.
-	 */
-	private static void hideSession() {
-		GlobalVariables.setHideSessionFromTestsMessage("To use the session, " + HIDE_SESSION_FROM_TESTS_MESSAGE);
-		GlobalVariables.setUserSession(null);
-	}
-
-//	private boolean canUseTestTransaction() {
-//		boolean can = true;
-//		can &= !getSetUpOrTearDownMethod(true).isAnnotationPresent(TestsWorkflowViaDatabase.class);
-//		can &= !getSetUpOrTearDownMethod(false).isAnnotationPresent(TestsWorkflowViaDatabase.class);
-//		try {
-//			// Test methods must be public, so we can use getMethod(), which
-//			// handles inheritence. (I recommend not inheriting test methods,
-//			// however.)
-//			can &= !getClass().getMethod(getName()).isAnnotationPresent(TestsWorkflowViaDatabase.class);
-//		} catch (NoSuchMethodException e) {
-//			throw new AssertionError("Impossible because tests are named after their test method.");
-//		}
-//		return can;
-//	}
-
-//	/**
-//	 * The setUp and tearDown methods are not public, so we need to search up
-//	 * the inheritence heirarchy explicitly.
-//	 * 
-//	 * @param setUp
-//	 *            true to get the setUp method (false for tearDown)
-//	 * @return the most recently inherited method
-//	 */
-//	private Method getSetUpOrTearDownMethod(boolean setUp) {
-//		Class clazz = getClass();
-//		while (clazz != null) {
-//			try {
-//				return clazz.getDeclaredMethod(setUp ? "setUp" : "tearDown");
-//			} catch (NoSuchMethodException e) {
-//				clazz = clazz.getSuperclass();
-//			}
-//		}
-//		throw new AssertionError("Impossible because TestCase defines both setUp and tearDown, so they will be found.");
-//	}
-
-	// private void initializeSessionIfAnnotated()
-	// throws UserNotFoundException
-	// {
-	// UserNameFixture sessionUser =
-	// getClass().getAnnotation(WithTestSpringContext.class).session();
-	// if (sessionUser != UserNameFixture.NO_SESSION) {
-	// // reset the userSession between tests, iff it was changed during the
-	// preceding test
-	// changeCurrentUser(sessionUser);
-	// GlobalVariables.setHideSessionFromTestsMessage(null);
-	// }
-	// }
-
-	/**
-	 * Creates a userSession for the given username into GlobalVariables, if and
-	 * only if the given username doesn't match the username used to create the
-	 * current userSession. Tests that call this method or use the global
-	 * UserSession at all must be annotated WithTestSpringContext with a session
-	 * element of the default UserNameFixture to use before changing. For
-	 * example,
-	 * {@code @WithTestSpringContext(session = UserNameFixture.KHUNTLEY) public class MyTest extends KualiTestBase}
-	 * The UserNameFixture may be imported statically to reduce verbosity:
-	 * {@code @WithTestSpringContext(session = KHUNTLEY)}.
-	 * 
-	 * @param fixture
-	 *            the fixture of the user name to change the session to
-	 * @throws org.kuali.core.exceptions.UserNotFoundException
-	 *             if Workflow doesn't know that user
-	 */
-	// protected synchronized void changeCurrentUser(UserNameFixture fixture)
-	// throws UserNotFoundException {
-	// WithTestSpringContext annotation =
-	// getClass().getAnnotation(WithTestSpringContext.class);
-	// if (annotation == null || annotation.session() ==
-	// UserNameFixture.NO_SESSION) {
-	// throw new RuntimeException("To change the user, " +
-	// HIDE_SESSION_FROM_TESTS_MESSAGE);
-	// }
-	// if (userSessionUsername != fixture) {
-	// try {
-	// String prefix = (userSession == null) ? "set" : "updated";
-	//
-	// // todo: evaluate this optimization. If it's worth it, should we cache
-	// more than one? If not, why cache any?
-	// userSessionUsername = fixture;
-	// userSession = new UserSession(fixture.toString());
-	//
-	// if (LOG.isDebugEnabled()) {
-	// LOG.debug(prefix + " GlobalVariables.userSession for username '" +
-	// fixture + "'");
-	// }
-	// }
-	// catch (ResourceUnavailableException e) {
-	// throw new InfrastructureException("unable to create UserSession", e);
-	// }
-	// catch (WorkflowException e) {
-	// throw new UserNotFoundException("unable to find workflowUser for username
-	// '" + fixture + "'");
-	// }
-	// }
-	// GlobalVariables.setUserSession(userSession);
-	// }
-	/**
-	 * Gives a Logger to all inheriting classes whether they like it or not.
-	 * Usefule to not have to keep defining LOG if you need it and forgetting to
-	 * remove it when you don't.
-	 * 
-	 * @return Logger
-	 */
-	protected Logger LOG() {
-		return Logger.getLogger(getClass());
 	}
 }

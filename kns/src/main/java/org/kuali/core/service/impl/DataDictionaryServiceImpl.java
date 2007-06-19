@@ -40,7 +40,6 @@ import org.kuali.core.datadictionary.ValidationCompletionUtils;
 import org.kuali.core.datadictionary.control.ControlDefinition;
 import org.kuali.core.datadictionary.exporter.DataDictionaryMap;
 import org.kuali.core.datadictionary.mask.Mask;
-import org.kuali.core.datadictionary.spring.DataDictionaryLocationConfigurer;
 import org.kuali.core.document.Document;
 import org.kuali.core.exceptions.UnknownBusinessClassAttributeException;
 import org.kuali.core.service.AuthorizationService;
@@ -48,7 +47,6 @@ import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.service.KualiGroupService;
 import org.kuali.core.service.KualiModuleService;
-import org.kuali.rice.config.ConfigurationException;
 
 /**
  * This class is the service implementation for a DataDictionary. It is a thin wrapper around creating, initializing, and returning

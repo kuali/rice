@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,8 +30,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.core.datadictionary.exception.DuplicateEntryException;
 import org.kuali.core.exceptions.DuplicateKeyException;
-import org.kuali.core.service.KualiConfigurationService;
-import org.kuali.core.service.KualiGroupService;
 import org.kuali.rice.KNSServiceLocator;
 
 /**

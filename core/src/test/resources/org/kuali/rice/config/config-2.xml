@@ -1,0 +1,6 @@
+<config>
+  <!-- redefine bar, reference ancestor ${baz} -->
+  <param name="bar">config-2:bar ${baz}</param>
+  <!-- define blah, reference ancestor ${boo} -->
+  <param name="blah">config-2:blah ${boo}</param>
+</config>

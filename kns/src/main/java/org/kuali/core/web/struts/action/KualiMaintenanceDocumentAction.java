@@ -41,7 +41,6 @@ import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.authorization.FieldAuthorization;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
-import org.kuali.core.datadictionary.DataDictionary;
 import org.kuali.core.datadictionary.DocumentEntry;
 import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.core.datadictionary.MaintainableSectionDefinition;

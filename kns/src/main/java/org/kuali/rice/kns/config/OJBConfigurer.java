@@ -11,6 +11,6 @@ public class OJBConfigurer extends BaseOjbConfigurer {
 
 	@Override
 	protected String getMetadataLocation() {
-		return "classpath:org/kuali/kns/ojb/OJB-repository-kns.xml";
+		return "classpath:OJB-repository-kns.xml";
 	}
 }

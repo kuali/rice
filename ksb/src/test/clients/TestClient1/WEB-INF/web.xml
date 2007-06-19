@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+
+    <context-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:edu/iu/uis/eden/testclient1/resources/TestClient1SpringBeans.xml</param-value>
+    </context-param>
+    
+    <context-param>
+      <param-name>test.client.spring.context.name</param-name>
+      <param-value>TestClient1SpringContext</param-value>
+    </context-param>
+
+    <listener>
+      <listener-class>edu.iu.uis.eden.server.KSBTestContextLoaderListener</listener-class>
+    </listener>
+
+    <servlet>
+		<servlet-name>remoting</servlet-name>
+		<servlet-class>edu.iu.uis.eden.messaging.servlet.KSBDispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>remoting</servlet-name>
+		<url-pattern>/remoting/*</url-pattern>
+	</servlet-mapping>
+	
+</web-app>

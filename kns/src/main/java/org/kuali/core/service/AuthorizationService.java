@@ -18,7 +18,6 @@ package org.kuali.core.service;
 import java.util.Set;
 
 import org.kuali.core.bo.user.UniversalUser;
-import org.kuali.core.datadictionary.DataDictionary;
 import org.kuali.core.datadictionary.DocumentEntry;
 
 

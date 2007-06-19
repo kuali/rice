@@ -1,0 +1,6 @@
+<config>
+	<param name="axis:user">user3</param>
+	<param name="axis:password">password3</param>
+	<param name="user">${axis:user}</param>
+	<param name="password">${axis:password}</param>
+</config>

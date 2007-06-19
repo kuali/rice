@@ -1,0 +1,21 @@
+<config>
+
+	<param name="config.location">classpath:META-INF/common-derby-connection-config.xml</param>
+	<param name="config.location">classpath:META-INF/common-locations-test-config.xml</param>
+
+	<param name="client1.location">${basedir}/src/test/clients/TestClient1</param>	
+	<param name="client2.location">${basedir}/src/test/clients/TestClient2</param>
+	<param name="threadPool.size">1</param>
+	<param name="threadPool.fetchFrequency">3000</param>
+	<param name="bus.refresh.rate">3000</param>
+	<param name="bam.enabled">true</param>
+	<param name="message.persistence">synchronous</param>
+	<param name="keystore.alias">onestartsharedservices-devandtst</param>
+	<param name="keystore.password">s1t0spss!xX-tst</param>
+	<param name="keystore.file">${basedir}/src/test/resources/keystore/onestartsharedservices-devandtst_keystore</param>
+
+	<param name="use.clearDatabaseLifecycle">true</param>
+	<param name="use.sqlDataLoaderLifecycle">true</param>
+
+	<param name="config.location">${alt.config.location}</param>
+</config>

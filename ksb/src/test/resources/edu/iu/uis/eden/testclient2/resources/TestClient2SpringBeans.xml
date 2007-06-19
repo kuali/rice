@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<bean id="config" class="org.kuali.rice.config.spring.ConfigFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:META-INF/ksb-test-config.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="config" />
+		<property name="targetMethod" value="getProperties" />
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" ref="configProperties" />
+	</bean>
+
+	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean" />
+
+	<bean id="dataSource" class="org.kuali.rice.database.XAPoolDataSource">
+		<property name="transactionManager" ref="jotm" />
+		<property name="driverClassName" value="${datasource.driver.name}" />
+		<property name="url" value="${datasource.url}" />
+		<property name="maxSize" value="${datasource.pool.maxSize}" />
+		<property name="minSize" value="${datasource.pool.minSize}" />
+		<property name="maxWait" value="${datasource.pool.maxWait}" />
+		<property name="validationQuery" value="${datasource.pool.validationQuery}" />
+		<property name="username" value="${datasource.username}" />
+		<property name="password" value="${datasource.password}" />
+	</bean>
+
+
+	<bean id="echoService" class="edu.iu.uis.eden.testclient2.EchoService2Impl" />
+	<bean id="chainedRequestService" class="edu.iu.uis.eden.testclient2.ChainedRequestService2Impl" />
+	<bean id="sharedQueue" class="edu.iu.uis.eden.testclient2.ClientApp2SharedQueue" />
+	<bean id="testServiceFailover" class="edu.iu.uis.eden.messaging.remotedservices.GenericTestService" />
+	<bean id="soapService" class="edu.iu.uis.eden.testclient2.Client2SOAPService" />
+
+	<bean id="credentialsSourceFactory" class="org.kuali.rice.security.credentials.CredentialsSourceFactory" />
+
+	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
+		<property name="dataSource" ref="dataSource" />
+		<property name="transactionManager" ref="jotm" />
+		<property name="userTransaction" ref="jotm" />
+		<property name="credentialsSourceFactory" ref="credentialsSourceFactory" />
+		<property name="rootConfig" ref="config" />
+		<property name="messageEntity" value="TestCl2" />
+		<property name="properties">
+			<props>
+				<prop key="plugin.registry.enabled">true</prop>
+				<prop key="kew.standalone.server">true</prop>
+			</props>
+		</property>
+		<property name="modules">
+			<list>
+				<bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
+					<property name="serviceServletUrl" value="http://localhost:9911/TestClient2/remoting" />
+					<property name="services">
+						<list>
+							<bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+								<property name="service">
+									<ref bean="soapService" />
+								</property>
+								<property name="localServiceName" value="soap-cluster-test" />
+								<property name="serviceNameSpaceURI" value="testNameSpace" />
+								<property name="priority" value="3" />
+								<property name="retryAttempts" value="1" />
+								<property name="busSecurity" value="false"></property>
+							</bean>
+							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+								<property name="service">
+									<ref bean="testServiceFailover" />
+								</property>
+								<property name="localServiceName" value="testServiceFailover" />
+								<property name="serviceNameSpaceURI" value="KEW" />
+							</bean>
+							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+								<property name="service" ref="echoService" />
+								<property name="serviceInterface" value="edu.iu.uis.eden.messaging.remotedservices.EchoService" />
+								<property name="localServiceName" value="echoService" />
+							</bean>
+							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+								<property name="service" ref="chainedRequestService" />
+								<property name="serviceInterface" value="edu.iu.uis.eden.messaging.remotedservices.ChainedRequestService" />
+								<property name="localServiceName" value="chainedRequestService2" />
+							</bean>
+							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+								<property name="service" ref="sharedQueue" />
+								<property name="localServiceName" value="sharedQueue" />
+								<property name="serviceNameSpaceURI" value="testAppsSharedQueue" />
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+</beans>

@@ -74,7 +74,7 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
 		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/EmployeeTypeMaintenanceDocument.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/FinancialSystemParameterSecurityMaintenanceDocument.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/FinancialSystemParameterMaintenanceDocument.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/KualiUniversityUserMaintenanceDocument.xml", true);
+		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/UniversalUserMaintenanceDocument.xml", true);
 		
 		// quieten things down a bit
 		setLogLevel("org.apache.commons.digester", Level.FATAL);

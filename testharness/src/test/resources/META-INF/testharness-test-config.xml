@@ -1,0 +1,11 @@
+<!-- config file loaded by the TestHarness root test case.  This file is filtered by maven in order 
+to get the override location in place.  -->
+<config>
+
+	<param name="config.location">classpath:META-INF/common-derby-connection-config.xml</param>
+	<param name="config.location">classpath:META-INF/common-locations-test-config.xml</param>
+	<param name="config.location">${alt.config.location}</param>
+	<!-- this is used for the testharness test -->
+	<param name="rice.test.case.test">test</param>
+	
+</config>

@@ -1,29 +1,45 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.kuali.rice</groupId>
 	<artifactId>rice</artifactId>
 	<packaging>pom</packaging>
-	<version>0.9-M2</version>
+	<version>0.9-RC1</version>
 	<name>Kuali Rice</name>
 	<url>http://rice.kuali.org</url>
 
 	<modules>
+		<module>core</module>
+		<module>shared</module>
+		<module>testharness</module>
+		<module>ksb</module>
 		<module>kns</module>
 	</modules>
 
 	<build>
+	<!-- 
 		<resources>
 			<resource>
-				<directory>src/main/java</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-				<filtering>true</filtering>
+				<directory>${basedir}/src/main/resources</directory>
 			</resource>
 		</resources>
-
+	 -->
+		<testResources>
+			<testResource>
+				<directory>${basedir}/src/test/resources</directory>
+				<includes>
+					<include>META-INF/${project.name}-test-config.xml</include>
+				</includes>
+				<filtering>true</filtering>
+			</testResource>
+			<testResource>
+				<directory>${basedir}/src/test/resources</directory>
+				<excludes>
+					<exclude>${project.name}-test-config.xml</exclude>
+				</excludes>
+				<filtering>false</filtering>
+			</testResource>
+		</testResources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -53,15 +69,24 @@
 				<artifactId>maven-clover-plugin</artifactId>
 				<configuration>
 					<jdk>1.5</jdk>
-					<licenseLocation>
-						kns/src/test/config/clover.license
-					</licenseLocation>
+					<licenseLocation>kns/src/test/config/clover.license</licenseLocation>
 				</configuration>
 				<executions>
+					<execution>
+						<id>main</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>instrument</goal>
+							<goal>aggregate</goal>
+							<goal>log</goal>
+						</goals>
+					</execution>
 					<execution>
 						<phase>pre-site</phase>
 						<goals>
 							<goal>instrument</goal>
+							<goal>aggregate</goal>
+							<goal>save-history</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -139,12 +164,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.kuali.rice</groupId>
-			<artifactId>rice-ksb</artifactId>
-			<version>0.9-M2</version>
-		</dependency>
-
-		<dependency>
 			<groupId>xalan</groupId>
 			<artifactId>xalan</artifactId>
 			<version>2.7.0</version>
@@ -154,6 +173,31 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1</version>
+			<type>jar</type>
+			<exclusions>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>logkit</groupId>
+					<artifactId>logkit</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>avalon-framework</groupId>
+					<artifactId>avalon-framework</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -230,13 +274,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>jdom</groupId>
-			<artifactId>jdom</artifactId>
-			<version>1.0</version>
-			<type>jar</type>
-		</dependency>
-
-		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 			<version>1.7.0</version>
@@ -280,6 +317,12 @@
 			<artifactId>xapool</artifactId>
 			<version>1.5.0-patch</version>
 			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+			<version>10.2.2.0</version>
 		</dependency>
 
 		<dependency>
@@ -362,9 +405,7 @@
 			<id>kuali</id>
 			<layout>default</layout>
 			<name>Kuali Repository</name>
-			<url>
-				https://onestart.iu.edu/dav/MY/maven-mirror/maven2
-			</url>
+			<url>https://onestart.iu.edu/dav/MY/maven-mirror/maven2</url>
 		</repository>
 
 		<repository>
@@ -377,20 +418,14 @@
 	</repositories>
 
 	<description>
-		Rice Commons contains 3 primary components. 1.) Rice Core which
-		contains primarily resource loading and configuration 2.) Rice
-		Shared which contains rice library data access code. This is
-		OJB, XAPool, Spring and JTA 3.) Rice Service Bus
+		Rice Commons contains 3 primary components. 1.) Rice Core which contains primarily resource loading and configuration 2.) Rice Shared which
+		contains rice library data access code. This is OJB, XAPool, Spring and JTA 3.) Rice Service Bus
 	</description>
 	<inceptionYear>2007</inceptionYear>
 	<licenses>
 		<license>
-			<name>
-				The Kuali Foundation Educational Community License 1.0
-			</name>
-			<url>
-				https://test.kuali.org/confluence/display/KULDOC/The+Kuali+Foundation+ECL
-			</url>
+			<name>The Kuali Foundation Educational Community License 1.0</name>
+			<url>https://test.kuali.org/confluence/display/KULDOC/The+Kuali+Foundation+ECL</url>
 			<distribution>manual</distribution>
 		</license>
 

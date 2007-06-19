@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" path="core/src/main/java"/>
+	<classpathentry kind="src" path="core/src/main/resources"/>
+	<classpathentry kind="src" path="core/src/test/java"/>
+	<classpathentry kind="src" path="core/src/test/resources"/>
+	<classpathentry kind="src" path="shared/src/main/java"/>
+	<classpathentry kind="src" path="shared/src/main/resources"/>
+	<classpathentry kind="src" path="testharness/src/main/java"/>
+	<classpathentry kind="src" path="testharness/src/main/resources"/>
+	<classpathentry kind="src" path="testharness/src/test/java"/>
+	<classpathentry kind="src" path="testharness/src/test/resources"/>
+	<classpathentry kind="src" path="ksb/src/main/java"/>
+	<classpathentry kind="src" path="ksb/src/main/resources"/>
+	<classpathentry kind="src" path="ksb/src/test/java"/>
+	<classpathentry kind="src" path="ksb/src/test/resources"/>
 	<classpathentry kind="src" path="kns/src/main/java"/>
+	<classpathentry kind="src" path="kns/src/main/resources"/>
 	<classpathentry kind="src" path="kns/src/test/java"/>
 	<classpathentry kind="src" path="kns/src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

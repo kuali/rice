@@ -25,7 +25,6 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.core.authorization.AuthorizationStore;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.datadictionary.AuthorizationDefinition;
-import org.kuali.core.datadictionary.DataDictionary;
 import org.kuali.core.datadictionary.DocumentEntry;
 import org.kuali.core.service.AuthorizationService;
 import org.kuali.core.service.DataDictionaryService;

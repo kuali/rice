@@ -18,7 +18,6 @@ package org.kuali.core.datadictionary.exporter;
 import java.util.Map;
 
 import org.junit.Test;
-import org.kuali.KeyConstants.ObjectCode;
 import org.kuali.core.bo.BusinessObjectAttributeEntry;
 import org.kuali.core.datadictionary.BusinessObjectEntry;
 import org.kuali.core.datadictionary.DataDictionary;

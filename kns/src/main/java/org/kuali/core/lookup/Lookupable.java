@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.core.bo.PersistableBusinessObject;
+import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.web.struts.form.LookupForm;
 import org.kuali.core.web.ui.ResultRow;
 
@@ -100,7 +100,7 @@ public interface Lookupable extends Serializable {
      * @return List of business objects found by the search
      * @throws Exception
      */
-    public List<PersistableBusinessObject> getSearchResults(Map<String, String> fieldValues);
+    public List<BusinessObject> getSearchResults(Map<String, String> fieldValues);
 
     /**
      * Similar to getSearchResults, but the number of returned rows is not bounded
@@ -108,7 +108,7 @@ public interface Lookupable extends Serializable {
      * @param fieldValues
      * @return
      */
-    public List<PersistableBusinessObject> getSearchResultsUnbounded(Map<String, String> fieldValues);
+    public List<BusinessObject> getSearchResultsUnbounded(Map<String, String> fieldValues);
 
     /**
      * @return String providing instructions for using the lookup
@@ -141,7 +141,7 @@ public interface Lookupable extends Serializable {
      * @param lookupImpl - Current lookup impl name
      * @return String url called when selecting a row from the result set
      */
-    public String getReturnUrl(PersistableBusinessObject businessObject, Map fieldConversions, String lookupImpl);
+    public String getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl);
 
     /**
      * Builds the Url for a maintenance new document for the lookup business object class

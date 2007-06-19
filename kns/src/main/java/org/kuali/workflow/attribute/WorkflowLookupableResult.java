@@ -15,7 +15,7 @@
  */
 package org.kuali.workflow.attribute;
 
-import org.kuali.core.bo.PersistableBusinessObject;
+import org.kuali.core.bo.BusinessObject;
 
 /**
  * This interface is used to get the cglib Enhancer to simulate the returnUrl bean property required by workflow on the
@@ -28,7 +28,7 @@ import org.kuali.core.bo.PersistableBusinessObject;
  * @see org.kuali.workflow.attribute.WorkflowLookupableInvocationHandler
  * @deprecated This will go away once workflow supports simple url integration for custom attribute lookups.
  */
-public interface WorkflowLookupableResult extends PersistableBusinessObject {
+public interface WorkflowLookupableResult extends BusinessObject {
     /**
      * Gets the returnUrl attribute.
      * 

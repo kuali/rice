@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.kuali.Constants;
-import org.kuali.core.bo.PersistableBusinessObject;
+import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.service.BusinessObjectDictionaryService;
 import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.util.UrlFactory;
@@ -86,7 +86,7 @@ public class KualiLookupableImpl implements Lookupable {
      *
      * @return List found business objects
      */
-    public List<PersistableBusinessObject> getSearchResultsUnbounded(Map<String, String> fieldValues) {
+    public List<BusinessObject> getSearchResultsUnbounded(Map<String, String> fieldValues) {
         return getLookupableHelperService().getSearchResultsUnbounded(fieldValues);
     }
 
@@ -97,14 +97,14 @@ public class KualiLookupableImpl implements Lookupable {
      * 
      * @return List found business objects
      */
-    public List<PersistableBusinessObject> getSearchResults(Map<String, String> fieldValues) {
+    public List<BusinessObject> getSearchResults(Map<String, String> fieldValues) {
         return getLookupableHelperService().getSearchResults(fieldValues);
     }
 
     /**
      * @return the return url for each result row.
      */
-    public String getReturnUrl(PersistableBusinessObject bo, Map fieldConversions, String lookupImpl) {
+    public String getReturnUrl(BusinessObject bo, Map fieldConversions, String lookupImpl) {
         return getLookupableHelperService().getReturnUrl(bo, fieldConversions, lookupImpl);
     }
 
@@ -115,7 +115,7 @@ public class KualiLookupableImpl implements Lookupable {
      * @param methodToCall - maintenance action
      * @return
      */
-    protected String getMaintenanceUrl(PersistableBusinessObject bo, String methodToCall) {
+    protected String getMaintenanceUrl(BusinessObject bo, String methodToCall) {
         //TODO: delete me
         return getLookupableHelperService().getMaintenanceUrl(bo, methodToCall);
     }

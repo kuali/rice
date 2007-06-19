@@ -21,7 +21,7 @@ import java.util.HashMap;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.InvocationHandler;
 
-import org.kuali.core.bo.PersistableBusinessObject;
+import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.web.format.BooleanFormatter;
 
@@ -33,7 +33,7 @@ import org.kuali.core.web.format.BooleanFormatter;
  * @deprecated This will go away once workflow supports simple url integration for custom attribute lookups.
  */
 public class WorkflowLookupableInvocationHandler implements InvocationHandler {
-    private PersistableBusinessObject proxiedBusinessObject;
+    private BusinessObject proxiedBusinessObject;
     private ClassLoader classLoader;
 
     private String returnUrl;
@@ -43,7 +43,7 @@ public class WorkflowLookupableInvocationHandler implements InvocationHandler {
      * 
      * @param proxiedBusinessObject The BusinessObject that this instance is providing access to.
      */
-    public WorkflowLookupableInvocationHandler(PersistableBusinessObject proxiedBusinessObject, ClassLoader classLoader) {
+    public WorkflowLookupableInvocationHandler(BusinessObject proxiedBusinessObject, ClassLoader classLoader) {
         this.proxiedBusinessObject = proxiedBusinessObject;
         this.classLoader = classLoader;
     }
@@ -54,7 +54,7 @@ public class WorkflowLookupableInvocationHandler implements InvocationHandler {
      * @param proxiedBusinessObject The BusinessObject that this instance is providing access to.
      * @param returnUrl The returnUrl String for selection of a result from the UI
      */
-    public WorkflowLookupableInvocationHandler(PersistableBusinessObject proxiedBusinessObject, String returnUrl, ClassLoader classLoader) {
+    public WorkflowLookupableInvocationHandler(BusinessObject proxiedBusinessObject, String returnUrl, ClassLoader classLoader) {
         this.proxiedBusinessObject = proxiedBusinessObject;
         this.returnUrl = returnUrl;
         this.classLoader = classLoader;
@@ -81,8 +81,8 @@ public class WorkflowLookupableInvocationHandler implements InvocationHandler {
             }
             else if ("get".equals(method.getName())) {
                 Object propertyValue = ObjectUtils.getNestedValue(proxiedBusinessObject, args[0].toString());
-                if (propertyValue instanceof PersistableBusinessObject) {
-                    return Enhancer.create(propertyValue.getClass(), new WorkflowLookupableInvocationHandler((PersistableBusinessObject) propertyValue, classLoader));
+                if (propertyValue instanceof BusinessObject) {
+                    return Enhancer.create(propertyValue.getClass(), new WorkflowLookupableInvocationHandler((BusinessObject) propertyValue, classLoader));
                 }
                 else {
                     if (propertyValue instanceof Boolean) {

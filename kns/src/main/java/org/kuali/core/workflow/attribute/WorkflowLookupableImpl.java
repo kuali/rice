@@ -28,7 +28,7 @@ import net.sf.cglib.proxy.Enhancer;
 
 import org.apache.log4j.Logger;
 import org.kuali.Constants;
-import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.lookup.LookupUtils;
 import org.kuali.core.lookup.Lookupable;
 import org.kuali.core.service.BusinessObjectDictionaryService;
@@ -175,7 +175,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
             combinedFieldConversions = fieldConversions;
         }
         while (searchResultItr.hasNext()) {
-            PersistableBusinessObjectBase businessObject = (PersistableBusinessObjectBase) searchResultItr.next();
+            BusinessObject businessObject = (BusinessObject) searchResultItr.next();
             workflowLookupableResults.add(Enhancer.create(businessObject.getClass(), new Class[] { WorkflowLookupableResult.class }, new WorkflowLookupableInvocationHandler(businessObject, new StringBuffer("<a href=\"").append(lookupable.getReturnUrl(businessObject, combinedFieldConversions, lookupableImplName)).append(" \">return value</a>").toString(), getLookupableClassLoader())));
         }
         return workflowLookupableResults;

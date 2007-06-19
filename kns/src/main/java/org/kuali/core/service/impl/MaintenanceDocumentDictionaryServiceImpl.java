@@ -143,7 +143,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
 
         Class businessRulesClass = null;
 
-        MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(maintainable.getBusinessObject().getClass());
+        MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(maintainable.getBoClass());
         if (entry != null) {
             businessRulesClass = entry.getBusinessRulesClass();
         }

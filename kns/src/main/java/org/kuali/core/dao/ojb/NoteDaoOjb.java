@@ -66,7 +66,10 @@ public class NoteDaoOjb extends PlatformAwareDaoBaseOjb implements NoteDao {
      * Deletes a note from the DB using OJB.
      */
     public void deleteNote(Note note) throws DataAccessException {
+        getPersistenceBrokerTemplate().delete(note.getAttachment());
+        note.setAttachment(null);
         getPersistenceBrokerTemplate().delete(note);
+        
     }
 
     /**

@@ -1012,6 +1012,7 @@ public class KualiDocumentActionBase extends KualiAction {
         Note note = noteParent.getBoNote(getLineToDelete(request));
 
         Attachment attachment = note.getAttachment();
+        attachment.refresh();
 
         // delete the note if the document is already saved
         if (!document.getDocumentHeader().getWorkflowDocument().stateIsInitiated()) {

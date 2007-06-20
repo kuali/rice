@@ -144,9 +144,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // setup convenience pointers to the old & new bo
         setupBaseConvenienceObjects(maintenanceDocument);
 
-        // apply rules that are common across all maintenance documents, regardless of class
-        processGlobalSaveDocumentBusinessRules(maintenanceDocument);
-
         // the document must be in a valid state for saving. this does not include business
         // rules, but just enough testing that the document is populated and in a valid state
         // to not cause exceptions when saved. if this passes, then the save will always occur,
@@ -185,6 +182,9 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // setup convenience pointers to the old & new bo
         setupBaseConvenienceObjects(maintenanceDocument);
 
+        // apply rules that are common across all maintenance documents, regardless of class
+        processGlobalSaveDocumentBusinessRules(maintenanceDocument);
+
         // from here on, it is in a default-success mode, and will route unless one of the
         // business rules stop it.
         boolean success = true;
@@ -218,6 +218,9 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         // setup convenience pointers to the old & new bo
         setupBaseConvenienceObjects(maintenanceDocument);
+
+        // apply rules that are common across all maintenance documents, regardless of class
+        processGlobalSaveDocumentBusinessRules(maintenanceDocument);
 
         // from here on, it is in a default-success mode, and will approve unless one of the
         // business rules stop it.

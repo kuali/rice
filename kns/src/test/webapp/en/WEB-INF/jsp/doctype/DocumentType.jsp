@@ -187,13 +187,13 @@
 		          </tr>
 
 		          <tr>
-		            <td width="33%" align=right valign="top" class="data-category">Document Search Executor Attribute Class Name:</td>
+		            <td width="33%" align=right valign="top" class="data-category">Document Search Generator Attribute Class Name:</td>
 		            <c:if test="${DocumentTypeForm.existingDocumentType != null}">
-		              <td width="33%" valign="top" class="datacell"><span class="greyout-text"><c:out value="${DocumentTypeForm.existingDocumentType.documentSearchExecutorAttributeClassName}" /></span>&nbsp;</td>
+		              <td width="33%" valign="top" class="datacell"><span class="greyout-text"><c:out value="${DocumentTypeForm.existingDocumentType.documentSearchGeneratorAttributeClassName}" /></span>&nbsp;</td>
 		            </c:if>
 		              <td class="datacell">
-		                <html-el:text property="documentType.documentSearchExecutorAttributeClassName" />&nbsp;
-		                <a href="javascript: workflowHelpPop('DocumentSearchExecutorAttributeClassName')"><img src="images/my_cp_inf.gif" title="Help" alt="Help" border=0 align=absmiddle></a>
+		                <html-el:text property="documentType.documentSearchGeneratorAttributeClassName" />&nbsp;
+		                <a href="javascript: workflowHelpPop('DocumentSearchGeneratorAttributeClassName')"><img src="images/my_cp_inf.gif" title="Help" alt="Help" border=0 align=absmiddle></a>
 		              </td>
 		          </tr>
 
@@ -261,7 +261,7 @@
 		<html-el:hidden property="documentType.customActionListAttributeClassName" />
 		<html-el:hidden property="documentType.customEmailAttributeClassName" />
 		<html-el:hidden property="documentType.customNoteAttributeClassName" />
-		<html-el:hidden property="documentType.documentSearchExecutorAttributeClassName" />
+		<html-el:hidden property="documentType.documentSearchGeneratorAttributeClassName" />
 		<html-el:hidden property="documentType.activeInd"/>
 		<html-el:hidden property="documentType.description" />
 	</c:otherwise>

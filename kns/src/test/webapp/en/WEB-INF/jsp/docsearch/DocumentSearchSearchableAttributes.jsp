@@ -82,18 +82,37 @@
 		  <c:when test="${field.fieldType==field.TEXT}" >
             <html-el:text property="propertyField[${fieldIndex}].value"/>
 		  </c:when>
-		  <c:when test="${field.fieldType==field.CHECKBOX}" >
-		  <%-- using the 'valueForUserInterface' below due to unchecked checkbox not submitting with form  --%>
-		    <html-el:checkbox property="propertyField[${fieldIndex}].valueForUserInterface" />
-            <html-el:hidden property="propertyField[${fieldIndex}].alternateValue" value="F"/>
+		  <c:when test="${field.fieldType==field.CHECKBOX_YES_NO}" >
+		    <%-- using the 'valueForUserInterface' below due to unchecked checkbox not submitting with form  --%>
+		    <html-el:checkbox property="propertyField[${fieldIndex}].valueForUserInterface" value="${field.CHECKBOX_VALUE_CHECKED}"/>
+            <html-el:hidden property="propertyField[${fieldIndex}].alternateValue" value="${field.CHECKBOX_VALUE_UNCHECKED}"/>
+		  </c:when>
+		  <c:when test="${field.fieldType==field.CHECKBOX_PRESENT}" >
+		    <%-- using the 'valueForUserInterface' below due to unchecked checkbox not submitting with form  --%>
+		    <html-el:checkbox property="propertyField[${fieldIndex}].valueForUserInterface" value="${field.CHECKBOX_VALUE_CHECKED}"/>
 		  </c:when>
 		  <c:when test="${field.fieldType==field.MULTIBOX}" >
-			<c:forEach items="${field.fieldValidValues}" var="box" varStatus="status">
-              <html-el:multibox property="propertyField[${fieldIndex}].values" value="${box.key}"/><c:out value="${box.label}" />
-              <c:if test="${((status.count+1) % 3 == 0) and ((status.count+1) != 3)}">
-                <br>
-              </c:if>
-			</c:forEach>
+            <table>
+              <tr>
+                <td>
+                  <c:forEach items="${field.fieldValidValues}" var="box" varStatus="status">
+                    <html-el:multibox property="propertyField[${fieldIndex}].values" value="${box.key}"/>&nbsp;<c:out value="${box.label}" />
+                    <c:choose>
+                      <c:when test="${((status.count) % 3) == 0}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                      </c:when>
+                      <c:otherwise>
+                          </td>
+                          <td>
+                      </c:otherwise>
+                    </c:choose>
+			      </c:forEach>
+			    </td>
+		      </tr>
+		    </table>
 		  </c:when>
 		  <c:when test="${field.fieldType==field.DROPDOWN}" >
             <html-el:select property="propertyField[${fieldIndex}].value" style="background: rgb(255, 255, 255) none repeat scroll 0%; font-family: verdana,arial,helvetica,sans-serif; font-size: 10px; -moz-background-clip: initial; -moz-background-inline-policy: initial; -moz-background-origin: initial; color: rgb(51, 51, 153);">

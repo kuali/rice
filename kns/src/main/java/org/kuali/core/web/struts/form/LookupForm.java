@@ -199,7 +199,7 @@ public class LookupForm extends KualiForm {
             setFieldsForLookup(fieldValues);
             
             // only show maintenance links if the lookup was called from the portal
-            if (StringUtils.contains(backLocation, Constants.MAPPING_PORTAL)) {
+            if (StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(Constants.APPLICATION_URL_KEY) + "/" + Constants.MAPPING_PORTAL)) {
                 showMaintenanceLinks = true;
             }
             else {

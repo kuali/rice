@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -287,29 +287,37 @@ public class KualiRequestProcessor extends RequestProcessor {
 
         try {
             TransactionTemplate template = new TransactionTemplate(KNSServiceLocator.getTransactionManager());
-            ActionForward forward = (ActionForward)template.execute(new TransactionCallback() {
-                public Object doInTransaction(TransactionStatus status) {
-                    try {
-                        Object actionResult = action.execute(mapping, form, request, response);
-                      //  KNSServiceLocator.getTransactionManager().
-                        return actionResult;
-                        
-                    } catch (Exception e) {
-                        // the doInTransaction method has no means for throwing exceptions, so we will wrap the exception in
-                        // a RuntimeException and re-throw.  The one caveat here is that this will always result in the
-                        // transaction being rolled back (since WrappedRuntimeException is a runtime exception).
-                        throw new WrappedRuntimeException(e);
-                    }
-                }
-            });
-            
+            ActionForward forward = null;
+            try {
+            	forward = (ActionForward)template.execute(new TransactionCallback() {
+            		public Object doInTransaction(TransactionStatus status) {
+            			ActionForward actionForward = null;
+            			try {
+            				actionForward = action.execute(mapping, form, request, response);
+            			} catch (Exception e) {
+            				// the doInTransaction method has no means for throwing exceptions, so we will wrap the exception in
+            				// a RuntimeException and re-throw.  The one caveat here is that this will always result in the
+            				// transaction being rolled back (since WrappedRuntimeException is a runtime exception).
+            				throw new WrappedRuntimeException(e);
+            			}
+            			if (status.isRollbackOnly()) {
+            				// this means that the struts action execution caused the transaction to rollback, we want to go ahead
+            				// and trigger the rollback by throwing an exception here but then return the action forward from this method
+            				throw new WrappedActionForwardRuntimeException(actionForward);
+            			}
+            			return actionForward;
+            		}
+            	});
+            } catch (WrappedActionForwardRuntimeException e) {
+            	forward = e.getActionForward();
+            }
             publishErrorMessages(request);
             saveMessages(request);
             saveAuditErrors(request);
-            
+
             t0.log();
             return forward;
-            
+
         } catch (Exception e) {
             if (e instanceof WrappedRuntimeException) {
                 e = (Exception)e.getCause();
@@ -326,9 +334,9 @@ public class KualiRequestProcessor extends RequestProcessor {
                 t0.log();
                 return mapping.findForward(Constants.MAPPING_BASIC);
             }
-            
+
             publishErrorMessages(request);
-            
+
             t0.log();
             return (processException(request, response, e, form, mapping));
         }
@@ -435,6 +443,16 @@ public class KualiRequestProcessor extends RequestProcessor {
         public WrappedRuntimeException(Exception e) {
             super(e);
         }
+    }
+
+    private static class WrappedActionForwardRuntimeException extends RuntimeException {
+    	private ActionForward actionForward;
+    	public WrappedActionForwardRuntimeException(ActionForward actionForward) {
+    		this.actionForward = actionForward;
+    	}
+    	public ActionForward getActionForward() {
+    		return actionForward;
+    	}
     }
 
 }

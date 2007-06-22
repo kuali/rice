@@ -15,6 +15,7 @@
  */
 package org.kuali.core.web.struts.form;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +83,7 @@ public abstract class KualiDocumentFormBase extends KualiForm {
     private boolean returnToActionList;
 
     /** Special list class which doesn't blow up when setting an index which doesn't exist. */
-    private static class AutoExpandingList extends AutoPopulatingList {
+    private static class AutoExpandingList extends AutoPopulatingList implements Serializable {
         AutoExpandingList( Class listClass ) {
             super( listClass );
         }

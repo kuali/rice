@@ -46,17 +46,18 @@ import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.Timer;
 import org.kuali.core.web.struts.pojo.PojoForm;
 import org.kuali.rice.KNSServiceLocator;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.UnexpectedRollbackException;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springmodules.orm.ojb.OjbOperationException;
 
 import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class handles setup of user session and restoring of action form.
+ *
+ *
  */
 public class KualiRequestProcessor extends RequestProcessor {
     private static Logger LOG = Logger.getLogger(KualiRequestProcessor.class);
@@ -253,6 +254,7 @@ public class KualiRequestProcessor extends RequestProcessor {
         String docFormKey = request.getParameter(Constants.DOC_FORM_KEY);
         String methodToCall = request.getParameter(Constants.DISPATCH_REQUEST_PARAMETER);
         String refreshCaller = request.getParameter(Constants.REFRESH_CALLER);
+        String searchListRequestKey = request.getParameter(Constants.SEARCH_LIST_REQUEST_KEY);
 
         if (StringUtils.isNotBlank(docFormKey) && (mapping.getPath().startsWith(Constants.REFRESH_MAPPING_PREFIX) || Constants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall) || Constants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller))) {
 
@@ -280,29 +282,42 @@ public class KualiRequestProcessor extends RequestProcessor {
      */
     @Override
     protected ActionForward processActionPerform(final HttpServletRequest request, final HttpServletResponse response, final Action action, final ActionForm form, final ActionMapping mapping) throws IOException, ServletException {
+
         Timer t0 = new Timer("KualiRequestProcessor.processActionPerform");
 
-        ActionForward forward = null;
         try {
-            DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-            def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-
-            PlatformTransactionManager txManager = KNSServiceLocator.getTransactionManager();
-
-            TransactionStatus status = txManager.getTransaction(def);
-            forward = action.execute(mapping, form, request, response);
-
-            try {
-                txManager.commit(status);
+            TransactionTemplate template = new TransactionTemplate(KNSServiceLocator.getTransactionManager());
+            ActionForward forward = (ActionForward)template.execute(new TransactionCallback() {
+                public Object doInTransaction(TransactionStatus status) {
+                    try {
+                        Object actionResult = action.execute(mapping, form, request, response);
+                      //  KNSServiceLocator.getTransactionManager().
+                        return actionResult;
+                        
+                    } catch (Exception e) {
+                        // the doInTransaction method has no means for throwing exceptions, so we will wrap the exception in
+                        // a RuntimeException and re-throw.  The one caveat here is that this will always result in the
+                        // transaction being rolled back (since WrappedRuntimeException is a runtime exception).
+                        throw new WrappedRuntimeException(e);
+                    }
+                }
+            });
+            
+            publishErrorMessages(request);
+            saveMessages(request);
+            saveAuditErrors(request);
+            
+            t0.log();
+            return forward;
+            
+        } catch (Exception e) {
+            if (e instanceof WrappedRuntimeException) {
+                e = (Exception)e.getCause();
             }
-            catch (UnexpectedRollbackException e) {
-                // resume
-            }
-        }
-        catch (Exception e) {
             if (e instanceof ValidationException) {
                 // add a generic error message if there are none
                 if (GlobalVariables.getErrorMap().isEmpty()) {
+
                     GlobalVariables.getErrorMap().putError(Constants.GLOBAL_ERRORS, KeyConstants.ERROR_CUSTOM, e.getMessage());
                 }
 
@@ -311,18 +326,12 @@ public class KualiRequestProcessor extends RequestProcessor {
                 t0.log();
                 return mapping.findForward(Constants.MAPPING_BASIC);
             }
+            
             publishErrorMessages(request);
-
+            
             t0.log();
             return (processException(request, response, e, form, mapping));
         }
-
-        publishErrorMessages(request);
-        saveMessages(request);
-        saveAuditErrors(request);
-        
-        t0.log();
-        return forward;
     }
 
     /**
@@ -418,4 +427,14 @@ public class KualiRequestProcessor extends RequestProcessor {
             request.setAttribute(Constants.AUDIT_ERRORS, GlobalVariables.getAuditErrorMap());
         }
     }
+
+    /**
+     * A simple exception that allows us to wrap an exception that is thrown out of a transaction template.
+     */
+    private static class WrappedRuntimeException extends RuntimeException {
+        public WrappedRuntimeException(Exception e) {
+            super(e);
+        }
+    }
+
 }

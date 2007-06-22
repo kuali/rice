@@ -70,6 +70,7 @@ import org.kuali.core.workflow.KualiDocumentXmlMaterializer;
 import org.kuali.core.workflow.KualiTransactionalDocumentInformation;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.core.Core;
 import org.springmodules.orm.ojb.OjbOperationException;
 
 import edu.iu.uis.eden.clientapp.IDocHandler;

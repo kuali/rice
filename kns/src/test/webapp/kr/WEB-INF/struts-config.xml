@@ -38,17 +38,14 @@
         </action>        
         <action path="/initiationAuthorizationException" name="KualiForm" type="org.kuali.core.web.struts.action.KualiDocumentInitiationAuthorizationExceptionAction">
             <forward name="basic" path="/WEB-INF/jsp/authorizationException.jsp" />
-        </action>
-        
+        </action>        
    	    <action path="/lookup" name="LookupForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.core.web.struts.action.KualiLookupAction">
 	        <forward name="basic" path="/WEB-INF/jsp/KualiLookup.jsp" />
-	    </action>
-	     
-	     <action path="/multipleValueLookup" name="MultipleValueLookupForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.core.web.struts.action.KualiMultipleValueLookupAction">
+	    </action>	     
+	    <action path="/multipleValueLookup" name="MultipleValueLookupForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.core.web.struts.action.KualiMultipleValueLookupAction">
             <set-property property="cancellable" value="true" />
             <forward name="basic" path="/WEB-INF/jsp/KualiMultipleValueLookup.jsp" />
         </action>
-        
 	    <action path="/inquiry" name="InquiryForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.core.web.struts.action.KualiInquiryAction">
 	        <forward name="basic" path="/WEB-INF/jsp/KualiInquiry.jsp" />
 	    </action>

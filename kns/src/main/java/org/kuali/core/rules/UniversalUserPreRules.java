@@ -64,19 +64,19 @@ public class UniversalUserPreRules extends PreRulesContinuationBase {
         
         // determine what modules user data has changed for and set that info on the new maintainable for use in workflow
         // see TODO associated with this property in universal user
-        deriveChangedModuleIds(maintenanceDocument);
+        deriveChangedModuleCodes(maintenanceDocument);
         
         return success;
     }
     
-    private void deriveChangedModuleIds(MaintenanceDocument document) {
-        Set changedModuleIds = new HashSet();
+    private void deriveChangedModuleCodes(MaintenanceDocument document) {
+        Set<String> changedModuleCodes = new HashSet<String>();
         UniversalUser newUser = (UniversalUser) document.getNewMaintainableObject().getBusinessObject();
         for (KualiModuleUser newModuleUser : newUser.getModuleUsers().values()) {
             if (newModuleUser.isModified(document.isEdit() ? (UniversalUser) document.getOldMaintainableObject().getBusinessObject(): null, newUser)) {
-                changedModuleIds.add(newModuleUser.getModuleId());
+                changedModuleCodes.add(KNSServiceLocator.getKualiModuleService().getModule(newModuleUser.getModuleId()).getModuleCode());
             }
         }
-        newUser.setChangedModuleIds(changedModuleIds);
+        newUser.setChangedModuleCodes(changedModuleCodes);
     }
 }

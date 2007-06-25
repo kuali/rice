@@ -79,7 +79,7 @@ public class UniversalUser extends PersistableBusinessObjectBase {
     // - so, we could put it on the maintainable, but properties of the maintainable don't get put in the main doc xml in populateXmDocumentContentsFromMaintainables
     // - so, we could derive and set after populateMaintainablesFromXmlDocumentContents, but i don't see a hook - have processAfterRetrieve called then on the new maintainable, but we need the od maintainable to derive
     // - so, i could modify the framework - e.g. implement handleRouteLevelChange on maintenance document and call a method on the maintainable, where i pass the prior row - seems like a big change for this need
-    private Set<String> changedModuleIds;
+    private Set<String> changedModuleCodes;
     
     /**
      * Default no-arg constructor.
@@ -692,18 +692,18 @@ public class UniversalUser extends PersistableBusinessObjectBase {
     private transient String deptid;
 
     /**
-     * Gets the changedModuleIds attribute. 
-     * @return Returns the changedModuleIds.
+     * Gets the changedModuleCodes attribute. 
+     * @return Returns the changedModuleCodes.
      */
-    public Set<String> getChangedModuleIds() {
-        return changedModuleIds;
+    public Set<String> getChangedModuleCodes() {
+        return changedModuleCodes;
     }
 
     /**
-     * Sets the changedModuleIds attribute value.
-     * @param changedModuleIds The changedModuleIds to set.
+     * Sets the changedModuleCodes attribute value.
+     * @param changedModuleCodes The changedModuleCodes to set.
      */
-    public void setChangedModuleIds(Set<String> changedModuleIds) {
-        this.changedModuleIds = changedModuleIds;
+    public void setChangedModuleCodes(Set<String> changedModuleCodes) {
+        this.changedModuleCodes = changedModuleCodes;
     }
 }

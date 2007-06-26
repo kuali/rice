@@ -18,7 +18,9 @@ package org.kuali.core.service.impl;
 
 import java.io.StringWriter;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
@@ -31,6 +33,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.kuali.core.service.PersistenceService;
 import org.kuali.core.service.XmlObjectSerializerService;
@@ -110,11 +113,22 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
             super(mapper, reflectionProvider);
         }
         public boolean canConvert(Class clazz) {
-            return clazz.getName().indexOf("CGLIB") > -1;// || type.getName().equals("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
+            return clazz.getName().indexOf("CGLIB") > -1 || clazz.getName().equals("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
         }
 
         public void marshal(Object obj, HierarchicalStreamWriter writer, MarshallingContext context) {
-            super.marshal(getPersistenceService().resolveProxy(obj), writer, context);
+        	if (obj instanceof ListProxyDefaultImpl) { 
+                List copiedList = new ArrayList(); 
+                List proxiedList = (List) obj; 
+                for (Iterator iter = proxiedList.iterator(); iter.hasNext();) { 
+                    copiedList.add(iter.next()); 
+                } 
+                context.convertAnother( copiedList );
+                //super.marshal(copiedList, writer, context);
+            } 
+            else { 
+                super.marshal(getPersistenceService().resolveProxy(obj), writer, context);
+            }         	
         }
 
         public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {

@@ -22,7 +22,7 @@ import java.util.List;
  * 
  * 
  */
-class KualiUniversalGroup extends KualiGroup {
+public class KualiUniversalGroup extends KualiGroup {
     private static final long serialVersionUID = 1859237330240184446L;
 
     public static final String UNIVERSAL_GROUP_NAME = "kualiUniversalGroup";

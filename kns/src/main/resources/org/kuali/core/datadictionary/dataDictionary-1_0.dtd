@@ -562,7 +562,7 @@
             * allowsNoteDelete (boolean String)
             * displayTopicFieldInNotes (boolean String)
     -->
-    <!ELEMENT transactionalDocument (documentClass, %COPYABLE_DOCUMENT_ATTRIBUTES;, allowsErrorCorrection, allowsNoteDelete?, displayTopicFieldInNotes?) >
+    <!ELEMENT transactionalDocument (documentClass, %COPYABLE_DOCUMENT_ATTRIBUTES;, allowsErrorCorrection, allowsNoteDelete?, displayTopicFieldInNotes?, attachmentTypesValuesFinderClass?) >
         <!ELEMENT documentClass (#PCDATA) >
         
 
@@ -582,7 +582,7 @@
             * description (String)
             * maintainableSections (Map)
     -->
-    <!ELEMENT maintenanceDocument (businessObjectClass, maintainableClass, %DOCUMENT_ATTRIBUTES;, lockingKeys, allowsNewOrCopy?, defaultExistenceChecks?, applyApcRules?, maintainableSections, allowsNoteDelete?, displayTopicFieldInNotes?) >
+    <!ELEMENT maintenanceDocument (businessObjectClass, maintainableClass, %DOCUMENT_ATTRIBUTES;, lockingKeys, allowsNewOrCopy?, defaultExistenceChecks?, applyApcRules?, maintainableSections, allowsNoteDelete?, displayTopicFieldInNotes?, attachmentTypesValuesFinderClass?) >
         <!ELEMENT maintainableClass (#PCDATA) >
         
         <!--

@@ -77,9 +77,12 @@ public class KNSServiceLocator {
 	}
 
 	public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName) {
+		return getNamedOrderedListBeans(listName, KNSResourceLoaderFactory.getSpringResourceLoader().getContext());
+	}
+	
+	protected static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName, ApplicationContext applicationContext) {
 		List<NamedOrderedListBean> namedOrderedListBeans = new ArrayList<NamedOrderedListBean>();
-		ApplicationContext context = KNSResourceLoaderFactory.getSpringResourceLoader().getContext();
-		for (Object namedOrderedListBean : context.getBeansOfType(NamedOrderedListBean.class).values()) {
+		for (Object namedOrderedListBean : applicationContext.getBeansOfType(NamedOrderedListBean.class).values()) {
 			if (((NamedOrderedListBean) namedOrderedListBean).getName().equals(listName)) {
 				namedOrderedListBeans.add((NamedOrderedListBean) namedOrderedListBean);
 			}

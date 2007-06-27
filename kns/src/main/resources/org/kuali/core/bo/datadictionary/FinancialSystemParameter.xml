@@ -23,6 +23,7 @@
         <inquiry>
             <title>Financial System Parameter Inquiry</title>
             <inquirySections><inquirySection title="Header Text"><inquiryFields>
+                <field attributeName="moduleCode" />
                 <field attributeName="financialSystemScriptName" />
                 <field attributeName="financialSystemParameterName" noInquiry="true" />
                 <field attributeName="financialSystemParameterText" />
@@ -36,6 +37,7 @@
             <instructions>Look up a system parameter.</instructions>
             <defaultSort attributeName="financialSystemParameterName" sortAscending="true" />
             <lookupFields>
+                <lookupField attributeName="moduleCode" required="false" />
                 <lookupField attributeName="financialSystemScriptName" required="false" />
                 <lookupField attributeName="financialSystemParameterName" required="false" noLookup="true" />
                 <lookupField attributeName="financialSystemParameterText" required="false" noLookup="true" />
@@ -43,6 +45,7 @@
                 <lookupField attributeName="financialSystemMultipleValueIndicator" />
             </lookupFields>
             <resultFields>
+                <field attributeName="moduleCode" forceInquiry="true" />
                 <field attributeName="financialSystemParameterName" forceInquiry="true" />
                 <field attributeName="financialSystemScriptName" forceInquiry="true" />
                 <field attributeName="financialSystemParameterDescription" />
@@ -54,6 +57,10 @@
         <titleAttribute>financialSystemParameterName</titleAttribute>
 
         <attributes>
+            <attributeReference name="moduleCode" sourceClassName="org.kuali.core.bo.Module" sourceAttributeName="moduleCode">
+                <shortLabel>Module Code</shortLabel>
+                <required>true</required>
+            </attributeReference>
             <attribute name="financialSystemParameterName" forceUppercase="false">
                 <label>Parameter Name</label>
                 <shortLabel>Parm Nm</shortLabel>

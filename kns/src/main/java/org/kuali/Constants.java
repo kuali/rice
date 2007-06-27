@@ -34,6 +34,9 @@ public class Constants extends JstlConstants {
     public static final String PARAM_MAINTENANCE_VIEW_MODE_LOOKUP = "lookup";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_INQUIRY = "inquiry";
     
+    public static final String CROSS_MODULE_CODE = "SY";
+    public static final String CROSS_MODULE_NAME = "All";
+    
     public static final String CONFIGURATION_FILE_NAME = "configuration";
     public static final String ENVIRONMENT_KEY = "environment";
     public static final String VERSION_KEY = "version";

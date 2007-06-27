@@ -25,6 +25,7 @@
             <title>Business Rule Inquiry</title>
 
             <inquirySections><inquirySection title="Header Text"><inquiryFields>
+                <field attributeName="moduleCode" />
                 <field attributeName="ruleGroupName" />
                 <field attributeName="ruleName" />
                 <field attributeName="ruleText" />
@@ -48,6 +49,7 @@
             </defaultSort>
 
             <lookupFields>
+                <lookupField attributeName="moduleCode" required="false" />
                 <lookupField attributeName="ruleGroupName" required="false" />
                 <lookupField attributeName="ruleName" required="false" />
                 <lookupField attributeName="ruleText" required="false" />
@@ -58,6 +60,7 @@
             </lookupFields>
 
             <resultFields>
+                <field attributeName="moduleCode" />
                 <field attributeName="ruleGroupName" />
                 <field attributeName="ruleName" />
                 <field attributeName="ruleText" maxLength="40" />
@@ -71,7 +74,10 @@
 		<titleAttribute>ruleName</titleAttribute>
 		 
         <attributes>
-
+            <attributeReference name="moduleCode" sourceClassName="org.kuali.core.bo.Module" sourceAttributeName="moduleCode">
+                <shortLabel>Module Code</shortLabel>
+                <required>true</required>
+            </attributeReference>
             <attribute name="financialSystemMultipleValueIndicator" forceUppercase="false">
                 <label>Financial System Multiple Value Indicator</label>
                 <shortLabel>Indicator</shortLabel>

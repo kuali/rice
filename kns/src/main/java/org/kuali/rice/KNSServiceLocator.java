@@ -22,6 +22,7 @@ import org.kuali.core.datadictionary.ValidationCompletionUtils;
 import org.kuali.core.inquiry.Inquirable;
 import org.kuali.core.lookup.LookupResultsService;
 import org.kuali.core.lookup.Lookupable;
+import org.kuali.core.lookup.ModuleLookupableHelperServiceImpl;
 import org.kuali.core.question.Question;
 import org.kuali.core.service.AttachmentService;
 import org.kuali.core.service.AuthorizationService;
@@ -177,7 +178,13 @@ public class KNSServiceLocator {
 	public static KualiModuleService getKualiModuleService() {
 		return (KualiModuleService) getService(KUALI_MODULE_SERVICE);
 	}
+	
+	public static final String MODULE_LOOKUPABLE_HELPER_SERVICE = "moduleLookupableHelperService";
 
+	public static ModuleLookupableHelperServiceImpl getModuleLookupableHelperService() {
+		return (ModuleLookupableHelperServiceImpl) getService(MODULE_LOOKUPABLE_HELPER_SERVICE);
+	}
+	
 	public static final String MODULE_USER_PROPERTY_SERVICE = "kualiModuleUserPropertyService";
 
 	public static KualiModuleUserPropertyService getKualiModuleUserPropertyService() {

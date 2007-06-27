@@ -27,6 +27,7 @@ import java.util.LinkedHashMap;
  */
 public class FinancialSystemParameter extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 4874830226334867797L;
+    private String moduleCode;
     private String financialSystemScriptName;
     private String financialSystemParameterName;
     private String financialSystemParameterText;
@@ -153,7 +154,15 @@ public class FinancialSystemParameter extends PersistableBusinessObjectBase {
         this.financialSystemMultipleValueIndicator = financialSystemMultipleValueIndicator;
     }
 
-    /**
+    public String getModuleCode() {
+		return moduleCode;
+	}
+
+	public void setModuleCode(String moduleCode) {
+		this.moduleCode = moduleCode;
+	}
+
+	/**
      * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
      */
     protected LinkedHashMap toStringMapper() {

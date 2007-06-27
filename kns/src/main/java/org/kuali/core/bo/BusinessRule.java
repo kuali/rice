@@ -22,7 +22,7 @@ import java.util.LinkedHashMap;
  * 
  */
 public class BusinessRule extends PersistableBusinessObjectBase {
-
+    private String moduleCode;
     private String ruleGroupName;
     private String ruleName;
     private String ruleText;
@@ -188,8 +188,27 @@ public class BusinessRule extends PersistableBusinessObjectBase {
         this.financialSystemParameterActiveIndicator = financialSystemParameterActiveIndicator;
     }
 
+    /**
+     * Gets the moduleCode attribute.
+     * 
+     * @return Returns the moduleCode
+     * 
+     */
+    public String getModuleCode() {
+		return moduleCode;
+	}
 
     /**
+     * Sets the moduleCode attribute.
+     * 
+     * @param moduleCode The moduleCode to set.
+     * 
+     */
+	public void setModuleCode(String moduleCode) {
+		this.moduleCode = moduleCode;
+	}
+
+	/**
      * Gets the ruleGroup attribute.
      * 
      * @return Returns the ruleGroup.

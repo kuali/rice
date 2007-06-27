@@ -154,6 +154,7 @@
 				<value>classpath:org/kuali/core/bo/datadictionary/EmployeeType.xml</value>
 				<value>classpath:org/kuali/core/bo/datadictionary/FinancialSystemParameter.xml</value>
 				<value>classpath:org/kuali/core/bo/datadictionary/FinancialSystemParameterSecurity.xml</value>
+				<value>classpath:org/kuali/core/bo/datadictionary/Module.xml</value>
 				<value>classpath:org/kuali/core/bo/datadictionary/Note.xml</value>
 				<value>classpath:org/kuali/core/bo/datadictionary/NoteType.xml</value>
 				<value>classpath:org/kuali/core/bo/datadictionary/UniversalUser.xml</value>
@@ -482,6 +483,16 @@
 
 	<bean id="ojbCollectionHelper" class="org.kuali.core.util.OjbCollectionHelper" />
 
+	<bean id="moduleLookupable" class="org.kuali.core.lookup.KualiLookupableImpl" singleton="false">
+	    <property name="lookupableHelperService">
+	        <ref bean="moduleLookupableHelperService" />
+	    </property>
+	</bean>
+
+    <bean id="moduleLookupableHelperService" class="org.kuali.core.lookup.ModuleLookupableHelperServiceImpl" singleton="false" parent="kualiLookupableHelperService">
+    	<property name="moduleService" ref="kualiModuleService" />
+    </bean>
+      	
 	<bean id="kualiLookupable" class="org.kuali.core.lookup.KualiLookupableImpl" singleton="false">
 		<property name="lookupableHelperService">
 			<ref bean="kualiLookupableHelperService" />
@@ -593,7 +604,7 @@
 	<bean id="kualiInquirable" class="org.kuali.core.inquiry.KualiInquirableImpl" singleton="false" />
 
 	<bean id="confirmationQuestion" class="org.kuali.core.question.ConfirmationQuestion" singleton="false" />
-
+    
 	<bean id="maintenanceDocumentRuleBase" class="org.kuali.core.maintenance.rules.MaintenanceDocumentRuleBase" abstract="true">
 		<property name="configService">
 			<ref bean="kualiConfigurationService" />

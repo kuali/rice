@@ -122,17 +122,18 @@ function setRouteLogIframeDimensions() {
     // unable to set due to cross-domain scripting
     frameDocHeight = 0;
   }
+
   if ( frameDocHeight > 0 ) {
 	  if (routeLogFrame && routeLogFrameWin) {
 	  	
 	    if ((Math.abs(frameDocHeight - currentHeight)) > 20 ) {
 	      if (safari > -1) {
 	        if ((Math.abs(docHt - currentHeight)) > 59 ) {
-	          routeLogFrame.style.height = currentHeight + 30 + "px";
+	          routeLogFrame.style.height = (frameDocHeight + 30) + "px";
 	          currentHeight = frameDocHeight;
 	        }
 	      } else {    
-	        routeLogFrame.style.height = currentHeight + 30 + "px";
+	        routeLogFrame.style.height = (frameDocHeight + 30) + "px";
 	        currentHeight = frameDocHeight;
 	      }
 	    }

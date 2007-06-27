@@ -57,7 +57,6 @@ public abstract class KualiDocumentFormBase extends KualiForm {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiDocumentFormBase.class);
 
     private Document document;
-    private static ResourceBundle docInfo = ResourceBundle.getBundle("org.kuali.core.web.struts.form.documents");
     private String annotation = "";
     private String command;
 

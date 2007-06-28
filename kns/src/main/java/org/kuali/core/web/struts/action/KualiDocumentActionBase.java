@@ -683,7 +683,7 @@ public class KualiDocumentActionBase extends KualiAction {
         KNSServiceLocator.getDocumentService().clearDocumentFyi(kualiDocumentFormBase.getDocument(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(KeyConstants.MESSAGE_ROUTE_FYIED);
         kualiDocumentFormBase.setAnnotation("");
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return returnToSender(mapping, kualiDocumentFormBase);
     }
 
     /**
@@ -701,7 +701,7 @@ public class KualiDocumentActionBase extends KualiAction {
         KNSServiceLocator.getDocumentService().acknowledgeDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(KeyConstants.MESSAGE_ROUTE_ACKNOWLEDGED);
         kualiDocumentFormBase.setAnnotation("");
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return returnToSender(mapping, kualiDocumentFormBase);
     }
 
     /**

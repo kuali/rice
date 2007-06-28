@@ -45,9 +45,16 @@ public abstract class KeyValuesBase implements KeyValuesFinder {
         List optionValues = new ArrayList();
 
         List keyLabels = getKeyValues();
+        boolean hasBlank = false;
         for (Iterator iter = keyLabels.iterator(); iter.hasNext();) {
             KeyLabelPair keyLabel = (KeyLabelPair) iter.next();
             optionValues.add(keyLabel.getKey());
+            if ( keyLabel.getKey().equals( "" ) ) {
+            	hasBlank = true;
+            }
+        }
+        if ( !hasBlank ) {
+        	optionValues.add( 0, "" );
         }
         return optionValues;
     }

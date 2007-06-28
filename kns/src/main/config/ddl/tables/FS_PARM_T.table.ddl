@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 CREATE TABLE FS_PARM_T(
-        FS_MODULE_CD                   VARCHAR2(2) NOT NULL,
+        FS_MOD_CD                   VARCHAR2(2) NOT NULL,
         FS_SCR_NM                      VARCHAR2(255) CONSTRAINT FS_PARM_TN1 NOT NULL,
         FS_PARM_NM                     VARCHAR2(255) CONSTRAINT FS_PARM_TN2 NOT NULL,
         OBJ_ID                         VARCHAR2(36) DEFAULT SYS_GUID() CONSTRAINT FS_PARM_TN3 NOT NULL,

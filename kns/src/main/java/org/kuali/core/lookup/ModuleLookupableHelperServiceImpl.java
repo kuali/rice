@@ -43,10 +43,10 @@ public class ModuleLookupableHelperServiceImpl extends KualiLookupableHelperServ
         List<KualiModule> allModules = moduleService.getInstalledModules();
         List<Module> modules = new ArrayList<Module>();
         
-        Module syModule = new Module();
-        syModule.setModuleCode(Constants.CROSS_MODULE_CODE);
-        syModule.setModuleName(Constants.CROSS_MODULE_NAME);
-        modules.add(syModule);
+        Module cfModule = new Module();
+        cfModule.setModuleCode(Constants.CROSS_MODULE_CODE);
+        cfModule.setModuleName(Constants.CROSS_MODULE_NAME);
+        modules.add(cfModule);
         
         for ( KualiModule kualiModule : allModules ) {
             Module module = new Module();

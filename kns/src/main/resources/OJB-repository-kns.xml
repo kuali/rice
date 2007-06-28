@@ -239,7 +239,7 @@
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.core.bo.FinancialSystemParameter" table="FS_PARM_T">
-	    <field-descriptor name="moduleCode" column="FS_MODULE_CD" jdbc-type="VARCHAR" />
+	    <field-descriptor name="moduleCode" column="FS_MOD_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="financialSystemScriptName" column="FS_SCR_NM" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="financialSystemParameterName" column="FS_PARM_NM" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
@@ -296,7 +296,7 @@
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.core.bo.BusinessRule" table="FS_BSNS_RULE_T">
-	    <field-descriptor name="moduleCode" column="FS_MODULE_CD" jdbc-type="VARCHAR" />
+	    <field-descriptor name="moduleCode" column="FS_MOD_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="ruleGroupName" column="FS_RULE_GRP_NM" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="ruleName" column="FS_RULE_NM" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />

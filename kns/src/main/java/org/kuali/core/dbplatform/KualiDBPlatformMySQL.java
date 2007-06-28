@@ -45,6 +45,10 @@ public class KualiDBPlatformMySQL extends AbstractDBPlatformDaoJdbc {
         return "STR_TO_DATE";
     }
 
+    public String getUpperCaseFunction() {
+    	return "UPPER";
+    }
+    
     public String getDateFormatString(String dateFormatString) {
         String newString = "";
         if ("yyyy-mm-dd".equalsIgnoreCase(dateFormatString)) {

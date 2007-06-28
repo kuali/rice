@@ -52,4 +52,11 @@ public interface LookupDao {
      * @return true if the criteria is created successfully; otherwise, return false
      */
     public boolean createCriteria(Object example, String searchValue, String propertyName, Criteria criteria);
+
+    /**
+     * Create OJB criteria based on business object, search field and value
+     * 
+     * @return true if the criteria is created successfully; otherwise, return false
+     */
+    public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, Criteria criteria);
 }

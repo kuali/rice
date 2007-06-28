@@ -30,6 +30,10 @@ public class KualiDBPlatformDerby extends AbstractDBPlatformDaoJdbc {
 		return "'" + dateFormatString + "'";
 	}
 
+    public String getUpperCaseFunction() {
+    	return "UPPER";
+    }
+	
 	public String getStrToDateFunction() {
 		return null;
 	}

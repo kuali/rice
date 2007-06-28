@@ -30,5 +30,7 @@ public interface KualiDBPlatform {
 
     public String getDateFormatString(String dateFormatString);
 
+    public String getUpperCaseFunction();
+    
     public void applyLimit(Integer limit, Criteria criteria);
 }

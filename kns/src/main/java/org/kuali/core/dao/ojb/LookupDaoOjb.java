@@ -16,7 +16,6 @@
 package org.kuali.core.dao.ojb;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,6 +41,7 @@ import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.TypeUtils;
+import org.kuali.rice.KNSServiceLocator;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springmodules.orm.ojb.OjbOperationException;
 
@@ -75,7 +75,12 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
                 Criteria universalUserSubCriteria = new Criteria();
                 while (universalUserReferenceSearchCriterionItr.hasNext()) {
                     String universalUserSearchFieldName = (String)universalUserReferenceSearchCriterionItr.next();
-                    createCriteria(universalUserExample, (String)universalUserReferenceSearchCriteria.get(universalUserSearchFieldName), universalUserSearchFieldName, universalUserSubCriteria);
+                	Boolean caseInsensitive = Boolean.FALSE;
+                	if ( KNSServiceLocator.getDataDictionaryService().isAttributeDefined( businessObjectClass, universalUserSearchFieldName )) {
+                		caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase( UniversalUser.class, universalUserSearchFieldName );
+                	}
+                	if ( caseInsensitive == null ) { caseInsensitive = Boolean.FALSE; }
+                    createCriteria(universalUserExample, (String)universalUserReferenceSearchCriteria.get(universalUserSearchFieldName), universalUserSearchFieldName, caseInsensitive, universalUserSubCriteria);
                 }
                 ReportQueryByCriteria universalUserSubQuery = QueryFactory.newReportQuery(UniversalUser.class, universalUserSubCriteria);
                 universalUserSubQuery.setAttributes(new String[] { "personUniversalIdentifier" });
@@ -114,13 +119,23 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             if (formProps.get(propertyName) instanceof Collection) {
                 Iterator iter = ((Collection) formProps.get(propertyName)).iterator();
                 while (iter.hasNext()) {
-                    if (!createCriteria(example, (String) iter.next(), propertyName, criteria)) {
+                	Boolean caseInsensitive = Boolean.FALSE;
+                	if ( KNSServiceLocator.getDataDictionaryService().isAttributeDefined( example.getClass(), propertyName )) {
+                		caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase( example.getClass(), propertyName );
+                	}
+                	if ( caseInsensitive == null ) { caseInsensitive = Boolean.FALSE; }
+                    if (!createCriteria(example, (String) iter.next(), propertyName, caseInsensitive.booleanValue(), criteria )) {
                         throw new RuntimeException("Invalid value in Collection");
                     }
                 }
             }
             else {
-                if (!createCriteria(example, (String) formProps.get(propertyName), propertyName, criteria)) {
+            	Boolean caseInsensitive = Boolean.FALSE;
+            	if ( KNSServiceLocator.getDataDictionaryService().isAttributeDefined( example.getClass(), propertyName )) {
+            		caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase( example.getClass(), propertyName );
+            	}
+            	if ( caseInsensitive == null ) { caseInsensitive = Boolean.FALSE; }
+                if (!createCriteria(example, (String) formProps.get(propertyName), propertyName, caseInsensitive.booleanValue(), criteria)) {
                     continue;
                 }
             }
@@ -143,7 +158,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             else if (StringUtils.indexOfAny(pkValue, Constants.QUERY_CHARACTERS) != -1) {
                 throw new RuntimeException("Value \"" + pkValue + "\" for PK field " + pkFieldName + " contains wildcard/operator characters.");
             }
-            createCriteria(businessObject, pkValue, pkFieldName, criteria);
+            createCriteria(businessObject, pkValue, pkFieldName, false, criteria);
         }
         return criteria;
     }
@@ -265,8 +280,12 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         return b;
         
     }
-    
+
     public boolean createCriteria(Object example, String searchValue, String propertyName, Criteria criteria) {
+    	return createCriteria( example, searchValue, propertyName, false, criteria );
+    }
+    
+    public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, Criteria criteria) {
         
         // if searchValue is empty and the key is not a valid property ignore
         if (StringUtils.isBlank(searchValue) || !isWriteable(example, propertyName)) {
@@ -282,7 +301,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         }
 
         // build criteria
-        addCriteria(propertyName, searchValue, propertyType, criteria);
+        addCriteria(propertyName, searchValue, propertyType, caseInsensitive, criteria);
         return true;
     }
 
@@ -308,9 +327,14 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             if (propertyType == null) {
                 continue;
             }
+        	Boolean caseInsensitive = Boolean.FALSE;
+        	if ( KNSServiceLocator.getDataDictionaryService().isAttributeDefined( example.getClass(), propertyName )) {
+        		caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase( example.getClass(), propertyName );
+        	}
+        	if ( caseInsensitive == null ) { caseInsensitive = Boolean.FALSE; }
 
             // build criteria
-            addCriteria(propertyName, searchValue, propertyType, criteria);
+            addCriteria(propertyName, searchValue, propertyType, caseInsensitive, criteria);
         }
 
         // execute query and return result list
@@ -348,21 +372,26 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     /**
      * Adds to the criteria object based on the property type and any query characters given.
      */
-    private void addCriteria(String propertyName, String propertyValue, Class propertyType, Criteria criteria) {
+    private void addCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
         
         if (StringUtils.contains(propertyValue, Constants.OR_LOGICAL_OPERATOR)) {
-            addOrCriteria(propertyName, propertyValue, propertyType, criteria);
+            addOrCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
             return;
         }
 
         if (StringUtils.contains(propertyValue, Constants.AND_LOGICAL_OPERATOR)) {
-            addAndCriteria(propertyName, propertyValue, propertyType, criteria);
+            addAndCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
             return;
         }
-
+        
         if (TypeUtils.isStringClass(propertyType)) {
+        	// KULRICE-85 : made string searches case insensitive - used new DBPlatform function to force strings to upper case
+        	if ( caseInsensitive ) {
+        		propertyName = getDbPlatform().getUpperCaseFunction() + "(" + propertyName + ")";
+        		propertyValue = propertyValue.toUpperCase();
+        	}
             if (StringUtils.contains(propertyValue, Constants.NOT_LOGICAL_OPERATOR)) {
-                addNotCriteria(propertyName, propertyValue, propertyType, criteria);
+                addNotCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
             } else if (StringUtils.contains(propertyValue, "..") || StringUtils.contains(propertyValue, ">") 
                     || StringUtils.contains(propertyValue, "<")  || StringUtils.contains(propertyValue, ">=") 
                     || StringUtils.contains(propertyValue, "<=")){
@@ -389,8 +418,8 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      * @param propertyType
      * @param criteria
      */
-    private void addOrCriteria(String propertyName, String propertyValue, Class propertyType, Criteria criteria) {
-        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, criteria, Constants.OR_LOGICAL_OPERATOR);
+    private void addOrCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
+        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, Constants.OR_LOGICAL_OPERATOR);
     }
 
     /**
@@ -399,11 +428,11 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      * @param propertyType
      * @param criteria
      */
-    private void addAndCriteria(String propertyName, String propertyValue, Class propertyType, Criteria criteria) {
-        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, criteria, Constants.AND_LOGICAL_OPERATOR);
+    private void addAndCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
+        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, Constants.AND_LOGICAL_OPERATOR);
     }
 
-    private void addNotCriteria(String propertyName, String propertyValue, Class propertyType, Criteria criteria) {
+    private void addNotCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
 
         String[] splitPropVal = StringUtils.split(propertyValue, Constants.NOT_LOGICAL_OPERATOR);
 
@@ -411,7 +440,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         // if more than one NOT operator assume an implicit and (i.e. !a!b = !a&!b)
         if (strLength > 1) {
             String expandedNot = "!" + StringUtils.join(splitPropVal, Constants.AND_LOGICAL_OPERATOR + Constants.NOT_LOGICAL_OPERATOR);
-            addCriteria(propertyName, expandedNot, propertyType, criteria);
+            addCriteria(propertyName, expandedNot, propertyType, caseInsensitive, criteria);
         }
         else {
             // only one so add a not like
@@ -424,14 +453,14 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      * Builds a sub criteria object joined with an 'AND' or 'OR' (depending on splitValue) using the split values of propertyValue. Then joins back the
      * sub criteria to the main criteria using an 'AND'.
      */
-    private void addLogicalOperatorCriteria(String propertyName, String propertyValue, Class propertyType, Criteria criteria, String splitValue) {
+    private void addLogicalOperatorCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria, String splitValue) {
         String[] splitPropVal = StringUtils.split(propertyValue, splitValue);
       
         Criteria subCriteria = new Criteria();
         for (int i = 0; i < splitPropVal.length; i++) {
         	Criteria predicate = new Criteria();
 
-            addCriteria(propertyName, splitPropVal[i], propertyType, predicate);
+            addCriteria(propertyName, splitPropVal[i], propertyType, caseInsensitive, predicate);
             if (splitValue == Constants.OR_LOGICAL_OPERATOR) {
             	subCriteria.addOrCriteria(predicate);
             }
@@ -444,22 +473,22 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     }
 
 
-    private static final DateFormat[] dateFormats = new DateFormat[] {
-        new SimpleDateFormat( "MM/dd/yy" ),        
-        new SimpleDateFormat( "MM/dd/yyyy" ),
-        new SimpleDateFormat( "MM-dd-yy" ),        
-        new SimpleDateFormat( "MM-dd-yyyy" )
+    private static final String[] dateFormats = new String[] {
+        "MM/dd/yy",        
+        "MM/dd/yyyy",
+        "MM-dd-yy",        
+        "MM-dd-yyyy"
     };
     
     public static java.sql.Date parseDate( String dateString ) {
         dateString = dateString.trim();
-        for ( DateFormat format : dateFormats ) {
+        for ( String format : dateFormats ) {
             try {
-                return new java.sql.Date( format.parse( dateString ).getTime() );
+                return new java.sql.Date( new SimpleDateFormat( format ).parse( dateString ).getTime() );
             } catch ( ParseException ex ) {
                 // do nothing, just skip to the next item
                 if ( LOG.isDebugEnabled() ) {
-                    LOG.debug( "parsing of " + dateString + " failed using pattern " + ((SimpleDateFormat)format).toPattern() );
+                    LOG.debug( "parsing of " + dateString + " failed using pattern " + format );
                 }
             }
         }

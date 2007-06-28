@@ -55,6 +55,10 @@ public class KualiDBPlatformOracle extends AbstractDBPlatformDaoJdbc {
         return "sysdate";
     }
     
+    public String getUpperCaseFunction() {
+    	return "UPPER";
+    }
+    
     public void createTable(String ddl) {
         executeSql(ddl);
     }

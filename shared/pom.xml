@@ -15,7 +15,7 @@
 		<dependency>
 			<groupId>org.kuali.rice</groupId>
 			<artifactId>rice-core</artifactId>
-			<version>${project.version}</version>
+			<version>0.9-RC1</version>
 			<scope>compile</scope>
 		</dependency>
 		

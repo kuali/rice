@@ -440,7 +440,7 @@ public class Formatter implements Serializable {
      * string.
      */
     protected Object convertToObject(String string) {
-        return string == null ? null : string.trim();
+        return string == null ? null : string.replace( "\r\n", "\n" ).trim();        
     }
 
     /**

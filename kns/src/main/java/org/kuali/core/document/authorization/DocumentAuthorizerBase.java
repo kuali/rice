@@ -107,13 +107,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 
                 flags.setCanRoute(hasInitiateAuthorization || validActions.contains(EdenConstants.ACTION_TAKEN_ROUTED_CD));
 
-                String authorizedWorkgroup = KNSServiceLocator.getKualiConfigurationService().getApplicationParameterValue(Constants.CoreApcParms.GROUP_CORE_MAINT_EDOCS, Constants.CoreApcParms.WORKFLOW_ROUTING_REPORT_ACCESS_WORKGROUP);
-                try {
-                    flags.setCanPerformRouteReport(KNSServiceLocator.getKualiGroupService().getByGroupName(authorizedWorkgroup).hasMember(user));
-                }
-                catch (GroupNotFoundException e) {
-                    throw new RuntimeException("Workgroup " + authorizedWorkgroup + " not found",e);
-                }
+                flags.setCanPerformRouteReport(workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved());
 
                 flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
                 flags.setCanFYI(workflowDocument.isFYIRequested());

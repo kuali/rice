@@ -58,19 +58,20 @@ function setFocusedIframeDimensions(iframeName, focusHeight, resetToDefaultWidth
     var iframeEl = document.getElementById? document.getElementById(iframeName): document.all? document.all[iframeName]: null;
   
     if ( iframeEl && iframeWin && iframe_portlet_container_table) {
-      var docHeight = getDocHeight(iframeWin.document);
+      var docHeight = getDocHeight(iframeWin.document);      
   	  if ( resetToDefaultWidth ) {
   	    iframe_portlet_container_table.width = "100%";
-  	  }	  	
-     
+  	  }
+  	  var frameScrollWidth = iframeEl.contentWindow.document.documentElement.scrollWidth;
+	  //window.status = frameScrollWidth + "/" + iframe_portlet_container_table.scrollWidth + "/" + iframe_portlet_container_table.width; 
       if (docHeight > 150) {
         //console.log( "iframeEl.contentDocument.documentElement.scrollWidth="+iframeEl.contentDocument.documentElement.scrollWidth
         //			+"\niframe_portlet_container_table.width="+iframe_portlet_container_table.width
         //			+"\niframe_portlet_container_table.scrollWidth="+iframe_portlet_container_table.scrollWidth );
         
-        if ( Math.abs( iframeEl.contentDocument.documentElement.scrollWidth - iframe_portlet_container_table.scrollWidth ) > 30 ) {
-        	if ( iframeEl.contentDocument.documentElement.scrollWidth > iframe_portlet_container_table.scrollWidth ) {
-        		iframe_portlet_container_table.width = iframeEl.contentDocument.documentElement.scrollWidth + 30;
+        if ( Math.abs( frameScrollWidth - iframe_portlet_container_table.scrollWidth ) > 10 ) {
+        	if ( frameScrollWidth > iframe_portlet_container_table.scrollWidth ) {
+        		iframe_portlet_container_table.width = frameScrollWidth + 30;
         	}
         }
 

@@ -542,7 +542,7 @@ public class FieldUtils {
                     // else, if not null, then it has a value, and we'll let the rest of the code handle it when the param is processed on
                     // another iteration (may be before or after this iteration).
                 }
-                else if (PropertyUtils.isWriteable(bo, propertyName) && StringUtils.isNotEmpty((String) fieldValues.get(propertyName))) {
+                else if (PropertyUtils.isWriteable(bo, propertyName) && fieldValues.get(propertyName) != null ) {
                     // if the field propertyName is a valid property on the bo class
                     Class type = ObjectUtils.easyGetPropertyType(bo, propertyName);
                     try {

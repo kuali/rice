@@ -21,7 +21,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 public class KualiInteger extends Number implements Comparable {
-    public static final int ROUND_BEHAVIOR = BigDecimal.ROUND_HALF_EVEN;
+    public static final int ROUND_BEHAVIOR = KualiDecimal.ROUND_BEHAVIOR;
     public static final int SCALE = 0;
 
     public static KualiInteger ZERO = new KualiInteger(0);

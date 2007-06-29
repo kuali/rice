@@ -65,28 +65,6 @@ public class CurrencyFormatter extends Formatter {
     @Override
     protected Object convertToObject(String target) {
         // begin Kuali Foundation modification
-        // major code rewrite, original code commented
-        /*
-        // Insert currency symbol if absent
-        if (!(target.startsWith("(") || target.startsWith(getSymbol()))) {
-            target = interpolateSymbol(target);
-        }
-
-        NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        BigDecimal value;
-        try {
-            Number parsedNumber = formatter.parse(target.trim());
-            value = new BigDecimal(parsedNumber.toString());
-            value.setScale(SCALE, BigDecimal.ROUND_HALF_EVEN);
-        } catch (NumberFormatException e) {
-            throw new FormatException(PARSE_MSG + target, e);
-        } catch (ParseException e) {
-            throw new FormatException(PARSE_MSG + target, e);
-        }
-
-        return value;
-        */
-        
         KualiDecimal value = null;
 
         LOG.debug("convertToObject '" + target + "'");

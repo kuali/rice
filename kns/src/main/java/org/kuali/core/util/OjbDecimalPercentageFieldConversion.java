@@ -41,7 +41,7 @@ public class OjbDecimalPercentageFieldConversion extends OjbKualiDecimalFieldCon
         // Do conversion if our type is correct (BigDecimal).
         if (source != null && source instanceof BigDecimal) {
             BigDecimal converted = (BigDecimal) source;
-            return converted.divide(oneHundred, 4, BigDecimal.ROUND_HALF_EVEN);
+            return converted.divide(oneHundred, 4, KualiDecimal.ROUND_BEHAVIOR);
         }
         else {
             return null;

@@ -15,7 +15,6 @@
  */
 package org.kuali.core.web.struts.form;
 
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,7 +76,7 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
             return "";
         }
         // new for thread safety
-        return new SimpleDateFormat("MMM d, yyyy").format(reversalDate);
+        return KNSServiceLocator.getDateTimeService().toString(reversalDate, "MMM d, yyyy");
     }
 
     /**

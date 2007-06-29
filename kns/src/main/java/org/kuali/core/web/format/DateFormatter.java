@@ -18,14 +18,13 @@ package org.kuali.core.web.format;
 // end Kuali Foundation modification
 
 // begin Kuali Foundation modification
-// import order changed, and java.util.Calendar is imported instead of java.util.Date
-import java.text.FieldPosition;
+// import order changed, and java.util.Calendar, org.kuali.KeyConstants and org.kuali.rice.KNSServiceLocator added
+import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.kuali.Constants;
 import org.kuali.KeyConstants;
+import org.kuali.rice.KNSServiceLocator;
 
 /**
  * begin Kuali Foundation modification
@@ -37,9 +36,6 @@ public class DateFormatter extends Formatter {
     // serialVersionUID changed from 1L
     private static final long serialVersionUID = 7612442662886603084L;
     // end Kuali Foundation modification
-
-    /** The default date format string for display (Kuali Foundation modification to comment text)*/
-    public final static String DATE_FORMAT = "MM/dd/yyyy";
 
 	// begin Kuali Foundation modification
 	// static variables DATE_ERROR_KEY and PARSE_MSG removed
@@ -76,11 +72,8 @@ public class DateFormatter extends Formatter {
      */
     protected Object convertToObject(String target) {
     	// begin Kuali Foundation modification
-        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
-        formatter.setLenient(false);
         try {
-            java.util.Date result = new java.sql.Date(formatter.parse(target).getTime());
-
+            Date result = KNSServiceLocator.getDateTimeService().convertToSqlDate(target);
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(result);
             if (calendar.get(Calendar.YEAR) < 1000 && verbatimYear(target).length() < 4) {
@@ -103,15 +96,7 @@ public class DateFormatter extends Formatter {
         if (value == null)
             return null;
         // begin Kuali Foundation modification
-        if (value.toString().equals(Constants.EMPTY_STRING))
-            return null;
+        return KNSServiceLocator.getDateTimeService().toDateString((java.util.Date)value);
         // end Kuali Foundation modification
-
-        StringBuffer buf = new StringBuffer();
-        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
-        formatter.setLenient(false);
-        formatter.format(value, buf, new FieldPosition(0));
-
-        return buf.toString();
     }
 }

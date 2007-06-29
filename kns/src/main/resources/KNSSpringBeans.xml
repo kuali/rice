@@ -284,7 +284,19 @@
 	</bean>
 
 
-	<bean id="dateTimeService" class="org.kuali.core.service.impl.DateTimeServiceImpl"></bean>
+	<bean id="dateTimeService" class="org.kuali.core.service.impl.DateTimeServiceImpl">
+		<property name="sqlDateFormats">
+			<list>
+				<value>yyyy-MM-dd</value>
+				<value>MM/dd/yyyy</value>
+				<value>MM/dd/yy</value>
+				<value>MM-dd-yyyy</value>
+				<value>MM-dd-yy</value>
+			</list>
+		</property>
+		<property name="stringDateFormat" value="MM/dd/yyyy" />
+		<property name="stringDateTimeFormat" value="MM/dd/yyyy hh:mm a" />
+	</bean>
 
 	<bean id="businessObjectDictionaryService" class="org.kuali.core.service.impl.BusinessObjectDictionaryServiceImpl">
 		<property name="dataDictionaryService">
@@ -604,7 +616,7 @@
 	<bean id="kualiInquirable" class="org.kuali.core.inquiry.KualiInquirableImpl" singleton="false" />
 
 	<bean id="confirmationQuestion" class="org.kuali.core.question.ConfirmationQuestion" singleton="false" />
-    
+
 	<bean id="maintenanceDocumentRuleBase" class="org.kuali.core.maintenance.rules.MaintenanceDocumentRuleBase" abstract="true">
 		<property name="configService">
 			<ref bean="kualiConfigurationService" />
@@ -653,6 +665,7 @@
 		<property name="persistenceStructureService">
 			<ref bean="persistenceStructureService" />
 		</property>
+		<property name="dateTimeService" ref="dateTimeService" />
 	</bean>
 
 	<bean id="universalUserDao" class="org.kuali.rice.RiceKNSDefaultUserDAOImpl" />

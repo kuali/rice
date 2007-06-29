@@ -40,7 +40,7 @@ import org.kuali.core.document.authorization.DocumentAuthorizer;
 import org.kuali.core.exceptions.DocumentAuthorizationException;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.web.format.NoOpStringFormatter;
-import org.kuali.core.web.format.TimestampFullPrecisionFormatter;
+import org.kuali.core.web.format.TimestampAMPMFormatter;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
 import org.springframework.util.AutoPopulatingList;
@@ -108,12 +108,12 @@ public abstract class KualiDocumentFormBase extends KualiForm {
         newAdHocRouteWorkgroup = new AdHocRouteWorkgroup();
 
         // to make sure it posts back the correct time
-        setFormatterType("document.documentHeader.note.finDocNotePostedDttmStamp", TimestampFullPrecisionFormatter.class);
-        setFormatterType("document.documentHeader.note.attachment.finDocNotePostedDttmStamp", TimestampFullPrecisionFormatter.class);
+        setFormatterType("document.documentHeader.note.finDocNotePostedDttmStamp", TimestampAMPMFormatter.class);
+        setFormatterType("document.documentHeader.note.attachment.finDocNotePostedDttmStamp", TimestampAMPMFormatter.class);
         //TODO: Chris - Notes: remove the above and change the below from boNotes when notes are finished
         //overriding note formatter to make sure they post back the full timestamp
-        setFormatterType("document.documentHeader.boNote.notePostedTimestamp",TimestampFullPrecisionFormatter.class);
-        setFormatterType("document.documentBusinessObject.boNote.notePostedTimestamp",TimestampFullPrecisionFormatter.class);
+        setFormatterType("document.documentHeader.boNote.notePostedTimestamp",TimestampAMPMFormatter.class);
+        setFormatterType("document.documentBusinessObject.boNote.notePostedTimestamp",TimestampAMPMFormatter.class);
 
         setFormatterType("editingMode", NoOpStringFormatter.class);
         setFormatterType("editableAccounts", NoOpStringFormatter.class);

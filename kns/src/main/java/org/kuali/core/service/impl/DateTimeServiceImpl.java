@@ -17,10 +17,10 @@ package org.kuali.core.service.impl;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.text.FieldPosition;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DurationFormatUtils;
@@ -28,154 +28,221 @@ import org.kuali.core.service.DateTimeService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * This class is the service implementation for a DateTime structure. This is the default, Kuali delivered implementation.
+ * This class is the service implementation for a DateTime structure. This is
+ * the default, Kuali delivered implementation.
  */
 @Transactional
 public class DateTimeServiceImpl implements DateTimeService {
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DateTimeServiceImpl.class);
+	private String[] sqlDateFormats;
 
-    private static final String SQLDATE_FORMAT = "yyyy-MM-dd";
-    private static final String SQLTIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
+	private String stringDateFormat;
 
-    //    
+	private String stringDateTimeFormat;
 
-    /**
-     * @see org.kuali.core.service.DateTimeService#getCurrentDate()
-     */
-    public java.util.Date getCurrentDate() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(new java.util.Date());
-        return c.getTime();
-    }
+	/**
+	 * @see org.kuali.core.service.DateTimeService#toDateString(java.util.Date)
+	 */
+	public String toDateString(Date date) {
+		return toString(date, stringDateFormat);
+	}
 
-    /**
-     * @see org.kuali.core.service.DateTimeService#getCurrentTimestamp()
-     */
-    public Timestamp getCurrentTimestamp() {
-        return new java.sql.Timestamp(getCurrentDate().getTime());
-    }
+	/**
+	 * @see org.kuali.core.service.DateTimeService#toDateTimeString(java.util.Date)
+	 */
+	public String toDateTimeString(Date date) {
+		return toString(date, stringDateTimeFormat);
+	}
 
-    /**
-     * @see org.kuali.core.service.DateTimeService#getCurrentSqlDate()
-     */
-    public java.sql.Date getCurrentSqlDate() {
-        return new java.sql.Date(getCurrentDate().getTime());
-    }
+	/**
+	 * @see org.kuali.core.service.DateTimeService#toString(java.util.Date,
+	 *      java.lang.String)
+	 */
+	public String toString(Date date, String pattern) {
+		DateFormat dateFormat = new SimpleDateFormat(pattern);
+		dateFormat.setLenient(false);
+		return dateFormat.format(date);
+	}
 
+	/**
+	 * @see org.kuali.core.service.DateTimeService#getCurrentDate()
+	 */
+	public Date getCurrentDate() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		return c.getTime();
+	}
 
-    /**
-     * @see org.kuali.core.service.DateTimeService#getCurrentSqlDateMidnight()
-     */
-    public java.sql.Date getCurrentSqlDateMidnight() {
-        // simple and not unduely inefficient way to truncate the time component
-        return java.sql.Date.valueOf(getCurrentSqlDate().toString());
-    }
+	/**
+	 * @see org.kuali.core.service.DateTimeService#getCurrentTimestamp()
+	 */
+	public Timestamp getCurrentTimestamp() {
+		return new java.sql.Timestamp(getCurrentDate().getTime());
+	}
 
-    /**
-     * @see org.kuali.core.service.DateTimeService#getCurrentCalendar()
-     */
-    public Calendar getCurrentCalendar() {
-        return getCalendar(getCurrentDate());
-    }
+	/**
+	 * @see org.kuali.core.service.DateTimeService#getCurrentSqlDate()
+	 */
+	public java.sql.Date getCurrentSqlDate() {
+		return new java.sql.Date(getCurrentDate().getTime());
+	}
 
-    /**
-     * @see org.kuali.core.service.DateTimeService#getCalendar
-     */
-    public Calendar getCalendar(java.util.Date date) {
-        if (date == null) {
-            throw new IllegalArgumentException("invalid (null) date");
-        }
+	/**
+	 * @see org.kuali.core.service.DateTimeService#getCurrentSqlDateMidnight()
+	 */
+	public java.sql.Date getCurrentSqlDateMidnight() {
+		// simple and not unduely inefficient way to truncate the time component
+		return java.sql.Date.valueOf(getCurrentSqlDate().toString());
+	}
 
-        Calendar currentCalendar = Calendar.getInstance();
-        currentCalendar.setTime(date);
+	/**
+	 * @see org.kuali.core.service.DateTimeService#getCurrentCalendar()
+	 */
+	public Calendar getCurrentCalendar() {
+		return getCalendar(getCurrentDate());
+	}
 
-        return currentCalendar;
-    }
+	/**
+	 * @see org.kuali.core.service.DateTimeService#getCalendar
+	 */
+	public Calendar getCalendar(Date date) {
+		if (date == null) {
+			throw new IllegalArgumentException("invalid (null) date");
+		}
 
+		Calendar currentCalendar = Calendar.getInstance();
+		currentCalendar.setTime(date);
 
-    /**
-     * @see org.kuali.core.service.DateTimeService#convertToSqlTimestamp(java.lang.String)
-     */
-    public java.sql.Timestamp convertToSqlTimestamp(String timeString) throws ParseException {
-        if (StringUtils.isBlank(timeString)) {
-            throw new IllegalArgumentException("invalid (blank) timeString");
-        }
+		return currentCalendar;
+	}
 
-        DateFormat dateFormat = new SimpleDateFormat(SQLTIMESTAMP_FORMAT);
+	/**
+	 * @see org.kuali.core.service.DateTimeService#convertToDate(java.lang.String)
+	 */
+	public Date convertToDate(String dateString) throws ParseException {
+		return parse(dateString, stringDateFormat);
+	}
 
-        java.sql.Timestamp timestamp = null;
-        timestamp = new java.sql.Timestamp(dateFormat.parse(timeString).getTime());
+	/**
+	 * @see org.kuali.core.service.DateTimeService#convertToDateTime(java.lang.String)
+	 */
+	public Date convertToDateTime(String dateTimeString) throws ParseException {
+		return parse(dateTimeString, stringDateTimeFormat);
+	}
 
-        return timestamp;
-    }
+	/**
+	 * @see org.kuali.core.service.DateTimeService#convertToSqlTimestamp(java.lang.String)
+	 */
+	public java.sql.Timestamp convertToSqlTimestamp(String timeString)
+			throws ParseException {
+		if (!StringUtils.isBlank(timeString)) {
+			return new java.sql.Timestamp(parse(timeString, stringDateTimeFormat)
+                    .getTime());
+		}
+        return null;
+	}
 
-    private static String[] acceptedDateFormats = new String[] {
-        SQLDATE_FORMAT,
-        "MM/dd/yyyy",
-        "MM/dd/yy",
-        "MM-dd-yyyy",
-        "MM-dd-yy"
-    };
-    
-    /**
-     * @see org.kuali.core.service.DateTimeService#convertToSqlDate(java.lang.String)
-     */
-    public java.sql.Date convertToSqlDate(String dateString) throws ParseException {
-        if (StringUtils.isBlank(dateString)) {
-            throw new IllegalArgumentException("invalid (blank) timeString");
-        }
-        java.sql.Date date = null;
-        StringBuffer exceptionMessage = new StringBuffer("Date string '").append(dateString).append("' could not be converted using any of the accepted formats: ");
-        for ( String dateFormatString : acceptedDateFormats ) {
-            try {
-                return new java.sql.Date(new SimpleDateFormat(dateFormatString).parse(dateString).getTime());
-            } catch ( ParseException ex ) {
-                exceptionMessage.append(dateFormatString).append(" (error offset=").append(ex.getErrorOffset()).append("),");
-            }
-        }
-        if (date == null) {
-			throw new ParseException(exceptionMessage.toString().substring(0, exceptionMessage.length() -1), 0);
-        }
-        return date;
-    }
+	/**
+	 * @see org.kuali.core.service.DateTimeService#convertToSqlDate(java.lang.String)
+	 */
+	public java.sql.Date convertToSqlDate(String dateString)
+			throws ParseException {
+		if (StringUtils.isBlank(dateString)) {
+			throw new IllegalArgumentException("invalid (blank) timeString");
+		}
+		dateString = dateString.trim();
+		java.sql.Date date = null;
+		StringBuffer exceptionMessage = new StringBuffer("Date string '")
+				.append(dateString)
+				.append(
+						"' could not be converted using any of the accepted formats: ");
+		for (String dateFormatString : sqlDateFormats) {
+			try {
+				return new java.sql.Date(parse(dateString, dateFormatString)
+						.getTime());
+			} catch (ParseException e) {
+				exceptionMessage.append(dateFormatString).append(
+						" (error offset=").append(e.getErrorOffset()).append(
+						"),");
+			}
+		}
+		if (date == null) {
+			throw new ParseException(exceptionMessage.toString().substring(0,
+					exceptionMessage.length() - 1), 0);
+		}
+		return date;
+	}
 
-    /**
-     * @throws ParseException
-     * @see org.kuali.core.service.DateTimeService#convertToSqlDate(java.sql.Timestamp)
-     */
-    public java.sql.Date convertToSqlDate(Timestamp timestamp) throws ParseException {
-        StringBuffer buf = new StringBuffer();
-        SimpleDateFormat formatter = new SimpleDateFormat(SQLDATE_FORMAT);
-        formatter.setLenient(false);
-        formatter.format(timestamp, buf, new FieldPosition(0));
+	/**
+	 * @throws ParseException
+	 * @see org.kuali.core.service.DateTimeService#convertToSqlDate(java.sql.Timestamp)
+	 */
+	public java.sql.Date convertToSqlDate(Timestamp timestamp)
+			throws ParseException {
+		return new java.sql.Date(timestamp.getTime());
+	}
 
-        return convertToSqlDate(buf.toString());
-    }
+	public int dateDiff(Date startDate, Date endDate, boolean inclusive) {
+		Calendar startDateCalendar = Calendar.getInstance();
+		startDateCalendar.setTime(startDate);
 
+		Calendar endDateCalendar = Calendar.getInstance();
+		endDateCalendar.setTime(endDate);
 
-    public int dateDiff(java.util.Date startDate, java.util.Date endDate, boolean inclusive) {
-        Calendar startDateCalendar = Calendar.getInstance();
-        startDateCalendar.setTime(startDate);
+		int startDateOffset = -(startDateCalendar.get(Calendar.ZONE_OFFSET) + startDateCalendar
+				.get(Calendar.DST_OFFSET))
+				/ (60 * 1000);
 
-        Calendar endDateCalendar = Calendar.getInstance();
-        endDateCalendar.setTime(endDate);
+		int endDateOffset = -(endDateCalendar.get(Calendar.ZONE_OFFSET) + endDateCalendar
+				.get(Calendar.DST_OFFSET))
+				/ (60 * 1000);
 
-        int startDateOffset = -(startDateCalendar.get(Calendar.ZONE_OFFSET) + startDateCalendar.get(Calendar.DST_OFFSET)) / (60 * 1000);
+		if (startDateOffset > endDateOffset) {
+			startDateCalendar.add(Calendar.MINUTE, endDateOffset
+					- startDateOffset);
+		}
 
-        int endDateOffset = -(endDateCalendar.get(Calendar.ZONE_OFFSET) + endDateCalendar.get(Calendar.DST_OFFSET)) / (60 * 1000);
+		if (inclusive) {
+			startDateCalendar.add(Calendar.DATE, -1);
+		}
 
-        if (startDateOffset > endDateOffset) {
-            startDateCalendar.add(Calendar.MINUTE, endDateOffset - startDateOffset);
-        }
+		int dateDiff = Integer.parseInt(DurationFormatUtils.formatDuration(
+				endDateCalendar.getTimeInMillis()
+						- startDateCalendar.getTimeInMillis(), "d", true));
 
-        if (inclusive) {
-            startDateCalendar.add(Calendar.DATE, -1);
-        }
+		return dateDiff;
+	}
 
-        int dateDiff = Integer.parseInt(DurationFormatUtils.formatDuration(endDateCalendar.getTimeInMillis() - startDateCalendar.getTimeInMillis(), "d", true));
+	private Date parse(String dateString, String pattern) throws ParseException {
+		if (!StringUtils.isBlank(dateString)) {
+			DateFormat dateFormat = new SimpleDateFormat(pattern);
+			dateFormat.setLenient(false);
+			return dateFormat.parse(dateString);
+		}
+		return null;
+	}
 
-        return dateDiff;
-    }
+	/**
+	 * @param sqlDateFormats
+	 *            the sqlDateFormats to set
+	 */
+	public void setSqlDateFormats(
+			String[] sqlDateFormats) {
+		this.sqlDateFormats = sqlDateFormats;
+	}
 
+	/**
+	 * @param stringDateFormat
+	 *            the stringDateFormat to set
+	 */
+	public void setStringDateFormat(String stringDateFormat) {
+		this.stringDateFormat = stringDateFormat;
+	}
 
+	/**
+	 * @param stringDateTimeFormat
+	 *            the stringDateTimeFormat to set
+	 */
+	public void setStringDateTimeFormat(String stringDateTimeFormat) {
+		this.stringDateTimeFormat = stringDateTimeFormat;
+	}
 }

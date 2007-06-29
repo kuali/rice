@@ -112,7 +112,7 @@ public class Formatter implements Serializable {
         registerFormatter(Boolean.TYPE, BooleanFormatter.class);
         registerFormatter(boolean[].class, BooleanFormatter.class);
         registerFormatter(Long.class, LongFormatter.class);
-        registerFormatter(Timestamp.class, TimestampFormatter.class);
+        registerFormatter(Timestamp.class, DateViewTimestampObjectFormatter.class);
         registerFormatter(boolean.class, LittleBooleanFormatter.class);
         // end Kuali Foundation modification
     }

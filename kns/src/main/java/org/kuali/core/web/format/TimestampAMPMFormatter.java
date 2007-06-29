@@ -16,12 +16,10 @@
 
 package org.kuali.core.web.format;
 
-import java.text.FieldPosition;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
-import org.kuali.Constants;
 import org.kuali.KeyConstants;
+import org.kuali.rice.KNSServiceLocator;
 
 /**
  * This class is used to format timestamp objects.
@@ -30,19 +28,14 @@ import org.kuali.KeyConstants;
 public class TimestampAMPMFormatter extends Formatter {
     private static final long serialVersionUID = 7612442662886603084L;
 
-    /** The default date format string for display */
-    public final static String TIMESTAMP_FORMAT = "MM/dd/yyyy h:mm a";
-
     /**
      * Unformats its argument and return a java.util.Date instance initialized with the resulting string.
      * 
      * @return a java.util.Date intialized with the provided string
      */
     protected Object convertToObject(String target) {
-        SimpleDateFormat formatter = new SimpleDateFormat(TIMESTAMP_FORMAT);
-        formatter.setLenient(false);
         try {
-            return new java.sql.Timestamp(formatter.parse(target).getTime());
+        	return KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(target);
         }
         catch (ParseException e) {
             throw new FormatException("parsing", KeyConstants.ERROR_DATE_TIME, target, e);
@@ -58,14 +51,6 @@ public class TimestampAMPMFormatter extends Formatter {
     public Object format(Object value) {
         if (value == null)
             return null;
-        if (value.toString().equals(Constants.EMPTY_STRING))
-            return null;
-
-        StringBuffer buf = new StringBuffer();
-        SimpleDateFormat formatter = new SimpleDateFormat(TIMESTAMP_FORMAT);
-        formatter.setLenient(false);
-        formatter.format(value, buf, new FieldPosition(0));
-
-        return buf.toString();
+        return KNSServiceLocator.getDateTimeService().toDateTimeString((java.sql.Timestamp)value);
     }
 }

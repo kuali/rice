@@ -73,8 +73,8 @@ public class KNSServiceLocator {
 
 	public static final String VALIDATION_COMPLETION_UTILS = "validationCompletionUtils";
 
-	public static Object getService(String serviceName) {
-		return GlobalResourceLoader.getService(serviceName);
+	public static <T> T getService(String serviceName) {
+		return (T)GlobalResourceLoader.getService(serviceName);
 	}
 
 	public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName) {

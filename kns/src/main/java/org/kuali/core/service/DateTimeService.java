@@ -18,19 +18,44 @@ package org.kuali.core.service;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * This interface defines methods that a DateTime service must provide
- * 
- * 
  */
 public interface DateTimeService {
+    /**
+     * Translates the specified date into a string without a time component, formatted according to "stringDateFormat" that the
+     * service is configured with
+     * 
+     * @param date
+     * @return formatted string version of the specified date
+     */
+    public String toDateString(Date date);
+
+    /**
+     * Translates the specified date into a string with a time component, formatted according to the "stringDateTimeFormat" that the
+     * service is configured with
+     * 
+     * @param date
+     * @return formatted string version of the specified date
+     */
+    public String toDateTimeString(Date date);
+
+    /**
+     * Translates the specified date into a string without a time component, formatted according to the specified pattern
+     * 
+     * @param date
+     * @return formatted string version of the specified date
+     */
+    public String toString(Date date, String pattern);
+
     /**
      * Returns the current date/time as a java.util.Date
      * 
      * @return current date/time
      */
-    public java.util.Date getCurrentDate();
+    public Date getCurrentDate();
 
     /**
      * Returns the current date/time as a java.sql.Timestamp
@@ -67,10 +92,31 @@ public interface DateTimeService {
      * @return date-specific Calendar
      * @throws IllegalArgumentException if the given Date is null
      */
-    public Calendar getCalendar(java.util.Date date);
+    public Calendar getCalendar(Date date);
 
     /**
-     * Converts the given String into a java.sql.Timestamp instance
+     * Translates the specified string into a date without a time component, formatted according to "stringDateFormat" that the
+     * service is configured with
+     * 
+     * @param dateString
+     * @return the date representation of the specified dateString
+     * @throws ParseException
+     */
+    public Date convertToDate(String dateString) throws ParseException;
+
+    /**
+     * Translates the specified string into a date with a time component, formatted according to "stringDateTimeFormat" that the
+     * service is configured with
+     * 
+     * @param dateTimeString
+     * @return the date representation of the specified dateTimeString
+     * @throws ParseException
+     */
+    public Date convertToDateTime(String dateTimeString) throws ParseException;
+
+    /**
+     * Converts the given String into a java.sql.Timestamp instance according to the "stringDateTimeFormat" that the service is
+     * configured with
      * 
      * @param timeString
      * @return java.sql.Timestamp
@@ -97,8 +143,6 @@ public interface DateTimeService {
      */
     public java.sql.Date convertToSqlDate(Timestamp timestamp) throws ParseException;
 
-
-
     /**
      * Returns the number of days between two days - start and end date of some arbitrary period.
      * 
@@ -107,6 +151,6 @@ public interface DateTimeService {
      * @param inclusive Whether the result should include both the start and the end date. Otherwise it only includes one.
      * @return int The number of days in the period
      */
-    public int dateDiff(java.util.Date date1, java.util.Date date2, boolean inclusive);
+    public int dateDiff(Date date1, Date date2, boolean inclusive);
 
 }

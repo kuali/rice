@@ -73,15 +73,15 @@ public class KNSServiceLocator {
 
 	public static final String VALIDATION_COMPLETION_UTILS = "validationCompletionUtils";
 
-	public static <T> T getService(String serviceName) {
-		return (T)GlobalResourceLoader.getService(serviceName);
+	public static Object getService(String serviceName) {
+		return GlobalResourceLoader.getService(serviceName);
 	}
 
 	public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName) {
 		return getNamedOrderedListBeans(listName, KNSResourceLoaderFactory.getSpringResourceLoader().getContext());
 	}
 	
-	protected static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName, ApplicationContext applicationContext) {
+	public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName, ApplicationContext applicationContext) {
 		List<NamedOrderedListBean> namedOrderedListBeans = new ArrayList<NamedOrderedListBean>();
 		for (Object namedOrderedListBean : applicationContext.getBeansOfType(NamedOrderedListBean.class).values()) {
 			if (((NamedOrderedListBean) namedOrderedListBean).getName().equals(listName)) {

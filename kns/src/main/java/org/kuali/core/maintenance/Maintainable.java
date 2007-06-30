@@ -15,9 +15,11 @@
  */
 package org.kuali.core.maintenance;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.DataDictionaryDefinitionBase;
 import org.kuali.core.document.MaintenanceDocument;
@@ -229,5 +231,6 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
     public void overrideDataDictionarySectionConfiguration(DataDictionaryDefinitionBase definition);
     public void overrideDataDictionaryFieldConfiguration(DataDictionaryDefinitionBase definition);
     
-    
+    public void addMultipleValueLookupResults(MaintenanceDocument document, String collectionName, Collection<PersistableBusinessObject> rawValues);
+
 }

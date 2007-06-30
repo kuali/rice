@@ -48,6 +48,7 @@ import org.kuali.core.service.EncryptionService;
 import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.FieldUtils;
 import org.kuali.core.util.GlobalVariables;
+import org.kuali.core.util.MaintenanceUtils;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.web.ui.Section;
 import org.kuali.core.web.ui.SectionBridge;
@@ -387,6 +388,53 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 }
             }
         }
+    }
+    
+    public void addMultipleValueLookupResults(MaintenanceDocument document, String collectionName, Collection<PersistableBusinessObject> rawValues) {
+        PersistableBusinessObject bo = document.getNewMaintainableObject().getBusinessObject();
+        Collection maintCollection = (Collection) ObjectUtils.getPropertyValue(bo, collectionName);
+        List<String> existingIdentifierList = getMultiValueIdentifierList(maintCollection);
+        String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
+        Class collectionClass = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getCollectionBusinessObjectClass(docTypeName, collectionName);
+
+        List<MaintainableSectionDefinition> sections = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
+        Map<String, String> template = MaintenanceUtils.generateMultipleValueLookupBOTemplate(sections, collectionName);
+        try {
+            for (PersistableBusinessObject nextBo : rawValues) {
+                PersistableBusinessObject templatedBo = (PersistableBusinessObject) ObjectUtils.createHybridBusinessObject(collectionClass, nextBo, template);
+                templatedBo.setNewCollectionRecord(true);
+                prepareBusinessObjectForAdditionFromMultipleValueLookup(templatedBo);
+                if (!hasBusinessObjectExistedInLookupResult(templatedBo, existingIdentifierList)) {   
+                    maintCollection.add(templatedBo); 
+                }
+            }
+        } 
+        catch (Exception e) {
+        	LOG.error("Unable to add multiple value lookup results " + e.getMessage());
+            throw new RuntimeException("Unable to add multiple value lookup results " + e.getMessage());
+        }
+    }
+    
+    protected List<String> getMultiValueIdentifierList(Collection maintCollection) {
+        // Default implementation uses object.toString() as the identifier.
+    	// The subclasses implementation would put the field(s) that can be used to
+    	// uniquely identify the business object other than the objectId.
+    	
+        List<String> identifierList = new ArrayList<String>();
+        for (PersistableBusinessObject bo : (Collection<PersistableBusinessObject>)maintCollection) {
+            identifierList.add(bo.toString());
+        }
+        return identifierList;
+    } 
+    
+    protected boolean hasBusinessObjectExistedInLookupResult (BusinessObject bo, List<String> existingIdentifierList) {
+        // default implementation returns false;
+    	return false;
+    } 
+    
+    //TODO: ask Warren what he wants this for ?
+    public void prepareBusinessObjectForAdditionFromMultipleValueLookup(BusinessObject bo) {
+        // default implementation does nothing
     }
     
     /**

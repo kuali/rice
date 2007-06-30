@@ -406,20 +406,21 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             // KULCOA-1000, KULCOA-1004 removed business rule validation on multiple value return
             // (this was running before the objects were added anyway)
             // KNSServiceLocator.getKualiRuleService().applyRules(new SaveDocumentEvent(document));
-            PersistableBusinessObject bo = document.getNewMaintainableObject().getBusinessObject();
             String collectionName = maintenanceForm.getLookedUpCollectionName();
-            Collection maintCollection = this.extractCollection(bo, collectionName);
-            String docTypeName = ((MaintenanceDocument) maintenanceForm.getDocument()).getDocumentHeader().getWorkflowDocument().getDocumentType();
-            Class collectionClass = extractCollectionClass(docTypeName, collectionName);
-
-            List<MaintainableSectionDefinition> sections = maintenanceDocumentDictionaryService.getMaintainableSections(docTypeName);
-            Map<String, String> template = MaintenanceUtils.generateMultipleValueLookupBOTemplate(sections, collectionName);
-            for (PersistableBusinessObject nextBo : rawValues) {
-                PersistableBusinessObject templatedBo = (PersistableBusinessObject) ObjectUtils.createHybridBusinessObject(collectionClass, nextBo, template);
-                templatedBo.setNewCollectionRecord(true);
-                maintCollection.add(templatedBo);
-            }
-
+//TODO: Cathy remember to delete this block of comments after I've tested.            
+//            PersistableBusinessObject bo = document.getNewMaintainableObject().getBusinessObject();
+//            Collection maintCollection = this.extractCollection(bo, collectionName);
+//            String docTypeName = ((MaintenanceDocument) maintenanceForm.getDocument()).getDocumentHeader().getWorkflowDocument().getDocumentType();
+//            Class collectionClass = extractCollectionClass(docTypeName, collectionName);
+//
+//            List<MaintainableSectionDefinition> sections = maintenanceDocumentDictionaryService.getMaintainableSections(docTypeName);
+//            Map<String, String> template = MaintenanceUtils.generateMultipleValueLookupBOTemplate(sections, collectionName);
+//            for (PersistableBusinessObject nextBo : rawValues) {
+//                PersistableBusinessObject templatedBo = (PersistableBusinessObject) ObjectUtils.createHybridBusinessObject(collectionClass, nextBo, template);
+//                templatedBo.setNewCollectionRecord(true);
+//                maintCollection.add(templatedBo);
+//            }
+            document.getNewMaintainableObject().addMultipleValueLookupResults(document, collectionName, rawValues);
         }
 
         document.getNewMaintainableObject().refresh(maintenanceForm.getRefreshCaller(), requestParams, document);

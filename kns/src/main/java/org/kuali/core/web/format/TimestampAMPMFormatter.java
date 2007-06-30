@@ -17,6 +17,7 @@
 package org.kuali.core.web.format;
 
 import java.text.ParseException;
+import java.util.Date;
 
 import org.kuali.KeyConstants;
 import org.kuali.rice.KNSServiceLocator;
@@ -51,6 +52,6 @@ public class TimestampAMPMFormatter extends Formatter {
     public Object format(Object value) {
         if (value == null)
             return null;
-        return KNSServiceLocator.getDateTimeService().toDateTimeString((java.sql.Timestamp)value);
+        return KNSServiceLocator.getDateTimeService().toDateTimeString((Date)value);
     }
 }

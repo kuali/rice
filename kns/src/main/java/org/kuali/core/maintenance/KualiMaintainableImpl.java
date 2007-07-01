@@ -33,6 +33,7 @@ import org.kuali.Constants;
 import org.kuali.PropertyConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.BusinessObjectRelationship;
+import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.DataDictionaryDefinitionBase;
 import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
@@ -961,16 +962,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         }
         return references;
     }
-    
-    
-    
-    /*
-    public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
-        return maintenanceDocumentDictionaryService;
-    }
 
-    public void setMaintenanceDocumentDictionaryService(MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService) {
-        this.maintenanceDocumentDictionaryService = maintenanceDocumentDictionaryService;
-    }
-    */
+	public void handleRouteStatusChange(DocumentHeader documentHeader) {
+	}
 }

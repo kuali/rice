@@ -217,7 +217,7 @@ public class MethodCacheInterceptor implements MethodInterceptor, InitializingBe
      * @param invocation MethodInvocation being handled
      * @return cache key: className.methodName(paramClass=argValue[,paramClass=argValue...])
      */
-    public String buildCacheKey(MethodInvocation invocation) {
+    private String buildCacheKey(MethodInvocation invocation) {
         return buildCacheKey(invocation.getStaticPart().toString(), invocation.getArguments());
     }
 

@@ -20,19 +20,18 @@ import java.util.List;
 import org.kuali.KeyConstants;
 import org.kuali.core.bo.BusinessRule;
 import org.kuali.core.bo.FinancialSystemParameter;
-import org.kuali.core.bo.Module;
 import org.kuali.core.document.MaintenanceDocument;
-import org.kuali.core.lookup.ModuleLookupableHelperServiceImpl;
+import org.kuali.core.lookup.keyvalues.ModuleValuesFinder;
 import org.kuali.core.util.GlobalVariables;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.core.web.ui.KeyLabelPair;
 
 public class BusinessRuleAndSystemParameterRuleBase extends MaintenanceDocumentRuleBase {
 
-	ModuleLookupableHelperServiceImpl moduleLookupableHelperService;
+	ModuleValuesFinder moduleValuesFinder;
 	
 	public BusinessRuleAndSystemParameterRuleBase() {
 		super();
-		setModuleLookupableHelperService(KNSServiceLocator.getModuleLookupableHelperService());
+        moduleValuesFinder = new ModuleValuesFinder();
 	}
 	
 	@Override
@@ -45,9 +44,8 @@ public class BusinessRuleAndSystemParameterRuleBase extends MaintenanceDocumentR
 		else {
 		    theModuleCodeEntered = ((FinancialSystemParameter)document.getDocumentBusinessObject()).getModuleCode();
 		}
-        List<Module> availableModules = moduleLookupableHelperService.getSearchResults();
-        for (Module module : availableModules) {
-        	if (module.getModuleCode().equalsIgnoreCase(theModuleCodeEntered)) {
+        for (Object moduleKeyLabelPair : moduleValuesFinder.getKeyValues()) {
+        	if (((KeyLabelPair)moduleKeyLabelPair).getKey().toString().equalsIgnoreCase(theModuleCodeEntered)) {
         		return valid;
         	}
         }
@@ -56,9 +54,4 @@ public class BusinessRuleAndSystemParameterRuleBase extends MaintenanceDocumentR
         GlobalVariables.getErrorMap().putError("moduleCode", KeyConstants.ERROR_EXISTENCE, "Module Code");
         return false;
     }
-	
-	public void setModuleLookupableHelperService(ModuleLookupableHelperServiceImpl moduleLookupableHelperService) {
-		this.moduleLookupableHelperService = moduleLookupableHelperService;
-	}
-
 }

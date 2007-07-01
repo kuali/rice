@@ -50,10 +50,7 @@
         <maintainableSections>
             <maintainableSection title="Edit Business Rule">
                 <maintainableItems>
-                    <maintainableField name="moduleCode" required="true">
-                         <overrideLookupClass>org.kuali.core.bo.Module</overrideLookupClass>
-                         <overrideFieldConversions>moduleCode:moduleCode</overrideFieldConversions>                    
-                    </maintainableField>
+                    <maintainableField name="moduleCode" required="true" />
                     <maintainableField name="ruleGroupName" required="true" />
                     <maintainableField name="ruleName" required="true" />
                     <maintainableField name="ruleText" />

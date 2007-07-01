@@ -57,10 +57,17 @@
         <titleAttribute>financialSystemParameterName</titleAttribute>
 
         <attributes>
-            <attributeReference name="moduleCode" sourceClassName="org.kuali.core.bo.Module" sourceAttributeName="moduleCode">
-                <shortLabel>Module Code</shortLabel>
+            <attribute name="moduleCode" forceUppercase="true">
+                <label>Module Code</label>
+                <shortLabel>Mdl Cd</shortLabel>
+                <maxLength>2</maxLength>
                 <required>true</required>
-            </attributeReference>
+				<control>
+					<select valuesFinderClass="org.kuali.core.lookup.keyvalues.ModuleValuesFinder" />
+				</control>
+                <summary>The module that the parameter is associated with.</summary>
+                <description>This value is used to categorize parameters by module.</description>
+            </attribute>
             <attribute name="financialSystemParameterName" forceUppercase="false">
                 <label>Parameter Name</label>
                 <shortLabel>Parm Nm</shortLabel>

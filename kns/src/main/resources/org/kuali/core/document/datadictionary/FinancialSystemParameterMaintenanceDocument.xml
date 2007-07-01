@@ -50,10 +50,7 @@
         <maintainableSections>
             <maintainableSection title="Edit Financial System Parameter">
                 <maintainableItems>
-                    <maintainableField name="moduleCode" required="true" >
-                         <overrideLookupClass>org.kuali.core.bo.Module</overrideLookupClass>
-                         <overrideFieldConversions>moduleCode:moduleCode</overrideFieldConversions>                    
-                    </maintainableField>                    
+                    <maintainableField name="moduleCode" required="true" />
                     <maintainableField name="financialSystemScriptName" required="true" />
                     <maintainableField name="financialSystemParameterName" required="true" />
                     <maintainableField name="financialSystemParameterText" />

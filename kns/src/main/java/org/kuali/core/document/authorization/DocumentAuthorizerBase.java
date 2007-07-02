@@ -109,7 +109,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 
                 flags.setCanRoute(hasInitiateAuthorization || validActions.contains(EdenConstants.ACTION_TAKEN_ROUTED_CD));
 
-                flags.setCanPerformRouteReport(true);
+                flags.setCanPerformRouteReport(allowsPerformRouteReport(document, user));
 
                 flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
                 flags.setCanFYI(workflowDocument.isFYIRequested());
@@ -121,7 +121,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 
                 flags.setCanDisapprove(workflowDocument.isApprovalRequested());
 
-                flags.setCanPerformRouteReport(true);
+                flags.setCanPerformRouteReport(allowsPerformRouteReport(document, user));
 
                 flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
                 flags.setCanFYI(workflowDocument.isFYIRequested());
@@ -146,6 +146,16 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         setAnnotateFlag(flags);
 
         return flags;
+    }
+    
+    /**
+     * Helper method to disallow the perform route report button globally for a particular authorizer class
+     * @param document - current document
+     * @param user - current user
+     * @return boolean to allow or disallow route report button to show for user
+     */
+    public boolean allowsPerformRouteReport(Document document, UniversalUser user) {
+        return true;
     }
 
     /**

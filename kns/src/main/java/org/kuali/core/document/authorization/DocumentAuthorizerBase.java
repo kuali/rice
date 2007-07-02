@@ -98,6 +98,8 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 
             // default normal documents to be unable to copy
             flags.setCanCopy(false);
+            // default route report to false and set individually based on workflow doc status below
+            flags.setCanPerformRouteReport(false);
 
             if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
                 ValidActionsVO validActions = workflowDocument.getRouteHeader().getValidActions();
@@ -107,7 +109,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
 
                 flags.setCanRoute(hasInitiateAuthorization || validActions.contains(EdenConstants.ACTION_TAKEN_ROUTED_CD));
 
-                flags.setCanPerformRouteReport(workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved());
+                flags.setCanPerformRouteReport(true);
 
                 flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
                 flags.setCanFYI(workflowDocument.isFYIRequested());
@@ -118,6 +120,8 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
                 flags.setCanApprove(workflowDocument.isApprovalRequested());
 
                 flags.setCanDisapprove(workflowDocument.isApprovalRequested());
+
+                flags.setCanPerformRouteReport(true);
 
                 flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
                 flags.setCanFYI(workflowDocument.isFYIRequested());

@@ -404,7 +404,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
             for (PersistableBusinessObject nextBo : rawValues) {
                 PersistableBusinessObject templatedBo = (PersistableBusinessObject) ObjectUtils.createHybridBusinessObject(collectionClass, nextBo, template);
                 templatedBo.setNewCollectionRecord(true);
-                prepareBusinessObjectForAdditionFromMultipleValueLookup(templatedBo);
+                prepareBusinessObjectForAdditionFromMultipleValueLookup(collectionName, templatedBo);
                 if (!hasBusinessObjectExistedInLookupResult(templatedBo, existingIdentifierList)) {   
                     maintCollection.add(templatedBo); 
                 }
@@ -433,8 +433,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     	return false;
     } 
     
-    //TODO: ask Warren what he wants this for ?
-    public void prepareBusinessObjectForAdditionFromMultipleValueLookup(BusinessObject bo) {
+    public void prepareBusinessObjectForAdditionFromMultipleValueLookup(String collectionName, BusinessObject bo) {
         // default implementation does nothing
     }
     

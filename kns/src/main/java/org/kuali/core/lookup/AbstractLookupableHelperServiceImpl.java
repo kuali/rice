@@ -16,6 +16,7 @@
 package org.kuali.core.lookup;
 
 import java.security.GeneralSecurityException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -47,6 +48,7 @@ import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.UrlFactory;
 import org.kuali.core.web.comparator.CellComparatorHelper;
 import org.kuali.core.web.format.BooleanFormatter;
+import org.kuali.core.web.format.DateFormatter;
 import org.kuali.core.web.format.Formatter;
 import org.kuali.core.web.struts.form.LookupForm;
 import org.kuali.core.web.ui.Column;
@@ -426,7 +428,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 fieldVal = Constants.EMPTY_STRING;
             }
 
-
             // Encrypt value if it is a secure field
             String displayWorkgroup = dataDictionaryService.getAttributeDisplayWorkgroup(bo.getClass(), fieldNm);
 
@@ -450,6 +451,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 else {
                     encryptedList = encryptedList + Constants.FIELD_CONVERSIONS_SEPERATOR + fieldNm;
                 }
+            }
+            
+            //need to format date in url
+            if (fieldVal instanceof Date) {
+            	DateFormatter dateFormatter = new DateFormatter();
+            	fieldVal = dateFormatter.format(fieldVal);
             }
 
             parameters.put(fieldNm, fieldVal.toString());
@@ -681,6 +688,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                     // for Booleans, always use BooleanFormatter
                     if (prop instanceof Boolean) {
                         formatter = new BooleanFormatter();
+                    }
+                    
+                    // for Dates, always use DateFormatter
+                    if (prop instanceof Date) {
+                        formatter = new DateFormatter();
                     }
 
                     if (formatter != null) {

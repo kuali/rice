@@ -15,6 +15,7 @@
  */
 package org.kuali.core.web.ui;
 
+import java.sql.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.Constants;
 import org.kuali.core.datadictionary.mask.Mask;
 import org.kuali.core.web.format.BooleanFormatter;
+import org.kuali.core.web.format.DateFormatter;
 import org.kuali.core.web.format.Formatter;
 
 /**
@@ -733,6 +735,11 @@ public class Field implements java.io.Serializable {
             // for Booleans always use BooleanFormatter
             if (propertyValue instanceof Boolean) {
                 setFormatter(new BooleanFormatter());
+            }
+            
+            // for Dates, always use DateFormatter
+            if (propertyValue instanceof Date) {
+                formatter = new DateFormatter();
             }
 
             if (formatter != null && !(propertyValue instanceof String)) {

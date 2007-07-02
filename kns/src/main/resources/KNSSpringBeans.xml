@@ -154,7 +154,6 @@
 				<value>classpath:org/kuali/core/bo/datadictionary/EmployeeType.xml</value>
 				<value>classpath:org/kuali/core/bo/datadictionary/FinancialSystemParameter.xml</value>
 				<value>classpath:org/kuali/core/bo/datadictionary/FinancialSystemParameterSecurity.xml</value>
-				<value>classpath:org/kuali/core/bo/datadictionary/Module.xml</value>
 				<value>classpath:org/kuali/core/bo/datadictionary/Note.xml</value>
 				<value>classpath:org/kuali/core/bo/datadictionary/NoteType.xml</value>
 				<value>classpath:org/kuali/core/bo/datadictionary/UniversalUser.xml</value>
@@ -494,16 +493,6 @@
 	<bean id="kualiModuleUserDao" class="org.kuali.core.dao.ojb.KualiModuleUserDaoOjb" />
 
 	<bean id="ojbCollectionHelper" class="org.kuali.core.util.OjbCollectionHelper" />
-
-	<bean id="moduleLookupable" class="org.kuali.core.lookup.KualiLookupableImpl" singleton="false">
-	    <property name="lookupableHelperService">
-	        <ref bean="moduleLookupableHelperService" />
-	    </property>
-	</bean>
-
-    <bean id="moduleLookupableHelperService" class="org.kuali.core.lookup.ModuleLookupableHelperServiceImpl" singleton="false" parent="kualiLookupableHelperService">
-    	<property name="moduleService" ref="kualiModuleService" />
-    </bean>
       	
 	<bean id="kualiLookupable" class="org.kuali.core.lookup.KualiLookupableImpl" singleton="false">
 		<property name="lookupableHelperService">

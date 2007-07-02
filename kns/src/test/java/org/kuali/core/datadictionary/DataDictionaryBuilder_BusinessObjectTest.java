@@ -22,16 +22,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.test.KualiTestBase;
-import org.kuali.test.WithTestSpringContext;
+import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSWithTestSpringContext;
 
 /**
  * This class is used to test the DataDictionaryBuilder Business Object.
  * 
  * 
  */
-@WithTestSpringContext
-public class DataDictionaryBuilder_BusinessObjectTest extends KualiTestBase {
+@KNSWithTestSpringContext
+public class DataDictionaryBuilder_BusinessObjectTest extends KNSTestBase {
 
 	DataDictionaryBuilder builder = null;
 

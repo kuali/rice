@@ -26,12 +26,10 @@ import java.lang.annotation.Target;
  * The context is initialized before setUp(), but only once (for speed).
  * By default, a test transaction is started before setUp() and rolled back after tearDown().
  * 
- * @see TestsWorkflowViaDatabase
- * 
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface WithTestSpringContext {
+public @interface KNSWithTestSpringContext {
     //UserNameFixture session() default UserNameFixture.NO_SESSION;
 }

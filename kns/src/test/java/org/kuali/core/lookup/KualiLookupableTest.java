@@ -21,8 +21,8 @@ import java.util.Map;
 import org.junit.Test;
 import org.kuali.Constants;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.test.KualiTestBase;
-import org.kuali.test.WithTestSpringContext;
+import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSWithTestSpringContext;
 
 import edu.sampleu.travel.bo.TravelAccount;
 
@@ -31,8 +31,8 @@ import edu.sampleu.travel.bo.TravelAccount;
  * 
  * 
  */
-@WithTestSpringContext
-public class KualiLookupableTest extends KualiTestBase {
+@KNSWithTestSpringContext
+public class KualiLookupableTest extends KNSTestBase {
     private KualiLookupableImpl lookupableImpl;
 
     @Override

@@ -20,8 +20,8 @@ import org.kuali.Constants;
 import org.kuali.core.UserSession;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.test.KualiTestBase;
-import org.kuali.test.WithTestSpringContext;
+import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSWithTestSpringContext;
 
 import edu.sampleu.travel.bo.FiscalOfficer;
 
@@ -30,8 +30,8 @@ import edu.sampleu.travel.bo.FiscalOfficer;
  * 
  * 
  */
-@WithTestSpringContext
-public class MaintenanceDocumentTest extends KualiTestBase {
+@KNSWithTestSpringContext
+public class MaintenanceDocumentTest extends KNSTestBase {
 
     MaintenanceDocument document;
     

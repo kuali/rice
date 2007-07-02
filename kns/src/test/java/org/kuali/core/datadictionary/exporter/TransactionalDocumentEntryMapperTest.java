@@ -22,8 +22,8 @@ import org.kuali.core.datadictionary.DataDictionary;
 import org.kuali.core.datadictionary.DataDictionaryBuilder;
 import org.kuali.core.datadictionary.TransactionalDocumentEntry;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.test.KualiTestBase;
-import org.kuali.test.WithTestSpringContext;
+import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSWithTestSpringContext;
 
 import edu.sampleu.travel.document.TravelDocument2;
 import edu.sampleu.travel.document.rule.TravelDocumentRule;
@@ -33,8 +33,8 @@ import edu.sampleu.travel.document.rule.TravelDocumentRule;
  * 
  * 
  */
-@WithTestSpringContext
-public class TransactionalDocumentEntryMapperTest extends KualiTestBase {
+@KNSWithTestSpringContext
+public class TransactionalDocumentEntryMapperTest extends KNSTestBase {
     private DataDictionaryBuilder builder;
     private DataDictionary dataDictionary;
 

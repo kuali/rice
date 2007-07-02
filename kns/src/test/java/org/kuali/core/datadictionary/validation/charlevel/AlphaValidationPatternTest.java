@@ -17,9 +17,9 @@ package org.kuali.core.datadictionary.validation.charlevel;
 
 import org.junit.Test;
 import org.kuali.core.datadictionary.validation.ValidationTestUtils;
-import org.kuali.test.KualiTestBase;
+import org.kuali.test.KNSTestBase;
 
-public class AlphaValidationPatternTest extends KualiTestBase {
+public class AlphaValidationPatternTest extends KNSTestBase {
     private AlphaValidationPattern pattern;
 
     @Override

@@ -16,9 +16,9 @@
 package org.kuali.core.datadictionary.validation.charlevel;
 
 import org.junit.Test;
-import org.kuali.test.KualiTestBase;
+import org.kuali.test.KNSTestBase;
 
-public class CharsetValidationPatternTest extends KualiTestBase {
+public class CharsetValidationPatternTest extends KNSTestBase {
     private CharsetValidationPattern charsetPattern;
 
     @Override

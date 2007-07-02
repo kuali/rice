@@ -16,12 +16,12 @@
 package org.kuali.core.datadictionary.validation.fieldlevel;
 
 import org.junit.Test;
-import org.kuali.test.KualiTestBase;
-import org.kuali.test.WithTestSpringContext;
+import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSWithTestSpringContext;
 
 
-@WithTestSpringContext
-public class YearValidationPatternTest extends KualiTestBase {
+@KNSWithTestSpringContext
+public class YearValidationPatternTest extends KNSTestBase {
     YearValidationPattern pattern;
 
     @Override

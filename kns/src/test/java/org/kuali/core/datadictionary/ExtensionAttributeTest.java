@@ -20,13 +20,13 @@ import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.web.ui.Field;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.test.KualiTestBase;
+import org.kuali.test.KNSTestBase;
 
 import edu.sampleu.travel.bo.TravelAccount;
 import edu.sampleu.travel.bo.TravelAccountExtension;
 import edu.sampleu.travel.bo.TravelAccountType;
 
-public class ExtensionAttributeTest extends KualiTestBase {
+public class ExtensionAttributeTest extends KNSTestBase {
 
 	DataDictionaryBuilder builder = null;
 

@@ -23,8 +23,8 @@ import org.junit.Test;
 import org.kuali.core.datadictionary.exception.ClassValidationException;
 import org.kuali.core.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.test.KualiTestBase;
-import org.kuali.test.WithTestSpringContext;
+import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSWithTestSpringContext;
 
 /**
  * This class is used to test the DataDictionaryBuilder Maintenance Document
@@ -32,8 +32,8 @@ import org.kuali.test.WithTestSpringContext;
  * 
  * 
  */
-@WithTestSpringContext
-public class DataDictionaryBuilder_MaintenanceDocumentTest extends KualiTestBase {
+@KNSWithTestSpringContext
+public class DataDictionaryBuilder_MaintenanceDocumentTest extends KNSTestBase {
 
 	DataDictionaryBuilder builder = null;
 

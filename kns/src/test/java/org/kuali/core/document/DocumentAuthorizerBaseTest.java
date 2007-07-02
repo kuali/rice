@@ -22,11 +22,11 @@ import org.kuali.PropertyConstants;
 import org.kuali.core.document.authorization.DocumentActionFlags;
 import org.kuali.core.document.authorization.DocumentAuthorizer;
 import org.kuali.core.document.authorization.DocumentAuthorizerBase;
-import org.kuali.test.KualiTestBase;
-import org.kuali.test.WithTestSpringContext;
+import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSWithTestSpringContext;
 
-@WithTestSpringContext
-public class DocumentAuthorizerBaseTest extends KualiTestBase {
+@KNSWithTestSpringContext
+public class DocumentAuthorizerBaseTest extends KNSTestBase {
 
     private static final String SUPERVISOR_USER = "ABNEY";
     private static final String SUPERVISOR_UNIVERSAL = "2237202707";

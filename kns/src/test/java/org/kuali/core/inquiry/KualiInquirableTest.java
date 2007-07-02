@@ -17,8 +17,8 @@ package org.kuali.core.inquiry;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.test.KualiTestBase;
-import org.kuali.test.WithTestSpringContext;
+import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSWithTestSpringContext;
 
 import edu.sampleu.travel.bo.FiscalOfficer;
 
@@ -27,8 +27,8 @@ import edu.sampleu.travel.bo.FiscalOfficer;
  * 
  * 
  */
-@WithTestSpringContext
-public class KualiInquirableTest extends KualiTestBase {
+@KNSWithTestSpringContext
+public class KualiInquirableTest extends KNSTestBase {
 
     private FiscalOfficer fo;
 

@@ -24,11 +24,11 @@ import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.exceptions.GroupNotFoundException;
 import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.test.KualiTestBase;
-import org.kuali.test.WithTestSpringContext;
+import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSWithTestSpringContext;
 
-@WithTestSpringContext
-public class AuthorizationStoreTest extends KualiTestBase {
+@KNSWithTestSpringContext
+public class AuthorizationStoreTest extends KNSTestBase {
     private static final String NAME_OF_WORKGROUP_WITH_NO_MEMBERS = "KUALI_PED";
     private static final String LEGIT_WORKGROUP_NAME_1 = "KUALI_OPERATIONS";
     private static final String LEGIT_WORKGROUP_NAME_2 = "KUALI_ROLE_MAINTENANCE";

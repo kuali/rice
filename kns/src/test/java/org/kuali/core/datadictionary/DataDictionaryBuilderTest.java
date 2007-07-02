@@ -21,16 +21,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.test.KualiTestBase;
-import org.kuali.test.WithTestSpringContext;
+import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSWithTestSpringContext;
 
 /**
  * This class is used to test the DataDictionaryBuilder.
  * 
  * 
  */
-@WithTestSpringContext
-public class DataDictionaryBuilderTest extends KualiTestBase {
+@KNSWithTestSpringContext
+public class DataDictionaryBuilderTest extends KNSTestBase {
 	static final String PACKAGE_CORE_BO = "org/kuali/core/bo/datadictionary/";
 
 	static final String PACKAGE_CORE_DOCUMENT = "org/kuali/core/document/datadictionary/";

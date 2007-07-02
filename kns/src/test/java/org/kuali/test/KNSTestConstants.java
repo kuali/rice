@@ -24,7 +24,7 @@ import org.kuali.core.util.KualiDecimal;
  * 
  * 
  */
-public interface KualiTestConstants {
+public interface KNSTestConstants {
     /**
      * contains Test related constants
      * 

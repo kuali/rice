@@ -21,16 +21,16 @@ import org.apache.log4j.Level;
 import org.junit.Test;
 import org.kuali.core.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.test.KualiTestBase;
-import org.kuali.test.WithTestSpringContext;
+import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSWithTestSpringContext;
 import org.xml.sax.SAXParseException;
 
 /**
  * This class is used to test the DataDictionaryBuilder Transactional Document
  * object.
  */
-@WithTestSpringContext
-public class DataDictionaryBuilder_TransactionalDocumentTest extends KualiTestBase {
+@KNSWithTestSpringContext
+public class DataDictionaryBuilder_TransactionalDocumentTest extends KNSTestBase {
 
 	DataDictionaryBuilder builder = null;
 

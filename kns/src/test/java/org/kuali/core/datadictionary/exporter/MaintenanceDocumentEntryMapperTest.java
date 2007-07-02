@@ -24,16 +24,16 @@ import org.kuali.core.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.core.datadictionary.bos.PaymentReasonCode;
 import org.kuali.core.impls.RiceTestMaintenanceDocumentRule;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.test.KualiTestBase;
-import org.kuali.test.WithTestSpringContext;
+import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSWithTestSpringContext;
 
 /**
  * This class is used to test the MaintenanceDocumentEntryExporter.
  * 
  * 
  */
-@WithTestSpringContext
-public class MaintenanceDocumentEntryMapperTest extends KualiTestBase {
+@KNSWithTestSpringContext
+public class MaintenanceDocumentEntryMapperTest extends KNSTestBase {
     private DataDictionaryBuilder builder;
     private DataDictionary dataDictionary;
 

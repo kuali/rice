@@ -59,14 +59,12 @@ import org.kuali.rice.testharness.TransactionalLifecycle;
  * this system property to their own environments, because of this delay and so
  * that they can still work on those tests.
  * 
- * @see WithTestSpringContext
- * @see TestsWorkflowViaDatabase
- * @see RelatesTo
+ * @see KNSWithTestSpringContext
  * 
  * 
  */
 
-public abstract class KualiTestBase extends KNSTestCase implements KualiTestConstants {
+public abstract class KNSTestBase extends KNSTestCase implements KNSTestConstants {
 
 	public static final String SKIP_OPEN_OR_IN_PROGRESS_OR_REOPENED_JIRA_ISSUES = "org.kuali.test.KualiTestBase.skipOpenOrInProgressOrReopenedJiraIssues";
 
@@ -115,7 +113,7 @@ public abstract class KualiTestBase extends KNSTestCase implements KualiTestCons
 	@Before 
 	public void setUp() throws Exception {
 		super.setUp();
-		final boolean needsSpring = getClass().isAnnotationPresent(WithTestSpringContext.class);
+		final boolean needsSpring = getClass().isAnnotationPresent(KNSWithTestSpringContext.class);
 		GlobalVariables.setErrorMap(new ErrorMap());
 		if (needsSpring) {
 			transactionalLifecycle = new TransactionalLifecycle();
@@ -125,7 +123,7 @@ public abstract class KualiTestBase extends KNSTestCase implements KualiTestCons
 
 	@After 
 	public void tearDown() throws Exception {
-		final boolean needsSpring = getClass().isAnnotationPresent(WithTestSpringContext.class);
+		final boolean needsSpring = getClass().isAnnotationPresent(KNSWithTestSpringContext.class);
 		resetLogLevels();
 		if (needsSpring) {
 			transactionalLifecycle.stop();

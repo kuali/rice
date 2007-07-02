@@ -24,8 +24,8 @@ import org.kuali.core.datadictionary.DataDictionary;
 import org.kuali.core.datadictionary.DataDictionaryBuilder;
 import org.kuali.core.datadictionary.bos.PaymentReasonCode;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.test.KualiTestBase;
-import org.kuali.test.WithTestSpringContext;
+import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSWithTestSpringContext;
 
 
 /**
@@ -33,8 +33,8 @@ import org.kuali.test.WithTestSpringContext;
  * 
  * 
  */
-@WithTestSpringContext
-public class BusinessObjectEntryMapperTest extends KualiTestBase {
+@KNSWithTestSpringContext
+public class BusinessObjectEntryMapperTest extends KNSTestBase {
     private DataDictionaryBuilder builder;
     private DataDictionary dataDictionary;
 

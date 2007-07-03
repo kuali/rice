@@ -31,16 +31,22 @@
 <%@ attribute name="highlightTab" required="false" %>
 <%@ attribute name="extraButtonSource" required="false" %>
 
+
 <c:set var="currentTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
 <c:set var="topLevelTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
 
-<c:set var="currentTab" value="${KualiForm.tabStateJstl}"/>
+
+<c:set var="tabKey" value="${kfunc:generateTabKey(tabTitle)}"/>
+<!--  hit form method to increment tab index -->
+<c:set var="doINeedThis" value="${kfunc:incrementTabIndex(KualiForm, tabKey)}" />
+
+<c:set var="currentTab" value="${kfunc:getTabState(KualiForm, tabKey)}"/>
 <c:choose>
     <c:when test="${empty currentTab}">
         <c:set var="isOpen" value="${defaultOpen}" />
     </c:when>
     <c:when test="${!empty currentTab}" >
-        <c:set var="isOpen" value="${currentTab.open}" />
+        <c:set var="isOpen" value="${currentTab == 'OPEN'}" />
     </c:when>
 </c:choose>
 
@@ -50,8 +56,7 @@
   <c:set var="isOpen" value="${hasErrors ? true : isOpen}"/>
 </c:if>
 
-<html:hidden property="tabState[${currentTabIndex}].open" value="${isOpen}" />
-
+<html:hidden property="tabStates(${tabKey})" value="${(isOpen ? 'OPEN' : 'CLOSE')}" />
 <!-- TAB -->
 
 <c:if test="${! empty tabItemCount}">
@@ -74,7 +79,7 @@
             <td class="tabtable1-left">
               <img src="${leftTabImage}" alt="" width="12" height="29" align="absmiddle" />
               <c:if test="${not empty leftSideHtmlProperty and not empty leftSideHtmlAttribute}"><kul:htmlControlAttribute property="${leftSideHtmlProperty}" attributeEntry="${leftSideHtmlAttribute}" disabled="${leftSideHtmlDisabled}" /></c:if>
-              <a name="${currentTabIndex}" ></a> ${tabTitle}
+              <a name="${tabKey}" ></a> ${tabTitle}
               <c:if test="${highlightTab}">
                 &nbsp;<img src="${ConfigProperties.kr.externalizable.images.url}asterisk_orange.png" alt="changed"/>
               </c:if>
@@ -93,10 +98,10 @@
 
             <td class="${midTabClass}">
                <c:if test="${isOpen == 'true' || isOpen == 'TRUE'}">
-                 <html:image property="methodToCall.toggleTab.tab${currentTabIndex}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-hide.gif" title="close ${tabTitle}" alt="close ${tabTitle}" styleClass="tinybutton"  styleId="tab-${currentTabIndex}-imageToggle" onclick="javascript: return toggleTab(document, ${currentTabIndex}); " />
+                 <html:image property="methodToCall.toggleTab.tab${tabKey}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-hide.gif" title="close ${tabTitle}" alt="close ${tabTitle}" styleClass="tinybutton"  styleId="tab-${tabKey}-imageToggle" onclick="javascript: return toggleTab(document, ${tabKey}); " />
                </c:if>
                <c:if test="${isOpen != 'true' && isOpen != 'TRUE'}">
-                 <html:image  property="methodToCall.toggleTab.tab${currentTabIndex}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-show.gif" title="open ${tabTitle}" alt="open ${tabTitle}" styleClass="tinybutton" styleId="tab-${currentTabIndex}-imageToggle" onclick="javascript: return toggleTab(document, ${currentTabIndex}); " />
+                 <html:image  property="methodToCall.toggleTab.tab${tabKey}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-show.gif" title="open ${tabTitle}" alt="open ${tabTitle}" styleClass="tinybutton" styleId="tab-${tabKey}-imageToggle" onclick="javascript: return toggleTab(document, ${tabKey}); " />
                </c:if>
             </td>
             <td class="${rightTabClass}"><img src="${rightTabImage}" alt="" width="12" height="29" align="middle" /></td>
@@ -106,10 +111,10 @@
 
 
 <c:if test="${isOpen == 'true' || isOpen == 'TRUE'}">
-<div style="display: block;" id="tab-${currentTabIndex}-div">
+<div style="display: block;" id="tab-${tabKey}-div">
 </c:if>
 <c:if test="${isOpen != 'true' && isOpen != 'TRUE'}" >
-<div style="display: none;" id="tab-${currentTabIndex}-div">
+<div style="display: none;" id="tab-${tabKey}-div">
 </c:if>
   
  

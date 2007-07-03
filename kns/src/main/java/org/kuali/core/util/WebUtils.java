@@ -32,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.kuali.Constants;
+import org.kuali.core.web.struts.form.KualiForm;
 
 /**
  * General helper methods for handling requests.
@@ -208,5 +209,38 @@ public class WebUtils {
             out.write(inStream.read());
         }
         out.flush();
+    }
+    
+    /**
+     * JSTL function to return the tab state of the tab from the form. 
+     * 
+     * @param form
+     * @param tabKey
+     * @return
+     */
+    public static String getTabState(KualiForm form, String tabKey) {
+        return form.getTabState(tabKey);
+    }
+    
+    public static void incrementTabIndex(KualiForm form, String tabKey) {
+    	form.incrementTabIndex();
+    }
+    
+    /**
+     * Generates a String from the title that can be used as a Map key.
+     * 
+     * @param tabTitle
+     * @return
+     */
+    public static String generateTabKey(String tabTitle) {
+        String key = "";
+        if (!StringUtils.isBlank(tabTitle)) {
+            key = tabTitle.replaceAll("\\W", "");
+            if (key.length() > 25) {
+                key = key.substring(0, 24);
+            }
+        }
+        
+        return key;
     }
 }

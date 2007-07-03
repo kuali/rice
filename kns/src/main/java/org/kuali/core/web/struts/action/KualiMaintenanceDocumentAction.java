@@ -588,27 +588,27 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 subCollectionIndex += getSubCollectionIndex(aSubCollection, maintenanceForm.getDocTypeName());
             }
 
-            String parameter = (String) request.getAttribute(Constants.METHOD_TO_CALL_ATTRIBUTE);
-            String indexStr = StringUtils.substringBetween(parameter, Constants.METHOD_TO_CALL_PARM13_LEFT_DEL, Constants.METHOD_TO_CALL_PARM13_RIGHT_DEL);
+//            String parameter = (String) request.getAttribute(Constants.METHOD_TO_CALL_ATTRIBUTE);
+//            String indexStr = StringUtils.substringBetween(parameter, Constants.METHOD_TO_CALL_PARM13_LEFT_DEL, Constants.METHOD_TO_CALL_PARM13_RIGHT_DEL);
             // + 1 is for the fact that the first element of a collection is on the next tab
-            int index = Integer.parseInt(indexStr) + subCollectionIndex + 1;
-            List<TabState> tabStates = maintenanceForm.getTabStates();
-            List<TabState> copyOfTabStates = new ArrayList();
-
-            for (TabState tabState : tabStates) {
-                TabState newTabState = new TabState();
-                newTabState.setOpen(tabState.isOpen());
-                copyOfTabStates.add(newTabState);
-            }
-
-            int i = index;
-            while (i < tabStates.size()) {
-                TabState original = tabStates.get(i);
-                TabState copy = copyOfTabStates.get(i - 1);
-                original.setOpen(copy.isOpen());
-                i++;
-            }
-            tabStates.get(index - 1).setOpen(false);
+//            int index = Integer.parseInt(indexStr) + subCollectionIndex + 1;
+//            List<TabState> tabStates = maintenanceForm.getTabStates();
+//            List<TabState> copyOfTabStates = new ArrayList();
+//
+//            for (TabState tabState : tabStates) {
+//                TabState newTabState = new TabState();
+//                newTabState.setOpen(tabState.isOpen());
+//                copyOfTabStates.add(newTabState);
+//            }
+//
+//            int i = index;
+//            while (i < tabStates.size()) {
+//                TabState original = tabStates.get(i);
+//                TabState copy = copyOfTabStates.get(i - 1);
+//                original.setOpen(copy.isOpen());
+//                i++;
+//            }
+//            tabStates.get(index - 1).setOpen(false);
         }
 
         return mapping.findForward(Constants.MAPPING_BASIC);
@@ -697,10 +697,10 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
         // remove the tab state information of the tab that the deleted element originally occupied, so that it will keep tab states
         // consistent
-        String parameter = (String) request.getAttribute(Constants.METHOD_TO_CALL_ATTRIBUTE);
-        String indexStr = StringUtils.substringBetween(parameter, Constants.METHOD_TO_CALL_PARM13_LEFT_DEL, Constants.METHOD_TO_CALL_PARM13_RIGHT_DEL);
-        int index = Integer.parseInt(indexStr);
-        maintenanceForm.removeTabState(index);
+//        String parameter = (String) request.getAttribute(Constants.METHOD_TO_CALL_ATTRIBUTE);
+//        String indexStr = StringUtils.substringBetween(parameter, Constants.METHOD_TO_CALL_PARM13_LEFT_DEL, Constants.METHOD_TO_CALL_PARM13_RIGHT_DEL);
+//        int index = Integer.parseInt(indexStr);
+//        maintenanceForm.removeTabState(index);
 
         return mapping.findForward(Constants.MAPPING_BASIC);
     }

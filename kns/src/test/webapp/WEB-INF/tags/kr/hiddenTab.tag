@@ -22,9 +22,14 @@
 <%--   getTabStateJstl call is *required*, since it changes the currentTabIndex as a side-effect --%>
 <%--   (which also means that I must retrieve currentTabIndex before retrieving tabStateJstl) --%>
 <c:set var="currentTabIndex" value="${KualiForm.currentTabIndex}"/>
-<c:set var="currentTab" value="${KualiForm.tabStateJstl}"/>
+<c:set var="tabKey" value="${kfunc:generateTabKey(tabTitle)}"/>
+<!--  hit form method to increment tab index -->
+<${kfunc:incrementTabIndex(KualiForm)}>
 
-<html:hidden property="tabState[${currentTabIndex}].open" value="${forceOpen}" />
+${tabKey}
+<c:set var="currentTab" value="${kfunc:getTabState(KualiForm, tabKey)}"/>
+
+<html:hidden property="tabStates(${tabKey}).open" value="${forceOpen}" />
 
 <%-- display tab contents --%>
 <jsp:doBody/>            

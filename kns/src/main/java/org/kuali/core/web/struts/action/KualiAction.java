@@ -15,8 +15,8 @@
  */
 package org.kuali.core.web.struts.action;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +35,6 @@ import org.kuali.core.exceptions.ModuleAuthorizationException;
 import org.kuali.core.service.Demonstration;
 import org.kuali.core.service.KualiModuleService;
 import org.kuali.core.util.GlobalVariables;
-import org.kuali.core.util.TabState;
 import org.kuali.core.util.UrlFactory;
 import org.kuali.core.util.WebUtils;
 import org.kuali.core.web.struts.form.KualiDocumentFormBase;
@@ -117,9 +116,18 @@ public abstract class KualiAction extends DispatchAction {
      */
     public ActionForward toggleTab(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiForm kualiForm = (KualiForm) form;
-        if (getTabToToggle(request) >= 0) {
-            kualiForm.getTabState(getTabToToggle(request)).setOpen(!kualiForm.getTabState(getTabToToggle(request)).isOpen());
+        String tabToToggle = getTabToToggle(request);
+        if (StringUtils.isNotBlank(tabToToggle)) {
+            if (kualiForm.getTabState(tabToToggle).equals("OPEN")) {
+            	kualiForm.getTabStates().remove(tabToToggle);
+            	kualiForm.getTabStates().put(tabToToggle, "CLOSE");
+            }
+            else {
+            	kualiForm.getTabStates().remove(tabToToggle);
+            	kualiForm.getTabStates().put(tabToToggle, "OPEN");
+            }
         }
+        
         return mapping.findForward(Constants.MAPPING_BASIC);
     }
 
@@ -135,12 +143,13 @@ public abstract class KualiAction extends DispatchAction {
      */
     public ActionForward showAllTabs(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiForm kualiForm = (KualiForm) form;
-        List tabStates = kualiForm.getTabStates();
-        for (Iterator iter = tabStates.iterator(); iter.hasNext();) {
-            TabState state = (TabState) iter.next();
-            state.setOpen(true);
+        
+        Map<String, String> tabStates = kualiForm.getTabStates();
+        Map<String, String> newTabStates = new HashMap<String, String>();
+        for (String tabKey: tabStates.keySet()) {
+            newTabStates.put(tabKey, "OPEN");
         }
-
+        kualiForm.setTabStates(newTabStates);
         return mapping.findForward(Constants.MAPPING_BASIC);
     }
 
@@ -156,12 +165,13 @@ public abstract class KualiAction extends DispatchAction {
      */
     public ActionForward hideAllTabs(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiForm kualiForm = (KualiForm) form;
-        List tabStates = kualiForm.getTabStates();
-        for (Iterator iter = tabStates.iterator(); iter.hasNext();) {
-            TabState state = (TabState) iter.next();
-            state.setOpen(false);
+        
+        Map<String, String> tabStates = kualiForm.getTabStates();
+        Map<String, String> newTabStates = new HashMap<String, String>();
+        for (String tabKey: tabStates.keySet()) {
+        	newTabStates.put(tabKey, "CLOSE");
         }
-
+        kualiForm.setTabStates(newTabStates);
         return mapping.findForward(Constants.MAPPING_BASIC);
     }
 
@@ -213,13 +223,13 @@ public abstract class KualiAction extends DispatchAction {
      * @param request
      * @return
      */
-    protected int getTabToToggle(HttpServletRequest request) {
-        int tabToToggle = -1;
+    protected String getTabToToggle(HttpServletRequest request) {
+        String tabToToggle = "";
         String parameterName = (String) request.getAttribute(Constants.METHOD_TO_CALL_ATTRIBUTE);
         if (StringUtils.isNotBlank(parameterName)) {
-            String lineNumber = StringUtils.substringBetween(parameterName, ".tab", ".");
-            tabToToggle = Integer.parseInt(lineNumber);
+            tabToToggle = StringUtils.substringBetween(parameterName, ".tab", ".");
         }
+        
         return tabToToggle;
     }
 

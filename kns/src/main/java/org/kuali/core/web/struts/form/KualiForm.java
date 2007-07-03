@@ -15,7 +15,6 @@
  */
 package org.kuali.core.web.struts.form;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,15 +33,13 @@ import org.kuali.core.web.ui.KeyLabelPair;
 
 /**
  * This class common properites for all action forms.
- * 
- * 
  */
 public class KualiForm extends PojoFormBase {
     private static final long serialVersionUID = 1L;
     private String methodToCall;
     private String refreshCaller;
     private String anchor;
-    private List tabStates;
+    private Map<String, String> tabStates;
     private Map actionFormUtilMap;
     private Map displayedErrors = new HashMap();
     private int currentTabIndex = 0;
@@ -59,7 +56,7 @@ public class KualiForm extends PojoFormBase {
      * no args constructor which must init our tab states list
      */
     public KualiForm() {
-        this.tabStates = new ArrayList();
+        this.tabStates = new HashMap<String, String>();
         this.actionFormUtilMap = new ActionFormUtilMap();
     }
 
@@ -117,57 +114,39 @@ public class KualiForm extends PojoFormBase {
     /**
      * @return the tab state list
      */
-    public List getTabStates() {
+    public Map<String, String> getTabStates() {
         return tabStates;
     }
 
     /**
-     * simple setter for the tab state list
+     * simple setter for the tab state Map
      * 
      * @param tabStates
      */
-    public void setTabStates(List tabStates) {
+    public void setTabStates(Map<String, String> tabStates) {
         this.tabStates = tabStates;
-    }
-
-    /**
-     * Special getter based on index to work with multi rows for tab state objects
-     * 
-     * struts page
-     * 
-     * @param index
-     * @return
-     */
-    public TabState getTabState(int index) {
-        while (getTabStates().size() <= index) {
-            getTabStates().add(new TabState());
-        }
-        return (TabState) getTabStates().get(index);
     }
     
     /**
-     * Removes the TabState information for the tab from the given index.  All subsequent tab indices are moved up one.
-     * 
-     * @param index
+     * Special getter based on key to work with multi rows for tab state objects
      */
-    public void removeTabState(int index) {
-        if (index >= 0 && index < tabStates.size()) {
-            tabStates.remove(index);
+    public String getTabState(String key) {
+        String state = "OPEN";
+        if (tabStates.containsKey(key)) {
+            if (tabStates.get(key) instanceof String) {
+            	state = tabStates.get(key);
+            }
+            else {
+            	//This is the case where the value is an Array of String,
+            	//so we'll have to get the first element
+            	Object result = tabStates.get(key);
+            	result.getClass();
+            	state = ((String[])result)[0];
+            }
         }
+        
+        return state;
     }
-
-    /**
-     * Get the tab for jstl which will rely on the tab index set in this object
-     */
-    public TabState getTabStateJstl() {
-        TabState tabState = null;
-        if (getTabStates().size() >= getCurrentTabIndex() && !getTabStates().isEmpty()) {
-            tabState = (TabState) getTabState(getCurrentTabIndex());
-        }
-        currentTabIndex++;
-        return tabState;
-    }
-
 
     public int getCurrentTabIndex() {
         return currentTabIndex;
@@ -176,7 +155,11 @@ public class KualiForm extends PojoFormBase {
     public void setCurrentTabIndex(int currentTabIndex) {
         this.currentTabIndex = currentTabIndex;
     }
-
+    
+    public void incrementTabIndex() {
+        this.currentTabIndex++;
+    }
+    
     public int getNextArbitrarilyHighIndex() {
         return this.arbitrarilyHighIndex++;
     }

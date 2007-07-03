@@ -64,18 +64,18 @@ public abstract class BaseOjbConfigurer extends BaseLifecycle {
 	@Override
 	public void start() throws Exception {
 		// if OJB has not already been loaded, let's trigger a load using our built-in OJB properties file
-//		String currentValue = System.getProperty(OJB_PROPERTIES_PROP);
+		String currentValue = System.getProperty(OJB_PROPERTIES_PROP);
 		try {
 			System.setProperty(OJB_PROPERTIES_PROP, DEFAULT_OJB_PROPERTIES);
 			MetadataManager mm = MetadataManager.getInstance();
 			establishConnectionMetaData(mm);
 			establishRepositoryMetaData(mm);
 		} finally {
-//			if (currentValue == null) {
-//				System.getProperties().remove(OJB_PROPERTIES_PROP);
-//			} else {
-//				System.setProperty(OJB_PROPERTIES_PROP, currentValue);
-//			}
+			if (currentValue == null) {
+				System.getProperties().remove(OJB_PROPERTIES_PROP);
+			} else {
+				System.setProperty(OJB_PROPERTIES_PROP, currentValue);
+			}
 		}
 		super.start();
 	}

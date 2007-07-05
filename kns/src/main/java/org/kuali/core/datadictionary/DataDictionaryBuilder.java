@@ -90,6 +90,10 @@ public class DataDictionaryBuilder {
 
 		return this.dataDictionary;
 	}
+	
+	protected Map<String,String> getFileLocationMap() {
+		return fileLocationMap;
+	}
 
 	/**
 	 * Given the name of an XML file, or of a directory containing XML files,
@@ -173,10 +177,6 @@ public class DataDictionaryBuilder {
 			}
 			String indexName = sourceName.substring(sourceName.lastIndexOf("/") + 1, sourceName.indexOf(".xml"));
 			fileLocationMap.put( indexName, sourceName);
-			// FIXME: JHK: stupid hack until we can fix the document type name to match the business object name 
-			if ( indexName.contains( "UniversalUser" ) ) {
-				fileLocationMap.put( indexName.replace( "UniversalUser", "UniversityUser" ), "file:" + sourceName);
-			}
 		}
 	}
 	
@@ -192,10 +192,6 @@ public class DataDictionaryBuilder {
 			} else if (file.getName().indexOf(".xml") > 0) {
 				String indexName = file.getName().substring(file.getName().lastIndexOf("/") + 1, file.getName().indexOf(".xml"));
 				fileLocationMap.put( indexName, "file:" + file.getAbsolutePath());
-				// FIXME: JHK: stupid hack until we can fix the document type name to match the business object name 
-				if ( indexName.contains( "UniversalUser" ) ) {
-					fileLocationMap.put( indexName.replace( "UniversalUser", "UniversityUser" ), "file:" + file.getAbsolutePath());
-				}
 			} else {
 				LOG.debug("Skipping non xml file " + file.getAbsolutePath() + " in DD load");
 			}
@@ -316,9 +312,10 @@ public class DataDictionaryBuilder {
 				digest(resourceLoader.getResource(sourceName).getFile(), digester);
 			}
 		} catch (DataDictionaryException dde) {
+			LOG.error("Rethrowing DataDictionaryException encountered while parsing sourceName: " + sourceName);
 			throw dde;
 		} catch (Exception e) {
-			throw new DataDictionaryException("Problems parsing DD", e);
+			throw new DataDictionaryException("Problems parsing DD for sourceName: " + sourceName, e);
 		} finally {
 			if (digester != null) {
 				digester.clear();

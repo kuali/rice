@@ -89,6 +89,10 @@ public class DataDictionary implements Serializable {
 		this.dataDictionaryBuilder = dataDictionaryBuilder;
 		jstlKeys = new HashSet();
 	}
+	
+	protected Map<String,String> getFileLocationMap() {
+		return dataDictionaryBuilder.getFileLocationMap();
+	}
 
 	// called by digester
 	public void addDocumentEntry(DocumentEntry documentEntry) {
@@ -175,6 +179,44 @@ public class DataDictionary implements Serializable {
 		jstlKeys.add(jstlKey);
 		businessObjectEntry.expandAttributeReferences(this, validationCompletionUtils);
 	}
+	
+    /**
+     * This method provides the Map of all "components" (i.e. lookup, inquiry, and document titles), keyed by business object or document class names
+     * 
+     * @return map of component names, keyed by class name
+     */
+    protected Map<String,Set<String>> getComponentNamesByClassName() {
+        Map<String,Set<String>> componentNamesByClassName = new HashMap<String,Set<String>>();
+        for (String businessObjectEntryKey : businessObjectEntries.keySet()) {
+            BusinessObjectEntry businessObjectEntry = businessObjectEntries.get(businessObjectEntryKey);
+            Set<String> componentNames = new HashSet<String>();
+            if (businessObjectEntry.getLookupDefinition() != null) {
+                componentNames.add(businessObjectEntry.getLookupDefinition().getTitle());
+            }
+            if (businessObjectEntry.getInquiryDefinition() != null) {
+                componentNames.add(businessObjectEntry.getInquiryDefinition().getTitle());
+            }
+            componentNamesByClassName.put(businessObjectEntry.getFullClassName(), componentNames);
+        }
+        for (Class businessObjectClass : documentEntriesByBusinessObjectClass.keySet()) {
+            DocumentEntry documentEntry = documentEntriesByBusinessObjectClass.get(businessObjectClass);
+            if (componentNamesByClassName.containsKey(businessObjectClass.getName())) {
+                componentNamesByClassName.get(businessObjectClass.getName()).add(documentEntry.getLabel());
+            }
+            else {
+                Set<String> componentNames = new HashSet<String>();
+                componentNames.add(documentEntry.getLabel());
+                componentNamesByClassName.put(businessObjectClass.getName(), componentNames);                
+            }
+        }
+        for (Class documentClass : documentEntriesByDocumentClass.keySet()) {
+            DocumentEntry documentEntry = documentEntriesByDocumentClass.get(documentClass);
+            Set<String> componentNames = new HashSet<String>();
+            componentNames.add(documentEntry.getLabel());
+            componentNamesByClassName.put(documentClass.getName(), componentNames);
+        }
+        return componentNamesByClassName;
+    }
 
 	/**
 	 * @param className

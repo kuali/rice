@@ -33,7 +33,7 @@
             </authorization>
         </authorizations>
 
-        <documentTypeName>KualiUniversityUserMaintenanceDocument</documentTypeName>
+        <documentTypeName>UniversalUserMaintenanceDocument</documentTypeName>
         <documentTypeCode>UNVL</documentTypeCode>
 
         <label>User Maintenance Document</label>

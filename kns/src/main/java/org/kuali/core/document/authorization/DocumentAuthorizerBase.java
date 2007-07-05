@@ -199,4 +199,15 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         return workflowDocument.getInitiatorNetworkId().equalsIgnoreCase(user.getPersonUserIdentifier());
     }
 
+    /**
+     * Determines whether the given user should be able to view the attachment on the given document
+     * and the attachment type
+     * @param attachmentTypeName - the attachment type
+     * @param document - current document
+     * @param user - current user
+     * @return boolean (true if they should have permissions)
+     */
+    public boolean canViewAttachment(String attachmentTypeName, Document document, UniversalUser user) {
+    	return true;
+    }
 }

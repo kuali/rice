@@ -4,7 +4,7 @@
 	<groupId>org.kuali.rice</groupId>
 	<artifactId>rice</artifactId>
 	<packaging>pom</packaging>
-	<version>0.9-RC1</version>
+	<version>0.9</version>
 	<name>Kuali Rice</name>
 	<url>http://rice.kuali.org</url>
 

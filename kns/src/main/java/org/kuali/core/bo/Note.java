@@ -140,14 +140,7 @@ public class Note extends PersistableBusinessObjectBase {
 	public void setNotePostedTimestamp(Timestamp notePostedTimestamp) {
 		this.notePostedTimestamp = notePostedTimestamp;
 	}
-	
-	public void setNoteFormattedPostedTimestamp(String timestamp) {
-		this.setNotePostedTimestamp((Timestamp) new TimestampAMPMFormatter().convertToObject(timestamp));
-	}
-	
-	public String getNoteFormattedPostedTimestamp() {
-		return (String)new TimestampAMPMFormatter().format(getNotePostedTimestamp());
-	}
+
 
 	/**
 	 * Gets the noteTypeCode attribute.

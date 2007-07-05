@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.kuali.rice</groupId>
         <artifactId>rice</artifactId>
-        <version>0.9-RC1</version>
+        <version>0.9</version>
     </parent>
     <artifactId>rice-ksb</artifactId>
 
@@ -20,19 +20,19 @@
         <dependency>
             <groupId>org.kuali.rice</groupId>
             <artifactId>rice-core</artifactId>
-            <version>0.9-RC1</version>
+            <version>0.9</version>
         </dependency>
 
         <dependency>
             <groupId>org.kuali.rice</groupId>
             <artifactId>rice-shared</artifactId>
-            <version>0.9-RC1</version>
+            <version>0.9</version>
         </dependency>
 
         <dependency>
             <groupId>org.kuali.rice</groupId>
             <artifactId>rice-testharness</artifactId>
-            <version>0.9-RC1</version>
+            <version>0.9</version>
         </dependency>
         
         <dependency>

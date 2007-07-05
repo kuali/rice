@@ -16,11 +16,11 @@
 // Toggles a tab to show / hide and changes the source image to properly reflect this
 // change. Returns false to avoid post. Example usage:
 // onclick="javascript: return toggleTab(document, this, ${currentTabIndex}) }
-function toggleTab(doc, tabIndex) {
-	if (doc.forms[0].elements['tabState[' + tabIndex + '].open'].value == 'false') {
-        showTab(doc, tabIndex);
+function toggleTab(doc, tabKey) {
+	if (doc.forms[0].elements['tabStates(' + tabKey + ')'].value == 'CLOSE') {
+        showTab(doc, tabKey);
     } else {
-        hideTab(doc, tabIndex);
+        hideTab(doc, tabKey);
 	}
 	return false;
 }
@@ -39,11 +39,11 @@ function collapseAllTab(doc, tabStatesSize) {
 	return false;
 }
 
-function showTab(doc, tabIndex) {
+function showTab(doc, tabKey) {
     // replaced 'block' with '' to make budgetExpensesRow.tag happy.
-    doc.getElementById('tab-' + tabIndex + '-div').style.display = '';
-    doc.forms[0].elements['tabState[' + tabIndex + '].open'].value = 'true';
-    var image = doc.getElementById('tab-' + tabIndex + '-imageToggle');
+    doc.getElementById('tab-' + tabKey + '-div').style.display = '';
+    doc.forms[0].elements['tabStates(' + tabKey + ')'].value = 'OPEN';
+    var image = doc.getElementById('tab-' + tabKey + '-imageToggle');
     image.src = jsContextPath + '/kr/images/tinybutton-hide.gif';
     image.alt = image.alt.replace(/^show/, 'hide');
     image.alt = image.alt.replace(/^open/, 'close');
@@ -52,10 +52,10 @@ function showTab(doc, tabIndex) {
     return false;
 }
 
-function hideTab(doc, tabIndex) {
-    doc.getElementById('tab-' + tabIndex + '-div').style.display = 'none';
-    doc.forms[0].elements['tabState[' + tabIndex + '].open'].value = 'false';
-    var image = doc.getElementById('tab-' + tabIndex + '-imageToggle');
+function hideTab(doc, tabKey) {
+    doc.getElementById('tab-' + tabKey + '-div').style.display = 'none';
+    doc.forms[0].elements['tabStates(' + tabKey + ')'].value = 'CLOSE';
+    var image = doc.getElementById('tab-' + tabKey + '-imageToggle');
     image.src = jsContextPath + '/kr/images/tinybutton-show.gif';
     image.alt = image.alt.replace(/^hide/, 'show');
     image.alt = image.alt.replace(/^close/, 'open');

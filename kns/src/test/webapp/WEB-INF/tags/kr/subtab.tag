@@ -54,7 +54,7 @@
                                     alt="${isOpen ? 'close' : 'open'} ${buttonAlt}"
                                     styleClass="tinybutton"
                                     styleId="tab-${tabKey}-imageToggle"
-                                    onclick="javascript: return toggleTab(document, ${tabKey}); "/>
+                                    onclick="javascript: return toggleTab(document, '${tabKey}'); "/>
 </c:if>
                     <%-- display the title anyway --%>
                     ${subTabTitle}

@@ -390,7 +390,7 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
         super.handleRouteStatusChange();
 
         KualiWorkflowDocument workflowDocument = getDocumentHeader().getWorkflowDocument();
-
+        getNewMaintainableObject().handleRouteStatusChange(getDocumentHeader());
         // commit the changes to the Maintainable BusinessObject when it goes to Processed (ie, fully approved),
         // and also unlock it
         if (workflowDocument.stateIsProcessed()) {

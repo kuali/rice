@@ -24,7 +24,7 @@
 <c:set var="currentTabIndex" value="${KualiForm.currentTabIndex}"/>
 <c:set var="tabKey" value="${kfunc:generateTabKey(tabTitle)}"/>
 <!--  hit form method to increment tab index -->
-<${kfunc:incrementTabIndex(KualiForm)}>
+<${kfunc:incrementTabIndex(KualiForm, tabKey)}>
 
 ${tabKey}
 <c:set var="currentTab" value="${kfunc:getTabState(KualiForm, tabKey)}"/>

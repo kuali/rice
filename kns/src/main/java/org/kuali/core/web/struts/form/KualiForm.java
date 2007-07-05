@@ -22,9 +22,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.Constants;
 import org.kuali.core.datadictionary.HeaderNavigation;
 import org.kuali.core.util.ActionFormUtilMap;
-import org.kuali.core.util.TabState;
 import org.kuali.core.util.TypedArrayList;
 import org.kuali.core.util.WebUtils;
 import org.kuali.core.web.struts.pojo.PojoFormBase;
@@ -131,7 +131,7 @@ public class KualiForm extends PojoFormBase {
      * Special getter based on key to work with multi rows for tab state objects
      */
     public String getTabState(String key) {
-        String state = "OPEN";
+        String state = Constants.EMPTY_STRING;
         if (tabStates.containsKey(key)) {
             if (tabStates.get(key) instanceof String) {
             	state = tabStates.get(key);

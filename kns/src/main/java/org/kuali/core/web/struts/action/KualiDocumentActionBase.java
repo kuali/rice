@@ -259,7 +259,8 @@ public class KualiDocumentActionBase extends KualiAction {
         // if the rule evaluation passed, let's add the ad hoc route person
         if (rulePassed) {
             // uppercase userid for consistency
-            kualiDocumentFormBase.getNewAdHocRoutePerson().setId(StringUtils.upperCase(kualiDocumentFormBase.getNewAdHocRoutePerson().getId()));
+//            kualiDocumentFormBase.getNewAdHocRoutePerson().setId(StringUtils.upperCase(kualiDocumentFormBase.getNewAdHocRoutePerson().getId()));
+        	kualiDocumentFormBase.getNewAdHocRoutePerson().setId(kualiDocumentFormBase.getNewAdHocRoutePerson().getId());
             kualiDocumentFormBase.getAdHocRoutePersons().add(kualiDocumentFormBase.getNewAdHocRoutePerson());
             AdHocRoutePerson person = new AdHocRoutePerson();
             kualiDocumentFormBase.setNewAdHocRoutePerson(person);

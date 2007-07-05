@@ -77,8 +77,7 @@ public class RiceKNSDefaultUserDAOImpl implements UniversalUserDao {
         UniversalUser kUser = new UniversalUser();
         kUser.setPersonPayrollIdentifier(user.getEmplId().getEmplId());
         kUser.setPersonEmailAddress(user.getEmailAddress());
-        kUser.setPersonFirstName(user.getGivenName());
-        kUser.setPersonLastName(user.getLastName());
+        kUser.setPersonName(user.getGivenName());
         kUser.setPersonUserIdentifier(user.getAuthenticationUserId().getAuthenticationId());
         kUser.setPersonUniversalIdentifier(user.getWorkflowId());
         return kUser;

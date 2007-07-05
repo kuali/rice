@@ -34,7 +34,7 @@ public class TimestampAMPMFormatter extends Formatter {
      * 
      * @return a java.util.Date intialized with the provided string
      */
-    protected Object convertToObject(String target) {
+    public Object convertToObject(String target) {
         try {
         	return KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(target);
         }

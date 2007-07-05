@@ -157,6 +157,7 @@
 				<value>classpath:org/kuali/core/bo/datadictionary/Note.xml</value>
 				<value>classpath:org/kuali/core/bo/datadictionary/NoteType.xml</value>
 				<value>classpath:org/kuali/core/bo/datadictionary/UniversalUser.xml</value>
+				<value>classpath:org/kuali/core/bo/datadictionary/RiceUser.xml</value>
 				<value>classpath:org/kuali/core/document/datadictionary/BusinessRuleMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/core/document/datadictionary/BusinessRuleSecurityMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/core/document/datadictionary/CampusMaintenanceDocument.xml</value>
@@ -167,6 +168,7 @@
 				<value>classpath:org/kuali/core/document/datadictionary/FinancialSystemParameterSecurityMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/core/document/datadictionary/FinancialSystemParameterMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/core/document/datadictionary/UniversalUserMaintenanceDocument.xml</value>
+				<value>classpath:org/kuali/core/document/datadictionary/RiceUserMaintenanceDocument.xml</value>
 			</list>
 		</property>
 	</bean>
@@ -294,7 +296,7 @@
 			</list>
 		</property>
 		<property name="stringDateFormat" value="MM/dd/yyyy" />
-		<property name="stringDateTimeFormat" value="MM/dd/yyyy hh:mm a" />
+		<property name="stringDateTimeFormat" value="MM/dd/yyyy hh:mm" />
 	</bean>
 
 	<bean id="businessObjectDictionaryService" class="org.kuali.core.service.impl.BusinessObjectDictionaryServiceImpl">
@@ -493,7 +495,7 @@
 	<bean id="kualiModuleUserDao" class="org.kuali.core.dao.ojb.KualiModuleUserDaoOjb" />
 
 	<bean id="ojbCollectionHelper" class="org.kuali.core.util.OjbCollectionHelper" />
-      	
+
 	<bean id="kualiLookupable" class="org.kuali.core.lookup.KualiLookupableImpl" singleton="false">
 		<property name="lookupableHelperService">
 			<ref bean="kualiLookupableHelperService" />
@@ -605,7 +607,7 @@
 	<bean id="kualiInquirable" class="org.kuali.core.inquiry.KualiInquirableImpl" singleton="false" />
 
 	<bean id="confirmationQuestion" class="org.kuali.core.question.ConfirmationQuestion" singleton="false" />
-
+    
 	<bean id="maintenanceDocumentRuleBase" class="org.kuali.core.maintenance.rules.MaintenanceDocumentRuleBase" abstract="true">
 		<property name="configService">
 			<ref bean="kualiConfigurationService" />

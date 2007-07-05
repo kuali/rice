@@ -400,4 +400,12 @@
 			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
 		<field-descriptor name="campusTypeName" column="CMP_TYP_NM" jdbc-type="VARCHAR" />
 	</class-descriptor>
+	
+	<class-descriptor class="org.kuali.core.bo.user.RiceUser" table="EN_USR_T">
+	    <field-descriptor name="personUniversalIdentifier" column="PRSN_EN_ID" jdbc-type="VARCHAR" primarykey="true" />
+	    <field-descriptor name="universityId" column="PRSN_UNIV_ID" jdbc-type="VARCHAR" />
+	    <field-descriptor name="personUserIdentifier" column="PRSN_NTWRK_ID" jdbc-type="VARCHAR" />
+	    <field-descriptor name="emailAddress" column="PRSN_EMAIL_ADDR" jdbc-type="VARCHAR" />
+	    <field-descriptor name="personName" column="PRSN_NM" jdbc-type="VARCHAR"/>
+  </class-descriptor>
 </descriptor-repository>

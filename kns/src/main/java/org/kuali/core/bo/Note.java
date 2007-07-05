@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 
 import org.kuali.Constants;
 import org.kuali.core.bo.user.UniversalUser;
+import org.kuali.core.web.format.TimestampAMPMFormatter;
 import org.kuali.rice.KNSServiceLocator;
 
 /**
@@ -28,7 +29,12 @@ import org.kuali.rice.KNSServiceLocator;
  */
 public class Note extends PersistableBusinessObjectBase {
 
-    private Long noteIdentifier;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7647166354016356770L;
+	
+	private Long noteIdentifier;
     private String remoteObjectIdentifier;
 	private String authorUniversalIdentifier;
 	private Timestamp notePostedTimestamp;
@@ -134,7 +140,14 @@ public class Note extends PersistableBusinessObjectBase {
 	public void setNotePostedTimestamp(Timestamp notePostedTimestamp) {
 		this.notePostedTimestamp = notePostedTimestamp;
 	}
-
+	
+	public void setNoteFormattedPostedTimestamp(String timestamp) {
+		this.setNotePostedTimestamp((Timestamp) new TimestampAMPMFormatter().convertToObject(timestamp));
+	}
+	
+	public String getNoteFormattedPostedTimestamp() {
+		return (String)new TimestampAMPMFormatter().format(getNotePostedTimestamp());
+	}
 
 	/**
 	 * Gets the noteTypeCode attribute.
@@ -315,4 +328,6 @@ public class Note extends PersistableBusinessObjectBase {
         setAttachment(null);
         setAttachmentIdentifier(null);
     }
+    
+    
 }

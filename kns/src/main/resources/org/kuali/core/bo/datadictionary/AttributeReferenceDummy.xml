@@ -79,7 +79,7 @@
 
                 <maxLength>12</maxLength>
                 <validationPattern>
-                    <numeric />
+                    <anyCharacter />
                 </validationPattern>
 
                 <control>

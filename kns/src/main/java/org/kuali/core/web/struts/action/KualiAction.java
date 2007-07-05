@@ -546,7 +546,13 @@ public abstract class KualiAction extends DispatchAction {
      * @throws Exception
      */
     public ActionForward performWorkgroupLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String returnUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getPath() + ".do";
+    	String returnUrl = null;
+    	if ("/kr".equals(mapping.getModuleConfig().getPrefix())) {
+    		returnUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix() + mapping.getPath() + ".do";
+    	} else {
+    		returnUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getPath() + ".do";
+    	}
+        
 
         String fullParameter = (String) request.getAttribute(Constants.METHOD_TO_CALL_ATTRIBUTE);
         String conversionFields = StringUtils.substringBetween(fullParameter, Constants.METHOD_TO_CALL_PARM1_LEFT_DEL, Constants.METHOD_TO_CALL_PARM1_RIGHT_DEL);

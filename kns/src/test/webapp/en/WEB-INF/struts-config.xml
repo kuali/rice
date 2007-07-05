@@ -17,6 +17,7 @@
       <form-bean name="ApplicationConstantsForm" type="edu.iu.uis.eden.applicationconstants.web.ApplicationConstantsForm" />
       <form-bean name="RuleAttributeReportForm" type="edu.iu.uis.eden.routetemplate.web.RuleAttributeReportForm" />
       <form-bean name="RuleTemplateForm" type="edu.iu.uis.eden.routetemplate.web.RuleTemplateForm" />
+      <form-bean name="WorkgroupTypeForm" type="org.kuali.workflow.workgroup.web.WorkgroupTypeForm" />
       <form-bean name="Rule2Form" type="edu.iu.uis.eden.routetemplate.web.Rule2Form" />
       <form-bean name="RoutingReportForm" type="edu.iu.uis.eden.routetemplate.web.RoutingReportForm" />
       <form-bean name="FeedbackForm" type="edu.iu.uis.eden.feedback.web.FeedbackForm"/>
@@ -213,6 +214,14 @@
           <forward path="/WEB-INF/jsp/routetemplate/RuleTemplateReport.jsp" name="report" />
           <forward name="requiredStateError" path="/WEB-INF/jsp/routetemplate/RuleTemplateReport.jsp"/>
           <forward name="finalStateError" path="/WEB-INF/jsp/routetemplate/RuleTemplateReport.jsp"/>
+       </action>
+
+       <action path="/WorkgroupType" type="org.kuali.workflow.workgroup.web.WorkgroupTypeAction"
+          input="/WEB-INF/jsp/workgroup/WorkgroupTypeReport.jsp"
+          name="WorkgroupTypeForm" scope="request" parameter="methodToCall">
+          <forward path="/WEB-INF/jsp/workgroup/WorkgroupTypeReport.jsp" name="report" />
+          <forward name="requiredStateError" path="/WEB-INF/jsp/workgroup/WorkgroupTypeReport.jsp"/>
+          <forward name="finalStateError" path="/WEB-INF/jsp/workgroup/WorkgroupTypeReport.jsp"/>
        </action>
 
        <action path="/Rule" type="edu.iu.uis.eden.routetemplate.web.Rule2Action"

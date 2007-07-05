@@ -42,7 +42,9 @@
         <c:set var="conversionFields" value="${conversionFields}${field.defaultLookupableName}:${fieldValue}"/>
 	  </c:if>
 
-      <html-el:hidden property="propertyField[${fieldIndex}].key" value="${field.propertyName}"/>
+      <c:if test="${not empty field.propertyName}">
+        <html-el:hidden property="propertyField[${fieldIndex}].key" value="${field.propertyName}"/>
+      </c:if>
 	  <c:choose>
 	    <c:when test="${field.fieldType==field.HIDDEN}" >
 		  <html-el:hidden property="propertyField[${fieldIndex}].value"/>
@@ -117,18 +119,18 @@
 		  <c:when test="${field.fieldType==field.DROPDOWN}" >
             <html-el:select property="propertyField[${fieldIndex}].value" style="background: rgb(255, 255, 255) none repeat scroll 0%; font-family: verdana,arial,helvetica,sans-serif; font-size: 10px; -moz-background-clip: initial; -moz-background-inline-policy: initial; -moz-background-origin: initial; color: rgb(51, 51, 153);">
  			  <c:set var="fieldValidValues" value="${field.fieldValidValues}" />
-			  <html-el:options collection="fieldValidValues" property="key" labelProperty="label" />
+			  <html-el:options collection="fieldValidValues" property="key" labelProperty="label" filter="false" />
 			</html-el:select>
 		  </c:when>
 		  <c:when test="${field.fieldType==field.DROPDOWN_REFRESH}" >
             <html-el:select property="propertyField[${fieldIndex}].value" onchange="document.forms[0].methodToCall.value='noOp';document.forms[0].submit();" style="background: rgb(255, 255, 255) none repeat scroll 0%; font-family: verdana,arial,helvetica,sans-serif; font-size: 10px; -moz-background-clip: initial; -moz-background-inline-policy: initial; -moz-background-origin: initial; color: rgb(51, 51, 153);">
   			  <c:set var="fieldValidValues" value="${field.fieldValidValues}" />
-  			  <html-el:options collection="fieldValidValues" property="key" labelProperty="label" />
+  			  <html-el:options collection="fieldValidValues" property="key" labelProperty="label" filter="false" />
 			</html-el:select>
 		  </c:when>										
 		  <c:when test="${field.fieldType==field.RADIO}" >
 			<c:forEach items="${field.fieldValidValues}" var="radio">
-              <html-el:radio property="propertyField[${fieldIndex}].value" value="${radio.key}"/><c:out value="${radio.label}" />
+              <html-el:radio property="propertyField[${fieldIndex}].value" value="${radio.key}" /><c:out value="${radio.label}" />
 			</c:forEach>
 		  </c:when>
 		  <c:when test="${field.fieldType==field.QUICKFINDER}" >
@@ -165,6 +167,7 @@
 	    <html-el:hidden property="searchableAttributeRow[${rowIndex}].field[${rowFieldIndex}].fieldDataType"/>
 	    <html-el:hidden property="searchableAttributeRow[${rowIndex}].field[${rowFieldIndex}].propertyName"/>
   	    <html-el:hidden property="searchableAttributeRow[${rowIndex}].field[${rowFieldIndex}].propertyValue" /> 
+  	    <html-el:hidden property="searchableAttributeRow[${rowIndex}].field[${rowFieldIndex}].propertyValues" /> 
 	    <html-el:hidden property="searchableAttributeRow[${rowIndex}].field[${rowFieldIndex}].defaultLookupableName"/>
 	    <html-el:hidden property="searchableAttributeRow[${rowIndex}].field[${rowFieldIndex}].quickFinderClassNameImpl"/>
 	    <html-el:hidden property="searchableAttributeRow[${rowIndex}].field[${rowFieldIndex}].allowWildcards"/>
@@ -177,7 +180,9 @@
 	    <html-el:hidden property="searchableAttributeRow[${rowIndex}].field[${rowFieldIndex}].memberOfRange"/>
     </c:if>    
 
-  	<c:set var="fieldIndex" value="${fieldIndex+1}"/>
+	<c:if test="${not empty field.propertyName}">
+        <c:set var="fieldIndex" value="${fieldIndex+1}"/>
+	</c:if>
     <c:set var="rowFieldIndex" value="${rowFieldIndex+1}"/>
   </c:forEach>
 

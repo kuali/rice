@@ -40,7 +40,7 @@ public class MaintenanceDocumentTest extends KNSTestBase {
     public void setUp() throws Exception {
         super.setUp();
         GlobalVariables.setUserSession(new UserSession("quickstart"));
-        document = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getNewDocument("TravelFiscalOfficerDocument");
+        document = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getNewDocument("FiscalOfficerMaintenanceDocument");
     }
 
     private void setupNewAccountMaintDoc(MaintenanceDocument document) {

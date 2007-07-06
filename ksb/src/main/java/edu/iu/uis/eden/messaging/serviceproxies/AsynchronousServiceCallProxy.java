@@ -3,11 +3,8 @@ package edu.iu.uis.eden.messaging.serviceproxies;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-
-import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
@@ -16,12 +13,10 @@ import org.kuali.rice.proxy.TargetedInvocationHandler;
 import org.kuali.rice.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.util.ClassLoaderUtils;
 
-import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 import edu.iu.uis.eden.messaging.AsynchronousCall;
 import edu.iu.uis.eden.messaging.AsynchronousCallback;
 import edu.iu.uis.eden.messaging.PersistedMessage;
 import edu.iu.uis.eden.messaging.RemotedServiceHolder;
-import edu.iu.uis.eden.messaging.RepeatTopicInvokerQueue;
 import edu.iu.uis.eden.messaging.ServiceInfo;
 
 /**
@@ -89,13 +84,14 @@ public class AsynchronousServiceCallProxy extends BaseInvocationHandler implemen
 		}
 
 		if (this.repeatCallTimeIncrement != null && this.topicService) {
-			QName repeatTopicInvokingQueueName = new QName("KEW", "RepeatTopicInvokerQueue");
-			// the above work will send the first message. Offset the next send
-			// of the topic by the time increment of the repeated call
-			Timestamp deliveryDate = new Timestamp(message.getQueueDate().getTime() + this.repeatCallTimeIncrement);
-			RepeatTopicInvokerQueue repeatTopicInvokingQueue = (RepeatTopicInvokerQueue) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(repeatTopicInvokingQueueName, deliveryDate, null, TimeUnit.MILLISECONDS,
-					this.repeatCallTimeIncrement);
-			repeatTopicInvokingQueue.invokeTopic(methodCall);
+			throw new UnsupportedOperationException("repeating topic invocation not supported.  get quartz.");
+//			QName repeatTopicInvokingQueueName = new QName("KEW", "RepeatTopicInvokerQueue");
+//			// the above work will send the first message. Offset the next send
+//			// of the topic by the time increment of the repeated call
+//			Timestamp deliveryDate = new Timestamp(message.getQueueDate().getTime() + this.repeatCallTimeIncrement);
+//			RepeatTopicInvokerQueue repeatTopicInvokingQueue = (RepeatTopicInvokerQueue) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(repeatTopicInvokingQueueName, deliveryDate, null, TimeUnit.MILLISECONDS,
+//					this.repeatCallTimeIncrement);
+//			repeatTopicInvokingQueue.invokeTopic(methodCall);
 		}
 
 		return null;

@@ -24,7 +24,7 @@ import org.kuali.rice.resourceloader.SpringResourceLoader;
  * handles automatic tear down of objects created inside the test environment.
  * 
  * @author rkirkend
- * @version $Revision: 1.2 $ $Date: 2007-06-19 14:35:13 $
+ * @version $Revision: 1.3 $ $Date: 2007-07-06 22:07:29 $
  * @since 0.9
  */
 public abstract class RiceTestCase extends LoggableTestCase {
@@ -43,16 +43,23 @@ public abstract class RiceTestCase extends LoggableTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		beforeRun();
-		final long initTime = System.currentTimeMillis();
-		this.perTestLifeCycles = getPerTestLifecycles();
-		this.suiteLifeCycles = getSuiteLifecycles();
-		startLifecycles(this.perTestLifeCycles);
-		if (!SUITE_LIFE_CYCLES_RAN) {
-			startLifecycles(this.suiteLifeCycles);
-			SUITE_LIFE_CYCLES_RAN = true;
+		try {
+			beforeRun();
+			final long initTime = System.currentTimeMillis();
+			this.perTestLifeCycles = getPerTestLifecycles();
+			this.suiteLifeCycles = getSuiteLifecycles();
+
+			startLifecycles(this.perTestLifeCycles);
+
+			if (!SUITE_LIFE_CYCLES_RAN) {
+				startLifecycles(this.suiteLifeCycles);
+				SUITE_LIFE_CYCLES_RAN = true;
+			}
+			report("Time to start all Lifecycles: " + (System.currentTimeMillis() - initTime));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
 		}
-		report("Time to start all Lifecycles: " + (System.currentTimeMillis() - initTime));
 	}
 
 	/**

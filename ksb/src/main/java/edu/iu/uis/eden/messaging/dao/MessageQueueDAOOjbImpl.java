@@ -95,8 +95,13 @@ public class MessageQueueDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
         crit.addEqualTo("messageEntity", messagingEntity);
         crit.addEqualTo("queueStatus", RiceConstants.ROUTE_QUEUE_QUEUED);
         crit.addEqualTo("ipNumber", RiceUtilities.getIpNumber());
-        Timestamp currentDate = new Timestamp(new Date().getTime());
-        crit.addLessThan("queueDate", currentDate);
+
+        //Date fetching does not seem to work with derby...
+        if (Core.getCurrentContextConfig().getProperty("datasource.ojb.platform").indexOf("Derby") == -1) {
+        	Timestamp currentDate = new Timestamp(new Date().getTime());
+            crit.addLessThan("queueDate", currentDate);	
+        }
+        
         QueryByCriteria query = new QueryByCriteria(PersistedMessage.class, crit);
         query.addOrderByAscending("queuePriority");
         query.addOrderByAscending("routeQueueId");

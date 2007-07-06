@@ -49,9 +49,7 @@
 						<list>
 							<bean class="edu.iu.uis.eden.messaging.config.ServiceHolder">
 								<property name="localServiceName" value="exceptionMessagingService" />
-								<property name="service">
-									<bean class="edu.iu.uis.eden.messaging.exceptionhandling.TestExceptionHandlerServiceImpl" />
-								</property>
+								<property name="service" ref="testExceptionHandlerService" />
 							</bean>
 						</list>
 					</property>
@@ -104,7 +102,7 @@
 									<ref bean="testExplodingQueueTimeLimit" />
 								</property>
 								<property name="localServiceName" value="explodingQueueTimeLimit" />
-								<property name="millisToLive" value="3000" />
+								<property name="millisToLive" value="2000" />
 							</bean>
 							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
 								<property name="service">
@@ -148,6 +146,45 @@
 	<bean id="testLocalServiceFavoriteCall" class="edu.iu.uis.eden.messaging.remotedservices.GenericTestService" />
 	<bean id="soapService" class="edu.iu.uis.eden.messaging.remotedservices.SOAPServiceImpl" />
 	
-	
+	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
+		<property name="userTransaction">
+			<ref local="jotm" />
+		</property>
+		<property name="transactionManager">
+			<ref local="jotm" />
+		</property>
+	</bean>	
+	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" lazy-init="true">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+	</bean>
+	<bean id="matchAllWithPropReq" class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource" lazy-init="true">
+		<property name="transactionAttribute">
+			<value>PROPAGATION_REQUIRED</value>
+		</property>
+	</bean>
+	<bean id="matchAllTxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor" lazy-init="true">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="transactionAttributeSource">
+			<ref bean="matchAllWithPropReq" />
+		</property>
+	</bean>
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
+		<property name="interceptorNames">
+			<list>
+				<idref local="matchAllTxInterceptor" />
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<idref local="testExceptionHandlerService" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="testExceptionHandlerService" class="edu.iu.uis.eden.messaging.exceptionhandling.TestExceptionHandlerServiceImpl" />
 
 </beans>

@@ -84,6 +84,7 @@ public class ExceptionMessagingTest extends KSBTestCase {
 		TestUtilities.waitForExceptionRouting();
 		
 		this.callback.pauseUntilNumberCallbacksUsingStaticCounter(3, this.retryCountServiceName);
+		Thread.sleep(4000);
 		
 		assertEquals("Service should have been called 3 times", 3, TesetHarnessExplodingQueue.NUM_CALLS);
 		

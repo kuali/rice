@@ -137,7 +137,7 @@ public class ExtensionAttributeTest extends KNSTestBase {
 		ta.setName( "Test Name" );
 		ta.setNumber( "1234567" );
         GlobalVariables.setUserSession(new UserSession("quickstart"));
-        MaintenanceDocument document = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getNewDocument("TravelAccountDocument");
+        MaintenanceDocument document = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getNewDocument("TravelAccountMaintenanceDocument");
         assertNotNull( "new document must not be null", document );
         document.getDocumentHeader().setFinancialDocumentDescription( getClass().getSimpleName() + "test" );
         document.getOldMaintainableObject().setBusinessObject(null);

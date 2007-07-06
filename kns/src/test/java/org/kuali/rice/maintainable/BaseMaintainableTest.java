@@ -34,7 +34,7 @@ public class BaseMaintainableTest extends KNSTestCase {
         maintForm.getInputByName("document.newMaintainableObject.number").setValueAttribute("a6");
         maintForm.getInputByName("document.newMaintainableObject.name").setValueAttribute("myaccount");
         maintForm.getInputByName("document.newMaintainableObject.foId").setValueAttribute("1");
-        maintForm.getSelectByName("document.newMaintainableObject.accountType").setSelectedAttribute("CAT", true);
+        maintForm.getSelectByName("document.newMaintainableObject.extension.accountTypeCode").setSelectedAttribute("CAT", true);
         HtmlPage returnPage = (HtmlPage)((HtmlInput)maintForm.getInputByName("methodToCall.route")).click();
         assertTrue("Document not successfully routed", HtmlUnitUtil.pageContainsText(returnPage, "Document was successfully submitted"));
     }

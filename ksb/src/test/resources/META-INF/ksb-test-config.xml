@@ -1,7 +1,7 @@
 <config>
 
 	<param name="config.location">classpath:META-INF/common-derby-connection-config.xml</param>
-	<param name="config.location">classpath:META-INF/common-locations-test-config.xml</param>
+	<param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
 
 	<param name="client1.location">${basedir}/src/test/clients/TestClient1</param>	
 	<param name="client2.location">${basedir}/src/test/clients/TestClient2</param>

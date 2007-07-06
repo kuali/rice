@@ -75,24 +75,19 @@ public class MessageHelperImpl implements MessageHelper {
 	}
 
 	public Object getServiceAsynchronously(QName qname, Date deliveryDate) {
-		return getAsynchronousServiceCallProxy(qname, null, null, deliveryDate, null);
+		return getAsynchronousServiceCallProxy(qname, null, null, null, null);
 	}
 
 	public Object getServiceAsynchronously(QName qname, Date deliveryDate, AsynchronousCallback callback) {
-		return getAsynchronousServiceCallProxy(qname, callback, null, deliveryDate, null);
+		return getAsynchronousServiceCallProxy(qname, null, null, null, null);
 	}
 
 	public Object getServiceAsynchronously(QName qname, Date deliveryDate, AsynchronousCallback callback, TimeUnit repeatTimeUnit, Long repeatDelay) {
-		Long millisRepeatIncrement = repeatTimeUnit.toMillis(repeatDelay);
-		return getAsynchronousServiceCallProxy(qname, callback, null, deliveryDate, millisRepeatIncrement);
+		return getAsynchronousServiceCallProxy(qname, null, null, null, null);
 	}
 	
 	public Object getServiceAsynchronously(QName qname, Date deliveryDate, AsynchronousCallback callback, TimeUnit repeatTimeUnit, Long repeatDelay, Serializable context) {
-		Long millisRepeatIncrement = null;
-		if (repeatTimeUnit != null) {
-			millisRepeatIncrement = repeatTimeUnit.toMillis(repeatDelay);
-		}
-		return getAsynchronousServiceCallProxy(qname, callback, context, deliveryDate, millisRepeatIncrement);
+		return getAsynchronousServiceCallProxy(qname, null, null, null, null);
 	}
 
 	public Object getAsynchronousServiceCallProxy(QName qname, AsynchronousCallback callback, Serializable context, Date deliveryDate, Long repeatCallTimeIncrement) {

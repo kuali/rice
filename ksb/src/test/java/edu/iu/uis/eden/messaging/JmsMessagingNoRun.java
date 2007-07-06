@@ -16,14 +16,13 @@
  */
 package edu.iu.uis.eden.messaging;
 
-import org.kuali.bus.test.KSBTestCase;
 
 
 /**
  *
  * @author rkirkend
  */
-public class JmsMessagingTest extends KSBTestCase {
+public class JmsMessagingNoRun {
     // TODO renable this test
 	
 //	private TestClient1 testClient1;

@@ -28,12 +28,16 @@ public class KSBTestCase extends RiceTestCase {
 
 	private TestClient1 testClient1;
 	private TestClient2 testClient2;
-	private ResourceLoader springContextResourceLoader = new SpringResourceLoader(new QName("ksbtestharness"), "KSBTestHarnessSpring.xml");
+	private ResourceLoader springContextResourceLoader;
 	
 	
 	
 	@Override
 	public void setUp() throws Exception {
+		//because we're stopping and starting so many times we need to clear the core before 
+		//another set of RLs get put in the core.  This is because we are sometimes using 
+		//the GRL to fetch a specific servers spring file out for testing purposes.
+		Core.destroy();
 		super.setUp();
 		if (startClient1() || startClient2()) {
 			((Runnable)KSBResourceLoaderFactory.getRemoteResourceLocator()).run();	
@@ -60,6 +64,7 @@ public class KSBTestCase extends RiceTestCase {
 	@Override
 	protected List<Lifecycle> getPerTestLifecycles() {
 		List<Lifecycle> lifecycles = super.getPerTestLifecycles();
+		this.springContextResourceLoader = new SpringResourceLoader(new QName("ksbtestharness"), "KSBTestHarnessSpring.xml");
 		lifecycles.add(this.springContextResourceLoader);
 		if (startClient1()) {
 		    this.testClient1 = new TestClient1();
@@ -137,6 +142,7 @@ public class KSBTestCase extends RiceTestCase {
 				try {
 					//TestClient1SpringContext found in web.xml of TestClient1
 					ApplicationContext appContext = (ApplicationContext)Core.getCurrentContextConfig().getObject("TestClient1SpringContext");
+					
 					return appContext.getBean(serviceName);
 				} finally {
 					Thread.currentThread().setContextClassLoader(old);	

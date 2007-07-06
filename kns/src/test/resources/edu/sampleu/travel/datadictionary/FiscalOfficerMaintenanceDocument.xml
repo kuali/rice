@@ -31,7 +31,7 @@
             </authorization>
         </authorizations>
         
-        <documentTypeName>TravelFiscalOfficerDocument</documentTypeName>
+        <documentTypeName>FiscalOfficerMaintenanceDocument</documentTypeName>
         <documentTypeCode>TRFO</documentTypeCode>
 
         <label>Travel Fiscal Officer Maintenance Document</label>

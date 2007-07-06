@@ -27,6 +27,11 @@ public class TestExceptionHandlerServiceImpl extends DefaultExceptionServiceImpl
 		}
 
 		public void run() {
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		    this.testExceptionService.callRealPlaceInExceptionRouting(this.throwable, this.message, this.service);
 		}
 	}

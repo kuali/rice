@@ -10,7 +10,11 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
 
 public class TravelAccount extends PersistableBusinessObjectBase {
     
-    private String number;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7739303391609093875L;
+	private String number;
     private String name;
     private Long foId;
     private FiscalOfficer fiscalOfficer;    

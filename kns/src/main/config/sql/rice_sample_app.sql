@@ -74,7 +74,7 @@ insert into en_usr_t values ('quickstart','quickstart','quickstart','quickstart'
 /
 insert into en_wrkgrp_t values (1,1,'WorkflowAdmin',1,'W','Workflow Administrator Workgroup',1,null,0) 
 /
-insert into EN_WRKGRP_MBR_T values ('quickstart',1,1,0) 
+insert into EN_WRKGRP_MBR_T values ('quickstart',1,1,0,'U') 
 /
 
 insert into FP_DOC_TYPE_T values ('TRVA', '1A6FEB2501C7607EE043814FD881607E', 1, 'TR', 'TRAV ACCNT', 'N', 'Y', 'N', 0, 'N', 'N')

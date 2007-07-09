@@ -23,5 +23,7 @@ public class RiceConstants {
     // custom http header keys
     public static final String DIGITAL_SIGNATURE_HEADER = "KEW_DIGITAL_SIGNATURE";
 	public static final String KEYSTORE_ALIAS_HEADER = "KEW_KEYSTORE_ALIAS";
+	
+	
 
 }

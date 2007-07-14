@@ -54,14 +54,6 @@ public class PersistedMessage implements Serializable {
 		this.messageEntity = messageEntity;
 	}
 
-//	public String getRouteQueueStatusLabel() {
-//        if (this.queueStatus != null && ! "".equals(this.queueStatus)) {
-//          return CodeTranslator.getRouteQueueStatusLabel(this.queueStatus);
-//        } else {
-//            return null;
-//        }
-//    }
-    
     public String getIpNumber() {
         return this.ipNumber;
     }

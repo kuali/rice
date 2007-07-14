@@ -67,7 +67,7 @@ public class ServiceInfo implements Serializable {
 	}
 
 	public ServiceDefinition getServiceDefinition() {
-		if (this.serviceDefinition == null) {
+		if (this.serviceDefinition == null && this.serializedMessageEntity != null) {
 		    this.serviceDefinition = (ServiceDefinition)KSBServiceLocator.getMessageHelper().deserializeObject(this.serializedMessageEntity);
 		}
 		return this.serviceDefinition;

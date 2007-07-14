@@ -49,6 +49,9 @@ public class MessageHelperImpl implements MessageHelper {
 	}
 
 	public Object deserializeObject(String serializedObject) {
+        if (serializedObject == null) {
+            return serializedObject;
+        }
 		Base64 b64 = new Base64();
 		byte[] result = b64.decode(serializedObject.getBytes());
 		Object payload = null;

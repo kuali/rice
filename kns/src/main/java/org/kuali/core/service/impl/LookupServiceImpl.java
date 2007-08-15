@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.dao.LookupDao;
 import org.kuali.core.service.AuthorizationService;
@@ -99,7 +99,7 @@ public class LookupServiceImpl implements LookupService {
             if (StringUtils.isBlank(pkValue)) {
                 returnVal = false;
             }
-            else if (StringUtils.indexOfAny(pkValue, Constants.QUERY_CHARACTERS) != -1) {
+            else if (StringUtils.indexOfAny(pkValue, RiceConstants.QUERY_CHARACTERS) != -1) {
                 returnVal = false;
             }
         }

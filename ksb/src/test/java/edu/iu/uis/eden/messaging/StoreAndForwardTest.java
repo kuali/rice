@@ -47,8 +47,6 @@ public class StoreAndForwardTest extends KSBTestCase {
 		KEWXMLService testXmlAsyncService = (KEWXMLService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 		testXmlAsyncService.invoke("message content");
 		verifyServiceCalls();
-//		sleep 3 to let the call get flushed from testClient1 for smooth shutdown.  could use a callback to guarantee this is done, being lazy
-		Thread.sleep(3000);
 	}
 	
 	private void verifyServiceCalls() throws Exception {

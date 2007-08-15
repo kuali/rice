@@ -17,11 +17,8 @@
 package edu.iu.uis.eden.messaging;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.xml.namespace.QName;
-
-import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
 
 /**
@@ -33,8 +30,8 @@ public interface MessageHelper {
 	public String serializeObject(Serializable object);
 	public Object deserializeObject(String serializedObject);
 	public Object getServiceAsynchronously(QName qname);
-	public Object getServiceAsynchronously(QName qname, Date deliveryDate);
-	public Object getServiceAsynchronously(QName qname, Date deliveryDate, AsynchronousCallback callback);
-	public Object getServiceAsynchronously(QName qname, Date deliveryDate, AsynchronousCallback callback, TimeUnit unit, Long repeatDelay);
-	public Object getServiceAsynchronously(QName qname, Date deliveryDate, AsynchronousCallback callback, TimeUnit repeatTimeUnit, Long repeatDelay, Serializable context);
+	public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback);
+	public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context);
+	public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context, String value1, String value2);
+	public Object getServiceAsynchronously(QName qname, Serializable context, String value1, String value2, long delayMilliseconds);
 }

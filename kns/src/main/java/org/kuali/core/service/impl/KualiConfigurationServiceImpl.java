@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessRule;
 import org.kuali.core.bo.FinancialSystemParameter;
 import org.kuali.core.exceptions.ApplicationParameterException;
@@ -106,8 +106,8 @@ public class KualiConfigurationServiceImpl extends AbstractStaticConfigurationSe
             throw new IllegalArgumentException("blank parameter: '" + parameter + "'");
         }
         HashMap map = new HashMap();
-        map.put(Constants.PARM_SECTION_NAME_FIELD, scriptName);
-        map.put(Constants.PARM_PARM_NAME_FIELD, parameter);
+        map.put(RiceConstants.PARM_SECTION_NAME_FIELD, scriptName);
+        map.put(RiceConstants.PARM_PARM_NAME_FIELD, parameter);
         return businessObjectService.findMatching(FinancialSystemParameter.class, map);
     }
 
@@ -210,7 +210,7 @@ public class KualiConfigurationServiceImpl extends AbstractStaticConfigurationSe
 
         Map<String, FinancialSystemParameter> out = new HashMap<String, FinancialSystemParameter>();
 
-        map.put(Constants.PARM_SECTION_NAME_FIELD, groupName);
+        map.put(RiceConstants.PARM_SECTION_NAME_FIELD, groupName);
         Collection parms = businessObjectService.findMatching(FinancialSystemParameter.class, map);
 
         for (Iterator iter = parms.iterator(); iter.hasNext();) {
@@ -225,7 +225,7 @@ public class KualiConfigurationServiceImpl extends AbstractStaticConfigurationSe
     }
     
     public boolean isProductionEnvironment() {
-        return getPropertyString( Constants.PROD_ENVIRONMENT_CODE_KEY ).equals( getPropertyString( Constants.ENVIRONMENT_KEY ) );
+        return getPropertyString( RiceConstants.PROD_ENVIRONMENT_CODE_KEY ).equals( getPropertyString( RiceConstants.ENVIRONMENT_KEY ) );
     }
 
 }

@@ -20,14 +20,14 @@ package edu.iu.uis.eden.messaging.threadpool;
 import org.kuali.rice.lifecycle.Lifecycle;
 
 import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
-import edu.emory.mathcs.backport.java.util.concurrent.ScheduledExecutorService;
+import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 
 /**
  * A thread pool which can be used to schedule asynchronous tasks.
  *
  * @author rkirkend
  */
-public interface KSBThreadPool extends ScheduledExecutorService, Lifecycle {
+public interface KSBThreadPool extends ExecutorService, Lifecycle {
 
 	public boolean remove(Runnable task);
 
@@ -36,17 +36,23 @@ public interface KSBThreadPool extends ScheduledExecutorService, Lifecycle {
 	public void setCorePoolSize(int corePoolSize);
 
 	public int getCorePoolSize();
+	
+	public int getMaximumPoolSize();
 
-	public long getFetchFrequency();
+	public void setMaximumPoolSize(int maxPoolSize);
 
-	public void setFetchFrequency(long fetchFrequency);
+	public int getPoolSize();
 
-	public long getInitialFetchDelay();
+	public int getLargestPoolSize();
 
-	public void setInitialFetchDelay(long initialFetchDelay);
+	public long getKeepAliveTime();
 
-	public boolean isThreadPoolOn();
+	public long getTaskCount();
+
+	public long getCompletedTaskCount();
 
 	public BlockingQueue getQueue();
+
+	public Object getInstance();
 }
 

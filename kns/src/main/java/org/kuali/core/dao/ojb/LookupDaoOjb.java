@@ -30,8 +30,8 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
-import org.kuali.Constants;
-import org.kuali.KeyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.dao.LookupDao;
@@ -156,7 +156,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             if (StringUtils.isBlank(pkValue)) {
                 throw new RuntimeException("Missing pk value for field " + pkFieldName + " when a search based on PK values only is performed.");
             }
-            else if (StringUtils.indexOfAny(pkValue, Constants.QUERY_CHARACTERS) != -1) {
+            else if (StringUtils.indexOfAny(pkValue, RiceConstants.QUERY_CHARACTERS) != -1) {
                 throw new RuntimeException("Value \"" + pkValue + "\" for PK field " + pkFieldName + " contains wildcard/operator characters.");
             }
             createCriteria(businessObject, pkValue, pkFieldName, false, criteria);
@@ -200,14 +200,10 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             searchResults = bos;
         }
         catch (OjbOperationException e) {
-            // TODO when KULRNE-4326 is done, replace the 2 lines below with this: throw new RuntimeException("LookupDaoOjb encountered exception during executeSearch", e);
-            LOG.debug("Caught OjbOperationException while executing search: " + businessObjectClass, e);
-            GlobalVariables.getErrorMap().putError(Constants.DOCUMENT_ERRORS, KeyConstants.ERROR_CUSTOM, new String[] { "Invalid Input" });
+            throw new RuntimeException("LookupDaoOjb encountered exception during executeSearch", e);
         }
         catch (DataIntegrityViolationException e) {
-            // TODO when KULRNE-4326 is done, replace the 2 lines below with this: throw new RuntimeException("LookupDaoOjb encountered exception during executeSearch", e);
-            LOG.debug("Caught DataIntegrityViolationException while executing search: " + businessObjectClass, e);
-            GlobalVariables.getErrorMap().putError(Constants.DOCUMENT_ERRORS, KeyConstants.ERROR_CUSTOM, new String[] { "Invalid Input" });
+            throw new RuntimeException("LookupDaoOjb encountered exception during executeSearch", e);
         }
         return new CollectionIncomplete(searchResults, matchingResultsCount);   
     }
@@ -375,12 +371,12 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      */
     private void addCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
         
-        if (StringUtils.contains(propertyValue, Constants.OR_LOGICAL_OPERATOR)) {
+        if (StringUtils.contains(propertyValue, RiceConstants.OR_LOGICAL_OPERATOR)) {
             addOrCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
             return;
         }
 
-        if (StringUtils.contains(propertyValue, Constants.AND_LOGICAL_OPERATOR)) {
+        if (StringUtils.contains(propertyValue, RiceConstants.AND_LOGICAL_OPERATOR)) {
             addAndCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
             return;
         }
@@ -391,7 +387,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         		propertyName = getDbPlatform().getUpperCaseFunction() + "(" + propertyName + ")";
         		propertyValue = propertyValue.toUpperCase();
         	}
-            if (StringUtils.contains(propertyValue, Constants.NOT_LOGICAL_OPERATOR)) {
+            if (StringUtils.contains(propertyValue, RiceConstants.NOT_LOGICAL_OPERATOR)) {
                 addNotCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
             } else if (StringUtils.contains(propertyValue, "..") || StringUtils.contains(propertyValue, ">") 
                     || StringUtils.contains(propertyValue, "<")  || StringUtils.contains(propertyValue, ">=") 
@@ -420,7 +416,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      * @param criteria
      */
     private void addOrCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
-        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, Constants.OR_LOGICAL_OPERATOR);
+        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, RiceConstants.OR_LOGICAL_OPERATOR);
     }
 
     /**
@@ -430,17 +426,17 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      * @param criteria
      */
     private void addAndCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
-        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, Constants.AND_LOGICAL_OPERATOR);
+        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, RiceConstants.AND_LOGICAL_OPERATOR);
     }
 
     private void addNotCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
 
-        String[] splitPropVal = StringUtils.split(propertyValue, Constants.NOT_LOGICAL_OPERATOR);
+        String[] splitPropVal = StringUtils.split(propertyValue, RiceConstants.NOT_LOGICAL_OPERATOR);
 
         int strLength = splitPropVal.length;
         // if more than one NOT operator assume an implicit and (i.e. !a!b = !a&!b)
         if (strLength > 1) {
-            String expandedNot = "!" + StringUtils.join(splitPropVal, Constants.AND_LOGICAL_OPERATOR + Constants.NOT_LOGICAL_OPERATOR);
+            String expandedNot = "!" + StringUtils.join(splitPropVal, RiceConstants.AND_LOGICAL_OPERATOR + RiceConstants.NOT_LOGICAL_OPERATOR);
             addCriteria(propertyName, expandedNot, propertyType, caseInsensitive, criteria);
         }
         else {
@@ -462,10 +458,10 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         	Criteria predicate = new Criteria();
 
             addCriteria(propertyName, splitPropVal[i], propertyType, caseInsensitive, predicate);
-            if (splitValue == Constants.OR_LOGICAL_OPERATOR) {
+            if (splitValue == RiceConstants.OR_LOGICAL_OPERATOR) {
             	subCriteria.addOrCriteria(predicate);
             }
-            if (splitValue == Constants.AND_LOGICAL_OPERATOR) {
+            if (splitValue == RiceConstants.AND_LOGICAL_OPERATOR) {
             	subCriteria.addAndCriteria(predicate);
             }
         }
@@ -526,7 +522,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         try {
             return new BigDecimal( cleanedValue );
         } catch ( NumberFormatException ex ) {
-            GlobalVariables.getErrorMap().putError(Constants.DOCUMENT_ERRORS, KeyConstants.ERROR_CUSTOM, new String[] { "Invalid Numeric Input: " + value });
+            GlobalVariables.getErrorMap().putError(RiceConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_CUSTOM, new String[] { "Invalid Numeric Input: " + value });
             return null;
         }
     }

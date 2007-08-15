@@ -18,6 +18,7 @@ package org.kuali.core.datadictionary.exporter;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.core.datadictionary.BusinessObjectEntry;
 import org.kuali.core.datadictionary.DataDictionaryEntry;
 import org.kuali.core.datadictionary.MaintenanceDocumentEntry;
@@ -46,6 +47,10 @@ public class DataDictionaryMap extends DataDictionaryMapBase {
                 subMap = ddMap.get( key );
                 if ( subMap == null ) { // recheck in case it was loaded by another thread while this one was blocked
                     DataDictionaryEntry entry = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry( key.toString() );
+                    // if that fails try just using the simple name if a full class name was passed
+                    if ( entry == null && key.toString().indexOf( "." ) != -1 ) {
+                    	entry = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry( StringUtils.substringAfterLast( key.toString(), "." ) );
+                    }
                     if ( entry != null ) {
                         if ( entry instanceof BusinessObjectEntry ) {
                             subMap = boMapper.mapEntry( (BusinessObjectEntry)entry ).getExportData();                    

@@ -15,7 +15,7 @@
  */
 package org.kuali.core.exceptions;
 
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 
 /**
  * This class represents an exception that is thrown when a maintenance document type does not allow
@@ -32,6 +32,6 @@ public class MaintenanceNewCopyAuthorizationException extends DocumentTypeAuthor
      * @see AuthorizationException#getErrorMessageKey()
      */
     public String getErrorMessageKey() {
-        return KeyConstants.AUTHORIZATION_ERROR_MAINTENANCE_NEWCOPY;
+        return RiceKeyConstants.AUTHORIZATION_ERROR_MAINTENANCE_NEWCOPY;
     }
 }

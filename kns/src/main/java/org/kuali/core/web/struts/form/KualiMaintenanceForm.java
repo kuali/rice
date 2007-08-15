@@ -24,8 +24,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
-import org.kuali.KeyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.core.authorization.AuthorizationConstants;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.document.Document;
@@ -88,7 +88,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         super.postprocessRequestParameters(requestParameters);
 
         String docTypeName = null;
-        String[] docTypeNames = (String[]) requestParameters.get(Constants.DOCUMENT_TYPE_NAME);
+        String[] docTypeNames = (String[]) requestParameters.get(RiceConstants.DOCUMENT_TYPE_NAME);
         if ((docTypeNames != null) && (docTypeNames.length > 0)) {
             docTypeName = docTypeNames[0];
         }
@@ -114,12 +114,12 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             Map<String,Object> localNewCollectionValues = new HashMap<String,Object>();
             for (Enumeration i = request.getParameterNames(); i.hasMoreElements();) {
                 String parameter = (String) i.nextElement();
-                if (parameter.toUpperCase().startsWith(Constants.MAINTENANCE_OLD_MAINTAINABLE.toUpperCase())) {
-                    String propertyName = parameter.substring(Constants.MAINTENANCE_OLD_MAINTAINABLE.length());
+                if (parameter.toUpperCase().startsWith(RiceConstants.MAINTENANCE_OLD_MAINTAINABLE.toUpperCase())) {
+                    String propertyName = parameter.substring(RiceConstants.MAINTENANCE_OLD_MAINTAINABLE.length());
                     localOldMaintainableValues.put(propertyName, request.getParameter(parameter));
                 }
-                if (parameter.toUpperCase().startsWith(Constants.MAINTENANCE_NEW_MAINTAINABLE.toUpperCase())) {
-                    String propertyName = parameter.substring(Constants.MAINTENANCE_NEW_MAINTAINABLE.length());
+                if (parameter.toUpperCase().startsWith(RiceConstants.MAINTENANCE_NEW_MAINTAINABLE.toUpperCase())) {
+                    String propertyName = parameter.substring(RiceConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
                     localNewMaintainableValues.put(propertyName, request.getParameter(parameter));
                 }
             }
@@ -127,8 +127,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             // for use in a separate call to the maintainable
             for ( Object obj : localNewMaintainableValues.entrySet() ) {
                 String key = (String)((Map.Entry)obj).getKey(); 
-                if ( key.startsWith( Constants.MAINTENANCE_ADD_PREFIX ) ) {
-                    localNewCollectionValues.put( key.substring( Constants.MAINTENANCE_ADD_PREFIX.length() ),
+                if ( key.startsWith( RiceConstants.MAINTENANCE_ADD_PREFIX ) ) {
+                    localNewCollectionValues.put( key.substring( RiceConstants.MAINTENANCE_ADD_PREFIX.length() ),
                             ((Map.Entry)obj).getValue() );
                 }
             }
@@ -154,11 +154,11 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             GlobalVariables.getErrorMap().removeFromErrorPath("document.newMaintainableObject");
 
             if (cachedValues.size() > 0) {
-                GlobalVariables.getErrorMap().putError(Constants.DOCUMENT_ERRORS, KeyConstants.ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR);
+                GlobalVariables.getErrorMap().putError(RiceConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR);
                 for (Iterator iter = cachedValues.keySet().iterator(); iter.hasNext();) {
                     String propertyName = (String) iter.next();
                     String value = (String) cachedValues.get(propertyName);
-                    cacheUnconvertedValue(Constants.MAINTENANCE_NEW_MAINTAINABLE + propertyName, value);
+                    cacheUnconvertedValue(RiceConstants.MAINTENANCE_NEW_MAINTAINABLE + propertyName, value);
                 }
             }
         }
@@ -177,7 +177,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         if (((MaintenanceDocumentBase) getDocument()).getNewMaintainableObject() == null) {
             throw new RuntimeException("New maintainable not set in document.");
         }
-        if ((Constants.MAINTENANCE_EDIT_ACTION.equals(this.getMaintenanceAction()) || Constants.MAINTENANCE_COPY_ACTION.equals(this.getMaintenanceAction())) && ((MaintenanceDocumentBase) getDocument()).getOldMaintainableObject() == null) {
+        if ((RiceConstants.MAINTENANCE_EDIT_ACTION.equals(this.getMaintenanceAction()) || RiceConstants.MAINTENANCE_COPY_ACTION.equals(this.getMaintenanceAction())) && ((MaintenanceDocumentBase) getDocument()).getOldMaintainableObject() == null) {
             throw new RuntimeException("Old maintainable not set in document.");
         }
 

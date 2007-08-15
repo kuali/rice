@@ -56,5 +56,13 @@ public interface DocumentAuthorizer {
      * @returns boolean indicating whether a user can copy a document
      */
     public boolean canCopy(String documentTypeName, UniversalUser user);
-    
+
+    /**
+     * 
+     * @param attachmentTypeName
+     * @param document
+     * @param user
+     * @return
+     */
+    public boolean canViewAttachment(String attachmentTypeName, Document document, UniversalUser user);
 }

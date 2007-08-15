@@ -26,7 +26,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.exceptions.DocumentInitiationAuthorizationException;
 
 
@@ -35,7 +35,7 @@ import org.kuali.core.exceptions.DocumentInitiationAuthorizationException;
  */
 public class KualiDocumentInitiationAuthorizationExceptionAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ActionForward returnForward = mapping.findForward(Constants.MAPPING_BASIC);
+        ActionForward returnForward = mapping.findForward(RiceConstants.MAPPING_BASIC);
 
         String messageKey = null;
         DocumentInitiationAuthorizationException e = (DocumentInitiationAuthorizationException) request.getAttribute(Globals.EXCEPTION_KEY);

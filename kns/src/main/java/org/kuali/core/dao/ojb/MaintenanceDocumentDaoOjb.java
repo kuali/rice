@@ -23,7 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.PropertyConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.dao.MaintenanceDocumentDao;
 import org.kuali.core.document.MaintenanceDocumentBase;
 import org.kuali.core.document.MaintenanceLock;
@@ -51,7 +51,7 @@ public class MaintenanceDocumentDaoOjb extends PlatformAwareDaoBaseOjb implement
         // if a docHeaderId is specified, then it will be excluded from the
         // locking representation test.
         if (StringUtils.isNotBlank(documentNumber)) {
-            criteria.addNotEqualTo(PropertyConstants.DOCUMENT_NUMBER, documentNumber);
+            criteria.addNotEqualTo(RicePropertyConstants.DOCUMENT_NUMBER, documentNumber);
         }
 
         // attempt to retrieve a document based off this criteria

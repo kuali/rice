@@ -26,8 +26,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
-import org.kuali.Constants;
-import org.kuali.KeyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.core.authorization.AuthorizationConstants;
 import org.kuali.core.bo.AdHocRoutePerson;
 import org.kuali.core.bo.AdHocRouteRecipient;
@@ -180,9 +180,9 @@ public abstract class KualiDocumentFormBase extends KualiForm {
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         // check that annotation does not exceed 2000 characters
         setAnnotation(StringUtils.stripToNull(getAnnotation()));
-        int diff = StringUtils.defaultString(getAnnotation()).length() - Constants.DOCUMENT_ANNOTATION_MAX_LENGTH;
+        int diff = StringUtils.defaultString(getAnnotation()).length() - RiceConstants.DOCUMENT_ANNOTATION_MAX_LENGTH;
         if (diff > 0) {
-            GlobalVariables.getErrorMap().putError("annotation", KeyConstants.ERROR_DOCUMENT_ANNOTATION_MAX_LENGTH_EXCEEDED, new String[] { Integer.toString(Constants.DOCUMENT_ANNOTATION_MAX_LENGTH), Integer.toString(diff) });
+            GlobalVariables.getErrorMap().putError("annotation", RiceKeyConstants.ERROR_DOCUMENT_ANNOTATION_MAX_LENGTH_EXCEEDED, new String[] { Integer.toString(RiceConstants.DOCUMENT_ANNOTATION_MAX_LENGTH), Integer.toString(diff) });
         }
         return super.validate(mapping, request);
     }

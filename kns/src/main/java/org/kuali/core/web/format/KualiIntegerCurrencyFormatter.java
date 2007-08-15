@@ -17,7 +17,7 @@ package org.kuali.core.web.format;
 
 import java.text.NumberFormat;
 
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.core.util.KualiDecimal;
 import org.kuali.core.util.KualiInteger;
 
@@ -43,10 +43,10 @@ public class KualiIntegerCurrencyFormatter extends CurrencyFormatter {
             string = formatter.format(number.doubleValue());
         }
         catch (IllegalArgumentException e) {
-            throw new FormatException("formatting", KeyConstants.ERROR_CURRENCY, obj.toString(), e);
+            throw new FormatException("formatting", RiceKeyConstants.ERROR_CURRENCY, obj.toString(), e);
         }
         catch (ClassCastException e) {
-            throw new FormatException("formatting", KeyConstants.ERROR_CURRENCY, obj.toString(), e);
+            throw new FormatException("formatting", RiceKeyConstants.ERROR_CURRENCY, obj.toString(), e);
         }
 
         return showSymbol() ? string : removeSymbol(string);

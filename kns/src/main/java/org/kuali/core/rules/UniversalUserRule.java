@@ -19,8 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.Constants;
-import org.kuali.KeyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.document.MaintenanceDocument;
@@ -99,7 +99,7 @@ public class UniversalUserRule extends MaintenanceDocumentRuleBase {
         newUser.refresh();
 
         if ( userEditWorkgroupName == null ) {
-            userEditWorkgroupName = configService.getApplicationParameterValue(Constants.CoreApcParms.GROUP_CORE_MAINT_EDOCS, Constants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
+            userEditWorkgroupName = configService.getApplicationParameterValue(RiceConstants.CoreApcParms.GROUP_CORE_MAINT_EDOCS, RiceConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
             installedModules = KNSServiceLocator.getKualiModuleService().getInstalledModules();
         }
     }
@@ -115,7 +115,7 @@ public class UniversalUserRule extends MaintenanceDocumentRuleBase {
         try {
             newUser.setPersonLocalPhoneNumber((String) phoneNumberFormatter.convertFromPresentationFormat(newUser.getPersonLocalPhoneNumber()));
         } catch (Exception e){
-            putFieldError("personLocalPhoneNumber", KeyConstants.ERROR_INVALID_FORMAT, new String[] {"Local Phone Number", phoneNumber});
+            putFieldError("personLocalPhoneNumber", RiceKeyConstants.ERROR_INVALID_FORMAT, new String[] {"Local Phone Number", phoneNumber});
             success = false;
         }
         
@@ -128,7 +128,7 @@ public class UniversalUserRule extends MaintenanceDocumentRuleBase {
         String userId=newUser.getPersonUserIdentifier();
         if (userId != null && (!userId.equals(oldUser.getPersonUserIdentifier()) || "Copy".equals(document.getNewMaintainableObject().getMaintenanceAction()))) {
             if (userExists("personUserIdentifier", userId)) {
-                putFieldError("personUserIdentifier", KeyConstants.ERROR_DOCUMENT_MAINTENANCE_KEYS_ALREADY_EXIST_ON_CREATE_NEW, userId); 
+                putFieldError("personUserIdentifier", RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_KEYS_ALREADY_EXIST_ON_CREATE_NEW, userId); 
                 success = false;
             }
         }
@@ -137,7 +137,7 @@ public class UniversalUserRule extends MaintenanceDocumentRuleBase {
         // KULCOA-1164: Check whether Employee Id is unique or not
         if( emplId!= null && (!emplId.equals(oldUser.getPersonPayrollIdentifier()) || "Copy".equals(document.getNewMaintainableObject().getMaintenanceAction()))){
             if (userExists("personPayrollIdentifier", newUser.getPersonPayrollIdentifier())) {
-                putFieldError("personPayrollIdentifier", KeyConstants.ERROR_DOCUMENT_KUALIUSERMAINT_UNIQUE_EMPLID);    
+                putFieldError("personPayrollIdentifier", RiceKeyConstants.ERROR_DOCUMENT_KUALIUSERMAINT_UNIQUE_EMPLID);    
                 success = false;
             }
         }

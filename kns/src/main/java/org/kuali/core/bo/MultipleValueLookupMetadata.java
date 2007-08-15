@@ -18,7 +18,7 @@ package org.kuali.core.bo;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 
 public abstract class MultipleValueLookupMetadata extends PersistableBusinessObjectBase {
     private String lookupResultsSequenceNumber;
@@ -47,7 +47,7 @@ public abstract class MultipleValueLookupMetadata extends PersistableBusinessObj
     @Override
     protected LinkedHashMap toStringMapper() {
         LinkedHashMap map = new LinkedHashMap();
-        map.put(Constants.LOOKUP_RESULTS_SEQUENCE_NUMBER, getLookupResultsSequenceNumber());
+        map.put(RiceConstants.LOOKUP_RESULTS_SEQUENCE_NUMBER, getLookupResultsSequenceNumber());
         return map;
     }
 

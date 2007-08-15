@@ -74,8 +74,10 @@ public class DataDictionaryBuilder_TransactionalDocumentTest extends KNSTestBase
 			builder.addUniqueEntries(INPUT_FILE, true);
 			builder.parseDocument("InvalidTransactionalDocument", true);
 		} catch (DataDictionaryException e) {
-			if (DataDictionaryUtils.saxCause(e) instanceof IllegalArgumentException) {
+			if (DataDictionaryUtils.saxCause(e) instanceof IllegalStateException) {
 				failedAsExpected = true;
+			} else {
+				throw e;
 			}
 		}
 

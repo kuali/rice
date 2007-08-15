@@ -15,7 +15,7 @@
  */
 package org.kuali.core.exceptions;
 
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 
 /**
  * This class represents an exception that is thrown when a given user is not authorized to take a given action on the given
@@ -40,7 +40,7 @@ public class DocumentAuthorizationException extends AuthorizationException {
      * @see org.kuali.core.exceptions.AuthorizationException#getErrorMessageKey()
      */
     public String getErrorMessageKey() {
-        return KeyConstants.AUTHORIZATION_ERROR_DOCUMENT;
+        return RiceKeyConstants.AUTHORIZATION_ERROR_DOCUMENT;
     }
 
 }

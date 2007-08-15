@@ -21,7 +21,7 @@ package org.kuali.core.web.format;
 import java.util.Arrays;
 import java.util.List;
 
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 
 /**
  * begin Kuali Foundation modification
@@ -69,7 +69,7 @@ public class BooleanFormatter extends Formatter {
 
 		// begin Kuali Foundation modification
 		// was: throw new FormatException(CONVERT_MSG + stringValue);
-        throw new FormatException("converting", KeyConstants.ERROR_BOOLEAN, stringValue);
+        throw new FormatException("converting", RiceKeyConstants.ERROR_BOOLEAN, stringValue);
         // end Kuali Foundation modification
     }
 

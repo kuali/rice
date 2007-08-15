@@ -23,8 +23,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.Constants;
-import org.kuali.PropertyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.Note;
 import org.kuali.core.bo.PersistableBusinessObject;
@@ -44,6 +44,8 @@ import org.kuali.core.workflow.KualiDocumentXmlMaterializer;
 import org.kuali.core.workflow.KualiTransactionalDocumentInformation;
 import org.kuali.rice.KNSServiceLocator;
 
+import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
 import edu.iu.uis.eden.exception.WorkflowException;
 
@@ -242,16 +244,16 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      */
     public void handleRouteStatusChange() {
         if (getDocumentHeader().getWorkflowDocument().stateIsCanceled()) {
-            getDocumentHeader().setFinancialDocumentStatusCode(Constants.DocumentStatusCodes.CANCELLED);
+            getDocumentHeader().setFinancialDocumentStatusCode(RiceConstants.DocumentStatusCodes.CANCELLED);
         }
         else if (getDocumentHeader().getWorkflowDocument().stateIsEnroute()) {
-            getDocumentHeader().setFinancialDocumentStatusCode(Constants.DocumentStatusCodes.ENROUTE);
+            getDocumentHeader().setFinancialDocumentStatusCode(RiceConstants.DocumentStatusCodes.ENROUTE);
         }
         if (getDocumentHeader().getWorkflowDocument().stateIsDisapproved()) {
-            getDocumentHeader().setFinancialDocumentStatusCode(Constants.DocumentStatusCodes.DISAPPROVED);
+            getDocumentHeader().setFinancialDocumentStatusCode(RiceConstants.DocumentStatusCodes.DISAPPROVED);
         }
         if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
-            getDocumentHeader().setFinancialDocumentStatusCode(Constants.DocumentStatusCodes.APPROVED);
+            getDocumentHeader().setFinancialDocumentStatusCode(RiceConstants.DocumentStatusCodes.APPROVED);
         }
         LOG.info("Status is: " + getDocumentHeader().getFinancialDocumentStatusCode());
     }
@@ -260,9 +262,16 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * The the default implementation for RouteLevelChange does nothing, but is meant to provide a hook for documents to implement
      * for other needs.
      *
-     * @see org.kuali.core.document.Document#handleRouteLevelChange()
+     * @see org.kuali.core.document.Document#handleRouteLevelChange(edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO)
      */
-    public void handleRouteLevelChange() {
+    public void handleRouteLevelChange(DocumentRouteLevelChangeVO levelChangeEvent) {
+        // do nothing
+    }
+    
+    /**
+     * @see org.kuali.core.document.Document#doActionTaken(edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO)
+     */
+    public void doActionTaken(ActionTakenEventVO event) {
         // do nothing
     }
 
@@ -294,7 +303,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         newDoc.getDocumentHeader().setOrganizationDocumentNumber(getDocumentHeader().getOrganizationDocumentNumber());
 
         try {
-            ObjectUtils.setObjectPropertyDeep(this, PropertyConstants.DOCUMENT_NUMBER, documentNumber.getClass(), newDoc.getDocumentNumber());
+            ObjectUtils.setObjectPropertyDeep(this, RicePropertyConstants.DOCUMENT_NUMBER, documentNumber.getClass(), newDoc.getDocumentNumber());
         }
         catch (Exception e) {
             LOG.error("Unable to set document number property in copied document " + e.getMessage());
@@ -326,6 +335,27 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.core.document.Document#populateDocumentForRouting()
      */
     public void populateDocumentForRouting() {
+        String xml = serializeDocumentToXml();
+//        KualiTransactionalDocumentInformation transInfo = new KualiTransactionalDocumentInformation();
+//        DocumentInitiator initiatior = new DocumentInitiator();
+//        String initiatorNetworkId = documentHeader.getWorkflowDocument().getInitiatorNetworkId();
+//        try {
+//            UniversalUser initiatorUser = KNSServiceLocator.getUniversalUserService().getUniversalUser(new AuthenticationUserId(initiatorNetworkId));
+//            initiatorUser.getModuleUsers(); // init the module users map for serialization
+//            initiatior.setUniversalUser(initiatorUser);
+//        }
+//        catch (UserNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//        transInfo.setDocumentInitiator(initiatior);
+//        KualiDocumentXmlMaterializer xmlWrapper = new KualiDocumentXmlMaterializer();
+//        xmlWrapper.setDocument(this);
+//        xmlWrapper.setKualiTransactionalDocumentInformation(transInfo);
+//        String xml = KNSServiceLocator.getXmlObjectSerializerService().toXml(xmlWrapper);
+        documentHeader.getWorkflowDocument().setApplicationContent(xml);
+    }
+    
+    public String serializeDocumentToXml() {
         KualiTransactionalDocumentInformation transInfo = new KualiTransactionalDocumentInformation();
         DocumentInitiator initiatior = new DocumentInitiator();
         String initiatorNetworkId = documentHeader.getWorkflowDocument().getInitiatorNetworkId();
@@ -342,7 +372,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         xmlWrapper.setDocument(this);
         xmlWrapper.setKualiTransactionalDocumentInformation(transInfo);
         String xml = KNSServiceLocator.getXmlObjectSerializerService().toXml(xmlWrapper);
-        documentHeader.getWorkflowDocument().setApplicationContent(xml);
+        return xml;
     }
 
     /**

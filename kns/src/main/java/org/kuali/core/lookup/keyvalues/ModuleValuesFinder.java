@@ -18,7 +18,7 @@ package org.kuali.core.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.rice.KNSServiceLocator;
@@ -31,7 +31,7 @@ public class ModuleValuesFinder extends KeyValuesBase {
     public List getKeyValues() {
         List keyValues = new ArrayList();
         keyValues.add(new KeyLabelPair("", ""));
-        keyValues.add(getKeyLabelPair(Constants.CROSS_MODULE_CODE, Constants.CROSS_MODULE_NAME));
+        keyValues.add(getKeyLabelPair(RiceConstants.CROSS_MODULE_CODE, RiceConstants.CROSS_MODULE_NAME));
         for (KualiModule kualiModule : KNSServiceLocator.getKualiModuleService().getInstalledModules()) {
             keyValues.add(getKeyLabelPair(kualiModule.getModuleCode(), kualiModule.getModuleName()));
         }

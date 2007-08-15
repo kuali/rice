@@ -89,6 +89,8 @@ public interface KualiWorkflowDocument {
 
     public abstract String getInitiatorNetworkId();
 
+    public abstract String getRoutedByUserNetworkId();
+
     public abstract String getTitle();
 
     public abstract void saveDocument(String annotation) throws WorkflowException;
@@ -100,6 +102,10 @@ public interface KualiWorkflowDocument {
     public abstract void approve(String annotation) throws WorkflowException;
 
     public abstract void superUserApprove(String annotation) throws WorkflowException;
+
+    public void superUserCancel(String annotation) throws WorkflowException;
+
+    public void superUserDisapprove(String annotation) throws WorkflowException;
 
     public abstract void cancel(String annotation) throws WorkflowException;
 
@@ -291,6 +297,14 @@ public interface KualiWorkflowDocument {
      */
     public boolean userIsInitiator(UniversalUser user);
 
+    /**
+     * Returns true if the personUserIdentifier of the given KualiUser matches the routedByUserNetworkId of this document
+     * 
+     * @param user
+     * @return true if the given user is the user who routed this document
+     */
+    public boolean userIsRoutedByUser(UniversalUser user);
+    
     /**
      * Returns the names of the nodes that the document is currently at.
      */

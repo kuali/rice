@@ -32,7 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.lookup.CollectionIncomplete;
 import org.kuali.core.lookup.LookupResultsService;
 import org.kuali.core.lookup.LookupUtils;
@@ -94,7 +94,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         }
         else {
             multipleValueLookupForm.setSearchUsingOnlyPrimaryKeyValues(false);
-            multipleValueLookupForm.setPrimaryKeyFieldLabels(Constants.EMPTY_STRING);
+            multipleValueLookupForm.setPrimaryKeyFieldLabels(RiceConstants.EMPTY_STRING);
         }
         
         request.setAttribute("reqSearchResultsActualSize", ((CollectionIncomplete) displayList).getActualSizeIfTruncated());
@@ -103,14 +103,14 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         multipleValueLookupForm.setResultsActualSize((int) ((CollectionIncomplete) displayList).getActualSizeIfTruncated().longValue());
         multipleValueLookupForm.setResultsLimitedSize(resultTable.size());
 
-        if (request.getParameter(Constants.SEARCH_LIST_REQUEST_KEY) != null) {
-            GlobalVariables.getUserSession().removeObject(request.getParameter(Constants.SEARCH_LIST_REQUEST_KEY));
+        if (request.getParameter(RiceConstants.SEARCH_LIST_REQUEST_KEY) != null) {
+            GlobalVariables.getUserSession().removeObject(request.getParameter(RiceConstants.SEARCH_LIST_REQUEST_KEY));
         }
-        request.setAttribute(Constants.SEARCH_LIST_REQUEST_KEY, GlobalVariables.getUserSession().addObject(resultTable, Constants.SEARCH_LIST_KEY_PREFIX));
+        request.setAttribute(RiceConstants.SEARCH_LIST_REQUEST_KEY, GlobalVariables.getUserSession().addObject(resultTable, RiceConstants.SEARCH_LIST_KEY_PREFIX));
 
-        String refreshCaller = request.getParameter(Constants.REFRESH_CALLER);
+        String refreshCaller = request.getParameter(RiceConstants.REFRESH_CALLER);
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     /**
@@ -127,7 +127,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         MultipleValueLookupForm multipleValueLookupForm = (MultipleValueLookupForm) form;
         List<ResultRow> resultTable = switchToPage(multipleValueLookupForm, getMaxRowsPerPage(multipleValueLookupForm));
         request.setAttribute("reqSearchResults", resultTable);
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
     /**
@@ -149,7 +149,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         MultipleValueLookupForm multipleValueLookupForm = (MultipleValueLookupForm) form;
         List<ResultRow> resultTable = sort(multipleValueLookupForm, getMaxRowsPerPage(multipleValueLookupForm));
         request.setAttribute("reqSearchResults", resultTable);
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
     /**
@@ -173,13 +173,13 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         
         // build the parameters for the refresh url
         Properties parameters = new Properties();
-        parameters.put(Constants.LOOKUP_RESULTS_BO_CLASS_NAME, multipleValueLookupForm.getBusinessObjectClassName());
-        parameters.put(Constants.LOOKUP_RESULTS_SEQUENCE_NUMBER, multipleValueLookupForm.getLookupResultsSequenceNumber());
-        parameters.put(Constants.DOC_FORM_KEY, multipleValueLookupForm.getFormKey());
-        parameters.put(Constants.DISPATCH_REQUEST_PARAMETER, Constants.RETURN_METHOD_TO_CALL);
-        parameters.put(Constants.REFRESH_CALLER, Constants.MULTIPLE_VALUE);
-        parameters.put(Constants.ANCHOR, multipleValueLookupForm.getLookupAnchor());
-        parameters.put(Constants.LOOKED_UP_COLLECTION_NAME, multipleValueLookupForm.getLookedUpCollectionName());
+        parameters.put(RiceConstants.LOOKUP_RESULTS_BO_CLASS_NAME, multipleValueLookupForm.getBusinessObjectClassName());
+        parameters.put(RiceConstants.LOOKUP_RESULTS_SEQUENCE_NUMBER, multipleValueLookupForm.getLookupResultsSequenceNumber());
+        parameters.put(RiceConstants.DOC_FORM_KEY, multipleValueLookupForm.getFormKey());
+        parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, RiceConstants.RETURN_METHOD_TO_CALL);
+        parameters.put(RiceConstants.REFRESH_CALLER, RiceConstants.MULTIPLE_VALUE);
+        parameters.put(RiceConstants.ANCHOR, multipleValueLookupForm.getLookupAnchor());
+        parameters.put(RiceConstants.LOOKED_UP_COLLECTION_NAME, multipleValueLookupForm.getLookedUpCollectionName());
         String backUrl = UrlFactory.parameterizeUrl(multipleValueLookupForm.getBackLocation(), parameters);
         return new ActionForward(backUrl, true);
     }
@@ -197,7 +197,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         MultipleValueLookupForm multipleValueLookupForm = (MultipleValueLookupForm) form;
         List<ResultRow> resultTable = selectAll(multipleValueLookupForm, getMaxRowsPerPage(multipleValueLookupForm));
         request.setAttribute("reqSearchResults", resultTable);
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
     /**
@@ -214,7 +214,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         MultipleValueLookupForm multipleValueLookupForm = (MultipleValueLookupForm) form;
         List<ResultRow> resultTable = unselectAll(multipleValueLookupForm, getMaxRowsPerPage(multipleValueLookupForm));
         request.setAttribute("reqSearchResults", resultTable);
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
     /**
@@ -243,10 +243,10 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         
         // build the parameters for the refresh url
         Properties parameters = new Properties();
-        parameters.put(Constants.DOC_FORM_KEY, multipleValueLookupForm.getFormKey());
-        parameters.put(Constants.DISPATCH_REQUEST_PARAMETER, Constants.RETURN_METHOD_TO_CALL);
-        parameters.put(Constants.REFRESH_CALLER, Constants.MULTIPLE_VALUE);
-        parameters.put(Constants.ANCHOR, multipleValueLookupForm.getLookupAnchor());
+        parameters.put(RiceConstants.DOC_FORM_KEY, multipleValueLookupForm.getFormKey());
+        parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, RiceConstants.RETURN_METHOD_TO_CALL);
+        parameters.put(RiceConstants.REFRESH_CALLER, RiceConstants.MULTIPLE_VALUE);
+        parameters.put(RiceConstants.ANCHOR, multipleValueLookupForm.getLookupAnchor());
         
         String backUrl = UrlFactory.parameterizeUrl(multipleValueLookupForm.getBackLocation(), parameters);
         return new ActionForward(backUrl, true);
@@ -267,7 +267,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         MultipleValueLookupForm multipleValueLookupForm = (MultipleValueLookupForm) form;
         List<ResultRow> resultTable = prepareToExport(multipleValueLookupForm);
         request.setAttribute("reqSearchResults", resultTable);
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
     /**
@@ -309,7 +309,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         multipleValueLookupForm.jumpToFirstPage(resultTable.size(), maxRowsPerPage);
         
         SequenceAccessorService sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
-        String lookupResultsSequenceNumber = String.valueOf(sequenceAccessorService.getNextAvailableSequenceNumber(Constants.LOOKUP_RESULTS_SEQUENCE));
+        String lookupResultsSequenceNumber = String.valueOf(sequenceAccessorService.getNextAvailableSequenceNumber(RiceConstants.LOOKUP_RESULTS_SEQUENCE));
         multipleValueLookupForm.setLookupResultsSequenceNumber(lookupResultsSequenceNumber);
         try {
             LookupResultsService lookupResultsService = KNSServiceLocator.getLookupResultsService();
@@ -550,7 +550,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
      * if someone wants to implement something where a user can decide how many results to display per page, 
      * this method is the place to do it.  Make this method read form values to determine the max rows per page based on the user inputs
      * 
-     * @see org.kuali.Constants.SystemGroupParameterNames#MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE
+     * @see org.kuali.RiceConstants.SystemGroupParameterNames#MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE
      * @see #DEFAULT_MAX_ROWS_PER_PAGE
      * @param multipleValueLookupForm the form
      * @return

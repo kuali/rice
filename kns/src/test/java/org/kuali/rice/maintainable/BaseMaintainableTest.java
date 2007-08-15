@@ -16,14 +16,14 @@
 package org.kuali.rice.maintainable;
 
 import org.junit.Test;
-import org.kuali.rice.test.htmlunit.HtmlUnitUtil;
-import org.kuali.rice.testharness.KNSTestCase;
+import org.kuali.rice.TestBase;
+import org.kuali.rice.testharness.HtmlUnitUtil;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-public class BaseMaintainableTest extends KNSTestCase {
+public class BaseMaintainableTest extends TestBase {
     
 
     @Test public void testMaintainable() throws Exception {
@@ -34,7 +34,7 @@ public class BaseMaintainableTest extends KNSTestCase {
         maintForm.getInputByName("document.newMaintainableObject.number").setValueAttribute("a6");
         maintForm.getInputByName("document.newMaintainableObject.name").setValueAttribute("myaccount");
         maintForm.getInputByName("document.newMaintainableObject.foId").setValueAttribute("1");
-        maintForm.getSelectByName("document.newMaintainableObject.accountType").setSelectedAttribute("CAT", true);
+        maintForm.getSelectByName("document.newMaintainableObject.extension.accountTypeCode").setSelectedAttribute("CAT", true);
         HtmlPage returnPage = (HtmlPage)((HtmlInput)maintForm.getInputByName("methodToCall.route")).click();
         assertTrue("Document not successfully routed", HtmlUnitUtil.pageContainsText(returnPage, "Document was successfully submitted"));
     }

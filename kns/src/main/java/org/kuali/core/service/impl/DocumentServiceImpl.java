@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.bo.AdHocRouteRecipient;
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.Note;
@@ -44,6 +44,7 @@ import org.kuali.core.rule.event.BlanketApproveDocumentEvent;
 import org.kuali.core.rule.event.KualiDocumentEvent;
 import org.kuali.core.rule.event.RouteDocumentEvent;
 import org.kuali.core.rule.event.SaveDocumentEvent;
+import org.kuali.core.rule.event.SaveOnlyDocumentEvent;
 import org.kuali.core.service.BusinessObjectService;
 import org.kuali.core.service.DateTimeService;
 import org.kuali.core.service.DictionaryValidationService;
@@ -86,7 +87,7 @@ public class DocumentServiceImpl implements DocumentService {
     
 
     /**
-     * @see org.kuali.core.service.DocumentService#saveDocument(org.kuali.core.document.Document, java.lang.String, java.util.List)
+     * @see org.kuali.core.service.DocumentService#saveDocument(org.kuali.core.document.Document)
      */
     public Document saveDocument(Document document) throws WorkflowException, ValidationException {
         checkForNulls(document);
@@ -94,7 +95,7 @@ public class DocumentServiceImpl implements DocumentService {
             throw buildAuthorizationException("save", document);
         }
         document.prepareForSave();
-        validateAndPersistDocumentAndSaveAdHocRoutingRecipients(document);
+        validateAndPersistDocumentAndSaveAdHocRoutingRecipients(document, new SaveDocumentEvent(document));
         prepareWorkflowDocument(document);
         workflowDocumentService.save(document.getDocumentHeader().getWorkflowDocument(), null, null);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
@@ -102,6 +103,20 @@ public class DocumentServiceImpl implements DocumentService {
         return document;
     }
 
+    /**
+     * @see org.kuali.core.service.DocumentService#saveDocumentWithoutRunningValidation(org.kuali.core.document.Document)
+     */
+    public Document saveDocumentWithoutRunningValidation(Document document) throws WorkflowException {
+        checkForNulls(document);
+        document.prepareForSave();
+        validateAndPersistDocument(document, new SaveOnlyDocumentEvent(document));
+        prepareWorkflowDocument(document);
+        workflowDocumentService.saveRoutingData(document.getDocumentHeader().getWorkflowDocument());
+        GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+
+        return document;
+    }
+    
     /**
      * @see org.kuali.core.service.DocumentService#routeDocument(org.kuali.core.document.Document, java.lang.String, java.util.List)
      */
@@ -145,6 +160,28 @@ public class DocumentServiceImpl implements DocumentService {
         documentDao.save(document);
         prepareWorkflowDocument(document);
         workflowDocumentService.superUserApprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
+        GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+        return document;
+    }
+
+    /**
+     * @see org.kuali.core.service.DocumentService#superUserCancelDocument(org.kuali.core.document.Document, java.lang.String)
+     */
+    public Document superUserCancelDocument(Document document, String annotation) throws WorkflowException {
+        documentDao.save(document);
+        prepareWorkflowDocument(document);
+        workflowDocumentService.superUserCancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
+        GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+        return document;
+    }
+
+    /**
+     * @see org.kuali.core.service.DocumentService#superUserCancelDocument(org.kuali.core.document.Document, java.lang.String)
+     */
+    public Document superUserDisapproveDocument(Document document, String annotation) throws WorkflowException {
+        documentDao.save(document);
+        prepareWorkflowDocument(document);
+        workflowDocumentService.superUserDisapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         return document;
     }
@@ -228,7 +265,6 @@ public class DocumentServiceImpl implements DocumentService {
         if (!getDocumentActionFlags(document).getCanFYI()) {
             throw buildAuthorizationException("clear FYI", document);
         }
-        // TODO delyea - added this here
         // populate document content so searchable attributes will be indexed properly
         document.populateDocumentForRouting();
         workflowDocumentService.clearFyi(document.getDocumentHeader().getWorkflowDocument(), adHocRecipients);
@@ -257,7 +293,7 @@ public class DocumentServiceImpl implements DocumentService {
         return new DocumentAuthorizationException(currentUser.getPersonUserIdentifier(), action, document.getDocumentNumber());
     }
 
-    private void validateAndPersistDocumentAndSaveAdHocRoutingRecipients(Document document) throws WorkflowException {
+    private void validateAndPersistDocumentAndSaveAdHocRoutingRecipients(Document document, KualiDocumentEvent event) throws WorkflowException {
         /*
          * Using this method to wrap validateAndPersistDocument to keep everything in one transaction. This avoids modifying the
          * signature on validateAndPersistDocument method
@@ -273,7 +309,7 @@ public class DocumentServiceImpl implements DocumentService {
         businessObjectService.deleteMatching(AdHocRouteRecipient.class, criteria);
 
         businessObjectService.save(adHocRoutingRecipients);
-        validateAndPersistDocument(document, new SaveDocumentEvent(document));
+        validateAndPersistDocument(document, event);
     }
 
     /**
@@ -560,7 +596,6 @@ public class DocumentServiceImpl implements DocumentService {
      * @throws WorkflowException
      */
     public void prepareWorkflowDocument(Document document) throws WorkflowException {
-        // TODO delyea - added this here
         // populate document content so searchable attributes will be indexed properly
         document.populateDocumentForRouting();
         
@@ -618,9 +653,9 @@ public class DocumentServiceImpl implements DocumentService {
         note.setVersionNumber(new Long(1));
         note.setNoteText(text);
         if(document.isBoNotesSupport()) {
-            note.setNoteTypeCode(Constants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE.getCode());
+            note.setNoteTypeCode(RiceConstants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE.getCode());
         } else {
-            note.setNoteTypeCode(Constants.NoteTypeEnum.DOCUMENT_HEADER_NOTE_TYPE.getCode());
+            note.setNoteTypeCode(RiceConstants.NoteTypeEnum.DOCUMENT_HEADER_NOTE_TYPE.getCode());
         }
         
         PersistableBusinessObject bo = null;

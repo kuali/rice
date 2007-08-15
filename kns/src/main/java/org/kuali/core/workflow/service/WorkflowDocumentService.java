@@ -75,6 +75,14 @@ public interface WorkflowDocumentService {
     public void save(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
 
     /**
+     * save the routing data of the document to workflow
+     * 
+     * @param workflowDocument
+     * @throws WorkflowException
+     */
+    public void saveRoutingData(KualiWorkflowDocument workflowDocument) throws WorkflowException;
+
+    /**
      * route this flexDoc optionally providing an annotation for this action taken which will show up in the route log for this
      * document corresponding to this action taken, and additionally optionally providing a list of ad hoc recipients for the
      * document
@@ -108,6 +116,26 @@ public interface WorkflowDocumentService {
      * @throws EdenException
      */
     public void superUserApprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException;
+
+    /**
+     * super user cancel this flexdoc optionally providing an annotation for this action taken which will show up in the route log
+     * for this document corresponding to this action taken
+     * 
+     * @param workflowDocument
+     * @param annotation
+     * @throws WorkflowException
+     */
+    public void superUserCancel(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException;
+
+    /**
+     * super user disapprove this flexdoc optionally providing an annotation for this action taken which will show up in the route log
+     * for this document corresponding to this action taken
+     * 
+     * @param workflowDocument
+     * @param annotation
+     * @throws WorkflowException
+     */
+    public void superUserDisapprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException;
 
     /**
      * disapprove this flexDoc optionally providing an annotation for this action taken which will show up in the route log for this
@@ -164,4 +192,24 @@ public interface WorkflowDocumentService {
      * @throws EdenException
      */
     public void clearFyi(KualiWorkflowDocument workflowDocument, List adHocRecipients) throws WorkflowException;
+    
+    /**
+     * Gets the current route level name of the workflow document even if document has no active node
+     * names.  Allows for getting the node name of a document already in a final status.
+     * 
+     * @param workflowDocument
+     * @return node name of the current node if only one or list of node names separated by string ", " if more than one current node name 
+     * @throws WorkflowException
+     */
+    public String getCurrentRouteLevelName(KualiWorkflowDocument workflowDocument) throws WorkflowException;
+    
+    /**
+     * Sends FYI to the list of ad hoc recipients.
+     * 
+     * @param workflowDocument
+     * @param annotation
+     * @param adHocRecipients
+     * @throws WorkflowException
+     */
+    public void sendFYI(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
 }

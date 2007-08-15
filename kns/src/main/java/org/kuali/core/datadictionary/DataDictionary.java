@@ -104,26 +104,34 @@ public class DataDictionary implements Serializable {
 		String entryName = documentEntry.getDocumentTypeName();
 		if (!allowOverrides) {
 			if (documentEntries.containsKey(entryName)) {
-				throw new DuplicateEntryException("duplicate DocumentEntry for class '" + entryName + "'");
+				throw new DuplicateEntryException("duplicate DocumentEntry for document type '" + entryName + "'");
 			}
+		}
+		if ((documentEntry instanceof TransactionalDocumentEntry) && (documentEntries.get(documentEntry.getFullClassName()) != null) && !((DocumentEntry)documentEntries.get(documentEntry.getFullClassName())).getDocumentTypeName().equals(documentEntry.getDocumentTypeName())) {
+			throw new DataDictionaryException(new StringBuffer("Two transactional document types may not share the same document class: this=").append(documentEntry.getDocumentTypeName()).append(" / existing=").append(((DocumentEntry)documentEntries.get(documentEntry.getDocumentClass().getName())).getDocumentTypeName()).toString());
+		}
+		if ((entriesByJstlKey.get(documentEntry.getJstlKey()) != null) && !((DocumentEntry)documentEntries.get(documentEntry.getJstlKey())).getDocumentTypeName().equals(documentEntry.getDocumentTypeName())) {
+			throw new DataDictionaryException(new StringBuffer("Two document types may not share the same jstl key: this=").append(documentEntry.getDocumentTypeName()).append(" / existing=").append(((DocumentEntry)documentEntries.get(documentEntry.getJstlKey())).getDocumentTypeName()).toString());
 		}
 
 		documentEntry.completeValidation(validationCompletionUtils);
 
 		documentEntries.put(entryName, documentEntry);
-		documentEntries.put(documentEntry.getDocumentClass().getName(), documentEntry);
-
+		documentEntries.put(documentEntry.getFullClassName(), documentEntry);
 		entriesByJstlKey.put(documentEntry.getJstlKey(), documentEntry);
+
 		if (documentEntry instanceof TransactionalDocumentEntry) {
 			TransactionalDocumentEntry tde = (TransactionalDocumentEntry) documentEntry;
 
 			documentEntriesByDocumentClass.put(tde.getDocumentClass(), documentEntry);
+			documentEntries.put(tde.getDocumentClass().getSimpleName(), documentEntry);
 		}
 		if (documentEntry instanceof MaintenanceDocumentEntry) {
 			MaintenanceDocumentEntry mde = (MaintenanceDocumentEntry) documentEntry;
 
 			documentEntriesByBusinessObjectClass.put(mde.getBusinessObjectClass(), documentEntry);
 			documentEntriesByMaintainableClass.put(mde.getMaintainableClass(), documentEntry);
+			documentEntries.put(mde.getBusinessObjectClass().getSimpleName() + "MaintenanceDocument", documentEntry);
 		}
 
 		String jstlKey = documentEntry.getJstlKey();
@@ -156,6 +164,9 @@ public class DataDictionary implements Serializable {
 			if (businessObjectEntries.containsKey(entryName)) {
 				throw new DuplicateEntryException("duplicate BusinessObjectEntry for class '" + entryName + "'");
 			}
+		}
+		if ((businessObjectEntries.get(businessObjectEntry.getJstlKey()) != null) && !((BusinessObjectEntry)businessObjectEntries.get(businessObjectEntry.getJstlKey())).getBusinessObjectClass().equals(businessObjectEntry.getBusinessObjectClass())) {
+			throw new DataDictionaryException(new StringBuffer("Two business object classes may not share the same jstl key: this=").append(businessObjectEntry.getBusinessObjectClass()).append(" / existing=").append(((BusinessObjectEntry)businessObjectEntries.get(businessObjectEntry.getJstlKey())).getBusinessObjectClass()).toString());
 		}
 
 		businessObjectEntry.completeValidation(validationCompletionUtils);
@@ -223,6 +234,13 @@ public class DataDictionary implements Serializable {
 	 * @return BusinessObjectEntry for the named class, or null if none exists
 	 */
 	public BusinessObjectEntry getBusinessObjectEntry(String className) {
+		return getBusinessObjectEntry( className, true );
+	}
+	/**
+	 * @param className
+	 * @return BusinessObjectEntry for the named class, or null if none exists
+	 */
+	public BusinessObjectEntry getBusinessObjectEntry(String className, boolean parseOnFail ) {
 		if (StringUtils.isBlank(className)) {
 			throw new IllegalArgumentException("invalid (blank) className");
 		}
@@ -231,11 +249,11 @@ public class DataDictionary implements Serializable {
 		if (index >= 0) {
 			className = className.substring(0, index);
 		}
-		// LOG.info("calling getBusinessObjectEntry truncated '" + className +
-		// "'");
+		// LOG.info("calling getBusinessObjectEntry truncated '" + className + "'");
 
 		BusinessObjectEntry boe = businessObjectEntries.get(className);
-		if (boe == null) {
+		if ( boe == null && parseOnFail ) {
+			LOG.debug("Unable to find BusinessObjectEntry '" + className + "' -- calling parseBO()");
 			this.dataDictionaryBuilder.parseBO(className, isAllowOverrides());
 		}
 		return businessObjectEntries.get(className);
@@ -273,30 +291,59 @@ public class DataDictionary implements Serializable {
 			className = className.substring(0, index);
 		}
 
+		// look in the JSTL key cache
 		DataDictionaryEntry entry = entriesByJstlKey.get(className);
-		if (entry != null) {
-			return entry;
+		if ( entry == null ) {
+			// look in the BO cache
+			entry = getBusinessObjectEntry(className, false );
+			if (entry == null) {	
+				//look in the document cache
+				entry = getDocumentEntry(className, false);
+				
+				// the object does not exist in the DD currently, attempt to parse the file
+				if ( entry == null ) {
+					this.dataDictionaryBuilder.parseDocument(className, isAllowOverrides());
+					// re-try the BO and document caches after the parse
+					entry = getDocumentEntry(className, false);					
+					if ( entry == null ) {
+						entry = getBusinessObjectEntry(className, true );
+					}
+				}
+			}
 		}
-
-		entry = getBusinessObjectEntry(className);
-		if (entry != null) {
-			return entry;
-		}
-
-		return getDocumentEntry(className);
+		
+		return entry;
 	}
 
 	public DocumentEntry getDocumentEntry(String documentTypeDDKey) {
+		return getDocumentEntry( documentTypeDDKey, true );
+	}	
+	
+	public DocumentEntry getDocumentEntry(String documentTypeDDKey, boolean parseOnFail ) {
 		if (StringUtils.isBlank(documentTypeDDKey)) {
 			throw new IllegalArgumentException("invalid (blank) documentTypeName");
 		}
 		LOG.debug("calling getDocumentEntry by documentTypeName '" + documentTypeDDKey + "'");
 
-		DocumentEntry de = documentEntries.get(documentTypeDDKey);
-		if (de == null) {
+		DocumentEntry de = documentEntries.get(documentTypeDDKey);		
+        if (de == null) {
+        	// need to attempt to convert the key to a class since the documentEntries...
+        	// maps are keyed by class objects rather than class names
+        	try {
+        		Class clazz = Class.forName( documentTypeDDKey );
+                de = documentEntriesByBusinessObjectClass.get( clazz );
+                if (de == null) {
+                    de = documentEntriesByDocumentClass.get( clazz );
+                }
+        	} catch ( ClassNotFoundException ex ) {
+        		// do nothing, just skip if not a valid class name
+        	}
+        }
+		if ( de == null && parseOnFail ) {
 			this.dataDictionaryBuilder.parseDocument(documentTypeDDKey, isAllowOverrides());
+			de = documentEntries.get(documentTypeDDKey);
 		}
-		return documentEntries.get(documentTypeDDKey);
+        return de;
 	}
 
 	/**
@@ -317,7 +364,13 @@ public class DataDictionary implements Serializable {
 
 		MaintenanceDocumentEntry mde = (MaintenanceDocumentEntry) documentEntriesByBusinessObjectClass.get(businessObjectClass);
 		if (mde == null) {
-			this.dataDictionaryBuilder.parseDocument(businessObjectClass.getName(), false);
+			//Before attempting to parse the DD again, try to look in the documentEntries, if we found
+			//it there, then we'll return null for this method because it means that the businessObjectClass
+			//is not in maintenance document, it's transactional.
+		    if (documentEntries.get(businessObjectClass.getName()) != null) {	
+		    	return null;
+		    }
+			this.dataDictionaryBuilder.parseMaintenanceDocument(businessObjectClass.getName(), true);
 		}
 		return (MaintenanceDocumentEntry) documentEntriesByBusinessObjectClass.get(businessObjectClass);
 	}

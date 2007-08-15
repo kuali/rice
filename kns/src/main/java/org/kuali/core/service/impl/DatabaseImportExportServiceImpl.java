@@ -34,7 +34,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversionDefaultImpl;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.dao.KualiDBPlatformDao;
 import org.kuali.core.exceptions.ClassNotPersistableException;
@@ -220,15 +220,30 @@ public class DatabaseImportExportServiceImpl extends PersistenceServiceImplBase 
                     Matcher matcher;
                     char[]data = new char[BUFFER_SIZE];
                     int cursorPosition;
+                    boolean firstRecord = true;
+                    StringBuffer fieldNameList = new StringBuffer( 1000 );
                     while ((cursorPosition = dumpFileReader.read(data)) != -1) {
                         temp.append(data, 0, cursorPosition);
                         while (temp.indexOf("\t\n") > -1) {
                             record = temp.substring(0, temp.indexOf("\t\n"));
                             temp.delete(0, temp.indexOf("\t\n")+2);
+                            if ( firstRecord ) {
+                            	String[] fields = record.split("\\t");
+                            	for (int i=0; i<fields.length; i++) {
+                            		if ( i > 0 ) {
+                            			fieldNameList.append( ',' );
+                            		}
+                            		fieldNameList.append( fields[i] );
+                            	}
+                            	firstRecord = false;
+                            	continue;
+                            }
                             // at this point, the string record should contain a complete
                             // record.  now we can attempt to do something with it.
                             recordInsertStatement.delete(0, recordInsertStatement.length());
-                            recordInsertStatement.append("INSERT INTO " + tableName + " VALUES (");
+                            recordInsertStatement.append("INSERT INTO " ).append( tableName ).append( " ( " );
+                            recordInsertStatement.append( fieldNameList );
+                            recordInsertStatement.append( " ) VALUES (" );
                             String[] fields = record.split("\\t");
                             for (int i=0; i<fields.length; i++) {
                                 if (fields[i].equalsIgnoreCase("\\N")) {
@@ -236,7 +251,7 @@ public class DatabaseImportExportServiceImpl extends PersistenceServiceImplBase 
                                 } else {
                                     matcher = pattern.matcher(fields[i]);
                                     if (matcher.find() || (fields[i].length() <= 8 && fields[i].startsWith("0"))) {
-                                        recordInsertStatement.append("'" + dbPlatformDao.escapeSingleQuotes(fields[i]) + "',");
+                                        recordInsertStatement.append("'" + dbPlatformDao.escapeSingleQuotes(fields[i].replace( "//~T~//", "\t" ).replace(  "\\", "\\\\" ) ) + "',");
                                     } else {
                                         recordInsertStatement.append(fields[i] + ",");
                                     }
@@ -246,7 +261,9 @@ public class DatabaseImportExportServiceImpl extends PersistenceServiceImplBase 
                             // chop off the trailing comma.
                             recordInsertStatement.delete(recordInsertStatement.length()-1, recordInsertStatement.length()); 
                             recordInsertStatement.append(")");
-                            dbPlatformDao.executeSql(recordInsertStatement.toString());
+                            if ( recordInsertStatement.length() <= 1000000 ) {
+                            	dbPlatformDao.executeSql(recordInsertStatement.toString());
+                            }
                         }
                     }
                     dumpFileReader.close();
@@ -304,7 +321,7 @@ public class DatabaseImportExportServiceImpl extends PersistenceServiceImplBase 
     }
     
     public void updateWorkflowDocHandlerUrls() {
-        String baseURL = configService.getPropertyString( Constants.APPLICATION_URL_KEY );
+        String baseURL = configService.getPropertyString( RiceConstants.APPLICATION_URL_KEY );
         dbPlatformDao.executeSql( "UPDATE en_doc_typ_t SET doc_typ_hdlr_url_addr = REPLACE( doc_typ_hdlr_url_addr, " +
                 "'http://localhost:8080/kuali-dev', ? ) " +
                 "WHERE doc_typ_hdlr_url_addr LIKE 'http://localhost:8080/kuali-dev/%' " +

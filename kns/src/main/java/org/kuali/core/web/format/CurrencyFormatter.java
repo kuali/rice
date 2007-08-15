@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.core.util.KualiDecimal;
 import org.kuali.core.util.KualiInteger;
 
@@ -89,12 +89,12 @@ public class CurrencyFormatter extends Formatter {
             // preemptively detect non-numeric-related symbols, since NumberFormat.parse seems to be silently deleting them
             // (i.e. 9aaaaaaaaaaaaaaa is silently converted into 9)
             if (!CURRENCY_PATTERN.matcher(target).matches()) {
-                throw new FormatException("parsing", KeyConstants.ERROR_CURRENCY, rawString);
+                throw new FormatException("parsing", RiceKeyConstants.ERROR_CURRENCY, rawString);
             }
 
             // preemptively detect String with excessive digits after the decimal, to prevent them from being silently rounded
             if (rawString.contains(".") && !TRAILING_DECIMAL_PATTERN.matcher(rawString).matches()) {
-                throw new FormatException("parsing", KeyConstants.ERROR_CURRENCY_DECIMAL, rawString);
+                throw new FormatException("parsing", RiceKeyConstants.ERROR_CURRENCY_DECIMAL, rawString);
             }
 
             // actually reformat the numeric value
@@ -104,10 +104,10 @@ public class CurrencyFormatter extends Formatter {
                 value = new KualiDecimal(parsedNumber.toString());
             }
             catch (NumberFormatException e) {
-                throw new FormatException("parsing", KeyConstants.ERROR_CURRENCY, rawString, e);
+                throw new FormatException("parsing", RiceKeyConstants.ERROR_CURRENCY, rawString, e);
             }
             catch (ParseException e) {
-                throw new FormatException("parsing", KeyConstants.ERROR_CURRENCY, rawString, e);
+                throw new FormatException("parsing", RiceKeyConstants.ERROR_CURRENCY, rawString, e);
             }
         }
 
@@ -201,10 +201,10 @@ public class CurrencyFormatter extends Formatter {
             string = formatter.format(convertedNumber.bigDecimalValue());
         }
         catch (IllegalArgumentException e) {
-            throw new FormatException("formatting", KeyConstants.ERROR_CURRENCY, obj.toString(), e);
+            throw new FormatException("formatting", RiceKeyConstants.ERROR_CURRENCY, obj.toString(), e);
         }
         catch (ClassCastException e) {
-            throw new FormatException("formatting", KeyConstants.ERROR_CURRENCY, obj.toString(), e);
+            throw new FormatException("formatting", RiceKeyConstants.ERROR_CURRENCY, obj.toString(), e);
         }
 
         return showSymbol() ? string : removeSymbol(string);

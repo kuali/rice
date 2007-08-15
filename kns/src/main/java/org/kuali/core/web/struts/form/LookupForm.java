@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.lookup.LookupUtils;
 import org.kuali.core.lookup.Lookupable;
 import org.kuali.core.service.DataDictionaryService;
@@ -69,9 +69,9 @@ public class LookupForm extends KualiForm {
 
         try {
             Lookupable localLookupable = null;
-            if (StringUtils.isBlank(request.getParameter(Constants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME)) && StringUtils.isBlank(getLookupableImplServiceName())) {
+            if (StringUtils.isBlank(request.getParameter(RiceConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME)) && StringUtils.isBlank(getLookupableImplServiceName())) {
                 // get the business object class for the lookup
-                String localBusinessObjectClassName = request.getParameter(Constants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);
+                String localBusinessObjectClassName = request.getParameter(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);
                 setBusinessObjectClassName(localBusinessObjectClassName);
                 if (StringUtils.isBlank(localBusinessObjectClassName)) {
                     LOG.error("Business object class not passed to lookup.");
@@ -94,16 +94,16 @@ public class LookupForm extends KualiForm {
             }
 
 
-            if (request.getParameter(Constants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME) != null) {
-                setLookupableImplServiceName(request.getParameter(Constants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME));
+            if (request.getParameter(RiceConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME) != null) {
+                setLookupableImplServiceName(request.getParameter(RiceConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME));
             }
 
             // check the doc form key is empty before setting so we don't override a restored lookup form
-            if (request.getAttribute(Constants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
-                setFormKey((String) request.getAttribute(Constants.DOC_FORM_KEY));
+            if (request.getAttribute(RiceConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
+                setFormKey((String) request.getAttribute(RiceConstants.DOC_FORM_KEY));
             }
-            else if (request.getParameter(Constants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
-                setFormKey(request.getParameter(Constants.DOC_FORM_KEY));
+            else if (request.getParameter(RiceConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
+                setFormKey(request.getParameter(RiceConstants.DOC_FORM_KEY));
             }
 
             if (request.getParameter("returnLocation") != null) {
@@ -112,11 +112,11 @@ public class LookupForm extends KualiForm {
             if (request.getParameter("conversionFields") != null) {
                 setConversionFields(request.getParameter("conversionFields"));
             }
-            if (request.getParameter(Constants.EXTRA_BUTTON_SOURCE) != null) {
-                setExtraButtonSource(request.getParameter(Constants.EXTRA_BUTTON_SOURCE));
+            if (request.getParameter(RiceConstants.EXTRA_BUTTON_SOURCE) != null) {
+                setExtraButtonSource(request.getParameter(RiceConstants.EXTRA_BUTTON_SOURCE));
             }
-            if (request.getParameter(Constants.EXTRA_BUTTON_PARAMS) != null) {
-                setExtraButtonParams(request.getParameter(Constants.EXTRA_BUTTON_PARAMS));
+            if (request.getParameter(RiceConstants.EXTRA_BUTTON_PARAMS) != null) {
+                setExtraButtonParams(request.getParameter(RiceConstants.EXTRA_BUTTON_PARAMS));
             }
             String value = request.getParameter("multipleValues");
             if (value != null) {
@@ -127,10 +127,10 @@ public class LookupForm extends KualiForm {
                     setMultipleValues(new Boolean(request.getParameter("multipleValues")).booleanValue());
                 }
             }
-            if (request.getParameter(Constants.REFERENCES_TO_REFRESH) != null) {
-                setReferencesToRefresh(request.getParameter(Constants.REFERENCES_TO_REFRESH));
+            if (request.getParameter(RiceConstants.REFERENCES_TO_REFRESH) != null) {
+                setReferencesToRefresh(request.getParameter(RiceConstants.REFERENCES_TO_REFRESH));
             }
-        
+
             if (request.getParameter("readOnlyFields") != null) {
                 setReadOnlyFields(request.getParameter("readOnlyFields"));
                 setReadOnlyFieldsList(LookupUtils.translateReadOnlyFieldsToList(this.readOnlyFields));
@@ -185,21 +185,21 @@ public class LookupForm extends KualiForm {
                     }
                 }
             }
-            fieldValues.put(Constants.DOC_FORM_KEY, this.getFormKey());
-            fieldValues.put(Constants.BACK_LOCATION, this.getBackLocation());
+            fieldValues.put(RiceConstants.DOC_FORM_KEY, this.getFormKey());
+            fieldValues.put(RiceConstants.BACK_LOCATION, this.getBackLocation());
             if (StringUtils.isNotBlank(getReferencesToRefresh())) {
-                fieldValues.put(Constants.REFERENCES_TO_REFRESH, this.getReferencesToRefresh());
+                fieldValues.put(RiceConstants.REFERENCES_TO_REFRESH, this.getReferencesToRefresh());
             }
-            
+
             this.setFields(fieldValues);
 
             setFieldConversions(LookupUtils.translateFieldConversions(this.conversionFields));
             localLookupable.setFieldConversions(getFieldConversions());
             setLookupable(localLookupable);
             setFieldsForLookup(fieldValues);
-            
-            // only show maintenance links if the lookup was called from the portal
-            if (StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(Constants.APPLICATION_URL_KEY) + "/" + Constants.MAPPING_PORTAL)) {
+
+            // only show maintenance links if the lookup was called from the portal (or index.html for the generated applications)
+            if (StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceConstants.APPLICATION_URL_KEY) + "/" + RiceConstants.MAPPING_PORTAL) || StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceConstants.APPLICATION_URL_KEY) + "/index.html")) {
                 showMaintenanceLinks = true;
             }
             else {
@@ -379,7 +379,7 @@ public class LookupForm extends KualiForm {
 
 
     /**
-     * 
+     *
      * @return whether this form returns multiple values
      */
     public boolean isMultipleValues() {
@@ -387,7 +387,7 @@ public class LookupForm extends KualiForm {
     }
 
     /**
-     * 
+     *
      * @param multipleValues - specify whether this form returns multiple values (i.e. a Collection)
      */
     public void setMultipleValues(boolean multipleValues) {
@@ -403,7 +403,7 @@ public class LookupForm extends KualiForm {
     }
 
     /**
-     * Gets the fieldsForLookup attribute. 
+     * Gets the fieldsForLookup attribute.
      * @return Returns the fieldsForLookup.
      */
     public Map getFieldsForLookup() {
@@ -419,7 +419,7 @@ public class LookupForm extends KualiForm {
     }
 
     /**
-     * Gets the readOnlyFields attribute. 
+     * Gets the readOnlyFields attribute.
      * @return Returns the readOnlyFields.
      */
     public String getReadOnlyFields() {
@@ -435,7 +435,7 @@ public class LookupForm extends KualiForm {
     }
 
     /**
-     * Gets the readOnlyFieldsList attribute. 
+     * Gets the readOnlyFieldsList attribute.
      * @return Returns the readOnlyFieldsList.
      */
     public List getReadOnlyFieldsList() {
@@ -475,7 +475,7 @@ public class LookupForm extends KualiForm {
     }
 
     /**
-     * Gets the showMaintenanceLinks attribute. 
+     * Gets the showMaintenanceLinks attribute.
      * @return Returns the showMaintenanceLinks.
      */
     public boolean isShowMaintenanceLinks() {
@@ -489,6 +489,6 @@ public class LookupForm extends KualiForm {
     public void setShowMaintenanceLinks(boolean hideMaintenanceLinks) {
         this.showMaintenanceLinks = hideMaintenanceLinks;
     }
-    
-    
+
+
 }

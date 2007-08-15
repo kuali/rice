@@ -17,6 +17,8 @@ package org.kuali.core.dao;
 
 import java.util.List;
 
+import javax.sql.DataSource;
+
 public interface KualiDBPlatformDao {
     public Long getNextAvailableSequenceNumber(String sequenceName);
 
@@ -60,6 +62,8 @@ public interface KualiDBPlatformDao {
     
     public String escapeSingleQuotes( String value );
     
+    public String escapeBackslashes( String value );
+    
     public List<String> getSequenceNames();
     
     public void dumpSequence( String sequenceName, String exportDirectory );
@@ -71,4 +75,6 @@ public interface KualiDBPlatformDao {
     public boolean isSequence( String sequenceName );
     
     public void clearSequenceTable( String sequenceName );
+    
+    public void setDataSource( DataSource dataSource );
 }

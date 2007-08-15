@@ -322,7 +322,10 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
      * @see org.kuali.core.datadictionary.DataDictionaryEntry#getFullClassName()
      */
     public String getFullClassName() {
-        return getDocumentClass().getName();
+    	if ( getDocumentClass() != null ) {
+    		return getDocumentClass().getName();
+    	}
+    	return "";
     }
 
     /**

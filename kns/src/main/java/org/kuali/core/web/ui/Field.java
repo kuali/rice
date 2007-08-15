@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.datadictionary.mask.Mask;
 import org.kuali.core.web.format.BooleanFormatter;
 import org.kuali.core.web.format.DateFormatter;
@@ -108,7 +108,7 @@ public class Field implements java.io.Serializable {
     private String universalIdAttributeName;
     private String userIdAttributeName;
     private String personNameAttributeName;
-    private String defaultValue = Constants.EMPTY_STRING;
+    private String defaultValue = RiceConstants.EMPTY_STRING;
     private boolean keyField;
     private String displayEditMode;
     private Mask displayMask;
@@ -434,7 +434,7 @@ public class Field implements java.io.Serializable {
      */
     public String getPropertyValue() {
         if (propertyValue == null) {
-            propertyValue = Constants.EMPTY_STRING;
+            propertyValue = RiceConstants.EMPTY_STRING;
         }
 
         return propertyValue;
@@ -647,9 +647,17 @@ public class Field implements java.io.Serializable {
      * @param fieldValidValues The fieldValidValues to set.
      */
     public void setFieldValidValues(List fieldValidValues) {
-        this.fieldValidValues = fieldValidValues;
+    	this.fieldValidValues = fieldValidValues;
     }
 
+    public boolean getHasBlankValidValue() {
+    	for ( KeyLabelPair keyLabel : (List<KeyLabelPair>)fieldValidValues ) {
+            if ( keyLabel.getKey().equals( "" ) ) {
+            	return true;
+            }        	
+        }
+    	return false;
+    }
 
     /**
      * @param formatter The formatter to set.
@@ -718,7 +726,7 @@ public class Field implements java.io.Serializable {
      * @param propertyName The propertyName to set.
      */
     public void setPropertyName(String propertyName) {
-        String newPropertyName = Constants.EMPTY_STRING;
+        String newPropertyName = RiceConstants.EMPTY_STRING;
         if (propertyName != null) {
             newPropertyName = propertyName;
         }
@@ -729,7 +737,7 @@ public class Field implements java.io.Serializable {
      * @param propertyValue The propertyValue to set.
      */
     public void setPropertyValue(Object propertyValue) {
-        String newPropertyValue = Constants.EMPTY_STRING;
+        String newPropertyValue = RiceConstants.EMPTY_STRING;
 
         if (propertyValue != null) {
             // for Booleans always use BooleanFormatter

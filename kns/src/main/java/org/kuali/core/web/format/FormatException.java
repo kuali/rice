@@ -16,7 +16,7 @@
 package org.kuali.core.web.format;
 // end Kuali Foundation modification
 
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 
 /**
  * begin Kuali Foundation modification
@@ -43,7 +43,7 @@ public class FormatException extends RuntimeException {
     public FormatException(String message) {
         // begin Kuali Foundation modification
         // orig code: this(message, null);
-        this(message, KeyConstants.ERROR_CUSTOM, message);
+        this(message, RiceKeyConstants.ERROR_CUSTOM, message);
         // end Kuali Foundation modification
     }
 
@@ -53,7 +53,7 @@ public class FormatException extends RuntimeException {
 		super(message);
         this.cause = cause;
 		*/
-        this(message, KeyConstants.ERROR_CUSTOM, message, cause);
+        this(message, RiceKeyConstants.ERROR_CUSTOM, message, cause);
         // end Kuali Foundation modification
     }
 

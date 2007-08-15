@@ -19,7 +19,7 @@ package org.kuali.core.web.format;
 import java.text.ParseException;
 import java.util.Date;
 
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.rice.KNSServiceLocator;
 
 /**
@@ -39,7 +39,7 @@ public class TimestampAMPMFormatter extends Formatter {
         	return KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(target);
         }
         catch (ParseException e) {
-            throw new FormatException("parsing", KeyConstants.ERROR_DATE_TIME, target, e);
+            throw new FormatException("parsing", RiceKeyConstants.ERROR_DATE_TIME, target, e);
         }
     }
 

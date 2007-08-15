@@ -109,31 +109,31 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
 //	}
 
 	public void loadRepositoryDescriptor(String ojbRepositoryFilePath) {
-            DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
+		LOG.info("Begin loading OJB Metadata for: " + ojbRepositoryFilePath);
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
 		InputStream is = null;
-    
 		try {
 			is = resourceLoader.getResource(CLASSPATH_RESOURCE_PREFIX + ojbRepositoryFilePath).getInputStream();
-        ConnectionRepository cr = MetadataManager.getInstance().readConnectionRepository(is);
-        MetadataManager.getInstance().mergeConnectionRepository(cr);
-        
-        is = resourceLoader.getResource(CLASSPATH_RESOURCE_PREFIX + ojbRepositoryFilePath).getInputStream();
-        DescriptorRepository dr = MetadataManager.getInstance().readDescriptorRepository(is);
-        MetadataManager.getInstance().mergeDescriptorRepository(dr);
-        
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("--------------------------------------------------------------------------");
-            LOG.debug("Merging repository descriptor: " + ojbRepositoryFilePath);
-            LOG.debug("--------------------------------------------------------------------------");
-        }
+			ConnectionRepository cr = MetadataManager.getInstance().readConnectionRepository(is);
+			MetadataManager.getInstance().mergeConnectionRepository(cr);
+
+			is = resourceLoader.getResource(CLASSPATH_RESOURCE_PREFIX + ojbRepositoryFilePath).getInputStream();
+			DescriptorRepository dr = MetadataManager.getInstance().readDescriptorRepository(is);
+			MetadataManager.getInstance().mergeDescriptorRepository(dr);
+
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("--------------------------------------------------------------------------");
+				LOG.debug("Merging repository descriptor: " + ojbRepositoryFilePath);
+				LOG.debug("--------------------------------------------------------------------------");
+			}
 		} catch (IOException ioe) {
 			if (is != null) {
-        try {
-            is.close();
+				try {
+					is.close();
 				} catch (IOException e) {
 					LOG.info("Failed to close InputStream on OJB repository path " + ojbRepositoryFilePath, e);
-        }
-    }
+				}
+			}
 			throw new RiceRuntimeException(ioe);
 		} finally {
 			if (is != null) {
@@ -144,12 +144,12 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
 				}
 			}
 		}
-
+		LOG.info("Finished loading OJB Metadata for: " + ojbRepositoryFilePath);
 	}
 
     /**
-     * @see org.kuali.core.service.PersistenceService#retrieveNonKeyFields(java.lang.Object)
-     */
+	 * @see org.kuali.core.service.PersistenceService#retrieveNonKeyFields(java.lang.Object)
+	 */
     public void retrieveNonKeyFields(Object persistableObject) {
         if (persistableObject == null) {
             throw new IllegalArgumentException("invalid (null) persistableObject");

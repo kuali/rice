@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,11 +23,14 @@ import org.apache.ws.security.components.crypto.Crypto;
 import org.apache.ws.security.components.crypto.Merlin;
 import org.apache.ws.security.handler.RequestData;
 import org.apache.ws.security.handler.WSHandlerConstants;
+import org.codehaus.xfire.MessageContext;
 import org.codehaus.xfire.security.wss4j.WSS4JOutHandler;
 import org.kuali.rice.config.wss4j.CryptoPasswordCallbackHandler;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.exceptions.RiceRuntimeException;
 import org.kuali.rice.util.ClassLoaderUtils;
+
+import edu.iu.uis.eden.messaging.ServiceInfo;
 
 /**
  *
@@ -35,14 +38,17 @@ import org.kuali.rice.util.ClassLoaderUtils;
  * @author natjohns
  */
 public class WorkflowXFireWSS4JOutHandler extends WSS4JOutHandler {
-	
+
 	private static final Logger LOG = Logger.getLogger(WorkflowXFireWSS4JOutHandler.class);
 
-	public WorkflowXFireWSS4JOutHandler() {
+	private ServiceInfo serviceInfo;
+
+	public WorkflowXFireWSS4JOutHandler(ServiceInfo serviceInfo) {
 		this.setProperty(WSHandlerConstants.ACTION, WSHandlerConstants.SIGNATURE);
 		this.setProperty(WSHandlerConstants.PW_CALLBACK_CLASS, CryptoPasswordCallbackHandler.class.getName());
 		this.setProperty(WSHandlerConstants.SIG_KEY_ID, "IssuerSerial");
 		this.setProperty(WSHandlerConstants.USER, Core.getCurrentContextConfig().getKeystoreAlias());
+		this.serviceInfo = serviceInfo;
 	}
 
 	@Override
@@ -51,7 +57,7 @@ public class WorkflowXFireWSS4JOutHandler extends WSS4JOutHandler {
 			return new Merlin(getMerlinProperties(), ClassLoaderUtils.getDefaultClassLoader());
 		} catch (Exception e) {
 			throw new RiceRuntimeException(e);
-		} 	
+		}
 	}
 
 	@Override
@@ -66,11 +72,27 @@ public class WorkflowXFireWSS4JOutHandler extends WSS4JOutHandler {
 		props.put("org.apache.ws.security.crypto.merlin.alias.password", Core.getCurrentContextConfig().getKeystorePassword());
 		props.put("org.apache.ws.security.crypto.merlin.keystore.alias", Core.getCurrentContextConfig().getKeystoreAlias());
 		props.put("org.apache.ws.security.crypto.merlin.file", Core.getCurrentContextConfig().getKeystoreFile());
-		
+
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Using keystore location " + Core.getCurrentContextConfig().getKeystoreFile());
 		}
-		
+
 		return props;
 	}
+
+	@Override
+	public void invoke(MessageContext context) throws Exception {
+		if (getServiceInfo().getServiceDefinition().getBusSecurity()) {
+			super.invoke(context);
+		}
+	}
+
+	public ServiceInfo getServiceInfo() {
+		return serviceInfo;
+	}
+
+	public void setServiceInfo(ServiceInfo serviceInfo) {
+		this.serviceInfo = serviceInfo;
+	}
+
 }

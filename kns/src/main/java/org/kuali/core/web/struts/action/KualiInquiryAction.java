@@ -30,8 +30,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.Constants;
-import org.kuali.KeyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.exceptions.AuthorizationException;
@@ -69,7 +69,7 @@ public class KualiInquiryAction extends KualiAction {
 
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setAttribute(Constants.PARAM_MAINTENANCE_VIEW_MODE, Constants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
+        request.setAttribute(RiceConstants.PARAM_MAINTENANCE_VIEW_MODE, RiceConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
         return super.execute(mapping, form, request, response);
     }
 
@@ -88,10 +88,10 @@ public class KualiInquiryAction extends KualiAction {
         EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
 
         // List of encrypted values
-        String encryptedString = request.getParameter(Constants.ENCRYPTED_LIST_PREFIX);
+        String encryptedString = request.getParameter(RiceConstants.ENCRYPTED_LIST_PREFIX);
         List encryptedList = new ArrayList();
         if (StringUtils.isNotBlank(encryptedString)) {
-            encryptedList = Arrays.asList(StringUtils.split(encryptedString, Constants.FIELD_CONVERSIONS_SEPERATOR));
+            encryptedList = Arrays.asList(StringUtils.split(encryptedString, RiceConstants.FIELD_CONVERSIONS_SEPERATOR));
         }
 
         Class businessObjectClass = Class.forName(inquiryForm.getBusinessObjectClassName());
@@ -144,7 +144,7 @@ public class KualiInquiryAction extends KualiAction {
         BusinessObject bo = kualiInquirable.getBusinessObject(fieldValues);
         if (bo == null) {
             LOG.error("No records found in inquiry action.");
-            GlobalVariables.getErrorMap().putError(Constants.GLOBAL_ERRORS, KeyConstants.ERROR_INQUIRY);
+            GlobalVariables.getErrorMap().putError(RiceConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
             return mapping.findForward("error");
         }
 
@@ -155,8 +155,8 @@ public class KualiInquiryAction extends KualiAction {
 
         kualiInquirable.addAdditionalSections(sections, bo);
 
-        request.setAttribute(Constants.INQUIRABLE_ATTRIBUTE_NAME, kualiInquirable);
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        request.setAttribute(RiceConstants.INQUIRABLE_ATTRIBUTE_NAME, kualiInquirable);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
 }

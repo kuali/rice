@@ -27,7 +27,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.KNSServiceLocator;
 
@@ -127,7 +127,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
         }
         LOG.debug("calling setMenubar '" + menubar + "'");
 
-        this.menubar = menubar.replace("${kr.externalizable.images.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(Constants.EXTERNALIZABLE_IMAGES_URL_KEY)).replace("${externalizable.images.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(Constants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
+        this.menubar = menubar.replace("${kr.externalizable.images.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceConstants.EXTERNALIZABLE_IMAGES_URL_KEY)).replace("${externalizable.images.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceConstants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
     }
 
 

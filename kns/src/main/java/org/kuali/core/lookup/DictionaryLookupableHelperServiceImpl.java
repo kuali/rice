@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.BusinessObjectAttributeEntry;
 import org.kuali.core.datadictionary.control.ControlDefinition;
@@ -51,13 +51,13 @@ public class DictionaryLookupableHelperServiceImpl extends AbstractLookupableHel
      * definitions.
      */
     public List getSearchResults(Map fieldValues, Map fieldConversions) {
-        setBackLocation((String) fieldValues.get(Constants.BACK_LOCATION));
-        setDocFormKey((String) fieldValues.get(Constants.DOC_FORM_KEY));
+        setBackLocation((String) fieldValues.get(RiceConstants.BACK_LOCATION));
+        setDocFormKey((String) fieldValues.get(RiceConstants.DOC_FORM_KEY));
 
         List searchResults = new ArrayList();
         DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
         try {
-            String boClassName = (String) fieldValues.get(Constants.DICTIONARY_BO_NAME);
+            String boClassName = (String) fieldValues.get(RiceConstants.DICTIONARY_BO_NAME);
 
             // get bo class to query on
             Class boClass = Class.forName(boClassName);
@@ -128,7 +128,7 @@ public class DictionaryLookupableHelperServiceImpl extends AbstractLookupableHel
      */
     @Override
     public String getReturnUrl(BusinessObject bo, Map fieldConversions, String lookupImpl) {
-        return Constants.EMPTY_STRING;
+        return RiceConstants.EMPTY_STRING;
     }
 
     /**
@@ -136,7 +136,7 @@ public class DictionaryLookupableHelperServiceImpl extends AbstractLookupableHel
      */
     @Override
     public String getMaintenanceUrl(BusinessObject bo, String methodToCall) {
-        return Constants.EMPTY_STRING;
+        return RiceConstants.EMPTY_STRING;
     }
 
     /**

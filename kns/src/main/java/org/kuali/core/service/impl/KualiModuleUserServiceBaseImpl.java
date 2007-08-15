@@ -18,7 +18,7 @@ package org.kuali.core.service.impl;
 import java.util.Collections;
 import java.util.List;
 
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.bo.user.KualiModuleUser;
 import org.kuali.core.bo.user.UniversalUser;
@@ -111,7 +111,7 @@ public abstract class KualiModuleUserServiceBaseImpl<T extends KualiModuleUser> 
 	}
     
 	public Object getActiveFacultyStaffAffiliateCriteria() {
-        String[] allowedEmployeeStatusValues = getConfigService().getApplicationRule(Constants.ADMIN_GROUP, Constants.ALLOWED_EMPLOYEE_STATUS_RULE).getRuleText().split(";");
+        String[] allowedEmployeeStatusValues = getConfigService().getApplicationRule(RiceConstants.ADMIN_GROUP, RiceConstants.ALLOWED_EMPLOYEE_STATUS_RULE).getRuleText().split(";");
 		return kualiModuleUserDao.getActiveFacultyStaffAffiliateCriteria(allowedEmployeeStatusValues);
 	}
 }

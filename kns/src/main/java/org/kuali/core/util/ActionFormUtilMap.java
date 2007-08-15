@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.core.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.KNSServiceLocator;
@@ -40,7 +40,7 @@ public class ActionFormUtilMap extends HashMap {
      * @see java.util.Map#get(java.lang.Object)
      */
     public Object get(Object key) {
-        String[] methodKey = StringUtils.split((String) key, Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER);
+        String[] methodKey = StringUtils.split((String) key, RiceConstants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER);
      
         String methodToCall = methodKey[0];
         String methodParm = methodKey[1];

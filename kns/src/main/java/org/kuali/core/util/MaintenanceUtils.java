@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.core.datadictionary.MaintainableFieldDefinition;
@@ -161,7 +161,7 @@ public class MaintenanceUtils {
             
             Iterator<String> collectionIter = section.getContainedCollectionNames().iterator();
             while (collectionIter.hasNext()) {
-                buf.append(Constants.MAINTENANCE_NEW_MAINTAINABLE + collectionIter.next());
+                buf.append(RiceConstants.MAINTENANCE_NEW_MAINTAINABLE + collectionIter.next());
                 if (collectionIter.hasNext()) {
                     buf.append(",");
                 }
@@ -175,7 +175,7 @@ public class MaintenanceUtils {
      * This method recurses through all the fields of the list of rows and adds each field's property name to the set if it starts
      * with Constants.MAINTENANCE_NEW_MAINTAINABLE
      * 
-     * @see Constants#MAINTENANCE_NEW_MAINTAINABLE
+     * @see RiceConstants#MAINTENANCE_NEW_MAINTAINABLE
      * @param listOfRows
      * @param errorKeys
      */
@@ -190,7 +190,7 @@ public class MaintenanceUtils {
             }
             for (Field field : fields) {
                 String fieldPropertyName = field.getPropertyName();
-                if (fieldPropertyName != null && fieldPropertyName.startsWith(Constants.MAINTENANCE_NEW_MAINTAINABLE)) {
+                if (fieldPropertyName != null && fieldPropertyName.startsWith(RiceConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
                     errorKeys.add(field.getPropertyName());
                 }
                 addRowsToErrorKeySet(field.getContainerRows(), errorKeys);

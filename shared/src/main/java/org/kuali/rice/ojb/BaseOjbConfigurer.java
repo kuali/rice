@@ -103,7 +103,7 @@ public abstract class BaseOjbConfigurer extends BaseLifecycle {
 				 LOG.warn("Failed to close stream to file " + connMetadata, e);
 			 }
 	    } else {
-        	LOG.info("OJB Connection already configured for jcd alias '" + getJcdAlias() + "', skipping Metadata merge.");
+        	LOG.info("OJB Connections already configured for jcd aliases '" + StringUtils.join(getJcdAliases(), ", ") + "', skipping Metadata merge.");
         }
 	}
 
@@ -119,7 +119,7 @@ public abstract class BaseOjbConfigurer extends BaseLifecycle {
 				if (StringUtils.isEmpty(ojbPlatform)) {
 					throw new ConfigurationException("Could not configure OJB, the '" + Config.OJB_PLATFORM + "' configuration property was not set.");
 				}
-				LOG.info("Setting " + getJcdAlias() + " OJB connection descriptor database platform to '" + ojbPlatform + "'");
+				LOG.info("Setting OJB connection descriptor database platform to '" + ojbPlatform + "'");
 				descriptor.setAttribute("platform", ojbPlatform);
 			}
 		}
@@ -133,8 +133,10 @@ public abstract class BaseOjbConfigurer extends BaseLifecycle {
 		List descriptors = mm.connectionRepository().getAllDescriptor();
 		for (Iterator iterator = descriptors.iterator(); iterator.hasNext();) {
 			JdbcConnectionDescriptor descriptor = (JdbcConnectionDescriptor) iterator.next();
-			if (descriptor.getJcdAlias().equals(getJcdAlias())) {
+			for (String jcdAlias : getJcdAliases()) {
+			    if (descriptor.getJcdAlias().equals(jcdAlias)) {
 				return true;
+			    }
 			}
 		}
 		return false;
@@ -167,7 +169,7 @@ public abstract class BaseOjbConfigurer extends BaseLifecycle {
 	 * Return the jcd alias of the connection loaded by the connection metadata.
 	 * @return
 	 */
-	protected abstract String getJcdAlias();
+	protected abstract String[] getJcdAliases();
 
 	/**
 	 * Should return a String representing the location of a file to load OJB connection and

@@ -23,7 +23,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.util.spring.NamedOrderedListBean;
 import org.kuali.rice.KNSServiceLocator;
@@ -60,7 +60,7 @@ public class KualiDWRServlet extends DWRServlet {
 	 */
 	@Override
 	public void configure(ServletConfig servletConfig, Configuration configuration) throws ServletException {
-		for (NamedOrderedListBean namedOrderedListBean : KNSServiceLocator.getNamedOrderedListBeans(Constants.SCRIPT_CONFIGURATION_FILES_LIST_NAME)) {
+		for (NamedOrderedListBean namedOrderedListBean : KNSServiceLocator.getNamedOrderedListBeans(RiceConstants.SCRIPT_CONFIGURATION_FILES_LIST_NAME)) {
 			for (String scriptConfigurationFilePath : namedOrderedListBean.getList()) {
 				if (getSpringBasedConfigPath()) {
 					DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());

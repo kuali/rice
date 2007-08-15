@@ -17,7 +17,7 @@ package org.kuali.core.web.format;
 // end Kuali Foundation modification
 
 // begin Kuali Foundation modification
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 
 
 /**
@@ -46,7 +46,7 @@ public class PhoneNumberFormatter extends Formatter {
         String digits = target.replaceAll("[^0-9]", "");
         if (digits.length() != NUM_DIGITS)
         	// begin Kuali Foundation modification
-            throw new FormatException("parsing", KeyConstants.ERROR_PHONE_NUMBER, target);
+            throw new FormatException("parsing", RiceKeyConstants.ERROR_PHONE_NUMBER, target);
             // end Kuali Foundation modification
 
         return digits;
@@ -65,13 +65,13 @@ public class PhoneNumberFormatter extends Formatter {
             return null;
         if (!(value instanceof String))
         	// begin Kuali Foundation modification
-            throw new FormatException("formatting", KeyConstants.ERROR_PHONE_NUMBER, value.toString());
+            throw new FormatException("formatting", RiceKeyConstants.ERROR_PHONE_NUMBER, value.toString());
             // end Kuali Foundation modification
 
 		// begin Kuali Foundation modification
         String digits = (String) value;
         if (digits.length() != NUM_DIGITS)
-            throw new FormatException("formatting", KeyConstants.ERROR_PHONE_NUMBER, value.toString());
+            throw new FormatException("formatting", RiceKeyConstants.ERROR_PHONE_NUMBER, value.toString());
         // end Kuali Foundation modification
 
         StringBuffer buf = new StringBuffer("(");

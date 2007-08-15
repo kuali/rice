@@ -249,6 +249,21 @@ public class DataDictionaryBuilder {
 		addEntriesWrapper(documentFileName, true, allowsOverrides);
 	}
 
+	public void parseMaintenanceDocument(String businessObjectDDKey, boolean allowsOverrides) {
+		if (businessObjectDDKey.indexOf(".") > -1) {
+			businessObjectDDKey = StringUtils.substringAfterLast( businessObjectDDKey, "." );
+		}
+		
+		String documentFileName = fileLocationMap.get(businessObjectDDKey + "MaintenanceDocument");
+		if (documentFileName == null) {
+			documentFileName = fileLocationMap.get("Kuali" + businessObjectDDKey + "MaintenanceDocument");
+			if (documentFileName == null) {
+				return;	
+			}
+		}
+		addEntriesWrapper(documentFileName, true, allowsOverrides);
+	}
+	
 	/**
 	 * Wraps addEntries with a try-catch block which prevents SourceExceptions
 	 * from escaping if sourceMustExist is false.

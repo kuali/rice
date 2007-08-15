@@ -16,7 +16,7 @@
 package org.kuali.core.web.format;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 
 /**
  * This class is used to format Long objects.
@@ -35,7 +35,7 @@ public class LongFormatter extends Formatter {
             return new Long(string);
         }
         catch (NumberFormatException e) {
-            throw new FormatException("parsing", KeyConstants.ERROR_LONG, string, e);
+            throw new FormatException("parsing", RiceKeyConstants.ERROR_LONG, string, e);
         }
     }
 

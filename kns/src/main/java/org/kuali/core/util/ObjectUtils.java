@@ -34,7 +34,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.PersistableBusinessObjectExtension;
@@ -557,8 +557,8 @@ public class ObjectUtils {
      * @return Cleaned string
      */
     public static String clean(String string) {
-        for (int i = 0; i < Constants.QUERY_CHARACTERS.length; i++) {
-            string = StringUtils.replace(string, Constants.QUERY_CHARACTERS[i], Constants.EMPTY_STRING);
+        for (int i = 0; i < RiceConstants.QUERY_CHARACTERS.length; i++) {
+            string = StringUtils.replace(string, RiceConstants.QUERY_CHARACTERS[i], RiceConstants.EMPTY_STRING);
         }
         return string;
     }

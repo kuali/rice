@@ -23,7 +23,7 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 
 /**
  * This forwards to MAPPING_BASIC without doing anything else; useful for displaying JSPs whose contents don't depend on anything
@@ -34,7 +34,7 @@ import org.kuali.Constants;
 
 public class KualiSimpleAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ActionForward returnForward = mapping.findForward(Constants.MAPPING_BASIC);
+        ActionForward returnForward = mapping.findForward(RiceConstants.MAPPING_BASIC);
 
         return returnForward;
     }

@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.datadictionary.InquirySectionDefinition;
@@ -123,20 +123,20 @@ public class KualiInquirableImpl implements Inquirable {
      */
     public static String getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
         Properties parameters = new Properties();
-        parameters.put(Constants.DISPATCH_REQUEST_PARAMETER, "start");
+        parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, "start");
 
         // If the field is subAccountNumber, financialSubObjectCode or projectCode and the value is dashes, don't give a url
         if ("subAccountNumber".equals(attributeName) || "financialSubObjectCode".equals(attributeName) || "projectCode".equals(attributeName)) {
             Object objFieldValue = ObjectUtils.getPropertyValue(businessObject, attributeName);
             String fieldValue = objFieldValue == null ? "" : objFieldValue.toString();
 
-            if ("subAccountNumber".equals(attributeName) && fieldValue.equals(Constants.DASHES_SUB_ACCOUNT_NUMBER)) {
+            if ("subAccountNumber".equals(attributeName) && fieldValue.equals(RiceConstants.DASHES_SUB_ACCOUNT_NUMBER)) {
                 return "";
             }
-            if ("financialSubObjectCode".equals(attributeName) && fieldValue.equals(Constants.DASHES_SUB_OBJECT_CODE)) {
+            if ("financialSubObjectCode".equals(attributeName) && fieldValue.equals(RiceConstants.DASHES_SUB_OBJECT_CODE)) {
                 return "";
             }
-            if ("projectCode".equals(attributeName) && fieldValue.equals(Constants.DASHES_PROJECT_CODE)) {
+            if ("projectCode".equals(attributeName) && fieldValue.equals(RiceConstants.DASHES_PROJECT_CODE)) {
                 return "";
             }
         }
@@ -167,7 +167,7 @@ public class KualiInquirableImpl implements Inquirable {
         }
 
         if (inquiryBusinessObjectClass == null || businessDictionary.isInquirable(inquiryBusinessObjectClass) == null || !businessDictionary.isInquirable(inquiryBusinessObjectClass).booleanValue()) {
-            return Constants.EMPTY_STRING;
+            return RiceConstants.EMPTY_STRING;
         }
 
         synchronized (HACK_LIST) {
@@ -179,7 +179,7 @@ public class KualiInquirableImpl implements Inquirable {
             }    
         }
         
-        parameters.put(Constants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, inquiryBusinessObjectClass.getName());
+        parameters.put(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, inquiryBusinessObjectClass.getName());
 
         List keys = new ArrayList();
         if (persistenceStructureService.isPersistable(inquiryBusinessObjectClass)) {
@@ -236,7 +236,7 @@ public class KualiInquirableImpl implements Inquirable {
                     encryptedList = keyName;
                 }
                 else {
-                    encryptedList = encryptedList + Constants.FIELD_CONVERSIONS_SEPERATOR + keyName;
+                    encryptedList = encryptedList + RiceConstants.FIELD_CONVERSIONS_SEPERATOR + keyName;
                 }
             }
 
@@ -245,10 +245,10 @@ public class KualiInquirableImpl implements Inquirable {
 
         // if we did encrypt a value (or values), add the list of those that are encrypted to the parameters
         if (!encryptedList.equals("")) {
-            parameters.put(Constants.ENCRYPTED_LIST_PREFIX, encryptedList);
+            parameters.put(RiceConstants.ENCRYPTED_LIST_PREFIX, encryptedList);
         }
 
-        return UrlFactory.parameterizeUrl(Constants.INQUIRY_ACTION, parameters);
+        return UrlFactory.parameterizeUrl(RiceConstants.INQUIRY_ACTION, parameters);
     }
 
     public void addAdditionalSections(List columns, BusinessObject bo) {

@@ -465,7 +465,7 @@
 										
 							<c:otherwise>
 								<select name='${field.propertyName}' style="${textStyle}" ${onblurcall}>
-									<c:if test="${ActionName != null && ActionName == 'Lookup.do' && !empty field.fieldValidValues[0].key}">
+									<c:if test="${!field.hasBlankValidValue}">
 										<option value=""></option>
 									</c:if>
 									<kul:fieldSelectValues field="${field}"/>

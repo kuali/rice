@@ -19,7 +19,7 @@ package org.kuali.core.datadictionary;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
 import org.kuali.core.datadictionary.exception.ClassValidationException;
 import org.kuali.core.datadictionary.mask.Mask;
@@ -48,7 +48,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
      * This field is stored as a String because apache digester does not make it
      * easy to detect number format exceptions because it swallows parsing exceptions.
      */
-    private String maxLength = String.valueOf(Constants.LOOKUP_RESULT_FIELD_MAX_LENGTH_NOT_DEFINED);
+    private String maxLength = String.valueOf(RiceConstants.LOOKUP_RESULT_FIELD_MAX_LENGTH_NOT_DEFINED);
 
     private String displayEditMode;
     private Mask displayMask;
@@ -61,7 +61,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
         this.noInquiry = false;
         this.forceLookup = false;
         this.noLookup = false;
-        this.maxLength = String.valueOf(Constants.LOOKUP_RESULT_FIELD_MAX_LENGTH_NOT_DEFINED);
+        this.maxLength = String.valueOf(RiceConstants.LOOKUP_RESULT_FIELD_MAX_LENGTH_NOT_DEFINED);
     }
 
 

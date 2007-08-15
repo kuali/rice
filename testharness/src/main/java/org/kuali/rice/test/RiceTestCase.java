@@ -1,3 +1,18 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.test;
 
 import java.util.ArrayList;
@@ -24,7 +39,6 @@ import org.kuali.rice.resourceloader.SpringResourceLoader;
  * handles automatic tear down of objects created inside the test environment.
  * 
  * @author rkirkend
- * @version $Revision: 1.2 $ $Date: 2007-06-19 14:35:13 $
  * @since 0.9
  */
 public abstract class RiceTestCase extends LoggableTestCase {
@@ -43,16 +57,23 @@ public abstract class RiceTestCase extends LoggableTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		beforeRun();
-		final long initTime = System.currentTimeMillis();
-		this.perTestLifeCycles = getPerTestLifecycles();
-		this.suiteLifeCycles = getSuiteLifecycles();
-		startLifecycles(this.perTestLifeCycles);
-		if (!SUITE_LIFE_CYCLES_RAN) {
-			startLifecycles(this.suiteLifeCycles);
-			SUITE_LIFE_CYCLES_RAN = true;
+		try {
+			beforeRun();
+			final long initTime = System.currentTimeMillis();
+			this.perTestLifeCycles = getPerTestLifecycles();
+			this.suiteLifeCycles = getSuiteLifecycles();
+
+			startLifecycles(this.perTestLifeCycles);
+
+			if (!SUITE_LIFE_CYCLES_RAN) {
+				startLifecycles(this.suiteLifeCycles);
+				SUITE_LIFE_CYCLES_RAN = true;
+			}
+			report("Time to start all Lifecycles: " + (System.currentTimeMillis() - initTime));
+		} catch (Throwable e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		report("Time to start all Lifecycles: " + (System.currentTimeMillis() - initTime));
 	}
 
 	/**

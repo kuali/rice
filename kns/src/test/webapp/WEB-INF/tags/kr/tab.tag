@@ -30,13 +30,20 @@
 <%@ attribute name="transparentBackground" required="false" %>
 <%@ attribute name="highlightTab" required="false" %>
 <%@ attribute name="extraButtonSource" required="false" %>
-
+<%@ attribute name="useCurrentTabIndexAsKey" required="false" %>
 
 <c:set var="currentTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
 <c:set var="topLevelTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
 
+<c:choose>
+    <c:when test="${(useCurrentTabIndexAsKey)}">
+        <c:set var="tabKey" value="${currentTabIndex}"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="tabKey" value="${kfunc:generateTabKey(tabTitle)}"/>
+    </c:otherwise>
+</c:choose>
 
-<c:set var="tabKey" value="${kfunc:generateTabKey(tabTitle)}"/>
 <!--  hit form method to increment tab index -->
 <c:set var="doINeedThis" value="${kfunc:incrementTabIndex(KualiForm, tabKey)}" />
 
@@ -98,10 +105,10 @@
 
             <td class="${midTabClass}">
                <c:if test="${isOpen == 'true' || isOpen == 'TRUE'}">
-                 <html:image property="methodToCall.toggleTab.tab${tabKey}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-hide.gif" title="close ${tabTitle}" alt="close ${tabTitle}" styleClass="tinybutton"  styleId="tab-${tabKey}-imageToggle" onclick="javascript: return toggleTab(document, ${tabKey}); " />
+                 <html:image property="methodToCall.toggleTab.tab${tabKey}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-hide.gif" title="close ${tabTitle}" alt="close ${tabTitle}" styleClass="tinybutton"  styleId="tab-${tabKey}-imageToggle" onclick="javascript: return toggleTab(document, '${tabKey}'); " />
                </c:if>
                <c:if test="${isOpen != 'true' && isOpen != 'TRUE'}">
-                 <html:image  property="methodToCall.toggleTab.tab${tabKey}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-show.gif" title="open ${tabTitle}" alt="open ${tabTitle}" styleClass="tinybutton" styleId="tab-${tabKey}-imageToggle" onclick="javascript: return toggleTab(document, ${tabKey}); " />
+                 <html:image  property="methodToCall.toggleTab.tab${tabKey}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-show.gif" title="open ${tabTitle}" alt="open ${tabTitle}" styleClass="tinybutton" styleId="tab-${tabKey}-imageToggle" onclick="javascript: return toggleTab(document, '${tabKey}'); " />
                </c:if>
             </td>
             <td class="${rightTabClass}"><img src="${rightTabImage}" alt="" width="12" height="29" align="middle" /></td>

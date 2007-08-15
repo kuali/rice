@@ -18,6 +18,7 @@ package org.kuali.rice.baseline;
 import java.net.URL;
 
 import org.junit.Test;
+import org.kuali.rice.testharness.HtmlUnitUtil;
 import org.kuali.rice.testharness.KNSTestCase;
 
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -27,7 +28,7 @@ public class BaseLineAppStartTest extends KNSTestCase {
 
     @Test public void testHomePage() throws Exception {
         final WebClient webClient = new WebClient();
-        final URL url = new URL("http://localhost:9912/SampleRiceClient/");
+        final URL url = new URL(HtmlUnitUtil.BASE_URL);
         final HtmlPage page = (HtmlPage)webClient.getPage(url);
         assertEquals("Rice Sample Client", page.getTitleText() );
     }

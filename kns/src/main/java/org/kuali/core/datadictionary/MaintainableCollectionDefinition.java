@@ -49,6 +49,7 @@ public class MaintainableCollectionDefinition extends MaintainableItemDefinition
     private Map maintainableFields;
     private Map maintainableCollections;
     private Map summaryFields;
+    private Map duplicateIdentificationFields;
 
     private Map<String, String> template;
 
@@ -59,6 +60,7 @@ public class MaintainableCollectionDefinition extends MaintainableItemDefinition
         this.maintainableFields = new LinkedHashMap();
         this.maintainableCollections = new LinkedHashMap();
         this.summaryFields = new LinkedHashMap();
+        this.duplicateIdentificationFields = new LinkedHashMap();
     }
 
 
@@ -278,7 +280,23 @@ public class MaintainableCollectionDefinition extends MaintainableItemDefinition
         this.summaryFields.put(fieldName, summaryField);
     }
 
+    public void addDuplicateIdentificationField(MaintainableFieldDefinition identifierField) {
+        if (identifierField == null) {
+            throw new IllegalArgumentException("invalid (null) identifierField");
+        }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("calling addDuplicateIdentificationField for field '" + identifierField.getName() + "'");
+        }
 
+        String fieldName = identifierField.getName();
+        if (this.duplicateIdentificationFields.containsKey(fieldName)) {
+            throw new DuplicateEntryException("duplicate fieldName entry for field '" + fieldName + "'");
+        }
+
+        this.duplicateIdentificationFields.put(fieldName, identifierField);
+    }
+
+    
     /**
      * @return Collection of all SummaryFieldDefinitions associated with this SummaryFieldDefinition, in the order in which they
      *         were added
@@ -320,5 +338,8 @@ public class MaintainableCollectionDefinition extends MaintainableItemDefinition
         return StringUtils.isNotBlank(getAttributeToHighlightOnDuplicateKey());
     }
 
+    public Collection<MaintainableFieldDefinition> getDuplicateIdentificationFields() {
+        return Collections.unmodifiableCollection(this.duplicateIdentificationFields.values());
+    }
 
 }

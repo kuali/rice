@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <descriptor-repository version="1.0">
 
-	<jdbc-connection-descriptor jcd-alias="ksbDataSource" default-connection="false" jdbc-level="3.0" eager-release="false" batch-mode="false"
+	<jdbc-connection-descriptor jcd-alias="ksbMessageDataSource" default-connection="false" jdbc-level="3.0" eager-release="false" batch-mode="false"
+		useAutoCommit="0" ignoreAutoCommitExceptions="false">
+		<sequence-manager className="org.kuali.rice.ojb.ConfigurableSequenceManager">
+			<attribute attribute-name="property.prefix" attribute-value="datasource.ojb.sequenceManager" />
+		</sequence-manager>
+		<object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
+	</jdbc-connection-descriptor>
+	
+	<jdbc-connection-descriptor jcd-alias="ksbRegistryDataSource" default-connection="false" jdbc-level="3.0" eager-release="false" batch-mode="false"
 		useAutoCommit="0" ignoreAutoCommitExceptions="false">
 		<sequence-manager className="org.kuali.rice.ojb.ConfigurableSequenceManager">
 			<attribute attribute-name="property.prefix" attribute-value="datasource.ojb.sequenceManager" />
@@ -9,7 +17,7 @@
 		<object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
 	</jdbc-connection-descriptor>
 
-	<class-descriptor class="edu.iu.uis.eden.messaging.PersistedMessage" table="EN_MESSAGE_QUE_T">
+	<class-descriptor class="edu.iu.uis.eden.messaging.PersistedMessage" table="EN_MSG_QUE_T">
 		<field-descriptor name="routeQueueId" column="MESSAGE_QUE_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true"
 			sequence-name="SEQ_ROUTE_QUEUE" />
 		<field-descriptor name="queuePriority" column="MESSAGE_QUE_PRIO_NBR" jdbc-type="INTEGER" />
@@ -18,11 +26,17 @@
 		<field-descriptor name="expirationDate" column="MESSAGE_EXP_DT" jdbc-type="TIMESTAMP" />
 		<field-descriptor name="retryCount" column="MESSAGE_QUE_RTRY_CNT" jdbc-type="INTEGER" />
 		<field-descriptor name="ipNumber" column="MESSAGE_QUE_IP_NBR" jdbc-type="VARCHAR" />
-		<field-descriptor name="payload" column="MESSAGE_PAYLOAD" jdbc-type="CLOB" />
 		<field-descriptor name="serviceName" column="MESSAGE_SERVICE_NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="messageEntity" column="MESSAGE_ENTITY_NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="methodName" column="SERVICE_METHOD_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="value1" column="VAL_ONE" jdbc-type="VARCHAR" />
+		<field-descriptor name="value2" column="VAL_TWO" jdbc-type="VARCHAR" />
 		<field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
+	</class-descriptor>
+	
+	<class-descriptor class="edu.iu.uis.eden.messaging.PersistedMassagePayload" table="EN_MSG_PAYLOAD_T">
+		<field-descriptor name="routeQueueId" column="MESSAGE_QUE_ID" jdbc-type="BIGINT" primarykey="true" />
+		<field-descriptor name="payload" column="MESSAGE_PAYLOAD" jdbc-type="CLOB" />
 	</class-descriptor>
 
 	<class-descriptor class="edu.iu.uis.eden.messaging.ServiceInfo" table="EN_SERVICE_DEF_DUEX_T">

@@ -15,24 +15,36 @@
  */
 package org.kuali.core.service.impl;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants.NoteTypeEnum;
+import org.kuali.RiceKeyConstants;
+import org.kuali.RiceConstants.NoteTypeEnum;
+import org.kuali.core.bo.AdHocRoutePerson;
+import org.kuali.core.bo.AdHocRouteRecipient;
 import org.kuali.core.bo.Note;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.dao.NoteDao;
+import org.kuali.core.document.Document;
+import org.kuali.core.exceptions.UserNotFoundException;
+import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.service.NoteService;
+import org.kuali.core.service.UniversalUserService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
+import org.kuali.core.workflow.service.WorkflowDocumentService;
 import org.springframework.transaction.annotation.Transactional;
+
+import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class is the service implementation for the Note structure.
- *
+ * 
  * @author Kuali Nervous System Team (kualidev@oncourse.iu.edu)
  */
 @Transactional
@@ -41,6 +53,9 @@ public class NoteServiceImpl implements NoteService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(NoteServiceImpl.class);
 
     private NoteDao noteDao;
+    private UniversalUserService universalUserService;
+    private WorkflowDocumentService workflowDocumentService;
+    private KualiConfigurationService kualiConfigurationService;
 
     /**
      * Default constructor
@@ -50,22 +65,20 @@ public class NoteServiceImpl implements NoteService {
     }
 
     /**
-     *
      * @see org.kuali.core.service.NoteService#saveNoteValueList(java.util.List)
      */
     public void saveNoteList(List notes) {
         if (notes != null) {
             for (Iterator iter = notes.iterator(); iter.hasNext();) {
-                noteDao.save((Note)iter.next());
+                noteDao.save((Note) iter.next());
             }
         }
     }
 
     /**
      * Saves a Note to the DB.
-     *
-     * @param Note The accounting Note object to save - can be any object that extends Note (i.e. Source and
-     *        Target lines).
+     * 
+     * @param Note The accounting Note object to save - can be any object that extends Note (i.e. Source and Target lines).
      */
     public Note save(Note note) throws Exception {
         noteDao.save(note);
@@ -74,6 +87,7 @@ public class NoteServiceImpl implements NoteService {
 
     /**
      * Retrieves a Note by its associated object id.
+     * 
      * @see org.kuali.core.service.NoteService#getByRemoteObjectId(java.lang.String)
      */
     public ArrayList getByRemoteObjectId(String remoteObjectId) {
@@ -83,7 +97,7 @@ public class NoteServiceImpl implements NoteService {
 
     /**
      * Deletes a Note from the DB.
-     *
+     * 
      * @param Note The Note object to delete.
      */
     public void deleteNote(Note note) throws Exception {
@@ -93,7 +107,7 @@ public class NoteServiceImpl implements NoteService {
     // needed for Spring injection
     /**
      * Sets the data access object
-     *
+     * 
      * @param d
      */
     public void setNoteDao(NoteDao d) {
@@ -108,26 +122,75 @@ public class NoteServiceImpl implements NoteService {
     }
 
     public Note createNote(Note note, PersistableBusinessObject bo) throws Exception {
-            Note tmpNote = (Note)ObjectUtils.deepCopy(note);
-            UniversalUser kualiUser = GlobalVariables.getUserSession().getUniversalUser();
-            tmpNote.setRemoteObjectIdentifier(bo.getObjectId());
-            tmpNote.setAuthorUniversalIdentifier(kualiUser.getPersonUniversalIdentifier());
-            return tmpNote;
+        Note tmpNote = (Note) ObjectUtils.deepCopy(note);
+        UniversalUser kualiUser = GlobalVariables.getUserSession().getUniversalUser();
+        tmpNote.setRemoteObjectIdentifier(bo.getObjectId());
+        tmpNote.setAuthorUniversalIdentifier(kualiUser.getPersonUniversalIdentifier());
+        return tmpNote;
     }
-    
+
     /**
      * This method gets the property name for the note
+     * 
      * @param note
      * @return note property text
      */
     public String extractNoteProperty(Note note) {
         String propertyName = null;
         for (NoteTypeEnum nte : NoteTypeEnum.values()) {
-            if(StringUtils.equals(nte.getCode(), note.getNoteTypeCode())) {
+            if (StringUtils.equals(nte.getCode(), note.getNoteTypeCode())) {
                 propertyName = nte.getPath();
             }
         }
         return propertyName;
     }
 
+    /**
+     * @see org.kuali.core.service.NoteService#sendNoteFYI(org.kuali.core.document.Document, org.kuali.core.bo.Note,
+     *      org.kuali.core.bo.user.UniversalUser)
+     */
+    public void sendNoteFYI(Document document, Note note, UniversalUser sender) throws UserNotFoundException, WorkflowException {
+        AdHocRouteRecipient fyiRecipient = note.getFyiNoteRecipient();
+
+        // build fyi request
+        UniversalUser requestedUser = universalUserService.getUniversalUserByAuthenticationUserId(fyiRecipient.getId());
+        String senderName = sender.getPersonFirstName() + " " + sender.getPersonLastName();
+        String requestedName = requestedUser.getPersonFirstName() + " " + requestedUser.getPersonLastName();
+        
+        String fyiText = kualiConfigurationService.getPropertyString(RiceKeyConstants.MESSAGE_NOTE_FYI_ANNOTATION);
+        if (StringUtils.isBlank(fyiText)) {
+            throw new RuntimeException("No annotation message found for note fyi. Message needs added to application resources with key:" + RiceKeyConstants.MESSAGE_NOTE_FYI_ANNOTATION);
+        }
+        fyiText = MessageFormat.format(fyiText, new Object[] { senderName, requestedName, note.getNoteText() });
+
+        fyiRecipient.setActionRequested(EdenConstants.ACTION_REQUEST_FYI_REQ);
+        List<AdHocRouteRecipient> fyiRecipients = new ArrayList<AdHocRouteRecipient>();
+        fyiRecipients.add(fyiRecipient);
+
+        workflowDocumentService.sendFYI(document.getDocumentHeader().getWorkflowDocument(), fyiText, fyiRecipients);
+
+        // clear recipient allowing an fyi to be sent to another person
+        note.setFyiNoteRecipient(new AdHocRoutePerson());
+    }
+
+    /**
+     * @param universalUserService the universalUserService to set
+     */
+    public void setUniversalUserService(UniversalUserService universalUserService) {
+        this.universalUserService = universalUserService;
+    }
+
+    /**
+     * @param workflowDocumentService the workflowDocumentService to set
+     */
+    public void setWorkflowDocumentService(WorkflowDocumentService workflowDocumentService) {
+        this.workflowDocumentService = workflowDocumentService;
+    }
+
+    /**
+     * @param kualiConfigurationService the kualiConfigurationService to set
+     */
+    public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
+        this.kualiConfigurationService = kualiConfigurationService;
+    }
 }

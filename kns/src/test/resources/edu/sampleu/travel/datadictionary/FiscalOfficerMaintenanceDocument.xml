@@ -16,7 +16,7 @@
 -->
 <!DOCTYPE dictionaryEntry PUBLIC
     "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "dataDictionary-1_0.dtd">
+    "../../../../../../../../kns/src/main/resources/org/kuali/core/datadictionary/dataDictionary-1_0.dtd">
 <dictionaryEntry>
 <maintenanceDocument>
         <businessObjectClass>edu.sampleu.travel.bo.FiscalOfficer</businessObjectClass>
@@ -31,7 +31,7 @@
             </authorization>
         </authorizations>
         
-        <documentTypeName>TravelFiscalOfficerDocument</documentTypeName>
+        <documentTypeName>FiscalOfficerMaintenanceDocument</documentTypeName>
         <documentTypeCode>TRFO</documentTypeCode>
 
         <label>Travel Fiscal Officer Maintenance Document</label>

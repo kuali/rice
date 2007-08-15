@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.exceptions.AuthorizationException;
 import org.kuali.core.exceptions.ModuleAuthorizationException;
@@ -89,7 +89,7 @@ public class KualiLookupAction extends KualiAction {
     
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setAttribute(Constants.PARAM_MAINTENANCE_VIEW_MODE, Constants.PARAM_MAINTENANCE_VIEW_MODE_LOOKUP);
+        request.setAttribute(RiceConstants.PARAM_MAINTENANCE_VIEW_MODE, RiceConstants.PARAM_MAINTENANCE_VIEW_MODE_LOOKUP);
         supressActionsIfNeeded(form);
         return super.execute(mapping, form, request, response);
     }
@@ -98,7 +98,7 @@ public class KualiLookupAction extends KualiAction {
      * Entry point to lookups, forwards to jsp for search render.
      */
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     /**
@@ -128,7 +128,7 @@ public class KualiLookupAction extends KualiAction {
         }
         else {
             lookupForm.setSearchUsingOnlyPrimaryKeyValues(false);
-            lookupForm.setPrimaryKeyFieldLabels(Constants.EMPTY_STRING);
+            lookupForm.setPrimaryKeyFieldLabels(RiceConstants.EMPTY_STRING);
         }
         
         if ( displayList instanceof CollectionIncomplete ) {
@@ -138,14 +138,14 @@ public class KualiLookupAction extends KualiAction {
         }
         request.setAttribute("reqSearchResults", resultTable);
         
-        if (request.getParameter(Constants.SEARCH_LIST_REQUEST_KEY) != null) {
-            GlobalVariables.getUserSession().removeObject(request.getParameter(Constants.SEARCH_LIST_REQUEST_KEY));
+        if (request.getParameter(RiceConstants.SEARCH_LIST_REQUEST_KEY) != null) {
+            GlobalVariables.getUserSession().removeObject(request.getParameter(RiceConstants.SEARCH_LIST_REQUEST_KEY));
         }
-        request.setAttribute(Constants.SEARCH_LIST_REQUEST_KEY, GlobalVariables.getUserSession().addObject(resultTable, Constants.SEARCH_LIST_KEY_PREFIX));
+        request.setAttribute(RiceConstants.SEARCH_LIST_REQUEST_KEY, GlobalVariables.getUserSession().addObject(resultTable, RiceConstants.SEARCH_LIST_KEY_PREFIX));
 
-        String refreshCaller = request.getParameter(Constants.REFRESH_CALLER);
+        String refreshCaller = request.getParameter(RiceConstants.REFRESH_CALLER);
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
 
@@ -201,7 +201,7 @@ public class KualiLookupAction extends KualiAction {
             }
         }
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     /**
@@ -237,7 +237,7 @@ public class KualiLookupAction extends KualiAction {
         }
 
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
 
@@ -246,9 +246,9 @@ public class KualiLookupAction extends KualiAction {
         if (lookupForm.isSearchUsingOnlyPrimaryKeyValues()) {
             lookupForm.setPrimaryKeyFieldLabels(lookupForm.getLookupable().getPrimaryKeyFieldLabels());
         }
-        request.setAttribute(Constants.SEARCH_LIST_REQUEST_KEY, request.getParameter(Constants.SEARCH_LIST_REQUEST_KEY));
-        request.setAttribute("reqSearchResults", GlobalVariables.getUserSession().retrieveObject(request.getParameter(Constants.SEARCH_LIST_REQUEST_KEY)));
+        request.setAttribute(RiceConstants.SEARCH_LIST_REQUEST_KEY, request.getParameter(RiceConstants.SEARCH_LIST_REQUEST_KEY));
+        request.setAttribute("reqSearchResults", GlobalVariables.getUserSession().retrieveObject(request.getParameter(RiceConstants.SEARCH_LIST_REQUEST_KEY)));
         request.setAttribute("reqSearchResultsActualSize", request.getParameter("reqSearchResultsActualSize"));
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 }

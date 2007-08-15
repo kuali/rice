@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.ApcRuleDefinition;
 import org.kuali.core.datadictionary.ReferenceDefinition;
@@ -177,7 +177,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         if (StringUtils.isNotBlank(attributeValue)) {
             Integer maxLength = getDataDictionaryService().getAttributeMaxLength(objectClassName, attributeName);
             if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
-                GlobalVariables.getErrorMap().putError(errorKey, KeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
+                GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
                 return;
             }
             Pattern validationExpression = getDataDictionaryService().getAttributeValidatingExpression(objectClassName, attributeName);
@@ -185,7 +185,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," + attributeName + "," + validationExpression + ")");
 
                 if (!validationExpression.matcher(attributeValue).matches()) {
-                    GlobalVariables.getErrorMap().putError(errorKey, KeyConstants.ERROR_INVALID_FORMAT, new String[] { errorLabel, attributeValue });
+                    GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_INVALID_FORMAT, new String[] { errorLabel, attributeValue });
                     return;
                 }
             }
@@ -193,7 +193,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             if (exclusiveMin != null) {
                 try {
                     if (exclusiveMin.compareTo(new BigDecimal(attributeValue)) >= 0) {
-                        GlobalVariables.getErrorMap().putError(errorKey, KeyConstants.ERROR_EXCLUSIVE_MIN,
+                        GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
                         // todo: Formatter for currency?
                                 new String[] { errorLabel, exclusiveMin.toString() });
                         return;
@@ -207,7 +207,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             if (inclusiveMax != null) {
                 try {
                     if (inclusiveMax.compareTo(new BigDecimal(attributeValue)) < 0) {
-                        GlobalVariables.getErrorMap().putError(errorKey, KeyConstants.ERROR_INCLUSIVE_MAX,
+                        GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
                         // todo: Formatter for currency?
                                 new String[] { errorLabel, inclusiveMax.toString() });
                         return;
@@ -233,7 +233,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
                 // get label of attribute for message
                 String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
-                GlobalVariables.getErrorMap().putError(errorKey, KeyConstants.ERROR_REQUIRED, errorLabel);
+                GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_REQUIRED, errorLabel);
             }
         }
     }
@@ -530,13 +530,13 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 if (activeIndicatorSet) {
                     active = validateReferenceIsActive(bo, referenceName, activeIndicatorAttributeName, activeIndicatorReversed);
                     if (!active) {
-                        GlobalVariables.getErrorMap().putError(attributeToHighlightOnFail, KeyConstants.ERROR_INACTIVE, displayFieldName);
+                        GlobalVariables.getErrorMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_INACTIVE, displayFieldName);
                         success &= false;
                     }
                 }
             }
             else {
-                GlobalVariables.getErrorMap().putError(attributeToHighlightOnFail, KeyConstants.ERROR_EXISTENCE, displayFieldName);
+                GlobalVariables.getErrorMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_EXISTENCE, displayFieldName);
                 success &= false;
             }
         }

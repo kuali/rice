@@ -1,6 +1,19 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package edu.iu.uis.eden.messaging;
-
-import java.util.List;
 
 import javax.xml.namespace.QName;
 
@@ -8,9 +21,7 @@ import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.bus.test.KSBTestCase;
 
-import edu.iu.uis.eden.messaging.bam.BAMService;
-import edu.iu.uis.eden.messaging.bam.BAMTargetEntry;
-import edu.iu.uis.eden.messaging.remotedservices.SOAPService;
+import edu.iu.uis.eden.messaging.callbacks.SimpleCallback;
 import edu.iu.uis.eden.messaging.remotedservices.ServiceCallInformationHolder;
 import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 
@@ -27,54 +38,42 @@ public class DistributedTopicTest extends KSBTestCase {
 	}
 	
 	@Test
-	public void testSuccessfullyCallingAllTopics() throws Exception {
+	public void testSuccessfullyCallingSyncTopics() throws Exception {
 		
-//		ensure test harness has entries for TestClient1
 		((Runnable) KSBResourceLoaderFactory.getRemoteResourceLocator()).run();
-		
-		
 		QName serviceName = new QName("testAppsSharedTopic", "sharedTopic");
 		
 		KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 		testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
-		verifyServiceCallsViaBam(serviceName);
 		
 		assertTrue("Test harness topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
 		assertTrue("Cliet1 app topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("Client1Called")).booleanValue());
 	}
 	
-	@Test public void testSuccessfullyCallingSOAPTopic() throws Exception {
-//		ensure test harness has entries for TestClient1
-		((Runnable) KSBResourceLoaderFactory.getRemoteResourceLocator()).run();
+	@Test public void testCallingAsyncTopics() throws Exception {
+	    	KSBTestUtils.setMessagingToAsync();
 		
-		QName serviceName = new QName("testNameSpace", "soap-repeatTopic");
+		QName serviceName = new QName("testAppsSharedTopic", "sharedTopic");
 		
-		SOAPService testJavaAsyncService = (SOAPService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
-		testJavaAsyncService.doTheThing("The param");
-		verifyServiceCallsViaBam(serviceName);
+		SimpleCallback simpleCallback = new SimpleCallback();
+		KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, simpleCallback);
+		testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
+		simpleCallback.waitForAsyncCall();
+		//because topic invocation doesn't happen in the message service invoker like it should this wait is really on half the answer.  We need to wait long and poll 
+		//to determine if the client1 has been called.
 		
-		assertTrue("Test harness topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
-		assertTrue("Cliet1 app topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("Client1SOAPServiceCalled")).booleanValue());
-	}
-	
-	
-	private void verifyServiceCallsViaBam(QName serviceName) throws Exception {
-		BAMService bamService = KSBServiceLocator.getBAMService();
-		List<BAMTargetEntry> bamCalls = bamService.getCallsForService(serviceName);
-		assertTrue("No service call recorded", bamCalls.size() > 0);
-		boolean foundClientCall = false;
-		boolean foundServiceCall = false;
-		for (BAMTargetEntry bamEntry : bamCalls) {
-			if (bamEntry.getServerInvocation()) {
-				foundServiceCall = true;
-			} else {
-				foundClientCall = true;
-			}
+		int i = 0;
+		while (i < 100) {
+		    if (ServiceCallInformationHolder.stuff.get("Client1Called") != null) {
+			break;
+		    }
+		    Thread.sleep(1000);
+		    i++;
 		}
-		//only 2 calls for server and client on the remote client1 app the other is locally and 
-		//thus not recorded by the bam
-		assertTrue("No client call recorded", foundClientCall);
-		assertTrue("No service call recorded", foundServiceCall);
-		assertEquals("Wrong number of calls recorded", 2, bamCalls.size());
+	
+		assertTrue("Test harness topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
+		assertTrue("Cliet1 app topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("Client1Called")).booleanValue());
+	
 	}
+	
 }

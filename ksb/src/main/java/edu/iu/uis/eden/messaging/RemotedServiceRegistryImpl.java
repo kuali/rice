@@ -1,3 +1,18 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package edu.iu.uis.eden.messaging;
 
 import java.util.ArrayList;
@@ -148,6 +163,10 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		this.publishedTempServices.remove(serviceName);
 	}
 
+	public void refresh() {
+	    run();
+	}
+
 	public synchronized void run() {
 		String serviceServletUrl = (String) Core.getObjectFromConfigHierarchy(Config.SERVICE_SERVLET_URL);
 		if (serviceServletUrl == null) {
@@ -175,13 +194,13 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			//TODO we are not verifying that this read is not being done in dev mode in a test
 			fetchedServices = this.getServiceInfoService().findLocallyPublishedServices(RiceUtilities.getIpNumber(), messageEntity);
 		}
-		
+
 		RoutingTableDiffCalculator diffCalc = new RoutingTableDiffCalculator();
 		boolean needUpdated = diffCalc.calculateServerSideUpdateLists(configuredServices, fetchedServices);
 		if (needUpdated) {
 			if (!Core.getCurrentContextConfig().getDevMode()) {
 				getServiceInfoService().save(diffCalc.getServicesNeedUpdated());
-				getServiceInfoService().remove(diffCalc.getServicesNeedRemoved());	
+				getServiceInfoService().remove(diffCalc.getServicesNeedRemoved());
 			}
 			this.publishedServices.clear();
 			publishServiceList(diffCalc.getMasterServiceList());
@@ -214,7 +233,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		run();
 		if (!Core.getCurrentContextConfig().getDevMode()) {
 			int refreshRate = Core.getCurrentContextConfig().getRefreshRate();
-			this.future = KSBServiceLocator.getThreadPool().scheduleWithFixedDelay(this, 5, refreshRate, TimeUnit.SECONDS);
+			this.future = KSBServiceLocator.getScheduledPool().scheduleWithFixedDelay(this, 30, refreshRate, TimeUnit.SECONDS);
 		}
 		this.started = true;
 	}

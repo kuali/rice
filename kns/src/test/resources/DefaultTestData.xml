@@ -262,7 +262,7 @@
 			<displayName>KULUSER 4</displayName>
 			<givenName>KULUSER</givenName>
 			<lastName>KULUSER</lastName>
-		</user>			
+		</user>
 		<user>
 			<workflowId>fred</workflowId>
 			<emplId>fred</emplId>
@@ -328,7 +328,7 @@
 			<members>
 				<authenticationId>employee</authenticationId>
 			</members>
-		</workgroup>		
+		</workgroup>
 	</workgroups>
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
@@ -557,9 +557,9 @@
 					<ruleTemplate>TravelRequest-AccountRouting</ruleTemplate>
 				</requests>
 			</routeNodes>
-		</documentType>		
+		</documentType>
 		<documentType>
-			<name>TravelAccountDocument</name>
+			<name>TravelAccountMaintenanceDocument</name>
 			<description>Create a New Travel Request</description>
 			<label>Travel Request</label>
 			<postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
@@ -579,7 +579,7 @@
 			</routeNodes>
 		</documentType>
 		<documentType>
-			<name>TravelFiscalOfficerDocument</name>
+			<name>FiscalOfficerMaintenanceDocument</name>
 			<description>Create a New Travel Fiscal Officer</description>
 			<label>Travel Fiscal Officer</label>
 			<postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>

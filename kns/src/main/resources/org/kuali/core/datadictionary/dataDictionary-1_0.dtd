@@ -687,7 +687,7 @@
                         * name (String)
                         * businessObjectClass (String)
                     -->
-                    <!ELEMENT maintainableCollection (subSectionHeader?,maintainableField+,maintainableCollection?,summaryFields?) >                   
+                    <!ELEMENT maintainableCollection (subSectionHeader?,maintainableField+,maintainableCollection?,summaryFields?,duplicateIdentificationFields?) >                   
                     <!ATTLIST maintainableCollection
                         name CDATA #REQUIRED
                         businessObjectClass CDATA #REQUIRED
@@ -701,5 +701,11 @@
                     <!ELEMENT summaryFields (summaryField+)>
                     <!ELEMENT summaryField EMPTY>
                 	<!ATTLIST summaryField
+                    	name CDATA #IMPLIED
+                    >
+                    
+                    <!ELEMENT duplicateIdentificationFields (duplicateIdentificationField+)>
+                    <!ELEMENT duplicateIdentificationField EMPTY>
+                	<!ATTLIST duplicateIdentificationField
                     	name CDATA #IMPLIED
                     >

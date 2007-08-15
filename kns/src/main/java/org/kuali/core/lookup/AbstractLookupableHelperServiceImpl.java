@@ -25,8 +25,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
-import org.kuali.KeyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.mask.Mask;
@@ -106,8 +106,8 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     public String getMaintenanceUrl(BusinessObject businessObject, String methodToCall) {
         // TODO: considering making visibility "protected"
         Properties parameters = new Properties();
-        parameters.put(Constants.DISPATCH_REQUEST_PARAMETER, methodToCall);
-        parameters.put(Constants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.businessObjectClass.getName());
+        parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
+        parameters.put(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.businessObjectClass.getName());
 
         String encryptedList = "";
 
@@ -117,7 +117,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
             Object fieldVal = ObjectUtils.getPropertyValue(businessObject, fieldNm);
             if (fieldVal == null) {
-                fieldVal = Constants.EMPTY_STRING;
+                fieldVal = RiceConstants.EMPTY_STRING;
             }
             if (fieldVal instanceof java.sql.Date) {
                 String formattedString = "";
@@ -145,7 +145,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                     encryptedList = fieldNm;
                 }
                 else {
-                    encryptedList = encryptedList + Constants.FIELD_CONVERSIONS_SEPERATOR + fieldNm;
+                    encryptedList = encryptedList + RiceConstants.FIELD_CONVERSIONS_SEPERATOR + fieldNm;
                 }
             }
 
@@ -154,11 +154,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
         // if we did encrypt a value (or values), add the list of those that are encrypted to the parameters
         if (!encryptedList.equals("")) {
-            parameters.put(Constants.ENCRYPTED_LIST_PREFIX, encryptedList);
+            parameters.put(RiceConstants.ENCRYPTED_LIST_PREFIX, encryptedList);
         }
 
         // FIXME: either use UrlFactory or hardcode url
-        String url = UrlFactory.parameterizeUrl(Constants.MAINTENANCE_ACTION, parameters);
+        String url = UrlFactory.parameterizeUrl(RiceConstants.MAINTENANCE_ACTION, parameters);
         url = "<a href=\"" + url + "\">" + methodToCall + "</a>";
         return url;
     }
@@ -285,12 +285,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     public String getActionUrls(BusinessObject businessObject) {
         StringBuffer actions = new StringBuffer();
         if (StringUtils.isNotBlank(getMaintenanceDocumentTypeName())) {
-            actions.append(getMaintenanceUrl(businessObject, Constants.MAINTENANCE_EDIT_METHOD_TO_CALL));
+            actions.append(getMaintenanceUrl(businessObject, RiceConstants.MAINTENANCE_EDIT_METHOD_TO_CALL));
         }
     
         if (allowsMaintenanceNewOrCopyAction()) {
             actions.append("&nbsp;&nbsp;");
-            actions.append(getMaintenanceUrl(businessObject, Constants.MAINTENANCE_COPY_METHOD_TO_CALL));
+            actions.append(getMaintenanceUrl(businessObject, RiceConstants.MAINTENANCE_COPY_METHOD_TO_CALL));
         }
     
         return actions.toString();
@@ -410,11 +410,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     
     protected Properties getParameters(BusinessObject bo, Map fieldConversions, String lookupImpl) {
         Properties parameters = new Properties();
-        parameters.put(Constants.DISPATCH_REQUEST_PARAMETER, Constants.RETURN_METHOD_TO_CALL);
-        parameters.put(Constants.DOC_FORM_KEY, getDocFormKey());
-        parameters.put(Constants.REFRESH_CALLER, lookupImpl);
+        parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, RiceConstants.RETURN_METHOD_TO_CALL);
+        parameters.put(RiceConstants.DOC_FORM_KEY, getDocFormKey());
+        parameters.put(RiceConstants.REFRESH_CALLER, lookupImpl);
         if (getReferencesToRefresh() != null) {
-            parameters.put(Constants.REFERENCES_TO_REFRESH, getReferencesToRefresh());
+            parameters.put(RiceConstants.REFERENCES_TO_REFRESH, getReferencesToRefresh());
         }
         
         String encryptedList = "";
@@ -425,7 +425,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
             Object fieldVal = ObjectUtils.getPropertyValue(bo, fieldNm);
             if (fieldVal == null) {
-                fieldVal = Constants.EMPTY_STRING;
+                fieldVal = RiceConstants.EMPTY_STRING;
             }
 
             // Encrypt value if it is a secure field
@@ -449,7 +449,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                     encryptedList = fieldNm;
                 }
                 else {
-                    encryptedList = encryptedList + Constants.FIELD_CONVERSIONS_SEPERATOR + fieldNm;
+                    encryptedList = encryptedList + RiceConstants.FIELD_CONVERSIONS_SEPERATOR + fieldNm;
                 }
             }
             
@@ -464,7 +464,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
         // if we did encrypt a value (or values), add the list of those that are encrypted to the parameters
         if (!encryptedList.equals("")) {
-            parameters.put(Constants.ENCRYPTED_LIST_PREFIX, encryptedList);
+            parameters.put(RiceConstants.ENCRYPTED_LIST_PREFIX, encryptedList);
         }
 
         return parameters;
@@ -559,17 +559,17 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 // check for required if field does not have value
                 if (StringUtils.isBlank(attributeValue)) {
                     if ((getBusinessObjectDictionaryService().getLookupAttributeRequired(getBusinessObjectClass(), attributeName)).booleanValue()) {
-                        GlobalVariables.getErrorMap().putError(attributeName, KeyConstants.ERROR_REQUIRED, attributeLabel);
+                        GlobalVariables.getErrorMap().putError(attributeName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
                     }
                 }
                 else if (isSecureField) {
                     // following loop would be trivial if Constants.QUERY_CHARACTERS would implement CharSequence but not so
                     // sure if that makes sense...
-                    for (int i = 0; i < Constants.QUERY_CHARACTERS.length; i++) {
-                        String queryCharacter = Constants.QUERY_CHARACTERS[i];
+                    for (int i = 0; i < RiceConstants.QUERY_CHARACTERS.length; i++) {
+                        String queryCharacter = RiceConstants.QUERY_CHARACTERS[i];
 
                         if (attributeValue.contains(queryCharacter)) {
-                            GlobalVariables.getErrorMap().putError(attributeName, KeyConstants.ERROR_SECURE_FIELD, attributeLabel);
+                            GlobalVariables.getErrorMap().putError(attributeName, RiceKeyConstants.ERROR_SECURE_FIELD, attributeLabel);
                         }
                     }
                 }
@@ -671,7 +671,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 Formatter formatter = col.getFormatter();
 
                 // pick off result column from result list, do formatting
-                String propValue = Constants.EMPTY_STRING;
+                String propValue = RiceConstants.EMPTY_STRING;
                 Object prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
                 
                 // set comparator and formatter based on property type
@@ -782,6 +782,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @see org.kuali.core.lookup.LookupableHelperService#getPrimaryKeyFieldLabels()
      */
     public String getPrimaryKeyFieldLabels() {
-        return Constants.NOT_AVAILABLE_STRING;
+        return RiceConstants.NOT_AVAILABLE_STRING;
     }
 }

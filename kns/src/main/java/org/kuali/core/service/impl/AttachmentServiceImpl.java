@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.bo.Attachment;
 import org.kuali.core.bo.Note;
 import org.kuali.core.bo.PersistableBusinessObject;
@@ -186,9 +186,9 @@ public class AttachmentServiceImpl implements AttachmentService {
     private String getDocumentFileStorageLocation(String objectId) {
         String location = null;
         if(StringUtils.isEmpty(objectId)) {
-            location = kualiConfigurationService.getPropertyString(Constants.ATTACHMENTS_PENDING_DIRECTORY_KEY);
+            location = kualiConfigurationService.getPropertyString(RiceConstants.ATTACHMENTS_PENDING_DIRECTORY_KEY);
         } else {
-            location = kualiConfigurationService.getPropertyString(Constants.ATTACHMENTS_DIRECTORY_KEY)+ File.separator + objectId;
+            location = kualiConfigurationService.getPropertyString(RiceConstants.ATTACHMENTS_DIRECTORY_KEY)+ File.separator + objectId;
         }
         return  location;
     }

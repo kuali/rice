@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.document.Copyable;
 import org.kuali.core.document.Correctable;
 import org.kuali.core.document.Document;
@@ -56,7 +56,7 @@ public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBas
 
         ((Copyable) tmpForm.getTransactionalDocument()).toCopy();
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     /**
@@ -80,7 +80,7 @@ public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBas
 
         ((Correctable) tmpForm.getTransactionalDocument()).toErrorCorrection();
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
  

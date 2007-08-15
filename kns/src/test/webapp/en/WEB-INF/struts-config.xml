@@ -26,7 +26,6 @@
       <form-bean name="RouteManagerDriverForm" type="edu.iu.uis.eden.routemanager.web.RouteManagerDriverForm"/>
       <form-bean name="QuickLinksForm" type="edu.iu.uis.eden.quicklinks.web.QuickLinksForm"/>
       <form-bean name="RuleQuickLinkForm" type="edu.iu.uis.eden.routetemplate.web.RuleQuickLinksForm" />
-      <form-bean name="RouteQueueForm" type="edu.iu.uis.eden.messaging.web.RouteQueueForm" />
       <form-bean name="DocumentOperationForm" type="edu.iu.uis.eden.documentoperation.web.DocumentOperationForm" />
       <form-bean name="NoteForm" type="edu.iu.uis.eden.notes.web.NoteForm" />
       <form-bean name="HelpForm" type="edu.iu.uis.eden.help.web.HelpForm" />
@@ -80,6 +79,9 @@
         <forward name="requiredStateError" path="/WEB-INF/jsp/superuser/SuperUser.jsp"/>
         <forward name="finalStateError" path="/WEB-INF/jsp/superuser/SuperUser.jsp"/>
       </action>
+
+      <action path="/Error" scope="request" validate="false" type="org.apache.struts.actions.ForwardAction"
+             parameter="/WEB-INF/jsp/Error.jsp"/>
 
       <action path="/ActionList" scope="request" validate="false" parameter="methodToCall"
         type="edu.iu.uis.eden.actionlist.web.ActionListAction" name="ActionListForm"
@@ -255,13 +257,6 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/routetemplate/RoutingReportCriteria.jsp"/>
        </action>
 
-      <action path="/Test" name="WorkgroupForm" scope="request" validate="false"
-        type="edu.iu.uis.eden.web.ButtonAction" parameter="methodToCall">
-        <forward name="basic" path="/WEB-INF/jsp/testbed/testbed.jsp"/>
-        <forward name="requiredStateError" path="/WEB-INF/jsp/testbed/testbed.jsp"/>
-        <forward name="finalStateError" path="/WEB-INF/jsp/testbed/testbed.jsp"/>
-      </action>
-
       <action path="/Feedback"
           type="edu.iu.uis.eden.feedback.web.FeedbackAction"
           name="FeedbackForm"
@@ -284,16 +279,6 @@
 	      <forward name="basic" path="/WEB-INF/jsp/quicklinks/QuickLinks.jsp"/>
 	      <forward name="requiredStateError" path="/WEB-INF/jsp/quicklinks/QuickLinks.jsp"/>
           <forward name="finalStateError" path="/WEB-INF/jsp/quicklinks/QuickLinks.jsp"/>
-      </action>
-
-      <action path="/RouteQueue" name="RouteQueueForm" scope="request" input="/WEB-INF/jsp/routequeue/RouteQueueEntry.jsp"
-      			validate="false" type="edu.iu.uis.eden.messaging.web.RouteQueueAction" parameter="methodToCall">
-	      <forward name="report" path="/WEB-INF/jsp/routequeue/RouteQueue.jsp"/>
-	      <forward name="basic" path="/WEB-INF/jsp/routequeue/RouteQueueEntry.jsp"/>
-	      <forward name="restart" path="/RouteQueue.do?methodToCall=start" redirect="true"/>
-	      <forward name="requiredStateError" path="/WEB-INF/jsp/routequeue/RouteQueue.jsp"/>
-          <forward name="finalStateError" path="/WEB-INF/jsp/routequeue/RouteQueue.jsp"/>
-          <forward name="payload" path="/WEB-INF/jsp/routequeue/RouteQueuePayload.jsp" />
       </action>
 
       <action path="/DocumentOperation" name="DocumentOperationForm" scope="request" input="/WEB-INF/jsp/documentoperation/DocumentOperation.jsp"

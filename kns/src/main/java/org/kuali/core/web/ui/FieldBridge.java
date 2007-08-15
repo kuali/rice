@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.Summarizable;
 import org.kuali.core.datadictionary.CollectionDefinitionI;
@@ -147,7 +147,7 @@ public class FieldBridge {
                         propValue = prop.toString();
                     }
                 } else {
-                    propValue = Constants.EMPTY_STRING;
+                    propValue = RiceConstants.EMPTY_STRING;
                 }
                 
             }
@@ -324,7 +324,7 @@ public class FieldBridge {
                 }
                 //generate the error key for the add row 
                 String[] nameParts = StringUtils.split(collField.getPropertyName(), "."); 
-                String fieldErrorKey = Constants.MAINTENANCE_NEW_MAINTAINABLE + Constants.ADD_PREFIX + "."; 
+                String fieldErrorKey = RiceConstants.MAINTENANCE_NEW_MAINTAINABLE + RiceConstants.ADD_PREFIX + "."; 
                 fieldErrorKey += collName + "."; 
                 for (int i = 0; i < nameParts.length; i++) { 
                     fieldErrorKey += nameParts[i]; 
@@ -357,7 +357,7 @@ public class FieldBridge {
         // does not handle the prefixes on the property names
         for ( Field field : collFields ) {
             // prefix name for add line 
-            field.setPropertyName(Constants.MAINTENANCE_ADD_PREFIX + parents + collectionDefinition.getName() + "." + field.getPropertyName());
+            field.setPropertyName(RiceConstants.MAINTENANCE_ADD_PREFIX + parents + collectionDefinition.getName() + "." + field.getPropertyName());
         }
         LOG.debug("Error Key for section " + collectionDefinition.getName() + " : " + containerRowErrorKey.toString());
         // get label for collection
@@ -382,7 +382,7 @@ public class FieldBridge {
         if(!hideAdd) {
             Field field = new Field();
             
-            String addButtonName = Constants.DISPATCH_REQUEST_PARAMETER + "." + Constants.ADD_LINE_METHOD + "." + parents + collectionDefinition.getName() + "." + Constants.METHOD_TO_CALL_BOPARM_LEFT_DEL + collectionDefinition.getBusinessObjectClass().getName() + Constants.METHOD_TO_CALL_BOPARM_RIGHT_DEL;
+            String addButtonName = RiceConstants.DISPATCH_REQUEST_PARAMETER + "." + RiceConstants.ADD_LINE_METHOD + "." + parents + collectionDefinition.getName() + "." + RiceConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL + collectionDefinition.getBusinessObjectClass().getName() + RiceConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL;
             field.setPropertyName(addButtonName);
             field.setFieldType(Field.IMAGE_SUBMIT);
             field.setPropertyValue("images/tinybutton-add1.gif");

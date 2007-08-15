@@ -113,7 +113,6 @@
 			  <c:out value="${field.propertyValue}" />
 			</c:if>
 			<a href="javascript:lookup('<c:out value="${field.quickFinderClassNameImpl}"/>', '<c:out value="${conversionFields}"/>', '<c:out value="${actionName}" />')"><img src="images/searchicon.gif" alt="search" align="absmiddle"></a>
-			<c:set var="conversionFields" value=""/>
 		  </c:when>
 		</c:choose>
 		<c:choose>

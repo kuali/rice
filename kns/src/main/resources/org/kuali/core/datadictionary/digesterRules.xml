@@ -599,6 +599,14 @@
 						      
                     <set-next-rule methodname="addSummaryField" />
                 </pattern>
+                
+                <pattern value="duplicateIdentificationFields/duplicateIdentificationField">
+                	<object-create-rule classname="org.kuali.core.datadictionary.MaintainableFieldDefinition" />
+                    <set-properties-rule />
+						      
+                    <set-next-rule methodname="addDuplicateIdentificationField" />
+                </pattern>
+                
                  <set-next-rule methodname="addMaintainableCollection" />
                 </pattern>
 				<pattern value="summaryFields/summaryField">
@@ -607,7 +615,12 @@
 						      
                     <set-next-rule methodname="addSummaryField" />
                 </pattern>
-					
+				<pattern value="duplicateIdentificationFields/duplicateIdentificationField">
+                	<object-create-rule classname="org.kuali.core.datadictionary.MaintainableFieldDefinition" />
+                    <set-properties-rule />
+						      
+                    <set-next-rule methodname="addDuplicateIdentificationField" />
+                </pattern>					
 					
 					
                     <set-next-rule methodname="addMaintainableItem" />

@@ -20,9 +20,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.RiceKeyConstants;
 
 
 /**
@@ -54,6 +56,9 @@ public class ErrorContainer implements Serializable {
      * @return number of errors in the ErrorMap used to initialize this container
      */
     public int getErrorCount() {
+    	if (hasFormatterError()) {
+    		return 0;
+    	}
         return errorCount;
     }
 
@@ -70,6 +75,24 @@ public class ErrorContainer implements Serializable {
         return properties;
     }
 
+    /**
+     * This method checks whether the errorMap contains at least a formatter error.
+     * @return boolean true if the errorMap contains a formatter error and false otherwise
+     */
+    private boolean hasFormatterError() {
+    	if (errorMap.getErrorCount()>0) {
+            for (String errorKey : (Set<String>)errorMap.keySet()) {
+            	TypedArrayList errorValues = errorMap.getMessages(errorKey);
+            	for (ErrorMessage errorMessage : (List<ErrorMessage>)errorValues) {
+                    if (errorMessage.getErrorKey().equals(RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR)) {
+                        return true;
+                    }
+            	}
+            }
+        }
+        return false;
+    }
+    
     /**
      * @return ActionMessages instance containing error messages constructed from the contents of the ErrorMap with which this
      *         container was initialized

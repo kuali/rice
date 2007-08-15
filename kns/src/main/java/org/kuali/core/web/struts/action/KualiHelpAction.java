@@ -22,8 +22,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.Constants;
-import org.kuali.KeyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.core.datadictionary.AttributeDefinition;
 import org.kuali.core.datadictionary.BusinessObjectEntry;
 import org.kuali.core.datadictionary.DataDictionary;
@@ -97,9 +97,7 @@ public class KualiHelpAction extends KualiAction {
         AttributeDefinition retval = null;
 
         if (getDataDictionaryEntry(businessObjectClassName) != null) {
-            if (getDataDictionaryEntry(businessObjectClassName).getAttributeDefinition(attributeName) != null) {
-                retval = getDataDictionaryEntry(businessObjectClassName).getAttributeDefinition(attributeName);
-            }
+            retval = getDataDictionaryEntry(businessObjectClassName).getAttributeDefinition(attributeName);
         }
         return retval;
     }
@@ -152,7 +150,7 @@ public class KualiHelpAction extends KualiAction {
         }
                 
         if (attribute == null || StringUtils.isBlank(attribute.getSummary())) {
-            helpForm.setResourceKey(KeyConstants.MESSAGE_NO_HELP_TEXT);
+            helpForm.setResourceKey(RiceKeyConstants.MESSAGE_NO_HELP_TEXT);
             return getResourceHelpText(mapping, helpForm, request, response);
         }
 
@@ -185,7 +183,7 @@ public class KualiHelpAction extends KualiAction {
         helpForm.setHelpMaxLength(getAttributeMaxLength(attribute));
         helpForm.setValidationPatternName(getAttributeValidationPatternName(attribute));
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     /**
@@ -249,7 +247,7 @@ public class KualiHelpAction extends KualiAction {
         helpForm.setHelpDescription(description);
         helpForm.setHelpDefinition(helpDefinition);
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     /**
@@ -297,7 +295,7 @@ public class KualiHelpAction extends KualiAction {
         helpForm.setHelpLabel(label);
         helpForm.setHelpDescription(objectDescription);
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
     /**
@@ -349,7 +347,7 @@ public class KualiHelpAction extends KualiAction {
         helpForm.setHelpLabel(pageName);
         helpForm.setHelpDescription("No help content available.");
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
     /**
@@ -382,7 +380,7 @@ public class KualiHelpAction extends KualiAction {
         }
         
         helpForm.setHelpDescription("No help content available.");
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     /**
@@ -400,7 +398,7 @@ public class KualiHelpAction extends KualiAction {
         helpForm.setHelpSummary("");
         helpForm.setHelpDescription(getConfigurationService().getPropertyString(resourceKey));
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     /**
@@ -414,10 +412,10 @@ public class KualiHelpAction extends KualiAction {
      * @throws Exception
      */
     public ActionForward showTravelPerDiemLinks(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return mapping.findForward(Constants.MAPPING_DV_PER_DIEM_LINKS);
+        return mapping.findForward(RiceConstants.MAPPING_DV_PER_DIEM_LINKS);
     }
 
     private String getHelpUrl(String securityGroupName, String parameterName) {
-        return getConfigurationService().getPropertyString(Constants.EXTERNALIZABLE_HELP_URL_KEY) + getConfigurationService().getApplicationParameterValue(securityGroupName, parameterName);
+        return getConfigurationService().getPropertyString(RiceConstants.EXTERNALIZABLE_HELP_URL_KEY) + getConfigurationService().getApplicationParameterValue(securityGroupName, parameterName);
     }
 }

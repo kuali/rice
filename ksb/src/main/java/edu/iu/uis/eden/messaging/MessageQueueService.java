@@ -16,7 +16,6 @@
  */
 package edu.iu.uis.eden.messaging;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -30,17 +29,17 @@ import javax.xml.namespace.QName;
  * @author rkirkend
  */
 public interface MessageQueueService {
-	
-	public List<PersistedMessage> findByServiceName(QName serviceName, String methodName);
+
+    public List<PersistedMessage> findByServiceName(QName serviceName, String methodName);
 
     public void delete(PersistedMessage routeQueue);
 
     public void save(PersistedMessage routeQueue);
-    
+
     public List<PersistedMessage> findAll();
-    
+
     public List<PersistedMessage> findAll(int maxRows);
-    
+
     /**
      * Finds the PersistedMessage identified by the passed-in primary key, if one is 
      * available, otherwise returns a null object.
@@ -51,15 +50,15 @@ public interface MessageQueueService {
      */
     public PersistedMessage findByRouteQueueId(Long routeQueueId);
 
-    public List getNextDocuments();
-    
+//    public List getNextDocuments();
+
     /**
      * Returns a List of RouteQueue documents which are queued for routing.  Will not
      * return more RouteQueues than the value of maxDocuments.
      */
-    public List getNextDocuments(int maxDocuments);
-    
-//    public void validateRouteQueueValues(PersistedMessage routeQueue);
+    public List<PersistedMessage> getNextDocuments(Integer maxDocuments);
+
+    public PersistedMassagePayload findByPersistedMessageByRouteQueueId(Long routeQueueId);
     
     /**
      * Finds the persisted messages that match the values passed into the 
@@ -68,11 +67,12 @@ public interface MessageQueueService {
      * 
      * @param criteriaValues A Map of Key/Value pairs, where the Key is a string holding the field 
      *                       name, and the Value is a string holding the value to match.
+     * @param maxRows the maximum number of rows to return from the query.  If -1, then all rows will be returned.
      * @return A populated (or empty) list containing the results of the search.  If no matches are made, 
      *         an empty list will be returned.
      */
-    public List<PersistedMessage> findByValues(Map<String,String> criteriaValues);
-    
+    public List<PersistedMessage> findByValues(Map<String, String> criteriaValues, int maxRows);
+
     /**
      * Used to determine the maximum number of retries allowed by the system before the 
      * message goes into Exception.
@@ -81,5 +81,5 @@ public interface MessageQueueService {
      */
     public Integer getMaxRetryAttempts();
 
-    public PersistedMessage getMessage(ServiceInfo serviceInfo, AsynchronousCall methodCall, Date deliveryDate);
+    public PersistedMessage getMessage(ServiceInfo serviceInfo, AsynchronousCall methodCall);
 }

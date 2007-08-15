@@ -17,13 +17,13 @@
 package edu.iu.uis.eden.messaging.exceptionhandling;
 
 import org.junit.Test;
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.bus.test.KSBTestCase;
 import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
 
 import edu.iu.uis.eden.messaging.AsynchronousCall;
 import edu.iu.uis.eden.messaging.JavaServiceDefinition;
+import edu.iu.uis.eden.messaging.PersistedMassagePayload;
 import edu.iu.uis.eden.messaging.PersistedMessage;
 import edu.iu.uis.eden.messaging.ServiceInfo;
 
@@ -35,8 +35,8 @@ public class DefaultMessageExceptionHandlerTest extends KSBTestCase {
         ServiceInfo serviceInfo = new ServiceInfo();
         serviceInfo.setServiceDefinition(new JavaServiceDefinition());
         serviceInfo.getServiceDefinition().setRetryAttempts(serviceMaxRetries);
-        AsynchronousCall methodCall = new AsynchronousCall(new Class[0], new Object[0], serviceInfo, "", new Long(0), null, new Long(0));
-        message.setPayload(KSBServiceLocator.getMessageHelper().serializeObject(methodCall));
+        AsynchronousCall methodCall = new AsynchronousCall(new Class[0], new Object[0], serviceInfo, "", null, null);
+        message.setPayload(new PersistedMassagePayload(methodCall, message));
         message.setMethodCall(methodCall);
         return message;
     }

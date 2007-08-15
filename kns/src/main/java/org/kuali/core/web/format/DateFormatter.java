@@ -23,7 +23,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.util.Calendar;
 
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.rice.KNSServiceLocator;
 
 /**
@@ -77,12 +77,12 @@ public class DateFormatter extends Formatter {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(result);
             if (calendar.get(Calendar.YEAR) < 1000 && verbatimYear(target).length() < 4) {
-                throw new FormatException("illegal year format", KeyConstants.ERROR_DATE, target);
+                throw new FormatException("illegal year format", RiceKeyConstants.ERROR_DATE, target);
             }
             return result;
         }
         catch (ParseException e) {
-            throw new FormatException("parsing", KeyConstants.ERROR_DATE, target, e);
+            throw new FormatException("parsing", RiceKeyConstants.ERROR_DATE, target, e);
         }
         // end Kuali Foundation modification
     }

@@ -21,8 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.Constants;
-import org.kuali.PropertyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.bo.user.AuthenticationUserId;
 import org.kuali.core.bo.user.KualiModuleUser;
@@ -222,9 +222,9 @@ public class UniversalUserMaintainable extends KualiMaintainableImpl {
             universalUserService = KNSServiceLocator.getUniversalUserService();
             moduleUserPropertyService = KNSServiceLocator.getKualiModuleUserPropertyService();
             documentService = KNSServiceLocator.getDocumentService();
-            userEditWorkgroupName = configService.getApplicationParameterValue(Constants.CoreApcParms.GROUP_CORE_MAINT_EDOCS, Constants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
+            userEditWorkgroupName = configService.getApplicationParameterValue(RiceConstants.CoreApcParms.GROUP_CORE_MAINT_EDOCS, RiceConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
             // check whether users are editable within Kuali
-            usersMaintainedByKuali = configService.getPropertyAsBoolean( Constants.MAINTAIN_USERS_LOCALLY_KEY );
+            usersMaintainedByKuali = configService.getPropertyAsBoolean( RiceConstants.MAINTAIN_USERS_LOCALLY_KEY );
             kualiModuleService = KNSServiceLocator.getKualiModuleService();
         }
     }
@@ -234,8 +234,8 @@ public class UniversalUserMaintainable extends KualiMaintainableImpl {
      */
     public Map populateBusinessObject(Map fieldValues) {
         // need to make sure that the UUID is populated first for later fields
-        if ( fieldValues.containsKey( PropertyConstants.PERSON_UNIVERSAL_IDENTIFIER ) ) {
-            ((UniversalUser)getBusinessObject()).setPersonUniversalIdentifier( (String)fieldValues.get( PropertyConstants.PERSON_UNIVERSAL_IDENTIFIER ) );
+        if ( fieldValues.containsKey( RicePropertyConstants.PERSON_UNIVERSAL_IDENTIFIER ) ) {
+            ((UniversalUser)getBusinessObject()).setPersonUniversalIdentifier( (String)fieldValues.get( RicePropertyConstants.PERSON_UNIVERSAL_IDENTIFIER ) );
         }
         return super.populateBusinessObject( fieldValues );
     }

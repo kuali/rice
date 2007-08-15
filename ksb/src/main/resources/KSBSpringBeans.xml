@@ -20,9 +20,35 @@
 		</property>
 	</bean>
 
-	<bean id="ksbDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+	<bean id="ksbRegistryDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean" lazy-init="true">
 		<property name="transactionManager">
 			<ref local="jtaTransactionManager" />
+		</property>
+		<property name="preferredDataSourceParams">
+			<list>
+				<value>ksbRegistry.datasource</value>
+			</list>
+		</property>
+		<property name="preferredDataSourceJndiParams">
+			<list>
+				<value>ksbRegistry.datasource.jndi.location</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="ksbMessageDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+		<property name="transactionManager">
+			<ref local="jtaTransactionManager" />
+		</property>
+		<property name="preferredDataSourceParams">
+			<list>
+				<value>ksbMessage.datasource</value>
+			</list>
+		</property>
+		<property name="preferredDataSourceJndiParams">
+			<list>
+				<value>ksbMessage.datasource.jndi.location</value>
+			</list>
 		</property>
 	</bean>
 
@@ -71,17 +97,14 @@
 		</property>
 	</bean>
 
-	<bean id="enThreadPool" class="edu.iu.uis.eden.messaging.threadpool.KSBThreadPoolImpl" lazy-init="true">
-		<property name="dao">
-			<bean class="edu.iu.uis.eden.messaging.threadpool.dao.KSBThreadPoolDAOConfigImpl" />
-		</property>
-	</bean>
-	
+	<bean id="enThreadPool" class="edu.iu.uis.eden.messaging.threadpool.KSBThreadPoolImpl" lazy-init="true" />
+	<bean id="enScheduledThreadPool" class="edu.iu.uis.eden.messaging.threadpool.KSBScheduledThreadPoolExecutor" lazy-init="true" />
+
 
 	<bean id="bamService" class="edu.iu.uis.eden.messaging.bam.BAMServiceImpl" lazy-init="true">
 		<property name="dao">
-			<bean class="edu.iu.uis.eden.messaging.bam.dao.BAMDAOOjbImpl" >
-				<property name="jcdAlias" value="ksbDataSource" />
+			<bean class="edu.iu.uis.eden.messaging.bam.dao.BAMDAOOjbImpl">
+				<property name="jcdAlias" value="ksbRegistryDataSource" />
 			</bean>
 		</property>
 		<property name="configDao">
@@ -96,7 +119,7 @@
 	<bean id="enRouteQueueService" class="edu.iu.uis.eden.messaging.MessageQueueServiceImpl" lazy-init="true">
 		<property name="messageQueueDAO">
 			<bean class="edu.iu.uis.eden.messaging.dao.MessageQueueDAOOjbImpl">
-			<property name="jcdAlias" value="ksbDataSource" />
+				<property name="jcdAlias" value="ksbMessageDataSource" />
 			</bean>
 		</property>
 	</bean>
@@ -104,7 +127,7 @@
 	<bean id="enRoutingTableService" class="edu.iu.uis.eden.messaging.ServiceRegistryImpl" lazy-init="true">
 		<property name="dao">
 			<bean class="edu.iu.uis.eden.messaging.dao.ServiceInfoDAOOjbImpl">
-			<property name="jcdAlias" value="ksbDataSource" />
+				<property name="jcdAlias" value="ksbRegistryDataSource" />
 			</bean>
 		</property>
 	</bean>
@@ -132,7 +155,7 @@
 		<property name="retryAttempts" value="0" />
 	</bean>
 
-	<bean id="ObjectRemoterService" class="edu.iu.uis.eden.messaging.objectremoting.ObjectRemoterServiceImpl" singleton="true" lazy-init="true"/>
+	<bean id="ObjectRemoterService" class="edu.iu.uis.eden.messaging.objectremoting.ObjectRemoterServiceImpl" singleton="true" lazy-init="true" />
 	<bean id="ksb.objectRemoterServiceDefinition" class="edu.iu.uis.eden.messaging.JavaServiceDefinition" singleton="true" lazy-init="true">
 		<property name="service">
 			<ref bean="ObjectRemoterService" />
@@ -140,7 +163,7 @@
 		<property name="localServiceName" value="ObjectRemoterService" />
 		<property name="priority" value="3" />
 		<property name="retryAttempts" value="0" />
-	</bean>	
+	</bean>
 
 	<bean id="xfire.serviceRegistry" class="org.codehaus.xfire.service.DefaultServiceRegistry" singleton="true" lazy-init="true" />
 
@@ -190,5 +213,27 @@
 	</bean>
 
 	<bean id="xfire.messageBindingProvider" class="org.codehaus.xfire.service.binding.MessageBindingProvider" lazy-init="true" />
+
+	<bean id="ksbScheduler" class="edu.iu.uis.eden.messaging.quartz.KSBSchedulerFactoryBean" lazy-init="true" destroy-method="stop">
+		<property name="jobListeners">
+			<list>
+				<bean class="edu.iu.uis.eden.messaging.quartz.MessageServiceExecutorJobListener"/>
+			</list>
+		</property>
+		<property name="quartzProperties">
+			<bean class="edu.iu.uis.eden.messaging.quartz.QuartzConfigPropertiesFactoryBean"/>
+		</property>
+		<property name="jtaTransactionManager" ref="transactionManager"/>
+	</bean>
+
+    <bean id="busAdminService" class="edu.iu.uis.eden.messaging.BusAdminServiceImpl"/>
+    <bean id="ksb.busAdminServiceDefinition" class="edu.iu.uis.eden.messaging.JavaServiceDefinition" singleton="true" lazy-init="true">
+      <property name="service">
+        <ref bean="busAdminService" />
+      </property>
+      <property name="localServiceName" value="busAdminService" />
+      <property name="priority" value="3" />
+      <property name="retryAttempts" value="0" />
+    </bean>
 
 </beans>

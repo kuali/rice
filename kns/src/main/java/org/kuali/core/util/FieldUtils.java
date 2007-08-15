@@ -25,7 +25,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.authorization.FieldAuthorization;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
@@ -282,7 +282,7 @@ public class FieldUtils {
      * @return List of Row objects
      */
     public static List wrapFields(List fields) {
-        return wrapFields(fields, Constants.DEFAULT_NUM_OF_COLUMNS);
+        return wrapFields(fields, RiceConstants.DEFAULT_NUM_OF_COLUMNS);
     }
 
     /**
@@ -353,7 +353,7 @@ public class FieldUtils {
      * @return Field of type CONTAINER
      */
     public static Field constructContainerField(String name, String label, List fields) {
-        return constructContainerField(name, label, fields, Constants.DEFAULT_NUM_OF_COLUMNS);
+        return constructContainerField(name, label, fields, RiceConstants.DEFAULT_NUM_OF_COLUMNS);
     }
 
     /**
@@ -522,11 +522,11 @@ public class FieldUtils {
             for (Iterator iter = fieldValues.keySet().iterator(); iter.hasNext();) {
                 String propertyName = (String) iter.next();
 
-                if (propertyName.endsWith(Constants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION)) {
+                if (propertyName.endsWith(RiceConstants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION)) {
                     // since checkboxes do not post values when unchecked, this code detects whether a checkbox was unchecked, and
                     // sets the value to false.
                     if (StringUtils.isNotBlank((String) fieldValues.get(propertyName))) {
-                        String checkboxName = StringUtils.removeEnd(propertyName, Constants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION);
+                        String checkboxName = StringUtils.removeEnd(propertyName, RiceConstants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION);
                         String checkboxValue = (String) fieldValues.get(checkboxName);
                         if (checkboxValue == null) {
                             // didn't find a checkbox value, assume that it is unchecked
@@ -587,7 +587,7 @@ public class FieldUtils {
         if (field.containsBOData()) {
 
             // don't prefix submit fields, must start with dispatch parameter name
-            if (!propertyName.startsWith(Constants.DISPATCH_REQUEST_PARAMETER)) {
+            if (!propertyName.startsWith(RiceConstants.DISPATCH_REQUEST_PARAMETER)) {
                 // if the developer hasn't set a specific prefix use the one supplied
                 if (field.getPropertyPrefix() == null || field.getPropertyPrefix().equals("")) {
                     field.setPropertyName(namePrefix + propertyName);
@@ -602,7 +602,7 @@ public class FieldUtils {
             }
 
             // set keys read only for edit
-            if (keyFieldNames.contains(propertyName) && Constants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction)) {
+            if (keyFieldNames.contains(propertyName) && RiceConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction)) {
                 field.setReadOnly(true);
                 field.setKeyField(true);
             }
@@ -613,19 +613,19 @@ public class FieldUtils {
             // if fieldConversions specified, prefix with new constant
             if (StringUtils.isNotBlank(field.getFieldConversions())) {
                 String fieldConversions = field.getFieldConversions();
-                String newFieldConversions = Constants.EMPTY_STRING;
-                String[] conversions = StringUtils.split(fieldConversions, Constants.FIELD_CONVERSIONS_SEPERATOR);
+                String newFieldConversions = RiceConstants.EMPTY_STRING;
+                String[] conversions = StringUtils.split(fieldConversions, RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
 
                 for (int l = 0; l < conversions.length; l++) {
                     String conversion = conversions[l];
-                    String[] conversionPair = StringUtils.split(conversion, Constants.FIELD_CONVERSION_PAIR_SEPERATOR);
+                    String[] conversionPair = StringUtils.split(conversion, RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
                     String conversionFrom = conversionPair[0];
                     String conversionTo = conversionPair[1];
-                    conversionTo = Constants.MAINTENANCE_NEW_MAINTAINABLE + conversionTo;
-                    newFieldConversions += (conversionFrom + Constants.FIELD_CONVERSION_PAIR_SEPERATOR + conversionTo);
+                    conversionTo = RiceConstants.MAINTENANCE_NEW_MAINTAINABLE + conversionTo;
+                    newFieldConversions += (conversionFrom + RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR + conversionTo);
 
                     if (l < conversions.length) {
-                        newFieldConversions += Constants.FIELD_CONVERSIONS_SEPERATOR;
+                        newFieldConversions += RiceConstants.FIELD_CONVERSIONS_SEPERATOR;
                     }
                 }
 
@@ -647,19 +647,19 @@ public class FieldUtils {
             // if lookupParameters specified, prefix with new constant
             if (StringUtils.isNotBlank(field.getLookupParameters())) {
                 String lookupParameters = field.getLookupParameters();
-                String newLookupParameters = Constants.EMPTY_STRING;
-                String[] conversions = StringUtils.split(lookupParameters, Constants.FIELD_CONVERSIONS_SEPERATOR);
+                String newLookupParameters = RiceConstants.EMPTY_STRING;
+                String[] conversions = StringUtils.split(lookupParameters, RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
 
                 for (int m = 0; m < conversions.length; m++) {
                     String conversion = conversions[m];
-                    String[] conversionPair = StringUtils.split(conversion, Constants.FIELD_CONVERSION_PAIR_SEPERATOR);
+                    String[] conversionPair = StringUtils.split(conversion, RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
                     String conversionFrom = conversionPair[0];
                     String conversionTo = conversionPair[1];
-                    conversionFrom = Constants.MAINTENANCE_NEW_MAINTAINABLE + conversionFrom;
-                    newLookupParameters += (conversionFrom + Constants.FIELD_CONVERSION_PAIR_SEPERATOR + conversionTo);
+                    conversionFrom = RiceConstants.MAINTENANCE_NEW_MAINTAINABLE + conversionFrom;
+                    newLookupParameters += (conversionFrom + RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR + conversionTo);
 
                     if (m < conversions.length) {
-                        newLookupParameters += Constants.FIELD_CONVERSIONS_SEPERATOR;
+                        newLookupParameters += RiceConstants.FIELD_CONVERSIONS_SEPERATOR;
                     }
                 }
 
@@ -694,10 +694,10 @@ public class FieldUtils {
     public static void applyAuthorization(Field field, MaintenanceDocumentAuthorizations auths) {
 
         // only apply this on the newMaintainable
-        if (field.getPropertyName().startsWith(Constants.MAINTENANCE_NEW_MAINTAINABLE)) {
+        if (field.getPropertyName().startsWith(RiceConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
 
             // get just the actual fieldName, with the document.newMaintainableObject, etc etc removed
-            String fieldName = field.getPropertyName().substring(Constants.MAINTENANCE_NEW_MAINTAINABLE.length());
+            String fieldName = field.getPropertyName().substring(RiceConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
 
             // if the field is restricted somehow
             if (auths.hasAuthFieldRestricted(fieldName)) {
@@ -729,9 +729,9 @@ public class FieldUtils {
             // special check for old maintainable - need to ensure that fields hidden on the
             // "new" side are also hidden on the old side
         }
-        else if (field.getPropertyName().startsWith(Constants.MAINTENANCE_OLD_MAINTAINABLE)) {
+        else if (field.getPropertyName().startsWith(RiceConstants.MAINTENANCE_OLD_MAINTAINABLE)) {
             // get just the actual fieldName, with the document.oldMaintainableObject, etc etc removed
-            String fieldName = field.getPropertyName().substring(Constants.MAINTENANCE_OLD_MAINTAINABLE.length());
+            String fieldName = field.getPropertyName().substring(RiceConstants.MAINTENANCE_OLD_MAINTAINABLE.length());
             // if the field is restricted somehow
             if (auths.hasAuthFieldRestricted(fieldName)) {
                 FieldAuthorization fieldAuth = auths.getAuthFieldAuthorization(fieldName);
@@ -789,7 +789,7 @@ public class FieldUtils {
         for (int k = 0; k < newFields.size(); k++) {
             Field newMaintField = (Field) newFields.get(k);
             String propertyName = newMaintField.getPropertyName();
-            newMaintField = FieldUtils.fixFieldForForm(newMaintField, keyFieldNames, Constants.MAINTENANCE_NEW_MAINTAINABLE, maintenanceAction, readOnly, auths);
+            newMaintField = FieldUtils.fixFieldForForm(newMaintField, keyFieldNames, RiceConstants.MAINTENANCE_NEW_MAINTAINABLE, maintenanceAction, readOnly, auths);
 
             results.add(newMaintField);
         }
@@ -869,11 +869,11 @@ public class FieldUtils {
                 meshedFields.add(newMaintField);
             }
             else {
-                newMaintField = FieldUtils.fixFieldForForm(newMaintField, keyFieldNames, Constants.MAINTENANCE_NEW_MAINTAINABLE, maintenanceAction, readOnly, auths);
+                newMaintField = FieldUtils.fixFieldForForm(newMaintField, keyFieldNames, RiceConstants.MAINTENANCE_NEW_MAINTAINABLE, maintenanceAction, readOnly, auths);
                 // add old fields for edit
-                if (Constants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction) || Constants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
+                if (RiceConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction) || RiceConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
                     Field oldMaintField = (Field) oldFields.get(k);
-                    oldMaintField = FieldUtils.fixFieldForForm(oldMaintField, keyFieldNames, Constants.MAINTENANCE_OLD_MAINTAINABLE, maintenanceAction, true, auths);
+                    oldMaintField = FieldUtils.fixFieldForForm(oldMaintField, keyFieldNames, RiceConstants.MAINTENANCE_OLD_MAINTAINABLE, maintenanceAction, true, auths);
                     oldFieldsToMerge.add(oldMaintField);
 
                     // compare values for change, and set new maintainable fields for highlighting

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,10 +32,9 @@ import edu.iu.uis.eden.messaging.SOAPServiceDefinition;
 import edu.iu.uis.eden.messaging.ServiceInfo;
 
 /**
- * 
+ *
  * @author rkirkend
  * @author Scott Battaglia
- * @version $Revision: 1.2 $ $Date: 2007-06-19 14:35:13 $
  * @since 0.9
  */
 public class SOAPConnector extends AbstractServiceConnector {
@@ -56,14 +55,14 @@ public class SOAPConnector extends AbstractServiceConnector {
 	protected void configureClient(final Client client) {
 		client.addOutHandler(new DOMOutHandler());
 		client.addOutHandler(new org.codehaus.xfire.util.LoggingHandler());
-		
+
 		if (getCredentialsSource() != null) {
 			client.addOutHandler(new CredentialsOutHandler(getCredentialsSource(), getServiceInfo()));
 		}
-		
-		client.addOutHandler(new WorkflowXFireWSS4JOutHandler());
+
+		client.addOutHandler(new WorkflowXFireWSS4JOutHandler(getServiceInfo()));
 		client.addInHandler(new DOMInHandler());
 		client.addInHandler(new org.codehaus.xfire.util.LoggingHandler());
-		client.addInHandler(new WorkflowXFireWSS4JInHandler());
+		client.addInHandler(new WorkflowXFireWSS4JInHandler(getServiceInfo()));
 	}
 }

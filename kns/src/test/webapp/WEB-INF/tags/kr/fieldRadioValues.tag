@@ -18,10 +18,12 @@
 <%@ attribute name="field" required="true" type="org.kuali.core.web.ui.Field"%>
 
 <c:forEach items="${field.fieldValidValues}" var="radio">
+  <c:if test="${!empty radio.label}">
     <input type="radio"
         ${field.propertyValue eq radio.key ? 'checked="checked"' : ''}
            name='${field.propertyName}'
            value='<c:out value="${radio.key}"/>'
         ${onblurcall} />
     <c:out value="${radio.label}"/>
+  </c:if>
 </c:forEach>

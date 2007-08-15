@@ -8,7 +8,7 @@
 	<bean id="config" class="org.kuali.rice.config.spring.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
-				<value>classpath:META-INF/kns-config.xml</value>
+				<value>classpath:META-INF/sample-app-config.xml</value>
 			</list>
 		</property>
 	</bean>
@@ -18,7 +18,9 @@
 		<property name="targetMethod" value="getProperties" />
 	</bean>
 
-	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean" />
+	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean">
+      <property name="defaultTimeout" value="3600"/>
+    </bean>
 
 	<bean id="dataSource" class="org.kuali.rice.database.XAPoolDataSource">
 		<property name="transactionManager" ref="jotm" />
@@ -42,6 +44,9 @@
 			<list>
 				<bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
 					<property name="serviceServletUrl" value="${serviceServletUrl}" />
+                    <property name="authorizationService">
+                      <bean class="edu.sampleu.travel.rice.TravelAuthorizationService"/>
+                    </property>
 				</bean>
 				<bean class="org.kuali.workflow.config.KEWConfigurer">
 					<property name="clientProtocol" value="local" />

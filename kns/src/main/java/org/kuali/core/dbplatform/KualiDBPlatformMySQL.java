@@ -15,6 +15,7 @@
  */
 package org.kuali.core.dbplatform;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,7 @@ public class KualiDBPlatformMySQL extends AbstractDBPlatformDaoJdbc {
             newString = "'%Y-%m-%d'";
         }
         else if ("DD/MM/YYYY HH12:MI:SS PM".equalsIgnoreCase(dateFormatString)) {
-            newString = "'%d/%m/%Y HH:MM:SS'";
+            newString = "'%d/%m/%Y %r'";
         }
         return newString;
     }
@@ -69,8 +70,8 @@ public class KualiDBPlatformMySQL extends AbstractDBPlatformDaoJdbc {
         String[] tokens = ddl.split(" ");
         StringBuffer convertedDdl = new StringBuffer("CREATE TABLE ");
         for (int i = 0; i < tokens.length; i++) {
-            if (tokens[i].endsWith("_SEQ") || tokens[i].startsWith("SEQ_") || tokens[i].endsWith("_SEQUENCE") || tokens[i].startsWith("SEQUENCE_")) {
-                sequenceName = tokens[i];
+            if (tokens[i].equals("SEQUENCE")) {
+                sequenceName = tokens[i+1];
                 executeSql(new StringBuffer("CREATE TABLE ").append(sequenceName).append(" ( id bigint(19) not null auto_increment, primary key (id) ) ENGINE MyISAM").toString());
             }
             if (tokens[i].equals("WITH")) {
@@ -139,7 +140,7 @@ public class KualiDBPlatformMySQL extends AbstractDBPlatformDaoJdbc {
         newDDL = newDDL.replaceAll("\\bNUMBER", " NUMERIC");
         newDDL = newDDL.replaceAll("\\bSYS_GUID\\(\\)", "''");
         newDDL = newDDL.replaceAll("CONSTRAINT \\w+? NOT NULL ENABLE", "NOT NULL");
-        newDDL = newDDL.replaceAll("CONSTRAINT \\w+? NOT NULL", "NOT NULL");
+        newDDL = newDDL.replaceAll("CONSTRAINT[ \\t]+\\w+[ \\t]+NOT NULL", "NOT NULL");
         newDDL = newDDL.replaceAll("NOT NULL ENABLE", "NOT NULL");
         newDDL = newDDL.replaceAll("USING INDEX TABLESPACE \\w+\\b", "");
         newDDL = newDDL.replaceAll("USING INDEX", "");
@@ -147,6 +148,8 @@ public class KualiDBPlatformMySQL extends AbstractDBPlatformDaoJdbc {
         newDDL = newDDL.replaceAll("\\bDATE", " DATETIME");
         newDDL = newDDL.replaceAll("\\bCLOB", " MEDIUMTEXT");
         newDDL = newDDL.replaceAll("\\bUSERENV\\('SESSIONID'\\)", " 0");
+        newDDL = newDDL.replaceAll("DEFAULT SYSDATE", "");
+        newDDL = newDDL.replaceAll("\\(\\*,0\\)", "");
         newDDL = newDDL.replaceAll("\"", "");
         newDDL = newDDL.replaceAll("/", "");
         newDDL = newDDL.replaceAll(";", " ");
@@ -193,6 +196,10 @@ public class KualiDBPlatformMySQL extends AbstractDBPlatformDaoJdbc {
         return value.replaceAll( "'", "\\\\'" );
     }
 
+    public String escapeBackslashes( String value ) {
+        return value.replaceAll( "\\", "\\\\" );
+    }
+
     public void dumpSequence(String sequenceName, String exportDirectory) {
         // do nothing, sequences are dumped as tables        
     }
@@ -203,14 +210,18 @@ public class KualiDBPlatformMySQL extends AbstractDBPlatformDaoJdbc {
     }
     
     public boolean isSequence( String sequenceName ) {
-        return sequenceName.toUpperCase().startsWith( "SEQ_" ) || sequenceName.toUpperCase().startsWith( "SEQUENCE_" ) || sequenceName.toUpperCase().endsWith( "_SEQ" ) || sequenceName.toUpperCase().endsWith( "_SEQUENCE" );
+        return (sequenceName.toUpperCase().startsWith( "SEQ_" ) || sequenceName.toUpperCase().startsWith( "SEQUENCE_" ) || sequenceName.toUpperCase().endsWith( "_SEQ" ) || sequenceName.toUpperCase().endsWith( "_SEQUENCE" ))
+        		&& isTable( sequenceName );
     }
     
     // We need a way to determine the name of the database that we're connected
     // to (for MySQL at least) - may need this for other dbs, too.
     protected String getSchemaName() {
         try {
-            return getJdbcTemplate().getDataSource().getConnection().getCatalog();
+        	Connection con = getJdbcTemplate().getDataSource().getConnection();
+        	String cat = con.getCatalog();
+        	con.close();
+            return cat;
         } catch (SQLException e) {
             return "";
         }

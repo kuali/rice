@@ -125,6 +125,12 @@ CREATE TABLE EN_DLGN_RSP_T (
 	CONSTRAINT EN_DLGN_RSP_PK PRIMARY KEY (DLGN_RULE_ID) USING INDEX
 )
 /
+CREATE TABLE EN_DOC_HDR_CNTNT_T (
+	DOC_HDR_ID 			    NUMBER(14) NOT NULL,
+	DOC_CNTNT_TXT			CLOB NULL,
+	CONSTRAINT EN_DOC_HDR_T_CNTNT_PK PRIMARY KEY (DOC_HDR_ID)
+)
+/
 CREATE TABLE EN_DOC_HDR_EXT_DT_T (
 	DOC_HDR_EXT_ID			NUMBER(19) NOT NULL,
 	DOC_HDR_ID				NUMBER(14) NOT NULL,
@@ -175,6 +181,7 @@ CREATE TABLE EN_DOC_HDR_T (
 	DOC_OVRD_IND			NUMBER(1) DEFAULT 0,
 	DOC_LOCK_CD				CHAR(1) NULL,
 	DB_LOCK_VER_NBR			NUMBER(8) DEFAULT 0,
+	DOC_RTE_USR_PRSN_EN_ID  VARCHAR2(30) NULL,
 	CONSTRAINT EN_DOC_HDR_T_PK PRIMARY KEY (DOC_HDR_ID) USING INDEX
 )
 /
@@ -327,6 +334,29 @@ CREATE TABLE EN_MESSAGE_QUE_T (
    SERVICE_METHOD_NM		  VARCHAR2(2000) NULL,
    DB_LOCK_VER_NBR	          NUMBER(8) DEFAULT 0,
    CONSTRAINT EN_MESSAGE_QUE_T_PK PRIMARY KEY (MESSAGE_QUE_ID) USING INDEX
+)
+/
+CREATE TABLE EN_MSG_PAYLOAD_T (
+	   MESSAGE_QUE_ID			  NUMBER(14) NOT NULL,
+	   MESSAGE_PAYLOAD 		      CLOB NOT NULL,
+	   CONSTRAINT EN_MSG_PAYLOAD_T PRIMARY KEY (MESSAGE_QUE_ID)
+)
+/
+CREATE TABLE EN_MSG_QUE_T (
+   MESSAGE_QUE_ID			  NUMBER(14) NOT NULL,
+   MESSAGE_QUE_DT             DATE NOT NULL,
+   MESSAGE_EXP_DT			  DATE NULL,
+   MESSAGE_QUE_PRIO_NBR       NUMBER(8) NOT NULL,
+   MESSAGE_QUE_STAT_CD        CHAR(1) NOT NULL,
+   MESSAGE_QUE_RTRY_CNT       NUMBER(8) NOT NULL,
+   MESSAGE_QUE_IP_NBR         VARCHAR2(2000) NOT NULL,
+   MESSAGE_SERVICE_NM		  VARCHAR2(255),
+   MESSAGE_ENTITY_NM 		  VARCHAR2(10) NOT NULL,
+   SERVICE_METHOD_NM		  VARCHAR2(2000) NULL,
+   VAL_ONE					  VARCHAR2(2000) NULL,
+   VAL_TWO					  VARCHAR2(2000) NULL,
+   DB_LOCK_VER_NBR	          NUMBER(8) DEFAULT 0,
+   CONSTRAINT EN_MSG_QUE_T_PK PRIMARY KEY (MESSAGE_QUE_ID) USING INDEX
 )
 /
 CREATE TABLE EN_ORG_RESP_ID_T (
@@ -651,6 +681,8 @@ CREATE TABLE EN_WRKGRP_TYP_ATTRIB_T (
 	WRKGRP_TYP_ATTRIB_ID NUMBER(19) NOT NULL,
 	WRKGRP_TYP_ID NUMBER(19) NOT NULL,
 	ATTRIB_ID NUMBER(19) NOT NULL,
+	ACTV_IND NUMBER(1) DEFAULT 1,
+	ORD_INDX NUMBER(4) DEFAULT 0,
 	DB_LOCK_VER_NBR	NUMBER(8) DEFAULT 0,
 	CONSTRAINT EN_WRKGRP_TYP_ATTRIB_PK PRIMARY KEY (WRKGRP_TYP_ATTRIB_ID)
 )
@@ -664,6 +696,128 @@ CREATE TABLE EN_WRKGRP_TYP_T (
 	ACTV_IND NUMBER(1) DEFAULT 1,
 	DB_LOCK_VER_NBR	NUMBER(8) DEFAULT 0,
 	CONSTRAINT EN_WRKGRP_TYP_T_PK PRIMARY KEY (WRKGRP_TYP_ID)
+)
+/
+CREATE TABLE kr_qrtz_blob_triggers
+  (
+    TRIGGER_NAME VARCHAR2(80) NOT NULL,
+    TRIGGER_GROUP VARCHAR2(80) NOT NULL,
+    BLOB_DATA BLOB NULL,
+    PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP)
+)
+/
+CREATE TABLE kr_qrtz_calendars
+  (
+    CALENDAR_NAME  VARCHAR2(80) NOT NULL,
+    CALENDAR BLOB NOT NULL,
+    PRIMARY KEY (CALENDAR_NAME)
+)
+/
+CREATE TABLE kr_qrtz_cron_triggers
+  (
+    TRIGGER_NAME VARCHAR2(80) NOT NULL,
+    TRIGGER_GROUP VARCHAR2(80) NOT NULL,
+    CRON_EXPRESSION VARCHAR2(80) NOT NULL,
+    TIME_ZONE_ID VARCHAR2(80),
+    PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP)
+)
+/
+CREATE TABLE kr_qrtz_fired_triggers
+  (
+    ENTRY_ID VARCHAR2(95) NOT NULL,
+    TRIGGER_NAME VARCHAR2(80) NOT NULL,
+    TRIGGER_GROUP VARCHAR2(80) NOT NULL,
+    IS_VOLATILE VARCHAR2(1) NOT NULL,
+    INSTANCE_NAME VARCHAR2(80) NOT NULL,
+    FIRED_TIME NUMBER(13) NOT NULL,
+    PRIORITY NUMBER(13) NOT NULL,
+    STATE VARCHAR2(16) NOT NULL,
+    JOB_NAME VARCHAR2(80) NULL,
+    JOB_GROUP VARCHAR2(80) NULL,
+    IS_STATEFUL VARCHAR2(1) NULL,
+    REQUESTS_RECOVERY VARCHAR2(1) NULL,
+    PRIMARY KEY (ENTRY_ID)
+)
+/
+CREATE TABLE kr_qrtz_job_details
+  (
+    JOB_NAME  VARCHAR2(80) NOT NULL,
+    JOB_GROUP VARCHAR2(80) NOT NULL,
+    DESCRIPTION VARCHAR2(120) NULL,
+    JOB_CLASS_NAME   VARCHAR2(128) NOT NULL,
+    IS_DURABLE VARCHAR2(1) NOT NULL,
+    IS_VOLATILE VARCHAR2(1) NOT NULL,
+    IS_STATEFUL VARCHAR2(1) NOT NULL,
+    REQUESTS_RECOVERY VARCHAR2(1) NOT NULL,
+    JOB_DATA BLOB NULL,
+    PRIMARY KEY (JOB_NAME,JOB_GROUP)
+)
+/
+CREATE TABLE kr_qrtz_job_listeners
+  (
+    JOB_NAME  VARCHAR2(80) NOT NULL,
+    JOB_GROUP VARCHAR2(80) NOT NULL,
+    JOB_LISTENER VARCHAR2(80) NOT NULL,
+    PRIMARY KEY (JOB_NAME,JOB_GROUP,JOB_LISTENER)
+)
+/
+CREATE TABLE kr_qrtz_locks
+  (
+    LOCK_NAME  VARCHAR2(40) NOT NULL,
+    PRIMARY KEY (LOCK_NAME)
+)
+/
+CREATE TABLE kr_qrtz_paused_trigger_grps
+  (
+    TRIGGER_GROUP  VARCHAR2(80) NOT NULL,
+    PRIMARY KEY (TRIGGER_GROUP)
+)
+/
+CREATE TABLE kr_qrtz_scheduler_state
+  (
+    INSTANCE_NAME VARCHAR2(80) NOT NULL,
+    LAST_CHECKIN_TIME NUMBER(13) NOT NULL,
+    CHECKIN_INTERVAL NUMBER(13) NOT NULL,
+    PRIMARY KEY (INSTANCE_NAME)
+)
+/
+CREATE TABLE kr_qrtz_simple_triggers
+  (
+    TRIGGER_NAME VARCHAR2(80) NOT NULL,
+    TRIGGER_GROUP VARCHAR2(80) NOT NULL,
+    REPEAT_COUNT NUMBER(7) NOT NULL,
+    REPEAT_INTERVAL NUMBER(12) NOT NULL,
+    TIMES_TRIGGERED NUMBER(7) NOT NULL,
+    PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP)
+)
+/
+CREATE TABLE kr_qrtz_triggers
+  (
+    TRIGGER_NAME VARCHAR2(80) NOT NULL,
+    TRIGGER_GROUP VARCHAR2(80) NOT NULL,
+    JOB_NAME  VARCHAR2(80) NOT NULL,
+    JOB_GROUP VARCHAR2(80) NOT NULL,
+    IS_VOLATILE VARCHAR2(1) NOT NULL,
+    DESCRIPTION VARCHAR2(120) NULL,
+    NEXT_FIRE_TIME NUMBER(13) NULL,
+    PREV_FIRE_TIME NUMBER(13) NULL,
+    PRIORITY NUMBER(13) NULL,
+    TRIGGER_STATE VARCHAR2(16) NOT NULL,
+    TRIGGER_TYPE VARCHAR2(8) NOT NULL,
+    START_TIME NUMBER(13) NOT NULL,
+    END_TIME NUMBER(13) NULL,
+    CALENDAR_NAME VARCHAR2(80) NULL,
+    MISFIRE_INSTR NUMBER(2) NULL,
+    JOB_DATA BLOB NULL,
+    PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP)
+)
+/
+CREATE TABLE kr_qrtz_trigger_listeners
+  (
+    TRIGGER_NAME  VARCHAR2(80) NOT NULL,
+    TRIGGER_GROUP VARCHAR2(80) NOT NULL,
+    TRIGGER_LISTENER VARCHAR2(80) NOT NULL,
+    PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP,TRIGGER_LISTENER)
 )
 /
 CREATE SEQUENCE BAM_PARAM_SEQ INCREMENT BY 1 START WITH 2000
@@ -793,6 +947,9 @@ CREATE INDEX EN_DOC_HDR_EXT_TI1 ON EN_DOC_HDR_EXT_T (DOC_HDR_EXT_VAL_KEY, DOC_HD
 CREATE INDEX EN_DOC_HDR_EXT_TI2 ON EN_DOC_HDR_EXT_T (DOC_HDR_ID)
 /
 CREATE INDEX EN_DOC_HDR_EXT_TI3 ON EN_DOC_HDR_EXT_T (DOC_HDR_EXT_VAL)
+/
+
+CREATE INDEX EN_DOC_HDR_EXT_TI4 ON EN_DOC_HDR_EXT_T (DOC_HDR_EXT_VAL_KEY, UPPER(DOC_HDR_EXT_VAL))
 /
 CREATE INDEX EN_DOC_HDR_TI1
  ON EN_DOC_HDR_T (DOC_TYP_ID)
@@ -952,4 +1109,146 @@ CREATE INDEX EN_WRKGRP_TI1
  ON EN_WRKGRP_T (WRKGRP_NM)
 /
 CREATE UNIQUE INDEX EN_WRKGRP_TYP_TI1 ON EN_WRKGRP_TYP_T (WRKGRP_TYP_NM)
+/
+create index idx_kr_qrtz_ft_trig_name on kr_qrtz_fired_triggers(TRIGGER_NAME)/
+create index idx_kr_qrtz_ft_trig_group on kr_qrtz_fired_triggers(TRIGGER_GROUP)/
+create index idx_kr_qrtz_ft_trig_nm_gp on kr_qrtz_fired_triggers(TRIGGER_NAME,TRIGGER_GROUP)/
+create index idx_kr_qrtz_ft_trig_volatile on kr_qrtz_fired_triggers(IS_VOLATILE)/
+create index idx_kr_qrtz_ft_trig_inst_name on kr_qrtz_fired_triggers(INSTANCE_NAME)/
+create index idx_kr_qrtz_ft_job_name on kr_qrtz_fired_triggers(JOB_NAME)/
+create index idx_kr_qrtz_ft_job_group on kr_qrtz_fired_triggers(JOB_GROUP)/
+create index idx_kr_qrtz_ft_job_stateful on kr_qrtz_fired_triggers(IS_STATEFUL)/
+create index idx_kr_qrtz_ft_job_req_recov on kr_qrtz_fired_triggers(REQUESTS_RECOVERY)/
+create index idx_kr_qrtz_j_req_recovery on kr_qrtz_job_details(REQUESTS_RECOVERY)/
+create index idx_kr_qrtz_t_next_fire_time on kr_qrtz_triggers(NEXT_FIRE_TIME)/
+create index idx_kr_qrtz_t_state on kr_qrtz_triggers(TRIGGER_STATE)/
+create index idx_kr_qrtz_t_nft_st on kr_qrtz_triggers(NEXT_FIRE_TIME,TRIGGER_STATE)/
+create index idx_kr_qrtz_t_volatile on kr_qrtz_triggers(IS_VOLATILE)/
+insert into EN_APPL_CNST_T values ('Config.Application.MinutesToCacheUsers', '2620', 0)
+/
+insert into EN_APPL_CNST_T values ('RuleChange.IsGenerateActionRequests', 'true', 0)
+/
+insert into EN_APPL_CNST_T values ('DelegateRuleChange.IsGenerateActionRequests', 'true', 0)
+/
+insert into EN_APPL_CNST_T values ('Config.Application.AdminUserList', 'admin', 0)
+/
+insert into EN_APPL_CNST_T values ('DocumentSearch.IsRouteLogPopup', 'true', 0)
+/
+insert into EN_APPL_CNST_T values ('DocumentSearch.IsDocumentPopup', 'true', 0)
+/
+insert into EN_APPL_CNST_T values ('ActionList.IsRouteLogPopup', 'true', 0)
+/
+insert into EN_APPL_CNST_T values ('ActionList.IsDocumentPopup', 'true', 0)
+ /
+insert into EN_APPL_CNST_T values ('RouteTypeSearch.Instructions', 'Enter search criteria and click the search button to view the results.', 0)
+/
+insert into EN_APPL_CNST_T values ('RouteQueue.isRoutingByIPNumber', 'true', 0)
+/
+insert into EN_APPL_CNST_T values ('RouteQueue.maxRetryAttempts', '3', 0)
+/
+insert into EN_APPL_CNST_T values ('RouteQueue.timeIncrement', '3600000', 0)
+/
+insert into EN_APPL_CNST_T values ('RouteManagerQueue.initialDelay', '60000', 0)
+/
+insert into EN_APPL_CNST_T values ('RouteManagerQueue.waitTime', '15000', 0)
+/
+insert into EN_APPL_CNST_T values ('RouteManagerPool.numWorkers', '10', 0)
+/
+insert into EN_APPL_CNST_T values ('RouteManagerDriver.isRunning', 'true', 0)
+/
+insert into EN_APPL_CNST_T values ('ActionList.sendEmailNotification', 'true', 0)
+/
+insert into EN_APPL_CNST_T values ('RuleTemplate.CreateNew.Instruction', 'Enter a rule template name and description. Please select all necessary rule attributes for this template.', 0)
+/
+insert into EN_APPL_CNST_T values ('Rule.CreateNew.Instruction', 'Please select a rule template and document type.', 0)
+/
+insert into EN_APPL_CNST_T values ('Workgroup.Search.Instruction', 'Enter criteria to search for a workgroup.', 0)
+/
+insert into EN_APPL_CNST_T values ('RuleAttribute.CreateNew.Instruction', 'Enter the rule attributes name and full class name.', 0)
+/
+insert into EN_APPL_CNST_T values ('RuleTemplate.Search.Instruction', 'Use fields below to search for rule templates.', 0)
+/
+insert into EN_APPL_CNST_T values ('Rule.Search.Instruction', 'Use fields below to search for rules.', 0)
+/
+insert into EN_APPL_CNST_T values ('GlobalReviewer.Replace.Instruction', 'Enter the reviewer to replace.', 0)
+/
+insert into EN_APPL_CNST_T values ('DocumentType.Search.Instruction',  'Enter document type information below and click search.', 0)
+/
+insert into EN_APPL_CNST_T values ('DocumentType.CreateNew.Instruction', 'Create or modify a document type.', 0)
+/
+insert into EN_APPL_CNST_T values ('Config.Backdoor.TargetFrameName', 'iframe_51148', 0)
+/
+insert into EN_APPL_CNST_T values ('ApplicationContext', 'en-dev', 0)
+/
+insert into EN_APPL_CNST_T values ('ChartOrg.Search.Instruction', 'Put instruction in EN_APPL_CNST_T table, in the row ChartOrg.Search.Instruction', 0)
+/
+insert into EN_APPL_CNST_T values ('RuleAttribute.Search.Instruction', 'Put instruction in EN_APPL_CNST_T table, in the row RuleAttribute.Search.Instruction', 0)
+/
+insert into EN_APPL_CNST_T values ('SubAccount.Search.Instruction', 'Put instruction in EN_APPL_CNST_T table, in the row SubAccount.Search.Instruction', 0)
+/
+insert into EN_APPL_CNST_T values ('User.Search.Instruction', 'Enter search criteria and click the search button to view the results.', 0)
+/
+insert into EN_APPL_CNST_T values ('QuickLinks.restrictDocumentTypes', 'HREDOC,PURDOCS,ERADOCS,IeAccessRequest,ERA_HumanSubjects,MainStudy,TRAVELDOCS', 0)
+/
+insert into EN_APPL_CNST_T values ('Workgroup.CreateNew.Instruction', 'Enter/edit the workgroup data and click the route button to route the document.', 0)
+/
+insert into EN_APPL_CNST_T values ('Workflow.AdminWorkgroup', 'WorkflowAdmin', 0)
+/
+insert into EN_APPL_CNST_T values ('Workgroup.IsRouteLogPopup', 'false', 0)
+/
+insert into EN_APPL_CNST_T values ('DocumentType.IsRouteLogPopup', 'false', 0)
+/
+insert into EN_APPL_CNST_T values ('Rule.IsRouteLogPopup', 'false', 0)
+/
+insert into EN_APPL_CNST_T values ('Config.Application.RuleLockingOn', 'true', 0)
+/
+insert into EN_APPL_CNST_T values ('Config.Application.DelegateLimit', '20', 0)
+/
+insert into EN_APPL_CNST_T values ('Config.Mailer.IPAddress', '129.79.210.114', 0)
+/
+insert into EN_APPL_CNST_T values ('Config.Mailer.FromAddress', 'eden@indiana.edu', 0)
+/
+insert into EN_APPL_CNST_T values ('Backdoor.ShowbackDoorLogin', 'true', 0)
+/
+
+insert into EN_APPL_CNST_T values ('HelpDeskActionList.helpDeskActionListName', 'WorkflowAdmin', 0)
+/
+insert into EN_APPL_CNST_T values ('Config.Mailer.LastDailyReminderDate', '1112663586040', 0)
+/
+insert into EN_APPL_CNST_T values ('Config.Mailer.LastWeeklyReminderDate', '1112663586068', 0)
+/
+insert into EN_APPL_CNST_T values ('User.CreateNew.Instruction', 'Create or modify user information.', 0)
+/
+insert into EN_APPL_CNST_T values ('Workflow.AdminUrls', '/RouteType.do /RouteManagerDriver.do /ApplicationConstants.do /RuleAttribute.do /RuleTemplate.do /WorkflowUser.do /Help.do /DocumentOperation.do', 0)
+/
+insert into EN_APPL_CNST_T values ('Feature.CheckRouteLogAuthentication.CheckFuture', 'true', 0)
+/
+insert into EN_APPL_CNST_T values ('Note.CreateNew.Instruction', 'Create or modify note information.', 0)
+/
+insert into EN_APPL_CNST_T values ('RouteQueue.requeueWaitTime', '20000', 0)
+/
+insert into EN_APPL_CNST_T values ('EDL.UseXSLTC', 'true', 0)
+/
+insert into EN_APPL_CNST_T values ('EDL.DebugTransform', 'false', 0)
+/
+
+insert into en_usr_t values ('admin','admin','admin','admin','admin@localhost','admin','admin','admin',to_date('01/01/2000', 'dd/mm/yyyy'),to_date('01/01/2100', 'dd/mm/yyyy'),0,0)
+/
+insert into en_wrkgrp_t values (1,1,'WorkflowAdmin',1,'W','Workflow Administrator Workgroup',1,null,0)
+/
+insert into EN_WRKGRP_MBR_T values ('quickstart', 1, 'U', 1, 0)
+/
+
+INSERT INTO kr_qrtz_locks values('TRIGGER_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('JOB_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('CALENDAR_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('STATE_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('MISFIRE_ACCESS')
+/
+
+commit
 /

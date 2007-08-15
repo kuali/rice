@@ -26,6 +26,8 @@ import org.kuali.core.rule.event.KualiDocumentEvent;
 
 import edu.iu.uis.eden.exception.WorkflowException;
 
+import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
 
 /**
@@ -71,6 +73,14 @@ public interface Document extends PersistableBusinessObject{
     public void populateDocumentForRouting();
 
     /**
+     * This is a method where we can get the xml of a document that the workflow system will use to base it's routing and search
+     * attributes on.
+     * 
+     * @return the document serialized to an xml string
+     */
+    public String serializeDocumentToXml();
+    
+    /**
      * method to integrate with workflow, where we will actually handle the transitions of status for documents
      * 
      */
@@ -79,7 +89,12 @@ public interface Document extends PersistableBusinessObject{
     /**
      * method to integrate with workflow, where we will actually handle the transitions of levels for documents
      */
-    public void handleRouteLevelChange();
+    public void handleRouteLevelChange(DocumentRouteLevelChangeVO levelChangeEvent);
+    
+    /**
+     * method to integrate with workflow where we will be able to perform logic for an action taken being performed on a document
+     */
+    public void doActionTaken(ActionTakenEventVO event);
 
     /**
      * Getter method to get the document title as it will appear in and be searchable in workflow.

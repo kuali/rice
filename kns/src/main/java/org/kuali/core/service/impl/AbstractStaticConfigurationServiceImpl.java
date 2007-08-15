@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.util.properties.KualiPropertiesFactory;
 import org.kuali.core.util.properties.PropertyHolder;
 import org.kuali.core.util.spring.Cached;
@@ -34,23 +34,9 @@ public abstract class AbstractStaticConfigurationServiceImpl {
      * Harcoding the configFileName, by request.
      */
     public AbstractStaticConfigurationServiceImpl() {
-        loadConfigFile(Constants.CONFIGURATION_SERVICE_DATA_FILE_NAME);
-    }
-
-    /**
-     * Loads configuration information from the named file.
-     */
-    private void loadConfigFile(String configFileName) {
-        if (StringUtils.isBlank(configFileName)) {
-            throw new IllegalArgumentException("invalid (blank) configFileName");
-        }
-
-        KualiPropertiesFactory propertiesFactory = new KualiPropertiesFactory(configFileName);
+        KualiPropertiesFactory propertiesFactory = new KualiPropertiesFactory(RiceConstants.CONFIGURATION_SERVICE_DATA_FILE_NAME);
         this.propertyHolder = propertiesFactory.getProperties(null);
-        this.propertyHolder.getHeldProperties().put("testing", "a value");
-        //add properties in Core config
         this.propertyHolder.getHeldProperties().putAll(Core.getCurrentContextConfig().getProperties());
-        int i = 0;
     }
 
     /**

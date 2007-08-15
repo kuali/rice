@@ -16,13 +16,13 @@
 
 <descriptor-repository version="1.0">
 
-
-	<descriptor-repository version="1.0">
-		<jdbc-connection-descriptor jcd-alias="knsDataSource" default-connection="false" platform="Oracle9i" jdbc-level="3.0" useAutoCommit="0">
-			<sequence-manager className="org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl" />
-			<object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
-		</jdbc-connection-descriptor>
-	</descriptor-repository>
+	<jdbc-connection-descriptor jcd-alias="knsDataSource" default-connection="false" jdbc-level="3.0" eager-release="false" batch-mode="false"
+		useAutoCommit="0" ignoreAutoCommitExceptions="false">
+		<sequence-manager className="org.kuali.rice.ojb.ConfigurableSequenceManager">
+			<attribute attribute-name="property.prefix" attribute-value="datasource.ojb.sequenceManager" />
+		</sequence-manager>
+		<object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
+	</jdbc-connection-descriptor>
 
 	<class-descriptor class="org.kuali.core.bo.user.UniversalUser" table="FS_UNIVERSAL_USR_T">
 		<field-descriptor name="personUniversalIdentifier" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />

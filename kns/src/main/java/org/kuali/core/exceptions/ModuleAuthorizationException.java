@@ -15,7 +15,7 @@
  */
 package org.kuali.core.exceptions;
 
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.authorization.AuthorizationType;
 
@@ -32,7 +32,7 @@ public class ModuleAuthorizationException extends AuthorizationException {
      * @see org.kuali.core.exceptions.AuthorizationException#getErrorMessageKey()
      */
     public String getErrorMessageKey() {
-        return KeyConstants.AUTHORIZATION_ERROR_MODULE;
+        return RiceKeyConstants.AUTHORIZATION_ERROR_MODULE;
     }
 
 }

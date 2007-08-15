@@ -65,3 +65,13 @@ insert into FS_PARM_T values ('CoreMaintenanceEDoc','Workflow.Exception.Workgrou
 ;
 insert into FS_PARM_T values ('CoreMaintenanceEDoc','Kuali.Supervisor.Workgroup','2409BD6AB4CC800EE043814FD881800E',1,'WorkflowAdmin','Workgroup which can perform almost any function within Kuali.','N', 'KR')
 ;
+INSERT INTO kr_qrtz_locks values('TRIGGER_ACCESS')
+;
+INSERT INTO kr_qrtz_locks values('JOB_ACCESS')
+;
+INSERT INTO kr_qrtz_locks values('CALENDAR_ACCESS')
+;
+INSERT INTO kr_qrtz_locks values('STATE_ACCESS')
+;
+INSERT INTO kr_qrtz_locks values('MISFIRE_ACCESS')
+;

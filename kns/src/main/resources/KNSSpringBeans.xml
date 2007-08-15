@@ -126,14 +126,13 @@
 	<bean id="validationCompletionUtils" class="org.kuali.core.datadictionary.ValidationCompletionUtils">
 		<property name="persistenceStructureService" ref="persistenceStructureService" />
 	</bean>
-
+	
 	<bean id="dataDictionaryService" class="org.kuali.core.service.impl.DataDictionaryServiceImpl">
 		<constructor-arg ref="validationCompletionUtils" />
 		<property name="kualiConfigurationService" ref="kualiConfigurationService" />
 		<property name="authorizationService" ref="authorizationService" />
 		<property name="kualiGroupService" ref="kualiGroupService" />
 		<property name="kualiModuleService" ref="kualiModuleService" />
-		<property name="institutionId" value="${institution}" />
 		<property name="baselinePackages">
 			<list>
 				<value>classpath:org/kuali/core/bo/datadictionary/AdHocRoutePerson.xml</value>
@@ -225,9 +224,12 @@
 		<property name="host" value="${mail.relay.server}" />
 	</bean>
 
-	<bean id="dbPlatformDao" class="org.kuali.core.dbplatform.KualiDBPlatformOracle">
+	<bean id="dbPlatformDaoFactory" class="org.kuali.core.dbplatform.ConfigurableKualiDBPlatformFactory">
 		<property name="dataSource" ref="knsDataSource" />
 	</bean>
+
+	<bean id="dbPlatformDao" factory-bean="dbPlatformDaoFactory" factory-method="getPlatformDao" />
+	
 	<alias name="dbPlatformDao" alias="dbPlatformBean" />
 
 	<bean id="workflowGroupService" class="org.kuali.core.workflow.service.impl.WorkflowGroupServiceImpl"></bean>
@@ -296,7 +298,7 @@
 			</list>
 		</property>
 		<property name="stringDateFormat" value="MM/dd/yyyy" />
-		<property name="stringDateTimeFormat" value="MM/dd/yyyy hh:mm" />
+		<property name="stringDateTimeFormat" value="MM/dd/yyyy hh:mm a" />
 	</bean>
 
 	<bean id="businessObjectDictionaryService" class="org.kuali.core.service.impl.BusinessObjectDictionaryServiceImpl">
@@ -368,20 +370,26 @@
 		</property>
 	</bean>
 
-
 	<bean id="noteService" class="org.kuali.core.service.impl.NoteServiceImpl">
 		<property name="noteDao">
 			<ref bean="noteDao" />
 		</property>
+		<property name="universalUserService">
+			<ref bean="universalUserService" />
+		</property>
+		<property name="workflowDocumentService">
+			<ref bean="workflowDocumentService" />
+		</property>		
+		<property name="kualiConfigurationService">
+			<ref bean="kualiConfigurationService" />
+		</property>	
 	</bean>
-
 
 	<bean id="attachmentService" class="org.kuali.core.service.impl.AttachmentServiceImpl">
 		<property name="kualiConfigurationService">
 			<ref bean="kualiConfigurationService" />
 		</property>
 	</bean>
-
 
 	<bean id="persistenceStructureService" class="org.kuali.core.service.impl.PersistenceStructureServiceImpl" />
 

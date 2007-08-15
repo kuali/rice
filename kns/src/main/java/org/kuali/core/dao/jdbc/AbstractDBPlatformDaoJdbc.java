@@ -188,11 +188,16 @@ public abstract class AbstractDBPlatformDaoJdbc extends JdbcDaoSupport implement
             ResultSetMetaData rowMetaData = rows.getMetaData();
             if (rows.next()) {
                 PrintWriter dumpFileWriter = new PrintWriter(new FileOutputStream(new File(fileName)));
+                for (int i = 1; i <= rowMetaData.getColumnCount(); i++) {
+                	dumpFileWriter.print( rowMetaData.getColumnName( i ) );
+                	dumpFileWriter.print( FIELD_DELIMITER );
+                }
+                dumpFileWriter.print(LINE_DELIMITER);
                 do {
                     for (int i = 1; i <= rowMetaData.getColumnCount(); i++) {
                         Object columnValue = rows.getObject(i);
                         int columnType = rowMetaData.getColumnType( i );
-                        if ( columnType == java.sql.Types.CLOB ) {
+                        if ( columnType == java.sql.Types.CLOB && columnValue != null ) {
                             java.sql.Clob clob = (java.sql.Clob)columnValue;
                             Reader r = clob.getCharacterStream();
                             columnValue = new StringBuffer();
@@ -210,7 +215,8 @@ public abstract class AbstractDBPlatformDaoJdbc extends JdbcDaoSupport implement
                             dumpFileWriter.print("\\N");
                         }
                         else {
-                            dumpFileWriter.print(columnValue.toString());
+                        	String stringColVal = columnValue.toString();
+                            dumpFileWriter.print( stringColVal.replace( "\t", "//~T~//" ) );
                         }
                         dumpFileWriter.print(FIELD_DELIMITER);
                     }
@@ -281,5 +287,9 @@ public abstract class AbstractDBPlatformDaoJdbc extends JdbcDaoSupport implement
     }    
     public void clearSequenceTable(String sequenceName) {
         // do nothing unless a DB implementation requires it
+    }
+
+    public String escapeBackslashes( String value ) {
+        return value;
     }
 }

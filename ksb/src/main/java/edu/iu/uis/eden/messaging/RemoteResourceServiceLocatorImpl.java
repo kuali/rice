@@ -1,3 +1,18 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package edu.iu.uis.eden.messaging;
 
 import java.util.ArrayList;
@@ -46,7 +61,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	public synchronized void removeService(ServiceInfo serviceInfo, Object service) {
 		QName serviceName = serviceInfo.getQname();
 		LOG.info("Removing service '" + serviceName + "'...");
-		List<RemotedServiceHolder> clientProxies = this.clients.get(serviceName);
+		List<RemotedServiceHolder> clientProxies = this.getClients().get(serviceName);
 		// these could be null in the case that they were removed by another
 		// thread (the thread pool) prior to entry into this method
 		if (clientProxies != null) {
@@ -55,7 +70,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 				LOG.info("There was no client proxy removed for the given service: " + serviceName);
 			}
 			if (clientProxies.isEmpty()) {
-				List<RemotedServiceHolder> removedList = this.clients.remove(serviceName);
+				List<RemotedServiceHolder> removedList = this.getClients().remove(serviceName);
 				if (!removedList.isEmpty()) {
 					LOG.warn("No client proxy was removed for the given service " + serviceName);
 				}
@@ -68,7 +83,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	 * services. This isn't very effecient but for time reasons hashcode and
 	 * equals wasn't implemented on the RemotedServiceHolder and IPTable, which
 	 * is a member of te RemotedServiceHolder.
-	 * 
+	 *
 	 * @param service
 	 * @param serviceList
 	 * @return boolean indicating if the entry was removed from the list
@@ -88,7 +103,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 			KSBServiceLocator.getIPTableService().markServicesDead(serviceInfos);
 			return serviceList.remove(serviceToRemove);
 		}
-		
+
 		return false;
 	}
 
@@ -105,7 +120,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		if (service != null) {
 			return service;
 		}
-		
+
 		List<RemotedServiceHolder> clientProxies = getAllServices(serviceName);
 		if (clientProxies == null || clientProxies.isEmpty()) {
 			return null;
@@ -136,16 +151,20 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	}
 
 	public synchronized List<RemotedServiceHolder> getAllServices(QName qName) {
-		List<RemotedServiceHolder> clientProxies = this.clients.get(qName);
+		List<RemotedServiceHolder> clientProxies = this.getClients().get(qName);
 		if (clientProxies == null) {
 			LOG.debug("Client proxies are null, Re-aquiring services.  Message Entity " + Core.getCurrentContextConfig().getMessageEntity());
 			run();
-			clientProxies = this.clients.get(qName);
+			clientProxies = this.getClients().get(qName);
 			if (clientProxies == null || clientProxies.size() == 0) {
 				throw new RiceRuntimeException("No remote services available for client access when attempting to lookup '" + qName + "'");
 			}
 		}
 		return clientProxies;
+	}
+
+	public void refresh() {
+	    run();
 	}
 
 	public synchronized void run() {
@@ -160,10 +179,10 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 				servicesOnBus.add(remoteServiceHolder.getServiceInfo());
 			}
 		} else {
-			servicesOnBus = KSBServiceLocator.getIPTableService().fetchAll();	
+			servicesOnBus = KSBServiceLocator.getIPTableService().fetchAllActive();
 		}
 
-		if (new RoutingTableDiffCalculator().calculateClientSideUpdate(this.clients, servicesOnBus)) {
+		if (new RoutingTableDiffCalculator().calculateClientSideUpdate(this.getClients(), servicesOnBus)) {
 			LOG.debug("Located new services on the bus, numServices=" + servicesOnBus.size());
 			Map<QName, List<RemotedServiceHolder>> updatedRemoteServicesMap = new HashMap<QName, List<RemotedServiceHolder>>();
 			for (Iterator<ServiceInfo> iter = servicesOnBus.iterator(); iter.hasNext();) {
@@ -176,7 +195,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 					}
 				}
 			}
-			this.clients = updatedRemoteServicesMap;
+			this.setClients(updatedRemoteServicesMap);
 		} else {
 			LOG.debug("No new services on the bus.");
 		}
@@ -208,7 +227,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		LOG.info("Starting the RemoteResourceServiceLocator...");
 
 		int refreshRate = Core.getCurrentContextConfig().getRefreshRate();
-		this.future = KSBServiceLocator.getThreadPool().scheduleWithFixedDelay(this, 5, refreshRate, TimeUnit.SECONDS);
+		this.future = KSBServiceLocator.getScheduledPool().scheduleWithFixedDelay(this, 30, refreshRate, TimeUnit.SECONDS);
 		this.started = true;
 		run();
 		LOG.info("...RemoteResourceServiceLocator started.");
@@ -236,15 +255,15 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		QName objectRemoterName = new QName(definition.getMessageEntity(), KSBServiceLocator.OBJECT_REMOTER);
 		ObjectRemoterService classRemoter = (ObjectRemoterService)GlobalResourceLoader.getService(objectRemoterName);
 		ServiceInfo serviceInfo = classRemoter.getRemotedClassURL(definition);
-		
+
 		if (serviceInfo == null) {
 			return null;
 		}
-		
+
 		try {
 			RemoteObjectCleanup remoteCleanup = new RemoteObjectCleanup(objectRemoterName, serviceInfo.getQname());
-			KSBServiceLocator.getTransactionManager().getTransactionManager().getTransaction().registerSynchronization(remoteCleanup);
-			
+			KSBServiceLocator.getJtaTransactionManager().getTransaction().registerSynchronization(remoteCleanup);
+
 			return ServiceConnectorFactory.getServiceConnector(serviceInfo).getServiceHolder().getService();
 		} catch (Exception e) {
 			throw new RiceRuntimeException(e);
@@ -265,5 +284,13 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 			return (MessageExceptionHandler) GlobalResourceLoader.getObject(new ObjectDefinition(messageExceptionHandlerName));
 		}
 		throw new RiceRuntimeException("No service with QName " + qname + " found");
+	}
+
+	public Map<QName, List<RemotedServiceHolder>> getClients() {
+	    return this.clients;
+	}
+
+	public void setClients(Map<QName, List<RemotedServiceHolder>> clients) {
+	    this.clients = clients;
 	}
 }

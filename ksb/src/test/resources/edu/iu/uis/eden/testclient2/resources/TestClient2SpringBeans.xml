@@ -58,7 +58,7 @@
 		<property name="modules">
 			<list>
 				<bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
-					<property name="serviceServletUrl" value="http://localhost:9911/TestClient2/remoting" />
+					<property name="serviceServletUrl" value="http://localhost:${ksb.client2.port}/TestClient2/remoting" />
 					<property name="services">
 						<list>
 							<bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">

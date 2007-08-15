@@ -22,7 +22,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.core.util.KualiPercent;
 
 /**
@@ -63,10 +63,10 @@ public class PercentageFormatter extends Formatter {
             return new KualiPercent(parsedNumber.doubleValue());
         }
         catch (NumberFormatException e) {
-            throw new FormatException("parsing", KeyConstants.ERROR_PERCENTAGE, target, e);
+            throw new FormatException("parsing", RiceKeyConstants.ERROR_PERCENTAGE, target, e);
         }
         catch (ParseException e) {
-            throw new FormatException("parsing", KeyConstants.ERROR_PERCENTAGE, target, e);
+            throw new FormatException("parsing", RiceKeyConstants.ERROR_PERCENTAGE, target, e);
         }
         // end Kuali Foundation modification
     }
@@ -88,7 +88,7 @@ public class PercentageFormatter extends Formatter {
         }
         catch (IllegalArgumentException iae) {
         	// begin Kuali Foundation modification
-            throw new FormatException("formatting", KeyConstants.ERROR_PERCENTAGE, value.toString(), iae);
+            throw new FormatException("formatting", RiceKeyConstants.ERROR_PERCENTAGE, value.toString(), iae);
         	// end Kuali Foundation modification
         }
 

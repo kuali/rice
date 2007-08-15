@@ -182,6 +182,14 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getRoutedByUserNetworkId()
+     */
+    public String getRoutedByUserNetworkId() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
      * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getTitle()
      */
     public String getTitle() {
@@ -225,6 +233,22 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
      * @see org.kuali.core.workflow.service.KualiWorkflowDocument#superUserApprove(java.lang.String)
      */
     public void superUserApprove(String annotation) throws WorkflowException {
+        // TODO Auto-generated method stub
+
+    }
+
+    /**
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#superUserCancel(java.lang.String)
+     */
+    public void superUserCancel(String annotation) throws WorkflowException {
+        // TODO Auto-generated method stub
+
+    }
+
+    /**
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#superUserDisapprove(java.lang.String)
+     */
+    public void superUserDisapprove(String annotation) throws WorkflowException {
         // TODO Auto-generated method stub
 
     }
@@ -512,9 +536,17 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#userIsInitiator(org.kuali.core.bo.user.KualiUser)
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#userIsInitiator(org.kuali.core.bo.user.UniversalUser)
      */
     public boolean userIsInitiator(UniversalUser user) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+    
+    /**
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#userIsRoutedByUser(org.kuali.core.bo.user.UniversalUser)
+     */
+    public boolean userIsRoutedByUser(UniversalUser user) {
         // TODO Auto-generated method stub
         return false;
     }

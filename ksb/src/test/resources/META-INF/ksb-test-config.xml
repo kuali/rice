@@ -5,11 +5,16 @@
 
 	<param name="client1.location">${basedir}/src/test/clients/TestClient1</param>	
 	<param name="client2.location">${basedir}/src/test/clients/TestClient2</param>
+	<param name="ksb.client1.port">9913</param>
+	<param name="ksb.client2.port">9914</param>
+	<param name="ksb.testharness.port">9915</param>
+	
 	<param name="threadPool.size">1</param>
 	<param name="threadPool.fetchFrequency">3000</param>
 	<param name="bus.refresh.rate">3000</param>
 	<param name="bam.enabled">true</param>
-	<param name="message.persistence">synchronous</param>
+	
+	
 	<param name="keystore.alias">onestartsharedservices-devandtst</param>
 	<param name="keystore.password">s1t0spss!xX-tst</param>
 	<param name="keystore.file">${basedir}/src/test/resources/keystore/onestartsharedservices-devandtst_keystore</param>
@@ -17,5 +22,15 @@
 	<param name="use.clearDatabaseLifecycle">true</param>
 	<param name="use.sqlDataLoaderLifecycle">true</param>
 
+	<!-- bus messaging props -->
+	<param name="message.delivery">synchronous</param>
+	<param name="message.persistence">true</param>	
+	<param name="useQuartzDatabase">false</param>
+	<!-- 
+    <param name="org.quartz.jobStore.isClustered">false</param>
+    <param name="org.quartz.jobStore.tablePrefix">KR_QRTZ_</param>
+     -->
+	
 	<param name="config.location">${alt.config.location}</param>
+	
 </config>

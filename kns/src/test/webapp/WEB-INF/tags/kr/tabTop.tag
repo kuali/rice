@@ -18,9 +18,9 @@
 <%@ attribute name="defaultOpen" required="true" %>
 <%@ attribute name="tabErrorKey" required="false" %>
 
-<%-- c:set var="currentTabIndex" value="${KualiForm.currentTabIndex}"/ --%>
-<%-- c:set var="currentTab" value="${KualiForm.tabStateJstl}"/ --%>
+<c:set var="currentTabIndex" value="${KualiForm.currentTabIndex}"/>
 <c:set var="tabKey" value="${kfunc:generateTabKey(tabTitle)}"/>
+<c:set var="doINeedThis" value="${kfunc:incrementTabIndex(KualiForm, tabKey)}" />
 <c:set var="currentTab" value="${kfunc:getTabState(KualiForm, tabKey)}"/>
 <c:choose>
     <c:when test="${empty currentTab}">

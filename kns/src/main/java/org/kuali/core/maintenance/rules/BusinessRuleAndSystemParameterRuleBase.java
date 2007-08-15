@@ -17,7 +17,7 @@ package org.kuali.core.maintenance.rules;
 
 import java.util.List;
 
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.core.bo.BusinessRule;
 import org.kuali.core.bo.FinancialSystemParameter;
 import org.kuali.core.document.MaintenanceDocument;
@@ -51,7 +51,7 @@ public class BusinessRuleAndSystemParameterRuleBase extends MaintenanceDocumentR
         }
         //If we reach here, it means we couldn't find the module code, so return an error.
         GlobalVariables.getErrorMap().addToErrorPath("document.newMaintainableObject");
-        GlobalVariables.getErrorMap().putError("moduleCode", KeyConstants.ERROR_EXISTENCE, "Module Code");
+        GlobalVariables.getErrorMap().putError("moduleCode", RiceKeyConstants.ERROR_EXISTENCE, "Module Code");
         return false;
     }
 }

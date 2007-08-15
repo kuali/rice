@@ -59,10 +59,6 @@ public class KualiPropertiesFactory {
      * @throws IllegalArgumentException if the configurationFileName is blank
      */
     public KualiPropertiesFactory(String configurationFileName) {
-        if (StringUtils.isBlank(configurationFileName)) {
-            throw new IllegalArgumentException("invalid (blank) configurationFileName");
-        }
-
         this.configurationFileName = configurationFileName;
     }
 
@@ -83,37 +79,40 @@ public class KualiPropertiesFactory {
         try {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             URL url = loader.getResource(getConfigurationFileName());
-            if (url == null) {
-                throw new PropertiesException("unable to load config file '" + getConfigurationFileName() + "'");
+            if (url != null) {
+                input = url.openStream();
             }
-
-            input = url.openStream();
         }
         catch (IOException e) {
             throw new PropertiesException("exception caught opening configFile '" + getConfigurationFileName() + "'", e);
         }
-
-        // create and init digester
-        PropertyHolderBuilder builder = new PropertyHolderBuilder(startingProperties);
-        Digester digester = buildDigester(builder);
-
-        // populate the PropertyHolderBuilder with all sources listed in the
-        // config file
-        try {
-            digester.parse(input);
-            input.close();
+        if (input != null) {
+	
+	        // create and init digester
+	        PropertyHolderBuilder builder = new PropertyHolderBuilder(startingProperties);
+	        Digester digester = buildDigester(builder);
+	
+	        // populate the PropertyHolderBuilder with all sources listed in the
+	        // config file
+	        try {
+	            digester.parse(input);
+	            input.close();
+	        }
+	        catch (SAXException saxe) {
+	            log.error("SAX Exception caught", saxe);
+	            throw new PropertiesException("SAX Exception caught", saxe);
+	        }
+	        catch (IOException ioe) {
+	            log.error("IO Exception caught", ioe);
+	            throw new PropertiesException("IO Exception caught", ioe);
+	        }
+	
+	        // create and return the merged PropertyHolder
+	        return builder.mergeProperties();
         }
-        catch (SAXException saxe) {
-            log.error("SAX Exception caught", saxe);
-            throw new PropertiesException("SAX Exception caught", saxe);
+        else {
+        	return new PropertyHolder();
         }
-        catch (IOException ioe) {
-            log.error("IO Exception caught", ioe);
-            throw new PropertiesException("IO Exception caught", ioe);
-        }
-
-        // create and return the merged PropertyHolder
-        return builder.mergeProperties();
     }
 
     private Digester buildDigester(Object rootObject) {

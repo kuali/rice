@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.Inactivateable;
 import org.kuali.core.bo.PersistableBusinessObject;
@@ -36,6 +36,7 @@ import org.kuali.core.datadictionary.InquiryCollectionDefinition;
 import org.kuali.core.datadictionary.InquirySectionDefinition;
 import org.kuali.core.datadictionary.InquirySubSectionHeaderDefinition;
 import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
+import org.kuali.core.datadictionary.MaintainableFieldDefinition;
 import org.kuali.core.datadictionary.MaintainableItemDefinition;
 import org.kuali.core.datadictionary.MaintainableSectionDefinition;
 import org.kuali.core.datadictionary.MaintainableSubSectionHeaderDefinition;
@@ -66,7 +67,7 @@ public class SectionBridge {
             section.setNumberOfColumns(Integer.parseInt(sd.getNumberOfColumns()));
         }
         else {
-            section.setNumberOfColumns(Constants.DEFAULT_NUM_OF_COLUMNS);
+            section.setNumberOfColumns(RiceConstants.DEFAULT_NUM_OF_COLUMNS);
         }
 
         List<Field> sectionFields = new ArrayList();
@@ -142,7 +143,7 @@ public class SectionBridge {
                 section.getContainedCollectionNames().add(((MaintainableCollectionDefinition) item).getName());
 
                 StringBuffer containerRowErrorKey = new StringBuffer();
-                sectionRows = getContainerRows(section, definition, o, maintainable, oldMaintainable, displayedFieldNames, containerRowErrorKey, Constants.DEFAULT_NUM_OF_COLUMNS);
+                sectionRows = getContainerRows(section, definition, o, maintainable, oldMaintainable, displayedFieldNames, containerRowErrorKey, RiceConstants.DEFAULT_NUM_OF_COLUMNS);
             }
             else if (item instanceof MaintainableSubSectionHeaderDefinition) {
                 MaintainableSubSectionHeaderDefinition definition = (MaintainableSubSectionHeaderDefinition) item;
@@ -159,7 +160,7 @@ public class SectionBridge {
             sectionFields = FieldUtils.populateFieldsFromBusinessObject(sectionFields, o);
 
             /* if maintenance action is copy, clear out secure fields */
-            if (Constants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
+            if (RiceConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
                 for (Iterator iterator = sectionFields.iterator(); iterator.hasNext();) {
                     Field element = (Field) iterator.next();
                     if (element.isSecure()) {
@@ -210,7 +211,7 @@ public class SectionBridge {
         }
         
         // add the toggle inactive record display button for the collection
-        if (Inactivateable.class.isAssignableFrom(collectionDefinition.getBusinessObjectClass()) && StringUtils.isBlank(parents)) {
+        if (m != null && Inactivateable.class.isAssignableFrom(collectionDefinition.getBusinessObjectClass()) && StringUtils.isBlank(parents)) {
             addShowInactiveButtonField(s, collectionName, !m.getShowInactiveRecords(collectionName));
         }
         
@@ -261,12 +262,13 @@ public class SectionBridge {
 
                 if (obj instanceof List) {
                     Map summaryFields = new HashMap();
+                    boolean hidableRowsPresent = false;
                     for (int i = 0; i < ((List) obj).size(); i++) {
                         BusinessObject lineBusinessObject = (BusinessObject) ((List) obj).get(i);
                         
                         /*
                          * Handle display of inactive records. The old maintainable is used to compare the old side (if it exists). If the row should not be displayed, it is set as
-                         * hidden and will be handled in the maintenance rowDisplay.tag.
+                         * hidden and will be handled in the maintenance rowDisplay.tag.   
                          */  
                         boolean setRowHidden = false;
                         BusinessObject oldLineBusinessObject = null;
@@ -274,18 +276,33 @@ public class SectionBridge {
                             oldLineBusinessObject = (BusinessObject) ((List) oldObj).get(i);
                         }
                         
-                        if (lineBusinessObject instanceof Inactivateable && !m.getShowInactiveRecords(collectionName) && !((Inactivateable) lineBusinessObject).isActive()) {
-                            if (oldLineBusinessObject != null) {
-                                if (!((PersistableBusinessObject) lineBusinessObject).isNewCollectionRecord() && !((Inactivateable) oldLineBusinessObject).isActive()) {
-                                    setRowHidden = true;
-                                }
-                            }
-                            else {
-                                setRowHidden = true;
-                            }
+                        if ( m != null && lineBusinessObject instanceof Inactivateable && !((Inactivateable) lineBusinessObject).isActive() ) {
+                        	if (oldLineBusinessObject != null) { 
+                        		if (!((PersistableBusinessObject) lineBusinessObject).isNewCollectionRecord() && !((Inactivateable) oldLineBusinessObject).isActive()) {
+                                	hidableRowsPresent = true;
+                                	if ( !m.getShowInactiveRecords(collectionName) ) {
+                                        setRowHidden = true;
+                                	}
+                        		} else {
+                                	hidableRowsPresent = true;
+                                	if ( !m.getShowInactiveRecords(collectionName) ) {
+                                        setRowHidden = true;
+                                	}
+                        		}
+                        	}
                         }
 
                         collFields = new ArrayList<Field>();
+                        List<String> duplicateIdentificationFieldNames = new ArrayList<String>(); 
+                        //We only need to do this if the collection definition is a maintainable collection definition, 
+                        //don't need it for inquiry collection definition.
+                        if (collectionDefinition instanceof MaintainableCollectionDefinition) {
+	                        Collection<MaintainableFieldDefinition> duplicateFieldDefs = ((MaintainableCollectionDefinition)collectionDefinition).getDuplicateIdentificationFields();
+	                        for (MaintainableFieldDefinition eachFieldDef : duplicateFieldDefs) {
+	                    		duplicateIdentificationFieldNames.add(eachFieldDef.getName());
+	                    	}
+                        }
+                        
                         for (Iterator iterator = collectionFields.iterator(); iterator.hasNext();) {
                             FieldDefinitionI fieldDefinition = (FieldDefinitionI) iterator.next();
 
@@ -295,6 +312,12 @@ public class SectionBridge {
                             FieldBridge.setupField(collField, fieldDefinition);
                             setPrimaryKeyFieldsReadOnly(collectionDefinition.getBusinessObjectClass(), collField);
 
+                            //If the duplicateIdentificationFields were specified in the maint. doc. DD, we'll need
+                            //to set the fields to be read only as well, in addition to the primary key fields.
+                            if (duplicateIdentificationFieldNames.size() > 0) {
+                            	setDuplicateIdentificationFieldsReadOnly(collField, duplicateIdentificationFieldNames);
+                            }
+                            
                             FieldUtils.setInquiryURL(collField, lineBusinessObject, fieldDefinition.getName());
                             // save the simple property name
                             String name = collField.getPropertyName();
@@ -342,7 +365,7 @@ public class SectionBridge {
                         }
 
                         Field containerField;
-                        containerField = FieldUtils.constructContainerField(Constants.EDIT_PREFIX + "[" + (new Integer(i)).toString() + "]", collectionLabel + " " + (i + 1), collFields, numberOfColumns);
+                        containerField = FieldUtils.constructContainerField(RiceConstants.EDIT_PREFIX + "[" + (new Integer(i)).toString() + "]", collectionLabel + " " + (i + 1), collFields, numberOfColumns);
                         // why is this only on collections and not subcollections any significance or just oversight?
                         containerField.setContainerName(collectionDefinition.getName() + "[" + (new Integer(i)).toString() + "].");
 
@@ -353,7 +376,11 @@ public class SectionBridge {
                         }
 
                         if (StringUtils.isNotEmpty(collectionElementLabel)) {
-                            containerField.setContainerElementName(collectionElementLabel + " " + (i + 1));
+                        	//We don't want to associate any indexes to the containerElementName anymore so that
+                        	//when the element is deleted, the currentTabIndex won't be associated with the
+                        	//wrong tab for the remaining tab.
+                        	//containerField.setContainerElementName(collectionElementLabel + " " + (i + 1));
+                        	containerField.setContainerElementName(collectionElementLabel);
                             // reorder summaryFields to make sure they are in the order specified in the summary section
                             List orderedSummaryFields = getSummaryFields(summaryFields, collectionDefinition);
                             containerField.setContainerDisplayFields(orderedSummaryFields);
@@ -416,17 +443,24 @@ public class SectionBridge {
                                     
                                     // determine if sub collection line is inactive and should be hidden
                                     boolean setSubRowHidden = false;
-                                    if (lineSubBusinessObject instanceof Inactivateable && !m.getShowInactiveRecords(collectionName) && !((Inactivateable) lineSubBusinessObject).isActive()) {
-                                        if (oldSubObj != null) {
+                                    if ( m != null && lineSubBusinessObject instanceof Inactivateable && !((Inactivateable) lineSubBusinessObject).isActive() ) {
+                                    	if (oldSubObj != null) { 
                                             BusinessObject oldLineSubBusinessObject = (BusinessObject) ((List) oldSubObj).get(i);
-                                            if (!((PersistableBusinessObject) lineSubBusinessObject).isNewCollectionRecord() && !((Inactivateable) oldLineSubBusinessObject).isActive()) {
-                                                setSubRowHidden = true;
-                                            }
-                                        }
-                                        else {
-                                            setSubRowHidden = true;
-                                        }
+                                    		if (!((PersistableBusinessObject) lineSubBusinessObject).isNewCollectionRecord() && !((Inactivateable) oldLineSubBusinessObject).isActive()) {
+                                    			hidableRowsPresent = true;
+                                            	if ( !m.getShowInactiveRecords(collectionName) ) {
+                                            		setSubRowHidden = true;
+                                            	}
+                                    		} else {
+                                    			hidableRowsPresent = true;
+                                            	if ( !m.getShowInactiveRecords(collectionName) ) {
+                                            		setSubRowHidden = true;
+                                            	}
+                                    		}
+                                    	}
                                     }
+
+                                    
                                     
                                     subCollFields = new ArrayList<Field>();
                                     // construct field objects based on fields
@@ -476,14 +510,18 @@ public class SectionBridge {
                                         subCollFields.add(subCollField);
                                     }
 
-                                    Field subContainerField = FieldUtils.constructContainerField(Constants.EDIT_PREFIX + "[" + (new Integer(j)).toString() + "]", subCollectionLabel, subCollFields);
+                                    Field subContainerField = FieldUtils.constructContainerField(RiceConstants.EDIT_PREFIX + "[" + (new Integer(j)).toString() + "]", subCollectionLabel, subCollFields);
                                     if (lineSubBusinessObject instanceof PersistableBusinessObject && ((PersistableBusinessObject) lineSubBusinessObject).isNewCollectionRecord()) {
                                         subContainerField.getContainerRows().add(new Row(getDeleteRowButtonField(parents + collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionName, (new Integer(j)).toString())));
                                     }
 
                                     // summary line code
                                     if (StringUtils.isNotEmpty(subCollectionElementLabel)) {
-                                        subContainerField.setContainerElementName(subCollectionElementLabel + " " + (j + 1));
+                                        //We don't want to associate any indexes to the containerElementName anymore so that
+                                    	//when the element is deleted, the currentTabIndex won't be associated with the
+                                    	//wrong tab for the remaining tab.
+                                        //subContainerField.setContainerElementName(subCollectionElementLabel + " " + (j + 1));
+                                    	subContainerField.setContainerElementName(collectionElementLabel + "-" + subCollectionElementLabel);
                                     }
                                     subContainerField.setContainerName(collectionDefinition.getName() + "." + subCollectionName);
                                     if (!summaryFields.isEmpty()) {
@@ -500,6 +538,9 @@ public class SectionBridge {
                                 }
                             }
                         }
+                    }
+                    if ( !hidableRowsPresent ) {
+                    	s.setExtraButtonSource( "" );
                     }
                 }
             }
@@ -519,7 +560,7 @@ public class SectionBridge {
     private static final Field getDeleteRowButtonField(String collectionName, String rowIndex) {
         Field deleteButtonField = new Field();
 
-        String deleteButtonName = Constants.DISPATCH_REQUEST_PARAMETER + "." + Constants.DELETE_LINE_METHOD + "." + collectionName + "." + Constants.METHOD_TO_CALL_BOPARM_LEFT_DEL + ".line" + rowIndex;
+        String deleteButtonName = RiceConstants.DISPATCH_REQUEST_PARAMETER + "." + RiceConstants.DELETE_LINE_METHOD + "." + collectionName + "." + RiceConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL + ".line" + rowIndex;
         deleteButtonField.setPropertyName(deleteButtonName);
         deleteButtonField.setFieldType(Field.IMAGE_SUBMIT);
         deleteButtonField.setPropertyValue("images/tinybutton-delete1.gif");
@@ -536,8 +577,8 @@ public class SectionBridge {
      * @return Field - of type IMAGE_SUBMIT
      */
     private static final void addShowInactiveButtonField(Section section, String collectionName, boolean showInactive) {
-        String showInactiveButton = "<a name=\"showInactive" + collectionName + "\"><input type=\"image\" name=\"" + Constants.DISPATCH_REQUEST_PARAMETER + "." + Constants.TOGGLE_INACTIVE_METHOD + "." + collectionName;
-        showInactiveButton += "." + Constants.METHOD_TO_CALL_BOPARM_LEFT_DEL + showInactive  + ".anchorshowInactive" + collectionName + "\" src=\"";
+        String showInactiveButton = "<a name=\"showInactive" + collectionName + "\"><input type=\"image\" name=\"" + RiceConstants.DISPATCH_REQUEST_PARAMETER + "." + RiceConstants.TOGGLE_INACTIVE_METHOD + "." + collectionName.replace( '.', '_' );
+        showInactiveButton += "." + RiceConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL + showInactive  + ".anchorshowInactive" + collectionName + "\" src=\"";
         
         if (showInactive) {
             showInactiveButton += "images/tinybutton-showinact.gif";
@@ -559,6 +600,12 @@ public class SectionBridge {
         List primaryKeyPropertyNames = KNSServiceLocator.getPersistenceStructureService().getPrimaryKeys(businessObjectClass);
         if (primaryKeyPropertyNames.contains(field.getPropertyName())) {
             field.setReadOnly(true);
+        }
+    }
+    
+    private static void setDuplicateIdentificationFieldsReadOnly(Field field, List<String>duplicateIdentificationFieldNames) {
+        if (duplicateIdentificationFieldNames.contains(field.getPropertyName())) {
+        	field.setReadOnly(true);
         }
     }
 

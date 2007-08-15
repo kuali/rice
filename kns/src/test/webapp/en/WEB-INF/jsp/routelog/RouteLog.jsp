@@ -17,12 +17,20 @@
 	<table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1">
 	  <tr>
 	    <td width="10%"><img src="images/wf-logo.gif" alt="OneStart Workflow" width=150 height=21 hspace=5 vspace=5></td>
-		<td><a href="<c:url value="RouteLog.do">
-									<c:param name="showFuture" value="${RouteLogForm.showFuture}" />
-									<c:param name="showNotes" value="${RouteLogForm.showNotes}" />
-									<c:param name="routeHeaderId" value="${RouteLogForm.routeHeaderId}" />
-									<c:param name="docId" value="${RouteLogForm.docId}" />
-								</c:url>">Refresh</a>
+		<td>
+		  <a href="<c:url value="RouteLog.do">
+					<c:param name="showFuture" value="${RouteLogForm.showFuture}" />
+					<c:param name="showNotes" value="${RouteLogForm.showNotes}" />
+					<c:param name="routeHeaderId" value="${RouteLogForm.routeHeaderId}" />
+					<c:param name="docId" value="${RouteLogForm.docId}" />
+					<c:param name="backUrl" value="${RouteLogForm.returnUrlLocation}" />
+				  </c:url>">Refresh</a>
+		  <c:if test="${not empty RouteLogForm.returnUrlLocation}">
+		    &nbsp;&nbsp;&nbsp;<a href="<c:out value="${RouteLogForm.returnUrlLocation}"/>">Back to Previous Page</a>
+		  </c:if>
+		  <c:if test="${RouteLogForm.showCloseButton}">
+		    &nbsp;&nbsp;&nbsp;<a href="#" onclick="javascript:window.close();"><img src="images/buttonsmall_close.gif" alt="Close This Window" /></a>
+		  </c:if>
 		</td>
 	  </tr>
 	</table>

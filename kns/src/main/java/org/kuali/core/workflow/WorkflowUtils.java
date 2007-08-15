@@ -20,8 +20,8 @@ import java.util.Properties;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 
-import org.kuali.Constants;
-import org.kuali.PropertyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.util.UrlFactory;
 import org.kuali.rice.KNSServiceLocator;
 import org.w3c.dom.Document;
@@ -75,9 +75,9 @@ public class WorkflowUtils {
      */
     public static String getHelpUrl(org.kuali.core.web.ui.Field field) {
         Properties params = new Properties();
-        params.put(Constants.DISPATCH_REQUEST_PARAMETER, "getAttributeHelpText");
-        params.put(Constants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, field.getBusinessObjectClassName());
-        params.put(PropertyConstants.ATTRIBUTE_NAME, field.getPropertyName());
-        return UrlFactory.parameterizeUrl(KNSServiceLocator.getKualiConfigurationService().getPropertyString(Constants.APPLICATION_URL_KEY) + "/kr/help.do", params);
+        params.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, "getAttributeHelpText");
+        params.put(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, field.getBusinessObjectClassName());
+        params.put(RicePropertyConstants.ATTRIBUTE_NAME, field.getPropertyName());
+        return UrlFactory.parameterizeUrl(KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceConstants.APPLICATION_URL_KEY) + "/kr/help.do", params);
     }
 }

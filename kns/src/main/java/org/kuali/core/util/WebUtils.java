@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.web.struts.form.KualiForm;
 
 /**
@@ -52,8 +52,8 @@ public class WebUtils {
         String methodToCall = null;
 
         // check if is specified cleanly
-        if (StringUtils.isNotBlank(request.getParameter(Constants.DISPATCH_REQUEST_PARAMETER))) {
-            methodToCall = request.getParameter(Constants.DISPATCH_REQUEST_PARAMETER);
+        if (StringUtils.isNotBlank(request.getParameter(RiceConstants.DISPATCH_REQUEST_PARAMETER))) {
+            methodToCall = request.getParameter(RiceConstants.DISPATCH_REQUEST_PARAMETER);
         }
 
         if (methodToCall == null) {
@@ -62,9 +62,9 @@ public class WebUtils {
                 String parameterName = (String) i.nextElement();
 
                 // check if the parameter name is a specifying the methodToCall
-                if (parameterName.startsWith(Constants.DISPATCH_REQUEST_PARAMETER) && parameterName.endsWith(".x")) {
-                    methodToCall = StringUtils.substringBetween(parameterName, Constants.DISPATCH_REQUEST_PARAMETER + ".", ".");
-                    request.setAttribute(Constants.METHOD_TO_CALL_ATTRIBUTE, parameterName);
+                if (parameterName.startsWith(RiceConstants.DISPATCH_REQUEST_PARAMETER) && parameterName.endsWith(".x")) {
+                    methodToCall = StringUtils.substringBetween(parameterName, RiceConstants.DISPATCH_REQUEST_PARAMETER + ".", ".");
+                    request.setAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE, parameterName);
                 }
             }
         }
@@ -236,9 +236,9 @@ public class WebUtils {
         String key = "";
         if (!StringUtils.isBlank(tabTitle)) {
             key = tabTitle.replaceAll("\\W", "");
-            if (key.length() > 25) {
-                key = key.substring(0, 24);
-            }
+//            if (key.length() > 25) {
+//                key = key.substring(0, 24);
+//            }
         }
         
         return key;

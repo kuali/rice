@@ -1,18 +1,3 @@
-/*
- * Copyright 2005-2006 The Kuali Foundation.
- * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- * http://www.opensource.org/licenses/ecl1.php
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 CREATE TABLE SH_LOCK_T(
         TRN_SMPHR_TYP_CD               VARCHAR2(10) CONSTRAINT SH_LOCK_TN1 NOT NULL,
         TRN_SMPHR_ID                   VARCHAR2(10) CONSTRAINT SH_LOCK_TN2 NOT NULL,
@@ -22,8 +7,7 @@ CREATE TABLE SH_LOCK_T(
         TRN_LCKTM_TS                   DATE,
      CONSTRAINT SH_LOCK_TP1 PRIMARY KEY (
         TRN_SMPHR_TYP_CD,
-        TRN_SMPHR_ID) USING INDEX TABLESPACE KUL_IDX03,
-     CONSTRAINT SH_LOCK_TC0 UNIQUE (OBJ_ID) USING INDEX TABLESPACE KUL_IDX03
+        TRN_SMPHR_ID),
+     CONSTRAINT SH_LOCK_TC0 UNIQUE (OBJ_ID)
 )
-TABLESPACE KUL03
 /

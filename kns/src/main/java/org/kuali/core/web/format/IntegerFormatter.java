@@ -18,7 +18,7 @@ package org.kuali.core.web.format;
 
 // begin Kuali Foundation modification
 import org.apache.commons.lang.StringUtils;
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 
 /**
  * This class is used to format Integer objects.
@@ -44,7 +44,7 @@ public class IntegerFormatter extends Formatter {
             return new Integer(string);
         }
         catch (NumberFormatException e) {
-            throw new FormatException("parsing", KeyConstants.ERROR_INTEGER, string, e);
+            throw new FormatException("parsing", RiceKeyConstants.ERROR_INTEGER, string, e);
         }
         // end Kuali Foundation modification
     }

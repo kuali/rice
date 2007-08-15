@@ -5,7 +5,7 @@
 	<bean id="config" class="org.kuali.rice.config.spring.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
-				<value>classpath:org/kuali/bus/ksb.xml</value>
+				<value>classpath:META-INF/ksb-test-config.xml</value>
 			</list>
 		</property>
 	</bean>
@@ -44,7 +44,7 @@
 		<property name="modules">
 			<list>
 				<bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
-					<property name="serviceServletUrl" value="http://localhost:9912/en-test/remoting/" />
+					<property name="serviceServletUrl" value="http://localhost:${ksb.testharness.port}/en-test/remoting/" />
 					<property name="overrideServices">
 						<list>
 							<bean class="edu.iu.uis.eden.messaging.config.ServiceHolder">

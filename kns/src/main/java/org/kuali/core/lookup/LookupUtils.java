@@ -28,7 +28,7 @@ import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.BusinessObjectRelationship;
 import org.kuali.core.bo.PersistableBusinessObject;
@@ -166,7 +166,7 @@ public class LookupUtils {
     }
 
     public static Integer getApplicationSearchResultsLimit() {
-        String limitString = KNSServiceLocator.getKualiConfigurationService().getApplicationParameterValue(Constants.ParameterGroups.SYSTEM, Constants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
+        String limitString = KNSServiceLocator.getKualiConfigurationService().getApplicationParameterValue(RiceConstants.ParameterGroups.SYSTEM, RiceConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
         if (limitString != null) {
             return Integer.valueOf(limitString);
         }
@@ -176,11 +176,11 @@ public class LookupUtils {
     /**
      * This method the maximum rows per page in a multiple value lookup
      * 
-     * @see org.kuali.Constants.SystemGroupParameterNames#MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE
+     * @see org.kuali.RiceConstants.SystemGroupParameterNames#MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE
      * @return
      */
     public static Integer getApplicationMaximumSearchResulsPerPageForMultipleValueLookups() {
-        String limitString = KNSServiceLocator.getKualiConfigurationService().getApplicationParameterValue(Constants.ParameterGroups.SYSTEM, Constants.SystemGroupParameterNames.MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE);
+        String limitString = KNSServiceLocator.getKualiConfigurationService().getApplicationParameterValue(RiceConstants.ParameterGroups.SYSTEM, RiceConstants.SystemGroupParameterNames.MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE);
         if (limitString != null) {
             return Integer.valueOf(limitString);
         }
@@ -253,7 +253,7 @@ public class LookupUtils {
             String collectionPrefix = "";
             if ( collectionName != null ) {
                 if (addLine) {
-                    collectionPrefix = Constants.MAINTENANCE_ADD_PREFIX + collectionName + ".";
+                    collectionPrefix = RiceConstants.MAINTENANCE_ADD_PREFIX + collectionName + ".";
                 }
                 else {
                     collectionPrefix = collectionName + "[" + index + "].";
@@ -289,7 +289,7 @@ public class LookupUtils {
         String collectionPrefix = "";
         if ( collectionName != null ) {
             if (addLine) {
-                collectionPrefix = Constants.MAINTENANCE_ADD_PREFIX + collectionName + ".";
+                collectionPrefix = RiceConstants.MAINTENANCE_ADD_PREFIX + collectionName + ".";
             }
             else {
                 collectionPrefix = collectionName + "[" + index + "].";
@@ -524,11 +524,11 @@ public class LookupUtils {
     public static String convertReferencesToSelectCollectionToString(Collection<String> referencesToRefresh) {
         StringBuilder buf = new StringBuilder();
         for (String reference : referencesToRefresh) {
-            buf.append(reference).append(Constants.REFERENCES_TO_REFRESH_SEPARATOR);
+            buf.append(reference).append(RiceConstants.REFERENCES_TO_REFRESH_SEPARATOR);
         }
         if (!referencesToRefresh.isEmpty()) {
             // we appended one too many separators, remove it
-            buf.delete(buf.length() - Constants.REFERENCES_TO_REFRESH_SEPARATOR.length(), buf.length());
+            buf.delete(buf.length() - RiceConstants.REFERENCES_TO_REFRESH_SEPARATOR.length(), buf.length());
         }
         return buf.toString();
     }
@@ -539,13 +539,13 @@ public class LookupUtils {
         }
         StringBuilder buf = new StringBuilder();
         for (String objectId : objectIds) {
-            if (objectId.contains(Constants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR)) {
+            if (objectId.contains(RiceConstants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR)) {
                 throw new RuntimeException("object ID " + objectId + " contains the selected obj ID separator");
             }
-            buf.append(objectId).append(Constants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR);
+            buf.append(objectId).append(RiceConstants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR);
         }
         // added one extra separator, remove it
-        buf.delete(buf.length() - Constants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR.length(), buf.length());
+        buf.delete(buf.length() - RiceConstants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR.length(), buf.length());
         
         return buf.toString();
     }
@@ -554,7 +554,7 @@ public class LookupUtils {
         Set<String> set = new HashSet<String>();
         
         if (StringUtils.isNotBlank(objectIdsString)) {
-            String[] objectIds = StringUtils.splitByWholeSeparator(objectIdsString, Constants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR);
+            String[] objectIds = StringUtils.splitByWholeSeparator(objectIdsString, RiceConstants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR);
             for (String objectId : objectIds) {
                 set.add(objectId);
             }

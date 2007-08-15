@@ -30,6 +30,7 @@ public interface ServiceRegistry {
 	public void saveEntry(ServiceInfo entry);
 	public void removeEntry(ServiceInfo entry);
 	public List<ServiceInfo> fetchAll();
+	public List<ServiceInfo> fetchAllActive();
 	public void save(List<ServiceInfo> serviceEntries);
 	public void remove(List<ServiceInfo> serviceEntries);
 	public void markServicesDead(List<ServiceInfo> serviceEntries);

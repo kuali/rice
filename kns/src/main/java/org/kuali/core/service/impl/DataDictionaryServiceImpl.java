@@ -21,12 +21,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.core.datadictionary.AttributeDefinition;
 import org.kuali.core.datadictionary.BusinessObjectEntry;
 import org.kuali.core.datadictionary.CollectionDefinition;
@@ -54,17 +51,20 @@ import org.kuali.core.service.KualiModuleService;
  */
 public class DataDictionaryServiceImpl implements DataDictionaryService {
 
-    private static Log LOG = LogFactory.getLog(DataDictionaryServiceImpl.class);
-
     private DataDictionaryBuilder dataDictionaryBuilder;
-//    private List<String> baselineDirectories;
     private DataDictionaryMap dataDictionaryMap = new DataDictionaryMap( this );
 
     private KualiConfigurationService kualiConfigurationService;
     private KualiGroupService kualiGroupService;
     private KualiModuleService kualiModuleService;
     private AuthorizationService authorizationService;
-    private String institutionId;
+    
+    /**
+     * @see org.kuali.core.service.DataDictionaryService#setBaselinePackages(java.lang.String)
+     */
+    public void setBaselinePackages(List baselinePackages) {
+    	this.addDataDictionaryLocations(baselinePackages);
+    }
 
     /**
      * Default constructor.
@@ -74,17 +74,9 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.core.service.DataDictionaryService#setBaselinePackages(java.lang.String)
-     */
-    public void setBaselinePackages(List baselinePackages) {
-    	this.addDataDictionaryLocations(baselinePackages);
-    }
-
-    /**
      * @see org.kuali.core.service.DataDictionaryService#getDataDictionary()
      */
     public DataDictionary getDataDictionary() {
-        waitForDDInitCompletion();
         return dataDictionaryBuilder.getDataDictionary();
     }
 
@@ -743,13 +735,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return isAttributeRequired(businessObjectClass.getName(), attributeName);
 
     }
-
-//    /**
-//     * @see org.kuali.core.service.DataDictionaryService#getDocumentObjectClassnames()
-//     */
-//    public List getDocumentObjectClassnames() {
-//        return getDataDictionary().getDocumentObjectClassNames();
-//    }
     
     /**
      * @see org.kuali.core.service.DataDictionaryService#getDocumentLabelByClass(java.lang.Class)
@@ -822,18 +807,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return null;
     }
 
-
-//    /**
-//     * @see org.kuali.core.service.DataDictionaryService#getDocumentTypeNameByTypeCode(java.lang.String)
-//     */
-//    public String getDocumentTypeNameByTypeCode(String documentTypeCode) {
-//        DocumentEntry documentEntry = getDataDictionary().getDocumentEntryByCode(documentTypeCode);
-//        if (documentEntry != null) {
-//            return documentEntry.getDocumentTypeName();
-//        }
-//        return null;
-//    }
-
     /**
      * @see org.kuali.core.service.DataDictionaryService#getPreRulesCheckClass(java.lang.String)
      */
@@ -847,17 +820,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         return preRulesCheckClass;
     }
-
-    // set up a latch with a count of one - one call the countDown will release the latch
-    private CountDownLatch ddLoadLatch = new CountDownLatch(1);
-    
-    private void waitForDDInitCompletion() {
-//        try {
-////            ddLoadLatch.await();
-//        } catch ( InterruptedException ex ) {
-//            // do nothing
-//        }
-        }
     
     public void addDataDictionaryLocation(String location) {
     	dataDictionaryBuilder.addOverrideEntries(location, true);
@@ -868,76 +830,12 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 			addDataDictionaryLocation(location);
                 }
             }
-            
-//    /**
-//     * @see org.kuali.core.service.DataDictionaryService#completeInitialization()
-//     */
-//    public void completeInitialization() {
-//        try {
-//            dataDictionaryBuilder.setKualiConfigurationService(getKualiConfigurationService());
-//            dataDictionaryBuilder.setKualiGroupService(getKualiGroupService());
-//    
-//            LOG.info( "starting background DataDictionary init" );
-//            if (baselineDirectories != null) {
-//                for ( String dirName : baselineDirectories ) {
-//                    dataDictionaryBuilder.addUniqueEntries(dirName, true);
-//        }
-//
-//                List<String> overrideDirectories = convertBaselineToOverrideDirectories( baselineDirectories );
-//                for (String dirName : overrideDirectories ) {
-//                    dataDictionaryBuilder.addOverrideEntries(dirName, false);
-//    }
-//            }
-//            
-//            List<String> moduleDirectories = kualiModuleService.getDataDictionaryPackages();
-//            for ( String dirName : moduleDirectories ) {
-//                dataDictionaryBuilder.addUniqueEntries(dirName, true);
-//            }
-//            
-//            List<String> overrideDirectories = convertBaselineToOverrideDirectories( moduleDirectories );
-//            for (String dirName : overrideDirectories ) {
-//                dataDictionaryBuilder.addOverrideEntries(dirName, false);
-//            }
-//    
-//    
-//            dataDictionaryBuilder.completeInitialization();
-//            // need to pass in the DD to the authorization service since the latch has not been released yet
-//            authorizationService.completeInitialization( dataDictionaryBuilder.getDataDictionary() );
-//            LOG.info( "completed DataDictionary init - releasing latch" );
-//        } finally {
-//            // ensure that the latch gets released, even if there is a problem
-//            ddLoadLatch.countDown();
-//        }
-//    }
 
-    
-    /**
-     * Adds the instution extension to the directory name for use as the institutional override directories.
-     * 
-     * @param dirList
-     * @return
-     */
-    private List<String> convertBaselineToOverrideDirectories(List<String> dirList) {
-        List<String> directoryList = new ArrayList<String>();
-        for (String dirName :  dirList ) {
-        	//only allow directories to do the institutional overrides.
-        	if (dirName.indexOf("xml") < 0) {
-        		directoryList.add( dirName + "/" + institutionId );	
-        	}
-        }
 
-        return directoryList;
-    }
-    
     public Map getDataDictionaryMap() {
         return dataDictionaryMap;
     }
     
-
-//    public void addUniqueEntries(String sourceName, boolean sourceMustExist) {
-//        dataDictionaryBuilder.addUniqueEntries(sourceName, sourceMustExist);
-//
-//    }
 
     public void setKualiGroupService(KualiGroupService kualiGroupService) {
         this.kualiGroupService = kualiGroupService;
@@ -946,7 +844,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public KualiGroupService getKualiGroupService() {
         return kualiGroupService;
     }
-
 
     public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
         this.kualiConfigurationService = kualiConfigurationService;
@@ -963,15 +860,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public void setKualiModuleService(KualiModuleService kualiModuleService) {
         this.kualiModuleService = kualiModuleService;
     }
-
-    public String getInstitutionId() {
-        return institutionId;
-    }
-
-    public void setInstitutionId(String institutionId) {
-        this.institutionId = institutionId;
-    }
-
     public AuthorizationService getAuthorizationService() {
         return authorizationService;
     }

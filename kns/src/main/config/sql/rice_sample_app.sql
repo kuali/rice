@@ -41,6 +41,20 @@ create table TRAV_DOC_2_ACCOUNTS (
 )
 /
 
+create table TRV_ACCT_TYPE (
+    ACCT_TYPE VARCHAR2(10),
+    ACCT_TYPE_NAME varchar2(50),
+    CONSTRAINT TRV_ACCT_TYPE_PK PRIMARY KEY (ACCT_TYPE)
+)
+/
+
+create table TRV_ACCT_EXT (
+    ACCT_NUM VARCHAR2(10),
+    ACCT_TYPE varchar2(100),
+    CONSTRAINT TRV_ACCT_TYPE_P1 PRIMARY KEY (ACCT_NUM, ACCT_TYPE)
+)
+/
+
 CREATE SEQUENCE SEQ_TRAVEL_DOC_ID INCREMENT BY 1 START WITH 1000 
 /
 CREATE SEQUENCE SEQ_TRAVEL_FO_ID INCREMENT BY 1 START WITH 1000 
@@ -74,23 +88,55 @@ insert into en_usr_t values ('quickstart','quickstart','quickstart','quickstart'
 /
 insert into en_wrkgrp_t values (1,1,'WorkflowAdmin',1,'W','Workflow Administrator Workgroup',1,null,0) 
 /
-insert into EN_WRKGRP_MBR_T values ('quickstart',1,1,0,'U') 
+insert into EN_WRKGRP_MBR_T values ('quickstart',1,'U',1,0) 
 /
 
-insert into FP_DOC_TYPE_T values ('TRVA', '1A6FEB2501C7607EE043814FD881607E', 1, 'TR', 'TRAV ACCNT', 'N', 'Y', 'N', 0, 'N', 'N')
-/
 INSERT INTO FP_DOC_GROUP_T VALUES ('TR', '054EDFB3B260C8D2E043814FD881C8D2', 1,	'Travel Documents', null)
 /
-
+INSERT INTO FP_DOC_GROUP_T VALUES ('KR', '054EDFB3B260C8D2E043816FD881C8D2', 1,	'Kuali Rice', null)
+/
+insert into FP_DOC_TYPE_T values ('TRVA', '1A6FEB2501C7607EE043814FD881607E', 1, 'TR', 'TRAV ACCNT', 'N', 'Y', 'N', 0, 'N', 'N')
+/
 insert into FP_DOC_TYPE_T values ('TRFO', '1A6FEB250342607EE043814FD881607E', 1, 'TR', 'TRAV FO', 'N', 'Y', 'N', 0, 'N', 'N')
 /
 insert into FP_DOC_TYPE_T values ('TRD2', '1A6FEB250342607EE043814FD889607E', 1, 'TR', 'TRAV D2', 'N', 'Y', 'N', 0, 'N', 'N')
 /
 insert into FP_DOC_TYPE_T values ('RUSR', '1A6FEB253342607EE043814FD889607E', 1, 'TR', 'RICE USR', 'N', 'Y', 'N', 0, 'N', 'N') 
 /
+insert into FP_DOC_TYPE_T values ('PARM', '1A6FRB253342607EE043814FD889607E', 1, 'TR', 'System Parms', 'N', 'Y', 'N', 0, 'N', 'N') 
+/
+insert into FP_DOC_TYPE_T values ('BR', '1A6FRB253343337EE043814FD889607E', 1, 'TR', 'Biz Rules', 'N', 'Y', 'N', 0, 'N', 'N') 
+/
 insert into SH_NTE_TYP_T values ('BO', '2D3C44FE49415102E043814FD8815102',	1,	'DOCUMENT BUSINESS OBJECT', 'Y')
 /
 insert into SH_NTE_TYP_T values ('DH', '2D3C44FE49425102E043814FD8815102',	1,	'DOCUMENT HEADER', 'Y')
 /
+
+insert into TRV_ACCT_EXT values ('a1', 'IAT') 
+/
+insert into TRV_ACCT_EXT values ('a2', 'EAT') 
+/
+insert into TRV_ACCT_EXT values ('a3', 'IAT') 
+/
+
+insert into TRV_ACCT_TYPE values ('CAT', 'Clearing Account Type') 
+/
+insert into TRV_ACCT_TYPE values ('EAT', 'Expense Account Type') 
+/
+insert into TRV_ACCT_TYPE values ('IAT', ' Income Account Type') 
+/
+
+INSERT INTO kr_qrtz_locks values('TRIGGER_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('JOB_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('CALENDAR_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('STATE_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('MISFIRE_ACCESS')
+/
+
+
 commit 
 /

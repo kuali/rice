@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.PropertyConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.LookupResults;
 import org.kuali.core.bo.SelectedObjectIds;
 import org.kuali.core.dao.PersistedLookupMetadataDao;
@@ -32,7 +32,7 @@ public class PersistedLookupMetadataDaoOjb extends PlatformAwareDaoBaseOjb imple
      */
     public void deleteOldLookupResults(Timestamp expirationDate) {
         Criteria criteria = new Criteria();
-        criteria.addLessThan(PropertyConstants.LOOKUP_DATE, expirationDate);
+        criteria.addLessThan(RicePropertyConstants.LOOKUP_DATE, expirationDate);
         getPersistenceBrokerTemplate().deleteByQuery(QueryFactory.newQuery(LookupResults.class, criteria));
     }
 
@@ -41,7 +41,7 @@ public class PersistedLookupMetadataDaoOjb extends PlatformAwareDaoBaseOjb imple
      */
     public void deleteOldSelectedObjectIds(Timestamp expirationDate) {
         Criteria criteria = new Criteria();
-        criteria.addLessThan(PropertyConstants.LOOKUP_DATE, expirationDate);
+        criteria.addLessThan(RicePropertyConstants.LOOKUP_DATE, expirationDate);
         getPersistenceBrokerTemplate().deleteByQuery(QueryFactory.newQuery(SelectedObjectIds.class, criteria));
     }
 }

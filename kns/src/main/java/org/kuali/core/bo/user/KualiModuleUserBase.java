@@ -19,8 +19,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
-import org.kuali.PropertyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.TransientBusinessObjectBase;
 import org.kuali.rice.KNSServiceLocator;
 
@@ -52,16 +52,16 @@ public class KualiModuleUserBase extends TransientBusinessObjectBase implements 
     }
 
     public boolean isActive() {
-        return getUserProperty( PropertyConstants.ACTIVE ).equals( "Y" );
+        return getUserProperty( RicePropertyConstants.ACTIVE ).equals( "Y" );
     }
     
     protected boolean isActiveFacultyStaffAffiliate() {
-        return (getUniversalUser().isFaculty() || getUniversalUser().isStaff() || getUniversalUser().isAffiliate()) && !KNSServiceLocator.getKualiConfigurationService().getApplicationParameterRule(Constants.ADMIN_GROUP, Constants.ALLOWED_EMPLOYEE_STATUS_RULE).failsRule(getUniversalUser().getEmployeeStatusCode());
+        return (getUniversalUser().isFaculty() || getUniversalUser().isStaff() || getUniversalUser().isAffiliate()) && !KNSServiceLocator.getKualiConfigurationService().getApplicationParameterRule(RiceConstants.ADMIN_GROUP, RiceConstants.ALLOWED_EMPLOYEE_STATUS_RULE).failsRule(getUniversalUser().getEmployeeStatusCode());
     }
 
     public void setActive(boolean active) {
-        if (KNSServiceLocator.getKualiModuleService().getModule(moduleId).getModuleUserService().getPropertyList().contains(PropertyConstants.ACTIVE)) { 
-            setUserProperty( PropertyConstants.ACTIVE, active?"Y":"N" );
+        if (KNSServiceLocator.getKualiModuleService().getModule(moduleId).getModuleUserService().getPropertyList().contains(RicePropertyConstants.ACTIVE)) { 
+            setUserProperty( RicePropertyConstants.ACTIVE, active?"Y":"N" );
         }
     }
 
@@ -116,7 +116,7 @@ public class KualiModuleUserBase extends TransientBusinessObjectBase implements 
     protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
 
-        m.put( PropertyConstants.PERSON_UNIVERSAL_IDENTIFIER, getPersonUniversalIdentifier());
+        m.put( RicePropertyConstants.PERSON_UNIVERSAL_IDENTIFIER, getPersonUniversalIdentifier());
 
         return m;
     }

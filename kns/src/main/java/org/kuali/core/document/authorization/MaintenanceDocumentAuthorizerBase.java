@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.authorization.AuthorizationConstants;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.datadictionary.MaintainableFieldDefinition;
@@ -168,6 +168,6 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
         
         // A maint doc is new when the new maintainable maintenance flag is set to either Constants.MAINTENANCE_NEW_ACTION or Constants.MAINTENANCE_COPY_ACTION
         String maintAction = maintDoc.getNewMaintainableObject().getMaintenanceAction();
-        return (Constants.MAINTENANCE_NEW_ACTION.equals(maintAction) || Constants.MAINTENANCE_COPY_ACTION.equals(maintAction));
+        return (RiceConstants.MAINTENANCE_NEW_ACTION.equals(maintAction) || RiceConstants.MAINTENANCE_COPY_ACTION.equals(maintAction));
     }
 }

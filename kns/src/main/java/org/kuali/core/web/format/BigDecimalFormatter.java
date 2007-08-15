@@ -21,7 +21,7 @@ import java.text.ParseException;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 
 /**
  * This class is used to format BigDecimal objects.
@@ -45,7 +45,7 @@ public class BigDecimalFormatter extends Formatter {
             // preemptively detect non-numeric-related symbols, since NumberFormat.parse seems to be silently deleting them
             // (i.e. 9aaaaaaaaaaaaaaa is silently converted into 9)
             if (!DECIMAL_PATTERN.matcher(target).matches()) {
-                throw new FormatException("parsing", KeyConstants.ERROR_NUMERIC, target);
+                throw new FormatException("parsing", RiceKeyConstants.ERROR_NUMERIC, target);
             }
 
 
@@ -57,10 +57,10 @@ public class BigDecimalFormatter extends Formatter {
                 value = new BigDecimal(parsedNumber.toString());
             }
             catch (NumberFormatException e) {
-                throw new FormatException("parsing", KeyConstants.ERROR_BIG_DECIMAL, target, e);
+                throw new FormatException("parsing", RiceKeyConstants.ERROR_BIG_DECIMAL, target, e);
             }
             catch (ParseException e) {
-                throw new FormatException("parsing", KeyConstants.ERROR_BIG_DECIMAL, target, e);
+                throw new FormatException("parsing", RiceKeyConstants.ERROR_BIG_DECIMAL, target, e);
             }
         }
 
@@ -99,10 +99,10 @@ public class BigDecimalFormatter extends Formatter {
             string = formatter.format(number);
         }
         catch (IllegalArgumentException e) {
-            throw new FormatException("formatting", KeyConstants.ERROR_BIG_DECIMAL, obj.toString(), e);
+            throw new FormatException("formatting", RiceKeyConstants.ERROR_BIG_DECIMAL, obj.toString(), e);
         }
         catch (ClassCastException e) {
-            throw new FormatException("formatting", KeyConstants.ERROR_BIG_DECIMAL, obj.toString(), e);
+            throw new FormatException("formatting", RiceKeyConstants.ERROR_BIG_DECIMAL, obj.toString(), e);
         }
 
         return string;

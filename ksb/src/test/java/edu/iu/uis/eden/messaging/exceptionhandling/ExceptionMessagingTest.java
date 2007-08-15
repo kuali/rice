@@ -1,3 +1,18 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package edu.iu.uis.eden.messaging.exceptionhandling;
 
 import java.util.List;
@@ -42,7 +57,7 @@ public class ExceptionMessagingTest extends KSBTestCase {
 	public void setUp() throws Exception {
 		System.setProperty(RiceConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "500");
 		System.setProperty(RiceConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, "5");
-		System.setProperty(RiceConstants.IMMEDIATE_EXCEPTION_ROUTING, "false");
+//		System.setProperty(RiceConstants.IMMEDIATE_EXCEPTION_ROUTING, "false");
 		super.setUp();
 		GlobalCallbackRegistry.getCallbacks().clear();
 		GlobalCallbackRegistry.getCallbacks().add(this.callback);
@@ -50,6 +65,14 @@ public class ExceptionMessagingTest extends KSBTestCase {
 		TesetHarnessExplodingQueue.NUM_CALLS = 0;
 	}
 	
+	@Override
+	public void tearDown() throws Exception {
+	    KSBServiceLocator.getScheduler().shutdown();
+	    super.tearDown();
+	}
+
+
+
 	/**
 	 * test that service is in queue marked 'E' when the time to live is expired.
 	 * @throws Exception
@@ -59,7 +82,7 @@ public class ExceptionMessagingTest extends KSBTestCase {
 		KEWJavaService explodingQueue = (KEWJavaService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(this.queueTimeToLiveServiceName);
 		explodingQueue.invoke("");
 		TestUtilities.waitForExceptionRouting();
-		//this service is on a 3 second wait the queue is on a 1 sec.  sleep 4 secs and it should be in exception routing
+		//this service is on a 3 second wait the queue is on a 1 sec.
 		Thread.sleep(10000);
 		
 		//verify the entry is in exception routing
@@ -69,28 +92,5 @@ public class ExceptionMessagingTest extends KSBTestCase {
 		assertTrue("Message expiration date should be equal to or earlier than last queue date", message.getExpirationDate().getTime() <= message.getQueueDate().getTime());
 	}
 
-	/**
-	 * Test that a message with retry count gets retried that many times.
-	 * 
-	 * @throws Exception
-	 */
-	@Test public void testRetryCount() throws Exception {
-		//Turn the requeue up very high so the message will go through all it's requeues immediately
-		
-		Core.getCurrentContextConfig().overrideProperty(RiceConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "100");
-		
-		KEWJavaService explodingQueue = (KEWJavaService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(this.retryCountServiceName);
-		explodingQueue.invoke("");
-		TestUtilities.waitForExceptionRouting();
-		
-		this.callback.pauseUntilNumberCallbacksUsingStaticCounter(3, this.retryCountServiceName);
-		Thread.sleep(4000);
-		
-		assertEquals("Service should have been called 3 times", 3, TesetHarnessExplodingQueue.NUM_CALLS);
-		
-		List<PersistedMessage> messagesQueued = KSBServiceLocator.getRouteQueueService().findByServiceName(this.retryCountServiceName, "invoke");
-		PersistedMessage message = messagesQueued.get(0);
-		assertEquals("Message should be in exception status", RiceConstants.ROUTE_QUEUE_EXCEPTION, message.getQueueStatus());
-		assertEquals("Message retry count not what was configured", new Integer(2), message.getRetryCount());
-	}
+
 }

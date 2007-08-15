@@ -15,7 +15,7 @@
  */
 package org.kuali.core.exceptions;
 
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 
 /**
  * This class represents an exception that is thrown when a given user is not authorized to initiate a
@@ -33,7 +33,7 @@ public class DocumentInitiationAuthorizationException extends RuntimeException {
     }
     
     public DocumentInitiationAuthorizationException(String[] messageParameters) {
-        this.errorMessageKey = KeyConstants.AUTHORIZATION_ERROR_DOCUMENT_WORKGROUP;
+        this.errorMessageKey = RiceKeyConstants.AUTHORIZATION_ERROR_DOCUMENT_WORKGROUP;
         this.messageParameters = messageParameters;
      }
 

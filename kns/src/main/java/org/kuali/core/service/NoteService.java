@@ -20,6 +20,11 @@ import java.util.List;
 
 import org.kuali.core.bo.Note;
 import org.kuali.core.bo.PersistableBusinessObject;
+import org.kuali.core.bo.user.UniversalUser;
+import org.kuali.core.document.Document;
+import org.kuali.core.exceptions.UserNotFoundException;
+
+import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This interface defines methods that a Note service must provide
@@ -52,7 +57,6 @@ public interface NoteService {
      */
     public Note save(Note note) throws Exception;
 
-
     /**
      * Deletes a note
      *
@@ -64,4 +68,15 @@ public interface NoteService {
     public Note createNote(Note note, PersistableBusinessObject bo) throws Exception;
 
     public String extractNoteProperty(Note note);
+    
+    /**
+     * Builds an FYI request for the note and sends fyi to note recipient.
+     * 
+     * @param document - document that contains the note
+     * @param note - note to fyi
+     * @param sender - user who is sending the fyi
+     * @throws UserNotFoundException 
+     * @throws WorkflowException 
+     */
+    public void sendNoteFYI(Document document, Note note, UniversalUser sender) throws UserNotFoundException, WorkflowException;
 }

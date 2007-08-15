@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.document.Document;
 import org.kuali.core.question.ConfirmationQuestion;
 import org.kuali.core.rule.PreRulesCheck;
@@ -80,7 +80,7 @@ public abstract class PreRulesContinuationBase implements PreRulesCheck {
 
         public void askQuestion(String id, String text) {
             event.setQuestionId(id);
-            event.setQuestionType(Constants.CONFIRMATION_QUESTION);
+            event.setQuestionType(RiceConstants.CONFIRMATION_QUESTION);
             event.setQuestionText(text);
             event.setPerformQuestion(true);
 
@@ -132,8 +132,8 @@ public abstract class PreRulesContinuationBase implements PreRulesCheck {
 
     public boolean processPreRuleChecks(ActionForm form, HttpServletRequest request, PreRulesCheckEvent event) {
 
-        question = request.getParameter(Constants.QUESTION_INST_ATTRIBUTE_NAME);
-        buttonClicked = request.getParameter(Constants.QUESTION_CLICKED_BUTTON);
+        question = request.getParameter(RiceConstants.QUESTION_INST_ATTRIBUTE_NAME);
+        buttonClicked = request.getParameter(RiceConstants.QUESTION_CLICKED_BUTTON);
         this.event = event;
         this.form = (KualiForm) form;
 
@@ -144,7 +144,7 @@ public abstract class PreRulesContinuationBase implements PreRulesCheck {
             LOG.debug("QuestionContext() is: " + event.getQuestionContext());
         }
 
-        session = new ContextSession(request.getParameter(Constants.QUESTION_CONTEXT), event);
+        session = new ContextSession(request.getParameter(RiceConstants.QUESTION_CONTEXT), event);
 
         boolean result = false;
 
@@ -168,7 +168,7 @@ public abstract class PreRulesContinuationBase implements PreRulesCheck {
      * 
      */
     public void abortRulesCheck() {
-        event.setActionForwardName(Constants.MAPPING_BASIC);
+        event.setActionForwardName(RiceConstants.MAPPING_BASIC);
         isAborting = true;
     }
 

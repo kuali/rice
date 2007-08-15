@@ -20,10 +20,14 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.bus.auth.AuthorizationService;
 import org.kuali.bus.ojb.OjbConfigurer;
 import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.RiceConstants;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.config.ModuleConfigurer;
@@ -32,6 +36,7 @@ import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.lifecycle.ServiceDelegatingLifecycle;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.util.ClassLoaderUtils;
+import org.quartz.Scheduler;
 
 import edu.iu.uis.eden.cache.RiceCacheAdministrator;
 import edu.iu.uis.eden.messaging.ServiceDefinition;
@@ -59,6 +64,14 @@ public class KSBConfigurer extends ModuleConfigurer {
 	private String webservicesUrl;
 	private String webserviceRetry;
 	private RiceCacheAdministrator cache;
+	
+	private DataSource registryDataSource;
+	private DataSource messageDataSource;
+	private String registryDataSourceJndiName;
+	private String messageDataSourceJndiName;
+	private Scheduler exceptionMessagingScheduler;
+
+	private AuthorizationService authorizationService;
 
 	private boolean isStarted = false;
 
@@ -66,8 +79,11 @@ public class KSBConfigurer extends ModuleConfigurer {
 	public Config loadConfig(Config parentConfig) throws Exception {
 		LOG.info("Starting configuration of KEW for message entity " + getMessageEntity(parentConfig));
 		Config currentConfig = Core.getCurrentContextConfig();
+		configureDataSource(currentConfig);
 		configureBus(currentConfig);
 		configureKeystore(currentConfig);
+		configureScheduler(currentConfig);
+		configureAuthorization(currentConfig);
 		if (getServiceServletUrl() != null) {
 			currentConfig.overrideProperty("http.service.url", getServiceServletUrl());
 		}
@@ -99,8 +115,10 @@ public class KSBConfigurer extends ModuleConfigurer {
 		lifecycles.add(KSBResourceLoaderFactory.createRootKSBResourceLoader());
 		lifecycles.add(new ServicesOverrideLifecycle(this.getOverrideServices()));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.THREAD_POOL_SERVICE));
+		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.SCHEDULED_THREAD_POOL_SERVICE));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.REPEAT_TOPIC_INVOKING_QUEUE));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.OBJECT_REMOTER));
+		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.BUS_ADMIN_SERVICE));
 		if (getCache() != null) {
 			lifecycles.add(getCache());
 		}
@@ -122,7 +140,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void configureServiceList(Config config, String key, List services) throws Exception {
+	protected void configureServiceList(Config config, String key, List services) throws Exception {
 		LOG.debug("Configuring services for Message Entity " + Core.getCurrentContextConfig().getMessageEntity() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
 		List<ServiceDefinition> serviceDefinitions = (List<ServiceDefinition>) config.getObject(key);
 		if (serviceDefinitions == null) {
@@ -137,9 +155,23 @@ public class KSBConfigurer extends ModuleConfigurer {
 			config.getObjects().put(Config.SERVICE_SERVLET_URL, this.serviceServletUrl);
 			config.overrideProperty(Config.SERVICE_SERVLET_URL, this.serviceServletUrl);
 		}
-
 	}
 	
+	protected void configureScheduler(Config config) {
+	    if (this.getExceptionMessagingScheduler() != null) {
+		LOG.info("Configuring injected exception messaging Scheduler");
+		config.getObjects().put(RiceConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY, this.getExceptionMessagingScheduler());
+	    }
+	}
+	
+	protected void configureAuthorization(Config config) {
+	    if (this.getAuthorizationService() != null) {
+		LOG.info("Configuring injected AuthorizationService: " + getAuthorizationService().getClass().getName());
+		config.getObjects().put(RiceConstants.KSB_AUTH_SERVICE, this.getAuthorizationService());
+	}
+	}
+
+
 	protected void configureKeystore(Config config) {
 		if (!StringUtils.isEmpty(this.keystoreAlias)) {
 			config.getProperties().put(Config.KEYSTORE_ALIAS, this.keystoreAlias);
@@ -152,6 +184,26 @@ public class KSBConfigurer extends ModuleConfigurer {
 		}
 	}
 
+	protected void configureDataSource(Config config) {
+	    	if (getMessageDataSource() != null && getRegistryDataSource() == null) {
+	    	    throw new ConfigurationException("A message data source was defined but a registry data source was not defined.  Both must be specified.");
+	    	}
+	    	if (getMessageDataSource() == null && getRegistryDataSource() != null) {
+	    	    throw new ConfigurationException("A registry data source was defined but a message data source was not defined.  Both must be specified.");
+	    	}
+	    	
+		if (getMessageDataSource() != null) {
+			config.getObjects().put(RiceConstants.KSB_MESSAGE_DATASOURCE, getMessageDataSource());
+		} else if (!StringUtils.isBlank(getMessageDataSourceJndiName())) {
+			config.getProperties().put(RiceConstants.KSB_MESSAGE_DATASOURCE_JNDI, getMessageDataSourceJndiName());
+		}
+		if (getRegistryDataSource() != null) {
+			config.getObjects().put(RiceConstants.KSB_REGISTRY_DATASOURCE, getRegistryDataSource());
+		} else if (!StringUtils.isBlank(getRegistryDataSourceJndiName())) {
+			config.getProperties().put(RiceConstants.KSB_REGISTRY_DATASOURCE_JNDI, getRegistryDataSourceJndiName());
+		}
+	}
+	
 	public void stop() throws Exception {
 		try {
 			GlobalResourceLoader.stop();
@@ -227,6 +279,40 @@ public class KSBConfigurer extends ModuleConfigurer {
 		this.serviceServletUrl = serviceServletUrl;
 	}
 	
+	
+	
+	public DataSource getMessageDataSource() {
+	    return this.messageDataSource;
+	}
+
+	public void setMessageDataSource(DataSource messageDataSource) {
+	    this.messageDataSource = messageDataSource;
+	}
+
+	public String getMessageDataSourceJndiName() {
+	    return this.messageDataSourceJndiName;
+	}
+
+	public void setMessageDataSourceJndiName(String messageDataSourceJndiName) {
+	    this.messageDataSourceJndiName = messageDataSourceJndiName;
+	}
+
+	public DataSource getRegistryDataSource() {
+	    return this.registryDataSource;
+	}
+
+	public void setRegistryDataSource(DataSource registryDataSource) {
+	    this.registryDataSource = registryDataSource;
+	}
+
+	public String getRegistryDataSourceJndiName() {
+	    return this.registryDataSourceJndiName;
+	}
+
+	public void setRegistryDataSourceJndiName(String registryDataSourceJndiName) {
+	    this.registryDataSourceJndiName = registryDataSourceJndiName;
+	}
+
 	public List<ServiceHolder> getOverrideServices() {
 		return this.overrideServices;
 	}
@@ -242,4 +328,21 @@ public class KSBConfigurer extends ModuleConfigurer {
 	public void setCache(RiceCacheAdministrator cache) {
 		this.cache = cache;
 	}
+
+	public Scheduler getExceptionMessagingScheduler() {
+	    return this.exceptionMessagingScheduler;
+	}
+
+	public void setExceptionMessagingScheduler(Scheduler exceptionMessagingScheduler) {
+	    this.exceptionMessagingScheduler = exceptionMessagingScheduler;
+	}
+	
+	public AuthorizationService getAuthorizationService() {
+	    return this.authorizationService;
+	}
+
+	public void setAuthorizationService(AuthorizationService authorizationService) {
+	    this.authorizationService = authorizationService;
+	}
+	
 }

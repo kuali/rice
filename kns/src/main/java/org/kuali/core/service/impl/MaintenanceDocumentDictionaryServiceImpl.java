@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.DataDictionary;
 import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
@@ -548,7 +548,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
                 if (obj == null || StringUtils.isBlank(obj.toString())) {
                     String attributeLabel = dataDictionaryService.getAttributeLabel(businessObject.getClass(), fieldName);
                     String shortLabel = dataDictionaryService.getAttributeShortLabel(businessObject.getClass(), fieldName);
-                    GlobalVariables.getErrorMap().putError(fieldName, KeyConstants.ERROR_REQUIRED, attributeLabel + " (" + shortLabel + ")" );
+                    GlobalVariables.getErrorMap().putError(fieldName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel + " (" + shortLabel + ")" );
                 }
             } catch( Exception ex ) {
                 LOG.error( "unable to read property during doc required field checks", ex );
@@ -710,7 +710,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
                     String pathToElement = collectionName + "[" + (pos++) + "]";
                     if (ObjectUtils.countObjectsWithIdentitcalKey(collection, element) > 1) {
                         GlobalVariables.getErrorMap().addToErrorPath(pathToElement);
-                        GlobalVariables.getErrorMap().putError(propertyName, KeyConstants.ERROR_DUPLICATE_ELEMENT, new String[] { label, shortLabel });
+                        GlobalVariables.getErrorMap().putError(propertyName, RiceKeyConstants.ERROR_DUPLICATE_ELEMENT, new String[] { label, shortLabel });
                         GlobalVariables.getErrorMap().removeFromErrorPath(pathToElement);
                     }
                 }

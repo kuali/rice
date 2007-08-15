@@ -20,8 +20,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.log4j.Logger;
-import org.kuali.Constants;
-import org.kuali.PropertyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.ConfigProperties;
 import org.kuali.core.authorization.AuthorizationConstants;
 import org.kuali.rice.KNSServiceLocator;
@@ -42,7 +42,7 @@ public class JstlConstantsInitListener implements ServletContextListener {
         ServletContext context = sce.getServletContext();
 
         // publish application constants into JSP app context with name "Constants"
-        context.setAttribute("Constants", new Constants());
+        context.setAttribute("Constants", new RiceConstants());
         
         // publish configuration properties into JSP app context with name "ConfigProperties"
         context.setAttribute("ConfigProperties", new ConfigProperties());
@@ -54,7 +54,7 @@ public class JstlConstantsInitListener implements ServletContextListener {
         context.setAttribute("AuthorizationConstants", new AuthorizationConstants());
 
         // publish property constants into JSP app context with name "PropertyConstants"
-        context.setAttribute("PropertyConstants", new PropertyConstants());
+        context.setAttribute("PropertyConstants", new RicePropertyConstants());
     }
 
     public void contextDestroyed(ServletContextEvent sce) {

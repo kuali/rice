@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
-import org.kuali.KeyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RiceKeyConstants;
 import org.kuali.core.authorization.FieldAuthorization;
 import org.kuali.core.bo.GlobalBusinessObject;
 import org.kuali.core.bo.PersistableBusinessObject;
@@ -75,7 +75,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
     // these two constants are used to correctly prefix errors added to
     // the global errors
-    public static final String MAINTAINABLE_ERROR_PREFIX = Constants.MAINTENANCE_NEW_MAINTAINABLE;
+    public static final String MAINTAINABLE_ERROR_PREFIX = RiceConstants.MAINTENANCE_NEW_MAINTAINABLE;
     public static final String DOCUMENT_ERROR_PREFIX = "document.";
     public static final String MAINTAINABLE_ERROR_PATH = DOCUMENT_ERROR_PREFIX + "newMaintainableObject";
 
@@ -250,8 +250,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * 
      */
     protected void putGlobalError(String errorConstant) {
-        if (!errorAlreadyExists(Constants.DOCUMENT_ERRORS, errorConstant)) {
-            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(Constants.DOCUMENT_ERRORS, errorConstant);
+        if (!errorAlreadyExists(RiceConstants.DOCUMENT_ERRORS, errorConstant)) {
+            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(RiceConstants.DOCUMENT_ERRORS, errorConstant);
         }
     }
 
@@ -265,8 +265,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * 
      */
     protected void putGlobalError(String errorConstant, String parameter) {
-        if (!errorAlreadyExists(Constants.DOCUMENT_ERRORS, errorConstant)) {
-            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(Constants.DOCUMENT_ERRORS, errorConstant, parameter);
+        if (!errorAlreadyExists(RiceConstants.DOCUMENT_ERRORS, errorConstant)) {
+            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(RiceConstants.DOCUMENT_ERRORS, errorConstant, parameter);
         }
     }
 
@@ -280,8 +280,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * 
      */
     protected void putGlobalError(String errorConstant, String[] parameters) {
-        if (!errorAlreadyExists(Constants.DOCUMENT_ERRORS, errorConstant)) {
-            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(Constants.DOCUMENT_ERRORS, errorConstant, parameters);
+        if (!errorAlreadyExists(RiceConstants.DOCUMENT_ERRORS, errorConstant)) {
+            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(RiceConstants.DOCUMENT_ERRORS, errorConstant, parameters);
         }
     }
 
@@ -559,7 +559,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             if (!ObjectUtils.equalByKeys(oldBo, newBo)) { // this is a very handy utility on our ObjectUtils
 
                 // add a complaint to the errors
-                putDocumentError(Constants.DOCUMENT_ERRORS, KeyConstants.ERROR_DOCUMENT_MAINTENANCE_PRIMARY_KEYS_CHANGED_ON_EDIT, getHumanReadablePrimaryKeyFieldNames(boClass));
+                putDocumentError(RiceConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_PRIMARY_KEYS_CHANGED_ON_EDIT, getHumanReadablePrimaryKeyFieldNames(boClass));
                 success &= false;
             }
         }
@@ -582,7 +582,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             // if the retrieve was successful, then this object already exists, and we need
             // to complain
             if (testBo != null) {
-                putDocumentError(Constants.DOCUMENT_ERRORS, KeyConstants.ERROR_DOCUMENT_MAINTENANCE_KEYS_ALREADY_EXIST_ON_CREATE_NEW, getHumanReadablePrimaryKeyFieldNames(boClass));
+                putDocumentError(RiceConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_KEYS_ALREADY_EXIST_ON_CREATE_NEW, getHumanReadablePrimaryKeyFieldNames(boClass));
                 success &= false;
             }
         }
@@ -882,7 +882,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         // if failed, then add a field error
         if (!success) {
-            putFieldError(propertyName, KeyConstants.ERROR_REQUIRED, parameter);
+            putFieldError(propertyName, RiceKeyConstants.ERROR_REQUIRED, parameter);
         }
 
         return success;
@@ -905,7 +905,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         boolean success = true;
         success = checkEmptyValue(valueToTest);
         if (!success) {
-            putDocumentError(propertyName, KeyConstants.ERROR_REQUIRED, parameter);
+            putDocumentError(propertyName, RiceKeyConstants.ERROR_REQUIRED, parameter);
         }
         return success;
     }
@@ -1131,7 +1131,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
                 // if anything has changed, complain
                 if (changed) {
                     String humanReadableFieldName = ddService.getAttributeLabel(document.getNewMaintainableObject().getBoClass(), fieldName);
-                    putFieldError(fieldName, KeyConstants.ERROR_DOCUMENT_AUTHORIZATION_RESTRICTED_FIELD_CHANGED, humanReadableFieldName);
+                    putFieldError(fieldName, RiceKeyConstants.ERROR_DOCUMENT_AUTHORIZATION_RESTRICTED_FIELD_CHANGED, humanReadableFieldName);
                     success &= false;
                 }
             }
@@ -1181,7 +1181,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
                 String fieldNameReadable = ddService.getAttributeLabel(newBo.getClass(), fieldName);
 
                 // add a field error
-                putFieldError(fieldName, KeyConstants.ERROR_DOCUMENT_MAINTENANCE_PARTIALLY_FILLED_OUT_REF_FKEYS, new String[] { fieldNameReadable, fKeysReadable });
+                putFieldError(fieldName, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_PARTIALLY_FILLED_OUT_REF_FKEYS, new String[] { fieldNameReadable, fKeysReadable });
             }
         }
 
@@ -1531,10 +1531,11 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         }
         getBoDictionaryService().performForceUppercase(bo);
         getMaintDocDictionaryService().validateMaintainableCollectionsAddLineRequiredFields( document, document.getNewMaintainableObject().getBusinessObject(), collectionName );
-        String errorPath = Constants.MAINTENANCE_ADD_PREFIX + collectionName;
+        String errorPath = RiceConstants.MAINTENANCE_ADD_PREFIX + collectionName;
         map.addToErrorPath( errorPath );
         getDictionaryValidationService().validateBusinessObject( bo, false );
         success &= map.getErrorCount() == errorCount; 
+        success &= validateDuplicateIdentifierInDataDictionary(document, collectionName, bo);
         success &= processCustomAddCollectionLineBusinessRules( document, collectionName, bo );
         map.removeFromErrorPath( errorPath );
         map.removeFromErrorPath( MAINTAINABLE_ERROR_PATH );
@@ -1544,6 +1545,33 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         }
         
         return success;
+    }
+    
+    /**
+     * This method validates that there should only exist one entry in the collection whose
+     * fields match the fields specified within the duplicateIdentificationFields in the 
+     * maintenance document data dictionary.
+     * If the duplicateIdentificationFields is not specified in the DD, by default it would
+     * allow the addition to happen and return true.
+     * It will return false if it fails the uniqueness validation.
+     * @param document
+     * @param collectionName
+     * @param bo
+     * @return
+     */
+    private boolean validateDuplicateIdentifierInDataDictionary(MaintenanceDocument document, String collectionName, PersistableBusinessObject bo) {
+    	boolean valid = true;
+    	PersistableBusinessObject maintBo = document.getNewMaintainableObject().getBusinessObject();
+        Collection maintCollection = (Collection) ObjectUtils.getPropertyValue(maintBo, collectionName);
+        List<String> duplicateIdentifier = document.getNewMaintainableObject().getDuplicateIdentifierFieldsFromDataDictionary(document.getDocumentHeader().getWorkflowDocument().getDocumentType(), collectionName);
+    	if (duplicateIdentifier.size()>0) {
+            List<String> existingIdentifierString = document.getNewMaintainableObject().getMultiValueIdentifierList(maintCollection, duplicateIdentifier);
+            if (document.getNewMaintainableObject().hasBusinessObjectExisted(bo, existingIdentifierString, duplicateIdentifier)) {
+    		    valid = false;
+    		    GlobalVariables.getErrorMap().putError(duplicateIdentifier.get(0), RiceKeyConstants.ERROR_DUPLICATE_ELEMENT, "entries in ", document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+    	    }
+    	}
+    	return valid;
     }
     
     public boolean processCustomAddCollectionLineBusinessRules(MaintenanceDocument document, String collectionName, PersistableBusinessObject line) {

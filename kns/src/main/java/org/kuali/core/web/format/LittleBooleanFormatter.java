@@ -18,7 +18,7 @@ package org.kuali.core.web.format;
 import java.util.Arrays;
 import java.util.List;
 
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 
 /**
  * This class is a formatter for little-b boolean classes, that cannot accept a null.
@@ -40,7 +40,7 @@ public class LittleBooleanFormatter extends Formatter {
         if (FALSE_VALUES.contains(stringValue))
             return Boolean.FALSE;
 
-        throw new FormatException("converting", KeyConstants.ERROR_BOOLEAN, stringValue);
+        throw new FormatException("converting", RiceKeyConstants.ERROR_BOOLEAN, stringValue);
     }
 
     public Object format(Object target) {

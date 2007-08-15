@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.web.struts.action.KualiDocumentActionBase;
 import org.kuali.rice.KNSServiceLocator;
 
@@ -36,7 +36,7 @@ public class TravelDocumentAction2 extends KualiDocumentActionBase {
         TravelAccount travAcct = (TravelAccount) KNSServiceLocator.getBusinessObjectService().retrieve(travelForm.getTravelAccount());
         ((TravelDocument2) travelForm.getDocument()).getTravelAccounts().add(travAcct);
         travelForm.setTravelAccount(new TravelAccount());
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
 }

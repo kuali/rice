@@ -34,16 +34,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.Constants;
-import org.kuali.KeyConstants;
-import org.kuali.PropertyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RiceKeyConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.authorization.FieldAuthorization;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.datadictionary.DocumentEntry;
 import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
-import org.kuali.core.datadictionary.MaintainableSectionDefinition;
 import org.kuali.core.document.Document;
 import org.kuali.core.document.MaintenanceDocument;
 import org.kuali.core.document.authorization.MaintenanceDocumentAuthorizations;
@@ -58,9 +57,7 @@ import org.kuali.core.service.EncryptionService;
 import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.GlobalVariables;
-import org.kuali.core.util.MaintenanceUtils;
 import org.kuali.core.util.ObjectUtils;
-import org.kuali.core.util.TabState;
 import org.kuali.core.web.format.Formatter;
 import org.kuali.core.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.KNSServiceLocator;
@@ -98,7 +95,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setAttribute(Constants.PARAM_MAINTENANCE_VIEW_MODE, Constants.PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE);
+        request.setAttribute(RiceConstants.PARAM_MAINTENANCE_VIEW_MODE, RiceConstants.PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE);
         return super.execute(mapping, form, request, response);
     }
 
@@ -106,7 +103,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      * Calls setup Maintenance for new action.
      */
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return setupMaintenance(mapping, form, request, response, Constants.MAINTENANCE_NEW_ACTION);
+        return setupMaintenance(mapping, form, request, response, RiceConstants.MAINTENANCE_NEW_ACTION);
     }
 
     /**
@@ -114,8 +111,8 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      */
     public ActionForward copy(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         // check for copy document number
-        if (request.getParameter("document." + PropertyConstants.DOCUMENT_NUMBER) == null) { // object copy
-            return setupMaintenance(mapping, form, request, response, Constants.MAINTENANCE_COPY_ACTION);
+        if (request.getParameter("document." + RicePropertyConstants.DOCUMENT_NUMBER) == null) { // object copy
+            return setupMaintenance(mapping, form, request, response, RiceConstants.MAINTENANCE_COPY_ACTION);
         }
         else { // document copy
             throw new UnsupportedOperationException("System does not support copying of maintenance documents.");
@@ -126,14 +123,14 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      * Calls setupMaintenance for edit action.
      */
     public ActionForward edit(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return setupMaintenance(mapping, form, request, response, Constants.MAINTENANCE_EDIT_ACTION);
+        return setupMaintenance(mapping, form, request, response, RiceConstants.MAINTENANCE_EDIT_ACTION);
     }
 
     /**
      * Calls setupMaintenance for new object that have existing objects attributes.
      */
     public ActionForward newWithExisting(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return setupMaintenance(mapping, form, request, response, Constants.MAINTENANCE_NEWWITHEXISTING_ACTION);
+        return setupMaintenance(mapping, form, request, response, RiceConstants.MAINTENANCE_NEWWITHEXISTING_ACTION);
     }
 
     /**
@@ -164,7 +161,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             }
 
             // check doc type allows new or copy if that action was requested
-            if (Constants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction) || Constants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
+            if (RiceConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction) || RiceConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
                 boolean allowsNewOrCopy = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getAllowsNewOrCopy(documentTypeName);
                 if (!allowsNewOrCopy) {
                     LOG.error("Document type " + documentTypeName + " does not allow new or copy actions.");
@@ -182,7 +179,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         }
 
         // retrieve business object from request parameters
-        if (!(Constants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) && !(Constants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction))) {
+        if (!(RiceConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) && !(RiceConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction))) {
             Map requestParameters = buildKeyMapFromRequest(document.getNewMaintainableObject(), request);
             PersistableBusinessObject oldBusinessObject = (PersistableBusinessObject) KNSServiceLocator.getLookupService().findObjectBySearch(Class.forName(maintenanceForm.getBusinessObjectClassName()), requestParameters);
             if (oldBusinessObject == null) {
@@ -198,7 +195,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
             // on a COPY, clear any fields that this user isnt authorized for, and also
             // clear the primary key fields
-            if (Constants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
+            if (RiceConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
                 if (!document.isFieldsClearedOnCopy()) {
                     clearPrimaryKeyFields(document);
                     clearUnauthorizedNewFields(document);
@@ -214,12 +211,12 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                     maintainable.setGenerateBlankRequiredValues(true);
                 }
             }
-            else if (Constants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction)) {
+            else if (RiceConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction)) {
                 document.getNewMaintainableObject().processAfterEdit();
             }
         }
         // if new with existing we need to populate we need to populate with passed in parameters
-        if (Constants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction)) {
+        if (RiceConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction)) {
             // TODO: this code should be abstracted out into a helper
             // also is it a problem that we're not calling setGenerateDefaultValues? it blanked out the below values when I did
             // maybe we need a new generateDefaultValues that doesn't overwrite?
@@ -249,7 +246,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         }
 
         // for new maintainble need to pick up default values
-        if (Constants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) {
+        if (RiceConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) {
             document.getNewMaintainableObject().setGenerateDefaultValues(true);
         }
 
@@ -271,7 +268,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         DocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
         document.setDisplayTopicFieldInNotes(entry.getDisplayTopicFieldInNotes());
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     /**
@@ -362,13 +359,13 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         }
         else if (IDocHandler.INITIATE_COMMAND.equals(kualiMaintenanceForm.getCommand())) {
             kualiMaintenanceForm.setReadOnly(false);
-            return setupMaintenance(mapping, form, request, response, Constants.MAINTENANCE_NEW_ACTION);
+            return setupMaintenance(mapping, form, request, response, RiceConstants.MAINTENANCE_NEW_ACTION);
         }
         else {
             LOG.error("We should never have gotten to here");
             throw new IllegalStateException("docHandler called with invalid parameters");
         }
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     /**
@@ -390,7 +387,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
         // Add multiple values from Lookup
         Collection<PersistableBusinessObject> rawValues = null;
-        if (StringUtils.equals(Constants.MULTIPLE_VALUE, maintenanceForm.getRefreshCaller())) {
+        if (StringUtils.equals(RiceConstants.MULTIPLE_VALUE, maintenanceForm.getRefreshCaller())) {
             String lookupResultsSequenceNumber = maintenanceForm.getLookupResultsSequenceNumber();
             if (StringUtils.isNotBlank(lookupResultsSequenceNumber)) {
                 // actually returning from a multiple value lookup
@@ -425,7 +422,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
         document.getNewMaintainableObject().refresh(maintenanceForm.getRefreshCaller(), requestParams, document);
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     /**
@@ -436,8 +433,8 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         List keyFieldNames = null;
         // are override keys listed in the request? If so, then those need to be our keys,
         // not the primary keye fields for the BO
-        if (!StringUtils.isBlank(request.getParameter(Constants.OVERRIDE_KEYS))) {
-            String[] overrideKeys = request.getParameter(Constants.OVERRIDE_KEYS).split(Constants.FIELD_CONVERSIONS_SEPERATOR);
+        if (!StringUtils.isBlank(request.getParameter(RiceConstants.OVERRIDE_KEYS))) {
+            String[] overrideKeys = request.getParameter(RiceConstants.OVERRIDE_KEYS).split(RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
             keyFieldNames = new ArrayList();
             for (String overrideKey : overrideKeys) {
                 keyFieldNames.add(overrideKey);
@@ -451,10 +448,10 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
 
         // List of encrypted values
-        String encryptedString = request.getParameter(Constants.ENCRYPTED_LIST_PREFIX);
+        String encryptedString = request.getParameter(RiceConstants.ENCRYPTED_LIST_PREFIX);
         List encryptedList = new ArrayList();
         if (StringUtils.isNotBlank(encryptedString)) {
-            encryptedList = Arrays.asList(StringUtils.split(encryptedString, Constants.FIELD_CONVERSIONS_SEPERATOR));
+            encryptedList = Arrays.asList(StringUtils.split(encryptedString, RiceConstants.FIELD_CONVERSIONS_SEPERATOR));
         }
 
 
@@ -489,7 +486,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      */
     String extractCollectionName(HttpServletRequest request, String methodToCall) {
         // collection name and underlying object type from request parameter
-        String parameterName = (String) request.getAttribute(Constants.METHOD_TO_CALL_ATTRIBUTE);
+        String parameterName = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
         String collectionName = null;
         if (StringUtils.isNotBlank(parameterName)) {
             collectionName = StringUtils.substringBetween(parameterName, methodToCall + ".", ".(");
@@ -516,7 +513,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         Maintainable oldMaintainable = document.getOldMaintainableObject();
         Maintainable newMaintainable = document.getNewMaintainableObject();
 
-        String collectionName = extractCollectionName(request, Constants.ADD_LINE_METHOD);
+        String collectionName = extractCollectionName(request, RiceConstants.ADD_LINE_METHOD);
         if (collectionName == null) {
             LOG.error("Unable to get find collection name and class in request.");
             throw new RuntimeException("Unable to get find collection name and class in request.");
@@ -553,8 +550,8 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         if (rulePassed) {
 
             // if edit or copy action, just add empty instance to old maintainable
-            boolean isEdit = Constants.MAINTENANCE_EDIT_ACTION.equals(maintenanceForm.getMaintenanceAction());
-            boolean isCopy = Constants.MAINTENANCE_COPY_ACTION.equals(maintenanceForm.getMaintenanceAction());
+            boolean isEdit = RiceConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceForm.getMaintenanceAction());
+            boolean isCopy = RiceConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceForm.getMaintenanceAction());
             
             
             if (isEdit || isCopy) {
@@ -587,31 +584,40 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             for (Object aSubCollection : maintCollection) {
                 subCollectionIndex += getSubCollectionIndex(aSubCollection, maintenanceForm.getDocTypeName());
             }
-
+//TODO: Should we keep this logic and continue using currentTabIndex as the key in the tabStates HashMap ?
+//            
 //            String parameter = (String) request.getAttribute(Constants.METHOD_TO_CALL_ATTRIBUTE);
 //            String indexStr = StringUtils.substringBetween(parameter, Constants.METHOD_TO_CALL_PARM13_LEFT_DEL, Constants.METHOD_TO_CALL_PARM13_RIGHT_DEL);
-            // + 1 is for the fact that the first element of a collection is on the next tab
+//            // + 1 is for the fact that the first element of a collection is on the next tab
 //            int index = Integer.parseInt(indexStr) + subCollectionIndex + 1;
-//            List<TabState> tabStates = maintenanceForm.getTabStates();
-//            List<TabState> copyOfTabStates = new ArrayList();
+//            Map<String, String> tabStates = maintenanceForm.getTabStates();
+//            Map<String, String> copyOfTabStates = new HashMap<String, String>();
 //
-//            for (TabState tabState : tabStates) {
-//                TabState newTabState = new TabState();
-//                newTabState.setOpen(tabState.isOpen());
-//                copyOfTabStates.add(newTabState);
+//            int incrementor = 0;
+//            for (String tabState : tabStates.keySet()) {
+//            	String originalValue = maintenanceForm.getTabState(Integer.toString(incrementor));
+//                copyOfTabStates.put(Integer.toString(incrementor), originalValue);
+//                incrementor++;
 //            }
 //
 //            int i = index;
-//            while (i < tabStates.size()) {
-//                TabState original = tabStates.get(i);
-//                TabState copy = copyOfTabStates.get(i - 1);
-//                original.setOpen(copy.isOpen());
+//        	if (tabStates.containsKey(Integer.toString(i-1))) {
+//        		tabStates.remove(Integer.toString(i-1));
+//        	}
+//            while (i < copyOfTabStates.size() + 1) {
+//                String originalValue = copyOfTabStates.get(Integer.toString(i-1));
+//                if (tabStates.containsKey(Integer.toString(i))) {
+//                    tabStates.remove(Integer.toString(i));
+//                }
+//                tabStates.put(Integer.toString(i), originalValue);
 //                i++;
 //            }
-//            tabStates.get(index - 1).setOpen(false);
+
+            
+// End of whether we should continue to keep this logic and use currentTabIndex as the key            
         }
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     private int getSubCollectionIndex(Object object, String documentTypeName) {
@@ -659,7 +665,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         Maintainable oldMaintainable = document.getOldMaintainableObject();
         Maintainable newMaintainable = document.getNewMaintainableObject();
 
-        String collectionName = extractCollectionName(request, Constants.DELETE_LINE_METHOD);
+        String collectionName = extractCollectionName(request, RiceConstants.DELETE_LINE_METHOD);
         if (collectionName == null) {
             LOG.error("Unable to get find collection name in request.");
             throw new RuntimeException("Unable to get find collection class in request.");
@@ -682,8 +688,9 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
         ((List) maintCollection).remove(deleteRecordIndex);
 
-        // if not an edit, need to remove the collection from the old maintainable as well
-        if (Constants.MAINTENANCE_EDIT_ACTION.equals(maintenanceForm.getMaintenanceAction())) {
+        // if it's either an edit or a copy, need to remove the collection from the old maintainable as well
+        if (RiceConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceForm.getMaintenanceAction()) ||
+            RiceConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceForm.getMaintenanceAction())) {
             bo = oldMaintainable.getBusinessObject();
             maintCollection = extractCollection(bo, collectionName);
 
@@ -702,7 +709,39 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 //        int index = Integer.parseInt(indexStr);
 //        maintenanceForm.removeTabState(index);
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        
+//      TODO: Should we keep this logic and continue using currentTabIndex as the key in the tabStates HashMap ?        
+//        
+//        String parameter = (String) request.getAttribute(Constants.METHOD_TO_CALL_ATTRIBUTE);
+//        String indexStr = StringUtils.substringBetween(parameter, Constants.METHOD_TO_CALL_PARM13_LEFT_DEL, Constants.METHOD_TO_CALL_PARM13_RIGHT_DEL);
+//        // + 1 is for the fact that the first element of a collection is on the next tab
+//        int index = Integer.parseInt(indexStr) +  1;
+//        Map<String, String> tabStates = maintenanceForm.getTabStates();
+//        Map<String, String> copyOfTabStates = new HashMap<String, String>();
+//
+//        int incrementor = 0;
+//        for (String tabState : tabStates.keySet()) {
+//        	String originalValue = maintenanceForm.getTabState(Integer.toString(incrementor));
+//            copyOfTabStates.put(Integer.toString(incrementor), originalValue);
+//            incrementor++;
+//        }
+//
+//        int i = index;
+//
+//        while (i < copyOfTabStates.size() ) {
+//            String originalValue = copyOfTabStates.get(Integer.toString(i));
+//            if (tabStates.containsKey(Integer.toString(i-1))) {
+//                tabStates.remove(Integer.toString(i-1));
+//            }
+//            tabStates.put(Integer.toString(i-1), originalValue);
+//            i++;
+//        }
+//
+//        
+//End of whether we should continue to keep this logic and use currentTabIndex as the key            
+        
+        
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
     /**
@@ -714,19 +753,19 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         Maintainable oldMaintainable = document.getOldMaintainableObject();
         Maintainable newMaintainable = document.getNewMaintainableObject();
         
-        String collectionName = extractCollectionName(request, Constants.TOGGLE_INACTIVE_METHOD);
+        String collectionName = extractCollectionName(request, RiceConstants.TOGGLE_INACTIVE_METHOD);
         if (collectionName == null) {
             LOG.error("Unable to get find collection name in request.");
             throw new RuntimeException("Unable to get find collection class in request.");
         }  
         
-        String parameterName = (String) request.getAttribute(Constants.METHOD_TO_CALL_ATTRIBUTE);
-        boolean showInactive = Boolean.parseBoolean(StringUtils.substringBetween(parameterName, Constants.METHOD_TO_CALL_BOPARM_LEFT_DEL, "."));
+        String parameterName = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
+        boolean showInactive = Boolean.parseBoolean(StringUtils.substringBetween(parameterName, RiceConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL, "."));
 
         oldMaintainable.setShowInactiveRecords(collectionName, showInactive);
         newMaintainable.setShowInactiveRecords(collectionName, showInactive);
         
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
 
@@ -746,7 +785,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
         // post an error about the locked document
         LOG.debug("Maintenance record: " + lockedDocument.getDocumentHeader().getDocumentNumber() + "is locked.");
-        GlobalVariables.getErrorMap().put(Constants.GLOBAL_ERRORS, KeyConstants.ERROR_MAINTENANCE_LOCKED1);
+        GlobalVariables.getErrorMap().put(RiceConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_MAINTENANCE_LOCKED1);
         // TODO: post message about no other validations have been run, and it hasnt been saved
 
         // load the blocking document
@@ -757,7 +796,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         // document is read only
         kualiMaintenanceForm.setReadOnly(true);
         kualiMaintenanceForm.setDocTypeName(lockedDocument.getDocumentHeader().getWorkflowDocument().getDocumentType());
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     /**

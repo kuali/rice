@@ -16,17 +16,21 @@
 package org.kuali.core.service.impl;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.OptimisticLockException;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.UserSession;
 import org.kuali.core.document.Document;
 import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.service.DateTimeService;
 import org.kuali.core.service.DocumentService;
 import org.kuali.core.service.PostProcessorService;
+import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.GlobalVariables;
+import org.kuali.core.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -55,7 +59,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     public boolean doRouteStatusChange(DocumentRouteStatusChangeVO statusChangeEvent) throws RemoteException {
         try {
             LOG.info(new StringBuffer("started handling route status change from ").append(statusChangeEvent.getOldRouteStatus()).append(" to ").append(statusChangeEvent.getNewRouteStatus()).append(" for document ").append(statusChangeEvent.getRouteHeaderId()));
-            establishUserSession();
+            establishGlobalVariables();
             Document document = documentService.getByDocumentHeaderId(statusChangeEvent.getRouteHeaderId().toString());
             if (document == null) {
                 if (!EdenConstants.ROUTE_HEADER_CANCEL_CD.equals(statusChangeEvent.getNewRouteStatus())) {
@@ -97,13 +101,13 @@ public class PostProcessorServiceImpl implements PostProcessorService {
         // want to avoid the user waiting for this during sync processing
         try {
             LOG.debug(new StringBuffer("started handling route level change from ").append(levelChangeEvent.getOldRouteLevel()).append(" to ").append(levelChangeEvent.getNewRouteLevel()).append(" for document ").append(levelChangeEvent.getRouteHeaderId()));
-            establishUserSession();
+            establishGlobalVariables();
             Document document = documentService.getByDocumentHeaderId(levelChangeEvent.getRouteHeaderId().toString());
             if (document == null) {
                 throw new RuntimeException("unable to load document " + levelChangeEvent.getRouteHeaderId());
             }
             document.populateDocumentForRouting();
-            document.handleRouteLevelChange();
+            document.handleRouteLevelChange(levelChangeEvent);
             document.getDocumentHeader().getWorkflowDocument().saveRoutingData();
             LOG.debug(new StringBuffer("finished handling route level change from ").append(levelChangeEvent.getOldRouteLevel()).append(" to ").append(levelChangeEvent.getNewRouteLevel()).append(" for document ").append(levelChangeEvent.getRouteHeaderId()));
         }
@@ -124,6 +128,25 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doActionTaken(edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO)
      */
     public boolean doActionTaken(ActionTakenEventVO event) throws RemoteException {
+        try {
+            LOG.debug(new StringBuffer("started doing action taken for action taken code").append(event.getActionTaken().getActionTaken()).append(" for document ").append(event.getRouteHeaderId()));
+            establishGlobalVariables();
+            Document document = documentService.getByDocumentHeaderId(event.getRouteHeaderId().toString());
+            if (ObjectUtils.isNull(document)) {
+                // only throw an exception if we are not cancelling
+                if (!EdenConstants.ACTION_TAKEN_CANCELED.equals(event.getActionTaken())) {
+                    LOG.warn("doActionTaken() Unable to load document with id " + event.getRouteHeaderId() + 
+                            " using action taken code '" + EdenConstants.ACTION_TAKEN_CD.get(event.getActionTaken().getActionTaken()));
+//                    throw new RuntimeException("unable to load document " + event.getRouteHeaderId());
+                }
+            } else {
+                document.doActionTaken(event);
+                LOG.debug(new StringBuffer("finished doing action taken for action taken code").append(event.getActionTaken().getActionTaken()).append(" for document ").append(event.getRouteHeaderId()));
+            }
+        }
+        catch (Exception e) {
+            logAndRethrow("do action taken", e);
+        }
         return true;
     }
 
@@ -175,10 +198,11 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     /**
      * Establishes the UserSession if one does not already exist.
      */
-    protected void establishUserSession() throws WorkflowException, UserNotFoundException {
+    protected void establishGlobalVariables() throws WorkflowException, UserNotFoundException {
         if (GlobalVariables.getUserSession() == null) {
-            GlobalVariables.setUserSession(new UserSession(Constants.SYSTEM_USER));
+            GlobalVariables.setUserSession(new UserSession(RiceConstants.SYSTEM_USER));
         }
+        GlobalVariables.clear();
     }
 
 }

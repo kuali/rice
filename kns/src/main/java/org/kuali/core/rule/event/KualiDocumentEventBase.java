@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.PropertyConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.document.Document;
 import org.kuali.core.util.ObjectUtils;
 
@@ -147,7 +147,7 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
         if (document != null) {
             String documentNumber = document.getDocumentNumber();
             if (StringUtils.isBlank(documentNumber)) {
-                docId = "(blank " + PropertyConstants.DOCUMENT_NUMBER + ")";
+                docId = "(blank " + RicePropertyConstants.DOCUMENT_NUMBER + ")";
             }
             else {
                 docId = documentNumber;

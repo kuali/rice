@@ -30,13 +30,20 @@
 <%@ attribute name="transparentBackground" required="false" %>
 <%@ attribute name="highlightTab" required="false" %>
 <%@ attribute name="extraButtonSource" required="false" %>
-
+<%@ attribute name="useCurrentTabIndexAsKey" required="false" %>
 
 <c:set var="currentTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
 <c:set var="topLevelTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
 
+<c:choose>
+    <c:when test="${(useCurrentTabIndexAsKey)}">
+        <c:set var="tabKey" value="${currentTabIndex}"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="tabKey" value="${kfunc:generateTabKey(tabTitle)}"/>
+    </c:otherwise>
+</c:choose>
 
-<c:set var="tabKey" value="${kfunc:generateTabKey(tabTitle)}"/>
 <!--  hit form method to increment tab index -->
 <c:set var="doINeedThis" value="${kfunc:incrementTabIndex(KualiForm, tabKey)}" />
 

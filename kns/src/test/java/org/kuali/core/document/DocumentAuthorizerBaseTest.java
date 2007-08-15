@@ -18,7 +18,7 @@ package org.kuali.core.document;
 import java.util.LinkedHashMap;
 
 import org.junit.Test;
-import org.kuali.PropertyConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.document.authorization.DocumentActionFlags;
 import org.kuali.core.document.authorization.DocumentAuthorizer;
 import org.kuali.core.document.authorization.DocumentAuthorizerBase;
@@ -106,7 +106,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         protected LinkedHashMap toStringMapper() {
             LinkedHashMap map = new LinkedHashMap();
             map.put("class", "MockDocument");
-            map.put(PropertyConstants.DOCUMENT_NUMBER, documentNumber);
+            map.put(RicePropertyConstants.DOCUMENT_NUMBER, documentNumber);
             map.put("initiator", documentHeader.getWorkflowDocument().getInitiatorNetworkId());
             return map;
         }

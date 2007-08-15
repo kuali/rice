@@ -140,7 +140,16 @@ public interface DocumentService {
      */
     public Document saveDocument(Document document) throws WorkflowException;
 
-
+    /**
+     * Saves the passed-in document without running validation.  The method also populates and saves routing data to the workflow
+     * system so that any potential searchable attributes will be updated.
+     * 
+     * @param document
+     * @return
+     * @throws WorkflowException
+     */
+    public Document saveDocumentWithoutRunningValidation(Document document) throws WorkflowException;
+    
     /**
      * start the route the document for approval, optionally providing a list of ad hoc recipients, and additionally provideing a
      * annotation to show up in the route log for the document
@@ -178,6 +187,28 @@ public interface DocumentService {
      * @throws ValidationErrorList
      */
     public Document superUserApproveDocument(Document document, String annotation) throws WorkflowException;
+
+    /**
+     * cancel this document as super user, optionally providing an annotation which will show up in the route log for this document
+     * for this action taken
+     *
+     * @param document
+     * @param annotation
+     * @return
+     * @throws WorkflowException
+     */
+    public Document superUserCancelDocument(Document document, String annotation) throws WorkflowException;
+
+    /**
+     * disapprove this document as super user, optionally providing an annotation which will show up in the route log for this document
+     * for this action taken
+     *
+     * @param document
+     * @param annotation
+     * @return
+     * @throws WorkflowException
+     */
+    public Document superUserDisapproveDocument(Document document, String annotation) throws WorkflowException;
 
     /**
      * disapprove this document, optionally providing an annotation for the disapproval which will show up in the route log for the

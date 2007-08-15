@@ -102,7 +102,7 @@ public interface BusinessObjectDictionaryService {
      * 
      * @param businessObjectClass
      * @param resultFieldName
-     * @return the maximum length of the lookup results field that should be displayed.  Returns {@link org.kuali.Constants#LOOKUP_RESULT_FIELD_MAX_LENGTH_NOT_DEFINED}
+     * @return the maximum length of the lookup results field that should be displayed.  Returns {@link org.kuali.RiceConstants#LOOKUP_RESULT_FIELD_MAX_LENGTH_NOT_DEFINED}
      * if this value has not been defined
      */
     public int getLookupResultFieldMaxLength(Class businessObjectClass, String resultFieldName);

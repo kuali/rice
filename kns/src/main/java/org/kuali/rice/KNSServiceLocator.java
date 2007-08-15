@@ -17,7 +17,9 @@ package org.kuali.rice;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.kuali.core.bo.user.KualiModuleUser;
 import org.kuali.core.datadictionary.ValidationCompletionUtils;
 import org.kuali.core.inquiry.Inquirable;
 import org.kuali.core.lookup.LookupResultsService;
@@ -62,27 +64,49 @@ import org.kuali.core.workflow.service.WorkflowDocumentService;
 import org.kuali.core.workflow.service.WorkflowGroupService;
 import org.kuali.rice.kns.config.KNSResourceLoaderFactory;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
-public class KNSServiceLocator {
+public class KNSServiceLocator<T extends Object> {
 
 	public static final String VALIDATION_COMPLETION_UTILS = "validationCompletionUtils";
 
 	public static Object getService(String serviceName) {
 		return GlobalResourceLoader.getService(serviceName);
 	}
-
-	public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName) {
-		return getNamedOrderedListBeans(listName, KNSResourceLoaderFactory.getSpringResourceLoader().getContext());
+	
+	public static <T> T getBean(Class<T> type) {
+		List<T> beansOfType = getBeansOfType(type);
+		if (beansOfType.isEmpty()) {
+			throw new NoSuchBeanDefinitionException("No beans of this type in the KNS application context: " + type.getName());
+		}
+		if (beansOfType.size() > 1) {
+			throw new IllegalArgumentException("The getBean(Class<T> type) method of KNSServiceLocator expects a type for which there is only one matching bean in the application context: " + type.getName());
+		}
+        return beansOfType.get(0);
 	}
 	
-	public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName, ApplicationContext applicationContext) {
+	@SuppressWarnings("unchecked")
+	public static <T> T getBean(Class<T> type, String name) {
+		return  (T) KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBean(name);
+	}
+	
+	@SuppressWarnings("unchecked")
+    public static <T> List<T> getBeansOfType(Class<T> type) {
+        return new ArrayList<T>(KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(type).values());
+    }
+	
+    public static String[] getBeanNames() {
+        return KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanDefinitionNames();
+    }
+
+	public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName) {
 		List<NamedOrderedListBean> namedOrderedListBeans = new ArrayList<NamedOrderedListBean>();
-		for (Object namedOrderedListBean : applicationContext.getBeansOfType(NamedOrderedListBean.class).values()) {
+		for (Object namedOrderedListBean : KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(NamedOrderedListBean.class).values()) {
 			if (((NamedOrderedListBean) namedOrderedListBean).getName().equals(listName)) {
 				namedOrderedListBeans.add((NamedOrderedListBean) namedOrderedListBean);
 			}

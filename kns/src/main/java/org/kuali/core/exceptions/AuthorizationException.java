@@ -15,7 +15,7 @@
  */
 package org.kuali.core.exceptions;
 
-import org.kuali.KeyConstants;
+import org.kuali.RiceKeyConstants;
 
 /**
  * This class represents an exception that is thrown when a given user is not authorized to take the given action on the given
@@ -58,6 +58,6 @@ public class AuthorizationException extends RuntimeException {
      * @return message key used by Struts to select the error message to be displayed
      */
     public String getErrorMessageKey() {
-        return KeyConstants.AUTHORIZATION_ERROR_GENERAL;
+        return RiceKeyConstants.AUTHORIZATION_ERROR_GENERAL;
     }
 }

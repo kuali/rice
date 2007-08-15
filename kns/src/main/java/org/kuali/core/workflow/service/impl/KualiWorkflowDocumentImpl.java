@@ -159,11 +159,23 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument {
         return workflowDocument.getRouteHeader().getInitiator().getNetworkId();
     }
 
+    private String getInitiatorUuId() {
+        return workflowDocument.getRouteHeader().getInitiator().getUuId();
+    }
+    
     /**
      * @return
      */
-    public String getInitiatorUuId() {
+    public String getRoutedByUserNetworkId() {
+        // TODO delyea - JIRA THIS for RNE
+        return workflowDocument.getRouteHeader().getInitiator().getNetworkId();
+//        return workflowDocument.getRouteHeader().getRoutedByUser().getNetworkId();
+    }
+
+    private String getRoutedByUserUuId() {
+        // TODO delyea - JIRA THIS for RNE
         return workflowDocument.getRouteHeader().getInitiator().getUuId();
+//        return workflowDocument.getRouteHeader().getRoutedByUser().getUuId();
     }
     
     public String getTitle() {
@@ -188,6 +200,14 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument {
 
     public void superUserApprove(String annotation) throws WorkflowException {
         workflowDocument.superUserApprove(annotation);
+    }
+
+    public void superUserCancel(String annotation) throws WorkflowException {
+        workflowDocument.superUserCancel(annotation);
+    }
+
+    public void superUserDisapprove(String annotation) throws WorkflowException {
+        workflowDocument.superUserDisapprove(annotation);
     }
 
     public void cancel(String annotation) throws WorkflowException {
@@ -470,6 +490,18 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument {
         }
 
         return StringUtils.equalsIgnoreCase(getInitiatorUuId(), user.getPersonUniversalIdentifier());
+    }
+
+    /**
+     * 
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#userIsRoutedByUser(org.kuali.core.bo.user.KualiUser)
+     */
+    public boolean userIsRoutedByUser(UniversalUser user) {
+        if (user == null) {
+            throw new IllegalArgumentException("invalid (null) user");
+        }
+
+        return StringUtils.equalsIgnoreCase(getRoutedByUserUuId(), user.getPersonUniversalIdentifier());
     }
 
     public String[] getNodeNames() throws WorkflowException {

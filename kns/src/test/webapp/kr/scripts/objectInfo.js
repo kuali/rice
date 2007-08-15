@@ -22,25 +22,18 @@ function loadUserInfo( userIdFieldName, universalIdFieldName, userNameFieldName 
 	} else {
 		var dwrReply = {
 			callback:function(data) {
-			alert("yo" + data.personUniversalIdentifier);
 			if ( data != null && typeof data == 'object' ) {
-				alert("1");
 				if ( universalIdFieldName != null && universalIdFieldName != "" ) {
-					alert("2");
 					setRecipientValue( universalIdFieldName, data.personUniversalIdentifier );
 				}
 				if ( userNameFieldName != null && userNameFieldName != "" ) {
-					alert("3 " + data.personName);
 					setRecipientValue( userNameFieldName, data.personName );
 				}				
 			} else {
-				alert("4");
 				if ( universalIdFieldName != null && universalIdFieldName != "" ) {
-					alert("5");
 					setRecipientValue( universalIdFieldName, "" );
 				}
 				if ( userNameFieldName != null && userNameFieldName != "" ) {
-					alert("6");
 					setRecipientValue( userNameFieldName, wrapError( "person not found" ), true );
 				}
 			} },
@@ -50,7 +43,6 @@ function loadUserInfo( userIdFieldName, universalIdFieldName, userNameFieldName 
 					setRecipientValue( universalIdFieldName, "" );
 				}
 				if ( userNameFieldName != null && userNameFieldName != "" ) {
-					alert("2-->" + userNameFieldName + "<--true?:" + (userNameFieldName != null && userNameFieldName != "") + "-->" + errorMessage + "<--");
 					setRecipientValue( userNameFieldName, wrapError( "person not found" ), true );
 				}
 			}

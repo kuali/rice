@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,7 +22,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.datadictionary.HeaderNavigation;
 import org.kuali.core.util.ActionFormUtilMap;
 import org.kuali.core.util.TypedArrayList;
@@ -78,7 +78,7 @@ public class KualiForm extends PojoFormBase {
 
     /**
      * Used by the dispatch action to determine which action method to call into.
-     * 
+     *
      * @return Returns the methodToCall.
      */
     public String getMethodToCall() {
@@ -96,7 +96,7 @@ public class KualiForm extends PojoFormBase {
 
     /**
      * Can be used by actions refresh method to determine what called the the refresh method.
-     * 
+     *
      * @return Returns the refreshCaller.
      */
     public String getRefreshCaller() {
@@ -120,18 +120,18 @@ public class KualiForm extends PojoFormBase {
 
     /**
      * simple setter for the tab state Map
-     * 
+     *
      * @param tabStates
      */
     public void setTabStates(Map<String, String> tabStates) {
         this.tabStates = tabStates;
     }
-    
+
     /**
      * Special getter based on key to work with multi rows for tab state objects
      */
     public String getTabState(String key) {
-        String state = Constants.EMPTY_STRING;
+        String state = RiceConstants.EMPTY_STRING;
         if (tabStates.containsKey(key)) {
             if (tabStates.get(key) instanceof String) {
             	state = tabStates.get(key);
@@ -144,7 +144,7 @@ public class KualiForm extends PojoFormBase {
             	state = ((String[])result)[0];
             }
         }
-        
+
         return state;
     }
 
@@ -155,11 +155,11 @@ public class KualiForm extends PojoFormBase {
     public void setCurrentTabIndex(int currentTabIndex) {
         this.currentTabIndex = currentTabIndex;
     }
-    
+
     public void incrementTabIndex() {
         this.currentTabIndex++;
     }
-    
+
     public int getNextArbitrarilyHighIndex() {
         return this.arbitrarilyHighIndex++;
     }
@@ -180,7 +180,7 @@ public class KualiForm extends PojoFormBase {
 
     /**
      * Gets the headerNavigationTabs attribute.
-     * 
+     *
      * @return Returns the headerNavigationTabs.
      */
     public HeaderNavigation[] getHeaderNavigationTabs() {
@@ -189,7 +189,7 @@ public class KualiForm extends PojoFormBase {
 
     /**
      * Sets the headerNavigationTabs attribute value.
-     * 
+     *
      * @param headerNavigationTabs The headerNavigationTabs to set.
      */
     public void setHeaderNavigationTabs(HeaderNavigation[] headerNavigationTabs) {
@@ -198,7 +198,7 @@ public class KualiForm extends PojoFormBase {
 
     /**
      * Gets the navigationCss attribute.
-     * 
+     *
      * @return Returns the navigationCss.
      */
     public String getNavigationCss() {
@@ -207,7 +207,7 @@ public class KualiForm extends PojoFormBase {
 
     /**
      * Sets the navigationCss attribute value.
-     * 
+     *
      * @param navigationCss The navigationCss to set.
      */
     public void setNavigationCss(String navigationCss) {
@@ -216,7 +216,7 @@ public class KualiForm extends PojoFormBase {
 
     /**
      * Gets the additionalDocInfo1 attribute.
-     * 
+     *
      * @return Returns the additionalDocInfo1.
      */
     public KeyLabelPair getAdditionalDocInfo1() {
@@ -225,7 +225,7 @@ public class KualiForm extends PojoFormBase {
 
     /**
      * Sets the additionalDocInfo1 attribute value.
-     * 
+     *
      * @param additionalDocInfo1 The additionalDocInfo1 to set.
      */
     public void setAdditionalDocInfo1(KeyLabelPair additionalDocInfo1) {
@@ -234,7 +234,7 @@ public class KualiForm extends PojoFormBase {
 
     /**
      * Gets the additionalDocInfo2 attribute.
-     * 
+     *
      * @return Returns the additionalDocInfo2.
      */
     public KeyLabelPair getAdditionalDocInfo2() {
@@ -243,7 +243,7 @@ public class KualiForm extends PojoFormBase {
 
     /**
      * Sets the additionalDocInfo2 attribute value.
-     * 
+     *
      * @param additionalDocInfo2 The additionalDocInfo2 to set.
      */
     public void setAdditionalDocInfo2(KeyLabelPair additionalDocInfo2) {

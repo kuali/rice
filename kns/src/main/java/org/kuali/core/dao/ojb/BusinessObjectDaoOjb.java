@@ -24,7 +24,7 @@ import java.util.Set;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.PropertyConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.dao.BusinessObjectDao;
 import org.kuali.core.service.PersistenceStructureService;
@@ -270,7 +270,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
      */
     private Criteria buildActiveCriteria(){
         Criteria criteria = new Criteria();
-        criteria.addEqualTo(PropertyConstants.ACTIVE, true);
+        criteria.addEqualTo(RicePropertyConstants.ACTIVE, true);
         
         return criteria;
     }

@@ -19,8 +19,8 @@ package org.kuali.core.bo;
 import java.sql.Date;
 import java.util.LinkedHashMap;
 
-import org.kuali.Constants;
-import org.kuali.PropertyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.util.KualiDecimal;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 
@@ -54,7 +54,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
      * 
      */
     public DocumentHeader() {
-        financialDocumentStatusCode = Constants.DocumentStatusCodes.INITIATED;
+        financialDocumentStatusCode = RiceConstants.DocumentStatusCodes.INITIATED;
     }
 
     /**
@@ -217,7 +217,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
     protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
 
-        m.put(PropertyConstants.DOCUMENT_NUMBER, documentNumber);
+        m.put(RicePropertyConstants.DOCUMENT_NUMBER, documentNumber);
 
         return m;
     }

@@ -30,6 +30,7 @@ import org.kuali.core.workflow.service.WorkflowDocumentService;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.clientapp.vo.RouteNodeInstanceVO;
@@ -177,6 +178,24 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
 
     /**
+     * @see org.kuali.core.workflow.service.WorkflowDocumentService#superUserCancel(org.kuali.core.workflow.service.KualiWorkflowDocument,
+     *      java.lang.String)
+     */
+    public void superUserCancel(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
+        LOG.info("super user cancel flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+        workflowDocument.superUserCancel(annotation);
+    }
+
+    /**
+     * @see org.kuali.core.workflow.service.WorkflowDocumentService#superUserDisapprove(org.kuali.core.workflow.service.KualiWorkflowDocument,
+     *      java.lang.String)
+     */
+    public void superUserDisapprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
+        LOG.info("super user approve flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+        workflowDocument.superUserDisapprove(annotation);
+    }
+
+    /**
      * @see org.kuali.core.workflow.service.WorkflowDocumentService#blanketApprove(edu.iu.uis.eden.routetemplate.FlexDoc)
      */
     public void blanketApprove(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
@@ -209,6 +228,17 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
         handleAdHocRouteRequests(workflowDocument, "", filterAdHocRecipients(adHocRecipients, new String[] { EdenConstants.ACTION_REQUEST_FYI_REQ }));
         workflowDocument.fyi();
+    }
+    
+    /**
+     * @see org.kuali.core.workflow.service.WorkflowDocumentService#sendFYI(org.kuali.core.workflow.service.KualiWorkflowDocument, java.lang.String, java.util.List)
+     */
+    public void sendFYI(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("sending FYI for flexDoc(" + workflowDocument.getRouteHeaderId() + ")");
+        }
+
+        handleAdHocRouteRequests(workflowDocument, annotation, adHocRecipients);
     }
 
     /**
@@ -243,6 +273,27 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         }
         
         workflowDocument.saveDocument(annotation);
+    }
+    
+    /**
+     * @see org.kuali.core.workflow.service.WorkflowDocumentService#saveRoutingData(org.kuali.core.workflow.service.KualiWorkflowDocument)
+     */
+    public void saveRoutingData(KualiWorkflowDocument workflowDocument) throws WorkflowException {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("saving flexDoc(" + workflowDocument.getRouteHeaderId() + ")");
+        }
+        
+        workflowDocument.saveRoutingData();
+    }
+    
+    /**
+     * @see org.kuali.core.workflow.service.WorkflowDocumentService#getCurrentRouteLevelName(org.kuali.core.workflow.service.KualiWorkflowDocument)
+     */
+    public String getCurrentRouteLevelName(KualiWorkflowDocument workflowDocument) throws WorkflowException {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("getting current route level name for flexDoc(" + workflowDocument.getRouteHeaderId());
+        }
+        return KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId()).getCurrentRouteLevelName();
     }
 
     /**

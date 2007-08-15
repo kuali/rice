@@ -25,6 +25,11 @@
 	showTabButtons="true" 
 	auditCount="0">
 
+	<SCRIPT type="text/javascript">
+    var kualiForm = document.forms['KualiForm'];
+    var kualiElements = kualiForm.elements;
+    </SCRIPT>
+
  	<kul:hiddenDocumentFields isTransactionalDocument="false" isFinancialDocument="true" excludePostingYear="true"/>
 
 	<kul:documentOverview editingMode="${KualiForm.editingMode}" /> 

@@ -19,8 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.kuali.Constants;
-import org.kuali.PropertyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.authorization.AuthorizationConstants;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.document.Document;
@@ -76,27 +76,27 @@ public class UniversalUserDocumentAuthorizer extends MaintenanceDocumentAuthoriz
 
         // prevent users not in the UU edit group from changing base UU properties
         if ( !(usersMaintainedByKuali && user.isMember( userEditWorkgroupName )) ) {
-            auths.addReadonlyAuthField( PropertyConstants.PERSON_USER_IDENTIFIER );
-            auths.addReadonlyAuthField( PropertyConstants.PERSON_UNIVERSAL_IDENTIFIER );
+            auths.addReadonlyAuthField( RicePropertyConstants.PERSON_USER_IDENTIFIER );
+            auths.addReadonlyAuthField( RicePropertyConstants.PERSON_UNIVERSAL_IDENTIFIER );
             auths.addHiddenAuthField( "personTaxIdentifier" );
             auths.addHiddenAuthField( "personTaxIdentifierTypeCode" );
-            auths.addReadonlyAuthField( PropertyConstants.PERSON_NAME );
-            auths.addReadonlyAuthField( PropertyConstants.CAMPUS_CODE );
+            auths.addReadonlyAuthField( RicePropertyConstants.PERSON_NAME );
+            auths.addReadonlyAuthField( RicePropertyConstants.CAMPUS_CODE );
             auths.addReadonlyAuthField( "primaryDepartmentCode" );
             auths.addHiddenAuthField( "personPayrollIdentifier" );
-            auths.addReadonlyAuthField( PropertyConstants.EMPLOYEE_STATUS_CODE );
-            auths.addReadonlyAuthField( PropertyConstants.EMPLOYEE_TYPE_CODE );
+            auths.addReadonlyAuthField( RicePropertyConstants.EMPLOYEE_STATUS_CODE );
+            auths.addReadonlyAuthField( RicePropertyConstants.EMPLOYEE_TYPE_CODE );
             auths.addReadonlyAuthField( "student" );
             auths.addReadonlyAuthField( "staff" );
             auths.addReadonlyAuthField( "faculty" );
             auths.addReadonlyAuthField( "affiliate" );
-            auths.addHiddenAuthField( PropertyConstants.PERSON_FIRST_NAME );
-            auths.addHiddenAuthField( PropertyConstants.PERSON_LAST_NAME );
+            auths.addHiddenAuthField( RicePropertyConstants.PERSON_FIRST_NAME );
+            auths.addHiddenAuthField( RicePropertyConstants.PERSON_LAST_NAME );
             auths.addHiddenAuthField( "personMiddleName" );
-            auths.addHiddenAuthField( PropertyConstants.PERSON_LOCAL_PHONE_NUMBER );
-            auths.addHiddenAuthField( PropertyConstants.PERSON_CAMPUS_ADDRESS );
-            auths.addHiddenAuthField( PropertyConstants.PERSON_EMAIL_ADDRESS );
-            auths.addHiddenAuthField( PropertyConstants.PERSON_BASE_SALARY_AMOUNT );
+            auths.addHiddenAuthField( RicePropertyConstants.PERSON_LOCAL_PHONE_NUMBER );
+            auths.addHiddenAuthField( RicePropertyConstants.PERSON_CAMPUS_ADDRESS );
+            auths.addHiddenAuthField( RicePropertyConstants.PERSON_EMAIL_ADDRESS );
+            auths.addHiddenAuthField( RicePropertyConstants.PERSON_BASE_SALARY_AMOUNT );
             auths.addHiddenAuthField( "financialSystemsEncryptedPasswordText" );
         } else {
             if ( !passwordEditingEnabled ) {
@@ -113,9 +113,9 @@ public class UniversalUserDocumentAuthorizer extends MaintenanceDocumentAuthoriz
         }
         // get the group name that we need here
         if ( userEditWorkgroupName == null ) {
-            userEditWorkgroupName = configService.getApplicationParameterValue(Constants.CoreApcParms.GROUP_CORE_MAINT_EDOCS, Constants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
+            userEditWorkgroupName = configService.getApplicationParameterValue(RiceConstants.CoreApcParms.GROUP_CORE_MAINT_EDOCS, RiceConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
             // check whether users are editable within Kuali
-            usersMaintainedByKuali = configService.getPropertyAsBoolean( Constants.MAINTAIN_USERS_LOCALLY_KEY );
+            usersMaintainedByKuali = configService.getPropertyAsBoolean( RiceConstants.MAINTAIN_USERS_LOCALLY_KEY );
             // check whether local CAS is in use
             passwordEditingEnabled = KNSServiceLocator.getWebAuthenticationService().isValidatePassword();
         }

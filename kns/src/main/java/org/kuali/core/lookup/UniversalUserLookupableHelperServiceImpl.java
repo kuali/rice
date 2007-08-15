@@ -15,7 +15,7 @@
  */
 package org.kuali.core.lookup;
 
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.util.GlobalVariables;
 
@@ -35,9 +35,9 @@ public class UniversalUserLookupableHelperServiceImpl extends KualiLookupableHel
     public boolean allowsMaintenanceNewOrCopyAction() {
         // get the group name that we need here
         if ( userEditWorkgroupName == null ) {
-            userEditWorkgroupName = configService.getApplicationParameterValue(Constants.CoreApcParms.GROUP_CORE_MAINT_EDOCS, Constants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
+            userEditWorkgroupName = configService.getApplicationParameterValue(RiceConstants.CoreApcParms.GROUP_CORE_MAINT_EDOCS, RiceConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
             // check whether users are editable within Kuali
-            usersMaintainedByKuali = configService.getPropertyAsBoolean( Constants.MAINTAIN_USERS_LOCALLY_KEY );
+            usersMaintainedByKuali = configService.getPropertyAsBoolean( RiceConstants.MAINTAIN_USERS_LOCALLY_KEY );
         }
         
         if ( usersMaintainedByKuali && GlobalVariables.getUserSession().getUniversalUser().isMember( userEditWorkgroupName ) ) {

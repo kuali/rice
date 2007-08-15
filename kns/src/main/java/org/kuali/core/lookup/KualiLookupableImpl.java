@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.service.BusinessObjectDictionaryService;
 import org.kuali.core.service.DataDictionaryService;
@@ -35,7 +35,7 @@ import org.kuali.core.web.ui.ResultRow;
  */
 public class KualiLookupableImpl implements Lookupable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiLookupableImpl.class);
-    private static final String[] IGNORE_LIST = { Constants.DOC_FORM_KEY, Constants.BACK_LOCATION };
+    private static final String[] IGNORE_LIST = { RiceConstants.DOC_FORM_KEY, RiceConstants.BACK_LOCATION };
 
     private Class businessObjectClass;
     private LookupableHelperService lookupableHelperService;
@@ -129,10 +129,10 @@ public class KualiLookupableImpl implements Lookupable {
 
         if (getLookupableHelperService().allowsMaintenanceNewOrCopyAction()) {
             Properties parameters = new Properties();
-            parameters.put(Constants.DISPATCH_REQUEST_PARAMETER, Constants.MAINTENANCE_NEW_METHOD_TO_CALL);
-            parameters.put(Constants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.businessObjectClass.getName());
+            parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, RiceConstants.MAINTENANCE_NEW_METHOD_TO_CALL);
+            parameters.put(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.businessObjectClass.getName());
 
-            url = UrlFactory.parameterizeUrl(Constants.MAINTENANCE_ACTION, parameters);
+            url = UrlFactory.parameterizeUrl(RiceConstants.MAINTENANCE_ACTION, parameters);
             url = "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
         }
 

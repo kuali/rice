@@ -34,25 +34,22 @@ public class AsynchronousCall implements Serializable {
 	private Class[] paramTypes;
 
 	private ServiceInfo serviceInfo;
-
+	
+	private Serializable context;
+	
 	private String methodName;
 
-	private Serializable context;
-
 	private AsynchronousCallback callback;
-
-	private Long repeatCallTimeIncrement;
 	
 	private boolean ignoreStoreAndForward;
-
-	public AsynchronousCall(Class[] paramTypes, Object[] arguments, ServiceInfo serviceInfo, String methodName, Serializable context, AsynchronousCallback callback, Long repeatCallTimeIncrement) {
-		this.arguments = arguments;
+	
+	public AsynchronousCall(Class[] paramTypes, Object[] arguments, ServiceInfo serviceInfo, String methodName, AsynchronousCallback callback, Serializable context) {
+	    this.arguments = arguments;
 		this.paramTypes = paramTypes;
 		this.serviceInfo = serviceInfo;
 		this.methodName = methodName;
-		this.context = context;
 		this.callback = callback;
-		this.repeatCallTimeIncrement = repeatCallTimeIncrement;
+		this.context = context;
 	}
 
 	public Object[] getArguments() {
@@ -76,7 +73,7 @@ public class AsynchronousCall implements Serializable {
 	}
 
 	public String toString() {
-		return "[AsynchronousCall: " + "serviceInfo=" + this.serviceInfo + ", methodName=" + this.methodName + ", context" + this.context + ", paramTypes=" + getStringifiedArray(this.paramTypes) + ", arguments=" + getStringifiedArray(this.arguments) + "]";
+		return "[AsynchronousCall: " + "serviceInfo=" + this.serviceInfo + ", methodName=" + this.methodName + ", paramTypes=" + getStringifiedArray(this.paramTypes) + ", arguments=" + getStringifiedArray(this.arguments) + "]";
 	}
 
 	/**
@@ -98,15 +95,6 @@ public class AsynchronousCall implements Serializable {
 		return sb.toString();
 	}
 
-
-	public Long getRepeatCallTimeIncrement() {
-		return this.repeatCallTimeIncrement;
-	}
-
-	public void setRepeatCallTimeIncrement(Long repeatCallTimeIncrement) {
-		this.repeatCallTimeIncrement = repeatCallTimeIncrement;
-	}
-
 	public boolean isIgnoreStoreAndForward() {
 		return this.ignoreStoreAndForward;
 	}
@@ -116,11 +104,12 @@ public class AsynchronousCall implements Serializable {
 	}
 
 	public Serializable getContext() {
-		return this.context;
+	    return this.context;
 	}
 
 	public void setContext(Serializable context) {
-		this.context = context;
+	    this.context = context;
 	}
+
 
 }

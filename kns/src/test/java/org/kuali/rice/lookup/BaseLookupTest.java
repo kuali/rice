@@ -16,8 +16,8 @@
 package org.kuali.rice.lookup;
 
 import org.junit.Test;
-import org.kuali.rice.test.htmlunit.HtmlUnitUtil;
-import org.kuali.rice.testharness.KNSTestCase;
+import org.kuali.rice.TestBase;
+import org.kuali.rice.testharness.HtmlUnitUtil;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
@@ -26,7 +26,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.html.HtmlTableCell;
 import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 
-public class BaseLookupTest extends KNSTestCase {
+public class BaseLookupTest extends TestBase {
 
     @Test public void testLookupable() throws Exception {
         

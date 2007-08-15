@@ -90,10 +90,7 @@ public interface Config {
 	public static final String MESSAGE_ENTITY = "message.entity";
 
 	public static final String THREAD_POOL_SIZE = "threadPool.size";
-	public static final String THREAD_POOL_INITIAL_FETCH_DELAY = "threadPool.initialFetchDelay";
-	public static final String THREAD_POOL_FETCH_FREQUENCY = "threadPool.fetchFrequency";
-	public static final String THREAD_POOL_ON = "threadPool.on";
-
+	
 	public static final String BAM_ENABLED = "bam.enabled";
 
 	public static final String EMBEDDED_PLUGIN_LOCATIAON = "embedded.plugin.location";

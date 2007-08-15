@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.bo.AdHocRoutePerson;
 import org.kuali.core.bo.AdHocRouteWorkgroup;
 import org.kuali.core.document.Document;
@@ -109,7 +109,7 @@ public class KualiRuleServiceImpl implements KualiRuleService {
         List events = new ArrayList();
 
         for (int i = 0; i < adHocRoutePersons.size(); i++) {
-            events.add(new AddAdHocRoutePersonEvent(Constants.EXISTING_AD_HOC_ROUTE_PERSON_PROPERTY_NAME + "[" + i + "]", document, (AdHocRoutePerson) adHocRoutePersons.get(i)));
+            events.add(new AddAdHocRoutePersonEvent(RiceConstants.EXISTING_AD_HOC_ROUTE_PERSON_PROPERTY_NAME + "[" + i + "]", document, (AdHocRoutePerson) adHocRoutePersons.get(i)));
         }
 
         return events;
@@ -127,7 +127,7 @@ public class KualiRuleServiceImpl implements KualiRuleService {
         List events = new ArrayList();
 
         for (int i = 0; i < adHocRouteWorkgroups.size(); i++) {
-            events.add(new AddAdHocRouteWorkgroupEvent(Constants.EXISTING_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME + "[" + i + "]", document, (AdHocRouteWorkgroup) adHocRouteWorkgroups.get(i)));
+            events.add(new AddAdHocRouteWorkgroupEvent(RiceConstants.EXISTING_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME + "[" + i + "]", document, (AdHocRouteWorkgroup) adHocRouteWorkgroups.get(i)));
         }
 
         return events;

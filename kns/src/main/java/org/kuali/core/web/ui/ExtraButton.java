@@ -16,7 +16,7 @@
 package org.kuali.core.web.ui;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.rice.KNSServiceLocator;
 
 /**
@@ -68,13 +68,13 @@ public class ExtraButton {
 							KNSServiceLocator
 									.getKualiConfigurationService()
 									.getPropertyString(
-											Constants.EXTERNALIZABLE_IMAGES_URL_KEY))
+											RiceConstants.EXTERNALIZABLE_IMAGES_URL_KEY))
 					.replace(
 							"${externalizable.images.url}",
 							KNSServiceLocator
 									.getKualiConfigurationService()
 									.getPropertyString(
-											Constants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
+											RiceConstants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
 		}
 	}
 

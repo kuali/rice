@@ -24,8 +24,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.codec.binary.Base64;
-import org.kuali.Constants;
-import org.kuali.PropertyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.LookupResults;
 import org.kuali.core.bo.MultipleValueLookupMetadata;
 import org.kuali.core.bo.PersistableBusinessObject;
@@ -87,7 +87,7 @@ public class LookupResultsServiceImpl implements LookupResultsService {
      */
     protected LookupResults retrieveLookupResults(String lookupResultsSequenceNumber) throws Exception {
         Map<String, String> queryCriteria = new HashMap<String, String>();
-        queryCriteria.put(Constants.LOOKUP_RESULTS_SEQUENCE_NUMBER, lookupResultsSequenceNumber);
+        queryCriteria.put(RiceConstants.LOOKUP_RESULTS_SEQUENCE_NUMBER, lookupResultsSequenceNumber);
         LookupResults lookupResults = (LookupResults) businessObjectService.findByPrimaryKey(LookupResults.class, queryCriteria);
         
         return lookupResults;
@@ -101,7 +101,7 @@ public class LookupResultsServiceImpl implements LookupResultsService {
      */
     protected SelectedObjectIds retrieveSelectedObjectIds(String lookupResultsSequenceNumber) throws Exception {
         Map<String, String> queryCriteria = new HashMap<String, String>();
-        queryCriteria.put(Constants.LOOKUP_RESULTS_SEQUENCE_NUMBER, lookupResultsSequenceNumber);
+        queryCriteria.put(RiceConstants.LOOKUP_RESULTS_SEQUENCE_NUMBER, lookupResultsSequenceNumber);
         SelectedObjectIds selectedObjectIds = (SelectedObjectIds) businessObjectService.findByPrimaryKey(SelectedObjectIds.class, queryCriteria);
         
         return selectedObjectIds;
@@ -192,7 +192,7 @@ public class LookupResultsServiceImpl implements LookupResultsService {
             return new ArrayList<PersistableBusinessObject>();
         }
         Map<String, Collection<String>> queryCriteria = new HashMap<String, Collection<String>>();
-        queryCriteria.put(PropertyConstants.OBJECT_ID, setOfSelectedObjIds);
+        queryCriteria.put(RicePropertyConstants.OBJECT_ID, setOfSelectedObjIds);
         return businessObjectService.findMatching(boClass, queryCriteria);
     }
     

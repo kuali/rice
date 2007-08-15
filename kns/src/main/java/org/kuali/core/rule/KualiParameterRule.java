@@ -25,8 +25,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
-import org.kuali.KeyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RiceKeyConstants;
 
 /**
  * A rule evaluated from an entry in the parameters table.
@@ -86,14 +86,14 @@ public class KualiParameterRule implements Serializable {
      * @return whether ruleOperator is 'A'
      */
     public boolean isAllowedRule() {
-        return Constants.APC_ALLOWED_OPERATOR.equals(ruleOperator);
+        return RiceConstants.APC_ALLOWED_OPERATOR.equals(ruleOperator);
     }
 
     /**
      * @return whether ruleOperator is 'D'
      */
     public boolean isDeniedRule() {
-        return Constants.APC_DENIED_OPERATOR.equals(ruleOperator);
+        return RiceConstants.APC_DENIED_OPERATOR.equals(ruleOperator);
     }
 
     /**
@@ -150,10 +150,10 @@ public class KualiParameterRule implements Serializable {
      */
     public String getErrorMessageKey() {
         if (isAllowedRule()) {
-            return KeyConstants.ERROR_APPLICATION_PARAMETERS_ALLOWED_RESTRICTION;
+            return RiceKeyConstants.ERROR_APPLICATION_PARAMETERS_ALLOWED_RESTRICTION;
         }
         else {
-            return KeyConstants.ERROR_APPLICATION_PARAMETERS_DENIED_RESTRICTION;
+            return RiceKeyConstants.ERROR_APPLICATION_PARAMETERS_DENIED_RESTRICTION;
         }
     }
 
@@ -201,14 +201,14 @@ public class KualiParameterRule implements Serializable {
             }
         }
         if (allowedValues == null) {
-            return new KualiParameterRule("and" + names, makeText(deniedValues), Constants.APC_DENIED_OPERATOR, active);
+            return new KualiParameterRule("and" + names, makeText(deniedValues), RiceConstants.APC_DENIED_OPERATOR, active);
         }
         else {
             allowedValues.removeAll(deniedValues);
             // The ";" is a work-around to enforce allowing disjoint values (i.e., allowing nothing, always failing).
             // If the text were empty then the rule would be ignored, always succeeding.
             String text = allowedValues.isEmpty() ? ";" : makeText(allowedValues);
-            return new KualiParameterRule("and" + names, text, Constants.APC_ALLOWED_OPERATOR, active);
+            return new KualiParameterRule("and" + names, text, RiceConstants.APC_ALLOWED_OPERATOR, active);
         }
     }
 

@@ -25,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.core.question.ConfirmationQuestion;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.UrlFactory;
@@ -51,7 +51,7 @@ public class QuestionPromptAction extends KualiAction {
         // deal with the fact that some requests might be reposts from errors on the reason field
         processErrorMessages(request);
 
-        return mapping.findForward(Constants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     /**
@@ -69,27 +69,27 @@ public class QuestionPromptAction extends KualiAction {
 
         Properties parameters = new Properties();
 
-        parameters.put(Constants.DOC_FORM_KEY, questionPromptForm.getFormKey());
-        parameters.put(Constants.QUESTION_CLICKED_BUTTON, getSelectedButton(request));
-        parameters.put(Constants.METHOD_TO_CALL_ATTRIBUTE, questionPromptForm.getCaller());
-        parameters.put(Constants.REFRESH_CALLER, Constants.QUESTION_REFRESH);
-        parameters.put(Constants.QUESTION_INST_ATTRIBUTE_NAME, questionPromptForm.getQuestionIndex());
+        parameters.put(RiceConstants.DOC_FORM_KEY, questionPromptForm.getFormKey());
+        parameters.put(RiceConstants.QUESTION_CLICKED_BUTTON, getSelectedButton(request));
+        parameters.put(RiceConstants.METHOD_TO_CALL_ATTRIBUTE, questionPromptForm.getCaller());
+        parameters.put(RiceConstants.REFRESH_CALLER, RiceConstants.QUESTION_REFRESH);
+        parameters.put(RiceConstants.QUESTION_INST_ATTRIBUTE_NAME, questionPromptForm.getQuestionIndex());
 
         if (StringUtils.isNotBlank(questionPromptForm.getQuestionAnchor())) {
-            parameters.put(Constants.ANCHOR, questionPromptForm.getQuestionAnchor());
+            parameters.put(RiceConstants.ANCHOR, questionPromptForm.getQuestionAnchor());
         }
 
         String context = questionPromptForm.getContext();
         if (StringUtils.isNotBlank(context)) {
-            parameters.put(Constants.QUESTION_CONTEXT, context);
+            parameters.put(RiceConstants.QUESTION_CONTEXT, context);
         }
         String reason = questionPromptForm.getReason();
         if (StringUtils.isNotBlank(reason)) {
-            parameters.put(Constants.QUESTION_REASON_ATTRIBUTE_NAME, reason);
+            parameters.put(RiceConstants.QUESTION_REASON_ATTRIBUTE_NAME, reason);
         }
         if (StringUtils.isNotBlank(questionPromptForm.getMethodToCallPath()) && ConfirmationQuestion.YES.equals(getSelectedButton(request))) {
             // For header tab navigation. Leaving it blank will just kick user back to page.
-            parameters.put(Constants.METHOD_TO_CALL_PATH, questionPromptForm.getMethodToCallPath());
+            parameters.put(RiceConstants.METHOD_TO_CALL_PATH, questionPromptForm.getMethodToCallPath());
         }
 
         String returnUrl = UrlFactory.parameterizeUrl(questionPromptForm.getBackLocation(), parameters);
@@ -105,7 +105,7 @@ public class QuestionPromptAction extends KualiAction {
      */
     private String getSelectedButton(HttpServletRequest request) {
         String selectedButton = "-1";
-        String parameterName = (String) request.getAttribute(Constants.METHOD_TO_CALL_ATTRIBUTE);
+        String parameterName = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
         if (StringUtils.isNotBlank(parameterName)) {
             selectedButton = StringUtils.substringBetween(parameterName, ".button", ".");
         }
@@ -119,9 +119,9 @@ public class QuestionPromptAction extends KualiAction {
      * @param request
      */
     private void processErrorMessages(HttpServletRequest request) {
-        String errorKey = request.getParameter(Constants.QUESTION_ERROR_KEY);
-        String errorPropertyName = request.getParameter(Constants.QUESTION_ERROR_PROPERTY_NAME);
-        String errorParameter = request.getParameter(Constants.QUESTION_ERROR_PARAMETER);
+        String errorKey = request.getParameter(RiceConstants.QUESTION_ERROR_KEY);
+        String errorPropertyName = request.getParameter(RiceConstants.QUESTION_ERROR_PROPERTY_NAME);
+        String errorParameter = request.getParameter(RiceConstants.QUESTION_ERROR_PARAMETER);
 
         if (StringUtils.isNotBlank(errorKey)) {
             if (StringUtils.isBlank(errorPropertyName)) {

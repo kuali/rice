@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.kuali.Constants;
+import org.kuali.RiceConstants;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
@@ -62,7 +62,7 @@ public class KualiLookupableTest extends KNSTestBase {
         String returnUrl = lookupableImpl.getReturnUrl(account, fieldConversions, "kualiLookupable");
 
         // check url has our doc form key
-        checkURLContains("Lookup return url does not contain docFormKey", Constants.DOC_FORM_KEY + "=8888888", returnUrl);
+        checkURLContains("Lookup return url does not contain docFormKey", RiceConstants.DOC_FORM_KEY + "=8888888", returnUrl);
 
         // check url goes back to our back location
         assertTrue("Lookup return url does not go back to back location", returnUrl.startsWith(TestConstants.BASE_PATH + "ib.do"));

@@ -16,15 +16,15 @@
 package org.kuali.rice.transactiondocument;
 
 import org.junit.Test;
-import org.kuali.rice.test.htmlunit.HtmlUnitUtil;
-import org.kuali.rice.testharness.KNSTestCase;
+import org.kuali.rice.TestBase;
+import org.kuali.rice.testharness.HtmlUnitUtil;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTextArea;
 
-public class BaseTransactionDocumentTest extends KNSTestCase {
+public class BaseTransactionDocumentTest extends TestBase {
 
     @Test public void testTransactionDocumentRoute() throws Exception {
         HtmlPage transDocPage = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL + "/travelDocument2.do?methodToCall=docHandler&command=initiate&docTypeName=TravelRequest");

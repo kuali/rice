@@ -122,6 +122,7 @@
 					</td>
 		  		  </tr>
 		  		  <c:set var="extensions" scope="request" value="${WorkgroupForm.extensions}"/>
+			      <c:set var="existingExtensions" scope="request" value="${WorkgroupForm.existingExtensions}"/>
 		  		  <c:import url="../extension/ExtensionDataEdit.jsp">
 					  <c:param name="extensionsProperty" value="extensions"/>
 				  </c:import>

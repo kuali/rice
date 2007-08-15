@@ -29,8 +29,8 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.Constants;
-import org.kuali.PropertyConstants;
+import org.kuali.RiceConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.BusinessObjectRelationship;
 import org.kuali.core.bo.DocumentHeader;
@@ -117,7 +117,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         
         List<MaintenanceLock> maintenanceLocks = new ArrayList<MaintenanceLock>();
         StringBuffer lockRepresentation = new StringBuffer(boClass.getName());
-        lockRepresentation.append(Constants.Maintenance.AFTER_CLASS_DELIM);
+        lockRepresentation.append(RiceConstants.Maintenance.AFTER_CLASS_DELIM);
 
         PersistableBusinessObject bo = getBusinessObject();
         List keyFieldNames = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getLockingKeys(getDocumentTypeName());
@@ -142,10 +142,10 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
             }
 
             lockRepresentation.append(fieldName);
-            lockRepresentation.append(Constants.Maintenance.AFTER_FIELDNAME_DELIM);
+            lockRepresentation.append(RiceConstants.Maintenance.AFTER_FIELDNAME_DELIM);
             lockRepresentation.append(String.valueOf(fieldValue));
             if (i.hasNext()) {
-                lockRepresentation.append(Constants.Maintenance.AFTER_VALUE_DELIM);
+                lockRepresentation.append(RiceConstants.Maintenance.AFTER_VALUE_DELIM);
             }
         }
 
@@ -287,7 +287,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      *      is needed on refresh.
      */
     public void refresh(String refreshCaller, Map fieldValues, MaintenanceDocument document) {
-        String referencesToRefresh = (String) fieldValues.get(Constants.REFERENCES_TO_REFRESH);
+        String referencesToRefresh = (String) fieldValues.get(RiceConstants.REFERENCES_TO_REFRESH);
         refreshReferences(referencesToRefresh);
     }
 
@@ -295,12 +295,12 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     protected void refreshReferences(String referencesToRefresh) {
         PersistenceStructureService persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
         if (StringUtils.isNotBlank(referencesToRefresh)) {
-            String[] references = StringUtils.split(referencesToRefresh, Constants.REFERENCES_TO_REFRESH_SEPARATOR);
+            String[] references = StringUtils.split(referencesToRefresh, RiceConstants.REFERENCES_TO_REFRESH_SEPARATOR);
             for (String reference : references) {
                 if (StringUtils.isNotBlank(reference)) {
-                    if (reference.startsWith(Constants.ADD_PREFIX + ".")) {
+                    if (reference.startsWith(RiceConstants.ADD_PREFIX + ".")) {
                         // add one for the period
-                        reference = reference.substring(Constants.ADD_PREFIX.length() + 1);
+                        reference = reference.substring(RiceConstants.ADD_PREFIX.length() + 1);
                         
                         String boToRefreshName = StringUtils.substringBeforeLast(reference, ".");
                         String propertyToRefresh = StringUtils.substringAfterLast(reference, ".");
@@ -390,12 +390,16 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
             }
         }
     }
-    
+
     public void addMultipleValueLookupResults(MaintenanceDocument document, String collectionName, Collection<PersistableBusinessObject> rawValues) {
         PersistableBusinessObject bo = document.getNewMaintainableObject().getBusinessObject();
         Collection maintCollection = (Collection) ObjectUtils.getPropertyValue(bo, collectionName);
-        List<String> existingIdentifierList = getMultiValueIdentifierList(maintCollection);
         String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
+        
+        List<String> duplicateIdentifierFieldsFromDataDictionary = getDuplicateIdentifierFieldsFromDataDictionary(docTypeName, collectionName);
+        
+        List<String> existingIdentifierList = getMultiValueIdentifierList(maintCollection, duplicateIdentifierFieldsFromDataDictionary);
+        
         Class collectionClass = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getCollectionBusinessObjectClass(docTypeName, collectionName);
 
         List<MaintainableSectionDefinition> sections = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
@@ -405,7 +409,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 PersistableBusinessObject templatedBo = (PersistableBusinessObject) ObjectUtils.createHybridBusinessObject(collectionClass, nextBo, template);
                 templatedBo.setNewCollectionRecord(true);
                 prepareBusinessObjectForAdditionFromMultipleValueLookup(collectionName, templatedBo);
-                if (!hasBusinessObjectExistedInLookupResult(templatedBo, existingIdentifierList)) {   
+                if (!hasBusinessObjectExisted(templatedBo, existingIdentifierList, duplicateIdentifierFieldsFromDataDictionary)) {   
                     maintCollection.add(templatedBo); 
                 }
             }
@@ -416,21 +420,51 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         }
     }
     
-    protected List<String> getMultiValueIdentifierList(Collection maintCollection) {
-        // Default implementation uses object.toString() as the identifier.
-    	// The subclasses implementation would put the field(s) that can be used to
-    	// uniquely identify the business object other than the objectId.
-    	
+    /**
+     * This method is to retrieve a List of fields which are specified in the maintenance document
+     * data dictionary as the duplicateIdentificationFields. This List is used to determine whether
+     * the new entry being added to the collection is a duplicate entry and if so, we should not
+     * add the new entry to the existing collection
+     * 
+     * @param docTypeName
+     * @param collectionName
+     */
+    public List<String> getDuplicateIdentifierFieldsFromDataDictionary(String docTypeName, String collectionName) {
+    	List<String> duplicateIdentifierFieldNames = new ArrayList<String>();
+    	MaintainableCollectionDefinition collDef = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintainableCollection(docTypeName, collectionName);
+    	Collection<MaintainableFieldDefinition> fieldDef = collDef.getDuplicateIdentificationFields();
+    	for (MaintainableFieldDefinition eachFieldDef : fieldDef) {
+    		duplicateIdentifierFieldNames.add(eachFieldDef.getName());
+    	}
+    	return duplicateIdentifierFieldNames;
+    }
+    
+
+    public List<String> getMultiValueIdentifierList(Collection maintCollection, List<String> duplicateIdentifierFields) {
         List<String> identifierList = new ArrayList<String>();
         for (PersistableBusinessObject bo : (Collection<PersistableBusinessObject>)maintCollection) {
-            identifierList.add(bo.toString());
+        	String uniqueIdentifier = new String();
+        	for (String identifierField : duplicateIdentifierFields) {
+                    uniqueIdentifier = uniqueIdentifier + identifierField + "-" + ObjectUtils.getPropertyValue(bo, identifierField);
+        	}
+        	if (StringUtils.isNotEmpty(uniqueIdentifier)) {
+                identifierList.add(uniqueIdentifier);
+        	}
         }
         return identifierList;
     } 
     
-    protected boolean hasBusinessObjectExistedInLookupResult (BusinessObject bo, List<String> existingIdentifierList) {
-        // default implementation returns false;
-    	return false;
+    public boolean hasBusinessObjectExisted(BusinessObject bo, List<String> existingIdentifierList, List<String> duplicateIdentifierFields) {
+    	String uniqueIdentifier = new String();
+        for (String identifierField : duplicateIdentifierFields) {
+            uniqueIdentifier = uniqueIdentifier + identifierField + "-" + ObjectUtils.getPropertyValue(bo, identifierField);
+        }
+        if (existingIdentifierList.contains(uniqueIdentifier)) {
+            return true; 
+        }
+        else {
+            return false;
+        }
     } 
     
     public void prepareBusinessObjectForAdditionFromMultipleValueLookup(String collectionName, BusinessObject bo) {
@@ -458,7 +492,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 	 */
 	public void processAfterCopy() {
         try {
-            ObjectUtils.setObjectPropertyDeep(businessObject, PropertyConstants.NEW_COLLECTION_RECORD, boolean.class, true, 2);
+            ObjectUtils.setObjectPropertyDeep(businessObject, RicePropertyConstants.NEW_COLLECTION_RECORD, boolean.class, true, 2);
         }
         catch (Exception e) {
             LOG.error("unable to set newCollectionRecord property: " + e.getMessage(), e);
@@ -575,13 +609,14 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         if (collectionName == null) {
             throw new IllegalArgumentException("collection name cannot be null");
         }
+        // remove periods from the collection name due to parsing limitation in Apache beanutils 
+        collectionName = collectionName.replace( '.', '_' );
         
         if (inactiveRecordDisplay.containsKey(collectionName)) {
             Object inactiveSetting = inactiveRecordDisplay.get(collectionName);
             if (inactiveSetting instanceof Boolean) {
                 showInactive = ((Boolean) inactiveSetting).booleanValue();
-            }
-            else {
+            } else {
                 showInactive = Boolean.parseBoolean(((String[]) inactiveSetting)[0]);
             }
         }
@@ -597,6 +632,9 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
             throw new IllegalArgumentException("collection name cannot be null");
         }
         
+        // remove periods from the collection name due to parsing limitation in Apache beanutils 
+        collectionName = collectionName.replace( '.', '_' );
+
         inactiveRecordDisplay.put(collectionName, new Boolean(showInactive));
     }
     
@@ -736,9 +774,9 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
             if ( LOG.isDebugEnabled() ) {
                 LOG.debug( "values for collection: " + collectionValues );
             }
-            GlobalVariables.getErrorMap().addToErrorPath( Constants.MAINTENANCE_ADD_PREFIX + collName );
-            cachedValues.putAll( FieldUtils.populateBusinessObjectFromMap( getNewCollectionLine( collName ), collectionValues, Constants.MAINTENANCE_ADD_PREFIX + collName + "." ) );
-            GlobalVariables.getErrorMap().removeFromErrorPath( Constants.MAINTENANCE_ADD_PREFIX + collName );
+            GlobalVariables.getErrorMap().addToErrorPath( RiceConstants.MAINTENANCE_ADD_PREFIX + collName );
+            cachedValues.putAll( FieldUtils.populateBusinessObjectFromMap( getNewCollectionLine( collName ), collectionValues, RiceConstants.MAINTENANCE_ADD_PREFIX + collName + "." ) );
+            GlobalVariables.getErrorMap().removeFromErrorPath( RiceConstants.MAINTENANCE_ADD_PREFIX + collName );
             cachedValues.putAll( populateNewSubCollectionLines( coll, subCollectionValues ) );
         }
         
@@ -788,9 +826,9 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 if ( LOG.isDebugEnabled() ) {
                     LOG.debug( "values for sub collection: " + collectionValues );
                 }
-                GlobalVariables.getErrorMap().addToErrorPath( Constants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
-                cachedValues.putAll( FieldUtils.populateBusinessObjectFromMap( getNewCollectionLine( parent+"."+collName ), collectionValues, Constants.MAINTENANCE_ADD_PREFIX + parent + "." + collName + "." ) );
-                GlobalVariables.getErrorMap().removeFromErrorPath( Constants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
+                GlobalVariables.getErrorMap().addToErrorPath( RiceConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
+                cachedValues.putAll( FieldUtils.populateBusinessObjectFromMap( getNewCollectionLine( parent+"."+collName ), collectionValues, RiceConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName + "." ) );
+                GlobalVariables.getErrorMap().removeFromErrorPath( RiceConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
             }
             
             cachedValues.putAll( populateNewSubCollectionLines( coll, fieldValues ) );

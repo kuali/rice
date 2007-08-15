@@ -16,14 +16,14 @@
 package org.kuali.rice.maintainable;
 
 import org.junit.Test;
-import org.kuali.rice.test.htmlunit.HtmlUnitUtil;
-import org.kuali.rice.testharness.KNSTestCase;
+import org.kuali.rice.TestBase;
+import org.kuali.rice.testharness.HtmlUnitUtil;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-public class BaseMaintainableTest extends KNSTestCase {
+public class BaseMaintainableTest extends TestBase {
     
 
     @Test public void testMaintainable() throws Exception {

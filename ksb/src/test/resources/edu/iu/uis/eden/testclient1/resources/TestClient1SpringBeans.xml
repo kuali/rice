@@ -70,7 +70,7 @@
 		<property name="modules">
 			<list>
 				<bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
-					<property name="serviceServletUrl" value="http://localhost:9910/TestClient1/remoting" />
+					<property name="serviceServletUrl" value="http://localhost:${ksb.client1.port}/TestClient1/remoting" />
 					<property name="cache">
 						<ref bean="cache" />
 					</property>

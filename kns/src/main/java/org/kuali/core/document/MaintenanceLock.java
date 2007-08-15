@@ -17,7 +17,7 @@ package org.kuali.core.document;
 
 import java.util.LinkedHashMap;
 
-import org.kuali.PropertyConstants;
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 
 /**
@@ -50,7 +50,7 @@ public class MaintenanceLock extends PersistableBusinessObjectBase {
     protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
         m.put("lockingRepresentation", this.lockingRepresentation);
-        m.put(PropertyConstants.DOCUMENT_NUMBER, getDocumentNumber());
+        m.put(RicePropertyConstants.DOCUMENT_NUMBER, getDocumentNumber());
         return m;
     }
 }

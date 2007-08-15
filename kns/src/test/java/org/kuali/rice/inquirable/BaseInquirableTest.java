@@ -16,12 +16,12 @@
 package org.kuali.rice.inquirable;
 
 import org.junit.Test;
-import org.kuali.rice.test.htmlunit.HtmlUnitUtil;
-import org.kuali.rice.testharness.KNSTestCase;
+import org.kuali.rice.TestBase;
+import org.kuali.rice.testharness.HtmlUnitUtil;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-public class BaseInquirableTest extends KNSTestCase {
+public class BaseInquirableTest extends TestBase {
     
     @Test public void testInquiryFetch() throws Exception {
         HtmlPage inquiryPage = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL + "/kr/inquiry.do?businessObjectClassName=edu.sampleu.travel.bo.TravelAccount&number=a1&methodToCall=start");

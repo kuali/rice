@@ -1,3 +1,18 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package edu.iu.uis.eden.messaging;
 
 import java.net.URL;
@@ -19,9 +34,13 @@ public class RemotedServiceRegistryTest extends KSBTestCase {
 	
 	private QName mockServiceName = new QName("KEW", "mockService");
 	private QName testTopicName = new QName("testAppsSharedTopic", "sharedTopic");
-	
-	//TODO: need to test that publishing a service with duplicate end point throws an exception
-	
+
+	@Override
+	public void setUp() throws Exception {
+	    super.setUp();
+	    
+	}
+
 	@SuppressWarnings("unchecked")
 	private ServiceDefinition addServiceToConfig() throws Exception {
 		List httpServices = (List) Core.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
@@ -55,8 +74,6 @@ public class RemotedServiceRegistryTest extends KSBTestCase {
 	 * Verifies when service is added to configuration that differs from the config in the db the change is reflected.
 	 */
 	@Test public void testServiceRefreshAddedService() throws Exception {
-		//stop the registry so we thread pool doesn't mess up the result
-		KSBServiceLocator.getThreadPool().stop();
 		int originalSize = KSBServiceLocator.getServiceDeployer().getPublishedServices().size(); 
 		ServiceDefinition mockServiceDef = getMockServiceDefinition();
 		KSBServiceLocator.getServiceDeployer().registerService(mockServiceDef, true);
@@ -66,8 +83,6 @@ public class RemotedServiceRegistryTest extends KSBTestCase {
 	}
 	
 	@Test public void testServiceRefreshServiceRemoved() throws Exception {
-		//stop the registry so we thread pool doesn't mess up the result
-		KSBServiceLocator.getThreadPool().stop();
 		int originalSize = KSBServiceLocator.getServiceDeployer().getPublishedServices().size(); 
 		removeServiceFromConfig();
 		((Runnable)KSBServiceLocator.getServiceDeployer()).run();

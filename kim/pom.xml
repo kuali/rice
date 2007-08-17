@@ -7,7 +7,7 @@
         <artifactId>rice</artifactId>
         <version>0.9.1-SNAPSHOT</version>
     </parent>
-    <artifactId>rice-ksb</artifactId>
+    <artifactId>rice-kim</artifactId>
 	
 	<dependencies>
 		<dependency>

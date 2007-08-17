@@ -1,3 +1,6 @@
+/****************************/
+/* KNS TABLES               */
+/****************************/
 CREATE SEQUENCE LOOKUP_RESULT_SEQUENCE_NBR_SEQ INCREMENT BY 1 START WITH 2000
 /
 CREATE SEQUENCE NTE_ID_SEQ INCREMENT BY 1 START WITH 2000
@@ -295,6 +298,10 @@ ALTER TABLE SH_NTE_T
   REFERENCES SH_NTE_TYP_T (
         NTE_TYP_CD ))
 /
+
+/****************************/
+/* KSB AND KEW TABLES       */
+/****************************/
 CREATE SEQUENCE BAM_PARAM_SEQ INCREMENT BY 1 START WITH 2000
 /
 CREATE SEQUENCE BAM_SEQ INCREMENT BY 1 START WITH 2000
@@ -1469,78 +1476,415 @@ create index idx_kr_qrtz_ft_job_stateful on kr_qrtz_fired_triggers(IS_STATEFUL)
 /
 create index idx_kr_qrtz_ft_job_req_recov on kr_qrtz_fired_triggers(REQUESTS_RECOVERY)
 /
-INSERT INTO FS_PARM_SEC_T values ('SYSTEM', '1', 1, 'WorkflowAdmin', 'Desc')
+
+/****************************/
+/* KIM TABLES               */
+/****************************/
+CREATE TABLE APPLICATIONS (
+        ID NUMBER(8) NOT NULL,
+        NAME VARCHAR2(500) NOT NULL,
+        DESCRIPTION VARCHAR2(4000),
+		OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, 
+        VER_NBR NUMBER(8) DEFAULT 1 NOT NULL, 
+        CONSTRAINT APPLICATION_PK PRIMARY KEY(ID) 
+)
 /
-INSERT INTO FS_PARM_SEC_T values ('CoreMaintenanceEDoc', '2', 1, 'WorkflowAdmin', 'Desc')
+CREATE TABLE APP_SPONSRD_USER_ATTRIB_DEFS (
+        ID NUMBER(8) NOT NULL,
+        APPLICATION_ID NUMBER(8) NOT NULL,
+        ATTRIBUTE_NAME VARCHAR2(500) NOT NULL,
+        ATTRIBUTE_TYPE_ID NUMBER(8) NOT NULL,
+        DESCRIPTION VARCHAR(4000),
+		OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, 
+        VER_NBR NUMBER(8) DEFAULT 1 NOT NULL, 
+        CONSTRAINT APP_SPONSRD_USER_ATTR_PK PRIMARY KEY (ID)
+)
 /
-INSERT INTO FS_PARM_T VALUES('SYSTEM','HELP_URL','07D71A3FF0D604D8E043814FD88104D8','1','http://www.fms.indiana.edu/fis/home.asp','','N', 'MC')
+CREATE TABLE ROLES (
+        ID NUMBER(8) NOT NULL,
+        NAME VARCHAR2(500) NOT NULL,
+        DESCRIPTION VARCHAR2(4000),
+		OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, 
+        VER_NBR NUMBER(8) DEFAULT 1 NOT NULL, 
+        CONSTRAINT ROLES_PK PRIMARY KEY (ID)
+)
 /
-INSERT INTO FS_PARM_T VALUES('SYSTEM','lookup.results.limit','1AFCED30C07B2070E043814FD8812070','0','200','Limit of results returned in a lookup query','N', 'MC')
+CREATE TABLE PERMISSIONS (
+        ID NUMBER(8) NOT NULL,
+        NAME VARCHAR2(500) NOT NULL,
+        DESCRIPTION VARCHAR2(4000),
+		APPLICATION_ID NUMBER(8) NOT NULL,
+		OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, 
+        VER_NBR NUMBER(8) DEFAULT 1 NOT NULL, 
+        CONSTRAINT PERMISSIONS_PK PRIMARY KEY (ID)
+)
 /
-INSERT INTO FS_PARM_T VALUES('SYSTEM','demonstrationEncryptionCheck_FLAG','1C3D291AAD51A08CE043814FD881A08C','1','Y','Flag for enabling/disabling the demonstration encryption check.','N', 'MC')
+CREATE TABLE ROLES_PERMISSIONS (
+        ROLE_ID NUMBER(8) NOT NULL,
+        PERMISSION_ID NUMBER(8) NOT NULL,
+		OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, 
+        VER_NBR NUMBER(8) DEFAULT 1 NOT NULL, 
+        CONSTRAINT ROLES_PERMISSIONS_PK PRIMARY KEY (ROLE_ID, PERMISSION_ID)
+)
 /
-INSERT INTO FS_PARM_T VALUES('SYSTEM','loadDataFileStep_USER','1F75EFB795DFB050E043814FD881B050','1','KULUSER','determines who the loadDataFileStep of pcdo_batch.sh will run as','N', 'MC')
+CREATE TABLE ROLES_USERS (
+        ROLE_ID NUMBER(8) NOT NULL,
+        USER_ID NUMBER(8) NOT NULL,
+		OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, 
+        VER_NBR NUMBER(8) DEFAULT 1 NOT NULL, 
+        CONSTRAINT ROLES_USERS_PK PRIMARY KEY (ROLE_ID, USER_ID)
+)
 /
-insert into FS_PARM_T values ('CoreMaintenanceEDoc','Kuali.Document.RoutingReport.Workgroup','263A097060A3F152E043814FD881F152','1','WorkflowAdmin','Workgroup which can perform the route report on documents.','N', 'MC')
+CREATE TABLE ROLE_ATTRIBUTES (
+        ID NUMBER(8) NOT NULL,
+        ROLE_ID NUMBER(8) NOT NULL,
+        ATTRIBUTE_NAME VARCHAR2(500) NOT NULL,
+        ATTRIBUTE_TYPE_ID NUMBER(8) NOT NULL,
+        ATTRIBUTE_VALUE VARCHAR(4000),
+		OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, 
+        VER_NBR NUMBER(8) DEFAULT 1 NOT NULL, 
+        CONSTRAINT ROLE_ATTRIBUTES_PK PRIMARY KEY (ID)
+)
 /
-insert into FS_PARM_T values ('CoreMaintenanceEDoc','CASPasswordEnabled','26C8E6D6E77F40B4E043814FD88140B4','1','N','Whether the built in CAS implementation should ask for a password. The password will be verified against the Universal User Table.','N', 'MC')
+CREATE TABLE GROUPS (
+        ID NUMBER(8) NOT NULL,
+        NAME VARCHAR2(500) NOT NULL,
+        DESCRIPTION VARCHAR2(4000),
+		OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, 
+        VER_NBR NUMBER(8) DEFAULT 1 NOT NULL, 
+        CONSTRAINT GROUPS_PK PRIMARY KEY (ID)
+)
 /
-insert into FS_PARM_T values ('CoreMaintenanceEDoc','UniversalUser.EditWorkgroup','2409BD6AB4CA800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can edit the universal user table.','N', 'MC')
+CREATE TABLE GROUPS_USERS (
+        GROUP_ID NUMBER(8) NOT NULL,
+        USER_ID NUMBER(8) NOT NULL,
+		OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, 
+        VER_NBR NUMBER(8) DEFAULT 1 NOT NULL, 
+        CONSTRAINT GROUPS_USERS_PK PRIMARY KEY (GROUP_ID, USER_ID)
+)
 /
-insert into FS_PARM_T values ('CoreMaintenanceEDoc','Workflow.Exception.Workgroup','2409BD6AB4CB800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can perform functions on documents in exception routing status.','N', 'MC')
+CREATE TABLE ROLES_GROUPS (
+        ROLE_ID NUMBER(8) NOT NULL,
+        GROUP_ID NUMBER(8) NOT NULL, 
+		OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, 
+        VER_NBR NUMBER(8) DEFAULT 1 NOT NULL, 
+        CONSTRAINT ROLES_GROUPS_PK PRIMARY KEY (ROLE_ID, GROUP_ID)
+)
 /
-insert into FS_PARM_T values ('CoreMaintenanceEDoc','Kuali.Supervisor.Workgroup','2409BD6AB4CC800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can perform almost any function within Kuali.','N', 'MC')
+CREATE TABLE GROUP_ATTRIBUTES (
+        ID NUMBER(8) NOT NULL,
+        GROUP_ID NUMBER(8) NOT NULL,
+        ATTRIBUTE_NAME VARCHAR2(500) NOT NULL,
+        ATTRIBUTE_TYPE_ID NUMBER(8) NOT NULL,
+        ATTRIBUTE_VALUES VARCHAR2(4000),
+		OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, 
+        VER_NBR NUMBER(8) DEFAULT 1 NOT NULL, 
+        CONSTRAINT GROUP_ATTRIBUTES_PK PRIMARY KEY (ID)
+)
 /
-insert into EN_APPL_CNST_T values ('Feature.CheckRouteLogAuthentication.CheckFuture', 'true', 1)
+CREATE TABLE USERS (
+        ID NUMBER(8) NOT NULL,
+        USERNAME VARCHAR2(500) NOT NULL,
+        PASSWORD VARCHAR2(500),
+		OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, 
+        VER_NBR NUMBER(8) DEFAULT 1 NOT NULL, 
+        CONSTRAINT USERS_PK PRIMARY KEY (ID)
+)
 /
-insert into EN_APPL_CNST_T values ('RouteQueue.maxRetryAttempts', '0', 1)
+CREATE TABLE USER_ATTRIBUTES (
+        ID NUMBER(8) NOT NULL,
+        USER_ID NUMBER(8) NOT NULL,
+        SPONSOR_APPLICATION_ID NUMBER(8) NOT NULL,
+        ATTRIBUTE_NAME VARCHAR2(500) NOT NULL,
+        ATTRIBUTE_TYPE_ID NUMBER(8) NOT NULL,
+        ATTRIBUTE_VALUES VARCHAR2(4000),
+		OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, 
+        VER_NBR NUMBER(8) DEFAULT 1 NOT NULL, 
+        CONSTRAINT USER_ATTRIBUTES_PK PRIMARY KEY (ID)
+)
 /
-insert into EN_APPL_CNST_T values ('BAM', 'true', 1)
+CREATE TABLE ATTRIBUTE_TYPES (
+        ID NUMBER(8) NOT NULL,
+        NAME VARCHAR2(500) NOT NULL,
+        DESCRIPTION VARCHAR2(4000),
+		OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, 
+        VER_NBR NUMBER(8) DEFAULT 1 NOT NULL, 
+        CONSTRAINT ATTRIBUTE_TYPES_PK PRIMARY KEY (ID)
+)
 /
-insert into EN_APPL_CNST_T values ('Security.HttpInvoker.SignMessages', 'true', 1)
+
+CREATE SEQUENCE SEQ_APPLICATIONS_ID INCREMENT BY 1 START WITH 1000
 /
-insert into EN_APPL_CNST_T values ('Workflow.AdminWorkgroup', 'WorkflowAdmin', 1)
+CREATE SEQUENCE SEQ_APP_SPONSRD_USER_ATTR_ID INCREMENT BY 1 START WITH 1000
 /
-insert into EN_APPL_CNST_T values ('Routing.ImmediateExceptionRouting', 'true', 1)
+CREATE SEQUENCE SEQ_ROLES_ID INCREMENT BY 1 START WITH 1000
 /
-insert into EN_APPL_CNST_T values ('Workgroup.IsRouteLogPopup', 'false', 0)
+CREATE SEQUENCE SEQ_PERMISSIONS_ID INCREMENT BY 1 START WITH 1000
 /
-insert into EN_APPL_CNST_T values ('DocumentType.IsRouteLogPopup', 'false', 0)
+CREATE SEQUENCE SEQ_ROLE_ATTRIBUTES_ID INCREMENT BY 1 START WITH 1000
 /
-insert into EN_APPL_CNST_T values ('DocumentSearch.IsRouteLogPopup', 'true', 0)
+CREATE SEQUENCE SEQ_GROUPS_ID INCREMENT BY 1 START WITH 1000
 /
-insert into EN_APPL_CNST_T values ('DocumentSearch.IsDocumentPopup', 'true', 0)
+CREATE SEQUENCE SEQ_GROUP_ATTRIBUTES_ID INCREMENT BY 1 START WITH 1000
 /
-insert into EN_APPL_CNST_T values ('Config.Backdoor.TargetFrameName', 'iframe_51148', 0)
+CREATE SEQUENCE SEQ_USERS_ID INCREMENT BY 1 START WITH 1000
 /
-insert into FP_DOC_STATUS_T values ('A',	'2E0671732A684002E043814FD8814002',	1,	'Approved')
+CREATE SEQUENCE SEQ_USER_ATTRIBUTES_ID INCREMENT BY 1 START WITH 1000
 /
-insert into FP_DOC_STATUS_T values ('C',	'2E0671732A694002E043814FD8814002',	1,	'Cancelled')
+CREATE SEQUENCE SEQ_ATTRIBUTE_TYPES_ID INCREMENT BY 1 START WITH 1000
 /
-insert into FP_DOC_STATUS_T values ('E',	'2E0671732A6A4002E043814FD8814002',	1,	'Extracted')
+
+ALTER TABLE APPLICATIONS 
+ADD CONSTRAINT APPLICATIONS_UK1 UNIQUE
+(
+NAME
+) ENABLE
 /
-insert into FP_DOC_STATUS_T values ('I',	'2E0671732A6B4002E043814FD8814002',	1,	'In Process')
+ALTER TABLE APP_SPONSRD_USER_ATTRIB_DEFS 
+ADD CONSTRAINT APP_SPONSRD_USER_ATTR_UK1 UNIQUE
+(
+APPLICATION_ID,
+ATTRIBUTE_NAME
+) ENABLE
 /
-insert into FP_DOC_STATUS_T values ('II',	'2E0671732A6C4002E043814FD8814002',	1,	'In Process')
+ALTER TABLE ROLES 
+ADD CONSTRAINT ROLES_UK1 UNIQUE
+(
+NAME
+) ENABLE
 /
-insert into FP_DOC_STATUS_T values ('O',	'2E0671732A6D4002E043814FD8814002',	1,	'Pend Org')
+ALTER TABLE PERMISSIONS 
+ADD CONSTRAINT PERMISSIONS_UK1 UNIQUE
+(
+NAME,
+APPLICATION_ID
+) ENABLE
 /
-insert into FP_DOC_STATUS_T values ('OO',	'2E0671732A6E4002E043814FD8814002',	1,	'Pend Org')
+ALTER TABLE ROLE_ATTRIBUTES 
+ADD CONSTRAINT ROLE_ATTRIBUTES_UK1 UNIQUE
+(
+ROLE_ID,
+ATTRIBUTE_NAME
+) ENABLE
 /
-insert into FP_DOC_STATUS_T values ('P',	'2E0671732A6F4002E043814FD8814002',	1,	'Pend Acct')
+ALTER TABLE GROUPS 
+ADD CONSTRAINT GROUPS_UK1 UNIQUE
+(
+NAME
+) ENABLE
 /
-insert into FP_DOC_STATUS_T values ('PP',	'2E0671732A704002E043814FD8814002',	1,	'Pend Acct')
+ALTER TABLE GROUP_ATTRIBUTES
+ADD CONSTRAINT GROUP_ATTRIBUTES_UK1 UNIQUE
+(
+GROUP_ID,
+ATTRIBUTE_NAME
+) ENABLE
 /
-insert into FP_DOC_STATUS_T values ('R',	'2E0671732A714002E043814FD8814002',	1,	'Pend Specl')
+ALTER TABLE USERS
+ADD CONSTRAINT USERS_UK1 UNIQUE
+(
+USERNAME
+) ENABLE
 /
-insert into FP_DOC_STATUS_T values ('RR',	'2E0671732A724002E043814FD8814002',	1,	'Pend Specl')
+ALTER TABLE USER_ATTRIBUTES
+ADD CONSTRAINT USER_ATTRIBUTES_UK1 UNIQUE
+(
+USER_ID,
+SPONSOR_APPLICATION_ID,
+ATTRIBUTE_NAME
+) ENABLE
 /
-insert into FP_DOC_STATUS_T values ('S',	'2E0671732A734002E043814FD8814002',	1,	'Pend CG')
+ALTER TABLE ATTRIBUTE_TYPES
+ADD CONSTRAINT ATTRIBUTE_TYPES_UK1 UNIQUE
+(
+NAME
+) ENABLE
 /
-insert into FP_DOC_STATUS_T values ('V',	'2E0671732A744002E043814FD8814002',	1,	'Validation')
+
+ALTER TABLE APP_SPONSRD_USER_ATTRIB_DEFS
+ADD CONSTRAINT APP_SPONSRD_USER_ATTR_FK1 FOREIGN KEY
+(
+APPLICATION_ID
+)
+REFERENCES APPLICATIONS
+(
+ID
+) ENABLE
 /
-insert into FP_DOC_STATUS_T values ('Q',	'2E0671732A754002E043814FD8814002',	1,	'Doc Specif')
+ALTER TABLE APP_SPONSRD_USER_ATTRIB_DEFS
+ADD CONSTRAINT APP_SPONSRD_USER_ATTR_FK2 FOREIGN KEY
+(
+ATTRIBUTE_TYPE_ID
+)
+REFERENCES ATTRIBUTE_TYPES
+(
+ID
+) ENABLE
 /
+ALTER TABLE PERMISSIONS
+ADD CONSTRAINT PERMISSIONS_FK1 FOREIGN KEY
+(
+APPLICATION_ID
+)
+REFERENCES APPLICATIONS
+(
+ID
+) ENABLE
+/
+ALTER TABLE ROLES_PERMISSIONS
+ADD CONSTRAINT ROLES_PERMISSIONS_FK1 FOREIGN KEY
+(
+ROLE_ID
+)
+REFERENCES ROLES
+(
+ID
+) ENABLE
+/
+ALTER TABLE ROLES_PERMISSIONS
+ADD CONSTRAINT ROLES_PERMISSIONS_FK2 FOREIGN KEY
+(
+PERMISSION_ID
+)
+REFERENCES PERMISSIONS
+(
+ID
+) ENABLE
+/
+ALTER TABLE ROLES_USERS
+ADD CONSTRAINT ROLES_USERS_FK1 FOREIGN KEY
+(
+ROLE_ID
+)
+REFERENCES ROLES
+(
+ID
+) ENABLE
+/
+ALTER TABLE ROLES_USERS
+ADD CONSTRAINT ROLES_USERS_FK2 FOREIGN KEY
+(
+USER_ID
+)
+REFERENCES USERS
+(
+ID
+) ENABLE
+/
+ALTER TABLE ROLE_ATTRIBUTES
+ADD CONSTRAINT ROLE_ATTRIBUTES_FK1 FOREIGN KEY
+(
+ROLE_ID
+)
+REFERENCES ROLES
+(
+ID
+) ENABLE
+/
+ALTER TABLE ROLE_ATTRIBUTES
+ADD CONSTRAINT ROLE_ATTRIBUTES_FK2 FOREIGN KEY
+(
+ATTRIBUTE_TYPE_ID
+)
+REFERENCES ATTRIBUTE_TYPES
+(
+ID
+) ENABLE
+/
+ALTER TABLE GROUPS_USERS
+ADD CONSTRAINT GROUPS_USERS_FK1 FOREIGN KEY
+(
+GROUP_ID
+)
+REFERENCES GROUPS
+(
+ID
+) ENABLE
+/
+ALTER TABLE GROUPS_USERS
+ADD CONSTRAINT GROUPS_USERS_FK2 FOREIGN KEY
+(
+USER_ID
+)
+REFERENCES USERS
+(
+ID
+) ENABLE
+/
+ALTER TABLE ROLES_GROUPS
+ADD CONSTRAINT ROLES_GROUPS_FK1 FOREIGN KEY
+(
+GROUP_ID
+)
+REFERENCES GROUPS
+(
+ID
+) ENABLE
+/
+ALTER TABLE ROLES_GROUPS
+ADD CONSTRAINT ROLES_GROUPS_FK2 FOREIGN KEY
+(
+ROLE_ID
+)
+REFERENCES ROLES
+(
+ID
+) ENABLE
+/
+ALTER TABLE GROUP_ATTRIBUTES
+ADD CONSTRAINT GROUP_ATTRIBUTES_FK1 FOREIGN KEY
+(
+GROUP_ID
+)
+REFERENCES GROUPS
+(
+ID
+) ENABLE
+/
+ALTER TABLE GROUP_ATTRIBUTES
+ADD CONSTRAINT GROUP_ATTRIBUTES_FK2 FOREIGN KEY
+(
+ATTRIBUTE_TYPE_ID
+)
+REFERENCES ATTRIBUTE_TYPES
+(
+ID
+) ENABLE
+/
+ALTER TABLE USER_ATTRIBUTES
+ADD CONSTRAINT USER_ATTRIBUTES_FK1 FOREIGN KEY
+(
+USER_ID
+)
+REFERENCES USERS
+(
+ID
+) ENABLE
+/
+ALTER TABLE USER_ATTRIBUTES
+ADD CONSTRAINT USER_ATTRIBUTES_FK2 FOREIGN KEY
+(
+ATTRIBUTE_TYPE_ID
+)
+REFERENCES ATTRIBUTE_TYPES
+(
+ID
+) ENABLE
+/
+ALTER TABLE USER_ATTRIBUTES
+ADD CONSTRAINT USER_ATTRIBUTES_FK3 FOREIGN KEY
+(
+SPONSOR_APPLICATION_ID
+)
+REFERENCES APPLICATIONS
+(
+ID
+) ENABLE
+/
+
+/****************************/
+/* TRAVEL SAMPLE APP TABLES */
+/****************************/
 create table trv_doc_2 (
         FDOC_NBR                       VARCHAR2(14) CONSTRAINT FP_INT_BILL_DOC_TN1 NOT NULL,
         OBJ_ID                         VARCHAR2(36) DEFAULT SYS_GUID() CONSTRAINT FP_INT_BILL_DOC_TN2 NOT NULL,
@@ -1606,34 +1950,56 @@ CREATE SEQUENCE SEQ_TRAVEL_FO_ID INCREMENT BY 1 START WITH 1000
 alter table trv_acct add constraint trv_acct_fk1 foreign key(acct_fo_id) references trv_acct_fo(acct_fo_id) 
 /
 
+/****************************/
+/* BOOTSTRAP DATA           */
+/****************************/
+/* KNS DATA */
+INSERT INTO FS_PARM_SEC_T values ('SYSTEM', '1', 1, 'WorkflowAdmin', 'Desc')
+/
+INSERT INTO FS_PARM_SEC_T values ('CoreMaintenanceEDoc', '2', 1, 'WorkflowAdmin', 'Desc')
+/
+INSERT INTO FS_PARM_T VALUES('SYSTEM','HELP_URL','07D71A3FF0D604D8E043814FD88104D8','1','http://www.fms.indiana.edu/fis/home.asp','','N', 'MC')
+/
+INSERT INTO FS_PARM_T VALUES('SYSTEM','lookup.results.limit','1AFCED30C07B2070E043814FD8812070','0','200','Limit of results returned in a lookup query','N', 'MC')
+/
+INSERT INTO FS_PARM_T VALUES('SYSTEM','demonstrationEncryptionCheck_FLAG','1C3D291AAD51A08CE043814FD881A08C','1','Y','Flag for enabling/disabling the demonstration encryption check.','N', 'MC')
+/
+INSERT INTO FS_PARM_T VALUES('SYSTEM','loadDataFileStep_USER','1F75EFB795DFB050E043814FD881B050','1','KULUSER','determines who the loadDataFileStep of pcdo_batch.sh will run as','N', 'MC')
+/
+insert into FS_PARM_T values ('CoreMaintenanceEDoc','Kuali.Document.RoutingReport.Workgroup','263A097060A3F152E043814FD881F152','1','WorkflowAdmin','Workgroup which can perform the route report on documents.','N', 'MC')
+/
+insert into FS_PARM_T values ('CoreMaintenanceEDoc','CASPasswordEnabled','26C8E6D6E77F40B4E043814FD88140B4','1','N','Whether the built in CAS implementation should ask for a password. The password will be verified against the Universal User Table.','N', 'MC')
+/
+insert into FS_PARM_T values ('CoreMaintenanceEDoc','UniversalUser.EditWorkgroup','2409BD6AB4CA800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can edit the universal user table.','N', 'MC')
+/
+insert into FS_PARM_T values ('CoreMaintenanceEDoc','Workflow.Exception.Workgroup','2409BD6AB4CB800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can perform functions on documents in exception routing status.','N', 'MC')
+/
+insert into FS_PARM_T values ('CoreMaintenanceEDoc','Kuali.Supervisor.Workgroup','2409BD6AB4CC800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can perform almost any function within Kuali.','N', 'MC')
+/
+insert into SH_NTE_TYP_T values ('BO', '2D3C44FE49415102E043814FD8815102',	1,	'DOCUMENT BUSINESS OBJECT', 'Y')
+/
+insert into SH_NTE_TYP_T values ('DH', '2D3C44FE49425102E043814FD8815102',	1,	'DOCUMENT HEADER', 'Y')
+/
+
+/* SAMPLE TRAVEL APP DATA */
 insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (1, 'fred') 
 /
 insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (2, 'fran') 
 /
 insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (3, 'frank') 
 /
-
 insert into TRV_ACCT values ('a1', 'a1', 'CAT', 1) 
 /
 insert into TRV_ACCT values ('a2', 'a2', 'EAT', 2) 
 /
 insert into TRV_ACCT values ('a3', 'a3', 'IAT', 3) 
 /
-
 insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a1') 
 /
 insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a2') 
 /
 insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a3') 
 /
-
-insert into en_usr_t values ('quickstart','quickstart','quickstart','quickstart','quickstart@school.edu','quickstart','quickstart','quickstart',to_date('01/01/2000', 'dd/mm/yyyy'),to_date('01/01/2100', 'dd/mm/yyyy'),0,0) 
-/
-insert into en_wrkgrp_t values (1,1,'WorkflowAdmin',1,'W','Workflow Administrator Workgroup',1,null,0) 
-/
-insert into EN_WRKGRP_MBR_T values ('quickstart',1,'U',1,0) 
-/
-
 INSERT INTO FP_DOC_GROUP_T VALUES ('TR', '054EDFB3B260C8D2E043814FD881C8D2', 1,	'Travel Documents', null)
 /
 INSERT INTO FP_DOC_GROUP_T VALUES ('KR', '054EDFB3B260C8D2E043816FD881C8D2', 1,	'Kuali Rice', null)
@@ -1650,18 +2016,12 @@ insert into FP_DOC_TYPE_T values ('PARM', '1A6FRB253342607EE043814FD889607E', 1,
 /
 insert into FP_DOC_TYPE_T values ('BR', '1A6FRB253343337EE043814FD889607E', 1, 'TR', 'Biz Rules', 'N', 'Y', 'N', 0, 'N', 'N') 
 /
-insert into SH_NTE_TYP_T values ('BO', '2D3C44FE49415102E043814FD8815102',	1,	'DOCUMENT BUSINESS OBJECT', 'Y')
-/
-insert into SH_NTE_TYP_T values ('DH', '2D3C44FE49425102E043814FD8815102',	1,	'DOCUMENT HEADER', 'Y')
-/
-
 insert into TRV_ACCT_EXT values ('a1', 'IAT') 
 /
 insert into TRV_ACCT_EXT values ('a2', 'EAT') 
 /
 insert into TRV_ACCT_EXT values ('a3', 'IAT') 
 /
-
 insert into TRV_ACCT_TYPE values ('CAT', 'Clearing Account Type') 
 /
 insert into TRV_ACCT_TYPE values ('EAT', 'Expense Account Type') 
@@ -1669,6 +2029,63 @@ insert into TRV_ACCT_TYPE values ('EAT', 'Expense Account Type')
 insert into TRV_ACCT_TYPE values ('IAT', ' Income Account Type') 
 /
 
+/* KEW AND KSB DATA */
+insert into EN_APPL_CNST_T values ('Feature.CheckRouteLogAuthentication.CheckFuture', 'true', 1)
+/
+insert into EN_APPL_CNST_T values ('RouteQueue.maxRetryAttempts', '0', 1)
+/
+insert into EN_APPL_CNST_T values ('BAM', 'true', 1)
+/
+insert into EN_APPL_CNST_T values ('Security.HttpInvoker.SignMessages', 'true', 1)
+/
+insert into EN_APPL_CNST_T values ('Workflow.AdminWorkgroup', 'WorkflowAdmin', 1)
+/
+insert into EN_APPL_CNST_T values ('Routing.ImmediateExceptionRouting', 'true', 1)
+/
+insert into EN_APPL_CNST_T values ('Workgroup.IsRouteLogPopup', 'false', 0)
+/
+insert into EN_APPL_CNST_T values ('DocumentType.IsRouteLogPopup', 'false', 0)
+/
+insert into EN_APPL_CNST_T values ('DocumentSearch.IsRouteLogPopup', 'true', 0)
+/
+insert into EN_APPL_CNST_T values ('DocumentSearch.IsDocumentPopup', 'true', 0)
+/
+insert into EN_APPL_CNST_T values ('Config.Backdoor.TargetFrameName', 'iframe_51148', 0)
+/
+insert into FP_DOC_STATUS_T values ('A',	'2E0671732A684002E043814FD8814002',	1,	'Approved')
+/
+insert into FP_DOC_STATUS_T values ('C',	'2E0671732A694002E043814FD8814002',	1,	'Cancelled')
+/
+insert into FP_DOC_STATUS_T values ('E',	'2E0671732A6A4002E043814FD8814002',	1,	'Extracted')
+/
+insert into FP_DOC_STATUS_T values ('I',	'2E0671732A6B4002E043814FD8814002',	1,	'In Process')
+/
+insert into FP_DOC_STATUS_T values ('II',	'2E0671732A6C4002E043814FD8814002',	1,	'In Process')
+/
+insert into FP_DOC_STATUS_T values ('O',	'2E0671732A6D4002E043814FD8814002',	1,	'Pend Org')
+/
+insert into FP_DOC_STATUS_T values ('OO',	'2E0671732A6E4002E043814FD8814002',	1,	'Pend Org')
+/
+insert into FP_DOC_STATUS_T values ('P',	'2E0671732A6F4002E043814FD8814002',	1,	'Pend Acct')
+/
+insert into FP_DOC_STATUS_T values ('PP',	'2E0671732A704002E043814FD8814002',	1,	'Pend Acct')
+/
+insert into FP_DOC_STATUS_T values ('R',	'2E0671732A714002E043814FD8814002',	1,	'Pend Specl')
+/
+insert into FP_DOC_STATUS_T values ('RR',	'2E0671732A724002E043814FD8814002',	1,	'Pend Specl')
+/
+insert into FP_DOC_STATUS_T values ('S',	'2E0671732A734002E043814FD8814002',	1,	'Pend CG')
+/
+insert into FP_DOC_STATUS_T values ('V',	'2E0671732A744002E043814FD8814002',	1,	'Validation')
+/
+insert into FP_DOC_STATUS_T values ('Q',	'2E0671732A754002E043814FD8814002',	1,	'Doc Specif')
+/
+insert into en_usr_t values ('quickstart','quickstart','quickstart','quickstart','quickstart@school.edu','quickstart','quickstart','quickstart',to_date('01/01/2000', 'dd/mm/yyyy'),to_date('01/01/2100', 'dd/mm/yyyy'),0,0) 
+/
+insert into en_wrkgrp_t values (1,1,'WorkflowAdmin',1,'W','Workflow Administrator Workgroup',1,null,0) 
+/
+insert into EN_WRKGRP_MBR_T values ('quickstart',1,'U',1,0) 
+/
 INSERT INTO kr_qrtz_locks values('TRIGGER_ACCESS')
 /
 INSERT INTO kr_qrtz_locks values('JOB_ACCESS')
@@ -1680,6 +2097,10 @@ INSERT INTO kr_qrtz_locks values('STATE_ACCESS')
 INSERT INTO kr_qrtz_locks values('MISFIRE_ACCESS')
 /
 
-
+/* KIM DATA */
+INSERT INTO APPLICATIONS (ID, NAME, DESCRIPTION) VALUES (1, 'KIM', 'This record represents the actual KIM system.') 
+/
+INSERT INTO USERS (ID, USERNAME, PASSWORD) VALUES (1, 'admin', 'admin')
+/
 commit 
 /

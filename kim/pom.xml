@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<name>kim</name>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.kuali.rice</groupId>
+        <artifactId>rice</artifactId>
+        <version>0.9.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>rice-ksb</artifactId>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-kns</artifactId>
+			<version>0.9.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+</project>

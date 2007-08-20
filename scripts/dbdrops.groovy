@@ -1,3 +1,4 @@
+
 // Just add comma separated values for ignored DDL
 ignores = ['FS_UNIVERSAL_USR_T']
 
@@ -11,6 +12,13 @@ createdrops(PROJECT_DIR + '/kns/src/main/config/ddl/tables')
 // Do the KEW DDL
 createdrops(PROJECT_DIR + '/kew/src/main/config/ddl/sequences')
 createdrops(PROJECT_DIR + '/kew/src/main/config/ddl/tables')
+
+// Do the KSB DDL Drops
+createdrops(PROJECT_DIR + '/ksb/src/main/config/ddl/tables')
+
+// Do the KIM DDL
+createdrops(PROJECT_DIR + '/kim/src/main/config/ddl/sequences')
+createdrops(PROJECT_DIR + '/kim/src/main/config/ddl/tables')
 
 System.exit(0)
 

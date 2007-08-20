@@ -37,8 +37,13 @@ createdrops(db, PROJECT_DIR + '/kns/src/main/config/ddl/tables')
 createdrops(db, PROJECT_DIR + '/kew/src/main/config/ddl/sequences')
 createdrops(db, PROJECT_DIR + '/kew/src/main/config/ddl/tables')
 
-// Do the KSB DDL Drops (at this point it only quartz tables)
-createdrops(db, PROJECT_DIR + '/ksb/src/main/config/ddl')
+// Do the KSB DDL Drops
+createdrops(db, PROJECT_DIR + '/ksb/src/main/config/ddl/tables')
+
+// Do the KIM DDL Drops
+createdrops(db, PROJECT_DIR + '/kim/src/main/config/ddl/sequences')
+createdrops(db, PROJECT_DIR + '/kim/src/main/config/ddl/tables')
+
 
 merge(db, PROJECT_DIR + '/kns/src/main/config/sql/rice_sample_app_drops.sql')
 
@@ -60,8 +65,16 @@ mergeandstrip(db, PROJECT_DIR + '/kew/src/main/config/ddl/tables')
 mergeandstrip(db, PROJECT_DIR + '/kew/src/main/config/ddl/indexes')
 mergeandstrip(db, PROJECT_DIR + '/kew/src/main/config/ddl/constraints')
 
-// Do the KSB DDL Drops (at this point it only quartz tables)
-mergeandstrip(db, PROJECT_DIR + '/ksb/src/main/config/ddl')
+// Do the KSB DDL Creates
+mergeandstrip(db, PROJECT_DIR + '/ksb/src/main/config/ddl/tables')
+mergeandstrip(db, PROJECT_DIR + '/ksb/src/main/config/ddl/indexes')
+mergeandstrip(db, PROJECT_DIR + '/ksb/src/main/config/ddl/constraints')
+
+// Do the KIM DDL Creates
+mergeandstrip(db, PROJECT_DIR + '/kim/src/main/config/ddl/sequences')
+mergeandstrip(db, PROJECT_DIR + '/kim/src/main/config/ddl/tables')
+mergeandstrip(db, PROJECT_DIR + '/kim/src/main/config/ddl/indexes')
+mergeandstrip(db, PROJECT_DIR + '/kim/src/main/config/ddl/constraints')
 
 merge(db, PROJECT_DIR + '/kns/src/main/config/sql/rice_data.sql')
 merge(db, PROJECT_DIR + '/kns/src/main/config/sql/rice_sample_app.sql')

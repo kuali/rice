@@ -70,3 +70,17 @@ insert into FP_DOC_STATUS_T values ('V',	'2E0671732A744002E043814FD8814002',	1,	
 /
 insert into FP_DOC_STATUS_T values ('Q',	'2E0671732A754002E043814FD8814002',	1,	'Doc Specif')
 /
+INSERT INTO kr_qrtz_locks values('TRIGGER_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('JOB_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('CALENDAR_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('STATE_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('MISFIRE_ACCESS')
+/
+INSERT INTO APPLICATIONS_T (ID, NAME, DESCRIPTION) VALUES (1, 'KIM', 'This record represents the actual KIM system and must always be loaded by default in order for the system to work properly.') 
+/
+INSERT INTO USERS_T (ID, USERNAME, PASSWORD) VALUES (1, 'admin', 'admin')
+/

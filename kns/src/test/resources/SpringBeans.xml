@@ -63,6 +63,8 @@
 						</list>
 					</property>
 				</bean>
+				<bean class="org.kuali.rice.kim.config.KIMConfigurer">
+				</bean>
 			</list>
 		</property>
 	</bean>

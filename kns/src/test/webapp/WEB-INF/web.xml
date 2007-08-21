@@ -51,6 +51,10 @@
           <param-name>config/ksb</param-name>
           <param-value>/ksb/WEB-INF/struts-config.xml</param-value>
         </init-param>
+        <init-param>
+          <param-name>config/kim</param-name>
+          <param-value>/kim/WEB-INF/struts-config.xml</param-value>
+        </init-param>
 		<init-param>
 			<param-name>debug</param-name>
 			<param-value>3</param-value>

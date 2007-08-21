@@ -14,7 +14,7 @@ public class Application extends BusinessObjectBase {
 	private Long id;
 	private String name;
 	private String description;
-	private List<ApplicationSponsoredUserAttributeDefinition> applicationSponsoredUserAttributeDefinitions;
+	private List<ApplicationSponsoredPersonAttributeDefinition> applicationSponsoredPersonAttributeDefinitions;
 	private List<Permission> permissions;
 	
 	public String getDescription() {
@@ -49,12 +49,12 @@ public class Application extends BusinessObjectBase {
 		this.permissions = permissions;
 	}
 
-	public List<ApplicationSponsoredUserAttributeDefinition> getApplicationSponsoredUserAttributeDefinitions() {
-		return applicationSponsoredUserAttributeDefinitions;
+	public List<ApplicationSponsoredPersonAttributeDefinition> getApplicationSponsoredUserAttributeDefinitions() {
+		return applicationSponsoredPersonAttributeDefinitions;
 	}
 
-	public void setApplicationSponsoredUserAttributeDefinitions(List<ApplicationSponsoredUserAttributeDefinition> applicationSponsoredUserAttributeDefinitions) {
-		this.applicationSponsoredUserAttributeDefinitions = applicationSponsoredUserAttributeDefinitions;
+	public void setApplicationSponsoredUserAttributeDefinitions(List<ApplicationSponsoredPersonAttributeDefinition> applicationSponsoredPersonAttributeDefinitions) {
+		this.applicationSponsoredPersonAttributeDefinitions = applicationSponsoredPersonAttributeDefinitions;
 	}
 
 	protected LinkedHashMap toStringMapper() {
@@ -63,7 +63,7 @@ public class Application extends BusinessObjectBase {
         propMap.put("name", getName());
         propMap.put("discription", getDescription());
         propMap.put("permissions", getPermissions());
-        propMap.put("applicationSponsoredUserAttributeDefinitions", getApplicationSponsoredUserAttributeDefinitions());
+        propMap.put("applicationSponsoredPersonAttributeDefinitions", getApplicationSponsoredUserAttributeDefinitions());
         return propMap;
 	}
 

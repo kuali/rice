@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.BusinessObjectBase;
 
-public class UserAttribute extends BusinessObjectBase {
+public class PersonAttribute extends BusinessObjectBase {
 
 	private static final long serialVersionUID = 2861440911751860350L;
 	private Long id;

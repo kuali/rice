@@ -8,13 +8,13 @@ import java.util.List;
 
 import org.kuali.core.bo.BusinessObjectBase;
 
-public class User extends BusinessObjectBase {
+public class Person extends BusinessObjectBase {
 
 	private static final long serialVersionUID = -1207463934478758540L;
 	private Long id;
 	private String username;
 	private String password;
-	private List<UserAttribute> userAttributes;
+	private List<PersonAttribute> personAttributes;
 	
 	public Long getId() {
 		return id;
@@ -32,12 +32,12 @@ public class User extends BusinessObjectBase {
 		this.password = password;
 	}
 
-	public List<UserAttribute> getUserAttributes() {
-		return userAttributes;
+	public List<PersonAttribute> getUserAttributes() {
+		return personAttributes;
 	}
 
-	public void setUserAttributes(List<UserAttribute> userAttributes) {
-		this.userAttributes = userAttributes;
+	public void setUserAttributes(List<PersonAttribute> personAttributes) {
+		this.personAttributes = personAttributes;
 	}
 
 	public String getUsername() {
@@ -53,7 +53,7 @@ public class User extends BusinessObjectBase {
         propMap.put("id", getId());
         propMap.put("username", getUsername());
         propMap.put("password", getPassword());
-        propMap.put("userAttributes", getUserAttributes());
+        propMap.put("personAttributes", getUserAttributes());
         return propMap;
 	}
 

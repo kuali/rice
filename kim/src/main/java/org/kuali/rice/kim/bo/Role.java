@@ -15,7 +15,7 @@ public class Role extends BusinessObjectBase {
 	private Long id;
 	private String name;
 	private String description;
-	private List<User> users;
+	private List<Person> persons;
 	private List<Group> groups;
 	private List<Permission> permissions;
 	
@@ -59,12 +59,12 @@ public class Role extends BusinessObjectBase {
 		this.permissions = permissions;
 	}
 
-	public List<User> getUsers() {
-		return users;
+	public List<Person> getUsers() {
+		return persons;
 	}
 
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setUsers(List<Person> persons) {
+		this.persons = persons;
 	}
 
 	protected LinkedHashMap toStringMapper() {
@@ -72,7 +72,7 @@ public class Role extends BusinessObjectBase {
         propMap.put("id", getId());
         propMap.put("name", getName());
         propMap.put("description", getDescription());
-        propMap.put("users", getUsers());
+        propMap.put("persons", getUsers());
         propMap.put("groups", getGroups());
         propMap.put("permissions", getPermissions());
         return propMap;

@@ -12,7 +12,7 @@ public class Group extends BusinessObjectBase {
 	private Long id;
 	private String name;
 	private String description;
-	private List<User> users;
+	private List<Person> persons;
 	private List<GroupAttribute> groupAttributes;
 	
 	public String getDescription() {
@@ -39,12 +39,12 @@ public class Group extends BusinessObjectBase {
 		this.name = name;
 	}
 
-	public List<User> getUsers() {
-		return users;
+	public List<Person> getUsers() {
+		return persons;
 	}
 
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setUsers(List<Person> persons) {
+		this.persons = persons;
 	}
 
 	public List<GroupAttribute> getGroupAttributes() {

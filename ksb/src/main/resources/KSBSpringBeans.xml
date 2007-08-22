@@ -35,7 +35,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="ksbMessageDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean" lazy-init="true">
 		<property name="transactionManager">
 			<ref local="jtaTransactionManager" />
@@ -135,14 +135,6 @@
 	<bean id="exceptionMessagingService" class="edu.iu.uis.eden.messaging.exceptionhandling.DefaultExceptionServiceImpl" lazy-init="true" />
 	<bean id="enEncryptionService" class="edu.iu.uis.eden.security.DESEncryptionService" lazy-init="true" />
 	<bean id="digitalSignatureService" class="edu.iu.uis.eden.security.DigitalSignatureServiceImpl" lazy-init="true" />
-	<bean id="enOptimisticLockFailureService" class="edu.iu.uis.eden.util.OptimisticLockFailureServiceImpl" lazy-init="true">
-		<property name="classNames">
-			<list>
-				<value>org.apache.ojb.broker.OptimisticLockException</value>
-				<value>org.springframework.dao.OptimisticLockingFailureException</value>
-			</list>
-		</property>
-	</bean>
 
 	<bean id="enRepeatTopicInvokerQueue" class="edu.iu.uis.eden.messaging.RepeatTopicInvokerQueueImpl" singleton="true" lazy-init="true" />
 	<!-- this bean will be used by the enRepeatTopicInvokerQueue to register itself with the bus programmatically -->

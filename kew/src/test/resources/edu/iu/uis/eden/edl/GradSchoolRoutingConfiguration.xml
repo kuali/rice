@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+		<ruleAttribute>
+			<name>DepartmentAttribute</name>
+			<className>edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+			<label>Department Routing</label>
+			<description>Department Routing</description>
+			<type>RuleXmlAttribute</type>
+			<routingConfig>
+				<fieldDef name="department" title="Department" workflowType="RULE">
+					<display>
+						<type>select</type>
+						<values title="African American/African Diaspora Studies">AAAD</values>
+						<values title="African Studies">AFRI</values>
+						<values title="American Studies">AMST</values>
+						<values title="Ancient Studies">ANCS</values>
+					</display>
+					<!-- enforce attrib-level validation -->
+					<validation required="false" />
+					<!-- 
+						<regex>AAAD COAS|AFRI COAS|AMST COAS|ANCS COAS</regex>
+						<message>[Attrib] A valid department must be specified</message>
+					</validation>
+					 -->
+					<fieldEvaluation>
+						<xpathexpression>normalize-space(substring-before(//department, ' ')) = wf:ruledata('department')</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<fieldDef name="department" title="Department" workflowType="REPORT">
+					<display>
+						<type>select</type>
+						<values title="African American/African Diaspora Studies">AAAD</values>
+						<values title="African Studies">AFRI</values>
+						<values title="American Studies">AMST</values>
+						<values title="Ancient Studies">ANCS</values>
+					</display>
+					<validation required="false" />
+					<fieldEvaluation>
+						<xpathexpression>normalize-space(substring-before(//department, ' ')) = wf:ruledata('department')</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>				
+				<xmlDocumentContent>
+					<department>%department%</department>
+				</xmlDocumentContent>
+			</routingConfig>
+		</ruleAttribute>
+
+		<ruleAttribute>
+			<name>DepartmentSearchAttribute</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>DepartmentSearchAttribute</label>
+			<description>DepartmentSearchAttribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="department" title="Department">
+					<display>
+						<type>select</type>
+						<values title=""></values>
+						<values title="African American/African Diaspora Studies">AAAD</values>
+						<values title="African Studies">AFRI</values>
+						<values title="American Studies">AMST</values>
+						<values title="Ancient Studies">ANCS</values>
+					</display>
+					<fieldEvaluation>
+						<xpathexpression>normalize-space(substring-before(//department, ' '))</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+			</searchingConfig>
+		</ruleAttribute>
+
+		<ruleAttribute>
+			<name>SchoolAttribute</name>
+			<className>edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+			<label>School/Division Routing</label>
+			<description>School/Division Routing</description>
+			<type>RuleXmlAttribute</type>
+			<routingConfig>
+				<fieldDef name="school" title="School/Division" workflowType="RULE">
+					<display>
+						<type>select</type>
+						<values title="College of Arts and Sciences">COAS</values>
+						<values title="School of Business">BUS</values>
+						<values title="School of Education">EDUC</values>
+					</display>
+					<validation required="false" />
+					<fieldEvaluation>
+						<xpathexpression>normalize-space(substring-after(//department, ' ')) = wf:ruledata('school')</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+                <xmlDocumentContent>
+					<school>%school%</school>
+				</xmlDocumentContent>
+			</routingConfig>
+		</ruleAttribute>
+
+		<ruleAttribute>
+			<name>SchoolSearchAttribute</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>SchoolSearchAttribute</label>
+			<description>SchoolSearchAttribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="school" title="School">
+					<display>
+						<type>select</type>
+						<values title=""></values>
+						<values title="College of Arts and Sciences">COAS</values>
+						<values title="School of Business">BUS</values>
+						<values title="School of Education">EDUC</values>
+					</display>
+					<fieldEvaluation>
+						<xpathexpression>normalize-space(substring-after(//department, ' '))</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+			</searchingConfig>
+		</ruleAttribute>
+	</ruleAttributes>
+
+	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+		<!-- 
+			<ruleTemplate allowOverwrite="true">
+			<name>UniversityGraduateSchool-SchoolRoutingDelegation</name>
+			<description>University Graduate School Office - School Routing Delegation</description>
+			<attributes>
+			    <attribute>
+			        <name>SchoolAttribute</name>
+        			<required>false</required>
+		    	</attribute>
+			</attributes>
+			</ruleTemplate>
+		-->
+		<ruleTemplate allowOverwrite="true">
+			<name>UniversityGraduateSchoolOffice-SchoolRouting</name>
+			<description>University Graduate School Office - School Routing</description>
+			<!-- 
+				<delegationTemplate>UniversityGraduateSchool-SchoolRoutingDelegation</delegationTemplate>
+			-->
+			<attributes>
+				<attribute>
+					<name>SchoolAttribute</name>
+					<required>false</required>
+				</attribute>
+			</attributes>
+		</ruleTemplate>
+		<!-- 
+			<ruleTemplate allowOverwrite="true">
+			<name>UniversityGraduateSchool-DepartmentRoutingDelegation</name>
+			<description>University Graduate School Office - Department Routing Delegation</description>
+			<attributes>
+			<attribute>
+			<name>DepartmentAttribute</name>
+			<required>false</required>
+			</attribute>
+			</attributes>
+			</ruleTemplate>
+		-->
+		<ruleTemplate allowOverwrite="true">
+			<name>UniversityGraduateSchoolOffice-DepartmentRouting</name>
+			<description>University Graduate School Office - Department Routing</description>
+			<!-- 
+				<delegationTemplate>UniversityGraduateSchool-DepartmentRoutingDelegation</delegationTemplate>
+			-->
+			<attributes>
+				<attribute>
+					<name>DepartmentAttribute</name>
+					<required>false</required>
+				</attribute>
+			</attributes>
+		</ruleTemplate>
+		<ruleTemplate allowOverwrite="true">
+			<name>UniversityGraduateSchoolOffice-Routing</name>
+			<description>University Graduate School Office Routing</description>
+		</ruleTemplate>
+	</ruleTemplates>
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>NewCourseRequest</name>
+			<description>Create a New Graduate Course</description>
+			<label>New Course Request</label>
+			<postProcessorName>edu.iu.uis.eden.edoclite.EDocLitePostProcessor</postProcessorName>
+			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+			<docHandler>http://localhost:8080/en-dev/EDocLite</docHandler>
+			<active>true</active>
+			<attributes>
+				<attribute>
+					<name>DepartmentSearchAttribute</name>
+				</attribute>
+				<attribute>
+					<name>SchoolSearchAttribute</name>
+				</attribute>
+			</attributes>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>true</value><!-- this should be false in a production scenario -->
+				</policy>
+				<policy>
+					<name>LOOK_FUTURE</name>
+					<value>true</value>
+				</policy>
+			</policies>
+			<routePaths>
+				<routePath>
+					<start name="Initiated" nextNode="Department" />
+					<requests name="Department" nextNode="School" />
+					<requests name="School" nextNode="UGS" />
+					<requests name="UGS" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initiated">
+					<activationType>P</activationType>
+				</start>
+				<requests name="Department">
+					<activationType>S</activationType>
+					<ruleTemplate>UniversityGraduateSchoolOffice-DepartmentRouting</ruleTemplate>
+				</requests>
+				<requests name="School">
+					<activationType>S</activationType>
+					<ruleTemplate>UniversityGraduateSchoolOffice-SchoolRouting</ruleTemplate>
+				</requests>
+				<requests name="UGS">
+					<activationType>S</activationType>
+					<ruleTemplate>UniversityGraduateSchoolOffice-Routing</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+	</documentTypes>
+<!-- 
+	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<rule>
+			<documentType>NewCourseRequest</documentType>
+			<ruleTemplate>UniversityGraduateSchoolOffice-SchoolRouting</ruleTemplate>
+			<description>GradSchoolRouting doc routing rule</description>
+			<ignorePrevious>false</ignorePrevious>
+			<ruleExtensions>
+    			<ruleExtension>
+	    		    <attribute>SchoolAttribute</attribute>
+		        	<ruleTemplate>UniversityGraduateSchoolOffice-SchoolRouting</ruleTemplate>
+	    	    	<ruleExtensionValues>
+    			        <ruleExtensionValue>
+			                <key>school</key>
+        			        <value>COAS</value>
+            		    </ruleExtensionValue>
+	    		    </ruleExtensionValues>
+		    	</ruleExtension>
+			</ruleExtensions>
+			<responsibilities>
+			    <responsibility>
+        			<workgroup>Group1</workgroup>
+        			<actionRequested>A</actionRequested>
+        			<priority>1</priority>
+		    	</responsibility>
+			</responsibilities>
+		</rule>
+
+		<rule>
+			<documentType>NewCourseRequest</documentType>
+			<ruleTemplate>UniversityGraduateSchoolOffice-DepartmentRouting</ruleTemplate>
+			<description>GradSchoolRouting doc routing rule</description>
+			<ignorePrevious>false</ignorePrevious>
+			<ruleExtensions>
+				<ruleExtension>
+					<attribute>DepartmentAttribute</attribute>
+					<ruleTemplate>UniversityGraduateSchoolOffice-DepartmentRouting</ruleTemplate>
+					<ruleExtensionValues>
+						<ruleExtensionValue>
+							<key>department</key>
+							<value>AMST</value>
+						</ruleExtensionValue>
+					</ruleExtensionValues>
+				</ruleExtension>
+			</ruleExtensions>
+			<responsibilities>
+				<responsibility>
+					<workgroup>Group2</workgroup>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		
+	</rules>
+ -->
+</data>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="ns:workflow resource:WorkflowData">
+
+  <!-- This is only a demo file showing the format of an actual ApplicationConstantsContent.xml file.  -->
+  <ApplicationConstants xmlns="ns:workflow/ApplicationConstants"
+                        xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">
+
+    <ApplicationConstant>
+      <ConstantName>appConstant1</ConstantName>
+      <ConstantValue>value 1</ConstantValue>
+    </ApplicationConstant>
+
+    <ApplicationConstant>
+      <ConstantName>appConstant2</ConstantName>
+      <ConstantValue>value 2</ConstantValue>
+    </ApplicationConstant>
+  </ApplicationConstants>
+</data>

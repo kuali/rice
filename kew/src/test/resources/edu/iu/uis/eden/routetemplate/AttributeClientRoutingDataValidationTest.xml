@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+		<ruleAttribute>
+			<name>TestRuleAttributeDuex</name>
+			<className>edu.iu.uis.eden.routetemplate.TestRuleAttributeDuex</className>
+			<label>TestRuleAttributeDuex</label>
+			<description>TestRuleAttributeDuex</description>
+			<type>TestRuleAttributeDuex</type>
+		</ruleAttribute>
+        <ruleAttribute>
+          <name>TestRuleAttributeThree</name>
+          <className>edu.iu.uis.eden.routetemplate.TestRuleAttributeThree</className>
+          <label>TestRuleAttributeThree</label>
+          <description>TestRuleAttributeThree</description>
+          <type>TestRuleAttributeThree</type>
+      </ruleAttribute>
+	</ruleAttributes>
+</data>

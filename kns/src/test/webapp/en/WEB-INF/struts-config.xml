@@ -44,6 +44,7 @@
     <global-forwards type="org.apache.struts.action.ActionForward">
    	    <forward name="WorkflowError" path="/WEB-INF/jsp/Error.jsp" />
    	    <forward name="DeleteRouteHeaderConfirmation" path="/WEB-INF/jsp/DeleteRouteHeaderConfirmation.jsp" />
+   	    <forward name="NotAuthorized" path="/WEB-INF/jsp/NotAuthorized.jsp" />
     </global-forwards>
 
     <!-- ========== action mapping definitions ============================= -->

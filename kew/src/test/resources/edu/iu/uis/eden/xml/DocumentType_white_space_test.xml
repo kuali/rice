@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>XmlImportDocumentType1</name>
+			<description>XmlImportDocumentType</description>
+			<label>XmlImportDocumentType</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<!--  below will make the parser blow chunks if white space is not handled correctly -->
+			<superUserWorkgroupName> TestWorkgroup </superUserWorkgroupName>
+			<blanketApproveWorkgroupName> TestWorkgroup </blanketApproveWorkgroupName>
+			<active>true</active>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+					<activationType>P</activationType>
+				</start>
+			</routeNodes>
+		</documentType>
+	</documentTypes>
+</data>

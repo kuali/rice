@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:c="ns:workflow/common"
+        xmlns:h="ns:workflow/Help"
+        targetNamespace="ns:workflow/Help"
+        attributeFormDefault="unqualified"
+        elementFormDefault="qualified">
+
+  <annotation>
+    <documentation>
+      Copyright 2005-2006 The Kuali Foundation.
+ 
+
+      Licensed under the Educational Community License, Version 1.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+ 
+      http://www.opensource.org/licenses/ecl1.php
+ 
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    </documentation>
+  </annotation>
+
+  <annotation>
+    <documentation xml:lang="en">
+      Help schema
+    </documentation>
+  </annotation>
+
+  <import namespace="ns:workflow/common" schemaLocation="resource:common"/>
+
+  <element name="helpEntries">
+    <complexType>
+      <sequence minOccurs="0" maxOccurs="unbounded">
+        <element name="helpEntry" type="h:HelpEntryType">
+        	<annotation>
+        		<documentation>
+        		 A modifiable help parameter in the system.
+        		</documentation>
+        	</annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+
+  <complexType name="HelpEntryType">
+    <all>
+      <element name="helpName" type="c:ShortStringType">
+      	<annotation>
+      		<documentation>
+      		 Name of the help entry.
+      		</documentation>
+      	</annotation>
+      </element>
+      <element name="helpKey" type="h:EntryKeyType">
+      	<annotation>
+      		<documentation>
+      		 The key that identifies the help entry.
+      		</documentation>
+      	</annotation>
+      </element>
+      <element name="helpText">
+      		<annotation>
+      			<documentation>
+      			 The help text of the help entry.
+      			</documentation>
+      		</annotation>
+         <complexType mixed="true">
+           <sequence minOccurs="0" maxOccurs="unbounded">
+               <element name="p" type="c:LongStringType"/>
+           </sequence>
+         </complexType>
+      </element>           
+   </all>
+  </complexType>
+
+  <!-- HelpService implementation does not allow single quotes in
+       an entry key so we enforce that here -->
+  <simpleType name="EntryKeyType">
+    <restriction base="string">
+      <minLength value="1"/>
+      <maxLength value="255"/>
+      <pattern value="[^']+"/>
+    </restriction>
+  </simpleType>
+  
+</schema>

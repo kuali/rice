@@ -1,0 +1,781 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+		<ruleAttribute>
+			<name>XMLSearchableAttributeString</name>
+			<className>edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeString</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttributeLong</name>
+			<className>edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeLong</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttributeFloat</name>
+			<className>edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeFloat</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttributeDateTime</name>
+			<className>edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeDateTime</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>CustomActionListAttribute</name>
+			<className>edu.iu.uis.eden.actionlist.DefaultCustomActionListAttribute</className>
+			<label>CustomActionListAttribute</label>
+			<description>CustomActionListAttribute</description>
+			<type>ActionListAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>DocumentSearchGeneratorAttribute</name>
+			<className>edu.iu.uis.eden.docsearch.CustomDocumentSearchGenerator</className>
+			<label>DocumentSearchGeneratorAttribute</label>
+			<description>DocumentSearchGeneratorAttribute</description>
+			<type>DocumentSearchGeneratorAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>DocumentSearchResultProcessorAttribute</name>
+			<className>edu.iu.uis.eden.docsearch.CustomSearchResultProcessor</className>
+			<label>DocumentSearchResultProcessorAttributeCustom</label>
+			<description>DocumentSearchResultProcessorAttributeCustom</description>
+			<type>DocumentSearchResultProcessorAttribute</type>
+		</ruleAttribute>
+		<!-- XML rul attributes -->
+		<ruleAttribute>
+			<name>SearchableAttributeVisible</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>Visible Search Attribute</label>
+			<description>Searchable attribute is visible</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="givenname" title="First name">
+					<display>
+						<type>text</type>
+					</display>
+					<visibility>
+						<column visible="true"/>
+					</visibility>					
+					<searchDefinition autoWildcardLocation="prefixonly"/>
+					<validation required="true">
+						<regex>^[a-zA-Z ]+$</regex>
+						<message>Invalid first name</message>
+					</validation>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/givenname/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<givenname>
+							<value>%givenname%</value>
+						</givenname>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>SearchableAttributeNotVisible</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>Non-Visible Search Attribute</label>
+			<description>Searchable attribute is not visible</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="givenname_hidden" title="First name">
+					<display>
+						<type>text</type>
+					</display>
+					<visibility>
+						<column visible="false"/>
+					</visibility>					
+					<searchDefinition autoWildcardLocation="prefixonly"/>
+					<validation required="true">
+						<regex>^[a-zA-Z ]+$</regex>
+						<message>Invalid first name</message>
+					</validation>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/givenname_hidden/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<givenname_hidden>
+							<value>%givenname_hidden%</value>
+						</givenname_hidden>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLResultProcessorDetails</name>
+			<className>edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>DocumentSearchXMLResultProcessorAttribute</type>
+			<searchResultConfig>
+				<column name="docTypeLabel" title="" sortable="true"/>
+				<column name="documentTitle" sortable="false"/>
+				<column name="initiator" title="Initiator Dude"/>
+				<column name="docRouteStatusCodeDesc"/>
+			</searchResultConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLResultProcessorDefault</name>
+			<className>edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>DocumentSearchXMLResultProcessorAttribute</type>
+			<searchResultConfig>
+				<column name="docTypeLabel" title="" sortable="true"/>
+				<column name="givenname_hidden" sortable="false"/>
+				<column name="documentTitle" sortable="false"/>
+				<column name="initiator" title="Initiator Dude"/>
+				<column name="docRouteStatusCodeDesc"/>
+			</searchResultConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLResultProcessorAllCustom</name>
+			<className>edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>DocumentSearchXMLResultProcessorAttribute</type>
+			<searchResultConfig showStandardSearchFields="false" overrideSearchableAttributes="true">
+				<column name="docTypeLabel"/>
+				<column name="documentTitle"/>
+				<column name="initiator"/>
+				<column name="givenname_hidden" sortable="false"/>
+				<column name="docRouteStatusCodeDesc"/>
+			</searchResultConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLResultProcessorSearchAttributeCustom</name>
+			<className>edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>DocumentSearchXMLResultProcessorAttribute</type>
+			<searchResultConfig showStandardSearchFields="true" overrideSearchableAttributes="true">
+<!--
+	 			<column name="docTypeLabel"/>
+				<column name="documentTitle"/>
+				<column name="initiator"/>
+				<column name="docRouteStatusCodeDesc"/>
+-->
+				<column name="givenname_hidden" sortable="false"/>
+			</searchResultConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLResultProcessorStandardCustom</name>
+			<className>edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>DocumentSearchXMLResultProcessorAttribute</type>
+			<searchResultConfig showStandardSearchFields="false" overrideSearchableAttributes="false">
+				<column name="documentTitle"/>
+				<column name="docTypeLabel"/>
+				<column name="docRouteStatusCodeDesc"/>
+				<column name="initiator"/>
+				<column name="givenname_hidden" sortable="false"/>
+			</searchResultConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLResultProcessorNormalCustom</name>
+			<className>edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>DocumentSearchXMLResultProcessorAttribute</type>
+			<searchResultConfig showStandardSearchFields="true" overrideSearchableAttributes="false">
+<!--
+				<column name="docTypeLabel"/>
+				<column name="documentTitle"/>
+				<column name="initiator"/>
+				<column name="docRouteStatusCodeDesc"/>
+-->
+				<column name="givenname_hidden" sortable="false"/>
+			</searchResultConfig>
+		</ruleAttribute>
+	</ruleAttributes>
+	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+		<ruleTemplate>
+			<name>searchTemplate</name>
+			<description>search template</description>
+		</ruleTemplate>
+	</ruleTemplates>
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>SearchDocType</name>
+			<description>SearchDocType</description>
+			<label>SearchDocType</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<!-- Add the CustomActionListAttribute to this document type to verify the resolution to KULWF-654 -->
+				<attribute>
+					<name>CustomActionListAttribute</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttributeString</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttributeLong</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttributeFloat</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttributeDateTime</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>SearchDocType2</name>
+			<description>SearchDocType3</description>
+			<label>SearchDocType3</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>SearchableAttributeVisible</name>
+				</attribute>
+				<attribute>
+					<name>SearchableAttributeNotVisible</name>
+				</attribute>
+				<attribute>
+					<name>DocumentSearchResultProcessorAttribute</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>SearchDocType_DefaultCustomProcessor</name>
+			<description>SearchDocType2</description>
+			<label>SearchDocType2</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>SearchableAttributeVisible</name>
+				</attribute>
+				<attribute>
+					<name>SearchableAttributeNotVisible</name>
+				</attribute>
+				<attribute>
+				    <name>DocumentSearchGeneratorAttribute</name>
+				</attribute>
+				<attribute>
+					<name>XMLResultProcessorDefault</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>SearchDocType_DefaultCustomProcessor_2</name>
+			<description>SearchDocType_DefaultCustomProcessor_2</description>
+			<label>SearchDocType_DefaultCustomProcessor_2</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>SearchableAttributeVisible</name>
+				</attribute>
+				<attribute>
+					<name>SearchableAttributeNotVisible</name>
+				</attribute>
+				<attribute>
+				    <name>DocumentSearchGeneratorAttribute</name>
+				</attribute>
+				<attribute>
+					<name>XMLResultProcessorDefault</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>SearchDocType_DefaultCustomProcessor_3</name>
+			<description>SearchDocType_DefaultCustomProcessor_3</description>
+			<label>SearchDocType_DefaultCustomProcessor_3</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>SearchableAttributeVisible</name>
+				</attribute>
+				<attribute>
+					<name>SearchableAttributeNotVisible</name>
+				</attribute>
+				<attribute>
+				    <name>DocumentSearchGeneratorAttribute</name>
+				</attribute>
+				<attribute>
+					<name>XMLResultProcessorDefault</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>SearchDocType_AllCustomProcessor</name>
+			<description>SearchDocType_AllCustomProcessor</description>
+			<label>SearchDocType_AllCustomProcessor</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>SearchableAttributeVisible</name>
+				</attribute>
+				<attribute>
+					<name>SearchableAttributeNotVisible</name>
+				</attribute>
+				<attribute>
+					<name>XMLResultProcessorAllCustom</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>SearchDocType_StandardCustomProcessor</name>
+			<description>SearchDocType_AllCustomProcessor</description>
+			<label>SearchDocType_AllCustomProcessor</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>SearchableAttributeVisible</name>
+				</attribute>
+				<attribute>
+					<name>SearchableAttributeNotVisible</name>
+				</attribute>
+				<attribute>
+					<name>XMLResultProcessorStandardCustom</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>SearchDocType_SearchAttCustomProcessor</name>
+			<description>SearchDocType_AllCustomProcessor</description>
+			<label>SearchDocType_AllCustomProcessor</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>SearchableAttributeVisible</name>
+				</attribute>
+				<attribute>
+					<name>SearchableAttributeNotVisible</name>
+				</attribute>
+				<attribute>
+					<name>XMLResultProcessorSearchAttributeCustom</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>SearchDocType_NormalCustomProcessor</name>
+			<description>SearchDocType_AllCustomProcessor</description>
+			<label>SearchDocType_AllCustomProcessor</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>SearchableAttributeVisible</name>
+				</attribute>
+				<attribute>
+					<name>SearchableAttributeNotVisible</name>
+				</attribute>
+				<attribute>
+					<name>XMLResultProcessorNormalCustom</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+	</documentTypes>
+	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<rule>
+			<documentType>SearchDocType</documentType>
+			<ruleTemplate>searchTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocType2</documentType>
+			<ruleTemplate>searchTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocType_DefaultCustomProcessor</documentType>
+			<ruleTemplate>searchTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocType_DefaultCustomProcessor_2</documentType>
+			<ruleTemplate>searchTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocType_DefaultCustomProcessor_3</documentType>
+			<ruleTemplate>searchTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocType_AllCustomProcessor</documentType>
+			<ruleTemplate>searchTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocType_SearchAttCustomProcessor</documentType>
+			<ruleTemplate>searchTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocType_StandardCustomProcessor</documentType>
+			<ruleTemplate>searchTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocType_NormalCustomProcessor</documentType>
+			<ruleTemplate>searchTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+	</rules>
+</data>

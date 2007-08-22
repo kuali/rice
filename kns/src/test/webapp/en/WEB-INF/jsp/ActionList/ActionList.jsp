@@ -201,7 +201,7 @@
  	<display-el:column property="actionRequestLabel" sortable="true" title="${actionRequestedLabel}" class="display-column" />
   </c:if>
   <c:if test="${preferences.showInitiator == Constants.PREFERENCES_YES_VAL}">
-	  <display-el:column sortable="true" title="${initiatorLabel}" sortProperty="routeHeader.actionListInitiatorUser.transposedName" class="display-column" >
+	  <display-el:column sortable="true" title="${initiatorLabel}" sortProperty="routeHeader.initiatorName" class="display-column" >
           <a href="<c:url value="${UrlResolver.userReportUrl}">
                      <c:param name="workflowId" value="${result.routeHeader.actionListInitiatorUser.workflowUserId.workflowId}"/>
                      <c:param name="showEdit" value="no"/>

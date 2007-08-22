@@ -1,0 +1,6 @@
+<association>
+	<docType>assoc1</docType>
+	<definition>NewCourseRequest</definition>
+	<style>Default</style>
+	<active>true</active>
+</association>

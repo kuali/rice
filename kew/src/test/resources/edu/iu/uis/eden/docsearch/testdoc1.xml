@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+    <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+        <ruleAttribute>
+          <name>SearchAttribute</name>
+          <className>edu.iu.uis.eden.docsearch.MockSearchableAttribute</className>
+          <label>SearchAttribute</label>
+          <description>SearchAttribute</description>
+          <type>SearchableAttribute</type>
+        </ruleAttribute>
+    </ruleAttributes>
+
+    <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+        <documentType>
+    		<name>SearchDoc</name>
+            <label>SearchDoc</label>
+    		<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+    		<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+    		<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+    		<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+    		<docHandler>_blank</docHandler>
+    		<active>true</active>
+            <attributes>
+                <attribute>
+                    <name>SearchAttribute</name>
+                </attribute>
+            </attributes>
+    		<policies>
+        		<policy>
+    				<name>DEFAULT_APPROVE</name>
+    				<value>true</value>
+    			</policy>
+    		</policies>
+            <routePaths>
+              <routePath>
+                  <start name="start"/>
+              </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="start"/>
+            </routeNodes>
+    	</documentType>
+    </documentTypes>
+</data>

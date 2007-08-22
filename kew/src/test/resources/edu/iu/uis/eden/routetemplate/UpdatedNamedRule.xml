@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+    <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+        <rule>
+            <name>ANamedRule</name>
+            <documentType>TestDocumentType</documentType>
+            <ruleTemplate>TestRuleTemplate</ruleTemplate>
+            <description>A named rule with an updated description, rule extension values, and responsibilities</description>
+            <ignorePrevious>false</ignorePrevious>
+            <ruleExtensions>
+                <ruleExtension>
+                    <attribute>TestRuleAttribute</attribute>
+                    <ruleTemplate>TestRuleTemplate</ruleTemplate>
+                    <ruleExtensionValues>
+                        <ruleExtensionValue>
+                            <key>flavor</key>
+                            <value>vanilla</value>
+                        </ruleExtensionValue>
+                        <ruleExtensionValue>
+                            <key>value</key>
+                            <value>10</value>
+                        </ruleExtensionValue>
+                    </ruleExtensionValues>
+                </ruleExtension>
+            </ruleExtensions>
+            <responsibilities>
+                <responsibility>
+                    <user>user2</user>
+                    <actionRequested>F</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
+    </rules>
+</data>

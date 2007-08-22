@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="ns:workflow resource:WorkflowData">
+
+  <users xmlns="ns:workflow/User"
+         xsi:schemaLocation="ns:workflow/User resource:User">
+
+    <user>
+      <workflowId>5000</workflowId>
+      <emplId>5000</emplId>
+      <authenticationId>Unit Test User 1</authenticationId>
+      <uuId>5000</uuId>
+      <emailAddress>bogus@email</emailAddress>
+      <displayName>Unit Test User 1</displayName>
+      <givenName>One</givenName>
+      <lastName>Unit Test User</lastName>
+      <createDate>01/01/2000</createDate>
+      <lastUpdateDate>12/31/2005</lastUpdateDate>
+      <identificationMissingIndicator>false(true)</identificationMissingIndicator>
+    </user>
+
+    <user>
+      <workflowId>5001</workflowId>
+      <emplId>5001</emplId>
+      <authenticationId>Unit Test User 2</authenticationId>
+      <uuId>5001</uuId>
+      <emailAddress>bogus@email</emailAddress>
+      <displayName>Unit Test User 2</displayName>
+      <givenName>Two</givenName>
+      <lastName>Unit Test User</lastName>
+      <createDate>01/01/2000</createDate>
+      <lastUpdateDate>12/31/2005</lastUpdateDate>
+      <identificationMissingIndicator>false(true)</identificationMissingIndicator>
+    </user>
+
+    <user>
+      <workflowId>5002</workflowId>
+      <emplId>5002</emplId>
+      <authenticationId>Unit Test User 3</authenticationId>
+      <uuId>5002</uuId>
+      <emailAddress>bogus@email</emailAddress>
+      <displayName>Unit Test User 3</displayName>
+      <givenName>Three</givenName>
+      <lastName>Unit Test User</lastName>
+      <createDate>01/01/2000</createDate>
+      <lastUpdateDate>12/31/2005</lastUpdateDate>
+      <identificationMissingIndicator>false(true)</identificationMissingIndicator>
+    </user>
+
+  </users>
+</data>

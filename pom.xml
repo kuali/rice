@@ -134,6 +134,7 @@
     <module>ksb</module>
     <module>kns</module>
     <module>kim</module>
+    <module>kew</module>
   </modules>
   <repositories>
     <repository>
@@ -194,12 +195,6 @@
 			<artifactId>jasper-compiler-jdt</artifactId>
 			<version>5.5.15</version>
 			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>kew</groupId>
-			<artifactId>kew</artifactId>
-      <version>2.4.1-final</version>
 		</dependency>
 
 		<dependency>
@@ -430,6 +425,12 @@
       <artifactId>quartz</artifactId>
       <version>1.6.0</version>
     </dependency>
+    <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.1.1</version>
+            <scope>compile</scope>
+        </dependency>
     <dependency>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-deploy-plugin</artifactId>

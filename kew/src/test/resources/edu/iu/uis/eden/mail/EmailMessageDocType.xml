@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+    <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+        <ruleAttribute>
+            <name>EmailMessageTestCaseEmailAttribute</name>
+            <className>edu.iu.uis.eden.mail.EmailMessageTestCaseCustomEmailAttribute</className>
+            <label>EmailMessageTestCaseEmailAttribute</label>
+            <description>EmailMessageTestCaseEmailAttribute</description>
+            <type>EmailAttribute</type>
+        </ruleAttribute>
+    </ruleAttributes>
+
+    <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+        <ruleTemplate allowOverwrite="true">
+            <name>PingDocumentTemplate</name>
+            <description>Ping Document Template</description>
+        </ruleTemplate>
+    </ruleTemplates>
+
+    <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+    	<documentType>
+    		<name>PingDocument</name>
+    		<description>PingDocument</description>
+    		<label>PingDocument</label>
+            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+    		<docHandler>http://localhost:8080/en-dev/this/is/a/sample/doc/handler</docHandler>
+            <notificationFromAddress>arh14@cornell.edu</notificationFromAddress>
+    		<routePaths>
+    			<routePath>
+    				<start name="AdHoc" nextNode="PingDocumentApproval"/>
+    				<requests name="PingDocumentApproval"/>
+    			</routePath>
+    		</routePaths>
+    		<routeNodes>
+    			<start name="AdHoc">
+    				<activationType>P</activationType>
+    			</start>
+    			<requests name="PingDocumentApproval">
+    				<ruleTemplate>PingDocumentTemplate</ruleTemplate>
+    			</requests>
+    		</routeNodes>
+    	</documentType>
+        <documentType>
+            <name>PingDocument2</name>
+            <description>PingDocument2</description>
+            <label>PingDocument2</label>
+            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <docHandler>http://localhost:8080/en-dev/this/is/a/sample/doc/handler</docHandler>
+            <notificationFromAddress>arh14@cornell.edu</notificationFromAddress>
+            <routePaths>
+                <routePath>
+                    <start name="AdHoc" nextNode="PingDocumentApproval"/>
+                    <requests name="PingDocumentApproval"/>
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="AdHoc">
+                    <activationType>P</activationType>
+                </start>
+                <requests name="PingDocumentApproval">
+                    <ruleTemplate>PingDocumentTemplate</ruleTemplate>
+                </requests>
+            </routeNodes>
+        </documentType>
+        <documentType>
+            <name>PingDocumentCustomStyle</name>
+            <description>PingDocumentCustomStyle</description>
+            <label>PingDocumentCustomStyle</label>
+            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <docHandler>http://localhost:8080/en-dev/this/is/a/sample/doc/handler</docHandler>
+            <notificationFromAddress>arh14@cornell.edu</notificationFromAddress>
+            <emailStylesheet>doc.custom.email.style</emailStylesheet>
+            <routePaths>
+                <routePath>
+                    <start name="AdHoc" nextNode="PingDocumentApproval"/>
+                    <requests name="PingDocumentApproval"/>
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="AdHoc">
+                    <activationType>P</activationType>
+                </start>
+                <requests name="PingDocumentApproval">
+                    <ruleTemplate>PingDocumentTemplate</ruleTemplate>
+                </requests>
+            </routeNodes>
+        </documentType>
+        <documentType>
+            <name>PingDocumentWithEmailAttrib</name>
+            <description>PingDocumentWithEmailAttrib</description>
+            <label>PingDocumentWithEmailAttrib</label>
+            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <docHandler>http://localhost:8080/en-dev/this/is/a/sample/doc/handler</docHandler>
+            <notificationFromAddress>arh14@cornell.edu</notificationFromAddress>
+            <attributes>
+                <attribute>
+                    <name>EmailMessageTestCaseEmailAttribute</name>
+                </attribute>
+            </attributes>
+            <routePaths>
+                <routePath>
+                    <start name="AdHoc" nextNode="PingDocumentApproval"/>
+                    <requests name="PingDocumentApproval"/>
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="AdHoc">
+                    <activationType>P</activationType>
+                </start>
+                <requests name="PingDocumentApproval">
+                    <ruleTemplate>PingDocumentTemplate</ruleTemplate>
+                </requests>
+            </routeNodes>
+        </documentType>
+    </documentTypes>
+
+    <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+        <rule>
+            <documentType>PingDocument</documentType>
+            <ruleTemplate>PingDocumentTemplate</ruleTemplate>
+            <description>PingDocument send to initiator rule</description>
+            <ignorePrevious>true</ignorePrevious>
+            <responsibilities>
+                <responsibility>
+                    <role>edu.iu.uis.eden.routetemplate.InitiatorRoleAttribute!INITIATOR</role>
+                    <actionRequested>A</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
+        <rule>
+            <documentType>PingDocument2</documentType>
+            <ruleTemplate>PingDocumentTemplate</ruleTemplate>
+            <description>PingDocument2 send to initiator rule</description>
+            <ignorePrevious>true</ignorePrevious>
+            <responsibilities>
+                <responsibility>
+                    <role>edu.iu.uis.eden.routetemplate.InitiatorRoleAttribute!INITIATOR</role>
+                    <actionRequested>A</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
+        <rule>
+            <documentType>PingDocumentCustomStyle</documentType>
+            <ruleTemplate>PingDocumentTemplate</ruleTemplate>
+            <description>PingDocumentCustomStyle send to initiator rule</description>
+            <ignorePrevious>true</ignorePrevious>
+            <responsibilities>
+                <responsibility>
+                    <role>edu.iu.uis.eden.routetemplate.InitiatorRoleAttribute!INITIATOR</role>
+                </responsibility>
+            </responsibilities>
+        </rule>
+        <rule>
+            <documentType>PingDocumentWithEmailAttrib</documentType>
+            <ruleTemplate>PingDocumentTemplate</ruleTemplate>
+            <description>PingDocumentWithEmailAttrib send to initiator rule</description>
+            <ignorePrevious>true</ignorePrevious>
+            <responsibilities>
+                <responsibility>
+                    <role>edu.iu.uis.eden.routetemplate.InitiatorRoleAttribute!INITIATOR</role>
+                    <actionRequested>A</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
+    </rules>
+</data>

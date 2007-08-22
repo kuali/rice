@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+		<ruleTemplate>
+			<name>WorkflowDocumentTemplate</name>
+			<description>Workflow Document Template</description>
+		</ruleTemplate>
+		<ruleTemplate>
+			<name>WorkflowDocument2Template</name>
+			<description>Workflow Document 2 Template</description>
+		</ruleTemplate>
+	</ruleTemplates>
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+ 		<documentType>
+			<name>NotificationTest</name>
+			<label>Notification Test</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<docHandler>none</docHandler>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="WorkflowDocument" />
+					<requests name="WorkflowDocument" nextNode="WorkflowDocument2" />
+					<requests name="WorkflowDocument2"/>
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="WorkflowDocument">
+					<activationType>P</activationType>
+					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+				</requests>
+				<requests name="WorkflowDocument2">
+					<activationType>P</activationType>
+					<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		
+		<!-- DocumentTypes for testing the notificationFromAddress -->
+		 <documentType>
+			<name>NotificationFromAddressParent</name>
+			<label>Doc Type From Address Notification Test</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<docHandler>none</docHandler>
+			<notificationFromAddress>fakey@mcfakey.com</notificationFromAddress>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<routePaths>
+				<routePath>
+					<start name="Initial"/>
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>NotificationFromAddressChild</name>
+			<parent>NotificationFromAddressParent</parent>
+			<label>Doc Type From Address Notification Test Child with own address</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<docHandler>none</docHandler>
+			<notificationFromAddress>fakey@mcchild.com</notificationFromAddress>
+		</documentType>
+		<documentType>
+			<name>NotificationFromAddressChildInherited</name>
+			<parent>NotificationFromAddressParent</parent>
+			<label>Doc Type From Address Notification Test Child with own address</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<docHandler>none</docHandler>
+		</documentType>		
+	</documentTypes>
+	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<rule>
+			<documentType>NotificationTest</documentType>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<description>WorkflowDocumentTemplate Rule 1</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>bmcgough</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+					<delegations>
+				        <rule>
+				        	<documentType>NotificationTest</documentType>
+				        	<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+          					<description>Notification Test Primary Delegation</description>
+          					<ignorePrevious>false</ignorePrevious>
+          					<responsibilities>
+            					<responsibility>
+              						<user>rkirkend</user>
+				            	</responsibility>
+          					</responsibilities>
+          					<delegationType>P</delegationType>
+				        </rule>
+        				<rule>
+				        	<documentType>NotificationTest</documentType>
+				        	<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+          					<description>Notification Test Secondary Delegation</description>
+          					<ignorePrevious>false</ignorePrevious>
+          					<responsibilities>
+            					<responsibility>
+              						<user>ewestfal</user>
+				            	</responsibility>
+          					</responsibilities>          					
+          					<delegationType>S</delegationType>
+				        </rule>
+				        <rule>
+				        	<documentType>NotificationTest</documentType>
+				        	<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+          					<description>Notification Test Secondary Delegation</description>
+          					<ignorePrevious>false</ignorePrevious>
+          					<responsibilities>
+            					<responsibility>
+              						<user>jitrue</user>
+				            	</responsibility>
+          					</responsibilities>          					
+          					<delegationType>S</delegationType>
+				        </rule>
+					</delegations>
+				</responsibility>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>K</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+				<responsibility>
+					<user>ewestfal</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>				
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+				<responsibility>
+					<user>user1</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+	</rules>
+</data>

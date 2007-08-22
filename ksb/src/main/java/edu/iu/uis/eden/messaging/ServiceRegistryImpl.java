@@ -21,6 +21,7 @@ import java.util.List;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.util.DataAccessUtils;
 
 import edu.iu.uis.eden.messaging.dao.ServiceInfoDAO;
 
@@ -43,7 +44,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	public List<ServiceInfo> fetchAll() {
 		return getDao().fetchAll();
 	}
-	
+
 	public List<ServiceInfo> fetchAllActive() {
 	    return dao.fetchAllActive();
 	}
@@ -93,7 +94,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 			try {
 				saveEntry(currentInfo);
 			} catch (Exception e) {
-				boolean isOptimisticLockExp = KSBServiceLocator.getOptimisticLockFailureService().checkForOptimisticLockFailure(e);
+				boolean isOptimisticLockExp = DataAccessUtils.isOptimisticLockFailure(e);
 				// suppress optimistic lock exceptions, it's collision with
 				// other nodes
 				if (!isOptimisticLockExp) {

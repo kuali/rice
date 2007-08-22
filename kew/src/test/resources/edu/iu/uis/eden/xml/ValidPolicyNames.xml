@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+
+    <documentType>
+      <name>DocumentTypeXmlParserTestDoc_ValidPolicyNames_UpperCase</name>
+      <description>This document has valid policies (upper case)</description>
+      <label>DocumentTypeXmlParserTestDoc_ValidPolicyNames_UpperCase</label>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+          <activationType>S</activationType>
+        </start>
+      </routeNodes>
+      <policies>
+        <policy>
+          <name>PRE_APPROVE</name>
+          <value>false</value>
+        </policy>
+        <policy>
+          <name>DISAPPROVE</name>
+          <value>false</value>
+        </policy>
+        <policy>
+          <name>DEFAULT_APPROVE</name>
+          <value>false</value>
+        </policy>
+        <policy>
+          <name>INITIATOR_MUST_ROUTE</name>
+          <value>false</value>
+        </policy>
+        <policy>
+          <name>INITIATOR_MUST_SAVE</name>
+          <value>false</value>
+        </policy>
+        <policy>
+          <name>LOOK_FUTURE</name>
+          <value>false</value>
+        </policy>
+      </policies>
+    </documentType>
+
+    <documentType>
+      <name>DocumentTypeXmlParserTestDoc_ValidPolicyNames_LowerCase</name>
+      <description>This document has valid policies (lower case)</description>
+      <label>DocumentTypeXmlParserTestDoc_ValidPolicyNames_LowerCase</label>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+          <activationType>S</activationType>
+        </start>
+      </routeNodes>
+      <policies>
+        <policy>
+          <name>pre_approve</name>
+          <value>false</value>
+        </policy>
+        <policy>
+          <name>disapprove</name>
+          <value>false</value>
+        </policy>
+        <policy>
+          <name>default_approve</name>
+          <value>false</value>
+        </policy>
+        <policy>
+          <name>initiator_must_route</name>
+          <value>false</value>
+        </policy>
+        <policy>
+          <name>initiator_must_save</name>
+          <value>false</value>
+        </policy>
+        <policy>
+          <name>look_future</name>
+          <value>false</value>
+        </policy>
+      </policies>
+    </documentType>
+  </documentTypes>
+</data>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+    <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+    
+        <ruleAttribute>
+            <name>RuleRoutingAttribute</name>
+            <className>edu.iu.uis.eden.routetemplate.RuleRoutingAttribute</className>
+            <label>RuleRoutingAttribute</label>
+            <description>RuleRoutingAttribute</description>
+            <type>RuleAttribute</type>
+        </ruleAttribute>
+    </ruleAttributes>
+        
+    <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+    <ruleTemplate>
+            <name>DocumentTypeRouting</name>
+            <description>desc</description>
+        </ruleTemplate>
+        <ruleTemplate>
+            <name>RuleRouting</name>
+            <description>RuleRouting</description>
+            <attributes>
+                <attribute>
+                    <name>RuleRoutingAttribute</name>
+                    <required>false</required>
+                </attribute>
+            </attributes>
+        </ruleTemplate>
+       <ruleTemplate allowOverwrite="true">
+            <name>AddDelegationTest_DelegationTemplate</name>
+            <description>AddDelegationTest_DelegationTemplate</description>
+        </ruleTemplate>
+        <ruleTemplate>
+            <name>AddDelegationTest_RuleTemplate</name>
+            <description>AddDelegationTest_RuleTemplate</description>
+            <delegationTemplate>AddDelegationTest_DelegationTemplate</delegationTemplate>
+        </ruleTemplate>
+    </ruleTemplates>
+
+    <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+    <documentType>
+            <name>EDENSERVICE-DOCS</name>
+            <description>Workflow Maintenance Document</description>
+            <label>Workflow Maintenance Document</label>
+            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <active>true</active>
+            <policies>
+                <policy>
+                    <name>PRE_APPROVE</name>
+                    <value>false</value>
+                </policy>
+                <policy>
+                    <name>DEFAULT_APPROVE</name>
+                    <value>false</value>
+                </policy>
+            </policies>
+            <routePaths>
+                <routePath>
+                    <start name="adhoc" nextNode="Workflow Document Routing" />
+                    <requests name="Workflow Document Routing" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="adhoc">
+                    <exceptionWorkgroupName>WorkflowAdmin</exceptionWorkgroupName>
+                    <activationType>S</activationType>
+                </start>
+                <requests name="Workflow Document Routing">
+                    <exceptionWorkgroupName>WorkflowAdmin</exceptionWorkgroupName>
+                    <activationType>S</activationType>
+                    <ruleTemplate>DocumentTypeRouting</ruleTemplate>
+                    <mandatoryRoute>true</mandatoryRoute>
+                </requests>
+            </routeNodes>
+        </documentType>
+        
+        <documentType>
+            <name>EDENSERVICE-DOCS.RuleDocument</name>
+            <parent>EDENSERVICE-DOCS</parent>
+            <description>Rule Maintenance Document Type Document</description>
+            <label>Rule Maintenance Document Type Document</label>
+            <postProcessorName>edu.iu.uis.eden.routetemplate.RulePostProcessor</postProcessorName>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
+            <active>true</active>
+            <policies>
+                <policy>
+                    <name>PRE_APPROVE</name>
+                    <value>false</value>
+                </policy>
+                <policy>
+                    <name>DEFAULT_APPROVE</name>
+                    <value>true</value>
+                </policy>
+            </policies>
+            <routePaths>
+                <routePath>
+                    <start name="adhoc" nextNode="RuleRouting" />
+                    <requests name="RuleRouting" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="adhoc">
+                    <exceptionWorkgroupName>WorkflowAdmin</exceptionWorkgroupName>
+                    <activationType>S</activationType>
+                </start>
+                <requests name="RuleRouting">
+                    <exceptionWorkgroupName>WorkflowAdmin</exceptionWorkgroupName>
+                    <activationType>S</activationType>
+                    <ruleTemplate>RuleRouting</ruleTemplate>
+                    <!-- 
+                    <mandatoryRoute>true</mandatoryRoute>
+                     -->
+                </requests>
+            </routeNodes>
+        </documentType>
+        
+        <documentType>
+            <name>AddDelegationTest_DocType</name>
+            <label>AddDelegationTest_DocType</label>
+            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <docHandler>_blank</docHandler>
+            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <messageEntity>KEW</messageEntity>
+            <policies>
+                <policy>
+                    <name>PRE_APPROVE</name>
+                    <value>false</value>
+                </policy>
+                <policy>
+                    <name>DEFAULT_APPROVE</name>
+                    <value>false</value>
+                </policy>
+            </policies>
+            <routePaths>
+                <routePath>
+                    <start name="AdHoc" nextNode="RouteLevel1" />
+                    <requests name="RouteLevel1" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="AdHoc">
+                    <activationType>S</activationType>
+                </start>
+                <requests name="RouteLevel1">
+                    <activationType>P</activationType>
+                    <ruleTemplate>AddDelegationTest_RuleTemplate</ruleTemplate>
+                    <finalApproval>true</finalApproval>
+                </requests>
+            </routeNodes>
+        </documentType>
+    </documentTypes>
+
+    <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+        <rule>
+            <documentType>AddDelegationTest_DocType</documentType>
+            <ruleTemplate>AddDelegationTest_RuleTemplate</ruleTemplate>
+            <description>RouteLevel1_Rule</description>
+            <ignorePrevious>false</ignorePrevious>
+            <responsibilities>
+                <responsibility>
+                    <user>user1</user>
+                    <actionRequested>A</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
+    </rules>
+</data>

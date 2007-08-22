@@ -1,0 +1,24 @@
+<!--
+  This file stores default configuration for the KewConfigurer.
+ -->
+<config>
+
+  <param name="useQuartzDatabase">true</param>
+  <param name="ksb.org.quartz.scheduler.instanceId">AUTO</param>
+  <param name="ksb.org.quartz.scheduler.instanceName">KSBScheduler</param>
+  <param name="ksb.org.quartz.jobStore.isClustered">true</param>
+  <param name="ksb.org.quartz.jobStore.tablePrefix">KR_QRTZ_</param>
+
+  <!-- Daily emails every day at 1 AM -->
+  <param name="dailyEmail.cronExpression">0 0 1 * * ?</param>
+  <param name="dailyEmail.active">true</param>
+
+  <!-- Weekly emails every Monday at 2 AM -->
+  <param name="weeklyEmail.cronExpression">0 0 2 ? * 2</param>
+  <param name="weeklyEmail.active">true</param>
+
+	<param name="message.delivery">async</param>
+	<param name="message.persistence">true</param>
+
+
+</config>

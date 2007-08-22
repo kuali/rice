@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.iu.uis.eden.util.converters;
+package org.kuali.rice.util;
 
 import java.sql.Timestamp;
 
@@ -26,13 +26,13 @@ import org.apache.commons.beanutils.Converter;
  * 
  * Adapted from org.apache.commons.beanutils.converters.SqlTimestampConverter
  */
-public class KEWSqlTimestampConverter implements Converter {
+public class SqlTimestampConverter implements Converter {
 
     /**
      * Create a {@link Converter} that will throw a {@link ConversionException}
      * if a conversion error occurs.
      */
-    public KEWSqlTimestampConverter() {
+    public SqlTimestampConverter() {
         this.defaultValue = null;
         this.useDefault = true;
     }
@@ -43,7 +43,7 @@ public class KEWSqlTimestampConverter implements Converter {
      *
      * @param defaultValue The default value to be returned
      */
-    public KEWSqlTimestampConverter(Object defaultValue) {
+    public SqlTimestampConverter(Object defaultValue) {
         this.defaultValue = defaultValue;
         this.useDefault = true;
     }

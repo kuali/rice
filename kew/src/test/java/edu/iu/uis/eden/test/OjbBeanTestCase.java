@@ -24,9 +24,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springmodules.orm.ojb.PersistenceBrokerTemplate;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.util.OptimisticLockFailureService;
-
 /**
  * @author ewestfal
  */
@@ -104,10 +101,6 @@ public abstract class OjbBeanTestCase extends WorkflowTestCase {
 
     protected PersistenceBrokerTemplate getPersistenceBrokerTemplate() {
         return new PersistenceBrokerTemplate();
-    }
-
-    protected OptimisticLockFailureService getOptimisticLockFailureService() {
-        return (OptimisticLockFailureService)KEWServiceLocator.getService(KEWServiceLocator.OPTIMISTIC_LOCK_FAILURE_SERVICE);
     }
 
 }

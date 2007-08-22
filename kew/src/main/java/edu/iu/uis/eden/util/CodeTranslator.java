@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,7 @@ import edu.iu.uis.eden.EdenConstants;
 
 /**
  * Utility class to translate the various codes used in Eden into labels and vice versa.
- * 
+ *
  * @author rkirkend
  */
 public class CodeTranslator {
@@ -32,11 +32,10 @@ public class CodeTranslator {
     public static final Map arStatusLabels = getArStatusLabels();
     public static final Map routeStatusLabels = getRouteStatusLabels();
     public static final Map activeIndicatorLabels = getActiveIndicatorLabels();
-    public static final Map activationPolicyLabels = getActivationPolicyLabels(); 
+    public static final Map activationPolicyLabels = getActivationPolicyLabels();
     public static final Map policyLabels = getPolicyLabels();
     public static final Map approvePolicyLabels = getApprovePolicyLabels();
-    public static final Map routeQueueStatusLabels = getRouteQueueStatusLabels();
-    
+
     private static Map getAtLabels() {
         Map newAtLabels = new HashMap();
         newAtLabels.put(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, EdenConstants.ACTION_TAKEN_ACKNOWLEDGED);
@@ -53,7 +52,7 @@ public class CodeTranslator {
         newAtLabels.put(EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS);
         newAtLabels.put(EdenConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, EdenConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION);
         newAtLabels.put(EdenConstants.ACTION_TAKEN_MOVE_CD, EdenConstants.ACTION_TAKEN_MOVE);
-        newAtLabels.put(EdenConstants.ACTION_TAKEN_SU_APPROVED_CD, EdenConstants.ACTION_TAKEN_SU_APPROVED);        
+        newAtLabels.put(EdenConstants.ACTION_TAKEN_SU_APPROVED_CD, EdenConstants.ACTION_TAKEN_SU_APPROVED);
         newAtLabels.put(EdenConstants.ACTION_TAKEN_SU_CANCELED_CD, EdenConstants.ACTION_TAKEN_SU_CANCELED);
         newAtLabels.put(EdenConstants.ACTION_TAKEN_SU_DISAPPROVED_CD, EdenConstants.ACTION_TAKEN_SU_DISAPPROVED);
         newAtLabels.put(EdenConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, EdenConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED);
@@ -112,14 +111,14 @@ public class CodeTranslator {
         newDocTypeActiveIndicatorLabels.put(EdenConstants.INHERITED_CD, EdenConstants.INHERITED_LABEL);
         return newDocTypeActiveIndicatorLabels;
     }
-    
+
     private static Map getActivationPolicyLabels() {
         Map newActivationPolicyLabels = new HashMap();
         newActivationPolicyLabels.put(EdenConstants.ROUTE_LEVEL_PARALLEL, EdenConstants.ROUTE_LEVEL_PARALLEL_LABEL);
         newActivationPolicyLabels.put(EdenConstants.ROUTE_LEVEL_SEQUENCE, EdenConstants.ROUTE_LEVEL_SEQUENCE_LABEL);
         return newActivationPolicyLabels;
     }
-    
+
     private static Map getApprovePolicyLabels() {
         Map approvePolicyLabels = new HashMap();
         approvePolicyLabels.put(EdenConstants.APPROVE_POLICY_ALL_APPROVE, EdenConstants.APPROVE_POLICY_ALL_APPROVE_LABEL);
@@ -127,17 +126,9 @@ public class CodeTranslator {
         return approvePolicyLabels;
     }
 
-    private static Map getRouteQueueStatusLabels() {
-        Map routeQueueStatusLabels = new HashMap();
-        routeQueueStatusLabels.put(EdenConstants.ROUTE_QUEUE_EXCEPTION, EdenConstants.ROUTE_QUEUE_EXCEPTION_LABEL);
-        routeQueueStatusLabels.put(EdenConstants.ROUTE_QUEUE_QUEUED, EdenConstants.ROUTE_QUEUE_QUEUED_LABEL);
-        routeQueueStatusLabels.put(EdenConstants.ROUTE_QUEUE_ROUTING, EdenConstants.ROUTE_QUEUE_ROUTING_LABEL);
-        return routeQueueStatusLabels; 
-    }
-  
     /**
      * Given an actionRequest code return the appropriate label.
-     * 
+     *
      * @param actionRequestCode
      *            The actionRequestCode to be translated.
      * @return action request label
@@ -148,7 +139,7 @@ public class CodeTranslator {
 
     /**
      * Given an action taken code return the appropriate label for it.
-     * 
+     *
      * @param actionTakenCode
      *            action taken code to use to find the label.
      * @return action taken label
@@ -159,7 +150,7 @@ public class CodeTranslator {
 
     /**
      * Return the label for the given request status level.
-     * 
+     *
      * @param status
      *            code of the request status
      * @return label for the corresponding code.
@@ -175,7 +166,7 @@ public class CodeTranslator {
     static public String getActiveIndicatorLabel(Boolean indicator) {
         return (String) activeIndicatorLabels.get(indicator);
     }
- 
+
     static public String getActivationPolicyLabel(String code) {
         return (String) activationPolicyLabels.get(code);
     }
@@ -184,8 +175,4 @@ public class CodeTranslator {
         return (String) policyLabels.get(code);
     }
 
-    static public String getRouteQueueStatusLabel(String routeQueueStatusCode) {
-        return (String) routeQueueStatusLabels.get(routeQueueStatusCode);
-    }  
-    
 }

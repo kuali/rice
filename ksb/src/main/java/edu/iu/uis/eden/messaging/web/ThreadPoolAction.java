@@ -25,14 +25,12 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.bus.services.KSBServiceLocator;
 
-import edu.iu.uis.eden.web.WorkflowAction;
-
 /**
  * Struts action for interacting with the queue of messages.
  *
  * @author rkirkend
  */
-public class ThreadPoolAction extends WorkflowAction {
+public class ThreadPoolAction extends KSBAction {
 
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 	    HttpServletResponse response) throws IOException, ServletException {

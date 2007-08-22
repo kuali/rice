@@ -799,8 +799,6 @@ public class EdenConstants extends JSTLConstants {
 	public static final int DEFAULT_TRANSACTION_TIMEOUT_SECONDS = 3600;
 	public static final int MAX_RETURNED_ROWS = 1000;
 
-  public static final String ROUTE_QUEUE_FILTER_SUFFIX = "Filter";
-
     public static final String HTML_NON_BREAKING_SPACE = "&nbsp;";
 
     public static final String LEGACY_DEFAULT_WORKGROUP_TYPE = "W";

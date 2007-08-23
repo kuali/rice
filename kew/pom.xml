@@ -9,19 +9,6 @@
   </parent>
   <artifactId>rice-kew</artifactId>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <forkMode>pertest</forkMode>
-          <argLine>-Xmx1024m -XX:MaxPermSize=512m</argLine>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
   <dependencies>
     <dependency>
       <groupId>org.kuali.rice</groupId>

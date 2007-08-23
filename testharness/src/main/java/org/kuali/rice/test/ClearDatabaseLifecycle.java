@@ -43,7 +43,7 @@ import org.springframework.transaction.support.TransactionTemplate;
  * Lifecycle class to clean up the database for use in testing.
  *
  * @author
- * @version $Revision: 1.2.2.2 $ $Date: 2007-08-22 16:19:59 $
+ * @version $Revision: 1.2.2.3 $ $Date: 2007-08-23 15:20:33 $
  * @since 0.9
  *
  */
@@ -142,7 +142,7 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
 	}
 
 	private boolean shouldTableBeCleared(String tableName) {
-	    if (getTablesToClear() != null) {
+	    if (getTablesToClear() != null && !getTablesToClear().isEmpty()) {
 		for (String tableToClear : getTablesToClear()) {
 		    if (tableName.matches(tableToClear)) {
 			return true;
@@ -150,7 +150,7 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
 		}
 		return false;
 	    }
-	    if (getTablesNotToClear() != null) {
+	    if (getTablesNotToClear() != null && !getTablesNotToClear().isEmpty()) {
 		for (String tableNotToClear : getTablesNotToClear()) {
 		    if (tableName.matches(tableNotToClear)) {
 			return false;

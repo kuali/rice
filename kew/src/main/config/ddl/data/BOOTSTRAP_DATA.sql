@@ -113,16 +113,5 @@ insert into en_wrkgrp_t values (1,1,'WorkflowAdmin',1,'W','Workflow Administrato
 insert into EN_WRKGRP_MBR_T values ('quickstart', 1, 'U', 1, 0)
 /
 
-INSERT INTO kr_qrtz_locks values('TRIGGER_ACCESS')
-/
-INSERT INTO kr_qrtz_locks values('JOB_ACCESS')
-/
-INSERT INTO kr_qrtz_locks values('CALENDAR_ACCESS')
-/
-INSERT INTO kr_qrtz_locks values('STATE_ACCESS')
-/
-INSERT INTO kr_qrtz_locks values('MISFIRE_ACCESS')
-/
-
 commit
 /

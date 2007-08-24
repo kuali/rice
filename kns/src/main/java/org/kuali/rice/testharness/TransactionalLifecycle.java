@@ -35,7 +35,7 @@ public class TransactionalLifecycle implements Lifecycle {
 
 		public void start() throws Exception {
 			DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
-			defaultTransactionDefinition.setTimeout(30);
+			defaultTransactionDefinition.setTimeout(3600);
 			TRANSACTION_STATUS = KNSServiceLocator.getTransactionManager().getTransaction(defaultTransactionDefinition);
 			started = true;
 		}

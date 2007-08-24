@@ -35,7 +35,8 @@
 			</policies>
 			<routePaths>
 				<routePath>
-					<start name="Initial" />
+					<start name="Initial" nextNode="MySimpleNode"/>
+                    <simple name="MySimpleNode"/>
 				</routePath>
 				<routePath processName="Organization Request" initialNode="Organization Request">
 					<requests name="Organization Request"/>
@@ -51,6 +52,9 @@
 				<start name="Initial">
 					<activationType>P</activationType>
 				</start>
+                <simple name="MySimpleNode">
+                  <type>edu.iu.uis.eden.engine.node.NoOpNode</type>
+                </simple>
 				<requests name="Organization Request">
 					<ruleTemplate>OrgRouting</ruleTemplate>
 				</requests>

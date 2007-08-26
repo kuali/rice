@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.BusinessObjectBase;
+import org.kuali.core.bo.PersistableBusinessObjectBase;
 
 /**
  * This class defines the concept of an attribute type.  Given KIM's need for dynamic lists of attributes attached 
@@ -27,7 +28,7 @@ import org.kuali.core.bo.BusinessObjectBase;
  * 
  * @author Aaron Godert (ag266 at cornell dot edu)
  */
-public class AttributeType extends BusinessObjectBase {
+public class AttributeType extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = -3856630570406063764L;
 	private Long id;

@@ -6,9 +6,9 @@ package org.kuali.rice.kim.bo;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.kuali.core.bo.BusinessObjectBase;
+import org.kuali.core.bo.PersistableBusinessObjectBase;
 
-public class Application extends BusinessObjectBase {
+public class Application extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 7639954054609198731L;
 	private Long id;

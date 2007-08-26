@@ -17,9 +17,9 @@ package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
 
-import org.kuali.core.bo.BusinessObjectBase;
+import org.kuali.core.bo.PersistableBusinessObjectBase;
 
-public class RoleAttribute extends BusinessObjectBase {
+public class RoleAttribute extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = -411609041830442521L;
 	private Long id;

@@ -1,3 +1,6 @@
 <config>
-	<param name="config.location">${alt.config.location}</param>
+	<param name="environment">${environment}</param>
+	<param name="module.name">kim</param>
+	<param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
+	<param name="config.location">${alt.build.location}</param>
 </config>

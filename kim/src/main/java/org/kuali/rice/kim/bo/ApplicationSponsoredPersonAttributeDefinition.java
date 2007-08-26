@@ -5,9 +5,9 @@ package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
 
-import org.kuali.core.bo.BusinessObjectBase;
+import org.kuali.core.bo.PersistableBusinessObjectBase;
 
-public class ApplicationSponsoredPersonAttributeDefinition extends BusinessObjectBase {
+public class ApplicationSponsoredPersonAttributeDefinition extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = -9056229917116128109L;
 	private Long id;

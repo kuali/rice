@@ -31,13 +31,13 @@ insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a3')
 ;
 insert into en_wrkgrp_t values (1,1,'WorkflowAdmin',1,'W','Workflow Administrator Workgroup',1,-1,0) 
 ;
-insert into EN_WRKGRP_MBR_T values ('quickstart',1,1,0, 'U') 
+insert into EN_WRKGRP_MBR_T values ('quickstart',1,'U',1,0) 
 ;
-insert into EN_WRKGRP_MBR_T values ('user4',1,1,0,'U') 
-;
-insert into FP_DOC_TYPE_T values ('TRVA', '1A6FEB2501C7607EE043814FD881607E', 1, 'TR',	'TRAV ACCNT', 'N', 'Y', 'N', 0, 'N', 'N')
+insert into EN_WRKGRP_MBR_T values ('user4',1,'U',1,0) 
 ;
 INSERT INTO FP_DOC_GROUP_T VALUES ('TR', '054EDFB3B260C8D2E043814FD881C8D2', 1,	'Travel Documents', null)
+;
+insert into FP_DOC_TYPE_T values ('TRAV', '1A6FEB2501C7607EE043814FD881607E', 1, 'TR',	'TRAV ACCNT', 'N', 'Y', 'N', 0, 'N', 'N')
 ;
 insert into FP_DOC_TYPE_T values ('TRFO', '1A6FEB250342607EE043814FD881607E', 1, 'TR',	'TRAV FO', 'N', 'Y', 'N', 0, 'N', 'N')
 ;
@@ -74,4 +74,8 @@ INSERT INTO kr_qrtz_locks values('CALENDAR_ACCESS')
 INSERT INTO kr_qrtz_locks values('STATE_ACCESS')
 ;
 INSERT INTO kr_qrtz_locks values('MISFIRE_ACCESS')
+;
+INSERT INTO APPLICATIONS_T (ID, NAME, DESCRIPTION) VALUES (1, 'KIM', 'This record represents the actual KIM system and must always be loaded by default in order for the system to work properly.') 
+;
+INSERT INTO PERSONS_T (ID, USERNAME, PASSWORD) VALUES (1, 'admin', 'admin')
 ;

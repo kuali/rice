@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
 
-import org.kuali.core.bo.BusinessObjectBase;
+import org.kuali.core.bo.PersistableBusinessObjectBase;
 
 /**
  * This business object represents the entity of Permission.  The ability to perform actions in a system/application 
@@ -26,7 +26,7 @@ import org.kuali.core.bo.BusinessObjectBase;
  * 
  * @author Aaron Godert (ag266 at cornell dot edu)
  */
-public class Permission extends BusinessObjectBase {
+public class Permission extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = -4520809944516623107L;
 	private Long id;

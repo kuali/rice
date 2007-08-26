@@ -18,9 +18,9 @@ package org.kuali.rice.kim.bo;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.kuali.core.bo.BusinessObjectBase;
+import org.kuali.core.bo.PersistableBusinessObjectBase;
 
-public class Group extends BusinessObjectBase {
+public class Group extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 4974576362491778342L;
 

@@ -77,9 +77,9 @@ public class KIMResourceLoaderFactory {
 	/**
 	 * This method sets the name of the KIM specific resource loader.
 	 * 
-	 * @param knsSpringResourceLoaderName
+	 * @param kimSpringResourceLoaderName
 	 */
-	public static void setSpringResourceLoaderName(QName knsSpringResourceLoaderName) {
-		Core.getCurrentContextConfig().getObjects().put(KIM_SPRING_RESOURCE_LOADER_LOCAL_NAME, knsSpringResourceLoaderName);
+	public static void setSpringResourceLoaderName(QName kimSpringResourceLoaderName) {
+		Core.getCurrentContextConfig().getObjects().put(KIM_SPRING_RESOURCE_LOADER_LOCAL_NAME, kimSpringResourceLoaderName);
 	}	
 }

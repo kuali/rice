@@ -6,9 +6,14 @@
 	<packaging>pom</packaging>
 	<name>Kuali Rice</name>
   <version>0.9.1-SNAPSHOT</version>
-  <description>Rice Commons contains 3 primary components. 1.) Rice Core which contains primarily resource loading and configuration 2.) Rice Shared which
-		contains rice library data access code. This is OJB, XAPool, Spring and JTA 3.) Rice Service Bus</description>
-	<url>http://rice.kuali.org</url>
+  <description>
+  The Kuali Rice effort provides an enterprise class middleware suite of integrated 
+  products that allows both Kuali and non-Kuali applications to be built in an agile 
+  fashion, such that developers will be able to react to end-user business requirements 
+  in an efficient and productive manner, so that they can produce high quality 
+  business applications.
+  </description>
+  <url>http://rice.kuali.org</url>
   <inceptionYear>2007</inceptionYear>
   <licenses>
     <license>

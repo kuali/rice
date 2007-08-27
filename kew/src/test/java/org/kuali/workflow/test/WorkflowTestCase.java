@@ -84,12 +84,6 @@ public abstract class WorkflowTestCase extends RiceTestCase {
 	loadTestDataInternal();
     }
 
-    @Override
-    public void tearDown() throws Exception {
-	super.tearDown();
-	KEWServiceLocator.getCacheAdministrator().flushAll();
-    }
-
     /**
      * Initiates loading of test data within a transaction.
      */
@@ -153,16 +147,27 @@ public abstract class WorkflowTestCase extends RiceTestCase {
         }
     }
 
+
+
+
+
+    @Override
+    protected List<Lifecycle> getPerTestLifecycles() {
+	List<Lifecycle> lifecycles = super.getPerTestLifecycles();
+	lifecycles.add(new ClearCacheLifecycle());
+	return lifecycles;
+    }
+
     @Override
     protected List<Lifecycle> getSuiteLifecycles() {
 	List<Lifecycle> lifecycles = super.getSuiteLifecycles();
-	JettyServer server = new JettyServer(9912, "/en-test", "/../kns/src/test/webapp/en");
-	lifecycles.add(server);
 	// we want to only clear out the quartz tables one time, therefore we want to pass this lifecycle the
 	// opposite of what is passed to the clear database lifecycle that runs on every test execution
 	lifecycles.add(new ClearDatabaseLifecycle(getTablesNotToClear(), getTablesToClear()));
-	lifecycles.add(new SuiteDataLoadLifecycle());
+	JettyServer server = new JettyServer(9912, "/en-test", "/../kns/src/test/webapp/en");
+	lifecycles.add(server);
 	lifecycles.add(new InitializeGRL());
+	lifecycles.add(new SuiteDataLoadLifecycle());
 	return lifecycles;
     }
 
@@ -189,6 +194,16 @@ public abstract class WorkflowTestCase extends RiceTestCase {
 		}
 	    }
 	    super.start();
+	}
+
+    }
+
+    public class ClearCacheLifecycle extends BaseLifecycle {
+
+	@Override
+	public void stop() throws Exception {
+	    KEWServiceLocator.getCacheAdministrator().flushAll();
+	    super.stop();
 	}
 
     }

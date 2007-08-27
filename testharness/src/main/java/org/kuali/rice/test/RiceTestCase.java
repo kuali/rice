@@ -51,9 +51,9 @@ public abstract class RiceTestCase extends LoggableTestCase {
 	private static final String DEFAULT_LOG4J_CONFIG = "rice-testharness-default-log4j.properties";
 	protected static boolean SUITE_LIFE_CYCLES_RAN = false;
 
-	private List<Lifecycle> perTestLifeCycles = new LinkedList<Lifecycle>();
+	protected List<Lifecycle> perTestLifeCycles = new LinkedList<Lifecycle>();
 
-	private List<Lifecycle> suiteLifeCycles = new LinkedList<Lifecycle>();
+	protected List<Lifecycle> suiteLifeCycles = new LinkedList<Lifecycle>();
 
 	private List<String> reports = new ArrayList<String>();
 

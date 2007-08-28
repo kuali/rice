@@ -7,10 +7,10 @@
 	<name>Kuali Rice</name>
   <version>0.9.1-SNAPSHOT</version>
   <description>
-  The Kuali Rice effort provides an enterprise class middleware suite of integrated 
-  products that allows both Kuali and non-Kuali applications to be built in an agile 
-  fashion, such that developers will be able to react to end-user business requirements 
-  in an efficient and productive manner, so that they can produce high quality 
+  The Kuali Rice effort provides an enterprise class middleware suite of integrated
+  products that allows both Kuali and non-Kuali applications to be built in an agile
+  fashion, such that developers will be able to react to end-user business requirements
+  in an efficient and productive manner, so that they can produce high quality
   business applications.
   </description>
 	<url>http://rice.kuali.org</url>
@@ -146,7 +146,7 @@
     <repository>
       <id>kuali</id>
       <name>Kuali Repository</name>
-      <url>https://onestart.iu.edu/dav/MY/maven-mirror/maven2</url>
+      <url>https://test.kuali.org/maven</url>
     </repository>
     <repository>
       <id>connector</id>

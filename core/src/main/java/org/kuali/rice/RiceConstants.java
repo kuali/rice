@@ -44,6 +44,8 @@ public class RiceConstants {
     public static final String IMMEDIATE_EXCEPTION_ROUTING = "Routing.ImmediateExceptionRouting";
     public static final Integer ROUTE_QUEUE_DEFAULT_PRIORITY = new Integer(5);
 
+    public static final String ROUTE_QUEUE_FILTER_SUFFIX = "Filter";
+
     public static final String KSB_MESSAGE_DATASOURCE = "ksbMessage.datasource";
     public static final String KSB_REGISTRY_DATASOURCE = "ksbRegistry.datasource";
     public static final String KSB_MESSAGE_DATASOURCE_JNDI = "ksbMessage.datasource.jndi.location";

@@ -5,6 +5,7 @@
 <%@ taglib uri="../../tld/fmt.tld" prefix="fmt" %>
 <%@ taglib uri="../../tld/displaytag.tld" prefix="display-el" %>
 
+<c:set var="Constants" value="${org.kuali.rice.RiceConstants}"/>
 <c:set var="hasAnyRows" value="${false}" />
 <c:if test="${!empty MessageQueueForm.messageQueueRows}">
 	<c:if test="${MessageQueueForm.messageQueueRowsSize > 0}">

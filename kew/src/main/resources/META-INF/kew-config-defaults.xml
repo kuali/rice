@@ -3,12 +3,6 @@
  -->
 <config>
 
-  <param name="useQuartzDatabase">true</param>
-  <param name="ksb.org.quartz.scheduler.instanceId">AUTO</param>
-  <param name="ksb.org.quartz.scheduler.instanceName">KSBScheduler</param>
-  <param name="ksb.org.quartz.jobStore.isClustered">true</param>
-  <param name="ksb.org.quartz.jobStore.tablePrefix">KR_QRTZ_</param>
-
   <!-- Daily emails every day at 1 AM -->
   <param name="dailyEmail.cronExpression">0 0 1 * * ?</param>
   <param name="dailyEmail.active">true</param>

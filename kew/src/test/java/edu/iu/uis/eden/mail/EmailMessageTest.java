@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,7 +39,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * Tests email content generation
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-public class EmailMessageTestCase extends WorkflowTestCase {
+public class EmailMessageTest extends WorkflowTestCase {
     private ActionListEmailServiceImpl actionListEmailService = new ActionListEmailServiceImpl();
     private HardCodedEmailContentServiceImpl hardCodedEmailContentService = new HardCodedEmailContentServiceImpl();
     private StyleableEmailContentServiceImpl styleableContentService = new StyleableEmailContentServiceImpl();
@@ -47,9 +47,9 @@ public class EmailMessageTestCase extends WorkflowTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        actionListEmailService.setDeploymentEnvironment("unttst");
-        hardCodedEmailContentService.setDeploymentEnvironment("unttst");
-        styleableContentService.setDeploymentEnvironment("unttst");
+        actionListEmailService.setDeploymentEnvironment("dev");
+        hardCodedEmailContentService.setDeploymentEnvironment("dev");
+        styleableContentService.setDeploymentEnvironment("dev");
         styleableContentService.setStyleService(KEWServiceLocator.getStyleService());
     }
 
@@ -58,11 +58,11 @@ public class EmailMessageTestCase extends WorkflowTestCase {
         loadXmlFile("EmailMessageDocType.xml");
     }
 
-    
+
     private void testImmediateReminder(WorkflowUser user, Collection<ActionItem> actionItems) throws Exception, ResourceUnavailableException {
         for (ActionItem actionItem: actionItems) {
             DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(actionItem.getDocName());
-            
+
             String oldBody = actionListEmailService.buildImmediateReminderBody(user, actionItem, docType);
             CustomEmailAttribute cea = docType.getCustomEmailAttribute();
             // it's not buildImmediateReminderBody, but sendImmediateReminder in the default ActionListEmailServiceImpl
@@ -77,7 +77,7 @@ public class EmailMessageTestCase extends WorkflowTestCase {
                 customSubject = cea.getCustomEmailSubject();
             }
             String oldSubject = actionListEmailService.getEmailSubject(customSubject).getSubject();
-            
+
             EmailContent hardCodedContent = hardCodedEmailContentService.generateImmediateReminder(user, actionItem, docType);
             EmailContent styledContent = styleableContentService.generateImmediateReminder(user, actionItem, docType);
 
@@ -88,7 +88,7 @@ public class EmailMessageTestCase extends WorkflowTestCase {
 
             log.info("Immediate reminder content: " + styledContent);
         }
-            
+
     }
 
     private void testDailyReminder(WorkflowUser user, Collection<ActionItem> actionItems) {
@@ -105,9 +105,9 @@ public class EmailMessageTestCase extends WorkflowTestCase {
         assertEquals("Daily reminder subject is not identical", oldSubject, styledContent.getSubject());
 
         log.info("Daily reminder content: " + styledContent);
-        
+
     }
-    
+
     private void testWeeklyReminder(WorkflowUser user, Collection<ActionItem> actionItems) {
         String oldBody = actionListEmailService.buildWeeklyReminderBody(user, actionItems);
         String oldSubject = actionListEmailService.getEmailSubject().getSubject();
@@ -132,7 +132,7 @@ public class EmailMessageTestCase extends WorkflowTestCase {
         testImmediateReminder(user, actionItems);
 
         testDailyReminder(user, actionItems);
-        
+
         testWeeklyReminder(user, actionItems);
     }
 
@@ -171,7 +171,7 @@ public class EmailMessageTestCase extends WorkflowTestCase {
         int count = generateDocs(new String[] { "PingDocument", "PingDocumentWithEmailAttrib" }, wfuser);
         testEmailContentGeneration(wfuser, count);
     }
-    
+
     /**
      * tests custom stylesheet
      * @throws Exception
@@ -185,15 +185,15 @@ public class EmailMessageTestCase extends WorkflowTestCase {
 
         Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user, null);
         assertEquals("user should have " + count + " items in his action list.", count, actionItems.size());
-        
+
         EmailContent content = styleableContentService.generateImmediateReminder(user, actionItems.iterator().next(), KEWServiceLocator.getDocumentTypeService().findByName(actionItems.iterator().next().getDocName()));
         assertTrue("Unexpected subject", content.getSubject().startsWith("CUSTOM:"));
         assertTrue("Unexpected body", content.getBody().startsWith("CUSTOM:"));
-        
+
         content = styleableContentService.generateDailyReminder(user, actionItems);
         assertTrue("Unexpected subject", content.getSubject().startsWith("CUSTOM:"));
         assertTrue("Unexpected body", content.getBody().startsWith("CUSTOM:"));
-        
+
         content = styleableContentService.generateWeeklyReminder(user, actionItems);
         assertTrue("Unexpected subject", content.getSubject().startsWith("CUSTOM:"));
         assertTrue("Unexpected body", content.getBody().startsWith("CUSTOM:"));
@@ -213,13 +213,13 @@ public class EmailMessageTestCase extends WorkflowTestCase {
         loadXmlFile("docCustomEmailStyleData.xml");
         assertNotNull(KEWServiceLocator.getStyleService().getStyle("kew.email.style"));
         assertNotNull(KEWServiceLocator.getStyleService().getStyle("doc.custom.email.style"));
-        
+
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("arh14"));
         int count = generateDocs(new String[] { "PingDocumentCustomStyle" }, user);
 
         Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user, null);
         assertEquals("user should have " + count + " items in his action list.", count, actionItems.size());
-        
+
         EmailContent content = styleableContentService.generateImmediateReminder(user, actionItems.iterator().next(), KEWServiceLocator.getDocumentTypeService().findByName(actionItems.iterator().next().getDocName()));
         // immediate email reminder should have used the doc type email style and NOT the global style
         assertFalse("Unexpected subject", content.getSubject().startsWith("CUSTOM:"));
@@ -227,12 +227,12 @@ public class EmailMessageTestCase extends WorkflowTestCase {
         assertTrue("Unexpected subject", content.getSubject().startsWith("DOCTYPE CUSTOM:"));
         assertTrue("Unexpected body", content.getBody().startsWith("DOCTYPE CUSTOM:"));
 
-        
+
         // daily and weekly are unchanged since they are not document type specific
         content = styleableContentService.generateDailyReminder(user, actionItems);
         assertTrue("Unexpected subject", content.getSubject().startsWith("CUSTOM:"));
         assertTrue("Unexpected body", content.getBody().startsWith("CUSTOM:"));
-        
+
         content = styleableContentService.generateWeeklyReminder(user, actionItems);
         assertTrue("Unexpected subject", content.getSubject().startsWith("CUSTOM:"));
         assertTrue("Unexpected body", content.getBody().startsWith("CUSTOM:"));
@@ -256,10 +256,10 @@ public class EmailMessageTestCase extends WorkflowTestCase {
     @Test
     public void testFeedback() throws Exception {
         HardCodedEmailContentServiceImpl hcContentService = new HardCodedEmailContentServiceImpl();
-        hcContentService.setDeploymentEnvironment("unttst");
+        hcContentService.setDeploymentEnvironment("dev");
 
         StyleableEmailContentServiceImpl styleContentService = new StyleableEmailContentServiceImpl();
-        styleContentService.setDeploymentEnvironment("unttst");
+        styleContentService.setDeploymentEnvironment("dev");
         styleContentService.setStyleService(KEWServiceLocator.getStyleService());
 
         FeedbackForm form = new FeedbackForm();
@@ -276,7 +276,7 @@ public class EmailMessageTestCase extends WorkflowTestCase {
         form.setUserEmail("user@unittest");
         form.setUserName("user name");
         // don't set route header id at this point
-        
+
         EmailContent hcContent = hcContentService.generateFeedback(form);
         EmailContent sContent = styleContentService.generateFeedback(form);
         assertEquals(hcContent.getSubject().replace("\\s+", " "), sContent.getSubject().replace("\\s+", " "));
@@ -285,7 +285,7 @@ public class EmailMessageTestCase extends WorkflowTestCase {
 
         // now test with the route header id set
         form.setRouteHeaderId("12345");
-       
+
         hcContent = hcContentService.generateFeedback(form);
         sContent = styleContentService.generateFeedback(form);
         assertEquals(hcContent.getSubject().replace("\\s+", " "), sContent.getSubject().replace("\\s+", " "));

@@ -15,21 +15,80 @@
  */
 package org.kuali.rice.test.runners;
 
+import java.lang.reflect.Method;
+
+import org.apache.commons.beanutils.MethodUtils;
 import org.junit.internal.runners.InitializationError;
-import org.junit.internal.runners.TestClassRunner;
+import org.junit.internal.runners.JUnit4ClassRunner;
+import org.junit.runner.Description;
+import org.junit.runner.Result;
+import org.junit.runner.notification.RunListener;
+import org.junit.runner.notification.RunNotifier;
 
 /**
- * A Runner which invokes setName() on the JUnit tests before running them. Used
- * for backward compatibility.
- * 
+ * A Runner which invokes setName() on the Test (if the method exists) and sets
+ * it to the name of the test method being invoked.
+ *
  * @author Eric Westfall
- * @version $Revision: 1.2.2.1 $ $Date: 2007-08-15 16:05:00 $
+ * @version $Revision: 1.2.2.2 $ $Date: 2007-08-28 02:15:45 $
  * @since 0.9
  */
-public class NamedTestClassRunner extends TestClassRunner {
+public class NamedTestClassRunner extends JUnit4ClassRunner {
 
-    public NamedTestClassRunner(final Class< ? > testClass)
-        throws InitializationError {
-        super(testClass, new NamedTestClassMethodsRunner(testClass));
+    public NamedTestClassRunner(final Class<?> testClass) throws InitializationError {
+        super(testClass);
     }
+
+    @Override
+    protected Object createTest() throws Exception {
+	Object test = super.createTest();
+	setTestName(test, getName());
+	return test;
+    }
+
+//    @Override
+//    protected TestMethodRunner createMethodRunner(final Object test,
+//        final Method method, final RunNotifier notifier) {
+//        final TestMethodRunner runner = super.createMethodRunner(test, method,
+//            notifier);
+//        setTestName(test, method.getName());
+//        return runner;
+//    }
+
+    protected void setTestName(final Object test, final String name) {
+        try {
+            final Method setNameMethod = MethodUtils.getAccessibleMethod(test
+                .getClass(), "setName", new Class[] {String.class});
+            setNameMethod.invoke(test, new Object[] {name});
+        } catch (final Exception e) {
+            // no setName method, or we failed to invoke it, so we can't set the
+            // name
+        }
+    }
+
+
+
+    @Override
+    public void run(RunNotifier runNotifier) {
+	runNotifier.addListener(new RiceRunListener());
+	super.run(runNotifier);
+    }
+
+    private class RiceRunListener extends RunListener {
+
+	@Override
+	public void testRunFinished(Result result) throws Exception {
+	    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TEST RUN FINISHED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+	}
+
+	@Override
+	public void testRunStarted(Description description) throws Exception {
+	    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TEST RUN STARTED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+	}
+
+
+
+    }
+
+
 }

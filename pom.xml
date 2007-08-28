@@ -13,7 +13,7 @@
   in an efficient and productive manner, so that they can produce high quality 
   business applications.
   </description>
-  <url>http://rice.kuali.org</url>
+	<url>http://rice.kuali.org</url>
   <inceptionYear>2007</inceptionYear>
   <licenses>
     <license>
@@ -212,7 +212,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.1</version>
+			<version>4.4</version>
 		</dependency>
 
 		<dependency>

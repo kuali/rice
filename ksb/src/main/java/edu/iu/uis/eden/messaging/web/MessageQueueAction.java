@@ -61,7 +61,6 @@ import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 public class MessageQueueAction extends KSBAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MessageQueueAction.class);
-    private static final String ROUTE_QUEUE_FILTER_SUFFIX = "Filter";
 
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 	    HttpServletResponse response) throws IOException, ServletException {
@@ -395,10 +394,10 @@ public class MessageQueueAction extends KSBAction {
 	    String trimmedKey = null;
 	    for (Iterator iter = request.getParameterMap().keySet().iterator(); iter.hasNext();) {
 		key = (String) iter.next();
-		if (key.endsWith(ROUTE_QUEUE_FILTER_SUFFIX)) {
+		if (key.endsWith(RiceConstants.ROUTE_QUEUE_FILTER_SUFFIX)) {
 		    value = request.getParameter(key);
 		    if (StringUtils.isNotBlank(value)) {
-			trimmedKey = key.substring(0, key.indexOf(ROUTE_QUEUE_FILTER_SUFFIX));
+			trimmedKey = key.substring(0, key.indexOf(RiceConstants.ROUTE_QUEUE_FILTER_SUFFIX));
 			criteriaValues.put(trimmedKey, value);
 		    }
 		}

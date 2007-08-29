@@ -62,11 +62,11 @@ import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.UserInRouteLogResp
  */
 public class SimpleDocumentActionsWebServiceTest extends WorkflowTestCase {
 
-	private static final String WSDL_URL1 = "http://localhost:9912/en-test/remoting/{KEW}simpleDocumentActionsService?wsdl";
+	private static final String WSDL_URL1 = "http://localhost:9952/en-test/remoting/{KEW}simpleDocumentActionsService?wsdl";
 
-	private static final String WSDL_URL2 = "http://localhost:9912/en-test/wsdl/{KEW}simpleDocumentActionsService.wsdl";
+	private static final String WSDL_URL2 = "http://localhost:9952/en-test/wsdl/{KEW}simpleDocumentActionsService.wsdl";
 
-	private static final String ENDPOINT_URL = "http://localhost:9912/en-test/remoting/{KEW}simpleDocumentActionsService";
+	private static final String ENDPOINT_URL = "http://localhost:9952/en-test/remoting/{KEW}simpleDocumentActionsService";
 
 	private SimpleDocumentActionsWebService service;
 

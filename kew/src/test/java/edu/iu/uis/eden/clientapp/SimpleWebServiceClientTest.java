@@ -75,8 +75,8 @@ public class SimpleWebServiceClientTest extends WorkflowTestCase {
 	protected void setUpWebservices() throws Exception {
 		try {
 			Core.getCurrentContextConfig().overrideProperty(Config.CLIENT_PROTOCOL, EdenConstants.WEBSERVICE_CLIENT_PROTOCOL);
-			Core.getCurrentContextConfig().overrideProperty("workflowutility.javaservice.endpoint", "http://localhost:9912/en-test/remoting/%7BKEW%7DWorkflowUtilityService");
-			Core.getCurrentContextConfig().overrideProperty("workflowdocument.javaservice.endpoint", "http://localhost:9912/en-test/remoting/%7BKEW%7DWorkflowDocumentActionsService");
+			Core.getCurrentContextConfig().overrideProperty("workflowutility.javaservice.endpoint", "http://localhost:9952/en-test/remoting/%7BKEW%7DWorkflowUtilityService");
+			Core.getCurrentContextConfig().overrideProperty("workflowdocument.javaservice.endpoint", "http://localhost:9952/en-test/remoting/%7BKEW%7DWorkflowDocumentActionsService");
 			Core.getCurrentContextConfig().overrideProperty("secure.workflowdocument.javaservice.endpoint", "true");
 			Core.getCurrentContextConfig().overrideProperty("secure.workflowutility.javaservice.endpoint", "true");
 			KEWConfigurer kewConfigurer  = new KEWConfigurer();

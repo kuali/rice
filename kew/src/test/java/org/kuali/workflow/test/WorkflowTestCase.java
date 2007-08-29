@@ -164,7 +164,7 @@ public abstract class WorkflowTestCase extends RiceTestCase {
 	// we want to only clear out the quartz tables one time, therefore we want to pass this lifecycle the
 	// opposite of what is passed to the clear database lifecycle that runs on every test execution
 	lifecycles.add(new ClearDatabaseLifecycle(getTablesNotToClear(), getTablesToClear()));
-	JettyServer server = new JettyServer(9912, "/en-test", "/../kns/src/test/webapp/en");
+	JettyServer server = new JettyServer(9952, "/en-test", "/../kns/src/test/webapp/en");
 	lifecycles.add(server);
 	lifecycles.add(new InitializeGRL());
 	lifecycles.add(new SuiteDataLoadLifecycle());

@@ -50,7 +50,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  */
 public class ActionListActionTest extends WorkflowTestCase {
 
-	private static final String URL_PREFIX = "http://localhost:9912/en-test/";
+	private static final String URL_PREFIX = "http://localhost:9952/en-test/";
 
 	private WebClient webClient;
 	private WorkflowUser quickstartUser;

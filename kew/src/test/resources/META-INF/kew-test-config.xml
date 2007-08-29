@@ -4,7 +4,7 @@
 	<param name="bam.enabled">true</param>
 	<param name="message.entity">KEW</param>
 	<param name="findServicesLocally">true</param>
-	<param name="http.service.port">9912</param>
+	<param name="http.service.port">9952</param>
 	<param name="serviceServletUrl">http://localhost:${http.service.port}/en-test/remoting/</param>
 	<param name="dev.mode">true</param>
     <param name="message.delivery">synchronous</param>

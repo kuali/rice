@@ -26,13 +26,13 @@ import org.kuali.rice.resourceloader.GlobalResourceLoader;
  * 
  * @author Aaron Godert (ag266 at cornell dot edu)
  */
-public abstract class KIMDaoTestBase extends KIMTestBase {
+public abstract class KIMDaoTestBase extends KIMTestCase {
     protected BusinessObjectService bos = null;
     
     /**
      * This gets an instance of the businessObjectService to use for testing.
      * 
-     * @see org.kuali.rice.kim.test.KIMTestBase#setUp()
+     * @see org.kuali.rice.kim.test.KIMTestCase#setUp()
      */
     @Override
     public void setUp() throws Exception {

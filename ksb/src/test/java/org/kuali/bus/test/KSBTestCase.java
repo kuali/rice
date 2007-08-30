@@ -30,7 +30,6 @@ import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.resourceloader.ResourceLoader;
 import org.kuali.rice.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.RiceTestCase;
-import org.kuali.rice.test.SQLDataLoader;
 import org.mortbay.jetty.webapp.WebAppClassLoader;
 import org.springframework.context.ApplicationContext;
 

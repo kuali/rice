@@ -26,7 +26,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
  * 
  * @author Aaron Godert (ag266 at cornell dot edu)
  */
-public abstract class KIMHtmlTestBase extends KIMTestBase {
+public abstract class KIMHtmlTestBase extends KIMTestCase {
     
     /**
     public void testMaintainable() throws Exception {

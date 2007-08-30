@@ -24,9 +24,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.BaseLifecycle;
@@ -34,10 +36,11 @@ import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.resourceloader.ResourceLoader;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
+import org.kuali.rice.test.DerbyDBCreationLifecycle;
 import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.kuali.rice.web.jetty.JettyServer;
 import org.mortbay.jetty.webapp.WebAppClassLoader;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -60,6 +63,8 @@ import edu.iu.uis.eden.test.TestUtilities;
  */
 public abstract class WorkflowTestCase extends RiceTestCase {
 
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowTestCase.class);
+
     private static final String MODULE_NAME = "kew";
 
     @Override
@@ -75,13 +80,6 @@ public abstract class WorkflowTestCase extends RiceTestCase {
     @Override
     protected String getModuleName() {
 	return MODULE_NAME;
-    }
-
-    @Override
-    public void setUp() throws Exception {
-	System.setProperty(EdenConstants.BOOTSTRAP_SPRING_FILE, "org/kuali/workflow/resources/TestKewSpringBeans.xml");
-	super.setUp();
-	loadTestDataInternal();
     }
 
     /**
@@ -147,28 +145,81 @@ public abstract class WorkflowTestCase extends RiceTestCase {
         }
     }
 
-
-
+    @Before
+    @Override
+    public void setUp() throws Exception {
+	try {
+	    System.setProperty(EdenConstants.BOOTSTRAP_SPRING_FILE, "org/kuali/workflow/resources/TestKewSpringBeans.xml");
+	    beforeRun();
+	    configureLogging();
+	    final long initTime = System.currentTimeMillis();
+	    this.perTestLifeCycles = getPerTestLifecycles();
+	    this.suiteLifeCycles = getSuiteLifecycles();
+	    if (!SUITE_LIFE_CYCLES_RAN) {
+		startLifecycles(this.suiteLifeCycles);
+		SUITE_LIFE_CYCLES_RAN = true;
+	    }
+	    startLifecycles(this.perTestLifeCycles);
+	    report("Time to start all Lifecycles: " + (System.currentTimeMillis() - initTime));
+	    loadTestDataInternal();
+	} catch (Throwable e) {
+	    LOG.error("An error was thrown from test setup, calling tearDown()", e);
+	    tearDown();
+	    throw new RuntimeException(e);
+	}
+    }
 
 
     @Override
     protected List<Lifecycle> getPerTestLifecycles() {
-	List<Lifecycle> lifecycles = super.getPerTestLifecycles();
+	List<Lifecycle> lifecycles = new ArrayList<Lifecycle>();
+	lifecycles.add(new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
 	lifecycles.add(new ClearCacheLifecycle());
 	return lifecycles;
     }
 
     @Override
     protected List<Lifecycle> getSuiteLifecycles() {
-	List<Lifecycle> lifecycles = super.getSuiteLifecycles();
+	LinkedList<Lifecycle> lifeCycles = new LinkedList<Lifecycle>();
+	lifeCycles.add(new Lifecycle() {
+	    boolean started = false;
+	    public boolean isStarted() {
+		return this.started;
+	    }
+	    public void start() throws Exception {
+		setModuleName(getModuleName());
+		setBaseDirSystemProperty(getModuleName());
+		Config config = getTestHarnessConfig();
+		Core.init(config);
+		this.started = true;
+	    }
+	    public void stop() throws Exception {
+		this.started = false;
+	    }
+	});
+	lifeCycles.add(getTestHarnessSpringResourceLoader());
+	lifeCycles.add(new Lifecycle() {
+	    boolean started = false;
+	    public boolean isStarted() {
+		return this.started;
+	    }
+	    public void start() throws Exception {
+		TestHarnessServiceLocator.setContext(getTestHarnessSpringResourceLoader().getContext());
+		this.started = true;
+	    }
+	    public void stop() throws Exception {
+		this.started = false;
+	    }
+	});
+	lifeCycles.add(new DerbyDBCreationLifecycle(getDerbySQLFileLocation()));
 	// we want to only clear out the quartz tables one time, therefore we want to pass this lifecycle the
 	// opposite of what is passed to the clear database lifecycle that runs on every test execution
-	lifecycles.add(new ClearDatabaseLifecycle(getTablesNotToClear(), getTablesToClear()));
+	lifeCycles.add(new ClearDatabaseLifecycle(getTablesNotToClear(), getTablesToClear()));
 	JettyServer server = new JettyServer(9952, "/en-test", "/../kns/src/test/webapp/en");
-	lifecycles.add(server);
-	lifecycles.add(new InitializeGRL());
-	lifecycles.add(new SuiteDataLoadLifecycle());
-	return lifecycles;
+	lifeCycles.add(server);
+	lifeCycles.add(new InitializeGRL());
+	lifeCycles.add(new SuiteDataLoadLifecycle());
+	return lifeCycles;
     }
 
     private class SuiteDataLoadLifecycle extends BaseLifecycle {

@@ -22,7 +22,6 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.lifecycle.Lifecycle;
-import org.kuali.rice.resourceloader.ResourceLoader;
 import org.kuali.rice.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.RiceTestCase;
 
@@ -35,7 +34,7 @@ import org.kuali.rice.test.RiceTestCase;
 public class KIMTestCase extends RiceTestCase {
     
     	private static final String KIM_TEST_CONTEXT_LOC = "classpath:KimTestHarnessSpring.xml";
-    	private ResourceLoader springContextResourceLoader;
+    	private SpringResourceLoader springContextResourceLoader;
     
 	@Override
 	public List<Lifecycle> getPerTestLifecycles() {
@@ -51,6 +50,15 @@ public class KIMTestCase extends RiceTestCase {
 	}
 
 
+    protected List<String> getTablesNotToClear() {
+        List<String> tables = new ArrayList<String>();
+        tables.add("EN.*");
+        tables.add("FS.*");
+        tables.add("FP.*");
+        tables.add("KR.*");
+        return tables;
+    }
+	
     @Override
     protected List<String> getConfigLocations() {
 	return Arrays.asList(new String[]{"classpath:META-INF/kim-test-config.xml"});
@@ -64,5 +72,13 @@ public class KIMTestCase extends RiceTestCase {
     @Override
     protected String getModuleName() {
 	return "kim";
+    }
+
+    public SpringResourceLoader getSpringContextResourceLoader() {
+        return this.springContextResourceLoader;
+    }
+
+    public void setSpringContextResourceLoader(SpringResourceLoader springContextResourceLoader) {
+        this.springContextResourceLoader = springContextResourceLoader;
     }
 }

@@ -41,6 +41,18 @@
 		<property name="rootConfig" ref="config" />
 		<property name="modules">
 			<list>
+				<bean class="org.kuali.rice.kns.config.KNSConfigurer">
+					<property name="dataDictionaryPackages">
+						<list>
+							<value>edu/sampleu/travel/datadictionary</value>
+						</list>
+					</property>
+					<property name="databaseRepositoryFilePaths">
+						<list>
+							<value>repository.xml</value>
+						</list>
+					</property>
+				</bean>
 				<bean class="org.kuali.rice.kim.config.KIMConfigurer" />
 			</list>
 		</property>

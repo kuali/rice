@@ -59,11 +59,19 @@
 				<idref local="matchAllTxInterceptor" />
 			</list>
 		</property>
-		<!-- 
 		<property name="beanNames">
 			<list>				
+				<idref local="kimService" />
 			</list>
 		</property>
-		-->
 	</bean>
+	
+	<bean id="kimService" class="org.kuali.rice.kim.service.KimServiceImpl">
+		<property name="kimDao">
+			<bean class="org.kuali.rice.kim.service.dao.KimDaoOjbImpl">
+				<property name="jcdAlias" value="kimDataSource"></property>
+			</bean>
+		</property>
+	</bean>
+	
 </beans>

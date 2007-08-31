@@ -94,6 +94,13 @@ public abstract class RiceTestCase extends LoggableTestCase {
 		}
 	}
 
+	/**
+	 * Returns the basedir for the module under which the tests are currently executing.
+	 */
+	protected String getBaseDir() {
+	    return System.getProperty("basedir");
+	}
+
 	protected void setModuleName(String moduleName) {
 		if (System.getProperty("module.name") == null) {
 			System.setProperty("module.name", moduleName);

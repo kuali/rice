@@ -212,20 +212,10 @@ public abstract class WorkflowTestCase extends RiceTestCase {
 	lifeCycles.add(new DerbyDBCreationLifecycle(getDerbySQLFileLocation()));
 	// we want to only clear out the quartz tables one time, therefore we want to pass this lifecycle the
 	// opposite of what is passed to the clear database lifecycle that runs on every test execution
-	lifeCycles.add(new ClearDatabaseLifecycle(getTablesNotToClear(), getTablesToClear()));
 	JettyServer server = new JettyServer(9952, "/en-test", "/../kns/src/test/webapp/en");
 	lifeCycles.add(server);
 	lifeCycles.add(new InitializeGRL());
-	lifeCycles.add(new SuiteDataLoadLifecycle());
 	return lifeCycles;
-    }
-
-    private class SuiteDataLoadLifecycle extends BaseLifecycle {
-	@Override
-	public void start() throws Exception {
-	    new SQLDataLoader("OneTimeDefaultTestData.sql", WorkflowTestCase.class).runSql();
-	    super.start();
-	}
     }
 
     private class InitializeGRL extends BaseLifecycle {
@@ -266,21 +256,6 @@ public abstract class WorkflowTestCase extends RiceTestCase {
 	tablesToClear.add("EN_.*");
 	return tablesToClear;
     }
-
-
-    /**
-     * Returns the List of tables that should NOT be cleared on every test run.
-     *
-     * We only want to clear out the quartz tables one time, otherwise we get weird locking
-     * errors if we try to clear out those tables on every run.
-     */
-    @Override
-    protected List<String> getTablesNotToClear() {
-	List<String> tablesNotToClear = new ArrayList<String>();
-	tablesNotToClear.add("KR_.*");
-	return tablesNotToClear;
-    }
-
 
 	/**
 	 * By default this loads the "default" data set from the DefaultTestData.sql

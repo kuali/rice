@@ -19,6 +19,7 @@ package edu.iu.uis.eden.actions.asyncservices;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.definition.DataDefinition;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -35,8 +36,16 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * @author rkirkend
  */
 public class ActionInvocationProcessor implements ActionInvocationService { // implements RouteQueueProcessor {
+    
+    private static final Logger LOG = Logger.getLogger(ActionInvocationProcessor.class);
 
 	public void invokeAction(WorkflowUser user, Long documentId, ActionInvocation invocation) {
+	    	
+	    	if (KEWServiceLocator.getActionListService().findByActionItemId(invocation.getActionItemId()) == null) {
+	    	    LOG.info("Attempting to invoke ActionItem " + invocation.getActionItemId() + " that does not exist");
+	    	    return;
+	    	}
+	    	
 		List<Object> parameters = new ArrayList<Object>();
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		parameters.add(new DataDefinition(document));

@@ -65,8 +65,6 @@ public abstract class WorkflowTestCase extends RiceTestCase {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowTestCase.class);
 
-    private static final String MODULE_NAME = "kew";
-
     @Override
     protected List<String> getConfigLocations() {
 	return Arrays.asList(new String[]{"classpath:META-INF/kew-test-config.xml"});
@@ -79,7 +77,7 @@ public abstract class WorkflowTestCase extends RiceTestCase {
 
     @Override
     protected String getModuleName() {
-	return MODULE_NAME;
+	return TestUtils.getModuleName();
     }
 
     /**

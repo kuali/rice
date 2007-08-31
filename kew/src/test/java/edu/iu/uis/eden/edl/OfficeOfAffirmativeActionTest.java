@@ -36,7 +36,10 @@ import java.net.URL;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.workflow.test.TestUtils;
 import org.kuali.workflow.test.WorkflowTestCase;
+
+import sun.security.action.GetBooleanAction;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
@@ -51,7 +54,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 public class OfficeOfAffirmativeActionTest extends WorkflowTestCase {
 
 	private static final String URL_PREFIX = "http://localhost:9952/en-test/";
-	private static final String OAA_DIR = "edoclite/OfficeOfAffirmativeAction/";
+	private static final String OAA_DIR = TestUtils.getBaseDir() + "/src/test/config/edoclite/OfficeOfAffirmativeAction/";
 
 	protected void loadTestData() throws Exception {
 		// workgroups
@@ -94,46 +97,51 @@ public class OfficeOfAffirmativeActionTest extends WorkflowTestCase {
         loadXmlFileFromFileSystem(OAA_DIR + "OfficeOfAffirmativeActionPilotRules.xml");
 
         // widgets
-        loadXmlFileFromFileSystem("edoclite/widgets.xml");
+        loadXmlFileFromFileSystem(getBaseDir() + "/src/main/config/edoclite/widgets.xml");
     }
+
+	@Test public void testOAAEdocLiteLoad() {
+	    // just a test to allow the setup method above to run and verify the xml import
+	    // of these files
+	}
 
 	/**
 	 * Tests the Office of Affirmative Action interview request.
 	 */
-	@Ignore
-	@Test public void testInterviewRequest() throws Exception {
-		WebClient webClient = new WebClient();
-
-		URL url = new URL (URL_PREFIX + "EDocLite?userAction=initiate&edlName=InterviewRequest");
-		HtmlPage page = (HtmlPage)webClient.getPage(url);
-
-		// On the first access, we should end up on the backdoor and login as quickstart
-		HtmlForm form = (HtmlForm) page.getForms().get(0);
-		HtmlTextInput textInput = (HtmlTextInput)form.getInputByName("__login_user");
-		assertEquals("quickstart", textInput.getDefaultValue());
-		page = (HtmlPage)form.submit();
-
-		// we should be on the EDL form now, check that theres a form here
-		assertEquals("Should be one form.", 1, page.getForms().size());
-
-		// TOOD, fill out the form, route it, verify it goes where it needs to go
-		// do a few different permutations of data on a few different EDL's
-	}
-
-	@Test public void testOfferRequest() throws Exception {
-		// TODO
-	}
-
-	@Test public void testSearchStatus() throws Exception {
-		// TODO
-	}
-
-	@Test public void testVacancyNotice() throws Exception {
-		// TODO
-	}
-
-	@Test public void testWaiverRequest() throws Exception {
-		// TODO
-	}
+//	@Test public void testInterviewRequest() throws Exception {
+//		WebClient webClient = new WebClient();
+//
+//		URL url = new URL (URL_PREFIX + "EDocLite?userAction=initiate&edlName=InterviewRequest");
+//		HtmlPage page = (HtmlPage)webClient.getPage(url);
+//
+//		// On the first access, we should end up on the backdoor and login as quickstart
+//		HtmlForm form = (HtmlForm) page.getForms().get(0);
+//		HtmlTextInput textInput = (HtmlTextInput)form.getInputByName("__login_user");
+//		assertEquals("quickstart", textInput.getDefaultValue());
+//		page = (HtmlPage)form.submit();
+//
+//		// we should be on the EDL form now, check that theres a form here
+//		assertEquals("Should be one form.", 1, page.getForms().size());
+//
+//		// TOOD, fill out the form, route it, verify it goes where it needs to go
+//		// do a few different permutations of data on a few different EDL's
+//	}
+//
+//
+//	@Test public void testOfferRequest() throws Exception {
+//		// TODO
+//	}
+//
+//	@Test public void testSearchStatus() throws Exception {
+//		// TODO
+//	}
+//
+//	@Test public void testVacancyNotice() throws Exception {
+//		// TODO
+//	}
+//
+//	@Test public void testWaiverRequest() throws Exception {
+//		// TODO
+//	}
 
 }

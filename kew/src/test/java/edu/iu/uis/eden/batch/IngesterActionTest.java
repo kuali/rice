@@ -34,6 +34,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.junit.Test;
+import org.kuali.workflow.test.TestUtils;
 import org.kuali.workflow.test.WorkflowTestCase;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -105,6 +106,7 @@ public class IngesterActionTest extends WorkflowTestCase {
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
             String filePath = entry.getKey().toString();
+            filePath = filePath.replace("${"+TestUtils.BASEDIR_PROP+"}", getBaseDir());
             String fileName = new File(filePath).getName();
             if (Boolean.valueOf(entry.getValue().toString()).booleanValue()) {
                 shouldPass.add(fileName);

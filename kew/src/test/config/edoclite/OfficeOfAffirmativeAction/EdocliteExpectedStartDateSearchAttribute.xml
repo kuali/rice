@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+    <ruleAttribute>
+      <name>EDLExpectedStartDateSearchAttribute</name>
+      <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+      <label>EDL Expected Start Date Search Attribute</label>
+      <description>EDL Expected Start Date Search Attribute</description>
+      <type>SearchableXmlAttribute</type>
+      <searchingConfig>
+        <fieldDef name="expectedStartDate" title="Expected Start Date" workflowType="ALL">
+          <display>
+            <type>text</type>
+          </display>
+          <fieldEvaluation>
+            <xpathexpression>normalize-space(substring-before(//expectedStartDate, ' '))</xpathexpression>
+          </fieldEvaluation>
+        </fieldDef>
+      </searchingConfig>
+    </ruleAttribute>
+  </ruleAttributes>
+</data>
+

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.kuali.rice.config.Config;
 import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
 
@@ -32,16 +33,21 @@ import org.kuali.rice.core.Core;
 public class DESEncryptionServiceTest extends TestCase {
 
 	private static boolean failed = false;
-	
+
 	/**
 	 * Verfies that the DESEncryptionService is thread-safe.  We had problems originally with the
 	 * thread-safety of the implementation so we added this test to verify and prevent regression.
 	 */
 	public void testEncryptionMultiThreaded() throws Exception {
 		String key = DESEncryptionService.generateEncodedKey();
-		SimpleConfig config = new SimpleConfig();
-		config.getProperties().put("encryption.key", key);
-		Core.init(config);
+		Config config = Core.getCurrentContextConfig();
+		if (config == null) {
+		    // because of previously running tests, the config might already be initialized
+		    config = new SimpleConfig();
+		    Core.init(config);
+		}
+		config.overrideProperty("encryption.key", key);
+
 		final EncryptionService service = new DESEncryptionService();
 		List<Thread> threads = new ArrayList<Thread>();
 		failed = false;
@@ -73,15 +79,19 @@ public class DESEncryptionServiceTest extends TestCase {
 		// the fix to the encryption service
 		assertFalse(failed);
 	}
-	
+
 	/**
 	 * Similar to the test above except that a new DESEncryptionService is created for each thread.
 	 */
 	public void testEncryptionMultiThreadedSafe() throws Exception {
 		String key = DESEncryptionService.generateEncodedKey();
-		SimpleConfig config = new SimpleConfig();
-		config.getProperties().put("encryption.key", key);
-		Core.init(config);
+		Config config = Core.getCurrentContextConfig();
+		if (config == null) {
+		    // because of previously running tests, the config might already be initialized
+		    config = new SimpleConfig();
+		    Core.init(config);
+		}
+		config.overrideProperty("encryption.key", key);
 		List<Thread> threads = new ArrayList<Thread>();
 		failed = false;
 		for (int i =0; i < 10; i++) {

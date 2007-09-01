@@ -151,12 +151,12 @@ public abstract class WorkflowTestCase extends RiceTestCase {
 	    beforeRun();
 	    configureLogging();
 	    final long initTime = System.currentTimeMillis();
-	    this.perTestLifeCycles = getPerTestLifecycles();
-	    this.suiteLifeCycles = getSuiteLifecycles();
 	    if (!SUITE_LIFE_CYCLES_RAN) {
+		this.suiteLifeCycles = getSuiteLifecycles();
 		startLifecycles(this.suiteLifeCycles);
 		SUITE_LIFE_CYCLES_RAN = true;
 	    }
+	    this.perTestLifeCycles = getPerTestLifecycles();
 	    startLifecycles(this.perTestLifeCycles);
 	    report("Time to start all Lifecycles: " + (System.currentTimeMillis() - initTime));
 	    loadTestDataInternal();

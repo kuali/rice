@@ -18,6 +18,7 @@ package edu.iu.uis.eden.clientapp;
 
 import javax.xml.namespace.QName;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
@@ -37,6 +38,7 @@ import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
  *
  * @author ewestfal
  */
+@Ignore
 public class SimpleWebServiceClientTest extends WorkflowTestCase {
 
 	@Override

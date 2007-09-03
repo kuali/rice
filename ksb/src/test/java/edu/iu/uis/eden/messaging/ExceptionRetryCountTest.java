@@ -29,17 +29,17 @@ import org.kuali.rice.test.TestUtilities;
 import edu.iu.uis.eden.messaging.remotedservices.TesetHarnessExplodingQueue;
 
 /**
- * This is a description of what this class does - rkirkend don't forget to fill this in. 
- * 
+ * This is a description of what this class does - rkirkend don't forget to fill this in.
+ *
  * @author Full Name (email at address dot com)
  *
  */
 public class ExceptionRetryCountTest extends KSBTestCase {
-    
-    
+
+
 	private QName retryCountServiceName = new QName("KEW", "testExplodingRetryCount");
 	private TestCallback callback = new TestCallback();
-	
+
 	@Override
 	public void setUp() throws Exception {
 		System.setProperty(RiceConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "500");
@@ -51,32 +51,35 @@ public class ExceptionRetryCountTest extends KSBTestCase {
 		TestCallback.clearCallbacks();
 		TesetHarnessExplodingQueue.NUM_CALLS = 0;
 	}
-	
+
 	@Override
 	public void tearDown() throws Exception {
-	    KSBServiceLocator.getScheduler().shutdown();
-	    super.tearDown();
+	    try {
+		KSBServiceLocator.getScheduler().shutdown();
+	    } finally {
+		super.tearDown();
+	    }
 	}
-    
+
 	/**
 	 * Test that a message with retry count gets retried that many times.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test public void testRetryCount() throws Exception {
 		//Turn the requeue up very high so the message will go through all it's requeues immediately
-		
+
 		Core.getCurrentContextConfig().overrideProperty(RiceConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "100");
-		
+
 		KEWJavaService explodingQueue = (KEWJavaService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(this.retryCountServiceName);
 		explodingQueue.invoke("");
 		TestUtilities.waitForExceptionRouting();
-		
+
 		this.callback.pauseUntilNumberCallbacksUsingStaticCounter(3, this.retryCountServiceName);
 		Thread.sleep(4000);
-		
+
 		assertEquals("Service should have been called 3 times", 3, TesetHarnessExplodingQueue.NUM_CALLS);
-		
+
 		List<PersistedMessage> messagesQueued = KSBServiceLocator.getRouteQueueService().findByServiceName(this.retryCountServiceName, "invoke");
 		PersistedMessage message = messagesQueued.get(0);
 		assertEquals("Message should be in exception status", RiceConstants.ROUTE_QUEUE_EXCEPTION, message.getQueueStatus());

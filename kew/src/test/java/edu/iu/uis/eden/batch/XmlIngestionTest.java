@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.junit.Test;
+import org.kuali.workflow.test.TestUtils;
 import org.kuali.workflow.test.WorkflowTestCase;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -122,7 +123,9 @@ public class XmlIngestionTest extends WorkflowTestCase {
         int i = 0;
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
-            File testFile = new File(entry.getKey().toString());
+            String filePath = entry.getKey().toString();
+            filePath = filePath.replace("${"+TestUtils.BASEDIR_PROP+"}", TestUtils.getBaseDir());
+            File testFile = new File(filePath);
             File pendingDir = new File(PENDING_DIR + "/TestDoc-" + i);
             pendingDir.mkdirs();
             assertTrue(pendingDir.isDirectory());

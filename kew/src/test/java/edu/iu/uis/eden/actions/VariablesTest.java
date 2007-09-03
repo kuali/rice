@@ -34,9 +34,9 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * and via the "SetVar" node; stolen directly from ApproveActionTest.testPreapprovals
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-public class VariablesTestCase extends WorkflowTestCase {
+public class VariablesTest extends WorkflowTestCase {
 
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(VariablesTestCase.class);
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(VariablesTest.class);
 
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");

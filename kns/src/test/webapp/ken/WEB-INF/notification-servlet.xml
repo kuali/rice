@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+  - Application context definition for "notification" DispatcherServlet.
+  -->
+<beans>
+
+   <!-- View Resolver -->
+
+   <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+      <property name="viewClass">
+         <value>org.springframework.web.servlet.view.JstlView</value>
+      </property>
+      <property name="prefix">
+         <value>/WEB-INF/jsp/</value>
+      </property>
+      <property name="suffix">
+         <value>.jsp</value>
+      </property>
+   </bean>
+  
+
+   <!-- mapping for unsecured urls -->
+
+   <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+      <property name="interceptors">
+            <list>
+                <bean class="org.kuali.notification.web.spring.SecurityInterceptor">
+                    <property name="notificationAuthorizationService"><ref bean="notificationAuthorizationService"/></property>
+                </bean>
+            </list>
+        </property>
+      <property name="mappings">
+         <props>
+            <prop key="/HomePage.form">notificationController</prop>
+            <prop key="/NotificationsSent.form">notificationController</prop>
+            <prop key="/Search.form">notificationController</prop>
+            <prop key="/DetailView.form">notificationController</prop>
+            <prop key="/LookupUsers.form">notificationController</prop>
+            <prop key="/LookupWorkgroups.form">notificationController</prop>
+            <prop key="/RemoveNotification.form">notificationController</prop>
+            <prop key="/AckNotification.form">notificationController</prop>
+            <prop key="/FyiNotification.form">notificationController</prop>
+            <prop key="/Logout.form">notificationController</prop>
+            <prop key="/ContentTypeManager.form">contentTypeController</prop>
+            <prop key="/ContentTypeForm.form">contentTypeController</prop>
+            <prop key="/UpdateContentType.form">contentTypeController</prop>
+            <prop key="/AddContentType.form">contentTypeController</prop>
+            <prop key="/DisplayUserPreferences.form">userPreferencesController</prop>
+            <prop key="/DisplayDelivererConfigurationForm.form">userPreferencesController</prop>
+            <prop key="/DisplayActionListPreferences.form">userPreferencesController</prop>
+            <prop key="/SaveDelivererConfiguration.form">userPreferencesController</prop>
+            <prop key="/SubscribeToChannel.form">userPreferencesController</prop>
+            <prop key="/UnsubscribeFromChannel.form">userPreferencesController</prop>
+
+            <prop key="/SendSimpleNotificationMessage.form">sendSimpleNotificationMessageController</prop>
+            <prop key="/SubmitSimpleNotificationMessage.form">sendSimpleNotificationMessageController</prop>
+            
+            <prop key="/SendEventNotificationMessage.form">sendEventNotificationMessageController</prop>
+            <prop key="/SubmitEventNotificationMessage.form">sendEventNotificationMessageController</prop>
+            
+            <prop key="/AdministerNotificationRequest.form">administerNotificationRequestController</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+     <property name="defaultErrorView"><value>error</value></property>
+   </bean>
+
+   <!-- Multiaction Controllers  -->
+    
+   <bean name="notificationController" class="org.kuali.notification.web.spring.NotificationController">     
+      <property name="methodNameResolver">
+         <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+            <property name="mappings">
+               <props>
+                  <prop key="/HomePage.form">displayHome</prop>
+                  <prop key="/NotificationsSent.form">displayNotificationsSent</prop>
+                  <prop key="/Search.form">displaySearch</prop>
+                  <prop key="/DetailView.form">displayNotificationDetail</prop>
+                  <prop key="/LookupUsers.form">displayLookupUsers</prop>
+            	  <prop key="/LookupWorkgroups.form">displayLookupWorkgroups</prop>
+                  <prop key="/RemoveNotification.form">removeNotification</prop>
+                  <prop key="/AckNotification.form">ackNotification</prop>
+                  <prop key="/FyiNotification.form">fyiNotification</prop>
+                  <prop key="/Logout.form">logout</prop>                                  
+               </props>
+            </property>
+         </bean>          
+      </property>
+      <property name="notificationService"> <ref bean="notificationService"/> </property>
+      <property name="messageDeliveryService"> <ref bean="notificationMessageDeliveryService"/> </property>
+      <property name="notificationWorkflowDocumentService"><ref bean="notificationWorkflowDocumentService"/></property>      
+   </bean> 
+   
+   <bean name="contentTypeController" class="org.kuali.notification.web.spring.ContentTypeController">     
+      <property name="methodNameResolver">
+         <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+            <property name="mappings">
+               <props>
+                  <prop key="/ContentTypeManager.form">displayContentTypes</prop>
+                  <prop key="/ContentTypeForm.form">displayContentTypeForm</prop>                  
+                  <prop key="/AddContentType.form">addContentType</prop>
+                  <prop key="/UpdateContentType.form">updateContentType</prop>                                
+               </props>
+            </property>
+         </bean>          
+      </property>
+      <property name="notificationService"> <ref bean="notificationService"/> </property>
+      <property name="notificationContentTypeService"> <ref bean="notificationContentTypeService"/> </property>            
+      <property name="notificationAuthorizationService"> <ref bean="notificationAuthorizationService"/> </property>            
+   </bean>
+   
+   <bean name="userPreferencesController" class="org.kuali.notification.web.spring.UserPreferencesController">     
+      <property name="methodNameResolver">
+         <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+            <property name="mappings">
+               <props>
+                  <prop key="/DisplayUserPreferences.form">displayUserPreferences</prop>
+                  <prop key="/DisplayDelivererConfigurationForm.form">displayDelivererConfigurationForm</prop>
+                  <prop key="/DisplayActionListPreferences.form">displayActionListPreferences</prop>
+                  <prop key="/SaveDelivererConfiguration.form">saveDelivererConfiguration</prop>
+                  <prop key="/SubscribeToChannel.form">subscribeToChannel</prop>
+                  <prop key="/UnsubscribeFromChannel.form">unsubscribeFromChannel</prop>                                             
+               </props>
+            </property>
+         </bean>          
+      </property>
+      <property name="notificationChannelService"> <ref bean="notificationChannelService"/> </property>
+      <property name="userPreferenceService"> <ref bean="userPreferenceService"/> </property>
+      <property name="notificationMessageDelivererRegistryService"> <ref bean="notificationMessageDelivererRegistryService"/> </property>            
+   </bean>
+   
+   <bean name="sendSimpleNotificationMessageController" class="org.kuali.notification.web.spring.SendNotificationMessageController">     
+      <property name="methodNameResolver">
+         <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+            <property name="mappings">
+               <props>
+                  <prop key="/SendSimpleNotificationMessage.form">sendSimpleNotificationMessage</prop>
+                  <prop key="/SubmitSimpleNotificationMessage.form">submitSimpleNotificationMessage</prop>
+               </props>
+            </property>
+         </bean>          
+      </property>
+      <property name="notificationService"> <ref bean="notificationService"/> </property>
+      <property name="notificationWorkflowDocumentService"><ref bean="notificationWorkflowDocumentService"/></property>
+      <property name="notificationChannelService"> <ref bean="notificationChannelService"/> </property>
+      <property name="notificationRecipientService"> <ref bean="notificationRecipientService"/> </property>
+      <property name="messageContentService"> <ref bean="messageContentService"/> </property>
+      <property name="businessObjectDao"> <ref bean="businessObjectDao"/> </property>
+   </bean>
+   
+   <bean name="sendEventNotificationMessageController" class="org.kuali.notification.web.spring.SendEventNotificationMessageController">     
+      <property name="methodNameResolver">
+         <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+            <property name="mappings">
+               <props>
+                  <prop key="/SendEventNotificationMessage.form">sendEventNotificationMessage</prop>
+                  <prop key="/SubmitEventNotificationMessage.form">submitEventNotificationMessage</prop>
+               </props>
+            </property>
+         </bean>          
+      </property>
+      <property name="notificationService"> <ref bean="notificationService"/> </property>
+      <property name="notificationWorkflowDocumentService"><ref bean="notificationWorkflowDocumentService"/></property>
+      <property name="notificationChannelService"> <ref bean="notificationChannelService"/> </property>
+      <property name="notificationRecipientService"> <ref bean="notificationRecipientService"/> </property>
+      <property name="messageContentService"> <ref bean="messageContentService"/> </property>
+      <property name="businessObjectDao"> <ref bean="businessObjectDao"/> </property>
+   </bean>
+   
+    <bean name="administerNotificationRequestController" class="org.kuali.notification.web.spring.AdministerNotificationRequestController">
+        <property name="messageContentService"><ref bean="messageContentService"/></property>
+        <property name="workflowDocumentService"><ref bean="notificationWorkflowDocumentService"/></property>
+        <property name="recipientService"><ref bean="notificationRecipientService"/></property>
+        <property name="methodNameResolver">
+            <bean class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+                <property name="defaultMethodName" value="view"/>
+                <property name="methodParamNames">
+                    <list>
+                        <value>approve</value>
+                        <value>disapprove</value>
+                        <value>acknowledge</value>
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
+</beans>

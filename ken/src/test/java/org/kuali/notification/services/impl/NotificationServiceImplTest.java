@@ -262,10 +262,6 @@ public class NotificationServiceImplTest extends NotificationTestCaseBase {
         // go ahead and dispatch the message deliveries...
         ProcessingResult result = services.getNotificationMessageDeliveryDispatchService().processUndeliveredNotificationMessageDeliveries();
 
-        // have to clear cache so we can load fresh copies of the message deliveries...they will have been modified by the dispatch process
-        // and will have incremented lockvernbrs...
-        PersistenceBrokerFactory.defaultPersistenceBroker().clearCache();
-        
         deliveries = nmds.getNotificationMessageDeliveries(n, TestConstants.TEST_USER_FIVE);
         assertNotNull(deliveries);
         assertEquals(TestConstants.NUM_OF_MSG_DELIVS_FOR_NOTIF_1_TEST_USER_5, deliveries.size());

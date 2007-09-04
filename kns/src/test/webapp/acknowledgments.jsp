@@ -60,6 +60,8 @@ Copyright 2005-2007  The Kuali Foundation.  All rights reserved.  Kuali is licen
 
 <p>Portions Copyright (c) 2001-2006 Sun Microsystems, Inc. All Rights Reserved.</p>
 
+<p>Portions Copyright (c) 2002, 2003 Mihai Bazon. All Rights Reserved.  Licensed under GNU Lesser General Public License (<span class="nobr"><a href="http://www.opensource.org/licenses/lgpl-license.php">http://www.opensource.org/licenses/lgpl-license.php</a></span>).</p>
+
 <p>Portions Copyright (c) 2005 Envoi Solutions LLC. All Rights Reserved. (<span class="nobr"><a href="http://xfire.codehaus.org/">http://xfire.codehaus.org/</a></span>)</p>
 
 <p>Portions Copyright (c) 2003-2006 The Werken Company. All Rights Reserved. (<span class="nobr"><a href="http://jaxen.codehaus.org/">http://jaxen.codehaus.org/</a></span>)</p>

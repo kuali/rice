@@ -26,6 +26,10 @@
 	<classpathentry kind="src" path="kew/src/main/resources"/>
 	<classpathentry kind="src" path="kew/src/test/java"/>
 	<classpathentry kind="src" path="kew/src/test/resources"/>
+	<classpathentry kind="src" path="ken/src/main/java"/>
+	<classpathentry kind="src" path="ken/src/main/resources"/>
+	<classpathentry kind="src" path="ken/src/test/java"/>
+	<classpathentry kind="src" path="ken/src/test/resources"/>
 	<classpathentry kind="src" path="tools/src/main/java"/>
 	<classpathentry kind="src" path="tools/src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

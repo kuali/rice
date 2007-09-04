@@ -141,6 +141,7 @@
     <module>kns</module>
     <module>kim</module>
     <module>kew</module>
+    <module>ken</module>
   </modules>
   <repositories>
     <repository>

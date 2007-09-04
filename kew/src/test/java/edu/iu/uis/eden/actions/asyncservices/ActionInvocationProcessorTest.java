@@ -62,11 +62,25 @@ public class ActionInvocationProcessorTest extends WorkflowTestCase {
 	
 	assertNotNull(request);
 	
+	user = KEWServiceLocator.getUserService().getWorkflowUser(new NetworkIdVO("user1"));
 	new ActionInvocationProcessor().invokeAction(user, request.getRouteHeaderId(), new ActionInvocation(request.getRouteHeaderId(), request.getActionRequested()));
 	//do it again and make sure we don't have a blow up
 	new ActionInvocationProcessor().invokeAction(user, request.getRouteHeaderId(), new ActionInvocation(request.getRouteHeaderId(), request.getActionRequested()));
 	
-	assertTrue(true);
+	//verify that user1 doesn't have any AR's
+	requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(doc.getRouteHeaderId());
+	assertFalse(requests.isEmpty());
+	
+	request = null;
+	for (ActionRequestValue tempRequest : requests) {
+	    if (tempRequest.getWorkflowUser() != null && tempRequest.getWorkflowUser().getAuthenticationUserId().getAuthenticationId().equals("user1") && tempRequest.isActive()) {
+		request = tempRequest;
+		break;
+	    }
+	}
+	
+	assertNull(request);
+	
     }
     
     

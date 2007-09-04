@@ -15,12 +15,18 @@
  */
 package edu.iu.uis.eden.actions.asyncservices;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.workflow.test.WorkflowTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
+import edu.iu.uis.eden.routetemplate.TestRuleAttribute;
+import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 
 
@@ -33,14 +39,42 @@ public class ActionInvocationProcessorTest extends WorkflowTestCase {
 
     
     @Test public void testActionInvocationProcessorWorksWithNoActionItem() throws Exception {
+	
+	
+	
+	TestRuleAttribute.setRecipients("TestRole", "QualRole", getRecipients());
+	
 	NetworkIdVO netId = new NetworkIdVO("rkirkend");
 	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(netId);
 	WorkflowDocument doc = new WorkflowDocument(netId, "TestDocumentType");
+	doc.routeDocument("");
 	
-	assertFalse(! KEWServiceLocator.getActionListService().findByRouteHeaderId(doc.getRouteHeaderId()).isEmpty());
+	List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(doc.getRouteHeaderId());
+	assertFalse(requests.isEmpty());
 	
-	new ActionInvocationProcessor().invokeAction(user, doc.getRouteHeaderId(), new ActionInvocation(new Long(-1), "A"));
+	ActionRequestValue request = null;
+	for (ActionRequestValue tempRequest : requests) {
+	    if (tempRequest.getWorkflowUser() != null && tempRequest.getWorkflowUser().getAuthenticationUserId().getAuthenticationId().equals("user1")) {
+		request = tempRequest;
+		break;
+	    }
+	}
+	
+	assertNotNull(request);
+	
+	new ActionInvocationProcessor().invokeAction(user, request.getRouteHeaderId(), new ActionInvocation(request.getRouteHeaderId(), request.getActionRequested()));
+	//do it again and make sure we don't have a blow up
+	new ActionInvocationProcessor().invokeAction(user, request.getRouteHeaderId(), new ActionInvocation(request.getRouteHeaderId(), request.getActionRequested()));
+	
 	assertTrue(true);
+    }
+    
+    
+    public static List getRecipients()	{
+	List recipients = new ArrayList();
+	recipients.add(new AuthenticationUserId("user1"));
+	recipients.add(new AuthenticationUserId("user2"));
+	return recipients;
     }
     
     

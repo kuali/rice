@@ -136,8 +136,20 @@ public class TestRuleAttribute implements WorkflowAttribute, RoleAttribute, Work
 		getRole(roleName).remove(qualifiedRoleName);
 	}
 	
+	/**
+	 * All you need to call now.  Simplies the previous 3 step process of adding role, qual role then recipients
+	 * 
+	 * @param roleName
+	 * @param qualifiedRoleName
+	 * @param recipients
+	 */
 	public static void setRecipients(String roleName, String qualifiedRoleName, List recipients) {
 		Map qualifiedRoles = getRole(roleName);
+		if (qualifiedRoles == null) {
+		    addRole(roleName);
+		    addQualifiedRole(roleName, qualifiedRoleName);
+		    qualifiedRoles = getRole(roleName);
+		}
 		qualifiedRoles.put(qualifiedRoleName, recipients);
 	}
 	

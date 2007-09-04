@@ -24,7 +24,7 @@ import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
-import org.kuali.workflow.test.KEWXmlDataLoaderLifecycle;
+import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
 
 /**
  * Default test base for a full KNS enabled unit test.

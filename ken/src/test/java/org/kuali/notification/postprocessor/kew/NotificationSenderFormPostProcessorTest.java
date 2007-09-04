@@ -15,7 +15,9 @@
  */
 package org.kuali.notification.postprocessor.kew;
 
+import org.junit.Ignore;
 import org.kuali.notification.test.NotificationTestCaseBase;
 
+@Ignore
 public class NotificationSenderFormPostProcessorTest extends NotificationTestCaseBase {
 }

@@ -26,7 +26,6 @@ import org.kuali.notification.core.SpringNotificationServiceLocator;
 import org.kuali.rice.lifecycle.BaseLifecycle;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
-import org.kuali.workflow.test.KEWXmlDataLoaderLifecycle;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.SchedulerRepository;
@@ -34,6 +33,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
 
 /**
  * Base test case for KEN that extends RiceTestCase

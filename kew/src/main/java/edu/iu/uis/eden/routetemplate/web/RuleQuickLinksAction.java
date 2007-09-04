@@ -142,6 +142,9 @@ public class RuleQuickLinksAction extends WorkflowAction {
         public void setFlattenedNodes(List flattenedNodes) {
             this.flattenedNodes = flattenedNodes;
         }
+        public boolean isNodesEmpty () {
+            return flattenedNodes.isEmpty();
+        }
     }
     
     private void makeLookupPathParam(ActionMapping mapping, HttpServletRequest request) {

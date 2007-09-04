@@ -767,7 +767,11 @@ public class RuleServiceImpl implements RuleService {
                 performanceLogger.log("Time to fetchRules by template " + ruleTemplateName + " cached.");
                 return rules;
             }
-            Long ruleTemplateId = getRuleTemplateService().findByRuleTemplateName(ruleTemplateName).getRuleTemplateId();
+            RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
+            if (ruleTemplate == null) {
+        		return Collections.EMPTY_LIST;
+            }
+            Long ruleTemplateId = ruleTemplate.getRuleTemplateId();
             //RuleListCache translatedRules = new RuleListCache();
             //translatedRules.setId(getRuleCacheKey(ruleTemplateName, documentType));
             rules = getRuleDAO().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateId, getDocGroupAndTypeList(documentType));

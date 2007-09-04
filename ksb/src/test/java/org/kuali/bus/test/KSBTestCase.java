@@ -15,6 +15,7 @@
  */
 package org.kuali.bus.test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -71,6 +72,15 @@ public class KSBTestCase extends RiceTestCase {
     @Override
     protected String getModuleName() {
 	return "ksb";
+    }
+
+
+
+    @Override
+    protected List<String> getTablesNotToClear() {
+	List<String> tablesNotToClear = new ArrayList<String>();
+	tablesNotToClear.add("KR_QRTZ_.*");
+	return tablesNotToClear;
     }
 
     @Override

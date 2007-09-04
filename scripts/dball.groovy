@@ -44,6 +44,9 @@ createdrops(db, PROJECT_DIR + '/ksb/src/main/config/ddl/tables')
 createdrops(db, PROJECT_DIR + '/kim/src/main/config/ddl/sequences')
 createdrops(db, PROJECT_DIR + '/kim/src/main/config/ddl/tables')
 
+// Do the KEN DDL Drops
+createdrops(db, PROJECT_DIR + '/ken/src/main/config/ddl/sequences')
+createdrops(db, PROJECT_DIR + '/ken/src/main/config/ddl/tables')
 
 merge(db, PROJECT_DIR + '/kns/src/main/config/sql/rice_sample_app_drops.sql')
 
@@ -75,6 +78,12 @@ mergeandstrip(db, PROJECT_DIR + '/kim/src/main/config/ddl/sequences')
 mergeandstrip(db, PROJECT_DIR + '/kim/src/main/config/ddl/tables')
 mergeandstrip(db, PROJECT_DIR + '/kim/src/main/config/ddl/indexes')
 mergeandstrip(db, PROJECT_DIR + '/kim/src/main/config/ddl/constraints')
+
+// Do the KEN DDL Creates
+mergeandstrip(db, PROJECT_DIR + '/ken/src/main/config/ddl/sequences')
+mergeandstrip(db, PROJECT_DIR + '/ken/src/main/config/ddl/tables')
+mergeandstrip(db, PROJECT_DIR + '/ken/src/main/config/ddl/indexes')
+mergeandstrip(db, PROJECT_DIR + '/ken/src/main/config/ddl/constraints')
 
 merge(db, PROJECT_DIR + '/kns/src/main/config/sql/rice_data.sql')
 merge(db, PROJECT_DIR + '/kns/src/main/config/sql/rice_sample_app.sql')

@@ -1,0 +1,193 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ * 
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.opensource.org/licenses/ecl1.php
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.notification.dao;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.kuali.notification.bo.NotificationChannel;
+import org.kuali.notification.bo.NotificationChannelReviewer;
+import org.kuali.notification.bo.NotificationProducer;
+import org.kuali.notification.test.util.MockObjectsUtil;
+import org.kuali.notification.util.NotificationConstants;
+
+/**
+ * This class test basic persistence for the NotificationChannel business object.
+ * 
+ * @author Aaron Godert (ag266 at cornell dot edu)
+ */
+public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCaseBase {
+    NotificationChannel channel1 = MockObjectsUtil.getTestChannel1();
+    NotificationChannel channel2 = MockObjectsUtil.getTestChannel2();
+    
+    NotificationProducer mockProducer1 = MockObjectsUtil.getTestProducer1();
+    
+    private String[] updatedDescriptions = {"Test 1 - updated description", "Test 2 - updated description"};
+    private boolean[] updatedSubscribables = {false, true};
+
+    /**
+     * @see org.kuali.notification.dao.BusinessObjectPersistenceTestCaseBase#setup()
+     */
+    @Override
+    protected void setup() {
+	super.setup();
+	businessObjectDao.save(mockProducer1);
+    }
+    
+    /**
+     * @see org.kuali.notification.dao.BusinessObjectPersistenceTestCaseBase#delete()
+     */
+    @Override
+    protected boolean delete() {
+	NotificationChannel mockChannel1 = MockObjectsUtil.getTestChannel1();
+	NotificationChannel mockChannel2 = MockObjectsUtil.getTestChannel2();
+	
+	channel1 = new NotificationChannel();
+	channel2 = new NotificationChannel();
+	
+	HashMap criteria = new HashMap();
+	
+	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockChannel1.getName());
+	channel1 = (NotificationChannel) (businessObjectDao.findMatching(NotificationChannel.class, criteria)).iterator().next();
+	
+	criteria.clear();
+	
+	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockChannel2.getName());
+	channel2 = (NotificationChannel) (businessObjectDao.findMatching(NotificationChannel.class, criteria)).iterator().next();
+	
+	try {
+	    businessObjectDao.delete(channel1);
+	    businessObjectDao.delete(channel2);
+	} catch(Exception e) {
+	    return false;
+	}
+	return true;
+    }
+    
+    /**
+     * @see org.kuali.notification.dao.BusinessObjectPersistenceTestCaseBase#retrieve()
+     */
+    @Override
+    protected boolean retrieve() {
+	NotificationChannel mockChannel1 = MockObjectsUtil.getTestChannel1();
+	NotificationChannel mockChannel2 = MockObjectsUtil.getTestChannel2();
+	
+	channel1 = new NotificationChannel();
+	channel2 = new NotificationChannel();
+	
+	HashMap criteria = new HashMap();
+	
+	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockChannel1.getName());
+	channel1 = (NotificationChannel) (businessObjectDao.findMatching(NotificationChannel.class, criteria)).iterator().next();
+	
+	criteria.clear();
+	
+	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockChannel2.getName());
+	channel2 = (NotificationChannel) (businessObjectDao.findMatching(NotificationChannel.class, criteria)).iterator().next();
+	
+	boolean success = true;
+	
+	success &= channel1 != null;
+	success &= channel1.getDescription().equals(mockChannel1.getDescription());
+	success &= (channel1.isSubscribable()==mockChannel1.isSubscribable());
+	success &= channel1.getProducers().size() == 1;
+	
+	success &= channel2 != null;
+	success &= channel2.getDescription().equals(mockChannel2.getDescription());
+	success &= (channel2.isSubscribable()==mockChannel2.isSubscribable());
+	success &= channel2.getProducers().size() == 1;
+	
+	return success;
+    }
+    
+    /**
+     * @see org.kuali.notification.dao.BusinessObjectPersistenceTestCaseBase#insert()
+     */
+    @Override
+    protected boolean insert() {
+	// add in a notification channel producer join object
+	channel1.getProducers().add(mockProducer1);
+	channel2.getProducers().add(mockProducer1);
+	
+	try {
+	    businessObjectDao.save(channel1);
+	    businessObjectDao.save(channel2);
+	} catch(Exception e) {
+	    return false;
+	}
+	return true;
+    }
+    
+    /**
+     * @see org.kuali.notification.dao.BusinessObjectPersistenceTestCaseBase#update()
+     */
+    @Override
+    protected boolean update() {
+	channel1.setDescription(updatedDescriptions[0]);
+	channel1.setSubscribable(updatedSubscribables[0]);
+	channel1.getProducers().clear();
+	
+	channel2.setDescription(updatedDescriptions[1]);
+	channel2.setSubscribable(updatedSubscribables[1]);
+        NotificationChannelReviewer reviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(NotificationConstants.RECIPIENT_TYPES.USER, "aReviewer");
+        reviewer.setChannel(channel2);
+        channel2.getReviewers().add(reviewer);
+
+	try {
+	    businessObjectDao.save(channel1);
+	    businessObjectDao.save(channel2);
+	} catch(Exception e) {
+	    return false;
+	}
+	return true;
+    }
+    
+    /**
+     * @see org.kuali.notification.dao.BusinessObjectPersistenceTestCaseBase#validateChanges()
+     */
+    @Override
+    protected boolean validateChanges() {
+	//retrieve fresh again
+	NotificationChannel mockChannel1 = MockObjectsUtil.getTestChannel1();
+	NotificationChannel mockChannel2 = MockObjectsUtil.getTestChannel2();
+	
+	channel1 = new NotificationChannel();
+	channel2 = new NotificationChannel();
+	
+	HashMap criteria = new HashMap();
+	
+	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockChannel1.getName());
+	channel1 = (NotificationChannel) (businessObjectDao.findMatching(NotificationChannel.class, criteria)).iterator().next();
+	
+	criteria.clear();
+	
+	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockChannel2.getName());
+	channel2 = (NotificationChannel) (businessObjectDao.findMatching(NotificationChannel.class, criteria)).iterator().next();
+	
+	boolean success = true;
+	
+	success &= channel1.getDescription().equals(updatedDescriptions[0]);
+	success &= (channel1.isSubscribable()==updatedSubscribables[0]);
+	success &= channel1.getProducers().size() == 0;
+	
+	success &= channel2.getDescription().equals(updatedDescriptions[1]);
+	success &= (channel2.isSubscribable()==updatedSubscribables[1]);
+	success &= channel2.getProducers().size() == 1;
+        success &= channel2.getReviewers().size() == 1;
+	    
+	return success;
+    }
+}

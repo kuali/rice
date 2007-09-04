@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  use the next two lines for Spring 1.2.* -->
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+<!-- use the following for Spring 2.0
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+-->   
+    <bean
+            id="httpClient"
+            class="org.jasig.cas.util.HttpClient3FactoryBean"/>
+
+    <!-- final String casServerUrl, final boolean renew, final HttpClient httpClient, final Service proxyCallbackUrl, List proxyChains, boolean acceptAnyProxy, final ProxyGrantingTicketStorage proxyGrantingTicketStorage, final ProxyRetriever proxyRetriever -->
+    <bean
+            id="ticketValidator"
+            class="org.jasig.cas.client.validation.Cas20ProxyTicketValidator">
+        <constructor-arg  index="0" value="${cas.server.url}"/>
+        <constructor-arg  index="1" value="${cas.server.renew}"/>
+        <constructor-arg  index="2" ref="httpClient"/>
+        
+        <constructor-arg index="3">
+            <list></list>
+        </constructor-arg>
+        <constructor-arg index="4" value="true"/>
+        
+    </bean>
+
+    <bean
+            id="casValidationFilter"
+            class="org.jasig.cas.client.web.filter.TicketValidationFilter">
+        <!-- serverName of client to construct serviceURL eg:"thisServer.myDomain.net" -->
+        <constructor-arg index="0" value="${cas.client.serverName}"/>
+        <!-- serviceUrl of client: either provide serverName or serviceUrl -->
+        <constructor-arg index="1">
+            <null/>
+        </constructor-arg>
+        <!-- ticketValidator implementation (defines protocol version to be used) -->
+        <constructor-arg index="2" ref="ticketValidator"/>
+    </bean>
+
+    <bean
+            id="casAuthenticationFilter"
+            class="org.jasig.cas.client.web.filter.AuthenticationFilter">
+        <!-- serverName of client to construct serviceURL eg:"thisServer.myDomain.net" -->
+        <constructor-arg index="0" value="${cas.client.serverName}"/>
+        <!-- serviceUrl of client: either provide serverName or serviceUrl -->
+        <constructor-arg index="1">
+            <null/>
+        </constructor-arg>
+        <!-- CAS server loginUrl -->
+        <constructor-arg index="2" value="${cas.server.url}login"/>
+        <!-- renew? -->
+        <constructor-arg index="3" value="${cas.server.renew}"/>
+        <!-- gateway? -->
+        <constructor-arg index="4" value="${cas.server.gateway}"/>
+    </bean>
+    
+    <bean
+            id="casHttpServletRequestWrapperFilter"
+            class="org.jasig.cas.client.web.filter.HttpServletRequestWrapperFilter"/>
+</beans>

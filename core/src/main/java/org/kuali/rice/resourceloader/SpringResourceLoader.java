@@ -43,6 +43,9 @@ public class SpringResourceLoader extends BaseResourceLoader {
 	}
 
 	public Object getService(QName serviceName) {
+	    	if (!isStarted()) {
+	    	    return null;
+	    	}
 		if (this.getContext().containsBean(serviceName.toString())) {
 			Object service = this.getContext().getBean(serviceName.toString());
 			return postProcessService(serviceName, service);

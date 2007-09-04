@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data edlName="sendNotificationRequest">
+	<version current="true" date="Wed Nov 15 10:49:18 MST 2006"
+		version="0">
+		<field name="channel">
+			<value>Test Channel #2</value>
+		</field>
+		<field name="senders">
+			<value>Aaron Godert;Aaron Hamid;Ryan Kirkendall;Brian McGough</value>
+		</field>
+		<field name="type">
+			<value>fyi</value>
+		</field>
+		<field name="startDateTime">
+			<value></value>
+		</field>
+		<field name="autoRemoveDateTime">
+			<value></value>
+		</field>
+		<field name="userRecipients">
+			<value>TestUser1;TestUser2</value>
+		</field>
+		<field name="workgroupRecipients">
+			<value>RiceTeam</value>
+		</field>
+		<field name="message">
+			<value>Holiday-Ho-Out Starts Next Week - 11/20/2006!</value>
+		</field>
+	</version>
+</data>

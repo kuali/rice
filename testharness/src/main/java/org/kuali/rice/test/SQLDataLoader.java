@@ -31,6 +31,7 @@ import org.springframework.core.io.DefaultResourceLoader;
 public class SQLDataLoader {
     
     private static final Logger LOG = Logger.getLogger(SQLDataLoader.class);
+    public static final String SQL_LINE_COMMENT_PREFIX = "--"; 
 
     private String fileLoc;
     private String seperatorChar;
@@ -81,7 +82,12 @@ public class SQLDataLoader {
             reader = new BufferedReader(new InputStreamReader(resourceLoader.getResource(fileLoc).getInputStream()));
             String line = "";
             while ((line = reader.readLine()) != null) {
+                // discard comments...commented single line statements
+                // will result in errors when executed because there are no
+                // results
+                if (!line.trim().startsWith(SQL_LINE_COMMENT_PREFIX)) {
                 data += line + " ";
+                }
             }
         }
         finally {

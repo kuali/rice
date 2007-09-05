@@ -46,13 +46,13 @@ public class NotificationWebServiceTest extends NotificationWebServiceTestCaseBa
 
     @Override
     protected boolean shouldStartWebService() {
-        return !GlobalNotificationServiceLocator.isInitialized();
+        return true; //!GlobalNotificationServiceLocator.isInitialized();
     }
 
     @Test
     public void test() throws Exception {
         // test cannot run with existing KEN context - must be run separately
-        if (GlobalNotificationServiceLocator.isInitialized()) return;
+        //if (GlobalNotificationServiceLocator.isInitialized()) return;
         
         NotificationWebServiceSoapBindingStub stub = new NotificationWebServiceSoapBindingStub(new URL(getWebServiceURL()), null);
 

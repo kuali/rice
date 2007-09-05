@@ -44,6 +44,15 @@ public interface BusinessObjectDao {
     public void save(List businessObjects);
 
     /**
+     * Retrieves an object instance identified bys it primary key.
+     * 
+     * @param clazz the class
+     * @param id the primary key value
+     * @return Object
+     */
+    public Object findById(Class clazz, Object keyValue);
+    
+    /**
      * Retrieves an object instance identified bys it primary keys and
      * values. This can be done by constructing a map where the key to the
      * map entry is the primary key attribute and the value of the entry

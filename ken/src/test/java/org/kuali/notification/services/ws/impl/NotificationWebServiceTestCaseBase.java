@@ -18,6 +18,7 @@ package org.kuali.notification.services.ws.impl;
 import junit.framework.TestCase;
 
 import org.apache.axis.transport.http.AxisServlet;
+import org.kuali.notification.test.NotificationTestCaseBase;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.servlet.Context;
 import org.springframework.context.ApplicationContext;
@@ -29,7 +30,7 @@ import org.springframework.web.context.support.GenericWebApplicationContext;
  * Base class for testing the web service that KEN exposes.
  * @author Aaron Hamid (arh 14 at cornell dot edu)
  */
-public abstract class NotificationWebServiceTestCaseBase extends TestCase {
+public abstract class NotificationWebServiceTestCaseBase extends NotificationTestCaseBase {
     protected Server server;
 
     protected boolean shouldStartWebService() {
@@ -50,7 +51,7 @@ public abstract class NotificationWebServiceTestCaseBase extends TestCase {
 
     protected ApplicationContext getContext() {
         //return applicationContext;
-        return new ClassPathXmlApplicationContext("test-spring.xml");
+        return new ClassPathXmlApplicationContext("KENSpringBeans-test.xml");
     }
 
     protected Server createWebServiceServer(int port) {
@@ -75,7 +76,7 @@ public abstract class NotificationWebServiceTestCaseBase extends TestCase {
     }
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         if (shouldStartWebService()) {
             server = createWebServiceServer(getWebServicePort());
@@ -84,7 +85,7 @@ public abstract class NotificationWebServiceTestCaseBase extends TestCase {
     }
 
     @Override
-    protected void tearDown() throws Exception {
+    public void tearDown() throws Exception {
         if (server != null) {
             server.stop();
         }

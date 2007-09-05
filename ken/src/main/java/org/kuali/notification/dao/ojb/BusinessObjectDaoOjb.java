@@ -41,6 +41,13 @@ public class BusinessObjectDaoOjb extends PersistenceBrokerDaoSupport implements
     	.getLogger(BusinessObjectDaoOjb.class);
 
     /**
+     * @see org.kuali.notification.dao.BusinessObjectDao#findById(Class, Object)
+     */
+    public Object findById(Class clazz, Object id) {
+	return getPersistenceBrokerTemplate().getObjectById(clazz, id);
+    }
+
+    /**
      * @see org.kuali.notification.dao.BusinessObjectDao#findByPrimaryKey(java.lang.Class, java.util.Map)
      */
     public Object findByPrimaryKey(Class clazz, Map primaryKeys) {

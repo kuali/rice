@@ -119,12 +119,18 @@ public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCas
     @Override
     protected boolean insert() {
 	// add in a notification channel producer join object
-	channel1.getProducers().add(mockProducer1);
-	channel2.getProducers().add(mockProducer1);
-	
 	try {
+	    channel1.getProducers().add(mockProducer1);
 	    businessObjectDao.save(channel1);
+
+	    // reload for collections
+	    mockProducer1 = (NotificationProducer) businessObjectDao.findById(NotificationProducer.class, mockProducer1.getId());
+
+	    channel2.getProducers().add(mockProducer1);
 	    businessObjectDao.save(channel2);
+	    
+	    mockProducer1 = (NotificationProducer) businessObjectDao.findById(NotificationProducer.class, mockProducer1.getId());
+	    
 	} catch(Exception e) {
 	    return false;
 	}
@@ -136,19 +142,24 @@ public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCas
      */
     @Override
     protected boolean update() {
-	channel1.setDescription(updatedDescriptions[0]);
-	channel1.setSubscribable(updatedSubscribables[0]);
-	channel1.getProducers().clear();
-	
-	channel2.setDescription(updatedDescriptions[1]);
-	channel2.setSubscribable(updatedSubscribables[1]);
-        NotificationChannelReviewer reviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(NotificationConstants.RECIPIENT_TYPES.USER, "aReviewer");
-        reviewer.setChannel(channel2);
-        channel2.getReviewers().add(reviewer);
-
 	try {
+	    channel1.setDescription(updatedDescriptions[0]);
+	    channel1.setSubscribable(updatedSubscribables[0]);
+	    channel1.getProducers().clear();
+
 	    businessObjectDao.save(channel1);
+	    
+	    channel2 = (NotificationChannel) businessObjectDao.findById(NotificationChannel.class, channel2.getId());
+
+	    channel2.setDescription(updatedDescriptions[1]);
+	    channel2.setSubscribable(updatedSubscribables[1]);
+	    NotificationChannelReviewer reviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(
+            NotificationConstants.RECIPIENT_TYPES.USER, "aReviewer");
+	    reviewer.setChannel(channel2);
+	    channel2.getReviewers().add(reviewer);
+	    
 	    businessObjectDao.save(channel2);
+	    
 	} catch(Exception e) {
 	    return false;
 	}

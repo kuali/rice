@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
+		<workgroup allowOverwrite="true">	
+		
+			<id>1</id>
+			<workgroupName>TestWorkgroup</workgroupName>
+			<description>TestWorkgroup</description>
+			<members>
+				<authenticationId>ewestfal</authenticationId>
+				<authenticationId>rkirkend</authenticationId>
+				<authenticationId>jhopf</authenticationId>
+				<authenticationId>bmcgough</authenticationId>
+				<authenticationId>temay</authenticationId>
+				<authenticationId>xqi</authenticationId>
+				<authenticationId>natjohns</authenticationId>
+				<authenticationId>pmckown</authenticationId>
+				<authenticationId>jthomas</authenticationId>
+				<authenticationId>jitrue</authenticationId>
+				<authenticationId>imbad</authenticationId>
+			</members>
+		</workgroup>
+  </workgroups>
+</data>
+		

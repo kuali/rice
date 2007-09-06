@@ -30,7 +30,7 @@ public class RecipientPreferenceDaoTest extends BusinessObjectPersistenceTestCas
     RecipientPreference pref2 = new RecipientPreference();
     
     private String[] recipientTypes = {"Type 1", "Type 2"};
-    private String[] recipientIds = {"ag266", "jaf30"};
+    private String[] recipientIds = {"unit_test_recip1", "unit_test_recip2"};
     private String[] propertys = {"Property A", "Property B"};
     private String[] values = {"Value A", "Value B"};
     private String[] updatedValues = {"Value C", "Value D"};

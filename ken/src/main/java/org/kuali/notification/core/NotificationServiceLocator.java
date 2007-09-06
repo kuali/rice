@@ -32,6 +32,7 @@ import org.kuali.notification.service.NotificationRecipientService;
 import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.service.UserPreferenceService;
+import org.quartz.Scheduler;
 
 /**
  * Interface for obtaining Notification System services
@@ -133,4 +134,10 @@ public interface NotificationServiceLocator {
      * @return the Notification system configuration properties
      */
     public Properties getNotificationConfiguration();
+    
+    /**
+     * Returns the Quartz scheduler used by the Notification system
+     * @return the Quartz scheduler used by the Notification system
+     */
+    public Scheduler getScheduler();
 }

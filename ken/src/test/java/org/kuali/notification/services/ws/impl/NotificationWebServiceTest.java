@@ -22,14 +22,15 @@ import java.net.URL;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.notification.client.ws.stubs.NotificationWebServiceSoapBindingStub;
-import org.kuali.notification.core.GlobalNotificationServiceLocator;
 
 /**
  * Tests Axis Notification web service
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
+@Ignore // we need the webapp up for this...
 public class NotificationWebServiceTest extends NotificationWebServiceTestCaseBase {
     private static final Logger LOG = Logger.getLogger(NotificationWebServiceTest.class);
     private static final String notificationMessageAsXml;

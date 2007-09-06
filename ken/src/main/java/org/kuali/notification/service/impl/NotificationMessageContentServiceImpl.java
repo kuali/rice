@@ -361,12 +361,14 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
      * @throws InvalidXMLException
      */
     private void validateContent(Notification notification, String contentType, Element contentElement, String content) throws IOException, InvalidXMLException {
-        LOG.debug(contentElement.getSchemaTypeInfo());
+        // this debugging relies on a DOM 3 API that is only available with Xerces 2.7.1+ (TypeInfo)
+        // commented out for now
+        /*LOG.debug(contentElement.getSchemaTypeInfo());
         LOG.debug(contentElement.getSchemaTypeInfo().getTypeName());
         LOG.debug(contentElement.getSchemaTypeInfo().getTypeNamespace());
         LOG.debug(contentElement.getNamespaceURI());
         LOG.debug(contentElement.getLocalName());
-        LOG.debug(contentElement.getNodeName());
+        LOG.debug(contentElement.getNodeName());*/
 
         String contentTypeTitleCase = Character.toTitleCase(contentType.charAt(0)) + contentType.substring(1);
         String expectedNamespaceURI = CONTENT_TYPE_NAMESPACE_PREFIX + contentTypeTitleCase;

@@ -28,6 +28,7 @@ import org.kuali.notification.bo.Notification;
 import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.notification.bo.NotificationResponse;
 import org.kuali.notification.exception.InvalidXMLException;
+import org.kuali.notification.service.NotificationMessageDeliveryAutoRemovalService;
 import org.kuali.notification.service.NotificationMessageDeliveryService;
 import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.service.ProcessingResult;
@@ -87,115 +88,69 @@ public class NotificationServiceImplTest extends NotificationTestCaseBase {
 
     @Test
     public void testSendNotificationAsXml_validInput() throws InterruptedException, SchedulerException, IOException  {
+        services.getNotificationMessageDeliveryResolverService().resolveNotificationMessageDeliveries();
+        services.getNotificationMessageDeliveryDispatchService().processUndeliveredNotificationMessageDeliveries();
+        services.getNotificationMessageDeliveryAutoRemovalService().processAutoRemovalOfDeliveredNotificationMessageDeliveries();
+
+        // get the count of pending action requests
+        DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("KualiNotification");
+        List<ActionRequestValue> list = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocumentType(docType.getDocumentTypeId());
+        int count_before = list.size();
+        LOG.info("ActionRequests: " + count_before);
+        for (ActionRequestValue v: list) {
+            LOG.info("Root request: " + v.getActionRequested() + " " + v.getWorkflowId() + " " + v.getStatus() + " " + v.getRoleName());
+        }
+
+        // now send ours
+        final NotificationService nSvc = services.getNotificationService();
         
-        /*TransactionTemplate tt = new TransactionTemplate(txManager);
+        final String notificationMessageAsXml = IOUtils.toString(getClass().getResourceAsStream("valid_input.xml"));
+        
+        Map map = new HashMap();
+        map.put(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
+        Collection<Notification> notifications = services.getBusinesObjectDao().findMatching(Notification.class, map);
+        assertEquals(0, notifications.size());
+        final String[] result = new String[1];
+        // execute this in a distinct transaction so it will actually commit to the DB
+        TransactionTemplate tt = new TransactionTemplate(transactionManager);
         tt.setPropagationBehavior(TransactionTemplate.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallback() {
+        NotificationResponse response = (NotificationResponse) tt.execute(new TransactionCallback() {
             public Object doInTransaction(TransactionStatus txStatus) {
-                try {*/
-//              quartz jobs are turned off by unit test base class
-                // turn them back on for this test
-                enableQuartzJobs();
-
-                Thread.sleep(10000);
-
-                // get the count of pending action requests
-                DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("KualiNotification");
-                List<ActionRequestValue> list = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocumentType(docType.getDocumentTypeId());
-                int count_before = list.size();
-                LOG.info("ActionRequests: " + count_before);
-                for (ActionRequestValue v: list) {
-                    LOG.info("Root request: " + v.getActionRequested() + " " + v.getWorkflowId() + " " + v.getStatus() + " " + v.getRoleName());
+                try {
+                    return nSvc.sendNotification(notificationMessageAsXml);
+                } catch (Exception e) {
+                    throw new RuntimeException("Error occurred sending notification", e);
                 }
-
-                // now send ours
-                final NotificationService nSvc = services.getNotificationService();
-                
-                /*final String notificationMessageAsXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!-- A Simple Notification Message -->" +
-                "<notification xmlns=\"ns:notification/NotificationRequest\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-                "xsi:schemaLocation=\"ns:notification/NotificationRequest resource:notification/NotificationRequest\"><!-- this is the " +
-                "name of the notification channel --><!-- that has been registered in the system --><channel>Test Channel #1</channel>" +
-                " <!-- this is the name of the producing system --><!-- the value must match a registered producer --><producer>Test Producer #3</producer>" +
-                "<!-- these are the people that the message is sent on --><!-- behalf of --><senders><sender>Aaron Godert</sender><sender>John Fareira</sender><sender>Aaron Hamid</sender></senders>" +
-                "<!-- who is the notification going to? --><recipients><group>RiceTeam</group><user>TestUser2</user>" +
-                "</recipients><!--  fyi or acknowledge --><deliveryType>fyi</deliveryType><!-- optional date and time that a notification should be sent -->" +
-                "<!-- use this for scheduling a single future notification to happen --><sendDateTime>2006-01-01T00:00:00</sendDateTime>" +
-                "<!-- optional date and time that a notification should be removed --><!-- from all recipients' lists, b/c the message no longer applies -->" +
-                "<autoRemoveDateTime>3000-01-01T00:00:00</autoRemoveDateTime><!-- this is the name of the priority of the message -->" +
-                "<!-- priorities are registered in the system, so your value --><!-- here must match one of the registered priorities --><priority>Normal</priority>" +
-                "<!-- this is the name of the content type for the message --><!-- content types are registered in the system, so your value -->" +
-                "<!-- here must match one of the registered contents --><contentType>Simple</contentType><!-- actual content of the message -->" +
-                "<content xmlns=\"ns:notification/ContentTypeSimple\" xsi:schemaLocation=\"ns:notification/ContentTypeSimple resource:notification/ContentTypeSimple\">" +
-                "<message>Check this out!</message></content></notification>";*/
-                final String notificationMessageAsXml = IOUtils.toString(getClass().getResourceAsStream("valid_input.xml"));
-                
-                Map map = new HashMap();
-                map.put(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
-                Collection<Notification> notifications = services.getBusinesObjectDao().findMatching(Notification.class, map);
-                assertEquals(0, notifications.size());
-                final String[] result = new String[1];
-                // execute this in a distinct transaction so it will actually commit to the DB
-                TransactionTemplate tt = new TransactionTemplate(transactionManager);
-                tt.setPropagationBehavior(TransactionTemplate.PROPAGATION_REQUIRES_NEW);
-                NotificationResponse response = (NotificationResponse) tt.execute(new TransactionCallback() {
-                    public Object doInTransaction(TransactionStatus txStatus) {
-                        try {
-                            return nSvc.sendNotification(notificationMessageAsXml);
-                        } catch (Exception e) {
-                            throw new RuntimeException("Error occurred sending notification", e);
-                        }
-                    }
-                });
-                LOG.info("response XML: " + response);
-                assertEquals(NotificationConstants.RESPONSE_STATUSES.SUCCESS, response.getStatus());
-                notifications = services.getBusinesObjectDao().findMatching(Notification.class, map);
-                assertEquals(1, notifications.size());
-                LOG.info("Notification: " + notifications.iterator().next());
-               
-
-                Thread.sleep(10000);
-                
-                list = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocumentType(docType.getDocumentTypeId());
-                int count_after = list.size();
-                LOG.info("ActionRequests before: " + count_before);
-                LOG.info("ActionRequests after: " + count_after);
-                for (ActionRequestValue v: list) {
-                    LOG.info("Root request: " + v.getActionRequested() + " " + v.getWorkflowId() + " " + v.getStatus() + " " + v.getRoleName());
-                }
-                
-                disableQuartzJobs();
-
-                // should have 6 requests, 1 to each user in in Rice Team group
-                assertEquals(6, count_after - count_before);
-                /*} catch (Throwable t) {
-                    t.printStackTrace();
-                }
-                return null;
             }
-        });*/
+        });
+        LOG.info("response XML: " + response);
+        assertEquals(NotificationConstants.RESPONSE_STATUSES.SUCCESS, response.getStatus());
+        notifications = services.getBusinesObjectDao().findMatching(Notification.class, map);
+        assertEquals(1, notifications.size());
+        LOG.info("Notification: " + notifications.iterator().next());
+       
+        services.getNotificationMessageDeliveryResolverService().resolveNotificationMessageDeliveries();
+        services.getNotificationMessageDeliveryDispatchService().processUndeliveredNotificationMessageDeliveries();
+        services.getNotificationMessageDeliveryAutoRemovalService().processAutoRemovalOfDeliveredNotificationMessageDeliveries();
+
+        list = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocumentType(docType.getDocumentTypeId());
+        int count_after = list.size();
+        LOG.info("ActionRequests before: " + count_before);
+        LOG.info("ActionRequests after: " + count_after);
+        for (ActionRequestValue v: list) {
+            LOG.info("Root request: " + v.getActionRequested() + " " + v.getWorkflowId() + " " + v.getStatus() + " " + v.getRoleName());
+        }
+        
+        disableQuartzJobs();
+
+        // should have 6 requests, 1 to each user in in Rice Team group
+        assertEquals(6, count_after - count_before);
     }
 
     @Test
     public void testSendNotificationAsXml_invalidInput() throws IOException {
 	NotificationService nSvc = services.getNotificationService();
 	
-        // this is invalid notification XML, the content type schema is incorrect
-	/*String notificationMessageAsXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!-- A Simple Notification Message -->" +
-	"<notification xmlns=\"ns:notification/NotificationRequest\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-	"xsi:schemaLocation=\"ns:notification/NotificationRequest resource:notification/NotificationRequest\"><!-- this is the " +
-	"name of the notification channel --><!-- that has been registered in the system --><channel>Test Channel #1</channel>" +
-	" <!-- this is the name of the producing system --><!-- the value must match a registered producer --><producer>Test Producer #1</producer>" +
-	"<!-- these are the people that the message is sent on --><!-- behalf of --><senders><sender>ag266</sender><sender>jaf30</sender><sender>arh14</sender></senders>" +
-	"<!-- who is the notification going to? --><recipients><group>Group X</group><group>Group Z</group><user>ag266</user><user>jaf30</user>" +
-	"<user>arh14</user></recipients><!--  fyi or acknowledge --><deliveryType>bad</deliveryType><!-- optional date and time that a notification should be sent -->" +
-	"<!-- use this for scheduling a single future notification to happen --><sendDateTime>2006-01-01T00:00:00</sendDateTime>" +
-	"<!-- optional date and time that a notification should be removed --><!-- from all recipients' lists, b/c the message no longer applies -->" +
-	"<!-- this is the name of the priority of the message -->" +
-	"<!-- priorities are registered in the system, so your value --><!-- here must match one of the registered priorities --><priority>Normal</priority>" +
-	"<!-- this is the name of the content type for the message --><!-- content types are registered in the system, so your value -->" +
-	"<!-- here must match one of the registered contents --><contentType>Simple</contentType><!-- actual content of the message -->" +
-	"<content xmlns=\"ns:notification/ContentSimple\" xsi:schemaLocation=\"ns:notification/ContentSimple resource:notification/ContentSimple\">" +
-	"</content></notification>";*/
         final String notificationMessageAsXml = IOUtils.toString(getClass().getResourceAsStream("invalid_input.xml"));
 	
         try {
@@ -215,23 +170,6 @@ public class NotificationServiceImplTest extends NotificationTestCaseBase {
     public void testSendNotificationAsXml_producerNotAuthorized() throws IOException, InvalidXMLException {
 	NotificationService nSvc = services.getNotificationService();
 	
-	/*String notificationMessageAsXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!-- A Simple Notification Message -->" +
-	"<notification xmlns=\"ns:notification/NotificationRequest\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-	"xsi:schemaLocation=\"ns:notification/NotificationRequest resource:notification/NotificationRequest\"><!-- this is the " +
-	"name of the notification channel --><!-- that has been registered in the system --><channel>Test Channel #1</channel>" +
-	" <!-- this is the name of the producing system --><!-- the value must match a registered producer --><producer>Test Producer #4</producer>" +
-	"<!-- these are the people that the message is sent on --><!-- behalf of --><senders><sender>ag266</sender><sender>jaf30</sender><sender>arh14</sender></senders>" +
-	"<!-- who is the notification going to? --><recipients><group>Group X</group><group>Group Z</group><user>ag266</user><user>jaf30</user>" +
-	"<user>arh14</user></recipients><!--  fyi or acknowledge --><deliveryType>fyi</deliveryType><!-- optional date and time that a notification should be sent -->" +
-	"<!-- use this for scheduling a single future notification to happen --><sendDateTime>2006-01-01T00:00:00</sendDateTime>" +
-	"<!-- optional date and time that a notification should be removed --><!-- from all recipients' lists, b/c the message no longer applies -->" +
-	"<autoRemoveDateTime>2007-01-01T00:00:00</autoRemoveDateTime><!-- this is the name of the priority of the message -->" +
-	"<!-- priorities are registered in the system, so your value --><!-- here must match one of the registered priorities --><priority>Normal</priority>" +
-	"<!-- this is the name of the content type for the message --><!-- content types are registered in the system, so your value -->" +
-	"<!-- here must match one of the registered contents --><contentType>Simple</contentType><!-- actual content of the message -->" +
-	"<content xmlns=\"ns:notification/ContentTypeSimple\" xsi:schemaLocation=\"ns:notification/ContentTypeSimple resource:notification/ContentTypeSimple\">" +
-	"<message>Check this out!</message></content></notification>";*/
-        
         final String notificationMessageAsXml = IOUtils.toString(getClass().getResourceAsStream("producer_not_authorized.xml"));
 	
         NotificationResponse response = nSvc.sendNotification(notificationMessageAsXml);

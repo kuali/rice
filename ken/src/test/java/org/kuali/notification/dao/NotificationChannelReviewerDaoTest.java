@@ -121,10 +121,7 @@ public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenc
      */
     @Override
     protected boolean validateChanges() {
-        HashMap criteria = new HashMap();
-        
-        criteria.put(NotificationConstants.BO_PROPERTY_NAMES.REVIEWER_ID, mockReviewer.getReviewerId());
-        NotificationChannelReviewer reviewer = (NotificationChannelReviewer) businessObjectDao.findByUniqueKey(NotificationChannelReviewer.class, criteria);
+        NotificationChannelReviewer reviewer = (NotificationChannelReviewer) businessObjectDao.findById(NotificationChannelReviewer.class, mockReviewer.getId());
 
         boolean success = reviewer != null;
         success &= reviewer.getReviewerId().equals("updatedReviewerId");

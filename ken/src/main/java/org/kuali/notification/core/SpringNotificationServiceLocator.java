@@ -32,6 +32,7 @@ import org.kuali.notification.service.NotificationRecipientService;
 import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.service.UserPreferenceService;
+import org.quartz.Scheduler;
 import org.springframework.beans.factory.BeanFactory;
 
 /**
@@ -57,6 +58,7 @@ public class SpringNotificationServiceLocator implements NotificationServiceLoca
     private static final String NOTIFICATION_CHANNEL_SERVICE = "notificationChannelService";
     private static final String NOTIFICATION_EMAIL_SERVICE = "notificationEmailService";
     private static final String NOTIFICATION_CONFIG = "notificationConfig";
+    private static final String NOTIFICATION_SCHEDULER = "notificationScheduler";
 
     private BeanFactory beanFactory;
 
@@ -178,5 +180,12 @@ public class SpringNotificationServiceLocator implements NotificationServiceLoca
      */
     public Properties getNotificationConfiguration() {
         return (Properties) beanFactory.getBean(NOTIFICATION_CONFIG);
+    }
+
+    /**
+     * @see org.kuali.notification.core.NotificationServiceLocator#getScheduler()
+     */
+    public Scheduler getScheduler() {
+        return (Scheduler) beanFactory.getBean(NOTIFICATION_SCHEDULER);
     }
 }

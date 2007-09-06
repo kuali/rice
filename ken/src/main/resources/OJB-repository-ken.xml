@@ -66,6 +66,9 @@
     <!-- Deletes must be done directly on the join object -->
     <collection-descriptor name="producers" element-class-ref="org.kuali.notification.bo.NotificationProducer" 
         auto-retrieve="true" auto-update="true" auto-delete="false" indirection-table="NOTIFICATION_CHANNEL_PRODUCERS">
+        <!-- 
+        collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList">
+         -->
         <orderby name="id" sort="ASC" />
         <fk-pointing-to-this-class column="CHANNEL_ID"/>
         <fk-pointing-to-element-class column="PRODUCER_ID"/>
@@ -114,6 +117,9 @@
     <!-- Deletes must be done directly on the join object -->
     <collection-descriptor name="channels" element-class-ref="org.kuali.notification.bo.NotificationChannel" 
         auto-retrieve="true" auto-update="true" auto-delete="false" indirection-table="NOTIFICATION_CHANNEL_PRODUCERS">
+        <!--
+        collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList">
+         -->
         <orderby name="id" sort="ASC" />
         <fk-pointing-to-this-class column="PRODUCER_ID"/>
         <fk-pointing-to-element-class column="CHANNEL_ID"/>

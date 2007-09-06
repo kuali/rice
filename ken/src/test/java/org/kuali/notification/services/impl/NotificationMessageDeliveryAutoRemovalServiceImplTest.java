@@ -31,7 +31,7 @@ import org.kuali.notification.util.NotificationConstants;
  * Tests NotificationMessageDeliveryAutoRemovalServiceImpl
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-@Ignore
+//@Ignore // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends NotificationTestCaseBase {
     // NOTE: this value is highly dependent on test data 
     private static final int EXPECTED_SUCCESSES = 8;
@@ -71,6 +71,7 @@ public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends Notif
     /**
      * Test concurrent auto-removal of message deliveries
      */
+    @Ignore
     @Test
     public void testAutoRemovalConcurrency() throws InterruptedException {
         final NotificationMessageDeliveryAutoRemovalService nSvc = services.getNotificationMessageDeliveryAutoRemovalService();

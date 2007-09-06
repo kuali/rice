@@ -16,8 +16,6 @@
 package org.kuali.notification.test;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -28,7 +26,6 @@ import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.impl.SchedulerRepository;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -90,8 +87,20 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
 	// clear out the KEW cache
 	lifecycles.add(new BaseLifecycle() {
 	    @Override
+	    public void start() throws Exception {
+	        super.start();
+
+	        //LOG.info("Status of Ken scheduler on start: " + services.getScheduler().isStarted());
+                // stop quartz if a test failed to do so
+                disableQuartzJobs();
+	    }
 	    public void stop() throws Exception {
 		KEWServiceLocator.getCacheAdministrator().flushAll();
+		
+		LOG.info("Status of Ken scheduler on stop: " + services.getScheduler().isStarted());
+		// stop quartz if a test failed to do so
+		disableQuartzJobs();
+
 		super.stop();
 	    }
 	});
@@ -111,33 +120,26 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
     }
 
     /**
-     * This method makes sure to disable the Quartz
+     * This method makes sure to disable the Quartz scheduler
      * @throws SchedulerException
      */
     protected static void disableQuartzJobs() throws SchedulerException {
 	// do this so that our quartz jobs don't go off - we don't care about
         // these in our unit tests
-        Collection<Scheduler> schedulers = SchedulerRepository.getInstance().lookupAll();
-        
-        Iterator<Scheduler> i = schedulers.iterator();
-        while(i.hasNext()) {
-            (i.next()).shutdown();
-        }
+        Scheduler scheduler = services.getScheduler();
+        scheduler.pause();
+        //scheduler.shutdown();
     }
 
     /**
-     * This method makes sure to disable the Quartz
+     * This method enables the Quartz scheduler
      * @throws SchedulerException
      */
     protected static void enableQuartzJobs() throws SchedulerException {
         // do this so that our quartz jobs don't go off - we don't care about
         // these in our unit tests
-        Collection<Scheduler> schedulers = SchedulerRepository.getInstance().lookupAll();
-        
-        Iterator<Scheduler> i = schedulers.iterator();
-        while(i.hasNext()) {
-            (i.next()).start();
-        }
+        Scheduler scheduler = services.getScheduler();
+        scheduler.start();
     }
 
     /**

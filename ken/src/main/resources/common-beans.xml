@@ -311,7 +311,7 @@
     </bean>
 
     <!-- Configure the Quartz job scheduler -->
-    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <bean id="notificationScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
                 <ref bean="resolveNotificationMessageDeliveriesJobTrigger" />

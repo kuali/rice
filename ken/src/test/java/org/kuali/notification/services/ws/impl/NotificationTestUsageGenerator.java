@@ -19,15 +19,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import junit.framework.TestResult;
-import junit.textui.TestRunner;
-
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * This class runs the s2s generator that throws notifications at the system to simulate that situation for users.
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
+@Ignore
 public class NotificationTestUsageGenerator extends NotificationUsageSimulator {
     private String webServiceHost = null;
 

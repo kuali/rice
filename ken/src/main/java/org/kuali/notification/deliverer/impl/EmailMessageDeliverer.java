@@ -43,8 +43,8 @@ public class EmailMessageDeliverer implements NotificationMessageDeliverer {
     private UserPreferenceService userPreferenceService;
     
     public static final String NAME = "Email";
-    private static final String EMAIL_ADDR_PREF_KEY = "email_address";
-    private static final String EMAIL_DELIV_FRMT_PREF_KEY = "email_delivery_format";
+    public static final String EMAIL_ADDR_PREF_KEY = "email_address";
+    public static final String EMAIL_DELIV_FRMT_PREF_KEY = "email_delivery_format";
     
     /**
      * Constructs a EmailMessageDeliverer.java.

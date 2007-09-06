@@ -25,17 +25,16 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 
-import junit.framework.TestResult;
-import junit.textui.TestRunner;
-
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * Load tester for notification
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
+@Ignore
 public class NotificationLoadTester extends NotificationUsageSimulator {
     private static final Logger LOG = Logger.getLogger(NotificationLoadTester.class);
 

@@ -187,8 +187,6 @@ public class TestConstants {
     /**
      * Email deliverer property
      */
-    public static final String EMAIL_DELIVERER_NAME = EmailMessageDeliverer.NAME;
-    public static final String EMAIL_DELIVERER_PROPERTY = "address";
     public static final String EMAIL_DELIVERER_PROPERTY_VALUE = "kuali-ken-testing@cornell.edu";
 
 }

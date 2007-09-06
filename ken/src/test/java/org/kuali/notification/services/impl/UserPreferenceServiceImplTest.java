@@ -24,6 +24,7 @@ import org.kuali.notification.bo.RecipientPreference;
 import org.kuali.notification.bo.UserChannelSubscription;
 import org.kuali.notification.bo.UserDelivererConfig;
 import org.kuali.notification.deliverer.NotificationMessageDeliverer;
+import org.kuali.notification.deliverer.impl.EmailMessageDeliverer;
 import org.kuali.notification.exception.ErrorList;
 import org.kuali.notification.exception.NotificationMessageDelivererNotFoundException;
 import org.kuali.notification.service.NotificationMessageDelivererRegistryService;
@@ -40,9 +41,9 @@ public class UserPreferenceServiceImplTest extends NotificationTestCaseBase {
     public static final String VALID_USER_ID = TestConstants.TEST_USER_ONE;
     public static final String VALID_CHANNEL_ID = TestConstants.VALID_CHANNEL_ONE_ID.toString();
     public static final Long VALID_CHANNEL_ID_LONG = TestConstants.VALID_CHANNEL_ONE_ID;
-    public static final String VALID_DELIVERER_NAME = TestConstants.EMAIL_DELIVERER_NAME;
+    public static final String VALID_DELIVERER_NAME = EmailMessageDeliverer.NAME;
     public static final String[] CHANNEL_SELECTED = { TestConstants.VALID_CHANNEL_ONE_ID.toString() };
-    public static final String VALID_PROPERTY = TestConstants.EMAIL_DELIVERER_PROPERTY;
+    public static final String VALID_PROPERTY = EmailMessageDeliverer.NAME + "." + EmailMessageDeliverer.EMAIL_ADDR_PREF_KEY;
     public static final String VALID_VALUE = TestConstants.EMAIL_DELIVERER_PROPERTY_VALUE;
 
     public UserPreferenceServiceImplTest() {
@@ -113,6 +114,7 @@ public class UserPreferenceServiceImplTest extends NotificationTestCaseBase {
 		
 	HashMap<String, String> userprefs = new HashMap<String, String>();
 	userprefs.put(VALID_PROPERTY, VALID_VALUE);
+	userprefs.put("Email.email_delivery_format", "text");
 	try {
 	  impl.saveUserRecipientPreferences(VALID_USER_ID, userprefs, deliverer);
 	} catch (ErrorList list) {
@@ -121,7 +123,7 @@ public class UserPreferenceServiceImplTest extends NotificationTestCaseBase {
 	RecipientPreference recipientPreference = new RecipientPreference();
 	recipientPreference.setRecipientId(VALID_USER_ID);
 	Collection<RecipientPreference> prefs = services.getBusinesObjectDao().findMatchingByExample(recipientPreference);
-	assertEquals(1, prefs.size()); 
+	assertEquals(2, prefs.size()); 
     }
 
     @Test
@@ -136,6 +138,7 @@ public class UserPreferenceServiceImplTest extends NotificationTestCaseBase {
 	}
 	HashMap<String, String> userprefs = new HashMap<String, String>();
 	userprefs.put(VALID_PROPERTY, VALID_VALUE);
+	userprefs.put("Email.email_delivery_format", "text");
 	try {
 	   impl.saveUserRecipientPreferences(VALID_USER_ID, userprefs, deliverer);
 	} catch (ErrorList list) {

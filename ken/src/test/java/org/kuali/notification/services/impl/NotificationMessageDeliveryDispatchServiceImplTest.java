@@ -33,7 +33,7 @@ import org.kuali.notification.util.NotificationConstants;
  * @author Aaron Godert (ag266 at cornell dot edu)
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-//@Ignore // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
+@Ignore // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 public class NotificationMessageDeliveryDispatchServiceImplTest extends NotificationTestCaseBase {
     private static final int EXPECTED_SUCCESSES = 7;
 

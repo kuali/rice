@@ -39,6 +39,7 @@ import edu.iu.uis.eden.messaging.MessageQueueService;
 import edu.iu.uis.eden.notes.NoteService;
 import edu.iu.uis.eden.notification.NotificationService;
 import edu.iu.uis.eden.preferences.PreferencesService;
+import edu.iu.uis.eden.removereplace.RemoveReplaceDocumentService;
 import edu.iu.uis.eden.responsibility.ResponsibilityIdService;
 import edu.iu.uis.eden.routeheader.RouteHeaderService;
 import edu.iu.uis.eden.routeheader.WorkflowDocumentService;
@@ -244,6 +245,8 @@ public final class KEWServiceLocator {
 	public static final String OPTIONAL_EMBEDDED_USER_SERVICE = "enOptionalEmbeddedClientUserService";
 
 	public static final String OPTIONAL_EMBEDDED_WORKGROUP_SERVICE = "enOptionalEmbeddedClientWorkgroupService";
+
+	public static final String REMOVE_REPLACE_DOCUMENT_SERVICE = "enRemoveReplaceDocumentService";
 
 	/**
 	 * @param serviceName
@@ -465,6 +468,10 @@ public final class KEWServiceLocator {
 
     public static DocumentSearchService getDocumentSearchService() {
     	return (DocumentSearchService) getBean(DOCUMENT_SEARCH_SERVICE);
+    }
+
+    public static RemoveReplaceDocumentService getRemoveReplaceDocumentService() {
+	return (RemoveReplaceDocumentService) getBean(REMOVE_REPLACE_DOCUMENT_SERVICE);
     }
 
     /**

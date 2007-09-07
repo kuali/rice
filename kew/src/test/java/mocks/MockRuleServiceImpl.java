@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,6 +28,7 @@ import java.util.Map;
 import org.jdom.Element;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.export.ExportDataSet;
@@ -49,7 +50,7 @@ public class MockRuleServiceImpl implements RuleService {
     Map responsibilitiesById = new HashMap();
     Map responsibilitiesByReviewer = new HashMap();
     Map rulesByRouteHeaderId = new HashMap();
-    
+
     public RuleBaseValues getParentRule(Long ruleBaseValuesId) {
         return null;
     }
@@ -71,9 +72,9 @@ public class MockRuleServiceImpl implements RuleService {
     public List search(String docTypeName, String ruleTemplateName, String ruleDescription, GroupId workgroupId, UserId userId, String roleName, Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) throws EdenUserNotFoundException {
         return null;
     }
-    public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType) {	
+    public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType) {
     }
-    
+
     public RuleBaseValues getRuleByName(String name) {
         return rulesByName.get(name);
     }
@@ -91,12 +92,12 @@ public class MockRuleServiceImpl implements RuleService {
         }
         routeHeaderList.add(rule);
         rulesByRouteHeaderId.put(rule.getRouteHeaderId(), routeHeaderList);
-        
+
         for (Iterator iter = rule.getResponsibilities().iterator(); iter.hasNext();) {
             RuleResponsibility resp = (RuleResponsibility) iter.next();
-            responsibilitiesByKey.put(resp.getRuleResponsibilityKey(), resp);    
+            responsibilitiesByKey.put(resp.getRuleResponsibilityKey(), resp);
             responsibilitiesById.put(resp.getResponsibilityId(), resp);
-            
+
             List respList = null;
             if(responsibilitiesByReviewer.get(resp.getRuleResponsibilityName()) != null){
                 respList = (List)responsibilitiesByReviewer.get(resp.getRuleResponsibilityName());
@@ -107,7 +108,7 @@ public class MockRuleServiceImpl implements RuleService {
             responsibilitiesByReviewer.put(resp.getRuleResponsibilityName(), respList);
         }
     }
-    
+
     public Long route2(MyRules2 myRules, WorkflowUser user, String annotation) throws Exception {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
@@ -174,11 +175,11 @@ public class MockRuleServiceImpl implements RuleService {
     public List fetchAllRules(boolean currentRules) {
         return new ArrayList(rules.values());
     }
-    
+
     public void saveDeactivationDate(RuleBaseValues rule) {
         // do anything?
     }
-   
+
     public void validate2(RuleBaseValues ruleBaseValues, RuleDelegation ruleDelegation, List errors) throws Exception {
     	throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
@@ -189,11 +190,11 @@ public class MockRuleServiceImpl implements RuleService {
 	public RuleBaseValues findDefaultRuleByRuleTemplateId(Long ruleTemplateId) {
 		return null;
 	}
-    
+
     public void save2(RuleBaseValues ruleBaseValues) throws Exception {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
-    
+
     public void loadXml(InputStream inputStream, WorkflowUser user) {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
@@ -201,9 +202,25 @@ public class MockRuleServiceImpl implements RuleService {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
 	public void notifyCacheOfDocumentTypeChange(DocumentType documentType) {
-		
+
 	}
 	public String getRuleDocmentTypeName(List rules) {
 		return EdenConstants.DEFAULT_RULE_DOCUMENT_NAME;
 	}
+	public void removeRuleInvolvement(Id entityToBeRemoved, List<Long> ruleIds, Long documentId) {
+	    throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
+	}
+	public void replaceRuleInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> ruleIds, Long documentId) {
+	    throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
+	}
+	/**
+	 * This overridden method ...
+	 *
+	 * @see edu.iu.uis.eden.routetemplate.RuleService#findRuleBaseValuesByResponsibilityReviewerTemplateDoc(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type) {
+	    throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
+	}
+
+
 }

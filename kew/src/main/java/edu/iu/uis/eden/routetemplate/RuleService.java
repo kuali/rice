@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.XmlLoader;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
@@ -67,14 +68,15 @@ public interface RuleService extends XmlLoader, XmlExporter {
     public List findByRouteHeaderId(Long routeHeaderId);
     public void makeCurrent(Long routeHeaderId) throws EdenUserNotFoundException;
     public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type);
+    public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type);
     public Long isLockedForRouting(Long currentRuleBaseValuesId);
     public List fetchAllRules(boolean currentRules);
     public void saveDeactivationDate(RuleBaseValues rule);
     public RuleBaseValues findDefaultRuleByRuleTemplateId(Long ruleTemplateId);
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType);
     public RuleBaseValues getParentRule(Long ruleBaseValuesId);
-    
-    
+
+
     /**
      * Notifies the Rule system that the given DocumentType has been changed.  When a DocumentType changes this
      * could result in the change to the DocumentType hierarchy.  In these cases we want to ensure that all
@@ -82,12 +84,29 @@ public interface RuleService extends XmlLoader, XmlExporter {
      * DocumentType hierarchy in place.
      */
     public void notifyCacheOfDocumentTypeChange(DocumentType documentType);
-    
+
     /**
      * Returns the name of the document type definition that should be used to route the given List of rules.  This method will never
      * return a null value, as it will default to the default Rule document type name if not custom document type is configured for
      * the given rules.
      */
     public String getRuleDocmentTypeName(List rules);
+
+    /**
+     * Replaces entities who have responsibilities on the given set of rules with the specified new entity.  In this case
+     * the Id can be the id of either a Workgroup or a User.
+     *
+     * <p>This method should handle any versioning of the rules that is required.
+     */
+    public void replaceRuleInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> ruleIds, Long documentId);
+
+    /**
+     * Removes entities who have responsibilities on the given set of rules.  In the case that a targeted rule
+     * contains only a single responsibility the rule will be inactivated instead of removing the responsibility.
+     * The Id can be the id of either a Workgroup or a User.
+     *
+     * <p>This method should handle any versioning of the rules that is required.
+     */
+    public void removeRuleInvolvement(Id entityToBeRemoved, List<Long> ruleIds, Long documentId);
 
 }

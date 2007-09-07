@@ -809,6 +809,8 @@ public class EdenConstants extends JSTLConstants {
     public static final String DAILY_EMAIL_ACTIVE = "dailyEmail.active";
     public static final String WEEKLY_EMAIL_ACTIVE = "weeklyEmail.active";
 
+    public static final String REMOVE_REPLACE_DOCUMENT_TYPE = "EDENSERVICE-DOCS.RemoveReplaceUser";
+
 }
 
 /*

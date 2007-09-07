@@ -1018,4 +1018,30 @@
     </reference-descriptor>
   </class-descriptor>
 
+  <class-descriptor class="edu.iu.uis.eden.removereplace.RemoveReplaceDocument" table="EN_RMV_RPLC_DOC_T">
+    <field-descriptor column="DOC_HDR_ID" name="documentId" jdbc-type="BIGINT" primarykey="true"/>
+    <field-descriptor column="OPRN" name="operation" jdbc-type="VARCHAR"/>
+    <field-descriptor column="PRSN_EN_ID" name="userWorkflowId" jdbc-type="VARCHAR"/>
+    <field-descriptor column="RPLC_PRSN_EN_ID" name="replacementUserWorkflowId" jdbc-type="VARCHAR"/>
+    <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
+    <collection-descriptor name="ruleTargets" element-class-ref="edu.iu.uis.eden.removereplace.RuleTarget"
+      auto-delete="true" auto-retrieve="true" auto-update="object">
+      <inverse-foreignkey field-ref="documentId"/>
+    </collection-descriptor>
+    <collection-descriptor name="workgroupTargets" element-class-ref="edu.iu.uis.eden.removereplace.WorkgroupTarget"
+      auto-delete="true" auto-retrieve="true" auto-update="object">
+      <inverse-foreignkey field-ref="documentId"/>
+    </collection-descriptor>
+  </class-descriptor>
+
+  <class-descriptor class="edu.iu.uis.eden.removereplace.RuleTarget" table="EN_RMV_RPLC_RULE_T">
+    <field-descriptor column="DOC_HDR_ID" name="documentId" jdbc-type="BIGINT" primarykey="true"/>
+    <field-descriptor column="RULE_ID" name="ruleId" jdbc-type="BIGINT" primarykey="true"/>
+  </class-descriptor>
+
+  <class-descriptor class="edu.iu.uis.eden.removereplace.WorkgroupTarget" table="EN_RMV_RPLC_WRKGRP_T">
+    <field-descriptor column="DOC_HDR_ID" name="documentId" jdbc-type="BIGINT" primarykey="true"/>
+    <field-descriptor column="WRKGRP_ID" name="workgroupId" jdbc-type="BIGINT" primarykey="true"/>
+  </class-descriptor>
+
 </descriptor-repository>

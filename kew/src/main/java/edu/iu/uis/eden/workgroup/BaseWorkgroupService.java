@@ -27,6 +27,7 @@ import org.jdom.Element;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.workgroup.BaseWorkgroupExtension;
 
+import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.vo.WorkflowGroupIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
@@ -262,7 +263,16 @@ public class BaseWorkgroupService implements WorkgroupService {
 		KEWServiceLocator.getCacheAdministrator().flushEntry(generateCacheKey(id));
 	}
 
-    // XMLLoader methods
+	public void removeWorkgroupInvolvement(Id entityToBeRemoved, List<Long> workgroupIds, Long documentId) {
+	    System.out.println("REMOVING WORKGROUP INVOLVEMENT: " + workgroupIds.size());
+
+	}
+
+	public void replaceWorkgroupInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> workgroupIds, Long documentId) {
+	    System.out.println("REPLACING WORKGROUP INVOLVEMENT: " + workgroupIds.size());
+	}
+
+        // XMLLoader methods
 
 	/**
 	 * Loads workgroups from the given XML.

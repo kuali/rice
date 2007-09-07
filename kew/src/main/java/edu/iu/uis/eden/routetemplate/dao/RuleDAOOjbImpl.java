@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
@@ -46,15 +47,15 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleDAOOjbImpl.class);
 
 	private static final String OLD_DELEGATIONS_SQL =
-		"select oldDel.dlgn_rule_base_val_id "+ 
+		"select oldDel.dlgn_rule_base_val_id "+
 		"from en_rule_rsp_t oldRsp, en_dlgn_rsp_t oldDel "+
 		"where oldRsp.rule_base_val_id=? and "+
 		"oldRsp.rule_rsp_id=oldDel.rule_rsp_id and "+
 		"oldDel.dlgn_rule_base_val_id not in "+
-		"(select newDel.dlgn_rule_base_val_id from en_rule_rsp_t newRsp, en_dlgn_rsp_t newDel "+ 
+		"(select newDel.dlgn_rule_base_val_id from en_rule_rsp_t newRsp, en_dlgn_rsp_t newDel "+
 		"where newRsp.rule_base_val_id=? and "+
 		"newRsp.rule_rsp_id=newDel.rule_rsp_id)";
-	
+
 	public void save(RuleBaseValues ruleBaseValues) {
 		this.getPersistenceBrokerTemplate().store(ruleBaseValues);
 	}
@@ -184,6 +185,31 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return rules;
 	}
 
+	public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type) {
+	    Criteria crit = new Criteria();
+		crit.addEqualTo("ruleResponsibilityName", reviewerName);
+		crit.addEqualTo("ruleResponsibilityType", type);
+		crit.addEqualTo("ruleBaseValues.currentInd", Boolean.TRUE);
+		if (!StringUtils.isBlank(ruleTemplateName)) {
+		    crit.addLike("ruleBaseValues.ruleTemplate.name", ruleTemplateName.replace("*", "%").concat("%"));
+		}
+		if (!StringUtils.isBlank(documentType)) {
+		    crit.addLike("ruleBaseValues.docTypeName", documentType.replace("*", "%").concat("%"));
+		}
+
+		List responsibilities = (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleResponsibility.class, crit));
+		List rules = new ArrayList();
+
+		for (Iterator iter = responsibilities.iterator(); iter.hasNext();) {
+			RuleResponsibility responsibility = (RuleResponsibility) iter.next();
+			RuleBaseValues rule = responsibility.getRuleBaseValues();
+			if (rule != null && rule.getCurrentInd() != null && rule.getCurrentInd().booleanValue()) {
+				rules.add(rule);
+			}
+		}
+		return rules;
+	}
+
 	public List findRuleBaseValuesByObjectGraph(RuleBaseValues ruleBaseValues) {
 		ruleBaseValues.setCurrentInd(new Boolean(true));
 		ruleBaseValues.setTemplateRuleInd(Boolean.FALSE);
@@ -233,19 +259,19 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 //        // user id -- workgroups
 //        // no user id -- workgroups
 //        Criteria userResponsibilityCrit = null;
-//        if ( (!Utilities.isEmpty(workflowId)) && 
+//        if ( (!Utilities.isEmpty(workflowId)) &&
 //             ( (workgroupIds != null) && (!workgroupIds.isEmpty()) ) ) {
 //            // have user id and at least one workgroup id
 //            userResponsibilityCrit = new Criteria();
 //            userResponsibilityCrit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workflowId));
 //            Criteria workgroupCrit = this.getWorkgroupOrCriteria(workgroupIds);
 //            userResponsibilityCrit.addOrCriteria(workgroupCrit);
-//        } else if ( (!Utilities.isEmpty(workflowId)) && 
+//        } else if ( (!Utilities.isEmpty(workflowId)) &&
 //                    ( (workgroupIds == null) || (workgroupIds.isEmpty()) ) ) {
 //            // have user id and no workgroup ids
 //            userResponsibilityCrit = new Criteria();
 //            userResponsibilityCrit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workflowId));
-//        } else if ( (Utilities.isEmpty(workflowId)) && 
+//        } else if ( (Utilities.isEmpty(workflowId)) &&
 //                    ( (workgroupIds != null) && (!workgroupIds.isEmpty()) ) ) {
 //            // have no user id and at least one workgroup id
 //            userResponsibilityCrit = this.getWorkgroupOrCriteria(workgroupIds);
@@ -257,13 +283,13 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit, true));
     }
-    
+
     private ReportQueryByCriteria getResponsibilitySubQuery(Collection<String> workgroupIds, String workflowId, String roleName, Collection actionRequestCodes) {
         Criteria responsibilityCrit = new Criteria();
         if ( (actionRequestCodes != null) && (!actionRequestCodes.isEmpty()) ) {
             responsibilityCrit.addIn("actionRequestedCd", actionRequestCodes);
         }
-        
+
         Criteria ruleResponsibilityNameCrit = null;
         if (!Utilities.isEmpty(roleName)) {
             // role name exists... nothing else matters
@@ -298,12 +324,12 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         if (ruleResponsibilityNameCrit != null) {
             responsibilityCrit.addAndCriteria(ruleResponsibilityNameCrit);
         }
-        
+
         ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleResponsibility.class, responsibilityCrit);
         query.setAttributes(new String[] { "ruleBaseValuesId" });
         return query;
     }
-    
+
     private Criteria getSearchCriteria(String docTypeName, Long ruleTemplateId, String ruleDescription, Boolean delegateRule, Boolean activeInd, Map extensionValues) {
         Criteria crit = new Criteria();
         crit.addEqualTo("currentInd", new Boolean(true));
@@ -353,7 +379,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         }
         return crit;
     }
-    
+
     private Criteria getWorkgroupOrCriteria(Collection workgroupIds) {
         Criteria responsibilityCrit = new Criteria();
         for (Iterator iter = workgroupIds.iterator(); iter.hasNext();) {
@@ -401,7 +427,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 	public void retrieveAllReferences(RuleBaseValues rule) {
 		// getPersistenceBroker().retrieveAllReferences(rule);
 	}
-	
+
 	public RuleBaseValues getParentRule(Long ruleBaseValuesId) {
 		Criteria criteria = new Criteria();
 		criteria.addEqualTo("currentInd", Boolean.TRUE);
@@ -416,7 +442,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		}
 		return rule;
 	}
-	
+
 	public List findOldDelegations(final RuleBaseValues oldRule, final RuleBaseValues newRule) {
 		return (List)this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
 			public Object doInPersistenceBroker(PersistenceBroker pb) {
@@ -453,5 +479,5 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 			}
 		});
 	}
-	
+
 }

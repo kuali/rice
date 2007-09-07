@@ -122,6 +122,7 @@
           <idref local="enActionListEmailService" />
         <idref local="enWorkflowUtilityService" />
         <idref local="enWorkflowDocumentActionsService" />
+        <idref local="enRemoveReplaceDocumentService"/>
 			</list>
 		</property>
 	</bean>
@@ -584,6 +585,15 @@
         </property>
     </bean>
 
+    <bean id="enRemoveReplaceDocumentService" class="edu.iu.uis.eden.removereplace.RemoveReplaceDocumentServiceImpl">
+      <property name="removeReplaceDocumentDAO">
+        <bean class="edu.iu.uis.eden.removereplace.dao.RemoveReplaceDocumentDAOOjbImpl">
+          <property name="jcdAlias" value="enWorkflowDataSource"/>
+        </bean>
+      </property>
+    </bean>
+
+
 	<bean id="enWorkflowUtilityService" class="edu.iu.uis.eden.server.WorkflowUtilityWebServiceImpl" lazy-init="true" />
     <bean id="enDocumentRoutingService" class="edu.iu.uis.eden.messaging.RouteDocumentMessageService"/>
     <bean id="enBlanketApproveProcssor" class="edu.iu.uis.eden.actions.asyncservices.BlanketApproveProcessor"/>
@@ -817,6 +827,6 @@
     </property>
   </bean>
 
-	<bean id="enCacheAdministrator" class="edu.iu.uis.eden.messaging.RiceCacheExporterFactoryBean" />
+  <bean id="enCacheAdministrator" class="edu.iu.uis.eden.messaging.RiceCacheExporterFactoryBean" />
 
 </beans>

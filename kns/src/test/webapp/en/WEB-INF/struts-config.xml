@@ -32,6 +32,7 @@
       <form-bean name="IngesterForm" type="edu.iu.uis.eden.batch.web.IngesterForm" />
       <form-bean name="WorkflowUserForm" type="edu.iu.uis.eden.user.web.WorkflowUserForm" />
 	  <form-bean name="WorkgroupForm" type="edu.iu.uis.eden.workgroup.web.WorkgroupForm" />
+      <form-bean name="RemoveReplaceForm" type="edu.iu.uis.eden.removereplace.web.RemoveReplaceForm"/>
     </form-beans>
 
     <!-- =================== exception handler definitions ================= -->
@@ -341,6 +342,15 @@
          <forward name="report" path="/WEB-INF/jsp/workgroup/WorkgroupReport.jsp"/>
          <forward name="requiredStateError" path="/WEB-INF/jsp/workgroup/WorkgroupReport.jsp"/>
          <forward name="finalStateError" path="/WEB-INF/jsp/workgroup/WorkgroupReport.jsp"/>
+       </action>
+
+       <action path="/RemoveReplace" name="RemoveReplaceForm" scope="request" validate="true"
+         input="/WEB-INF/jsp/removereplace/RemoveReplaceEntry.jsp"
+         type="edu.iu.uis.eden.removereplace.web.RemoveReplaceAction" parameter="methodToCall">
+         <forward name="basic" path="/WEB-INF/jsp/removereplace/RemoveReplaceEntry.jsp"/>
+         <forward name="report" path="/WEB-INF/jsp/removereplace/RemoveReplaceReport.jsp"/>
+         <forward name="requiredStateError" path="/WEB-INF/jsp/removereplace/RemoveReplaceReport.jsp"/>
+         <forward name="finalStateError" path="/WEB-INF/jsp/removereplace/RemoveReplaceReport.jsp"/>
        </action>
 
     </action-mappings>

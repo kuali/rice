@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,6 +34,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
@@ -79,7 +80,7 @@ public class RuleServiceImpl implements RuleService {
     public RuleResponsibilityDAO getRuleResponsibilityDAO() {
         return ruleResponsibilityDAO;
     }
-    
+
     public RuleBaseValues getRuleByName(String name) {
         return ruleDAO.findRuleBaseValuesByName(name);
     }
@@ -468,7 +469,7 @@ public class RuleServiceImpl implements RuleService {
         if (parentRule.getPreviousVersionId() == null && delegateRule.getPreviousVersionId() == null) {
             throw new IllegalArgumentException("Previous rule version required.");
         }
-        
+
         // if the parent rule is new, unsaved, then save it
         boolean isRoutingParent = parentRule.getRuleBaseValuesId() == null;
         if (isRoutingParent) {
@@ -644,7 +645,7 @@ public class RuleServiceImpl implements RuleService {
                 }
             }
         }
-        
+
         for (Iterator iter = ruleBaseValues.getRuleTemplate().getRuleTemplateAttributes().iterator(); iter.hasNext();) {
 			RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iter.next();
 			if (!templateAttribute.isRuleValidationAttribute()) {
@@ -963,6 +964,10 @@ public class RuleServiceImpl implements RuleService {
         return getRuleDAO().findRuleBaseValuesByResponsibilityReviewer(reviewerName, type);
     }
 
+    public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type) {
+	return getRuleDAO().findRuleBaseValuesByResponsibilityReviewerTemplateDoc(ruleTemplateName, documentType, reviewerName, type);
+    }
+
     public RuleTemplateService getRuleTemplateService() {
         return (RuleTemplateService) KEWServiceLocator.getService(KEWServiceLocator.RULE_TEMPLATE_SERVICE);
     }
@@ -1027,6 +1032,16 @@ public class RuleServiceImpl implements RuleService {
     public Element export(ExportDataSet dataSet) {
         RuleXmlExporter exporter = new RuleXmlExporter();
         return exporter.export(dataSet);
+    }
+
+    public void removeRuleInvolvement(Id entityToBeRemoved, List<Long> ruleIds, Long documentId) {
+	// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
+
+    }
+
+    public void replaceRuleInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> ruleIds, Long documentId) {
+	// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
+
     }
 
     private static class RuleRoutingConfig {

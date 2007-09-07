@@ -391,6 +391,31 @@
                 </requests>
             </routeNodes>
         </documentType>
+        <documentType>
+            <name>EDENSERVICE-DOCS.RemoveReplaceUser</name>
+            <parent>EDENSERVICE-DOCS</parent>
+            <description>A document to remove or replace users within rules and workgroups.</description>
+            <label>Remove/Replace User</label>
+            <postProcessorName>edu.iu.uis.eden.removereplace.RemoveReplacePostProcessor</postProcessorName>
+            <superUserWorkgroupName>${workflow.admin.workgroup}</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>${workflow.admin.workgroup}</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>${workflow.admin.workgroup}</defaultExceptionWorkgroupName>
+            <docHandler>${base.url}/RemoveReplace.do?methodToCall=docHandler</docHandler>
+            <active>true</active>
+            <routingVersion>1</routingVersion>
+            <routePaths>
+                <routePath>
+                    <start name="Adhoc Routing"/>
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="Adhoc Routing">
+                    <activationType>P</activationType>
+                    <mandatoryRoute>false</mandatoryRoute>
+                    <finalApproval>false</finalApproval>
+                </start>
+            </routeNodes>
+        </documentType>
     </documentTypes>
 
     <!-- Core rules -->
@@ -404,7 +429,7 @@
             <ignorePrevious>false</ignorePrevious>
             <!--
                 <ruleExtensions>
-                
+
                 </ruleExtensions>
             -->
             <responsibilities>

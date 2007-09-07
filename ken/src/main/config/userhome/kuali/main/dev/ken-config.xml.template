@@ -8,6 +8,8 @@
 	<param name="kr.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
 	<param name="travel.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
 	<param name="kr.url">/${app.context.name}/kr</param>
+	<param name="attachments.pending.directory">${java.io.tmpdir}</param>
+	<param name="attachments.directory">${java.io.tmpdir}</param>
 
 	<!-- Misc parameters -->
 	<param name="production.environment.code">PRD</param>

@@ -13,29 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.test;
-
-import org.junit.Test;
-import org.kuali.rice.kim.service.KimService;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+package org.kuali.rice.kim.service;
 
 /**
- * Basic test to verify we can access the KimService through the GRL. 
+ * This is the service API for accessing KIM services.  This contract should be used by all Kuali software that 
+ * needs to leverage identity management features. 
  * 
- * @author rkirkend
- * @author Aaron Godert agodert at cornell dot edu
- *
+ * @author Aaron Godert (agodert at cornell dot edu)
  */
-public class KimServiceTest extends KIMTestCase {
-    /**
-     * This method ...
-     * 
-     * @throws Exception
-     */
-    @Test public void testKimTestHarness() throws Exception {
-	KimService kimService = (KimService)GlobalResourceLoader.getService("kimService");
-	
-	assertNotNull(kimService);
-    }
-    
+public interface KIMService {
 }

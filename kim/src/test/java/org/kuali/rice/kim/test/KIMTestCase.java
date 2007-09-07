@@ -32,7 +32,7 @@ import org.kuali.rice.test.RiceTestCase;
  * @author Ryan Kirkendall
  * @author Aaron Godert (agodert at cornell dot edu)
  */
-public class KIMTestCase extends RiceTestCase {
+public abstract class KIMTestCase extends RiceTestCase {
 
     private static final String KIM_TEST_CONTEXT_LOC = "classpath:KimTestHarnessSpring.xml";
     private SpringResourceLoader springContextResourceLoader;

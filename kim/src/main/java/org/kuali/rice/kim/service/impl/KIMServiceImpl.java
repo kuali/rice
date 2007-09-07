@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import org.kuali.rice.kim.service.KimService;
+import org.kuali.rice.kim.service.KIMService;
 
 /**
  * This is the default implementation that is provided by Rice.  This will mature over time as the KIM 
@@ -23,5 +23,5 @@ import org.kuali.rice.kim.service.KimService;
  * 
  * @author Aaron Godert (agodert at cornell dot edu)
  */
-public class KimServiceImpl implements KimService {
+public class KIMServiceImpl implements KIMService {
 }

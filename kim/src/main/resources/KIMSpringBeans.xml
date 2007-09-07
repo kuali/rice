@@ -66,6 +66,6 @@
 		</property>
 	</bean>
 	
-	<bean id="kimService" class="org.kuali.rice.kim.service.impl.KimServiceImpl" />
+	<bean id="kimService" class="org.kuali.rice.kim.service.impl.KIMServiceImpl" />
 	
 </beans>

@@ -16,29 +16,26 @@
 package org.kuali.rice.kim.test;
 
 import org.junit.Test;
-import org.kuali.rice.kim.bo.AttributeType;
 import org.kuali.rice.kim.service.KimService;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 /**
- * Basic Test to verify the test harness is able to start kim. 
+ * Basic test to verify we can access the KimService through the GRL. 
  * 
  * @author rkirkend
+ * @author Aaron Godert agodert at cornell dot edu
  *
  */
-public class KimSanityCheckTest extends KIMTestCase {
-
+public class KimServiceTest extends KIMTestCase {
+    /**
+     * This method ...
+     * 
+     * @throws Exception
+     */
     @Test public void testKimTestHarness() throws Exception {
-	
 	KimService kimService = (KimService)GlobalResourceLoader.getService("kimService");
-	AttributeType attType = new AttributeType();
-	attType.setAttributeTypeName("name");
-	kimService.saveAttributeType(attType);
 	
-	attType = kimService.getAttributeType(attType.getId());
-	
-	
-	assertNotNull("should have selected saved att type", attType);
+	assertNotNull(kimService);
     }
     
 }

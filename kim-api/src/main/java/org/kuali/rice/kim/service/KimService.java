@@ -15,17 +15,11 @@
  */
 package org.kuali.rice.kim.service;
 
-import org.kuali.rice.kim.bo.AttributeType;
-
 /**
- * This is a description of what this class does - rkirkend don't forget to fill this in. 
+ * This is the service API for accessing KIM services.  This contract should be used by all Kuali software that 
+ * needs to leverage identity management features. 
  * 
- * @author Full Name (email at address dot com)
- *
+ * @author Aaron Godert (agodert at cornell dot edu)
  */
 public interface KimService {
-
-    public void saveAttributeType(AttributeType attributeType);
-    public AttributeType getAttributeType(Long attributeTypeId);
-    
 }

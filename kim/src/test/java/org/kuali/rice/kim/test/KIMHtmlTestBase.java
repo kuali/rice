@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.kim.test;
 
-import org.kuali.rice.testharness.HtmlUnitUtil;
-
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlInput;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-
 /**
  * This is the base HTML Unit Test class that all KIM HTML Unit tests need to extend from. 
  * 

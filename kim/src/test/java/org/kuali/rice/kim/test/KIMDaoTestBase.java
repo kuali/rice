@@ -18,7 +18,6 @@ package org.kuali.rice.kim.test;
 import org.junit.Test;
 import org.kuali.core.service.BusinessObjectService;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 /**
  * This base class should be used for all KIM Unit Tests that will be testing 

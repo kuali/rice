@@ -13,19 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.dao;
+package org.kuali.rice.kim.service.impl;
 
-import org.kuali.rice.kim.bo.AttributeType;
+import org.kuali.rice.kim.service.KimService;
 
 /**
- * This is a description of what this class does - rkirkend don't forget to fill this in. 
+ * This is the default implementation that is provided by Rice.  This will mature over time as the KIM 
+ * component is developed.
  * 
- * @author Full Name (email at address dot com)
- *
+ * @author Aaron Godert (agodert at cornell dot edu)
  */
-public interface KimDao {
-
-    public void saveAttributeType(AttributeType attributeType);
-    public AttributeType getAttributeType(Long attributeTypeId);
-    
+public class KimServiceImpl implements KimService {
 }

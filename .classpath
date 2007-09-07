@@ -18,6 +18,7 @@
 	<classpathentry kind="src" path="kns/src/main/resources"/>
 	<classpathentry kind="src" path="kns/src/test/java"/>
 	<classpathentry kind="src" path="kns/src/test/resources"/>
+	<classpathentry kind="src" path="kim-api/src/main/java"/>
 	<classpathentry kind="src" path="kim/src/main/java"/>
 	<classpathentry kind="src" path="kim/src/main/resources"/>
 	<classpathentry kind="src" path="kim/src/test/java"/>

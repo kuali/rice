@@ -128,9 +128,13 @@ public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCas
 
 	    channel2.getProducers().add(mockProducer1);
 	    businessObjectDao.save(channel2);
-	    
+	    assertEquals(1, channel2.getProducers().size());
+
 	    mockProducer1 = (NotificationProducer) businessObjectDao.findById(NotificationProducer.class, mockProducer1.getId());
+	    assertEquals(2, mockProducer1.getChannels().size());
 	    
+	    channel2 = (NotificationChannel) businessObjectDao.findById(NotificationChannel.class, channel2.getId());
+	    assertEquals(1, channel2.getProducers().size());
 	} catch(Exception e) {
 	    return false;
 	}
@@ -143,14 +147,23 @@ public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCas
     @Override
     protected boolean update() {
 	try {
+	    
+	    channel2 = (NotificationChannel) businessObjectDao.findById(NotificationChannel.class, channel2.getId());
+            assertEquals(1, channel2.getProducers().size());
+            
 	    channel1.setDescription(updatedDescriptions[0]);
 	    channel1.setSubscribable(updatedSubscribables[0]);
 	    channel1.getProducers().clear();
 
 	    businessObjectDao.save(channel1);
 	    
+	    mockProducer1 = (NotificationProducer) businessObjectDao.findById(NotificationProducer.class, mockProducer1.getId());
+            assertNotNull(mockProducer1);
+	    assertEquals(1, mockProducer1.getChannels().size());
+            
 	    channel2 = (NotificationChannel) businessObjectDao.findById(NotificationChannel.class, channel2.getId());
-
+	    assertEquals(1, channel2.getProducers().size());
+	    
 	    channel2.setDescription(updatedDescriptions[1]);
 	    channel2.setSubscribable(updatedSubscribables[1]);
 	    NotificationChannelReviewer reviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(

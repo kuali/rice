@@ -43,7 +43,7 @@ import org.springframework.context.ConfigurableApplicationContext;
  * context: classpath:(uppercase moduleName)TestHarnessSpringBeans.xml
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-public class ModuleTestCase extends RiceTestCase {
+public abstract class ModuleTestCase extends RiceTestCase {
     protected final Logger log = Logger.getLogger(getClass());
     protected final String moduleName;
     protected final String contextLocation;

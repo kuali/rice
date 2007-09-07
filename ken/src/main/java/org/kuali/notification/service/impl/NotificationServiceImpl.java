@@ -297,9 +297,9 @@ public class NotificationServiceImpl implements NotificationService {
         criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
         criteria.addLessOrEqualThan(NotificationConstants.BO_PROPERTY_NAMES.SEND_DATE_TIME, new Timestamp(System.currentTimeMillis()));
         criteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
-        criteria = Util.makeSelectForUpdate(criteria);
+        //criteria = Util.makeSelectForUpdate(criteria);
         
-        Collection<Notification> available_notifications = businessObjectDao.findMatching(Notification.class, criteria);
+        Collection<Notification> available_notifications = businessObjectDao.findMatching(Notification.class, criteria, true);
         
         LOG.debug("Available notifications: " + available_notifications.size());
 

@@ -477,23 +477,4 @@ public final class Util {
         }
         return null;
     }
-    
-
-    /**
-     * Applies "select for update" mode to the specified criteria.
-     * @param criteria the criteria to modify
-     * @return a criteria that has been configured to "select for update"
-     */
-    /* This method applies a hack to the OJB criteria object in versions of OJB
-     * that do not yet expose a setSelectForUpdate property on Query.  So instead
-     * we add a final sql clause which surreptitiously adds 'for update' to the end
-     * of the sql statement.  This will only work if the criterion is added last,
-     * and if OJB generates the SQL in the order the criteria are specified, which
-     * appears to be the case.
-     */
-    public static Criteria makeSelectForUpdate(Criteria criteria) {
-        final String SELECT_FOR_UPDATE_HACK_CRITERIA = "'1' = '1' for update";
-        criteria.addSql(SELECT_FOR_UPDATE_HACK_CRITERIA);
-        return criteria;
-    }
 }

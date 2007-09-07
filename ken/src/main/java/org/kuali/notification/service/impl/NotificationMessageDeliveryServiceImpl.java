@@ -155,9 +155,9 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
     public void unlockMessageDelivery(NotificationMessageDelivery messageDelivery) {
         Criteria criteria = new Criteria();
         criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.ID, messageDelivery.getId());
-        criteria = Util.makeSelectForUpdate(criteria);
+        //criteria = Util.makeSelectForUpdate(criteria);
 
-        Collection<NotificationMessageDelivery> deliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, criteria);
+        Collection<NotificationMessageDelivery> deliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, criteria, true);
         if (deliveries == null || deliveries.size() == 0) {
             throw new RuntimeException("NotificationMessageDelivery #" + messageDelivery.getId() + " not found to unlock");
         }

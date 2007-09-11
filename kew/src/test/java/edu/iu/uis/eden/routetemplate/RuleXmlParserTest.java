@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.core.Core;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.test.AssertThrows;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -33,7 +33,7 @@ import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.test.TestUtilities;
 import edu.iu.uis.eden.xml.RuleXmlParser;
 
-public class RuleXmlParserTest extends WorkflowTestCase {
+public class RuleXmlParserTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("RouteTemplateConfig.xml");

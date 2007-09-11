@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
@@ -39,7 +39,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * Tests email content generation
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-public class EmailMessageTest extends WorkflowTestCase {
+public class EmailMessageTest extends KEWTestCase {
     private ActionListEmailServiceImpl actionListEmailService = new ActionListEmailServiceImpl();
     private HardCodedEmailContentServiceImpl hardCodedEmailContentService = new HardCodedEmailContentServiceImpl();
     private StyleableEmailContentServiceImpl styleableContentService = new StyleableEmailContentServiceImpl();

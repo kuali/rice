@@ -35,7 +35,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.junit.Test;
 import org.kuali.workflow.test.TestUtils;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import edu.iu.uis.eden.batch.web.IngesterAction;
@@ -48,7 +48,7 @@ import edu.iu.uis.eden.web.UserLoginFilter;
  * Tests workflow Struts IngesterAction
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-public class IngesterActionTest extends WorkflowTestCase {
+public class IngesterActionTest extends KEWTestCase {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(IngesterActionTest.class);
 

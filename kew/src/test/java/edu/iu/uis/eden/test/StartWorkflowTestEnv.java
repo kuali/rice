@@ -17,14 +17,14 @@
 package edu.iu.uis.eden.test;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 
 /**
  *
  * @author rkirkend
  */
-public class StartWorkflowTestEnv extends WorkflowTestCase {
+public class StartWorkflowTestEnv extends KEWTestCase {
 
 	@Test public void startTestEnv() throws Exception {}
 	

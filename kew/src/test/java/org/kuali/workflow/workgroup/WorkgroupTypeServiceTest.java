@@ -17,7 +17,7 @@
 package org.kuali.workflow.workgroup;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
@@ -27,7 +27,7 @@ import edu.iu.uis.eden.routetemplate.RuleAttribute;
  *
  * @author ewestfal
  */
-public class WorkgroupTypeServiceTest extends WorkflowTestCase {
+public class WorkgroupTypeServiceTest extends KEWTestCase {
 
 	private WorkgroupTypeService service;
 

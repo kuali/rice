@@ -61,9 +61,9 @@ import edu.iu.uis.eden.test.TestUtilities;
  * provides a template method for running custom transactional setUp. Tear down
  * handles automatic tear down of objects created inside the test environment.
  */
-public abstract class WorkflowTestCase extends RiceTestCase {
+public abstract class KEWTestCase extends RiceTestCase {
 
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowTestCase.class);
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KEWTestCase.class);
 
     @Override
     protected List<String> getConfigLocations() {
@@ -266,8 +266,8 @@ public abstract class WorkflowTestCase extends RiceTestCase {
 		// at this point this is constants. loading these through xml import is
 		// problematic because of cache notification
 		// issues in certain low level constants.
-		new SQLDataLoader("DefaultTestData.sql", WorkflowTestCase.class).runSql();
-		this.loadXmlFile(WorkflowTestCase.class, "DefaultTestData.xml");
+		new SQLDataLoader("DefaultTestData.sql", KEWTestCase.class).runSql();
+		this.loadXmlFile(KEWTestCase.class, "DefaultTestData.xml");
 	}
 
 	protected void loadXmlFile(String fileName) {

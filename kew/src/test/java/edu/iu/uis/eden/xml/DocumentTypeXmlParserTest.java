@@ -20,7 +20,7 @@ package edu.iu.uis.eden.xml;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
@@ -28,7 +28,7 @@ import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.exception.InvalidWorkgroupException;
 import edu.iu.uis.eden.exception.InvalidXmlException;
 
-public class DocumentTypeXmlParserTest extends WorkflowTestCase {
+public class DocumentTypeXmlParserTest extends KEWTestCase {
     private void testDoc(String docName, Class expectedException) throws Exception {
         DocumentTypeXmlParser parser = new DocumentTypeXmlParser();
         try {

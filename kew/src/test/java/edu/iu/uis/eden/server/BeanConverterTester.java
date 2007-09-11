@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -37,7 +37,7 @@ import edu.iu.uis.eden.workgroup.GroupId;
 import edu.iu.uis.eden.workgroup.GroupNameId;
 import edu.iu.uis.eden.workgroup.Workgroup;
 
-public class BeanConverterTester extends WorkflowTestCase {
+public class BeanConverterTester extends KEWTestCase {
 
     private static final String DOCUMENT_CONTENT = EdenConstants.DOCUMENT_CONTENT_ELEMENT;
     private static final String ATTRIBUTE_CONTENT = EdenConstants.ATTRIBUTE_CONTENT_ELEMENT;

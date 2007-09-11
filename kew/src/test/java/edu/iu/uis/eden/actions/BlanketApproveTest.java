@@ -25,7 +25,7 @@ import mocks.MockEmailNotificationService;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -38,7 +38,7 @@ import edu.iu.uis.eden.engine.node.RouteNodeService;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.test.TestUtilities;
 
-public class BlanketApproveTest extends WorkflowTestCase {
+public class BlanketApproveTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");

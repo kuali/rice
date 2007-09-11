@@ -16,7 +16,7 @@
 package edu.iu.uis.eden.clientapp;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
@@ -28,7 +28,7 @@ import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
  * @author Full Name (email at address dot com)
  *
  */
-public class WorkflowInfoTest extends WorkflowTestCase {
+public class WorkflowInfoTest extends KEWTestCase {
 
     /**
      * Tests the loading of a RouteHeaderVO using the WorkflowInfo.

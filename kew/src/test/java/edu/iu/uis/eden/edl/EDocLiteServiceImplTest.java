@@ -29,7 +29,7 @@ import junit.framework.AssertionFailedError;
 import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Element;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -41,7 +41,7 @@ import edu.iu.uis.eden.util.XmlHelper;
  * Tests EDocLiteServiceImpl
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-public class EDocLiteServiceImplTest extends WorkflowTestCase {
+public class EDocLiteServiceImplTest extends KEWTestCase {
 
 	@Test public void testLoadXML() throws FileNotFoundException {
         loadXmlFile("EDocLiteContent.xml");

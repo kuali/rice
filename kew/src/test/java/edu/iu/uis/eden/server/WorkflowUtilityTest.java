@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -42,7 +42,7 @@ import edu.iu.uis.eden.clientapp.vo.UserIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
 import edu.iu.uis.eden.util.Utilities;
 
-public class WorkflowUtilityTest extends WorkflowTestCase {
+public class WorkflowUtilityTest extends KEWTestCase {
     
     private WorkflowUtility utility;
     

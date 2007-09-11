@@ -22,12 +22,12 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.test.TestUtilities;
 
-public class NoteServiceTest extends WorkflowTestCase {
+public class NoteServiceTest extends KEWTestCase {
 		
 	@Test public void testAttachmentSave() throws Exception {		
 		Note note = new Note();

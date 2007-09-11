@@ -17,7 +17,7 @@
 package edu.iu.uis.eden.routetemplate;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
@@ -28,7 +28,7 @@ import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
  *
  * @author ewestfal
  */
-public class RoleAttributeTest extends WorkflowTestCase {
+public class RoleAttributeTest extends KEWTestCase {
 
 	@Test public void testWorkgroupRoleAttribute() throws Exception {
 		loadXmlFile("WorkgroupRoleAttributeTestConfig.xml");

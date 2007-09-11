@@ -19,7 +19,7 @@ package edu.iu.uis.eden.test;
 
 import org.junit.Test;
 import org.kuali.rice.util.DataAccessUtils;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springmodules.orm.ojb.PersistenceBrokerTemplate;
@@ -27,7 +27,7 @@ import org.springmodules.orm.ojb.PersistenceBrokerTemplate;
 /**
  * @author ewestfal
  */
-public abstract class OjbBeanTestCase extends WorkflowTestCase {
+public abstract class OjbBeanTestCase extends KEWTestCase {
 
     private Object lock = new Object();
 

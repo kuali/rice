@@ -16,7 +16,7 @@
 package edu.iu.uis.eden.workgroup;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 
@@ -26,7 +26,7 @@ import edu.iu.uis.eden.KEWServiceLocator;
  * @author rkirkend
  *
  */
-public class WorkflowXmlImportTest extends WorkflowTestCase {
+public class WorkflowXmlImportTest extends KEWTestCase {
     
     
     /**

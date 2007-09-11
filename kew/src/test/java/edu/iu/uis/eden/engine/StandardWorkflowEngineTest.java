@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.EdenConstants;
@@ -41,7 +41,7 @@ import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.test.TestUtilities;
 
-public class StandardWorkflowEngineTest extends WorkflowTestCase {
+public class StandardWorkflowEngineTest extends KEWTestCase {
 
 	protected void loadTestData() throws Exception {
 		loadXmlFile("EngineConfig.xml");

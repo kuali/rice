@@ -20,7 +20,7 @@ import java.lang.reflect.Field;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -35,7 +35,7 @@ import edu.iu.uis.eden.routetemplate.TestRuleAttribute;
  * 
  * @author Eric Westfall
  */
-public class DocumentContentTest extends WorkflowTestCase {
+public class DocumentContentTest extends KEWTestCase {
 
     private static final String DOCUMENT_CONTENT = EdenConstants.DOCUMENT_CONTENT_ELEMENT;
     private static final String ATTRIBUTE_CONTENT = EdenConstants.ATTRIBUTE_CONTENT_ELEMENT;

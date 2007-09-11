@@ -27,7 +27,7 @@ import java.util.Properties;
 
 import org.junit.Test;
 import org.kuali.workflow.test.TestUtils;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -38,7 +38,7 @@ import org.springframework.util.FileCopyUtils;
  * Tests XML "ingestion" pipeline
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-public class XmlIngestionTest extends WorkflowTestCase {
+public class XmlIngestionTest extends KEWTestCase {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(XmlIngestionTest.class);
 

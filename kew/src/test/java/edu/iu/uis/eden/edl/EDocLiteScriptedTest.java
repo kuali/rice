@@ -18,9 +18,9 @@ package edu.iu.uis.eden.edl;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
-public class EDocLiteScriptedTest extends WorkflowTestCase {
+public class EDocLiteScriptedTest extends KEWTestCase {
     /**
      * Would be nice to be able to specify data to load from the script
      * but it has to be loaded here...

@@ -21,7 +21,7 @@ import java.util.Collection;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
@@ -36,7 +36,7 @@ import edu.iu.uis.eden.messaging.MessageServiceNames;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.test.TestUtilities;
 
-public class ExceptionRoutingTest extends WorkflowTestCase {
+public class ExceptionRoutingTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("RouteManagerConfig.xml");

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /*
- * $Id: Pipe.java,v 1.1.2.1 2007-08-22 16:19:34 ewestfal Exp $
+ * $Id: Pipe.java,v 1.1.2.2 2007-09-11 18:00:11 ewestfal Exp $
  */
 package edu.iu.uis.eden.transformation;
 
@@ -32,7 +32,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.xml.serializer.OutputPropertiesFactory;
 import org.apache.xml.serializer.Serializer;
 import org.apache.xml.serializer.SerializerFactory;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -43,7 +43,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
    * piping SAX events from one Transformer to another. Each Transformer
    * operates as a SAX2 XMLFilter/XMLReader.
    */
-public class Pipe extends WorkflowTestCase
+public class Pipe extends KEWTestCase
 {
 	public void testPipe()
 	throws TransformerException, TransformerConfigurationException, 

@@ -22,14 +22,14 @@ package edu.iu.uis.eden.engine.node;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 /**
  * 
  * Tests on functionality within the Branch class.
  *
  */
-public class BranchTest extends WorkflowTestCase {
+public class BranchTest extends KEWTestCase {
 
     private Branch branch;
     

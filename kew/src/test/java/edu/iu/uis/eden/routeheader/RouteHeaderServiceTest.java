@@ -20,7 +20,7 @@ package edu.iu.uis.eden.routeheader;
 import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
@@ -29,7 +29,7 @@ import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.exception.LockingException;
 
-public class RouteHeaderServiceTest extends WorkflowTestCase {
+public class RouteHeaderServiceTest extends KEWTestCase {
 
     private Object lock = new Object();
     private RouteHeaderService routeHeaderService;

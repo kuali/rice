@@ -17,7 +17,7 @@
 package edu.iu.uis.eden.routetemplate;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
 import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
@@ -33,7 +33,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * @author rkirkend
  *
  */
-public class AttributeClientRoutingDataValidationTest extends WorkflowTestCase {
+public class AttributeClientRoutingDataValidationTest extends KEWTestCase {
 
 
     protected void loadTestData() throws Exception {

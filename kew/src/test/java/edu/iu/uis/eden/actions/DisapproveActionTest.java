@@ -20,7 +20,7 @@ import mocks.MockEmailNotificationService;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -30,7 +30,7 @@ import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.test.TestUtilities;
 
-public class DisapproveActionTest extends WorkflowTestCase {
+public class DisapproveActionTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");

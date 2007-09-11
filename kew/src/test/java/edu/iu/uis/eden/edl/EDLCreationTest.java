@@ -25,14 +25,14 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Document;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.web.session.UserSession;
 
-public class EDLCreationTest extends WorkflowTestCase {
+public class EDLCreationTest extends KEWTestCase {
 
 	protected void loadTestData() throws Exception {
 		super.loadXmlFile("widgets.xml");

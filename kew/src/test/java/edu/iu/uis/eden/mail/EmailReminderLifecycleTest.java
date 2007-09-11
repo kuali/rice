@@ -21,7 +21,7 @@ import mocks.MockEmailNotificationServiceImpl;
 
 import org.junit.Test;
 import org.kuali.rice.core.Core;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -31,7 +31,7 @@ import edu.iu.uis.eden.preferences.Preferences;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 
-public class EmailReminderLifecycleTest extends WorkflowTestCase {
+public class EmailReminderLifecycleTest extends KEWTestCase {
 
 	private EmailReminderLifecycle emailReminderLifecycle;
 

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
@@ -32,7 +32,7 @@ import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.clientapp.vo.RouteNodeInstanceVO;
 import edu.iu.uis.eden.test.TestUtilities;
 
-public class MoveDocumentTest extends WorkflowTestCase {
+public class MoveDocumentTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");

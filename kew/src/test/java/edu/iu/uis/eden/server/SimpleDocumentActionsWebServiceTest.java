@@ -39,7 +39,7 @@ import org.codehaus.xfire.util.dom.DOMInHandler;
 import org.codehaus.xfire.util.dom.DOMOutHandler;
 import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
@@ -60,7 +60,7 @@ import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.UserInRouteLogResp
  * Tests SimpleDocumentActionsWebService
  * @author ewestfal
  */
-public class SimpleDocumentActionsWebServiceTest extends WorkflowTestCase {
+public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 
 	private static final String WSDL_URL1 = "http://localhost:9952/en-test/remoting/{KEW}simpleDocumentActionsService?wsdl";
 

@@ -21,7 +21,7 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.attribute.ExtensionData;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.workgroup.GroupNameId;
@@ -33,7 +33,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  *
  * @author ewestfal
  */
-public class WorkgroupXmlParserTest extends WorkflowTestCase {
+public class WorkgroupXmlParserTest extends KEWTestCase {
 
 	@Test
 	public void testParseWorkgroupWithExtensionData() throws Exception {

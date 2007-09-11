@@ -19,7 +19,7 @@ package edu.iu.uis.eden.actions;
 import java.util.Collection;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -27,7 +27,7 @@ import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.exception.WorkflowException;
 
-public class RouteDocumentTest extends WorkflowTestCase {
+public class RouteDocumentTest extends KEWTestCase {
 
 	public static final String DOCUMENT_TYPE_NAME = "BlanketApproveSequentialTest";
     public static final String DOCUMENT_TYPE_POLICY_TEST_NAME = "BlanketApprovePolicyTest";

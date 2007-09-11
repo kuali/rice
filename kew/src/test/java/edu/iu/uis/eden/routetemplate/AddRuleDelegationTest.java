@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -38,7 +38,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * Tests adding a delegation rule
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-public class AddRuleDelegationTest extends WorkflowTestCase {
+public class AddRuleDelegationTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("AddRuleDelegationTestData.xml");

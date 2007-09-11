@@ -20,14 +20,14 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actions.BlanketApproveTest.NotifySetup;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 
-public class CancelActionTest extends WorkflowTestCase {
+public class CancelActionTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");

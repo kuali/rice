@@ -29,7 +29,7 @@ import java.util.List;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -54,7 +54,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 /**
  * @author rkirkend
  */
-public class ActionListTest extends WorkflowTestCase {
+public class ActionListTest extends KEWTestCase {
 
     private static final String[] AUTHENTICATION_IDS = { "ewestfal", "rkirkend", "jhopf", "bmcgough" };
     private static final Long[] WORKGROUP_IDS = { new Long(1), new Long(2), new Long(3), new Long(4) };

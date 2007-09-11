@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.EdenConstants;
@@ -39,7 +39,7 @@ import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 import edu.iu.uis.eden.test.TestUtilities;
 import edu.iu.uis.eden.util.Utilities;
 
-public class ReturnToPreviousNodeActionTest extends WorkflowTestCase {
+public class ReturnToPreviousNodeActionTest extends KEWTestCase {
     
 	@Test public void testReturnToPreviousSequential() throws Exception {
         

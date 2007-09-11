@@ -25,7 +25,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
@@ -42,7 +42,7 @@ import edu.iu.uis.eden.workgroup.GroupNameId;
 import edu.iu.uis.eden.workgroup.Workgroup;
 import edu.iu.uis.eden.xml.export.DocumentTypeXmlExporter;
 
-public class DocumentTypeTest extends WorkflowTestCase {
+public class DocumentTypeTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(DocumentTypeTest.class);
 
     protected void loadTestData() throws Exception {

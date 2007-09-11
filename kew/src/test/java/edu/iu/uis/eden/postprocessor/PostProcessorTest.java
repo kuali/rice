@@ -17,7 +17,7 @@
 package edu.iu.uis.eden.postprocessor;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.DocumentRouteStatusChange;
@@ -26,7 +26,7 @@ import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 
-public class PostProcessorTest extends WorkflowTestCase {
+public class PostProcessorTest extends KEWTestCase {
 
 	private static final String APPLICATION_CONTENT = "<some><application>content</application></some>";
 	private static final String DOC_TITLE = "The Doc Title";

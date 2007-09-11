@@ -17,10 +17,10 @@
 package edu.iu.uis.eden.xml;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 
-public class XmlImportTest extends WorkflowTestCase {
+public class XmlImportTest extends KEWTestCase {
 
 	/*public void testCanParseWhiteSpace() throws Exception {
 		//XmlImportTest_white_space_test.xml contains white space that will make things choke if not 

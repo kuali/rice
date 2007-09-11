@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -33,7 +33,7 @@ import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.test.TestUtilities;
 
-public class RevokeAdHocActionTest extends WorkflowTestCase {
+public class RevokeAdHocActionTest extends KEWTestCase {
 
 	private static final String ADH0C_DOC = "AdhocRouteTest";
 	private Long docId;

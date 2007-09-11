@@ -17,9 +17,9 @@
 package edu.iu.uis.eden.xml.export;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
-public abstract class XmlExporterTestCase extends WorkflowTestCase {
+public abstract class XmlExporterTestCase extends KEWTestCase {
 
 	@Test public void testExportActionConfig() throws Exception { 
         loadXmlFile("edu/iu/uis/eden/actions/ActionsConfig.xml");

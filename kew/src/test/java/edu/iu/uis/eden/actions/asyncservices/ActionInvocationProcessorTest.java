@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
@@ -35,7 +35,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * @author rkirkend
  *
  */
-public class ActionInvocationProcessorTest extends WorkflowTestCase {
+public class ActionInvocationProcessorTest extends KEWTestCase {
 
     
     @Test public void testActionInvocationProcessorWorksWithNoActionItem() throws Exception {

@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -43,7 +43,7 @@ import edu.iu.uis.eden.workgroup.WorkflowGroupId;
 import edu.iu.uis.eden.workgroup.Workgroup;
 import edu.iu.uis.eden.workgroup.WorkgroupService;
 
-public class ActionItemServiceTest extends WorkflowTestCase {
+public class ActionItemServiceTest extends KEWTestCase {
 
 	private ActionListService actionListService;
 

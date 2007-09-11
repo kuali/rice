@@ -21,7 +21,7 @@ package edu.iu.uis.eden.applicationconstants;
 import junit.framework.AssertionFailedError;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -31,7 +31,7 @@ import edu.iu.uis.eden.WorkflowServiceErrorException;
  * @author Aaron Hamid
  * @author rkirkend
  */
-public class ApplicationConstantsTest extends WorkflowTestCase {
+public class ApplicationConstantsTest extends KEWTestCase {
     private static final String CONSTANT_NAME = "BogusConstant";
     private static final String CONSTANT_VALUE = "test value";
     

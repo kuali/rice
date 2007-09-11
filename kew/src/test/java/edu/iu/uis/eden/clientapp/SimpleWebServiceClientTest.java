@@ -26,7 +26,7 @@ import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.resourceloader.ResourceLoader;
 import org.kuali.workflow.config.KEWConfigurer;
 import org.kuali.workflow.config.ThinClientResourceLoader;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
@@ -39,7 +39,7 @@ import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
  * @author ewestfal
  */
 @Ignore
-public class SimpleWebServiceClientTest extends WorkflowTestCase {
+public class SimpleWebServiceClientTest extends KEWTestCase {
 
 	@Override
 	public void tearDown() throws Exception {

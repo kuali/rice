@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
@@ -35,7 +35,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 /**
  * @author rkirkend
  */
-public class ReleaseWorkgroupAuthorityTest extends WorkflowTestCase {
+public class ReleaseWorkgroupAuthorityTest extends KEWTestCase {
     
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");

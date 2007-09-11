@@ -19,7 +19,7 @@
 package edu.iu.uis.eden.actions;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
@@ -34,7 +34,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * and via the "SetVar" node; stolen directly from ApproveActionTest.testPreapprovals
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-public class VariablesTest extends WorkflowTestCase {
+public class VariablesTest extends KEWTestCase {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(VariablesTest.class);
 

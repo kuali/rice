@@ -19,7 +19,7 @@ package edu.iu.uis.eden.notification;
 import mocks.MockEmailNotificationService;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -31,7 +31,7 @@ import edu.iu.uis.eden.preferences.PreferencesService;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 
-public class NotificationServiceTest extends WorkflowTestCase {
+public class NotificationServiceTest extends KEWTestCase {
 
 	protected void loadTestData() throws Exception {
         loadXmlFile("NotificationConfig.xml");

@@ -32,7 +32,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
@@ -77,7 +77,7 @@ import edu.iu.uis.eden.web.KeyValueSort;
  * KULWF-654: Tests the resolution to this issue by configuring a CustomActionListAttribute as well as a
  * searchable attribute.
  */
-public class StandardGenericXMLSearchableAttributeTest extends WorkflowTestCase {
+public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
     
     protected void loadTestData() throws Exception {
         loadXmlFile("XmlConfig.xml");

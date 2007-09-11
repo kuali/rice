@@ -18,14 +18,14 @@ package edu.iu.uis.eden.plugin;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 /**
  * Tests that the PluginManifestParser properly parses the plugin manifest xml file.
  * 
  * @author ewestfal
  */
-public class PluginManifestParserTest extends WorkflowTestCase {
+public class PluginManifestParserTest extends KEWTestCase {
 
 //    private PluginManifestParser parser = new PluginManifestParser();
 //    private static final String MANIFEST_PATH = "test/src/edu/iu/uis/eden/plugin/workflow.xml";

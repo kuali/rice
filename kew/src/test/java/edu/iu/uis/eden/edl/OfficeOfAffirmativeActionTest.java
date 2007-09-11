@@ -37,7 +37,7 @@ import java.net.URL;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.workflow.test.TestUtils;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import sun.security.action.GetBooleanAction;
 
@@ -51,7 +51,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
  *
  * @author ewestfal
  */
-public class OfficeOfAffirmativeActionTest extends WorkflowTestCase {
+public class OfficeOfAffirmativeActionTest extends KEWTestCase {
 
 	private static final String URL_PREFIX = "http://localhost:9952/en-test/";
 	private static final String OAA_DIR = TestUtils.getBaseDir() + "/src/test/config/edoclite/OfficeOfAffirmativeAction/";

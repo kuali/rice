@@ -17,13 +17,13 @@
 package edu.iu.uis.eden.actions;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.exception.WorkflowException;
 
-public class CreateDocumentTest extends WorkflowTestCase {
+public class CreateDocumentTest extends KEWTestCase {
     
     @Override
     protected void loadTestData() throws Exception {

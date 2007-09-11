@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -48,7 +48,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  *
  * @author ewestfal
  */
-public class ActionListActionTest extends WorkflowTestCase {
+public class ActionListActionTest extends KEWTestCase {
 
 	private static final String URL_PREFIX = "http://localhost:9952/en-test/";
 

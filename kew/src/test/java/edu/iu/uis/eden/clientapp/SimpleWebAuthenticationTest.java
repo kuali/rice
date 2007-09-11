@@ -19,7 +19,7 @@ package edu.iu.uis.eden.clientapp;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -34,7 +34,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  *
  * @author rkirkend
  */
-public class SimpleWebAuthenticationTest extends WorkflowTestCase {
+public class SimpleWebAuthenticationTest extends KEWTestCase {
 
 	@Test public void testGetLoggedInUserFromRequest() throws Exception {
 		HttpServletRequest request = new MockHttpServletRequest();

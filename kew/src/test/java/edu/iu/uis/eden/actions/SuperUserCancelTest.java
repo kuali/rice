@@ -17,7 +17,7 @@
 package edu.iu.uis.eden.actions;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.actions.BlanketApproveTest.NotifySetup;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
@@ -26,7 +26,7 @@ import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 /**
  * Test SuperUserCancel through WorkflowDocument
  */
-public class SuperUserCancelTest extends WorkflowTestCase {
+public class SuperUserCancelTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");

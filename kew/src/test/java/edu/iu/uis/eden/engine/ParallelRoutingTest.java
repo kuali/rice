@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -34,7 +34,7 @@ import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 
-public class ParallelRoutingTest extends WorkflowTestCase {
+public class ParallelRoutingTest extends KEWTestCase {
     
     private static final String DOCUMENT_TYPE_NAME = "ParallelDocType";
     private static final String PARALLEL_EMPTY_DOCUMENT_TYPE_NAME = "ParallelEmptyDocType";

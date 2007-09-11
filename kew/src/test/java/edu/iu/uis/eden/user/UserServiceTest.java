@@ -17,7 +17,7 @@
 package edu.iu.uis.eden.user;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.vo.EmplIdVO;
@@ -26,7 +26,7 @@ import edu.iu.uis.eden.clientapp.vo.UuIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 
-public class UserServiceTest extends WorkflowTestCase {
+public class UserServiceTest extends KEWTestCase {
 
 	private UserService userService;
 

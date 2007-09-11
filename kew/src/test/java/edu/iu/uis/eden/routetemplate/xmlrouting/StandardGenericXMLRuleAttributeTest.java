@@ -30,7 +30,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
@@ -47,7 +47,7 @@ import edu.iu.uis.eden.routetemplate.RuleExtension;
 import edu.iu.uis.eden.routetemplate.RuleExtensionValue;
 import edu.iu.uis.eden.routetemplate.RuleTemplateAttribute;
 
-public class StandardGenericXMLRuleAttributeTest extends WorkflowTestCase {
+public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 	private DocumentContent docContent;
 	private StandardGenericXMLRuleAttribute attribute;

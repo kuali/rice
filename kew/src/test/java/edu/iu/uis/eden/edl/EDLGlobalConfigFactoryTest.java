@@ -22,14 +22,14 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.iu.uis.eden.test.TestUtilities;
 
-public class EDLGlobalConfigFactoryTest extends WorkflowTestCase {
+public class EDLGlobalConfigFactoryTest extends KEWTestCase {
 
 	/**
 	 * Test a positive case global parsing..

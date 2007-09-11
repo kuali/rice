@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -33,7 +33,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  *
  * @author Eric Westfall
  */
-public class BaseWorkgroupServiceTest extends WorkflowTestCase {
+public class BaseWorkgroupServiceTest extends KEWTestCase {
 
 	/**
 	 * Tests that Workgroup caching works as expected.

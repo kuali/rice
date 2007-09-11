@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -34,7 +34,7 @@ import edu.iu.uis.eden.test.TestUtilities;
  * 
  * @author Eric Westfall
  */
-public class ActionRequestScenariosTest extends WorkflowTestCase {
+public class ActionRequestScenariosTest extends KEWTestCase {
 
 	protected void loadTestData() throws Exception {
 		loadXmlFile("ActionRequestsConfig.xml");

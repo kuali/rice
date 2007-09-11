@@ -32,7 +32,7 @@ import javax.xml.transform.stream.StreamSource;
 import junit.framework.AssertionFailedError;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -42,7 +42,7 @@ import edu.iu.uis.eden.test.TestUtilities;
  * Tests StyleServiceImpl
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-public class StyleServiceImplTest extends WorkflowTestCase {
+public class StyleServiceImplTest extends KEWTestCase {
 
 	@Test public void testLoadXML() throws FileNotFoundException {
         loadXmlFile("style.xml");

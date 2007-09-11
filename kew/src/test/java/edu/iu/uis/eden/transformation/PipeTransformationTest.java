@@ -30,12 +30,12 @@ import org.apache.xml.serializer.OutputPropertiesFactory;
 import org.apache.xml.serializer.Serializer;
 import org.apache.xml.serializer.SerializerFactory;
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-public class PipeTransformationTest extends WorkflowTestCase {
+public class PipeTransformationTest extends KEWTestCase {
 	
 	@Test public void testPipeUsingTemplate(){
 		try{

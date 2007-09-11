@@ -23,7 +23,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.config.Config;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.test.TestUtilities;
 
@@ -37,7 +37,7 @@ import edu.iu.uis.eden.test.TestUtilities;
  *
  * @author Eric Westfall
  */
-public class ExtraClassPathTest extends WorkflowTestCase {
+public class ExtraClassPathTest extends KEWTestCase {
 
 	@Override
 	public void setUp() throws Exception {

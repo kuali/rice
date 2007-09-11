@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.workflow.role.RoleService;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -43,7 +43,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Tests the role re-resolving.  This test depends on the route queue being synchronous.
  */
-public class RoleServiceTest extends WorkflowTestCase {
+public class RoleServiceTest extends KEWTestCase {
 
 	private static final String TEST_ROLE = "TestRole";
 	private static final String TEST_GROUP_1 = "TestGroup1";

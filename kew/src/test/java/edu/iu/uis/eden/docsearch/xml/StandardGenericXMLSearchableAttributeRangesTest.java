@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -63,7 +63,7 @@ import edu.iu.uis.eden.util.Utilities;
  * KULWF-654: Tests the resolution to this issue by configuring a CustomActionListAttribute as well as a
  * searchable attribute.
  */
-public class StandardGenericXMLSearchableAttributeRangesTest extends WorkflowTestCase {
+public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase {
     
     protected void loadTestData() throws Exception {
         loadXmlFile("XmlConfig.xml");

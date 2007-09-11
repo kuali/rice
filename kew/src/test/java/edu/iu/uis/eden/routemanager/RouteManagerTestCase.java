@@ -16,7 +16,7 @@
  */
 package edu.iu.uis.eden.routemanager;
 
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
@@ -31,7 +31,7 @@ import edu.iu.uis.eden.test.TestUtilities;
 /**
  * @author ewestfal
  */
-public abstract class RouteManagerTestCase extends WorkflowTestCase {
+public abstract class RouteManagerTestCase extends KEWTestCase {
     
 //    protected PersistedMessage makeNewRouteQueue() throws Exception {
 //        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "TestDocumentType");

@@ -19,7 +19,7 @@ package edu.iu.uis.eden.actions;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -34,7 +34,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Tests the super user actions available on the API.
  */
-public class SuperUserActionRequestApproveEventTest extends WorkflowTestCase {
+public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");

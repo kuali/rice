@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
@@ -32,7 +32,7 @@ import edu.iu.uis.eden.test.TestUtilities;
 /**
  * Tests the super user actions available on the API.
  */
-public class SuperUserActionTest extends WorkflowTestCase {
+public class SuperUserActionTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");

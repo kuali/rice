@@ -17,7 +17,7 @@
 package edu.iu.uis.eden.actions;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
@@ -26,7 +26,7 @@ import edu.iu.uis.eden.edl.WorkflowFunctions;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.web.session.UserSession;
 
-public class RouteLogAuthenticationTest extends WorkflowTestCase {
+public class RouteLogAuthenticationTest extends KEWTestCase {
 
 	public static final String DOCUMENT_TYPE_NAME = "BlanketApproveSequentialTest";
     

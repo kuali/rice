@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -31,7 +31,7 @@ import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.clientapp.vo.RouteNodeInstanceVO;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 
-public class SubProcessRoutingTest extends WorkflowTestCase {
+public class SubProcessRoutingTest extends KEWTestCase {
     
     private static final String DOCUMENT_TYPE_NAME = "SubProcessDocType";
 	private static final String SUB_PROCESS_NODE = "MySubProcess";

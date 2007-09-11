@@ -19,7 +19,7 @@ package edu.iu.uis.eden.clientapp;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.workflow.test.WorkflowTestCase;
+import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.clientapp.vo.EmplIdVO;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
@@ -32,7 +32,7 @@ import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
  * Place to test WorkflowDocument.
  * 
  */
-public class WorkflowDocumentTest extends WorkflowTestCase {
+public class WorkflowDocumentTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("ClientAppConfig.xml");

@@ -27,20 +27,6 @@ import org.apache.ojb.broker.PersistenceBroker;
  * @author arh14 at cornell dot edu
  */
 public interface Platform {
-    public static class DocSearchResult {
-        protected String sql;
-        protected int searchableAttributeCount;
-        public DocSearchResult(String sql, int count) {
-            this.sql = sql;
-            this.searchableAttributeCount = count;
-        }
-        public String getSql() {
-            return sql;
-        }
-        public int getSearchableAttributeCount() {
-            return searchableAttributeCount;
-        }
-    }
 
     /**
      * Supplies a parameterized sequence incrementation query

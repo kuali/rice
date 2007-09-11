@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/jsp/Include.jsp"%>
+<%@ include file="Include.jsp"%>
 
 <html>
 <head>
@@ -31,7 +31,7 @@
 
 
 <div id="pagebody">
-	<%@ include file="/WEB-INF/jsp/NotificationDetailInclude.jsp" %>	
+	<%@ include file="NotificationDetailInclude.jsp" %>	
 </div>
 <!-- end pagebody -->
 

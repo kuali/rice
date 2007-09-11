@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/jsp/Include.jsp"%>
+<%@ include file="Include.jsp"%>
 
 <html>
 <head>
@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<%@ include file="/WEB-INF/jsp/Header.jsp"%>
+<%@ include file="Header.jsp"%>
 
 <div id="pagebody">
 <table width="100%" border="0" align="center" cellpadding="3"
@@ -16,17 +16,17 @@
 	<tr>
 		<td colspan="2">
 		
-		<%@ include file="/WEB-INF/jsp/LogoutForm.jsp"%>
+		<%@ include file="LogoutForm.jsp"%>
 
 		</td>
 	</tr>
 	<tr>
 	
 		<!-- Include the Menu -->
-		<%@ include file="/WEB-INF/jsp/Menu.jsp" %>
+		<%@ include file="Menu.jsp" %>
 
 		<!-- Include the top half of the Work Area -->
-		<%@ include file="/WEB-INF/jsp/WorkAreaTop.jsp" %>
+		<%@ include file="WorkAreaTop.jsp" %>
         <div style="padding: 5px">
             <div class="title">Configure Delivery Types</div>
 			<p>Enter the appropriate information for each delivery type
@@ -97,13 +97,13 @@
             </form> 								
 		</div>
 		<!-- Include the bottom half of the Work Area -->
-		<%@ include file="/WEB-INF/jsp/WorkAreaBottom.jsp" %>
+		<%@ include file="WorkAreaBottom.jsp" %>
 	
 	</tr>
 </table>
 </div>
 
-<%@ include file="/WEB-INF/jsp/Footer.jsp"%>
+<%@ include file="Footer.jsp"%>
 
 </body>
 </html>

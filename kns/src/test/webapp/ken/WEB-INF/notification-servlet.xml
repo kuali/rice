@@ -4,6 +4,52 @@
   - Application context definition for "notification" DispatcherServlet.
   -->
 <beans>
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <!-- resource for "system" properties that do not need to be internationalized -->
+                <value>system-messages</value>
+                <!-- resources for textual/ui properties may need to be internationalized -->
+                <value>messages</value>
+            </list>
+        </property>
+    </bean>
+
+   <!-- import beans from GlobalResourceLoader -->
+   <bean id="notificationAuthorizationService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean"/>
+   <bean id="notificationService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean"/>
+   <bean id="notificationWorkflowDocumentService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean"/>
+   <bean id="notificationChannelService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean"/>
+   <bean id="notificationRecipientService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean"/>
+   <bean id="messageContentService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean"/>
+   <bean id="businessObjectDao" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean"/>
+   <bean id="notificationMessageDeliveryService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean"/>
+   <bean id="notificationMessageDelivererRegistryService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean"/>
+   <bean id="userPreferenceService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean"/>
+   <bean id="notificationContentTypeService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean"/>
+   
+   <!-- Implement better strategy later -->
+   <!-- 
+   <bean class="org.kuali.notification.web.spring.ServletConfigPropertyPlaceholderConfigurer"/>
+   -->
+   <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+     <property name="properties">
+       <props>
+         <prop key="prefix">/ken</prop>
+       </props>
+     </property>
+   </bean>
+
+   <bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
+     <property name="attributes">
+       <map>
+         <entry>
+           <key><value>ken.prefix</value></key>
+           <value>${prefix}</value>
+         </entry>
+       </map>
+     </property>
+   </bean>
 
    <!-- View Resolver -->
 
@@ -12,7 +58,7 @@
          <value>org.springframework.web.servlet.view.JstlView</value>
       </property>
       <property name="prefix">
-         <value>/WEB-INF/jsp/</value>
+         <value>${prefix}/WEB-INF/jsp/</value>
       </property>
       <property name="suffix">
          <value>.jsp</value>
@@ -32,34 +78,34 @@
         </property>
       <property name="mappings">
          <props>
-            <prop key="/HomePage.form">notificationController</prop>
-            <prop key="/NotificationsSent.form">notificationController</prop>
-            <prop key="/Search.form">notificationController</prop>
-            <prop key="/DetailView.form">notificationController</prop>
-            <prop key="/LookupUsers.form">notificationController</prop>
-            <prop key="/LookupWorkgroups.form">notificationController</prop>
-            <prop key="/RemoveNotification.form">notificationController</prop>
-            <prop key="/AckNotification.form">notificationController</prop>
-            <prop key="/FyiNotification.form">notificationController</prop>
-            <prop key="/Logout.form">notificationController</prop>
-            <prop key="/ContentTypeManager.form">contentTypeController</prop>
-            <prop key="/ContentTypeForm.form">contentTypeController</prop>
-            <prop key="/UpdateContentType.form">contentTypeController</prop>
-            <prop key="/AddContentType.form">contentTypeController</prop>
-            <prop key="/DisplayUserPreferences.form">userPreferencesController</prop>
-            <prop key="/DisplayDelivererConfigurationForm.form">userPreferencesController</prop>
-            <prop key="/DisplayActionListPreferences.form">userPreferencesController</prop>
-            <prop key="/SaveDelivererConfiguration.form">userPreferencesController</prop>
-            <prop key="/SubscribeToChannel.form">userPreferencesController</prop>
-            <prop key="/UnsubscribeFromChannel.form">userPreferencesController</prop>
+            <prop key="${prefix}/HomePage.form">notificationController</prop>
+            <prop key="${prefix}/NotificationsSent.form">notificationController</prop>
+            <prop key="${prefix}/Search.form">notificationController</prop>
+            <prop key="${prefix}/DetailView.form">notificationController</prop>
+            <prop key="${prefix}/LookupUsers.form">notificationController</prop>
+            <prop key="${prefix}/LookupWorkgroups.form">notificationController</prop>
+            <prop key="${prefix}/RemoveNotification.form">notificationController</prop>
+            <prop key="${prefix}/AckNotification.form">notificationController</prop>
+            <prop key="${prefix}/FyiNotification.form">notificationController</prop>
+            <prop key="${prefix}/Logout.form">notificationController</prop>
+            <prop key="${prefix}/ContentTypeManager.form">contentTypeController</prop>
+            <prop key="${prefix}/ContentTypeForm.form">contentTypeController</prop>
+            <prop key="${prefix}/UpdateContentType.form">contentTypeController</prop>
+            <prop key="${prefix}/AddContentType.form">contentTypeController</prop>
+            <prop key="${prefix}/DisplayUserPreferences.form">userPreferencesController</prop>
+            <prop key="${prefix}/DisplayDelivererConfigurationForm.form">userPreferencesController</prop>
+            <prop key="${prefix}/DisplayActionListPreferences.form">userPreferencesController</prop>
+            <prop key="${prefix}/SaveDelivererConfiguration.form">userPreferencesController</prop>
+            <prop key="${prefix}/SubscribeToChannel.form">userPreferencesController</prop>
+            <prop key="${prefix}/UnsubscribeFromChannel.form">userPreferencesController</prop>
 
-            <prop key="/SendSimpleNotificationMessage.form">sendSimpleNotificationMessageController</prop>
-            <prop key="/SubmitSimpleNotificationMessage.form">sendSimpleNotificationMessageController</prop>
+            <prop key="${prefix}/SendSimpleNotificationMessage.form">sendSimpleNotificationMessageController</prop>
+            <prop key="${prefix}/SubmitSimpleNotificationMessage.form">sendSimpleNotificationMessageController</prop>
             
-            <prop key="/SendEventNotificationMessage.form">sendEventNotificationMessageController</prop>
-            <prop key="/SubmitEventNotificationMessage.form">sendEventNotificationMessageController</prop>
+            <prop key="${prefix}/SendEventNotificationMessage.form">sendEventNotificationMessageController</prop>
+            <prop key="${prefix}/SubmitEventNotificationMessage.form">sendEventNotificationMessageController</prop>
             
-            <prop key="/AdministerNotificationRequest.form">administerNotificationRequestController</prop>
+            <prop key="${prefix}/AdministerNotificationRequest.form">administerNotificationRequestController</prop>
          </props>
       </property>
    </bean>
@@ -75,16 +121,16 @@
          <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
             <property name="mappings">
                <props>
-                  <prop key="/HomePage.form">displayHome</prop>
-                  <prop key="/NotificationsSent.form">displayNotificationsSent</prop>
-                  <prop key="/Search.form">displaySearch</prop>
-                  <prop key="/DetailView.form">displayNotificationDetail</prop>
-                  <prop key="/LookupUsers.form">displayLookupUsers</prop>
-            	  <prop key="/LookupWorkgroups.form">displayLookupWorkgroups</prop>
-                  <prop key="/RemoveNotification.form">removeNotification</prop>
-                  <prop key="/AckNotification.form">ackNotification</prop>
-                  <prop key="/FyiNotification.form">fyiNotification</prop>
-                  <prop key="/Logout.form">logout</prop>                                  
+                  <prop key="${prefix}/HomePage.form">displayHome</prop>
+                  <prop key="${prefix}/NotificationsSent.form">displayNotificationsSent</prop>
+                  <prop key="${prefix}/Search.form">displaySearch</prop>
+                  <prop key="${prefix}/DetailView.form">displayNotificationDetail</prop>
+                  <prop key="${prefix}/LookupUsers.form">displayLookupUsers</prop>
+            	  <prop key="${prefix}/LookupWorkgroups.form">displayLookupWorkgroups</prop>
+                  <prop key="${prefix}/RemoveNotification.form">removeNotification</prop>
+                  <prop key="${prefix}/AckNotification.form">ackNotification</prop>
+                  <prop key="${prefix}/FyiNotification.form">fyiNotification</prop>
+                  <prop key="${prefix}/Logout.form">logout</prop>                                  
                </props>
             </property>
          </bean>          
@@ -99,10 +145,10 @@
          <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
             <property name="mappings">
                <props>
-                  <prop key="/ContentTypeManager.form">displayContentTypes</prop>
-                  <prop key="/ContentTypeForm.form">displayContentTypeForm</prop>                  
-                  <prop key="/AddContentType.form">addContentType</prop>
-                  <prop key="/UpdateContentType.form">updateContentType</prop>                                
+                  <prop key="${prefix}/ContentTypeManager.form">displayContentTypes</prop>
+                  <prop key="${prefix}/ContentTypeForm.form">displayContentTypeForm</prop>                  
+                  <prop key="${prefix}/AddContentType.form">addContentType</prop>
+                  <prop key="${prefix}/UpdateContentType.form">updateContentType</prop>                                
                </props>
             </property>
          </bean>          
@@ -117,12 +163,12 @@
          <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
             <property name="mappings">
                <props>
-                  <prop key="/DisplayUserPreferences.form">displayUserPreferences</prop>
-                  <prop key="/DisplayDelivererConfigurationForm.form">displayDelivererConfigurationForm</prop>
-                  <prop key="/DisplayActionListPreferences.form">displayActionListPreferences</prop>
-                  <prop key="/SaveDelivererConfiguration.form">saveDelivererConfiguration</prop>
-                  <prop key="/SubscribeToChannel.form">subscribeToChannel</prop>
-                  <prop key="/UnsubscribeFromChannel.form">unsubscribeFromChannel</prop>                                             
+                  <prop key="${prefix}/DisplayUserPreferences.form">displayUserPreferences</prop>
+                  <prop key="${prefix}/DisplayDelivererConfigurationForm.form">displayDelivererConfigurationForm</prop>
+                  <prop key="${prefix}/DisplayActionListPreferences.form">displayActionListPreferences</prop>
+                  <prop key="${prefix}/SaveDelivererConfiguration.form">saveDelivererConfiguration</prop>
+                  <prop key="${prefix}/SubscribeToChannel.form">subscribeToChannel</prop>
+                  <prop key="${prefix}/UnsubscribeFromChannel.form">unsubscribeFromChannel</prop>                                             
                </props>
             </property>
          </bean>          
@@ -137,8 +183,8 @@
          <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
             <property name="mappings">
                <props>
-                  <prop key="/SendSimpleNotificationMessage.form">sendSimpleNotificationMessage</prop>
-                  <prop key="/SubmitSimpleNotificationMessage.form">submitSimpleNotificationMessage</prop>
+                  <prop key="${prefix}/SendSimpleNotificationMessage.form">sendSimpleNotificationMessage</prop>
+                  <prop key="${prefix}/SubmitSimpleNotificationMessage.form">submitSimpleNotificationMessage</prop>
                </props>
             </property>
          </bean>          
@@ -156,8 +202,8 @@
          <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
             <property name="mappings">
                <props>
-                  <prop key="/SendEventNotificationMessage.form">sendEventNotificationMessage</prop>
-                  <prop key="/SubmitEventNotificationMessage.form">submitEventNotificationMessage</prop>
+                  <prop key="${prefix}/SendEventNotificationMessage.form">sendEventNotificationMessage</prop>
+                  <prop key="${prefix}/SubmitEventNotificationMessage.form">submitEventNotificationMessage</prop>
                </props>
             </property>
          </bean>          

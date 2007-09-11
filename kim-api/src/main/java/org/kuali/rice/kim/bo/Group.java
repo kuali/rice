@@ -27,7 +27,8 @@ public class Group extends PersistableBusinessObjectBase {
 	private Long id;
 	private String name;
 	private String description;
-	private List<Person> persons;
+	private List<Person> memberPersons;
+	private List<Group> memberGroups;
 	private List<GroupAttribute> groupAttributes;
 	
 	public String getDescription() {
@@ -54,12 +55,29 @@ public class Group extends PersistableBusinessObjectBase {
 		this.name = name;
 	}
 
-	public List<Person> getUsers() {
-		return persons;
+	public List<Person> getMemberPersons() {
+		return memberPersons;
 	}
 
-	public void setUsers(List<Person> persons) {
-		this.persons = persons;
+	/**
+	 * @param memberPersons the memberPersons to set
+	 */
+	public void setMemberPersons(List<Person> memberPersons) {
+	    this.memberPersons = memberPersons;
+	}
+	
+	/**
+	 * @return the memberGroups
+	 */
+	public List<Group> getMemberGroups() {
+	    return this.memberGroups;
+	}
+
+	/**
+	 * @param memberGroups the memberGroups to set
+	 */
+	public void setMemberGroups(List<Group> memberGroups) {
+	    this.memberGroups = memberGroups;
 	}
 
 	public List<GroupAttribute> getGroupAttributes() {
@@ -71,13 +89,14 @@ public class Group extends PersistableBusinessObjectBase {
 	}
 	
 	protected LinkedHashMap toStringMapper() {
-        LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-        propMap.put("id", getId());
-        propMap.put("name", getName());
-        propMap.put("discription", getDescription());
-        propMap.put("permissions", getGroupAttributes());
-        propMap.put("applicationSponsoredUserAttributes", getUsers());
-        return propMap;
+            LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
+            propMap.put("id", getId());
+            propMap.put("name", getName());
+            propMap.put("description", getDescription());
+            propMap.put("groupAttributes", getGroupAttributes());
+            propMap.put("memberPersons", getMemberPersons());
+            propMap.put("memberGroups", getMemberGroups());
+            return propMap;
 	}
 
 	public void refresh() {

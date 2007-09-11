@@ -1496,6 +1496,14 @@ CREATE TABLE KIM_GROUP_ATTRIBUTES_T (
         CONSTRAINT KIM_GROUP_ATTRIBUTES_PK PRIMARY KEY (ID)
 )
 /
+CREATE TABLE KIM_GROUPS_GROUPS_T (
+        PARENT_GROUP_ID NUMBER(8) NOT NULL,
+        MEMBER_GROUP_ID NUMBER(8) NOT NULL, 
+		OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, 
+        VER_NBR NUMBER(8) DEFAULT 1 NOT NULL, 
+        CONSTRAINT KIM_GROUPS_GROUPS_PK PRIMARY KEY (PARENT_GROUP_ID, MEMBER_GROUP_ID)
+)
+/
 CREATE TABLE KIM_GROUPS_PERSONS_T (
         GROUP_ID NUMBER(8) NOT NULL,
         PERSON_ID NUMBER(8) NOT NULL,
@@ -1658,6 +1666,26 @@ ADD CONSTRAINT KIM_GROUP_ATTRIBUTES_FK2 FOREIGN KEY
 ATTRIBUTE_TYPE_ID
 )
 REFERENCES KIM_ATTRIBUTE_TYPES_T
+(
+ID
+) ENABLE
+/
+ALTER TABLE KIM_GROUPS_GROUPS_T
+ADD CONSTRAINT KIM_GROUPS_GROUPS_FK1 FOREIGN KEY
+(
+PARENT_GROUP_ID
+)
+REFERENCES KIM_GROUPS_T
+(
+ID
+) ENABLE
+/
+ALTER TABLE KIM_GROUPS_GROUPS_T
+ADD CONSTRAINT KIM_GROUPS_GROUPS_FK2 FOREIGN KEY
+(
+MEMBER_GROUP_ID
+)
+REFERENCES KIM_GROUPS_T
 (
 ID
 ) ENABLE
@@ -2038,4 +2066,457 @@ USER_ID VARCHAR2(300) NOT NULL,
 DELIVERER_NAME VARCHAR2(300) NOT NULL,
 CONSTRAINT USER_DELIVERER_CONFIG_PK PRIMARY KEY (ID)
 )
+/
+ALTER TABLE NOTIFICATION_CHANNEL_PRODUCERS
+ADD CONSTRAINT NOTIFICATION_CHANNEL_PROD_FK1 FOREIGN KEY
+(
+CHANNEL_ID
+)
+REFERENCES NOTIFICATION_CHANNELS
+(
+ID
+) ENABLE
+/
+
+ALTER TABLE NOTIFICATION_CHANNEL_PRODUCERS
+ADD CONSTRAINT NOTIFICATION_CHANNEL_PROD_FK2 FOREIGN KEY
+(
+PRODUCER_ID
+)
+REFERENCES NOTIFICATION_PRODUCERS
+(
+ID
+) ENABLE
+/
+ALTER TABLE NOTIFICATION_CHANNELS
+ADD CONSTRAINT NOTIFICATION_CHANNELS_UK1 UNIQUE
+(
+NAME
+)
+ ENABLE
+/
+ALTER TABLE NOTIFICATION_CONTENT_TYPES
+ADD CONSTRAINT NOTIFICATION_CONTENT_TYPE_UK1 UNIQUE
+(
+NAME
+)
+ ENABLE
+/
+ALTER TABLE NOTIFICATION_MSG_DELIVS
+ADD CONSTRAINT NOTIF_MSG_DELIVS_UK1 UNIQUE
+(
+NOTIFICATION_ID,
+USER_RECIPIENT_ID,
+MESSAGE_DELIVERY_TYPE_NAME
+)
+ ENABLE
+/
+
+ALTER TABLE NOTIFICATION_MSG_DELIVS
+ADD CONSTRAINT NOTIF_MSG_DELIVS_FK1 FOREIGN KEY
+(
+NOTIFICATION_ID
+)
+REFERENCES NOTIFICATIONS
+(
+ID
+) ENABLE
+/
+ALTER TABLE NOTIFICATION_PRIORITIES
+ADD CONSTRAINT NOTIFICATION_PRIORITIES_UK1 UNIQUE
+(
+NAME
+)
+ ENABLE
+/
+ALTER TABLE NOTIFICATION_PRODUCERS
+ADD CONSTRAINT NOTIFICATION_PRODUCERS_UK1 UNIQUE
+(
+NAME
+)
+ ENABLE
+/
+ALTER TABLE NOTIFICATION_RECIPIENTS
+ADD CONSTRAINT NOTIFICATION_RECIPIENTS_UK1 UNIQUE
+(
+NOTIFICATION_ID,
+RECIPIENT_TYPE,
+RECIPIENT_ID
+)
+ ENABLE
+/
+
+ALTER TABLE NOTIFICATION_RECIPIENTS
+ADD CONSTRAINT NOTIFICATION_RECIPIENTS_N_FK1 FOREIGN KEY
+(
+NOTIFICATION_ID
+)
+REFERENCES NOTIFICATIONS
+(
+ID
+) ENABLE
+/
+ALTER TABLE NOTIFICATION_RECIPIENTS_LISTS
+ADD CONSTRAINT NOTIFICATION_RECIPIENTS_L_UK1 UNIQUE
+(
+CHANNEL_ID,
+RECIPIENT_TYPE,
+RECIPIENT_ID
+)
+ ENABLE
+/
+
+ALTER TABLE NOTIFICATION_RECIPIENTS_LISTS
+ADD CONSTRAINT NOTIFICATION_RECIPIENTS_L_FK1 FOREIGN KEY
+(
+CHANNEL_ID
+)
+REFERENCES NOTIFICATION_CHANNELS
+(
+ID
+) ENABLE
+/
+ALTER TABLE NOTIFICATION_REVIEWERS
+ADD CONSTRAINT NOTIFICATION_REVIEWERS_UK1 UNIQUE
+(
+CHANNEL_ID,
+REVIEWER_TYPE,
+REVIEWER_ID
+)
+ ENABLE
+/
+
+ALTER TABLE NOTIFICATION_REVIEWERS
+ADD CONSTRAINT NOTIFICATION_REVIEWERS_N_FK1 FOREIGN KEY
+(
+CHANNEL_ID
+)
+REFERENCES NOTIFICATION_CHANNELS
+(
+ID
+) ENABLE
+/
+ALTER TABLE NOTIFICATION_SENDERS
+ADD CONSTRAINT NOTIFICATION_SENDER_PK PRIMARY KEY
+(
+ID
+)
+ ENABLE
+/
+
+ALTER TABLE NOTIFICATION_SENDERS
+ADD CONSTRAINT NOTIFICATION_SENDERS_UK1 UNIQUE
+(
+NOTIFICATION_ID,
+NAME
+)
+ ENABLE
+/
+
+ALTER TABLE NOTIFICATION_SENDERS
+ADD CONSTRAINT NOTIFICATION_SENDERS_NOTI_FK1 FOREIGN KEY
+(
+NOTIFICATION_ID
+)
+REFERENCES NOTIFICATIONS
+(
+ID
+) ENABLE
+/
+ALTER TABLE NOTIFICATIONS
+ADD CONSTRAINT NOTIFICATIONS_NOTIFICATIO_FK1 FOREIGN KEY
+(
+NOTIFICATION_CHANNEL_ID
+)
+REFERENCES NOTIFICATION_CHANNELS
+(
+ID
+) ENABLE
+/
+
+ALTER TABLE NOTIFICATIONS
+ADD CONSTRAINT NOTIFICATIONS_NOTIFICATIO_FK2 FOREIGN KEY
+(
+CONTENT_TYPE_ID
+)
+REFERENCES NOTIFICATION_CONTENT_TYPES
+(
+ID
+) ENABLE
+/
+
+ALTER TABLE NOTIFICATIONS
+ADD CONSTRAINT NOTIFICATIONS_NOTIFICATIO_FK3 FOREIGN KEY
+(
+PRIORITY_ID
+)
+REFERENCES NOTIFICATION_PRIORITIES
+(
+ID
+) ENABLE
+/
+
+ALTER TABLE NOTIFICATIONS
+ADD CONSTRAINT NOTIFICATIONS_NOTIFICATIO_FK4 FOREIGN KEY
+(
+PRODUCER_ID
+)
+REFERENCES NOTIFICATION_PRODUCERS
+(
+ID
+) ENABLE
+/
+ALTER TABLE RECIPIENT_PREFERENCES
+ADD CONSTRAINT RECIPIENT_PREFERENCES_UK1 UNIQUE
+(
+RECIPIENT_TYPE,
+RECIPIENT_ID,
+PROPERTY
+)
+ ENABLE
+/
+ALTER TABLE USER_CHANNEL_SUBSCRIPTIONS
+ADD CONSTRAINT USER_CHANNEL_SUBSCRIPTION_UK1 UNIQUE
+(
+CHANNEL_ID,
+USER_ID
+)
+ ENABLE
+/
+
+ALTER TABLE USER_CHANNEL_SUBSCRIPTIONS
+ADD CONSTRAINT USER_CHANNEL_SUBSCRIPTION_FK1 FOREIGN KEY
+(
+CHANNEL_ID
+)
+REFERENCES NOTIFICATION_CHANNELS
+(
+ID
+) ENABLE
+/
+ALTER TABLE USER_DELIVERER_CONFIG
+ADD CONSTRAINT USER_DELIVERER_CONFIG_FK1 FOREIGN KEY
+(
+CHANNEL_ID
+)
+REFERENCES NOTIFICATION_CHANNELS
+(
+ID
+) ENABLE
+/
+INSERT INTO FS_PARM_SEC_T values ('SYSTEM', '1', 1, 'WorkflowAdmin', 'Desc')
+/
+INSERT INTO FS_PARM_SEC_T values ('CoreMaintenanceEDoc', '2', 1, 'WorkflowAdmin', 'Desc')
+/
+INSERT INTO FS_PARM_T VALUES('SYSTEM','HELP_URL','07D71A3FF0D604D8E043814FD88104D8','1','http://www.fms.indiana.edu/fis/home.asp','','N', 'MC')
+/
+INSERT INTO FS_PARM_T VALUES('SYSTEM','lookup.results.limit','1AFCED30C07B2070E043814FD8812070','0','200','Limit of results returned in a lookup query','N', 'MC')
+/
+INSERT INTO FS_PARM_T VALUES('SYSTEM','demonstrationEncryptionCheck_FLAG','1C3D291AAD51A08CE043814FD881A08C','1','Y','Flag for enabling/disabling the demonstration encryption check.','N', 'MC')
+/
+INSERT INTO FS_PARM_T VALUES('SYSTEM','loadDataFileStep_USER','1F75EFB795DFB050E043814FD881B050','1','KULUSER','determines who the loadDataFileStep of pcdo_batch.sh will run as','N', 'MC')
+/
+insert into FS_PARM_T values ('CoreMaintenanceEDoc','Kuali.Document.RoutingReport.Workgroup','263A097060A3F152E043814FD881F152','1','WorkflowAdmin','Workgroup which can perform the route report on documents.','N', 'MC')
+/
+insert into FS_PARM_T values ('CoreMaintenanceEDoc','CASPasswordEnabled','26C8E6D6E77F40B4E043814FD88140B4','1','N','Whether the built in CAS implementation should ask for a password. The password will be verified against the Universal User Table.','N', 'MC')
+/
+insert into FS_PARM_T values ('CoreMaintenanceEDoc','UniversalUser.EditWorkgroup','2409BD6AB4CA800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can edit the universal user table.','N', 'MC')
+/
+insert into FS_PARM_T values ('CoreMaintenanceEDoc','Workflow.Exception.Workgroup','2409BD6AB4CB800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can perform functions on documents in exception routing status.','N', 'MC')
+/
+insert into FS_PARM_T values ('CoreMaintenanceEDoc','Kuali.Supervisor.Workgroup','2409BD6AB4CC800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can perform almost any function within Kuali.','N', 'MC')
+/
+insert into EN_APPL_CNST_T values ('Feature.CheckRouteLogAuthentication.CheckFuture', 'true', 1)
+/
+insert into EN_APPL_CNST_T values ('RouteQueue.maxRetryAttempts', '0', 1)
+/
+insert into EN_APPL_CNST_T values ('BAM', 'true', 1)
+/
+insert into EN_APPL_CNST_T values ('Security.HttpInvoker.SignMessages', 'true', 1)
+/
+insert into EN_APPL_CNST_T values ('Workflow.AdminWorkgroup', 'WorkflowAdmin', 1)
+/
+insert into EN_APPL_CNST_T values ('Routing.ImmediateExceptionRouting', 'true', 1)
+/
+insert into EN_APPL_CNST_T values ('Workgroup.IsRouteLogPopup', 'false', 0)
+/
+insert into EN_APPL_CNST_T values ('DocumentType.IsRouteLogPopup', 'false', 0)
+/
+insert into EN_APPL_CNST_T values ('DocumentSearch.IsRouteLogPopup', 'true', 0)
+/
+insert into EN_APPL_CNST_T values ('DocumentSearch.IsDocumentPopup', 'true', 0)
+/
+insert into EN_APPL_CNST_T values ('Config.Backdoor.TargetFrameName', 'iframe_51148', 0)
+/
+insert into FP_DOC_STATUS_T values ('A',	'2E0671732A684002E043814FD8814002',	1,	'Approved')
+/
+insert into FP_DOC_STATUS_T values ('C',	'2E0671732A694002E043814FD8814002',	1,	'Cancelled')
+/
+insert into FP_DOC_STATUS_T values ('E',	'2E0671732A6A4002E043814FD8814002',	1,	'Extracted')
+/
+insert into FP_DOC_STATUS_T values ('I',	'2E0671732A6B4002E043814FD8814002',	1,	'In Process')
+/
+insert into FP_DOC_STATUS_T values ('II',	'2E0671732A6C4002E043814FD8814002',	1,	'In Process')
+/
+insert into FP_DOC_STATUS_T values ('O',	'2E0671732A6D4002E043814FD8814002',	1,	'Pend Org')
+/
+insert into FP_DOC_STATUS_T values ('OO',	'2E0671732A6E4002E043814FD8814002',	1,	'Pend Org')
+/
+insert into FP_DOC_STATUS_T values ('P',	'2E0671732A6F4002E043814FD8814002',	1,	'Pend Acct')
+/
+insert into FP_DOC_STATUS_T values ('PP',	'2E0671732A704002E043814FD8814002',	1,	'Pend Acct')
+/
+insert into FP_DOC_STATUS_T values ('R',	'2E0671732A714002E043814FD8814002',	1,	'Pend Specl')
+/
+insert into FP_DOC_STATUS_T values ('RR',	'2E0671732A724002E043814FD8814002',	1,	'Pend Specl')
+/
+insert into FP_DOC_STATUS_T values ('S',	'2E0671732A734002E043814FD8814002',	1,	'Pend CG')
+/
+insert into FP_DOC_STATUS_T values ('V',	'2E0671732A744002E043814FD8814002',	1,	'Validation')
+/
+insert into FP_DOC_STATUS_T values ('Q',	'2E0671732A754002E043814FD8814002',	1,	'Doc Specif')
+/
+INSERT INTO kr_qrtz_locks values('TRIGGER_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('JOB_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('CALENDAR_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('STATE_ACCESS')
+/
+INSERT INTO kr_qrtz_locks values('MISFIRE_ACCESS')
+/
+INSERT INTO APPLICATIONS_T (ID, NAME, DESCRIPTION) VALUES (1, 'KIM', 'This record represents the actual KIM system and must always be loaded by default in order for the system to work properly.') 
+/
+INSERT INTO PERSONS_T (ID, USERNAME, PASSWORD) VALUES (1, 'admin', 'admin')
+/
+create table trv_doc_2 (
+        FDOC_NBR                       VARCHAR2(14) CONSTRAINT FP_INT_BILL_DOC_TN1 NOT NULL,
+        OBJ_ID                         VARCHAR2(36) DEFAULT SYS_GUID() CONSTRAINT FP_INT_BILL_DOC_TN2 NOT NULL,
+        VER_NBR                        NUMBER(8) DEFAULT 1 CONSTRAINT FP_INT_BILL_DOC_TN3 NOT NULL,
+        FDOC_EXPLAIN_TXT               VARCHAR2(400),
+	    request_trav varchar2(30) not null,
+	    traveler          varchar2(200),
+        org          varchar2(60),
+        dest         varchar2(60),
+	    CONSTRAINT trv_doc_2P1 PRIMARY KEY (FDOC_NBR) 
+)
+/
+
+create table trv_acct (
+    acct_num  varchar2(10) not null,
+    acct_name varchar2(50),
+    acct_type varchar2(100),
+    acct_fo_id number(14),
+    constraint trv_acct_pk primary key(acct_num)
+) 
+/
+
+create table trv_doc_acct (
+    doc_hdr_id  number(14) not null,
+    acct_num    varchar2(10) not null,
+    constraint trv_doc_acct_pk primary key(doc_hdr_id, acct_num)
+) 
+/
+
+create table trv_acct_fo (
+	acct_fo_id  number(14) not null,
+	acct_fo_user_name varchar2(50) not null,
+	constraint trv_acct_fo_id_pk primary key(acct_fo_id)
+) 
+/
+
+create table TRAV_DOC_2_ACCOUNTS (
+    FDOC_NBR VARCHAR2(14),
+    ACCT_NUM varchar2(10),
+    CONSTRAINT TRAV_DOC_2_ACCOUNTS_P1 PRIMARY KEY (FDOC_NBR, ACCT_NUM)
+)
+/
+
+create table TRV_ACCT_TYPE (
+    ACCT_TYPE VARCHAR2(10),
+    ACCT_TYPE_NAME varchar2(50),
+    CONSTRAINT TRV_ACCT_TYPE_PK PRIMARY KEY (ACCT_TYPE)
+)
+/
+
+create table TRV_ACCT_EXT (
+    ACCT_NUM VARCHAR2(10),
+    ACCT_TYPE varchar2(100),
+    CONSTRAINT TRV_ACCT_TYPE_P1 PRIMARY KEY (ACCT_NUM, ACCT_TYPE)
+)
+/
+
+CREATE SEQUENCE SEQ_TRAVEL_DOC_ID INCREMENT BY 1 START WITH 1000 
+/
+CREATE SEQUENCE SEQ_TRAVEL_FO_ID INCREMENT BY 1 START WITH 1000 
+/
+
+alter table trv_acct add constraint trv_acct_fk1 foreign key(acct_fo_id) references trv_acct_fo(acct_fo_id) 
+/
+
+insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (1, 'fred') 
+/
+insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (2, 'fran') 
+/
+insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (3, 'frank') 
+/
+
+insert into TRV_ACCT values ('a1', 'a1', 'CAT', 1) 
+/
+insert into TRV_ACCT values ('a2', 'a2', 'EAT', 2) 
+/
+insert into TRV_ACCT values ('a3', 'a3', 'IAT', 3) 
+/
+
+insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a1') 
+/
+insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a2') 
+/
+insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a3') 
+/
+
+insert into en_usr_t values ('quickstart','quickstart','quickstart','quickstart','quickstart@school.edu','quickstart','quickstart','quickstart',to_date('01/01/2000', 'dd/mm/yyyy'),to_date('01/01/2100', 'dd/mm/yyyy'),0,0) 
+/
+insert into en_wrkgrp_t values (1,1,'WorkflowAdmin',1,'W','Workflow Administrator Workgroup',1,null,0) 
+/
+insert into EN_WRKGRP_MBR_T values ('quickstart',1,'U',1,0) 
+/
+
+INSERT INTO FP_DOC_GROUP_T VALUES ('TR', '054EDFB3B260C8D2E043814FD881C8D2', 1,	'Travel Documents', null)
+/
+INSERT INTO FP_DOC_GROUP_T VALUES ('KR', '054EDFB3B260C8D2E043816FD881C8D2', 1,	'Kuali Rice', null)
+/
+insert into FP_DOC_TYPE_T values ('TRAV', '1A6FEB2501C7607EE043814FD881607E', 1, 'TR', 'TRAV ACCNT', 'N', 'Y', 'N', 0, 'N', 'N')
+/
+insert into FP_DOC_TYPE_T values ('TRFO', '1A6FEB250342607EE043814FD881607E', 1, 'TR', 'TRAV FO', 'N', 'Y', 'N', 0, 'N', 'N')
+/
+insert into FP_DOC_TYPE_T values ('TRD2', '1A6FEB250342607EE043814FD889607E', 1, 'TR', 'TRAV D2', 'N', 'Y', 'N', 0, 'N', 'N')
+/
+insert into FP_DOC_TYPE_T values ('RUSR', '1A6FEB253342607EE043814FD889607E', 1, 'TR', 'RICE USR', 'N', 'Y', 'N', 0, 'N', 'N') 
+/
+insert into FP_DOC_TYPE_T values ('PARM', '1A6FRB253342607EE043814FD889607E', 1, 'TR', 'System Parms', 'N', 'Y', 'N', 0, 'N', 'N') 
+/
+insert into FP_DOC_TYPE_T values ('BR', '1A6FRB253343337EE043814FD889607E', 1, 'TR', 'Biz Rules', 'N', 'Y', 'N', 0, 'N', 'N') 
+/
+insert into SH_NTE_TYP_T values ('BO', '2D3C44FE49415102E043814FD8815102',	1,	'DOCUMENT BUSINESS OBJECT', 'Y')
+/
+insert into SH_NTE_TYP_T values ('DH', '2D3C44FE49425102E043814FD8815102',	1,	'DOCUMENT HEADER', 'Y')
+/
+
+insert into TRV_ACCT_EXT values ('a1', 'IAT') 
+/
+insert into TRV_ACCT_EXT values ('a2', 'EAT') 
+/
+insert into TRV_ACCT_EXT values ('a3', 'IAT') 
+/
+
+insert into TRV_ACCT_TYPE values ('CAT', 'Clearing Account Type') 
+/
+insert into TRV_ACCT_TYPE values ('EAT', 'Expense Account Type') 
+/
+insert into TRV_ACCT_TYPE values ('IAT', ' Income Account Type') 
+/
+
+commit 
 /

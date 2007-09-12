@@ -15,6 +15,8 @@
  */
 package edu.sampleu.travel.rice;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.kuali.bus.auth.AuthorizationService;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -36,7 +38,7 @@ public class TravelAuthorizationService implements AuthorizationService {
      *
      * @see org.kuali.bus.auth.AuthorizationService#isAdministrator()
      */
-    public boolean isAdministrator() {
+    public boolean isAdministrator(HttpServletRequest request) {
 	UserSession userSession = UserSession.getAuthenticatedUser();
 	if (userSession == null) {
 	    throw new RuntimeException("Could not determine authenticated user.  UserSession was null.");

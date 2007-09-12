@@ -41,16 +41,16 @@ public class KSBStrutsRequestProcessor extends RequestProcessor {
 
     @Override
     protected ActionForward processActionPerform(HttpServletRequest request, HttpServletResponse response, Action action, ActionForm form, ActionMapping mapping) throws IOException, ServletException {
-	if (!isAdministrator()) {
+	if (!isAdministrator(request)) {
 	    return mapping.findForward("NotAuthorized");
 	}
 	return super.processActionPerform(request, response, action, form, mapping);
     }
 
-    private boolean isAdministrator() {
+    private boolean isAdministrator(HttpServletRequest request) {
 	AuthorizationService authService = (AuthorizationService)Core.getCurrentContextConfig().getObject(RiceConstants.KSB_AUTH_SERVICE);
 	// if no auth service is defined then everyone's an admin
-	return authService == null || authService.isAdministrator();
+	return authService == null || authService.isAdministrator(request);
     }
 
 }

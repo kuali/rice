@@ -57,7 +57,21 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
 	
         return (NotificationMessageDelivery) businessObjectDao.findByPrimaryKey(NotificationMessageDelivery.class, primaryKeys);
     }
-    
+
+    /**
+     * @see org.kuali.notification.service.NotificationMessageDeliveryService#getNotificationMessageDeliveryByDelivererId(java.lang.Long)
+     */
+    public NotificationMessageDelivery getNotificationMessageDeliveryByDelivererId(Long id) {
+        Criteria criteria = new Criteria();
+        criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.DELIVERY_SYSTEM_ID, id);
+        Collection<NotificationMessageDelivery> results = businessObjectDao.findMatching(NotificationMessageDelivery.class, criteria);
+        if (results == null || results.size() == 0) return null;
+        if (results.size() > 1) {
+            throw new RuntimeException("More than one message delivery found with the following delivery system id: " + id);
+        }
+        return results.iterator().next();
+    }
+
     /**
      * @see org.kuali.notification.service.NotificationMessageDeliveryService#getNotificationMessageDeliveries()
      */

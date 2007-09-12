@@ -192,35 +192,6 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     /**
-     * This service is implemented first by getting an instance of the workflow document, then using the data stored in that, specifically the appDocId to 
-     * get the native Notification system's message delivery id, looks up the actual record details for the NotificationMessageDelivery
-     * @see org.kuali.notification.service.NotificationService#getNotificationByNotificationDocumentWorkflowDocumentId(java.lang.String, java.lang.Long)
-     */
-    public NotificationMessageDelivery getNotificationMessageDeliveryByNotificationDocumentWorkflowDocumentId(String initiatorUserId, Long workflowDocumentId) throws WorkflowException {
-	//first retrieve the NotificationWorkflowDocument
-	NotificationWorkflowDocument document = notificationWorkflowDocumentService.getNotificationWorkflowDocumentByDocumentId(initiatorUserId, workflowDocumentId);
-	
-	// now try to retrieve the full notification record from the notification system's DB
-	// first get at the messageDelivery record, and then retrieve the notification record from that
-	Long messageDeliveryId;  // will set this to document.getAppDocId(), need to validate first
-	if(StringUtils.isBlank(
-               document.
-                   getRouteHeader().
-                       getAppDocId())) {
-	    throw new WorkflowException("The retrieved message delivery id (document.getAppDocId()) is not valid: <blank>");
-	} else {
-	    try {
-		messageDeliveryId = new Long(document.getAppDocId());
-	    } catch(Exception e) {
-		throw new WorkflowException("The retrieved message delivery id (document.getAppDocId()) is not valid.  It could not be converted to a Long: " + document.getAppDocId());
-	    }
-	}
-	
-	// now make the actual call to retrieve the notification message delivery record
-	return notificationMessageDeliveryService.getNotificationMessageDelivery(messageDeliveryId);
-    }
-    
-    /**
      * @see org.kuali.notification.service.NotificationService#dismissNotificationMessageDelivery(java.lang.Long, java.lang.String)
      */
     public void dismissNotificationMessageDelivery(Long id, String user, String cause) {

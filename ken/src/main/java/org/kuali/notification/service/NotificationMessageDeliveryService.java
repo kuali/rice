@@ -33,7 +33,15 @@ public interface NotificationMessageDeliveryService {
      * @return NotificationMessageDelivery
      */
     public NotificationMessageDelivery getNotificationMessageDelivery(Long id);
-    
+
+    /**
+     * This method will retrieve a NotificationMessageDelivery object from the system, given the external deliverer system id
+     * registered with the NotificationMessageDelivery.
+     * @param id the external deliverer system id
+     * @return NotificationMessageDelivery
+     */
+    public NotificationMessageDelivery getNotificationMessageDeliveryByDelivererId(Long id);
+
     /**
      * This method will return all NotificationMessageDelivery objects in the system 
      * actual record.

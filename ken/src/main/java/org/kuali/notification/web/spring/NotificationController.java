@@ -196,7 +196,7 @@ public class NotificationController extends MultiActionController {
         if (docId != null) {  // this means that the request was triggered via the action list
             LOG.debug("Looking up notification with workflowId: "+docId);
             try {
-                messageDelivery = notificationService.getNotificationMessageDeliveryByNotificationDocumentWorkflowDocumentId(user, Long.decode(docId));
+                messageDelivery = messageDeliveryService.getNotificationMessageDeliveryByDelivererId(Long.decode(docId));
 
                 // check to see if this was a standalone window by examining the command from KEW before setting it to INLINE to force an inline view
                 if(command != null && 
@@ -287,7 +287,7 @@ public class NotificationController extends MultiActionController {
         if (docId != null) {
             LOG.debug("Looking up notification with workflowId: "+docId);
             try {
-                delivery = notificationService.getNotificationMessageDeliveryByNotificationDocumentWorkflowDocumentId(user, Long.decode(docId));
+                delivery = messageDeliveryService.getNotificationMessageDeliveryByDelivererId(Long.decode(docId));
                 notification = delivery.getNotification();
             } catch (Exception e) {
                 LOG.error("Could not get notification with workflowId.");

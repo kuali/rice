@@ -202,6 +202,7 @@ public class NotificationConstants {
         // NotificationMessageDelivery
         public static final String NOTIFICATION = "notification";
         public static final String USER_RECIPIENT_ID = "userRecipientId";
+        public static final String DELIVERY_SYSTEM_ID = "deliverySystemId";
     }
     
     /**

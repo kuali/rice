@@ -67,15 +67,6 @@ public interface NotificationService {
     public Collection<Notification> getNotificationsForRecipientByType(String contentTypeName, String recipientId);
     
     /**
-     * This method will retrieve a fully populated NotificationMessageDelivery instance given the associated Notification Workflow Document Id.
-     * @param initiatorUserId
-     * @param workflowDocumentId
-     * @return NotificationMessageDelivery the NotificationMessageDelivery to which the specified document corresponds
-     * @throws WorkflowException
-     */
-    public NotificationMessageDelivery getNotificationMessageDeliveryByNotificationDocumentWorkflowDocumentId(String initiatorUserId, Long workflowDocumentId) throws Exception;
-    
-    /**
      * This method will "dismiss"/remove a NotificationMessageDelivery with the specified cause.
      * @param id the id of the NotificationMessageDelivery that was acted upon
      * @param user the user or entity that performed the dismissal

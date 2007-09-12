@@ -50,17 +50,6 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
     }
 
     @Override
-    public void setUp() throws Exception {
-	super.setUp();
-	onSetUpBeforeTransaction();
-    }
-    
-    // XXX: only exists for compatibility with existing unit tests
-    protected void onSetUpBeforeTransaction() throws Exception {
-	
-    }
-
-    @Override
     protected List<Lifecycle> getSuiteLifecycles() {
 	List<Lifecycle> lifecycles = super.getSuiteLifecycles();
 	lifecycles.add(new BaseLifecycle() {
@@ -80,6 +69,17 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
 	return lifecycles;
     }
 
+    /**
+     * Avoid clearing the Quartz tables because it's deadlockey
+     * @see org.kuali.rice.test.RiceTestCase#getTablesNotToClear()
+     */
+    @Override
+    protected List<String> getTablesNotToClear() {
+        List<String> l =  super.getTablesNotToClear();
+        l.add("KR_.*");
+        return l;
+    }
+
     @Override
     protected List<Lifecycle> getPerTestLifecycles() {
 	List<Lifecycle> lifecycles = super.getPerTestLifecycles();
@@ -92,14 +92,14 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
 
 	        //LOG.info("Status of Ken scheduler on start: " + services.getScheduler().isStarted());
                 // stop quartz if a test failed to do so
-                disableQuartzJobs();
+                //disableQuartzJobs();
 	    }
 	    public void stop() throws Exception {
 		KEWServiceLocator.getCacheAdministrator().flushAll();
 		
 		LOG.info("Status of Ken scheduler on stop: " + services.getScheduler().isStarted());
 		// stop quartz if a test failed to do so
-		disableQuartzJobs();
+		//disableQuartzJobs();
 
 		super.stop();
 	    }
@@ -127,7 +127,7 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
 	// do this so that our quartz jobs don't go off - we don't care about
         // these in our unit tests
         Scheduler scheduler = services.getScheduler();
-        scheduler.pause();
+        scheduler.standby();
         //scheduler.shutdown();
     }
 
@@ -157,10 +157,5 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
     protected String getDerbySQLFileLocation() {
 	//return "classpath:db/derby/" + getModuleName() + "-derby.sql";
 	return null;
-    }
-
-    @Override
-    protected String getModuleName() {
-	return KEN_MODULE_NAME;
     }
 }

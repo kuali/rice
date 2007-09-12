@@ -24,13 +24,13 @@ import org.kuali.notification.test.NotificationTestCaseBase;
  */
 public abstract class BusinessObjectDaoTestCaseBase extends NotificationTestCaseBase {
     protected BusinessObjectDao businessObjectDao;
-    
+
     /**
-     * @see org.kuali.notification.test.NotificationTestCaseBase#onSetUpBeforeTransaction()
+     * @see org.kuali.notification.test.ModuleTestCase#setUp()
      */
     @Override
-    protected void onSetUpBeforeTransaction() throws Exception {
-        super.onSetUpBeforeTransaction();
+    public void setUp() throws Exception {
+        super.setUp();
         businessObjectDao = services.getBusinesObjectDao();
     }
 }

@@ -8,6 +8,16 @@
 <beans>
   <import resource="common-beans.xml"/>
 
+  <!-- override business object dao -->
+  <bean id="businessObjectDao" class="org.kuali.notification.dao.ojb.BusinessObjectDaoOjb">
+    <property name="jcdAlias">
+      <value>kenDataSource</value>
+    </property>
+    <property name="useSelectForUpdate">
+      <value>false</value>
+    </property>
+  </bean>
+
   <!-- override the notificationEmailService with a Mock implementation -->  
   <bean id="notificationEmailService" class="org.kuali.notification.test.util.MockNotificationEmailServiceImpl" >
     <property name="weburl"><value>${notification.basewebappurl}</value></property>

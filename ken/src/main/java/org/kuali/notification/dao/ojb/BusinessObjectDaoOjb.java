@@ -35,10 +35,19 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
  * (org.kuali.core.dao.BusinessObjectDao).
  * 
  * @author Bryan Hutchinson (bh79@cornell.edu)
+ * @author Aaron Hamid (arh14 at cornell dot edu)
  */
 public class BusinessObjectDaoOjb extends PersistenceBrokerDaoSupport implements BusinessObjectDao {
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger
-    	.getLogger(BusinessObjectDaoOjb.class);
+    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectDaoOjb.class);
+
+    private boolean useSelectForUpdate = true;
+    
+    /**
+     * @param selectForUpdate whether to use select for update to implement pessimistic locking (testing/debugging purposes only)
+     */
+    public void setUseSelectForUpdate(boolean useSelectForUpdate) {
+        this.useSelectForUpdate = useSelectForUpdate;
+    }
 
     /**
      * @see org.kuali.notification.dao.BusinessObjectDao#findById(Class, Object)
@@ -221,7 +230,7 @@ public class BusinessObjectDaoOjb extends PersistenceBrokerDaoSupport implements
      */
     public Collection findMatching(Class clazz, Criteria criteria, boolean selectForUpdate) {
         Query query;
-        if (selectForUpdate) {
+        if (selectForUpdate && useSelectForUpdate) {
             SuffixableQueryByCriteria q = new SuffixableQueryByCriteria(clazz, criteria);
             // XXX: hax
             q.setQuerySuffix(" for update");

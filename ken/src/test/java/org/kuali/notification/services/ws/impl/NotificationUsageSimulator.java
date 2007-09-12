@@ -18,12 +18,9 @@ package org.kuali.notification.services.ws.impl;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.notification.client.ws.stubs.NotificationWebServiceSoapBindingStub;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
@@ -72,6 +69,7 @@ public abstract class NotificationUsageSimulator extends NotificationWebServiceT
             executorService.submit(new Runnable() {
                 public void run() {
                     try {
+                        /*
                         NotificationWebServiceSoapBindingStub stub = new NotificationWebServiceSoapBindingStub(webserviceEndpoint, null);
     
                         String notification = generateNotificationMessage();
@@ -92,7 +90,7 @@ public abstract class NotificationUsageSimulator extends NotificationWebServiceT
                             Long id = Long.valueOf(idAsString);
                             assertNotNull(id);
                             LOG.info("Successfully sent notification id: " + id);
-                        }
+                        }*/
                     } catch (Exception e) {
                         LOG.info("Exception occurred sending notification", e);
                         synchronized (exceptions) {

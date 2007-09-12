@@ -15,9 +15,6 @@
  */
 package org.kuali.notification.services.ws.impl;
 
-import junit.framework.TestCase;
-
-import org.apache.axis.transport.http.AxisServlet;
 import org.kuali.notification.test.NotificationTestCaseBase;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.servlet.Context;
@@ -28,7 +25,7 @@ import org.springframework.web.context.support.GenericWebApplicationContext;
 
 /**
  * Base class for testing the web service that KEN exposes.
- * @author Aaron Hamid (arh 14 at cornell dot edu)
+ * @author Aaron Hamid (arh14 at cornell dot edu)
  */
 public abstract class NotificationWebServiceTestCaseBase extends NotificationTestCaseBase {
     protected Server server;
@@ -70,7 +67,9 @@ public abstract class NotificationWebServiceTestCaseBase extends NotificationTes
 
         context.setResourceBase("work/wstestcase-tmp");
         // AxisServlet will load config from server-config.wsdd, which is already present and configured in Notification class loader
-        context.addServlet(AxisServlet.class, "/services/*");
+
+        assert(false) : "replace axis...";
+//        context.addServlet(AxisServlet.class, "/services/*");
         
         return server;
     }

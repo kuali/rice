@@ -18,7 +18,7 @@ package org.kuali.notification.service.ws.impl;
 import java.io.IOException;
 import java.rmi.RemoteException;
 
-import javax.xml.rpc.ServiceException;
+//import javax.xml.rpc.ServiceException;
 
 import org.apache.log4j.Logger;
 import org.kuali.notification.bo.NotificationResponse;
@@ -41,7 +41,7 @@ import org.springframework.remoting.jaxrpc.ServletEndpointSupport;
  * from the ServletContext via getWebApplicationContext().  It then delegates to the NotificationService.
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-public class NotificationWebServiceImpl extends ServletEndpointSupport implements NotificationWebService {
+public class NotificationWebServiceImpl /*extends ServletEndpointSupport*/ implements NotificationWebService {
     private static final Logger LOG = Logger.getLogger(NotificationWebServiceImpl.class);
 
     private NotificationService notificationService;
@@ -51,12 +51,12 @@ public class NotificationWebServiceImpl extends ServletEndpointSupport implement
      * Callback for custom initialization after the context has been set up.
      * @throws ServiceException if initialization failed
      */
-    protected void onInit() throws ServiceException {
+    /*protected void onInit() throws ServiceException {
         // grab the spring application context from the webapp context so that we can look up our service in spring 
         NotificationServiceLocator locator = new SpringNotificationServiceLocator(getWebApplicationContext());
         this.notificationService = locator.getNotificationService();
         this.notificationMessageContentService = locator.getNotificationMessageContentService();
-    }
+    }*/
 
     /**
      * Invokes the underlying Java API calls via Spring service invocation.

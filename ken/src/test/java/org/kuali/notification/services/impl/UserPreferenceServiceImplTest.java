@@ -105,11 +105,9 @@ public class UserPreferenceServiceImplTest extends NotificationTestCaseBase {
     public void testSaveUserRecipientPreferences() {
 	UserPreferenceService impl = services.getUserPreferenceService();
 	NotificationMessageDelivererRegistryService delivererService = services.getNotificationMessageDelivererRegistryService();
-	NotificationMessageDeliverer deliverer = null;
-	try {
-	   deliverer = delivererService.getDelivererByName(VALID_DELIVERER_NAME);
-	} catch (NotificationMessageDelivererNotFoundException ex) {
-	    throw new RuntimeException(ex);
+	NotificationMessageDeliverer deliverer = delivererService.getDelivererByName(VALID_DELIVERER_NAME);
+	if (deliverer == null) {
+	    throw new RuntimeException("Message deliverer could not be obtained");
 	}
 		
 	HashMap<String, String> userprefs = new HashMap<String, String>();
@@ -130,11 +128,9 @@ public class UserPreferenceServiceImplTest extends NotificationTestCaseBase {
     public void testGetUserRecipientPreferences() {
 	UserPreferenceService impl = services.getUserPreferenceService();
 	NotificationMessageDelivererRegistryService delivererService = services.getNotificationMessageDelivererRegistryService();
-	NotificationMessageDeliverer deliverer = null;
-	try {
-	   deliverer = delivererService.getDelivererByName(VALID_DELIVERER_NAME);
-	} catch (NotificationMessageDelivererNotFoundException ex) {
-	    throw new RuntimeException(ex);
+	NotificationMessageDeliverer deliverer = delivererService.getDelivererByName(VALID_DELIVERER_NAME);
+	if (deliverer == null) {
+	    throw new RuntimeException("Message deliverer could not be obtained");
 	}
 	HashMap<String, String> userprefs = new HashMap<String, String>();
 	userprefs.put(VALID_PROPERTY, VALID_VALUE);

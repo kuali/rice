@@ -80,11 +80,9 @@ public class NotificationMessageDeliveryAutoRemovalServiceImpl extends Concurren
         NotificationMessageDelivery firstMessageDelivery = messageDeliveries.iterator().next();
 
 	// get our hands on the appropriate NotificationMessageDeliverer instance
-	try {
-	    messageDeliverer = messageDeliveryRegistryService.getDeliverer(firstMessageDelivery);
-	} catch (NotificationMessageDelivererNotFoundException e) {
-	    LOG.fatal(e.getStackTrace());
-	    throw new RuntimeException(e);
+	messageDeliverer = messageDeliveryRegistryService.getDeliverer(firstMessageDelivery);
+	if (messageDeliverer == null) {
+	    throw new RuntimeException("Message deliverer could not be obtained");
 	}
         if (messageDeliveries.size() > 1) {
             // this is a bulk deliverer, so we need to batch the NotificationMessageDeliveries

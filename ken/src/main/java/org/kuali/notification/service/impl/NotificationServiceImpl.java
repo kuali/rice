@@ -250,13 +250,10 @@ public class NotificationServiceImpl implements NotificationService {
             } else {
                 LOG.debug("Dismissing message delivery #" + messageDelivery.getId() + " " + messageDelivery.getLockVerNbr());
 
-                NotificationMessageDeliverer messageDeliverer;
                 // get our hands on the appropriate NotificationMessageDeliverer instance
-                try {
-                    messageDeliverer = messageDelivererRegistryService.getDeliverer(messageDelivery);
-                } catch (NotificationMessageDelivererNotFoundException e) {
-                    LOG.fatal(e.getStackTrace());
-                    throw new RuntimeException(e);
+                NotificationMessageDeliverer messageDeliverer = messageDelivererRegistryService.getDeliverer(messageDelivery);
+                if (messageDeliverer == null) {
+                    throw new RuntimeException("Message deliverer could not be obtained");
                 }
     
                 // we have our message deliverer, so tell it to dismiss the message

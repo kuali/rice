@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ns:workflow resource:WorkflowData">
+
+    <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+        <ruleAttribute>
+            <name>NotificationCustomActionListAttribute</name>
+            <className>org.kuali.notification.kew.NotificationCustomActionListAttribute</className>
+            <label>Notification  Action List Attribute</label>
+            <description>Notification Action List Attribute</description>
+            <type>ActionListAttribute</type>
+            <!--
+            <messageEntity>KEN</messageEntity>
+            -->
+        </ruleAttribute>
+        <ruleAttribute>
+            <name>ChannelReviewerRoleAttribute</name>
+            <className>org.kuali.notification.kew.ChannelReviewerRoleAttribute</className>
+            <label>Channel Reviewer Role Attribute</label>
+            <description>Channel Reviewer Role Attribute</description>
+            <type>RuleAttribute</type>
+            <!--
+            <messageEntity>KEN</messageEntity>
+            -->
+        </ruleAttribute>
+    </ruleAttributes>
+
+    <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+        <ruleTemplate allowOverwrite="true">
+            <name>ReviewersRouting</name>
+            <description>Routes to channel reviewers</description>
+            <attributes>
+                <attribute>
+                    <name>ChannelReviewerRoleAttribute</name>
+                </attribute>
+            </attributes>
+        </ruleTemplate>
+        <ruleTemplate allowOverwrite="true">
+            <name>NotificationRouting</name>
+            <description>The standard rule template for sending notification messages.</description>
+        </ruleTemplate>
+    </ruleTemplates>
+    
+    <documentTypes xmlns="ns:workflow/DocumentType"
+        xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+        <documentType>
+            <name>SendNotificationRequest</name>
+            <description>Create a New Notification Request</description>
+            <label>Send Notification Request</label>
+            <!--
+            <messageEntity>KEN</messageEntity>
+            -->
+            <postProcessorName>org.kuali.notification.postprocessor.kew.NotificationSenderFormPostProcessor</postProcessorName>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <docHandler>${notification.basewebappurl}/AdministerNotificationRequest.form</docHandler>
+            <active>true</active>
+
+            <attributes>
+              <attribute>
+                <name>NotificationCustomActionListAttribute</name>
+              </attribute>
+            </attributes>
+
+            <policies>
+                <policy>
+                    <name>PRE_APPROVE</name>
+                    <value>false</value>
+                </policy>
+                <policy>
+                    <name>DEFAULT_APPROVE</name>
+                    <value>true</value>
+                    <!-- this should be false in a production scenario -->
+                </policy>
+                <policy>
+                    <name>LOOK_FUTURE</name>
+                    <value>true</value>
+                </policy>
+            </policies>
+            <routePaths>
+                <routePath>
+                    <start name="Initiated" nextNode="ReviewersNode"/>
+                    <requests name="ReviewersNode" nextNode="RequestsNode"/>
+                    <requests name="RequestsNode"/>
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="Initiated">
+                    <activationType>S</activationType>
+                </start>
+                <requests name="ReviewersNode">
+                    <ruleTemplate>ReviewersRouting</ruleTemplate>
+                </requests>
+                <requests name="RequestsNode">
+                    <ruleTemplate>NotificationRouting</ruleTemplate>
+                </requests>
+            </routeNodes>
+        </documentType>
+    </documentTypes>
+    
+    <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+        <rule>
+          <documentType>SendNotificationRequest</documentType>
+          <ruleTemplate>ReviewersRouting</ruleTemplate>
+          <description>ReviewersRouting rule</description>
+          <ignorePrevious>true</ignorePrevious>
+          <ruleExtensions>
+            <ruleExtension>
+                <attribute>ChannelReviewerRoleAttribute</attribute>
+                <ruleTemplate>ReviewersRouting</ruleTemplate>
+            </ruleExtension>
+          </ruleExtensions>
+          <responsibilities>
+            <responsibility>
+              <role>org.kuali.notification.kew.ChannelReviewerRoleAttribute!reviewers</role>
+              <actionRequested>A</actionRequested>
+              <priority>1</priority>
+            </responsibility>
+          </responsibilities>
+        </rule>
+    </rules>
+</data>

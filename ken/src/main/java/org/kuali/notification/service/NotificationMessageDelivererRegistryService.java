@@ -38,16 +38,14 @@ public interface NotificationMessageDelivererRegistryService {
     /**
      * This method returns the associated deliverer class instance for the given NotificationMessageDelivery instance.
      * @param messageDelivery
-     * @return NotificationMessageDeliverer
-     * @throws NotificationMessageDelivererNotFoundException
+     * @return NotificationMessageDeliverer or null if not found
      */
-    public NotificationMessageDeliverer getDeliverer(NotificationMessageDelivery messageDelivery) throws NotificationMessageDelivererNotFoundException;
+    public NotificationMessageDeliverer getDeliverer(NotificationMessageDelivery messageDelivery);
     
     /**
      * This method returns the associated deliverer class instance for the given deliverer name.
      * @param messageDelivererName
-     * @return NotificationMessageDeliverer
-     * @throws NotificationMessageDelivererNotFoundException
+     * @return NotificationMessageDeliverer or null if not found
      */
-    public NotificationMessageDeliverer getDelivererByName(String messageDelivererName) throws NotificationMessageDelivererNotFoundException;
+    public NotificationMessageDeliverer getDelivererByName(String messageDelivererName);
 }

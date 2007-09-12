@@ -15,12 +15,39 @@
  */
 package org.kuali.notification.core;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.sql.DataSource;
+
 import org.apache.log4j.Logger;
-import org.apache.ojb.broker.PersistenceBrokerFactory;
+import org.kuali.rice.config.ConfigurationException;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanInitializationException;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.StatementCallback;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.batch.FileXmlDocCollection;
+import edu.iu.uis.eden.batch.XmlDoc;
+import edu.iu.uis.eden.batch.XmlDocCollection;
 
 /**
  * Eager-initializing singleton bean that performs some notification startup operations
@@ -31,6 +58,8 @@ public class NotificationLifeCycle extends LifecycleBean implements BeanFactoryA
 
     private String ojbPlatform;
     private BeanFactory theFactory;
+    private PlatformTransactionManager txMgr;
+    private DataSource dataSource;
 
     /**
      * This method sets the OJB platform.
@@ -47,6 +76,25 @@ public class NotificationLifeCycle extends LifecycleBean implements BeanFactoryA
 	 this.theFactory = theFactory;
     }
 
+    public void setTransactionManager(PlatformTransactionManager txMgr) {
+        this.txMgr = txMgr;
+    }
+    
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    /**
+     * Helper method for creating a TransactionTemplate initialized to create
+     * a new transaction
+     * @return a TransactionTemplate initialized to create a new transaction
+     */
+    protected TransactionTemplate createNewTransaction() {
+        TransactionTemplate tt = new TransactionTemplate(txMgr);
+        tt.setPropagationBehavior(TransactionTemplate.PROPAGATION_REQUIRES_NEW);
+        return tt;
+    }
+
     /**
      * @see org.kuali.notification.core.BaseLifecycle#start()
      */
@@ -56,10 +104,76 @@ public class NotificationLifeCycle extends LifecycleBean implements BeanFactoryA
         }
 
         GlobalNotificationServiceLocator.init(theFactory);
+        /*
+        createNewTransaction().execute(new TransactionCallback() {
+            public Object doInTransaction(TransactionStatus txStatus) {
+                JdbcTemplate t = new JdbcTemplate(dataSource);
+                Boolean dataLoaded = (Boolean) t.execute(new StatementCallback() {
+                    public Object doInStatement(Statement stmt) throws SQLException, DataAccessException {
+                        ResultSet rs = stmt.executeQuery("select * from APP_META_T where NAME = 'ken.bootstrap.loaded' and VALUE = 'true'");
+                        try {
+                            return rs.next();
+                        } finally {
+                            rs.close();
+                        }
+                    }
+                });
+                if (!dataLoaded.booleanValue()) {
+                    loadXmlFile("classpath:data/NotificationData.xml");
+                    
+                    t.execute(new StatementCallback() {
+                        public Object doInStatement(Statement stmt) throws SQLException, DataAccessException {
+                            ResultSet rs = stmt.executeQuery("update APP_META_T where NAME = 'ken.bootstrap.loaded' and VALUE = 'true'");
+                            try {
+                                return rs.next();
+                            } finally {
+                                rs.close();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        */
+        
         //LOG.info("Setting OJB platform to: " + ojbPlatform);
         //PersistenceBrokerFactory.defaultPersistenceBroker().serviceConnectionManager().getConnectionDescriptor().setDbms(ojbPlatform);
         super.start();
     }
+
+    // yanked from KEWXmlDataLoaderLifecycle
+    /*
+    protected void loadXmlFile(String fileName) throws Exception {
+        Resource resource = new DefaultResourceLoader().getResource(fileName);
+        InputStream xmlFile = resource.getInputStream();
+        if (xmlFile == null) {
+                throw new ConfigurationException("Didn't find file " + fileName);
+        }
+        List<XmlDocCollection> xmlFiles = new ArrayList<XmlDocCollection>();
+        XmlDocCollection docCollection = getFileXmlDocCollection(xmlFile, "UnitTestTemp");
+        xmlFiles.add(docCollection);
+        KEWServiceLocator.getXmlIngesterService().ingest(xmlFiles);
+        for (Iterator iterator = docCollection.getXmlDocs().iterator(); iterator.hasNext();) {
+                XmlDoc doc = (XmlDoc) iterator.next();
+                if (!doc.isProcessed()) {
+                        throw new RuntimeException("Failed to ingest xml doc: " + doc.getName());
+                }
+        }
+    }
+
+    protected FileXmlDocCollection getFileXmlDocCollection(InputStream xmlFile, String tempFileName) throws IOException {
+        if (xmlFile == null) {
+            throw new RuntimeException("Didn't find the xml file " + tempFileName);
+        }
+        File temp = File.createTempFile(tempFileName, ".xml");
+        FileOutputStream fos = new FileOutputStream(temp);
+        int data = -1;
+        while ((data = xmlFile.read()) != -1) {
+            fos.write(data);
+        }
+        fos.close();
+        return new FileXmlDocCollection(temp);
+    }*/
 
     /**
      * @see org.kuali.notification.core.BaseLifecycle#stop()

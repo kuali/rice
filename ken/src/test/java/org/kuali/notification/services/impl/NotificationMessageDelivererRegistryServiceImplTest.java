@@ -52,13 +52,11 @@ public class NotificationMessageDelivererRegistryServiceImplTest extends Notific
 	NotificationMessageDelivery mockValid = new NotificationMessageDelivery();
 	mockValid.setMessageDeliveryTypeName(TestConstants.VALID_DELIVERER_NAME);
 	
-	NotificationMessageDeliverer deliverer = null;
-	try {
-	    deliverer = services.getNotificationMessageDelivererRegistryService().getDeliverer(mockValid);
-	} catch (NotificationMessageDelivererNotFoundException e) {
-	    throw new RuntimeException(e);
+	NotificationMessageDeliverer deliverer = services.getNotificationMessageDelivererRegistryService().getDeliverer(mockValid);
+	if (deliverer == null) {
+	    throw new RuntimeException("Message deliverer could not be obtained");
 	}
-	
+
 	assertEquals(TestConstants.VALID_DELIVERER_NAME, deliverer.getName());
     }
     
@@ -72,14 +70,9 @@ public class NotificationMessageDelivererRegistryServiceImplTest extends Notific
 
 	boolean caughtException = false;
 	
-	NotificationMessageDeliverer deliverer = null;
-	try {
-	    deliverer = services.getNotificationMessageDelivererRegistryService().getDeliverer(mockInvalid);
-	} catch (NotificationMessageDelivererNotFoundException e) {
-	    caughtException = true;
-	}
-	
-	assertTrue(caughtException);
+	NotificationMessageDeliverer deliverer = services.getNotificationMessageDelivererRegistryService().getDeliverer(mockInvalid);
+
+	assertNull(deliverer);
     }
     
     /**
@@ -87,12 +80,7 @@ public class NotificationMessageDelivererRegistryServiceImplTest extends Notific
      */
     @Test
     public void testGetDelivererByName_valid() {
-	NotificationMessageDeliverer deliverer = null;
-	try {
-	    deliverer = services.getNotificationMessageDelivererRegistryService().getDelivererByName(TestConstants.VALID_DELIVERER_NAME);
-	} catch (NotificationMessageDelivererNotFoundException e) {
-	    throw new RuntimeException(e);
-	}
+	NotificationMessageDeliverer deliverer = services.getNotificationMessageDelivererRegistryService().getDelivererByName(TestConstants.VALID_DELIVERER_NAME);
 	
 	assertEquals(TestConstants.VALID_DELIVERER_NAME, deliverer.getName());
     }
@@ -101,13 +89,8 @@ public class NotificationMessageDelivererRegistryServiceImplTest extends Notific
     public void testGetDelivererByName_nonExistent() {
 	boolean caughtException = false;
 	
-	NotificationMessageDeliverer deliverer = null;
-	try {
-	    deliverer = services.getNotificationMessageDelivererRegistryService().getDelivererByName(TestConstants.NON_EXISTENT_DELIVERER_NAME);
-	} catch (NotificationMessageDelivererNotFoundException e) {
-	    caughtException = true;
-	}
+	NotificationMessageDeliverer deliverer = services.getNotificationMessageDelivererRegistryService().getDelivererByName(TestConstants.NON_EXISTENT_DELIVERER_NAME);
 	
-	assertTrue(caughtException);
+	assertNull(deliverer);
     }
 }

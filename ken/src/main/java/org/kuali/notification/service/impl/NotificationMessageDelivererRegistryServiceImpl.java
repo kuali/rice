@@ -84,17 +84,17 @@ public class NotificationMessageDelivererRegistryServiceImpl implements Notifica
     }
 
     /**
-     * Implements by calling getDelivererByName for the delivery type name within the messageDelivery obejct.
+     * Implements by calling getDelivererByName for the delivery type name within the messageDelivery object.
      * @see org.kuali.notification.service.NotificationMessageDelivererRegistryService#getDeliverer(org.kuali.notification.bo.NotificationMessageDelivery)
      */
-    public NotificationMessageDeliverer getDeliverer(NotificationMessageDelivery messageDelivery) throws NotificationMessageDelivererNotFoundException {
-	try {
-	    return getDelivererByName(messageDelivery.getMessageDeliveryTypeName());
-	} catch(NotificationMessageDelivererNotFoundException e) {
-	    throw new NotificationMessageDelivererNotFoundException("The message deliverer type ('" + messageDelivery.getMessageDeliveryTypeName() + "') " +
-	    		"associated with message delivery id='" + messageDelivery.getId() + "' was not found in the message deliverer registry.  This deliverer " +
-	    		"plugin is not in the system.");
+    public NotificationMessageDeliverer getDeliverer(NotificationMessageDelivery messageDelivery) {
+        NotificationMessageDeliverer nmd = getDelivererByName(messageDelivery.getMessageDeliveryTypeName());
+        if (nmd == null) {
+            LOG.error("The message deliverer type ('" + messageDelivery.getMessageDeliveryTypeName() + "') " +
+                      "associated with message delivery id='" + messageDelivery.getId() + "' was not found in the message deliverer registry.  This deliverer " +
+	              "plugin is not in the system.");
 	}
+        return nmd;
     }
 
     /**
@@ -102,13 +102,14 @@ public class NotificationMessageDelivererRegistryServiceImpl implements Notifica
      * all registered deliverers.
      * @see org.kuali.notification.service.NotificationMessageDelivererRegistryService#getDelivererByName(java.lang.String)
      */
-    public NotificationMessageDeliverer getDelivererByName(String messageDelivererName) throws NotificationMessageDelivererNotFoundException {
+    public NotificationMessageDeliverer getDelivererByName(String messageDelivererName) {
 	Class clazz = messageDelivererTypes.get(messageDelivererName);
 	
 	if(clazz == null) {
-	    throw new NotificationMessageDelivererNotFoundException("The message deliverer type ('" + messageDelivererName + "') " + 
-		    " was not found in the message deliverer registry.  This deliverer " +
-	    		"plugin is not in the system.");
+	    LOG.error("The message deliverer type ('" + messageDelivererName + "') " +
+                      " was not found in the message deliverer registry.  This deliverer " +
+                      "plugin is not in the system.");
+	    return null;
 	}
 	
 	NotificationMessageDeliverer messageDeliverer = null;

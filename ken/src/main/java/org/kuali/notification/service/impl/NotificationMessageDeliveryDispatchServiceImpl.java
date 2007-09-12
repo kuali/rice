@@ -87,11 +87,9 @@ public class NotificationMessageDeliveryDispatchServiceImpl extends ConcurrentJo
         Map<String, Collection<NotificationMessageDelivery>> bulkWorkUnits = new HashMap<String, Collection<NotificationMessageDelivery>>();
         for (NotificationMessageDelivery messageDelivery: workItems) {
             
-            NotificationMessageDeliverer deliverer;
-            try {
-                deliverer = messageDelivererRegistryService.getDeliverer(messageDelivery);
-            } catch (NotificationMessageDelivererNotFoundException nmdnfe) {
-                LOG.error("Error obtaining message deliverer for message delivery: " + messageDelivery, nmdnfe);
+            NotificationMessageDeliverer deliverer = messageDelivererRegistryService.getDeliverer(messageDelivery);
+            if (deliverer == null) {
+                LOG.error("Error obtaining message deliverer for message delivery: " + messageDelivery);
                 result.addFailure("Error obtaining message deliverer for message delivery: " + messageDelivery);
                 unlockWorkItemAtomically(messageDelivery);
                 continue;
@@ -127,14 +125,11 @@ public class NotificationMessageDeliveryDispatchServiceImpl extends ConcurrentJo
      */
     @Override
     protected Collection<?> processWorkItems(Collection<NotificationMessageDelivery> messageDeliveries) {
-	NotificationMessageDeliverer messageDeliverer;
 	NotificationMessageDelivery firstMessageDelivery = messageDeliveries.iterator().next();
 	// get our hands on the appropriate NotificationMessageDeliverer instance
-	try {
-	    messageDeliverer = messageDelivererRegistryService.getDeliverer(firstMessageDelivery);
-	} catch (NotificationMessageDelivererNotFoundException e) {
-	    LOG.fatal(e.getStackTrace());
-	    throw new RuntimeException(e);
+	NotificationMessageDeliverer messageDeliverer = messageDelivererRegistryService.getDeliverer(firstMessageDelivery);
+	if (messageDeliverer == null) {
+	    throw new RuntimeException("Message deliverer could not be obtained");
 	}
 
 	if (messageDeliveries.size() > 1) {

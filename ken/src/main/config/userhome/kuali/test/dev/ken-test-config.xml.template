@@ -96,7 +96,7 @@
     <param name="notification.quartz.autostartup">false</param>
     <param name="notification.concurrent.jobs">true</param>
 
-    <param name="notification.basewebappurl">http://localhost:8080/notification</param>
+    <param name="notification.basewebappurl">http://localhost:8080/kr-dev/ken</param>
     
     <param name="notification.ojb.platform">Oracle</param>
     

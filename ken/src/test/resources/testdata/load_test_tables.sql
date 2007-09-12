@@ -220,17 +220,17 @@ VALUES
 INSERT INTO RECIPIENT_PREFERENCES
 (ID, RECIPIENT_TYPE, RECIPIENT_ID, PROPERTY, VALUE) 
 VALUES
-(1000, 'USER', 'TestUser5', 'Email.email_address','test_user_5@127.0.0.1');
+(100, 'USER', 'TestUser5', 'Email.email_address','test_user_5@127.0.0.1');
 INSERT INTO RECIPIENT_PREFERENCES
 (ID, RECIPIENT_TYPE, RECIPIENT_ID, PROPERTY, VALUE) 
 VALUES
-(1001, 'USER', 'TestUser5', 'Email.email_delivery_format','html');
+(101, 'USER', 'TestUser5', 'Email.email_delivery_format','html');
 
 INSERT INTO RECIPIENT_PREFERENCES
 (ID, RECIPIENT_TYPE, RECIPIENT_ID, PROPERTY, VALUE) 
 VALUES
-(1002, 'USER', 'TestUser6', 'Email.email_address','test_user_6@127.0.0.1');
+(102, 'USER', 'TestUser6', 'Email.email_address','test_user_6@127.0.0.1');
 INSERT INTO RECIPIENT_PREFERENCES
 (ID, RECIPIENT_TYPE, RECIPIENT_ID, PROPERTY, VALUE) 
 VALUES
-(1003, 'USER', 'TestUser6', 'Email.email_delivery_format','text');
+(103, 'USER', 'TestUser6', 'Email.email_delivery_format','text');

@@ -17,12 +17,15 @@
         
         // super duper NPE avoidance for the case that this view was launched
         // from somewhere other than the notification portal (e.g. search results)
-        if (parent != null &&
-            parent.parent != null &&
-            parent.parent.frames[0] != null &&
-            parent.parent.frames[0].location != null) {
+        if (parent != null) {
+        // &&
+         //   parent.parent != null &&
+          //  parent.parent.frames[0] != null &&
+           // parent.parent.frames[0].location != null) {
 
-            parent.parent.frames[0].location.reload();
+            //parent.parent.frames[0].location.reload();
+            
+            parent.location.reload();
         }
 	</script>
 </c:if>

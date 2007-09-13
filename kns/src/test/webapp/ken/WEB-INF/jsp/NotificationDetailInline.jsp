@@ -5,7 +5,7 @@
 <title>Kuali Enterprise Notification - Notification Details</title>
 <meta name="Author" content="John Fereira">
 <link href="css/notification.css" rel="stylesheet" type="text/css" />
-<c:if test="${! empty ackmessage}">
+<c:if test="${! empty message}">
 	<script type="text/javascript">
         // the intent of this block is to reload the notification "portal" page
         // when action has been taken on a notification rendered via this view

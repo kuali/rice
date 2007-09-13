@@ -72,7 +72,7 @@ public class KEWActionListMessageDeliverer implements NotificationMessageDeliver
 	    LOG.debug("Message Delivery: " + messageDelivery.toString());
 	} catch (WorkflowException we) {
 	    LOG.error(we.getStackTrace());
-	    throw new NotificationMessageDeliveryException(we.getStackTrace().toString());
+	    throw new NotificationMessageDeliveryException("Workflow exception delivering message", we);
 	}
     }
     
@@ -106,7 +106,7 @@ public class KEWActionListMessageDeliverer implements NotificationMessageDeliver
         LOG.info("Dismissing as user '" + user + "' workflow document '" + messageDelivery.getDeliverySystemId() + "' corresponding to message delivery #" + messageDelivery.getId() + " due to cause: " + cause);
         if (NotificationConstants.AUTO_REMOVE_CAUSE.equals(cause)) {
             // perform an auto-remove
-        } else if ("ack".equals(cause)) {
+        } else if (NotificationConstants.ACK_CAUSE.equals(cause)) {
             // moved from NotificationController, ack command
             /*
              * acknowledge using workflow docId
@@ -114,14 +114,18 @@ public class KEWActionListMessageDeliverer implements NotificationMessageDeliver
             NotificationWorkflowDocument nwd;
             try {
                 nwd = notificationWorkflowDocumentService.getNotificationWorkflowDocumentByDocumentId(user, Long.decode(messageDelivery.getDeliverySystemId()));
-                nwd.acknowledge(new String("This notification has been acknowledged."));
-                LOG.debug("acknowledged "+nwd.getTitle());                      
-                LOG.debug("status display value: "+nwd.getStatusDisplayValue());            
+                if (nwd.isAcknowledgeRequested()) {
+                    nwd.acknowledge(new String("This notification has been acknowledged."));
+                    LOG.debug("acknowledged "+nwd.getTitle());                      
+                    LOG.debug("status display value: "+nwd.getStatusDisplayValue());
+                } else {
+                    LOG.debug("Acknowledgement was not needed for document " + nwd.getRouteHeaderId());
+                }
             } catch (WorkflowException we) {
                 LOG.error("Could not get workflow document with docId");
                 throw new RuntimeException(we);
             }
-        } else if ("fyi".equals(cause)) {
+        } else if (NotificationConstants.FYI_CAUSE.equals(cause)) {
             // moved from NotificationController, fyi command
             /*
              * FYI using workflow docId
@@ -129,9 +133,13 @@ public class KEWActionListMessageDeliverer implements NotificationMessageDeliver
             NotificationWorkflowDocument nwd;
             try {
                 nwd = notificationWorkflowDocumentService.getNotificationWorkflowDocumentByDocumentId(user, Long.decode(messageDelivery.getDeliverySystemId()));
-                nwd.fyi();
-                LOG.debug("fyi "+nwd.getTitle());                      
-                LOG.debug("status display value: "+nwd.getStatusDisplayValue());            
+                if (nwd.isFYIRequested()) {
+                    nwd.fyi();
+                    LOG.debug("fyi "+nwd.getTitle());                      
+                    LOG.debug("status display value: "+nwd.getStatusDisplayValue());
+                } else {
+                    LOG.debug("FYI was not needed for document " + nwd.getRouteHeaderId());
+                }
             } catch (WorkflowException we) {
                 LOG.error("Could not get workflow document with docId");
                 throw new RuntimeException(we);

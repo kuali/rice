@@ -20,7 +20,7 @@
 	       	<br/>
 	       	<br/>
 	       	<br/>
-	       	<b>The action taken on this notification was succesful!</b>
+	       	<b>The action taken on this notification was successful!</b>
 	       	<br/>
 	       	<br/>
 	       	<b>Please close this window and refresh your action list if it was not refreshed automatically.</b>

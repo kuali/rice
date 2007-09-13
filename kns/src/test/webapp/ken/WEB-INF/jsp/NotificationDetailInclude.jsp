@@ -1,4 +1,5 @@
    <ul>
+        <div><strong>Id: ${messageDeliveryId}</strong></div>
 		<div><strong>From: </strong>
 		<c:set var="sender_counter" value="0" />
 		<c:forEach var="sender" items="${senders}">
@@ -40,37 +41,39 @@
 		<div style="padding: 3px; align=center;">
         <%-- first test whether this notification is actionable by the current user --%>
         <c:if test="${actionable}">
-            <c:if test="${notification.deliveryType == 'ACK' && ! empty docId}">
+            <c:if test="${notification.deliveryType == 'ACK' && ! empty messageDeliveryId}">
              
-    			   <c:if test="${empty ackmessage}">
-    			   <a href="<c:url value='AckNotification.form'>
-                              <c:param name='docId' value='${docId}'/>
+    			   <c:if test="${empty message}">
+    			   <a href="<c:url value='DismissMessage.form'>
+                              <c:param name='messageDeliveryId' value='${messageDeliveryId}'/>
                               <c:param name='notifId' value='${notification.id}'/>
                               <c:param name='command' value='${command}'/>
+                              <c:param name='action' value='ack'/>
                               <c:param name='standaloneWindow' value='${standaloneWindow}'/>
                               </c:url>"><img
     					src="images/buttonsmall_acknowledge.gif" border="0"
     					alt="acknowledge" /></a>
     			   </c:if>
-    			   <c:if test="${! empty ackmessage}">
-    				<strong><c:out value="${ackmessage}" /></strong>
+    			   <c:if test="${! empty message}">
+    				<strong><c:out value="${message}" /></strong>
     			   </c:if>
     		 </c:if>
              
-             <c:if test="${notification.deliveryType == 'FYI' && ! empty docId}">
+             <c:if test="${notification.deliveryType == 'FYI' && ! empty messageDeliveryId}">
              
-                <c:if test="${empty fyimessage}">
-                <a href="<c:url value='FyiNotification.form'>
-                              <c:param name='docId' value='${docId}'/>
+                <c:if test="${empty message}">
+                <a href="<c:url value='DismissMessage.form'>
+                              <c:param name='messageDeliveryId' value='${messageDeliveryId}'/>
                               <c:param name='notifId' value='${notification.id}'/>
                               <c:param name='command' value='${command}'/>
+                              <c:param name='action' value='fyi'/>
                               <c:param name='standaloneWindow' value='${standaloneWindow}'/>
                               </c:url>"><img
                    src="images/buttonsmall_fyi.gif" border="0"
                    alt="fyi" /></a>
                 </c:if>
-                <c:if test="${! empty fyimessage}">
-                <strong><c:out value="${fyumessage}" /></strong>
+                <c:if test="${! empty message}">
+                <strong><c:out value="${message}" /></strong>
                 </c:if>
              </c:if>
          </c:if>

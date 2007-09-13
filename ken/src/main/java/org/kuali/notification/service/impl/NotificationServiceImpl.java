@@ -217,7 +217,9 @@ public class NotificationServiceImpl implements NotificationService {
 
             // don't attempt to dismiss undelivered message deliveries
             if (!NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED.equals(messageDelivery.getMessageDeliveryStatus())) {
-                LOG.debug("Skipping dismissal of non-delivered message delivery #" + messageDelivery.getId());
+                LOG.info("Skipping dismissal of non-delivered message delivery #" + messageDelivery.getId());
+            } else if (targetStatus.equals(messageDelivery.getMessageDeliveryStatus())) {
+                LOG.info("Skipping dismissal of already removed message delivery #" + messageDelivery.getId());
             } else {
                 LOG.debug("Dismissing message delivery #" + messageDelivery.getId() + " " + messageDelivery.getLockVerNbr());
 
@@ -226,7 +228,7 @@ public class NotificationServiceImpl implements NotificationService {
                 if (messageDeliverer == null) {
                     throw new RuntimeException("Message deliverer could not be obtained");
                 }
-    
+
                 // we have our message deliverer, so tell it to dismiss the message
                 try {
                     messageDeliverer.dismissMessageDelivery(messageDelivery, user, cause);

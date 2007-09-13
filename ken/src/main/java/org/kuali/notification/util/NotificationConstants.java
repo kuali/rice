@@ -62,6 +62,8 @@ public class NotificationConstants {
      * due to autoremoval
      */
     public static final String AUTO_REMOVE_CAUSE = "autoremove";
+    public static final String ACK_CAUSE = "ack";
+    public static final String FYI_CAUSE = "fyi";
 
     /**
      * This class holds constants for different detail views of a notification.
@@ -80,8 +82,9 @@ public class NotificationConstants {
      * @author Aaron Godert (ag266 at cornell dot edu)
      */
     public static final class NOTIFICATION_CONTROLLER_CONSTANTS {
-	public static final String DOC_ID = "docId";
-	public static final String MSG_DELIVERY_ID = "messageDeliveryId";
+        public static final String MSG_DELIVERY_ID = "messageDeliveryId";
+        public static final String DELIVERER_ID = "delivererId";
+        public static final String DOC_ID = "docId";
 	public static final String COMMAND = "command";
 	public static final String STANDALONE_WINDOW = "standaloneWindow";
     }

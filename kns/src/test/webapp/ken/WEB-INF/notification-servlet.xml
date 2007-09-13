@@ -85,8 +85,7 @@
             <prop key="${prefix}/LookupUsers.form">notificationController</prop>
             <prop key="${prefix}/LookupWorkgroups.form">notificationController</prop>
             <prop key="${prefix}/RemoveNotification.form">notificationController</prop>
-            <prop key="${prefix}/AckNotification.form">notificationController</prop>
-            <prop key="${prefix}/FyiNotification.form">notificationController</prop>
+            <prop key="${prefix}/DismissMessage.form">notificationController</prop>
             <prop key="${prefix}/Logout.form">notificationController</prop>
             <prop key="${prefix}/ContentTypeManager.form">contentTypeController</prop>
             <prop key="${prefix}/ContentTypeForm.form">contentTypeController</prop>
@@ -128,8 +127,7 @@
                   <prop key="${prefix}/LookupUsers.form">displayLookupUsers</prop>
             	  <prop key="${prefix}/LookupWorkgroups.form">displayLookupWorkgroups</prop>
                   <prop key="${prefix}/RemoveNotification.form">removeNotification</prop>
-                  <prop key="${prefix}/AckNotification.form">ackNotification</prop>
-                  <prop key="${prefix}/FyiNotification.form">fyiNotification</prop>
+                  <prop key="${prefix}/DismissMessage.form">dismissMessage</prop>
                   <prop key="${prefix}/Logout.form">logout</prop>                                  
                </props>
             </property>

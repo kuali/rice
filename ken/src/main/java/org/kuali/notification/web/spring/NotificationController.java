@@ -154,7 +154,7 @@ public class NotificationController extends MultiActionController {
     }
 
     /**
-     * Logs out a user and redirects to CAS appropriately.
+     * Logs out a user
      * @param request : a servlet request
      * @param response : a servlet response
      * @throws ServletException : an exception
@@ -165,7 +165,50 @@ public class NotificationController extends MultiActionController {
         request.getSession().invalidate();
 
         Map<String, Object> model = new HashMap<String, Object>(); 
-        return new ModelAndView(new RedirectView("/cas/logout"), model);
+        return new ModelAndView(new RedirectView("HomePage.form"), model);
+    }
+
+    /**
+     * This method retrieves the NotificationMessageDelivery given an HttpServletRequest which
+     * may contain EITHER a message delivery id or a workflow doc id.  Therefore, this is a
+     * "special case" for handling the workflow deliverer.
+     * @param request the incoming {@link HttpServletRequest}
+     * @return the {@link NotificationMessageDelivery} or null if not found
+     */
+    protected NotificationMessageDelivery determineMessageFromRequest(HttpServletRequest request) {
+        /**
+         * We can get the NotificationMessageDelivery object given a workflow ID or a NotificationMessageDelivery
+         * Id.  This method might be called either from a workflow action list or
+         * as a link from a message deliverer endpoint such as an email message.
+         */
+        String messageDeliveryId = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.MSG_DELIVERY_ID);
+        String delivererId = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.DELIVERER_ID);
+        if (delivererId == null) {
+            delivererId = request.getParameter(IDocHandler.ROUTEHEADER_ID_PARAMETER);
+        }
+
+        NotificationMessageDelivery messageDelivery;
+        if (messageDeliveryId != null) { // this means that the request came in not from the action list, but rather from a delivery end point
+            LOG.debug("Looking up notification with messageDeliveryId: "+messageDeliveryId);
+            try {
+                messageDelivery = messageDeliveryService.getNotificationMessageDelivery(new Long(messageDeliveryId));
+            } catch (Exception e) {
+                throw new RuntimeException("Error getting message with id: " + messageDeliveryId, e);
+            }
+        } else if (delivererId != null) {  // this means that the request was triggered via the action list
+            LOG.debug("Looking up notification with workflowId: "+delivererId);
+            try {
+                messageDelivery = messageDeliveryService.getNotificationMessageDeliveryByDelivererId(Long.decode(delivererId));
+            } catch (Exception e) {
+                LOG.error("Error getting message with from deliverer id: " + delivererId, e);
+                throw new RuntimeException("Error getting message with deliverer id: " + delivererId, e);
+            }
+        } else {
+            throw new RuntimeException("Neither message ('" + NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.MSG_DELIVERY_ID
+                                       + "') nor deliverer id ('" + NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.DELIVERER_ID + "') were specified in the request");
+        }
+        
+        return messageDelivery;
     }
 
     /**
@@ -180,54 +223,23 @@ public class NotificationController extends MultiActionController {
         String view = "NotificationDetail"; // default to full view
 
         String user = request.getRemoteUser();
-        String docId = request.getParameter(IDocHandler.ROUTEHEADER_ID_PARAMETER);
-        String messageDeliveryId = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.MSG_DELIVERY_ID);
         String command = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.COMMAND);
         String standaloneWindow = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.STANDALONE_WINDOW);
 
-        /**
-         * We can get the NotificationMessageDelivery object given a workflow ID or a NotificationMessageDelivery
-         * Id.  This method might be called either from a workflow action list or
-         * as a link from a message deliverer endpoint such as an email message.
-         */        
-        Notification notification;
-        NotificationMessageDelivery messageDelivery;
+        NotificationMessageDelivery messageDelivery = determineMessageFromRequest(request);
+        // now get the notification from the message delivery object
+        Notification notification = messageDelivery.getNotification();
         boolean actionable = false;
-        if (docId != null) {  // this means that the request was triggered via the action list
-            LOG.debug("Looking up notification with workflowId: "+docId);
-            try {
-                messageDelivery = messageDeliveryService.getNotificationMessageDeliveryByDelivererId(Long.decode(docId));
 
-                // check to see if this was a standalone window by examining the command from KEW before setting it to INLINE to force an inline view
-                if(command != null && 
-                        (command.equals(NotificationConstants.NOTIFICATION_DETAIL_VIEWS.NORMAL_VIEW) || 
-                                command.equals(NotificationConstants.NOTIFICATION_DETAIL_VIEWS.DOC_SEARCH_VIEW))) {
-                    standaloneWindow = "true";
-                }
-
-                // we want all messages from the action list in line
-                command = NotificationConstants.NOTIFICATION_DETAIL_VIEWS.INLINE;
-            } catch (Exception e) {
-                LOG.error("Could not get notification with workflowId.");
-                LOG.error(e);
-                throw new RuntimeException(e);
-            }
-        } else if (messageDeliveryId != null) { // this means that the request came in not from the action list, but rather from a delivery end point
-            LOG.debug("Looking up notification with messageDeliveryId: "+messageDeliveryId);
-            try {
-                messageDelivery = messageDeliveryService.getNotificationMessageDelivery(new Long(messageDeliveryId));
-
-            } catch (Exception e) {
-                LOG.error("Could not get notification with notificationId.");
-                LOG.error(e);
-                throw new RuntimeException(e);
-            } 
-        } else {
-            throw new RuntimeException("missing document workflow ID or notificationId");
+        // check to see if this was a standalone window by examining the command from KEW before setting it to INLINE to force an inline view
+        if(command != null && 
+                (command.equals(NotificationConstants.NOTIFICATION_DETAIL_VIEWS.NORMAL_VIEW) || 
+                        command.equals(NotificationConstants.NOTIFICATION_DETAIL_VIEWS.DOC_SEARCH_VIEW))) {
+            standaloneWindow = "true";
         }
 
-        // now get the notification from the message delivery object
-        notification = messageDelivery.getNotification();
+        // we want all messages from the action list in line
+        command = NotificationConstants.NOTIFICATION_DETAIL_VIEWS.INLINE;
 
         actionable = user.equals(messageDelivery.getUserRecipientId()) && NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED.equals(messageDelivery.getMessageDeliveryStatus());
 
@@ -246,11 +258,30 @@ public class NotificationController extends MultiActionController {
         model.put("senders", senders);
         model.put("recipients", recipients);
         model.put("contenthtml", contenthtml);
-        model.put("docId", docId);
+        model.put("messageDeliveryId", messageDelivery.getId());
         model.put("command", command);
         model.put("actionable", actionable);
         model.put(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.STANDALONE_WINDOW, standaloneWindow);
         return new ModelAndView(view, model);
+    }
+
+    /**
+     * This method handles user dismissal of a message
+     * @param request : a servlet request
+     * @param response : a servlet response
+     * @return a ModelAndView object
+     */   
+    public ModelAndView dismissMessage(HttpServletRequest request, HttpServletResponse response) {
+        String command = request.getParameter("action");
+        if (command == null) throw new RuntimeException("Dismissal command not specified");
+
+        if (NotificationConstants.ACK_CAUSE.equals(command)) {
+            return dismissMessage(command, "Notificaton acknowledged.  Please refresh your action list.", request, response);
+        } else if (NotificationConstants.FYI_CAUSE.equals(command)) {
+            return dismissMessage(command, "Action Taken.  Please refresh your action list.", request, response);
+        } else {
+            throw new RuntimeException("Unknown dismissal command: " + command);
+        }
     }
 
     /**
@@ -262,19 +293,19 @@ public class NotificationController extends MultiActionController {
      * @param response the HttpServletResponse
      * @return an appropriate ModelAndView
      */
-    private ModelAndView takeActionOnNotification(String action, String message, HttpServletRequest request, HttpServletResponse response) {
+    private ModelAndView dismissMessage(String action, String message, HttpServletRequest request, HttpServletResponse response) {
         String view = "NotificationDetail";
 
         String user = request.getRemoteUser();
-        String docId = request.getParameter(IDocHandler.ROUTEHEADER_ID_PARAMETER);
+        String messageDeliveryId = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.MSG_DELIVERY_ID);
         String command = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.COMMAND);
         String standaloneWindow = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.STANDALONE_WINDOW);
 
-        if (docId == null) {
-            throw new RuntimeException("A null docId was provided.");
+        if (messageDeliveryId == null) {
+            throw new RuntimeException("A null messageDeliveryId was provided.");
         }
 
-        LOG.debug("docId: "+docId);
+        LOG.debug("messageDeliveryId: "+messageDeliveryId);
         LOG.debug("command: "+command);
 
         /**
@@ -282,21 +313,11 @@ public class NotificationController extends MultiActionController {
          * Id.  This method might be called either from a workflow action list or
          * as a link from a message deliverer endpoint such as an email message.  
          */        
-        NotificationMessageDelivery delivery;
-        Notification notification;
-        if (docId != null) {
-            LOG.debug("Looking up notification with workflowId: "+docId);
-            try {
-                delivery = messageDeliveryService.getNotificationMessageDeliveryByDelivererId(Long.decode(docId));
-                notification = delivery.getNotification();
-            } catch (Exception e) {
-                LOG.error("Could not get notification with workflowId.");
-                LOG.error(e); 
-                throw new RuntimeException(e);
-            }
-        } else {
-            throw new RuntimeException("A null docId was provided.");
-        }           
+        NotificationMessageDelivery delivery = messageDeliveryService.getNotificationMessageDelivery(Long.decode(messageDeliveryId));
+        if (delivery == null) {
+            throw new RuntimeException("Could not find message delivery with id " + messageDeliveryId);
+        }
+        Notification notification = delivery.getNotification();
 
         /*
          * dismiss the message delivery
@@ -319,33 +340,13 @@ public class NotificationController extends MultiActionController {
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("notification", notification);
-        model.put("ackmessage", message);
+        model.put("message", message);
         model.put("senders", senders);
         model.put("recipients", recipients);
         model.put("contenthtml", contenthtml);
-        model.put("docId", docId);
+        model.put("messageDeliveryId", messageDeliveryId);
         model.put("command", command);
         model.put(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.STANDALONE_WINDOW, standaloneWindow);
         return new ModelAndView(view, model);
-    }
-
-    /**
-     * This method controls a user acknowledging a notification.
-     * @param request : a servlet request
-     * @param response : a servlet response
-     * @return a ModelAndView object
-     */   
-    public ModelAndView ackNotification(HttpServletRequest request, HttpServletResponse response) {
-        return takeActionOnNotification("ack", "Notificaton acknowledged.  Please refresh your action list.", request, response);
-    }
-
-    /**
-     * This method controls a user acknowledging a notification.
-     * @param request : a servlet request
-     * @param response : a servlet response
-     * @return a ModelAndView object
-     */   
-    public ModelAndView fyiNotification(HttpServletRequest request, HttpServletResponse response) {
-        return takeActionOnNotification("fyi", "Action Taken.  Please refresh your action list.", request, response);
     }
 }

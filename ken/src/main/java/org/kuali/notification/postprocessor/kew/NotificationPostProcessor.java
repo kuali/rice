@@ -20,13 +20,13 @@ import java.rmi.RemoteException;
 import org.apache.log4j.Logger;
 import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.notification.core.GlobalNotificationServiceLocator;
-import org.kuali.notification.dao.BusinessObjectDao;
-import org.kuali.notification.document.kew.NotificationWorkflowDocument;
 import org.kuali.notification.service.NotificationMessageDeliveryService;
+import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.util.NotificationConstants;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.PostProcessorRemote;
+import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
 import edu.iu.uis.eden.clientapp.vo.DeleteEventVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
@@ -43,15 +43,15 @@ import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 public class NotificationPostProcessor implements PostProcessorRemote {
     private static final Logger LOG = Logger.getLogger(NotificationPostProcessor.class);
     
+    NotificationService notificationService;
     NotificationMessageDeliveryService msgDeliverySvc;
-    BusinessObjectDao businessObjectDao;
     
     /**
      * Constructs a NotificationPostProcessor instance.
      */
     public NotificationPostProcessor() {
 	this.msgDeliverySvc = GlobalNotificationServiceLocator.getInstance().getNotificationMessageDeliveryService();
-	this.businessObjectDao = GlobalNotificationServiceLocator.getInstance().getBusinesObjectDao();
+	this.notificationService = GlobalNotificationServiceLocator.getInstance().getNotificationService();
     }
 
     /**
@@ -59,47 +59,51 @@ public class NotificationPostProcessor implements PostProcessorRemote {
      * Notification to REMOVED as well.
      * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#doActionTaken(edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO)
      */
-    public boolean doActionTaken(ActionTakenEventVO arg0) throws RemoteException {
-	LOG.debug("ENTERING NotificationPostProcessor.doActionTaken() for Notification action item with route header ID: " + arg0.getRouteHeaderId());
+    public boolean doActionTaken(ActionTakenEventVO event) throws RemoteException {
+	LOG.debug("ENTERING NotificationPostProcessor.doActionTaken() for Notification action item with route header ID: " + event.getRouteHeaderId());
 	
-	LOG.debug("ACTION TAKEN=" + arg0.getActionTaken().getActionTaken());
+	// XXX: this action could be happening because the user initiated it via KEW, OR because a dismiss has been invoked
+	// programmatically and the KEWActionListMessageDeliverer is taking an action...so there is a risk of dismiss being
+	// invoked recursively and causing an exception (because the doc has already been transitioned).  We make the decision
+	// of avoiding in the KEWActionListeMissageDeliverer, which should only attempt to take actions which are legal at
+	// the time it is called
+
+	LOG.debug("ACTION TAKEN=" + event.getActionTaken().getActionTaken());
 	
-	String actionTakenCode = arg0.getActionTaken().getActionTaken();
+	String actionTakenCode = event.getActionTaken().getActionTaken();
 	
 	if(actionTakenCode.equals(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD) || actionTakenCode.equals(EdenConstants.ACTION_TAKEN_FYI_CD)) {
 	    LOG.debug("User has taken either acknowledge or fy action (action code=" + actionTakenCode + 
-		    ") for Notification action item with route header ID: " + arg0.getRouteHeaderId() + 
+		    ") for Notification action item with route header ID: " + event.getRouteHeaderId() + 
 		    ".  We are now changing the status of the associated NotificationMessageDelivery to REMOVED.");
 	    
-	    // obtain a workflow user object first
-	    WorkflowIdVO proxyUser = new WorkflowIdVO(NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER);
-	        
-	    // now construct the workflow document, which will interact with workflow
-	    NotificationWorkflowDocument document;
-	    try {	
-		document = new NotificationWorkflowDocument(proxyUser, arg0.getRouteHeaderId());
+	    try {
+		NotificationMessageDelivery nmd = msgDeliverySvc.getNotificationMessageDeliveryByDelivererId(event.getRouteHeaderId());
 		
-		//get the id of the associated notification message delivery record
-                String notificationMsgDeliveryId = document.getAppDocId();
-                NotificationMessageDelivery notificationMessageDelivery = msgDeliverySvc.getNotificationMessageDelivery(new Long(notificationMsgDeliveryId));
+		if (nmd == null) {
+		    throw new RuntimeException("Could not find message delivery from workflow document " + event.getRouteHeaderId() + " to dismiss");
+		}
 
-                // avoid conflicts during an auto remove and make sure it wasn't already auto removed
-                // if we did this during an auto remove, then we'd not only be overwriting the AUTO_REMOVE status, but we'd also get an OJB optimistic lock exception
-                // if we did this after an auto remove, then we'd be overwriting the appropriate AUTO_REMOVE status
-                if(notificationMessageDelivery.getLockedDate() == null && !notificationMessageDelivery.getMessageDeliveryStatus().equals(NotificationConstants.MESSAGE_DELIVERY_STATUS.AUTO_REMOVED)) { 
-                    //change the state to REMOVED and persist
-                    assert(NotificationConstants.MESSAGE_DELIVERY_STATUS.REMOVED.equals(notificationMessageDelivery.getMessageDeliveryStatus())) : "MessageDelivery should already have been dismissed/removed by Notification System!";
-                    //notificationMessageDelivery.setMessageDeliveryStatus(NotificationConstants.MESSAGE_DELIVERY_STATUS.REMOVED);
-                    //businessObjectDao.save(notificationMessageDelivery);
-                }
-                
-                LOG.debug("Status of NotificationMessageDelivery with ID of " + notificationMsgDeliveryId + " was set to 'REMOVED'.");
+		//get the id of the associated notification message delivery record
+		String cause;
+		if (EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode)) {
+		    cause = NotificationConstants.ACK_CAUSE;
+		} else if (EdenConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode)) {
+		    cause = NotificationConstants.FYI_CAUSE;
+		} else {
+		    cause = "unknown";
+		}
+		
+		LOG.info("Dismissing message id " + nmd.getId() + " due to cause: " + cause);
+		notificationService.dismissNotificationMessageDelivery(nmd.getId(),
+		                                                       NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER,
+		                                                       cause);
 	    } catch(Exception e) {
-		throw new RuntimeException(e);
+		throw new RuntimeException("Error dismissing message", e);
 	    }
 	}
 
-	LOG.debug("LEAVING NotificationPostProcessor.doActionTaken() for Notification action item with route header ID: " + arg0.getRouteHeaderId());
+	LOG.debug("LEAVING NotificationPostProcessor.doActionTaken() for Notification action item with route header ID: " + event.getRouteHeaderId());
 	return true;
     }
 

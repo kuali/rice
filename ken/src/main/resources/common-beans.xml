@@ -256,6 +256,21 @@
         <property name="forceRefresh" value="true"/>
     </bean>
     
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+        <property name="serviceDefinition">
+            <bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+                <property name="service">
+                    <ref bean="sendNotificationKewXmlService" />
+                </property>
+                <property name="localServiceName" value="sendNotificationKewXmlSOAPService" />
+                <property name="priority" value="10" />
+                <property name="retryAttempts" value="1" />
+            </bean>
+        </property>
+        <!-- THIS IS NEEDED FOR THE KEWINTEGRATIONTEST TO OBSERVE THE SERVICE ON THE BUS... -->
+        <property name="forceRefresh" value="true"/>
+    </bean>
+    
 	<!-- Quartz beans -->    
 
     <!-- Define the job(s) -->

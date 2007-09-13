@@ -17,18 +17,26 @@ package org.kuali.notification.services.ws.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.xfire.client.Client;
+import org.codehaus.xfire.transport.http.AbstractMessageSender;
+import org.codehaus.xfire.util.LoggingHandler;
+import org.codehaus.xfire.util.dom.DOMInHandler;
+import org.codehaus.xfire.util.dom.DOMOutHandler;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import edu.iu.uis.eden.server.SimpleDocumentActionsWebServiceTest.EncodedCommonsHttpMessageSender;
+
 /**
- * Tests Axis Notification web service
+ * Tests XFire Notification web service.  See KEW SimpleDocumentActionsWebServiceTest
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-@Ignore // we need the webapp up for this...
-public class NotificationWebServiceTest extends NotificationWebServiceTestCaseBase {
+@Ignore // requires webapp to be up
+public class NotificationWebServiceTest {
     private static final Logger LOG = Logger.getLogger(NotificationWebServiceTest.class);
     private static final String notificationMessageAsXml;
     
@@ -41,24 +49,13 @@ public class NotificationWebServiceTest extends NotificationWebServiceTestCaseBa
         }
     }
 
-
-    @Override
-    protected boolean shouldStartWebService() {
-        return true; //!GlobalNotificationServiceLocator.isInitialized();
-    }
-
     @Test
     public void test() throws Exception {
-        // test cannot run with existing KEN context - must be run separately
-        //if (GlobalNotificationServiceLocator.isInitialized()) return;
-        
-        /*
-        NotificationWebServiceSoapBindingStub stub = new NotificationWebServiceSoapBindingStub(new URL(getWebServiceURL()), null);
+        /*NotificationWebServiceSoapBindingStub stub = new NotificationWebServiceSoapBindingStub(new URL(getWebServiceURL()), null);
 
         String responseAsXml = stub.sendNotification(notificationMessageAsXml);
 
         LOG.info(responseAsXml);
-        assertTrue(StringUtils.contains(responseAsXml, "<status>Success</status>"));
-        */
+        assertTrue(StringUtils.contains(responseAsXml, "<status>Success</status>"));*/
     }
 }

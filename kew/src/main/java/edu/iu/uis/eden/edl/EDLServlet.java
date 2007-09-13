@@ -51,28 +51,32 @@ public class EDLServlet extends HttpServlet {
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		try {
-			RequestParser requestParser = new RequestParser(request);
-			String edlName = requestParser.getParameterValue("edlName");
-			if (edlName == null) {
-				edlName = requestParser.getParameterValue("docTypeName");//this is for 'WorkflowQuicklinks'
-			}
-			EDLController edlController = null;
-			if (edlName == null) {
-				String documentId = requestParser.getParameterValue("docId");
-				if (documentId == null) {
-					throw new WorkflowRuntimeException("No edl name or document id detected");
-				}
-				edlController = KEWServiceLocator.getEDocLiteService().getEDLController(new Long(documentId));
-			} else {
-				edlController = KEWServiceLocator.getEDocLiteService().getEDLController(edlName);
-			}
+		    if (request.getParameter("__exception") != null) {
+		        throw new RuntimeException("testing error forward");
+		    }
 
-			EDLControllerChain controllerChain = new EDLControllerChain();
-			controllerChain.addEdlController(edlController);
-			response.setContentType("text/html; charset=UTF-8");
-			controllerChain.renderEDL(requestParser, response);
+		    RequestParser requestParser = new RequestParser(request);
+		    String edlName = requestParser.getParameterValue("edlName");
+		    if (edlName == null) {
+		        edlName = requestParser.getParameterValue("docTypeName");//this is for 'WorkflowQuicklinks'
+		    }
+		    EDLController edlController = null;
+		    if (edlName == null) {
+		        String documentId = requestParser.getParameterValue("docId");
+		        if (documentId == null) {
+		            throw new WorkflowRuntimeException("No edl name or document id detected");
+		        }
+		        edlController = KEWServiceLocator.getEDocLiteService().getEDLController(new Long(documentId));
+		    } else {
+		        edlController = KEWServiceLocator.getEDocLiteService().getEDLController(edlName);
+		    }
+
+		    EDLControllerChain controllerChain = new EDLControllerChain();
+		    controllerChain.addEdlController(edlController);
+		    response.setContentType("text/html; charset=UTF-8");
+		    controllerChain.renderEDL(requestParser, response);
+
 		} catch (Exception e) {
 			LOG.error("Error processing EDL", e);
 			outputError(request, response, e);
@@ -80,9 +84,9 @@ public class EDLServlet extends HttpServlet {
 	}
 
 	private void outputError(HttpServletRequest request, HttpServletResponse response, Exception e) throws ServletException, IOException {
-		request.setAttribute("WORKFLOW_ERROR", e);
-		RequestDispatcher rd = getServletContext().getRequestDispatcher("/Error.do");
-        rd.forward(request, response);
+	        request.setAttribute("WORKFLOW_ERROR", e);
+	        RequestDispatcher rd = getServletContext().getRequestDispatcher(request.getServletPath() + "/../Error.do");
+	        rd.forward(request, response);
 	}
 
 }

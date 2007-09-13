@@ -40,6 +40,7 @@ import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
 import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
 
 import edu.iu.uis.eden.messaging.SOAPServiceDefinition;
+import edu.iu.uis.eden.messaging.ServerSideRemotedServiceHolder;
 import edu.iu.uis.eden.messaging.ServiceInfo;
 import edu.iu.uis.eden.security.SignatureSigningResponseWrapper;
 import edu.iu.uis.eden.security.SignatureVerifyingRequestWrapper;
@@ -134,7 +135,11 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 
 	protected boolean isSecure(HttpServletRequest request) {
 		QName serviceName = this.httpInvokerHandler.getServiceNameFromRequest(request);
-		ServiceInfo serviceInfo = KSBServiceLocator.getServiceDeployer().getRemotedServiceHolder(serviceName).getServiceInfo();
+		ServerSideRemotedServiceHolder serviceHolder = KSBServiceLocator.getServiceDeployer().getRemotedServiceHolder(serviceName);
+		if (serviceHolder == null) {
+		    throw new RuntimeException("Service not found: " + serviceName);
+		}
+		ServiceInfo serviceInfo = serviceHolder.getServiceInfo();
 		if (serviceInfo.getServiceDefinition() instanceof SOAPServiceDefinition) {
 		    return false;
 		}

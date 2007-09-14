@@ -49,14 +49,8 @@
   </filter>
 
   <filter-mapping>
-    <!-- maps the ResponseOverrideFilter to Struts actions pattern -->
     <filter-name>ResponseOverrideFilter</filter-name>
     <url-pattern>*.do</url-pattern>
-  </filter-mapping>
-
-  <filter-mapping>
-    <filter-name>UserAccessFilter</filter-name>
-    <servlet-name>action</servlet-name>
   </filter-mapping>
 
   <filter-mapping>
@@ -67,6 +61,11 @@
   <filter-mapping>
     <!-- maps the UserLoginFilter to the Struts servlet -->
     <filter-name>UserLoginFilter</filter-name>
+    <servlet-name>action</servlet-name>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>UserAccessFilter</filter-name>
     <servlet-name>action</servlet-name>
   </filter-mapping>
 
@@ -99,7 +98,6 @@
 
   <servlet>
     <servlet-name>RequestForwardingServlet</servlet-name>
-    <display-name>Request Forwarding Servlet</display-name>
     <servlet-class>edu.iu.uis.eden.server.RequestForwardingServlet</servlet-class>
     <init-param>
         <param-name>.*/(\S+)\.wsdl</param-name>
@@ -114,6 +112,10 @@
     <init-param>
       <param-name>config</param-name>
       <param-value>/WEB-INF/struts-config.xml</param-value>
+    </init-param>
+    <init-param>
+       <param-name>config/ksb</param-name>
+       <param-value>/ksb/WEB-INF/struts-config.xml</param-value>
     </init-param>
     <init-param>
       <param-name>debug</param-name>

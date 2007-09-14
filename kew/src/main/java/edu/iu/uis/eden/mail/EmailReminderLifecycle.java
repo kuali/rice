@@ -16,6 +16,7 @@
  */
 package edu.iu.uis.eden.mail;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.Lifecycle;
@@ -33,15 +34,16 @@ import edu.iu.uis.eden.EdenConstants;
  * the daily and weekly email reminders.
  *
  * @author rkirkend
+ * @author Eric Westfall
  */
 public class EmailReminderLifecycle implements Lifecycle {
+
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(EmailReminderLifecycle.class);
 
 	private static final String DAILY_TRIGGER_NAME = "Daily Email Trigger";
 	private static final String DAILY_JOB_NAME = "Daily Email";
 	private static final String WEEKLY_TRIGGER_NAME = "Weekly Email Trigger";
 	private static final String WEEKLY_JOB_NAME = "Weekly Email";
-	private static final String EMAIL_BATCH_GROUP_NAME = "Email Batch";
-
 
 	private boolean started;
 
@@ -52,19 +54,31 @@ public class EmailReminderLifecycle implements Lifecycle {
 	public void start() throws Exception {
 		String emailBatchGroup = "Email Batch";
 
-		CronTrigger dailyTrigger = new CronTrigger(DAILY_TRIGGER_NAME, emailBatchGroup, Core.getCurrentContextConfig().getProperty(EdenConstants.DAILY_EMAIL_CRON_EXPRESSION));
-		JobDetail dailyJobDetail = new JobDetail(DAILY_JOB_NAME, emailBatchGroup, DailyEmailJob.class);
-		dailyTrigger.setJobName(dailyJobDetail.getName());
-		dailyTrigger.setJobGroup(dailyJobDetail.getGroup());
-		addJobToScheduler(dailyJobDetail);
-		addTriggerToScheduler(dailyTrigger);
+		String dailyCron = Core.getCurrentContextConfig().getProperty(EdenConstants.DAILY_EMAIL_CRON_EXPRESSION);
+		if (!StringUtils.isBlank(dailyCron)) {
+		    LOG.info("Scheduling Daily Email batch with cron expression: " + dailyCron);
+		    CronTrigger dailyTrigger = new CronTrigger(DAILY_TRIGGER_NAME, emailBatchGroup, dailyCron);
+		    JobDetail dailyJobDetail = new JobDetail(DAILY_JOB_NAME, emailBatchGroup, DailyEmailJob.class);
+		    dailyTrigger.setJobName(dailyJobDetail.getName());
+		    dailyTrigger.setJobGroup(dailyJobDetail.getGroup());
+		    addJobToScheduler(dailyJobDetail);
+		    addTriggerToScheduler(dailyTrigger);
+		} else {
+		    LOG.warn("No " + EdenConstants.DAILY_EMAIL_CRON_EXPRESSION + " parameter was configured.  Daily Email batch was not scheduled!");
+		}
 
-		CronTrigger weeklyTrigger = new CronTrigger(WEEKLY_TRIGGER_NAME, emailBatchGroup, Core.getCurrentContextConfig().getProperty(EdenConstants.WEEKLY_EMAIL_CRON_EXPRESSION));
-		JobDetail weeklyJobDetail = new JobDetail(WEEKLY_JOB_NAME, emailBatchGroup, WeeklyEmailJob.class);
-		weeklyTrigger.setJobName(weeklyJobDetail.getName());
-		weeklyTrigger.setJobGroup(weeklyJobDetail.getGroup());
-		addJobToScheduler(weeklyJobDetail);
-		addTriggerToScheduler(weeklyTrigger);
+		String weeklyCron = Core.getCurrentContextConfig().getProperty(EdenConstants.WEEKLY_EMAIL_CRON_EXPRESSION);
+		if (!StringUtils.isBlank(dailyCron)) {
+		    LOG.info("Scheduling Weekly Email batch with cron expression: " + weeklyCron);
+		    CronTrigger weeklyTrigger = new CronTrigger(WEEKLY_TRIGGER_NAME, emailBatchGroup, weeklyCron);
+		    JobDetail weeklyJobDetail = new JobDetail(WEEKLY_JOB_NAME, emailBatchGroup, WeeklyEmailJob.class);
+		    weeklyTrigger.setJobName(weeklyJobDetail.getName());
+		    weeklyTrigger.setJobGroup(weeklyJobDetail.getGroup());
+		    addJobToScheduler(weeklyJobDetail);
+		    addTriggerToScheduler(weeklyTrigger);
+		} else {
+		    LOG.warn("No " + EdenConstants.WEEKLY_EMAIL_CRON_EXPRESSION + " parameter was configured.  Weekly Email batch was not scheduled!");
+		}
 
 		started = true;
 	}

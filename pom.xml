@@ -139,6 +139,7 @@
     <module>testharness</module>
     <module>ksb</module>
     <module>kns</module>
+    <module>kim-api</module>
     <module>kim</module>
     <module>kew</module>
     <module>ken</module>

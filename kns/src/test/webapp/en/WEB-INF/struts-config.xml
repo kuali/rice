@@ -82,7 +82,7 @@
         <forward name="finalStateError" path="/WEB-INF/jsp/superuser/SuperUser.jsp"/>
       </action>
 
-      <action path="/Error" scope="request" validate="false" type="org.apache.struts.actions.ForwardAction"
+      <action path="/Error" scope="request" validate="false" type="edu.iu.uis.eden.web.ModuleRelativeForwardAction"
              parameter="/WEB-INF/jsp/Error.jsp"/>
 
       <action path="/ActionList" scope="request" validate="false" parameter="methodToCall"

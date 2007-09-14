@@ -52,10 +52,6 @@ public class EDLServlet extends HttpServlet {
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-		    if (request.getParameter("__exception") != null) {
-		        throw new RuntimeException("testing error forward");
-		    }
-
 		    RequestParser requestParser = new RequestParser(request);
 		    String edlName = requestParser.getParameterValue("edlName");
 		    if (edlName == null) {

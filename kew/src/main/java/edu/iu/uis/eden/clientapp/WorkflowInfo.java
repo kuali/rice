@@ -18,7 +18,9 @@ package edu.iu.uis.eden.clientapp;
 
 import java.rmi.RemoteException;
 
+import org.kuali.rice.config.Config;
 import org.kuali.rice.config.RiceConfigurer;
+import org.kuali.rice.core.Core;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.workflow.config.KEWConfigurer;
 
@@ -77,7 +79,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if there is an error starting the RiceConfigurer
      */
     private synchronized void initializeBus() throws WorkflowException {
-    	if (!GlobalResourceLoader.isInitialized()) {
+    	if (!isLocal() && !GlobalResourceLoader.isInitialized()) {
     		RiceConfigurer configurer = new RiceConfigurer();
     		configurer.setMessageEntity(EdenConstants.KEW_MESSAGING_ENTITY);
     		configurer.getModules().add(new KEWConfigurer());
@@ -92,6 +94,14 @@ public class WorkflowInfo implements java.io.Serializable {
     			throw new WorkflowException(e);
     		}
     	}
+    }
+
+    private boolean isLocal() {
+	Config config = Core.getCurrentContextConfig();
+	if (config != null) {
+	    return config.getProperty(Config.CLIENT_PROTOCOL).equals(EdenConstants.LOCAL_CLIENT_PROTOCOL);
+	}
+	return false;
     }
 
     /**

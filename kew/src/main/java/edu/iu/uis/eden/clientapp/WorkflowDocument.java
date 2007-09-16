@@ -54,6 +54,7 @@ import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
 import edu.iu.uis.eden.exception.DocumentTypeNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
+import edu.iu.uis.eden.messaging.config.KSBThinClientConfigurer;
 import edu.iu.uis.eden.server.WorkflowDocumentActions;
 import edu.iu.uis.eden.server.WorkflowUtility;
 import edu.iu.uis.eden.util.Utilities;
@@ -170,6 +171,8 @@ public class WorkflowDocument implements java.io.Serializable {
     	if (!isLocal() && !GlobalResourceLoader.isInitialized()) {
     		RiceConfigurer configurer = new RiceConfigurer();
     		configurer.setMessageEntity(EdenConstants.KEW_MESSAGING_ENTITY);
+    		// thin client allows us to still have access to the DigitalSignatureService but not use the full capabilities of the bus
+    		configurer.getModules().add(new KSBThinClientConfigurer());
     		configurer.getModules().add(new KEWConfigurer());
     		try {
     			configurer.start();

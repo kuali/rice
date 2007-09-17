@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,6 +16,7 @@
  */
 package org.kuali.workflow.config;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -31,14 +32,12 @@ import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.httpclient.params.HttpParams;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.resourceloader.BaseResourceLoader;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.SpringLoader;
-import edu.iu.uis.eden.core.dependencylifecycles.SpringLifeCycle;
 import edu.iu.uis.eden.messaging.HttpClientHelper;
 import edu.iu.uis.eden.messaging.KEWHttpInvokerRequestExecutor;
 import edu.iu.uis.eden.server.WorkflowDocumentActions;
@@ -54,7 +53,15 @@ import edu.iu.uis.eden.server.WorkflowUtility;
  */
 public class ThinClientResourceLoader extends BaseResourceLoader {
 
-	private Lifecycle springLifecycle = new SpringLifeCycle("org/kuali/workflow/resources/KewWebClientBeans.xml");
+    	public static final String DOCUMENT_ENDPOINT = "workflowdocument.javaservice.endpoint";
+    	public static final String SECURE_DOCUMENT_ENDPOINT = "secure.workflowdocument.javaservice.endpoint";
+    	public static final String UTILITY_ENDPOINT = "workflowutility.javaservice.endpoint";
+    	public static final String SECURE_UTILITY_ENDPOINT = "secure.workflowutility.javaservice.endpoint";
+
+    	// TODO this really isn't needed anymore since the digital signature service is part of the bus
+	//private Lifecycle springLifecycle = new SpringLifeCycle("org/kuali/workflow/resources/KewWebClientBeans.xml");
+
+    	private Map<String, Object> services = Collections.synchronizedMap(new HashMap<String, Object>());
 
 	public ThinClientResourceLoader() {
 		super(new QName(Core.getCurrentContextConfig().getMessageEntity(), "ThinClientResourceLoader"));
@@ -63,7 +70,8 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 	@Override
 	public void start() throws Exception {
 		super.start();
-		springLifecycle.start();
+		initializeHttpClientParams();
+		//springLifecycle.start();
 	}
 
 
@@ -71,54 +79,56 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 	@Override
 	public void stop() throws Exception {
 		super.stop();
-		springLifecycle.stop();
+		//springLifecycle.stop();
 	}
 
-	public Object getService(QName serviceName) {
-		if (serviceName.getLocalPart().equals(KEWServiceLocator.WORKFLOW_UTILITY_SERVICE)) {
-			return getWorkflowUtility();
-		} else if (serviceName.getLocalPart().equals(KEWServiceLocator.WORKFLOW_DOCUMENT_ACTIONS_SERVICE)) {
-			return getWorkflowDoucment();
+	public Object getService(QName serviceQName) {
+	    String serviceName = serviceQName.getLocalPart();
+	    	Object cachedService = services.get(serviceName);
+	    	if (cachedService != null) {
+	    	    return cachedService;
+	    	}
+		if (serviceName.equals(KEWServiceLocator.WORKFLOW_UTILITY_SERVICE)) {
+			WorkflowUtility utility = getWorkflowUtility();
+			services.put(serviceName, utility);
+			return utility;
+		} else if (serviceName.equals(KEWServiceLocator.WORKFLOW_DOCUMENT_ACTIONS_SERVICE)) {
+			WorkflowDocumentActions documentActions = getWorkflowDocument();
+			services.put(serviceName, documentActions);
+			return documentActions;
 		}
-		return SpringLoader.getInstance().getService(serviceName);
+	    	return null;
+		//return SpringLoader.getInstance().getService(serviceName);
 	}
 
 	public WorkflowUtility getWorkflowUtility() {
-		HttpInvokerProxyFactoryBean proxyFactory = new HttpInvokerProxyFactoryBean();
-		proxyFactory.setServiceUrl(Core.getCurrentContextConfig().getProperty("workflowutility.javaservice.endpoint"));
-
-		proxyFactory.setServiceInterface(WorkflowUtility.class);
-		String secureProp = Core.getCurrentContextConfig().getProperty("secure.workflowutility.javaservice.endpoint");
-		Boolean secureIt = null;
-		if (secureProp == null) {
-			secureIt = true;
-		} else {
-			secureIt = new Boolean(secureProp);
-		}
-
-		KEWHttpInvokerRequestExecutor executor = new KEWHttpInvokerRequestExecutor(secureIt);
-
-		proxyFactory.setHttpInvokerRequestExecutor(executor);
-		proxyFactory.afterPropertiesSet();
-		return (WorkflowUtility) proxyFactory.getObject();
+	    return (WorkflowUtility)getServiceProxy(WorkflowUtility.class, UTILITY_ENDPOINT, SECURE_UTILITY_ENDPOINT);
 	}
 
-	public WorkflowDocumentActions getWorkflowDoucment() {
-		HttpInvokerProxyFactoryBean proxyFactory = new HttpInvokerProxyFactoryBean();
-		proxyFactory.setServiceUrl(Core.getCurrentContextConfig().getProperty("workflowdocument.javaservice.endpoint"));
-		proxyFactory.setServiceInterface(WorkflowDocumentActions.class);
-		String secureProp = Core.getCurrentContextConfig().getProperty("secure.workflowdocument.javaservice.endpoint");
-		Boolean secureIt = null;
-		if (secureProp == null) {
-			secureIt = true;
-		} else {
-			secureIt = new Boolean(secureProp);
-		}
+	public WorkflowDocumentActions getWorkflowDocument() {
+	    return (WorkflowDocumentActions)getServiceProxy(WorkflowDocumentActions.class, DOCUMENT_ENDPOINT, SECURE_DOCUMENT_ENDPOINT);
+	}
 
-		KEWHttpInvokerRequestExecutor executor = new KEWHttpInvokerRequestExecutor(secureIt);
-		proxyFactory.setHttpInvokerRequestExecutor(executor);
-		proxyFactory.afterPropertiesSet();
-		return (WorkflowDocumentActions) proxyFactory.getObject();
+	protected Object getServiceProxy(Class serviceInterface, String endpointParam, String secureEndpointParam) {
+	    HttpInvokerProxyFactoryBean proxyFactory = new HttpInvokerProxyFactoryBean();
+	    String serviceUrl = Core.getCurrentContextConfig().getProperty(endpointParam);
+	    if (StringUtils.isEmpty(serviceUrl)) {
+		throw new IllegalArgumentException("The " + endpointParam + " configuration parameter was not defined but is required.");
+	    }
+	    proxyFactory.setServiceUrl(serviceUrl);
+	    proxyFactory.setServiceInterface(serviceInterface);
+	    String secureProp = Core.getCurrentContextConfig().getProperty(secureEndpointParam);
+	    Boolean secureIt = null;
+	    if (secureProp == null) {
+		secureIt = true;
+	    } else {
+		secureIt = new Boolean(secureProp);
+	    }
+	    KEWHttpInvokerRequestExecutor executor = new KEWHttpInvokerRequestExecutor(getHttpClient());
+	    executor.setSecure(secureIt);
+	    proxyFactory.setHttpInvokerRequestExecutor(executor);
+	    proxyFactory.afterPropertiesSet();
+	    return proxyFactory.getObject();
 	}
 
 	/*

@@ -145,11 +145,11 @@ public class KEWConfigurer extends ModuleConfigurer {
 	 * measure to load these without having to deal with the removal of the embedded plugin right away.
 	 */
 	protected Lifecycle createTempEmbeddedLifeCycle() throws Exception {
-		return (Lifecycle)ConstructorUtils.invokeConstructor(Class.forName("edu.iu.uis.eden.core.TempEmbeddedLifeCycle"), null);
+		return (Lifecycle)Class.forName("edu.iu.uis.eden.core.TempEmbeddedLifeCycle").newInstance();
 	}
 
 	protected Lifecycle createThinClientLifecycle() throws Exception {
-		return (Lifecycle)ConstructorUtils.invokeConstructor(Class.forName("org.kuali.workflow.config.ThinClientLifecycle"), null);
+		return (Lifecycle)Class.forName("org.kuali.workflow.config.ThinClientLifecycle").newInstance();
 	}
 
 	public Config loadConfig(Config parentConfig) throws Exception {

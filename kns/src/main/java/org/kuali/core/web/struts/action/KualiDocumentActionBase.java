@@ -44,6 +44,7 @@ import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.datadictionary.DataDictionary;
 import org.kuali.core.datadictionary.DocumentEntry;
 import org.kuali.core.document.Document;
+import org.kuali.core.document.SessionDocument;
 import org.kuali.core.document.authorization.DocumentActionFlags;
 import org.kuali.core.document.authorization.DocumentAuthorizer;
 import org.kuali.core.exceptions.AuthorizationException;
@@ -142,7 +143,10 @@ public class KualiDocumentActionBase extends KualiAction {
             Document document = formBase.getDocument();
             DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
             formBase.populateAuthorizationFields(documentAuthorizer);
-
+            if (document instanceof SessionDocument && (formBase.getFormKey() == null ||  formBase.getFormKey().equals(""))) {
+        	formBase.setFormKey(GlobalVariables.getUserSession().addObject(form));
+                // generate doc form key here if it does not exist
+            }
             // set returnToActionList flag, if needed
             if ("displayActionListView".equals(formBase.getCommand())) {
                 formBase.setReturnToActionList(true);

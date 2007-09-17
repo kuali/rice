@@ -546,6 +546,9 @@ public class RiceConstants extends JstlConstants {
     public static final String PERMISSION_MOD_DESCRIPTION = "MOD";
     public static final String PERMISSION_MODIFY = "modify";
     public static final String PERMISSION_VIEW = "view";
+    // websession
+    public static final String DOCUMENT_WEB_SCOPE = "documentWebScope";
+    public static final String SESSION_SCOPE = "session";
 
     public static class DocumentStatusCodes {
         public static final String INITIATED = "?";

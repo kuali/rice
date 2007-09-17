@@ -257,8 +257,9 @@ public class KualiRequestProcessor extends RequestProcessor {
         String methodToCall = request.getParameter(RiceConstants.DISPATCH_REQUEST_PARAMETER);
         String refreshCaller = request.getParameter(RiceConstants.REFRESH_CALLER);
         String searchListRequestKey = request.getParameter(RiceConstants.SEARCH_LIST_REQUEST_KEY);
+        String documentWebScope = request.getParameter(RiceConstants.DOCUMENT_WEB_SCOPE);
 
-        if (StringUtils.isNotBlank(docFormKey) && (mapping.getPath().startsWith(RiceConstants.REFRESH_MAPPING_PREFIX) || RiceConstants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall) || RiceConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller))) {
+        if (StringUtils.isNotBlank(docFormKey) && (mapping.getPath().startsWith(RiceConstants.REFRESH_MAPPING_PREFIX) || RiceConstants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall) || RiceConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller) || RiceConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope))) {
 
             // check for search result storage and clear
             GlobalVariables.getUserSession().removeObjectsByPrefix(RiceConstants.SEARCH_LIST_KEY_PREFIX);

@@ -212,6 +212,14 @@ public class NotificationController extends MultiActionController {
     }
 
     /**
+     * @param req the {@link HttpServletRequest}
+     * @return whether the incoming request was from the action list
+     */
+    protected boolean requestIsFromKEW(HttpServletRequest req) {
+        return req.getParameter(IDocHandler.ROUTEHEADER_ID_PARAMETER) != null;
+    }
+
+    /**
      * This controller handles displaying the appropriate notification details for a specific record.
      * @param request : a servlet request
      * @param response : a servlet response
@@ -231,15 +239,17 @@ public class NotificationController extends MultiActionController {
         Notification notification = messageDelivery.getNotification();
         boolean actionable = false;
 
-        // check to see if this was a standalone window by examining the command from KEW before setting it to INLINE to force an inline view
-        if(command != null && 
-                (command.equals(NotificationConstants.NOTIFICATION_DETAIL_VIEWS.NORMAL_VIEW) || 
-                        command.equals(NotificationConstants.NOTIFICATION_DETAIL_VIEWS.DOC_SEARCH_VIEW))) {
-            standaloneWindow = "true";
-        }
+        if (requestIsFromKEW(request)) {
+            // check to see if this was a standalone window by examining the command from KEW before setting it to INLINE to force an inline view
+            if(command != null && 
+                    (command.equals(NotificationConstants.NOTIFICATION_DETAIL_VIEWS.NORMAL_VIEW) || 
+                            command.equals(NotificationConstants.NOTIFICATION_DETAIL_VIEWS.DOC_SEARCH_VIEW))) {
+                standaloneWindow = "true";
+            }
 
-        // we want all messages from the action list in line
-        command = NotificationConstants.NOTIFICATION_DETAIL_VIEWS.INLINE;
+            // we want all messages from the action list in line
+            command = NotificationConstants.NOTIFICATION_DETAIL_VIEWS.INLINE;
+        }
 
         actionable = user.equals(messageDelivery.getUserRecipientId()) && NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED.equals(messageDelivery.getMessageDeliveryStatus());
 

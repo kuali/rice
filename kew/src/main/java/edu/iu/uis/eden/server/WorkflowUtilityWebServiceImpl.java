@@ -81,7 +81,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 
     private static final Logger LOG = Logger.getLogger(WorkflowUtilityWebServiceImpl.class);
 
-    public RouteHeaderVO getRouteHeaderWithUser(UserIdVO userId, Long documentId) throws WorkflowException, EdenUserNotFoundException {
+    public RouteHeaderVO getRouteHeaderWithUser(UserIdVO userId, Long documentId) throws WorkflowException {
         if (documentId == null) {
             LOG.error("null routeHeaderId passed in.  Throwing RuntimeExcpetion");
             throw new RuntimeException("Null documentId passed in.");
@@ -104,7 +104,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return routeHeaderVO;
     }
 
-    public RouteHeaderVO getRouteHeader(Long documentId) throws WorkflowException, EdenUserNotFoundException {
+    public RouteHeaderVO getRouteHeader(Long documentId) throws WorkflowException {
         if (documentId == null) {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in");
@@ -119,7 +119,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return routeHeaderVO;
     }
 
-    public DocumentDetailVO getDocumentDetail(Long documentId) throws WorkflowException, EdenUserNotFoundException {
+    public DocumentDetailVO getDocumentDetail(Long documentId) throws WorkflowException {
         if (documentId == null) {
             LOG.error("null documentId passed in.");
             throw new RuntimeException("null documentId passed in");
@@ -134,7 +134,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return documentDetailVO;
     }
 
-    public RouteNodeInstanceVO getNodeInstance(Long nodeInstanceId) throws RemoteException, WorkflowException {
+    public RouteNodeInstanceVO getNodeInstance(Long nodeInstanceId) throws WorkflowException {
         if (nodeInstanceId == null) {
             LOG.error("null nodeInstanceId passed in.");
             throw new RuntimeException("null nodeInstanceId passed in");
@@ -144,7 +144,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return BeanConverter.convertRouteNodeInstance(nodeInstance);
     }
 
-    public WorkgroupVO getWorkgroup(WorkgroupIdVO workgroupId) {
+    public WorkgroupVO getWorkgroup(WorkgroupIdVO workgroupId) throws WorkflowException {
         if (workgroupId == null) {
             LOG.error("null workgroupId passed in.");
             throw new RuntimeException("null workgroupId passed in.");
@@ -160,7 +160,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return workgroupVO;
     }
 
-    public UserVO getWorkflowUser(UserIdVO userId) throws EdenUserNotFoundException {
+    public UserVO getWorkflowUser(UserIdVO userId) throws WorkflowException {
         if (userId == null) {
             LOG.error("null userId passed in.");
             throw new RuntimeException("null userId passed in.");
@@ -183,7 +183,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return KEWServiceLocator.getDocumentTypeService().getDocumentTypeVO(docName).getRouteTemplates();
     }
 
-    public DocumentTypeVO getDocumentType(Long documentTypeId) throws DocumentTypeNotFoundException {
+    public DocumentTypeVO getDocumentType(Long documentTypeId) throws WorkflowException {
         if (documentTypeId == null) {
             LOG.error("null documentTypeId passed in.");
             throw new RuntimeException("null documentTypeId passed in.");
@@ -192,7 +192,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return KEWServiceLocator.getDocumentTypeService().getDocumentTypeVO(documentTypeId);
     }
 
-    public DocumentTypeVO getDocumentTypeByName(String documentTypeName) throws DocumentTypeNotFoundException {
+    public DocumentTypeVO getDocumentTypeByName(String documentTypeName) throws WorkflowException {
         if (documentTypeName == null) {
             LOG.error("null documentTypeName passed in.");
             throw new RuntimeException("null documentTypeName passed in");
@@ -209,7 +209,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return rid;
     }
 
-    public WorkgroupVO[] getUserWorkgroups(UserIdVO userId) throws EdenUserNotFoundException, WorkflowException {
+    public WorkgroupVO[] getUserWorkgroups(UserIdVO userId) throws WorkflowException {
 
         if (userId == null ){
             LOG.error("null userId passed in.");
@@ -228,7 +228,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return workgroupVOs;
     }
 
-    public ActionRequestVO[] getActionRequests(Long routeHeaderId) throws EdenUserNotFoundException {
+    public ActionRequestVO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
         if (routeHeaderId == null) {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
@@ -244,7 +244,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return actionRequestVOs;
     }
 
-    public ActionTakenVO[] getActionsTaken(Long routeHeaderId) throws EdenUserNotFoundException {
+    public ActionTakenVO[] getActionsTaken(Long routeHeaderId) throws WorkflowException {
         if (routeHeaderId == null) {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
@@ -292,18 +292,18 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
     }
 
-    public RouteNodeInstanceVO[] getDocumentRouteNodeInstances(Long documentId) throws RemoteException, WorkflowException {
+    public RouteNodeInstanceVO[] getDocumentRouteNodeInstances(Long documentId) throws WorkflowException {
     	LOG.debug("Fetching RouteNodeInstanceVOs [docId=" + documentId + "]");
     	return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(loadDocument(documentId), true));
     }
 
-    public RouteNodeInstanceVO[] getActiveNodeInstances(Long documentId) throws RemoteException, WorkflowException {
+    public RouteNodeInstanceVO[] getActiveNodeInstances(Long documentId) throws WorkflowException {
     	LOG.debug("Fetching active RouteNodeInstanceVOs [docId=" + documentId + "]");
         loadDocument(documentId);
         return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(documentId));
     }
 
-    public RouteNodeInstanceVO[] getTerminalNodeInstances(Long documentId) throws RemoteException, WorkflowException {
+    public RouteNodeInstanceVO[] getTerminalNodeInstances(Long documentId) throws WorkflowException {
     	LOG.debug("Fetching terminal RouteNodeInstanceVOs [docId=" + documentId + "]");
     	loadDocument(documentId);
         return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getTerminalNodeInstances(documentId));
@@ -318,7 +318,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return nodeInstanceVOs;
     }
 
-    public boolean isUserInRouteLog(Long routeHeaderId, UserIdVO userId, boolean lookFuture) throws RemoteException {
+    public boolean isUserInRouteLog(Long routeHeaderId, UserIdVO userId, boolean lookFuture) throws WorkflowException {
         if (routeHeaderId == null) {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
@@ -370,7 +370,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return authorized;
     }
 
-    private boolean actionRequestListHasUser(WorkflowUser user, List actionRequests) throws EdenUserNotFoundException {
+    private boolean actionRequestListHasUser(WorkflowUser user, List actionRequests) throws WorkflowException {
         for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
             if (actionRequest.isRecipientRoutedRequest(user)) {
@@ -418,7 +418,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
     }
 
-    public boolean isLastApproverInRouteLevel(Long routeHeaderId, UserIdVO userId, Integer routeLevel) throws RemoteException, WorkflowException {
+    public boolean isLastApproverInRouteLevel(Long routeHeaderId, UserIdVO userId, Integer routeLevel) throws WorkflowException {
         if (routeLevel == null) {
             LOG.error("null routeLevel passed in.");
             throw new RuntimeException("null routeLevel passed in.");
@@ -432,7 +432,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return isLastApproverAtNode(routeHeaderId, userId, node.getRouteNodeName());
     }
 
-    public boolean isLastApproverAtNode(Long routeHeaderId, UserIdVO userId, String nodeName) throws EdenUserNotFoundException {
+    public boolean isLastApproverAtNode(Long routeHeaderId, UserIdVO userId, String nodeName) throws WorkflowException {
         if (routeHeaderId == null) {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
@@ -698,7 +698,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 		}
 	}
 
-    public RuleVO[] ruleReport(RuleReportCriteriaVO ruleReportCriteria) throws RemoteException, WorkflowException, EdenUserNotFoundException {
+    public RuleVO[] ruleReport(RuleReportCriteriaVO ruleReportCriteria) throws RemoteException, WorkflowException {
         incomingParamCheck(ruleReportCriteria, "ruleReportCriteria");
         if (ruleReportCriteria == null) {
             throw new IllegalArgumentException("At least one criterion must be sent in a RuleReportCriteriaVO object");

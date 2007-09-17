@@ -1,0 +1,22 @@
+<config>
+	<param name="environment">dev</param>
+	<param name="axis:user">onestartsharedservices-devandtst</param>
+	<param name="axis:password">s1t0spss!xX-tst</param>
+	<param name="axis-crypto:org.apache.ws.security.crypto.merlin.keystore.password">s1t0spss!xX-tst</param>	
+	<param name="axis-crypto:org.apache.ws.security.crypto.merlin.keystore.alias">onestartsharedservices-devandtst</param>
+	<param name="axis-crypto:org.apache.ws.security.crypto.merlin.file">/opt/sa_forms/java/${environment}/edu/iu/uis/security/en/onestartsharedservices-devandtst_keystore</param>
+	<param name="log4j.settings.path">classpath:stress-test-app-config.xml</param>
+	<param name="workflowdocument.javaservice.endpoint">http://129.79.44.109:8080/kr-dev/remoting/%7BTRAVEL%7DWorkflowDocumentActionsService</param>
+	<param name="workflowutility.javaservice.endpoint">http://129.79.44.109:8080/kr-dev/remoting/%7BTRAVEL%7DWorkflowUtilityService</param>
+	<param name="serviceUrl">https://localhost:8080/kr-${environment}/services</param>
+	<param name="config.location">${user.home}/kuali/main/${environment}/kew-config.xml</param>
+	<param name="keystore.alias">onestartsharedservices-devandtst</param>
+	<param name="keystore.file">/opt/sa_forms/java/dev/edu/iu/uis/security/en/onestartsharedservices-devandtst_keystore</param>
+	<param name="keystore.location">/opt/sa_forms/java/dev/edu/iu/uis/security/en/onestartsharedservices-devandtst_keystore</param>
+	<param name="keystore.password">s1t0spss!xX-tst</param>
+	
+	<!-- Above params required for configuration of workflow. Below params configure stress test application -->
+	
+	
+	
+</config>

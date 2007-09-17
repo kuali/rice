@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.kuali.rice</groupId>
 	<artifactId>rice</artifactId>
 	<packaging>pom</packaging>
 	<name>Kuali Rice</name>
-  <version>0.9.1-SNAPSHOT</version>
-  <description>
-  The Kuali Rice effort provides an enterprise class middleware suite of integrated
-  products that allows both Kuali and non-Kuali applications to be built in an agile
-  fashion, such that developers will be able to react to end-user business requirements
-  in an efficient and productive manner, so that they can produce high quality
-  business applications.
-  </description>
+	<version>0.9.1-SNAPSHOT</version>
+	<description>
+		The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows both Kuali and non-Kuali applications
+		to be built in an agile fashion, such that developers will be able to react to end-user business requirements in an efficient and productive
+		manner, so that they can produce high quality business applications.
+	</description>
 	<url>http://rice.kuali.org</url>
-  <inceptionYear>2007</inceptionYear>
-  <licenses>
-    <license>
-      <name>The Kuali Foundation Educational Community License 1.0</name>
-      <url>https://test.kuali.org/confluence/display/KULDOC/The+Kuali+Foundation+ECL</url>
-      <distribution>manual</distribution>
-    </license>
-  </licenses>
-  <organization>
-    <name>The Kuali Foundation</name>
-    <url>http://kuali.org/</url>
-  </organization>
+	<inceptionYear>2007</inceptionYear>
+	<licenses>
+		<license>
+			<name>The Kuali Foundation Educational Community License 1.0</name>
+			<url>https://test.kuali.org/confluence/display/KULDOC/The+Kuali+Foundation+ECL</url>
+			<distribution>manual</distribution>
+		</license>
+	</licenses>
+	<organization>
+		<name>The Kuali Foundation</name>
+		<url>http://kuali.org/</url>
+	</organization>
 	<profiles>
 		<profile>
 			<id>default</id>
@@ -35,7 +34,7 @@
 			<build>
 				<testResources>
 					<testResource>
-            			<filtering>true</filtering>
+						<filtering>true</filtering>
 						<directory>${basedir}/src/test/resources</directory>
 						<includes>
 							<include>META-INF/${project.name}-test-config.xml</include>
@@ -67,7 +66,7 @@
 							</includes>
 							<forkMode>once</forkMode>
 							<reportFormat>plain</reportFormat>
-					        <argLine>-Xmx1024m -XX:MaxPermSize=512m</argLine>
+							<argLine>-Xmx1024m -XX:MaxPermSize=512m</argLine>
 						</configuration>
 					</plugin>
 					<plugin>
@@ -91,72 +90,79 @@
 								</goals>
 							</execution>
 						</executions>
-			            <configuration>
-			              <jdk>1.5</jdk>
-			              <licenseLocation>kns/src/test/config/clover.license</licenseLocation>
-			            </configuration>
+						<configuration>
+							<jdk>1.5</jdk>
+							<licenseLocation>kns/src/test/config/clover.license</licenseLocation>
+						</configuration>
 					</plugin>
-		            <plugin>
-		            	<artifactId>maven-deploy-plugin</artifactId>
-		            	<version>2.3</version>
-		          	</plugin>
-		          <plugin>
-				      <groupId>org.apache.maven.plugins</groupId>
-				      <artifactId>maven-source-plugin</artifactId>
-				      <version>2.0.2</version>
-				            <configuration>
-				              <outputDirectory>/tmp</outputDirectory>
-				              <finalName>rice-source</finalName>
-				              <attach>false</attach>
-				            </configuration>
-				          </plugin>
-				          <plugin>
-				      <groupId>org.apache.maven.plugins</groupId>
-				      <artifactId>maven-javadoc-plugin</artifactId>
-				      <version>2.2</version>
-          		  </plugin>
+					<plugin>
+						<artifactId>maven-deploy-plugin</artifactId>
+						<version>2.3</version>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>2.0.2</version>
+						<configuration>
+							<outputDirectory>/tmp</outputDirectory>
+							<finalName>rice-source</finalName>
+							<attach>false</attach>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.2</version>
+					</plugin>
 				</plugins>
 			</build>
-</profile>
-<profile>
-		<id>install-kns-dev</id>
-		<build>
-			<plugins>
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>1.5</source>
-						<target>1.5</target>
-					</configuration>
-				</plugin>
-			</plugins>
-		</build>
-	</profile>
-</profiles>
-  <modules>
-    <module>core</module>
-    <module>shared</module>
-    <module>testharness</module>
-    <module>ksb</module>
-    <module>kns</module>
+		</profile>
+		<profile>
+			<id>install-kns-dev</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<source>1.5</source>
+							<target>1.5</target>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	<modules>
+		<module>core</module>
+		<module>shared</module>
+		<module>testharness</module>
+		<module>ksb</module>
+		<module>kns</module>
     <module>kim-api</module>
-    <module>kim</module>
-    <module>kew</module>
-    <module>ken</module>
-  </modules>
-  <repositories>
-    <repository>
-      <id>kuali</id>
-      <name>Kuali Repository</name>
-      <url>https://test.kuali.org/maven</url>
-    </repository>
-    <repository>
-      <id>connector</id>
-      <name>Connector</name>
-      <url>http://julien.dubois.free.fr/maven2/</url>
-    </repository>
-  </repositories>
+		<module>kim</module>
+		<module>kew</module>
+		<module>ken</module>
+	</modules>
+	<repositories>
+		<repository>
+			<id>kuali</id>
+			<name>Kuali Repository</name>
+			<url>https://test.kuali.org/maven</url>
+		</repository>
+		<repository>
+			<id>connector</id>
+			<name>Connector</name>
+			<url>http://julien.dubois.free.fr/maven2/</url>
+		</repository>
+	</repositories>
 	<dependencies>
+
+		<dependency>
+			<groupId>jmeter</groupId>
+			<artifactId>jmeter</artifactId>
+			<version>2.3-RC4</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
@@ -165,7 +171,7 @@
 			<scope>compile</scope>
 			<exclusions>
 				<exclusion>
-          <artifactId>servlet-api-2.5</artifactId>
+					<artifactId>servlet-api-2.5</artifactId>
 					<groupId>org.mortbay.jetty</groupId>
 				</exclusion>
 			</exclusions>
@@ -223,19 +229,19 @@
 			<version>1.1</version>
 			<exclusions>
 				<exclusion>
-          <artifactId>log4j</artifactId>
+					<artifactId>log4j</artifactId>
 					<groupId>log4j</groupId>
 				</exclusion>
 				<exclusion>
-          <artifactId>logkit</artifactId>
+					<artifactId>logkit</artifactId>
 					<groupId>logkit</groupId>
 				</exclusion>
 				<exclusion>
-          <artifactId>avalon-framework</artifactId>
+					<artifactId>avalon-framework</artifactId>
 					<groupId>avalon-framework</groupId>
 				</exclusion>
 				<exclusion>
-          <artifactId>servlet-api</artifactId>
+					<artifactId>servlet-api</artifactId>
 					<groupId>javax.servlet</groupId>
 				</exclusion>
 			</exclusions>
@@ -247,15 +253,15 @@
 			<version>2.0.4</version>
 			<exclusions>
 				<exclusion>
-          <artifactId>servlet-api</artifactId>
+					<artifactId>servlet-api</artifactId>
 					<groupId>javax.servlet</groupId>
 				</exclusion>
 				<exclusion>
-          <artifactId>jsf-api</artifactId>
+					<artifactId>jsf-api</artifactId>
 					<groupId>javax.faces</groupId>
 				</exclusion>
 				<exclusion>
-          <artifactId>commons-logging</artifactId>
+					<artifactId>commons-logging</artifactId>
 					<groupId>commons-logging</groupId>
 				</exclusion>
 			</exclusions>
@@ -267,7 +273,7 @@
 			<version>2.0.4</version>
 			<exclusions>
 				<exclusion>
-          <artifactId>servlet-api</artifactId>
+					<artifactId>servlet-api</artifactId>
 					<groupId>javax.servlet</groupId>
 				</exclusion>
 			</exclusions>
@@ -342,7 +348,7 @@
 		<dependency>
 			<groupId>org.codehaus.xfire</groupId>
 			<artifactId>xfire-all</artifactId>
-      <version>1.2.6</version>
+			<version>1.2.6</version>
 		</dependency>
 
 		<dependency>
@@ -381,7 +387,7 @@
 			<version>1.2.9</version>
 			<exclusions>
 				<exclusion>
-          <artifactId>servlet-api</artifactId>
+					<artifactId>servlet-api</artifactId>
 					<groupId>javax.servlet</groupId>
 				</exclusion>
 			</exclusions>
@@ -411,7 +417,7 @@
 			<version>1.1.3</version>
 			<exclusions>
 				<exclusion>
-          <artifactId>servlet-api</artifactId>
+					<artifactId>servlet-api</artifactId>
 					<groupId>javax.servlet</groupId>
 				</exclusion>
 			</exclusions>
@@ -423,54 +429,54 @@
 			<version>1.11</version>
 			<exclusions>
 				<exclusion>
-          <artifactId>servlet-api</artifactId>
+					<artifactId>servlet-api</artifactId>
 					<groupId>javax.servlet</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
-    <dependency>
-      <groupId>opensymphony</groupId>
-      <artifactId>quartz</artifactId>
-      <version>1.6.0</version>
-    </dependency>
-    <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.1.1</version>
-            <scope>compile</scope>
-        </dependency>
-    <dependency>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-deploy-plugin</artifactId>
-      <version>2.3</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-javadoc-plugin</artifactId>
-      <version>2.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-source-plugin</artifactId>
-      <version>2.0.2</version>
-    </dependency>
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>quartz</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.1.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-deploy-plugin</artifactId>
+			<version>2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-javadoc-plugin</artifactId>
+			<version>2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-source-plugin</artifactId>
+			<version>2.0.2</version>
+		</dependency>
 	</dependencies>
-  <reporting>
-    <plugins>
-      <plugin>
-        <artifactId>maven-surefire-report-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <artifactId>maven-clover-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </reporting>
-  <distributionManagement>
+	<reporting>
+		<plugins>
+			<plugin>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clover-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
+	<distributionManagement>
 		<repository>
-      <id>ssh-repository</id>
-      <url>scpexe://wsa123.uits.indiana.edu/usr/local/apache/htdocs/maven</url>
+			<id>ssh-repository</id>
+			<url>scpexe://wsa123.uits.indiana.edu/usr/local/apache/htdocs/maven</url>
 		</repository>
-  </distributionManagement>
+	</distributionManagement>
 </project>
 
 

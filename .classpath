@@ -33,6 +33,8 @@
 	<classpathentry kind="src" path="ken/src/test/resources"/>
 	<classpathentry kind="src" path="tools/src/main/java"/>
 	<classpathentry kind="src" path="tools/src/test/java"/>
+	<classpathentry kind="src" path="kew-stress-test/src/main/java"/>
+	<classpathentry kind="src" path="kew-stress-test/src/main/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
 	<classpathentry kind="lib" path="scripts/groovy-1.0/groovy-1.0.jar"/>

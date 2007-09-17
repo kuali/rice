@@ -431,6 +431,62 @@ public abstract class KualiAction extends DispatchAction {
         return new ActionForward(lookupUrl, true);
     }
 
+    public ActionForward performInquiry(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+        // parse out the important strings from our methodToCall parameter
+        String fullParameter = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
+
+        // parse out business object class name for lookup
+        String boClassName = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL, RiceConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL);
+        if (StringUtils.isBlank(boClassName)) {
+            throw new RuntimeException("Illegal call to perform inquiry, no business object class name specified.");
+        }
+
+        // build the parameters for the inquiry url
+        Properties parameters = new Properties();
+        parameters.put(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, boClassName);               
+        
+        parameters.put(RiceConstants.RETURN_LOCATION_PARAMETER, getReturnLocation(request, mapping));
+
+        // pass values from form that should be pre-populated on inquiry
+        String parameterFields = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM2_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM2_RIGHT_DEL);
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug( "fullParameter: " + fullParameter );
+            LOG.debug( "parameterFields: " + parameterFields );
+        }
+        if (StringUtils.isNotBlank(parameterFields)) {
+            String[] lookupParams = parameterFields.split(RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug( "lookupParams: " + lookupParams );
+            }
+            for (int i = 0; i < lookupParams.length; i++) {
+                String[] keyValue = lookupParams[i].split(RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+
+                // hard-coded passed value
+                if (StringUtils.contains(keyValue[0], "'")) {
+                    parameters.put(keyValue[1], StringUtils.replace(keyValue[0], "'", ""));
+                }
+                // passed value should come from property
+                else if (StringUtils.isNotBlank(request.getParameter(keyValue[0]))) {
+                    parameters.put(keyValue[1], request.getParameter(keyValue[0]));
+                } else {
+                    parameters.put(keyValue[1], "directInquiryKeyNotSpecified");                    
+                }
+                if ( LOG.isDebugEnabled() ) {
+                    LOG.debug( "keyValue[0]: " + keyValue[0] );
+                    LOG.debug( "keyValue[1]: " + keyValue[1] );
+                }
+            }
+        }
+        parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, "start");
+        parameters.put(RiceConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
+
+        String inquiryAction = "directInquiry.do";
+        String inquiryUrl = UrlFactory.parameterizeUrl(basePath + "/kr/" + inquiryAction, parameters);
+        return new ActionForward(inquiryUrl, true);
+
+    }
+
     /**
      * This method handles rendering the question component, but without any of the extra error fields
      * 

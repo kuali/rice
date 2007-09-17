@@ -1,12 +1,12 @@
 <%--
  Copyright 2005-2007 The Kuali Foundation.
- 
+
  Licensed under the Educational Community License, Version 1.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.opensource.org/licenses/ecl1.php
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,6 +33,7 @@
 <%@ attribute name="errorKey" required="false" %>
 <%@ attribute name="auditCount" required="false" %>
 <%@ attribute name="additionalScriptFiles" required="false" type="java.util.List" %>
+<%@ attribute name="documentWebScope" required="false" %>
 
 <%-- Is the screen an inquiry? --%>
 <c:set var="_isInquiry" value="${requestScope[Constants.PARAM_MAINTENANCE_VIEW_MODE] eq Constants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY}" />
@@ -58,14 +59,12 @@
 	<%-- DWR Support Scripts --%>
 	<script language="JavaScript" src="${pageContext.request.contextPath}/dwr/engine.js" type="text/javascript"></script>
 	<script language="JavaScript" src="${pageContext.request.contextPath}/dwr/util.js" type="text/javascript"></script>
-	<script type='text/javascript' src="${pageContext.request.contextPath}/dwr/interface/UserService.js"></script>
-	<script language="JavaScript" src="${pageContext.request.contextPath}/kr/scripts/objectInfo.js" type="text/javascript"></script>
 	<c:choose>
 		<c:when test="${lookup}" >
 			  <c:if test="${not empty KualiForm.headerNavigationTabs}">
 				<link href="kr/css/${KualiForm.navigationCss}" rel="stylesheet" type="text/css" />
 			  </c:if>
-	
+
 			  <!-- Set the focus to first text box on form -->
 			  <script type="text/javascript">
 			  function placeFocus() {
@@ -79,7 +78,7 @@
 				  }
 			   }
 			  }
-			  
+
 			  var formHasAlreadyBeenSubmitted = false;
 			  var excludeSubmitRestriction = false;
 			  function hasFormAlreadyBeenSubmitted()
@@ -102,19 +101,18 @@
 		</c:otherwise>
 	</c:choose>
 </head>
-
 <c:choose>
 	<c:when test="${lookup}" >
 		<body onload="placeFocus();">
 		<kul:backdoor />
-		
+
 		<c:if test="${! empty headerMenuBar and !_isInquiry and KualiForm.showMaintenanceLinks}">
 			<div class="lookupcreatenew" title="Create a new record">${headerMenuBar}</div>
 		</c:if>
-		
+
 		<c:if test="${showDocumentInfo}">
-			<h1>${docTitle}<kul:help documentTypeName="${KualiForm.docTypeName}" altText="document help"/></h1>   
-		</c:if>  
+			<h1>${docTitle}<kul:help documentTypeName="${KualiForm.docTypeName}" altText="document help"/></h1>
+		</c:if>
     </c:when>
 	<c:otherwise>
 		<c:if test="${not empty KualiForm.anchor}">
@@ -126,14 +124,14 @@
 		<kul:backdoor />${headerMenuBar}
 	</c:otherwise>
 </c:choose>
-	
+
 <c:set var="encoding" value=""/>
 <c:if test="${not empty renderMultipart and renderMultipart eq true}">
 	<c:set var="encoding" value="multipart/form-data"/>
 </c:if>
-			
+
 <html:form styleId="kualiForm" action="/${htmlFormAction}.do" method="post" enctype="${encoding}" onsubmit="return hasFormAlreadyBeenSubmitted();">
-<c:choose>		
+<c:choose>
 	<c:when test="${lookup}" >
 	</c:when>
 	<c:otherwise>
@@ -145,12 +143,12 @@
 			</c:if>
 	</c:otherwise>
 </c:choose>
-				
+
     <c:set var="headerClass" value="header"/>
     <c:if test="${not empty KualiForm.additionalDocInfo1 or not empty KualiForm.additionalDocInfo2}">
 		 <c:set var="headerClass" value="header-3row"/>
     </c:if>
-			
+
 <!-- DOCUMENT INFO HEADER BOX -->
 <c:set var="docHeaderAttributes" value="${DataDictionary.DocumentHeader.attributes}" />
 <c:set var="dummyAttributes" value="${DataDictionary.AttributeReferenceDummy.attributes}" />
@@ -176,14 +174,14 @@
     <c:if test="${not empty KualiForm.additionalDocInfo1 or not empty KualiForm.additionalDocInfo2}">
 		<c:choose>
 			<c:when test="${lookup}" >
-				<c:set var="headerClass" value="headerinfo-3row"/>      
+				<c:set var="headerClass" value="headerinfo-3row"/>
 			</c:when>
 			<c:otherwise>
 				<c:set var="headerClass" value=""/>
 			</c:otherwise>
 		</c:choose>
     </c:if>
-	
+
   <div class="headerbox">
 	<c:choose>
 		<c:when test="${lookup}" >
@@ -230,7 +228,7 @@
             <c:if test="${addColumn}">
                 <kul:htmlAttributeHeaderCell attributeEntry="${thirdDocAttribute}" horizontal="true" scope="row"/>
                 <td>
-					
+
 					<c:choose>
 						<c:when test="${lookup}" >
 							${thirdDocId}
@@ -257,13 +255,13 @@
     </table>
      </div>
 </c:if>
-			
+
 <c:choose>
 	<c:when test="${lookup}" >
 		<%-- nothing to display--%>
 	</c:when>
 	<c:otherwise>
-		
+
 		</div>
 		<c:if test="${not empty KualiForm.headerNavigationTabs}">
 		  <div class="horz-links-bkgrnd" id="horz-links">
@@ -294,14 +292,14 @@
 				<html:image property="methodToCall.showAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-expandall.gif" title="show all panel content" alt="show all panel content" styleClass="tinybutton" onclick="javascript: return expandAllTab(document, tabStatesSize); " />
 				<html:image property="methodToCall.hideAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-collapseall.gif" title="hide all panel content" alt="hide all panel content" styleClass="tinybutton" onclick="javascript: return collapseAllTab(document, tabStatesSize); " />
 			  </div>
-		   </c:if>     
+		   </c:if>
 		  </div>
 		</div>
 		<table width="100%" cellpadding="0" cellspacing="0">
 			<tr>
 				<td width="1%"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20" height="20"/></td>
 				<td>
-					
+
 	</c:otherwise>
 </c:choose>
 					<jsp:doBody/>
@@ -315,17 +313,29 @@
 						<kul:errors displayRemaining="true" errorTitle="Other errors:"/>
 					</div>
 					<kul:footer feedbackKey="${feedbackKey}" />
-				
+
 					<!-- So that JS expandAllTab / collapseAllTab know the tabStates size. Subtract 1 because currentTabIndex = size + 1. -->
 					<html:hidden property="tabStatesSize" value="${KualiForm.currentTabIndex - 1}" />
-					
-				
+
+
 					<!-- state maintenance for returning the user to the action list if they started there -->
 					<logic:present name="KualiForm" property="returnToActionList">
 						<html:hidden name="KualiForm" property="returnToActionList" />
 					</logic:present>
 	</c:otherwise>
 </c:choose>
+<c:if test="${transactionalDocument}" >
+	<c:choose>
+		<c:when test="${KualiForm.document.sessionDocument}" >
+			<html:hidden property="documentWebScope" value="session"/>	
+		</c:when>
+		<c:otherwise>
+			<html:hidden property="documentWebScope" value="request"/>	
+		</c:otherwise>
+	</c:choose>
+	<html:hidden property="docFormKey" value="${KualiForm.formKey}"/>	
+</c:if>
+
 </html:form>
 </body>
 </html:html>

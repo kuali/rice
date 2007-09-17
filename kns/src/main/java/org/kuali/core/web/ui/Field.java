@@ -126,7 +126,8 @@ public class Field implements java.io.Serializable {
     private String referencesToRefresh;
     private int numberOfColumnsForCollection;
     public String cellAlign;
-    
+    private String inquiryParameters;
+
     /**
      * For container fields (i.e. fieldType.equals(CONTAINER)) with MV lookups enabled, the DD defined objectLabel of the class on which a multiple value lookup is performed.
      * The user friendly name
@@ -1240,6 +1241,36 @@ public class Field implements java.io.Serializable {
      */
     public void setCellAlign(String cellAlign) {
         this.cellAlign = cellAlign;
+    }
+
+    public String getInquiryParameters() {
+	// not sure it is ok to implement here.  SHould be in lookuputil
+	// is this 100% ok for all cases of lookup ?
+        if (StringUtils.isBlank(this.inquiryParameters) && StringUtils.isNotBlank(getFieldConversions())) {
+            String fieldConversions = getFieldConversions();
+            String newInquiryParameters = RiceConstants.EMPTY_STRING;
+            String[] conversions = StringUtils.split(fieldConversions, RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
+
+            for (int l = 0; l < conversions.length; l++) {
+                String conversion = conversions[l];
+                String[] conversionPair = StringUtils.split(conversion, RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+                String conversionFrom = conversionPair[0];
+                String conversionTo = conversionPair[1];
+                newInquiryParameters += (conversionTo + RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR + conversionFrom);
+
+                if (l < conversions.length - 1) {
+                    newInquiryParameters += RiceConstants.FIELD_CONVERSIONS_SEPERATOR;
+                }
+            }
+
+            setInquiryParameters(newInquiryParameters);
+        }
+
+        return this.inquiryParameters;
+    }
+
+    public void setInquiryParameters(String inquiryParameters) {
+        this.inquiryParameters = inquiryParameters;
     }
     
     

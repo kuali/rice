@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.kuali.core.authorization.AuthorizationConstants;
 
 /**
@@ -30,6 +32,8 @@ public class InquiryForm extends KualiForm {
     private List sections;
     private String businessObjectClassName;
     private Map editingMode;
+    private String backLocation;
+    private String formKey;
 
     public InquiryForm() {
         super();
@@ -37,6 +41,17 @@ public class InquiryForm extends KualiForm {
         this.editingMode.put(AuthorizationConstants.EditMode.VIEW_ONLY, "TRUE");
     }
     
+    public void populate(HttpServletRequest request) {
+        super.populate(request);
+        if (request.getParameter("returnLocation") != null) {
+            setBackLocation(request.getParameter("returnLocation"));
+        }
+        if (request.getParameter("docFormKey") != null) {
+            setFormKey(request.getParameter("docFormKey"));
+        }
+
+    }
+
     /**
      * @return Returns the fieldConversions.
      */
@@ -84,5 +99,21 @@ public class InquiryForm extends KualiForm {
 
     public Map getEditingMode() {
         return editingMode;
+    }
+
+    public String getFormKey() {
+        return this.formKey;
+    }
+
+    public void setFormKey(String formKey) {
+        this.formKey = formKey;
+    }
+
+    public String getBackLocation() {
+        return this.backLocation;
+    }
+
+    public void setBackLocation(String backLocation) {
+        this.backLocation = backLocation;
     }
 }

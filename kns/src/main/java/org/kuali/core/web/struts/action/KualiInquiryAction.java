@@ -145,7 +145,8 @@ public class KualiInquiryAction extends KualiAction {
         if (bo == null) {
             LOG.error("No records found in inquiry action.");
             GlobalVariables.getErrorMap().putError(RiceConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
-            return mapping.findForward("error");
+            request.setAttribute("backLocation", request.getParameter("returnLocation"));
+            return mapping.findForward("inquiryError");
         }
 
         // get list of populated sections for display

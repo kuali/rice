@@ -19,13 +19,14 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.kuali.core.document.SessionDocument;
 import org.kuali.core.document.TransactionalDocumentBase;
 
 import edu.sampleu.travel.bo.TravelAccount;
 
 
 
-public class TravelDocument2 extends TransactionalDocumentBase {
+public class TravelDocument2 extends TransactionalDocumentBase implements SessionDocument {
     
     private String traveler;
     private String origin;

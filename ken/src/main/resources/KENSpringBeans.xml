@@ -6,5 +6,4 @@
      as well as CAS security beans required for web layer -->
 <beans>
   <import resource="common-beans.xml"/>
-  <import resource="security-beans.xml"/>
 </beans>

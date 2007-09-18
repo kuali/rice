@@ -145,7 +145,7 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         try {
           org.jdom.Document securityDoc = new SAXBuilder().build(new StringReader(securityXML));
           XmlHelper.propogateNamespace(securityDoc.getRootElement(), DOCUMENT_TYPE_NAMESPACE);
-          parent.addContent(securityDoc.getRootElement());
+          parent.addContent(securityDoc.getRootElement().detach());
         } catch (IOException e) {
           throw new WorkflowRuntimeException("Error parsing doctype security XML.");
         } catch (JDOMException e) {

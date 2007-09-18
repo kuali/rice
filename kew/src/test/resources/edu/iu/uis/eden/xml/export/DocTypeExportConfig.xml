@@ -2,11 +2,28 @@
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
+			<name>DocTypeWithSecurity</name>
+			<description>Test Security on Doc Type</description>
+			<label>Doc Type with Security</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<active>true</active>
+			<security>
+				<routeLogAuthenticated>true</routeLogAuthenticated>
+				<initiator>true</initiator>
+				<searchableAttribute idType="emplid" name="emplid" />
+				<workgroup>NonSIT</workgroup>
+			</security>
+		</documentType>
+		<documentType>
 			<name>NoDocHandlerDocType</name>
 			<description>Chart/Org</description>
 			<label>Chart/Org</label>
 			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
-      <docHandler>now mandatory</docHandler>
+			<docHandler>now mandatory</docHandler>
 			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>

@@ -56,7 +56,6 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
         }
     }
     
-    // TODO delyea - check this
     private void assertDocTypeExport(DocumentType oldDocType, DocumentType newDocType) {
         // assert fields which should be different
         assertFalse("Document type ids should be different.", oldDocType.getDocumentTypeId().equals(newDocType.getDocumentTypeId()));

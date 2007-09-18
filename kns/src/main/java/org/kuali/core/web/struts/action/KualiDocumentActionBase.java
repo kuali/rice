@@ -33,6 +33,7 @@ import org.apache.struts.upload.FormFile;
 import org.kuali.RiceConstants;
 import org.kuali.RiceKeyConstants;
 import org.kuali.RicePropertyConstants;
+import org.kuali.core.UserSession;
 import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.bo.AdHocRoutePerson;
 import org.kuali.core.bo.AdHocRouteWorkgroup;
@@ -143,9 +144,10 @@ public class KualiDocumentActionBase extends KualiAction {
             Document document = formBase.getDocument();
             DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
             formBase.populateAuthorizationFields(documentAuthorizer);
-            if (document instanceof SessionDocument && (formBase.getFormKey() == null ||  formBase.getFormKey().equals(""))) {
-        	formBase.setFormKey(GlobalVariables.getUserSession().addObject(form));
+            UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
+            if (document instanceof SessionDocument && (formBase.getFormKey() == null ||  formBase.getFormKey().equals("") || userSession.retrieveObject(formBase.getFormKey()) == null)) {
                 // generate doc form key here if it does not exist
+        	formBase.setFormKey(GlobalVariables.getUserSession().addObject(form));
             }
             // set returnToActionList flag, if needed
             if ("displayActionListView".equals(formBase.getCommand())) {

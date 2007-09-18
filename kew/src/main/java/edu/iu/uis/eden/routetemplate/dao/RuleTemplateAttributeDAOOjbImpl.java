@@ -17,7 +17,6 @@
 package edu.iu.uis.eden.routetemplate.dao;
 
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.springmodules.orm.ojb.PersistenceBrokerTemplate;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 import edu.iu.uis.eden.routetemplate.RuleTemplateAttribute;
@@ -29,9 +28,9 @@ public class RuleTemplateAttributeDAOOjbImpl extends PersistenceBrokerDaoSupport
    * (non-Javadoc)
    * @see edu.iu.uis.eden.routetemplate.dao.RuleTemplateAttributeDAO#delete(java.lang.Long)
    */
-  public void delete(Long ruleTemplateAttributeId) {
-	  this.getPersistenceBrokerTemplate().delete(findByRuleTemplateAttributeId(ruleTemplateAttributeId));
-  }
+//  public void delete(Long ruleTemplateAttributeId) {
+//        this.getPersistenceBrokerTemplate().delete(findByRuleTemplateAttributeId(ruleTemplateAttributeId));
+//  }
 
   /*
    * (non-Javadoc)
@@ -45,6 +44,6 @@ public class RuleTemplateAttributeDAOOjbImpl extends PersistenceBrokerDaoSupport
   }
   
   public void save (RuleTemplateAttribute ruleTemplateAttribute){
-	  this.getPersistenceBrokerTemplate().store(ruleTemplateAttribute);
+      this.getPersistenceBrokerTemplate().store(ruleTemplateAttribute);
   }
 }

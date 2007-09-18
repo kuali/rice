@@ -174,7 +174,7 @@ public class RoutingReportAction extends WorkflowAction {
             List attributes = new ArrayList();
             for (Iterator iterator = ruleTemplates.keySet().iterator(); iterator.hasNext();) {
                 RuleTemplate ruleTemplate = (RuleTemplate) iterator.next();
-                for (Iterator iter = ruleTemplate.getRuleTemplateAttributes().iterator(); iter.hasNext();) {
+                for (Iterator iter = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
                     RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
                     if (!ruleTemplateAttribute.isWorkflowAttribute()) {
                         continue;
@@ -351,7 +351,7 @@ public class RoutingReportAction extends WorkflowAction {
 
 		Map fieldValues = new HashMap();
 
-		List ruleTemplateAttributes = ruleTemplate.getRuleTemplateAttributes();
+		List ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
 		Collections.sort(ruleTemplateAttributes);
 
 		List rows = new ArrayList();
@@ -438,7 +438,7 @@ public class RoutingReportAction extends WorkflowAction {
 			}
 		} else if (routingReportForm.getRuleTemplateId() != null) {
 			RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(routingReportForm.getRuleTemplateId());
-			ruleTemplateAttributes = ruleTemplate.getRuleTemplateAttributes();
+			ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
 		}
 		if (ruleTemplateAttributes != null) {
 			Collections.sort(ruleTemplateAttributes);

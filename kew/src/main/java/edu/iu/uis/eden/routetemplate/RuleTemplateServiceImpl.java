@@ -62,17 +62,17 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
      * 
      * @see edu.iu.uis.eden.routetemplate.RuleTemplateAttributeService#delete(java.lang.Long)
      */
-    public void deleteRuleTemplateAttribute(Long ruleTemplateAttributeId, List ruleTemplateAttributes) {
-
-        RuleTemplateAttribute ruleTemplateAttributeRemove = findByRuleTemplateAttributeId(ruleTemplateAttributeId);
-
-        for (int i = ruleTemplateAttributeRemove.getDisplayOrder().intValue() + 1; i <= ruleTemplateAttributes.size(); i++) {
-            RuleTemplateAttribute ruleTemplateAttributeUpdate = (RuleTemplateAttribute) ruleTemplateAttributes.get(i - 1);
-            ruleTemplateAttributeUpdate.setDisplayOrder(new Integer(i - 1));
-            getRuleTemplateAttributeDAO().save(ruleTemplateAttributeUpdate);
-        }
-        getRuleTemplateAttributeDAO().delete(ruleTemplateAttributeId);
-    }
+//    public void deleteRuleTemplateAttribute(Long ruleTemplateAttributeId, List ruleTemplateAttributes) {
+//
+//        RuleTemplateAttribute ruleTemplateAttributeRemove = findByRuleTemplateAttributeId(ruleTemplateAttributeId);
+//
+//        for (int i = ruleTemplateAttributeRemove.getDisplayOrder().intValue() + 1; i <= ruleTemplateAttributes.size(); i++) {
+//            RuleTemplateAttribute ruleTemplateAttributeUpdate = (RuleTemplateAttribute) ruleTemplateAttributes.get(i - 1);
+//            ruleTemplateAttributeUpdate.setDisplayOrder(new Integer(i - 1));
+//            getRuleTemplateAttributeDAO().save(ruleTemplateAttributeUpdate);
+//        }
+//        getRuleTemplateAttributeDAO().delete(ruleTemplateAttributeId);
+//    }
 
     public void deleteRuleTemplateOption(Long ruleTemplateOptionId) {
         getRuleTemplateOptionDAO().delete(ruleTemplateOptionId);
@@ -103,26 +103,26 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
         LOG.debug("save RuleTemplateServiceImpl");
         validate(ruleTemplate);
         fixAssociations(ruleTemplate);
-        if (ruleTemplate.getRuleTemplateId() != null) {
-            RuleTemplate previousRuleTemplate = findByRuleTemplateId(ruleTemplate.getRuleTemplateId());
-            if (previousRuleTemplate != null) {
-                for (Iterator iter = previousRuleTemplate.getRuleTemplateAttributes().iterator(); iter.hasNext();) {
-                    RuleTemplateAttribute previousAttribute = (RuleTemplateAttribute) iter.next();
-                    boolean found = false;
-
-                    for (Iterator iter2 = ruleTemplate.getRuleTemplateAttributes().iterator(); iter2.hasNext();) {
-                        RuleTemplateAttribute attribute = (RuleTemplateAttribute) iter2.next();
-                        if (previousAttribute.getRuleAttribute().getName().equals(attribute.getRuleAttribute().getName())) {
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        getRuleTemplateAttributeDAO().delete(previousAttribute.getRuleTemplateAttributeId());
-                    }
-                }
-            }
-        }
+//        if (ruleTemplate.getRuleTemplateId() != null) {
+//            RuleTemplate previousRuleTemplate = findByRuleTemplateId(ruleTemplate.getRuleTemplateId());
+//            if (previousRuleTemplate != null) {
+//                for (Iterator iter = previousRuleTemplate.getRuleTemplateAttributes().iterator(); iter.hasNext();) {
+//                    RuleTemplateAttribute previousAttribute = (RuleTemplateAttribute) iter.next();
+//                    boolean found = false;
+//
+//                    for (Iterator iter2 = ruleTemplate.getRuleTemplateAttributes().iterator(); iter2.hasNext();) {
+//                        RuleTemplateAttribute attribute = (RuleTemplateAttribute) iter2.next();
+//                        if (previousAttribute.getRuleAttribute().getName().equals(attribute.getRuleAttribute().getName())) {
+//                            found = true;
+//                            break;
+//                        }
+//                    }
+//                    if (!found) {
+//                        getRuleTemplateAttributeDAO().delete(previousAttribute.getRuleTemplateAttributeId());
+//                    }
+//                }
+//            }
+//        }
 
         getRuleTemplateDAO().save(ruleTemplate);
         LOG.debug("end save RuleTemplateServiceImpl");
@@ -171,7 +171,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
             errors.add(new WorkflowServiceErrorImpl("Please enter a rule template name.", RULE_TEMPLATE_NAME_REQUIRED));
             LOG.error("Rule template name is missing");
         } else {
-        	ruleTemplate.setName(ruleTemplate.getName().trim());
+            ruleTemplate.setName(ruleTemplate.getName().trim());
             if (ruleTemplate.getRuleTemplateId() == null) {
                 RuleTemplate nameInUse = findByRuleTemplateName(ruleTemplate.getName());
                 if (nameInUse != null) {

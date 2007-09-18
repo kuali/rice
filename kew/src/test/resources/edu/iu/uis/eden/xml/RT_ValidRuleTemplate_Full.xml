@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="ns:workflow resource:WorkflowData">
+
+	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+		<ruleTemplate>
+			<name>RuleTemplate_Valid_Full</name>
+			<description>TestRuleTemplate</description>
+			<attributes>
+				<attribute>
+					<name>TemplateTestRuleAttribute1</name>
+					<required>true</required>
+					<active>true</active>
+				</attribute>
+			</attributes>
+		</ruleTemplate>
+	</ruleTemplates>
+
+</data>

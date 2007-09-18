@@ -41,7 +41,7 @@ public interface RuleTemplateService extends XmlLoader, XmlExporter {
     public void delete(Long ruleTemplateId);
     
     public void deleteRuleTemplateOption(Long ruleTemplateOptionId);
-    public void deleteRuleTemplateAttribute(Long ruleTemplateAttributeId, List ruleTemplateAttributes);
+//    public void deleteRuleTemplateAttribute(Long ruleTemplateAttributeId, List ruleTemplateAttributes);
     public RuleTemplateAttribute findByRuleTemplateAttributeId(Long ruleTemplateAttributeId);
     public RuleTemplate findByRuleTemplateName(String ruleTemplateName);
     public Long getNextRuleTemplateId();

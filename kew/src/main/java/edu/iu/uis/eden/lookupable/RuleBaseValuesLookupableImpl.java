@@ -215,7 +215,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 			}
 
 			int i = 0;
-			for (Iterator iter = ruleTemplate.getRuleTemplateAttributes().iterator(); iter.hasNext();) {
+			for (Iterator iter = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
 				RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
 				if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 					continue;
@@ -408,7 +408,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 			}
 
 			attributes = new HashMap();
-			for (Iterator iter = ruleTemplate.getRuleTemplateAttributes().iterator(); iter.hasNext();) {
+			for (Iterator iter = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
 				RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
 				if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 					continue;

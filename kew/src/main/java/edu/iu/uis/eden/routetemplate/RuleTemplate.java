@@ -26,7 +26,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
-import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
 
 /**
  * A model bean which represents a template upon which a rule is created.
@@ -39,8 +38,8 @@ import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
  */
 public class RuleTemplate implements WorkflowPersistable {
 
-	private static final long serialVersionUID = -3387940485523951302L;
-	private Long ruleTemplateId;
+    private static final long serialVersionUID = -3387940485523951302L;
+    private Long ruleTemplateId;
     private String name;
     private String description;
     private Integer lockVerNbr;
@@ -80,57 +79,89 @@ public class RuleTemplate implements WorkflowPersistable {
 //        		"&nbsp;&nbsp;|&nbsp;&nbsp;<a onclick=\"if (confirm('Delete this record?')){ return true; } else {return false;} \" href=\"RuleTemplate.do?methodToCall=delete&ruleTemplate.ruleTemplateId=" + ruleTemplateId + "&redirectUrl=Lookup.do?methodToCall=search&lookupableImplServiceName=RuleTemplateLookupableImplService\" >delete</a>";
     }
 
-    public void addRuleTemplateAttribute(RuleTemplateAttribute ruleTemplateAttribute, Integer counter) {
-        boolean alreadyAdded = false;
-        int location = 0;
-        if (counter != null) {
-            for (Iterator templateAttributeIter = getRuleTemplateAttributes().iterator(); templateAttributeIter.hasNext();) {
-                RuleTemplateAttribute ruleTemplateAtt = (RuleTemplateAttribute) templateAttributeIter.next();
-                //                if (ruleTemplateAtt.getRuleAttributeId().longValue() == ruleTemplateAttribute.getRuleAttributeId().longValue()) {
-                if (counter.intValue() == location) {
-                    ruleTemplateAtt.setDefaultValue(ruleTemplateAttribute.getDefaultValue());
-                    ruleTemplateAtt.setDisplayOrder(ruleTemplateAttribute.getDisplayOrder());
-                    ruleTemplateAtt.setLockVerNbr(ruleTemplateAttribute.getLockVerNbr());
-                    ruleTemplateAtt.setRequired(ruleTemplateAttribute.getRequired());
-                    ruleTemplateAtt.setRuleTemplateAttributeId(ruleTemplateAttribute.getRuleTemplateAttributeId());
-                    ruleTemplateAtt.setRuleTemplateId(ruleTemplateAttribute.getRuleTemplateId());
-                    alreadyAdded = true;
+//    public void addRuleTemplateAttribute(RuleTemplateAttribute ruleTemplateAttribute, Integer counter) {
+//        boolean alreadyAdded = false;
+//        int location = 0;
+//        if (counter != null) {
+//            for (Iterator templateAttributeIter = getRuleTemplateAttributes().iterator(); templateAttributeIter.hasNext();) {
+//                RuleTemplateAttribute ruleTemplateAtt = (RuleTemplateAttribute) templateAttributeIter.next();
+//                //                if (ruleTemplateAtt.getRuleAttributeId().longValue() == ruleTemplateAttribute.getRuleAttributeId().longValue()) {
+//                if (counter.intValue() == location) {
+//                    ruleTemplateAtt.setDefaultValue(ruleTemplateAttribute.getDefaultValue());
+//                    ruleTemplateAtt.setDisplayOrder(ruleTemplateAttribute.getDisplayOrder());
+//                    ruleTemplateAtt.setLockVerNbr(ruleTemplateAttribute.getLockVerNbr());
+//                    ruleTemplateAtt.setRequired(ruleTemplateAttribute.getRequired());
+//                    ruleTemplateAtt.setRuleTemplateAttributeId(ruleTemplateAttribute.getRuleTemplateAttributeId());
+//                    ruleTemplateAtt.setRuleTemplateId(ruleTemplateAttribute.getRuleTemplateId());
+//                    alreadyAdded = true;
+//                }
+//                location++;
+//            }
+//        }
+//        if (!alreadyAdded) {
+//            ruleTemplateAttribute.setDisplayOrder(new Integer(getRuleTemplateAttributes().size() + 1));
+//            getRuleTemplateAttributes().add(ruleTemplateAttribute);
+//        }
+//    }
+    
+    private RuleTemplateAttribute getRuleTemplateAttribute(RuleTemplateAttribute ruleTemplateAttribute, Boolean active) {
+        for (Iterator iter = getRuleTemplateAttributes().iterator(); iter.hasNext();) {
+            RuleTemplateAttribute currentRuleTemplateAttribute = (RuleTemplateAttribute) iter.next();
+            if (currentRuleTemplateAttribute.getRuleAttribute().getName().equals(ruleTemplateAttribute.getRuleAttribute().getName())) {
+                if (active == null) {
+                    return currentRuleTemplateAttribute;
                 }
-                location++;
+                else if (active.compareTo(currentRuleTemplateAttribute.getActive()) == 0) {
+                    return currentRuleTemplateAttribute;
+                }
             }
         }
-        if (!alreadyAdded) {
-            ruleTemplateAttribute.setDisplayOrder(new Integer(getRuleTemplateAttributes().size() + 1));
-            getRuleTemplateAttributes().add(ruleTemplateAttribute);
-        }
+        return null;
     }
     
+    public RuleTemplateAttribute getRuleTemplateAttribute(RuleTemplateAttribute ruleTemplateAttribute) {
+        return getRuleTemplateAttribute(ruleTemplateAttribute, null);
+    }
+    
+    public boolean containsActiveRuleTemplateAttribute(RuleTemplateAttribute templateAttribute) {
+        return (getRuleTemplateAttribute(templateAttribute, Boolean.TRUE) != null);
+    }
+
     public boolean containsRuleTemplateAttribute(RuleTemplateAttribute templateAttribute) {
-        for (Iterator iter = ruleTemplateAttributes.iterator(); iter.hasNext();) {
-            RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
-            if (ruleTemplateAttribute.getRuleAttribute().getName().equals(templateAttribute.getRuleAttribute().getName())) {
-                return true;
-            }
-        }
-        return false;
+        return (getRuleTemplateAttribute(templateAttribute, null) != null);
     }
 
     public RuleTemplateAttribute getRuleTemplateAttribute(int index) {
+        // TODO delyea - does this need to check active only attributes?
         while (getRuleTemplateAttributes().size() <= index) {
             getRuleTemplateAttributes().add(new RuleTemplateAttribute());
         }
         return (RuleTemplateAttribute) getRuleTemplateAttributes().get(index);
     }
 
-    public RuleTemplateOption getRuleTemplateOption(int index) {
-        while (getRuleTemplateOptions().size() <= index) {
-            getRuleTemplateOptions().add(new RuleTemplateOption());
-        }
-        return (RuleTemplateOption) getRuleTemplateOptions().get(index);
-    }
+//    public RuleTemplateOption getRuleTemplateOption(int index) {
+//        while (getRuleTemplateOptions().size() <= index) {
+//            getRuleTemplateOptions().add(new RuleTemplateOption());
+//        }
+//        return (RuleTemplateOption) getRuleTemplateOptions().get(index);
+//    }
 
     public List getRuleTemplateAttributes() {
         return ruleTemplateAttributes;
+    }
+
+    public List getActiveRuleTemplateAttributes() {
+        // TODO delyea - fix this once active is persisting
+        return getRuleTemplateAttributes();
+//        List activeAttributes = new ArrayList();
+//        for (Iterator iterator = getRuleTemplateAttributes().iterator(); iterator
+//                .hasNext();) {
+//            RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iterator.next();
+//            if (templateAttribute.isActive()) {
+//                activeAttributes.add(templateAttribute);
+//            }
+//        }
+//        return activeAttributes;
     }
 
     /**
@@ -138,17 +169,17 @@ public class RuleTemplate implements WorkflowPersistable {
      * 
      * @throws ResourceUnavailableException if one of the WorkflowAttributes cannot be instantiated
      */
-    public List getWorkflowAttributes() throws ResourceUnavailableException {
-    	List workflowAttributes = new ArrayList();
-    	for (Iterator iter = getRuleTemplateAttributes().iterator(); iter.hasNext();) {
-            RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iter.next();
-            Object attribute = templateAttribute.getAttribute();
-            if (attribute instanceof WorkflowAttribute) {
-            	workflowAttributes.add(attribute);
-            }
-        }
-    	return workflowAttributes;
-    }
+//    public List getWorkflowAttributes() throws ResourceUnavailableException {
+//    	List workflowAttributes = new ArrayList();
+//    	for (Iterator iter = getRuleTemplateAttributes().iterator(); iter.hasNext();) {
+//            RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iter.next();
+//            Object attribute = templateAttribute.getAttribute();
+//            if (attribute instanceof WorkflowAttribute) {
+//            	workflowAttributes.add(attribute);
+//            }
+//        }
+//    	return workflowAttributes;
+//    }
     
 //    public RoleAttribute getRoleAttributeByName(String className) throws ResourceUnavailableException {
 //        for (Iterator iter = getWorkflowAttributes().iterator(); iter.hasNext();) {
@@ -224,10 +255,10 @@ public class RuleTemplate implements WorkflowPersistable {
         if (preserveKeys && ruleTemplateId != null) {
             ruleTemplateClone.setRuleTemplateId(new Long(ruleTemplateId.longValue()));
         }
-        if ((ruleTemplateAttributes != null) && !ruleTemplateAttributes.isEmpty()) {
+        if ((getRuleTemplateAttributes() != null) && !getRuleTemplateAttributes().isEmpty()) {
             List ruleTemplateAttributeList = new ArrayList();
 
-            for (Iterator i = ruleTemplateAttributes.iterator(); i.hasNext();) {
+            for (Iterator i = getRuleTemplateAttributes().iterator(); i.hasNext();) {
                 RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) i.next();
                 RuleTemplateAttribute ruleTemplateAttributeCopy = (RuleTemplateAttribute) ruleTemplateAttribute.copy(preserveKeys);
                 ruleTemplateAttributeCopy.setRuleTemplate(ruleTemplateClone);
@@ -354,7 +385,8 @@ public class RuleTemplate implements WorkflowPersistable {
                                         .append("name", name)
                                         .append("description", description)
                                         .append("delegationTemplateId", delegationTemplateId)
-                                        .append("ruleTemplateAttributes", ruleTemplateAttributes == null ? "null" : "size: " + ruleTemplateAttributes.size())
+                                        .append("totalRuleTemplateAttributes", getRuleTemplateAttributes() == null ? "null" : "size: " + getRuleTemplateAttributes().size())
+                                        .append("activeRuleTemplateAttributes", getActiveRuleTemplateAttributes() == null ? "null" : "size: " + getActiveRuleTemplateAttributes().size())
                                         .append("returnUrl", returnUrl)
                                         .append("lockVerNbr", lockVerNbr)
                                         .append("ruleTemplateOptions", ruleTemplateOptions).toString();

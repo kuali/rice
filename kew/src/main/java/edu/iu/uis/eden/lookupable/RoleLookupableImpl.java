@@ -124,7 +124,7 @@ public class RoleLookupableImpl implements WorkflowLookupable {
                 ruleTemplate = getRuleTemplateService().findByRuleTemplateName(ruleTemplateNameParam.trim());
             }
             if (ruleTemplate != null) {
-                for (Iterator iter = ruleTemplate.getRuleTemplateAttributes().iterator(); iter.hasNext();) {
+                for (Iterator iter = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
                     RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
                     try {
                         WorkflowAttribute attribute = (WorkflowAttribute)GlobalResourceLoader.getResourceLoader().getObject(new ObjectDefinition(ruleTemplateAttribute.getRuleAttribute().getClassName()));

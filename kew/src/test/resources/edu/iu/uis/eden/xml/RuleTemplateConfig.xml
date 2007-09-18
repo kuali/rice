@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="ns:workflow resource:WorkflowData">
+
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+		<ruleAttribute>
+			<name>TemplateTestRuleAttribute1</name>
+			<className>edu.iu.uis.eden.routetemplate.TestRuleAttribute</className>
+			<label>Test Rule Attribute 1</label>
+			<description>Test Rule Attribute 1</description>
+			<type>RuleAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>TemplateTestRuleAttribute2</name>
+			<className>edu.iu.uis.eden.routetemplate.TestRuleAttribute</className>
+			<label>Test Rule Attribute 2</label>
+			<description>Test Rule Attribute 2</description>
+			<type>RuleAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>TemplateTestRuleAttribute3</name>
+			<className>edu.iu.uis.eden.routetemplate.TestRuleAttribute</className>
+			<label>Test Rule Attribute 3</label>
+			<description>Test Rule Attribute 3</description>
+			<type>RuleAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>TemplateTestRuleAttribute4</name>
+			<className>edu.iu.uis.eden.routetemplate.TestRuleAttribute</className>
+			<label>Test Rule Attribute 4</label>
+			<description>Test Rule Attribute 4</description>
+			<type>RuleAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>TemplateTestRuleAttribute5</name>
+			<className>edu.iu.uis.eden.routetemplate.TestRuleAttribute</className>
+			<label>Test Rule Attribute 5</label>
+			<description>Test Rule Attribute 5</description>
+			<type>RuleAttribute</type>
+		</ruleAttribute>
+	</ruleAttributes>
+</data>

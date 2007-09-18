@@ -33,7 +33,7 @@ import edu.iu.uis.eden.test.OldClearDatabaseLifecycle;
 
 public class RuleTemplateXmlExporterTest extends XmlExporterTestCase {
 
-	@Test public void testExport() throws Exception {
+    @Test public void testExport() throws Exception {
         loadXmlFile("RuleTemplateExportConfig.xml");
         assertExport();
     }
@@ -79,23 +79,24 @@ public class RuleTemplateXmlExporterTest extends XmlExporterTestCase {
         } else {
             assertNull(newRuleTemplate.getDelegationTemplate());
         }
-        assertAttributes(oldRuleTemplate.getRuleTemplateAttributes(), newRuleTemplate.getRuleTemplateAttributes());
+        assertAttributes(oldRuleTemplate.getRuleTemplateAttributes(), newRuleTemplate.getRuleTemplateAttributes(), "attribute");
+        assertAttributes(oldRuleTemplate.getActiveRuleTemplateAttributes(), newRuleTemplate.getActiveRuleTemplateAttributes(), "active attribute");
         assertOptions(oldRuleTemplate.getRuleTemplateOptions(), newRuleTemplate.getRuleTemplateOptions());
     }
 
-    private void assertAttributes(List oldAttributes, List newAttributes) {
+    private void assertAttributes(List oldAttributes, List newAttributes, String errorMessageAttributeLabel) {
         assertEquals(oldAttributes.size(), newAttributes.size());
         for (Iterator iterator = oldAttributes.iterator(); iterator.hasNext();) {
             RuleTemplateAttribute oldAttribute = (RuleTemplateAttribute) iterator.next();
             boolean foundAttribute = false;
-            for (Iterator iterator2 = oldAttributes.iterator(); iterator2.hasNext();) {
+            for (Iterator iterator2 = newAttributes.iterator(); iterator2.hasNext();) {
                 RuleTemplateAttribute newAttribute = (RuleTemplateAttribute) iterator2.next();
                 if (oldAttribute.getRuleAttribute().getName().equals(newAttribute.getRuleAttribute().getName())) {
                     assertEquals(oldAttribute.getRequired(), newAttribute.getRequired());
                     foundAttribute = true;
                 }
             }
-            assertTrue("Could not locate new attribute.", foundAttribute);
+            assertTrue("Could not locate " + errorMessageAttributeLabel + " '" + oldAttribute.getRuleAttribute().getName() + "' in new attributes list.", foundAttribute);
         }
     }
 

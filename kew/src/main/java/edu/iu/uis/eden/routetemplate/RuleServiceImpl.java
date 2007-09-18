@@ -646,7 +646,7 @@ public class RuleServiceImpl implements RuleService {
             }
         }
 
-        for (Iterator iter = ruleBaseValues.getRuleTemplate().getRuleTemplateAttributes().iterator(); iter.hasNext();) {
+        for (Iterator iter = ruleBaseValues.getRuleTemplate().getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
 			RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iter.next();
 			if (!templateAttribute.isRuleValidationAttribute()) {
 				continue;

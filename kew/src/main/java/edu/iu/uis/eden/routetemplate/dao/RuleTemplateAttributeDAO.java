@@ -21,7 +21,7 @@ import edu.iu.uis.eden.routetemplate.RuleTemplateAttribute;
 
 public interface RuleTemplateAttributeDAO {
 
-  public void delete(Long ruleTemplateAttributeId);
+//  public void delete(Long ruleTemplateAttributeId);
   public RuleTemplateAttribute findByRuleTemplateAttributeId(Long ruleTemplateAttributeId);
   public void save(RuleTemplateAttribute ruleTemplateAttribute);
 }

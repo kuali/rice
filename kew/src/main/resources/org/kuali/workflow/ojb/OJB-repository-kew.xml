@@ -465,6 +465,7 @@
     <field-descriptor column="RULE_TMPL_ID" name="ruleTemplateId" jdbc-type="BIGINT" />
     <field-descriptor column="RULE_ATTRIB_ID" name="ruleAttributeId" jdbc-type="BIGINT" />
     <field-descriptor column="REQ_IND" name="required" jdbc-type="BIT" />
+    <field-descriptor column="ACTV_IND" name="active" jdbc-type="BIT" />
     <field-descriptor column="DSPL_ORD" name="displayOrder" jdbc-type="INTEGER" />
     <field-descriptor column="DFLT_VAL" name="defaultValue" jdbc-type="VARCHAR" />
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" locking="true" />

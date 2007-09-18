@@ -97,7 +97,7 @@ public class FlexRM {
 		if (template == null) {
 			throw new WorkflowRuntimeException("Could not locate the rule template with name " + ruleTemplateName + " on document " + routeHeader.getRouteHeaderId());
 		}
-		for (Iterator iter = template.getRuleTemplateAttributes().iterator(); iter.hasNext();) {
+		for (Iterator iter = template.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
 
 			RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iter.next();
 			if (!templateAttribute.isWorkflowAttribute()) {

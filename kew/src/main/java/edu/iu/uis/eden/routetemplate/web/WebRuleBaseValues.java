@@ -36,6 +36,7 @@ import org.apache.struts.action.ActionMessage;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceError;
+import edu.iu.uis.eden.docsearch.DocSearchUtils;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.plugin.attributes.RoleAttribute;
@@ -87,7 +88,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		if (getRuleTemplateId() != null) {
 			RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(getRuleTemplateId());
 			if (ruleTemplate != null) {
-				List ruleTemplateAttributes = ruleTemplate.getRuleTemplateAttributes();
+				List ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
 				Collections.sort(ruleTemplateAttributes);
 				for (Iterator iter = ruleTemplateAttributes.iterator(); iter.hasNext();) {
 					RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
@@ -193,7 +194,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		if (getRuleTemplateId() != null) {
 			RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(getRuleTemplateId());
 			if (ruleTemplate != null) {
-				List ruleTemplateAttributes = ruleTemplate.getRuleTemplateAttributes();
+				List ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
 				Collections.sort(ruleTemplateAttributes);
 				for (Iterator iter = ruleTemplateAttributes.iterator(); iter.hasNext();) {
 					RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
@@ -235,7 +236,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 			RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(getRuleTemplateId());
 			if (ruleTemplate != null) {
 				setRuleTemplateName(ruleTemplate.getName());
-				List ruleTemplateAttributes = ruleTemplate.getRuleTemplateAttributes();
+				List ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
 				Collections.sort(ruleTemplateAttributes);
 				List rows = new ArrayList();
 				for (Iterator iter = ruleTemplateAttributes.iterator(); iter.hasNext();) {
@@ -551,7 +552,14 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		if (Utilities.isEmpty(dateValue)) {
 			return null;
 		}
-		Date date = EdenConstants.getDefaultDateFormat().parse(dateValue);
+		/*  Not the best solution below but does allow our forcing of the 4 digit year
+		 *  until KEW and use the KNS for it's date entry/validation
+		 */
+		String convertedDate = DocSearchUtils.getEntryFormattedDate(dateValue);
+		if (convertedDate == null) {
+		    throw new ParseException("Date entered as '" + dateValue + "' is in invalid format", 0);
+		}
+		Date date = EdenConstants.getDefaultDateFormat().parse(convertedDate);
 		return new Timestamp(date.getTime());
 	}
 
@@ -561,7 +569,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 
 		/** Populate rule extension values * */
 		List extensions = new ArrayList();
-		for (Iterator iterator = ruleTemplate.getRuleTemplateAttributes().iterator(); iterator.hasNext();) {
+		for (Iterator iterator = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iterator.hasNext();) {
 			RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iterator.next();
 			if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 				continue;
@@ -594,7 +602,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 			RuleExtension ruleExtension = (RuleExtension) iterator.next();
 			ruleExtension.setRuleBaseValues(this);
 
-			for (Iterator iterator2 = ruleTemplate.getRuleTemplateAttributes().iterator(); iterator2.hasNext();) {
+			for (Iterator iterator2 = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iterator2.hasNext();) {
 				RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iterator2.next();
 				if (ruleTemplateAttribute.getRuleTemplateAttributeId().longValue() == ruleExtension.getRuleTemplateAttributeId().longValue()) {
 					ruleExtension.setRuleTemplateAttribute(ruleTemplateAttribute);

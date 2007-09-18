@@ -69,7 +69,7 @@ public abstract class TransactionalDocumentBase extends DocumentBase implements 
     }
 
     public boolean isSessionDocument() {
-        return this.sessionDocument;
+        return SessionDocument.class.isAssignableFrom(this.getClass());
     }
 
     public void setSessionDocument(boolean sessionDocument) {

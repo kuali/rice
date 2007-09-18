@@ -17,9 +17,8 @@
 <%@ attribute name="boClassName" required="true" %>
 <%@ attribute name="inquiryParameters" required="false" %>
 <%@ attribute name="anchor" required="false" %>
-<%@ attribute name="fieldLabel" required="false" %>
 
      
 <html:image  property="methodToCall.performInquiry.(!!${boClassName}!!).((#${inquiryParameters}#)).anchor${anchor}"
    onclick="javascript: inquiryPop('${boClassName}','${inquiryParameters}'); return false"
-   src="${ConfigProperties.kr.externalizable.images.url}book_open.png" />
+   src="${ConfigProperties.kr.externalizable.images.url}book_open.png" styleClass="tinybutton" />

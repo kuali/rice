@@ -328,12 +328,13 @@
 	<c:choose>
 		<c:when test="${KualiForm.document.sessionDocument}" >
 			<html:hidden property="documentWebScope" value="session"/>	
+			<html:hidden property="formKey" value="${KualiForm.formKey}"/>	
+			<html:hidden property="docFormKey" value="${KualiForm.formKey}"/>	
 		</c:when>
 		<c:otherwise>
 			<html:hidden property="documentWebScope" value="request"/>	
 		</c:otherwise>
 	</c:choose>
-	<html:hidden property="docFormKey" value="${KualiForm.formKey}"/>	
 </c:if>
 
 </html:form>

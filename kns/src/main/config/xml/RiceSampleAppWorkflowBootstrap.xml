@@ -33,7 +33,7 @@
 		</ApplicationConstant>
 		<ApplicationConstant>
 			<ConstantName>ActionList.IsDocumentPopup</ConstantName>
-			<ConstantValue>false</ConstantValue>
+			<ConstantValue>true</ConstantValue>
 		</ApplicationConstant>
 		<ApplicationConstant>
 			<ConstantName>RouteTypeSearch.Instructions</ConstantName>

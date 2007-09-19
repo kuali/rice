@@ -262,7 +262,7 @@
 			<displayName>KULUSER 4</displayName>
 			<givenName>KULUSER</givenName>
 			<lastName>KULUSER</lastName>
-		</user>			
+		</user>
 		<user>
 			<workflowId>fred</workflowId>
 			<emplId>fred</emplId>
@@ -329,6 +329,14 @@
 			<messageEntity>TRAVEL</messageEntity>
 			<type>RuleAttribute</type>
 		</ruleAttribute>
+        <ruleAttribute>
+          <name>RuleRoutingAttribute</name>
+          <className>edu.iu.uis.eden.routetemplate.RuleRoutingAttribute</className>
+          <label>Rule Routing</label>
+          <description>Rule Routing</description>
+          <messageEntity>TRAVEL</messageEntity>
+          <type>RuleAttribute</type>
+        </ruleAttribute>
 	</ruleAttributes>
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate allowOverwrite="true">
@@ -531,7 +539,7 @@
 					<ruleTemplate>TravelRequest-AccountRouting</ruleTemplate>
 				</requests>
 			</routeNodes>
-		</documentType>		
+		</documentType>
 		<documentType>
 			<name>TravelAccountMaintenanceDocument</name>
 			<description>Create a New Travel Request</description>
@@ -591,7 +599,7 @@
 					<activationType>P</activationType>
 				</start>
 			</routeNodes>
-		</documentType>		
+		</documentType>
 		<documentType>
 			<name>KualiFinancialSystemParameterMaintenanceDocument</name>
 			<description>Create a system param</description>
@@ -611,7 +619,7 @@
 					<activationType>P</activationType>
 				</start>
 			</routeNodes>
-		</documentType>		
+		</documentType>
 		<documentType>
 			<name>RiceUserMaintenanceDocument</name>
 			<description>Create a Rice User</description>
@@ -631,7 +639,7 @@
 					<activationType>P</activationType>
 				</start>
 			</routeNodes>
-		</documentType>		
+		</documentType>
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>

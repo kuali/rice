@@ -33,6 +33,7 @@ import edu.iu.uis.eden.clientapp.vo.WorkflowGroupIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
+import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -261,15 +262,6 @@ public class BaseWorkgroupService implements WorkgroupService {
 
 	public void removeFromCacheById(WorkflowGroupId id) {
 		KEWServiceLocator.getCacheAdministrator().flushEntry(generateCacheKey(id));
-	}
-
-	public void removeWorkgroupInvolvement(Id entityToBeRemoved, List<Long> workgroupIds, Long documentId) {
-	    System.out.println("REMOVING WORKGROUP INVOLVEMENT: " + workgroupIds.size());
-
-	}
-
-	public void replaceWorkgroupInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> workgroupIds, Long documentId) {
-	    System.out.println("REPLACING WORKGROUP INVOLVEMENT: " + workgroupIds.size());
 	}
 
         // XMLLoader methods

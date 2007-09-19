@@ -29,7 +29,7 @@ import edu.iu.uis.eden.removereplace.dao.RemoveReplaceDocumentDAO;
 import edu.iu.uis.eden.routetemplate.RuleService;
 import edu.iu.uis.eden.user.WorkflowUserId;
 import edu.iu.uis.eden.web.session.UserSession;
-import edu.iu.uis.eden.workgroup.WorkgroupService;
+import edu.iu.uis.eden.workgroup.WorkgroupRoutingService;
 
 public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentService {
 
@@ -91,18 +91,22 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
 	}
 
 	RuleService ruleService = KEWServiceLocator.getRuleService();
-	WorkgroupService workgroupService = KEWServiceLocator.getWorkgroupService();
-	if (RemoveReplaceDocument.REPLACE_OPERATION.equals(document.getOperation())) {
-	    if (StringUtils.isEmpty(document.getReplacementUserWorkflowId())) {
-		throw new WorkflowRuntimeException("Replacement operation was indicated but RemoveReplaceDocument does not have a replacement user id.");
+	WorkgroupRoutingService workgroupRoutingService = KEWServiceLocator.getWorkgroupRoutingService();
+	try {
+	    if (RemoveReplaceDocument.REPLACE_OPERATION.equals(document.getOperation())) {
+		if (StringUtils.isEmpty(document.getReplacementUserWorkflowId())) {
+		    throw new WorkflowRuntimeException("Replacement operation was indicated but RemoveReplaceDocument does not have a replacement user id.");
+		}
+		ruleService.replaceRuleInvolvement(new WorkflowUserId(document.getUserWorkflowId()), new WorkflowUserId(document.getReplacementUserWorkflowId()), ruleIds, documentId);
+		workgroupRoutingService.replaceWorkgroupInvolvement(new WorkflowUserId(document.getUserWorkflowId()), new WorkflowUserId(document.getReplacementUserWorkflowId()), workgroupIds, documentId);
+	    } else if (RemoveReplaceDocument.REMOVE_OPERATION.equals(document.getOperation())) {
+		ruleService.removeRuleInvolvement(new WorkflowUserId(document.getUserWorkflowId()), ruleIds, documentId);
+		workgroupRoutingService.removeWorkgroupInvolvement(new WorkflowUserId(document.getUserWorkflowId()), workgroupIds, documentId);
+	    } else {
+		throw new WorkflowRuntimeException("Invalid operation was specified on the RemoveReplaceDocument: " + document.getOperation());
 	    }
-	    ruleService.replaceRuleInvolvement(new WorkflowUserId(document.getUserWorkflowId()), new WorkflowUserId(document.getReplacementUserWorkflowId()), ruleIds, documentId);
-	    workgroupService.replaceWorkgroupInvolvement(new WorkflowUserId(document.getUserWorkflowId()), new WorkflowUserId(document.getReplacementUserWorkflowId()), workgroupIds, documentId);
-	} else if (RemoveReplaceDocument.REMOVE_OPERATION.equals(document.getOperation())) {
-	    ruleService.removeRuleInvolvement(new WorkflowUserId(document.getUserWorkflowId()), ruleIds, documentId);
-	    workgroupService.removeWorkgroupInvolvement(new WorkflowUserId(document.getUserWorkflowId()), workgroupIds, documentId);
-	} else {
-	    throw new WorkflowRuntimeException("Invalid operation was specified on the RemoveReplaceDocument: " + document.getOperation());
+	} catch (WorkflowException e) {
+	    throw new WorkflowRuntimeException(e);
 	}
     }
 

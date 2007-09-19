@@ -41,11 +41,13 @@ import edu.iu.uis.eden.removereplace.WorkgroupTarget;
 import edu.iu.uis.eden.routetemplate.RuleBaseValues;
 import edu.iu.uis.eden.routetemplate.RuleResponsibility;
 import edu.iu.uis.eden.user.AuthenticationUserId;
+import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.CodeTranslator;
 import edu.iu.uis.eden.web.WorkflowAction;
 import edu.iu.uis.eden.web.session.UserSession;
 import edu.iu.uis.eden.workgroup.Workgroup;
+import edu.iu.uis.eden.workgroup.web.WorkgroupForm;
 
 /**
  * Struts Action for the Remove/Replace User Document.
@@ -100,6 +102,8 @@ public class RemoveReplaceAction extends WorkflowAction {
 		throw new RuntimeException("Please enter a valid replacement user id.");
 	    }
 	}
+	form.setWorkgroupTypes(KEWServiceLocator.getWorkgroupTypeService().findAllActive());
+        form.getWorkgroupTypes().add(0, RemoveReplaceForm.createDefaultWorkgroupType());
 	return null;
     }
 
@@ -185,7 +189,9 @@ public class RemoveReplaceAction extends WorkflowAction {
 	}
 	Workgroup template = KEWServiceLocator.getWorkgroupService().getBlankWorkgroup();
 	template.setActiveInd(Boolean.TRUE);
-	// TODO allow for searching by workgroup type
+	if (!StringUtils.isBlank(form.getWorkgroupType())) {
+	    template.setWorkgroupType(form.getWorkgroupType());
+	}
 	List<Workgroup> workgroups = KEWServiceLocator.getWorkgroupService().search(template, null, form.getUser());
 	Set<Long> selectedWorkgroupIds = getSelectedWorkgroupIds(form);
 	form.getWorkgroups().clear();
@@ -194,16 +200,31 @@ public class RemoveReplaceAction extends WorkflowAction {
 	    removeReplaceWorkgroup.setId(workgroup.getWorkflowGroupId().getGroupId());
 	    removeReplaceWorkgroup.setName(workgroup.getGroupNameId().getNameId());
 	    removeReplaceWorkgroup.setType(workgroup.getWorkgroupType());
-	    // TODO add warnings...
 	    removeReplaceWorkgroup.setWarning("");
 	    // if workgroup was selected previously, keep it selected
 	    removeReplaceWorkgroup.setSelected(selectedWorkgroupIds.contains(workgroup.getWorkflowGroupId().getGroupId()));
-	    // TODO add warnings...
-//	    ResponsibilityEvaluation eval = evaluateResponsibility(form, rule);
-//	    if (!eval.foundResponsibility) {
-//		LOG.warn("Failed to find a valid responsbility on rule " + rule.getRuleBaseValuesId() + " for user " + form.getUserId() + ".  This rule will not be added to the list for selection.");
-//	    }
-//	    removeReplaceRule.getWarnings().addAll(eval.warnings);
+	    boolean isOnlyMember = true;
+	    boolean foundMember = false;
+	    for (Recipient member : workgroup.getMembers()) {
+		if (member instanceof WorkflowUser && ((WorkflowUser)member).getWorkflowId().equals(form.getUser().getWorkflowId())) {
+		    foundMember = true;
+		} else {
+		    isOnlyMember = false;
+		}
+	    }
+	    List<String> warnings = new ArrayList<String>();
+	    if (RemoveReplaceDocument.REMOVE_OPERATION.equals(form.getOperation()) && isOnlyMember) {
+		warnings.add("Only one member on the workgroup, removing them will inactivate the workgroup.");
+	    }
+	    for (String warning : warnings) {
+		if (!StringUtils.isEmpty(removeReplaceWorkgroup.getWarning())) {
+		    removeReplaceWorkgroup.setWarning(removeReplaceWorkgroup.getWarning().concat("<br>"));
+		}
+		removeReplaceWorkgroup.setWarning(removeReplaceWorkgroup.getWarning().concat(warning));
+	    }
+	    if (!foundMember) {
+		LOG.warn("Failed to find a valid member on workgroup " + workgroup.getDisplayName() + " for user " + form.getUserId() + ".  This workgroup will not be added to the list for selection.");
+	    }
 	    form.getWorkgroups().add(removeReplaceWorkgroup);
 	}
 	return mapping.findForward("basic");
@@ -263,15 +284,19 @@ public class RemoveReplaceAction extends WorkflowAction {
 	}
 	List<RuleTarget> ruleTargets = new ArrayList<RuleTarget>();
 	for (RemoveReplaceRule rule : form.getRules()) {
-	    RuleTarget target = new RuleTarget();
-	    target.setRuleId(rule.getRule().getRuleBaseValuesId());
-	    ruleTargets.add(target);
+	    if (rule.isSelected()) {
+		RuleTarget target = new RuleTarget();
+		target.setRuleId(rule.getRule().getRuleBaseValuesId());
+		ruleTargets.add(target);
+	    }
 	}
 	List<WorkgroupTarget> workgroupTargets = new ArrayList<WorkgroupTarget>();
 	for (RemoveReplaceWorkgroup workgroup : form.getWorkgroups()) {
-	    WorkgroupTarget target = new WorkgroupTarget();
-	    target.setWorkgroupId(workgroup.getId());
-	    workgroupTargets.add(target);
+	    if (workgroup.isSelected()) {
+		WorkgroupTarget target = new WorkgroupTarget();
+		target.setWorkgroupId(workgroup.getId());
+		workgroupTargets.add(target);
+	    }
 	}
 	document.setRuleTargets(ruleTargets);
 	document.setWorkgroupTargets(workgroupTargets);

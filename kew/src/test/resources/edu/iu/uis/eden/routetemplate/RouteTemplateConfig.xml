@@ -79,7 +79,7 @@
 			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
-			<active>true</active>		
+			<active>true</active>
 		</documentType>
 		<documentType>
 			<name>EDENSERVICE-DOCS.child1child</name>
@@ -90,8 +90,8 @@
 			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
-			<active>true</active>		
-		</documentType>		
+			<active>true</active>
+		</documentType>
 		<documentType>
 			<name>EDENSERVICE-DOCS.child2</name>
 			<parent>EDENSERVICE-DOCS</parent>
@@ -101,7 +101,7 @@
 			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
-			<active>true</active>		
+			<active>true</active>
 		</documentType>
 		<documentType>
 			<name>EDENSERVICE-DOCS.child3</name>
@@ -112,8 +112,8 @@
 			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
 			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
 			<docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
-			<active>true</active>		
-		</documentType>				
+			<active>true</active>
+		</documentType>
 		<documentType>
 			<name>EDENSERVICE-DOCS.RuleDocument</name>
 			<parent>EDENSERVICE-DOCS</parent>
@@ -178,9 +178,9 @@
 					<activationType>S</activationType>
 					<ruleTemplate>DocumentTypeRouting</ruleTemplate>
 					<mandatoryRoute>true</mandatoryRoute>
-				</requests>				
+				</requests>
 			</routeNodes>
-		</documentType>		
+		</documentType>
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
@@ -220,7 +220,7 @@
 					<priority>1</priority>
 				</responsibility>
 			</responsibilities>
-		</rule>		
+		</rule>
 		<rule>
 			<documentType>EDENSERVICE-DOCS.child1child</documentType>
 			<ruleTemplate>DocumentTypeRouting</ruleTemplate>
@@ -233,7 +233,7 @@
 					<priority>1</priority>
 				</responsibility>
 			</responsibilities>
-		</rule>				
+		</rule>
 		<rule>
 			<documentType>EDENSERVICE-DOCS.child2</documentType>
 			<ruleTemplate>DocumentTypeRouting</ruleTemplate>
@@ -246,7 +246,7 @@
 					<priority>1</priority>
 				</responsibility>
 			</responsibilities>
-		</rule>		
+		</rule>
 		<rule>
 			<documentType>EDENSERVICE-DOCS.child3</documentType>
 			<ruleTemplate>DocumentTypeRouting</ruleTemplate>
@@ -259,8 +259,9 @@
 					<priority>1</priority>
 				</responsibility>
 			</responsibilities>
-		</rule>		
+		</rule>
 		<rule>
+            <name>DTR-NotRelated</name>
 			<documentType>NotRelated</documentType>
 			<ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
@@ -272,6 +273,6 @@
 					<priority>1</priority>
 				</responsibility>
 			</responsibilities>
-		</rule>		
+		</rule>
 	</rules>
 </data>

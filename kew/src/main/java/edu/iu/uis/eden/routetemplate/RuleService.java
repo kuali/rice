@@ -25,6 +25,7 @@ import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.XmlLoader;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
+import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.user.UserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.workgroup.GroupId;
@@ -98,7 +99,7 @@ public interface RuleService extends XmlLoader, XmlExporter {
      *
      * <p>This method should handle any versioning of the rules that is required.
      */
-    public void replaceRuleInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> ruleIds, Long documentId);
+    public void replaceRuleInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> ruleIds, Long documentId) throws WorkflowException;
 
     /**
      * Removes entities who have responsibilities on the given set of rules.  In the case that a targeted rule
@@ -107,6 +108,6 @@ public interface RuleService extends XmlLoader, XmlExporter {
      *
      * <p>This method should handle any versioning of the rules that is required.
      */
-    public void removeRuleInvolvement(Id entityToBeRemoved, List<Long> ruleIds, Long documentId);
+    public void removeRuleInvolvement(Id entityToBeRemoved, List<Long> ruleIds, Long documentId) throws WorkflowException;
 
 }

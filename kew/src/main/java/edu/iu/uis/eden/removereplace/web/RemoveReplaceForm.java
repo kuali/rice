@@ -21,7 +21,9 @@ import java.util.Map;
 
 import org.apache.commons.collections.Factory;
 import org.apache.commons.collections.ListUtils;
+import org.kuali.workflow.workgroup.WorkgroupType;
 
+import edu.iu.uis.eden.removereplace.RemoveReplaceDocument;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.web.WorkflowRoutingForm;
 
@@ -40,8 +42,9 @@ public class RemoveReplaceForm extends WorkflowRoutingForm {
     private String replacementUserId;
     private String ruleDocumentTypeName;
     private String ruleRuleTemplate;
+    private String workgroupType;
 
-    private String operation;
+    private String operation = RemoveReplaceDocument.REPLACE_OPERATION;
     private List<RemoveReplaceRule> rules = ListUtils.lazyList(new ArrayList<RemoveReplaceRule>(),
 	    new Factory() {
 	     	public Object create() {
@@ -58,8 +61,17 @@ public class RemoveReplaceForm extends WorkflowRoutingForm {
     // properties that are loaded by establishRequiredState
     private WorkflowUser user;
     private WorkflowUser replacementUser;
+    private List<WorkgroupType> workgroupTypes = new ArrayList<WorkgroupType>();
 
     public RemoveReplaceForm() {
+    }
+
+    public static WorkgroupType createDefaultWorkgroupType() {
+    	WorkgroupType workgroupType = new WorkgroupType();
+    	workgroupType.setActive(true);
+    	workgroupType.setLabel("Default");
+    	workgroupType.setName("");
+    	return workgroupType;
     }
 
     public String getMethodToCall() {
@@ -149,5 +161,23 @@ public class RemoveReplaceForm extends WorkflowRoutingForm {
     public void setActionRequestCodes(Map actionRequestCodes) {
         this.actionRequestCodes = actionRequestCodes;
     }
+
+    public String getWorkgroupType() {
+        return this.workgroupType;
+    }
+
+    public void setWorkgroupType(String workgroupType) {
+        this.workgroupType = workgroupType;
+    }
+
+    public List<WorkgroupType> getWorkgroupTypes() {
+        return this.workgroupTypes;
+    }
+
+    public void setWorkgroupTypes(List<WorkgroupType> workgroupTypes) {
+        this.workgroupTypes = workgroupTypes;
+    }
+
+
 
 }

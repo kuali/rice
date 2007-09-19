@@ -17,13 +17,17 @@
 package edu.iu.uis.eden.workgroup;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.kuali.workflow.attribute.Extension;
+import org.kuali.workflow.workgroup.BaseWorkgroupExtension;
 import org.kuali.workflow.workgroup.WorkgroupType;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
@@ -32,12 +36,14 @@ import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
 import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowException;
+import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routeheader.Routable;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.user.Recipient;
+import edu.iu.uis.eden.user.UserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.XmlHelper;
 import edu.iu.uis.eden.web.session.UserSession;
@@ -156,6 +162,7 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
     public void versionAndSave(Workgroup workgroup) throws WorkflowException {
 		BaseWorkgroup baseWorkgroup = (BaseWorkgroup)workgroup;
 		baseWorkgroup.setVersionNumber(new Integer(0));
+		baseWorkgroup.setCurrentInd(Boolean.TRUE);
 		if (baseWorkgroup.getWorkgroupId() != null) {
 			BaseWorkgroup existingWorkgroup = getWorkgroupDAO().findByWorkgroupId(baseWorkgroup.getWorkgroupId());
 			existingWorkgroup.setCurrentInd(Boolean.FALSE);
@@ -164,6 +171,143 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
 		}
 		KEWServiceLocator.getWorkgroupService().save(workgroup);
 	}
+
+    public void removeWorkgroupInvolvement(Id entityToBeRemoved, List<Long> workgroupIds, Long documentId) throws WorkflowException {
+	WorkflowUser userToRemove = null;
+	Workgroup workgroupToRemove = null;
+	if (entityToBeRemoved instanceof UserId) {
+	    userToRemove = KEWServiceLocator.getUserService().getWorkflowUser((UserId)entityToBeRemoved);
+	} else if (entityToBeRemoved instanceof GroupId) {
+	    workgroupToRemove = KEWServiceLocator.getWorkgroupService().getWorkgroup((GroupId)entityToBeRemoved);
+	} else {
+	    throw new WorkflowRuntimeException("Invalid entity ID for removal was passed, type was: " + entityToBeRemoved);
+	}
+	if (userToRemove == null && workgroupToRemove == null) {
+	    throw new WorkflowRuntimeException("Could not resolve entity to be removed with id: " + entityToBeRemoved);
+	}
+	for (Long workgroupId : workgroupIds) {
+	    BaseWorkgroup existingWorkgroup = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
+	    BaseWorkgroup workgroup = createNewRemoveReplaceVersion(existingWorkgroup, documentId);
+	    List<BaseWorkgroupMember> finalMembers = new ArrayList<BaseWorkgroupMember>();
+	    for (BaseWorkgroupMember member : workgroup.getWorkgroupMembers()) {
+		if (member.getMemberType().equals(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
+		    if (userToRemove != null && member.getWorkflowId().equals(userToRemove.getWorkflowId())) {
+			continue;
+		    }
+		} else if (member.getMemberType().equals(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
+		    if (workgroupToRemove != null && member.getWorkflowId().equals(workgroupToRemove.getWorkflowGroupId().getGroupId().toString())) {
+			continue;
+		    }
+		}
+		finalMembers.add(member);
+	    }
+	    if (finalMembers.isEmpty()) {
+		// deactivate the workgroup instead
+		workgroup.setActiveInd(false);
+	    } else {
+		workgroup.setWorkgroupMembers(finalMembers);
+	    }
+	    // call to updaateActionItemsForWorkgroupChange below depends on materialized members
+	    workgroup.setMembers(new ArrayList<Recipient>());
+	    workgroup.materializeMembers();
+	    versionAndSave(workgroup);
+	    KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(existingWorkgroup, workgroup);
+	}
+    }
+
+    public void replaceWorkgroupInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> workgroupIds, Long documentId) throws WorkflowException {
+	WorkflowUser userToReplace = null;
+	Workgroup workgroupToReplace = null;
+	if (entityToBeReplaced instanceof UserId) {
+	    userToReplace = KEWServiceLocator.getUserService().getWorkflowUser((UserId)entityToBeReplaced);
+	} else if (entityToBeReplaced instanceof GroupId) {
+	    workgroupToReplace = KEWServiceLocator.getWorkgroupService().getWorkgroup((GroupId)entityToBeReplaced);
+	} else {
+	    throw new WorkflowRuntimeException("Invalid ID for entity to be replaced was passed, type was: " + entityToBeReplaced);
+	}
+	if (userToReplace == null && workgroupToReplace == null) {
+	    throw new WorkflowRuntimeException("Could not resolve entity to be replaced with id: " + entityToBeReplaced);
+	}
+	WorkflowUser newUser = null;
+	Workgroup newWorkgroup = null;
+	if (newEntity instanceof UserId) {
+	    newUser = KEWServiceLocator.getUserService().getWorkflowUser((UserId)newEntity);
+	} else if (newEntity instanceof GroupId) {
+	    newWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup((GroupId)newEntity);
+	} else {
+	    throw new WorkflowRuntimeException("Invalid ID for new replacement entity was passed, type was: " + newEntity);
+	}
+	if (newUser == null && newWorkgroup == null) {
+	    throw new WorkflowRuntimeException("Could not resolve new replacement entity with id: " + newEntity);
+	}
+	for (Long workgroupId : workgroupIds) {
+	    BaseWorkgroup existingWorkgroup = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
+	    BaseWorkgroup workgroup = createNewRemoveReplaceVersion(existingWorkgroup, documentId);
+	    for (BaseWorkgroupMember member : workgroup.getWorkgroupMembers()) {
+		if (member.getMemberType().equals(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
+		    if (userToReplace != null && member.getWorkflowId().equals(userToReplace.getWorkflowId())) {
+			if (newUser != null) {
+			    member.setMemberType(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+			    member.setWorkflowId(newUser.getWorkflowId());
+			} else if (newWorkgroup != null) {
+			    member.setMemberType(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+			    member.setWorkflowId(newWorkgroup.getWorkflowGroupId().getGroupId().toString());
+			}
+		    }
+		} else if (member.getMemberType().equals(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
+		    if (workgroupToReplace != null && member.getWorkflowId().equals(workgroupToReplace.getWorkflowGroupId().getGroupId().toString())) {
+			if (newUser != null) {
+			    member.setMemberType(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+			    member.setWorkflowId(newUser.getWorkflowId());
+			} else if (newWorkgroup != null) {
+			    member.setMemberType(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD);
+			    member.setWorkflowId(newWorkgroup.getWorkflowGroupId().getGroupId().toString());
+			}
+		    }
+		}
+	    }
+	    // call to updaateActionItemsForWorkgroupChange below depends on materialized members
+	    workgroup.setMembers(new ArrayList<Recipient>());
+	    workgroup.materializeMembers();
+	    versionAndSave(workgroup);
+	    KEWServiceLocator.getActionListService().updateActionItemsForWorkgroupChange(existingWorkgroup, workgroup);
+	}
+
+    }
+
+    protected BaseWorkgroup createNewRemoveReplaceVersion(BaseWorkgroup workgroup, Long documentId) throws EdenUserNotFoundException {
+	BaseWorkgroup copy = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().copy(workgroup);
+	copy.setDocumentId(documentId);
+	List<BaseWorkgroupMember> members = new ArrayList<BaseWorkgroupMember>();
+	for (BaseWorkgroupMember member : workgroup.getWorkgroupMembers()) {
+	    BaseWorkgroupMember copyMember = copyMember(copy, member);
+	    members.add(copyMember);
+	}
+	copy.setWorkgroupMembers(members);
+	copy.setMembers(new ArrayList<Recipient>());
+	copy.materializeMembers();
+	List<Extension> extensions = new ArrayList<Extension>();
+	for (Extension extension : copy.getExtensions()) {
+	    extensions.add(copyExtension(copy, (BaseWorkgroupExtension)extension));
+	}
+	copy.setExtensions(extensions);
+	return copy;
+    }
+
+    protected BaseWorkgroupMember copyMember(BaseWorkgroup workgroup, BaseWorkgroupMember member) {
+	BaseWorkgroupMember copy = new BaseWorkgroupMember();
+	copy.setMemberType(member.getMemberType());
+	copy.setWorkflowId(member.getWorkflowId());
+	copy.setWorkgroup(workgroup);
+	return copy;
+    }
+
+    protected BaseWorkgroupExtension copyExtension(BaseWorkgroup workgroup, BaseWorkgroupExtension extension) {
+	BaseWorkgroupExtension copyExtension = new BaseWorkgroupExtension();
+	copyExtension.setWorkgroup(workgroup);
+	copyExtension.setWorkgroupTypeAttribute(extension.getWorkgroupTypeAttribute());
+	return copyExtension;
+    }
 
     protected void materializeMembersForRouting(BaseWorkgroup workgroup) throws WorkflowException {
         workgroup.getWorkgroupMembers().clear();

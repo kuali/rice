@@ -80,21 +80,4 @@ public interface WorkgroupService extends XmlLoader, XmlExporter {
 
     public void save(Workgroup workgroup);
 
-    /**
-     * Replaces entities who are members of the given set of workgroups with the specified new entity.  In this case
-     * the Id can be the id of either a Workgroup or a User.
-     *
-     * <p>This method should handle any versioning of the workgroups that is required.
-     */
-    public void replaceWorkgroupInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> workgroupIds, Long documentId);
-
-    /**
-     * Removes entities who are members of the given set of workgroups.  In the case that a targeted workgroup
-     * contains only a single member, the workgroup will be inactivated instead of removing the final member.
-     * The Id can be the id of either a Workgroup or a User.
-     *
-     * <p>This method should handle any versioning of the workgroups that is required.
-     */
-    public void removeWorkgroupInvolvement(Id entityToBeRemoved, List<Long> workgroupIds, Long documentId);
-
 }

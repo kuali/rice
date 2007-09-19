@@ -22,10 +22,8 @@
 
   <html-el:hidden property="methodToCall" /><br>
   <html-el:hidden property="docId" /><br>
-  Operation: <html-el:select property="operation">
-	<html-el:option value="P">Replace</html-el:option>
-  	<html-el:option value="M">Remove</html-el:option>
-  </html-el:select><br>
+  Operation: <html-el:radio property="operation" value="P"/>Replace <html-el:radio property="operation" value="M"/>Remove
+  <br>
   User Id: <html-el:text property="userId"/><br>
   User Id to Replace With: <html-el:text property="replacementUserId"/><br><br>
 <hr>
@@ -67,8 +65,12 @@
   </c:forEach>
 <hr>
   <br><br>
+
   Workgroups:<br>
-  Workgroup Type: ...<br>
+  Workgroup Type: <html-el:select property="workgroupType">
+    <c:set var="workgroupTypes" value="${RemoveReplaceForm.workgroupTypes}"/>
+	<html-el:options collection="workgroupTypes" property="name" labelProperty="label"/>
+  </html-el:select><br>
   <input type="button" value="Choose Workgroups" onclick="javascript:setMethodToCallAndSubmit('chooseWorkgroups')"/><br><br>
   <c:set var="workgroupIndex" value="0"/>
   <display-el:table class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${RemoveReplaceForm.workgroups}" defaultsort="1" id="workgroup" requestURI="RemoveReplace.do"

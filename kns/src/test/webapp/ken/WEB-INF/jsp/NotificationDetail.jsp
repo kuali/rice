@@ -29,8 +29,6 @@
 		<!-- Include the top half of the Work Area -->
 		<%@ include file="WorkAreaTop.jsp" %>
       
-        <div style="margin-bottom: 10px"><a href="HomePage.form">back to action list</a></div>
-
         <!-- Include the actual detail of the notification -->
 		<%@ include file="NotificationDetailInclude.jsp" %>
 		

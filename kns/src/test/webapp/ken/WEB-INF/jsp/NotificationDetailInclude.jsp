@@ -82,6 +82,8 @@
          	<a href="javascript:self.close()">
 	         	<img src="images/buttonsmall_close.gif" border="0" alt="close" />
             </a>
+
+            <button onClick="window.location='HomePage.form'">Back to Action List</button>
          </c:if>
         </div>
 	</ul>

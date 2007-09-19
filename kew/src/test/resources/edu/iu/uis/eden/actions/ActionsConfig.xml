@@ -298,6 +298,32 @@
 			</routeNodes>
 		</documentType>
 		<documentType>
+			<name>SuperUserApproveActionRequestApproveTest</name>
+			<description>SuperUserApproveActionRequestApproveTest</description>
+			<label>SuperUserApproveActionRequestApproveTest</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<docHandler>_blank</docHandler>
+			<active>true</active>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="Approval"/>
+					<requests name="Approval" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>S</activationType>
+				</start>
+				<requests name="Approval">
+					<activationType>S</activationType>
+					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
 			<name>NotificationTest</name>
 			<description>NotificationTest</description>
 			<label>NotificationTest</label>
@@ -886,6 +912,19 @@
 		<!-- end  super user approve exception case document type -->
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<rule>
+			<documentType>SuperUserApproveActionRequestApproveTest</documentType>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<description>WorkflowDocumentTemplate Rule 1</description>
+			<ignorePrevious>true</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>bmcgough</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>

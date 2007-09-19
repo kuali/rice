@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionMapping;
 
-import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -184,13 +183,26 @@ public class SuperUserForm extends WorkflowRoutingForm {
     }
     
     public boolean isSUDocument() {
-        if (EdenConstants.ROUTE_HEADER_INITIATED_CD.equals(routeHeader.getDocRouteStatus()) ||
-                EdenConstants.ROUTE_HEADER_SAVED_CD.equals(routeHeader.getDocRouteStatus())) {
+	if (routeHeader.isStateInitiated() || routeHeader.isStateSaved()) {
             return false;
         }
         return true;
     }
-
+    
+    public boolean isStateAllowsAction() {
+        if ( routeHeader.isApproved() || routeHeader.isProcessed() || routeHeader.isDisaproved() ) {
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean isStateFinal() {
+	if (routeHeader.isFinal() || routeHeader.isCanceled()) {
+	    return true;
+	}
+	return false;
+    }
+    
     public DocumentType getDocumentType() {
         return getRouteHeader().getDocumentType();
     }

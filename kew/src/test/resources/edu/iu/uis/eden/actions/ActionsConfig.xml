@@ -277,6 +277,27 @@
 			</routeNodes>
 		</documentType>
 		<documentType>
+			<name>SuperUserApproveActionRequestFyiTest</name>
+			<description>SuperUserApproveActionRequestFyiTest</description>
+			<label>SuperUserApproveActionRequestFyiTest</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<docHandler>_blank</docHandler>
+			<active>true</active>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>S</activationType>
+				</start>
+			</routeNodes>
+		</documentType>
+		<documentType>
 			<name>NotificationTest</name>
 			<description>NotificationTest</description>
 			<label>NotificationTest</label>

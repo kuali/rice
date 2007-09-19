@@ -155,6 +155,16 @@
 			<givenName>Pan</givenName>
 			<lastName>Zhang</lastName>
 		</user>
+		<user>
+			<workflowId>15</workflowId>
+			<emplId>3234598234</emplId>
+			<authenticationId>delyea</authenticationId>
+			<uuId>3234598234</uuId>
+			<emailAddress>delyea@indiana.edu</emailAddress>
+			<displayName>David Elyea</displayName>
+			<givenName>David</givenName>
+			<lastName>Elyea</lastName>
+		</user>
 
         <!-- test users, range starting at id 1000 -->
 		<user>

@@ -55,6 +55,7 @@ public interface WorkflowDocumentActions extends Remote {
     public void deleteDocument(UserIdVO userId, RouteHeaderVO routeHeader) throws RemoteException, WorkflowException;
     public void logDocumentAction(UserIdVO userId, RouteHeaderVO routeHeader, String annotation) throws RemoteException, WorkflowException;
     public RouteHeaderVO superUserApprove(UserIdVO userId, RouteHeaderVO routeHeader, String annotation) throws RemoteException, WorkflowException;
+    public RouteHeaderVO superUserActionRequestApprove(UserIdVO userId, RouteHeaderVO routeHeaderVO, Long actionRequestId, String annotation) throws RemoteException, WorkflowException;
     public RouteHeaderVO superUserDisapprove(UserIdVO userId, RouteHeaderVO routeHeader, String annotation) throws RemoteException, WorkflowException;
     public RouteHeaderVO superUserCancel(UserIdVO userId, RouteHeaderVO routeHeader, String annotation) throws RemoteException, WorkflowException;    
     

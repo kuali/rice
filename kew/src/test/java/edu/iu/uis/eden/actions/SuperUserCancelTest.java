@@ -29,38 +29,50 @@ import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 public class SuperUserCancelTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
-        loadXmlFile("ActionsConfig.xml");
+	loadXmlFile("ActionsConfig.xml");
     }
-	
-    @Test public void testSuperUserCancel() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
-        document.routeDocument("");
-        
-        document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
-        assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isSuperUser());
-        document.superUserCancel("");
-        assertTrue("Document should be final after Super User Disapprove", document.stateIsCanceled());
+
+    @Test
+    public void testSuperUserCancel() throws Exception {
+	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+	document.routeDocument("");
+
+	document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
+	assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isSuperUser());
+	document.superUserCancel("");
+	assertTrue("Document should be final after Super User Cancel", document.stateIsCanceled());
+    }
+
+    @Test
+    public void testSuperUserInitiatorCancel() throws Exception {
+	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+	assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
+	document.superUserCancel("");
+	assertTrue("Document should be final after Super User Cancel", document.stateIsCanceled());
+    }
+
+    @Test
+    public void testSuperUserNonInitiatorCancel() throws Exception {
+	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("delyea"), NotifySetup.DOCUMENT_TYPE_NAME);
+	document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+	assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
+	document.superUserCancel("");
+	assertTrue("Document should be final after Super User Cancel", document.stateIsCanceled());
+    }
+
+    @Test
+    public void testSuperUserCancelInvalidUser() throws Exception {
+	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+	document.routeDocument("");
+
+	document = new WorkflowDocument(new NetworkIdVO("quickstart"), document.getRouteHeaderId());
+	try {
+	    assertFalse("WorkflowDocument should not indicate quickstart as SuperUser", document.isSuperUser());
+	    document.superUserCancel("");
+	    fail("invalid user attempted to SuperUserApprove");
+	} catch (Exception e) {
 	}
-	
-    @Test public void testSuperUserInitiatorCancel() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
-        assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
-        document.superUserCancel("");
-        assertTrue("Document should be final after Super User Disapprove", document.stateIsCanceled());
-	}
-	
-	@Test public void testSuperUserCancelInvalidUser() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
-        document.routeDocument("");
-        
-        document = new WorkflowDocument(new NetworkIdVO("quickstart"), document.getRouteHeaderId());
-        try {
-        	assertFalse("WorkflowDocument should not indicate quickstart as SuperUser", document.isSuperUser());
-        	document.superUserCancel("");
-        	fail("invalid user attempted to SuperUserApprove");
-        } catch (Exception e) {
-        }
-        
-	}
-	
+
+    }
+
 }

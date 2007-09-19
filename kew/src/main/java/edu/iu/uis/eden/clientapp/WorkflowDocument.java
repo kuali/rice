@@ -848,6 +848,24 @@ public class WorkflowDocument implements java.io.Serializable {
     }
 
     /**
+     * Performs the 'super-user-action-request-approve' action on the document this WorkflowDocument represents and the action
+     * request the id represents.
+     * @param actionRequestId the action request id for the action request the super user is approved
+     * @param annotation the message to log for the action
+     * @throws WorkflowException in case an error occurs super-user-action-request-approve-ing the document
+     * @see WorkflowDocumentActions#superUserApprove(UserIdVO, RouteHeaderVO, String)(UserIdVO, RouteHeaderVO, String)
+     */
+    public void superUserActionRequestApprove(Long actionRequestId, String annotation) throws WorkflowException {
+        try {
+            createDocumentIfNeccessary();
+            routeHeader = getWorkflowDocumentActions().superUserActionRequestApprove(getUserId(), getRouteHeader(), actionRequestId, annotation);
+            documentContentDirty = true;
+        } catch (Exception e) {
+            throw handleException(e);
+        }
+    }
+
+    /**
      * Performs the 'super-user-disapprove' action on the document this WorkflowDocument represents.  If this is a new document,
      * the document is created first.
      * @param annotation the message to log for the action

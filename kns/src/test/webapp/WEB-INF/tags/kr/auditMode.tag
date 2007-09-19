@@ -15,6 +15,7 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <%@ attribute name="documentTypeName" required="true" %>
+<%@ attribute name="categories" required="true" %>
 
 <div align="right">
 	<kul:help documentTypeName="${documentTypeName}" pageName="${RiceConstants.AUDIT_MODE_HEADER_TAB}" altText="page help"/>
@@ -51,7 +52,9 @@
 		</table>
 		<c:if test="${KualiForm.auditActivated}">
 			<table cellpadding="0" cellspacing="0" summary="">
-				<kul:auditSet />
+			<c:forEach items="${fn:split(categories,',')}" var="category">
+				<kul:auditSet category="${category}" />
+			</c:forEach>			
 			</table>
 		</c:if>
 	</div>

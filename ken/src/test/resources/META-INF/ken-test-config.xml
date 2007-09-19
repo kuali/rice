@@ -4,5 +4,5 @@
     <param name="module.name">ken</param>
 
     <param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
-    <param name="config.location">${alt.build.location}</param>
+    <param name="config.location">${alt.config.location}</param>
 </config>

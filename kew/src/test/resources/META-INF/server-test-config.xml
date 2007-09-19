@@ -28,4 +28,5 @@
 	<!-- Override the message entity for the server -->
 	<param name="message.entity">KEW</param>
 
+    <param name="config.location">${alt.config.location}</param>
 </config>

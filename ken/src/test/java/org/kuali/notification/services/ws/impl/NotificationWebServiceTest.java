@@ -17,19 +17,11 @@ package org.kuali.notification.services.ws.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.xfire.client.Client;
-import org.codehaus.xfire.transport.http.AbstractMessageSender;
-import org.codehaus.xfire.util.LoggingHandler;
-import org.codehaus.xfire.util.dom.DOMInHandler;
-import org.codehaus.xfire.util.dom.DOMOutHandler;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import edu.iu.uis.eden.server.SimpleDocumentActionsWebServiceTest.EncodedCommonsHttpMessageSender;
 
 /**
  * Tests XFire Notification web service.  See KEW SimpleDocumentActionsWebServiceTest

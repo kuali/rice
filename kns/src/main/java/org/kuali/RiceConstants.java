@@ -263,6 +263,7 @@ public class RiceConstants extends JstlConstants {
 
     public static final String INQUIRABLE_ATTRIBUTE_NAME = "kualiInquirable";
     public static final String INQUIRY_ACTION = "inquiry.do";
+    public static final String DIRECT_INQUIRY_ACTION = "directInquiry.do";
     public static final String INQUIRY_IMPL_ATTRIBUTE_NAME = "inquirableImplServiceName";
     public static final String JOURNAL_VOUCHER_CHANGE_BALANCE_TYPE_QUESTION = "JournalVoucherChangeBalanceTypeQuestion";
     public static final String JOURNAL_VOUCHER_ROUTE_OUT_OF_BALANCE_DOCUMENT_QUESTION = "JournalVoucherRouteOutOfBalanceDocumentQuestion";

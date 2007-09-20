@@ -455,12 +455,13 @@ public abstract class KualiAction extends DispatchAction {
             LOG.debug( "parameterFields: " + parameterFields );
         }
         if (StringUtils.isNotBlank(parameterFields)) {
-            String[] lookupParams = parameterFields.split(RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
+            // TODO : create a method for this to be used by both lookup & inquiry ?
+            String[] inquiryParams = parameterFields.split(RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
             if ( LOG.isDebugEnabled() ) {
-                LOG.debug( "lookupParams: " + lookupParams );
+                LOG.debug( "inquiryParams: " + inquiryParams );
             }
-            for (int i = 0; i < lookupParams.length; i++) {
-                String[] keyValue = lookupParams[i].split(RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+            for (int i = 0; i < inquiryParams.length; i++) {
+                String[] keyValue = inquiryParams[i].split(RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
 
                 // hard-coded passed value
                 if (StringUtils.contains(keyValue[0], "'")) {
@@ -482,7 +483,7 @@ public abstract class KualiAction extends DispatchAction {
         parameters.put(RiceConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
 
         String inquiryAction = "directInquiry.do";
-        String inquiryUrl = UrlFactory.parameterizeUrl(basePath + "/kr/" + inquiryAction, parameters);
+        String inquiryUrl = UrlFactory.parameterizeUrl(basePath + "/kr/" + RiceConstants.DIRECT_INQUIRY_ACTION, parameters);
         return new ActionForward(inquiryUrl, true);
 
     }

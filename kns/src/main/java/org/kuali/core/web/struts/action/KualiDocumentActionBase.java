@@ -145,7 +145,7 @@ public class KualiDocumentActionBase extends KualiAction {
             DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
             formBase.populateAuthorizationFields(documentAuthorizer);
             UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
-            if (document instanceof SessionDocument && (formBase.getFormKey() == null ||  formBase.getFormKey().equals("") || userSession.retrieveObject(formBase.getFormKey()) == null)) {
+            if (document instanceof SessionDocument && (StringUtils.isBlank(formBase.getFormKey()) || userSession.retrieveObject(formBase.getFormKey()) == null)) {
                 // generate doc form key here if it does not exist
         	formBase.setFormKey(GlobalVariables.getUserSession().addObject(form));
             }

@@ -151,15 +151,11 @@ function resizeTheRouteLogFrame() {
 
 // should be in rice for direct inquiry 
  function inquiryPop(boClassName, inquiryParameters){
-  //alert("inquirypop "+boClassName+" "+inquiryParameters)
   parameterPairs = inquiryParameters.split(",");
-  //alert(parameterPairs)
-  //alert(parameters[0]+parameters[1]+document.getElementById('document.organizationId')+document.forms[0].elements['document.organizationId'])
   queryString="businessObjectClassName="+boClassName+"&methodToCall=start"
   for (i in parameterPairs) {
   
     parameters = parameterPairs[i].split(":");
-    //alert(parameterPairs[i])
   	if (document.forms[0].elements[parameters[0]].value=="") {
 //    	queryString=queryString+"&"+parameters[1]+"=directInquiryParameterNotSpecified";
 		return false;
@@ -172,7 +168,6 @@ function resizeTheRouteLogFrame() {
   idx1=url.indexOf(pathname);
   idx2=url.indexOf("/",idx1+1);
   baseUrl=url.substr(0,idx2)
-  //alert(baseUrl+" "+queryString)
   window.open(baseUrl+"/kr/directInquiry.do?"+queryString, "_blank", "width=640, height=600, scrollbars=yes");
 }
  

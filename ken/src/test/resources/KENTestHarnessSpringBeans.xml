@@ -47,6 +47,7 @@
                 <bean class="org.kuali.workflow.config.KEWConfigurer">
                     <property name="clientProtocol" value="local" />
                 </bean>
+                <!--
                 <bean class="org.kuali.rice.kns.config.KNSConfigurer">
                     <property name="dataDictionaryPackages">
                         <list>
@@ -59,6 +60,7 @@
                         </list>
                     </property>
                 </bean>
+                -->
                 <bean class="org.kuali.notification.config.KENConfigurer" />
             </list>
         </property>

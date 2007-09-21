@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.util.List;
+
+import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.GroupAttribute;
+import org.kuali.rice.kim.bo.Permission;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.RoleAttribute;
 import org.kuali.rice.kim.service.KIMService;
 
 /**
@@ -24,4 +32,28 @@ import org.kuali.rice.kim.service.KIMService;
  * @author Aaron Godert (agodert at cornell dot edu)
  */
 public class KIMServiceImpl implements KIMService {
+    public List<Person> getPersons(Role role)
+    {
+	return null;
+    }
+    public List<Role> getRoles()
+    {
+	return null;
+    }
+    public List<RoleAttribute> getQualifiedRoles(Person person, Role role)
+    {
+	return null;
+    }
+    public List<Permission> getPermissions(Role role)
+    {
+	return null;
+    }
+    public List<Group> getGroups(Role role)
+    {
+	return null;
+    }
+    public List<GroupAttribute> getQualifiedGroups(Person person, Group role)
+    {
+	return null;
+    }   
 }

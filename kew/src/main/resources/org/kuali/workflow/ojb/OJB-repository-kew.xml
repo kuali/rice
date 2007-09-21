@@ -550,8 +550,11 @@
       <foreignkey field-ref="ruleBaseValuesId" />
     </reference-descriptor>
 
-    <collection-descriptor element-class-ref="edu.iu.uis.eden.routetemplate.RuleDelegation" name="delegationRules" auto-delete="false" auto-retrieve="true" auto-update="true" proxy="true">
+    <!-- Uses a ManageableArrayList because we never want to delete RuleDelegation objects from the database -->
+    <collection-descriptor element-class-ref="edu.iu.uis.eden.routetemplate.RuleDelegation" name="delegationRules" auto-delete="false" auto-retrieve="true" auto-update="true" proxy="true"
+      collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList">
     	<inverse-foreignkey field-ref="ruleResponsibilityId" />
+        <query-customizer class="edu.iu.uis.eden.routetemplate.dao.RuleDelegationQueryCustomizer"/>
     </collection-descriptor>
 
   </class-descriptor>

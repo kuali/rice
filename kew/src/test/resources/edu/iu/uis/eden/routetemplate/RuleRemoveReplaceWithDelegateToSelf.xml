@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+    <rule>
+            <name>RuleWithDelegateToSelf</name>
+      <documentType>TestDocumentType</documentType>
+      <ruleTemplate>RuleRouting2</ruleTemplate>
+      <description>Rule Routing</description>
+      <ignorePrevious>false</ignorePrevious>
+      <ruleExtensions>
+        <ruleExtension>
+          <attribute>RuleRoutingAttribute</attribute>
+          <ruleTemplate>RuleRouting2</ruleTemplate>
+          <ruleExtensionValues>
+            <ruleExtensionValue>
+              <key>docTypeFullName</key>
+              <value>TestDocumentType</value><!-- exists in the default dataset -->
+            </ruleExtensionValue>
+          </ruleExtensionValues>
+        </ruleExtension>
+      </ruleExtensions>
+      <responsibilities>
+        <responsibility>
+          <user>ewestfal</user>
+          <actionRequested>A</actionRequested>
+          <priority>1</priority>
+                    <delegations>
+                      <rule>
+                        <documentType>TestDocumentType</documentType>
+                        <ruleTemplate>SimpleTemplate</ruleTemplate>
+                        <description>RuleWithDelegations1PrimaryDelegation</description>
+                        <ignorePrevious>false</ignorePrevious>
+                        <responsibilities>
+                          <responsibility>
+                            <user>ewestfal</user>
+                          </responsibility>
+                        </responsibilities>
+                        <delegationType>P</delegationType>
+                      </rule>
+                    </delegations>
+        </responsibility>
+      </responsibilities>
+    </rule>
+  </rules>
+</data>

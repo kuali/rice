@@ -30,6 +30,21 @@
 			<name>DocumentTypeRouting</name>
 			<description>desc</description>
 		</ruleTemplate>
+     <ruleTemplate>
+       <name>SimpleTemplate</name>
+        <description>simple</description>
+      </ruleTemplate>
+    <ruleTemplate>
+      <name>RuleRouting2</name>
+      <description>RuleRouting2</description>
+            <delegationTemplate>SimpleTemplate</delegationTemplate>
+      <attributes>
+        <attribute>
+          <name>RuleRoutingAttribute</name>
+          <required>false</required>
+        </attribute>
+      </attributes>
+    </ruleTemplate>
 	</ruleTemplates>
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
@@ -184,6 +199,7 @@
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
+            <name>RuleDocRuleRouting</name>
 			<documentType>EDENSERVICE-DOCS.RuleDocument</documentType>
 			<ruleTemplate>RuleRouting</ruleTemplate>
 			<description>Rule Routing</description>

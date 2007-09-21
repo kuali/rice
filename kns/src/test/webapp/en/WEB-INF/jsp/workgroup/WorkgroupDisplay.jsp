@@ -79,7 +79,7 @@
 	            <c:param name="methodToCall" value="report" />
                 <c:param name="showEdit" value="no" />
 	          </c:url>
-		  	  <c:out value="${displayName}" />
+		  	  <c:out value="${member.displayName}" />
 		      (<a href="<c:out value="${userReportUrl}"/>"><c:out value="${member.authenticationUserId.authenticationId}"/></a>)&nbsp;
 		    </c:if>
 		    <c:if test="${member.memberType == 'W'}">
@@ -111,7 +111,7 @@
 			   <c:if test="${UserSession.workflowUser.workflowId != member.workflowId}">
   		         <c:set var="displayName" value="${member.displayNameSafe}"/>
 			   </c:if>
-		  <c:out value="${displayName}" />
+		  <c:out value="${member.displayName}" />
 		      (<a href="<c:out value="${userReportUrl}"/>"><c:out value="${member.authenticationId}"/></a>)&nbsp;
 		    </c:if>
 		    <c:if test="${member.memberType == 'W'}">

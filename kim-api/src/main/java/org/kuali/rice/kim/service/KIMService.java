@@ -15,6 +15,15 @@
  */
 package org.kuali.rice.kim.service;
 
+import java.util.List;
+
+import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.GroupAttribute;
+import org.kuali.rice.kim.bo.Permission;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.RoleAttribute;
+
 /**
  * This is the service API for accessing KIM services.  This contract should be used by all Kuali software that 
  * needs to leverage identity management features. 
@@ -22,4 +31,12 @@ package org.kuali.rice.kim.service;
  * @author Aaron Godert (agodert at cornell dot edu)
  */
 public interface KIMService {
+    public List<Person> getPersons(Role role);
+    public List<Role> getRoles();
+    public List<RoleAttribute> getQualifiedRoles(Person person, Role role);
+    public List<Permission> getPermissions(Role role);
+    public List<Group> getGroups(Role role);
+    public List<GroupAttribute> getQualifiedGroups(Person person, Group role);
+    
+    
 }

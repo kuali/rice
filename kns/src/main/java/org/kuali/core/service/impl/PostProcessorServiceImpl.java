@@ -16,8 +16,6 @@
 package org.kuali.core.service.impl;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.OptimisticLockException;
@@ -28,7 +26,6 @@ import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.service.DateTimeService;
 import org.kuali.core.service.DocumentService;
 import org.kuali.core.service.PostProcessorService;
-import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;

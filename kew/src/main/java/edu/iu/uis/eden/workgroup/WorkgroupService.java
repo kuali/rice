@@ -22,7 +22,6 @@ import java.util.Set;
 
 import org.kuali.workflow.attribute.Extension;
 
-import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.XmlLoader;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;

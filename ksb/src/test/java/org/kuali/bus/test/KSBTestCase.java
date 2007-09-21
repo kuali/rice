@@ -27,6 +27,7 @@ import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.exceptions.RiceRuntimeException;
 import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.ojb.BaseOjbConfigurer;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.resourceloader.ResourceLoader;
 import org.kuali.rice.resourceloader.SpringResourceLoader;
@@ -48,9 +49,12 @@ public class KSBTestCase extends RiceTestCase {
 
     @Override
     public void setUp() throws Exception {
-	// because we're stopping and starting so many times we need to clear the core before
-	// another set of RLs get put in the core. This is because we are sometimes using
-	// the GRL to fetch a specific servers spring file out for testing purposes.
+		// because we're stopping and starting so many times we need to clear
+		// the core before
+		// another set of RLs get put in the core. This is because we are
+		// sometimes using
+		// the GRL to fetch a specific servers spring file out for testing
+		// purposes.
 	Core.destroy();
 	super.setUp();
 	if (startClient1() || startClient2()) {
@@ -86,7 +90,13 @@ public class KSBTestCase extends RiceTestCase {
     @Override
     protected List<Lifecycle> getPerTestLifecycles() {
 	List<Lifecycle> lifecycles = super.getPerTestLifecycles();
+		if (this.disableJta()) {
+			System.setProperty(BaseOjbConfigurer.OJB_PROPERTIES_PROP, "RiceNoJtaOJB.properties");
+			this.springContextResourceLoader = new SpringResourceLoader(new QName("ksbtestharness"), "KSBTestHarnessNoJtaSpring.xml");
+		} else {
 	this.springContextResourceLoader = new SpringResourceLoader(new QName("ksbtestharness"), "KSBTestHarnessSpring.xml");
+		}
+
 	lifecycles.add(this.springContextResourceLoader);
 	if (startClient1()) {
 	    this.testClient1 = new TestClient1();
@@ -115,8 +125,7 @@ public class KSBTestCase extends RiceTestCase {
 	return this.testClient2;
     }
 
-    public static boolean verifyServiceCallsViaBam(QName serviceName, String methodName, boolean serverInvocation)
-	    throws Exception {
+	public static boolean verifyServiceCallsViaBam(QName serviceName, String methodName, boolean serverInvocation) throws Exception {
 	BAMService bamService = KSBServiceLocator.getBAMService();
 	List<BAMTargetEntry> bamCalls = null;
 	if (methodName == null) {
@@ -164,8 +173,7 @@ public class KSBTestCase extends RiceTestCase {
 		Thread.currentThread().setContextClassLoader(configEntry.getKey());
 		try {
 		    // TestClient1SpringContext found in web.xml of TestClient1
-		    ApplicationContext appContext = (ApplicationContext) Core.getCurrentContextConfig().getObject(
-			    "TestClient1SpringContext");
+					ApplicationContext appContext = (ApplicationContext) Core.getCurrentContextConfig().getObject("TestClient1SpringContext");
 
 		    return appContext.getBean(serviceName);
 		} finally {
@@ -184,4 +192,7 @@ public class KSBTestCase extends RiceTestCase {
 	this.springContextResourceLoader = testHarnessResourceLoader;
     }
 
+	protected boolean disableJta() {
+		return false;
+}
 }

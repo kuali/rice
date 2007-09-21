@@ -22,13 +22,10 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.bus.test.KSBTestCase;
-import org.kuali.rice.config.Config;
-import org.kuali.rice.core.Core;
 
 import edu.iu.uis.eden.messaging.bam.BAMService;
 import edu.iu.uis.eden.messaging.bam.BAMTargetEntry;
 import edu.iu.uis.eden.messaging.callbacks.SimpleCallback;
-import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 
 /**
  * Tests calling services in a very simple scenario.  This test could probably go 

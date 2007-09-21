@@ -16,7 +16,6 @@
  */
 package edu.iu.uis.eden.docsearch;
 
-import edu.iu.uis.eden.docsearch.StandardDocumentSearchResultProcessor;;
 
 /**
  *

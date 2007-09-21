@@ -37,7 +37,6 @@ import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.doctype.SecuritySession;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserUtils;

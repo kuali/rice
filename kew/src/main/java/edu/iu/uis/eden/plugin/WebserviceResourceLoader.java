@@ -16,7 +16,6 @@
  */
 package edu.iu.uis.eden.plugin;
 
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -42,7 +41,6 @@ import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.SpringLoader;
 import edu.iu.uis.eden.core.dependencylifecycles.SpringLifeCycle;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.HttpClientHelper;
 import edu.iu.uis.eden.messaging.KEWHttpInvokerRequestExecutor;
 import edu.iu.uis.eden.server.WorkflowDocumentActions;

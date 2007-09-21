@@ -17,7 +17,6 @@ package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
 
-import org.kuali.core.bo.BusinessObjectBase;
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 
 /**

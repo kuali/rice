@@ -26,7 +26,6 @@ import org.kuali.notification.bo.UserDelivererConfig;
 import org.kuali.notification.deliverer.NotificationMessageDeliverer;
 import org.kuali.notification.deliverer.impl.EmailMessageDeliverer;
 import org.kuali.notification.exception.ErrorList;
-import org.kuali.notification.exception.NotificationMessageDelivererNotFoundException;
 import org.kuali.notification.service.NotificationMessageDelivererRegistryService;
 import org.kuali.notification.service.UserPreferenceService;
 import org.kuali.notification.test.NotificationTestCaseBase;

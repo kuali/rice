@@ -25,7 +25,6 @@ import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.service.NotificationMessageDeliveryService;
 import org.kuali.notification.util.NotificationConstants;
-import org.kuali.notification.util.Util;
 
 /**
  * NotificationService implementation - this is the default out-of-the-box implementation of the service that uses the 

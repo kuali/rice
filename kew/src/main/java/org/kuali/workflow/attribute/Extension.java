@@ -18,8 +18,6 @@ package org.kuali.workflow.attribute;
 
 import java.util.List;
 
-import org.kuali.workflow.workgroup.BaseWorkgroupExtensionData;
-
 /**
  * Represents an extension to a data object.  An Extension is associated with an Attribute which
  * defines the properties of the Extension.  An Extension has a list of ExtensionData which

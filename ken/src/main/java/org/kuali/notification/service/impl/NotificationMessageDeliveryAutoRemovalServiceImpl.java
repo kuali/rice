@@ -20,20 +20,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.ojb.broker.query.Criteria;
 import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.deliverer.BulkNotificationMessageDeliverer;
 import org.kuali.notification.deliverer.NotificationMessageDeliverer;
 import org.kuali.notification.exception.NotificationAutoRemoveException;
-import org.kuali.notification.exception.NotificationMessageDelivererNotFoundException;
-import org.kuali.notification.exception.NotificationMessageDeliveryException;
 import org.kuali.notification.service.NotificationMessageDelivererRegistryService;
 import org.kuali.notification.service.NotificationMessageDeliveryAutoRemovalService;
 import org.kuali.notification.service.NotificationMessageDeliveryService;
 import org.kuali.notification.service.ProcessingResult;
 import org.kuali.notification.util.NotificationConstants;
-import org.kuali.notification.util.PerformanceLog;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;

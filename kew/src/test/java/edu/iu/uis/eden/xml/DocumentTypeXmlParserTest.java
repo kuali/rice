@@ -18,7 +18,6 @@
 
 package edu.iu.uis.eden.xml;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
 

@@ -31,7 +31,6 @@ import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
-import org.springmodules.orm.ojb.PersistenceBrokerTemplate;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 import edu.iu.uis.eden.doctype.DocumentType;

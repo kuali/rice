@@ -34,7 +34,6 @@ import org.w3c.dom.NodeList;
 import edu.iu.uis.eden.edl.components.MatchingParam;
 import edu.iu.uis.eden.edl.components.WorkflowDocumentActions;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
-import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * Contains a bunch of dom utility methods.

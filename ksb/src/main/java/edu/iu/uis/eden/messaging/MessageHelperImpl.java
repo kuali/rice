@@ -1,17 +1,14 @@
 /*
  * Copyright 2007 The Kuali Foundation
- *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
+ * 
+ * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * 
  * http://www.opensource.org/licenses/ecl1.php
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
  */
 package edu.iu.uis.eden.messaging;
 
@@ -32,9 +29,9 @@ import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.exceptions.RiceRuntimeException;
 
+import edu.iu.uis.eden.messaging.serviceproxies.DelayedAsynchronousServiceCallProxy;
 import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 import edu.iu.uis.eden.messaging.serviceproxies.AsynchronousServiceCallProxy;
-import edu.iu.uis.eden.messaging.serviceproxies.DelayedAsynchronousServiceCallProxy;
 import edu.iu.uis.eden.messaging.serviceproxies.SynchronousServiceCallProxy;
 
 public class MessageHelperImpl implements MessageHelper {
@@ -90,39 +87,53 @@ public class MessageHelperImpl implements MessageHelper {
     public Object getServiceAsynchronously(QName qname) {
 	return getAsynchronousServiceCallProxy(qname, null, null, null, null);
     }
-    
+
     public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback) {
 	return getAsynchronousServiceCallProxy(qname, callback, null, null, null);
     }
-    
+
     public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context) {
 	return getAsynchronousServiceCallProxy(qname, callback, context, null, null);
     }
 
-    public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context, String value1, String value2) {
+    public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context, String value1,
+	    String value2) {
 	return getAsynchronousServiceCallProxy(qname, callback, context, value1, value2);
+    }
+
+    
+    
+    public Object getAsynchronousServiceCallProxy(QName qname, AsynchronousCallback callback, Serializable context,
+	    String value1, String value2) {
+
+	List<RemotedServiceHolder> servicesToProxy = KSBResourceLoaderFactory.getRemoteResourceLocator().getAllServices(
+		qname);
+	if (RiceConstants.MESSAGING_SYNCHRONOUS.equals(Core.getCurrentContextConfig().getProperty(
+		RiceConstants.MESSAGE_DELIVERY))) {
+	    return SynchronousServiceCallProxy.createInstance(servicesToProxy, callback, context, value1, value2);
+	}
+
+	return AsynchronousServiceCallProxy.createInstance(servicesToProxy, callback, context, value1, value2);
+
+    }
+
+    public Object getDelayedAsynchronousServiceCallProxy(QName qname, Serializable context, String value1, String value2,
+	    long delayMilliseconds) {
+	List<RemotedServiceHolder> servicesToProxy = KSBResourceLoaderFactory.getRemoteResourceLocator().getAllServices(
+		qname);
+	if (RiceConstants.MESSAGING_SYNCHRONOUS.equals(Core.getCurrentContextConfig().getProperty(
+		RiceConstants.MESSAGE_DELIVERY))) {
+	    LOG.warn("Executing a delayed service call for " + qname + " with delay of " + delayMilliseconds
+		    + " in synchronous mode.  Service will be invoked immediately.");
+	    return SynchronousServiceCallProxy.createInstance(servicesToProxy, null, context, value1, value2);
+	}
+	return DelayedAsynchronousServiceCallProxy.createInstance(servicesToProxy, context, value1, value2,
+		delayMilliseconds);
     }
     
     public Object getServiceAsynchronously(QName qname, Serializable context, String value1, String value2, long delayMilliseconds) {
 	return getDelayedAsynchronousServiceCallProxy(qname, context, value1, value2, delayMilliseconds);
     }
 
-    public Object getAsynchronousServiceCallProxy(QName qname, AsynchronousCallback callback, Serializable context, String value1, String value2) {
-	List<RemotedServiceHolder> servicesToProxy = KSBResourceLoaderFactory.getRemoteResourceLocator().getAllServices(qname);
-	if (RiceConstants.MESSAGING_SYNCHRONOUS.equals(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGE_DELIVERY))) {
-	    return SynchronousServiceCallProxy.createInstance(servicesToProxy, callback, context, value1, value2);
-	}
-
-	return AsynchronousServiceCallProxy.createInstance(servicesToProxy, callback, context, value1, value2);
-    }
-
-    public Object getDelayedAsynchronousServiceCallProxy(QName qname, Serializable context, String value1, String value2, long delayMilliseconds) {
-	List<RemotedServiceHolder> servicesToProxy = KSBResourceLoaderFactory.getRemoteResourceLocator().getAllServices(qname);
-	if (RiceConstants.MESSAGING_SYNCHRONOUS.equals(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGE_DELIVERY))) {
-	    LOG.warn("Executing a delayed service call for " + qname + " with delay of " + delayMilliseconds + " in synchronous mode.  Service will be invoked immediately.");
-	    return SynchronousServiceCallProxy.createInstance(servicesToProxy, null, context, value1, value2);
-}
-	return DelayedAsynchronousServiceCallProxy.createInstance(servicesToProxy, context, value1, value2, delayMilliseconds);
-    }
 
 }

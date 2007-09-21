@@ -16,6 +16,7 @@
 package edu.iu.uis.eden.messaging;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -192,6 +193,29 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
 	}
     }
 
+    @Test public void testAddingServiceWithDifferentIPSameURL() throws Exception {
+	KSBServiceLocator.getIPTableService().remove(KSBServiceLocator.getIPTableService().fetchAll());
+	assertTrue(KSBServiceLocator.getIPTableService().fetchAll().isEmpty());
+	ServiceDefinition serviceDef = addServiceToDB();
+	
+//	ServiceInfo servInfo1 = new ServiceInfo(serviceDef);
+	ServiceInfo servInfo2 = new ServiceInfo(serviceDef);
+	servInfo2.setServerIp("somethingnew");
+	
+	List<ServiceInfo> fetchedServices = KSBServiceLocator.getIPTableService().fetchAll();
+	assertEquals(1, fetchedServices.size());
+//	fetchedServices.add(servInfo1);
+	List<ServiceInfo> configuredServices = new ArrayList<ServiceInfo>();
+	configuredServices.add(servInfo2);
+	
+	RoutingTableDiffCalculator diffCalc = new RoutingTableDiffCalculator();
+	diffCalc.calculateServerSideUpdateLists(configuredServices, fetchedServices);
+	diffCalc.getMasterServiceList();
+	KSBServiceLocator.getIPTableService().save(diffCalc.getServicesNeedUpdated());
+	
+	assertEquals(1, KSBServiceLocator.getIPTableService().fetchAll().size());
+    }
+    
     private ServiceInfo findServiceInfo(QName serviceName, List<ServiceInfo> serviceInfos) {
 	for (ServiceInfo info : serviceInfos) {
 	    if (info.getQname().equals(serviceName)) {
@@ -214,11 +238,12 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
 	}
     }
 
-    private void addServiceToDB() throws Exception {
+    private ServiceDefinition addServiceToDB() throws Exception {
 	ServiceDefinition mockServiceDef = getMockServiceDefinition();
 	mockServiceDef.validate();
 	ServiceInfo mockService = new ServiceInfo(mockServiceDef);
 	saveServiceInfo(mockService, 0);
+	return mockServiceDef;
     }
 
     private ServiceDefinition getMockServiceDefinition() throws Exception {

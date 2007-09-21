@@ -20,7 +20,6 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.kuali.notification.bo.Notification;
 import org.kuali.notification.bo.NotificationMessageDelivery;
@@ -28,9 +27,7 @@ import org.kuali.notification.bo.NotificationRecipient;
 import org.kuali.notification.bo.NotificationResponse;
 import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.deliverer.NotificationMessageDeliverer;
-import org.kuali.notification.document.kew.NotificationWorkflowDocument;
 import org.kuali.notification.exception.InvalidXMLException;
-import org.kuali.notification.exception.NotificationMessageDelivererNotFoundException;
 import org.kuali.notification.exception.NotificationMessageDismissalException;
 import org.kuali.notification.service.NotificationAuthorizationService;
 import org.kuali.notification.service.NotificationMessageContentService;
@@ -40,9 +37,6 @@ import org.kuali.notification.service.NotificationRecipientService;
 import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.util.NotificationConstants;
-import org.kuali.notification.util.Util;
-
-import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * NotificationService implementation - this is the default out-of-the-box implementation of the service.

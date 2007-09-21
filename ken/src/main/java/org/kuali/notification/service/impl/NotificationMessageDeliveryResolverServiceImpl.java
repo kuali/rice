@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.ojb.broker.query.Criteria;
 import org.kuali.notification.bo.Notification;
 import org.kuali.notification.bo.NotificationChannel;
 import org.kuali.notification.bo.NotificationMessageDelivery;

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.notification.deliverer.NotificationMessageDeliverer;
-import org.kuali.notification.exception.NotificationMessageDelivererNotFoundException;
 
 /**
  * This class is responsible for providing services for Notification Message Deliverers (delivery types)

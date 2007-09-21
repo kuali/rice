@@ -18,7 +18,6 @@ package edu.iu.uis.eden.server;
 
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.namespace.QName;
 
@@ -48,7 +47,7 @@ import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 import edu.iu.uis.eden.clientapp.vo.UserIdVO;
 import edu.iu.uis.eden.exception.WorkflowException;
-import edu.iu.uis.eden.messaging.RemotedServiceHolder;
+import edu.iu.uis.eden.messaging.ServerSideRemotedServiceHolder;
 import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.DocumentResponse;
 import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.ErrorResponse;
 import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.NoteDetail;
@@ -74,7 +73,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	protected void setUpTransaction() throws Exception {
 		super.setUpTransaction();
 		// turn off bus security for the service
-		RemotedServiceHolder holder = KSBServiceLocator.getServiceDeployer().getRemotedServiceHolder(new QName("KEW", "simpleDocumentActionsService"));
+		ServerSideRemotedServiceHolder holder = KSBServiceLocator.getServiceDeployer().getRemotedServiceHolder(new QName("KEW", "simpleDocumentActionsService"));
 		holder.getServiceInfo().getServiceDefinition().setBusSecurity(false);
 		((Runnable) KSBServiceLocator.getServiceDeployer()).run();
 

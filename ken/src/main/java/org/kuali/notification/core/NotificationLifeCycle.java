@@ -15,39 +15,15 @@
  */
 package org.kuali.notification.core;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.config.ConfigurationException;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.StatementCallback;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.batch.FileXmlDocCollection;
-import edu.iu.uis.eden.batch.XmlDoc;
-import edu.iu.uis.eden.batch.XmlDocCollection;
 
 /**
  * Eager-initializing singleton bean that performs some notification startup operations

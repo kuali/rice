@@ -27,14 +27,13 @@ import org.logicblaze.lingo.SimpleMetadataStrategy;
 import org.logicblaze.lingo.jms.JmsProxyFactoryBean;
 
 import edu.iu.uis.eden.messaging.JmsServiceDefinition;
-import edu.iu.uis.eden.messaging.RemotedServiceHolder;
 import edu.iu.uis.eden.messaging.ServiceInfo;
 
 /**
  * 
  * @author rkirkend
  * @author Scott Battaglia
- * @version $Revision: 1.2 $ $Date: 2007-06-19 14:35:13 $
+ * @version $Revision: 1.2.2.1 $ $Date: 2007-09-21 21:30:50 $
  * @since 0.9
  */
 public class JmsConnector extends AbstractServiceConnector {
@@ -42,9 +41,9 @@ public class JmsConnector extends AbstractServiceConnector {
 	public JmsConnector(final ServiceInfo serviceInfo) {
 		super(serviceInfo);
 	}
-
-	public RemotedServiceHolder getServiceHolder() throws Exception {
-		final JmsServiceDefinition serviceDef = (JmsServiceDefinition) getServiceInfo().getServiceDefinition();
+	
+	public Object getService() throws Exception {
+	    final JmsServiceDefinition serviceDef = (JmsServiceDefinition) getServiceInfo().getServiceDefinition();
 		final JmsProxyFactoryBean factoryBean = getCredentialsSource() != null ? new AuthenticationJmsProxyFactoryBean(getCredentialsSource(), getServiceInfo()) : new JmsProxyFactoryBean();
 		
 		factoryBean.setServiceInterface(Class.forName(serviceDef.getServiceInterface()));
@@ -52,7 +51,7 @@ public class JmsConnector extends AbstractServiceConnector {
 		factoryBean.setDestination(getDestination(serviceDef.getConnectionFactory(), serviceDef.getServiceInterface()));
 		factoryBean.setMetadataStrategy(new SimpleMetadataStrategy(true));
 		factoryBean.afterPropertiesSet();
-		return new RemotedServiceHolder(getServiceProxyWithFailureMode(factoryBean.getObject(), getServiceInfo()), getServiceInfo());
+		return getServiceProxyWithFailureMode(factoryBean.getObject(), getServiceInfo());
 	}
 
 	protected Destination getDestination(final ConnectionFactory connectionFactory, final String queueName) throws Exception {

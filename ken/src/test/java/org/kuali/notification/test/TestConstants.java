@@ -16,7 +16,6 @@
 package org.kuali.notification.test;
 
 import org.kuali.notification.bo.NotificationProducer;
-import org.kuali.notification.deliverer.impl.EmailMessageDeliverer;
 import org.kuali.notification.util.NotificationConstants;
 
 /**

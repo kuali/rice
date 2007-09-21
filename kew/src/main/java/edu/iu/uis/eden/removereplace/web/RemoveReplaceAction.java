@@ -47,7 +47,6 @@ import edu.iu.uis.eden.util.CodeTranslator;
 import edu.iu.uis.eden.web.WorkflowAction;
 import edu.iu.uis.eden.web.session.UserSession;
 import edu.iu.uis.eden.workgroup.Workgroup;
-import edu.iu.uis.eden.workgroup.web.WorkgroupForm;
 
 /**
  * Struts Action for the Remove/Replace User Document.

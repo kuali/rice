@@ -57,7 +57,6 @@ import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.PerformanceLogger;
 import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.util.Utilities.RouteLogActionRequestSorter;
 import edu.iu.uis.eden.workgroup.Workgroup;
 
 /**

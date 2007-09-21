@@ -32,19 +32,9 @@
  */
 package edu.iu.uis.eden.edl;
 
-import java.net.URL;
-
-import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.workflow.test.TestUtils;
 import org.kuali.workflow.test.KEWTestCase;
-
-import sun.security.action.GetBooleanAction;
-
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
+import org.kuali.workflow.test.TestUtils;
 
 /**
  * Tests the web GUI for the ActionList.

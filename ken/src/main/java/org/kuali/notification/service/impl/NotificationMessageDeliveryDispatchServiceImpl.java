@@ -27,7 +27,6 @@ import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.deliverer.BulkNotificationMessageDeliverer;
 import org.kuali.notification.deliverer.NotificationMessageDeliverer;
-import org.kuali.notification.exception.NotificationMessageDelivererNotFoundException;
 import org.kuali.notification.exception.NotificationMessageDeliveryException;
 import org.kuali.notification.service.NotificationMessageDelivererRegistryService;
 import org.kuali.notification.service.NotificationMessageDeliveryDispatchService;

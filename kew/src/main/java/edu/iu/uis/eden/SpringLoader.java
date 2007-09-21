@@ -16,13 +16,11 @@
  */
 package edu.iu.uis.eden;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.BaseLifecycle;
 import org.kuali.rice.resourceloader.ServiceLocator;
 import org.springframework.context.ApplicationContext;

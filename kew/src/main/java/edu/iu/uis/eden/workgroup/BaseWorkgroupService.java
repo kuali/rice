@@ -27,13 +27,11 @@ import org.jdom.Element;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.workgroup.BaseWorkgroupExtension;
 
-import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.vo.WorkflowGroupIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.user.WorkflowUser;

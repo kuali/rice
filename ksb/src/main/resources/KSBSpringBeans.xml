@@ -11,7 +11,7 @@
 		<property name="transactionManager" ref="jtaTransactionManager" />
 	</bean>
 
-	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
+	<bean id="transactionManager" class="org.kuali.rice.config.spring.PlatformTransactionManagerFactoryBean" lazy-init="true">
 		<property name="userTransaction">
 			<ref local="userTransaction" />
 		</property>

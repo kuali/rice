@@ -46,7 +46,6 @@ import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeAttribute;
 import edu.iu.uis.eden.doctype.DocumentTypePolicy;
 import edu.iu.uis.eden.doctype.DocumentTypePolicyEnum;
-import edu.iu.uis.eden.doctype.DocumentTypeSecurity;
 import edu.iu.uis.eden.engine.node.ActivationTypeEnum;
 import edu.iu.uis.eden.engine.node.BranchPrototype;
 import edu.iu.uis.eden.engine.node.Process;

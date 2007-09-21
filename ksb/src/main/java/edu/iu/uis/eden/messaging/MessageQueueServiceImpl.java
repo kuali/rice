@@ -16,13 +16,12 @@
 package edu.iu.uis.eden.messaging;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.util.RiceUtilities;
@@ -31,15 +30,27 @@ import edu.iu.uis.eden.messaging.dao.MessageQueueDAO;
 
 public class MessageQueueServiceImpl implements MessageQueueService {
 
+    
+    	private static final Logger LOG = Logger.getLogger(MessageQueueServiceImpl.class);
     private MessageQueueDAO messageQueueDAO;
 
     public void delete(PersistedMessage routeQueue) {
+	    if (new Boolean(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGE_PERSISTENCE))) {
+		if (LOG.isDebugEnabled()) {
+		    LOG.debug("Message Persistence is on.  Deleting stored message" + routeQueue);
+		}
 	this.getMessageQueueDAO().remove(routeQueue);
     }
+	}
 
     public void save(PersistedMessage routeQueue) {
+	    if (new Boolean(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGE_PERSISTENCE))) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Persisting Message " + routeQueue);
+		}
 	this.getMessageQueueDAO().save(routeQueue);
     }
+	}
 
     public List<PersistedMessage> findAll() {
 	return this.getMessageQueueDAO().findAll();
@@ -86,14 +97,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
 	message.setPayload(new PersistedMassagePayload(methodCall, message));
 	message.setIpNumber(RiceUtilities.getIpNumber());
 	message.setServiceName(serviceInfo.getQname().toString());
-//	if (deliveryDate == null) {
 	    message.setQueueDate(new Timestamp(System.currentTimeMillis()));
-//	} else {
-//	    message.setQueueDate(new Timestamp(deliveryDate.getTime()));
-//	}
-	// we need this set to persist the message but it's likely many services
-	// won't set this
-	// for now just use a reasonable default value
 	if (serviceInfo.getServiceDefinition().getPriority() == null) {
 	    message.setQueuePriority(RiceConstants.ROUTE_QUEUE_DEFAULT_PRIORITY);
 	} else {
@@ -102,8 +106,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
 	message.setQueueStatus(RiceConstants.ROUTE_QUEUE_QUEUED);
 	message.setRetryCount(0);
 	if (serviceInfo.getServiceDefinition().getMillisToLive() > 0) {
-	    message.setExpirationDate(new Timestamp(System.currentTimeMillis()
-		    + serviceInfo.getServiceDefinition().getMillisToLive()));
+			message.setExpirationDate(new Timestamp(System.currentTimeMillis() + serviceInfo.getServiceDefinition().getMillisToLive()));
 	}
 	message.setMessageEntity(Core.getCurrentContextConfig().getMessageEntity());
 	message.setMethodName(methodCall.getMethodName());

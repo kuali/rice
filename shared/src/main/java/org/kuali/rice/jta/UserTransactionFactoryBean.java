@@ -19,6 +19,7 @@ import javax.naming.NamingException;
 import javax.transaction.UserTransaction;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.RiceConstants;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.core.Core;
@@ -40,6 +41,11 @@ public class UserTransactionFactoryBean implements FactoryBean {
 	private JndiTemplate jndiTemplate;
 	
 	public Object getObject() throws Exception {
+		
+		if (Core.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null) {
+			return null;
+		}
+		
 		UserTransaction userTransaction = (UserTransaction)Core.getCurrentContextConfig().getObject(Config.USER_TRANSACTION_OBJ);
 		if (userTransaction == null) {
 			String userTransactionJndiName = Core.getCurrentContextConfig().getProperty(Config.USER_TRANSACTION_JNDI);

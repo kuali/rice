@@ -30,9 +30,6 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.batch.FileXmlDocCollection;
-import edu.iu.uis.eden.batch.XmlDoc;
-import edu.iu.uis.eden.batch.XmlDocCollection;
 
 /**
  * A lifecycle for loading KEW XML datasets.

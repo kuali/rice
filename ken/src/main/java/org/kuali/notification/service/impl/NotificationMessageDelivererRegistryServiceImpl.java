@@ -26,7 +26,6 @@ import org.kuali.notification.deliverer.impl.AOLInstantMessageDeliverer;
 import org.kuali.notification.deliverer.impl.EmailMessageDeliverer;
 import org.kuali.notification.deliverer.impl.KEWActionListMessageDeliverer;
 import org.kuali.notification.deliverer.impl.SMSMessageDeliverer;
-import org.kuali.notification.exception.NotificationMessageDelivererNotFoundException;
 import org.kuali.notification.service.NotificationMessageDelivererRegistryService;
 
 /**

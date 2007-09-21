@@ -17,7 +17,6 @@
 package edu.iu.uis.eden.clientapp;
 
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
 

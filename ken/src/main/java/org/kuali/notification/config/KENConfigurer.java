@@ -18,7 +18,6 @@ package org.kuali.notification.config;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ModuleConfigurer;

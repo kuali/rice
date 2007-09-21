@@ -16,14 +16,12 @@
 package org.kuali.bus.services;
 
 import javax.sql.DataSource;
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
 
 import org.codehaus.xfire.XFire;
 import org.codehaus.xfire.service.ServiceFactory;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.quartz.Scheduler;
-import org.springframework.transaction.jta.JtaTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import edu.iu.uis.eden.messaging.BusAdminService;
@@ -55,20 +53,12 @@ public class KSBServiceLocator {
 	return GlobalResourceLoader.getService(name);
     }
 
-    public static UserTransaction getUserTransaction() {
-	return (UserTransaction) getService("userTransaction");
-    }
-
-    public static JtaTransactionManager getTransactionManager() {
-	return (JtaTransactionManager) getService("transactionManager");
-    }
-
-    public static TransactionManager getJtaTransactionManager() {
-	return (TransactionManager) getService(JTA_TRANSACTION_MANAGER);
-    }
-
     public static TransactionTemplate getTransactionTemplate() {
 	return (TransactionTemplate) getService("transactionTemplate");
+    }
+
+    public static PlatformTransactionManager getPlatformTransactionManager() {
+	return (PlatformTransactionManager) getService("transactionManager");
     }
 
     public static BAMService getBAMService() {

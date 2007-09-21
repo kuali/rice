@@ -135,9 +135,13 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 
 	protected boolean isSecure(HttpServletRequest request) {
 		QName serviceName = this.httpInvokerHandler.getServiceNameFromRequest(request);
+		if (LOG.isDebugEnabled()) {
+		    LOG.debug("Checking service " + serviceName + " for security enabled");
+		}
 		ServerSideRemotedServiceHolder serviceHolder = KSBServiceLocator.getServiceDeployer().getRemotedServiceHolder(serviceName);
 		if (serviceHolder == null) {
-		    throw new RuntimeException("Service not found: " + serviceName);
+		    LOG.error("Attempting to acquire non-existent service " + serviceName);
+		    throw new RiceRuntimeException("Attempting to acquire non-existent service " + serviceName);
 		}
 		ServiceInfo serviceInfo = serviceHolder.getServiceInfo();
 		if (serviceInfo.getServiceDefinition() instanceof SOAPServiceDefinition) {

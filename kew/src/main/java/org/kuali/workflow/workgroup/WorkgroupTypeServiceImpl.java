@@ -29,7 +29,6 @@ import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.xml.export.RuleTemplateXmlExporter;
 
 /**
  * Basic implementation of the WorkgroupTypeService.

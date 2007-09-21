@@ -16,7 +16,6 @@
 package org.kuali.notification.dao;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.kuali.notification.bo.NotificationChannel;
 import org.kuali.notification.bo.NotificationChannelReviewer;

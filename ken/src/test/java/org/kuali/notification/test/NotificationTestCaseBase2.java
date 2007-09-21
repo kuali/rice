@@ -30,7 +30,6 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.SchedulerRepository;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.AbstractSpringContextTests;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.springframework.transaction.PlatformTransactionManager;
 

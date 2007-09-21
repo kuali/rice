@@ -17,8 +17,6 @@
 package edu.iu.uis.eden.user;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.BeanNameAware;

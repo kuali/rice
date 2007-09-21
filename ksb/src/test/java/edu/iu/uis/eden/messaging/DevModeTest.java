@@ -67,7 +67,7 @@ public class DevModeTest extends KSBTestCase {
 
 		ServiceConnector serviceConnector = ServiceConnectorFactory.getServiceConnector(rrsl.getAllServices(serviceName).get(0).getServiceInfo());
 		assertTrue("Not BusLocalConnector", serviceConnector instanceof BusLocalConnector);
-		assertNull("Service in service definition needs to be null for async communications serialization", serviceConnector.getServiceHolder().getServiceInfo().getServiceDefinition().getService());
+		assertNull("Service in service definition needs to be null for async communications serialization", ((BusLocalConnector)serviceConnector).getServiceInfo().getServiceDefinition().getService());
 
 		service = (TestServiceInterface) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 		service.invoke();

@@ -19,9 +19,7 @@ package edu.iu.uis.eden.docsearch.web;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
-import javax.xml.transform.stream.StreamResult;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
 
 /**

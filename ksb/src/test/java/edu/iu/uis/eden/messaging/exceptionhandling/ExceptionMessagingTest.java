@@ -23,7 +23,6 @@ import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.bus.test.KSBTestCase;
 import org.kuali.rice.RiceConstants;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.test.TestUtilities;
 
 import edu.iu.uis.eden.messaging.GlobalCallbackRegistry;
@@ -50,7 +49,7 @@ public class ExceptionMessagingTest extends KSBTestCase {
 
 
 	private QName queueTimeToLiveServiceName = new QName("KEW", "explodingQueueTimeLimit");
-	private QName retryCountServiceName = new QName("KEW", "testExplodingRetryCount");
+//	private QName retryCountServiceName = new QName("KEW", "testExplodingRetryCount");
 	private TestCallback callback = new TestCallback();
 
 	@Override

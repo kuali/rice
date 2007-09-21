@@ -17,7 +17,6 @@ package org.kuali.notification.config;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.resourceloader.ResourceLoader;

@@ -19,7 +19,6 @@ package edu.iu.uis.eden.applicationconstants.dao;
 import java.util.List;
 
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.springmodules.orm.ojb.PersistenceBrokerTemplate;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 import edu.iu.uis.eden.applicationconstants.ApplicationConstant;

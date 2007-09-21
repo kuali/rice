@@ -23,8 +23,9 @@ import org.kuali.rice.core.Core;
 import edu.iu.uis.eden.messaging.remotedservices.TestHarnessSharedTopic;
 
 /**
- * Tests {@link MessageFetcher}. Turn messaging off but leave persistence on. this will result in messages being persisted
- * to db but not delivered. from there we start up the {@link MessageFetcher} and make sure he does his job.
+ * Tests {@link MessageFetcher}. Turn messaging off but leave persistence on.
+ * this will result in messages being persisted to db but not delivered. from
+ * there we start up the {@link MessageFetcher} and make sure he does his job.
  *
  * @author rkirkend
  *
@@ -46,7 +47,8 @@ public class MessageFetcherTest extends KSBTestCase {
     @Test
     public void testRequeueMessages() throws Exception {
 
-	// this number is way over the top but we're going to see if it works in an overworked CI env.
+		// this number is way over the top but we're going to see if it works in
+		// an overworked CI env.
 	TestHarnessSharedTopic.CALL_COUNT_NOTIFICATION_THRESHOLD = 500;
 
 	for (int i = 0; i < TestHarnessSharedTopic.CALL_COUNT_NOTIFICATION_THRESHOLD; i++) {
@@ -59,14 +61,12 @@ public class MessageFetcherTest extends KSBTestCase {
 	    TestHarnessSharedTopic.LOCK.wait(5 * 60 * 1000);
 	}
 
-	assertTrue("Service not called by message fetcher",
-		TestHarnessSharedTopic.CALL_COUNT == TestHarnessSharedTopic.CALL_COUNT_NOTIFICATION_THRESHOLD);
+		assertTrue("Service not called by message fetcher", TestHarnessSharedTopic.CALL_COUNT == TestHarnessSharedTopic.CALL_COUNT_NOTIFICATION_THRESHOLD);
     }
 
     private void sendMessage() {
 	QName serviceName = QName.valueOf("{testAppsSharedTopic}sharedTopic");
-	KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper()
-		.getServiceAsynchronously(serviceName);
+		KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 	testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
     }
 

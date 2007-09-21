@@ -23,8 +23,6 @@
 package org.kuali.notification.core;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;

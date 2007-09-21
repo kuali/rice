@@ -21,7 +21,6 @@ import java.io.Serializable;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.util.RiceUtilities;

@@ -26,7 +26,6 @@ import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
-import edu.iu.uis.eden.exception.ResourceUnavailableException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;

@@ -15,8 +15,6 @@
  */
 package org.kuali.core.maintenance.rules;
 
-import java.util.List;
-
 import org.kuali.RiceKeyConstants;
 import org.kuali.core.bo.BusinessRule;
 import org.kuali.core.bo.FinancialSystemParameter;

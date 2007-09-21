@@ -26,21 +26,14 @@ import java.util.TreeMap;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.resourceloader.ResourceLoader;
-import org.quartz.CronTrigger;
-import org.quartz.JobDetail;
-import org.quartz.SimpleTrigger;
-import org.quartz.Trigger;
 
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledExecutorService;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;
 import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
-import edu.iu.uis.eden.EdenConstants;
-import edu.iu.uis.eden.mail.DailyEmailJob;
 import edu.iu.uis.eden.plugin.PluginUtils.PluginZipFileFilter;
 import edu.iu.uis.eden.util.ClassLoaderUtils;
 

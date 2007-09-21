@@ -26,7 +26,6 @@ import java.util.Map;
 import javax.sql.DataSource;
 import javax.xml.namespace.QName;
 
-import org.apache.commons.beanutils.ConstructorUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.Config;

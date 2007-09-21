@@ -26,12 +26,10 @@ import org.kuali.notification.util.NotificationConstants;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.PostProcessorRemote;
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
 import edu.iu.uis.eden.clientapp.vo.DeleteEventVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 
 /**
  * This class is the post processor that gets run when workflow state changes occur for the 

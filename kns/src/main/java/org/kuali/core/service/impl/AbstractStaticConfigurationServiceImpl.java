@@ -18,7 +18,6 @@ package org.kuali.core.service.impl;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.RiceConstants;
 import org.kuali.core.util.properties.KualiPropertiesFactory;
 import org.kuali.core.util.properties.PropertyHolder;

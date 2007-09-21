@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import org.junit.Test;
 import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.notification.deliverer.NotificationMessageDeliverer;
-import org.kuali.notification.exception.NotificationMessageDelivererNotFoundException;
 import org.kuali.notification.test.NotificationTestCaseBase;
 import org.kuali.notification.test.TestConstants;
 

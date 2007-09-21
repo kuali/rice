@@ -26,7 +26,6 @@ import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.test.TestUtilities;
 
 /**

@@ -24,7 +24,6 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
-import org.springmodules.orm.ojb.PersistenceBrokerTemplate;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 import edu.iu.uis.eden.KEWServiceLocator;

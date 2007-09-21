@@ -20,16 +20,19 @@ package edu.iu.uis.eden.messaging;
  *
  * @author rkirkend
  */
-public class ServerSideRemotedServiceHolder extends RemotedServiceHolder {
+public class ServerSideRemotedServiceHolder implements ServiceHolder {
 
 	private Object injectedPojo;
+	private Object service;
+	private ServiceInfo serviceInfo;
 	
 	/**
 	 * @param service
 	 * @param entry
 	 */
 	public ServerSideRemotedServiceHolder(Object service, Object injectedPojo, ServiceInfo entry) {
-		super(service, entry);
+		this.setService(service);
+		this.setServiceInfo(entry);
 		this.setInjectedPojo(injectedPojo);
 	}
 
@@ -39,5 +42,22 @@ public class ServerSideRemotedServiceHolder extends RemotedServiceHolder {
 
 	public void setInjectedPojo(Object injectedPojo) {
 		this.injectedPojo = injectedPojo;
+	}
+	public Object getService() {
+		return this.service;
+	}
+
+	public ServiceInfo getServiceInfo() {
+	    return this.serviceInfo;
+	}
+
+
+	public void setService(Object service) {
+	    this.service = service;
+	}
+
+
+	public void setServiceInfo(ServiceInfo serviceInfo) {
+	    this.serviceInfo = serviceInfo;
 	}
 }

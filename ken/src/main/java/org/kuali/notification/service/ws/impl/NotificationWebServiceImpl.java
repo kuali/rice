@@ -18,12 +18,8 @@ package org.kuali.notification.service.ws.impl;
 import java.io.IOException;
 import java.rmi.RemoteException;
 
-//import javax.xml.rpc.ServiceException;
-
 import org.apache.log4j.Logger;
 import org.kuali.notification.bo.NotificationResponse;
-import org.kuali.notification.core.NotificationServiceLocator;
-import org.kuali.notification.core.SpringNotificationServiceLocator;
 import org.kuali.notification.exception.InvalidXMLException;
 import org.kuali.notification.service.NotificationMessageContentService;
 import org.kuali.notification.service.NotificationService;
@@ -31,7 +27,6 @@ import org.kuali.notification.service.ws.NotificationWebService;
 import org.kuali.notification.util.NotificationConstants;
 import org.kuali.notification.util.PerformanceLog;
 import org.kuali.notification.util.PerformanceLog.PerformanceStopWatch;
-import org.springframework.remoting.jaxrpc.ServletEndpointSupport;
 
 /**
  * Web service interface implementation that delegates directly to Spring service

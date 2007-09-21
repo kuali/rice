@@ -145,13 +145,14 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	}
 
 	public Object getService(QName qname) {
-		RemotedServiceHolder serviceHolder = getRemotedServiceHolder(qname);
+		ServiceHolder serviceHolder = getRemotedServiceHolder(qname);
 		if (serviceHolder != null) {
+		    	try {
 			Object service = serviceHolder.getService();
-			if (service == null) {
-				throw new RuntimeException("Retreived null service using " + qname + ".  This means the service exporter returned " + "a null object to this servers service repository.");
-			}
 			return service;
+		    	} catch (Exception e) {
+		    	    this.removeRemoteServiceFromRegistry(qname);
+		}
 		}
 		if (!StringUtils.isEmpty(qname.getNamespaceURI())) {
 			return getService(new QName(qname.getLocalPart()));
@@ -256,7 +257,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	public String getContents(String indent, boolean servicePerLine) {
 		String content = indent + "RemotedServiceRegistryImpl services=";
 
-		for (RemotedServiceHolder serviceHolder : this.publishedServices.values()) {
+		for (ServiceHolder serviceHolder : this.publishedServices.values()) {
 			if (servicePerLine) {
 				content += indent + "+++" + serviceHolder.getServiceInfo().toString() + "\n";
 			} else {

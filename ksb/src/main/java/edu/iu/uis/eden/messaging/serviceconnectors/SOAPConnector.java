@@ -27,7 +27,6 @@ import org.kuali.bus.security.soap.CredentialsOutHandler;
 import org.kuali.rice.config.xfire.WorkflowXFireWSS4JInHandler;
 import org.kuali.rice.config.xfire.WorkflowXFireWSS4JOutHandler;
 
-import edu.iu.uis.eden.messaging.RemotedServiceHolder;
 import edu.iu.uis.eden.messaging.SOAPServiceDefinition;
 import edu.iu.uis.eden.messaging.ServiceInfo;
 
@@ -43,13 +42,13 @@ public class SOAPConnector extends AbstractServiceConnector {
 		super(serviceInfo);
 	}
 
-	public RemotedServiceHolder getServiceHolder() throws Exception {
+	public Object getService() throws Exception {
 		ObjectServiceFactory serviceFactory = new ObjectServiceFactory(new AegisBindingProvider());
 		XFireProxyFactory proxyFactory = new XFireProxyFactory();
 		Service serviceModel = serviceFactory.create(Class.forName(((SOAPServiceDefinition) getServiceInfo().getServiceDefinition()).getServiceInterface()));
 		Object service = proxyFactory.create(serviceModel, getServiceInfo().getEndpointUrl());
 		configureClient(Client.getInstance(service));
-		return new RemotedServiceHolder(getServiceProxyWithFailureMode(service, this.getServiceInfo()), this.getServiceInfo());
+		return getServiceProxyWithFailureMode(service, this.getServiceInfo());
 	}
 
 	protected void configureClient(final Client client) {

@@ -45,7 +45,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.ojb.broker.query.Criteria;
 import org.kuali.notification.bo.Notification;
 import org.kuali.notification.bo.NotificationChannel;
 import org.kuali.notification.bo.NotificationContentType;

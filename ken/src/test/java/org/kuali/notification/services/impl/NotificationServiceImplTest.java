@@ -18,7 +18,6 @@ package org.kuali.notification.services.impl;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -35,11 +34,6 @@ import org.kuali.notification.test.NotificationTestCaseBase;
 import org.kuali.notification.test.TestConstants;
 import org.kuali.notification.util.NotificationConstants;
 import org.quartz.SchedulerException;
-import org.springframework.transaction.support.TransactionTemplate;
-
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.actionrequests.ActionRequestValue;
-import edu.iu.uis.eden.doctype.DocumentType;
 
 /**
  * This class tests the notification service impl.

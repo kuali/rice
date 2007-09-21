@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.Collection;
 
 import org.kuali.notification.bo.Notification;
-import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.notification.bo.NotificationResponse;
 import org.kuali.notification.exception.InvalidXMLException;
 

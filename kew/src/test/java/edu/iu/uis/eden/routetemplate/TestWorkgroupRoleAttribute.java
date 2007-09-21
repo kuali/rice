@@ -22,7 +22,6 @@ import java.util.List;
 import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.plugin.attributes.RoleAttribute;
 import edu.iu.uis.eden.routeheader.DocumentContent;
 import edu.iu.uis.eden.workgroup.GroupNameId;
 

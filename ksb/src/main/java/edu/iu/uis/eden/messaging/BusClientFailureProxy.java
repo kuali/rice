@@ -70,7 +70,7 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 			if (isServiceRemovalException(throwable)) {
 				LOG.error("Exception caught accessing remote service " + this.serviceInfo.getQname(), throwable);
 				RemoteResourceServiceLocator remoteResourceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
-				remoteResourceLocator.removeService(this.serviceInfo, proxyObject);
+				remoteResourceLocator.removeService(this.serviceInfo);
 
 				Object service = remoteResourceLocator.getService(this.serviceInfo.getQname());
 				if (service != null) {

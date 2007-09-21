@@ -34,8 +34,8 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.junit.Test;
-import org.kuali.workflow.test.TestUtils;
 import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.workflow.test.TestUtils;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import edu.iu.uis.eden.batch.web.IngesterAction;

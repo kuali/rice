@@ -23,18 +23,15 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
-import org.kuali.notification.config.KENResourceLoaderFactory;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.Lifecycle;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.resourceloader.ResourceLoader;
 import org.kuali.rice.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.DerbyDBCreationLifecycle;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.TestHarnessServiceLocator;
-import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * Base test case for module that defines context and configuration locations

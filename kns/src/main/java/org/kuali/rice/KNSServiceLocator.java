@@ -17,9 +17,7 @@ package org.kuali.rice;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import org.kuali.core.bo.user.KualiModuleUser;
 import org.kuali.core.datadictionary.ValidationCompletionUtils;
 import org.kuali.core.inquiry.Inquirable;
 import org.kuali.core.lookup.LookupResultsService;
@@ -65,7 +63,6 @@ import org.kuali.core.workflow.service.WorkflowGroupService;
 import org.kuali.rice.kns.config.KNSResourceLoaderFactory;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 

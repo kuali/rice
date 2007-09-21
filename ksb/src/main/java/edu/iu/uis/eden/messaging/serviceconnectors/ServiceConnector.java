@@ -18,17 +18,15 @@ package edu.iu.uis.eden.messaging.serviceconnectors;
 
 import org.kuali.rice.security.credentials.CredentialsSource;
 
-import edu.iu.uis.eden.messaging.RemotedServiceHolder;
-
 /**
  * 
  * @author rkirkend
  * @author Scott Battaglia
- * @version $Revision: 1.2 $ $Date: 2007-06-19 14:35:13 $
+ * @version $Revision: 1.2.2.1 $ $Date: 2007-09-21 21:30:50 $
  */
 public interface ServiceConnector {
-
-	RemotedServiceHolder getServiceHolder() throws Exception;
+	
+	Object getService() throws Exception;
 
 	/**
 	 * Method to set the optional CredentialsSource. A ServiceConnector is free

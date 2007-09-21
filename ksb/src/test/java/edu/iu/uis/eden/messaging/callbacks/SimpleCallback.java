@@ -21,7 +21,8 @@ import edu.iu.uis.eden.messaging.AsynchronousCall;
 import edu.iu.uis.eden.messaging.AsynchronousCallback;
 
 /**
- * This is a description of what this class does - rkirkend don't forget to fill this in. 
+ * This is a description of what this class does - rkirkend don't forget to fill
+ * this in.
  * 
  * @author rkirkend
  *

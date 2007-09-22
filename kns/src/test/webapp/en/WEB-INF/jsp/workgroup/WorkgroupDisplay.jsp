@@ -80,7 +80,7 @@
                 <c:param name="showEdit" value="no" />
 	          </c:url>
 		  	  <c:out value="${member.displayName}" />
-		      (<a href="<c:out value="${userReportUrl}"/>"><c:out value="${member.authenticationUserId.authenticationId}"/></a>)&nbsp;
+		      (<a href="<c:out value="${userReportUrl}"/>"><c:out value="${member.authenticationId}"/></a>)&nbsp;
 		    </c:if>
 		    <c:if test="${member.memberType == 'W'}">
 		      <c:url var="workgroupReportUrl" value="${UrlResolver.workgroupReportUrl}">

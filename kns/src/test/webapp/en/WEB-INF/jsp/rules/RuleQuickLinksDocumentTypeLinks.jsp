@@ -4,12 +4,12 @@
 <%@ taglib uri="../../tld/c.tld" prefix="c" %>
 <%@ taglib uri="../../tld/fmt.tld" prefix="fmt" %>
 <%@ taglib uri="../../tld/displaytag.tld" prefix="display-el" %>
-		
+
 <%
 String context = (String)request.getAttribute("basePath") + "/";
 //	String context = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+ "/";
 %>
-<c:if test="${! documentTypeStruct.nodesEmpty }" >
+<c:if test="${ documentTypeStruct.shouldDisplay }" >
 <c:set var="documentType" value="${documentTypeStruct.documentType}" />
 	<c:if test="${documentType.currentInd == true && documentType.activeInd == true}">
 		<table border="0" width="100%">
@@ -20,15 +20,15 @@ String context = (String)request.getAttribute("basePath") + "/";
 													<c:param name="methodToCall" value="report"/>
 												</c:url>"><c:out value="${documentType.label}" />
 											</a>&nbsp;</td>
-				</tr>			
-			</c:if>	
-			
+				</tr>
+			</c:if>
+
 		<c:forEach items="${documentTypeStruct.flattenedNodes}" var="routeLevel">
-		
-			<c:if test="${routeLevel.routeMethodName != Constants.EXCEPTION_ROUTE_MODULE_NAME && 
+
+			<c:if test="${routeLevel.routeMethodName != Constants.EXCEPTION_ROUTE_MODULE_NAME &&
 				routeLevel.routeMethodName != Constants.ADHOC_ROUTE_MODULE_NAME &&
 				routeLevel.flexRM}">
-				
+
 					<tr>
 						<td width="20">&nbsp;</td>
 						<td>
@@ -112,7 +112,7 @@ String context = (String)request.getAttribute("basePath") + "/";
 					</tr>
 			</c:if>
 		</c:forEach>
-		
+
 		<c:if test="${! empty documentTypeStruct.childrenDocumentTypes}">
 			<tr>
 				<td width="20">&nbsp;</td>

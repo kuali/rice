@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,25 +45,25 @@ import edu.iu.uis.eden.web.WorkflowAction;
  * @author rkirkend
  */
 public class RuleQuickLinksAction extends WorkflowAction {
-    
+
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	makeLookupPathParam(mapping, request);
         return mapping.findForward("basic");
     }
-    
+
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
         RuleQuickLinksForm qlForm = (RuleQuickLinksForm) form;
         List documentTypes;
         if (qlForm.getRootDocTypeName() != null) {
         	documentTypes = new ArrayList();
-            DocumentType docType = getDocumentTypeService().findByName(qlForm.getRootDocTypeName());    
+            DocumentType docType = getDocumentTypeService().findByName(qlForm.getRootDocTypeName());
             documentTypes.add(docType);
             request.setAttribute("renderOpened", Boolean.TRUE);
         } else {
         	documentTypes = getDocumentTypeService().findAllCurrentRootDocuments();
         }
         qlForm.setDocumentTypeQuickLinksStructures(getDocumentTypeDataStructure(documentTypes));
-        
+
         return null;
     }
 
@@ -84,7 +84,7 @@ public class RuleQuickLinksAction extends WorkflowAction {
         makeLookupPathParam(mapping, request);
         return new ActionForward("Lookup.do?"+stripMethodToCall(request.getQueryString()), true);
     }
-    
+
 	private List getDocumentTypeDataStructure(List rootDocuments) {
 		List documentTypeQuickLinksStructures = new ArrayList();
 		for (Iterator iter = rootDocuments.iterator(); iter.hasNext();) {
@@ -92,24 +92,24 @@ public class RuleQuickLinksAction extends WorkflowAction {
 			if (! quickLinkStruct.getFlattenedNodes().isEmpty() || ! quickLinkStruct.getChildrenDocumentTypes().isEmpty()) {
 				documentTypeQuickLinksStructures.add(quickLinkStruct);
 			}
-			
+
 		}
 
 		return documentTypeQuickLinksStructures;
 	}
-	
-	
+
+
 	/**
-     * A bean to hold a DocumentType with its flattened nodes for rendering purposes 
+     * A bean to hold a DocumentType with its flattened nodes for rendering purposes
      * on the quick links.
-     * 
+     *
      * @author rkirkend
      */
     public static class DocumentTypeQuickLinksStructure {
         private DocumentType documentType;
-        private List flattenedNodes = new ArrayList();
-        private List childrenDocumentTypes = new ArrayList();
-        
+        private List<RouteNode> flattenedNodes = new ArrayList<RouteNode>();
+        private List<DocumentTypeQuickLinksStructure> childrenDocumentTypes = new ArrayList<DocumentTypeQuickLinksStructure>();
+
         private DocumentTypeQuickLinksStructure(DocumentType documentType) {
              this.documentType = documentType;
              List tempFlattendNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, true);
@@ -123,11 +123,11 @@ public class RuleQuickLinksAction extends WorkflowAction {
                 childrenDocumentTypes.add(new DocumentTypeQuickLinksStructure((DocumentType) iter.next()));
             }
         }
-        
+
         public List getChildrenDocumentTypes() {
             return childrenDocumentTypes;
         }
-        public void setChildrenDocumentTypes(List childrenDocumentTypes) {
+        public void setChildrenDocumentTypes(List<DocumentTypeQuickLinksStructure> childrenDocumentTypes) {
             this.childrenDocumentTypes = childrenDocumentTypes;
         }
         public DocumentType getDocumentType() {
@@ -139,23 +139,31 @@ public class RuleQuickLinksAction extends WorkflowAction {
         public List getFlattenedNodes() {
             return flattenedNodes;
         }
-        public void setFlattenedNodes(List flattenedNodes) {
+        public void setFlattenedNodes(List<RouteNode> flattenedNodes) {
             this.flattenedNodes = flattenedNodes;
         }
-        public boolean isNodesEmpty () {
-            return flattenedNodes.isEmpty();
+        public boolean isShouldDisplay () {
+            if (flattenedNodes.isEmpty()) {
+        	for (DocumentTypeQuickLinksStructure docType : childrenDocumentTypes) {
+        	    if (docType.isShouldDisplay()) {
+        		return true;
+        	    }
+        	}
+        	return false;
+            }
+            return true;
         }
     }
-    
+
     private void makeLookupPathParam(ActionMapping mapping, HttpServletRequest request) {
     	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();
     	request.setAttribute("basePath", basePath);
     }
-    
+
     private String stripMethodToCall(String queryString) {
         return queryString.replaceAll("methodToCall=addDelegationRule&", "");
     }
-    
+
     private DocumentTypeService getDocumentTypeService() {
         return KEWServiceLocator.getDocumentTypeService();
     }
@@ -163,11 +171,11 @@ public class RuleQuickLinksAction extends WorkflowAction {
     private RuleService getRuleService() {
     	return KEWServiceLocator.getRuleService();
     }
-    
+
     private RuleTemplateService getRuleTemplateService() {
     	return KEWServiceLocator.getRuleTemplateService();
     }
-    
-    
-    
+
+
+
 }

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,13 +35,13 @@ import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;
 
 public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
-        
+
 	@Test public void testExportDynamicProcessConfig() throws Exception {
     	loadXmlFile("DocTypeExportRuleTemplateConfig.xml");
         loadXmlFile("DocTypeExportConfig.xml");
         assertExport();
     }
-    
+
     protected void assertExport() throws Exception {
         List documentTypes = KEWServiceLocator.getDocumentTypeService().findAllCurrent();
         for (Iterator iterator = documentTypes.iterator(); iterator.hasNext();) {
@@ -55,13 +55,13 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
             assertDocTypeExport(existingDocType, newDocType);
         }
     }
-    
+
     private void assertDocTypeExport(DocumentType oldDocType, DocumentType newDocType) {
         // assert fields which should be different
         assertFalse("Document type ids should be different.", oldDocType.getDocumentTypeId().equals(newDocType.getDocumentTypeId()));
         assertTrue("Version should be one greater.", newDocType.getVersion().intValue() == oldDocType.getVersion().intValue()+1);
         assertEquals("Previous version should be old doc type.", oldDocType.getDocumentTypeId(), newDocType.getPreviousVersionId());
-        
+
         // assert fields which should be the same
         assertEquals("Should have same name", oldDocType.getName(), newDocType.getName());
         if (oldDocType.getParentDocType() == null) {
@@ -79,11 +79,12 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
         assertEquals(oldDocType.getBlanketApprovePolicy(),newDocType.getBlanketApprovePolicy());
         assertEquals(oldDocType.getCurrentInd(), newDocType.getCurrentInd());
         assertEquals(oldDocType.getSuperUserWorkgroup().getWorkflowGroupId(), newDocType.getSuperUserWorkgroup().getWorkflowGroupId());
+        assertEquals(oldDocType.getSuperUserWorkgroupNoInheritence().getWorkflowGroupId(), newDocType.getSuperUserWorkgroupNoInheritence().getWorkflowGroupId());
         assertEquals(oldDocType.getNotificationFromAddress(), newDocType.getNotificationFromAddress());
         assertRoutePath(oldDocType, newDocType);
         assertPolicies(oldDocType, newDocType);
     }
-    
+
     private void assertRoutePath(DocumentType oldDocType, DocumentType newDocType) {
         for (Iterator iterator = oldDocType.getProcesses().iterator(); iterator.hasNext();) {
             Process oldProcess = (Process) iterator.next();
@@ -91,7 +92,7 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
             assertRouteNodes(oldProcess.getInitialRouteNode(), newProcess.getInitialRouteNode(), new HashSet());
         }
     }
-    
+
     private void assertRouteNodes(RouteNode oldNode, RouteNode newNode, Set processedNodeIds) {
         if (processedNodeIds.contains(oldNode.getRouteNodeId())) {
             if (!processedNodeIds.contains(newNode.getRouteNodeId())) {
@@ -126,7 +127,7 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
             assertTrue("Could not locate new node by name: " + nextOldNode.getRouteNodeName(), foundNode);
         }
     }
-    
+
     private void assertBranches(BranchPrototype oldBranch, BranchPrototype newBranch) {
         if (oldBranch == null) {
             assertNull("New Branch should also be null.", newBranch);
@@ -134,7 +135,7 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
             assertEquals(oldBranch.getName(), newBranch.getName());
         }
     }
-    
+
     private void assertPolicies(DocumentType oldDocType, DocumentType newDocType) {
         assertEquals(oldDocType.getPolicies().size(), newDocType.getPolicies().size());
         for (Iterator iterator = oldDocType.getPolicies().iterator(); iterator.hasNext();) {

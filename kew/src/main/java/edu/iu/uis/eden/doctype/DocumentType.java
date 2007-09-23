@@ -492,12 +492,31 @@ public class DocumentType implements WorkflowPersistable {
     }
 
     public Workgroup getSuperUserWorkgroup() {
-        return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(this.workgroupId));
+	Workgroup superUserWorkgroup = getSuperUserWorkgroupNoInheritence();
+	if (superUserWorkgroup == null && getParentDocType() != null) {
+	    return getParentDocType().getSuperUserWorkgroup();
+	}
+	return superUserWorkgroup;
     }
 
-    public void setSuperUserWorkgroup(Workgroup suWorkgroup) {
-    	this.workgroupId = suWorkgroup.getWorkflowGroupId().getGroupId();
+    public Workgroup getSuperUserWorkgroupNoInheritence() {
+	if (workgroupId == null) {
+	    return null;
+	}
+	return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(this.workgroupId));
     }
+
+    public void setSuperUserWorkgroupNoInheritence(Workgroup suWorkgroup) {
+	if (suWorkgroup == null) {
+	    this.workgroupId = null;
+	} else {
+	    this.workgroupId = suWorkgroup.getWorkflowGroupId().getGroupId();
+	}
+    }
+
+//    public void setSuperUserWorkgroup(Workgroup suWorkgroup) {
+//    	this.workgroupId = suWorkgroup.getWorkflowGroupId().getGroupId();
+//    }
 
     public DocumentType getPreviousVersion() {
         return getDocumentTypeService().findById(previousVersionId);
@@ -843,7 +862,11 @@ public class DocumentType implements WorkflowPersistable {
     }
 
     public boolean isSuperUser(WorkflowUser user) {
-    	return getSuperUserWorkgroup().hasMember(user);
+	Workgroup workgroup = getSuperUserWorkgroup();
+	if (workgroup == null) {
+	    return false;
+	}
+    	return workgroup.hasMember(user);
     }
 
     public boolean hasPreviousVersion() {

@@ -48,8 +48,8 @@ public class DocumentTypeTest extends KEWTestCase {
     protected void loadTestData() throws Exception {
         Core.getCurrentContextConfig().overrideProperty("test.doctype.workgroup", "TestWorkgroup");
         loadXmlFile("DoctypeConfig.xml");
-    }    
-    
+    }
+
     /**
      * Verify that enroute documents are not affected if you edit their document type.
      * @throws Exception
@@ -58,42 +58,42 @@ public class DocumentTypeTest extends KEWTestCase {
         WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "DocumentType");
         document.setTitle("");
         document.routeDocument("");
-        
+
         document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
         assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
-        
+
         WorkflowInfo info = new WorkflowInfo();
         Integer version1 = info.getDocType(document.getDocumentType()).getDocTypeVersion();
-        
+
         //update the document type
         loadXmlFile("DoctypeSecondVersion.xml");
-        
+
         //verify that we have a new documenttypeid and its a newer version
         Integer version2 = info.getDocType(document.getDocumentType()).getDocTypeVersion();
-        
+
         assertTrue("Version2 should be larger than verison1", version2.intValue() > version1.intValue());
-        
+
         //the new version would take the document final
         document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
         assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
-        
+
         document.approve("");
-        
+
         document = new WorkflowDocument(new NetworkIdVO("user2"), document.getRouteHeaderId());
         Integer versionDocument = info.getDocType(document.getRouteHeader().getDocTypeId()).getDocTypeVersion();
-        
+
         assertTrue("user2 should have an approve request", document.isApprovalRequested());
-        //make sure our document still represents the accurate version 
+        //make sure our document still represents the accurate version
         assertEquals("Document has the wrong document type version", version1, versionDocument);
     }
-    
+
     /**
-     * this test will verify that finalapprover node policies work 
-     * 
+     * this test will verify that finalapprover node policies work
+     *
      * @throws Exception
      */
     @Test public void testFinalApproverRouting() throws Exception {
-        
+
         WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "FinalApproverDocumentType");
         document.setTitle("");
         document.routeDocument("");
@@ -105,10 +105,10 @@ public class DocumentTypeTest extends KEWTestCase {
             //deal with single transaction issue in test.
         	TestUtilities.getExceptionThreader().join();
         	document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
-            assertTrue("Document should be in exception routing", document.stateIsException());            
-        }        
+            assertTrue("Document should be in exception routing", document.stateIsException());
+        }
     }
-    
+
     /**
      * Tests that route nodes mark as mandatory send out approve requests
      * @throws Exception
@@ -122,14 +122,14 @@ public class DocumentTypeTest extends KEWTestCase {
             //deal with single transaction issue in test.
         	TestUtilities.getExceptionThreader().join();
         	document = new WorkflowDocument(new NetworkIdVO("user1"), document.getRouteHeaderId());
-            assertTrue("Document should be in exception routing", document.stateIsException());            
+            assertTrue("Document should be in exception routing", document.stateIsException());
         }
     }
-    
+
     /**
      * Makes sure the DocumentTypeXmlParser is working.  Compare the parsed 'DocumentType' doctype to it's expected values.
      * This test does not include multiple processes.
-     * 
+     *
      * @throws Exception
      */
     @Test public void testDocumentTypeXmlParser() throws Exception {
@@ -153,53 +153,53 @@ public class DocumentTypeTest extends KEWTestCase {
         assertEquals("Wrong PRE_APPROVE policy value", Boolean.FALSE, parsedDocument.getPreApprovePolicy().getPolicyValue());
         assertEquals("Wrong DEFAULT_APPROVE policy value", Boolean.FALSE, parsedDocument.getDefaultApprovePolicy().getPolicyValue());
         assertEquals("Wrong LOOK_FUTURE", Boolean.TRUE, parsedDocument.getLookIntoFuturePolicy().getPolicyValue());
-        
+
         List processes = parsedDocument.getProcesses();
         assertEquals("Should only be 1 process", 1, processes.size());
-        
+
         //this is going against the intended structure and is very brittle
-        
+
         Process process = (Process)processes.get(0);
         List flattenedNodeList = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(process);
         assertEquals("Should be 6 total route nodes", 6, flattenedNodeList.size());
-        
+
         RouteNode adHocNode = process.getInitialRouteNode();
         assertEquals("Wrong node name should be 'AdHoc'", "AdHoc",adHocNode.getRouteNodeName());
         assertTrue("Wrong node type", NodeType.START.isAssignableFrom(Class.forName(adHocNode.getNodeType())));
         assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", adHocNode.getExceptionWorkgroup().getDisplayName());
-        
+
         RouteNode split = (RouteNode)adHocNode.getNextNodes().get(0);
         assertEquals("Wrong node name", "Split", split.getRouteNodeName());
         assertTrue("Wrong node type", NodeType.SPLIT.isAssignableFrom(Class.forName(split.getNodeType())));
         assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", split.getExceptionWorkgroup().getDisplayName());
-        
+
         RouteNode ruleTemplate1 = (RouteNode)split.getNextNodes().get(0);
         assertEquals("Wrong node name", "RuleTemplate1", ruleTemplate1.getRouteNodeName());
         assertTrue("Wrong node type", NodeType.REQUESTS.isAssignableFrom(Class.forName(ruleTemplate1.getNodeType())));
         assertEquals("Wrong branch name", "B1", ruleTemplate1.getBranch().getName());
         assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", ruleTemplate1.getExceptionWorkgroup().getDisplayName());
-        
+
         RouteNode ruleTemplate2 = (RouteNode)split.getNextNodes().get(1);
         assertEquals("Wrong node name", "RuleTemplate2", ruleTemplate2.getRouteNodeName());
         assertTrue("Wrong node type", NodeType.REQUESTS.isAssignableFrom(Class.forName(ruleTemplate2.getNodeType())));
         assertEquals("Wrong branch name", "B2", ruleTemplate2.getBranch().getName());
         assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", ruleTemplate2.getExceptionWorkgroup().getDisplayName());
-        
+
         RouteNode join = (RouteNode)ruleTemplate2.getNextNodes().get(0);
         assertEquals("Wrong node name", "Join", join.getRouteNodeName());
         assertTrue("Wrong node type", NodeType.JOIN.isAssignableFrom(Class.forName(join.getNodeType())));
         assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", join.getExceptionWorkgroup().getDisplayName());
-        
+
         RouteNode ruleTemplate3 = (RouteNode)join.getNextNodes().get(0);
         assertEquals("Wrong node name", "RuleTemplate3", ruleTemplate3.getRouteNodeName());
         assertTrue("Wrong node type", NodeType.REQUESTS.isAssignableFrom(Class.forName(ruleTemplate3.getNodeType())));
         assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", ruleTemplate3.getExceptionWorkgroup().getDisplayName());
     }
-     
+
     /**
-     * verify that saved documents are impacting the documents in the rest of they're hierarhy.  
+     * verify that saved documents are impacting the documents in the rest of they're hierarhy.
      * This means cache notification by document type will work.
-     * 
+     *
      * @throws Exception
      */
     @Test public void testDocumentTypeServiceCacheInteractions() throws Exception {
@@ -208,26 +208,26 @@ public class DocumentTypeTest extends KEWTestCase {
     	System.out.println(child == childDeux);
     	assertEquals("Names should be the same.", child.getName(), childDeux.getName());
     	assertEquals("Versions should be the same.", child.getVersion(), childDeux.getVersion());
-    	
+
     	// verify that the entry exists in OSCache
     	String childIdKey = DocumentTypeServiceImpl.DOCUMENT_TYPE_ID_CACHE_PREFIX+child.getDocumentTypeId().toString();
     	String childNameKey = DocumentTypeServiceImpl.DOCUMENT_TYPE_NAME_CACHE_PREFIX+child.getName();
     	assertNotNull("No entry was found in the id cache.", KEWServiceLocator.getCacheAdministrator().getFromCache(childIdKey));
     	assertNotNull("No entry was found in the name cache.", KEWServiceLocator.getCacheAdministrator().getFromCache(childNameKey));
-    	    	
+
     	// the parent document type should not be in the cache yet
-    	String parentIdKey = DocumentTypeServiceImpl.DOCUMENT_TYPE_ID_CACHE_PREFIX+child.getDocTypeParentId(); 
+    	String parentIdKey = DocumentTypeServiceImpl.DOCUMENT_TYPE_ID_CACHE_PREFIX+child.getDocTypeParentId();
     	assertNull("Entry for parent should not have found in the id cache.", KEWServiceLocator.getCacheAdministrator().getFromCache(parentIdKey));
-    	
+
     	DocumentType parent = child.getParentDocType();
     	// the act of fetching the parent from the child should result in the parent being cached
     	assertNotNull("Entry for parent should have been found in the id cache.", KEWServiceLocator.getCacheAdministrator().getFromCache(parentIdKey));
-    	
+
     	// now flush the cache, there should be no entries
     	KEWServiceLocator.getCacheAdministrator().flushAll();
     	assertNull(KEWServiceLocator.getCacheAdministrator().getFromCache(childIdKey));
     	assertNull(KEWServiceLocator.getCacheAdministrator().getFromCache(childNameKey));
-    	
+
     	DocumentType child2 = null;
     	for (Iterator iter = parent.getChildrenDocTypes().iterator(); iter.hasNext();) {
 			DocumentType childTmp = (DocumentType) iter.next();
@@ -235,7 +235,7 @@ public class DocumentTypeTest extends KEWTestCase {
 				child2 = childTmp;
 			}
 		}
-    	
+
     	//update the first child and verify that everything we fetch is a different object - ie it's been refetched
     	//from the db
     	DocumentType childEdit = new DocumentType();
@@ -251,10 +251,10 @@ public class DocumentTypeTest extends KEWTestCase {
     	childEdit.setRoutingVersion("1");
     	childEdit.setDocTypeParentId(child.getDocTypeParentId());
     	childEdit.setPostProcessorName("somename");
-    	childEdit.setSuperUserWorkgroup(workflowAdmin);
-    	
+    	childEdit.setSuperUserWorkgroupNoInheritence(workflowAdmin);
+
     	KEWServiceLocator.getDocumentTypeService().versionAndSave(childEdit);
-    	    	
+
     	DocumentType child1Ver2 = KEWServiceLocator.getDocumentTypeService().findByName("SaveTestDocumentTypeChild1");
     	assertTrue("the fetched document should a document type version number 1 larger than the previous version", child.getVersion().intValue() + 1 == child1Ver2.getVersion().intValue());
     	DocumentType previousVersion = child1Ver2.getPreviousVersion();
@@ -263,11 +263,11 @@ public class DocumentTypeTest extends KEWTestCase {
     	assertEquals("DocumentType should have been fetched from cache", child1Ver2, child1Ver2_2);
     	assertFalse("Previous Version should not be an object already fetched from cache", previousVersion.equals(child1Ver2));
     	assertEquals("Fetched wrong previous document type ", previousVersion.getDocumentTypeId(), child.getDocumentTypeId());
-    	
-    	
+
+
     	DocumentType parentV2 = child1Ver2.getParentDocType();
     	assertFalse("These should be different objects", parentV2.equals(parent));
-    	
+
     	DocumentType child2V2 = null;
     	for (Iterator iter = parentV2.getChildrenDocTypes().iterator(); iter.hasNext();) {
 			DocumentType childTmp = (DocumentType) iter.next();
@@ -277,13 +277,13 @@ public class DocumentTypeTest extends KEWTestCase {
 			}
 		}
     }
-    
+
     @Test public void testAttributeSaveClearsCache() throws Exception {
     	super.loadXmlFile("DocTypeWithSearchableAttributes.xml");
     	//fetch our document types out of the document service and therefore the cache
     	DocumentType shouldClearedFromCache = KEWServiceLocator.getDocumentTypeService().findByName("DocumentType");
     	DocumentType clearedFromCacheDuex = KEWServiceLocator.getDocumentTypeService().findByName("DocumentTypeDuex");
-    	
+
     	//upload the new xml
     	super.loadXmlFile("DocTypeRelatedAttributes.xml");
     	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("DocumentType");
@@ -291,7 +291,7 @@ public class DocumentTypeTest extends KEWTestCase {
     	assertFalse("This documenttype should have been cleared from the cache", shouldClearedFromCache.equals(documentType));
     	assertFalse("This documenttype should have been cleared from the cache", clearedFromCacheDuex.equals(documentTypeDuex));
     }
-    
+
     //verifies the documenttype hierarchy is intact after multiple uploads
     @Test public void testHierarchyUpload() throws Exception {
     	super.loadXmlFile("ParentWithChildrenDocTypeConfiguration.xml");
@@ -310,15 +310,15 @@ public class DocumentTypeTest extends KEWTestCase {
 				foundDelete = true;
 			}
 		}
-    	
+
     	assertTrue("Didn't find CourseRemonstraneProcess", foundRemonstrance);
     	assertTrue("Didn't find NewCourseRequest", foundNewCourse);
     	assertTrue("Didn't find DeleteCourseRequest", foundDelete);
-    	
+
     	//reload and verify that the structure looks the same - the below is missing one of the children document types
     	//to verify that a partial upload of the hierarchy doesn't kill the entire hierarchy
     	super.loadXmlFile("ParentWithChildrenDocTypeConfiguration2.xml");
-    	
+
     	parent = KEWServiceLocator.getDocumentTypeService().findByName("UGSDocumentType");
     	foundRemonstrance = false;
     	foundNewCourse = false;
@@ -339,7 +339,7 @@ public class DocumentTypeTest extends KEWTestCase {
     	assertTrue("Didn't find NewCourseRequest", foundNewCourse);
     	assertTrue("Didn't find DeleteCourseRequest", foundDelete);
     }
-    
+
     //verifies documenttype hierarchy is intact after uploading a series of documenttypes and then
     //uploading a parent onto those document types
     @Test public void testHierarchyUpload2() throws Exception {
@@ -348,13 +348,13 @@ public class DocumentTypeTest extends KEWTestCase {
     	DocumentType courseRemonstrance1 = KEWServiceLocator.getDocumentTypeService().findByName("CourseRemonstranceProcess");
     	DocumentType newCourseRequest1 = KEWServiceLocator.getDocumentTypeService().findByName("NewCourseRequest");
     	DocumentType deleteCourse1 = KEWServiceLocator.getDocumentTypeService().findByName("DeleteCourseRequest");
-    	
-    	//upload the new config with the parent and verify we are getting new document types with new versions 
+
+    	//upload the new config with the parent and verify we are getting new document types with new versions
     	super.loadXmlFile("ParentWithChildrenDocTypeConfiguration.xml");
     	DocumentType courseRemonstrance2 = null;
     	DocumentType newCourseRequest2 = null;
     	DocumentType deleteCourse2 = null;
-    	
+
     	DocumentType ugsDocumentType = KEWServiceLocator.getDocumentTypeService().findByName("UGSDocumentType");
     	for (Iterator iter = ugsDocumentType.getChildrenDocTypes().iterator(); iter.hasNext();) {
 			DocumentType childDocType = (DocumentType) iter.next();
@@ -366,11 +366,11 @@ public class DocumentTypeTest extends KEWTestCase {
 				deleteCourse2 = childDocType;
 			}
 		}
-    	
+
     	assertNotNull(courseRemonstrance2);
     	assertNotNull(newCourseRequest2);
     	assertNotNull(deleteCourse2);
-    	
+
     	assertTrue("Version didn't get incremented", courseRemonstrance1.getVersion().intValue() < courseRemonstrance2.getVersion().intValue());
     	assertTrue("Version didn't increment", newCourseRequest1.getVersion().intValue() < newCourseRequest2.getVersion().intValue());
     	assertTrue("Version didn't increment", deleteCourse1.getVersion().intValue() < deleteCourse2.getVersion().intValue());
@@ -380,7 +380,7 @@ public class DocumentTypeTest extends KEWTestCase {
      * Tests that the document type ingestion will not create a brand new
      * document when only label or description field changes.  Relates to
      * JIRA's EN-318 and KULOWF-147.
-     * 
+     *
      * @throws Exception
      */
     @Test public void testDocumentTypeIngestion() throws Exception {
@@ -391,14 +391,14 @@ public class DocumentTypeTest extends KEWTestCase {
         DocumentType secondIngestDoc = KEWServiceLocator.getDocumentTypeService().findByName("IngestTestDocumentType");
         assertNotNull("Second ingested document has empty Previous Version ID after first ingest", secondIngestDoc.getPreviousVersionId());
         DocumentType firstIngestDoc = KEWServiceLocator.getDocumentTypeService().findById(secondIngestDoc.getPreviousVersionId());
-        
+
         // the second ingested document should now be set to Current with the first ingested document should no longer be set to Current
         assertEquals("First ingested document is still set to Current after first ingest", Boolean.FALSE, firstIngestDoc.getCurrentInd());
         assertEquals("Second ingested document is not set to Current after first ingest", Boolean.TRUE, secondIngestDoc.getCurrentInd());
-        
+
         // second ingestion
         super.loadXmlFile("DocTypeIngestTestConfig3.xml");  // document setting active to false
-        
+
         firstIngestDoc = null;
         secondIngestDoc = null;
         DocumentType thirdIngestDoc = KEWServiceLocator.getDocumentTypeService().findByName("IngestTestDocumentType");
@@ -406,13 +406,13 @@ public class DocumentTypeTest extends KEWTestCase {
         secondIngestDoc = KEWServiceLocator.getDocumentTypeService().findById(thirdIngestDoc.getPreviousVersionId());
         assertNotNull("Second ingested document has empty Previous Version ID after second ingest", secondIngestDoc.getPreviousVersionId());
         firstIngestDoc = KEWServiceLocator.getDocumentTypeService().findById(secondIngestDoc.getPreviousVersionId());
-        
+
         // the third ingested document should now be set to Current and Inactive... all others should not be set to Current
         assertEquals("First ingested document is set to Current after second ingest", Boolean.FALSE, firstIngestDoc.getCurrentInd());
         assertEquals("Second ingested document is set to Current after second ingest", Boolean.FALSE, secondIngestDoc.getCurrentInd());
         assertEquals("Third ingested document is not set to Inactive after second ingest", Boolean.FALSE, thirdIngestDoc.getActiveInd());
         assertEquals("Third ingested document is not set to Current after second ingest", Boolean.TRUE, thirdIngestDoc.getCurrentInd());
-        
+
         // third ingestion
         super.loadXmlFile("DocTypeIngestTestConfig4.xml");  // document setting active to true
 
@@ -426,7 +426,7 @@ public class DocumentTypeTest extends KEWTestCase {
         secondIngestDoc = KEWServiceLocator.getDocumentTypeService().findById(thirdIngestDoc.getPreviousVersionId());
         assertNotNull("Second ingested document has empty Previous Version ID after third ingest", secondIngestDoc.getPreviousVersionId());
         firstIngestDoc = KEWServiceLocator.getDocumentTypeService().findById(secondIngestDoc.getPreviousVersionId());
-        
+
         // the fourth ingested document should now be set to Current and Active... all others should not be set to Current
         assertEquals("First ingested document is set to Current after third ingest", Boolean.FALSE, firstIngestDoc.getCurrentInd());
         assertEquals("Second ingested document is set to Current after third ingest", Boolean.FALSE, secondIngestDoc.getCurrentInd());

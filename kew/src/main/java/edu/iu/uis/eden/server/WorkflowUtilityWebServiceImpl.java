@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -377,7 +377,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         return false;
     }
-    
+
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes) throws RemoteException {
     	try {
 	        SimulationEngine simulationEngine = new SimulationEngine();
@@ -391,7 +391,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
                     // an action taken has eliminated this request from being active
                     continue;
                 }
-				// if no action request codes are passed in.... assume any request found is 
+				// if no action request codes are passed in.... assume any request found is
 		    	if ( (actionRequestedCodes == null) || (actionRequestedCodes.length == 0) ) {
 		    		// we found an action request
 		    		return true;
@@ -647,7 +647,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     	LOG.debug("Determining super user status [userId=" + userId + ", documentTypeId=" + documentTypeId + "]");
     	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(documentTypeId);
     	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-    	boolean isSuperUser = documentType.getSuperUserWorkgroup().hasMember(user);
+    	boolean isSuperUser = documentType.isSuperUser(user);
     	LOG.debug("Super user status is " + isSuperUser + ".");
     	return isSuperUser;
     }

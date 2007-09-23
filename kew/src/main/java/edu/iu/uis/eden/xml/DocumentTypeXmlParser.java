@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -65,7 +65,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 
 /**
  * A parser for parsing an XML file into {@link DocumentType}s.
- * 
+ *
  * @author rkirkend
  * @author ewestfal
  * @author ahamid
@@ -90,7 +90,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
     public List parseDocumentTypes(InputStream input) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, TransformerException {
 
         List documentTypeBeans = new ArrayList();
-    
+
     	Document routeDocument=XmlHelper.trimXml(input);
         xpath = XPathHelper.newXPath();
         NodeList documentTypeNodes = (NodeList) xpath.evaluate("/data/documentTypes/documentType", routeDocument, XPathConstants.NODESET);
@@ -109,29 +109,29 @@ public class DocumentTypeXmlParser implements XmlConstants {
             if (attributeList.getLength() > 1) {
                 throw new InvalidXmlException("More than one attributes node is present in a document type node");
             }
-            
+
             if (attributeList.getLength() > 0) {
                 NodeList attributeNodes = (NodeList) xpath.evaluate("./attribute", attributeList.item(0), XPathConstants.NODESET);
                 documentType.setDocumentTypeAttributes(getDocumentTypeAttributes(attributeNodes, documentType));
             }
 
-            
+
             NodeList securityList = (NodeList) xpath.evaluate("./security", documentTypeNodes.item(i), XPathConstants.NODESET);
             if (securityList.getLength() > 1) {
                 throw new InvalidXmlException("More than one security node is present in a document type node");
             }
-            
+
             if (securityList.getLength() > 0) {
                try {
                  Node securityNode = securityList.item(0);
                  String securityText = XmlHelper.writeNode(securityNode);
-                 documentType.setDocumentTypeSecurityXml(securityText);  
+                 documentType.setDocumentTypeSecurityXml(securityText);
                }
                catch (Exception e) {
                  throw new InvalidXmlException(e);
                }
             }
-            
+
             parseStructure(documentTypeNodes.item(i), routeDocument, documentType, new RoutePathContext());
 
             LOG.debug("Saving document type " + documentType.getName());
@@ -188,8 +188,8 @@ public class DocumentTypeXmlParser implements XmlConstants {
         }
 
         documentType.setDocHandlerUrl(docHandler);
-        
-        
+
+
         String messageEntity = null; // by default set this to null and let the system sort out what the "default" is
         if (((Boolean) xpath.evaluate("./" + MESSAGE_ENTITY, documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
             try {
@@ -201,7 +201,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
         }
 
         documentType.setMessageEntity(messageEntity);
-        
+
         try {
         	if (((Boolean) xpath.evaluate("./" + NOTIFICATION_FROM_ADDRESS, documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
                 documentType.setNotificationFromAddress((String) xpath.evaluate("./" + NOTIFICATION_FROM_ADDRESS, documentTypeNode, XPathConstants.STRING));
@@ -210,7 +210,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
             LOG.error("Error obtaining document type " + NOTIFICATION_FROM_ADDRESS, xpee);
             throw xpee;
         }
-        
+
         try {
             if (XmlHelper.pathExists(xpath, "./" + CUSTOM_EMAIL_STYLESHEET, documentTypeNode)) {
                 documentType.setCustomEmailStylesheet((String) xpath.evaluate("./" + CUSTOM_EMAIL_STYLESHEET, documentTypeNode, XPathConstants.STRING));
@@ -228,7 +228,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type defaultExceptionWorkgroupName", xpee);
             throw xpee;
-        } 
+        }
 
         if (! Utilities.isEmpty(exceptionWgName)) {
             // allow core config parameter replacement in documenttype workgroups
@@ -288,9 +288,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
                 if (suWorkgroup == null) {
                     throw new InvalidWorkgroupException("Workgroup could not be found: " + wg);
                 }
-                documentType.setSuperUserWorkgroup(suWorkgroup);
-            } else {
-            	throw new InvalidXmlException("superUserWorkgroupName is required.");
+                documentType.setSuperUserWorkgroupNoInheritence(suWorkgroup);
             }
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type superUserWorkgroupName", xpee);
@@ -299,12 +297,12 @@ public class DocumentTypeXmlParser implements XmlConstants {
         String blanketWorkGroupName = null;
     	String blanketApprovePolicy = null;
         try {
-        	if (((Boolean) xpath.evaluate("./blanketApproveWorkgroupName", documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) { 
+        	if (((Boolean) xpath.evaluate("./blanketApproveWorkgroupName", documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
                 blanketWorkGroupName =(String) xpath.evaluate("./blanketApproveWorkgroupName", documentTypeNode, XPathConstants.STRING);
-        }  
-        	if (((Boolean) xpath.evaluate("./blanketApprovePolicy", documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) { 
+        }
+        	if (((Boolean) xpath.evaluate("./blanketApprovePolicy", documentTypeNode, XPathConstants.BOOLEAN)).booleanValue()) {
                     blanketApprovePolicy =(String) xpath.evaluate("./blanketApprovePolicy", documentTypeNode, XPathConstants.STRING);
-            }      
+            }
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type blanketApproveWorkgroupName", xpee);
             throw xpee;
@@ -316,7 +314,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
             blanketWorkGroupName = Utilities.substituteConfigParameters(blanketWorkGroupName);
         	Workgroup blanketAppWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(blanketWorkGroupName), true);
         	if (blanketAppWorkgroup == null) {
-        		throw new InvalidWorkgroupException("The blanket approve workgroup " + blanketWorkGroupName + " does not exist");	
+        		throw new InvalidWorkgroupException("The blanket approve workgroup " + blanketWorkGroupName + " does not exist");
         	}
         	documentType.setBlanketApproveWorkgroup(blanketAppWorkgroup);
         } else if (!StringUtils.isBlank(blanketApprovePolicy)){
@@ -388,7 +386,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
         }
         Node routeNodesNode = nodeList.item(0);
         checkForOrphanedRouteNodes(documentTypeNode, routeNodesNode);
-        
+
         // passed validation.
         nodesMap = new HashMap();
         for (int index = 0; index < processNodes.getLength(); index++) {
@@ -426,7 +424,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
         }
 
     }
-    
+
     /**
      * Checks for route nodes that are declared but never used and throws an InvalidXmlException if one is discovered.
      */
@@ -437,14 +435,14 @@ public class DocumentTypeXmlParser implements XmlConstants {
     		Node nameNode = nodesInPath.item(index);
     		nodeNamesInPath.add(nameNode.getNodeValue());
     	}
-    	
+
     	NodeList declaredNodes = (NodeList) xpath.evaluate("./*/@name", routeNodesNode, XPathConstants.NODESET);
     	List<String> declaredNodeNames = new ArrayList<String>(declaredNodes.getLength());
     	for (int index = 0; index < declaredNodes.getLength(); index++) {
     		Node nameNode = declaredNodes.item(index);
     		declaredNodeNames.add(nameNode.getNodeValue());
     	}
-    	
+
     	// now compare the declared nodes to the ones actually used
     	List<String> orphanedNodes = new ArrayList<String>();
     	for (String declaredNode : declaredNodeNames) {
@@ -465,7 +463,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
 				String orphanedNode = (String) iterator.next();
 				message += orphanedNode + (iterator.hasNext() ? ", " : "");
 			}
-    		throw new InvalidXmlException(message); 
+    		throw new InvalidXmlException(message);
     	}
     }
 
@@ -527,7 +525,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
                 String nodeExpression = ".//*[@name='" + nodeName + "']";
                 currentRouteNode = makeRouteNodePrototype(nodeName, nodeExpression, routeNodesNode, documentType, context);
             }
-            
+
             if ("split".equalsIgnoreCase(localName)) {
                 getSplitNextNodes(currentNode, routePathNode, currentRouteNode, routeNodesNode, documentType, context);
             }
@@ -568,7 +566,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
                 } else {
                     boolean parentHasNextNodeAttrib;
                     try {
-                        parentHasNextNodeAttrib = ((Boolean) xpath.evaluate(PARENT_NEXT_NODE_EXP, currentNode, XPathConstants.BOOLEAN)).booleanValue(); 
+                        parentHasNextNodeAttrib = ((Boolean) xpath.evaluate(PARENT_NEXT_NODE_EXP, currentNode, XPathConstants.BOOLEAN)).booleanValue();
                     } catch (XPathExpressionException xpee) {
                         LOG.error("Error obtaining parent node nextNode attrib", xpee);
                         throw xpee;
@@ -617,7 +615,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
             }
             context.branch = new BranchPrototype();
             context.branch.setName(branchName);
-            
+
             createRouteNode(splitRouteNode, name, routePathNode, routeNodesNode, documentType, context);
         }
     }
@@ -748,7 +746,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
 //                policy.setInheritedFlag(Boolean.FALSE);
 //            }
             try {
-                
+
                 if (((Boolean) xpath.evaluate("./value", documentTypePolicies.item(i), XPathConstants.BOOLEAN)).booleanValue()) {
                     policy.setPolicyValue(Boolean.valueOf((String) xpath.evaluate("./value", documentTypePolicies.item(i), XPathConstants.STRING)));
                 } else {
@@ -796,5 +794,5 @@ public class DocumentTypeXmlParser implements XmlConstants {
         public BranchPrototype branch;
         public LinkedList splitNodeStack = new LinkedList();
     }
-    
+
 }

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,34 +49,34 @@ public class WorkflowRoutingForm extends ActionForm {
     private String initiateURL;
     private String command;
     private String annotation;
-    
+
     //private Integer destRouteLevel;
     private boolean showBlanketApproveButton;
     protected Map appSpecificRouteActionRequestCds = new HashMap();
     protected AppSpecificRouteRecipient appSpecificRouteRecipient = new AppSpecificRouteRecipient();
     protected List appSpecificRouteList = new ArrayList();
-    
+
     protected String appSpecificRouteRecipientType = "person";
     protected String appSpecificRouteActionRequestCd;
     protected Integer recipientIndex;
     protected String docHandlerReturnUrl;
     protected String removedAppSpecificRecipient;
-    
+
     public void resetAppSpecificRoute(){
         appSpecificRouteRecipient = new AppSpecificRouteRecipient();
     }
-    
+
     public Map getAppSpecificRouteActionRequestCds() {
         return appSpecificRouteActionRequestCds;
     }
-    
+
     /**
      * @return Returns the destRouteLevel.
      */
     /*public Integer getDestRouteLevel() {
         return destRouteLevel;
     }*/
-    
+
     /**
      * @param destRouteLevel The destRouteLevel to set.
      */
@@ -181,16 +181,16 @@ public class WorkflowRoutingForm extends ActionForm {
     public void setDocTypeName(String docTypeName) {
         this.docTypeName = docTypeName;
     }
- 
+
     public void setAppSpecificPersonId(String networkId){
         if(networkId != null && !networkId.trim().equals("")){
             getAppSpecificRouteRecipient().setId(networkId);
         }
         getAppSpecificRouteRecipient().setType("person");
     }
-    
+
     public void setAppSpecificWorkgroupId(Long workgroupId){
-        if(workgroupId != null){ 
+        if(workgroupId != null){
             Workgroup workgroup = getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
             if(workgroup != null){
                 getAppSpecificRouteRecipient().setId(workgroup.getGroupNameId().getNameId());
@@ -198,11 +198,11 @@ public class WorkflowRoutingForm extends ActionForm {
         }
         getAppSpecificRouteRecipient().setType("workgroup");
     }
-    
+
     private WorkgroupService getWorkgroupService() {
         return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
     }
-    
+
     public AppSpecificRouteRecipient getAppSpecificRouteRecipient() {
         return appSpecificRouteRecipient;
     }
@@ -215,8 +215,8 @@ public class WorkflowRoutingForm extends ActionForm {
     public void setAppSpecificRouteList(List appSpecificRouteList) {
         this.appSpecificRouteList = appSpecificRouteList;
     }
-    
-   
+
+
     public void setAppSpecificRouteRecipientType(
             String appSpecificRouteRecipientType) {
         this.appSpecificRouteRecipientType = appSpecificRouteRecipientType;
@@ -224,20 +224,20 @@ public class WorkflowRoutingForm extends ActionForm {
     public String getAppSpecificRouteRecipientType() {
         return appSpecificRouteRecipientType;
     }
-    
+
     public AppSpecificRouteRecipient getAppSpecificRoute(int index) {
         while (getAppSpecificRouteList().size() <= index) {
             getAppSpecificRouteList().add(new AppSpecificRouteRecipient());
         }
         return (AppSpecificRouteRecipient) getAppSpecificRouteList().get(index);
     }
-    
+
 
     public void setAppSpecificRoute(int index, AppSpecificRouteRecipient appSpecificRouteRecipient) {
         appSpecificRouteList.set(index, appSpecificRouteRecipient);
     }
 
-   
+
     public String getAppSpecificRouteActionRequestCd() {
         return appSpecificRouteActionRequestCd;
     }
@@ -251,15 +251,15 @@ public class WorkflowRoutingForm extends ActionForm {
     public void setRecipientIndex(Integer recipientIndex) {
         this.recipientIndex = recipientIndex;
     }
- 
-    
+
+
     public void establishVisibleActionRequestCds(){
     	try {
 	        if(getFlexDoc() != null){
 		    	Long docId = flexDoc.getRouteHeaderId();
 		    	Workgroup suWorkgroup = KEWServiceLocator.getRouteHeaderService().getRouteHeader(docId).getDocumentType().getSuperUserWorkgroup();
 		    	WorkflowUser docUser = KEWServiceLocator.getUserService().getWorkflowUser(flexDoc.getUserId());
-		    	boolean isSuperUser = suWorkgroup.hasMember(docUser);
+		    	boolean isSuperUser = (suWorkgroup == null ? false : suWorkgroup.hasMember(docUser));
 		    	if (isSuperUser){
 		    		appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
 		    	}else if(flexDoc.isFYIRequested()){
@@ -271,8 +271,8 @@ public class WorkflowRoutingForm extends ActionForm {
 	                appSpecificRouteActionRequestCds.put(EdenConstants.ACTION_REQUEST_FYI_REQ, EdenConstants.ACTION_REQUEST_FYI_REQ_LABEL);
 	            } else if(flexDoc.isApprovalRequested() || flexDoc.isCompletionRequested() || flexDoc.stateIsInitiated()){
 	                appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
-	            } 
-	        } 
+	            }
+	        }
     	} catch (Exception e) {
     		throw new RuntimeException("Caught exception building ad hoc action dropdown", e);
     	}
@@ -283,7 +283,7 @@ public class WorkflowRoutingForm extends ActionForm {
     public void setDocHandlerReturnUrl(String docHandlerReturnUrl) {
         this.docHandlerReturnUrl = docHandlerReturnUrl;
     }
-    
+
     public String getRemovedAppSpecificRecipient() {
         return removedAppSpecificRecipient;
     }

@@ -285,8 +285,7 @@
         </workgroup>
         
         <!-- WORKFLOW SPECIFIC WORKGROUPS (NEEDED FOR QUICKSTART INTEGRATION) -->
-        <!-- 
-		<workgroup>
+		<workgroup allowOverwrite="true">
             <workgroupName>WorkflowAdmin</workgroupName>
             <description>WorkflowAdmin</description>
             <activeInd>true</activeInd>
@@ -297,7 +296,6 @@
                 <workflowId>TestAdmin2</workflowId>
             </members>
         </workgroup>
-         -->
         <workgroup allowOverwrite="true">
             <workgroupName>Group0</workgroupName>
             <description>Group0</description>

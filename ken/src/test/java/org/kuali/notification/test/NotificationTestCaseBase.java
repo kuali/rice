@@ -106,12 +106,12 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
 	});
 	
 	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:testdata/BootstrapApplicationConstantsContent.xml"));
-	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:testdata/NotificationData.xml"));
+	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:data/NotificationData.xml"));
 	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:testdata/BootstrapRuleTemplateContent.xml"));
 	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:testdata/BootstrapDocumentTypesContent.xml"));
 	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:testdata/BootstrapRuleContent.xml"));
 	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:testdata/widgets.xml"));
-	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:testdata/SendNotificationMessageRoutingConfiguration.xml"));
+	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:data/SendNotificationMessageRoutingConfiguration.xml"));
 	
 	lifecycles.add(new SQLDataLoaderLifecycle("classpath:testdata/common.sql", ";" ));
 	lifecycles.add(new SQLDataLoaderLifecycle("classpath:testdata/load_test_tables.sql", ";"));

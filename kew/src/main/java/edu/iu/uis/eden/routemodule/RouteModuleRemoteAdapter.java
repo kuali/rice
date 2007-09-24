@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,6 +25,8 @@ import java.util.Set;
 
 import edu.iu.uis.eden.clientapp.RouteModuleRemote;
 import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentContentVO;
+import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
@@ -34,35 +36,37 @@ import edu.iu.uis.eden.util.ResponsibleParty;
 
 /**
  * Adapts a {@link RouteModuleRemote} to the {@link RouteModule} interface.
- * 
+ *
  * @see RouteModuleRemote
  * @see RouteModule
- * 
+ *
  * @author ewestfal
  */
 public class RouteModuleRemoteAdapter implements RouteModule {
 
     private RouteModuleRemote routeModule;
-    
+
     public RouteModuleRemoteAdapter(RouteModuleRemote routeModule) {
         if (routeModule == null) {
             throw new IllegalArgumentException("RouteModuleRemoteAdapter cannot adapt a null RouteModuleRemote");
         }
         this.routeModule = routeModule;
     }
-    
+
     public List findActionRequests(RouteContext context) throws Exception {
     	// TODO add new findActionRequests to RouteModuleRemote
     	return findActionRequests(context.getDocument());
     }
-    
+
     public List findActionRequests(DocumentRouteHeaderValue routeHeader) throws WorkflowException {
         try {
             List actionRequests = new ArrayList();
-            ActionRequestVO[] actionRequestVOs = routeModule.findActionRequests(BeanConverter.convertRouteHeader(routeHeader, null));
+            RouteHeaderVO routeHeaderVO = BeanConverter.convertRouteHeader(routeHeader, null);
+            DocumentContentVO documentContentVO = BeanConverter.convertDocumentContent(routeHeader.getDocContent(), routeHeaderVO.getRouteHeaderId());
+            ActionRequestVO[] actionRequestVOs = routeModule.findActionRequests(routeHeaderVO, documentContentVO);
             if (actionRequestVOs != null && actionRequestVOs.length > 0) {
                 Set rootRequests = findRootRequests(actionRequestVOs);
-                
+
                 for (Iterator iterator = rootRequests.iterator(); iterator.hasNext();) {
                     ActionRequestVO actionRequestVO = (ActionRequestVO) iterator.next();
                     actionRequestVO.setRouteHeaderId(routeHeader.getRouteHeaderId());
@@ -88,7 +92,7 @@ public class RouteModuleRemoteAdapter implements RouteModule {
             throw new WorkflowException("Remote exception when resolving responsibility ids from route module "+routeModule.toString(), e);
         }
     }
-    
+
     private Set findRootRequests(ActionRequestVO[] actionRequestVOs) {
         Set rootRequests = new HashSet();
         for (int index = 0; index < actionRequestVOs.length; index++) {
@@ -96,7 +100,7 @@ public class RouteModuleRemoteAdapter implements RouteModule {
         }
         return rootRequests;
     }
-    
+
     /**
      * Walks to the top of the request graph and returns the root request.  Also attempts to
      * avoid bad data by detecting cycles in the graph.

@@ -98,6 +98,7 @@ public class SaveActionEvent extends ActionTakenEvent {
         LOG.debug("Record the save action");
         saveActionTaken();
         getRouteHeader().getActionRequests().add(generateSaveRequest());
+        notifyActionTaken(this.actionTaken);
         LOG.debug("Marking document saved");
         try {
           String oldStatus = getRouteHeader().getDocRouteStatus();

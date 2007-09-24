@@ -129,6 +129,8 @@ public class RouteDocumentAction extends ActionTakenEvent {
                 }
             }
 
+            notifyActionTaken(this.actionTaken);
+
             try {
                 String oldStatus = getRouteHeader().getDocRouteStatus();
                 getRouteHeader().markDocumentEnroute();

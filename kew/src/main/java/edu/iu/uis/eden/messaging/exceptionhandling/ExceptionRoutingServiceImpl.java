@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,16 +24,20 @@ import org.apache.log4j.MDC;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.util.ExceptionUtils;
 
+import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
+import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.RouteManagerException;
 import edu.iu.uis.eden.exception.WorkflowDocumentExceptionRoutingService;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.PersistedMessage;
+import edu.iu.uis.eden.postprocessor.PostProcessor;
+import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.util.PerformanceLogger;
 
@@ -87,8 +91,10 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             ActionRequestFactory arFactory = new ActionRequestFactory(document, nodeInstance);
             ActionRequestValue exceptionRequest = arFactory.createActionRequest(EdenConstants.ACTION_REQUEST_COMPLETE_REQ, new Integer(0), nodeInstance.getRouteNode().getExceptionWorkgroup(), "Exception Workgroup for route node " + nodeInstance.getName(), EdenConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID, Boolean.TRUE, message);
             DocumentRouteHeaderValue rh = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
+            String oldStatus = rh.getDocRouteStatus();
             rh.setDocRouteStatus(EdenConstants.ROUTE_HEADER_EXCEPTION_CD);
-            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(rh); 
+            notifyStatusChange(rh, EdenConstants.ROUTE_HEADER_EXCEPTION_CD, oldStatus);
+            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(rh);
             KEWServiceLocator.getActionRequestService().activateRequest(exceptionRequest);
             KSBServiceLocator.getRouteQueueService().delete(persistedMessage);
         } catch (Exception e) {
@@ -98,7 +104,23 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             MDC.remove("docID");
         }
     }
-    
+
+    protected void notifyStatusChange(DocumentRouteHeaderValue routeHeader, String newStatusCode, String oldStatusCode) throws InvalidActionTakenException {
+        DocumentRouteStatusChange statusChangeEvent = new DocumentRouteStatusChange(routeHeader.getRouteHeaderId(), routeHeader.getAppDocId(), oldStatusCode, newStatusCode);
+        try {
+            LOG.debug("Notifying post processor of status change "+oldStatusCode+"->"+newStatusCode);
+            PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
+            ProcessDocReport report = postProcessor.doRouteStatusChange(statusChangeEvent);
+            if (!report.isSuccess()) {
+                LOG.warn(report.getMessage(), report.getProcessException());
+                throw new InvalidActionTakenException(report.getMessage());
+            }
+        } catch (Exception ex) {
+            LOG.warn(ex, ex);
+            throw new WorkflowRuntimeException(ex);
+        }
+    }
+
     private Throwable unwrapRouteManagerExceptionIfPossible(Throwable throwable) {
     	throwable = ExceptionUtils.unwrapActualCause(throwable);
     	if (throwable != null && (! (throwable instanceof RouteManagerException)) && throwable.getCause() instanceof RouteManagerException) {
@@ -106,7 +128,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     	}
     	return throwable;
     }
-    
+
     protected Throwable determineActualCause(Throwable throwable, int depth) {
     	if (depth >= 10) {
     		return throwable;

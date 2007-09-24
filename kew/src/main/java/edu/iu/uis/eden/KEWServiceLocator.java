@@ -27,6 +27,7 @@ import edu.iu.uis.eden.doctype.DocumentSecurityService;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.edl.EDocLiteService;
 import edu.iu.uis.eden.edl.StyleService;
+import edu.iu.uis.eden.edl.extract.ExtractService;
 import edu.iu.uis.eden.engine.WorkflowEngine;
 import edu.iu.uis.eden.engine.node.BranchService;
 import edu.iu.uis.eden.engine.node.RouteNodeService;
@@ -247,6 +248,8 @@ public final class KEWServiceLocator {
 	public static final String OPTIONAL_EMBEDDED_WORKGROUP_SERVICE = "enOptionalEmbeddedClientWorkgroupService";
 
 	public static final String REMOVE_REPLACE_DOCUMENT_SERVICE = "enRemoveReplaceDocumentService";
+
+	public static final String EXTRACT_SERVICE = "enExtractService";
 
 	/**
 	 * @param serviceName
@@ -472,6 +475,10 @@ public final class KEWServiceLocator {
 
     public static RemoveReplaceDocumentService getRemoveReplaceDocumentService() {
 	return (RemoveReplaceDocumentService) getBean(REMOVE_REPLACE_DOCUMENT_SERVICE);
+    }
+
+    public static ExtractService getExtractService() {
+	return (ExtractService) getBean(EXTRACT_SERVICE);
     }
 
     /**

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -65,7 +65,7 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
         return (String) xpath.evaluate("//edlContent/edl/eventNotificationURL", edlDoc, XPathConstants.STRING);
     }
 
-    /** 
+    /**
      * @param urlstring
      * @param eventDoc
      */
@@ -83,7 +83,7 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
         URL url = new URL(urlstring);
 
         String message = "POST " + url.getFile() + " HTTP/1.0\r\n" +
-                         "Content-Length: " + contentBytes.length + "\r\n" + 
+                         "Content-Length: " + contentBytes.length + "\r\n" +
                          "Cache-Control: no-cache\r\n" +
                          "Pragma: no-cache\r\n" +
                          "User-Agent: Java/1.4.2; EDocLitePostProcessor\r\n" +
@@ -121,10 +121,10 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
                     LOG.error("Error shutting down output stream for url " + urlstring + ": " + ioe.getMessage());
                 }
             }
-    
+
             InputStream is = s.getInputStream();
             try {
-    
+
                 buf = new byte[1024];
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 // this is what actually forces the write on the URLConnection!
@@ -154,7 +154,7 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
         }
     }
 
-    private static void postEvent(Long docId, Object event, String eventName) throws Exception {
+    protected static void postEvent(Long docId, Object event, String eventName) throws Exception {
         DocumentRouteHeaderValue val = KEWServiceLocator.getRouteHeaderService().getRouteHeader(docId);
         Document doc = getEDLContent(val);
         LOG.debug("Submitting doc: " + XmlHelper.jotNode(doc));
@@ -231,17 +231,17 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
 //        postEvent(event.getRouteHeaderId(), event, "routeLevelChange");
         return super.doRouteLevelChange(event);
     }
-    
+
     public static Document getEDLContent(DocumentRouteHeaderValue routeHeader) throws Exception {
         String content = routeHeader.getDocContent();
         Document doc =  DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(content)));
         return doc;
     }
-    
+
     public static DocumentBuilder getDocumentBuilder() throws Exception {
     	return DocumentBuilderFactory.newInstance().newDocumentBuilder();
     }
-    
+
     private static String lowerCaseFirstChar(String s) {
         if (s.length() == 0 || Character.isLowerCase(s.charAt(0))) return s;
         StringBuffer sb = new StringBuffer(s.length());
@@ -252,7 +252,7 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
         return sb.toString();
     }
 
-    
+
     public static Element propertiesToXml(Object o, String elementName) throws Exception {
         Class c = o.getClass();
         Document doc = getDocumentBuilder().newDocument();

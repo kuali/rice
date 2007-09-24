@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,12 +38,13 @@ import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.WorkflowException;
+import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.util.Utilities;
 
 /**
  * A WorkflowEngine implementation which orchestrates the document through the blanket approval process.
- * 
+ *
  * @author ewestfal
  */
 public class BlanketApproveEngine extends StandardWorkflowEngine {
@@ -111,7 +112,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
             }
             List nodeInstancesToProcess = determineNodeInstancesToProcess(activeNodeInstances, config.getDestinationNodeNames());
 
-            
+
             context.setDoNotSendApproveNotificationEmails(true);
             context.setDocument(document);
             context.setEngineState(new EngineState());
@@ -158,8 +159,11 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
                 // if there is an active approve request this is no-op.
                 super.process(documentId, null);
             } catch (Exception e) {
-                // TODO throw a new 'RoutingException' which holds the RoutingState
-                throw new RuntimeException(e);
+            	if (e instanceof RuntimeException) {
+        		throw (RuntimeException)e;
+        	} else {
+        		throw new WorkflowRuntimeException(e.toString(), e);
+        	}
             }
         } finally {
         	RouteContext.clearCurrentRouteContext();

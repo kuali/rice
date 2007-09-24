@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,6 +40,7 @@ public class ActionListForm extends ActionForm {
     private String methodToCall = "";
     private String helpDeskActionListUserName;
     private String docType;
+    private String docTypeForceRefresh;
     private String filterLegend;
     private String actionListType;
     private Boolean customActionList;
@@ -51,22 +52,26 @@ public class ActionListForm extends ActionForm {
     private Boolean hasCustomActions;
     private String routeLogPopup;
     private String documentPopup;
-    
+
     // "sticky" parameters for paginated action list
     private Integer currentPage;
     private String currentSort;
     private String currentDir;
-    
+
     // parameters for paginated action list
     private Integer page;
     private String sort;
     private String dir;
-    
+
+    private int count;
+    private String cssFile = "screen.css";
+    private String logoAlign = "left";
+
     public String getRouteLogPopup() {
         return routeLogPopup;
         //return Utilities.getApplicationConstant(EdenConstants.ACTION_LIST_ROUTE_LOG_POPUP_KEY).trim();
     }
-    
+
     public void setRouteLogPopup(String routeLogPopup) {
         this.routeLogPopup = routeLogPopup;
     }
@@ -75,11 +80,11 @@ public class ActionListForm extends ActionForm {
         return documentPopup;
         //return Utilities.getApplicationConstant(EdenConstants.ACTION_LIST_DOCUMENT_POPUP_KEY).trim();
     }
-    
+
     public void setDocumentPopup(String documentPopup) {
         this.documentPopup = documentPopup;
     }
-    
+
     public String getHelpDeskActionListUserName() {
         return helpDeskActionListUserName;
     }
@@ -120,6 +125,18 @@ public class ActionListForm extends ActionForm {
         this.docType = docType;
     }
 
+    public String getDocTypeForceRefresh() {
+        return docTypeForceRefresh;
+    }
+
+    public void setDocTypeForceRefresh(String docTypeForceRefresh) {
+        this.docTypeForceRefresh = docTypeForceRefresh;
+    }
+
+    public boolean isRefreshRequired() {
+        return getDocTypeForceRefresh() != null;
+    }
+
     public String getFilterLegend() {
         return filterLegend;
     }
@@ -146,7 +163,7 @@ public class ActionListForm extends ActionForm {
     public void setCustomActionList(Boolean customActionList) {
         this.customActionList = customActionList;
     }
-    
+
     public String getDefaultActionToTake() {
         return defaultActionToTake;
     }
@@ -162,14 +179,14 @@ public class ActionListForm extends ActionForm {
     public void setActionsToTake(List actionsToTake) {
         this.actionsToTake = actionsToTake;
     }
-    
+
     public ActionToTake getActions(int index) {
         while (getActionsToTake().size() <= index) {
             getActionsToTake().add(new ActionToTake());
         }
         return (ActionToTake) getActionsToTake().get(index);
     }
-    
+
     public Map getDefaultActions() {
         return defaultActions;
     }
@@ -249,6 +266,29 @@ public class ActionListForm extends ActionForm {
 	public void setCurrentSort(String currentSort) {
 		this.currentSort = currentSort;
 	}
-    
-    
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public String getCssFile() {
+		return cssFile;
+	}
+
+	public void setCssFile(String cssFile) {
+		this.cssFile = cssFile;
+	}
+
+	public String getLogoAlign() {
+		return logoAlign;
+	}
+
+	public void setLogoAlign(String logoAlign) {
+		this.logoAlign = logoAlign;
+	}
+
 }

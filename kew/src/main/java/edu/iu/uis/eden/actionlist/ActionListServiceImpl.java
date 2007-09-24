@@ -454,4 +454,8 @@ public class ActionListServiceImpl implements ActionListService {
 		return getActionItemDAO().findByActionItemId(actionItemId);
 	}
 
+	public int getCount(WorkflowUser user) {
+		return getActionListDAO().getCount(user.getWorkflowId());
+	}
+
 }

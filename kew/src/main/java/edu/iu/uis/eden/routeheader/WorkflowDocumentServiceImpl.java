@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -366,6 +366,16 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		init(routeHeader);
 		new SuperUserNodeApproveEvent(routeHeader, user, annotation, nodeName).recordAction();
 		return finish(routeHeader);
+	}
+
+	/**
+	 * TODO As with superUserReturnDocumentToPreviousNode, we allow for the passing in of a document ID here to allow for
+	 * the document load inside the current running transaction.  Otherwise we get an optimistic lock exception
+	 * when attempting to save the branch after the transition to the 'A' status.
+	 */
+	public DocumentRouteHeaderValue superUserNodeApproveAction(WorkflowUser user, Long documentId, String nodeName, String annotation) throws InvalidActionTakenException,
+		EdenUserNotFoundException {
+		return superUserNodeApproveAction(user, KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId), nodeName, annotation);
 	}
 
 	/**

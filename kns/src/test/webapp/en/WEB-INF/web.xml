@@ -153,6 +153,11 @@
 	<load-on-startup>1</load-on-startup>
   </servlet>
 
+  <servlet>
+    <servlet-name>actionListCount</servlet-name>
+    <servlet-class>edu.iu.uis.eden.actionlist.ActionListCountServlet</servlet-class>
+  </servlet>
+
   <servlet-mapping>
 	<servlet-name>remoting</servlet-name>
 	<url-pattern>/remoting/*</url-pattern>
@@ -181,6 +186,11 @@
   <servlet-mapping>
     <servlet-name>RequestForwardingServlet</servlet-name>
     <url-pattern>/wsdl/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>actionListCount</servlet-name>
+    <url-pattern>/ActionListCount</url-pattern>
   </servlet-mapping>
 
   <session-config>

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,18 +31,18 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.util.XmlHelper;
 
 /**
- * Used as a pre processor and post processor.  
+ * Used as a pre processor and post processor.
  * As a pre processor this creates/fetches the workflow document and sets it on request.
- * As a post processor this takes appropriate user action on the document if the document is not in error.  
- * 
+ * As a post processor this takes appropriate user action on the document if the document is not in error.
+ *
  * @author rkirkend
  * @author ahamid
- *  
+ *
  */
 public class WorkflowDocumentActions implements EDLModelComponent {
 
 	private static final Logger LOG = Logger.getLogger(WorkflowDocumentActions.class);
-	
+
 	public static final String USER_ACTION_REQUEST_KEY = "userAction";
     public static final String ACTION_CREATE = "initiate";
     public static final String RETRIEVE = "retrieve";
@@ -57,7 +57,7 @@ public class WorkflowDocumentActions implements EDLModelComponent {
     public static final String ACTION_COMPLETE = "complete";
     public static final String ACTION_DELETE = "delete";
     public static final String ACTION_RETURN_TO_PREVIOUS = "returnToPrevious";
-	
+
 	boolean isPreProcessor;
 
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
@@ -81,7 +81,7 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 		if (userAction == null) {
 			userAction = requestParser.getParameterValue("command");//'WorkflowQuicklinks'
 		}
-		
+
 		WorkflowDocument document = null;
 		if (ACTION_CREATE.equals(userAction)) {
 			document = new WorkflowDocument(new NetworkIdVO(edlContext.getUserSession().getNetworkId()), edlContext.getEdocLiteAssociation().getEdlName());
@@ -89,7 +89,7 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 			document.getRouteHeaderId();
 			LOG.info("Created document " + document.getRouteHeaderId());
 		} else {
-			document = (WorkflowDocument)requestParser.getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY); 
+			document = (WorkflowDocument)requestParser.getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);
 			if (document == null) {
 				String docId = requestParser.getParameterValue("docId");
 				if (docId == null) {
@@ -100,7 +100,7 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 				}
 			}
 		}
-		
+
 		requestParser.setAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY, document);
 	}
 
@@ -122,11 +122,17 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 	}
 
 	public static void takeAction(WorkflowDocument document, RequestParser requestParser) throws WorkflowException {
-        
+
 		String annotation = requestParser.getParameterValue("annotation");
 		String action = requestParser.getParameterValue(USER_ACTION_REQUEST_KEY);
 		String nodeName = requestParser.getParameterValue("previousNode");
-		
+
+		if (!EDLXmlUtils.isValidatableAction(action)) {
+			// if the action's not validatable, clear the attribute definitions because we don't want to end up executing validateClientRoutingData()
+			// TODO the problem here is that the XML is still updated on a cancel so we end up without any attribute content in the document content
+			document.clearAttributeDefinitions();
+		}
+
         if (ACTION_ROUTE.equals(action)) {
         	document.routeDocument(annotation);
         } else if (ACTION_APPROVE.equals(action)) {
@@ -142,7 +148,11 @@ public class WorkflowDocumentActions implements EDLModelComponent {
         } else if (ACTION_ACKNOWLEDGE.equals(action)) {
         	document.acknowledge(annotation);
         } else if (ACTION_SAVE.equals(action)) {
-        	document.saveDocument(annotation);
+            if (document.getStatusDisplayValue().equals("INITIATED")) {
+		document.saveDocument(annotation);
+            } else {
+        	document.saveRoutingData();
+            }
         } else if (ACTION_COMPLETE.equals(action)) {
         	document.complete(annotation);
         } else if (ACTION_DELETE.equals(action)) {
@@ -151,6 +161,6 @@ public class WorkflowDocumentActions implements EDLModelComponent {
             document.returnToPreviousNode(annotation, nodeName);
         }
     }
-	
+
 
 }

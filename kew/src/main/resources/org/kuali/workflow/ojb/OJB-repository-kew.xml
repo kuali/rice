@@ -1048,4 +1048,30 @@
     <field-descriptor column="WRKGRP_ID" name="workgroupId" jdbc-type="BIGINT" primarykey="true"/>
   </class-descriptor>
 
+    <class-descriptor class="edu.iu.uis.eden.edl.extract.Dump" table="EN_EDL_DMP_T">
+    <field-descriptor column="DOC_HDR_ID" name="docId" jdbc-type="BIGINT" primarykey="true" />
+    <field-descriptor column="DOC_TYP_NM" name="docTypeName" jdbc-type="VARCHAR" />
+    <field-descriptor column="DOC_RTE_STAT_CD" name="docRouteStatusCode" jdbc-type="VARCHAR" />
+    <field-descriptor column="DOC_MDFN_DT" name="docModificationDate" jdbc-type="TIMESTAMP" />
+    <field-descriptor column="DOC_CRTE_DT" name="docCreationDate" jdbc-type="TIMESTAMP" />
+    <field-descriptor column="DOC_TTL" name="docDescription" jdbc-type="VARCHAR" />
+    <field-descriptor column="DOC_INITR_ID" name="docInitiatorId" jdbc-type="VARCHAR" />
+    <field-descriptor column="DOC_CRNT_NODE_NM" name="docCurrentNodeName" jdbc-type="VARCHAR" />
+    <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr"  jdbc-type="INTEGER" locking="true" />
+  <collection-descriptor name="fields" element-class-ref="edu.iu.uis.eden.edl.extract.Fields" auto-retrieve="true" auto-delete="true" auto-update="true">
+    <inverse-foreignkey field-ref="docId"></inverse-foreignkey>
+  </collection-descriptor>
+  </class-descriptor>
+
+  <class-descriptor class="edu.iu.uis.eden.edl.extract.Fields" table="EN_EDL_FIELD_DMP_T">
+    <field-descriptor column="EDL_FIELD_DMP_ID" name="fieldId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_EDL_FIELD_DMP" />
+    <field-descriptor column="DOC_HDR_ID" name="docId" jdbc-type="BIGINT"/>
+    <field-descriptor column="FLD_NM" name="fieldName" jdbc-type="VARCHAR"/>
+    <field-descriptor column="FLD_VAL" name="fieldValue" jdbc-type="VARCHAR"/>
+    <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
+    <reference-descriptor name="dump" class-ref="edu.iu.uis.eden.edl.extract.Dump" auto-retrieve="true" auto-delete="false" auto-update="false">
+      <foreignkey field-ref="docId"></foreignkey>
+    </reference-descriptor>
+  </class-descriptor>
+
 </descriptor-repository>

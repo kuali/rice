@@ -96,7 +96,7 @@
 				<idref local="enWorkflowDocumentService" />
 				<idref local="enRoleService" />
 				<idref local="enRoutingReportService" />
-
+                <idref local="enExtractService" />
 				<idref local="workflowEngine" />
 				<idref local="enRouteNodeService" />
 				<idref local="enBranchService" />
@@ -253,6 +253,15 @@
 	<bean id="enDocumentRouteHeaderDAO" class="edu.iu.uis.eden.routeheader.dao.DocumentRouteHeaderDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
+
+  <!--  EDL Extract Service -->
+  <bean id="enExtractService" class="edu.iu.uis.eden.edl.extract.ExtractServiceImpl">
+    <property name="extractDAO">
+      <bean class="edu.iu.uis.eden.edl.extract.dao.ExtractDAOOjbImpl">
+          <property name="jcdAlias" value="enWorkflowDataSource" />
+      </bean>
+    </property>
+  </bean>
 
 	<!--  Routing Report Service -->
 	<bean id="enRoutingReportService" class="edu.iu.uis.eden.routemodule.RoutingReportServiceImpl"  lazy-init="true"/>

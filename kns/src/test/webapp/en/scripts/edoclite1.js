@@ -51,7 +51,7 @@ var field_names = new Array;
 
 // ---- utils
 
-function displayNewWindow(url, title, width, height, x, y) 
+function displayNewWindow(url, title, width, height, x, y)
 	{
 		mywindow = window.open (url, title, status=1, scrollbars=1, location=1, width=width, height=height);
 		mywindow.moveTo(x, y);
@@ -62,7 +62,7 @@ function confirm_route()
 		var route = confirm("Click OK to route this document or Cancel to return.")
 		return route;
 	}
-	
+
 function replaceEnter(e) {
  	if(window.event) {
     	if(window.event.keyCode == 13) {     	//IE
@@ -73,8 +73,8 @@ function replaceEnter(e) {
         	return confirm_route();
 		}
     }
-}		
-	
+}
+
 function isArray(obj)
 {
 if (isNaN(obj.length))
@@ -226,14 +226,17 @@ function isValid(fieldInputs, regex, required, validator) {
             return true;
         }
     } else {
+    	if (fieldValue == null) {
+    		return false;
+    	}
     	//regular expression associated with field
         if (required) {
             //field is require - validate
         return fieldValue.match(regex);
         } else {
-			//field is NOT required 
+			//field is NOT required
 			if (trim(fieldValue).length > 0) {
-				//field is NOT empty - validate 
+				//field is NOT empty - validate
 	        	return fieldValue.match(regex);
 			} else {
 				//field is empty - do NOT validate
@@ -258,6 +261,7 @@ function validate(event) {
 
 
 function getFieldValue(fieldInputs) {
+    // if you check a checkbox and then uncheck it it throws the error below like the length is not updated when you uncheck it.
 	if (fieldInputs.length > 1) {
 		var type = fieldInputs[0].type;
 		if (type == 'radio' || type == 'checkbox') {
@@ -266,6 +270,7 @@ function getFieldValue(fieldInputs) {
 					return fieldInputs[i].value;
 				}
 			}
+			return null;
 		}
 		throw 'Problem determining field value for inputs, type was: ' + type;
 	}
@@ -343,7 +348,7 @@ function validateField(fieldInputs, fieldName) {
 }
 
 function validateForm() {
-	
+
 	if ( buttonTitle == 'Cancel' || buttonTitle == 'Disapprove') {
 		return 0;
 	}
@@ -398,7 +403,7 @@ function validateOnSubmit(form) {
 	//Do they really want to submit the form?
 	//if (buttonTitle == 'Route') {
 	//	if (confirm_route() == false) {
-	//		return false;	
+	//		return false;
 	//	}
 	//}
     //alert("validating on submit");
@@ -409,6 +414,9 @@ function validateOnSubmit(form) {
 	} else if (errs == 1) {
 	  	alert('There is a field which requires correction before sending');
 	}
+
+	// is there an unsaved note?
+
     return (errs == 0);
 }
 

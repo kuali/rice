@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -74,24 +74,24 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  * @author rkirkend
  * @author temay
  * @author ewestfal
- * 
+ *
  */
 public class ActionListAction extends WorkflowAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListAction.class);
-    
+
     private static String ACTION_LIST_KEY = "actionList";
     private static String ACTION_LIST_PAGE_KEY = "actionListPage";
     private static String ACTION_LIST_USER_KEY = "actionList.user";
     private static String REQUERY_ACTION_LIST_KEY = "requeryActionList";
-    
+
     public ActionForward start(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         PerformanceLogger plog = new PerformanceLogger();
         plog.log("starting ActionList fetch");
         ActionListForm form = (ActionListForm) actionForm;
         ActionErrors errors = new ActionErrors();
         ActionListService actionListSrv = KEWServiceLocator.getActionListService();
-        
+
         // process display tag parameters
         Integer page = form.getPage();
         String sortCriterion = form.getSort();
@@ -99,25 +99,25 @@ public class ActionListAction extends WorkflowAction {
         if (form.getDir() != null) {
         	sortOrder = parseSortOrder(form.getDir());
         }
-        
+
         // if both the page and the sort criteria are null, that means its the first entry into the page, use defaults
         if (page == null && sortCriterion == null) {
         	page = new Integer(1);
         	sortCriterion = ActionItemComparator.DOCUMENT_ID;
         }
-        
+
         // if the page is still null, that means the user just performed a sort action, pull the currentPage off of the form
         if (page == null) {
         	page = form.getCurrentPage();
         }
-        
+
         // update the values of the "current" display tag parameters
         form.setCurrentPage(page);
         if (!StringUtils.isEmpty(sortCriterion)) {
         	form.setCurrentSort(sortCriterion);
         	form.setCurrentDir(getSortOrderValue(sortOrder));
         }
-        
+
         // reset the default action on the form
         form.setDefaultActionToTake("NONE");
 
@@ -141,6 +141,9 @@ public class ActionListAction extends WorkflowAction {
                 if (!StringUtils.isEmpty(form.getDocType())) {
                     uSession.getActionListFilter().setDocumentType(form.getDocType());
                     uSession.getActionListFilter().setExcludeDocumentType(false);
+                } else if (!StringUtils.isEmpty(form.getDocTypeForceRefresh())) {
+                    uSession.getActionListFilter().setDocumentType(form.getDocTypeForceRefresh());
+                    uSession.getActionListFilter().setExcludeDocumentType(false);
                 }
                 workflowUser = uSession.getWorkflowUser();
             }
@@ -152,17 +155,20 @@ public class ActionListAction extends WorkflowAction {
                 uSession.getActionListFilter().setExcludeDelegatorId(false);
                 actionList = null;
             }
-            
+
             // if the user has changed, we need to refresh the action list
             if (!workflowUser.getWorkflowId().equals((String) request.getSession().getAttribute(ACTION_LIST_USER_KEY))) {
                 actionList = null;
             }
-            
+
             if (actionList == null) {
             	// fetch the action list
-                actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));  
+                actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
                 request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
             } else if (actionListSrv.refreshActionList(getUserSession(request).getWorkflowUser())) {
+                actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
+                request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
+            } else if (form.isRefreshRequired()) {
                 actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
                 request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
             } else if (request.getSession().getAttribute(REQUERY_ACTION_LIST_KEY) != null) {
@@ -172,17 +178,17 @@ public class ActionListAction extends WorkflowAction {
             	freshActionList = false;
             }
             // reset the requery action list key
-            request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, null);            
+            request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, null);
 
             // build the drop-down of delegators
             if (EdenConstants.DELEGATORS_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getDelegatorFilter())) {
                 form.setDelegators(getDelegators(actionListSrv, workflowUser, EdenConstants.DELEGATION_SECONDARY));
                 form.setDelegationId(uSession.getActionListFilter().getDelegatorId());
             }
-            
+
             form.setFilterLegend(uSession.getActionListFilter().getFilterLegend());
             plog.log("Setting attributes");
-            
+
             int pageSize = getPageSize(preferences);
             // initialize the action list if necessary
             if (freshActionList) {
@@ -210,7 +216,7 @@ public class ActionListAction extends WorkflowAction {
         LOG.info("end start ActionListAction");
         return mapping.findForward("viewActionList");
     }
-    
+
     private SortOrderEnum parseSortOrder(String dir) throws WorkflowException {
     	if ("asc".equals(dir)) {
     		return SortOrderEnum.ASCENDING;
@@ -219,7 +225,7 @@ public class ActionListAction extends WorkflowAction {
     	}
     	throw new WorkflowException("Invalid sort direction: " + dir);
     }
-    
+
     private String getSortOrderValue(SortOrderEnum sortOrder) {
     	if (SortOrderEnum.ASCENDING.equals(sortOrder)) {
     		return "asc";
@@ -228,7 +234,7 @@ public class ActionListAction extends WorkflowAction {
     	}
     	return null;
     }
-    
+
     private void sortActionList(List actionList, String sortName, SortOrderEnum sortOrder) {
     	if (StringUtils.isEmpty(sortName)) {
     		return;
@@ -245,7 +251,7 @@ public class ActionListAction extends WorkflowAction {
 			actionItem.setActionItemIndex(new Integer(index++));
 		}
     }
-    
+
     private void initializeActionList(List actionList, Preferences preferences, ActionErrors errors) throws WorkflowException {
     	List actionItemProblemIds = new ArrayList();
     	int index = 0;
@@ -256,7 +262,7 @@ public class ActionListAction extends WorkflowAction {
     			iterator.remove();
     			continue;
     		}
-    		try {    	
+    		try {
     			actionItem.initialize();
     			DocumentRouteHeaderValueActionListExtension routeHeaderExtension = (DocumentRouteHeaderValueActionListExtension)actionItem.getRouteHeader();
     			routeHeaderExtension.setActionListInitiatorUser(routeHeaderExtension.getInitiatorUser());
@@ -292,13 +298,13 @@ public class ActionListAction extends WorkflowAction {
     	}
     	generateActionItemErrors(errors, "actionlist.badActionItems", actionItemProblemIds);
     }
-    
+
     /**
      * Gets the page size of the Action List.  Uses the user's preferences for page size unless the action list
      * has been throttled by an application constant, in which case it uses the smaller of the two values.
      */
     protected int getPageSize(Preferences preferences) {
-    	int pageSize = Integer.parseInt(preferences.getPageSize()); 
+    	int pageSize = Integer.parseInt(preferences.getPageSize());
     	String pageSizeThrottle = Utilities.getApplicationConstant(EdenConstants.ACTION_LIST_PAGE_SIZE_THROTTLE);
     	if (!StringUtils.isEmpty(pageSizeThrottle)) {
     		try {
@@ -312,7 +318,7 @@ public class ActionListAction extends WorkflowAction {
     	}
     	return pageSize;
     }
-    
+
     protected PaginatedList buildCurrentPage(List actionList, Integer page, String sortCriterion, String sortDirection, int pageSize, Preferences preferences, ActionErrors errors, ActionListForm form) throws WorkflowException {
     	List currentPage = new ArrayList(pageSize);
     	boolean haveFyis = false;
@@ -379,7 +385,7 @@ public class ActionListAction extends WorkflowAction {
     		}
     		currentPage.add(actionItem);
     	}
-    	
+
     	// configure custom actions on form
     	form.setHasCustomActions(new Boolean(haveCustomActions));
     	Map defaultActions = new LinkedHashMap();
@@ -411,7 +417,7 @@ public class ActionListAction extends WorkflowAction {
     	generateActionItemErrors(errors, "actionlist.badCustomActionListItems", customActionListProblemIds);
     	return new PaginatedActionList(currentPage, actionList.size(), page.intValue(), pageSize, "actionList", sortCriterion, sortOrder);
     }
-        
+
     private void generateActionItemErrors(ActionErrors errors, String errorKey, List documentIds) {
     	if (!documentIds.isEmpty()) {
     		String documentIdsString = StringUtils.join(documentIds.iterator(), ", ");
@@ -435,8 +441,8 @@ public class ActionListAction extends WorkflowAction {
         int index = 0;
         for (Iterator iterator = actionListForm.getActionsToTake().iterator(); iterator.hasNext();) {
         	ActionToTake actionToTake = (ActionToTake) iterator.next();
-        	if (actionToTake != null && actionToTake.getActionTakenCd() != null && 
-        			!"".equals(actionToTake.getActionTakenCd()) && 
+        	if (actionToTake != null && actionToTake.getActionTakenCd() != null &&
+        			!"".equals(actionToTake.getActionTakenCd()) &&
         			!"NONE".equalsIgnoreCase(actionToTake.getActionTakenCd()) &&
         			actionToTake.getActionItemId() != null) {
         		ActionItem actionItem = getActionItemFromActionList(actionList, actionToTake.getActionItemId());
@@ -466,14 +472,14 @@ public class ActionListAction extends WorkflowAction {
 		}
     	return null;
     }
-    
+
     public ActionForward helpDeskActionListLogin(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListForm actionListForm = (ActionListForm) form;
         UserService userSrv = (UserService) KEWServiceLocator.getUserService();
         WorkflowUser helpDeskActionListUser = userSrv.getWorkflowUser(new AuthenticationUserId(actionListForm.getHelpDeskActionListUserName()));
         getUserSession(request).setHelpDeskActionListUser(helpDeskActionListUser);
         actionListForm.setDelegator(null);
-        request.getSession().setAttribute("requeryActionList", "true");
+        request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
         return start(mapping, form, request, response);
     }
 
@@ -481,7 +487,7 @@ public class ActionListAction extends WorkflowAction {
         LOG.info("clearFilter ActionListAction");
         UserSession session = getUserSession(request);
         session.setActionListFilter(null);
-        request.getSession().setAttribute("requeryActionList", "true");
+        request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
         KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(session.getWorkflowUser());
         LOG.info("end clearFilter ActionListAction");
         return start(mapping, form, request, response);
@@ -492,6 +498,17 @@ public class ActionListAction extends WorkflowAction {
         getUserSession(request).setHelpDeskActionListUser(null);
         LOG.info("end clearHelpDeskActionListUser ActionListAction");
         return start(mapping, form, request, response);
+    }
+
+    /**
+     * Generates an Action List count.
+     */
+    public ActionForward count(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	ActionListForm alForm = (ActionListForm)form;
+    	WorkflowUser user = getUserSession(request).getWorkflowUser();
+    	alForm.setCount(KEWServiceLocator.getActionListService().getCount(user));
+    	LOG.info("Fetcher Action List count of " + alForm.getCount() + " for user " + user.getAuthenticationUserId().getId());
+    	return mapping.findForward("count");
     }
 
     private boolean isActionCompatibleRequest(ActionItemActionListExtension actionItem, String actionTakenCode) {
@@ -524,13 +541,13 @@ public class ActionListAction extends WorkflowAction {
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
         LOG.info("establishRequiredState ActionListAction");
         ActionListForm actionListForm = (ActionListForm) form;
-        
+
         // take the UserSession from the HttpSession and add it to the request
         request.setAttribute("UserSession", getUserSession(request));
-        
+
         //refactor actionlist.jsp not to be dependent on this
         request.setAttribute("preferences", getUserSession(request).getPreferences());
-        
+
         WorkgroupService workgroupSrv = (WorkgroupService) KEWServiceLocator.getWorkgroupService();
         String edenHelpDeskWgName = Utilities.getApplicationConstant(EdenConstants.HELP_DESK_ACTION_LIST_KEY);
         if (edenHelpDeskWgName != null && workgroupSrv.isUserMemberOfGroup(new GroupNameId(edenHelpDeskWgName), getUserSession(request).getWorkflowUser())) {
@@ -575,7 +592,7 @@ public class ActionListAction extends WorkflowAction {
         });
         return recipientList;
     }
-    
+
     public class WebFriendlyRecipient {
         private String displayName;
         private String recipientId;
@@ -600,11 +617,11 @@ public class ActionListAction extends WorkflowAction {
     }
 
     private class ActionItemComparator implements Comparator {
-    	
+
     	private static final String DOCUMENT_ID = "routeHeaderId";
-    	
+
     	private final String sortName;
-    	
+
     	public ActionItemComparator(String sortName) {
     		if (StringUtils.isEmpty(sortName)) {
     			sortName = DOCUMENT_ID;
@@ -640,5 +657,5 @@ public class ActionListAction extends WorkflowAction {
 			}
 		}
     }
-    
+
 }

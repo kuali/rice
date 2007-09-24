@@ -89,6 +89,8 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 
 		saveActionTaken();
 
+	        notifyActionTaken(this.actionTaken);
+
 		if (getRouteHeader().isInException() || getRouteHeader().isStateInitiated()) {
 			LOG.debug("Moving document back to Enroute");
 			String oldStatus = getRouteHeader().getDocRouteStatus();

@@ -4,7 +4,8 @@
 		<preProcessor>edu.iu.uis.eden.edl.components.VersioningPreprocessor</preProcessor>
 	</preProcessors>
 	<postProcessors>
-		<postProcessor>edu.iu.uis.eden.edl.components.ValidationComponent</postProcessor> 
+		<postProcessor>edu.iu.uis.eden.edl.components.ValidationComponent</postProcessor>
+        <postProcessor>edu.iu.uis.eden.edl.components.GlobalAttributeComponent</postProcessor>
 		<postProcessor>edu.iu.uis.eden.edl.components.WorkflowDocumentActions</postProcessor>
 		<postProcessor>edu.iu.uis.eden.edl.components.WorkflowDocumentState</postProcessor>
 		<postProcessor>edu.iu.uis.eden.edl.components.NoteConfigComponent</postProcessor>

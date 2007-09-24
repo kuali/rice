@@ -70,6 +70,8 @@
 
         <element name="validations" type="ed:ValidationsType" minOccurs="0"/>
 
+        <element name="attributes" type="ed:AttributeType" minOccurs="0"/>
+
         <element name="javascript" type="c:VeryLongStringType" minOccurs="0"/>
 
         <element name="fieldDef" type="ed:FieldType" minOccurs="0" maxOccurs="unbounded">
@@ -90,6 +92,24 @@
     </complexType>
   </element>
 
+  <complexType name="AttributeType">
+    <sequence>
+      <element name="attribute" type="ed:GlobalAttributeType" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+
+  <complexType name="GlobalAttributeType">
+    <sequence>
+      <element name="field" type="ed:AttributeFieldType" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+    <attribute name="name" type="c:ShortStringType" use="required"/>
+
+  </complexType>
+
+  <complexType name="AttributeFieldType">
+     <attribute name="edlField" type="c:ShortStringType" use="required"/>
+     <attribute name="attributeField" type="c:ShortStringType" use="required"/>
+  </complexType>
 
   <complexType name="ValidationsType">
     <sequence>

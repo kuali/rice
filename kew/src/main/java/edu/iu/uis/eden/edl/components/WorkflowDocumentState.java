@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,17 +39,17 @@ import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * Generates document state based on the workflow document in session.
- * 
+ *
  * @author rkirkend
  * @author ahamid
- * 
+ *
  */
 public class WorkflowDocumentState implements EDLModelComponent {
 
 	private static final Logger LOG = Logger.getLogger(WorkflowDocumentState.class);
-	
+
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
-		
+
 		try {
 			Element documentState = EDLXmlUtils.getDocumentStateElement(dom);
 
@@ -73,7 +73,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
 			String showContants = Utilities.getApplicationConstant(EdenConstants.APP_CONST_SHOW_ATTACHMENTS);
 			showAttachments.appendChild(dom.createTextNode(Boolean.valueOf(showContants).toString()));
 
-			WorkflowDocument document = (WorkflowDocument)edlContext.getRequestParser().getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY); 
+			WorkflowDocument document = (WorkflowDocument)edlContext.getRequestParser().getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);
 
 			boolean documentEditable = false;
 			if (document != null) {
@@ -95,7 +95,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
 		                EDLXmlUtils.createTextElementOnParent(previousNodes, "node", nodeNames[i]);
 		            }
 		        }
-				
+
 			}
 
 			Element editable = EDLXmlUtils.getOrCreateChildElement(documentState, "editable", true);
@@ -103,14 +103,14 @@ public class WorkflowDocumentState implements EDLModelComponent {
 
 			// display the buttons
 			EDLXmlUtils.createTextElementOnParent(documentState, "actionable", "true");
-			
+
 			List globalErrors = (List)edlContext.getRequestParser().getAttribute(RequestParser.GLOBAL_ERRORS_KEY);
 			List globalMessages = (List)edlContext.getRequestParser().getAttribute(RequestParser.GLOBAL_MESSAGES_KEY);
 			Map<String, String> globalFieldErrors = (Map)edlContext.getRequestParser().getAttribute(RequestParser.GLOBAL_FIELD_ERRORS_KEY);
 			EDLXmlUtils.addErrorsAndMessagesToDocument(dom, globalErrors, globalMessages, globalFieldErrors);
             if (LOG.isDebugEnabled()) {
             	LOG.debug("Transforming dom " + XmlHelper.jotNode(dom, true));
-            }		
+            }
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException(e);
 		}
@@ -132,6 +132,8 @@ public class WorkflowDocumentState implements EDLModelComponent {
 				list.add(WorkflowDocumentActions.ACTION_BLANKETAPPROVE);
 			}
 			list.add(WorkflowDocumentActions.ACTION_DISAPPROVE);
+	 	 	//should invoke WorkflowDocument.saveRoutingData(...).
+			list.add(WorkflowDocumentActions.ACTION_SAVE);
 			if (wfdoc.getPreviousNodeNames().length > 0) {
 				list.add(WorkflowDocumentActions.ACTION_RETURN_TO_PREVIOUS);
 			}
@@ -194,8 +196,8 @@ public class WorkflowDocumentState implements EDLModelComponent {
         Element annotatable = EDLXmlUtils.getOrCreateChildElement(documentState, "annotatable", true);
         annotatable.appendChild(dom.createTextNode(String.valueOf(isAnnotatable(actions))));
     }
-    
-    
+
+
     public static final String[] ANNOTATABLE_ACTIONS = new String[] {
     	WorkflowDocumentActions.ACTION_APPROVE,
     	WorkflowDocumentActions.ACTION_ACKNOWLEDGE,
@@ -205,14 +207,14 @@ public class WorkflowDocumentState implements EDLModelComponent {
     	WorkflowDocumentActions.ACTION_CANCEL,
     	WorkflowDocumentActions.ACTION_RETURN_TO_PREVIOUS
     };
-    
+
     public static boolean listContainsItems(List list, Object[] items) {
         for (int i = 0; i < items.length; i++) {
             if (list.contains(items[i])) return true;
         }
         return false;
     }
-    
+
     /**
      * Determines whether to display the annotation text box
      * Currently we will show the annotation box if ANY of the possible actions are

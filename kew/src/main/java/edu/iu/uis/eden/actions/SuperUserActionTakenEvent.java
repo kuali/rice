@@ -118,6 +118,8 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
             getActionRequestService().deactivateRequest(actionTaken, actionRequest);
         }
+
+        notifyActionTaken(this.actionTaken);
     }
 
     public ActionRequestValue getActionRequest() {

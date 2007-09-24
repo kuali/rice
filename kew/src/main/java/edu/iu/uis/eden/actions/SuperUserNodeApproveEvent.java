@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,17 +28,18 @@ import edu.iu.uis.eden.engine.OrchestrationConfig;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.WorkflowException;
+import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;
 
 /**
- * Does a node level super user approve action.  All approve/complete requests outstanding for 
+ * Does a node level super user approve action.  All approve/complete requests outstanding for
  * this node are satisfied by this action.
  *
  * @author ewestfal
  * @author rkirkend
- *  
+ *
  */
 public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
 
@@ -60,7 +61,7 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
 
     public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         checkLocking();
-        
+
         if (Utilities.isEmpty(nodeName)) {
             throw new InvalidActionTakenException("No approval node name set");
         }
@@ -82,7 +83,9 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
 //        }
 
         saveActionTaken();
-        
+
+        notifyActionTaken(this.actionTaken);
+
             if (getRouteHeader().isInException()) {
                 LOG.debug("Moving document back to Enroute from Exception");
                 String oldStatus = getRouteHeader().getDocRouteStatus();
@@ -91,7 +94,7 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
                 notifyStatusChange(newStatus, oldStatus);
                 getRouteHeaderService().saveRouteHeader(getRouteHeader());
             }
-            
+
             OrchestrationConfig config = new OrchestrationConfig();
             config.setCause(actionTaken);
             config.setDestinationNodeNames(Utilities.asSet(nodeName));
@@ -99,7 +102,11 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
             try {
                 new BlanketApproveEngine(config).process(getRouteHeader().getRouteHeaderId(), null);
             } catch (Exception e) {
-                throw new InvalidActionTakenException("Failed to orchestrate the document through super user node approve.", e);
+            	if (e instanceof RuntimeException) {
+        		throw (RuntimeException)e;
+        	} else {
+        		throw new WorkflowRuntimeException(e.toString(), e);
+        	}
             }
 
         //queueDocument();
@@ -108,9 +115,9 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
     protected void markDocument() throws WorkflowException {
         // do nothing since we are overriding the entire behavior
     }
-    
-    
 
-    
-    
+
+
+
+
 }

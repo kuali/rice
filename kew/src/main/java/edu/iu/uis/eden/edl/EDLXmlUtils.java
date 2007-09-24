@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,15 +37,15 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  * Contains a bunch of dom utility methods.
- * 
+ *
  * @author rkirkend
  * @author ahamid
- * 
+ *
  */
 public class EDLXmlUtils {
-	
+
 	private static final Logger LOG = Logger.getLogger(EDLXmlUtils.class);
-	
+
 	public static final String EDL_E = "edl";
 	public static final String EDLCONTENT_E = "edlContent";
 	public static final String DATA_E = "data";
@@ -53,7 +53,7 @@ public class EDLXmlUtils {
 	public static final String VALIDATION_E = "validation";
 	public static final String VERSION_E = "version";
 	public static final String DOCID_E = "docId";
-	
+
     private static ThreadLocal DOCUMENT_BUILDER = new ThreadLocal() {
         protected Object initialValue() {
             try {
@@ -61,13 +61,13 @@ public class EDLXmlUtils {
             } catch (ParserConfigurationException pce) {
                 // well folks, there is not much we can do if we get a ParserConfigurationException
                 // so might as well isolate the evilness here, and just balk if this occurs
-                String message = "Error obtaining document builder"; 
+                String message = "Error obtaining document builder";
                 LOG.error(message, pce);
                 return new RuntimeException(message, pce);
             }
         }
     };
-    
+
     /**
      * Returns a valid DocumentBuilder
      * @return a valid DocumentBuilder
@@ -75,8 +75,8 @@ public class EDLXmlUtils {
     public static DocumentBuilder getDocumentBuilder() {
         return (DocumentBuilder) DOCUMENT_BUILDER.get();
     }
-	
-	
+
+
 	public static Element createFieldDataElement(Element parentVersionElement, MatchingParam matchingParam) {
 		Element fieldData = createChildElement(parentVersionElement, "field");
 		fieldData.setAttribute("name", matchingParam.getParamName());
@@ -89,30 +89,30 @@ public class EDLXmlUtils {
 		placeTextInElement(fieldValue, matchingParam.getParamValue());
 		return fieldData;
 	}
-	
+
 	public static Element createChildElement(Element parentElement, String elementName) {
 		Element child = parentElement.getOwnerDocument().createElement(elementName);
 		parentElement.appendChild(child);
 		return child;
 	}
-	
+
 	public static Element getDocumentStateElement(Document dom) {
 		return EDLXmlUtils.getOrCreateChildElement(dom.getDocumentElement(), "documentState", true);
 	}
-	
-	
+
+
 	public static void addGlobalErrorMessage(Document dom, String errorMessage) {
 		Element documentState = getDocumentStateElement(dom);
 		createTextElementOnParent(documentState, "error", errorMessage);
 	}
-	
+
 	private static void placeTextInElement(Element element, String text) {
 		if (element.getOwnerDocument() == null) {
 			throw new WorkflowRuntimeException("The element must have an owner document in order to add text");
 		}
 		element.appendChild(element.getOwnerDocument().createTextNode(text));
 	}
-	
+
 	public static Element createTextElementOnParent(Element parent, String childElementName, String text) {
 		if (text == null) {
 			throw new WorkflowRuntimeException("The text placed in an Element cannot be null");
@@ -122,7 +122,7 @@ public class EDLXmlUtils {
 		childElement.appendChild(parent.getOwnerDocument().createTextNode(text));
 		return childElement;
 	}
-	
+
 	public static Element getVersionFromData(Element dataElement, Integer versionCount) {
 		if (dataElement == null) {
 			throw new WorkflowRuntimeException("Attempting to put version element inside null data Element");
@@ -136,15 +136,15 @@ public class EDLXmlUtils {
 		version.setAttribute("version", versionCount.toString());
 		return version;
 	}
-	
+
 	public static Element getDataFromEDLDocument(Element edlContent, boolean create) {
         return getOrCreateChildElement(edlContent, DATA_E, create);
     }
-	
+
     public static Element getEDLContent(Document displayDoc, boolean create) {
         return getOrCreateChildElement(displayDoc.getDocumentElement(), EDLCONTENT_E, create);
     }
-	
+
     /**
      * Returns, and creates if absent, a child element
      * @param parent the parent element
@@ -163,10 +163,10 @@ public class EDLXmlUtils {
         }
         return child;
     }
-    
+
     /**
      * Returns a node child with the specified tag name of the specified parent node,
-     * or null if no such child node is found. 
+     * or null if no such child node is found.
      * @param parent the parent node
      * @param name the name of the child node
      * @return child node if found, null otherwise
@@ -188,7 +188,7 @@ public class EDLXmlUtils {
         }
         return null;
     }
-    
+
     /**
      * Returns the text value of a child element with the given name, of the given parent element,
      * or null if the child does not exist or does not have a child text node
@@ -208,9 +208,9 @@ public class EDLXmlUtils {
         }
         return textNode.getNodeValue();
     }
-    
 
-	
+
+
     /**
      * Adds the specified errors and messages to the &lt;documentState&gt; element of the
      * given EDL doc
@@ -239,18 +239,18 @@ public class EDLXmlUtils {
         	documentState.appendChild(error);
         }
     }
-    
+
 	public static final String[] VALIDATABLE_ACTIONS = new String[] {
+		WorkflowDocumentActions.ACTION_SAVE,
 		WorkflowDocumentActions.ACTION_ROUTE,
 		WorkflowDocumentActions.ACTION_APPROVE,
     	WorkflowDocumentActions.ACTION_ACKNOWLEDGE,
     	WorkflowDocumentActions.ACTION_COMPLETE,
     	WorkflowDocumentActions.ACTION_FYI,
     	WorkflowDocumentActions.ACTION_DISAPPROVE,
-    	WorkflowDocumentActions.ACTION_CANCEL,
     	WorkflowDocumentActions.ACTION_RETURN_TO_PREVIOUS
     };
-    
+
 	public static boolean isValidatableAction(String action) {
 		for (int index = 0; index < VALIDATABLE_ACTIONS.length; index++) {
 			if (VALIDATABLE_ACTIONS[index].equals(action)) {

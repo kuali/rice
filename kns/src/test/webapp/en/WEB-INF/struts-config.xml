@@ -89,6 +89,7 @@
         type="edu.iu.uis.eden.actionlist.web.ActionListAction" name="ActionListForm"
         input="/WEB-INF/jsp/ActionList/ActionList.jsp" >
         <forward name="viewActionList" path="/WEB-INF/jsp/ActionList/ActionList.jsp"/>
+        <forward name="count" path="/WEB-INF/jsp/ActionList/ActionListCount.jsp"/>
         <forward name="requiredStateError" path="/WEB-INF/jsp/ActionList/ActionList.jsp"/>
         <forward name="finalStateError" path="/WEB-INF/jsp/ActionList/ActionList.jsp"/>
       </action>

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -67,7 +67,7 @@ public class SuperUserAction extends WorkflowAction {
         LOG.info("entering routeLevelApprove()...");
         SuperUserForm superUserForm = (SuperUserForm) form;
         //SpringServiceLocator.getWorkflowDocumentService().superUserRouteLevelApproveAction(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeader(), superUserForm.getRouteLevel(), superUserForm.getAnnotation());
-        KEWServiceLocator.getWorkflowDocumentService().superUserNodeApproveAction(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeader(), superUserForm.getDestNodeName(), superUserForm.getAnnotation());
+        KEWServiceLocator.getWorkflowDocumentService().superUserNodeApproveAction(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeader().getRouteHeaderId(), superUserForm.getDestNodeName(), superUserForm.getAnnotation());
         saveDocumentActionMessage("general.routing.superuser.routeLevelApproved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting routeLevelApprove()...");
         superUserForm.getActionRequests().clear();
@@ -157,7 +157,7 @@ public class SuperUserAction extends WorkflowAction {
         }
 
         superUserForm.setFutureNodeNames(KEWServiceLocator.getRouteNodeService().findFutureNodeNames(routeHeader.getRouteHeaderId()));
-        
+
 
         Collection actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(routeHeader.getRouteHeaderId());
         Iterator requestIterator = actionRequests.iterator();
@@ -167,14 +167,14 @@ public class SuperUserAction extends WorkflowAction {
                 superUserForm.getActionRequests().add(req);
            // }
         }
-              
-        
+
+
         superUserForm.setDocId(superUserForm.getRouteHeaderId());
         if (superUserForm.getDocId() != null) {
             superUserForm.setFlexDoc(new WorkflowDocument(new WorkflowIdVO(getUserSession(request).getWorkflowUser().getWorkflowId()), superUserForm.getDocId()));
             superUserForm.establishVisibleActionRequestCds();
         }
-        
+
         return null;
     }
 
@@ -189,7 +189,7 @@ public class SuperUserAction extends WorkflowAction {
         messages.add(ActionMessages.GLOBAL_MESSAGE, actionMessage);
         saveMessages(request, messages);
     }
-    
+
     public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         SuperUserForm superUserForm = (SuperUserForm) form;
 
@@ -213,8 +213,8 @@ public class SuperUserAction extends WorkflowAction {
         lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getModuleConfig().getPrefix()).append(mapping.getPath()).append(".do");
         return new ActionForward(lookupUrl.toString(), true);
     }
-    
-    
+
+
     public ActionForward routeToAppSpecificRecipient(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	SuperUserForm superUserForm = (SuperUserForm) form;
     	super.routeToAppSpecificRecipient(mapping, form, request, response);

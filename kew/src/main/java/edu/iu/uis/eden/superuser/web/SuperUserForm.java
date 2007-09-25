@@ -196,13 +196,6 @@ public class SuperUserForm extends WorkflowRoutingForm {
         return true;
     }
     
-    public boolean isStateFinal() {
-	if (routeHeader.isFinal() || routeHeader.isCanceled()) {
-	    return true;
-	}
-	return false;
-    }
-    
     public DocumentType getDocumentType() {
         return getRouteHeader().getDocumentType();
     }

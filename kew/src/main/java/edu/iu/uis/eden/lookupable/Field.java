@@ -23,6 +23,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
 import edu.iu.uis.eden.docsearch.SearchableAttribute;
+import edu.iu.uis.eden.engine.node.KeyValuePair;
 import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 
 /**
@@ -86,6 +87,7 @@ public class Field implements java.io.Serializable {
     private String defaultLookupableName;
     private List fieldValidValues;
     private String quickFinderClassNameImpl;
+    private List<KeyValuePair> customConversions;
     
     // this field is currently a hack to allow us to indicate whether or not the column of data associated
     // with a particular field will be visible in the result set of a search or not
@@ -169,7 +171,7 @@ public class Field implements java.io.Serializable {
     	return defaultValue.booleanValue();
     }
 
-	/**
+    /**
      * Helper method to determine if this is a field that collects data.
      *
      * @param fieldType
@@ -190,8 +192,27 @@ public class Field implements java.io.Serializable {
         }
 
     }
+    
+    public boolean isUsingCustomConversions() {
+	return (this.customConversions != null) && (!this.customConversions.isEmpty());
+    }
 
-    /**
+    
+    	/**
+	 * @return the customConversions
+	 */
+	public List<KeyValuePair> getCustomConversions() {
+	    return this.customConversions;
+	}
+
+	/**
+	 * @param customConversions the customConversions to set
+	 */
+	public void setCustomConversions(List<KeyValuePair> customConversions) {
+	    this.customConversions = customConversions;
+	}
+
+	/**
 	 * @return the allowWildcards
 	 */
 	public Boolean getAllowWildcards() {

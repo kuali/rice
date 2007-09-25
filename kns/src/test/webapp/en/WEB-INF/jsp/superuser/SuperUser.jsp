@@ -62,7 +62,7 @@
     </td>
   </tr>
 
-<c:if test="${!SuperUserForm.stateFinal}"> 
+<c:if test="${(! SuperUserForm.routeHeader.canceled) && (SuperUserForm.authorized}">
       <html-el:form method="post" action="/SuperUser.do">
       <html-el:hidden property="methodToCall" />
       <html-el:hidden property="routeHeaderId" value="${SuperUserForm.routeHeader.routeHeaderId}" />
@@ -70,7 +70,7 @@
 	  <html-el:hidden property="lookupableImplServiceName" />
   	  <html-el:hidden property="lookupType" />
 
-<c:if test="${SuperUserForm.authorized}">  
+<c:if test="${(! SuperUserForm.routeHeader.final)}">
   <tr>
     <td height=30>
       <table width="100%" border=0 cellpadding=0 cellspacing=0" class="bord-r-t">
@@ -141,6 +141,7 @@
       </table> 
     </td>
   </tr>
+ </c:if>
  
   <c:if test="${(! SuperUserForm.routeHeader.stateInitiated) && (! empty SuperUserForm.actionRequests)}">
     <tr>
@@ -158,8 +159,6 @@
       </td>
     </tr>
   </c:if>
-</c:if>
-
 </html-el:form>
 </c:if>
 

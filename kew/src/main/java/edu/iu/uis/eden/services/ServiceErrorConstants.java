@@ -26,6 +26,7 @@ public class ServiceErrorConstants {
   public static final String CHILDREN_IN_ERROR = "-1";
   public static final String CHART_BLANK = "chartBlank";
   public static final String ORG_BLANK = "orgBlank";
+  public static final String ACCOUNT_AND_ORG_BLANK = "accountAndOrgBlank";
   public static final String UNIVERSITY_ORGANIZATION_INVALID = "invalidChartOrgCombo";
   
   

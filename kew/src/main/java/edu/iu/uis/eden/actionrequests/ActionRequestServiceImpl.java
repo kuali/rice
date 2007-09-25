@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.kuali.rice.core.Core;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -390,6 +391,9 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         for (Iterator iterator = documentsAffected.iterator(); iterator.hasNext();) {
         	Long routeHeaderId = (Long) iterator.next();
             String messageEntity = KEWServiceLocator.getRouteHeaderService().getMessageEntityByDocumentId(routeHeaderId);
+            if (messageEntity == null) {
+                messageEntity = Core.getCurrentContextConfig().getMessageEntity();
+            }
             DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(messageEntity, routeHeaderId, cacheWait);
             documentRequeuer.requeueDocument(routeHeaderId);
         }

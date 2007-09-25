@@ -44,12 +44,12 @@
 				<bean class="org.kuali.rice.kns.config.KNSConfigurer">
 					<property name="dataDictionaryPackages">
 						<list>
-							<value>edu/sampleu/travel/datadictionary</value>
+							<value>org/kuali/rice/kim/bo/datadictionary/test</value>
 						</list>
 					</property>
 					<property name="databaseRepositoryFilePaths">
 						<list>
-							<value>repository.xml</value>
+							<value>OJB-repository-kim.xml</value>
 						</list>
 					</property>
 				</bean>

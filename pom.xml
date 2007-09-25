@@ -138,7 +138,7 @@
 		<module>testharness</module>
 		<module>ksb</module>
 		<module>kns</module>
-    <module>kim-api</module>
+        <module>kim-api</module>
 		<module>kim</module>
 		<module>kew</module>
 		<module>ken</module>
@@ -465,6 +465,13 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-surefire-report-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>report-only</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
 			</plugin>
 			<plugin>
 				<artifactId>maven-clover-plugin</artifactId>

@@ -66,7 +66,43 @@
 							<useFile>false</useFile>
 							<testFailureIgnore>true</testFailureIgnore>
 							<includes>
+                            <!--
 								<include>**/*Test.java</include>
+                            -->
+                                <!-- KEW test packages, bear with me while I march these through CI -->
+                                <include>edu/iu/uis/eden/actionitem/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/actionlist/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/actionrequests/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/actions/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/applicationconstants/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/batch/**/*Test.java</include>
+                                <!--
+                                <include>edu/iu/uis/eden/clientapp/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/docsearch/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/doctype/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/edl/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/engine/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/mail/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/notes/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/notification/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/plugin/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/postprocessor/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/preferences/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/routeheader/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/routemanager/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/routemodule/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/routetemplate/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/routing/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/security/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/server/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/support/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/test/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/transformation/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/user/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/workgroup/**/*Test.java</include>
+                                <include>edu/iu/uis/eden/xml/**/*Test.java</include>
+                                <include>org/kuali/workflow/**/*Test.java</include>
+                                -->
 							</includes>
 							<forkMode>once</forkMode>
 							<reportFormat>plain</reportFormat>

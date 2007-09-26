@@ -256,35 +256,30 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	}
 
 	public Object getObject(ObjectDefinition definition) {
-	    // TODO object remoting disabled because it breaks plugins, needs to be fixed prior to 0.9.1 as per KULRICE-1173
-	    return null;
-	}
+		if (definition.isAtRemotingLayer()) {
+			return null;
+		}
+		if (StringUtils.isEmpty(definition.getMessageEntity())) {
+			return null;
+		}
+		QName objectRemoterName = new QName(definition.getMessageEntity(), KSBServiceLocator.OBJECT_REMOTER);
+		ObjectRemoterService classRemoter = (ObjectRemoterService)GlobalResourceLoader.getService(objectRemoterName);
+		ServiceInfo serviceInfo = classRemoter.getRemotedClassURL(definition);
 
-//	public Object getObject(ObjectDefinition definition) {
-//		if (definition.isAtRemotingLayer()) {
-//			return null;
-//		}
-//		if (StringUtils.isEmpty(definition.getMessageEntity())) {
-//			return null;
-//		}
-//		QName objectRemoterName = new QName(definition.getMessageEntity(), KSBServiceLocator.OBJECT_REMOTER);
-//		ObjectRemoterService classRemoter = (ObjectRemoterService)GlobalResourceLoader.getService(objectRemoterName);
-//		ServiceInfo serviceInfo = classRemoter.getRemotedClassURL(definition);
-//
-//		if (serviceInfo == null) {
-//			return null;
-//		}
-//
-//		try {
-//			RemoteObjectCleanup remoteCleanup = new RemoteObjectCleanup(objectRemoterName, serviceInfo.getQname());
-//			if (TransactionSynchronizationManager.isActualTransactionActive()) {
-//			    TransactionSynchronizationManager.registerSynchronization(remoteCleanup);
-//			}
-//			return ServiceConnectorFactory.getServiceConnector(serviceInfo).getService();
-//		} catch (Exception e) {
-//			throw new RiceRuntimeException(e);
-//		}
-//	}
+		if (serviceInfo == null) {
+			return null;
+		}
+
+		try {
+			RemoteObjectCleanup remoteCleanup = new RemoteObjectCleanup(objectRemoterName, serviceInfo.getQname());
+			if (TransactionSynchronizationManager.isActualTransactionActive()) {
+			    TransactionSynchronizationManager.registerSynchronization(remoteCleanup);
+			}
+			return ServiceConnectorFactory.getServiceConnector(serviceInfo).getService();
+		} catch (Exception e) {
+			throw new RiceRuntimeException(e);
+		}
+	}
 
 	public synchronized MessageExceptionHandler getMessageExceptionHandler(QName qname) {
 		List<RemotedServiceHolder> remotedServices = getAllServices(qname);

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,6 +19,7 @@ package edu.iu.uis.eden.core;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.Core;
+import org.kuali.rice.definition.ObjectDefinition;
 import org.kuali.rice.resourceloader.BaseWrappingResourceLoader;
 import org.kuali.rice.resourceloader.ServiceLocator;
 
@@ -64,7 +65,22 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 				}
 			}
 		}
-		return super.getService(serviceName);
+		Object service = super.getService(serviceName);
+		if (service == null && getRegistry() != null) {
+		    service = getRegistry().getService(serviceName);
+		}
+		return service;
+	}
+
+
+
+	@Override
+	public Object getObject(ObjectDefinition objectDefinition) {
+	    Object object = super.getObject(objectDefinition);
+	    if (object == null && getRegistry() != null) {
+		object = getRegistry().getObject(objectDefinition);
+	    }
+	    return object;
 	}
 
 	@Override

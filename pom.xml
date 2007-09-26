@@ -53,6 +53,10 @@
 						<configuration>
 							<source>1.5</source>
 							<target>1.5</target>
+                            <!--
+                            <meminitial>256</meminitial>
+                            <maxmem>2048</maxmem>
+                            -->
 						</configuration>
 					</plugin>
 					<plugin>
@@ -473,9 +477,12 @@
                     </reportSet>
                 </reportSets>
 			</plugin>
-			<plugin>
-				<artifactId>maven-clover-plugin</artifactId>
-			</plugin>
+            <!-- turn off clover so we don't get duplicate test runs
+                 wait until Atlassian gets this straightened out... 
+            <plugin>
+                <artifactId>maven-clover-plugin</artifactId>
+            </plugin>
+            -->
 		</plugins>
 	</reporting>
 	<distributionManagement>

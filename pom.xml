@@ -66,9 +66,7 @@
 							<useFile>false</useFile>
 							<testFailureIgnore>true</testFailureIgnore>
 							<includes>
-                            <!--
 								<include>**/*Test.java</include>
-                            -->
                                 <!-- KEW test packages, bear with me while I march these through CI -->
                                 <!--
                                 <include>edu/iu/uis/eden/actionitem/**/*Test.java</include>
@@ -92,7 +90,6 @@
                                 <include>edu/iu/uis/eden/routemanager/**/*Test.java</include>
                                 <include>edu/iu/uis/eden/routemodule/**/*Test.java</include>
                                 <include>edu/iu/uis/eden/routetemplate/**/*Test.java</include>
-                                -->
                                 <include>edu/iu/uis/eden/routing/**/*Test.java</include>
                                 <include>edu/iu/uis/eden/security/**/*Test.java</include>
                                 <include>edu/iu/uis/eden/server/**/*Test.java</include>
@@ -103,6 +100,7 @@
                                 <include>edu/iu/uis/eden/workgroup/**/*Test.java</include>
                                 <include>edu/iu/uis/eden/xml/**/*Test.java</include>
                                 <include>org/kuali/workflow/**/*Test.java</include>
+                                -->
 							</includes>
 							<forkMode>once</forkMode>
 							<reportFormat>plain</reportFormat>

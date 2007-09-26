@@ -77,7 +77,6 @@
                                 <include>edu/iu/uis/eden/actions/**/*Test.java</include>
                                 <include>edu/iu/uis/eden/applicationconstants/**/*Test.java</include>
                                 <include>edu/iu/uis/eden/batch/**/*Test.java</include>
-                                -->
                                 <include>edu/iu/uis/eden/clientapp/**/*Test.java</include>
                                 <include>edu/iu/uis/eden/docsearch/**/*Test.java</include>
                                 <include>edu/iu/uis/eden/doctype/**/*Test.java</include>
@@ -93,7 +92,7 @@
                                 <include>edu/iu/uis/eden/routemanager/**/*Test.java</include>
                                 <include>edu/iu/uis/eden/routemodule/**/*Test.java</include>
                                 <include>edu/iu/uis/eden/routetemplate/**/*Test.java</include>
-                                <!--
+                                -->
                                 <include>edu/iu/uis/eden/routing/**/*Test.java</include>
                                 <include>edu/iu/uis/eden/security/**/*Test.java</include>
                                 <include>edu/iu/uis/eden/server/**/*Test.java</include>
@@ -104,7 +103,6 @@
                                 <include>edu/iu/uis/eden/workgroup/**/*Test.java</include>
                                 <include>edu/iu/uis/eden/xml/**/*Test.java</include>
                                 <include>org/kuali/workflow/**/*Test.java</include>
-                                -->
 							</includes>
 							<forkMode>once</forkMode>
 							<reportFormat>plain</reportFormat>

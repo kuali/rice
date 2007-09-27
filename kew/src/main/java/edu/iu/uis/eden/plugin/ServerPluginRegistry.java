@@ -69,13 +69,8 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 		hotDeployer = new HotDeployer(PluginUtils.getPluginRegistry(), sharedPluginDirectory, pluginDirectories);
 		loadPlugins(sharedPluginDirectory);
 		// TODO make the delay configurable
-		// TODO if we are running in dev.mode than the thread pool isn't started which causes the scheduling below to fail
-		// just disable hot deploy and reload in dev.mode for now, but better solution needed.  Probably just use our own
-		// thread pool here instead
-		if (!Core.getCurrentContextConfig().getDevMode()) {
-			this.reloaderFuture = scheduledExecutor.scheduleWithFixedDelay(reloader, 5, 5, TimeUnit.SECONDS);
-			this.hotDeployerFuture = scheduledExecutor.scheduleWithFixedDelay(hotDeployer, 5, 5, TimeUnit.SECONDS);
-		}
+		this.reloaderFuture = scheduledExecutor.scheduleWithFixedDelay(reloader, 5, 5, TimeUnit.SECONDS);
+		this.hotDeployerFuture = scheduledExecutor.scheduleWithFixedDelay(hotDeployer, 5, 5, TimeUnit.SECONDS);
 		super.start();
 	}
 

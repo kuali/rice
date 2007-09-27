@@ -44,16 +44,29 @@ public class GlobalResourceLoader {
 
 	public static ResourceLoader getResourceLoader() {
 		ClassLoader classLoader = ClassLoaderUtils.getDefaultClassLoader();
-		ResourceLoader resourceLoader = getResourceLoader(classLoader);
-		if (resourceLoader == null && classLoader.getParent() != null) {
-			resourceLoader = getResourceLoader(classLoader.getParent());
-		}
-		return resourceLoader;
+		return getResourceLoaderCheckParent(classLoader);
 	}
 
+	private static ResourceLoader getResourceLoaderCheckParent(ClassLoader classLoader) {
+	    ResourceLoader resourceLoader = getResourceLoader(classLoader);
+	    if (resourceLoader == null && classLoader.getParent() != null) {
+		resourceLoader = getResourceLoaderCheckParent(classLoader.getParent());
+	    }
+	    return resourceLoader;
+	}
+	
 	public static ResourceLoader getResourceLoader(ClassLoader classloader) {
 		return rootResourceLoaders.get(classloader);
 	}
+	
+//	public static ResourceLoader getResourceLoader() {
+//		ClassLoader classLoader = ClassLoaderUtils.getDefaultClassLoader();
+//		ResourceLoader resourceLoader = getResourceLoader(classLoader);
+//		if (resourceLoader == null && classLoader.getParent() != null) {
+//			resourceLoader = getResourceLoader(classLoader.getParent());
+//		}
+//		return resourceLoader;
+//	}
 
 	public static void start() throws Exception {
 		try {

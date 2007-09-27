@@ -141,7 +141,6 @@ public class ServerPluginRegistry extends BasePluginRegistry {
                 pluginLocations.put(pluginName, pluginZip);
             }
         }
-        Plugin institutionalPlugin = null;
         for (String pluginName : pluginLocations.keySet()) {
         	File pluginZipFile = pluginLocations.get(pluginName);
         	// now execute the loading of the plugins

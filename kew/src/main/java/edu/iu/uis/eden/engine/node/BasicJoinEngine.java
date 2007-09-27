@@ -23,6 +23,7 @@ import java.util.StringTokenizer;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.engine.RouteContext;
+import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.util.Utilities;
 
 /**
@@ -38,6 +39,9 @@ public class BasicJoinEngine implements JoinEngine {
     
     public void createExpectedJoinState(RouteContext context, RouteNodeInstance joinInstance, RouteNodeInstance previousNodeInstance) {
         RouteNodeInstance splitNode = previousNodeInstance.getBranch().getSplitNode();
+        if (splitNode == null) {
+            throw new WorkflowRuntimeException("The split node retrieved from node with name '" + previousNodeInstance.getName() + "' and branch with name '" + previousNodeInstance.getBranch().getName() + "' was null");
+        }
         for (Iterator iter = splitNode.getNextNodeInstances().iterator(); iter.hasNext();) {
             RouteNodeInstance splitNodeNextNode = (RouteNodeInstance) iter.next();
             splitNodeNextNode.getBranch().setJoinNode(joinInstance);

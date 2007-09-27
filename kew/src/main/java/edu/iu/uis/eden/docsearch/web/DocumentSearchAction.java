@@ -359,7 +359,7 @@ public class DocumentSearchAction extends WorkflowAction {
         Column sortColumn = getSortColumn(columns, sortName);
         sortDisplayList(sortColumn, displayResults, ascending);
         state.getResult().setSearchResult(new DocumentSearchResultComponents(columns,displayResults));
-        request.setAttribute("key", getUserSession(request).addObject(state.getResult()));
+        request.setAttribute("key", getUserSession(request).addObject(state));
         request.setAttribute("reqSearchResultColumns", state.getResult().getSearchResult().getColumns());
         request.setAttribute("reqSearchResults", state.getResult().getSearchResult().getSearchResults());
         return mapping.findForward("success");

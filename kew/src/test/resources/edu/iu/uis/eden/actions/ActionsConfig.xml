@@ -701,7 +701,7 @@
 		<!--  end preapproval test document type -->
 
         <!-- variables test document type -->
-        
+
         <documentType>
 			<name>VariablesTest</name>
 			<description>VariablesTest</description>
@@ -778,7 +778,7 @@
 		</documentType>
 
 		<!-- end variables test document type -->
-		
+
         <!--  initiator role test document type -->
 
 		<documentType>
@@ -850,7 +850,7 @@
 		</documentType>
 
 		<!--  end Blanket Approve Through role and workgroup document type -->
-		
+
 		<!--  super user approve exception case document type -->
 		<documentType>
 			<name>SUApproveDocument</name>
@@ -889,7 +889,7 @@
 				</requests>
 			</routeNodes>
 		</documentType>
-		
+
 		<documentType>
 			<name>SUApproveDocumentNotifications</name>
 			<parent>SUApproveDocument</parent>
@@ -908,7 +908,7 @@
 				</policy>
 			</policies>
 		</documentType>
-		
+
 		<!-- end  super user approve exception case document type -->
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
@@ -928,7 +928,7 @@
 		<rule>
 			<documentType>BlanketApproveTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
-			<description>WorkflowDocumentTemplate Rule 1</description>
+			<description>WorkflowDocumentTemplate Rule 3</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
 				<responsibility>
@@ -1227,7 +1227,7 @@
 					<priority>2</priority>
 				</responsibility>
 			</responsibilities>
-		</rule>		
+		</rule>
 		<rule>
 			<documentType>PreApprovalTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
@@ -1253,7 +1253,7 @@
 					<priority>4</priority>
 				</responsibility>
 			</responsibilities>
-		</rule>		
+		</rule>
 		<!--  end preapproval test rules	-->
 
 <!-- variables test rules -->
@@ -1282,7 +1282,7 @@
 					<priority>2</priority>
 				</responsibility>
 			</responsibilities>
-		</rule>		
+		</rule>
 		<rule>
 			<documentType>VariablesTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
@@ -1308,7 +1308,7 @@
 					<priority>4</priority>
 				</responsibility>
 			</responsibilities>
-		</rule>		
+		</rule>
 		<!-- end variables test rules -->
 		<!--  initiator role test rules -->
 		<rule>
@@ -1336,7 +1336,7 @@
 					<priority>2</priority>
 				</responsibility>
 			</responsibilities>
-		</rule>		
+		</rule>
 		<rule>
 			<documentType>InitiatorRoleApprovalTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
@@ -1362,9 +1362,9 @@
 					<priority>4</priority>
 				</responsibility>
 			</responsibilities>
-		</rule>		
+		</rule>
 		<!--  end initiator role test rules	-->
-		
+
 		<!-- rules for testing blanket approval past a role -->
 		<rule>
 			<documentType>BlanketApproveThroughRoleAndWorkgroupTest</documentType>
@@ -1420,7 +1420,7 @@
 				</responsibility>
 			</responsibilities>
 		</rule>
-		
+
 		<!-- su approve exception case rules -->
 		<rule>
 			<documentType>SUApproveDocument</documentType>
@@ -1450,4 +1450,4 @@
 		</rule>
 		<!-- end su approve exception case rules -->
 	</rules>
-</data>		
+</data>

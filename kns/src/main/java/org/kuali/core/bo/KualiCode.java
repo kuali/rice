@@ -18,7 +18,7 @@ package org.kuali.core.bo;
 /**
  * 
  */
-public interface KualiCode extends Summarizable {
+public interface KualiCode extends Summarizable, Inactivateable {
     
     /**
      * @param code - Setter for the Code.

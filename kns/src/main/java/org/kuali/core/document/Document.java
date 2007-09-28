@@ -81,6 +81,12 @@ public interface Document extends PersistableBusinessObject{
     public String serializeDocumentToXml();
     
     /**
+     * This method is used to get the xml that should be used in a Route Report.  In it's default implementation this will call the
+     * methods prepareForSave() and populateDocumentForRouting().
+     */
+    public String getXmlForRouteReport();
+    
+    /**
      * method to integrate with workflow, where we will actually handle the transitions of status for documents
      * 
      */

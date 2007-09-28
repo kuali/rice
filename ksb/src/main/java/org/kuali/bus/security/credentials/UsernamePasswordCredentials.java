@@ -21,7 +21,6 @@ import org.springframework.util.Assert;
 /**
  * 
  * @author Scott Battaglia
- * @version $Revision: 1.2.2.1 $ $Date: 2007-08-15 16:05:05 $
  * @since 0.9
  *
  */

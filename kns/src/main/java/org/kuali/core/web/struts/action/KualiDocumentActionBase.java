@@ -432,12 +432,16 @@ public class KualiDocumentActionBase extends KualiAction {
         if (preRulesForward != null) {
             return preRulesForward;
         }
-
         Document document = kualiDocumentFormBase.getDocument();
+        // check authorization for reloading document
+        DocumentActionFlags flags = getDocumentActionFlags(document);
+        if (!flags.isCanPerformRouteReport()) {
+            throw buildAuthorizationException("perform route report", document);
+        }
+
         String backUrlBase = getReturnLocation(request, mapping);
         String globalVariableFormKey = GlobalVariables.getUserSession().addObject(form);
-        
-        // setup back form bariables
+        // setup back form variables
         request.setAttribute("backUrlBase", backUrlBase);
         List<KeyLabelPair> backFormParameters = new ArrayList<KeyLabelPair>();
         backFormParameters.add(new KeyLabelPair(RiceConstants.DISPATCH_REQUEST_PARAMETER,RiceConstants.RETURN_METHOD_TO_CALL));
@@ -449,7 +453,10 @@ public class KualiDocumentActionBase extends KualiAction {
         List<KeyLabelPair> generalRouteReportFormParameters = new ArrayList<KeyLabelPair>();
         generalRouteReportFormParameters.add(new KeyLabelPair(RoutingReportForm.INITIATOR_ID_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getInitiatorNetworkId()));
         generalRouteReportFormParameters.add(new KeyLabelPair(RoutingReportForm.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getDocumentType()));
-        generalRouteReportFormParameters.add(new KeyLabelPair(RoutingReportForm.DOCUMENT_CONTENT_ATTRIBUTE_NAME,document.serializeDocumentToXml()));
+        // prepareForRouteReport() method should populate document header workflow document application content xml
+        String xml = document.getXmlForRouteReport();
+        LOG.debug("XML being used for Routing Report is: " + xml);
+        generalRouteReportFormParameters.add(new KeyLabelPair(RoutingReportForm.DOCUMENT_CONTENT_ATTRIBUTE_NAME,xml));
         
         // set up the variables for the form if java script is working (includes a close button variable and no back url)
         List<KeyLabelPair> javaScriptFormParameters = new ArrayList<KeyLabelPair>();

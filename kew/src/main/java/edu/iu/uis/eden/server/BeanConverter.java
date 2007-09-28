@@ -297,6 +297,7 @@ public class BeanConverter {
         //routeHeaderVO.setDocumentContent(convertDocumentContent(routeHeader.getDocContent(), routeHeader.getRouteHeaderId()));
 
         routeHeaderVO.setDocRouteLevel(routeHeader.getDocRouteLevel());
+        routeHeaderVO.setCurrentRouteNodeNames(routeHeader.getCurrentRouteLevelName());
 
         /*Collection activeNodes = SpringServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeaderVO.getRouteHeaderId());
         routeHeaderVO.setNodeNames(new String[activeNodes.size()]);
@@ -767,9 +768,10 @@ public class BeanConverter {
         actionRequestVO.setResponsibilityId(actionRequest.getResponsibilityId());
         actionRequestVO.setRouteHeaderId(actionRequest.getRouteHeaderId());
         actionRequestVO.setRouteLevel(actionRequest.getRouteLevel());
-        actionRequestVO.setNodeName((actionRequest.getNodeInstance() == null ? "" : actionRequest.getNodeInstance().getName()));
+        actionRequestVO.setNodeName(actionRequest.getPotentialNodeName());
         actionRequestVO.setNodeInstanceId((actionRequest.getNodeInstance() == null ? null : actionRequest.getNodeInstance().getRouteNodeInstanceId()));
 //        actionRequestVO.setRouteMethodName(actionRequest.getRouteMethodName());
+//      TODO delyea - should below be using actionRequest.getRoleName()?
         actionRequestVO.setRoleName(actionRequest.getQualifiedRoleName());
         actionRequestVO.setQualifiedRoleName(actionRequest.getQualifiedRoleName());
         actionRequestVO.setQualifiedRoleNameLabel(actionRequest.getQualifiedRoleNameLabel());

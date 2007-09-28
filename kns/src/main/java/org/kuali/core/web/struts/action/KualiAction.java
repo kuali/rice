@@ -97,7 +97,7 @@ public abstract class KualiAction extends DispatchAction {
         checkAuthorization(form, methodToCall);
 
         // check if demonstration encryption is enabled
-        if (KNSServiceLocator.getKualiConfigurationService().getApplicationParameterIndicator("SYSTEM", "demonstrationEncryptionCheck_FLAG") && KNSServiceLocator.getEncryptionService() instanceof Demonstration) {
+        if (KNSServiceLocator.getKualiConfigurationService().getIndicatorParameter(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.ALL_DETAIL_TYPE, RiceConstants.SystemGroupParameterNames.CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND) && KNSServiceLocator.getEncryptionService() instanceof Demonstration) {
             LOG.warn("WARNING: This implementation of Kuali uses the demonstration encryption framework.");
         }
 

@@ -437,4 +437,10 @@ public interface DataDictionaryService {
 //    public void addUniqueEntries(String sourceName, boolean sourceMustExist);
 
     public Map getDataDictionaryMap();
+    
+    /**
+     * Forces the DD to completely load itself immediately.  Used by application components which require
+     * a complete list of all BO and document components.
+     */
+    public void forceCompleteDataDictionaryLoad();
 }

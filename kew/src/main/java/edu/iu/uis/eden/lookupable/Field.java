@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,8 +16,10 @@
  */
 package edu.iu.uis.eden.lookupable;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -29,7 +31,7 @@ import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 /**
  * A field of data used by {@link WorkflowLookupable} implementations.  The field is typed according to
  * the type of field it is and how it should be rendered on the Lookupable.
- * 
+ *
  * @see WorkflowLookupable
  *
  * @author jhopf
@@ -38,7 +40,7 @@ import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 public class Field implements java.io.Serializable {
 
 	private static final long serialVersionUID = 8497421452176749283L;
-	
+
 	public static final String HIDDEN = "hidden";
     public static final String TEXT = "text";
     public static final String DROPDOWN = "dropdown";
@@ -50,7 +52,7 @@ public class Field implements java.io.Serializable {
     public static final String MULTIBOX = "multibox";
     public static final String CHECKBOX_YES_NO = "checkbox_yes_no";
     public static final String CHECKBOX_PRESENT = "checkbox_present";
-    
+
     public static final Set SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES;
     public static final Set MULTI_VALUE_FIELD_TYPES = new HashSet();
     static {
@@ -63,10 +65,10 @@ public class Field implements java.io.Serializable {
         SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(MULTIBOX);
         SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(CHECKBOX_YES_NO);
         SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(CHECKBOX_PRESENT);
-        
+
         MULTI_VALUE_FIELD_TYPES.add(MULTIBOX);
     }
-    
+
     private static final Boolean DEFAULT_ALLOW_WILDCARD_VALUE = Boolean.TRUE;
     private static final Boolean DEFAULT_AUTO_WILDCARD_BEGINNING_VALUE = Boolean.FALSE;
     private static final Boolean DEFAULT_AUTO_WILDCARD_ENDING_VALUE = Boolean.FALSE;
@@ -74,7 +76,7 @@ public class Field implements java.io.Serializable {
     private static final Boolean DEFAULT_RANGE_FIELD_INCLUSIVE_VALUE = Boolean.TRUE;
     public static final String CHECKBOX_VALUE_CHECKED = "Yes";
     public static final String CHECKBOX_VALUE_UNCHECKED = "No";
-    
+
     // fields for display
     private String fieldType;
     private boolean hasLookupable;
@@ -87,8 +89,9 @@ public class Field implements java.io.Serializable {
     private String defaultLookupableName;
     private List fieldValidValues;
     private String quickFinderClassNameImpl;
+    private Map<String,String> displayParameters = new HashMap<String,String>();
     private List<KeyValuePair> customConversions;
-    
+
     // this field is currently a hack to allow us to indicate whether or not the column of data associated
     // with a particular field will be visible in the result set of a search or not
     private boolean isColumnVisible = true;
@@ -99,15 +102,15 @@ public class Field implements java.io.Serializable {
     private Boolean autoWildcardBeginning;//
     private Boolean autoWildcardEnding;//
     private Boolean caseSensitive;//
-    
+
     private boolean searchable = true;
-    
+
     // following values used in ranged searches
     private String mainFieldLabel;  // the fieldLabel holds things like "From" and "Ending" and this field holds things like "Total Amount"
     private Boolean rangeFieldInclusive;//
     private String savablePropertyName = null;//
     private boolean memberOfRange = false;//
-    
+
     public Field() {}
 
     public Field(String fieldLabel, String fieldHelpUrl, String fieldType, boolean hasLookupable, String propertyName, String propertyValue, List fieldValidValues, String quickFinderClassNameImpl) {
@@ -122,12 +125,12 @@ public class Field implements java.io.Serializable {
         setupField(fieldLabel, fieldHelpUrl, fieldType, hasLookupable, propertyName, fieldValidValues, quickFinderClassNameImpl, defaultLookupableName);
         this.propertyValue = propertyValue;
     }
-    
+
     public Field(String fieldLabel, String fieldHelpUrl, String fieldType, boolean hasLookupable, String propertyName, String[] propertyValues, List fieldValidValues, String quickFinderClassNameImpl, String defaultLookupableName) {
         setupField(fieldLabel, fieldHelpUrl, fieldType, hasLookupable, propertyName, fieldValidValues, quickFinderClassNameImpl, defaultLookupableName);
         this.propertyValues = propertyValues;
     }
-    
+
     private void setupField(String fieldLabel, String fieldHelpUrl, String fieldType, boolean hasLookupable, String propertyName, List fieldValidValues, String quickFinderClassNameImpl, String defaultLookupableName) {
         this.fieldLabel = fieldLabel;
         this.fieldHelpUrl = fieldHelpUrl;
@@ -139,7 +142,21 @@ public class Field implements java.io.Serializable {
         this.quickFinderClassNameImpl = quickFinderClassNameImpl;
         this.defaultLookupableName = defaultLookupableName;
     }
-    
+
+    public void populateFieldFromExistingField(Field existingField) {
+        setColumnVisible(existingField.isColumnVisible());
+        setFieldDataType(existingField.getFieldDataType());
+        setFieldHelpUrl(existingField.getFieldHelpUrl());
+        setFieldType(existingField.getFieldType());
+        setMainFieldLabel(existingField.getFieldLabel());
+        setFieldValidValues(existingField.getFieldValidValues());
+        setSavablePropertyName(existingField.getPropertyName());
+        setQuickFinderClassNameImpl(existingField.getQuickFinderClassNameImpl());
+        setHasLookupable(existingField.isHasLookupable());
+        setDefaultLookupableName(existingField.getDefaultLookupableName());
+        setDisplayParameters(existingField.getDisplayParameters());
+    }
+
     public boolean isInclusive() {
     	return getPolicyBooleanValue(DEFAULT_RANGE_FIELD_INCLUSIVE_VALUE, rangeFieldInclusive);
     }
@@ -192,12 +209,12 @@ public class Field implements java.io.Serializable {
         }
 
     }
-    
+
     public boolean isUsingCustomConversions() {
 	return (this.customConversions != null) && (!this.customConversions.isEmpty());
     }
 
-    
+
     	/**
 	 * @return the customConversions
 	 */
@@ -211,6 +228,28 @@ public class Field implements java.io.Serializable {
 	public void setCustomConversions(List<KeyValuePair> customConversions) {
 	    this.customConversions = customConversions;
 	}
+
+	   public String getDisplayParameterValue(String key) {
+	        return displayParameters.get(key);
+	    }
+
+	    public void addDisplayParameter(String key, String value) {
+	        displayParameters.put(key, value);
+	    }
+
+	    /**
+	     * @return the displayParameters
+	     */
+	    public Map<String, String> getDisplayParameters() {
+	        return displayParameters;
+	    }
+
+	    /**
+	     * @param displayParameters the displayParameters to set
+	     */
+	    public void setDisplayParameters(Map<String, String> displayParameters) {
+	        this.displayParameters = displayParameters;
+	    }
 
 	/**
 	 * @return the allowWildcards

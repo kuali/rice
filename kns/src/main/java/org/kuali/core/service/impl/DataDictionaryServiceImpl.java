@@ -831,6 +831,9 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
                 }
             }
 
+    public void forceCompleteDataDictionaryLoad() {
+    	getDataDictionary().forceCompleteDataDictionaryLoad();
+    }
 
     public Map getDataDictionaryMap() {
         return dataDictionaryMap;

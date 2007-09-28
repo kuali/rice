@@ -290,7 +290,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
 
     private void validateCriteria(SimulationCriteria criteria) {
     	if (criteria.getDocumentId() == null && Utilities.isEmpty(criteria.getDocumentTypeName())) {
-    		throw new IllegalArgumentException("No document type name given, cannot simulate a document without a document type.");
+		throw new IllegalArgumentException("No document type name or route header id given, cannot simulate a document without a document type name or a route header id.");
     	}
     	if (criteria.getXmlContent() == null) {
     		criteria.setXmlContent("");
@@ -308,6 +308,10 @@ public class SimulationEngine extends StandardWorkflowEngine {
     	DocumentRouteHeaderValue document = null;
     	if (criteria.isDocumentSimulation()) {
             document = getDocumentForSimulation(documentId);
+            if (!Utilities.isEmpty(criteria.getXmlContent())) {
+                document.setDocContent(criteria.getXmlContent());
+            }
+
 //    		document = getRouteHeaderService().getRouteHeader(documentId);
     	} else if (criteria.isDocumentTypeSimulation()) {
         	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocumentTypeName());
@@ -331,12 +335,12 @@ public class SimulationEngine extends StandardWorkflowEngine {
         }
 		return document;
     }
-    
+
     private DocumentRouteHeaderValue getDocumentForSimulation(Long documentId) {
         DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId);
         return (DocumentRouteHeaderValue)deepCopy(document);
     }
-    
+
     private Serializable deepCopy(Serializable src) {
         Serializable obj = null;
         if (src != null) {

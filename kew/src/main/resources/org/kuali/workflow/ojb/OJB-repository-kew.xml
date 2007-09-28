@@ -290,7 +290,7 @@
       autoincrement="true" sequence-name="SEQ_SEARCHABLE_ATTRIBUTE_VALUE"/>
     <field-descriptor column="DOC_HDR_ID" name="routeHeaderId" jdbc-type="BIGINT"/>
     <field-descriptor column="DOC_HDR_EXT_VAL_KEY" name="searchableAttributeKey" jdbc-type="VARCHAR" />
-    <field-descriptor column="DOC_HDR_EXT_VAL" name="searchableAttributeValue" jdbc-type="REAL"/>
+    <field-descriptor column="DOC_HDR_EXT_VAL" name="searchableAttributeValue" jdbc-type="DECIMAL"/>
 
     <reference-descriptor class-ref="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue" name="routeHeader"
       auto-delete="false" auto-retrieve="true" auto-update="false">

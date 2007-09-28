@@ -119,6 +119,7 @@
 				<fieldDef name="testCurrencyKey" title="Dollars Here">
 					<display>
 						<type>text</type>
+                        <parameters name="displayFormatPattern">#.00</parameters>
 					</display>
 					<searchDefinition dataType="float"/>
 					<fieldEvaluation>
@@ -348,7 +349,7 @@
 						<type>text</type>
 					</display>
 					<!-- the service and appliesTo are completey fake here because we aren't actually going to render this thing -->
-					<quickfinder service="myLookuable" appliesTo="MyBean.data" draw="true" /> 
+					<quickfinder service="myLookuable" appliesTo="MyBean.data" draw="true" />
 					<fieldEvaluation>
 						<xpathexpression>//chart</xpathexpression>
 					</fieldEvaluation>
@@ -372,7 +373,7 @@
 					</display>
 					<visibility>
 						<column visible="false"/>
-					</visibility>					
+					</visibility>
 					<quickfinder service="ChartLookuable" appliesTo="chart" draw="true" />
 					<fieldEvaluation>
 						<xpathexpression>//chart</xpathexpression>
@@ -392,7 +393,7 @@
 					</display>
 					<visibility>
 						<field visible="false"/>
-					</visibility>					
+					</visibility>
 					<fieldEvaluation>
 						<xpathexpression>//dollar</xpathexpression>
 					</fieldEvaluation>
@@ -407,7 +408,7 @@
 		<ruleTemplate>
 			<name>searchTemplate</name>
 			<description>search template</description>
-			<!-- 
+			<!--
 				<attributes>
 				<attribute>
 				<name>XMLSearchableAttribute</name>
@@ -509,7 +510,7 @@
 					<ruleTemplate>searchTemplate</ruleTemplate>
 				</requests>
 			</routeNodes>
-		</documentType>		
+		</documentType>
 		<documentType>
 			<name>SearchDocTypeCaseSensitivity</name>
 			<description>SearchDocTypeCaseSensitivity</description>
@@ -738,7 +739,7 @@
 					<activationType>P</activationType>
 				</start>
 			</routeNodes>
-		</documentType>		
+		</documentType>
 		<documentType>
 			<name>AttributeWithHiddensDocType</name>
 			<label>AttributeWithHiddensDocType</label>
@@ -774,7 +775,7 @@
 					<activationType>P</activationType>
 				</start>
 			</routeNodes>
-		</documentType>		
+		</documentType>
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>

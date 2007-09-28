@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,9 +46,9 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 import edu.iu.uis.eden.workgroup.WorkgroupService;
 
 /**
- * Bean mapped to DB. Represents ActionRequest to a workgroup, user or role.  Contains 
+ * Bean mapped to DB. Represents ActionRequest to a workgroup, user or role.  Contains
  * references to children/parent if a member of a graph
- * 
+ *
  * @author rkirkend
  * @author ewestfal
  */
@@ -96,7 +96,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     private List actionItems = new ArrayList();
     private Boolean currentIndicator = new Boolean(true);
     private String createDateString;
-    
+
     /* New Workflow 2.1 Field */
     // The node instance at which this request was generated
     private RouteNodeInstance nodeInstance;
@@ -442,7 +442,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     public boolean isInitialized() {
         return EdenConstants.ACTION_REQUEST_INITIALIZED.equals(getStatus());
     }
-    
+
     public boolean isActive() {
         return EdenConstants.ACTION_REQUEST_ACTIVATED.equals(getStatus());
     }
@@ -519,7 +519,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 
     /**
      * Allows comparison of action requests to see which is greater responsibility. -1 : indicates code 1 is lesser responsibility than code 2 0 : indicates the same responsibility 1 : indicates code1 is greater responsibility than code 2 The priority of action requests is as follows: fyi < acknowledge < (approve == complete)
-     * 
+     *
      * @param code1
      * @param code2
      * @return -1 if less than, 0 if equal, 1 if greater than
@@ -534,7 +534,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 
     /**
      * Allows comparison of action requests to see which is greater responsibility. -1 : indicates type 1 is lesser responsibility than type 2 0 : indicates the same responsibility 1 : indicates type1 is greater responsibility than type 2
-     * 
+     *
      * @param type1
      * @param type2
      * @return -1 if less than, 0 if equal, 1 if greater than
@@ -544,7 +544,7 @@ public class ActionRequestValue implements WorkflowPersistable {
         Integer type2Index = new Integer(RECIPIENT_TYPE_RANK.indexOf(type2));
         return type1Index.compareTo(type2Index);
     }
-    
+
     public static int compareDelegationType(String type1, String type2) {
     	if (StringUtils.isEmpty(type1)) {
     		type1 = "N";
@@ -681,10 +681,14 @@ public class ActionRequestValue implements WorkflowPersistable {
     public void setCreateDateString(String createDateString) {
         this.createDateString = createDateString;
     }
-    
+
     public RouteNodeInstance getNodeInstance() {
 		return nodeInstance;
 	}
+
+    public String getPotentialNodeName() {
+        return (getNodeInstance() == null ? "" : getNodeInstance().getName());
+    }
 
 	public void setNodeInstance(RouteNodeInstance nodeInstance) {
 		this.nodeInstance = nodeInstance;
@@ -707,8 +711,8 @@ public class ActionRequestValue implements WorkflowPersistable {
     public void setRuleBaseValuesId(Long ruleBaseValuesId) {
         this.ruleBaseValuesId = ruleBaseValuesId;
     }
-    
-    
+
+
 //    public java.lang.String getRouteMethodName() {
 //		return routeMethodName;
 //	}
@@ -720,7 +724,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 	private RuleService getRuleService() {
         return (RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
     }
-    
+
     public boolean isPrimaryDelegator() {
         boolean primaryDelegator = false;
         for (Iterator iter = childrenRequests.iterator(); iter.hasNext();) {
@@ -729,12 +733,12 @@ public class ActionRequestValue implements WorkflowPersistable {
         }
         return primaryDelegator;
     }
-    
+
     /**
-     * Used to get primary delegate names on route log in the 'Requested Of' section so primary delegate requests 
-     * list the delegate and not the delegator as having the request 'IN ACTION LIST'.  This method doesn't recurse 
+     * Used to get primary delegate names on route log in the 'Requested Of' section so primary delegate requests
+     * list the delegate and not the delegator as having the request 'IN ACTION LIST'.  This method doesn't recurse
      * and therefore assume an AR structure.
-     * 
+     *
      * @return primary delgate requests
      */
     public List getPrimaryDelegateRequests() {
@@ -753,21 +757,21 @@ public class ActionRequestValue implements WorkflowPersistable {
         }
         return primaryDelegateRequests;
     }
-    
+
     public boolean isAdHocRequest() {
     	return EdenConstants.ADHOC_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
-    
+
     public boolean isGeneratedRequest() {
     	return EdenConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
-    
+
     public boolean isExceptionRequest() {
     	return EdenConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
-    
+
     public boolean isRouteModuleRequest() {
     	return getResponsibilityId().longValue() > 0;
     }
-    
+
 }

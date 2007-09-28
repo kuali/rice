@@ -9,14 +9,14 @@
   <annotation>
     <documentation>
       Copyright 2005-2006 The Kuali Foundation.
- 
+
 
       Licensed under the Educational Community License, Version 1.0 (the "License");
       you may not use this file except in compliance with the License.
       You may obtain a copy of the License at
- 
+
       http://www.opensource.org/licenses/ecl1.php
- 
+
       Unless required by applicable law or agreed to in writing, software
       distributed under the License is distributed on an "AS IS" BASIS,
       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -53,7 +53,7 @@
 
   <complexType name="RuleAttributeType">
     <all>
-      
+
       <element name="name" type="c:ShortStringType">
       	<annotation>
       		<documentation>
@@ -69,7 +69,7 @@
       		</documentation>
       	</annotation>
       </element>
-      
+
       <element name="label" type="c:ShortStringType">
       	<annotation>
       		<documentation>
@@ -77,7 +77,7 @@
       		</documentation>
       	</annotation>
       </element>
-      
+
       <element name="description" type="c:LongStringType" minOccurs="0">
       	<annotation>
       		<documentation>
@@ -85,7 +85,7 @@
       		</documentation>
       	</annotation>
       </element>
-      
+
       <element name="type" type="c:ShortStringType" minOccurs="0">
       	<annotation>
       		<documentation>
@@ -93,7 +93,7 @@
       		</documentation>
       	</annotation>
       </element>
-      
+
       <!-- tells the rule system how to draw the rule data collection screen and routing report screens -->
       <!-- To set the messaging entity.  defaults to 'KEW' (or workflow server if not included) -->
       <element name="messageEntity" type="c:ShortStringType" minOccurs="0">
@@ -102,12 +102,12 @@
       		 To set the messaging entity.
       		</documentation>
       	</annotation>
-      </element>	        
-      
-      <element name="routingConfig" minOccurs="0">	
+      </element>
+
+      <element name="routingConfig" minOccurs="0">
       	<complexType>
       		<sequence>
-      			
+
       			<element name="fieldDef" minOccurs="1" maxOccurs="unbounded">
       					<annotation>
       						<documentation>
@@ -116,7 +116,7 @@
       					</annotation>
       				<complexType>
       					<sequence>
-      					
+
       						<element name="display" type="ra:display">
       							<annotation>
       								<documentation>
@@ -124,7 +124,7 @@
       								</documentation>
       							</annotation>
       						</element>
-      						
+
       						<element name="validation" type="ra:validation">
       							<annotation>
       								<documentation>
@@ -132,7 +132,7 @@
       								</documentation>
       							</annotation>
       						</element>
-      						
+
       						<element name="quickfinder" type="ra:quickFinder" minOccurs="0">
       							<annotation>
       								<documentation>
@@ -140,7 +140,7 @@
       								</documentation>
       							</annotation>
       						</element>
-      						
+
       						<element name="fieldEvaluation" type="ra:fieldEvaluation">
       							<annotation>
       								<documentation>
@@ -148,14 +148,14 @@
       								</documentation>
       							</annotation>
       						</element>
-      						
+
       					</sequence>
 
       					<attribute name="name">
       					  	<annotation>
       					  		<documentation>
       					  		 Name of the filedDef as it is stored in the rule system. This is important because this
-      					  		 is how you reference data stored in the rule system in the xpath expression in 
+      					  		 is how you reference data stored in the rule system in the xpath expression in
       					  		 the 'filedEvaluation' element.
       					  		</documentation>
       					  	</annotation>
@@ -172,26 +172,26 @@
 								</documentation>
 							</annotation>
 						</attribute>
-					
+
 						<attribute name="workflowType" default="ALL">
 							<annotation>
 								<documentation>
 								 Determine if this field def should be render for rules, reports or both.
 								</documentation>
 							</annotation>
-						<!-- 
+						<!--
 							<simpleType>
 								<restriction base="string">
 									<enumeration value="RULE"></enumeration>
 									<enumeration value="ALL"></enumeration>
-									<enumeration value="REPORT"></enumeration>					
+									<enumeration value="REPORT"></enumeration>
 								</restriction>
 							</simpleType>
 							 -->
 						</attribute>
       				</complexType>
       			</element>
-      			
+
       			<!-- handy if you don't want to introduce xml libraries and such to your application -->
       			<element name="xmlDocumentContent" type="ra:xmlDocumentContent" minOccurs="0">
       				<annotation>
@@ -204,10 +204,10 @@
 			</sequence>
       	</complexType>
       </element>
-      
-      <!-- defines the fields that show up in document search for tying e-doc specific searches 
+
+      <!-- defines the fields that show up in document search for tying e-doc specific searches
       into workflow searches.  Everything is exactly the same as above except it is refering to document search -->
-      <element name="searchingConfig" minOccurs="0">	
+      <element name="searchingConfig" minOccurs="0">
       		<annotation>
       			<documentation>
       			 Defines the fields that show up in document search for tying e-doc specific searches into workflow
@@ -234,7 +234,7 @@
       								</documentation>
       							</annotation>
       						</element>
-      						
+
       						<element name="searchDefinition" type="ra:searchDefinition" minOccurs="0">
       						  <annotation>
       								<documentation>
@@ -242,7 +242,7 @@
       								</documentation>
       							</annotation>
       						</element>
-      						
+
       						<element name="validation" type="ra:validation" minOccurs="0">
       							<annotation>
       								<documentation>
@@ -250,7 +250,7 @@
       								</documentation>
       							</annotation>
       						</element>
-      						
+
       						<element name="quickfinder" type="ra:quickFinder" minOccurs="0">
       							<annotation>
       								<documentation>
@@ -258,7 +258,7 @@
       								</documentation>
       							</annotation>
       						</element>
-      			
+
       						<element name="fieldEvaluation" type="ra:fieldEvaluation" minOccurs="0">
       							<annotation>
       								<documentation>
@@ -280,7 +280,7 @@
   							  </restriction>
 						    </simpleType>
       					</attribute>
-						
+
 						<attribute name="title">
 							<annotation>
 								<documentation>
@@ -288,7 +288,7 @@
 								</documentation>
 							</annotation>
 						</attribute>
-						
+
 						<attribute name="workflowType" default="ALL">
 							<annotation>
 								<documentation>
@@ -315,7 +315,7 @@
       				</complexType>
       			</element>
       		</sequence>
-      		<!-- 
+      		<!--
       		     defaults below are reverse of standard impl defaults because if this element is provided
       		     we assume there is some overriding going on and these will be used as shortcuts to standard
       		     implementations such as showing all standard doc search fields or not overriding searchable
@@ -325,26 +325,26 @@
 	      	<attribute name="overrideSearchableAttributes" type="boolean" default="true" />
       	</complexType>
       </element>
-      <!-- should it be a <choice> between the following three? 
+      <!-- should it be a <choice> between the following three?
       <element ref="ra:routingConfig" minOccurs="0"/>
       <element ref="ra:searchingConfig" minOccurs="0"/>
       <element ref="ra:searchResultConfig" minOccurs="0"/>
       -->
     </all>
   </complexType>
-  
+
   <complexType name="xmlSearchContent">
 	<sequence>
         <any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
 	</sequence>
   </complexType>
-  
+
   <complexType name="xmlDocumentContent">
 	<sequence>
         <any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
 	</sequence>
   </complexType>
-  
+
   <complexType name="quickFinder">
 	<attribute name="service">
 		<annotation>
@@ -353,7 +353,7 @@
 			</documentation>
 		</annotation>
 	</attribute>
-	
+
 	<attribute name="appliesTo">
 		<annotation>
 			<documentation>
@@ -361,7 +361,7 @@
 			</documentation>
 		</annotation>
 	</attribute>
-	
+
 	<attribute name="draw">
 		<annotation>
 			<documentation>
@@ -369,9 +369,9 @@
 			</documentation>
 		</annotation>
 	</attribute>
-	
+
   </complexType>
-  
+
   <!--  used to render fieldDefs in the rule and report system -->
   <complexType name="display">
      <sequence>
@@ -399,14 +399,42 @@
                		</documentation>
                	</annotation>
                </attribute>
-			   <attribute name="selected" type="boolean" default="false" />
+   			   <attribute name="selected" type="boolean" default="false">
+               	<annotation>
+               		<documentation>
+               		 Determines if the value is selected by default.
+               		</documentation>
+               	</annotation>
+               </attribute>
              </extension>
            </simpleContent>
          </complexType>
        </element>
+
+       <element name="parameters" minOccurs="0" maxOccurs="unbounded">
+         <annotation>
+           <documentation>
+             Parameters used to display values.
+           </documentation>
+         </annotation>
+         <complexType>
+           <simpleContent>
+             <extension base="string">
+               <attribute name="name" form="unqualified" type="string">
+                <annotation>
+                  <documentation>
+                   The name of the diplay parameter.
+                  </documentation>
+                </annotation>
+               </attribute>
+             </extension>
+           </simpleContent>
+         </complexType>
+       </element>
+
      </sequence>
   </complexType>
-  
+
   <!--  used to render fieldDefs for use in doc search -->
   <complexType name="searchDefinition">
      <sequence>
@@ -419,7 +447,7 @@
      <attribute name="caseSensitive" type="boolean"/>
      <attribute name="rangeSearch" type="boolean"/>
   </complexType>
-  
+
   <complexType name="rangeDefinition">
      <sequence>
        <element name="lower" type="ra:rangeBound" minOccurs="0" maxOccurs="1"/>
@@ -491,7 +519,7 @@
       <element name="fieldAndColumn" type="ra:visibilityDecl">
       	<annotation>
       		<documentation>
-      		 The field(s) and column(s)in the template. 
+      		 The field(s) and column(s)in the template.
       		</documentation>
       	</annotation>
       </element>
@@ -499,12 +527,12 @@
   	<attribute name="show">
   		<annotation>
   			<documentation>
-  			 An attribute to show information. 
+  			 An attribute to show information.
   			</documentation>
-  	</annotation>	
+  	</annotation>
   	</attribute>
   </complexType>
-  
+
   <complexType name="visibilityDecl">
     <sequence>
     	<element name="isMemberOfWorkgroup" type="string" minOccurs="0">
@@ -523,7 +551,7 @@
   		</annotation>
   	</attribute>
   </complexType>
-  
+
   <!-- configure how the attribute should validate routing content -->
   <complexType name="validation">
   	<sequence>
@@ -534,7 +562,7 @@
   				</documentation>
   			</annotation>
   		</element>
-  		
+
   		<element name="message" type="string" minOccurs="0">
   			<annotation>
   				<documentation>
@@ -550,10 +578,10 @@
   				<enumeration value="false" />
   			</restriction>
   		</simpleType>
-  		 -->  
+  		 -->
   	</attribute>
   </complexType>
-  
+
   <complexType name="fieldEvaluation">
   	<sequence>
   		<element name="xpathexpression" type="string" >
@@ -564,8 +592,8 @@
   				</documentation>
   			</annotation>
   		</element>
-  		
+
   	</sequence>
   </complexType>
-  
+
 </schema>

@@ -17,6 +17,7 @@
 package edu.iu.uis.eden.docsearch.web;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -164,6 +165,7 @@ public class DocumentSearchAction extends WorkflowAction {
         String previousDocTypeName = docSearchForm.getDocTypeDisplayName();
         DocumentSearchResultComponents results = null;
         SavedSearchResult result = null;
+        try {
         if (docSearchForm.getNamedSearch() != null && !"".equals(docSearchForm.getNamedSearch()) && !"ignore".equals(docSearchForm.getNamedSearch())) {
             result = getDocumentSearchService().getSavedSearchResults(getUserSession(request).getWorkflowUser(), docSearchForm.getNamedSearch());
 //            DocSearchCriteriaVO criteria = result.getDocSearchCriteriaVO();
@@ -190,17 +192,17 @@ public class DocumentSearchAction extends WorkflowAction {
         } else {
         	docSearchForm.addSearchableAttributesToCriteria();
         	DocSearchCriteriaVO criteria = docSearchForm.getCriteria();
-            try {
             	if (docSearchForm.isInitiatorUser()) {
             		criteria.setInitiator(getUserSession(request).getNetworkId());
             	}
                 results = getDocumentSearchService().getList(getUserSession(request).getWorkflowUser(), docSearchForm.getCriteria());
                 result = new SavedSearchResult(criteria, results);
-            } catch (Exception e) {
-                establishFinalState(request, docSearchForm);
-                throw e;
-            }
         }
+        } catch (Exception e) {
+            establishFinalState(request, docSearchForm);
+            throw e;
+        }
+
         List columns = results.getColumns();
         MessageResources mr = getResources(request);
         mr.setReturnNull(true);
@@ -412,9 +414,9 @@ public class DocumentSearchAction extends WorkflowAction {
                         Long value1 = (property1 != null) ? (Long) property1 : Long.MIN_VALUE;
                         Long value2 = (property2 != null) ? (Long) property2 : Long.MIN_VALUE;
                         compare = value1.compareTo(value2);
-                    } else if ( (property1 instanceof Float) || (property2 instanceof Float) ) {
-                        Float value1 = (property1 != null) ? (Float) property1 : Float.MIN_VALUE;
-                        Float value2 = (property2 != null) ? (Float) property2 : Float.MIN_VALUE;
+                    } else if ( (property1 instanceof BigDecimal) || (property2 instanceof BigDecimal) ) {
+                        BigDecimal value1 = (property1 != null) ? (BigDecimal) property1 : BigDecimal.ZERO;
+                        BigDecimal value2 = (property2 != null) ? (BigDecimal) property2 : BigDecimal.ZERO;
                         compare = value1.compareTo(value2);
                     } else if ( (property1 instanceof Timestamp) || (property2 instanceof Timestamp) ) {
                         Timestamp value1 = (Timestamp) property1;

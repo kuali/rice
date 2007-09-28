@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -58,6 +58,7 @@ public interface WorkflowUtility extends Remote {
     public Long getNewResponsibilityId() throws RemoteException, WorkflowException;
     public WorkgroupVO[] getUserWorkgroups(UserIdVO userId) throws RemoteException, WorkflowException;
     public ActionRequestVO[] getActionRequests(Long documentId) throws RemoteException, WorkflowException;
+    public ActionRequestVO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdVO userId) throws RemoteException, WorkflowException;
     public ActionTakenVO[] getActionsTaken(Long documentId) throws RemoteException, WorkflowException;
     public WorkflowAttributeValidationErrorVO[] validateWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionVO definition) throws RemoteException, WorkflowException;
     public boolean isUserInRouteLog(Long documentId, UserIdVO userId, boolean lookFuture) throws RemoteException, WorkflowException;
@@ -67,35 +68,35 @@ public interface WorkflowUtility extends Remote {
     //public RouteHeaderDetailVO routingSimulation(RouteHeaderDetailVO detail, ActionTakenVO[] actionsToTake) throws RemoteException, WorkflowException;
     public boolean isFinalApprover(Long documentId, UserIdVO userId) throws RemoteException, WorkflowException;
     public boolean isSuperUserForDocumentType(UserIdVO userId, Long documentTypeId) throws RemoteException, WorkflowException;
-    
+
     // new in 2.3
-    
+
     public RuleVO[] ruleReport(RuleReportCriteriaVO ruleReportCriteria) throws RemoteException, WorkflowException;
-    
+
     // deprecated as of 2.1
-    
+
     /**
      * @deprecated use isLastApproverAtNode instead
      */
     public boolean isLastApproverInRouteLevel(Long routeHeaderId, UserIdVO userId, Integer routeLevel) throws RemoteException, WorkflowException;
-    
+
     /**
      * @deprecated use routeNodeHasApproverActionRequest instead
      */
     public boolean routeLevelHasApproverActionRequest(String docType, String docContent, Integer routeLevel) throws RemoteException, WorkflowException;
-    
+
     // new in 2.1
-    
+
     public boolean isLastApproverAtNode(Long documentId, UserIdVO userId, String nodeName) throws RemoteException, WorkflowException;
     public boolean routeNodeHasApproverActionRequest(String docType, String docContent, String nodeName) throws RemoteException, WorkflowException;
     public RouteNodeInstanceVO[] getDocumentRouteNodeInstances(Long documentId) throws RemoteException, WorkflowException;
     public RouteNodeInstanceVO[] getActiveNodeInstances(Long documentId) throws RemoteException, WorkflowException;
     public RouteNodeInstanceVO[] getTerminalNodeInstances(Long documentId) throws RemoteException, WorkflowException;
-    public DocumentContentVO getDocumentContent(Long routeHeaderId) throws RemoteException, WorkflowException; 
-    
+    public DocumentContentVO getDocumentContent(Long routeHeaderId) throws RemoteException, WorkflowException;
+
     //2.2
     public String[] getPreviousRouteNodeNames(Long documentId) throws RemoteException, WorkflowException;
-    
+
     // 2.4
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes) throws RemoteException;
 }

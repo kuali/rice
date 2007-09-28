@@ -42,7 +42,6 @@ import org.springframework.transaction.support.TransactionTemplate;
  * Lifecycle class to clean up the database for use in testing.
  *
  * @author
- * @version $Revision: 1.2.2.4 $ $Date: 2007-09-21 21:30:51 $
  * @since 0.9
  *
  */

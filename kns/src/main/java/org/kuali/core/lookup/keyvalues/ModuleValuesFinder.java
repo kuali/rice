@@ -31,7 +31,7 @@ public class ModuleValuesFinder extends KeyValuesBase {
     public List getKeyValues() {
         List keyValues = new ArrayList();
         keyValues.add(new KeyLabelPair("", ""));
-        keyValues.add(getKeyLabelPair(RiceConstants.CROSS_MODULE_CODE, RiceConstants.CROSS_MODULE_NAME));
+        //keyValues.add(getKeyLabelPair(RiceConstants.CROSS_MODULE_CODE, RiceConstants.CROSS_MODULE_NAME));
         for (KualiModule kualiModule : KNSServiceLocator.getKualiModuleService().getInstalledModules()) {
             keyValues.add(getKeyLabelPair(kualiModule.getModuleCode(), kualiModule.getModuleName()));
         }

@@ -48,17 +48,12 @@
 <head>
 	<script>var jsContextPath = "${pageContext.request.contextPath}";</script>
 	<title><bean:message key="app.title" /> :: ${headerTitle}</title>
-	<link href="${pageContext.request.contextPath}/kr/css/kuali.css" rel="stylesheet" type="text/css" />
-	<script language="JavaScript" src="${pageContext.request.contextPath}/kr/scripts/core.js" type="text/javascript"></script>
-	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/kr/scripts/dhtml.js"></script>
-	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/kr/scripts/my_common.js"></script>
-	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/kr/scripts/jscalendar-1.0/calendar.js"></script>
-	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/kr/scripts/jscalendar-1.0/lang/calendar-en.js"></script>
-	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/kr/scripts/jscalendar-1.0/calendar-setup.js"></script>
-	<link href="${pageContext.request.contextPath}/kr/scripts/jscalendar-1.0/calendar-win2k-1.css" rel="stylesheet" type="text/css" />
-	<%-- DWR Support Scripts --%>
-	<script language="JavaScript" src="${pageContext.request.contextPath}/dwr/engine.js" type="text/javascript"></script>
-	<script language="JavaScript" src="${pageContext.request.contextPath}/dwr/util.js" type="text/javascript"></script>
+<c:forEach items="${fn:split(ConfigProperties.css.files, ',')}" var="cssFile">
+	<link href="${pageContext.request.contextPath}/${cssFile}" rel="stylesheet" type="text/css" />
+</c:forEach>
+<c:forEach items="${fn:split(ConfigProperties.javascript.files, ',')}" var="javascriptFile">
+	<script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/${javascriptFile}"></script>
+</c:forEach>
 	<c:choose>
 		<c:when test="${lookup}" >
 			  <c:if test="${not empty KualiForm.headerNavigationTabs}">

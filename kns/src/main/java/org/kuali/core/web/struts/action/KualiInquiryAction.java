@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,12 +34,16 @@ import org.kuali.RiceConstants;
 import org.kuali.RiceKeyConstants;
 import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.bo.BusinessObject;
+import org.kuali.core.document.MaintenanceDocument;
 import org.kuali.core.exceptions.AuthorizationException;
 import org.kuali.core.exceptions.ModuleAuthorizationException;
 import org.kuali.core.inquiry.Inquirable;
+import org.kuali.core.maintenance.Maintainable;
+import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.service.EncryptionService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.web.struts.form.InquiryForm;
+import org.kuali.core.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.KNSServiceLocator;
 
 /**
@@ -84,70 +88,108 @@ public class KualiInquiryAction extends KualiAction {
             throw new RuntimeException("Business object name not given.");
         }
 
-
-        EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
-
-        // List of encrypted values
-        String encryptedString = request.getParameter(RiceConstants.ENCRYPTED_LIST_PREFIX);
-        List encryptedList = new ArrayList();
-        if (StringUtils.isNotBlank(encryptedString)) {
-            encryptedList = Arrays.asList(StringUtils.split(encryptedString, RiceConstants.FIELD_CONVERSIONS_SEPERATOR));
-        }
-
-        Class businessObjectClass = Class.forName(inquiryForm.getBusinessObjectClassName());
-
-        // build list of key values from request, if all keys not given throw error
-        List boKeys = KNSServiceLocator.getPersistenceStructureService().listPrimaryKeyFieldNames(businessObjectClass);
-        Map fieldValues = new HashMap();
-        boolean hasRequiredKeys = true;
-        for (Iterator iter = boKeys.iterator(); iter.hasNext();) {
-            String element = (String) iter.next();
-
-            if (request.getParameter(element) != null) {
-                String parameter = request.getParameter(element);
-
-                // Check if this element was encrypted, if it was decrypt it
-                if (encryptedList.contains(element)) {
-                    parameter = encryptionService.decrypt(parameter);
-                }
-
-                fieldValues.put(element, parameter);
-            }
-            else {
-                hasRequiredKeys = false;
-            }
-        }
-        if (!hasRequiredKeys) {
-            LOG.error("All keys not given to lookup for bo class name " + businessObjectClass.getName());
-            throw new RuntimeException("All keys not given to lookup for bo class name " + businessObjectClass.getName());
-        }
-
-        Class customInquirableClass = null;
-
-        try {
-            customInquirableClass = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryForm.getBusinessObjectClassName()).getInquiryDefinition().getInquirableClass();
-        }
-        catch (Exception e) {
-            LOG.error("Unable to correlate business object class with maintenance document entry");
-        }
-
-        Inquirable kualiInquirable = KNSServiceLocator.getKualiInquirable(); // get inquirable impl from Spring
-
-        if (customInquirableClass != null) {
-            Class[] defaultConstructor = new Class[] {};
-            Constructor cons = customInquirableClass.getConstructor(defaultConstructor);
-            kualiInquirable = (Inquirable) cons.newInstance();
-        }
-
-        // retrieve the business object
-        kualiInquirable.setBusinessObjectClass(businessObjectClass);
-        BusinessObject bo = kualiInquirable.getBusinessObject(fieldValues);
+        BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
         if (bo == null) {
             LOG.error("No records found in inquiry action.");
             GlobalVariables.getErrorMap().putError(RiceConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
             request.setAttribute("backLocation", request.getParameter("returnLocation"));
-            return mapping.findForward("inquiryError");
+            return mapping.findForward("error");
         }
+
+        populateSections(mapping, request, inquiryForm, bo);
+
+        Inquirable kualiInquirable = inquiryForm.getInquirable();
+
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    /**
+     * Turns on (or off) the inactive record display for a maintenance collection.
+     */
+    public ActionForward toggleInactiveRecordDisplay(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        InquiryForm inquiryForm = (InquiryForm) form;
+        if (inquiryForm.getBusinessObjectClassName() == null) {
+            LOG.error("Business object name not given.");
+            throw new RuntimeException("Business object name not given.");
+                }
+
+        BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
+        if (bo == null) {
+            LOG.error("No records found in inquiry action.");
+            GlobalVariables.getErrorMap().putError(RiceConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
+            request.setAttribute("backLocation", request.getParameter("returnLocation"));
+            return mapping.findForward("error");
+            }
+
+        Inquirable kualiInquirable = inquiryForm.getInquirable();
+        //////////////////////////////
+        String collectionName = extractCollectionName(request, RiceConstants.TOGGLE_INACTIVE_METHOD);
+        if (collectionName == null) {
+            LOG.error("Unable to get find collection name in request.");
+            throw new RuntimeException("Unable to get find collection class in request.");
+            }
+        String parameterName = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
+        boolean showInactive = Boolean.parseBoolean(StringUtils.substringBetween(parameterName, RiceConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL, "."));
+        kualiInquirable.setShowInactiveRecords(collectionName, showInactive);
+        //////////////////////////////
+
+        populateSections(mapping, request, inquiryForm, bo);
+
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        }
+
+
+    @Override
+    public ActionForward toggleTab(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        InquiryForm inquiryForm = (InquiryForm) form;
+        if (inquiryForm.getBusinessObjectClassName() == null) {
+            LOG.error("Business object name not given.");
+            throw new RuntimeException("Business object name not given.");
+        }
+
+        BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
+        if (bo == null) {
+            LOG.error("No records found in inquiry action.");
+            GlobalVariables.getErrorMap().putError(RiceConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
+            request.setAttribute("backLocation", request.getParameter("returnLocation"));
+            return mapping.findForward("error");
+        }
+
+        populateSections(mapping, request, inquiryForm, bo);
+
+        Inquirable kualiInquirable = inquiryForm.getInquirable();
+
+        return super.toggleTab(mapping, form, request, response);
+        }
+
+    /**
+     * Convert a Request into a Map<String,String>. Technically, Request parameters do not neatly translate into a Map of Strings,
+     * because a given parameter may legally appear more than once (so a Map of String[] would be more accurate.) This method should
+     * be safe for business objects, but may not be reliable for more general uses.
+     */
+    protected String extractCollectionName(HttpServletRequest request, String methodToCall) {
+        // collection name and underlying object type from request parameter
+        String parameterName = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
+        String collectionName = null;
+        if (StringUtils.isNotBlank(parameterName)) {
+            collectionName = StringUtils.substringBetween(parameterName, methodToCall + ".", ".(");
+        }
+        return collectionName;
+    }
+
+    protected BusinessObject retrieveBOFromInquirable(InquiryForm inquiryForm) {
+	Inquirable kualiInquirable = inquiryForm.getInquirable();
+        // retrieve the business object
+        BusinessObject bo = kualiInquirable.getBusinessObject(inquiryForm.getInquiryPrimaryKeys());
+        if (bo == null) {
+            LOG.error("No records found in inquiry action.");
+            GlobalVariables.getErrorMap().putError(RiceConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
+        }
+        return bo;
+    }
+
+    protected void populateSections(ActionMapping mapping, HttpServletRequest request, InquiryForm inquiryForm, BusinessObject bo) {
+	Inquirable kualiInquirable = inquiryForm.getInquirable();
 
         // get list of populated sections for display
         List sections = kualiInquirable.getSections(bo);
@@ -157,7 +199,6 @@ public class KualiInquiryAction extends KualiAction {
         kualiInquirable.addAdditionalSections(sections, bo);
 
         request.setAttribute(RiceConstants.INQUIRABLE_ATTRIBUTE_NAME, kualiInquirable);
-        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
 }

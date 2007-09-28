@@ -23,7 +23,8 @@ import org.apache.commons.logging.LogFactory;
  */
 public class HelpDefinition extends DataDictionaryDefinitionBase {
 
-    private String securityGroupName;
+    private String parameterNamespace;
+    private String parameterDetailType;
     private String parameterName;
 
     private static Log LOG = LogFactory.getLog(HelpDefinition.class);
@@ -58,26 +59,44 @@ public class HelpDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(parameterName)) {
             throw new IllegalArgumentException("invalid (blank) parameterName");
         }
-        LOG.debug("calling setParameterName '" + parameterName + "'");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("calling setParameterName '" + parameterName + "'");
+        }
         this.parameterName = parameterName;
     }
 
     /**
      * @return
      */
-    public String getSecurityGroupName() {
-        return securityGroupName;
+    public String getParameterNamespace() {
+        return parameterNamespace;
     }
 
     /**
-     * @param securityGroupName
+     * @param parameterNamespace
      */
-    public void setSecurityGroupName(String securityGroupName) {
-        if (StringUtils.isBlank(securityGroupName)) {
-            throw new IllegalArgumentException("invalid (blank) securityGroupName");
+    public void setParameterNamespace(String parameterNamespace) {
+        if (StringUtils.isBlank(parameterNamespace)) {
+            throw new IllegalArgumentException("invalid (blank) parameterNamespace");
         }
-        LOG.debug("calling setSecurityGroupName '" + securityGroupName + "'");
-        this.securityGroupName = securityGroupName;
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("calling setParameterNamespace '" + parameterNamespace + "'");
+        }
+        this.parameterNamespace = parameterNamespace;
     }
+
+	public String getParameterDetailType() {
+		return this.parameterDetailType;
+	}
+
+	public void setParameterDetailType(String parameterDetailType) {
+        if (StringUtils.isBlank(parameterDetailType)) {
+            throw new IllegalArgumentException("invalid (blank) parameterDetailType");
+        }
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("calling setParameterDetailType '" + parameterDetailType + "'");
+        }
+		this.parameterDetailType = parameterDetailType;
+	}
 
 }

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,19 +47,24 @@ import edu.iu.uis.eden.exception.WorkflowException;
 public class WorkflowUtilityServiceEndpoint implements WorkflowUtility {
 
 	private WorkflowUtility utility;
-	
+
     public void init(Object context) {
     	// fetch the service directly from the SpringLoader to gaurantee we are fetching the local, in-memory service
         this.utility = (WorkflowUtility)SpringLoader.getInstance().getService(new QName(KEWServiceLocator.WORKFLOW_UTILITY_SERVICE));
 //    	this.utility = ;
     }
-    
+
     public void destroy() {}
 
 	public ActionRequestVO[] getActionRequests(Long routeHeaderId) throws RemoteException, WorkflowException {
 		return utility.getActionRequests(routeHeaderId);
 	}
-    
+
+	    public ActionRequestVO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdVO userId) throws RemoteException, WorkflowException {
+	        return utility.getActionRequests(routeHeaderId, nodeName, userId);
+	    }
+
+
 	public WorkflowAttributeValidationErrorVO[] validateWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionVO definition) throws RemoteException, WorkflowException {
         return utility.validateWorkflowAttributeDefinitionVO(definition);
     }
@@ -131,7 +136,7 @@ public class WorkflowUtilityServiceEndpoint implements WorkflowUtility {
 	public boolean routeLevelHasApproverActionRequest(String docType, String docContent, Integer routeLevel) throws RemoteException, WorkflowException {
 		return utility.routeLevelHasApproverActionRequest(docType, docContent, routeLevel);
 	}
-    
+
     public boolean routeNodeHasApproverActionRequest(String docType, String docContent, String nodeName) throws RemoteException, WorkflowException {
         return utility.routeNodeHasApproverActionRequest(docType, docContent, nodeName);
     }
@@ -171,7 +176,7 @@ public class WorkflowUtilityServiceEndpoint implements WorkflowUtility {
 	public String[] getPreviousRouteNodeNames(Long documentId) throws RemoteException, WorkflowException {
 		return utility.getPreviousRouteNodeNames(documentId);
 	}
-    
+
     public RuleVO[] ruleReport(RuleReportCriteriaVO ruleReportCriteria) throws RemoteException, WorkflowException {
         return utility.ruleReport(ruleReportCriteria);
     }

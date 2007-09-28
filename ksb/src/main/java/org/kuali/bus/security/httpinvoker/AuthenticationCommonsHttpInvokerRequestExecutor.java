@@ -35,7 +35,6 @@ import edu.iu.uis.eden.messaging.ServiceInfo;
  * Authorization header.
  * 
  * @author Scott Battaglia
- * @version $Revision: 1.2.2.1 $ $Date: 2007-08-15 16:05:05 $
  * @since 0.9
  */
 public final class AuthenticationCommonsHttpInvokerRequestExecutor extends

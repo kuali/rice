@@ -537,7 +537,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 }
             }
             if (!foundMatch) {
-            	existingRow.addSearchableAttribute(new KeyValueSort(newData.getKey(),newRowValue,newData.getSortValue()));
+            	existingRow.addSearchableAttribute(new KeyValueSort(newData));
             }
     	}
     }
@@ -586,7 +586,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         	searchAttValue.setSearchableAttributeKey(rs.getString(prefixName + "_KEY"));
         	searchAttValue.setupAttributeValue(rs, prefixName + "_VALUE");
         	if ( (!Utilities.isEmpty(searchAttValue.getSearchableAttributeKey())) && (searchAttValue.getSearchableAttributeValue() != null) ) {
-        		docSearchVO.addSearchableAttribute(new KeyValueSort(searchAttValue.getSearchableAttributeKey(),searchAttValue.getSearchableAttributeDisplayValue(),searchAttValue.getSearchableAttributeValue()));
+        	    docSearchVO.addSearchableAttribute(new KeyValueSort(searchAttValue.getSearchableAttributeKey(),searchAttValue.getSearchableAttributeDisplayValue(),searchAttValue.getSearchableAttributeValue(),searchAttValue));
         	}
 		}
 

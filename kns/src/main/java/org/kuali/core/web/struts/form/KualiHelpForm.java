@@ -36,7 +36,8 @@ public class KualiHelpForm extends KualiForm {
     private String helpMaxLength;
     private String helpVPatName;
     private HelpDefinition helpDefinition;
-    private String helpSecurityGroupName;
+    private String helpParameterNamespace;
+    private String helpParameterDetailType;
     private String helpParameterName;
     private String pageName;
 
@@ -236,12 +237,12 @@ public class KualiHelpForm extends KualiForm {
         this.helpParameterName = helpParameterName;
     }
 
-    public String getHelpSecurityGroupName() {
-        return helpSecurityGroupName;
+    public String getHelpParameterNamespace() {
+        return helpParameterNamespace;
     }
 
-    public void setHelpSecurityGroupName(String helpSecurityGroupName) {
-        this.helpSecurityGroupName = helpSecurityGroupName;
+    public void setHelpParameterNamespace(String helpSecurityGroupName) {
+        this.helpParameterNamespace = helpSecurityGroupName;
     }
 
     public String getPageName() {
@@ -251,4 +252,12 @@ public class KualiHelpForm extends KualiForm {
     public void setPageName(String pageName) {
         this.pageName = pageName;
     }
+
+	public String getHelpParameterDetailType() {
+		return this.helpParameterDetailType;
+	}
+
+	public void setHelpParameterDetailType(String helpParameterDetailType) {
+		this.helpParameterDetailType = helpParameterDetailType;
+	}
 }

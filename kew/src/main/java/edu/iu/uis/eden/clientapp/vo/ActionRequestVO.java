@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,19 +24,19 @@ import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 
 /**
  * A transport object representing a {@link ActionRequestValue}.
- * 
+ *
  * @author ewestfal
  * @author rkirkend
- * 
+ *
  * @workflow.webservice-object
  */
 public class ActionRequestVO implements Serializable {
-    
+
     private final static String ACKNOWLEDGE_REQ = "K";
     private final static String FYI_REQ = "F";
     private final static String APPROVE_REQ = "A";
     private final static String COMPLETE_REQ = "C";
-    
+
     static final long serialVersionUID = 1074824814950100121L;
     private Long actionRequestId;
     private String actionRequested;
@@ -70,9 +70,9 @@ public class ActionRequestVO implements Serializable {
     private ActionTakenVO actionTaken;
     private String nodeName;
     private Long nodeInstanceId;
-    
+
     public ActionRequestVO() {}
-    
+
     public String getRoleName() {
         return roleName;
     }
@@ -104,7 +104,7 @@ public class ActionRequestVO implements Serializable {
     public Integer getDocVersion() {
         return docVersion;
     }
-    
+
     public Integer getPriority() {
         return priority;
     }
@@ -204,15 +204,15 @@ public class ActionRequestVO implements Serializable {
     public String getApprovePolicy() {
         return approvePolicy;
     }
-    
+
     public void setApprovePolicy(String approvePolicy) {
         this.approvePolicy = approvePolicy;
     }
-    
+
     public Boolean getIgnorePrevAction() {
         return ignorePrevAction;
     }
-    
+
     public UserVO getUserVO() {
         return userVO;
     }
@@ -230,7 +230,7 @@ public class ActionRequestVO implements Serializable {
     }
 
     public boolean isNotificationRequest() {
-        return ACKNOWLEDGE_REQ.equals(actionRequested) || FYI_REQ.equals(actionRequested);
+        return isAcknowledgeRequest() || isFyiRequest();
     }
 
     public boolean isApprovalRequest() {
@@ -242,7 +242,7 @@ public class ActionRequestVO implements Serializable {
     }
 
     /**
-     * 
+     *
      * @return
      * @deprecated
      */
@@ -262,30 +262,34 @@ public class ActionRequestVO implements Serializable {
         return ACKNOWLEDGE_REQ.equals(actionRequested);
     }
 
+    public boolean isFyiRequest() {
+        return FYI_REQ.equals(actionRequested);
+    }
+
     public boolean isPending() {
         return isInitialized() || isActivated();
     }
-    
+
     public boolean isCompleteRequest() {
         return EdenConstants.ACTION_REQUEST_COMPLETE_REQ.equals(actionRequested);
     }
-    
+
     public boolean isInitialized() {
         return EdenConstants.ACTION_REQUEST_INITIALIZED.equals(status);
     }
-    
+
     public boolean isActivated() {
         return EdenConstants.ACTION_REQUEST_ACTIVATED.equals(status);
     }
-    
+
     public boolean isDone() {
         return EdenConstants.ACTION_REQUEST_DONE_STATE.equals(status);
     }
-    
+
     public boolean isUserRequest() {
         return EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
-    
+
     public boolean isWorkgroupRequest() {
         return EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
@@ -293,29 +297,29 @@ public class ActionRequestVO implements Serializable {
     public boolean isRoleRequest() {
         return EdenConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD.equals(getRecipientTypeCd());
     }
-        
+
     public UserIdVO getUserIdVO() {
         return userIdVO;
     }
     public void setUserIdVO(UserIdVO userIdVO) {
         this.userIdVO = userIdVO;
     }
-    
+
     public Boolean getCurrentIndicator() {
         return currentIndicator;
     }
-    
+
     public void setCurrentIndicator(Boolean currentIndicator) {
         this.currentIndicator = currentIndicator;
     }
-    
+
     public String getDelegationType() {
         return delegationType;
     }
     public void setDelegationType(String delegationType) {
         this.delegationType = delegationType;
     }
-    
+
     public ActionRequestVO getParentActionRequest() {
         return parentActionRequest;
     }
@@ -328,7 +332,7 @@ public class ActionRequestVO implements Serializable {
     public void setParentActionRequestId(Long parentActionRequestId) {
         this.parentActionRequestId = parentActionRequestId;
     }
-    
+
     public String getQualifiedRoleName() {
         return qualifiedRoleName;
     }
@@ -349,14 +353,14 @@ public class ActionRequestVO implements Serializable {
 	public void setActionTaken(ActionTakenVO actionTaken) {
 		this.actionTaken = actionTaken;
 	}
-    
+
     public ActionRequestVO[] getChildrenRequests() {
         return childrenRequests;
     }
     public void setChildrenRequests(ActionRequestVO[] childrenRequests) {
         this.childrenRequests = childrenRequests;
     }
-    
+
     public void addChildRequest(ActionRequestVO childRequest) {
     	if (getChildrenRequests() == null) {
     		setChildrenRequests(new ActionRequestVO[0]);
@@ -366,11 +370,11 @@ public class ActionRequestVO implements Serializable {
     	newChildrenRequests[getChildrenRequests().length] = childRequest;
     	setChildrenRequests(newChildrenRequests);
     }
-    
+
     public String getNodeName() {
         return nodeName;
     }
-    
+
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
@@ -382,7 +386,7 @@ public class ActionRequestVO implements Serializable {
     public void setNodeInstanceId(Long nodeInstanceId) {
         this.nodeInstanceId = nodeInstanceId;
     }
-    
+
     public boolean isDelegateRequest() {
         if (getParentActionRequest() != null) {
             if (getParentActionRequest().isRoleRequest()) {
@@ -392,19 +396,19 @@ public class ActionRequestVO implements Serializable {
         }
         return false;
     }
-    
+
     public boolean isAdHocRequest() {
     	return EdenConstants.ADHOC_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
-    
+
     public boolean isGeneratedRequest() {
     	return EdenConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
-    
+
     public boolean isExceptionRequest() {
     	return EdenConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
-    
+
     public boolean isRouteModuleRequest() {
     	return getResponsibilityId().longValue() > 0;
     }

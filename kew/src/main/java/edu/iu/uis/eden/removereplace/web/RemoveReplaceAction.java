@@ -31,10 +31,12 @@ import org.apache.struts.action.ActionMessages;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.clientapp.IDocHandler;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowException;
+import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.removereplace.RemoveReplaceDocument;
 import edu.iu.uis.eden.removereplace.RuleTarget;
 import edu.iu.uis.eden.removereplace.WorkgroupTarget;
@@ -115,6 +117,22 @@ public class RemoveReplaceAction extends WorkflowAction {
 	    HttpServletResponse response) throws Exception {
 	return mapping.findForward("basic");
     }
+
+    public ActionForward docHandler(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        RemoveReplaceForm form = (RemoveReplaceForm) actionForm;
+        if (IDocHandler.INITIATE_COMMAND.equalsIgnoreCase(form.getCommand())) {
+            return start(mapping, form, request, response);
+        }
+        Long documentId = form.getDocId();
+        RemoveReplaceDocument removeReplaceDocument = KEWServiceLocator.getRemoveReplaceDocumentService().findById(documentId);
+        if (removeReplaceDocument == null) {
+            // TODO better error message
+            throw new WorkflowRuntimeException("Could not locate Remove/Replace User Document with ID " + documentId);
+        }
+        form.setDocument(removeReplaceDocument);
+        return mapping.findForward("docHandler");
+    }
+
 
     public ActionForward chooseRules(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request,
 	    HttpServletResponse response) throws Exception {

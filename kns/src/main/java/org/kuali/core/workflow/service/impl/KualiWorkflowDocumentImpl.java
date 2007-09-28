@@ -25,6 +25,7 @@ import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.KNSServiceLocator;
 
+import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
 import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
@@ -167,15 +168,11 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument {
      * @return
      */
     public String getRoutedByUserNetworkId() {
-        // TODO delyea - JIRA THIS for RNE
-        return workflowDocument.getRouteHeader().getInitiator().getNetworkId();
-//        return workflowDocument.getRouteHeader().getRoutedByUser().getNetworkId();
+        return workflowDocument.getRouteHeader().getRoutedByUser().getNetworkId();
     }
 
     private String getRoutedByUserUuId() {
-        // TODO delyea - JIRA THIS for RNE
-        return workflowDocument.getRouteHeader().getInitiator().getUuId();
-//        return workflowDocument.getRouteHeader().getRoutedByUser().getUuId();
+        return workflowDocument.getRouteHeader().getRoutedByUser().getUuId();
     }
     
     public String getTitle() {
@@ -200,6 +197,10 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument {
 
     public void superUserApprove(String annotation) throws WorkflowException {
         workflowDocument.superUserApprove(annotation);
+    }
+
+    public void superUserActionRequestApprove(Long actionRequestId, String annotation) throws WorkflowException {
+	workflowDocument.superUserActionRequestApprove(actionRequestId, annotation);
     }
 
     public void superUserCancel(String annotation) throws WorkflowException {
@@ -508,6 +509,13 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument {
         return workflowDocument.getNodeNames();
     }
 
+    public String getCurrentRouteNodeNames() {
+	return workflowDocument.getRouteHeader().getCurrentRouteNodeNames();
+    }
+
+    public boolean isStandardSaveAllowed() {
+        return workflowDocument.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_SAVED_CD);
+    }
 
     /**
      * @see java.lang.Object#toString()

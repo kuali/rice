@@ -180,6 +180,11 @@ public interface BusinessObjectDictionaryService {
 
 
     /**
+     * the class to be used for building inquiry pages.
+     */
+    public Class getInquirableClass(Class businessObjectClass);
+    
+    /**
      * the text to be displayed for the title of business object maintenance document.
      */
     public String getMaintainableLabel(Class businessObjectClass);

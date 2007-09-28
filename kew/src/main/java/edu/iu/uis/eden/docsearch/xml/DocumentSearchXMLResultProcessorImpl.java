@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,9 @@ package edu.iu.uis.eden.docsearch.xml;
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -56,9 +58,9 @@ public class DocumentSearchXMLResultProcessorImpl extends StandardDocumentSearch
 		List<Column> displayColumns = new ArrayList<Column>();
 		if (customDisplayColumns.isEmpty()) {
 			XPath xpath = XPathHelper.newXPath();
-			String findField = "//searchResultConfig/column";
+			String xPathExpression = "//searchResultConfig/column";
 			try {
-				NodeList nodes = (NodeList) xpath.evaluate(findField, getConfigXML(), XPathConstants.NODESET);
+				NodeList nodes = (NodeList) xpath.evaluate(xPathExpression, getConfigXML(), XPathConstants.NODESET);
 	            if (nodes == null) {
 	                LOG.error("Could not find searching configuration columns (<searchResultConfig><column>) for this DocumentSearchXMLResultProcessor");
 	            } else {
@@ -68,14 +70,14 @@ public class DocumentSearchXMLResultProcessorImpl extends StandardDocumentSearch
 	    				String key = (fieldAttributes.getNamedItem("name") != null) ? fieldAttributes.getNamedItem("name").getNodeValue().trim() : null;
 	    				String title = (fieldAttributes.getNamedItem("title") != null) ? fieldAttributes.getNamedItem("title").getNodeValue().trim() : null;
 	    				String sortable = (fieldAttributes.getNamedItem("sortable") != null) ? fieldAttributes.getNamedItem("sortable").getNodeValue().trim() : null;
-	    				Column currentColumn = new Column(title,sortable,"","",key);
+	    				Column currentColumn = new Column(title,sortable,"","",key,new HashMap<String,String>());
 	    				displayColumns.add(currentColumn);
 	    			}
 	    			customDisplayColumns = displayColumns;
 	            }
 			} catch (XPathExpressionException e) {
 				LOG.error("error in getCustomDisplayColumns ", e);
-				throw new RuntimeException("Error trying to find xml content with xpath expression", e);
+				throw new RuntimeException("Error trying to find xml content with xpath expression: " + xPathExpression, e);
 			} catch (Exception e) {
 				LOG.error("error in getCustomDisplayColumns attempting to find xml custon columns", e);
 				throw new RuntimeException("Error trying to get xml custom columns.", e);
@@ -83,7 +85,7 @@ public class DocumentSearchXMLResultProcessorImpl extends StandardDocumentSearch
 		}
 		return customDisplayColumns;
 	}
-	
+
 	@Override
 	public boolean getShowAllStandardFields() {
 		boolean returnValue = DEFAULT_SHOW_ALL_STANDARD_FIELDS_VALUE;
@@ -104,7 +106,7 @@ public class DocumentSearchXMLResultProcessorImpl extends StandardDocumentSearch
 		}
 		return returnValue;
 	}
-	
+
 	@Override
 	public boolean getOverrideSearchableAttributes() {
 		boolean returnValue = DEFAULT_OVERRIDE_SEARCHABLE_ATTRIBUTES_VALUE;

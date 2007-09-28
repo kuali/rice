@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,12 +29,12 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.util.Utilities;
 
 /**
- * Transport object for the {@link DocumentRouteHeaderValue}.  Represents a document to the 
+ * Transport object for the {@link DocumentRouteHeaderValue}.  Represents a document to the
  * client programmer
- * 
+ *
  * @author rkirkend
  * @author ewestfal
- * 
+ *
  * @workflow.webservice-object
  */
 public class RouteHeaderVO implements Serializable {
@@ -43,20 +43,21 @@ public class RouteHeaderVO implements Serializable {
     static final long serialVersionUID = -677289794727007572L;
 
     private Long routeHeaderId;
-    private String docRouteStatus; 
-    private Calendar dateCreated; 
-    private Calendar dateLastModified; 
-    private Calendar dateApproved; 
-    private Calendar dateFinalized; 
-    //private String docContent; 
-    private String docTitle; 
-    private String appDocId; 
-    private String overrideInd; 
-    private UserVO initiator; 
+    private String docRouteStatus;
+    private Calendar dateCreated;
+    private Calendar dateLastModified;
+    private Calendar dateApproved;
+    private Calendar dateFinalized;
+    //private String docContent;
+    private String docTitle;
+    private String appDocId;
+    private String overrideInd;
+    private UserVO initiator;
     private UserVO routedByUser;
     private Integer docRouteLevel;
     //private String[] nodeNames;
-    private Integer docVersion; 
+    private String currentRouteNodeNames;
+    private Integer docVersion;
     /**
      * @deprecated this is unreliable user docTypeId to retrieve document type
      */
@@ -69,19 +70,27 @@ public class RouteHeaderVO implements Serializable {
     private boolean userBlanketApprover;
     private Long docTypeId;
     //private DocumentContentVO documentContent = new DocumentContentVO();
-    private ValidActionsVO validActions; 
-    
+    private ValidActionsVO validActions;
+
     //** Modify for adding notes to web service. Modify Date: April 7, 2006
     private NoteVO[] notes = null;
     private NoteVO[] notesToDelete = null;
     //** Modify ends
-    
+
     /**
      * Probably needs to be an array for web services
      */
     private List variables = new ArrayList();
 
     public RouteHeaderVO() { }
+
+    public String getCurrentRouteNodeNames() {
+        return currentRouteNodeNames;
+    }
+
+    public void setCurrentRouteNodeNames(String currentRouteNodeNames) {
+        this.currentRouteNodeNames = currentRouteNodeNames;
+    }
 
     public String getAppDocId() {
         return appDocId;
@@ -98,7 +107,7 @@ public class RouteHeaderVO implements Serializable {
     public void setDateApproved(Calendar dateApproved) {
         this.dateApproved = dateApproved;
     }
-    
+
     public Calendar getDateCreated() {
         return dateCreated;
     }
@@ -149,7 +158,7 @@ public class RouteHeaderVO implements Serializable {
 
     /**
      * @deprecated this is unreliable user docTypeId to retrieve document type
-     */    
+     */
     public String getDocTypeName() {
         return docTypeName;
     }
@@ -238,7 +247,7 @@ public class RouteHeaderVO implements Serializable {
     public void setUserBlanketApprover(boolean userBlanketApprover) {
         this.userBlanketApprover = userBlanketApprover;
     }
-    
+
 
     public Long getDocTypeId() {
         return docTypeId;
@@ -248,7 +257,7 @@ public class RouteHeaderVO implements Serializable {
         this.docTypeId = docTypeId;
     }
 
-	
+
    //  ** Modify for adding notes to web service. Modify Date: April 7, 2006
     public NoteVO[] getNotes() {
 		return notes;

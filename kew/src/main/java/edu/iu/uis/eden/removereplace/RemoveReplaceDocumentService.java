@@ -29,6 +29,8 @@ public interface RemoveReplaceDocumentService {
 
     public void route(RemoveReplaceDocument document, UserSession user, String annotation);
 
+    public RemoveReplaceDocument findById(Long documentId);
+
     public void finalize(Long documentId);
 
 }

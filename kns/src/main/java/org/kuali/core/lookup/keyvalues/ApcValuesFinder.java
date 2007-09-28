@@ -18,33 +18,33 @@ package org.kuali.core.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.core.rule.KualiParameterRule;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.rice.KNSServiceLocator;
 
 public class ApcValuesFinder extends KeyValuesBase {
 
-    private String group;
     private String parameterName;
+    private String parameterDetailType;
+    private String parameterNamespace;
 
-    public ApcValuesFinder() {
+    public String getParameterNamespace() {
+		return this.parameterNamespace;
+	}
+
+	public void setParameterNamespace(String parameterNamespace) {
+		this.parameterNamespace = parameterNamespace;
+	}
+
+	public ApcValuesFinder() {
         super();
     }
 
-    public ApcValuesFinder(String group, String parameterName) {
+    public ApcValuesFinder(String parameterNamesapce, String parameterDetailType, String parameterName) {
         super();
-        this.group = group;
+        this.parameterNamespace = parameterNamespace;
+        this.parameterDetailType = parameterDetailType;
         this.parameterName = parameterName;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
     }
 
     public String getParameterName() {
@@ -57,13 +57,8 @@ public class ApcValuesFinder extends KeyValuesBase {
 
     public List getKeyValues() {
         KualiConfigurationService configService = KNSServiceLocator.getKualiConfigurationService();
-        KualiParameterRule rule = configService.getApplicationParameterRule(group, parameterName);
-        // now we need to retrieve the parm values
-        String[] parmValues = { "" };
-        if (StringUtils.isNotBlank(rule.getParameterText())) {
-            parmValues = rule.getParameterText().split(";");
-        }
-
+        String[] parmValues = configService.getParameterValues( parameterNamespace, parameterDetailType, parameterName );
+        
         List activeLabels = new ArrayList();
         activeLabels.add(new KeyLabelPair("", ""));
         for (int i = 0; i < parmValues.length; i++) {
@@ -72,5 +67,13 @@ public class ApcValuesFinder extends KeyValuesBase {
         }
         return activeLabels;
     }
+
+	public String getParameterDetailType() {
+		return this.parameterDetailType;
+	}
+
+	public void setParameterDetailType(String parameterDetailType) {
+		this.parameterDetailType = parameterDetailType;
+	}
 
 }

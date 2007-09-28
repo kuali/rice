@@ -100,6 +100,8 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     private static final long serialVersionUID = -4700736340527913220L;
     private static final Logger LOG = Logger.getLogger(DocumentRouteHeaderValue.class);
 
+    public static final String CURRENT_ROUTE_NODE_NAME_DELIMITER = ", ";
+
     private java.lang.Long documentTypeId;
     private java.lang.String docRouteStatus;
     private java.lang.Integer docRouteLevel;
@@ -161,10 +163,14 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
         legalActions = new HashMap<String,String>();
         legalActions.put(EdenConstants.ROUTE_HEADER_INITIATED_CD, EdenConstants.ACTION_TAKEN_SAVED_CD + EdenConstants.ACTION_TAKEN_COMPLETED_CD + EdenConstants.ACTION_TAKEN_ROUTED_CD + EdenConstants.ACTION_TAKEN_CANCELED_CD + EdenConstants.ACTION_TAKEN_ADHOC_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + EdenConstants.ACTION_TAKEN_MOVE_CD);
         legalActions.put(EdenConstants.ROUTE_HEADER_SAVED_CD, EdenConstants.ACTION_TAKEN_SAVED_CD + EdenConstants.ACTION_TAKEN_COMPLETED_CD + EdenConstants.ACTION_TAKEN_ROUTED_CD + EdenConstants.ACTION_TAKEN_APPROVED_CD + EdenConstants.ACTION_TAKEN_CANCELED_CD + EdenConstants.ACTION_TAKEN_ADHOC_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + EdenConstants.ACTION_TAKEN_MOVE_CD);
-        /* ROUTED_CD not included in enroute state */
-        legalActions.put(EdenConstants.ROUTE_HEADER_ENROUTE_CD, EdenConstants.ACTION_TAKEN_APPROVED_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ADHOC_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + EdenConstants.ACTION_TAKEN_CANCELED_CD + EdenConstants.ACTION_TAKEN_COMPLETED_CD + /*EdenConstants.ACTION_TAKEN_ROUTED_CD + */EdenConstants.ACTION_TAKEN_DENIED_CD + EdenConstants.ACTION_TAKEN_SAVED_CD + EdenConstants.ACTION_TAKEN_SU_APPROVED_CD + EdenConstants.ACTION_TAKEN_SU_CANCELED_CD + EdenConstants.ACTION_TAKEN_SU_DISAPPROVED_CD + EdenConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD + EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD + EdenConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD + EdenConstants.ACTION_TAKEN_MOVE_CD);
-        /* ROUTED_CD not included in exception state */
-        legalActions.put(EdenConstants.ROUTE_HEADER_EXCEPTION_CD, EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_ADHOC_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + EdenConstants.ACTION_TAKEN_APPROVED_CD + EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + EdenConstants.ACTION_TAKEN_CANCELED_CD + EdenConstants.ACTION_TAKEN_COMPLETED_CD + EdenConstants.ACTION_TAKEN_DENIED_CD + EdenConstants.ACTION_TAKEN_SAVED_CD + EdenConstants.ACTION_TAKEN_SU_APPROVED_CD + EdenConstants.ACTION_TAKEN_SU_CANCELED_CD + EdenConstants.ACTION_TAKEN_SU_DISAPPROVED_CD + EdenConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD + EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD + EdenConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD + EdenConstants.ACTION_TAKEN_MOVE_CD);
+        /* ACTION_TAKEN_ROUTED_CD not included in enroute state
+         * ACTION_TAKEN_SAVED_CD removed as of version 2.4
+         */
+        legalActions.put(EdenConstants.ROUTE_HEADER_ENROUTE_CD, /*EdenConstants.ACTION_TAKEN_SAVED_CD + EdenConstants.ACTION_TAKEN_ROUTED_CD + */EdenConstants.ACTION_TAKEN_APPROVED_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ADHOC_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + EdenConstants.ACTION_TAKEN_CANCELED_CD + EdenConstants.ACTION_TAKEN_COMPLETED_CD + EdenConstants.ACTION_TAKEN_DENIED_CD + EdenConstants.ACTION_TAKEN_SU_APPROVED_CD + EdenConstants.ACTION_TAKEN_SU_CANCELED_CD + EdenConstants.ACTION_TAKEN_SU_DISAPPROVED_CD + EdenConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD + EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD + EdenConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD + EdenConstants.ACTION_TAKEN_MOVE_CD);
+        /* ACTION_TAKEN_ROUTED_CD not included in exception state
+         * ACTION_TAKEN_SAVED_CD removed as of version 2.4.2
+         */
+        legalActions.put(EdenConstants.ROUTE_HEADER_EXCEPTION_CD, /*EdenConstants.ACTION_TAKEN_SAVED_CD + */EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_ADHOC_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + EdenConstants.ACTION_TAKEN_APPROVED_CD + EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + EdenConstants.ACTION_TAKEN_CANCELED_CD + EdenConstants.ACTION_TAKEN_COMPLETED_CD + EdenConstants.ACTION_TAKEN_DENIED_CD + EdenConstants.ACTION_TAKEN_SU_APPROVED_CD + EdenConstants.ACTION_TAKEN_SU_CANCELED_CD + EdenConstants.ACTION_TAKEN_SU_DISAPPROVED_CD + EdenConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD + EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD + EdenConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD + EdenConstants.ACTION_TAKEN_MOVE_CD);
         legalActions.put(EdenConstants.ROUTE_HEADER_FINAL_CD, EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
         legalActions.put(EdenConstants.ROUTE_HEADER_CANCEL_CD, EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
         legalActions.put(EdenConstants.ROUTE_HEADER_DISAPPROVED_CD, EdenConstants.ACTION_TAKEN_FYI_CD + EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
@@ -190,7 +196,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
         }
         return getUser(getRoutedByUserWorkflowId());
     }
-    
+
     private WorkflowUser getUser(java.lang.String workflowId) throws EdenUserNotFoundException {
         UserService userSrv = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
         WorkflowUser user = null;
@@ -214,7 +220,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
     		name = "Routing Report";
     	} else if (CompatUtils.isRouteLevelDocument(this)) {
             int routeLevelInt = getDocRouteLevel().intValue();
-            LOG.info("Getting current route level name for a Route level document: " + routeLevelInt+", "+routeHeaderId);
+            LOG.info("Getting current route level name for a Route level document: " + routeLevelInt+CURRENT_ROUTE_NODE_NAME_DELIMITER+routeHeaderId);
             List routeLevelNodes = CompatUtils.getRouteLevelCompatibleNodeList(getDocumentType());
             LOG.info("Route level compatible node list has " + routeLevelNodes.size() + " nodes");
             if (routeLevelInt < routeLevelNodes.size()) {
@@ -228,7 +234,7 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             }
             for (Iterator iterator = nodeInstances.iterator(); iterator.hasNext();) {
                 RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
-                name += nodeInstance.getRouteNode().getRouteNodeName() + (iterator.hasNext() ? ", " : "");
+                name += nodeInstance.getRouteNode().getRouteNodeName() + (iterator.hasNext() ? CURRENT_ROUTE_NODE_NAME_DELIMITER : "");
             }
         }
         return name;

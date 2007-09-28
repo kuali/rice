@@ -194,7 +194,8 @@ public class FieldBridge {
         
         if (finder != null) {
             if (finder instanceof ApcValuesFinder && fieldControl instanceof ApcSelectControlDefinition) {
-                ((ApcValuesFinder) finder).setGroup(((ApcSelectControlDefinition) fieldControl).getGroup());
+                ((ApcValuesFinder) finder).setParameterNamespace(((ApcSelectControlDefinition) fieldControl).getParameterNamespace());
+                ((ApcValuesFinder) finder).setParameterDetailType(((ApcSelectControlDefinition) fieldControl).getParameterDetailType());
                 ((ApcValuesFinder) finder).setParameterName(((ApcSelectControlDefinition) fieldControl).getParameterName());   
             }
         }

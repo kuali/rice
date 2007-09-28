@@ -116,12 +116,11 @@ public class KualiGroupServiceImpl implements KualiGroupService {
         List usersGroups = null;
 
         String userId = universalUser.getPersonUserIdentifier();
-        if ( userId == null ) {
+        if (StringUtils.isNotBlank(userId)) {
             userId = "";
         }
         try {
-
-            Collection workflowUsersGroups = workflowGroupService.getWorkflowUsersGroups(new NetworkIdVO(userId.toUpperCase()));
+            Collection workflowUsersGroups = getWorkflowGroupService().getWorkflowUsersGroups(new NetworkIdVO(userId.toUpperCase()));
             if (workflowUsersGroups != null) {
                 usersGroups = new ArrayList(workflowUsersGroups.size());
 

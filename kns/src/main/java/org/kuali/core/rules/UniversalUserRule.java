@@ -99,7 +99,7 @@ public class UniversalUserRule extends MaintenanceDocumentRuleBase {
         newUser.refresh();
 
         if ( userEditWorkgroupName == null ) {
-            userEditWorkgroupName = configService.getApplicationParameterValue(RiceConstants.CoreApcParms.GROUP_CORE_MAINT_EDOCS, RiceConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
+            userEditWorkgroupName = configService.getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, RiceConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
             installedModules = KNSServiceLocator.getKualiModuleService().getInstalledModules();
         }
     }

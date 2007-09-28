@@ -64,15 +64,16 @@ public interface WorkflowDocumentService {
     public KualiWorkflowDocument createWorkflowDocument(Long documentHeaderId, UniversalUser workflowUser) throws WorkflowException;
 
     /**
-     * save the document to workflows action list optionally providing an annotation which will show up in the route log for this
-     * document corresponding to this action taken and additionally providing a list of ad hoc recipients
+     * This method will first determine if the {@link KualiWorkflowDocument#saveDocument(String)} method is valid to be called.  If so the method
+     * will save the document to workflows action list optionally providing an annotation which will show up in the route log for this
+     * document corresponding to this action taken.  If the KualiWorkflowDocument.saveDocument() method is not valid to be called the system 
+     * will instead call the method {@link WorkflowDocumentService#saveRoutingData(KualiWorkflowDocument)}
      * 
      * @param flexDoc
      * @param annotation
-     * @param adHocRecipients
-     * @throws EdenException
+     * @throws WorkflowException
      */
-    public void save(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
+    public void save(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException;
 
     /**
      * save the routing data of the document to workflow

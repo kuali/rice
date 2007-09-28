@@ -35,4 +35,28 @@ public interface Inquirable {
     public void setBusinessObjectClass(Class businessObjectClass);
 
     public void addAdditionalSections(List columns, BusinessObject bo);
+    
+    /**
+     * Indicates whether inactive records for the given collection should be display.
+     * 
+     * @param collectionName - name of the collection (or sub-collection) to check inactive record display setting
+     * @return true if inactive records should be displayed, false otherwise
+     */
+    public boolean getShowInactiveRecords(String collectionName);
+    
+    /**
+     * Returns the Map used to control the state of inactive record collection display. Exposed for setting from the
+     * maintenance jsp.
+     */
+    public Map<String, Boolean> getInactiveRecordDisplay();
+    
+    /**
+     * Indicates to maintainble whether or not inactive records should be displayed for the given collection name.
+     * 
+     * @param collectionName - name of the collection (or sub-collection) to set inactive record display setting
+     * @param showInactive - true to display inactive, false to not display inactive records
+     */
+    public void setShowInactiveRecords(String collectionName, boolean showInactive);
+    
+    public String getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry);
 }

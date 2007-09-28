@@ -25,7 +25,6 @@ import org.kuali.rice.test.runners.NamedTestClassRunner;
  * subclass access
  * 
  * @author Aaron Hamid (arh14 at cornell dot edu)
- * @version $Revision: 1.2.2.1 $ $Date: 2007-08-15 16:04:52 $
  * @since 0.9
  */
 @RunWith(NamedTestClassRunner.class)

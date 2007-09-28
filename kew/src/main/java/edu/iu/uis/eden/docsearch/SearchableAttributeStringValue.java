@@ -1,26 +1,34 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
- * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * 
+ *
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
- * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
- * language governing permissions and limitations under the License.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package edu.iu.uis.eden.docsearch;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 /**
- * 
+ *
  * @author delyea
  */
 public class SearchableAttributeStringValue implements WorkflowPersistable, SearchableAttributeValue {
@@ -42,161 +50,148 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
     private DocumentRouteHeaderValue routeHeader;
 
     /**
-         * Default constructor.
-         */
+     * Default constructor.
+     */
     public SearchableAttributeStringValue() {
-	super();
-	this.ojbConcreteClass = this.getClass().getName();
+    	super();
+        this.ojbConcreteClass = this.getClass().getName();
     }
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#setupAttributeValue(java.lang.String)
-         */
+    /* (non-Javadoc)
+     * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#setupAttributeValue(java.lang.String)
+     */
     public void setupAttributeValue(String value) {
-	this.setSearchableAttributeValue(value);
+    	this.setSearchableAttributeValue(value);
     }
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#setupAttributeValue(java.sql.ResultSet, java.lang.String)
-         */
-    public void setupAttributeValue(ResultSet resultSet, String columnName) throws SQLException {
-	this.setSearchableAttributeValue(resultSet.getString(columnName));
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue()
-         */
-    public String getSearchableAttributeDisplayValue() {
-	return this.getSearchableAttributeValue();
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#getAttributeDataType()
-         */
-    public String getAttributeDataType() {
-	return ATTRIBUTE_XML_REPRESENTATION;
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#getAttributeTableName()
-         */
-    public String getAttributeTableName() {
-	return ATTRIBUTE_DATABASE_TABLE_NAME;
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#allowsWildcardsByDefault()
-         */
-    public boolean allowsWildcards() {
-	return DEFAULT_WILDCARD_ALLOWANCE_POLICY;
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#allowsCaseInsensitivity()
-         */
-    public boolean allowsCaseInsensitivity() {
-	return ALLOWS_CASE_INSENSITIVE_SEARCH;
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#allowsRangeSearches()
-         */
-    public boolean allowsRangeSearches() {
-	return ALLOWS_RANGE_SEARCH;
-    }
-
-    /**
-         * @return true
-         * 
-         * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#isPassesDefaultValidation()
-         */
-    public boolean isPassesDefaultValidation(String valueEntered) {
-	// TODO delyea - length check needed?
-	return true;
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#isRangeValid(java.lang.String, java.lang.String)
-         */
-    public Boolean isRangeValid(String lowerValue, String upperValue) {
-	if (allowsRangeSearches()) {
-	    return true;
+	/* (non-Javadoc)
+	 * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#setupAttributeValue(java.sql.ResultSet, java.lang.String)
+	 */
+	public void setupAttributeValue(ResultSet resultSet, String columnName) throws SQLException {
+		this.setSearchableAttributeValue(resultSet.getString(columnName));
 	}
-	return null;
+
+	/* (non-Javadoc)
+	 * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue()
+	 */
+    public String getSearchableAttributeDisplayValue() {
+        return getSearchableAttributeValue();
     }
 
-    public String getOjbConcreteClass() {
-	return ojbConcreteClass;
+    /* (non-Javadoc)
+     * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue(java.util.Map)
+     */
+    public String getSearchableAttributeDisplayValue(Map<String,String> displayParameters) {
+        return getSearchableAttributeDisplayValue();
     }
 
-    public void setOjbConcreteClass(String ojbConcreteClass) {
-	this.ojbConcreteClass = ojbConcreteClass;
+	/* (non-Javadoc)
+	 * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#getAttributeDataType()
+	 */
+	public String getAttributeDataType() {
+		return ATTRIBUTE_XML_REPRESENTATION;
+	}
+
+	/* (non-Javadoc)
+	 * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#getAttributeTableName()
+	 */
+	public String getAttributeTableName() {
+		return ATTRIBUTE_DATABASE_TABLE_NAME;
+	}
+
+    /* (non-Javadoc)
+	 * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#allowsWildcardsByDefault()
+	 */
+	public boolean allowsWildcards() {
+		return DEFAULT_WILDCARD_ALLOWANCE_POLICY;
+	}
+
+    /* (non-Javadoc)
+	 * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#allowsCaseInsensitivity()
+	 */
+	public boolean allowsCaseInsensitivity() {
+		return ALLOWS_CASE_INSENSITIVE_SEARCH;
+	}
+
+    /* (non-Javadoc)
+	 * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#allowsRangeSearches()
+	 */
+	public boolean allowsRangeSearches() {
+		return ALLOWS_RANGE_SEARCH;
+	}
+
+	/**
+	 * @return true
+	 *
+	 * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#isPassesDefaultValidation()
+	 */
+	public boolean isPassesDefaultValidation(String valueEntered) {
+        // TODO delyea - length check needed?
+		return true;
+	}
+
+    /* (non-Javadoc)
+     * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#isRangeValid(java.lang.String, java.lang.String)
+     */
+    public Boolean isRangeValid(String lowerValue, String upperValue) {
+        if (allowsRangeSearches()) {
+            return true;
+        }
+        return null;
     }
 
-    public DocumentRouteHeaderValue getRouteHeader() {
-	return routeHeader;
-    }
+	public String getOjbConcreteClass() {
+		return ojbConcreteClass;
+	}
 
-    public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
-	this.routeHeader = routeHeader;
-    }
+	public void setOjbConcreteClass(String ojbConcreteClass) {
+		this.ojbConcreteClass = ojbConcreteClass;
+	}
 
-    public Long getRouteHeaderId() {
-	return routeHeaderId;
-    }
+	public DocumentRouteHeaderValue getRouteHeader() {
+		return routeHeader;
+	}
 
-    public void setRouteHeaderId(Long routeHeaderId) {
-	this.routeHeaderId = routeHeaderId;
-    }
+	public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
+		this.routeHeader = routeHeader;
+	}
 
-    public String getSearchableAttributeKey() {
-	return searchableAttributeKey;
-    }
+	public Long getRouteHeaderId() {
+		return routeHeaderId;
+	}
 
-    public void setSearchableAttributeKey(String searchableAttributeKey) {
-	this.searchableAttributeKey = searchableAttributeKey;
-    }
+	public void setRouteHeaderId(Long routeHeaderId) {
+		this.routeHeaderId = routeHeaderId;
+	}
 
-    public String getSearchableAttributeValue() {
-	return searchableAttributeValue;
-    }
+	public String getSearchableAttributeKey() {
+		return searchableAttributeKey;
+	}
 
-    public void setSearchableAttributeValue(String searchableAttributeValue) {
-	this.searchableAttributeValue = searchableAttributeValue;
-    }
+	public void setSearchableAttributeKey(String searchableAttributeKey) {
+		this.searchableAttributeKey = searchableAttributeKey;
+	}
 
-    public Long getSearchableAttributeValueId() {
-	return searchableAttributeValueId;
-    }
+	public String getSearchableAttributeValue() {
+		return searchableAttributeValue;
+	}
 
-    public void setSearchableAttributeValueId(Long searchableAttributeValueId) {
-	this.searchableAttributeValueId = searchableAttributeValueId;
-    }
+	public void setSearchableAttributeValue(String searchableAttributeValue) {
+		this.searchableAttributeValue = searchableAttributeValue;
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see edu.iu.uis.eden.WorkflowPersistable#copy(boolean)
-         */
+	public Long getSearchableAttributeValueId() {
+		return searchableAttributeValueId;
+	}
+
+	public void setSearchableAttributeValueId(Long searchableAttributeValueId) {
+		this.searchableAttributeValueId = searchableAttributeValueId;
+	}
+
+	/* (non-Javadoc)
+     * @see edu.iu.uis.eden.WorkflowPersistable#copy(boolean)
+     */
     public Object copy(boolean preserveKeys) {
-	return null;
+        return null;
     }
 }

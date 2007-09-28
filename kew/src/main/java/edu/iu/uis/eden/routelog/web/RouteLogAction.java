@@ -117,7 +117,7 @@ public class RouteLogAction extends WorkflowAction {
         SimulationResults simResults = simEngine.runSimulation(new SimulationCriteria(document.getRouteHeaderId()));
         // should now be sorted list
         List rootRequests = getActionRequestService().getRootRequests(simResults.getSimulatedActionRequests());
-//        Collections.sort(rootRequests, new Utilities().new RouteLogActionRequestSorter());
+        Collections.sort(rootRequests, new Utilities().new RouteLogActionRequestSorter());
         int arCount = 0;
         for (Iterator iterator = rootRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();

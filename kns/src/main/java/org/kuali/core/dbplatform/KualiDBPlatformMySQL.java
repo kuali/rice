@@ -15,22 +15,13 @@
  */
 package org.kuali.core.dbplatform;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
-import org.kuali.core.dao.jdbc.AbstractDBPlatformDaoJdbc;
+import org.kuali.core.dao.jdbc.KualiDBPlatformBase;
 
 /**
  * This class is just for MySQL DB code - should be used only as last resort
  */
-public class KualiDBPlatformMySQL extends AbstractDBPlatformDaoJdbc {
-    private static final Logger LOG = Logger.getLogger(KualiDBPlatformMySQL.class);
-    private static int MAX_CHARACTERS_TO_INDEX = 250;
-
+public class KualiDBPlatformMySQL extends KualiDBPlatformBase implements KualiDBPlatform {
     public void applyLimit(Integer limit, Criteria criteria) {
         if (limit != null) {
             criteria.addSql(" 1 LIMIT 0," + limit.intValue()); // 1 has to be there because the criteria is ANDed
@@ -64,171 +55,5 @@ public class KualiDBPlatformMySQL extends AbstractDBPlatformDaoJdbc {
     public String getCurTimeFunction() {
         return "NOW()";
     }
-    
-    public void createSequence(String ddl) {
-        String sequenceName = null;
-        String[] tokens = ddl.split(" ");
-        StringBuffer convertedDdl = new StringBuffer("CREATE TABLE ");
-        for (int i = 0; i < tokens.length; i++) {
-            if (tokens[i].equals("SEQUENCE")) {
-                sequenceName = tokens[i+1];
-                executeSql(new StringBuffer("CREATE TABLE ").append(sequenceName).append(" ( id bigint(19) not null auto_increment, primary key (id) ) ENGINE MyISAM").toString());
             }
-            if (tokens[i].equals("WITH")) {
-                executeSql(new StringBuffer("ALTER TABLE ").append(sequenceName).append(" auto_increment=").append(tokens[i+1]).toString());
-            }
-        }
-    }
     
-    public void dropSequence(String sequenceName) {
-        executeSql(new StringBuffer("DROP TABLE ").append(sequenceName).toString());
-    }
-
-    public void createView(String ddl) {
-        String[] tokens = ddl.split("\\b");
-        // loop through once and make the required changes.
-        for (int i = 0; i < tokens.length; i++) {
-            if (tokens[i].equalsIgnoreCase("TRUNC")) {
-                tokens[i] = "DATE";
-                tokens[i + 2] = "SYSDATE()";
-                tokens[i - 2] = "DATE(" + tokens[i - 2] + ")";
-            }
-        }
-        // and reassemble into the full string
-        StringBuffer newDDL = new StringBuffer();
-        for (int i = 0; i < tokens.length; i++) {
-            newDDL.append(tokens[i]);
-        }
-        executeSql(newDDL.toString().replace("/", "").replace(";", ""));
-    }
-
-    public void dropView(String viewName) {
-        executeSql("DROP VIEW " + viewName);
-    }
-
-    public void createIndex(String ddl) {
-        int parseStartIndex = ddl.lastIndexOf(" ON ") + 4;
-        StringBuffer newDDL = new StringBuffer(ddl.substring(ddl.indexOf("CREATE"), parseStartIndex));
-        String tableName = ddl.substring(parseStartIndex, ddl.indexOf("(")).trim();
-        newDDL.append(tableName).append("(");
-        String[] columnNames = ddl.substring(ddl.indexOf("(") + 1, ddl.indexOf(")")).replace(" ", "").split(",");
-        for (int i = 0; i < columnNames.length; i++) {
-            newDDL.append(columnNames[i]);
-            if (getColumnLength( tableName, columnNames[i] ) > MAX_CHARACTERS_TO_INDEX) {
-                newDDL.append("(").append(MAX_CHARACTERS_TO_INDEX).append(")");
-            }
-            if (i != (columnNames.length - 1)) {
-                newDDL.append(",");
-            }
-        }
-        executeSql(newDDL.append(")").toString());
-    }
-
-
-    /**
-     * 
-     * This method converts an oracle table definition to mysql. The following things need to be converted (that we know of so far)
-     * varchar2 -> varchar number -> numeric sys_guid() -> '' constraint (\w+) not null (enable) --> $1 not null using index
-     * tablespace .* -> tablespace xxx -> userenv('sessionid') -> 0 date -> datetime (oracle's date type is really a datetime) clob ->
-     * mediumtext remove double-quotes around table/column names
-     * 
-     * @param ddl the input DDL
-     * @return a string containing the converted DDL
-     */
-    public void createTable(String ddl) {
-        String newDDL = ddl.replaceAll("\\bVARCHAR2", " VARCHAR");
-        newDDL = newDDL.replaceAll("\\bNUMBER", " NUMERIC");
-        newDDL = newDDL.replaceAll("\\bSYS_GUID\\(\\)", "''");
-        newDDL = newDDL.replaceAll("CONSTRAINT \\w+? NOT NULL ENABLE", "NOT NULL");
-        newDDL = newDDL.replaceAll("CONSTRAINT[ \\t]+\\w+[ \\t]+NOT NULL", "NOT NULL");
-        newDDL = newDDL.replaceAll("NOT NULL ENABLE", "NOT NULL");
-        newDDL = newDDL.replaceAll("USING INDEX TABLESPACE \\w+\\b", "");
-        newDDL = newDDL.replaceAll("USING INDEX", "");
-        newDDL = newDDL.replaceAll("TABLESPACE \\w+\\b", "");
-        newDDL = newDDL.replaceAll("\\bDATE", " DATETIME");
-        newDDL = newDDL.replaceAll("\\bCLOB", " MEDIUMTEXT");
-        newDDL = newDDL.replaceAll("\\bUSERENV\\('SESSIONID'\\)", " 0");
-        newDDL = newDDL.replaceAll("DEFAULT SYSDATE", "");
-        newDDL = newDDL.replaceAll("\\(\\*,0\\)", "");
-        newDDL = newDDL.replaceAll("\"", "");
-        newDDL = newDDL.replaceAll("/", "");
-        newDDL = newDDL.replaceAll(";", " ");
-        newDDL = newDDL + " ENGINE InnoDB CHARACTER SET utf8 COLLATE utf8_bin ";
-        executeSql(newDDL);
-    }
-    
-    public void dropTable(String tableName) {
-        executeSql("DROP TABLE " + tableName);
-    }
-
-    protected Integer getFetchSize() {
-        // We need this to force MySQL to stream the results 1 row at a time,
-        // otherwise we get errors on large tables due to the fact that the JDBC
-        // driver tries to load the entire result set into memory.
-        return Integer.MIN_VALUE;
-    }
-    
-    public List<String> getTableNames() {
-        List<String> tableNames = new ArrayList();
-        for (String tableName : super.getTableNames()) {
-            if (!isSequence(tableName)) {
-                tableNames.add(tableName);
-            }
-        }
-        return tableNames;
-    }
-
-    public List<String> getSequenceNames() {
-        List<String> sequenceNames = new ArrayList();
-        for (String tableName: super.getTableNames()) {
-            if (isSequence(tableName)) {
-                sequenceNames.add(tableName);
-            }
-        }
-        return sequenceNames;
-    }
-    
-    public void setDefaultDateFormatToYYYYMMDD() {
-        // do nothing
-    }
-    
-    public String escapeSingleQuotes( String value ) {
-        return value.replaceAll( "'", "\\\\'" );
-    }
-
-    public String escapeBackslashes( String value ) {
-        return value.replaceAll( "\\", "\\\\" );
-    }
-
-    public void dumpSequence(String sequenceName, String exportDirectory) {
-        // do nothing, sequences are dumped as tables        
-    }
-    
-    public void setSequenceStart( String sequenceName, Long value ) {
-        LOG.info( "Setting MySQL 'sequence': " + "ALTER TABLE "+sequenceName+" auto_increment="+value );
-        executeSql("ALTER TABLE "+sequenceName+" auto_increment="+value);
-    }
-    
-    public boolean isSequence( String sequenceName ) {
-        return (sequenceName.toUpperCase().startsWith( "SEQ_" ) || sequenceName.toUpperCase().startsWith( "SEQUENCE_" ) || sequenceName.toUpperCase().endsWith( "_SEQ" ) || sequenceName.toUpperCase().endsWith( "_SEQUENCE" ))
-        		&& isTable( sequenceName );
-    }
-    
-    // We need a way to determine the name of the database that we're connected
-    // to (for MySQL at least) - may need this for other dbs, too.
-    protected String getSchemaName() {
-        try {
-        	Connection con = getJdbcTemplate().getDataSource().getConnection();
-        	String cat = con.getCatalog();
-        	con.close();
-            return cat;
-        } catch (SQLException e) {
-            return "";
-        }
-    }
-
-    public void clearSequenceTable(String sequenceName) {
-        truncateTable( sequenceName );        
-    }
-    
-}

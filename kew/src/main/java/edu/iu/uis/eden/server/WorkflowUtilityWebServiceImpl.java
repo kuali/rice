@@ -227,6 +227,10 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     }
 
     public ActionRequestVO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
+        return getActionRequests(routeHeaderId, null, null);
+    }
+
+    public ActionRequestVO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdVO userId) throws WorkflowException {
         if (routeHeaderId == null) {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
@@ -237,9 +241,23 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         int i = 0;
         for (Iterator iter = actionRequests.iterator(); iter.hasNext(); i++) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-            actionRequestVOs[i] = BeanConverter.convertActionRequest(actionRequest);
+            if (actionRequestMatches(actionRequest, nodeName, userId)) {
+        	actionRequestVOs[i] = BeanConverter.convertActionRequest(actionRequest);
+            }
         }
         return actionRequestVOs;
+    }
+
+    private boolean actionRequestMatches(ActionRequestValue actionRequest, String nodeName, UserIdVO userId) throws WorkflowException {
+        boolean matchesUserId = true;  // assume a match in case user is empty
+        boolean matchesNodeName = true;  // assume a match in case node name is empty
+        if (StringUtils.isNotBlank(nodeName)) {
+            matchesNodeName = nodeName.equals(actionRequest.getPotentialNodeName());
+        }
+        if (userId != null) {
+            matchesUserId = actionRequest.isRecipientRoutedRequest(KEWServiceLocator.getUserService().getWorkflowUser(userId));
+        }
+        return matchesNodeName && matchesUserId;
     }
 
     public ActionTakenVO[] getActionsTaken(Long routeHeaderId) throws WorkflowException {

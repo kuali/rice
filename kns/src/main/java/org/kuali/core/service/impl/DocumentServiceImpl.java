@@ -15,6 +15,8 @@
  */
 package org.kuali.core.service.impl;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -44,7 +46,7 @@ import org.kuali.core.rule.event.BlanketApproveDocumentEvent;
 import org.kuali.core.rule.event.KualiDocumentEvent;
 import org.kuali.core.rule.event.RouteDocumentEvent;
 import org.kuali.core.rule.event.SaveDocumentEvent;
-import org.kuali.core.rule.event.SaveOnlyDocumentEvent;
+import org.kuali.core.rule.event.SaveEvent;
 import org.kuali.core.service.BusinessObjectService;
 import org.kuali.core.service.DateTimeService;
 import org.kuali.core.service.DictionaryValidationService;
@@ -59,6 +61,7 @@ import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.Timer;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.WorkflowDocumentService;
+import org.kuali.rice.config.ConfigurationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,31 +93,67 @@ public class DocumentServiceImpl implements DocumentService {
      * @see org.kuali.core.service.DocumentService#saveDocument(org.kuali.core.document.Document)
      */
     public Document saveDocument(Document document) throws WorkflowException, ValidationException {
+	return saveDocument(document, SaveDocumentEvent.class);
+    }
+    
+    public Document saveDocument(Document document, Class kualiDocumentEventClass) throws WorkflowException, ValidationException {
         checkForNulls(document);
-        if (!getDocumentActionFlags(document).getCanSave()) {
-            throw buildAuthorizationException("save", document);
+        if (kualiDocumentEventClass == null) {
+            throw new IllegalArgumentException("invalid (null) kualiDocumentEventClass");
         }
+        // if event is not an instance of a SaveDocumentEvent or a SaveOnlyDocumentEvent
+        if (!SaveEvent.class.isAssignableFrom(kualiDocumentEventClass)) {
+	    throw new ConfigurationException("The KualiDocumentEvent class '" + kualiDocumentEventClass.getName() + "' does not implement the class '" + SaveEvent.class.getName() + "'");
+        }
+//        if (!getDocumentActionFlags(document).getCanSave()) {
+//            throw buildAuthorizationException("save", document);
+//        }
         document.prepareForSave();
-        validateAndPersistDocumentAndSaveAdHocRoutingRecipients(document, new SaveDocumentEvent(document));
+        validateAndPersistDocumentAndSaveAdHocRoutingRecipients(document, generateKualiDocumentEvent(document, kualiDocumentEventClass));
         prepareWorkflowDocument(document);
-        workflowDocumentService.save(document.getDocumentHeader().getWorkflowDocument(), null, null);
+        workflowDocumentService.save(document.getDocumentHeader().getWorkflowDocument(), null);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
 
         return document;
     }
 
-    /**
-     * @see org.kuali.core.service.DocumentService#saveDocumentWithoutRunningValidation(org.kuali.core.document.Document)
-     */
-    public Document saveDocumentWithoutRunningValidation(Document document) throws WorkflowException {
-        checkForNulls(document);
-        document.prepareForSave();
-        validateAndPersistDocument(document, new SaveOnlyDocumentEvent(document));
-        prepareWorkflowDocument(document);
-        workflowDocumentService.saveRoutingData(document.getDocumentHeader().getWorkflowDocument());
-        GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
-
-        return document;
+    private KualiDocumentEvent generateKualiDocumentEvent(Document document, Class eventClass) throws ConfigurationException {
+	String potentialErrorMessage = "Found error trying to generate Kuali Document Event using event class '" + eventClass.getName() + "' for document " + document.getDocumentNumber();
+	try {
+	    Constructor usableConstructor = null;
+	    List<Object> paramList = null; 
+	    for (Constructor currentConstructor : eventClass.getConstructors()) {
+		paramList = new ArrayList<Object>();
+		for (Class parameterClass : currentConstructor.getParameterTypes()) {
+		    if (Document.class.isAssignableFrom(parameterClass)) {
+			usableConstructor = currentConstructor;
+			paramList.add(document);
+		    } else {
+			paramList.add(null);
+    }
+		}
+		if (ObjectUtils.isNotNull(usableConstructor)) {
+		    break;
+		}
+	    }
+	    if (ObjectUtils.isNull(usableConstructor)) {
+		throw new RuntimeException("Cannot find a constructor for class '" + eventClass.getName() + "' that takes in a document parameter");
+	    }
+	    else {
+		usableConstructor.newInstance(paramList.toArray());
+		return (KualiDocumentEvent) usableConstructor.newInstance(paramList.toArray());
+	    }
+	} catch (SecurityException e) {
+	    throw new ConfigurationException(potentialErrorMessage, e);
+	} catch (IllegalArgumentException e) {
+	    throw new ConfigurationException(potentialErrorMessage, e);
+	} catch (InstantiationException e) {
+	    throw new ConfigurationException(potentialErrorMessage, e);
+	} catch (IllegalAccessException e) {
+	    throw new ConfigurationException(potentialErrorMessage, e);
+	} catch (InvocationTargetException e) {
+	    throw new ConfigurationException(potentialErrorMessage, e);
+	}
     }
     
     /**

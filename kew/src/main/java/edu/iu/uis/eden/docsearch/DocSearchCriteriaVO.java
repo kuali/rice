@@ -407,7 +407,7 @@ public class DocSearchCriteriaVO implements Serializable {
         return abbreviatedString.toString();
     }
 
-    private String getRangeString(String from, String to) {
+    private String getRangeString(String to, String from) {
         String dateString = null;
         if (to != null && !"".equals(to.trim())  && from != null && !"".equals(from.trim()) ) {
             dateString = "("+ from + " - " + to + ")";

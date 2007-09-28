@@ -28,9 +28,6 @@
 		  <c:if test="${not empty RouteLogForm.returnUrlLocation}">
 		    &nbsp;&nbsp;&nbsp;<a href="<c:out value="${RouteLogForm.returnUrlLocation}"/>">Back to Previous Page</a>
 		  </c:if>
-		  <c:if test="${RouteLogForm.showCloseButton}">
-		    &nbsp;&nbsp;&nbsp;<a href="#" onclick="javascript:window.close();"><img src="images/buttonsmall_close.gif" alt="Close This Window" /></a>
-		  </c:if>
 		</td>
 	  </tr>
 	</table>
@@ -410,6 +407,13 @@
         </table>
       </td>
     </tr>
+    <c:if test="${RouteLogForm.showCloseButton}">
+      <tr>
+        <td align="center">
+          <br><br><a href="#" onclick="javascript:window.close();"><img src="images/buttonsmall_close.gif" alt="Close This Window" /></a>
+        </td>
+      </tr>
+    </c:if>
 </table>
 
 </body>

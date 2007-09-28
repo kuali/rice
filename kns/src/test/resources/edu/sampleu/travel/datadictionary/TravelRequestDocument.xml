@@ -120,7 +120,7 @@
         </summary>
         <description>Doing it right</description>
  		<!-- 
-        <help securityGroupName="WorkflowAdmin" parameterName="FINANCIAL_HELP_INTERNAL_BILLING" />
+        <help parameterNamespace="KR-NS" parameterDetailType="N/A" parameterName="FINANCIAL_HELP_INTERNAL_BILLING" />
  		-->
         <allowsCopy>false</allowsCopy>
         <allowsErrorCorrection>false</allowsErrorCorrection>

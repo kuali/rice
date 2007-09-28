@@ -26,6 +26,7 @@ import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
 import edu.iu.uis.eden.exception.WorkflowException;
+import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 public interface KualiWorkflowDocument {
 
@@ -102,6 +103,8 @@ public interface KualiWorkflowDocument {
     public abstract void approve(String annotation) throws WorkflowException;
 
     public abstract void superUserApprove(String annotation) throws WorkflowException;
+
+    public void superUserActionRequestApprove(Long actionRequestId, String annotation) throws WorkflowException;
 
     public void superUserCancel(String annotation) throws WorkflowException;
 
@@ -192,6 +195,13 @@ public interface KualiWorkflowDocument {
      * 
      */
     public abstract boolean isBlanketApproveCapable();
+
+    /**
+     * Checks to see if this document is allowed to have a standard 'save' performed
+     * 
+     * @return true if the saveDocument() method is valid to be called.... false otherwise
+     */
+    public boolean isStandardSaveAllowed();
 
     public abstract Integer getDocRouteLevel();
 
@@ -310,4 +320,9 @@ public interface KualiWorkflowDocument {
      */
     public String[] getNodeNames() throws WorkflowException;
 
+    /**
+     * Returns the current node names of the document delimited by the constant: 
+     * {@link DocumentRouteHeaderValue#CURRENT_ROUTE_NODE_NAME_DELIMITER}
+     */
+    public String getCurrentRouteNodeNames();
 }

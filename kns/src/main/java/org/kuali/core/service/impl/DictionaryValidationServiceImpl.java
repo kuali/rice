@@ -27,13 +27,13 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.RiceKeyConstants;
+import org.kuali.core.bo.Parameter;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.ApcRuleDefinition;
 import org.kuali.core.datadictionary.ReferenceDefinition;
 import org.kuali.core.datadictionary.control.ControlDefinition;
 import org.kuali.core.document.Document;
 import org.kuali.core.exceptions.InfrastructureException;
-import org.kuali.core.rule.KualiParameterRule;
 import org.kuali.core.service.BusinessObjectService;
 import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.service.DictionaryValidationService;
@@ -582,10 +582,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             throw new RuntimeException(e);
         }
 
-        KualiParameterRule rule = configService.getApplicationParameterRule(apcRule.getApcGroup(), apcRule.getApcRule());
+        Parameter rule = configService.getParameter(apcRule.getParameterNamespace(), apcRule.getParameterDetailType(), apcRule.getParameterName());
 
         String attrValueStr = attrValue.toString();
-        if (rule.failsRule(attrValueStr)) {
+        if (configService.failsRule(rule,attrValueStr)) {
             success &= false;
             GlobalVariables.getErrorMap().putError(apcRule.getAttributeName(), apcRule.getErrorMessage());
         }

@@ -25,9 +25,9 @@ import org.apache.commons.lang.StringUtils;
  */
 public class KualiCodeBase extends PersistableBusinessObjectBase implements KualiCode {
 
-    private String code;
-    private String name;
-    private boolean active;
+    protected String code;
+    protected String name;
+    protected boolean active;
 
     public KualiCodeBase() {
         this.active = true;
@@ -99,6 +99,7 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
         LinkedHashMap m = new LinkedHashMap();
 
         m.put("code", getCode());
+        m.put("name", getName());
 
         return m;
     }

@@ -39,7 +39,7 @@
 
         <summary>User maintenance document</summary>
         <description>Document used to create or update User objects</description>
-        <help securityGroupName="Kuali.User.Help" parameterName="USER_HELP_UNIVERSAL_USER" />
+        <help parameterNamespace="KR-NS" parameterDetailType="UniversalUser" parameterName="UNIVERSAL_USER" />
 
         <lockingKeys>
             <field attributeName="personUniversalIdentifier" />

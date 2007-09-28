@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,7 +20,14 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.WorkflowPersistable;
@@ -35,7 +42,7 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchableAttributeDateTimeValue.class);
 
     private static final long serialVersionUID = 3045621112943214772L;
-    
+
     private static final String ATTRIBUTE_DATABASE_TABLE_NAME = "EN_DOC_HDR_EXT_DT_T";
     private static final boolean DEFAULT_WILDCARD_ALLOWANCE_POLICY = false;
     private static final boolean ALLOWS_RANGE_SEARCH = true;
@@ -64,7 +71,7 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
     public void setupAttributeValue(String value) {
         this.setSearchableAttributeValue(convertStringToTimestamp(value));
     }
-    
+
     private Timestamp convertStringToTimestamp(String value) {
         if (Utilities.isEmpty(value)) {
             return null;
@@ -78,7 +85,7 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
             return t;
         }
     }
-    
+
 	/* (non-Javadoc)
 	 * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#setupAttributeValue(java.sql.ResultSet, java.lang.String)
 	 */
@@ -90,13 +97,32 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
 		c.clear(Calendar.MILLISECOND);
 		this.setSearchableAttributeValue(resultSet.getTimestamp(columnName, c));
 	}
-    
+
 	/* (non-Javadoc)
 	 * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue()
 	 */
-	public String getSearchableAttributeDisplayValue() {
-    	return EdenConstants.getDefaultDateFormat().format(new Date(this.getSearchableAttributeValue().getTime()));
-	}
+    public String getSearchableAttributeDisplayValue() {
+        return formatAttributeValue(null);
+    }
+
+    /* (non-Javadoc)
+     * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue(java.util.Map)
+     */
+    public String getSearchableAttributeDisplayValue(Map<String,String> displayParameters) {
+        return formatAttributeValue(displayParameters.get(DISPLAY_FORMAT_PATTERN_MAP_KEY));
+    }
+
+    private String formatAttributeValue(String formatPattern) {
+        DateFormat df = getDateFormatToUse(formatPattern);
+        return df.format(new Date(getSearchableAttributeValue().getTime()));
+    }
+
+    private DateFormat getDateFormatToUse(String parameterFormatPattern) {
+        if (StringUtils.isNotBlank(parameterFormatPattern)) {
+            return new SimpleDateFormat(parameterFormatPattern);
+        }
+        return EdenConstants.getDefaultDateFormat();
+    }
 
 	/* (non-Javadoc)
 	 * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#getAttributeDataType()
@@ -111,7 +137,7 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
 	public String getAttributeTableName() {
 		return ATTRIBUTE_DATABASE_TABLE_NAME;
 	}
-    
+
     /* (non-Javadoc)
 	 * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#allowsWildcardsByDefault()
 	 */

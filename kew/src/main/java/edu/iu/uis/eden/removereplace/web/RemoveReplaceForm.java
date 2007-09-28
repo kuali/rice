@@ -63,6 +63,8 @@ public class RemoveReplaceForm extends WorkflowRoutingForm {
     private WorkflowUser replacementUser;
     private List<WorkgroupType> workgroupTypes = new ArrayList<WorkgroupType>();
 
+    private RemoveReplaceDocument document;
+
     public RemoveReplaceForm() {
     }
 
@@ -178,6 +180,12 @@ public class RemoveReplaceForm extends WorkflowRoutingForm {
         this.workgroupTypes = workgroupTypes;
     }
 
+    public RemoveReplaceDocument getDocument() {
+        return this.document;
+    }
 
+    public void setDocument(RemoveReplaceDocument document) {
+        this.document = document;
+    }
 
 }

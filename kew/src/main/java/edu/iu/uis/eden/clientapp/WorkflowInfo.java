@@ -240,6 +240,28 @@ public class WorkflowInfo implements java.io.Serializable {
         }
     }
 
+   /**
+    * Returns the pending action requests of the document of the specified id for the specified
+    * user and/or the specified node name.  If both user and node name are empty then will
+    * return all pending action requests.
+    * @param routeHeaderId the id of the document whose action requests will be retrieved
+    * @param nodeName the node name of the requests to be retrieved
+    * @param userId the user that the requests would be satisfied by
+    * @return the pending action requests of the document of the specified id
+    * @throws WorkflowException if an error occurs obtaining the documents action requests
+    * @see WorkflowUtility#getActionRequests(Long)
+    */
+   public ActionRequestVO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdVO userId) throws WorkflowException {
+       try {
+           return getWorkflowUtility().getActionRequests(routeHeaderId, nodeName, userId);
+       } catch (Exception e) {
+           throw handleException(e);
+       }
+   }
+
+   /**
+
+
     /**
      * Returns the actions taken on the document of the specified id
      * @param routeHeaderId the id of the document whose actions taken will be retrieved

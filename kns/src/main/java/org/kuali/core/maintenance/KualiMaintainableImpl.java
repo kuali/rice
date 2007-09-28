@@ -49,6 +49,7 @@ import org.kuali.core.service.EncryptionService;
 import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.FieldUtils;
 import org.kuali.core.util.GlobalVariables;
+import org.kuali.core.util.InactiveRecordsHidingUtils;
 import org.kuali.core.util.MaintenanceUtils;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.web.ui.Section;
@@ -604,40 +605,16 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * @see org.kuali.core.maintenance.Maintainable#getShowInactiveRecords(java.lang.String)
      */
     public boolean getShowInactiveRecords(String collectionName) {
-        boolean showInactive = false;
-        
-        if (collectionName == null) {
-            throw new IllegalArgumentException("collection name cannot be null");
-        }
-        // remove periods from the collection name due to parsing limitation in Apache beanutils 
-        collectionName = collectionName.replace( '.', '_' );
-        
-        if (inactiveRecordDisplay.containsKey(collectionName)) {
-            Object inactiveSetting = inactiveRecordDisplay.get(collectionName);
-            if (inactiveSetting instanceof Boolean) {
-                showInactive = ((Boolean) inactiveSetting).booleanValue();
-            } else {
-                showInactive = Boolean.parseBoolean(((String[]) inactiveSetting)[0]);
-            }
+	return InactiveRecordsHidingUtils.getShowInactiveRecords(inactiveRecordDisplay, collectionName);
         }
         
-        return showInactive;
-    }
-
     /**
      * @see org.kuali.core.maintenance.Maintainable#setShowInactiveRecords(java.lang.String, boolean)
      */
     public void setShowInactiveRecords(String collectionName, boolean showInactive) {
-        if (collectionName == null) {
-            throw new IllegalArgumentException("collection name cannot be null");
+	InactiveRecordsHidingUtils.setShowInactiveRecords(inactiveRecordDisplay, collectionName, showInactive);
         }
         
-        // remove periods from the collection name due to parsing limitation in Apache beanutils 
-        collectionName = collectionName.replace( '.', '_' );
-
-        inactiveRecordDisplay.put(collectionName, new Boolean(showInactive));
-    }
-    
     /**
      * @return the inactiveRecordDisplay
      */

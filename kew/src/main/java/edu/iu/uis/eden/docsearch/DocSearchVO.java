@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,14 +31,14 @@ import edu.iu.uis.eden.web.RowStyleable;
  * @author rkirkend
  */
 public class DocSearchVO implements Serializable, RowStyleable {
-	
+
 	private static final long serialVersionUID = 7850758046316186962L;
 	private static String UNKNOWN_ROUTING_STATUS = "UNKNOWN";
     private static final String URL_SUFFIX = "?" + IDocHandler.COMMAND_PARAMETER + "=" + IDocHandler.DOCSEARCH_COMMAND + "&" + IDocHandler.ROUTEHEADER_ID_PARAMETER + "=";
     private static final String ROUTE_LOG_URL = "EdenServices/GetRouteHeader.do?docId=";
-    
+
 	private Long routeHeaderId;
-	private String docRouteStatusCode; 
+	private String docRouteStatusCode;
 	private java.sql.Timestamp dateCreated;
 	private String documentTitle;
 	private String activeIndicatorCode;
@@ -54,9 +54,9 @@ public class DocSearchVO implements Serializable, RowStyleable {
 	private String docTypeHandlerUrl;
 	private String rowStyleClass;
 	private String superUserSearch;
-	
+
 	private List searchableAttributes = new ArrayList();
-	
+
 	public DocSearchVO() {
 	}
 
@@ -177,7 +177,7 @@ public class DocSearchVO implements Serializable, RowStyleable {
 	public void setInitiatorLastName(String initiatorLastName) {
 		this.initiatorLastName = initiatorLastName;
 	}
-	
+
     public String getDocRouteStatusCodeDesc() {
         if (this.docRouteStatusCode == null || edu.iu.uis.eden.util.CodeTranslator.getRouteStatusLabel(docRouteStatusCode) == null || "".equalsIgnoreCase(edu.iu.uis.eden.util.CodeTranslator.getRouteStatusLabel(docRouteStatusCode))) {
             return UNKNOWN_ROUTING_STATUS;
@@ -197,7 +197,7 @@ public class DocSearchVO implements Serializable, RowStyleable {
             }
         }
     }
-    
+
     public boolean isUsingSuperUserSearch() {
     	return "YES".equalsIgnoreCase(superUserSearch);
     }
@@ -205,7 +205,7 @@ public class DocSearchVO implements Serializable, RowStyleable {
     public String getRouteLogUrl() {
         return ROUTE_LOG_URL + this.routeHeaderId.toString();
     }
-    
+
     public String getRowStyleClass() {
         return rowStyleClass;
     }
@@ -221,16 +221,16 @@ public class DocSearchVO implements Serializable, RowStyleable {
     public void setInitiatorTransposedName(String initiatorTransposedName) {
         this.initiatorTransposedName = initiatorTransposedName;
     }
-    
+
     /**
      * Method for the JSP to use to pull in searchable attributes by name
      * instead of by index location which is unreliable
-     * 
+     *
      * @param key Key of KeyValueSort trying to be retrieved
      * @return  the matching KeyValueSort in list of searchable attributes or an empty KeyValueSort
      */
     public KeyValueSort getSearchableAttribute(String key) {
-    	KeyValueSort returnPair = new KeyValueSort("","","");
+    	KeyValueSort returnPair = new KeyValueSort("","","",null);
     	if (key == null) {
     		return returnPair;
     	}
@@ -243,7 +243,7 @@ public class DocSearchVO implements Serializable, RowStyleable {
 		}
     	return returnPair;
     }
-    
+
     public void addSearchableAttribute(KeyValueSort searchableAttribute) {
     	searchableAttributes.add(searchableAttribute);
     }

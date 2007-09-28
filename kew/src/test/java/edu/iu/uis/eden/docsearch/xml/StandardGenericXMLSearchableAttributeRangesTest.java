@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,6 +16,7 @@
  */
 package edu.iu.uis.eden.docsearch.xml;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -59,12 +60,12 @@ import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute.
- * 
+ *
  * KULWF-654: Tests the resolution to this issue by configuring a CustomActionListAttribute as well as a
  * searchable attribute.
  */
 public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase {
-    
+
     protected void loadTestData() throws Exception {
         loadXmlFile("XmlConfig.xml");
     }
@@ -79,7 +80,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         attribute.setRuleAttribute(ruleAttribute);
         return attribute;
     }
-    
+
     private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
     	String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
     	String savedKey = key;
@@ -98,7 +99,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
     	}
     	return sacc;
     }
-    
+
     private Field getFieldByFormKey(DocumentType docType, String formKey) {
     	if (docType == null) {
     		return null;
@@ -138,9 +139,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
 
         searchAttribute = getAttribute("XMLSearchableAttributeStdLongRange");
         // search def :  rangeSearch=true
-        // range def  :  
-        // upper def  :  
-        // lower def  :  
+        // range def  :
+        // upper def  :
+        // lower def  :
         searchRows = searchAttribute.getSearchingRows();
         if ((new SearchableAttributeLongValue()).allowsRangeSearches()) {
             assertEquals("Invalid number of search rows", 2, searchRows.size());
@@ -163,7 +164,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         }
 
         searchAttribute = getAttribute("XMLSearchableAttributeStdFloatRange");
-        // search def :  
+        // search def :
         // range def  :  inclusive=false
         // upper def  :  label=ending
         // lower def  :  label=starting
@@ -200,7 +201,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         // search def :  datePicker=false
         // range def  :  inclusive=false
         // upper def  :  inclusvie=true - datePicker=true
-        // lower def  :  
+        // lower def  :
         searchRows = searchAttribute.getSearchingRows();
         if ((new SearchableAttributeDateTimeValue()).allowsRangeSearches()) {
             assertEquals("Invalid number of search rows", 2, searchRows.size());
@@ -252,7 +253,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         paramMap.put(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack*jack");
         validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
         assertEquals("Validation should return a single error message.", 0, validationErrors.size());
-        
+
         searchAttribute = getAttribute("XMLSearchableAttributeStdLongRange");
         paramMap = new HashMap();
         paramMap.put(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString());
@@ -318,7 +319,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName);
 
         /*
-         *   Below we are using the keys and values from the custom searchable attribute classes' static constants but 
+         *   Below we are using the keys and values from the custom searchable attribute classes' static constants but
          *   this is only for convenience as those should always be valid values to test for.
          */
         // adding string searchable attribute
@@ -340,7 +341,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
 
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
-        
+
         workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), workflowDocument.getRouteHeaderId());
         DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());
         assertEquals("Wrong number of searchable attributes", 4, doc.getSearchableAttributeValues().size());
@@ -385,7 +386,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         DocSearchCriteriaVO criteria = null;
         List searchResults = null;
         DocumentSearchResultComponents result = null;
-        
+
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, Boolean.TRUE, docType));
@@ -430,7 +431,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         result = docSearchService.getList(user, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 0, searchResults.size());
-        
+
         // test upper bound only
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
@@ -456,7 +457,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         result = docSearchService.getList(user, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 1, searchResults.size());
-        
+
         // test both bounds
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
@@ -494,13 +495,13 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
             result = docSearchService.getList(user, criteria);
             fail("Error should have been thrown for invalid range");
         } catch (WorkflowServiceErrorException e) {}
-        
+
         // begin float attribute value testing
         // inclusive = false
         String searchAttributeFloatKey = TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY;
-        Float searchAttributeFloatValue = TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE;
+        BigDecimal searchAttributeFloatValue = TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE;
 
-        Float floatValueToUse = null;
+        BigDecimal floatValueToUse = null;
         // test lower bound only
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
@@ -512,7 +513,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         assertEquals("Search results should have one document.", 0, searchResults.size());
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
-        floatValueToUse = Float.valueOf(searchAttributeFloatValue.floatValue() - 1);
+        floatValueToUse = searchAttributeFloatValue.subtract(BigDecimal.ONE);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, floatValueToUse.toString(), Boolean.TRUE, docType));
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, "", Boolean.FALSE, docType));
         result = docSearchService.getList(user, criteria);
@@ -520,13 +521,13 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         assertEquals("Search results should have one document.", 1, searchResults.size());
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
-        floatValueToUse = Float.valueOf(searchAttributeFloatValue.floatValue() + 1);
+        floatValueToUse = searchAttributeFloatValue.add(BigDecimal.ONE);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, floatValueToUse.toString(), Boolean.TRUE, docType));
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, "", Boolean.FALSE, docType));
         result = docSearchService.getList(user, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 0, searchResults.size());
-        
+
         // test upper bound only
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
@@ -538,7 +539,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         assertEquals("Search results should have one document.", 0, searchResults.size());
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
-        floatValueToUse = Float.valueOf(searchAttributeFloatValue.floatValue() - 1);
+        floatValueToUse = searchAttributeFloatValue.subtract(BigDecimal.ONE);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, "", Boolean.TRUE, docType));
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, floatValueToUse.toString(), Boolean.FALSE, docType));
         result = docSearchService.getList(user, criteria);
@@ -546,46 +547,46 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         assertEquals("Search results should have one document.", 0, searchResults.size());
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
-        floatValueToUse = Float.valueOf(searchAttributeFloatValue.floatValue() + 1);
+        floatValueToUse = searchAttributeFloatValue.add(BigDecimal.ONE);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, "", Boolean.TRUE, docType));
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, floatValueToUse.toString(), Boolean.FALSE, docType));
         result = docSearchService.getList(user, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 1, searchResults.size());
-        
+
         // test both bounds
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, Float.valueOf(searchAttributeFloatValue.floatValue()).toString(), Boolean.TRUE, docType));
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, Float.valueOf(searchAttributeFloatValue.floatValue()).toString(), Boolean.FALSE, docType));
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, searchAttributeFloatValue.toString(), Boolean.TRUE, docType));
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, searchAttributeFloatValue.toString(), Boolean.FALSE, docType));
         result = docSearchService.getList(user, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 0, searchResults.size());
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, Float.valueOf(searchAttributeFloatValue.floatValue() + 2).toString(), Boolean.TRUE, docType));
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, Float.valueOf(searchAttributeFloatValue.floatValue() + 4).toString(), Boolean.FALSE, docType));
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, (searchAttributeFloatValue.add(new BigDecimal(2))).toString(), Boolean.TRUE, docType));
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, (searchAttributeFloatValue.add(new BigDecimal(4))).toString(), Boolean.FALSE, docType));
         result = docSearchService.getList(user, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 0, searchResults.size());
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, Float.valueOf(searchAttributeFloatValue.floatValue() - 4).toString(), Boolean.TRUE, docType));
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, Float.valueOf(searchAttributeFloatValue.floatValue() - 2).toString(), Boolean.FALSE, docType));
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, (searchAttributeFloatValue.subtract(new BigDecimal(4))).toString(), Boolean.TRUE, docType));
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, (searchAttributeFloatValue.subtract(new BigDecimal(2))).toString(), Boolean.FALSE, docType));
         result = docSearchService.getList(user, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 0, searchResults.size());
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, Float.valueOf(searchAttributeFloatValue.floatValue() - 2).toString(), Boolean.TRUE, docType));
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, Float.valueOf(searchAttributeFloatValue.floatValue() + 2).toString(), Boolean.FALSE, docType));
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, (searchAttributeFloatValue.subtract(new BigDecimal(2))).toString(), Boolean.TRUE, docType));
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, (searchAttributeFloatValue.add(new BigDecimal(2))).toString(), Boolean.FALSE, docType));
         result = docSearchService.getList(user, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 1, searchResults.size());
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, Float.valueOf(searchAttributeFloatValue.floatValue() + 2).toString(), Boolean.TRUE, docType));
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, Float.valueOf(searchAttributeFloatValue.floatValue() - 2).toString(), Boolean.FALSE, docType));
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, (searchAttributeFloatValue.add(new BigDecimal(2))).toString(), Boolean.TRUE, docType));
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeFloatKey, (searchAttributeFloatValue.subtract(new BigDecimal(2))).toString(), Boolean.FALSE, docType));
         try {
             result = docSearchService.getList(user, criteria);
             fail("Error should have been thrown for invalid range");
@@ -595,13 +596,13 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         // inclusive = ?
         String searchAttributeDateTimeKey = TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY;
         Calendar searchAttributeDateTimeValue = Utilities.convertTimestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE);
-        
+
         Calendar calendarValueToUse = null;
         // test lower bound only
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
         calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
-        String valueToSearch = DocSearchUtils.getDisplayValueWithDateOnly(Utilities.convertCalendar(calendarValueToUse)); 
+        String valueToSearch = DocSearchUtils.getDisplayValueWithDateOnly(Utilities.convertCalendar(calendarValueToUse));
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeDateTimeKey, valueToSearch, Boolean.TRUE, docType));
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeDateTimeKey, "", Boolean.FALSE, docType));
         result = docSearchService.getList(user, criteria);
@@ -611,7 +612,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         criteria.setDocTypeFullName(documentTypeName);
         calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
         calendarValueToUse.add(Calendar.DATE, -1);
-        valueToSearch = DocSearchUtils.getDisplayValueWithDateOnly(Utilities.convertCalendar(calendarValueToUse)); 
+        valueToSearch = DocSearchUtils.getDisplayValueWithDateOnly(Utilities.convertCalendar(calendarValueToUse));
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeDateTimeKey, valueToSearch, Boolean.TRUE, docType));
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeDateTimeKey, "", Boolean.FALSE, docType));
         result = docSearchService.getList(user, criteria);
@@ -621,13 +622,13 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         criteria.setDocTypeFullName(documentTypeName);
         calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
         calendarValueToUse.add(Calendar.DATE, 1);
-        valueToSearch = DocSearchUtils.getDisplayValueWithDateOnly(Utilities.convertCalendar(calendarValueToUse)); 
+        valueToSearch = DocSearchUtils.getDisplayValueWithDateOnly(Utilities.convertCalendar(calendarValueToUse));
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeDateTimeKey, valueToSearch, Boolean.TRUE, docType));
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(searchAttributeDateTimeKey, "", Boolean.FALSE, docType));
         result = docSearchService.getList(user, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 0, searchResults.size());
-        
+
         // test upper bound only
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
@@ -655,7 +656,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase
         result = docSearchService.getList(user, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 1, searchResults.size());
-        
+
         // test both bounds
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);

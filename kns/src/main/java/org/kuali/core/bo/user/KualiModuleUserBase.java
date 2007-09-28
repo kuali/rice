@@ -56,7 +56,8 @@ public class KualiModuleUserBase extends TransientBusinessObjectBase implements 
     }
     
     protected boolean isActiveFacultyStaffAffiliate() {
-        return (getUniversalUser().isFaculty() || getUniversalUser().isStaff() || getUniversalUser().isAffiliate()) && !KNSServiceLocator.getKualiConfigurationService().getApplicationParameterRule(RiceConstants.ADMIN_GROUP, RiceConstants.ALLOWED_EMPLOYEE_STATUS_RULE).failsRule(getUniversalUser().getEmployeeStatusCode());
+        return (getUniversalUser().isFaculty() || getUniversalUser().isStaff() || getUniversalUser().isAffiliate()) 
+        		&& !KNSServiceLocator.getKualiConfigurationService().failsRule(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.KUALI_MODULE_USER_DETAIL_TYPE, RiceConstants.ALLOWED_EMPLOYEE_STATUS_RULE,getUniversalUser().getEmployeeStatusCode());
     }
 
     public void setActive(boolean active) {
@@ -67,10 +68,6 @@ public class KualiModuleUserBase extends TransientBusinessObjectBase implements 
 
     public String getPersonUniversalIdentifier() {
         return personUniversalIdentifier;
-    }
-
-    private void setPersonUniversalIdentifier(String personUniversalIdentifier) {
-        this.personUniversalIdentifier = personUniversalIdentifier;
     }
 
     /**

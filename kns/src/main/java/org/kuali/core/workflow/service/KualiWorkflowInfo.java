@@ -67,6 +67,8 @@ public interface KualiWorkflowInfo {
 
     public abstract ActionRequestVO[] getActionRequests(Long routeHeaderId) throws WorkflowException;
 
+    public abstract ActionRequestVO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdVO userId) throws WorkflowException;
+    
     public abstract ActionTakenVO[] getActionsTaken(Long routeHeaderId) throws WorkflowException;
 
     public abstract void reResolveRole(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;

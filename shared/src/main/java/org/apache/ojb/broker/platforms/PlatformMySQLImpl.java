@@ -45,7 +45,6 @@ import org.apache.ojb.broker.query.LikeCriteria;
 /**
  * @version 1.0
  * @author jakob br�uchi
- * @version $Id: PlatformMySQLImpl.java,v 1.2.2.1 2007-08-15 16:05:06 ewestfal Exp $
  */
 public class PlatformMySQLImpl extends PlatformDefaultImpl
 {

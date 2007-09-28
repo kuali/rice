@@ -46,7 +46,6 @@ import org.apache.ojb.broker.query.LikeCriteria;
  * 
  * @version 1.0
  * @author <a href="mailto:tomdz@apache.org">Thomas Dudziak</a>
- * @version $Id: PlatformMckoiImpl.java,v 1.2.2.1 2007-08-15 16:05:06 ewestfal Exp $
  * @see http://www.mckoi.com/database
  */
 public class PlatformMckoiImpl extends PlatformDefaultImpl

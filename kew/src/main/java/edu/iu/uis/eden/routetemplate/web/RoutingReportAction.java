@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,9 +23,11 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,8 +45,10 @@ import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
+import edu.iu.uis.eden.engine.ActivationContext;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.engine.node.RouteNode;
+import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
@@ -143,18 +147,18 @@ public class RoutingReportAction extends WorkflowAction {
 		routeHeader.setDocRouteLevel(new Integer(0));
         routeHeader.setDocVersion(new Integer(EdenConstants.CURRENT_DOCUMENT_VERSION));
 
-		Map ruleTemplates = new HashMap();
+        List<RouteReportRuleTemplateContainer> ruleTemplateContainers = new ArrayList<RouteReportRuleTemplateContainer>();
 		if (routingForm.getReportType().equals(DOC_TYPE_REPORTING)) {
-            
+
           List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(docType, true);
 			for (Iterator iter = routeNodes.iterator(); iter.hasNext();) {
                 RouteNode routeNode = (RouteNode) iter.next();
 				if (routeNode.isFlexRM()) {
 					RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateName(routeNode.getRouteMethodName());
 					if (ruleTemplate != null) {
-						ruleTemplates.put(ruleTemplate, routeNode);
+					    ruleTemplateContainers.add(new RouteReportRuleTemplateContainer(ruleTemplate, routeNode));
 						if (ruleTemplate.getDelegationTemplate() != null) {
-							ruleTemplates.put(ruleTemplate.getDelegationTemplate(), routeNode);
+						    ruleTemplateContainers.add(new RouteReportRuleTemplateContainer(ruleTemplate.getDelegationTemplate(), routeNode));
 						}
 					}
 				}
@@ -163,17 +167,18 @@ public class RoutingReportAction extends WorkflowAction {
 			RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(routingForm.getRuleTemplateId());
 			RouteNode routeNode = new RouteNode();
 			routeNode.setRouteNodeName(ruleTemplate.getName());
-			ruleTemplates.put(ruleTemplate, routeNode);
+			ruleTemplateContainers.add(new RouteReportRuleTemplateContainer(ruleTemplate, routeNode));
 			if (ruleTemplate.getDelegationTemplate() != null) {
-				ruleTemplates.put(ruleTemplate.getDelegationTemplate(), routeNode);
+			    ruleTemplateContainers.add(new RouteReportRuleTemplateContainer(ruleTemplate.getDelegationTemplate(), routeNode));
 			}
 		}
 
         String xmlDocumentContent = routingForm.getDocumentContent();
         if (routingForm.getReportType().equals(TEMPLATE_REPORTING)) {
             List attributes = new ArrayList();
-            for (Iterator iterator = ruleTemplates.keySet().iterator(); iterator.hasNext();) {
-                RuleTemplate ruleTemplate = (RuleTemplate) iterator.next();
+            for (Iterator iterator = ruleTemplateContainers.iterator(); iterator.hasNext();) {
+                RouteReportRuleTemplateContainer ruleTemplateContainer = (RouteReportRuleTemplateContainer) iterator.next();
+                RuleTemplate ruleTemplate = ruleTemplateContainer.ruleTemplate;
                 for (Iterator iter = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
                     RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
                     if (!ruleTemplateAttribute.isWorkflowAttribute()) {
@@ -192,15 +197,15 @@ public class RoutingReportAction extends WorkflowAction {
                     attributes.add(workflowAttribute);
                 }
             }
-            
+
             if (!errors.isEmpty()) {
                 throw new WorkflowServiceErrorException("Errors populating rule attributes.", errors);
             }
-            
+
             DocumentContent docContent = new AttributeDocumentContent(attributes);
             xmlDocumentContent = docContent.getDocContent();
         }
-        
+
 		routeHeader.setDocContent(xmlDocumentContent);
 		routeHeader.setInitiatorWorkflowId(getUserSession(request).getWorkflowUser().getWorkflowUserId().getWorkflowId());
 		routeHeader.setDocRouteStatus(EdenConstants.ROUTE_HEADER_INITIATED_CD);
@@ -209,24 +214,29 @@ public class RoutingReportAction extends WorkflowAction {
 		long magicCounter = 0;
 
 		FlexRM flexRM = new FlexRM(date);
-		
+
 		int numberOfRules = 0;
 		int numberOfActionRequests = 0;
-		for (Iterator iterator = ruleTemplates.keySet().iterator(); iterator.hasNext();) {
+		Set<String> alreadyProcessedRuleTemplateNames = new HashSet<String>();
+		for (Iterator iterator = ruleTemplateContainers.iterator(); iterator.hasNext();) {
 			// initialize the RouteContext
-			RouteContext context = RouteContext.getCurrentRouteContext();
-			context.setDocument(routeHeader);
+		    RouteContext context = RouteContext.createNewRouteContext();
+		context.setActivationContext(new ActivationContext(ActivationContext.CONTEXT_IS_SIMULATION));
 			try {
-				RuleTemplate ruleTemplate = (RuleTemplate) iterator.next();
-				RouteNode routeLevel = (RouteNode) ruleTemplates.get(ruleTemplate);
-			
+			    RouteReportRuleTemplateContainer ruleTemplateContainer = (RouteReportRuleTemplateContainer) iterator.next();
+				RuleTemplate ruleTemplate = ruleTemplateContainer.ruleTemplate;
+				RouteNode routeLevel = ruleTemplateContainer.routeNode;
+
+				if (!alreadyProcessedRuleTemplateNames.contains(ruleTemplate.getName())) {
+				    alreadyProcessedRuleTemplateNames.add(ruleTemplate.getName());
 				List actionRequests = flexRM.getActionRequests(routeHeader, ruleTemplate.getName());
 
 				numberOfActionRequests += actionRequests.size();
 				numberOfRules += flexRM.getNumberOfMatchingRules();
 
-				magicCounter += populateActionRequestsWithRouteLevelInformationAndIterateMagicCounter(routeLevel, actionRequests, magicCounter);
+				magicCounter = populateActionRequestsWithRouteLevelInformationAndIterateMagicCounter(routeLevel, actionRequests, magicCounter);
 				routeHeader.getActionRequests().addAll(actionRequests);
+				}
 			} finally {
 				RouteContext.clearCurrentRouteContext();
 			}
@@ -258,6 +268,15 @@ public class RoutingReportAction extends WorkflowAction {
 		return mapping.findForward("routeLog");
 	}
 
+	private class RouteReportRuleTemplateContainer {
+	    public RuleTemplate ruleTemplate = null;
+	    public RouteNode routeNode = null;
+	    public RouteReportRuleTemplateContainer(RuleTemplate template, RouteNode node) {
+	        this.ruleTemplate = template;
+	        this.routeNode = node;
+	    }
+	}
+
 	public long populateActionRequestsWithRouteLevelInformationAndIterateMagicCounter(RouteNode routeLevel, List actionRequests, long magicCounter) {
 
 		for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
@@ -265,6 +284,9 @@ public class RoutingReportAction extends WorkflowAction {
 			populateActionRequestsWithRouteLevelInformationAndIterateMagicCounter(routeLevel, actionRequest.getChildrenRequests(), magicCounter);
 			actionRequest.setStatus(EdenConstants.ACTION_REQUEST_INITIALIZED);
 //			actionRequest.setRouteMethodName(routeLevel.getRouteMethodName());
+			RouteNodeInstance routeNode = new RouteNodeInstance();
+			routeNode.setRouteNode(routeLevel);
+			actionRequest.setNodeInstance(routeNode);
 			actionRequest.setRouteLevel(new Integer(0));
 			magicCounter++;
 			actionRequest.setActionRequestId(new Long(magicCounter));
@@ -311,7 +333,7 @@ public class RoutingReportAction extends WorkflowAction {
             if (Utilities.isEmpty(routingReportForm.getDocumentContent())) {
                 throw new RuntimeException("Document Content was not given");
             }
-            
+
 			if (!Utilities.isEmpty(routingReportForm.getDocumentType())) {
 				DocumentType docType = getDocumentTypeService().findByName(routingReportForm.getDocumentType());
 				if (docType == null) {

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -132,7 +132,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
             for (int i = 0; i < fieldNodeList.getLength(); i++) {
                 Node field = fieldNodeList.item(i);
                 NamedNodeMap fieldAttributes = field.getAttributes();
-               
+
                 List fields = new ArrayList();
                 Field myField = new Field(fieldAttributes.getNamedItem("title").getNodeValue(), "", "", false, fieldAttributes.getNamedItem("name").getNodeValue(), "", null, "");
                 String quickfinderService = null;
@@ -167,6 +167,9 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                                 	title = titleAttribute.getNodeValue();
                             	}
                             	options.add(new KeyLabelPair(optionValue, title));
+                            } else if ("parameters".equals(displayChildNode.getNodeName())) {
+                                NamedNodeMap parametersAttributes = displayChildNode.getAttributes();
+                                myField.addDisplayParameter(parametersAttributes.getNamedItem("name").getNodeValue(), displayChildNode.getFirstChild().getNodeValue());
                             }
                         }
                         if (!options.isEmpty()) {
@@ -177,7 +180,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                                     int k = 0;
                                     for (Iterator iter = selectedOptions.iterator(); iter.hasNext();) {
                                         String option = (String) iter.next();
-                                        newSelectedOptions[k] = option; 
+                                        newSelectedOptions[k] = option;
                                         k++;
                                     }
                                     myField.setPropertyValues(newSelectedOptions);
@@ -230,14 +233,14 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
     private List ruleRows = new ArrayList();
     private List routingDataRows = new ArrayList();
     private boolean required;
-    
+
     public StandardGenericXMLRuleAttribute() {
     }
-    
+
     public void setRuleAttribute(RuleAttribute ruleAttribute) {
         this.ruleAttribute = ruleAttribute;
     }
-    
+
     public boolean isMatch(DocumentContent docContent, List ruleExtensions) {
         XPath xpath = XPathHelper.newXPath(docContent.getDocument());
         WorkflowFunctionResolver resolver = XPathHelper.extractFunctionResolver(xpath);
@@ -299,7 +302,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
         }
         return ruleRows;
     }
-    
+
     private static String getValidationErrorMessage(XPath xpath, Element root, String fieldName) throws XPathExpressionException {
         String findErrorMessage = "//routingConfig/" + FIELD_DEF_E + "[@name='" + fieldName + "']/validation/message";
         return (String) xpath.evaluate(findErrorMessage, root, XPathConstants.STRING);
@@ -367,10 +370,10 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                 fieldValue = "";
             }
 
-            if (regex == null){ 
+            if (regex == null){
                 if (fieldIsRequired) {
                     if (fieldValue.length() == 0) {
-                        errors.add(errorGenerator.generateMissingFieldError(field, fieldName, getValidationErrorMessage(xpath, root, fieldName)));        
+                        errors.add(errorGenerator.generateMissingFieldError(field, fieldName, getValidationErrorMessage(xpath, root, fieldName)));
                     }
                 }
             } else {
@@ -389,7 +392,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
         }
         return routingDataRows;
     }
-    
+
     public String getDocContent() {
         XPath xpath = XPathHelper.newXPath();
         final String findDocContent = "//routingConfig/xmlDocumentContent";
@@ -452,10 +455,10 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
             throw new RuntimeException("Error trying to get xml doc content.", e);
         }
     }
-    
+
     public List getRuleExtensionValues() {
         List extensionValues = new ArrayList();
-        
+
         XPath xpath = XPathHelper.newXPath();
         try {
             NodeList nodes = getFields(xpath, getConfigXML(), new String[] { "ALL", "RULE" });
@@ -477,7 +480,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
         }
         return extensionValues;
     }
-    
+
     public List validateRoutingData(Map paramMap) {
         this.paramMap = paramMap;
         try {
@@ -511,15 +514,15 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
             throw new RuntimeException("Error trying to find xml content with xpath expression", e);
         }
     }
-    
+
     public void setRequired(boolean required) {
         this.required = required;
     }
-    
+
     public boolean isRequired() {
         return required;
     }
-    
+
     public Element getConfigXML() {
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new BufferedReader(new StringReader(ruleAttribute.getXmlConfigData())))).getDocumentElement();

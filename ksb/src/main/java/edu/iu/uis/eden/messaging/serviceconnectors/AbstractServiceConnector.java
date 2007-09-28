@@ -27,7 +27,6 @@ import edu.iu.uis.eden.messaging.bam.BAMClientProxy;
  * and the CredentialsSource as well as providing convenience proxy methods.
  * 
  * @author Scott Battaglia
- * @version $Revision: 1.2.2.1 $ $Date: 2007-08-15 16:05:01 $
  * @since 0.9
  * 
  */

@@ -42,6 +42,7 @@ import org.kuali.core.datadictionary.MaintainableSectionDefinition;
 import org.kuali.core.datadictionary.MaintainableSubSectionHeaderDefinition;
 import org.kuali.core.datadictionary.SubSectionHeaderDefinitionI;
 import org.kuali.core.datadictionary.mask.Mask;
+import org.kuali.core.inquiry.Inquirable;
 import org.kuali.core.lookup.LookupUtils;
 import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.util.FieldUtils;
@@ -59,7 +60,7 @@ public class SectionBridge {
      * @param o The BusinessObject from which to populate the Section values.
      * @return A populated Section.
      */
-    public static final Section toSection(InquirySectionDefinition sd, BusinessObject o) {
+    public static final Section toSection(Inquirable inquirable, InquirySectionDefinition sd, BusinessObject o) {
         Section section = new Section();
         section.setSectionTitle(sd.getTitle());
         section.setRows(new ArrayList());
@@ -79,7 +80,7 @@ public class SectionBridge {
                 InquiryCollectionDefinition inquiryCollectionDefinition = (InquiryCollectionDefinition) fieldDefinition;
 
                 List<Row> sectionRows = new ArrayList();
-                sectionRows = getContainerRows(section, inquiryCollectionDefinition, o, null, null, new ArrayList(), new StringBuffer(section.getErrorKey()), Integer.parseInt(inquiryCollectionDefinition.getNumberOfColumns()));
+                sectionRows = getContainerRows(section, inquiryCollectionDefinition, o, null, null, new ArrayList(), new StringBuffer(section.getErrorKey()), Integer.parseInt(inquiryCollectionDefinition.getNumberOfColumns()), inquirable);
                 section.setRows(sectionRows);
             }
             else if (fieldDefinition instanceof InquirySubSectionHeaderDefinition) {
@@ -143,7 +144,7 @@ public class SectionBridge {
                 section.getContainedCollectionNames().add(((MaintainableCollectionDefinition) item).getName());
 
                 StringBuffer containerRowErrorKey = new StringBuffer();
-                sectionRows = getContainerRows(section, definition, o, maintainable, oldMaintainable, displayedFieldNames, containerRowErrorKey, RiceConstants.DEFAULT_NUM_OF_COLUMNS);
+                sectionRows = getContainerRows(section, definition, o, maintainable, oldMaintainable, displayedFieldNames, containerRowErrorKey, RiceConstants.DEFAULT_NUM_OF_COLUMNS, null);
             }
             else if (item instanceof MaintainableSubSectionHeaderDefinition) {
                 MaintainableSubSectionHeaderDefinition definition = (MaintainableSubSectionHeaderDefinition) item;
@@ -181,8 +182,8 @@ public class SectionBridge {
      * @see #getContainerRows(Section, CollectionDefinitionI, BusinessObject, Maintainable, List<String>, StringBuffer, String,
      *      boolean, int)
      */
-    public static final List<Row> getContainerRows(Section s, CollectionDefinitionI collectionDefinition, BusinessObject o, Maintainable m, Maintainable oldMaintainable, List<String> displayedFieldNames, StringBuffer containerRowErrorKey, int numberOfColumns) {
-        return getContainerRows(s, collectionDefinition, o, m, oldMaintainable, displayedFieldNames, containerRowErrorKey, "", false, numberOfColumns);
+    public static final List<Row> getContainerRows(Section s, CollectionDefinitionI collectionDefinition, BusinessObject o, Maintainable m, Maintainable oldMaintainable, List<String> displayedFieldNames, StringBuffer containerRowErrorKey, int numberOfColumns, Inquirable inquirable) {
+        return getContainerRows(s, collectionDefinition, o, m, oldMaintainable, displayedFieldNames, containerRowErrorKey, "", false, numberOfColumns, inquirable);
     }
 
     /**
@@ -199,7 +200,7 @@ public class SectionBridge {
      * @param numberOfColumns In how many columns in the UI will the fields in the Container/Collection be shown?
      * @return
      */
-     public static final List<Row> getContainerRows(Section s, CollectionDefinitionI collectionDefinition, BusinessObject o, Maintainable m, Maintainable oldMaintainable, List<String> displayedFieldNames, StringBuffer containerRowErrorKey, String parents, boolean hideAdd, int numberOfColumns) {
+     public static final List<Row> getContainerRows(Section s, CollectionDefinitionI collectionDefinition, BusinessObject o, Maintainable m, Maintainable oldMaintainable, List<String> displayedFieldNames, StringBuffer containerRowErrorKey, String parents, boolean hideAdd, int numberOfColumns, Inquirable inquirable) {
         List<Row> containerRows = new ArrayList<Row>();
         List<Field> collFields = new ArrayList<Field>();
         
@@ -213,6 +214,9 @@ public class SectionBridge {
         // add the toggle inactive record display button for the collection
         if (m != null && Inactivateable.class.isAssignableFrom(collectionDefinition.getBusinessObjectClass()) && StringUtils.isBlank(parents)) {
             addShowInactiveButtonField(s, collectionName, !m.getShowInactiveRecords(collectionName));
+        }
+        if (inquirable != null && Inactivateable.class.isAssignableFrom(collectionDefinition.getBusinessObjectClass()) && StringUtils.isBlank(parents)) {
+            addShowInactiveButtonField(s, collectionName, !inquirable.getShowInactiveRecords(collectionName));
         }
         
         // first need to populate the containerRows with the "new" form if available
@@ -237,7 +241,7 @@ public class SectionBridge {
                 }
             }
             // no colNum for add rows
-            containerRows.addAll(getContainerRows(s, subCollectionDefinition, o, m, oldMaintainable, displayedFieldNames, containerRowErrorKey, parents + collectionDefinition.getName() + ".", true, subCollectionNumberOfColumn));
+            containerRows.addAll(getContainerRows(s, subCollectionDefinition, o, m, oldMaintainable, displayedFieldNames, containerRowErrorKey, parents + collectionDefinition.getName() + ".", true, subCollectionNumberOfColumn, inquirable));
         }
 
         // then we need to loop through the existing collection and add those fields
@@ -276,19 +280,20 @@ public class SectionBridge {
                             oldLineBusinessObject = (BusinessObject) ((List) oldObj).get(i);
                         }
                         
-                        if ( m != null && lineBusinessObject instanceof Inactivateable && !((Inactivateable) lineBusinessObject).isActive() ) {
-                        	if (oldLineBusinessObject != null) { 
-                        		if (!((PersistableBusinessObject) lineBusinessObject).isNewCollectionRecord() && !((Inactivateable) oldLineBusinessObject).isActive()) {
-                                	hidableRowsPresent = true;
-                                	if ( !m.getShowInactiveRecords(collectionName) ) {
-                                        setRowHidden = true;
+                        if (lineBusinessObject instanceof Inactivateable && !((Inactivateable) lineBusinessObject).isActive()) {
+                            if (m != null) {
+                                // rendering a maint doc
+                                if (!hidableRowsPresent) {
+                                    hidableRowsPresent = isRowHideableForMaintenanceDocument(lineBusinessObject, oldLineBusinessObject);
                                 	}
-                        		} else {
-                                	hidableRowsPresent = true;
-                                	if ( !m.getShowInactiveRecords(collectionName) ) {
-                                        setRowHidden = true;
+                                setRowHidden = isRowHiddenForMaintenanceDocument(lineBusinessObject, oldLineBusinessObject, m, collectionName);
                                 	}
+                            if (inquirable != null) {
+                                // rendering an inquiry screen
+                                if (!hidableRowsPresent) {
+                                    hidableRowsPresent = isRowHideableForInquiry(lineBusinessObject);
                         		}
+                                setRowHidden = isRowHiddenForInquiry(lineBusinessObject, inquirable, collectionName);
                         	}
                         }
 
@@ -435,7 +440,7 @@ public class SectionBridge {
                             if (subObj instanceof List) {
                                 /* recursively call this method to get the add row and exisiting members of the subCollections subcollections containerRows.addAll(getContainerRows(subCollectionDefinition,
                                    displayedFieldNames,containerRowErrorKey, parents+collectionDefinition.getName()+"["+i+"]"+".","[0]",false, subCollectionNumberOfColumn)); */
-                                containerField.getContainerRows().addAll(getContainerRows(s, subCollectionDefinition, o, m, oldMaintainable, displayedFieldNames, containerRowErrorKey, parents + collectionDefinition.getName() + "[" + i + "]" + ".", false, subCollectionNumberOfColumns));
+                                containerField.getContainerRows().addAll(getContainerRows(s, subCollectionDefinition, o, m, oldMaintainable, displayedFieldNames, containerRowErrorKey, parents + collectionDefinition.getName() + "[" + i + "]" + ".", false, subCollectionNumberOfColumns, inquirable));
                              
                                 // iterate over the fields
                                 for (int j = 0; j < ((List) subObj).size(); j++) {
@@ -443,21 +448,23 @@ public class SectionBridge {
                                     
                                     // determine if sub collection line is inactive and should be hidden
                                     boolean setSubRowHidden = false;
-                                    if ( m != null && lineSubBusinessObject instanceof Inactivateable && !((Inactivateable) lineSubBusinessObject).isActive() ) {
+                                    if (lineSubBusinessObject instanceof Inactivateable && !((Inactivateable) lineSubBusinessObject).isActive() ) {
                                     	if (oldSubObj != null) { 
-                                            BusinessObject oldLineSubBusinessObject = (BusinessObject) ((List) oldSubObj).get(i);
-                                    		if (!((PersistableBusinessObject) lineSubBusinessObject).isNewCollectionRecord() && !((Inactivateable) oldLineSubBusinessObject).isActive()) {
-                                    			hidableRowsPresent = true;
-                                            	if ( !m.getShowInactiveRecords(collectionName) ) {
-                                            		setSubRowHidden = true;
+                                            // get corresponding elements in both the new list and the old list
+                                            BusinessObject oldLineSubBusinessObject = (BusinessObject) ((List) oldSubObj).get(j);
+                                            if (m != null) {
+                                                    if (!hidableRowsPresent) {
+                                                        hidableRowsPresent = isRowHideableForMaintenanceDocument(lineSubBusinessObject, oldLineSubBusinessObject);
                                             	}
-                                    		} else {
-                                    			hidableRowsPresent = true;
-                                            	if ( !m.getShowInactiveRecords(collectionName) ) {
-                                            		setSubRowHidden = true;
+                                                    setSubRowHidden = isRowHiddenForMaintenanceDocument(lineSubBusinessObject, oldLineSubBusinessObject, m, collectionName);
                                             	}
                                     		}
+                                        if (inquirable != null) {
+                                            if (!hidableRowsPresent) {
+                                                hidableRowsPresent = isRowHideableForInquiry(lineSubBusinessObject);
                                     	}
+                                            setSubRowHidden = isRowHiddenForInquiry(lineSubBusinessObject, inquirable, collectionName);
+                                    }
                                     }
 
                                     
@@ -649,5 +656,70 @@ public class SectionBridge {
         separatorField.setReadOnly(true);
 
         return separatorField;
+    }
+    
+    /**
+     * Determines whether a business object is hidable on a maintenance document.  Hidable means that if the user chose to hide the inactive
+     * elements in the collection in which the passed in BOs reside, then the BOs would be hidden
+     * 
+     * @param lineBusinessObject the BO in the new maintainable, should be of type {@link PersistableBusinessObject} and {@link Inquirable}
+     * @param oldLineBusinessObject the corresponding BO in the old maintainable, should be of type {@link PersistableBusinessObject} and 
+     * {@link Inquirable}
+     * @return whether the BOs are eligible to be hidden if the user decides to hide them
+     */
+    protected static boolean isRowHideableForMaintenanceDocument(BusinessObject lineBusinessObject, BusinessObject oldLineBusinessObject) {
+        if (oldLineBusinessObject != null) {
+            if (((PersistableBusinessObject) lineBusinessObject).isNewCollectionRecord()) {
+                // new records are never hidden, regardless of active status
+                return false;
+}
+            if (!((Inactivateable) lineBusinessObject).isActive() && !((Inactivateable) oldLineBusinessObject).isActive()) {
+                // records with an old and new collection elements of NOT active are eligible to be hidden
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * Determines whether a business object is hidden on a maintenance document.
+     * 
+     * @param lineBusinessObject the BO in the new maintainable, should be of type {@link PersistableBusinessObject}
+     * @param oldLineBusinessObject the corresponding BO in the old maintainable
+     * @param newMaintainable the new maintainable from the maintenace document
+     * @param collectionName the name of the collection from which these BOs come
+     * @return
+     */
+    protected static boolean isRowHiddenForMaintenanceDocument(BusinessObject lineBusinessObject, BusinessObject oldLineBusinessObject,
+            Maintainable newMaintainable, String collectionName) {
+        if (isRowHideableForMaintenanceDocument(lineBusinessObject, oldLineBusinessObject)) {
+            return !newMaintainable.getShowInactiveRecords(collectionName);
+        }
+        return false;
+    }
+    
+    /**
+     * Determines whether a business object is hidable on an inquiry screen.  Hidable means that if the user chose to hide the inactive
+     * elements in the collection in which the passed in BO resides, then the BO would be hidden
+     * 
+     * @param lineBusinessObject the collection element BO, should be of type {@link PersistableBusinessObject} and {@link Inquirable}
+     * @return whether the BO is eligible to be hidden if the user decides to hide them
+     */
+    protected static boolean isRowHideableForInquiry(BusinessObject lineBusinessObject) {
+        return !((Inactivateable) lineBusinessObject).isActive();
+    }
+    
+    /**
+     * Determines whether a business object is hidden on an inquiry screen.
+     * 
+     * @param lineBusinessObject the BO in the collection, should be of type {@link PersistableBusinessObject} and {@link Inquirable}
+     * @param inquirable the inquirable
+     * @param collectionName the name of the collection from which the BO comes
+     * @return true if the business object is to be hidden; false otherwise
+     */
+    protected static boolean isRowHiddenForInquiry(BusinessObject lineBusinessObject, Inquirable inquirable, String collectionName) {
+        if (isRowHideableForInquiry(lineBusinessObject)) {
+            return !inquirable.getShowInactiveRecords(collectionName);
+        }
+        return false;
     }
 }

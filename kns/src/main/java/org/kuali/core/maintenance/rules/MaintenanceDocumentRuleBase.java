@@ -36,7 +36,6 @@ import org.kuali.core.exceptions.UnknownDocumentIdException;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.rule.AddCollectionLineRule;
-import org.kuali.core.rule.KualiParameterRule;
 import org.kuali.core.rule.event.ApproveDocumentEvent;
 import org.kuali.core.rules.DocumentRuleBase;
 import org.kuali.core.service.BusinessObjectDictionaryService;
@@ -1199,15 +1198,15 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * 
      * @param apcGroupName - The script or group name in the APC system. If the value is null or blank, an IllegalArgumentException
      *        will be thrown.
-     * @param apcParmName - The name of the parm/rule in the APC system. If the value is null or blank, an IllegalArgumentException
+     * @param parameterName - The name of the parm/rule in the APC system. If the value is null or blank, an IllegalArgumentException
      *        will be thrown.
      * @param valueToTest - The String value to test against the APC rule. The value may be null or blank without throwing an error,
      *        but the rule will likely fail if null or blank.
      * @return True if the rule fails, False if the rule passes.
      * 
      */
-    protected boolean apcRuleFails(String apcGroupName, String apcParmName, String valueToTest) {
-        if (applyApcRule(apcGroupName, apcParmName, valueToTest) == false) {
+    protected boolean apcRuleFails(String parameterNamespace, String parameterDetailTypeCode, String parameterName, String valueToTest) {
+        if (applyApcRule(parameterNamespace, parameterDetailTypeCode, parameterName, valueToTest) == false) {
             return true;
         }
         return false;
@@ -1221,23 +1220,20 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * 
      * @param apcGroupName - The script or group name in the APC system. If the value is null or blank, an IllegalArgumentException
      *        will be thrown.
-     * @param apcParmName - The name of the parm/rule in the APC system. If the value is null or blank, an IllegalArgumentException
+     * @param parameterName - The name of the parm/rule in the APC system. If the value is null or blank, an IllegalArgumentException
      *        will be thrown.
      * @param valueToTest - The String value to test against the APC rule. The value may be null or blank without throwing an error,
      *        but the rule will likely fail if null or blank.
      * @return True if the rule passes, False if the rule fails.
      * 
      */
-    protected boolean applyApcRule(String apcGroupName, String apcParmName, String valueToTest) {
+    protected boolean applyApcRule(String parameterNamespace, String parameterDetailTypeCode, String parameterName, String valueToTest) {
 
         // default to success
         boolean success = true;
 
-        // load up the APC rule
-        KualiParameterRule rule = configService.getApplicationParameterRule(apcGroupName, apcParmName);
-
         // apply the rule, see if it fails
-        if (rule.failsRule(valueToTest)) {
+        if (configService.failsRule(parameterNamespace, parameterDetailTypeCode, parameterName, valueToTest)) {
             success = false;
         }
 

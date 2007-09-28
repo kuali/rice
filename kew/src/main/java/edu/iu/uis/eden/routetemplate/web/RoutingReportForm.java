@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,6 +23,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
@@ -43,7 +44,7 @@ import edu.iu.uis.eden.web.KeyValue;
  * @author delyea
  */
 public class RoutingReportForm extends ActionForm {
-    
+
 	private static final long serialVersionUID = 509542372934250061L;
     public static final String DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME = "documentTypeParam";
     public static final String INITIATOR_ID_ATTRIBUTE_NAME = "initiatorNetworkId";
@@ -51,7 +52,7 @@ public class RoutingReportForm extends ActionForm {
     public static final String RETURN_URL_ATTRIBUTE_NAME = "backUrl";
     public static final String DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME = "showCloseButton";
     public static final String DISPLAY_CLOSE_BUTTON_TRUE_VALUE = "showCloseButton";
-    
+
     private Long ruleTemplateId;
     private String methodToCall = "";
     private String lookupableImplServiceName;
@@ -275,17 +276,20 @@ public class RoutingReportForm extends ActionForm {
     }
 
     public String getBackUrl() {
+        if (StringUtils.isBlank(backUrl)) {
+            return null;
+        }
         return backUrl;
     }
 
     public void setBackUrl(String backUrl) {
         this.backUrl = backUrl;
     }
-    
+
     public boolean isDisplayCloseButton() {
         return (DISPLAY_CLOSE_BUTTON_TRUE_VALUE.equals(getShowCloseButton()));
     }
-    
+
     public String getShowCloseButton() {
         return showCloseButton;
     }

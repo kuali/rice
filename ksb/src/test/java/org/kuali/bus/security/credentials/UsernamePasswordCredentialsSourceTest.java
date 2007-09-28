@@ -23,7 +23,6 @@ import org.kuali.rice.security.credentials.CredentialsSource.CredentialsType;
 /**
  * 
  * @author Scott Battaglia
- * @version $Revision: 1.2.2.1 $ $Date: 2007-08-15 16:04:59 $
  * @since 0.9
  * 
  */

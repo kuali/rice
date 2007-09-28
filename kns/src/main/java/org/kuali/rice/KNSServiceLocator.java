@@ -16,7 +16,14 @@
 package org.kuali.rice;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.kuali.core.datadictionary.ValidationCompletionUtils;
 import org.kuali.core.inquiry.Inquirable;
@@ -77,14 +84,14 @@ public class KNSServiceLocator<T extends Object> {
 	}
 	
 	public static <T> T getBean(Class<T> type) {
-		List<T> beansOfType = getBeansOfType(type);
+		Collection<T> beansOfType = getBeansOfType(type).values();
 		if (beansOfType.isEmpty()) {
 			throw new NoSuchBeanDefinitionException("No beans of this type in the KNS application context: " + type.getName());
 		}
 		if (beansOfType.size() > 1) {
-			throw new IllegalArgumentException("The getBean(Class<T> type) method of KNSServiceLocator expects a type for which there is only one matching bean in the application context: " + type.getName());
+            return getBean(type, type.getSimpleName().substring(0, 1).toLowerCase() + type.getSimpleName().substring(1));
 		}
-        return beansOfType.get(0);
+        return beansOfType.iterator().next();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -93,14 +100,28 @@ public class KNSServiceLocator<T extends Object> {
 	}
 	
 	@SuppressWarnings("unchecked")
-    public static <T> List<T> getBeansOfType(Class<T> type) {
-        return new ArrayList<T>(KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(type).values());
+    public static <T> Map<String,T> getBeansOfType(Class<T> type) {
+        return new HashMap((Map)KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(type));
     }
 	
     public static String[] getBeanNames() {
         return KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanDefinitionNames();
     }
 
+    public static Set<String> getSingletonNames() {
+	Set<String> singletonNames = new HashSet<String>();
+	Collections.addAll(singletonNames, KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().getSingletonNames());
+	return singletonNames;
+    }
+    
+    public static Set<Class> getSingletonTypes() {
+	Set<Class> singletonTypes = new HashSet<Class>();
+        for (String singletonName : getSingletonNames()) {
+            singletonTypes.add(KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().getType(singletonName));
+        }
+        return singletonTypes;
+    }
+    
 	public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName) {
 		List<NamedOrderedListBean> namedOrderedListBeans = new ArrayList<NamedOrderedListBean>();
 		for (Object namedOrderedListBean : KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(NamedOrderedListBean.class).values()) {

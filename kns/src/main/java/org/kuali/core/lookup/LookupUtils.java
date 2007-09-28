@@ -166,7 +166,7 @@ public class LookupUtils {
     }
 
     public static Integer getApplicationSearchResultsLimit() {
-        String limitString = KNSServiceLocator.getKualiConfigurationService().getApplicationParameterValue(RiceConstants.ParameterGroups.SYSTEM, RiceConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
+        String limitString = KNSServiceLocator.getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, RiceConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
         if (limitString != null) {
             return Integer.valueOf(limitString);
         }
@@ -180,7 +180,7 @@ public class LookupUtils {
      * @return
      */
     public static Integer getApplicationMaximumSearchResulsPerPageForMultipleValueLookups() {
-        String limitString = KNSServiceLocator.getKualiConfigurationService().getApplicationParameterValue(RiceConstants.ParameterGroups.SYSTEM, RiceConstants.SystemGroupParameterNames.MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE);
+        String limitString = KNSServiceLocator.getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, RiceConstants.SystemGroupParameterNames.MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE);
         if (limitString != null) {
             return Integer.valueOf(limitString);
         }

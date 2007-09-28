@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,18 +16,21 @@
  */
 package edu.iu.uis.eden.lookupable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Represents a column within a table in the user interface for Lookupables.
- * 
+ *
  * @see WorkflowLookupable
- * 
+ *
  * @author jhopf
  */
 public class Column {
-	
+
 	public static final String COLUMN_IS_SORTABLE_VALUE = "true";
 	public static final String COLUMN_NOT_SORTABLE_VALUE = "false";
 
@@ -43,6 +46,7 @@ public class Column {
 	private String propertyName;
 	private String sortPropertyName;
 	private String type = TEXT;
+	private Map<String,String> displayParameters = new HashMap<String,String>();
 
 	public Column() {
 
@@ -53,15 +57,16 @@ public class Column {
 		this.sortable = sortable;
 		this.propertyName = propertyName;
 	}
-	
-	public Column(String columnTitle, String sortable, String propertyName, String sortPropertyName, String key) {
+
+	public Column(String columnTitle, String sortable, String propertyName, String sortPropertyName, String key, Map<String,String> displayParameters) {
 		this.columnTitle = columnTitle;
 		this.sortable = sortable;
 		this.propertyName = propertyName;
 		this.sortPropertyName = sortPropertyName;
 		this.key = key;
+		this.displayParameters = displayParameters;
 	}
-	
+
 	public String getSortName() {
 		if (!Utilities.isEmpty(this.sortPropertyName)) {
 			return this.sortPropertyName;
@@ -70,6 +75,20 @@ public class Column {
 	}
 
 	/**
+     * @return the displayParameters
+     */
+    public Map<String, String> getDisplayParameters() {
+        return displayParameters;
+    }
+
+    /**
+     * @param displayParameters the displayParameters to set
+     */
+    public void setDisplayParameters(Map<String, String> displayParameters) {
+        this.displayParameters = displayParameters;
+    }
+
+    /**
 	 * @return the key
 	 */
 	public String getKey() {

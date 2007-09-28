@@ -35,7 +35,7 @@ public class UniversalUserLookupableHelperServiceImpl extends KualiLookupableHel
     public boolean allowsMaintenanceNewOrCopyAction() {
         // get the group name that we need here
         if ( userEditWorkgroupName == null ) {
-            userEditWorkgroupName = configService.getApplicationParameterValue(RiceConstants.CoreApcParms.GROUP_CORE_MAINT_EDOCS, RiceConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
+            userEditWorkgroupName = configService.getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, RiceConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
             // check whether users are editable within Kuali
             usersMaintainedByKuali = configService.getPropertyAsBoolean( RiceConstants.MAINTAIN_USERS_LOCALLY_KEY );
         }

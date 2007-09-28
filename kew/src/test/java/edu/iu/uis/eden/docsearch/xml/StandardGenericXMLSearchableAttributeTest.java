@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -73,12 +73,12 @@ import edu.iu.uis.eden.web.KeyValueSort;
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute.
- * 
+ *
  * KULWF-654: Tests the resolution to this issue by configuring a CustomActionListAttribute as well as a
  * searchable attribute.
  */
 public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
-    
+
     protected void loadTestData() throws Exception {
         loadXmlFile("XmlConfig.xml");
     }
@@ -93,7 +93,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         attribute.setRuleAttribute(ruleAttribute);
         return attribute;
     }
-    
+
     private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {
     	String formKey = key;
     	String savedKey = key;
@@ -112,7 +112,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
     	}
     	return sacc;
     }
-    
+
     private Field getFieldByFormKey(DocumentType docType, String formKey) {
     	if (docType == null) {
     		return null;
@@ -136,7 +136,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName);
 
         /*
-         *   Below we are using the keys and values from the custom searchable attribute classes' static constants but 
+         *   Below we are using the keys and values from the custom searchable attribute classes' static constants but
          *   this is only for convenience as those should always be valid values to test for.
          */
         // adding string value in what should be a long searchable attribute
@@ -152,7 +152,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
             e.printStackTrace();
         }
     }
-    
+
     @Test public void testXMLStandardSearchableAttributesWithDataType() throws Exception {
         String documentTypeName = "SearchDocTypeStandardSearchDataType";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
@@ -160,7 +160,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName);
 
         /*
-         *   Below we are using the keys and values from the custom searchable attribute classes' static constants but 
+         *   Below we are using the keys and values from the custom searchable attribute classes' static constants but
          *   this is only for convenience as those should always be valid values to test for.
          */
         int i = 0;
@@ -187,7 +187,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
 
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
-        
+
         workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), workflowDocument.getRouteHeaderId());
         DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());
         assertEquals("Wrong number of searchable attributes", i, doc.getSearchableAttributeValues().size());
@@ -337,7 +337,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (WorkflowServiceErrorException e) {}
     }
-    
+
     @Test public void testRouteDocumentWithSearchableAttribute() throws Exception {
     	String documentTypeName = "SearchDocType";
     	String key = "givenname";
@@ -346,7 +346,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         WorkflowAttributeDefinitionVO givennameXMLDef = new WorkflowAttributeDefinitionVO("XMLSearchableAttribute");
 
         workflowDocument.setApplicationContent("<test></test>");
-        
+
         givennameXMLDef.addProperty(key, "jack");
         workflowDocument.addSearchableDefinition(givennameXMLDef);
 
@@ -362,7 +362,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
         DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
         List searchResults = result.getSearchResults();
-        
+
         assertEquals("Search results should have one document.", 1, searchResults.size());
 
         criteria = null;
@@ -397,7 +397,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         WorkflowAttributeDefinitionVO givennameXMLDef = new WorkflowAttributeDefinitionVO("XMLSearchableAttribute");
 
         workflowDocument.setApplicationContent("<test></test>");
-        
+
         givennameXMLDef.addProperty(key, "jack");
         workflowDocument.addSearchableDefinition(givennameXMLDef);
 
@@ -410,7 +410,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
         DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
         List searchResults = result.getSearchResults();
-        
+
         assertEquals("Search results should have one document.", 1, searchResults.size());
 
         criteria = new DocSearchCriteriaVO();
@@ -428,7 +428,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         searchResults = result.getSearchResults();
 
         assertEquals("Search results should have one document.", 0, searchResults.size());
-        
+
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "ack", docType));
@@ -437,7 +437,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
 
         assertEquals("Search results should have one document.", 1, searchResults.size());
     }
-    
+
     @Test public void testDocumentSearchAttributeWildcardingDisallow() throws Exception {
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
         UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
@@ -448,7 +448,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName);
 
         /*
-         *   Below we are using the keys and values from the custom searchable attribute classes' static constants but 
+         *   Below we are using the keys and values from the custom searchable attribute classes' static constants but
          *   this is only for convenience as those should always be valid values to test for.
          */
         WorkflowAttributeDefinitionVO longXMLDef = new WorkflowAttributeDefinitionVO("XMLSearchableAttributeStdLong");
@@ -456,7 +456,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         workflowDocument.addSearchableDefinition(longXMLDef);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
-        
+
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
 
         String validSearchValue = TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString();
@@ -588,7 +588,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         result = docSearchService.getList(user, criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
     }
-    
+
     /**
      * Tests searching with client-generated documentContent which is just malformed XML.
      * @throws WorkflowException
@@ -737,45 +737,45 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
                 foundJill = true;
             }
         }
-        
+
         assertTrue("Didn't find searchable attribute value 'jack'", foundJack);
         assertTrue("Didn't find searchable attribute value 'jill'", foundJill);
     }
-    
+
     @Test public void testNoSearchableContentAction() throws Exception {
     	RouteHeaderService routeHeaderService = KEWServiceLocator.getRouteHeaderService();
     	WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdVO("rkirkend"), "SearchDocType");
     	workflowDocument.saveDocument("");
-    	
-    	//verify that a searchable attribute exists even though 
+
+    	//verify that a searchable attribute exists even though
     	DocumentRouteHeaderValue document = routeHeaderService.getRouteHeader(workflowDocument.getRouteHeaderId());
     	assertEquals("Should have a searchable attribute key", 1, document.getSearchableAttributeValues().size());
     	assertEquals("Searchable attribute key should be givenname", "givenname", ((SearchableAttributeValue)document.getSearchableAttributeValues().get(0)).getSearchableAttributeKey());
-    	
-    	
+
+
     	WorkflowDocument workflowDocument2 = new WorkflowDocument(new NetworkIdVO("rkirkend"), "SearchDocType2");
     	workflowDocument2.saveDocument("");
-    	
+
     	DocumentRouteHeaderValue document2 = routeHeaderService.getRouteHeader(workflowDocument2.getRouteHeaderId());
     	assertEquals("Should have a searchable attribute key", 1, document2.getSearchableAttributeValues().size());
     	assertEquals("Searchable attribute key should be givenname", "givenname", ((SearchableAttributeValue)document2.getSearchableAttributeValues().get(0)).getSearchableAttributeKey());
     }
-    
+
 //    protected String getAltAppContextFile() {
 //    	if (this.getName().equals("testIndexingRequeue")) {
 //    		return "edu/iu/uis/eden/docsearch/xml/SearchableAttributeProcessorSpring.xml";
 //    	} else {
 //    		return null;
 //    	}
-//        
+//
 //    }
-    
-    //this is testing that the code being called in the event of an OptimisticLockException happening in the 
-    //SearchableAttributeProcessor is working.  An actual OptimisticLockException is not being created because it's 
+
+    //this is testing that the code being called in the event of an OptimisticLockException happening in the
+    //SearchableAttributeProcessor is working.  An actual OptimisticLockException is not being created because it's
     //too much of a pain in this single threaded testing env.
 //    public void testIndexingRequeue() throws Exception {
 //    	Long routeHeaderId = new Long(1);
-//    	
+//
 //        PersistedMessage searchIndexingWork = new PersistedMessage();
 //        searchIndexingWork.setProcessorClassName(SearchableAttributeProcessor.class.getName());
 //        searchIndexingWork.setRouteHeaderId(routeHeaderId);
@@ -783,9 +783,9 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
 //        searchIndexingWork.setQueueStatus("Q");
 //        searchIndexingWork.setQueueDate(new Timestamp(System.currentTimeMillis()));
 //        SpringServiceLocator.getRouteQueueService().save(searchIndexingWork);
-//        
+//
 //        new SearchableAttributeProcessor().requeueIndexing(searchIndexingWork);
-//        
+//
 //        Collection queueEntries = SpringServiceLocator.getRouteQueueService().findAll();
 //        assertEquals("should have 2 queue entries", 2, queueEntries.size());
 //        for (Iterator iter = queueEntries.iterator(); iter.hasNext();) {
@@ -796,7 +796,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
 //			assertEquals("Wrong queue priority", searchIndexingWork.getQueuePriority(), queueEntry.getQueuePriority());
 //		}
 //    }
-    
+
     @Test public void testClearingSearchContentWithSearchableAttribute() throws Exception {
     	RouteHeaderService routeHeaderService = KEWServiceLocator.getRouteHeaderService();
 
@@ -815,19 +815,19 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
 
         workflowDocument = new WorkflowDocument(new NetworkIdVO("jhopf"), workflowDocument.getRouteHeaderId());
         workflowDocument.clearSearchableContent();
-        
+
         givennameXMLDef = new WorkflowAttributeDefinitionVO("XMLSearchableAttribute");
         givennameXMLDef.addProperty("givenname", "dukeboys");
         workflowDocument.addSearchableDefinition(givennameXMLDef);
-        
+
         givennameXMLDef = new WorkflowAttributeDefinitionVO("XMLSearchableAttribute");
         givennameXMLDef.addProperty("givenname", "luke duke");
         workflowDocument.addSearchableDefinition(givennameXMLDef);
-        
+
         givennameXMLDef = new WorkflowAttributeDefinitionVO("XMLSearchableAttribute");
         givennameXMLDef.addProperty("givenname", "bo duke");
         workflowDocument.addSearchableDefinition(givennameXMLDef);
-        
+
         workflowDocument.approve("");
 
         doc = routeHeaderService.getRouteHeader(workflowDocument.getRouteHeaderId());
@@ -847,10 +847,10 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
                 foundBo = true;
             }
         }
-        
+
         assertTrue("Didn't find searchable attribute value 'luke duke'", foundLuke);
         assertTrue("Didn't find searchable attribute value 'bo duke'", foundBo);
-        assertTrue("Didn't find searchable attribute value 'dukeboys'", foundDukeBoys);    
+        assertTrue("Didn't find searchable attribute value 'dukeboys'", foundDukeBoys);
     }
 
     /*
@@ -908,7 +908,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         foundDocContent = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new BufferedReader(new StringReader(searchContent)))).getDocumentElement();
         findStuff = "//putWhateverWordsIwantInsideThisTag/" + keyName + "/value";
         assertTrue("Search content does not contain correct value for field '" + keyName + "'.", value.equals(xpath.evaluate(findStuff, foundDocContent, XPathConstants.STRING)));
-        
+
         attribute = getAttribute("XMLSearchableAttributeStdDateTime");
         keyName = "testDateTimeKey";
         value = DocSearchUtils.getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE);
@@ -939,7 +939,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
             assertEquals("Key of attribute is wrong",keyName,searchAttValue.getSearchableAttributeKey());
             assertEquals("Value of attribute is wrong",value,searchAttValue.getSearchableAttributeDisplayValue());
         }
-        
+
     	attributeName = "XMLSearchableAttributeStdLong";
         keyName = "testLongKey";
         value = "123458";
@@ -952,10 +952,10 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
             assertEquals("Key of attribute is wrong",keyName,searchAttValue.getSearchableAttributeKey());
             assertEquals("Value of attribute is wrong",value,searchAttValue.getSearchableAttributeDisplayValue());
         }
-        
+
         attributeName = "XMLSearchableAttributeStdFloat";
         keyName = "testFloatKey";
-        value = "2568.204";
+        value = "2568.204154796";
         documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
         attribute = getAttribute(attributeName);
         values = attribute.getSearchStorageValues(documentcontent);
@@ -963,9 +963,11 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         for (Iterator iter = values.iterator(); iter.hasNext();) {
             SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
             assertEquals("Key of attribute is wrong",keyName,searchAttValue.getSearchableAttributeKey());
-            assertEquals("Value of attribute is wrong",value,searchAttValue.getSearchableAttributeDisplayValue());
+            assertEquals("Value of attribute is wrong",insertCommasIfNeeded(value, 3),searchAttValue.getSearchableAttributeDisplayValue());
         }
-        
+
+        Map<String,String> currencyParameterMap = new HashMap<String,String>();
+        currencyParameterMap.put("displayFormatPattern", "#,###.00");
         attributeName = "XMLSearchableAttributeStdCurrency";
         keyName = "testCurrencyKey";
         value = "2238.2";
@@ -976,11 +978,22 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         for (Iterator iter = values.iterator(); iter.hasNext();) {
             SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
             assertEquals("Key of attribute is wrong",keyName,searchAttValue.getSearchableAttributeKey());
-            // TODO delyea - uncomment below if minimum decimal place gets working
-//            assertEquals("Value of attribute is wrong",value + "0",searchAttValue.getSearchableAttributeDisplayValue());
-            assertEquals("Value of attribute is wrong",value,searchAttValue.getSearchableAttributeDisplayValue());
+            assertEquals("Value of attribute is wrong",insertCommasIfNeeded(value + "0", 3),searchAttValue.getSearchableAttributeDisplayValue(currencyParameterMap));
         }
-        
+
+        attributeName = "XMLSearchableAttributeStdCurrency";
+        keyName = "testCurrencyKey";
+        value = "2157238.2";
+        documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
+        attribute = getAttribute(attributeName);
+        values = attribute.getSearchStorageValues(documentcontent);
+        assertEquals("Number of search attribute values is wrong",1,values.size());
+        for (Iterator iter = values.iterator(); iter.hasNext();) {
+            SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
+            assertEquals("Key of attribute is wrong",keyName,searchAttValue.getSearchableAttributeKey());
+            assertEquals("Value of attribute is wrong",insertCommasIfNeeded(value + "0", 3),searchAttValue.getSearchableAttributeDisplayValue(currencyParameterMap));
+        }
+
     	attributeName = "XMLSearchableAttributeStdDateTime";
         keyName = "testDateTimeKey";
         value = DocSearchUtils.getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE);
@@ -1008,20 +1021,41 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         }
     }
 
+    private String insertCommasIfNeeded(String value, int interval) {
+        int indexOfDecimal = value.indexOf(".");
+        String decimalPointOn = value.substring(indexOfDecimal);
+        String temp = value.substring(0, indexOfDecimal);
+        StringBuffer builtValue = new StringBuffer();
+        if (temp.length() <= interval) {
+            builtValue.append(temp);
+        } else {
+            int counter = 0;
+            for (int i = temp.length() - 1; (i >= 0); i--) {
+                if (counter == interval) {
+                    builtValue.insert(0, ",");
+                    counter = 0;
+                }
+                counter++;
+                builtValue.insert(0, temp.substring(i, i+1));
+            }
+        }
+        return (builtValue.append(decimalPointOn)).toString();
+    }
+
     /*
      * Test method for 'edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchingRows()'
      */
     @Test public void testGetSearchingRows() {
         StandardGenericXMLSearchableAttribute searchAttribute = getAttribute(null);
         assertTrue("Invalid number of search rows", searchAttribute.getSearchingRows().size() == 1);
-        
+
         //we really just want this to load without exploding
         List searchRows = getAttribute("BlankDropDownSearchAttribute").getSearchingRows();
         assertEquals("Invalid number of search rows", 1, searchRows.size());
         Row row = (Row) searchRows.get(0);
         Field field = row.getField(0);
         assertEquals("Should be 5 valid values", 5, field.getFieldValidValues().size());
-        
+
         assertEquals("Default value is not correct", "AMST", field.getPropertyValue());
     }
 
@@ -1044,7 +1078,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         paramMap.put(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack*jack");
         validationErrors = searchAttribute.validateUserSearchInputs(paramMap);
         assertEquals("Validation should return a single error message.", 0, validationErrors.size());
-        
+
         searchAttribute = getAttribute("XMLSearchableAttributeStdLong");
         paramMap = new HashMap();
         paramMap.put(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString());
@@ -1119,11 +1153,11 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
     }
-    
+
     /**
      * Tests the XStreamSafeEvaluator against searchable attributes to resolve EN-63 and KULWF-723.
-     * 
-     * This test is pretty much just a copy of testRouteDocumentWithSearchableAttribute using a 
+     *
+     * This test is pretty much just a copy of testRouteDocumentWithSearchableAttribute using a
      * different document type which defines the same xpath expression, only with embedded
      * XStream "reference" attributes in the XML.
      */
@@ -1136,7 +1170,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         WorkflowAttributeDefinitionVO givennameXMLDef = new WorkflowAttributeDefinitionVO("XMLXStreamSearchableAttribute");
 
         workflowDocument.setApplicationContent("<test></test>");
-        
+
         givennameXMLDef.addProperty("givenname", "jack");
         workflowDocument.addSearchableDefinition(givennameXMLDef);
 
@@ -1171,8 +1205,8 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (WorkflowServiceErrorException wsee) {}
     }
-    
-    
+
+
     /**
      * Tests the resolution to issues EN-95, KULWF-757, KULOWF-52 whereby the use of a quickfinder is causing
      * NullPointers when searching for documents.
@@ -1182,7 +1216,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
     	String key = "chart";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
     	 WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), documentTypeName);
-         
+
     	 // define the chart for the searchable attribute
     	 WorkflowAttributeDefinitionVO chartDef = new WorkflowAttributeDefinitionVO("SearchableAttributeWithQuickfinder");
          chartDef.addProperty(key, "BL");
@@ -1196,7 +1230,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
          DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
          UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
          WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("rkirkend"));
-         
+
          // execute the search by our chart, we should see one result
          DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
          criteria.setDocTypeFullName(documentTypeName);
@@ -1217,12 +1251,12 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
          result = (DocumentSearchResult)searchResults.get(0);
          kvs = result.getResultContainer(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID);
          assertEquals("Wrong document in search results.", document.getRouteHeaderId(), kvs.getSortValue());
-         
+
     }
-    
+
     /**
      * Tests that the hidding of fields and columns works properly to resolve EN-53.
-     * 
+     *
      * TODO this is currently commented out because we can't test this properly through the unit
      * test since the filtering of the column actually happens in the web-tier.  Shoudl this be
      * the case?  Maybe we need to re-examine when we refactor document search.
@@ -1235,7 +1269,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
 
     	String attributeName = "SearchableAttributeWithHiddens";
     	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), docType);
-        
+
    	 	// define the chart for the searchable attribute
    	 	WorkflowAttributeDefinitionVO chartDef = new WorkflowAttributeDefinitionVO(attributeName);
         chartDef.addProperty("chart", "BL");
@@ -1251,7 +1285,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
         UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId("rkirkend"));
-        
+
         // execute the search by our chart, we should see one result
         DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(docType);
@@ -1275,7 +1309,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         assertNotNull("The dollar column should be in the result set", kvs);
         assertEquals("Wrong dollar code.", "24", kvs.getValue());
     }
-    
+
     @Test public void testSetApplicationContentXMLRoutedDocument() throws Exception {
         String documentTypeName = "SearchDocType";
         String key = "givenname";
@@ -1316,10 +1350,10 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (WorkflowServiceErrorException wsee) {}
     }
-    
+
     @Ignore("Implement Me")
     @Test public void testDisplayTypeMultiboxSearch() throws Exception {
-        
+
     }
 
 }

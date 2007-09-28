@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,12 +44,12 @@ import edu.iu.uis.eden.web.UrlResolver;
  */
 public class StandardDocumentSearchResultProcessor implements DocumentSearchResultProcessor {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardDocumentSearchResultProcessor.class);
-    
+
     private Map<String,Boolean> sortableByKey = new HashMap<String,Boolean>();
     private Map<String,String> labelsByKey = new HashMap<String,String>();
     private DocSearchCriteriaVO searchCriteria;
     private WorkflowUser searchingUser;
-    
+
     /**
      * @return the searchCriteria
      */
@@ -81,18 +81,30 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
     public List<Column> getCustomDisplayColumns() {
 		return new ArrayList<Column>();
 	}
-	
+
+    private List<Column> getAndSetUpCustomDisplayColumns(DocSearchCriteriaVO criteria) {
+        List<Column> columns = getCustomDisplayColumns();
+        for (Column column : columns) {
+            for (Field field : getFields(criteria)) {
+                if ( (field.getSavablePropertyName().equals(column.getKey())) && (column.getDisplayParameters().isEmpty()) ) {
+                    column.setDisplayParameters(field.getDisplayParameters());
+                }
+            }
+        }
+        return columns;
+    }
+
 	public boolean getShowAllStandardFields() {
 		return true;
 	}
-	
+
 	public boolean getOverrideSearchableAttributes() {
 		return false;
 	}
-	
+
     /**
      * Convenience method to find a specific searchable attribute
-     * 
+     *
      * @param name  - name of search attribute savable property name
      * @return the SearchAttributeCriteriaComponent object related to the given key name or null if component is not found
      */
@@ -116,8 +128,8 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
         this.setSearchCriteria(criteria);
         this.setSearchingUser(user);
 		List columns = constructColumnList(criteria);
-		
-		List<DocumentSearchResult> documentSearchResults = new ArrayList<DocumentSearchResult>(); 
+
+		List<DocumentSearchResult> documentSearchResults = new ArrayList<DocumentSearchResult>();
 		for (Iterator iter = docSearchResultRows.iterator(); iter.hasNext();) {
 			DocSearchVO docSearchVO = (DocSearchVO) iter.next();
 			DocumentSearchResult docSearchResult = this.generateSearchResult(docSearchVO,columns);
@@ -127,15 +139,15 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		}
 		return new DocumentSearchResultComponents(columns,documentSearchResults);
 	}
-	
+
 	/**
 	 * Method to construct a list of columns in order of how they should appear in the search results
-	 * 
+	 *
 	 * @return a list of columns in an ordered list that will be used to generate the final search results
 	 */
 	public List<Column> constructColumnList(DocSearchCriteriaVO criteria) {
 		List<Column> tempColumns = new ArrayList<Column>();
-		List<Column> customDisplayColumnNames = getCustomDisplayColumns();
+		List<Column> customDisplayColumnNames = getAndSetUpCustomDisplayColumns(criteria);
 //		if (!customDisplayColumnNames.isEmpty()) {
             if ((!getShowAllStandardFields()) && (getOverrideSearchableAttributes())) {
 				// use only what is contained in displayColumns
@@ -163,7 +175,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		this.addRouteLogColumn(columns);
 		return columns;
 	}
-	
+
 	public void addStandardSearchColumns(List<Column> columns) {
 		this.addColumnUsingKey(columns, DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL);
 		this.addColumnUsingKey(columns, DocumentSearchResult.PROPERTY_NAME_DOCUMENT_TITLE);
@@ -171,15 +183,15 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		this.addColumnUsingKey(columns, DocumentSearchResult.PROPERTY_NAME_INITIATOR);
 		this.addColumnUsingKey(columns, DocumentSearchResult.PROPERTY_NAME_DATE_CREATED);
 	}
-	
+
 	public void addRouteHeaderIdColumn(List<Column> columns) {
 		this.addColumnUsingKey(columns, DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID);
 	}
-	
+
 	public void addRouteLogColumn(List<Column> columns) {
 		this.addColumnUsingKey(columns, DocumentSearchResult.PROPERTY_NAME_ROUTE_LOG);
 	}
-	
+
 	public void addSearchableAttributeColumnsNoOverrides(List<Column> columns,DocSearchCriteriaVO criteria) {
         this.addSearchableAttributeColumnsBasedOnFields(columns, criteria, null);
 //		Set alreadyProcessedFieldKeys = new HashSet();
@@ -205,42 +217,38 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 //			}
 //		}
 	}
-    
+
     protected void addSearchableAttributeColumnsBasedOnFields(List<Column> columns,DocSearchCriteriaVO criteria,List<String> searchAttributeFieldNames) {
-        Set alreadyProcessedFieldKeys = new HashSet();
-        List<Field> fields = this.getFields(criteria, searchAttributeFieldNames);
-        for (Field field : fields) {
-            if ( (field.getSavablePropertyName() == null) || (!alreadyProcessedFieldKeys.contains(field.getSavablePropertyName())) ) {
-                if (field.isColumnVisible()) {
-                    for (Iterator iter = Field.SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.iterator(); iter.hasNext();) {
-                        String displayableFieldType = (String) iter.next();
-                        if (field.getFieldType().equals(displayableFieldType)) {
-                            String resultFieldLabel = field.getFieldLabel();
-                            if (field.isMemberOfRange()) {
-                                resultFieldLabel = field.getMainFieldLabel();
-                            }
-                            this.addSearchableAttributeColumnUsingKey(columns, field.getSavablePropertyName(), resultFieldLabel, getSortableByKey().get(field.getSavablePropertyName()), Boolean.TRUE);
-                            if (field.getSavablePropertyName() != null) {
-                                alreadyProcessedFieldKeys.add(field.getSavablePropertyName());
-                            }
-                            break;
-                        }
+	Set alreadyProcessedFieldKeys = new HashSet();
+	List<Field> fields = this.getFields(criteria, searchAttributeFieldNames);
+	for (Field field : fields) {
+	    if ( (field.getSavablePropertyName() == null) || (!alreadyProcessedFieldKeys.contains(field.getSavablePropertyName())) ) {
+		if (field.isColumnVisible()) {
+		    if (Field.SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.contains(field.getFieldType())) {
+			String resultFieldLabel = field.getFieldLabel();
+			if (field.isMemberOfRange()) {
+			    resultFieldLabel = field.getMainFieldLabel();
+			}
+			this.addSearchableAttributeColumnUsingKey(columns, field.getDisplayParameters(), field.getSavablePropertyName(), resultFieldLabel, getSortableByKey().get(field.getSavablePropertyName()), Boolean.TRUE);
+			if (field.getSavablePropertyName() != null) {
+			    alreadyProcessedFieldKeys.add(field.getSavablePropertyName());
+			}
                     }
                 }
             }
         }
     }
-    
+
     protected void addSearchableAttributeColumnUsingField() {
-        
+
     }
-	
+
 	public void addAllCustomColumns(List<Column> columns,DocSearchCriteriaVO criteria,List<Column> customDisplayColumns) {
 		for (Column customColumn : customDisplayColumns) {
 			this.addCustomColumn(columns,customColumn);
 		}
 	}
-	
+
 	public void addCustomStandardCriteriaColumns(List<Column> columns,DocSearchCriteriaVO criteria,List<Column> customDisplayColumns) {
 		for (Column customColumn : customDisplayColumns) {
 			if (DocumentSearchResult.PROPERTY_NAME_SET.contains(customColumn.getKey())) {
@@ -248,7 +256,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 			}
 		}
 	}
-	
+
 //	public void addCustomSearchAttributeColumns(List<Column> columns,DocSearchCriteriaVO criteria,List<Column> customDisplayColumns) {
 //		for (Column customColumn : customDisplayColumns) {
 //			if (!DocumentSearchResult.PROPERTY_NAME_SET.contains(customColumn.getKey())) {
@@ -256,7 +264,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 //			}
 //		}
 //	}
-	
+
 	public void addCustomColumn(List<Column> columns,Column customColumn) {
 		Boolean sortable = null;
 		if ( (customColumn.getSortable() != null) && (Column.COLUMN_IS_SORTABLE_VALUE.equals(customColumn.getSortable())) ) {
@@ -264,9 +272,13 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		} else if ( (customColumn.getSortable() != null) && (Column.COLUMN_NOT_SORTABLE_VALUE.equals(customColumn.getSortable())) ) {
 			sortable = Boolean.FALSE;
 		}
-		addColumnUsingKey(columns, customColumn.getKey(), customColumn.getColumnTitle(), sortable);
+		addColumnUsingKey(columns, customColumn.getDisplayParameters(), customColumn.getKey(), customColumn.getColumnTitle(), sortable);
 	}
-	
+
+	private List<Field> getFields(DocSearchCriteriaVO criteria) {
+	    return getFields(criteria, null);
+	}
+
     private List<Field> getFields(DocSearchCriteriaVO criteria, List<String> searchAttributeFieldNames) {
 		List<Field> returnFields = new ArrayList<Field>();
 		DocumentType documentType = null;
@@ -298,7 +310,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		}
 		return returnFields;
 	}
-    
+
 	public DocumentSearchResult generateSearchResult(DocSearchVO docSearchVO, List columns) {
 		Map<String,Object> alternateSortValues = getSortValuesMap(docSearchVO);
 		DocumentSearchResult docSearchResult = null;
@@ -314,13 +326,14 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		}
 		return docSearchResult;
 	}
-	
+
 	public KeyValueSort generateSearchResult(DocSearchVO docSearchVO, Column column, Map<String,Object> sortValuesByColumnKey) {
 		KeyValueSort returnValue = null;
 		String fieldValue = null;
 		Object sortFieldValue = null;
 		String columnKeyName = column.getKey();
-		
+		SearchableAttributeValue attributeValue = null;
+
 		if (DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID.equals(columnKeyName)) {
 			fieldValue = this.getRouteHeaderIdFieldDisplayValue(docSearchVO.getRouteHeaderId().toString(), docSearchVO.isUsingSuperUserSearch());
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
@@ -347,20 +360,26 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 			for (Iterator iter = docSearchVO.getSearchableAttributes().iterator(); iter.hasNext();) {
 				KeyValueSort searchAttribute = (KeyValueSort) iter.next();
 				if (searchAttribute.getKey().equals(columnKeyName)) {
-					fieldValue = searchAttribute.getValue();
 					Object sortValue = sortValuesByColumnKey.get(columnKeyName);
 					sortFieldValue = (sortValue != null) ? sortValue : searchAttribute.getSortValue();
+					attributeValue = searchAttribute.getSearchableAttributeValue();
+					if ( (column.getDisplayParameters() != null) && (!column.getDisplayParameters().isEmpty()) ) {
+					    fieldValue = searchAttribute.getSearchableAttributeValue().getSearchableAttributeDisplayValue(column.getDisplayParameters());
+					}
+					else {
+					    fieldValue = searchAttribute.getValue();
+					}
 					break;
 				}
 			}
 		}
 		if (fieldValue != null) {
-			returnValue = new KeyValueSort(columnKeyName,fieldValue,(sortFieldValue != null) ? sortFieldValue : fieldValue);
+		    returnValue = new KeyValueSort(columnKeyName,fieldValue,(sortFieldValue != null) ? sortFieldValue : fieldValue, attributeValue);
 		}
 		return returnValue;
 	}
-	
-	/* 
+
+	/*
 	 * Convenience Methods to get field values for certain Workflow Standard
 	 * Search Result columns
 	 */
@@ -372,20 +391,20 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		}
 		return "<a href=\"RouteLog.do?routeHeaderId=" + routeHeaderId + "\"" + linkPopup + "><img alt=\"Route Log for Document\" src=\"images/my_route_log.gif\"/></a>";
 	}
-	
+
 	protected String getRouteHeaderIdFieldDisplayValue(String routeHeaderId,boolean isSuperUserSearch) {
 		return this.getValueEncodedWithDocHandlerUrl(routeHeaderId, routeHeaderId, isSuperUserSearch);
 	}
-	
+
 	protected String getInitiatorFieldDisplayValue(String fieldLinkTextValue, String initiatorWorkflowId) {
 		UrlResolver urlResolver = new UrlResolver();
 		return "<a href=\"" + urlResolver.getUserReportUrl() +  "?showEdit=no&methodToCall=report&workflowId=" + initiatorWorkflowId + "\" target=\"_blank\">" + fieldLinkTextValue + "</a>";
 	}
-	
+
 	/**
 	 * Convenience method to allow child classes to use a custom value string and wrap
 	 * that string in the document handler URL
-	 * 
+	 *
 	 * @param value - the value that will show on screen as the clickable link
 	 * @param routeHeaderId - the string value of the route header id the doc handler should point to
 	 * @param isSuperUserSearch - boolean indicating whether this search is a super user search or not
@@ -395,7 +414,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	protected String getValueEncodedWithDocHandlerUrl(String value, String routeHeaderId, boolean isSuperUserSearch) {
 		return getDocHandlerUrlPrefix(routeHeaderId,isSuperUserSearch) + value + getDocHandlerUrlSuffix(isSuperUserSearch);
 	}
-	
+
 	private Map<String,Object> getSortValuesMap(DocSearchVO docSearchVO) {
 		Map<String, Object> alternateSort = new HashMap<String, Object>();
 		alternateSort.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID, docSearchVO.getRouteHeaderId());
@@ -410,7 +429,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		}
 		return sortableByKey;
 	}
-	
+
 	protected Map<String,Boolean> constructSortableColumnByKey() {
 		Map<String,Boolean> sortable = new HashMap<String,Boolean>();
 		sortable.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID, Boolean.TRUE);
@@ -422,14 +441,14 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		sortable.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_LOG, Boolean.FALSE);
 		return sortable;
 	}
-	
+
 	public Map<String,Boolean> getSortableColumnByKey() {
 		if (sortableByKey.isEmpty()) {
 			sortableByKey = constructSortableByKey();
 		}
 		return sortableByKey;
 	}
-	
+
 	protected Map<String,Boolean> constructSortableByKey() {
 		Map<String,Boolean> sortable = new HashMap<String,Boolean>();
 		sortable.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID, Boolean.TRUE);
@@ -441,55 +460,60 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		sortable.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_LOG, Boolean.FALSE);
 		return sortable;
 	}
-	
+
 	public Map<String,String> getLabelsByKey() {
 		if (labelsByKey.isEmpty()) {
 			labelsByKey = constructLabelsByKey();
 		}
 		return labelsByKey;
 	}
-	
+
 	protected Map<String,String> constructLabelsByKey() {
 		return new HashMap<String,String>();
 	}
-	
+
 	/*
 	 * Below columns are for convenience for overriding classes
-	 * 
+	 *
 	 */
-			
+
 	protected void addColumnUsingKey(List<Column> columns,String key) {
-		this.addColumnUsingKey(columns, key, null, null);
+		this.addColumnUsingKey(columns, new HashMap<String,String>(), key, null, null);
 	}
-	
-	protected void addColumnUsingKey(List<Column> columns,String key,String label) {
-		this.addColumnUsingKey(columns, key, label, null);
+
+	protected void addColumnUsingKey(List<Column> columns,Map<String,String> displayParameters,String key,String label) {
+		this.addColumnUsingKey(columns, displayParameters, key, label, null);
 	}
-	
-	protected void addColumnUsingKey(List<Column> columns,String key,Boolean sortable) {
-		this.addColumnUsingKey(columns, key, null, sortable);
+
+	protected void addColumnUsingKey(List<Column> columns,Map<String,String> displayParameters,String key,Boolean sortable) {
+		this.addColumnUsingKey(columns, displayParameters, key, null, sortable);
 	}
-	
-	protected void addColumnUsingKey(List<Column> columns,String key,String label,Boolean sortable) {
-		columns.add(this.constructColumnUsingKey(key, label, sortable));
+
+	protected void addColumnUsingKey(List<Column> columns,Map<String,String> displayParameters,String key,String label,Boolean sortable) {
+		columns.add(this.constructColumnUsingKey(displayParameters, key, label, sortable));
 	}
-	
+
 	protected void addSearchableAttributeColumnUsingKey(List<Column> columns,String key,String label,Boolean sortableOverride, Boolean defaultSortable) {
-		columns.add(this.constructColumnUsingKey(key, label, (sortableOverride != null) ? sortableOverride : defaultSortable));
+	    addSearchableAttributeColumnUsingKey(columns, new HashMap<String,String>(), key, label, sortableOverride, defaultSortable);
 	}
-	
-	/* 
+
+	protected void addSearchableAttributeColumnUsingKey(List<Column> columns,Map<String,String> displayParameters,String key,String label,Boolean sortableOverride, Boolean defaultSortable) {
+	    columns.add(this.constructColumnUsingKey(displayParameters, key, label, (sortableOverride != null) ? sortableOverride : defaultSortable));
+	}
+
+
+	/*
 	 * Below methods should probably not be overriden by overriding classes but could be if desired
 	 */
 
-	protected Column constructColumnUsingKey(String key,String label,Boolean sortable) {
+	protected Column constructColumnUsingKey(Map<String,String> displayParameters, String key,String label,Boolean sortable) {
 		if (sortable == null) {
 			sortable = getSortableByKey().get(key);
 		}
 		if (label == null) {
 			label = getLabelsByKey().get(key);
 		}
-		Column c = new Column(label,((sortable != null) && (sortable.booleanValue())) ? Column.COLUMN_IS_SORTABLE_VALUE : Column.COLUMN_NOT_SORTABLE_VALUE,"resultContainer(" +key + ").value","resultContainer(" +key + ").sortValue",key);
+		Column c = new Column(label,((sortable != null) && (sortable.booleanValue())) ? Column.COLUMN_IS_SORTABLE_VALUE : Column.COLUMN_NOT_SORTABLE_VALUE,"resultContainer(" +key + ").value","resultContainer(" +key + ").sortValue",key,displayParameters);
 		return c;
 	}
 
@@ -497,12 +521,12 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		String applicationConstant = Utilities.getApplicationConstant(EdenConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_KEY).trim();
 		return (EdenConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_VALUE.equals(applicationConstant));
 	}
-	
+
 	private boolean isRouteLogPopup() {
 		String applicationConstant = Utilities.getApplicationConstant(EdenConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_KEY).trim();
 		return (EdenConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_VALUE.equals(applicationConstant));
 	}
-	
+
 	private String getDocHandlerUrlPrefix(String routeHeaderId,boolean superUserSearch) {
 		String linkPopup = "";
 		if (this.isDocumentHandlerPopup()) {
@@ -514,7 +538,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 			return "<a href=\"" + EdenConstants.DOC_HANDLER_REDIRECT_PAGE + "?command=displayDocSearchView&docId=" + routeHeaderId + "\"" + linkPopup + ">";
 		}
 	}
-	
+
 	private String getDocHandlerUrlSuffix(boolean superUserSearch) {
 		if (superUserSearch) {
 			return "</a>";

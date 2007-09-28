@@ -147,8 +147,8 @@ public class EdenConstants extends JSTLConstants {
 
     public static final String WORKFLOW_SUPER_USER_WORKGROUP_NAME = "WorkflowAdmin";
 
-	private static final String SIMPLE_DATE_FORMAT_FOR_DATE = "MM/dd/yyyy";
-	private static final String SIMPLE_DATE_FORMAT_FOR_TIME = "hh:mm a";
+	public static final String SIMPLE_DATE_FORMAT_FOR_DATE = "MM/dd/yyyy";
+	public static final String SIMPLE_DATE_FORMAT_FOR_TIME = "hh:mm a";
 	public static final String DEFAULT_DATE_FORMAT_PATTERN = SIMPLE_DATE_FORMAT_FOR_TIME + " " + SIMPLE_DATE_FORMAT_FOR_DATE;
     public static DateFormat getDefaultDateFormat() {
     	return new SimpleDateFormat(SIMPLE_DATE_FORMAT_FOR_DATE);

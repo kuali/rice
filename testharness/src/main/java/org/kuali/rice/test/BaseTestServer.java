@@ -23,7 +23,6 @@ import org.mortbay.jetty.Server;
  * Jetty Server instance.
  * 
  * @author
- * @version $Revision: 1.2.2.1 $ $Date: 2007-08-15 16:04:52 $
  * @since 0.9
  */
 public abstract class BaseTestServer implements Lifecycle {

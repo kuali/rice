@@ -24,7 +24,6 @@ import org.kuali.bus.test.KSBTestCase;
 /**
  * 
  * @author Scott Battaglia
- * @version $Revision: 1.2.2.1 $ $Date: 2007-08-15 16:04:32 $
  * @since 0.9
  *
  */

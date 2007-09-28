@@ -52,7 +52,6 @@ public class ExtensionAttributeTest extends KNSTestBase {
 		builder = new DataDictionaryBuilder(KNSServiceLocator.getValidationCompletionUtils());
 		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/AdHocRoutePerson.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/AdHocRouteWorkgroup.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/ApplicationConstant.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/Attachment.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/AttributeReferenceDummy.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/BusinessObjectAttributeEntry.xml", true);

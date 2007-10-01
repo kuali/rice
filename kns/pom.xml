@@ -21,6 +21,11 @@
       <artifactId>rice-kew</artifactId>
       <version>0.9.1-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <artifactId>rice-ken</artifactId>
+      <version>0.9.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
 </project>

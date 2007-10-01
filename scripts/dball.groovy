@@ -129,15 +129,16 @@ def createdrops(db, dir) {
 	    name = f.getName()
 	    if (! IGNORES.contains(name.substring(0, name.indexOf(".")))) {
 		    f.eachLine {
-		        ln -> 
-		        if (ln.trim().toUpperCase().startsWith("CREATE TABLE")) {				
-		            drop = ln.substring("CREATE TABLE".length() + 1)
-		            db << "DROP TABLE ${drop[0 .. (drop.indexOf(' '))]} CASCADE CONSTRAINTS"
+		        ln ->
+				line = ln.trim().toUpperCase()
+				def matcher = line =~ /CREATE TABLE ([\p{Alnum}[_]]+)[ \(]*/
+		        if (matcher.matches()) {
+		            db << "DROP TABLE ${matcher[0][1]} CASCADE CONSTRAINTS"
 		            db << '\n'
 		            db << "/"
 		            db << '\n'
 		        }
-		        if (ln.trim().toUpperCase().startsWith("CREATE SEQUENCE")) {				
+		        if (line.startsWith("CREATE SEQUENCE")) {				
 		            drop = ln.substring("CREATE SEQUENCE".length() + 1)
 		            db << "DROP SEQUENCE ${drop[0 .. (drop.indexOf(' '))]}"
 		            db << '\n'

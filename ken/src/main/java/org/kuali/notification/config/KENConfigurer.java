@@ -31,6 +31,7 @@ import org.kuali.rice.lifecycle.Lifecycle;
 public class KENConfigurer extends ModuleConfigurer {
     private static final Logger LOG = Logger.getLogger(KENConfigurer.class);
     
+    private static final String KEN_TEST_MODE_PARAM = "ken.test.mode";
     private static final String STANDARD_KEN_CONTEXT_FILE = "KENSpringBeans.xml";
     private static final String TEST_KEN_CONTEXT_FILE = "KENSpringBeans-test.xml";
     
@@ -60,7 +61,7 @@ public class KENConfigurer extends ModuleConfigurer {
 	
 	Config currentConfig = Core.getCurrentContextConfig();
 	String context;
-	String s = currentConfig.getProperty("test.mode");
+	String s = currentConfig.getProperty(KEN_TEST_MODE_PARAM);
 	if (!Boolean.valueOf(s).booleanValue()) {
 	    context = STANDARD_KEN_CONTEXT_FILE;
 	} else {

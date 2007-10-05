@@ -11,7 +11,7 @@
 	<param name="use.kewXmlmlDataLoaderLifecycle">true</param>
 	<param name="use.sqlDataLoaderLifecycle">true</param>
 	<param name="test.mode">true</param>
-
+    <param name="ken.test.mode">true</param>
 	<!-- Misc params -->
 	<param name="institution">iu</param>
 	<param name="version">03/19/2007 01:59 PM</param>

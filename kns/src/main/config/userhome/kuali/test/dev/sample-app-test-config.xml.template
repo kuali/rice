@@ -15,6 +15,7 @@
 	<param name="use.kewXmlmlDataLoaderLifecycle">true</param>
 	<param name="use.sqlDataLoaderLifecycle">true</param>
 	<param name="test.mode">true</param>
+    <param name="ken.test.mode">true</param>
 
 	<!-- Misc params -->
 	<param name="production.environment.code">PRD</param>

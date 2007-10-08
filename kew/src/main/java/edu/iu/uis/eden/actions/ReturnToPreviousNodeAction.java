@@ -105,7 +105,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     }
 
     private void processReturnToInitiator(RouteNodeInstance newNodeInstance) throws EdenUserNotFoundException {
-        RouteNode initialNode = getRouteHeader().getDocumentType().getPrimaryProcess().getInitialRouteNode();
+	RouteNode initialNode = newNodeInstance.getRouteNode().getDocumentType().getPrimaryProcess().getInitialRouteNode();
         if (newNodeInstance.getRouteNode().getRouteNodeId().equals(initialNode.getRouteNodeId())) {
             LOG.debug("Document was returned to initiator");
             ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), newNodeInstance);

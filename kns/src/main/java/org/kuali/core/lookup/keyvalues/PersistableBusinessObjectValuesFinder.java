@@ -1,0 +1,136 @@
+/*
+ * Copyright 2006-2007 The Kuali Foundation.
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.core.lookup.keyvalues;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.kuali.core.service.KeyValuesService;
+import org.kuali.core.web.ui.KeyLabelPair;
+import org.kuali.rice.KNSServiceLocator;
+
+/**
+ * This class is a Generic ValuesFinder that builds the list of KeyValuePairs it returns
+ * in getKeyValues() based on a BO along with a keyAttributeName and labelAttributeName
+ * that are specified.
+ */
+public class PersistableBusinessObjectValuesFinder extends KeyValuesBase {
+
+    private static final Log LOG = LogFactory.getLog(PersistableBusinessObjectValuesFinder.class);
+
+    private Class businessObjectClass;
+    private String keyAttributeName;
+    private String labelAttributeName;
+    private boolean includeKeyInDescription = false;
+
+    /**
+     * Build the list of KeyLabelPairs using the key (keyAttributeName) and
+     * label (labelAttributeName) of the list of all business objects found
+     * for the BO class specified.
+     *
+     * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
+     */
+    public List<KeyLabelPair> getKeyValues() {
+    	List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
+
+    	try {
+    	    KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
+            Collection objects = boService.findAll(businessObjectClass);
+
+            for (Object object : objects) {
+            	Object key = PropertyUtils.getProperty(object, keyAttributeName);
+            	String label = (String)PropertyUtils.getProperty(object, labelAttributeName);
+            	if (includeKeyInDescription) {
+            	    label = key + " - " + label;
+            	}
+            	labels.add(new KeyLabelPair(key, label));
+    	    }
+    	} catch (IllegalAccessException e) {
+            LOG.debug(e.getMessage(), e);
+            LOG.error(e.getMessage());
+    	} catch (InvocationTargetException e) {
+            LOG.debug(e.getMessage(), e);
+            LOG.error(e.getMessage());
+    	} catch (NoSuchMethodException e) {
+            LOG.debug(e.getMessage(), e);
+            LOG.error(e.getMessage());
+    	}
+
+        return labels;
+    }
+
+    /**
+     * @return the businessObjectClass
+     */
+    public Class getBusinessObjectClass() {
+        return this.businessObjectClass;
+    }
+
+    /**
+     * @param businessObjectClass the businessObjectClass to set
+     */
+    public void setBusinessObjectClass(Class businessObjectClass) {
+        this.businessObjectClass = businessObjectClass;
+    }
+
+    /**
+     * @return the includeKeyInDescription
+     */
+    public boolean isIncludeKeyInDescription() {
+        return this.includeKeyInDescription;
+    }
+
+    /**
+     * @param includeKeyInDescription the includeKeyInDescription to set
+     */
+    public void setIncludeKeyInDescription(boolean includeKeyInDescription) {
+        this.includeKeyInDescription = includeKeyInDescription;
+    }
+
+    /**
+     * @return the keyAttributeName
+     */
+    public String getKeyAttributeName() {
+        return this.keyAttributeName;
+    }
+
+    /**
+     * @param keyAttributeName the keyAttributeName to set
+     */
+    public void setKeyAttributeName(String keyAttributeName) {
+        this.keyAttributeName = keyAttributeName;
+    }
+
+    /**
+     * @return the labelAttributeName
+     */
+    public String getLabelAttributeName() {
+        return this.labelAttributeName;
+    }
+
+    /**
+     * @param labelAttributeName the labelAttributeName to set
+     */
+    public void setLabelAttributeName(String labelAttributeName) {
+        this.labelAttributeName = labelAttributeName;
+    }
+
+}

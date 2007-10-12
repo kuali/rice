@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,20 +45,20 @@ import org.kuali.rice.KNSServiceLocator;
  * This class is the base action class for all kuali actions. Overrides execute to set methodToCall for image submits. Other setup
  * for framework calls.
  *
- *  
+ *
  */
 public abstract class KualiAction extends DispatchAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiAction.class);
 
     private static KualiModuleService kualiModuleService;
-    
+
     /**
      * Entry point to all actions.
-     * 
+     *
      * NOTE: No need to hook into execute for handling framwork setup anymore. Just implement the methodToCall for the framework
      * setup, Constants.METHOD_REQUEST_PARAMETER will contain the full parameter, which can be sub stringed for getting framework
      * parameters.
-     * 
+     *
      * @see org.apache.struts.action.Action#execute(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm,
      *      javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
@@ -74,7 +74,7 @@ public abstract class KualiAction extends DispatchAction {
             }
             else if (StringUtils.isNotBlank(request.getParameter(RiceConstants.ANCHOR))) {
                 ((KualiForm) form).setAnchor(request.getParameter(RiceConstants.ANCHOR));
-            } 
+            }
             else {
                 ((KualiForm) form).setAnchor(RiceConstants.ANCHOR_TOP_OF_FORM);
             }
@@ -83,7 +83,7 @@ public abstract class KualiAction extends DispatchAction {
             // call utility method to parse the methodToCall from the request.
             methodToCall = WebUtils.parseMethodToCall(request);
         }
-        
+
         // if found methodToCall, pass control to that method, else return the basic forward
         if (StringUtils.isNotBlank(methodToCall)) {
             LOG.debug("methodToCall: " + methodToCall);
@@ -92,7 +92,7 @@ public abstract class KualiAction extends DispatchAction {
         else {
             returnForward = mapping.findForward(RiceConstants.MAPPING_BASIC);
         }
-        
+
         // make sure the user can do what they're trying to according to the module that owns the functionality
         checkAuthorization(form, methodToCall);
 
@@ -101,12 +101,17 @@ public abstract class KualiAction extends DispatchAction {
             LOG.warn("WARNING: This implementation of Kuali uses the demonstration encryption framework.");
         }
 
+        // Add the ActionForm to GlobalVariables
+        // This will allow developers to retrieve both the Document and any request parameters that are not
+        // part of the Form and make them available in ValueFinder classes and other places where they are needed.
+        GlobalVariables.setKualiForm((KualiForm)form);
+
         return returnForward;
     }
 
     /**
      * Toggles the tab state in the ui
-     * 
+     *
      * @param mapping
      * @param form
      * @param request
@@ -127,13 +132,13 @@ public abstract class KualiAction extends DispatchAction {
             	kualiForm.getTabStates().put(tabToToggle, "OPEN");
             }
         }
-        
+
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     /**
      * Toggles all tabs to open
-     * 
+     *
      * @param mapping
      * @param form
      * @param request
@@ -143,7 +148,7 @@ public abstract class KualiAction extends DispatchAction {
      */
     public ActionForward showAllTabs(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiForm kualiForm = (KualiForm) form;
-        
+
         Map<String, String> tabStates = kualiForm.getTabStates();
         Map<String, String> newTabStates = new HashMap<String, String>();
         for (String tabKey: tabStates.keySet()) {
@@ -155,7 +160,7 @@ public abstract class KualiAction extends DispatchAction {
 
     /**
      * Toggles all tabs to closed
-     * 
+     *
      * @param mapping
      * @param form
      * @param request
@@ -165,7 +170,7 @@ public abstract class KualiAction extends DispatchAction {
      */
     public ActionForward hideAllTabs(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiForm kualiForm = (KualiForm) form;
-        
+
         Map<String, String> tabStates = kualiForm.getTabStates();
         Map<String, String> newTabStates = new HashMap<String, String>();
         for (String tabKey: tabStates.keySet()) {
@@ -177,7 +182,7 @@ public abstract class KualiAction extends DispatchAction {
 
     /**
      * Default refresh method. Called from returning frameworks.
-     * 
+     *
      * @param mapping
      * @param form
      * @param request
@@ -192,7 +197,7 @@ public abstract class KualiAction extends DispatchAction {
 
     /**
      * Parses the method to call attribute to pick off the line number which should be deleted.
-     * 
+     *
      * @param request
      * @return
      */
@@ -202,7 +207,7 @@ public abstract class KualiAction extends DispatchAction {
 
     /**
      * Parses the method to call attribute to pick off the line number which should have an action performed on it.
-     * 
+     *
      * @param request
      * @return
      */
@@ -219,7 +224,7 @@ public abstract class KualiAction extends DispatchAction {
 
     /**
      * Determines which tab was requested to be toggled
-     * 
+     *
      * @param request
      * @return
      */
@@ -229,13 +234,13 @@ public abstract class KualiAction extends DispatchAction {
         if (StringUtils.isNotBlank(parameterName)) {
             tabToToggle = StringUtils.substringBetween(parameterName, ".tab", ".");
         }
-        
+
         return tabToToggle;
     }
 
     /**
      * Retrieves the header tab to navigate to.
-     * 
+     *
      * @param request
      * @return
      */
@@ -250,7 +255,7 @@ public abstract class KualiAction extends DispatchAction {
 
     /**
      * Retrieves the header tab dispatch.
-     * 
+     *
      * @param request
      * @return
      */
@@ -269,7 +274,7 @@ public abstract class KualiAction extends DispatchAction {
 
     /**
      * Retrieves the image context
-     * 
+     *
      * @param request
      * @param contextKey
      * @return
@@ -285,18 +290,18 @@ public abstract class KualiAction extends DispatchAction {
         }
         return imageContext;
     }
-    
+
     protected String getBasePath(HttpServletRequest request) {
         return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }
-    
+
     protected String getReturnLocation(HttpServletRequest request, ActionMapping mapping) {
         return getBasePath(request) + ("/lookup".equals(mapping.getPath()) || "/maintenance".equals(mapping.getPath()) || "/multipleValueLookup".equals(mapping.getPath()) ? "/kr" : "") + mapping.getPath() + ".do";
     }
 
     /**
      * Takes care of storing the action form in the User session and forwarding to the lookup action.
-     * 
+     *
      * @param mapping
      * @param form
      * @param request
@@ -349,7 +354,7 @@ public abstract class KualiAction extends DispatchAction {
                 }
             }
         }
-        
+
         // pass values from form that should be read-Only on lookup search
         String readOnlyFields = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM8_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM8_RIGHT_DEL);
         if (StringUtils.isNotBlank(readOnlyFields)) {
@@ -378,32 +383,32 @@ public abstract class KualiAction extends DispatchAction {
         }
 
         String lookupAction = RiceConstants.LOOKUP_ACTION;
-        
+
         // is this a multi-value return?
         String multipleValues = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM6_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM6_RIGHT_DEL);
         if ((new Boolean(multipleValues).booleanValue())) {
             parameters.put(RiceConstants.MULTIPLE_VALUE, multipleValues);
             lookupAction = RiceConstants.MULTIPLE_VALUE_LOOKUP_ACTION;
         }
-        
+
         // the name of the collection being looked up (primarily for multivalue lookups
         String lookedUpCollectionName = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM11_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM11_RIGHT_DEL);
         if (StringUtils.isNotBlank(lookedUpCollectionName)) {
             parameters.put(RiceConstants.LOOKED_UP_COLLECTION_NAME, lookedUpCollectionName);
         }
-        
+
         // grab whether or not the "supress actions" column should be hidden or not
         String supressActions = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM7_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM7_RIGHT_DEL);
         if (StringUtils.isNotBlank(supressActions)) {
             parameters.put(RiceConstants.SUPPRESS_ACTIONS, supressActions);
         }
-        
+
         // grab the references that should be refreshed upon returning from the lookup
         String referencesToRefresh = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM10_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM10_RIGHT_DEL);
         if (StringUtils.isNotBlank(referencesToRefresh)) {
             parameters.put(RiceConstants.REFERENCES_TO_REFRESH, referencesToRefresh);
         }
-        
+
         // anchor, if it exists
         if (form instanceof KualiForm && StringUtils.isNotEmpty(((KualiForm) form).getAnchor())) {
             parameters.put(RiceConstants.LOOKUP_ANCHOR, ((KualiForm) form).getAnchor());
@@ -411,22 +416,22 @@ public abstract class KualiAction extends DispatchAction {
 
         // now add required parameters
         parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, "start");
-        
+
         // pass value from form that shows if autoSearch is desired for lookup search
         String autoSearch = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM9_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM9_RIGHT_DEL);
-        
+
         if (StringUtils.isNotBlank(autoSearch)) {
             parameters.put(RiceConstants.LOOKUP_AUTO_SEARCH, autoSearch);
             if ("YES".equalsIgnoreCase(autoSearch)){
                 parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, "search");
             }
         }
-        
+
         parameters.put(RiceConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
-        parameters.put(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, boClassName);               
-        
+        parameters.put(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, boClassName);
+
         parameters.put(RiceConstants.RETURN_LOCATION_PARAMETER, getReturnLocation(request, mapping));
-        
+
         String lookupUrl = UrlFactory.parameterizeUrl(getBasePath(request) + "/kr/" + lookupAction, parameters);
         return new ActionForward(lookupUrl, true);
     }
@@ -444,8 +449,8 @@ public abstract class KualiAction extends DispatchAction {
 
         // build the parameters for the inquiry url
         Properties parameters = new Properties();
-        parameters.put(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, boClassName);               
-        
+        parameters.put(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, boClassName);
+
         parameters.put(RiceConstants.RETURN_LOCATION_PARAMETER, getReturnLocation(request, mapping));
 
         // pass values from form that should be pre-populated on inquiry
@@ -471,7 +476,7 @@ public abstract class KualiAction extends DispatchAction {
                 else if (StringUtils.isNotBlank(request.getParameter(keyValue[0]))) {
                     parameters.put(keyValue[1], request.getParameter(keyValue[0]));
                 } else {
-                    parameters.put(keyValue[1], "directInquiryKeyNotSpecified");                    
+                    parameters.put(keyValue[1], "directInquiryKeyNotSpecified");
                 }
                 if ( LOG.isDebugEnabled() ) {
                     LOG.debug( "keyValue[0]: " + keyValue[0] );
@@ -490,7 +495,7 @@ public abstract class KualiAction extends DispatchAction {
 
     /**
      * This method handles rendering the question component, but without any of the extra error fields
-     * 
+     *
      * @param mapping
      * @param form
      * @param request
@@ -509,7 +514,7 @@ public abstract class KualiAction extends DispatchAction {
 
     /**
      * Handles rendering a question prompt - without a specified context.
-     * 
+     *
      * @param mapping
      * @param form
      * @param request
@@ -528,7 +533,7 @@ public abstract class KualiAction extends DispatchAction {
 
     /**
      * Handles re-rendering a question prompt because of an error on what was submitted.
-     * 
+     *
      * @param mapping
      * @param form
      * @param request
@@ -551,7 +556,7 @@ public abstract class KualiAction extends DispatchAction {
 
     /**
      * Handles rendering a question prompt - with a specified context.
-     * 
+     *
      * @param mapping
      * @param form
      * @param request
@@ -598,7 +603,7 @@ public abstract class KualiAction extends DispatchAction {
 
     /**
      * Takes care of storing the action form in the User session and forwarding to the workflow workgroup lookup action.
-     * 
+     *
      * @param mapping
      * @param form
      * @param request
@@ -613,7 +618,7 @@ public abstract class KualiAction extends DispatchAction {
     	} else {
     		returnUrl = getBasePath(request) + mapping.getPath() + ".do";
     	}
-        
+
 
         String fullParameter = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
         String conversionFields = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
@@ -631,7 +636,7 @@ public abstract class KualiAction extends DispatchAction {
 
     /**
      * Handles requests that originate via Header Tabs.
-     * 
+     *
      * @param mapping
      * @param form
      * @param request
@@ -656,10 +661,10 @@ public abstract class KualiAction extends DispatchAction {
 
         return this.dispatchMethod(mapping, form, request, response, getHeaderTabNavigateTo(request));
     }
-    
+
     /**
      * Override this method to provide action-level access controls to the application.
-     * 
+     *
      * @param form
      * @throws AuthorizationException
      */

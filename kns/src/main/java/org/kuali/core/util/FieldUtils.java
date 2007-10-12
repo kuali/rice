@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,6 +41,7 @@ import org.kuali.core.lookup.LookupUtils;
 import org.kuali.core.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.core.lookup.keyvalues.IndicatorValuesFinder;
 import org.kuali.core.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.core.lookup.valueFinder.ValueFinder;
 import org.kuali.core.service.BusinessObjectDictionaryService;
 import org.kuali.core.service.BusinessObjectMetaDataService;
@@ -75,14 +76,14 @@ public class FieldUtils {
                 if ( inquirableClass != null ) {
                     inq = inquirableClass.newInstance();
                 } else {
-                    inq = KNSServiceLocator.getKualiInquirable();              
+                    inq = KNSServiceLocator.getKualiInquirable();
                     if ( LOG.isDebugEnabled() ) {
                         LOG.debug( "Default Inquirable Class: " + inq.getClass() );
         }
                 }
 
                 inquiryUrl = inq.getInquiryUrl(bo, propertyName, null == b2 ? false : b2.booleanValue() );
-                
+
             } catch ( Exception ex ) {
                 LOG.error("unable to create inquirable to get inquiry URL", ex );
             }
@@ -93,7 +94,7 @@ public class FieldUtils {
 
     /**
      * Builds up a Field object based on the propertyName and business object class.
-     * 
+     *
      * @param propertyName
      * @return Field
      */
@@ -224,6 +225,11 @@ public class FieldUtils {
                                 ((ApcValuesFinder) finder).setParameterNamespace(((ApcSelectControlDefinition) control).getParameterNamespace());
                                 ((ApcValuesFinder) finder).setParameterDetailType(((ApcSelectControlDefinition) control).getParameterDetailType());
                                 ((ApcValuesFinder) finder).setParameterName(((ApcSelectControlDefinition) control).getParameterName());
+                            } else if (finder instanceof PersistableBusinessObjectValuesFinder) {
+                                ((PersistableBusinessObjectValuesFinder) finder).setBusinessObjectClass(control.getBusinessObjectClass());
+                                ((PersistableBusinessObjectValuesFinder) finder).setKeyAttributeName(control.getKeyAttribute());
+                                ((PersistableBusinessObjectValuesFinder) finder).setLabelAttributeName(control.getLabelAttribute());
+                                ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(control.getIncludeKeyInLabel());
                             }
                             field.setFieldValidValues(finder.getKeyValues());
                         }
@@ -295,7 +301,7 @@ public class FieldUtils {
 
     /**
      * Wraps each Field in the list into a Row.
-     * 
+     *
      * @param fields
      * @return List of Row objects
      */
@@ -305,7 +311,7 @@ public class FieldUtils {
 
     /**
      * This method is to implement multiple columns where the numberOfColumns is obtained from data dictionary.
-     * 
+     *
      * @param fields
      * @param numberOfColumns
      * @return
@@ -341,7 +347,7 @@ public class FieldUtils {
 
     /**
      * This is a helper method to create and add a blank space to the fieldOnly List.
-     * 
+     *
      * @param fieldOnlyList
      * @param rows
      * @param numberOfColumns
@@ -364,7 +370,7 @@ public class FieldUtils {
 
     /**
      * Wraps list of fields into a Field of type CONTAINER
-     * 
+     *
      * @param name name for the field
      * @param label label for the field
      * @param fields list of fields that should be contained in the container
@@ -376,7 +382,7 @@ public class FieldUtils {
 
     /**
      * Wraps list of fields into a Field of type CONTAINER and arrange them into multiple columns.
-     * 
+     *
      * @param name name for the field
      * @param label label for the field
      * @param fields list of fields that should be contained in the container
@@ -399,7 +405,7 @@ public class FieldUtils {
     /**
      * Uses reflection to get the property names of the business object, then checks for a matching field property name. If found,
      * takes the value of the business object property and populates the field value. Iterates through for all fields in the list.
-     * 
+     *
      * @param fields list of Field object to populate
      * @param bo business object to get field values from
      * @return List of fields with values populated from business object.
@@ -449,7 +455,7 @@ public class FieldUtils {
 
     /**
      * This method indicates whether or not propertyName refers to a nested attribute.
-     * 
+     *
      * @param propertyName
      * @return true if propertyName refers to a nested property (e.g. "x.y")
      */
@@ -459,7 +465,7 @@ public class FieldUtils {
 
     /**
      * This method verifies that all of the parent objects of propertyName are non-null.
-     * 
+     *
      * @param bo
      * @param propertyName
      * @return true if all parents are non-null, otherwise false
@@ -514,7 +520,7 @@ public class FieldUtils {
     /**
      * Uses reflection to get the property names of the business object, then checks for the property name as a key in the passed
      * map. If found, takes the value from the map and sets the business object property.
-     * 
+     *
      * @param bo
      * @param fieldValues
      * @return Cached Values from any formatting failures
@@ -526,7 +532,7 @@ public class FieldUtils {
     /**
      * Uses reflection to get the property names of the business object, then checks for the property name as a key in the passed
      * map. If found, takes the value from the map and sets the business object property.
-     * 
+     *
      * @param bo
      * @param fieldValues
      * @param propertyNamePrefix this value will be prepended to all property names in the returned unformattable values map
@@ -591,7 +597,7 @@ public class FieldUtils {
 
     /**
      * Does prefixing and read only settings of a Field UI for display in a maintenance document.
-     * 
+     *
      * @param field - the Field object to be displayed
      * @param keyFieldNames - Primary key property names for the business object being maintained.
      * @param namePrefix - String to prefix Field names with.
@@ -658,10 +664,10 @@ public class FieldUtils {
             	} else {
             		field.setPersonNameAttributeName(namePrefix + field.getPersonNameAttributeName());
             	}
-                
+
                 // TODO: do we need to prefix the universalIdAttributeName in Field as well?
             }
-            
+
             // if lookupParameters specified, prefix with new constant
             if (StringUtils.isNotBlank(field.getLookupParameters())) {
                 String lookupParameters = field.getLookupParameters();
@@ -763,7 +769,7 @@ public class FieldUtils {
 
     /**
      * Merges together sections of the old maintainable and new maintainable.
-     * 
+     *
      * @param oldSections
      * @param newSections
      * @param keyFieldNames
@@ -794,7 +800,7 @@ public class FieldUtils {
     /**
      * This method is a helper method for createRowsForNewFields. It puts together all the fields that should exist in a row after
      * calling the fixFieldForForm for the other necessary prefixing and setting up of the fields.
-     * 
+     *
      * @param newFields
      * @param keyFieldNames
      * @param maintenanceAction
@@ -816,7 +822,7 @@ public class FieldUtils {
 
     /**
      * Merges together rows of an old maintainable section and new maintainable section.
-     * 
+     *
      * @param oldRows
      * @param newRows
      * @param keyFieldNames
@@ -844,7 +850,7 @@ public class FieldUtils {
                 if (sectionRow.isHidden()) {
                     meshedRow.setHidden(true);
                 }
-                
+
                 meshedRows.add(meshedRow);
             }
         }
@@ -855,7 +861,7 @@ public class FieldUtils {
 
     /**
      * Merges together fields and an old maintainble row and new maintainable row, for each field call fixFieldForForm.
-     * 
+     *
      * @param oldFields
      * @param newFields
      * @param keyFieldNames
@@ -981,7 +987,7 @@ public class FieldUtils {
 
     /**
      * This method modifies the passed in field so that it may be used to render a multiple values lookup button
-     * 
+     *
      * @param field this object will be modified by this method
      * @param parents
      * @param definition
@@ -995,7 +1001,7 @@ public class FieldUtils {
     /**
      * Returns whether the passed in collection has been properly configured in the maint doc dictionary to support multiple value
      * lookups.
-     * 
+     *
      * @param definition
      * @return
      */
@@ -1006,7 +1012,7 @@ public class FieldUtils {
     /**
      * This method removes any duplicating spacing (internal or on the ends) from a String, meant to be exposed as a tag library
      * function.
-     * 
+     *
      * @param s String to remove duplicate spacing from.
      * @return String without duplicate spacing.
      */

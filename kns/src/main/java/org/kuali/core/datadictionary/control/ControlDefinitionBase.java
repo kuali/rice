@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,8 +26,8 @@ import org.kuali.core.datadictionary.exception.CompletionException;
  * A single HTML control definition in the DataDictionary, which contains information relating to the HTML control used to realize a
  * specific attribute. All types of controls are represented by an instance of this class; you have to call one of the is* methods
  * to figure out which of the other accessors should return useful values.
- * 
- * 
+ *
+ *
  */
 public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase implements ControlDefinition {
 
@@ -37,6 +37,10 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     private boolean datePicker;
     private String script;
     private Class valuesFinderClass;
+    private Class businessObjectClass;
+    private String keyAttribute;
+    private String labelAttribute;
+    private Boolean includeKeyInLabel;
     private Integer size;
     private Integer rows;
     private Integer cols;
@@ -45,13 +49,13 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     public ControlDefinitionBase() {
         LOG.debug("creating new ControlDefinition");
     }
-    
+
     public boolean isDatePicker() {
         return datePicker;
     }
 
     public void setDatePicker(boolean datePicker) {
-        this.datePicker=datePicker; 
+        this.datePicker=datePicker;
     }
 
 
@@ -84,7 +88,7 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     }
 
     /**
-     * 
+     *
      * @see org.kuali.core.datadictionary.control.ControlDefinition#isApcSelect()
      */
 
@@ -114,13 +118,13 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     }
 
     /**
-     * 
+     *
      * @see org.kuali.core.datadictionary.control.ControlDefinition#isKualiUser()
      */
     public boolean isKualiUser() {
         return false;
     }
-    
+
     /**
      * @see org.kuali.core.datadictionary.control.ControlDefinition#isWorkgroup()
      */
@@ -152,6 +156,67 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
         LOG.debug("calling setValuesKey '" + valuesFinderClass.getName() + "'");
 
         this.valuesFinderClass = valuesFinderClass;
+    }
+
+    /**
+     * @return the businessObjectClass
+     */
+    public Class getBusinessObjectClass() {
+        return this.businessObjectClass;
+    }
+
+    /**
+     * @param businessObjectClass the businessObjectClass to set
+     */
+    public void setBusinessObjectClass(Class businessObjectClass) {
+        if (businessObjectClass == null) {
+            throw new IllegalArgumentException("invalid (null) businessObjectClass");
+        }
+        LOG.debug("calling setValuesKey '" + businessObjectClass.getName() + "'");
+
+	this.businessObjectClass = businessObjectClass;
+    }
+
+    /**
+     * @return the includeKeyInLabel
+     */
+    public Boolean getIncludeKeyInLabel() {
+        return this.includeKeyInLabel;
+    }
+
+    /**
+     * @param includeKeyInLabel the includeKeyInLabel to set
+     */
+    public void setIncludeKeyInLabel(Boolean includeKeyInLabel) {
+        this.includeKeyInLabel = includeKeyInLabel;
+    }
+
+    /**
+     * @return the keyAttribute
+     */
+    public String getKeyAttribute() {
+        return this.keyAttribute;
+    }
+
+    /**
+     * @param keyAttribute the keyAttribute to set
+     */
+    public void setKeyAttribute(String keyAttribute) {
+        this.keyAttribute = keyAttribute;
+    }
+
+    /**
+     * @return the labelAttribute
+     */
+    public String getLabelAttribute() {
+        return this.labelAttribute;
+    }
+
+    /**
+     * @param labelAttribute the labelAttribute to set
+     */
+    public void setLabelAttribute(String labelAttribute) {
+        this.labelAttribute = labelAttribute;
     }
 
     /**
@@ -218,7 +283,7 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
 
     /**
      * Directly validate simple fields.
-     * 
+     *
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {

@@ -29,6 +29,7 @@ import org.kuali.core.bo.PersistableBusinessObjectExtension;
 import org.kuali.core.document.MaintenanceDocument;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.lookup.LookupUtils;
+import org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.core.rule.event.RouteDocumentEvent;
 import org.kuali.core.util.FieldUtils;
 import org.kuali.core.util.GlobalVariables;
@@ -86,7 +87,7 @@ public class ExtensionAttributeTest extends KNSTestBase {
 		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/TravelAccountExtension.xml", true);
 		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/FiscalOfficer.xml", true);
 		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/FiscalOfficerMaintenanceDocument.xml", true);
-		
+
 		// quieten things down a bit
 		setLogLevel("org.apache.commons.digester", Level.ERROR);
 		setLogLevel("org.kuali.core.datadictionary.XmlErrorHandler", Level.ERROR);
@@ -104,6 +105,11 @@ public class ExtensionAttributeTest extends KNSTestBase {
 		assertNotNull( "BusinessObjectEntry for TravelAccount should not be null", boe );
 		AttributeDefinition extAttrib = boe.getAttributeDefinition( "extension.accountTypeCode" );
 		assertNotNull( "AttributeDefinition for 'extension.accountType' should not be null", extAttrib );
+		assertEquals(PersistableBusinessObjectValuesFinder.class, extAttrib.getControl().getValuesFinderClass());
+		assertEquals(TravelAccountType.class, extAttrib.getControl().getBusinessObjectClass());
+		assertEquals("accountTypeCode", extAttrib.getControl().getKeyAttribute());
+		assertEquals("name", extAttrib.getControl().getLabelAttribute());
+		assertEquals(true, extAttrib.getControl().getIncludeKeyInLabel());
 		extAttrib = boe.getAttributeDefinition( "extension.accountType.codeAndDescription" );
 		assertNotNull( "AttributeDefinition for 'extension.accountType.codeAndDescription' should not be null", extAttrib );
 	}
@@ -134,7 +140,7 @@ public class ExtensionAttributeTest extends KNSTestBase {
 		TravelAccount ta = new TravelAccount();
 		ArrayList<String> lookupFieldAttributeList = new ArrayList<String>();
 		lookupFieldAttributeList.add( "extension.accountTypeCode");
-		
+
         Field field = FieldUtils.getPropertyField(ta.getClass(), "extension.accountTypeCode", true);
 
         field = LookupUtils.setFieldQuickfinder((BusinessObject) ta, "extension.accountTypeCode", field, lookupFieldAttributeList);
@@ -158,7 +164,7 @@ public class ExtensionAttributeTest extends KNSTestBase {
         document.getOldMaintainableObject().setBoClass(ta.getClass());
         document.getNewMaintainableObject().setBusinessObject(ta);
         document.getNewMaintainableObject().setBoClass(ta.getClass());
-        
+
         boolean failedAsExpected = false;
         try {
         	document.validateBusinessRules( new RouteDocumentEvent(document) );

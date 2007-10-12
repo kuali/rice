@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
  Copyright 2006 The Kuali Foundation.
- 
+
  Licensed under the Educational Community License, Version 1.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.opensource.org/licenses/ecl1.php
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -55,9 +55,9 @@
                 <field attributeName="foId" forceInquiry="true" />
             </resultFields>
         </lookup>
-        
+
         <titleAttribute>number</titleAttribute>
- 
+
         <attributes>
 
             <attribute name="number">
@@ -70,7 +70,7 @@
                 <control>
                     <text size="10" />
                 </control>
-                
+
 
                 <summary>Travel Account Number</summary>
                 <description>Travel Account Number</description>
@@ -94,14 +94,14 @@
             <attributeReference name="extension.accountTypeCode" sourceClassName="edu.sampleu.travel.bo.TravelAccountType" sourceAttributeName="accountTypeCode">
                 <required>true</required>
                 <control>
-                    <select valuesFinderClass="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues" />
+                    <select valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder" businessObjectClass="edu.sampleu.travel.bo.TravelAccountType" keyAttribute="accountTypeCode" labelAttribute="name" includeKeyInLabel="true"/>
                 </control>
             </attributeReference>
 
             <attributeReference name="extension.accountType.codeAndDescription" sourceClassName="edu.sampleu.travel.bo.TravelAccountType" sourceAttributeName="codeAndDescription" />
-            		
+
 		    <attributeReference name="foId" sourceClassName="edu.sampleu.travel.bo.FiscalOfficer" sourceAttributeName="id"/>
-		</attributes>				
+		</attributes>
 		<relationships>
 			<relationship objectAttributeName="extension">
 				<primitiveAttribute sourceName="number" targetName="number" />
@@ -109,6 +109,6 @@
 			<relationship objectAttributeName="extension.accountType">
 				<primitiveAttribute sourceName="extension.accountTypeCode" targetName="accountTypeCode" />
 			</relationship>
-		</relationships>    
+		</relationships>
     </businessObject>
 </dictionaryEntry>

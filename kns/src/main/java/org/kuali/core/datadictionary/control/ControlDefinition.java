@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,14 +19,14 @@ import org.kuali.core.datadictionary.DataDictionaryDefinition;
 
 /**
  * ControlDefinition
- * 
- * 
+ *
+ *
  */
 public interface ControlDefinition extends DataDictionaryDefinition {
-    
+
     public boolean isDatePicker();
     public void setDatePicker(boolean datePicker);
-    
+
     /**
      * @return true if this ControlDefinition instance represents an HTML checkbox control
      */
@@ -63,7 +63,7 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public boolean isTextarea();
 
     /**
-     * 
+     *
      * @return any Script associated with this control
      */
     public String getScript();
@@ -74,21 +74,21 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public boolean isCurrency();
 
     /**
-     * 
+     *
      * @return true if the ControlDefinition instance represents a kualiUser control
      */
     public boolean isKualiUser();
-    
+
     /**
      * @return true if the ControlDefinition instance represents a workflow workgroup control
      */
     public boolean isWorkflowWorkgroup();
-    
+
     /**
      * @return true if the ControlDefinition instance represents a lookupHidden control
      */
     public boolean isLookupHidden();
-    
+
     /**
      * @return true if the ControlDefinition instance represents a lookupReadonly control
      */
@@ -96,14 +96,37 @@ public interface ControlDefinition extends DataDictionaryDefinition {
 
     /**
      * Sets the Class used to retrieve the complete range of values for radiobutton and select controls.
-     * 
+     *
      * @param valuesFinderClass
      */
     public void setValuesFinderClass(Class valuesFinderClass);
 
     /**
+     * Sets the BO Class used for the KeyLabelBusinessObjectValueFinder to retrieve the complete range of values for radiobutton and select controls.
+     *
+     * @param businessObjectClass
+     */
+    public void setBusinessObjectClass(Class businessObjectClass);
+
+
+    /**
+     * Sets the keyAttribute used for building radiobutton and select controls.
+     *
+     * @param keyAttribute
+     */
+    public void setKeyAttribute(String keyAttribute);
+
+    /**
+     * Sets the labelAttribute used for building radiobutton and select controls.
+     *
+     * @param labelAttribute
+     */
+    public void setLabelAttribute(String labelAttribute);
+
+
+    /**
      * Sets the Script
-     * 
+     *
      * @param script
      */
     public void setScript(String script);
@@ -114,8 +137,30 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public Class getValuesFinderClass();
 
     /**
+     * @return BO Class used for the KeyLabelBusinessObjectValueFinder to retrieve the complete range of values for radiobutton and select controls.
+     */
+    public Class getBusinessObjectClass();
+
+    /**
+     * @return the keyAttribute used for radiobutton and select controls.
+     */
+    public String getKeyAttribute();
+
+    /**
+     * @return the labelAttribute used for radiobutton and select controls.
+     */
+    public String getLabelAttribute();
+
+    /**
+     * Gets the flag that indicates if the labels the ValuesFinder class returns should include the key.
+     *
+     * @param includeKeyInLabel
+     */
+    public Boolean getIncludeKeyInLabel();
+
+    /**
      * Sets the size parameter for text controls.
-     * 
+     *
      * @param size
      */
     public void setSize(Integer size);
@@ -127,7 +172,7 @@ public interface ControlDefinition extends DataDictionaryDefinition {
 
     /**
      * Sets the rows parameter for textarea controls.
-     * 
+     *
      * @param rows
      */
     public void setRows(Integer rows);
@@ -139,7 +184,7 @@ public interface ControlDefinition extends DataDictionaryDefinition {
 
     /**
      * Sets the cols parameter for textarea controls.
-     * 
+     *
      * @param cols
      */
     public void setCols(Integer cols);

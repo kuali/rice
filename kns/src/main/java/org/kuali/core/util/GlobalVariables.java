@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,11 +19,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.kuali.core.UserSession;
+import org.kuali.core.web.struts.form.KualiForm;
 
 /**
  * This class will hold all of our thread local variables and accessors for those
- * 
- * 
+ *
+ *
  */
 public class GlobalVariables {
 
@@ -33,6 +34,7 @@ public class GlobalVariables {
     // todo: generic collections
     private static ThreadLocal<ArrayList> messageLists = new ThreadLocal<ArrayList>();
     private static ThreadLocal<HashMap> auditErrorMaps = new ThreadLocal<HashMap>();
+    private static ThreadLocal<KualiForm> kualiForms = new ThreadLocal<KualiForm>();
 
     /**
      * @return the UserSession that has been assigned to this thread of execution it is important that this not be called by
@@ -49,16 +51,16 @@ public class GlobalVariables {
     /**
      * Sets an error message for tests that try to use the session without declaring it.
      * This method should be use by only KualiTestBase, not by other test code and especially not by production code.
-     * 
+     *
      * @param message the detail to throw, or null to allow access to the session
      */
     public static void setHideSessionFromTestsMessage(String message) {
         hideSessionFromTestsMessage.set(message);
-    } 
+    }
 
     /**
      * sets the userSession object into the global variable for this thread
-     * 
+     *
      * @param userSession
      */
     public static void setUserSession(UserSession userSession) {
@@ -74,7 +76,7 @@ public class GlobalVariables {
 
     /**
      * Sets a new (clean) ErrorMap
-     * 
+     *
      * @param errorMap
      */
     public static void setErrorMap(ErrorMap errorMap) {
@@ -90,7 +92,7 @@ public class GlobalVariables {
 
     /**
      * Sets a new message list
-     * 
+     *
      * @param messageList
      */
     public static void setMessageList(ArrayList messageList) {
@@ -106,12 +108,29 @@ public class GlobalVariables {
 
     /**
      * Sets a new (clean) AuditErrorList
-     * 
+     *
      * @param errorMap
      */
     public static void setAuditErrorMap(HashMap errorMap) {
         auditErrorMaps.set(errorMap);
     }
+
+    /**
+     * @return KualiForm that has been assigned to this thread of execution.
+     */
+    public static KualiForm getKualiForm() {
+        return kualiForms.get();
+    }
+
+    /**
+     * sets the kualiForm object into the global variable for this thread
+     *
+     * @param kualiForm
+     */
+    public static void setKualiForm(KualiForm kualiForm) {
+	kualiForms.set(kualiForm);
+    }
+
 
     /**
      * Clears out GlobalVariable objects
@@ -120,5 +139,6 @@ public class GlobalVariables {
         errorMaps.set(new ErrorMap());
         auditErrorMaps.set(new HashMap());
         messageLists.set(new ArrayList());
+        //TODO: does the form need to be cleared out here to?
     }
 }

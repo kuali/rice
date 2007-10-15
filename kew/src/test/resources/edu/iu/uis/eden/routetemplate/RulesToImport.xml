@@ -21,6 +21,9 @@
 			<ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>TestRule2</description>
 			<ignorePrevious>false</ignorePrevious>
+            <expression type="whateva">
+              mary had a little lamb
+            </expression>
 			<responsibilities>
 				<responsibility>
 					<user>user3</user>

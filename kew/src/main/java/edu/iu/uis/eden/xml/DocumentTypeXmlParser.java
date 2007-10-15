@@ -487,107 +487,106 @@ public class DocumentTypeXmlParser implements XmlConstants {
     }
 
     private RouteNode createRouteNode(RouteNode previousRouteNode, String nodeName, Node routePathNode, Node routeNodesNode, DocumentType documentType, RoutePathContext context) throws XPathExpressionException, InvalidXmlException, InvalidWorkgroupException, TransformerException {
-        if (nodeName != null) {
-            Node currentNode;
-            try {
-                currentNode = (Node) xpath.evaluate(".//*[@name = '" + nodeName + "']", routePathNode, XPathConstants.NODE);
-            } catch (XPathExpressionException xpee) {
-                LOG.error("Error obtaining routePath for routeNode", xpee);
-                throw xpee;
-            }
-            if (currentNode == null) {
-                String message = "Next node '" + nodeName + "' for node '" + previousRouteNode.getRouteNodeName() + "' not found!";
-                LOG.error(message);
-                throw new InvalidXmlException(message);
-            }
-            boolean nodeIsABranch;
-            try {
-                nodeIsABranch = ((Boolean) xpath.evaluate("self::node()[local-name() = 'branch']", currentNode, XPathConstants.BOOLEAN)).booleanValue();
-            } catch (XPathExpressionException xpee) {
-                LOG.error("Error testing whether node is a branch", xpee);
-                throw xpee;
-            }
-            if (nodeIsABranch) {
-                throw new InvalidXmlException("Next node cannot be a branch node");
-            }
+        if (nodeName == null) return null;
 
-            String localName;
-            try {
-                localName = (String) xpath.evaluate("local-name(.)", currentNode, XPathConstants.STRING);
-            } catch (XPathExpressionException xpee) {
-                LOG.error("Error obtaining node local-name", xpee);
-                throw xpee;
-            }
-            RouteNode currentRouteNode = null;
-            if (nodesMap.containsKey(nodeName)) {
-                currentRouteNode = (RouteNode) nodesMap.get(nodeName);
-            } else {
-                String nodeExpression = ".//*[@name='" + nodeName + "']";
-                currentRouteNode = makeRouteNodePrototype(nodeName, nodeExpression, routeNodesNode, documentType, context);
-            }
+        Node currentNode;
+        try {
+            currentNode = (Node) xpath.evaluate(".//*[@name = '" + nodeName + "']", routePathNode, XPathConstants.NODE);
+        } catch (XPathExpressionException xpee) {
+            LOG.error("Error obtaining routePath for routeNode", xpee);
+            throw xpee;
+        }
+        if (currentNode == null) {
+            String message = "Next node '" + nodeName + "' for node '" + previousRouteNode.getRouteNodeName() + "' not found!";
+            LOG.error(message);
+            throw new InvalidXmlException(message);
+        }
+        boolean nodeIsABranch;
+        try {
+            nodeIsABranch = ((Boolean) xpath.evaluate("self::node()[local-name() = 'branch']", currentNode, XPathConstants.BOOLEAN)).booleanValue();
+        } catch (XPathExpressionException xpee) {
+            LOG.error("Error testing whether node is a branch", xpee);
+            throw xpee;
+        }
+        if (nodeIsABranch) {
+            throw new InvalidXmlException("Next node cannot be a branch node");
+        }
 
-            if ("split".equalsIgnoreCase(localName)) {
-                getSplitNextNodes(currentNode, routePathNode, currentRouteNode, routeNodesNode, documentType, context);
-            }
+        String localName;
+        try {
+            localName = (String) xpath.evaluate("local-name(.)", currentNode, XPathConstants.STRING);
+        } catch (XPathExpressionException xpee) {
+            LOG.error("Error obtaining node local-name", xpee);
+            throw xpee;
+        }
+        RouteNode currentRouteNode = null;
+        if (nodesMap.containsKey(nodeName)) {
+            currentRouteNode = (RouteNode) nodesMap.get(nodeName);
+        } else {
+            String nodeExpression = ".//*[@name='" + nodeName + "']";
+            currentRouteNode = makeRouteNodePrototype(localName, nodeName, nodeExpression, routeNodesNode, documentType, context);
+        }
 
-            if (previousRouteNode != null) {
-                previousRouteNode.getNextNodes().add(currentRouteNode);
-                nodesMap.put(previousRouteNode.getRouteNodeName(), previousRouteNode);
-                currentRouteNode.getPreviousNodes().add(previousRouteNode);
-            }
+        if ("split".equalsIgnoreCase(localName)) {
+            getSplitNextNodes(currentNode, routePathNode, currentRouteNode, routeNodesNode, documentType, context);
+        }
 
-            String nextNodeName = null;
-            boolean hasNextNodeAttrib;
-            try {
-                hasNextNodeAttrib = ((Boolean) xpath.evaluate(NEXT_NODE_EXP, currentNode, XPathConstants.BOOLEAN)).booleanValue();
-            } catch (XPathExpressionException xpee) {
-                LOG.error("Error obtaining node nextNode attrib", xpee);
-                throw xpee;
-            }
-            if (hasNextNodeAttrib) {
-                // if the node has a nextNode but is not a split node, the nextNode is used for its node
-                if (!"split".equalsIgnoreCase(localName)) {
-                    try {
-                        nextNodeName = (String) xpath.evaluate(NEXT_NODE_EXP, currentNode, XPathConstants.STRING);
-                    } catch (XPathExpressionException xpee) {
-                        LOG.error("Error obtaining node nextNode attrib", xpee);
-                        throw xpee;
-                    }
-                    createRouteNode(currentRouteNode, nextNodeName, routePathNode, routeNodesNode, documentType, context);
-                } else {
-                    // if the node has a nextNode but is a split node, the nextNode must be used for that split node's join node
-                    nodesMap.put(currentRouteNode.getRouteNodeName(), currentRouteNode);
+        if (previousRouteNode != null) {
+            previousRouteNode.getNextNodes().add(currentRouteNode);
+            nodesMap.put(previousRouteNode.getRouteNodeName(), previousRouteNode);
+            currentRouteNode.getPreviousNodes().add(previousRouteNode);
+        }
+
+        String nextNodeName = null;
+        boolean hasNextNodeAttrib;
+        try {
+            hasNextNodeAttrib = ((Boolean) xpath.evaluate(NEXT_NODE_EXP, currentNode, XPathConstants.BOOLEAN)).booleanValue();
+        } catch (XPathExpressionException xpee) {
+            LOG.error("Error obtaining node nextNode attrib", xpee);
+            throw xpee;
+        }
+        if (hasNextNodeAttrib) {
+            // if the node has a nextNode but is not a split node, the nextNode is used for its node
+            if (!"split".equalsIgnoreCase(localName)) {
+                try {
+                    nextNodeName = (String) xpath.evaluate(NEXT_NODE_EXP, currentNode, XPathConstants.STRING);
+                } catch (XPathExpressionException xpee) {
+                    LOG.error("Error obtaining node nextNode attrib", xpee);
+                    throw xpee;
                 }
+                createRouteNode(currentRouteNode, nextNodeName, routePathNode, routeNodesNode, documentType, context);
             } else {
-                // if the node has no nextNode of its own and is not a join which gets its nextNode from its parent split node
-                if (!"join".equalsIgnoreCase(localName)) {
-                    nodesMap.put(currentRouteNode.getRouteNodeName(), currentRouteNode);
-                    // if join has a parent nextNode (on its split node) and join has not already walked this path
-                } else {
-                    boolean parentHasNextNodeAttrib;
+                // if the node has a nextNode but is a split node, the nextNode must be used for that split node's join node
+                nodesMap.put(currentRouteNode.getRouteNodeName(), currentRouteNode);
+            }
+        } else {
+            // if the node has no nextNode of its own and is not a join which gets its nextNode from its parent split node
+            if (!"join".equalsIgnoreCase(localName)) {
+                nodesMap.put(currentRouteNode.getRouteNodeName(), currentRouteNode);
+                // if join has a parent nextNode (on its split node) and join has not already walked this path
+            } else {
+                boolean parentHasNextNodeAttrib;
+                try {
+                    parentHasNextNodeAttrib = ((Boolean) xpath.evaluate(PARENT_NEXT_NODE_EXP, currentNode, XPathConstants.BOOLEAN)).booleanValue();
+                } catch (XPathExpressionException xpee) {
+                    LOG.error("Error obtaining parent node nextNode attrib", xpee);
+                    throw xpee;
+                }
+                if (parentHasNextNodeAttrib && !nodesMap.containsKey(nodeName)) {
                     try {
-                        parentHasNextNodeAttrib = ((Boolean) xpath.evaluate(PARENT_NEXT_NODE_EXP, currentNode, XPathConstants.BOOLEAN)).booleanValue();
+                        nextNodeName = (String) xpath.evaluate(PARENT_NEXT_NODE_EXP, currentNode, XPathConstants.STRING);
                     } catch (XPathExpressionException xpee) {
                         LOG.error("Error obtaining parent node nextNode attrib", xpee);
                         throw xpee;
                     }
-                    if (parentHasNextNodeAttrib && !nodesMap.containsKey(nodeName)) {
-                        try {
-                            nextNodeName = (String) xpath.evaluate(PARENT_NEXT_NODE_EXP, currentNode, XPathConstants.STRING);
-                        } catch (XPathExpressionException xpee) {
-                            LOG.error("Error obtaining parent node nextNode attrib", xpee);
-                            throw xpee;
-                        }
-                        createRouteNode(currentRouteNode, nextNodeName, routePathNode, routeNodesNode, documentType, context);
-                    } else {
-                        // if join's parent split node does not have a nextNode
-                        nodesMap.put(currentRouteNode.getRouteNodeName(), currentRouteNode);
-                    }
+                    createRouteNode(currentRouteNode, nextNodeName, routePathNode, routeNodesNode, documentType, context);
+                } else {
+                    // if join's parent split node does not have a nextNode
+                    nodesMap.put(currentRouteNode.getRouteNodeName(), currentRouteNode);
                 }
             }
-            return currentRouteNode;
         }
-        return null;
+        return currentRouteNode;
     }
 
     private void getSplitNextNodes(Node splitNode, Node routePathNode, RouteNode splitRouteNode, Node routeNodesNode, DocumentType documentType, RoutePathContext context) throws XPathExpressionException, InvalidXmlException, InvalidWorkgroupException, TransformerException {
@@ -620,7 +619,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
         }
     }
 
-    private RouteNode makeRouteNodePrototype(String nodeName, String nodeExpression, Node routeNodesNode, DocumentType documentType, RoutePathContext context) throws XPathExpressionException, InvalidWorkgroupException, InvalidXmlException, TransformerException {
+    private RouteNode makeRouteNodePrototype(String nodeTypeName, String nodeName, String nodeExpression, Node routeNodesNode, DocumentType documentType, RoutePathContext context) throws XPathExpressionException, InvalidWorkgroupException, InvalidXmlException, TransformerException {
         NodeList nodeList;
         try {
             nodeList = (NodeList) xpath.evaluate(nodeExpression, routeNodesNode, XPathConstants.NODESET);
@@ -635,10 +634,13 @@ public class DocumentTypeXmlParser implements XmlConstants {
             throw new InvalidXmlException("No node definition was found with the name '" + nodeName + "'");
         }
         Node node = nodeList.item(0);
+
         RouteNode routeNode = new RouteNode();
+        // set fields that all route nodes of all types should have defined 
         routeNode.setDocumentType(documentType);
         routeNode.setRouteNodeName((String) xpath.evaluate("./@name", node, XPathConstants.STRING));
         routeNode.setContentFragment(XmlHelper.writeNode(node));
+        
         if (XmlHelper.pathExists(xpath, "./activationType", node)) {
             routeNode.setActivationType(ActivationTypeEnum.parse((String) xpath.evaluate("./activationType", node, XPathConstants.STRING)).getCode());
         } else {

@@ -52,7 +52,11 @@ public class InlineRequestsRouteModule extends BaseRouteModule {
 
     /* @see edu.iu.uis.eden.routemodule.RouteModule#findActionRequests(edu.iu.uis.eden.engine.RouteContext)
      */
-    public List findActionRequests(RouteContext context) throws Exception {
+    public List<ActionRequestValue> findActionRequests(RouteContext context) throws Exception {
+        // comment this out while implementing the meta-rules stuff
+        // re-implement later
+        return null;
+        /*
         String contentFragment = context.getNodeInstance().getRouteNode().getContentFragment();
         // parse with JDOM to reuse RuleXmlParser
         Document doc = XmlHelper.trimSAXXml(new ByteArrayInputStream(contentFragment.getBytes()));
@@ -99,7 +103,7 @@ public class InlineRequestsRouteModule extends BaseRouteModule {
         flexRM.makeActionRequests(responsibilities, context, fakeRule, context.getDocument(), null, null); 
         actionRequests.addAll(flexRM.getActionRequestFactory().getRequestGraphs());
 
-        return actionRequests;
+        return actionRequests;*/
     }
     
     public ResponsibleParty resolveResponsibilityId(Long responsibilityId) {

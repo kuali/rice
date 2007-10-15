@@ -19,6 +19,7 @@ package edu.iu.uis.eden.engine.node;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -26,6 +27,7 @@ import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.routetemplate.RuleTemplate;
 import edu.iu.uis.eden.routetemplate.RuleTemplateService;
+import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.workgroup.WorkflowGroupId;
 import edu.iu.uis.eden.workgroup.Workgroup;
 
@@ -35,8 +37,10 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * @author ewestfal
  */
 public class RouteNode implements Serializable {    
-    
+
     private static final long serialVersionUID = 4891233177051752726L;
+
+    private static final String CONTENT_FRAGMENT_CFG_KEY = "contentFragment";
 
     private Long routeNodeId;
     private Long documentTypeId;
@@ -47,7 +51,6 @@ public class RouteNode implements Serializable {
     private Long exceptionWorkgroupId;
     private String routeMethodCode;
     private String activationType = ActivationTypeEnum.PARALLEL.getCode();
-    private String contentFragment;
 
     private Integer lockVerNbr;
     private DocumentType documentType;
@@ -55,16 +58,61 @@ public class RouteNode implements Serializable {
 
     private RuleTemplate ruleTemplate;
     private String nodeType = RequestsNode.class.getName();
-    private List previousNodes = new ArrayList();
-    private List nextNodes = new ArrayList();
+    private List<RouteNode> previousNodes = new ArrayList<RouteNode>();
+    private List<RouteNode> nextNodes = new ArrayList<RouteNode>();
     private BranchPrototype branch;
+    private List<RouteNodeConfigParam> configParams  = new ArrayList<RouteNodeConfigParam>(0);
 
-    public String getContentFragment() {
-        return contentFragment;
+    /**
+     * Looks up a config parameter for this route node definition
+     * @param key the config param key 
+     * @return the RouteNodeConfigParam if present
+     */
+    protected RouteNodeConfigParam getConfigParam(String key) {
+        Map<String, RouteNodeConfigParam> configParamMap = Utilities.getKeyValueCollectionAsLookupTable(configParams);
+        return configParamMap.get(key);
     }
 
+    /**
+     * Sets a config parameter for this route node definition.  If the key already exists
+     * the existing RouteNodeConfigParam is modified, otherwise a new one is created
+     * @param key the key of the parameter to set
+     * @param value the value to set
+     */
+    protected void setConfigParam(String key, String value) {
+        Map<String, RouteNodeConfigParam> configParamMap = Utilities.getKeyValueCollectionAsLookupTable(configParams);
+        RouteNodeConfigParam cfCfgParam = configParamMap.get(key);
+        if (cfCfgParam == null) {
+            cfCfgParam = new RouteNodeConfigParam(key, value);
+            cfCfgParam.setRouteNode(this);
+            configParams.add(cfCfgParam);
+        } else {
+            cfCfgParam.setValue(value);
+        }
+    }
+
+    public List<RouteNodeConfigParam> getConfigParams() {
+        return configParams;
+    }
+
+    public void setConfigParams(List<RouteNodeConfigParam> configParams) {
+        this.configParams = configParams;
+    }
+
+    /**
+     * @return the RouteNodeConfigParam value under the 'contentFragment'  key
+     */
+    public String getContentFragment() {
+        RouteNodeConfigParam cfCfgParam = getConfigParam(CONTENT_FRAGMENT_CFG_KEY);
+        if (cfCfgParam == null) return null;
+        return cfCfgParam.getValue();
+    }
+
+    /**
+     * @param contentFragment the content fragment of the node, which will be set as a RouteNodeConfigParam under the 'contentFragment' key
+     */
     public void setContentFragment(String contentFragment) {
-        this.contentFragment = contentFragment;
+        setConfigParam(CONTENT_FRAGMENT_CFG_KEY, contentFragment);
     }
 
     public String getActivationType() {
@@ -184,25 +232,25 @@ public class RouteNode implements Serializable {
     public Boolean getMandatoryRouteInd() {
         return mandatoryRouteInd;
     }
-    
+
     public void addNextNode(RouteNode nextNode) {
         getNextNodes().add(nextNode);
         nextNode.getPreviousNodes().add(this);
     }
-    
-    public List getNextNodes() {
+
+    public List<RouteNode> getNextNodes() {
         return nextNodes;
     }
 
-    public void setNextNodes(List nextNodes) {
+    public void setNextNodes(List<RouteNode> nextNodes) {
         this.nextNodes = nextNodes;
     }
 
-    public List getPreviousNodes() {
+    public List<RouteNode> getPreviousNodes() {
         return previousNodes;
     }
 
-    public void setPreviousNodes(List parentNodes) {
+    public void setPreviousNodes(List<RouteNode> parentNodes) {
         this.previousNodes = parentNodes;
     }
 
@@ -213,7 +261,7 @@ public class RouteNode implements Serializable {
         }
         return ruleTemplate;
     }
-    
+
     public String getNodeType() {
         return nodeType;
     }
@@ -221,13 +269,13 @@ public class RouteNode implements Serializable {
     public void setNodeType(String nodeType) {
         this.nodeType = nodeType;
     }
-    
-    public BranchPrototype getBranch() {
-		return branch;
-	}
 
-	public void setBranch(BranchPrototype branch) {
-		this.branch = branch;
-	}
+    public BranchPrototype getBranch() {
+        return branch;
+    }
+
+    public void setBranch(BranchPrototype branch) {
+        this.branch = branch;
+    }
 
 }

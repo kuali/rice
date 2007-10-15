@@ -27,10 +27,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.KeyValue;
 import org.apache.commons.lang.text.StrSubstitutor;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -270,18 +273,35 @@ public class Utilities {
         return a.containsAll(b) && b.containsAll(a);
     }
 
-	public static String getIpNumber() {
-	    try {
-	        return InetAddress.getLocalHost().getHostAddress();
-	    } catch (UnknownHostException e) {
-	        throw new WorkflowRuntimeException("Error retrieving ip number.", e);
-	    }
-	}
-	
-	public static String getHostName() {
-		try {
-			return InetAddress.getLocalHost().getHostName();
-		} catch (UnknownHostException e) {
-			throw new WorkflowRuntimeException("Error retrieving host name.", e);
-}	}
+    public static String getIpNumber() {
+        try {
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            throw new WorkflowRuntimeException("Error retrieving ip number.", e);
+        }
+    }
+
+    public static String getHostName() {
+        try {
+            return InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            throw new WorkflowRuntimeException("Error retrieving host name.", e);
+        }
+    }
+
+    public static <T,Z> Map<T, Z> getKeyValueCollectionAsMap(List<? extends KeyValue> collection) {
+        Map<T, Z> map = new HashMap<T, Z>(collection.size());
+        for (KeyValue kv: collection) {
+            map.put((T) kv.getKey(), (Z) kv.getValue());
+        }
+        return map;
+    }
+
+    public static <T,Z  extends KeyValue> Map<T, Z> getKeyValueCollectionAsLookupTable(List<Z> collection) {
+        Map<T, Z> map = new HashMap<T, Z>(collection.size());
+        for (Z kv: collection) {
+            map.put((T) kv.getKey(), kv);
+        }
+        return map;
+    }
 }

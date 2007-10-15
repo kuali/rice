@@ -614,8 +614,6 @@
     <field-descriptor column="DOC_ACTVN_TYP_TXT" name="activationType" jdbc-type="VARCHAR" />
     <field-descriptor column="BRCH_PROTO_ID" name="branchId" jdbc-type="BIGINT" access="anonymous"/>
 
-    <field-descriptor column="CONTENT_FRAGMENT" name="contentFragment" jdbc-type="VARCHAR"/>
-
     <field-descriptor column="DB_LOCK_VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
     <reference-descriptor class-ref="edu.iu.uis.eden.doctype.DocumentType" name="documentType" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="documentTypeId" />
@@ -623,6 +621,11 @@
     <reference-descriptor class-ref="edu.iu.uis.eden.engine.node.BranchPrototype" name="branch" auto-update="true" auto-delete="false" auto-retrieve="true">
       <foreignkey field-ref="branchId" />
     </reference-descriptor>
+
+    <collection-descriptor name="configParams" auto-update="true" auto-retrieve="true" auto-delete="true" element-class-ref="edu.iu.uis.eden.engine.node.RouteNodeConfigParam">
+       <inverse-foreignkey field-ref="routeNodeId"/>
+    </collection-descriptor>
+    
     <collection-descriptor name="previousNodes"
      	collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
      	element-class-ref="edu.iu.uis.eden.engine.node.RouteNode"
@@ -645,6 +648,18 @@
     </collection-descriptor>
   </class-descriptor>
 
+  <class-descriptor class="edu.iu.uis.eden.engine.node.RouteNodeConfigParam" table="EN_RTE_NODE_CFG_PARM_T">
+    <field-descriptor column="RTE_NODE_CFG_PARM_ID" name="id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_RTE_NODE_CFG_PARM"/>
+
+    <field-descriptor column="RTE_NODE_CFG_PARM_ND" name="routeNodeId" jdbc-type="BIGINT" access="anonymous"/>
+    <reference-descriptor class-ref="edu.iu.uis.eden.engine.node.RouteNode" name="routeNode" auto-delete="false" auto-retrieve="true" auto-update="false">
+      <foreignkey field-ref="routeNodeId" />
+    </reference-descriptor>
+
+    <field-descriptor column="RTE_NODE_CFG_PARM_KEY" name="key" jdbc-type="VARCHAR"/>
+    <field-descriptor column="RTE_NODE_CFG_PARM_VAL" name="value" jdbc-type="VARCHAR"/>
+  </class-descriptor>
+  
   <class-descriptor class="edu.iu.uis.eden.engine.node.BranchPrototype" table="EN_RTE_BRCH_PROTO_T">
     <field-descriptor column="RTE_BRCH_PROTO_ID" name="branchId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_RTE_NODE"/>
     <field-descriptor column="RTE_BRCH_PROTO_NM" name="name" jdbc-type="VARCHAR" />

@@ -66,8 +66,8 @@ public class RuleBaseValues implements WorkflowPersistable {
     private Integer versionNbr;
     private Integer lockVerNbr;
     private Boolean ignorePrevious;
-    private List responsibilities;
-    private List ruleExtensions;
+    private List<RuleResponsibility> responsibilities;
+    private List<RuleExtension> ruleExtensions;
     private RuleTemplate ruleTemplate;
     private RuleBaseValues previousVersion;
     private Timestamp activationDate;
@@ -80,8 +80,8 @@ public class RuleBaseValues implements WorkflowPersistable {
     private MyColumns myColumns;
 
     public RuleBaseValues() {
-	responsibilities = new ArrayList();
-	ruleExtensions = new ArrayList();
+	responsibilities = new ArrayList<RuleResponsibility>();
+	ruleExtensions = new ArrayList<RuleExtension>();
     }
 
     public Map getRuleExtensionValueLabels() {
@@ -238,19 +238,19 @@ public class RuleBaseValues implements WorkflowPersistable {
 	this.docTypeName = docTypeName;
     }
 
-    public List getRuleExtensions() {
+    public List<RuleExtension> getRuleExtensions() {
 	return ruleExtensions;
     }
 
-    public void setRuleExtensions(List ruleExtensions) {
+    public void setRuleExtensions(List<RuleExtension> ruleExtensions) {
 	this.ruleExtensions = ruleExtensions;
     }
 
-    public List getResponsibilities() {
+    public List<RuleResponsibility> getResponsibilities() {
 	return responsibilities;
     }
 
-    public void setResponsibilities(List responsibilities) {
+    public void setResponsibilities(List<RuleResponsibility> responsibilities) {
 	this.responsibilities = responsibilities;
     }
 
@@ -383,7 +383,7 @@ public class RuleBaseValues implements WorkflowPersistable {
 	}
 
 	if ((ruleExtensions != null) && !ruleExtensions.isEmpty()) {
-	    List ruleExtensionsList = new ArrayList();
+	    List<RuleExtension> ruleExtensionsList = new ArrayList<RuleExtension>();
 
 	    for (Iterator i = ruleExtensions.iterator(); i.hasNext();) {
 		RuleExtension ruleExtension = (RuleExtension) i.next();
@@ -461,7 +461,7 @@ public class RuleBaseValues implements WorkflowPersistable {
 		((GenericXMLRuleAttribute) routingAttribute).setRuleAttribute(ruleAttribute);
 	    }
 	    String className = ruleAttribute.getClassName();
-	    List editedRuleExtensions = new ArrayList();
+	    List<RuleExtension> editedRuleExtensions = new ArrayList<RuleExtension>();
 	    for (Iterator iter2 = getRuleExtensions().iterator(); iter2.hasNext();) {
 		RuleExtension extension = (RuleExtension) iter2.next();
 		if (extension.getRuleTemplateAttribute().getRuleAttribute().getClassName().equals(className)) {

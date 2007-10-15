@@ -16,12 +16,14 @@
  */
 package edu.iu.uis.eden.engine.node;
 
+import org.apache.commons.collections.KeyValue;
+
 /**
  * A simple object representing a key/value pair.
  * 
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-public class KeyValuePair {
+public class KeyValuePair implements KeyValue {
     protected String key;
     protected String value;
 

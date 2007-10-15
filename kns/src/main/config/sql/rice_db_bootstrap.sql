@@ -321,6 +321,8 @@ CREATE SEQUENCE SEQ_ROUTE_TEMPLATE INCREMENT BY 1 START WITH 1000
 /
 CREATE SEQUENCE SEQ_RTE_NODE INCREMENT BY 1 START WITH 2000
 /
+CREATE SEQUENCE SEQ_RTE_NODE_CFG_PARM INCREMENT BY 1 START WITH 2000
+/
 CREATE SEQUENCE SEQ_RULE_TMPL_OPTN INCREMENT BY 1 START WITH 2000
 /
 CREATE SEQUENCE SEQ_SEARCHABLE_ATTRIBUTE_VALUE INCREMENT BY 1 START WITH 2000
@@ -747,6 +749,14 @@ CREATE TABLE EN_RTE_BRCH_T (
     JOIN_RTE_NODE_INSTN_ID		   NUMBER(19),
 	DB_LOCK_VER_NBR	               NUMBER(8) DEFAULT 0,
 	CONSTRAINT EN_RTE_BRCH_T_PK PRIMARY KEY (RTE_BRCH_ID) 
+)
+/
+CREATE TABLE EN_RTE_NODE_CFG_PARM_T (
+    RTE_NODE_CFG_PARM_ID    NUMBER(19) NOT NULL,
+    RTE_NODE_CFG_PARM_ND    NUMBER(19) NOT NULL,
+    RTE_NODE_CFG_PARM_KEY   VARCHAR2(255) NOT NULL,
+    RTE_NODE_CFG_PARM_VAL   VARCHAR2(4000),
+    CONSTRAINT EN_RTE_NODE_CFG_PARM_T_PK PRIMARY KEY (RTE_NODE_CFG_PARM_ID) 
 )
 /
 CREATE TABLE EN_RTE_NODE_INSTN_LNK_T (
@@ -1303,6 +1313,10 @@ CREATE INDEX EN_WRKGRP_TI1
  ON EN_WRKGRP_T (WRKGRP_NM)
 /
 CREATE UNIQUE INDEX EN_WRKGRP_TYP_TI1 ON EN_WRKGRP_TYP_T (WRKGRP_TYP_NM)
+/
+ALTER TABLE EN_RTE_NODE_CFG_PARM_T ADD CONSTRAINT EN_RTE_NODE_CFG_PARM_TR1
+FOREIGN KEY (RTE_NODE_CFG_PARM_ND)
+REFERENCES EN_RTE_NODE_T (RTE_NODE_ID)
 /
 ALTER TABLE EN_WRKGRP_EXT_DTA_T ADD CONSTRAINT EN_WRKGRP_EXT_DTA_TR1
 FOREIGN KEY (WRKGRP_EXT_ID)
@@ -2441,6 +2455,30 @@ ID
 --insert into FS_PARM_T values ('CoreMaintenanceEDoc','Workflow.Exception.Workgroup','2409BD6AB4CB800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can perform functions on documents in exception routing status.','N', 'MC')
 --/
 --insert into FS_PARM_T values ('CoreMaintenanceEDoc','Kuali.Supervisor.Workgroup','2409BD6AB4CC800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can perform almost any function within Kuali.','N', 'MC')
+--/
+insert into SH_PARM_TYP_T values ('CONFG', 3, 0,'Config',1)
+/
+insert into SH_PARM_NMSPC_T values ('KR-NS', 3, 0, 'Kuali Rice', 1)
+/
+INSERT INTO sh_parm_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
+VALUES
+('KR-NS','Lookup','RESULTS_DEFAULT_MAX_COLUMN_LENGTH','CONFG','70','If a
+maxLength attribute has not been set on a lookup result field in the
+data dictionary, then the result column''s max length will be the value
+of this parameter. Set this parameter to 0 for an unlimited default
+length or a positive value (i.e. greater than 0) for a finite max
+length.','A','KUALI_FMSOPS')
+/
+INSERT INTO sh_parm_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
+VALUES
+('KR-NS','Lookup','RESULTS_LIMIT','CONFG','200','If a
+maxLength attribute has not been set on a lookup result field in the
+data dictionary, then the result column''s max length will be the value
+of this parameter. Set this parameter to 0 for an unlimited default
+length or a positive value (i.e. greater than 0) for a finite max
+length.','A','KUALI_FMSOPS')
 /
 insert into EN_APPL_CNST_T values ('Feature.CheckRouteLogAuthentication.CheckFuture', 'true', 1)
 /

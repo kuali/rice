@@ -18,6 +18,7 @@ package org.kuali.workflow.routemodule;
 
 import java.util.List;
 
+import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.routemodule.RouteModule;
@@ -29,7 +30,7 @@ import edu.iu.uis.eden.util.ResponsibleParty;
  */
 public abstract class BaseRouteModule implements RouteModule {
 
-	public abstract List findActionRequests(RouteContext context) throws Exception;
+	public abstract List<ActionRequestValue> findActionRequests(RouteContext context) throws Exception;
 
 	/**
 	 * Default behavior is to return null which results in the responsibility staying the same.

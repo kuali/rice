@@ -18,6 +18,7 @@ package edu.iu.uis.eden.routemodule;
 
 import java.util.List;
 
+import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.util.ResponsibleParty;
@@ -31,22 +32,21 @@ import edu.iu.uis.eden.util.ResponsibleParty;
  */
 public interface RouteModule {
 
-	/**
-	 * Generate action requests for the given RouteContext.
-	 *
-	 * @return A List of the generated ActionRequestValue objects.
-	 * @throws EdenException
-	 */
-	public List findActionRequests(RouteContext context) throws Exception;
+    /**
+     * Generate action requests for the given RouteContext.
+     *
+     * @return A List of the generated ActionRequestValue objects.
+     * @throws EdenException
+     */
+    public List<ActionRequestValue> findActionRequests(RouteContext context) throws Exception;
 
-	/**
-	 * The route module will resolve the given responsibilityId and return an object that contains the key to
-	 * either a user or a Eden workgroup.
-	 * @param rId ResponsibiliyId that we need resolved.
-	 * @return The ResponsibleParty containing a key to a user or workgroup.
-	 * @throws EdenException if any problems are found this exception can be thrown.
-	 */
-	public ResponsibleParty resolveResponsibilityId(Long responsibilityId)
-    	throws WorkflowException;
+    /**
+     * The route module will resolve the given responsibilityId and return an object that contains the key to
+     * either a user or a Eden workgroup.
+     * @param rId ResponsibiliyId that we need resolved.
+     * @return The ResponsibleParty containing a key to a user or workgroup.
+     * @throws EdenException if any problems are found this exception can be thrown.
+     */
+    public ResponsibleParty resolveResponsibilityId(Long responsibilityId) throws WorkflowException;
 
 }

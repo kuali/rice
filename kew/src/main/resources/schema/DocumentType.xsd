@@ -738,14 +738,26 @@ Definitions are applied to the names in the routeNodes section.
       <extension base="dt:ActivatableNodeType" >
         <sequence>
           <choice>
-            <element name="ruleTemplate" type="c:ShortStringType" minOccurs="0" maxOccurs="1">
-            	<annotation>
-            		<documentation>
-            		 The ruleTemplate that applies to this routing node for a document type.
-            		</documentation>
-            	</annotation>
-            </element>
+            <!-- FlexRM-style definition -->
+            <sequence>
+                <element name="ruleSelector" type="c:ShortStringType" minOccurs="0">
+                    <annotation>
+                        <documentation>
+                         The strategy by which to select rules for evaluation
+                        </documentation>
+                    </annotation>
+                </element>
 
+                <element name="ruleTemplate" type="c:ShortStringType" minOccurs="0" maxOccurs="1">
+                	<annotation>
+                		<documentation>
+                		 The ruleTemplate that applies to this routing node for a document type.
+                		</documentation>
+                	</annotation>
+                </element>
+            </sequence>
+
+            <!-- Custom route module definition -->
             <element name="routeModule" type="c:MandatoryLongStringType" minOccurs="0" maxOccurs="1">
             	<annotation>
             		<documentation>

@@ -69,7 +69,7 @@ public class RouteModuleServiceImpl implements RouteModuleService {
     }
 
     private RouteModule getFlexRMRouteModule(String ruleTemplateName) {
-        return new FlexRMAdapter(ruleTemplateName);
+        return new FlexRMAdapter();
     }
 
 

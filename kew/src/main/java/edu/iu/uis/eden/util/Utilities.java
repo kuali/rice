@@ -289,6 +289,13 @@ public class Utilities {
         }
     }
 
+    /**
+     * Helper method that takes a List of {@link KeyValue} and presents it as a Map
+     * @param <T> the key type
+     * @param <Z> the value type
+     * @param collection collection of {@link KeyValue}
+     * @return a Map<T,Z> representing the keys and values in the KeyValue collection
+     */
     public static <T,Z> Map<T, Z> getKeyValueCollectionAsMap(List<? extends KeyValue> collection) {
         Map<T, Z> map = new HashMap<T, Z>(collection.size());
         for (KeyValue kv: collection) {
@@ -297,6 +304,14 @@ public class Utilities {
         return map;
     }
 
+    /**
+     * Helper method that takes a List of {@link KeyValue} and presents it as a Map containing
+     * KeyValue values
+     * @param <T> the key type
+     * @param <Z> the collection/map value type, which must be a KeyValue
+     * @param collection collection of {@link KeyValue}
+     * @return a Map<T,Z> where keys of the KeyValues in the collection are mapped to their respective KeyValue object
+     */
     public static <T,Z  extends KeyValue> Map<T, Z> getKeyValueCollectionAsLookupTable(List<Z> collection) {
         Map<T, Z> map = new HashMap<T, Z>(collection.size());
         for (Z kv: collection) {

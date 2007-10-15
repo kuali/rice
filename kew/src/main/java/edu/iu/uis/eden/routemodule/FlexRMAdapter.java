@@ -18,10 +18,9 @@ package edu.iu.uis.eden.routemodule;
 
 import java.util.List;
 
+import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
-import edu.iu.uis.eden.exception.WorkflowException;
-import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routetemplate.FlexRM;
 
 /**
@@ -34,22 +33,18 @@ import edu.iu.uis.eden.routetemplate.FlexRM;
  */
 public class FlexRMAdapter extends FlexRM implements RouteModule {
 
-    private final String ruleTemplateName;
-    
-    public FlexRMAdapter(String ruleTemplateName) {
-        this.ruleTemplateName = ruleTemplateName;
+    public List<ActionRequestValue> findActionRequests(RouteContext context) throws Exception {
+        RouteNodeInstance nodeInstance = context.getNodeInstance();
+        return getActionRequests(context.getDocument(), nodeInstance, nodeInstance.getRouteNode().getRouteMethodName());
     }
-    
-    public List findActionRequests(RouteContext context) throws Exception {
-		return getActionRequests(context.getDocument(), context.getNodeInstance(), ruleTemplateName);
-	}
 
-	public List findActionRequests(DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance) throws WorkflowException {
-    	return getActionRequests(routeHeader, nodeInstance, ruleTemplateName);
+    /*
+    public List<ActionRequestValue> findActionRequests(DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance) throws WorkflowException {
+        return getActionRequests(routeHeader, nodeInstance, ruleTemplateName);
     }
-    
-    public List findActionRequests(DocumentRouteHeaderValue routeHeader) throws WorkflowException {
+
+    public List<ActionRequestValue> findActionRequests(DocumentRouteHeaderValue routeHeader) throws WorkflowException {
         return getActionRequests(routeHeader, ruleTemplateName);
-    }
+    }*/
 
 }

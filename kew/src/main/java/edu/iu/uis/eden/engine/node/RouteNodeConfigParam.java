@@ -41,8 +41,9 @@ public class RouteNodeConfigParam extends KeyValuePair implements Serializable {
 
     public RouteNodeConfigParam() {}
 
-    public RouteNodeConfigParam(String key, String value) {
+    public RouteNodeConfigParam(RouteNode routeNode, String key, String value) {
         super(key, value);
+        this.routeNode = routeNode;
     }
 
     /**

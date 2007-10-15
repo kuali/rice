@@ -41,6 +41,7 @@ public class RouteNode implements Serializable {
     private static final long serialVersionUID = 4891233177051752726L;
 
     private static final String CONTENT_FRAGMENT_CFG_KEY = "contentFragment";
+    public static final String RULE_SELECTOR_CFG_KEY = "rule.selector";
 
     private Long routeNodeId;
     private Long documentTypeId;
@@ -83,8 +84,7 @@ public class RouteNode implements Serializable {
         Map<String, RouteNodeConfigParam> configParamMap = Utilities.getKeyValueCollectionAsLookupTable(configParams);
         RouteNodeConfigParam cfCfgParam = configParamMap.get(key);
         if (cfCfgParam == null) {
-            cfCfgParam = new RouteNodeConfigParam(key, value);
-            cfCfgParam.setRouteNode(this);
+            cfCfgParam = new RouteNodeConfigParam(this, key, value);
             configParams.add(cfCfgParam);
         } else {
             cfCfgParam.setValue(value);

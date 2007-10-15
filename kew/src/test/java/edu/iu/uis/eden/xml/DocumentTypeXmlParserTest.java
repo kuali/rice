@@ -55,6 +55,10 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     @Test public void testLoadDocWithValidPolicyNames() throws Exception {
         testDoc("ValidPolicyNames", null);
     }
+    
+    @Test public void testLoadDocWithValidRuleSelector() throws Exception {
+        testDoc("ValidRuleSelector", null);
+    }
 
     @Test public void testLoadDocWithDuplicatePolicyName() throws Exception {
         testDoc("DuplicatePolicyName", InvalidXmlException.class);

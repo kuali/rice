@@ -50,10 +50,12 @@ import edu.iu.uis.eden.engine.node.ActivationTypeEnum;
 import edu.iu.uis.eden.engine.node.BranchPrototype;
 import edu.iu.uis.eden.engine.node.Process;
 import edu.iu.uis.eden.engine.node.RouteNode;
+import edu.iu.uis.eden.engine.node.RouteNodeConfigParam;
 import edu.iu.uis.eden.exception.InvalidWorkgroupException;
 import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
+import edu.iu.uis.eden.routetemplate.FlexRM;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.routetemplate.RuleTemplate;
 import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
@@ -679,6 +681,14 @@ public class DocumentTypeXmlParser implements XmlConstants {
         } else {
             routeNode.setFinalApprovalInd(Boolean.FALSE);
         }
+        
+        // parse the rule selector if it is specified
+        String ruleSelector = FlexRM.DEFAULT_RULE_SELECTOR;
+        if (XmlHelper.pathExists(xpath, "./ruleSelector", node)) {
+            ruleSelector = (String) xpath.evaluate("./ruleSelector", node, XPathConstants.STRING);
+        }
+        routeNode.getConfigParams().add(new RouteNodeConfigParam(routeNode, RouteNode.RULE_SELECTOR_CFG_KEY, ruleSelector));
+
         if (((Boolean) xpath.evaluate("./ruleTemplate", node, XPathConstants.BOOLEAN)).booleanValue()) {
             String ruleTemplateName = (String) xpath.evaluate("./ruleTemplate", node, XPathConstants.STRING);
             RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);

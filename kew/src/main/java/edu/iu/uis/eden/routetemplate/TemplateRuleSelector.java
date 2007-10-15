@@ -39,32 +39,19 @@ import edu.iu.uis.eden.util.PerformanceLogger;
  *
  */
 class TemplateRuleSelector implements RuleSelector {
-    /* propagated from FlexRM */
-    private final Timestamp effectiveDate;
     /**
-     * Records the number of matching rules, prior to MassRuleAttribute filtering
+     * Records the number of selected rules, prior to MassRuleAttribute filtering
      */
-    private int numberOfMatchingRules;
-
-    TemplateRuleSelector() {
-	this.effectiveDate = null;
-    }
-
-    TemplateRuleSelector(Timestamp effectiveDate) {
-	this.effectiveDate = effectiveDate;
-    }
+    private int numberOfSelectedRules;
 
     /**
-     * @return the number of matching rules, prior to MassRuleAttribute filtering
+     * @return the number of selected rules, prior to MassRuleAttribute filtering
      */
-    int getNumberOfMatchingRules() {
-	return numberOfMatchingRules;
+    int getNumberOfSelectedRules() {
+	return numberOfSelectedRules;
     }
 
-    /**
-     * @see edu.iu.uis.eden.routetemplate.RuleSelector#selectRules(RouteContext, DocumentRouteHeaderValue, RouteNodeInstance, String)
-     */
-    public List<Rule> selectRules(RouteContext context, DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String selectionCriterion) throws WorkflowException {
+    public List<Rule> selectRules(RouteContext context, DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String selectionCriterion, Timestamp effectiveDate) throws WorkflowException {
 	// for TemplateRuleSelector, the criterion is taken as a ruletemplate name
 	final String ruleTemplateName = selectionCriterion;
 
@@ -92,7 +79,7 @@ class TemplateRuleSelector implements RuleSelector {
 	} else {
 	    rules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateName, routeHeader.getDocumentType().getName());
 	}
-	numberOfMatchingRules = rules.size();
+	numberOfSelectedRules = rules.size();
 
 	// TODO really the route context just needs to be able to support nested create and clears
 	// (i.e. a Stack model similar to transaction intercepting in Spring) and we wouldn't have to do this

@@ -15,6 +15,7 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import edu.iu.uis.eden.engine.RouteContext;
@@ -34,9 +35,10 @@ public interface RuleSelector {
      * @param routeHeader the DocumentRouteHeaderValue of the current document
      * @param nodeInstance the current RouteNodeInstance being executed
      * @param selectionCriterion an implementation-specific criterion passed in from the calling context
+     * @param effectiveDate an optional criterion that indicates that the rules selected should be active on the given date 
      * @return a list of applicable rules, if any (null or empty list otherwise)
      * @throws WorkflowException if anything goes awry...
      */
     /* inputs taken from FlexRM getActionRequests/makeActionRequests */
-    public List<Rule> selectRules(RouteContext context, DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String selectionCriterion) throws WorkflowException;
+    public List<Rule> selectRules(RouteContext context, DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String selectionCriterion, Timestamp effectiveDate) throws WorkflowException;
 }

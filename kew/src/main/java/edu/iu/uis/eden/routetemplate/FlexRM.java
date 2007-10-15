@@ -21,16 +21,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
 import edu.iu.uis.eden.actionrequests.ActionRequestService;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.engine.RouteContext;
+import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowException;
@@ -40,8 +44,10 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.RoleRecipient;
 import edu.iu.uis.eden.user.WorkflowUserId;
+import edu.iu.uis.eden.util.ClassLoaderUtils;
 import edu.iu.uis.eden.util.PerformanceLogger;
 import edu.iu.uis.eden.util.ResponsibleParty;
+import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.workgroup.WorkflowGroupId;
 
 /**
@@ -61,19 +67,68 @@ import edu.iu.uis.eden.workgroup.WorkflowGroupId;
 public class FlexRM {
 
     private static final Logger LOG = Logger.getLogger(FlexRM.class);
+    
+    /**
+     * The default type of rule selector implementation to use if none is explicitly
+     * specified for the node.
+     */
+    public static final String DEFAULT_RULE_SELECTOR = "Template";
+    /**
+     * Package in which rule selector implementations live
+     */
+    private static final String RULE_SELECTOR_PACKAGE = "edu.iu.uis.eden.routetemplate";
+    /**
+     * The class name suffix all rule selectors should have; e.g. FooRuleSelector
+     */
+    private static final String RULE_SELECTOR_SUFFIX= "RuleSelector";
 
-    private final TemplateRuleSelector selector;
+    private final Timestamp effectiveDate;
+    /**
+     * An accumulator that keeps track of the number of rules that have been selected over the lifespan of
+     * this FlexRM instance.
+     */
+    private int selectedRules;
 
     public FlexRM() {
-	selector = new TemplateRuleSelector();
+        this.effectiveDate = null;
     }
 
     public FlexRM(Timestamp effectiveDate) {
-	selector = new TemplateRuleSelector(effectiveDate);
+        this.effectiveDate = effectiveDate;
     }
 
     public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, String ruleTemplateName) throws EdenUserNotFoundException, WorkflowException {
 	return getActionRequests(routeHeader, null, ruleTemplateName);
+    }
+
+    // loads a RuleSelector implementation
+    protected RuleSelector loadRuleSelector(RouteNodeInstance nodeInstance) throws WorkflowException {
+        Map<String, String> nodeCfgParams = Utilities.getKeyValueCollectionAsMap(nodeInstance.getRouteNode().getConfigParams());
+        String ruleSelectorName = nodeCfgParams.get(RouteNode.RULE_SELECTOR_CFG_KEY);
+        if (ruleSelectorName == null) {
+            ruleSelectorName = DEFAULT_RULE_SELECTOR;
+        }
+        ruleSelectorName = StringUtils.capitalize(ruleSelectorName);
+
+        // load up the rule selection implementation
+        String className = RULE_SELECTOR_PACKAGE + "." + ruleSelectorName + RULE_SELECTOR_SUFFIX;
+        Class<?> ruleSelectorClass;
+        try {
+            ruleSelectorClass = ClassLoaderUtils.getDefaultClassLoader().loadClass(className);
+        } catch (ClassNotFoundException cnfe) {
+            throw new WorkflowException("Rule selector implementation '" + className + "' not found", cnfe);
+        }
+        if (!RuleSelector.class.isAssignableFrom(ruleSelectorClass)) {
+            throw new WorkflowException("Specified class '" + ruleSelectorClass + "' does not implement RuleSelector interface");
+        }
+        RuleSelector ruleSelector;
+        try {
+            ruleSelector = ((Class<RuleSelector>) ruleSelectorClass).newInstance();
+        } catch (Exception e) {
+            throw new WorkflowException("Error instantiating rule selector implementation '" + ruleSelectorClass + "'", e);
+        }
+
+        return ruleSelector;
     }
 
     public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String ruleTemplateName) throws EdenUserNotFoundException, WorkflowException {
@@ -89,18 +144,35 @@ public class FlexRM {
 	DocumentContent documentContent = context.getDocumentContent();
 
 	LOG.debug("Making action requests for document " + routeHeader.getRouteHeaderId());
-	List<Rule> rules = selector.selectRules(context, routeHeader, nodeInstance, ruleTemplateName);
+	
+	RuleSelector ruleSelector = loadRuleSelector(nodeInstance);
+
+	List<Rule> rules = ruleSelector.selectRules(context, routeHeader, nodeInstance, ruleTemplateName, effectiveDate);
+
+	// XXX: FIXME: this is a special case hack to expose info from the default selection implementation
+	// this is used in exactly one place, RoutingReportAction, to make a distinction between no rules being
+	// selected, and no rules actually matching when evaluated
+	// if (numberOfRules == 0) {
+        //   errors.add(new WorkflowServiceErrorImpl("There are no rules.", "routereport.noRules"));
+        // } else {
+        //   errors.add(new WorkflowServiceErrorImpl("There are rules, but no matches.", "routereport.noMatchingRules"));
+        // }
+	if (ruleSelector instanceof TemplateRuleSelector) {
+	    selectedRules += ((TemplateRuleSelector) ruleSelector).getNumberOfSelectedRules();
+	}
 
 	PerformanceLogger performanceLogger = new PerformanceLogger();
 
 	ActionRequestFactory arFactory = new ActionRequestFactory(routeHeader, context.getNodeInstance());
 	
 	List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
-	for (Rule rule: rules) {
-	    RuleExpressionResult result = rule.evaluate();
-	    if (result.isSuccess()) {
-//		actionRequests.addAll(makeActionRequests(context, rule, routeHeader, null, null));
-		makeActionRequests(arFactory, context, rule.getDefinition(), routeHeader, null, null);
+	if (rules != null) {
+	    for (Rule rule: rules) {
+	        RuleExpressionResult result = rule.evaluate();
+	        if (result.isSuccess()) {
+	            // actionRequests.addAll(makeActionRequests(context, rule, routeHeader, null, null));
+	            makeActionRequests(arFactory, context, rule.getDefinition(), routeHeader, null, null);
+	        }
 	    }
 	}
 	actionRequests = new ArrayList<ActionRequestValue>(arFactory.getRequestGraphs());
@@ -259,7 +331,7 @@ public class FlexRM {
     }
 
     public int getNumberOfMatchingRules() {
-	return selector.getNumberOfMatchingRules();
+	return selectedRules;
     }
 
 //  private DocumentContent parseDocumentContent(RouteContext context) throws WorkflowException {

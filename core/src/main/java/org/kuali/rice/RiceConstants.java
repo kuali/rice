@@ -18,7 +18,11 @@ package org.kuali.rice;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class RiceConstants {
+import org.kuali.rice.util.JSTLConstants;
+
+public class RiceConstants extends JSTLConstants {
+
+    private static final long serialVersionUID = -8828648691393487244L;
 
     public static final int DEFAULT_TRANSACTION_TIMEOUT_SECONDS = 3600;
     public static final String MESSAGE_ENTITY = "message.entity";

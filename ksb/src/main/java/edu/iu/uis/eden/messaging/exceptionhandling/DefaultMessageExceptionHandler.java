@@ -53,10 +53,7 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
 		requeue(throwable, message);
 	    }
 	} catch (Throwable t) {
-	    LOG
-		    .error(
-			    "Caught Exception trying to put message in exception routing!!!  Returning without notifying callbacks.",
-			    t);
+	    LOG.error("Caught Exception trying to put message in exception routing!!!  Returning without notifying callbacks.", t);
 	}
     }
 
@@ -115,11 +112,13 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
 	Scheduler scheduler = KSBServiceLocator.getScheduler();
 	JobDataMap jobData = new JobDataMap();
 	jobData.put(MessageServiceExecutorJob.MESSAGE_KEY, message);
-	JobDetail jobDetail = new JobDetail("Exception_Message_Job " + Math.random(), "Exception Messaging", MessageServiceExecutorJob.class);
+	JobDetail jobDetail = new JobDetail("Exception_Message_Job " + Math.random(), "Exception Messaging",
+		MessageServiceExecutorJob.class);
 	jobDetail.setJobDataMap(jobData);
 	jobDetail.addJobListener(MessageServiceExecutorJobListener.NAME);
-	Trigger trigger = new SimpleTrigger("Exception_Message_Trigger " + Math.random(), "Exception Messaging", message.getQueueDate());
-	trigger.setJobDataMap(jobData);//1.6 bug required or derby will choke
+	Trigger trigger = new SimpleTrigger("Exception_Message_Trigger " + Math.random(), "Exception Messaging", message
+		.getQueueDate());
+	trigger.setJobDataMap(jobData);// 1.6 bug required or derby will choke
 	scheduler.scheduleJob(jobDetail, trigger);
 	KSBServiceLocator.getRouteQueueService().delete(message);
     }

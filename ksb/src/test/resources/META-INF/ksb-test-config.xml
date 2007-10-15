@@ -15,10 +15,16 @@
 	<param name="bam.enabled">true</param>
 	
 	
+	<!-- 
 	<param name="keystore.alias">onestartsharedservices-devandtst</param>
 	<param name="keystore.password">s1t0spss!xX-tst</param>
 	<param name="keystore.file">${basedir}/src/test/resources/keystore/onestartsharedservices-devandtst_keystore</param>
-
+	-->
+	<param name="keystore.alias">rice</param>
+	<param name="keystore.password">r1c3pw</param>
+	<param name="keystore.file">${basedir}/src/test/resources/keystore/ricekeystore</param>
+	<param name="keystore.location">${basedir}/src/test/resources/keystore/ricekeystore</param>
+	
 	<param name="use.clearDatabaseLifecycle">true</param>
 	<param name="use.sqlDataLoaderLifecycle">true</param>
 

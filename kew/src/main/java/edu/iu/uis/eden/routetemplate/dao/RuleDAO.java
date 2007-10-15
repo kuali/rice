@@ -35,7 +35,7 @@ public interface RuleDAO {
     public List fetchAllRules(boolean currentRules);
     public List fetchAllCurrentRulesForTemplateDocCombination(Long ruleTemplateId, List documentTypes);
     public List fetchAllCurrentRulesForTemplateDocCombination(Long ruleTemplateId, List documentTypes, Timestamp effectiveDate);
-    public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, Long workgroupId, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues);
+    public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, Long workgroupId, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective);
     public List search(String docTypeName, Long ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection actionRequestCodes);
     public List findByRouteHeaderId(Long routeHeaderId);
     public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type);

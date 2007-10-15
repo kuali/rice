@@ -27,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -42,13 +43,19 @@ import edu.iu.uis.eden.removereplace.RuleTarget;
 import edu.iu.uis.eden.removereplace.WorkgroupTarget;
 import edu.iu.uis.eden.routetemplate.RuleBaseValues;
 import edu.iu.uis.eden.routetemplate.RuleResponsibility;
+import edu.iu.uis.eden.routing.web.DocHandlerForm;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;
+import edu.iu.uis.eden.user.WorkflowUserId;
 import edu.iu.uis.eden.util.CodeTranslator;
+import edu.iu.uis.eden.util.KeyLabelPair;
+import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.web.WorkflowAction;
 import edu.iu.uis.eden.web.session.UserSession;
+import edu.iu.uis.eden.workgroup.WorkflowGroupId;
 import edu.iu.uis.eden.workgroup.Workgroup;
+import edu.iu.uis.eden.workgroup.web.WorkgroupForm;
 
 /**
  * Struts Action for the Remove/Replace User Document.
@@ -60,8 +67,17 @@ public class RemoveReplaceAction extends WorkflowAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RemoveReplaceAction.class);
 
+    private static final String INVALID_USER_ID_MSG = "removereplace.invalidUserId";
+    private static final String USER_ID_NOT_FOUND_MSG = "removereplace.userIdNotFound";
+    private static final String INVALID_REPLACEMENT_USER_ID_MSG = "removereplace.invalidReplacementUserId";
+    private static final String REPLACEMENT_USER_ID_NOT_FOUND_MSG = "removereplace.replacementUserIdNotFound";
+    private static final String REPLACEMENT_USER_ID_REQUIRED_MSG = "removereplace.replacementUserIdRequired";
+    private static final String INVALID_OPERATION_MSG = "removereplace.invalidOperation";
+    private static final String FAILED_DOCUMENT_LOAD_MSG = "removereplace.failedDocumentLoad";
+
     @Override
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm actionForm) throws Exception {
+	ActionMessages messages = new ActionMessages();
 	RemoveReplaceForm form = (RemoveReplaceForm)actionForm;
 	form.setActionRequestCodes(CodeTranslator.arLabels);
 	boolean isCreating = false;
@@ -86,8 +102,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 	    }
 	    form.setUser(user);
 	    if (user == null) {
-		// TODO encode this in an error message that shows up next to the field
-		throw new RuntimeException("Please enter a valid user id.");
+		messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(USER_ID_NOT_FOUND_MSG, form.getUserId()));
 	    }
 	}
 	if (!StringUtils.isEmpty(form.getReplacementUserId())) {
@@ -99,13 +114,12 @@ public class RemoveReplaceAction extends WorkflowAction {
 	    }
 	    form.setReplacementUser(replacementUser);
 	    if (replacementUser == null) {
-		// TODO encode this in an error message that shows up next to the field
-		throw new RuntimeException("Please enter a valid replacement user id.");
+		messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(REPLACEMENT_USER_ID_NOT_FOUND_MSG, form.getReplacementUserId()));
 	    }
 	}
 	form.setWorkgroupTypes(KEWServiceLocator.getWorkgroupTypeService().findAllActive());
         form.getWorkgroupTypes().add(0, RemoveReplaceForm.createDefaultWorkgroupType());
-	return null;
+	return messages;
     }
 
     private WorkflowDocument createDocument() throws WorkflowException {
@@ -113,8 +127,44 @@ public class RemoveReplaceAction extends WorkflowAction {
     }
 
     @Override
-    public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+    public ActionForward start(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request,
 	    HttpServletResponse response) throws Exception {
+	RemoveReplaceForm form = (RemoveReplaceForm) actionForm;
+        form.getShowHide().getChild(0).setShow(true);
+        form.getShowHide().getChild(1).setShow(true);
+	return mapping.findForward("basic");
+    }
+
+    public ActionForward selectOperation(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	ActionMessages messages = new ActionMessages();
+	RemoveReplaceForm form = (RemoveReplaceForm) actionForm;
+	// validate that an operation was entered
+	if (!form.isRemove() && !form.isReplace()) {
+	    messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(INVALID_OPERATION_MSG));
+	}
+	// validity of IDs are validated in establishRequiredState, we just need to validate existence here
+	if (StringUtils.isBlank(form.getUserId())) {
+	    messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(INVALID_USER_ID_MSG));
+	}
+	if (form.isReplace() && StringUtils.isBlank(form.getReplacementUserId())) {
+	    messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(REPLACEMENT_USER_ID_REQUIRED_MSG));
+	}
+	if (!messages.isEmpty()) {
+	    saveMessages(request, messages);
+	    return mapping.findForward("basic");
+	}
+	form.setOperationSelected(true);
+	// clear out any workgroups or rules, because they might have just changed the user
+	form.getRules().clear();
+	form.getWorkgroups().clear();
+	form.getShowHide().getChild(0).setShow(true);
+        form.getShowHide().getChild(1).setShow(true);
+	return mapping.findForward("basic");
+    }
+
+    public ActionForward changeOperation(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	RemoveReplaceForm form = (RemoveReplaceForm) actionForm;
+	form.setOperationSelected(false);
 	return mapping.findForward("basic");
     }
 
@@ -126,30 +176,89 @@ public class RemoveReplaceAction extends WorkflowAction {
         Long documentId = form.getDocId();
         RemoveReplaceDocument removeReplaceDocument = KEWServiceLocator.getRemoveReplaceDocumentService().findById(documentId);
         if (removeReplaceDocument == null) {
-            // TODO better error message
-            throw new WorkflowRuntimeException("Could not locate Remove/Replace User Document with ID " + documentId);
+            ActionMessages messages = new ActionMessages();
+            messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(FAILED_DOCUMENT_LOAD_MSG, documentId));
+            saveMessages(request, messages);
+            return mapping.findForward("docHandler");
         }
-        form.setDocument(removeReplaceDocument);
+        loadFormForReport(form, removeReplaceDocument);
         return mapping.findForward("docHandler");
+    }
+
+    protected void loadFormForReport(RemoveReplaceForm form, RemoveReplaceDocument document) throws EdenUserNotFoundException {
+        form.setDocument(document);
+        form.setOperation(document.getOperation());
+        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(document.getUserWorkflowId()));
+        form.setUserId(user.getAuthenticationUserId().getAuthenticationId());
+        form.setUser(user);
+        if (!StringUtils.isBlank(document.getReplacementUserWorkflowId())) {
+            WorkflowUser replacementUser = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(document.getReplacementUserWorkflowId()));
+            form.setReplacementUserId(replacementUser.getAuthenticationUserId().getAuthenticationId());
+            form.setReplacementUser(replacementUser);
+        }
+        form.setRules(loadRemoveReplaceRules(form, loadRules(document)));
+        form.setWorkgroups(loadRemoveReplaceWorkgroups(form, loadWorkgroups(document)));
+        form.setReport(true);
+        form.getShowHide().getChild(0).setShow(!form.getRules().isEmpty());
+        form.getShowHide().getChild(1).setShow(!form.getWorkgroups().isEmpty());
+    }
+
+    protected List<Workgroup> loadWorkgroups(RemoveReplaceDocument document) {
+	List<Workgroup> workgroups = new ArrayList<Workgroup>();
+	for (WorkgroupTarget workgroupTarget : document.getWorkgroupTargets()) {
+	    Workgroup workgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupTarget.getWorkgroupId()));
+	    if (workgroup == null) {
+		throw new WorkflowRuntimeException("Failed to locate workgroup with id " + workgroupTarget.getWorkgroupId());
+	    }
+	    workgroups.add(workgroup);
+	}
+	return workgroups;
+    }
+
+    protected List<RuleBaseValues> loadRules(RemoveReplaceDocument document) {
+	List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();
+	for (RuleTarget ruleTarget : document.getRuleTargets()) {
+	    RuleBaseValues rule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(ruleTarget.getRuleId());
+	    if (rule == null) {
+		throw new WorkflowRuntimeException("Failed to locate rule with id " + ruleTarget.getRuleId());
+	    }
+	    rules.add(rule);
+	}
+	return rules;
     }
 
 
     public ActionForward chooseRules(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request,
 	    HttpServletResponse response) throws Exception {
 	RemoveReplaceForm form = (RemoveReplaceForm)actionForm;
+	// this condition should already be satisfied but throw an error if it's not
 	if (form.getUser() == null) {
-	    // TODO an error message, user must be selected before choosing rules
 	    throw new RuntimeException("Please enter a valid user id before choosing rules.");
 	}
 	List<RuleBaseValues> rules = KEWServiceLocator.getRuleService().findRuleBaseValuesByResponsibilityReviewerTemplateDoc(form.getRuleRuleTemplate(), form.getRuleDocumentTypeName(), form.getUser().getWorkflowId(), EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
-	Set<Long> selectedRuleIds = getSelectedRuleIds(form);
 	form.getRules().clear();
+	form.getRules().addAll(loadRemoveReplaceRules(form, rules));
+	return mapping.findForward("basic");
+    }
+
+    /**
+     * Constructs a list of RemoveReplaceRule objects from the given list of RuleBaseValues.
+     */
+    protected List<RemoveReplaceRule> loadRemoveReplaceRules(RemoveReplaceForm form, List<RuleBaseValues> rules) {
+	List<RemoveReplaceRule> removeReplaceRules = new ArrayList<RemoveReplaceRule>();
+	Set<Long> selectedRuleIds = getSelectedRuleIds(form);
 	for (RuleBaseValues rule : rules) {
 	    RemoveReplaceRule removeReplaceRule = new RemoveReplaceRule();
 	    removeReplaceRule.setRule(rule);
 	    removeReplaceRule.setRuleTemplateName(rule.getRuleTemplateName());
 	    // if rule was selected previously, keep it selected
 	    removeReplaceRule.setSelected(selectedRuleIds.contains(rule.getRuleBaseValuesId()));
+	    Long documentId = KEWServiceLocator.getRuleService().isLockedForRouting(rule.getRuleBaseValuesId());
+	    if (documentId != null) {
+		removeReplaceRule.setWarning(removeReplaceRule.getWarning().concat("Rule is locked by document " + documentId + " and cannot be modified."));
+		removeReplaceRule.setDisabled(true);
+		removeReplaceRule.setSelected(false);
+	    }
 	    ResponsibilityEvaluation eval = evaluateResponsibility(form, rule);
 	    if (!eval.foundResponsibility) {
 		LOG.warn("Failed to find a valid responsbility on rule " + rule.getRuleBaseValuesId() + " for user " + form.getUserId() + ".  This rule will not be added to the list for selection.");
@@ -160,10 +269,9 @@ public class RemoveReplaceAction extends WorkflowAction {
 		}
 		removeReplaceRule.setWarning(removeReplaceRule.getWarning().concat(warning));
 	    }
-
-	    form.getRules().add(removeReplaceRule);
+	    removeReplaceRules.add(removeReplaceRule);
 	}
-	return mapping.findForward("basic");
+	return removeReplaceRules;
     }
 
     private Set<Long> getSelectedRuleIds(RemoveReplaceForm form) {
@@ -201,7 +309,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 	    HttpServletResponse response) throws Exception {
 	RemoveReplaceForm form = (RemoveReplaceForm)actionForm;
 	if (form.getUser() == null) {
-	    // TODO an error message, user must be selected before choosing workgroups
+	    // this condition should already be satisfied but throw an error if it's not
 	    throw new RuntimeException("Please enter a valid user id before choosing workgroups.");
 	}
 	Workgroup template = KEWServiceLocator.getWorkgroupService().getBlankWorkgroup();
@@ -210,8 +318,17 @@ public class RemoveReplaceAction extends WorkflowAction {
 	    template.setWorkgroupType(form.getWorkgroupType());
 	}
 	List<Workgroup> workgroups = KEWServiceLocator.getWorkgroupService().search(template, null, form.getUser());
-	Set<Long> selectedWorkgroupIds = getSelectedWorkgroupIds(form);
 	form.getWorkgroups().clear();
+	form.getWorkgroups().addAll(loadRemoveReplaceWorkgroups(form, workgroups));
+	return mapping.findForward("basic");
+    }
+
+    /**
+     * Constructs a list of RemoveReplaceWorkgroup objects from the given list of Workgroups.
+     */
+    protected List<RemoveReplaceWorkgroup> loadRemoveReplaceWorkgroups(RemoveReplaceForm form, List<Workgroup> workgroups) {
+	List<RemoveReplaceWorkgroup> removeReplaceWorkgroups = new ArrayList<RemoveReplaceWorkgroup>();
+	Set<Long> selectedWorkgroupIds = getSelectedWorkgroupIds(form);
 	for (Workgroup workgroup : workgroups) {
 	    RemoveReplaceWorkgroup removeReplaceWorkgroup = new RemoveReplaceWorkgroup();
 	    removeReplaceWorkgroup.setId(workgroup.getWorkflowGroupId().getGroupId());
@@ -230,6 +347,16 @@ public class RemoveReplaceAction extends WorkflowAction {
 		}
 	    }
 	    List<String> warnings = new ArrayList<String>();
+	    try {
+		Long documentId = KEWServiceLocator.getWorkgroupRoutingService().getLockingDocumentId(workgroup.getWorkflowGroupId());
+		if (documentId != null) {
+		    warnings.add("Workgroup is locked by document " + documentId + " and cannot be modified.");
+		    removeReplaceWorkgroup.setDisabled(true);
+		    removeReplaceWorkgroup.setSelected(false);
+		}
+	    } catch (WorkflowException e) {
+		throw new WorkflowRuntimeException(e);
+	    }
 	    if (RemoveReplaceDocument.REMOVE_OPERATION.equals(form.getOperation()) && isOnlyMember) {
 		warnings.add("Only one member on the workgroup, removing them will inactivate the workgroup.");
 	    }
@@ -241,10 +368,11 @@ public class RemoveReplaceAction extends WorkflowAction {
 	    }
 	    if (!foundMember) {
 		LOG.warn("Failed to find a valid member on workgroup " + workgroup.getDisplayName() + " for user " + form.getUserId() + ".  This workgroup will not be added to the list for selection.");
+	    } else {
+		removeReplaceWorkgroups.add(removeReplaceWorkgroup);
 	    }
-	    form.getWorkgroups().add(removeReplaceWorkgroup);
 	}
-	return mapping.findForward("basic");
+	return removeReplaceWorkgroups;
     }
 
     private Set<Long> getSelectedWorkgroupIds(RemoveReplaceForm form) {
@@ -270,7 +398,11 @@ public class RemoveReplaceAction extends WorkflowAction {
 	validateSubmission(form);
 	RemoveReplaceDocument document = createRemoveReplaceDocument(form);
 	KEWServiceLocator.getRemoveReplaceDocumentService().blanketApprove(document, UserSession.getAuthenticatedUser(), form.getAnnotation());
-	return mapping.findForward("basic");
+	loadFormForReport(form, document);
+	ActionMessages messages = new ActionMessages();
+        messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.routing.blanketApproved", "Remove/Replace User Document"));
+        saveMessages(request, messages);
+	return mapping.findForward("summary");
     }
 
     public ActionForward route(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request,
@@ -278,8 +410,12 @@ public class RemoveReplaceAction extends WorkflowAction {
 	RemoveReplaceForm form = (RemoveReplaceForm)actionForm;
 	validateSubmission(form);
 	RemoveReplaceDocument document = createRemoveReplaceDocument(form);
-	KEWServiceLocator.getRemoveReplaceDocumentService().blanketApprove(document, UserSession.getAuthenticatedUser(), form.getAnnotation());
-	return mapping.findForward("basic");
+	KEWServiceLocator.getRemoveReplaceDocumentService().route(document, UserSession.getAuthenticatedUser(), form.getAnnotation());
+	loadFormForReport(form, document);
+	ActionMessages messages = new ActionMessages();
+        messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.routing.routed", "Remove/Replace User Document"));
+        saveMessages(request, messages);
+	return mapping.findForward("summary");
     }
 
     private void validateSubmission(RemoveReplaceForm form) {
@@ -318,6 +454,41 @@ public class RemoveReplaceAction extends WorkflowAction {
 	document.setRuleTargets(ruleTargets);
 	document.setWorkgroupTargets(workgroupTargets);
 	return document;
+    }
+
+    public ActionForward performLookup(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String lookupService = request.getParameter("lookupableImplServiceName");
+        String conversionFields = request.getParameter("conversionFields");
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();
+        StringBuffer lookupUrl = new StringBuffer(basePath);
+        lookupUrl.append("/Lookup.do?methodToCall=start&docFormKey=").append(getUserSession(request).addObject(actionForm)).append("&lookupableImplServiceName=");
+        lookupUrl.append(lookupService);
+        lookupUrl.append("&conversionFields=").append(conversionFields);
+        lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getPath()).append(".do");
+        return new ActionForward(lookupUrl.toString(), true);
+    }
+
+    public ActionForward cancel(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        LOG.info("entering cancel() method ...");
+        RemoveReplaceForm form = (RemoveReplaceForm)actionForm;
+        form.getFlexDoc().cancel("");
+        saveDocumentActionMessage("general.routing.canceled", request);
+        LOG.info("forwarding to actionTaken from cancel()");
+        return mapping.findForward("actionTaken");
+    }
+
+    public void saveDocumentActionMessage(String messageKey, HttpServletRequest request) {
+        saveDocumentActionMessage(messageKey, request, null);
+    }
+
+    public void saveDocumentActionMessage(String messageKey, HttpServletRequest request, String secondMessageParameter) {
+        ActionMessages messages = new ActionMessages();
+        if (Utilities.isEmpty(secondMessageParameter)) {
+            messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(messageKey, "document"));
+        } else {
+            messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(messageKey, "document", secondMessageParameter));
+        }
+        saveMessages(request, messages);
     }
 
 

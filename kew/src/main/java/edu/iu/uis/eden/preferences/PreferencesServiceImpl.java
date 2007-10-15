@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,7 +38,7 @@ import edu.iu.uis.eden.useroptions.UserOptionsService;
 public class PreferencesServiceImpl implements PreferencesService {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PreferencesServiceImpl.class);
-    
+
     private static final String DISAPPROVED_DOC_COLOR = "DOCUMENT_STATUS_COLOR_D";
     // what the hell is this status?
     private static final String DISSAPPROVED_CANCELLED_DOC_COLOR = "DOCUMENT_STATUS_COLOR_C";
@@ -71,7 +71,7 @@ public class PreferencesServiceImpl implements PreferencesService {
     private static final String ERR_KEY_REFRESH_RATE_WHOLE_NUM = "preferences.preferencesservice.refreshRate.wholenum";
     private static final String ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM = "preferences.preferencesservice.pagesize.wholenum";
     private static final String DELEGATOR_FILTER_KEY = "DELEGATOR_FILTER";
-    
+
     public Preferences getPreferences(WorkflowUser user) {
         LOG.debug("start preferences fetch user " + user);
         Preferences preferences = new Preferences();
@@ -105,19 +105,17 @@ public class PreferencesServiceImpl implements PreferencesService {
         LOG.debug("end preferences fetch user " + user);
         return preferences;
     }
-    
+
     private UserOptions getOption(String optionKey, String defaultValue, WorkflowUser user) {
         LOG.debug("start fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
         UserOptionsService optionSrv = getUserOptionService();
         UserOptions option =  optionSrv.findByOptionId(optionKey, user);
-        synchronized (this) {
-	        if (option == null) {
-	            option = new UserOptions();
-	            option.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
-	            option.setOptionId(optionKey);
-	            option.setOptionVal(defaultValue);
-	            optionSrv.save(option);
-	        }
+        if (option == null) {
+            option = new UserOptions();
+            option.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
+            option.setOptionId(optionKey);
+            option.setOptionVal(defaultValue);
+            optionSrv.save(option);
         }
         LOG.debug("end fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
         return option;
@@ -156,7 +154,7 @@ public class PreferencesServiceImpl implements PreferencesService {
         optionSrv.save(user, DELEGATOR_FILTER_KEY, preferences.getDelegatorFilter());
         LOG.debug("saved preferences user " + user.getAuthenticationUserId());
     }
-    
+
     private void validate(Preferences preferences) {
         LOG.debug("validating preferences");
         Collection errors = new ArrayList();
@@ -169,7 +167,7 @@ public class PreferencesServiceImpl implements PreferencesService {
             errors.add(new WorkflowServiceErrorImpl("ActionList Refresh Rate must be in whole " +
                     "minutes", ERR_KEY_REFRESH_RATE_WHOLE_NUM));
         }
-        
+
         try {
             new Integer(preferences.getPageSize().trim());
         } catch (NumberFormatException e) {
@@ -184,7 +182,7 @@ public class PreferencesServiceImpl implements PreferencesService {
             throw new WorkflowServiceErrorException("Preference Validation Error", errors);
         }
     }
-    
+
     public UserOptionsService getUserOptionService() {
         return (UserOptionsService) KEWServiceLocator.getService(
                 KEWServiceLocator.USER_OPTIONS_SRV);

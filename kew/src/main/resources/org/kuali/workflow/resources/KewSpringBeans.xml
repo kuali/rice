@@ -123,6 +123,9 @@
         <idref local="enWorkflowUtilityService" />
         <idref local="enWorkflowDocumentActionsService" />
         <idref local="enRemoveReplaceDocumentService"/>
+        <!-- it's important that this service remains non-transactionally proxied for various reasons
+        <idref local="enUserOptionsService"/>
+         -->
 			</list>
 		</property>
 	</bean>

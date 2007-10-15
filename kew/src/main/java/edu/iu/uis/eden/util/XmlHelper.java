@@ -68,6 +68,7 @@ import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.xml.ClassLoaderEntityResolver;
+import edu.iu.uis.eden.xml.XmlConstants;
 
 /**
  * Provides a set of utilities for XML-related operations.
@@ -608,5 +609,19 @@ public class XmlHelper {
             }
         }
         return wrapper;
+    }
+
+    public static String getChildElementText(org.w3c.dom.Element parent, String childElementName) {
+	NodeList childNodes = parent.getChildNodes();
+	for (int index = 0; index < childNodes.getLength(); index++) {
+	    org.w3c.dom.Node node = childNodes.item(index);
+	    if (Node.ELEMENT_NODE == node.getNodeType()) {
+		org.w3c.dom.Element element = (org.w3c.dom.Element)node;
+		if (XmlConstants.DOCUMENT_TYPE.equals(element.getNodeName())) {
+		    return element.getTextContent();
+		}
+	    }
+	}
+	return null;
     }
 }

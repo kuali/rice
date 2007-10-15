@@ -39,8 +39,10 @@ import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
+import edu.iu.uis.eden.user.UserUtils;
 import edu.iu.uis.eden.util.ClassLoaderUtils;
 import edu.iu.uis.eden.util.Utilities;
+import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * Various static utility methods for helping with Searcha.
@@ -168,7 +170,12 @@ public class DocSearchUtils {
 		}
 
     	if (matchingRegexExpression == null) {
-        	LOG.warn("formatDate(String,List) Date string given '" + date + "' is not valid according to Workflow defaults.  Returning null value.");
+            String errorMsg = "formatDate(String,List) Date string given '" + date + "' is not valid according to Workflow defaults.  Returning null value.";
+            if (StringUtils.isNotBlank(date)) {
+                LOG.warn(errorMsg); 
+            } else {
+                LOG.debug(errorMsg);
+            }
             return null;
     	}
     	String regexSplitExpression = (String) REGEX_EXPRESSION_MAP_TO_REGEX_SPLIT_EXPRESSION.get(matchingRegexExpression);
@@ -403,6 +410,14 @@ public class DocSearchUtils {
 //						savedKey = key.substring(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX.length());
 //					}
 					String value = searchableAttribute.substring(index + 1);
+					if (value.startsWith(CURRENT_USER_PREFIX)) {
+						String idType = value.substring(CURRENT_USER_PREFIX.length());
+						UserSession session = UserSession.getAuthenticatedUser();
+						String idValue = UserUtils.getIdValue(idType, session.getWorkflowUser());
+						if (!StringUtils.isBlank(idValue)) {
+							value = idValue;
+						}
+					}
 					SearchAttributeCriteriaComponent critComponent = (SearchAttributeCriteriaComponent) criteriaComponentsByKey.get(key);
                     if (critComponent == null) {
                         // here we potentially have a change to the searchable attributes dealing with naming or ranges... so we just ignore the values

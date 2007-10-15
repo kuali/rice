@@ -687,9 +687,9 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, Long workgroupId, String workflowId,
-            String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues) {
+            String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         return getRuleDAO().search(docTypeName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, roleName, delegateRule,
-                activeInd, extensionValues);
+                activeInd, extensionValues, workflowIdDirective);
     }
 
     public List search(String docTypeName, String ruleTemplateName, String ruleDescription, GroupId workgroupId, UserId userId, String roleName,
@@ -1059,6 +1059,9 @@ public class RuleServiceImpl implements RuleService {
 	}
 	for (Long ruleId : ruleIds) {
 	    RuleBaseValues existingRule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(ruleId);
+	    if (!shouldChangeRuleInvolvement(documentId, existingRule)) {
+		continue;
+	    }
 	    List<RuleResponsibility> finalResponsibilities = new ArrayList<RuleResponsibility>();
 	    RuleVersion ruleVersion = createNewRemoveReplaceVersion(existingRule, documentId);
 	    boolean modified = false;
@@ -1125,6 +1128,9 @@ public class RuleServiceImpl implements RuleService {
 	}
 	for (Long ruleId : ruleIds) {
 	    RuleBaseValues existingRule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(ruleId);
+	    if (!shouldChangeRuleInvolvement(documentId, existingRule)) {
+		continue;
+	    }
 	    RuleVersion ruleVersion = createNewRemoveReplaceVersion(existingRule, documentId);
 	    RuleBaseValues rule = ruleVersion.rule;
 	    boolean modified = false;
@@ -1170,6 +1176,24 @@ public class RuleServiceImpl implements RuleService {
 	    }
 	}
 
+    }
+
+    /**
+     * If a rule has been modified and is no longer current since the original request was made, we need to
+     * be sure to NOT update the rule.
+     */
+    protected boolean shouldChangeRuleInvolvement(Long documentId, RuleBaseValues rule) {
+	if (!rule.getCurrentInd()) {
+	    LOG.warn("Rule requested for rule involvement change by document " + documentId + " is no longer current.  Change will not be executed!  Rule id is: " + rule.getRuleBaseValuesId());
+	    return false;
+	}
+	Long lockingDocumentId = KEWServiceLocator.getRuleService().isLockedForRouting(rule.getRuleBaseValuesId());
+	if (lockingDocumentId != null) {
+	    LOG.warn("Rule requested for rule involvement change by document " + documentId + " is locked by document " + lockingDocumentId + " and cannot be modified.  " +
+		    "Change will not be executed!  Rule id is: " + rule.getRuleBaseValuesId());
+	    return false;
+	}
+	return true;
     }
 
     protected RuleDelegation getRuleDelegationForDelegateRule(RuleBaseValues rule) {

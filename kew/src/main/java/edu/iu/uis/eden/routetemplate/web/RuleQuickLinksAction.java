@@ -70,7 +70,7 @@ public class RuleQuickLinksAction extends WorkflowAction {
     public ActionForward addDelegationRule(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long ruleTemplateId = new Long(request.getParameter("ruleTemplate.ruleTemplateId"));
         String docTypeName = request.getParameter("docTypeFullName");
-        List rules = getRuleService().search(docTypeName, null, ruleTemplateId, "", null, null, "", Boolean.FALSE, Boolean.TRUE, new HashMap());
+        List rules = getRuleService().search(docTypeName, null, ruleTemplateId, "", null, null, "", Boolean.FALSE, Boolean.TRUE, new HashMap(), null);
         if (rules.size() == 1) {
             RuleBaseValues rule = (RuleBaseValues)rules.get(0);
             RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(ruleTemplateId);

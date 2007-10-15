@@ -149,6 +149,23 @@ public class BaseWorkgroupDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         return workgroupNames;
 	}
 
+	public Set<Long> findWorkgroupIdsForUser(String workflowId) {
+		Set<Long> workgroupIds = new HashSet<Long>();
+		Criteria crit = new Criteria();
+		crit.addEqualTo("workgroupMembers.workflowId", workflowId);
+		crit.addEqualTo("currentInd", Boolean.TRUE);
+		ReportQueryByCriteria query = QueryFactory.newReportQuery(BaseWorkgroup.class, crit);
+		query.setAttributes(new String[] { "workgroupId" });
+		Iterator iterator = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
+		while (iterator.hasNext()) {
+		    Object[] ids = (Object[])iterator.next();
+		    BigDecimal id = (BigDecimal)ids[0];
+		    workgroupIds.add(id.longValue());
+		}
+		return workgroupIds;
+	}
+
+
 	public BaseWorkgroup findByWorkgroupId(Long workgroupId) {
 		Criteria crit = new Criteria();
         crit.addEqualTo("workgroupId", workgroupId);

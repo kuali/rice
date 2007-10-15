@@ -25,6 +25,8 @@ if (!"yes".equals(answer.trim().toLowerCase())) {
 
 removeFile("${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME.toLowerCase()}-config.xml")
 removeFile("${System.getProperty('user.home')}/kuali/test/dev/${PROJECT_NAME.toLowerCase()}-test-config.xml")
+removeFile("${System.getProperty('user.home')}/kuali/main/dev/ricekeystore")
+removeFile("${System.getProperty('user.home')}/kuali/test/dev/ricekeystore")
 
 buildDir("${System.getProperty('user.home')}/kuali/main/dev/")
 buildDir("${System.getProperty('user.home')}/kuali/test/dev/")
@@ -59,6 +61,12 @@ ant.copy(todir:PROJECT_PATH + '/src/main/config/xml') {
 }
 ant.copy(todir:PROJECT_PATH + '/src/main/webapp') { 
     fileset(dir:RICE_DIR + '/kns/src/test/webapp', includes:'**/*', excludes:'CVS*,.cvs*') 
+}
+ant.copy(todir:"${System.getProperty('user.home')}/kuali/main/dev") { 
+    fileset(dir:RICE_DIR + '/security', includes:'ricekeystore', excludes:'CVS*,.cvs*') 
+}
+ant.copy(todir:"${System.getProperty('user.home')}/kuali/test/dev") { 
+    fileset(dir:RICE_DIR + '/security', includes:'ricekeystore', excludes:'CVS*,.cvs*') 
 }
 ant.delete(dir:PROJECT_PATH + '/src/main/resources/org')
 
@@ -217,9 +225,9 @@ def userhomeconfigtext() {
 	<param name="datasource.pool.minSize">0</param>
 	<param name="datasource.pool.maxSize">50</param>
 
-	<param name="keystore.alias">onestartsharedservices-devandtst</param>
-	<param name="keystore.location">/opt/sa_forms/java/dev/edu/iu/uis/security/en/onestartsharedservices-devandtst_keystore</param>
-	<param name="keystore.password">s1t0spss!xX-tst</param>
+	<param name="keystore.alias">rice</param>
+	<param name="keystore.location">''' + System.getProperty('user.home') + '''/kuali/main/dev/ricekeystore</param>
+	<param name="keystore.password">r1c3pw</param>
 
 	<param name="dev.mode">true</param>
 	<param name="message.persistence">false</param>
@@ -247,6 +255,33 @@ def userhomeconfigtext() {
 	<param name="encryption.key">7IC64w6ksLU</param>
 	<param name="kfsLocator.useAppContext">true</param>
 	<param name="production.environment.code">prd</param>
+
+    <!-- Ken stuffs... -->
+    <!-- stock notification system configuration properties -->
+
+    <!-- Quartz Jobs (MS = Milli Seconds) -->
+    <param name="notification.resolveMessageDeliveriesJob.startDelayMS">5000</param>
+    <param name="notification.resolveMessageDeliveriesJob.intervalMS">10000</param>
+
+    <param name="notification.processUndeliveredJob.startDelayMS">10000</param>
+    <param name="notification.processUndeliveredJob.intervalMS">10000</param>
+
+    <param name="notification.processAutoRemovalJob.startDelayMS">60000</param>
+    <param name="notification.processAutoRemovalJob.intervalMS">60000</param>
+
+    <param name="notification.quartz.autostartup">true</param>
+    <param name="notification.concurrent.jobs">true</param>
+
+    <param name="notification.basewebappurl">http://localhost:8080/kr-dev/ken</param>
+    
+    <param name="notification.ojb.platform">Oracle</param>
+    
+    <!-- Email Plugin Properties -->
+    <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
+    
+
+    <param name="css.files">kr/css/kuali.css</param>
+    <param name="javascript.files">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/documents.js,kr/scripts/my_common.js,kr/scripts/objectInfo.js</param>
 </config>'''	
 }
 
@@ -301,9 +336,9 @@ def userhometestconfigtext() {
 	<param name="datasource.pool.minSize">0</param>
 	<param name="datasource.pool.maxSize">50</param>
 
-	<param name="keystore.alias">onestartsharedservices-devandtst</param>
-	<param name="keystore.location">/opt/sa_forms/java/dev/edu/iu/uis/security/en/onestartsharedservices-devandtst_keystore</param>
-	<param name="keystore.password">s1t0spss!xX-tst</param>
+	<param name="keystore.alias">rice</param>
+	<param name="keystore.location">''' + System.getProperty('user.home') + '''/kuali/test/dev/ricekeystore</param>
+	<param name="keystore.password">r1c3pw</param>
 
 	<param name="dev.mode">true</param>
 	<param name="message.persistence">false</param>
@@ -331,6 +366,33 @@ def userhometestconfigtext() {
 	<param name="encryption.key">7IC64w6ksLU</param>
 	<param name="kfsLocator.useAppContext">true</param>
 	<param name="production.environment.code">prd</param>
+
+    <!-- Ken stuffs... -->
+    <!-- stock notification system configuration properties -->
+
+    <!-- Quartz Jobs (MS = Milli Seconds) -->
+    <param name="notification.resolveMessageDeliveriesJob.startDelayMS">5000</param>
+    <param name="notification.resolveMessageDeliveriesJob.intervalMS">10000</param>
+
+    <param name="notification.processUndeliveredJob.startDelayMS">10000</param>
+    <param name="notification.processUndeliveredJob.intervalMS">10000</param>
+
+    <param name="notification.processAutoRemovalJob.startDelayMS">60000</param>
+    <param name="notification.processAutoRemovalJob.intervalMS">60000</param>
+
+    <param name="notification.quartz.autostartup">true</param>
+    <param name="notification.concurrent.jobs">true</param>
+
+    <param name="notification.basewebappurl">http://localhost:8080/kr-dev/ken</param>
+    
+    <param name="notification.ojb.platform">Oracle</param>
+    
+    <!-- Email Plugin Properties -->
+    <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
+    
+
+    <param name="css.files">kr/css/kuali.css</param>
+    <param name="javascript.files">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/documents.js,kr/scripts/my_common.js,kr/scripts/objectInfo.js</param>
 </config>'''	
 }
 
@@ -590,6 +652,8 @@ with a new project:
 It will also create or replace the following files in USER_HOME:
     1) ${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME.toLowerCase()}-config.xml
     2) ${System.getProperty('user.home')}/kuali/test/dev/${PROJECT_NAME.toLowerCase()}-test-config.xml
+    3) ${System.getProperty('user.home')}/kuali/main/dev/ricekeystore
+    4) ${System.getProperty('user.home')}/kuali/test/dev/ricekeystore
 
 If this is not what you want, please supply more information:
     usage: groovy createproject -name PROJECT_NAME [-pdir PROJECT_DIR] [-rdir RICE_DIR]

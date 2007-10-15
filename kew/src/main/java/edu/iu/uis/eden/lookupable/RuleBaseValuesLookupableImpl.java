@@ -76,6 +76,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 	private static final String RULE_TEMPLATE_FIELD_LABEL = "Rule Template";
 	private static final String WORKGROUP_FIELD_LABEL = "Workgroup Reviewer";
 	private static final String PERSON_FIELD_LABEL = "Person Reviewer";
+	private static final String PERSON_REVIEWER_TYPE_FIELD_LABEL = "Person Reviewer on Rule is";
 	private static final String ROLE_FIELD_LABEL = "Role";
 	private static final String ACTIVE_IND_FIELD_LABEL = "Active Indicator";
 	private static final String DELEGATE_RULE_FIELD_LABEL = "Delegate Rule";
@@ -86,6 +87,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 	private static final String RULE_TEMPLATE_FIELD_HELP = "";
 	private static final String WORKGROUP_FIELD_HELP = "";
 	private static final String PERSON_FIELD_HELP = "";
+	private static final String PERSON_REVIEWER_TYPE_FIELD_HELP = "";
 	private static final String ROLE_FIELD_HELP = "";
 	private static final String ACTIVE_IND_FIELD_HELP = "";
 	private static final String DELEGATE_RULE_FIELD_HELP = "";
@@ -96,6 +98,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 	private static final String RULE_TEMPLATE_PROPERTY_NAME = "ruleTemplateName";
 	private static final String WORKGROUP_PROPERTY_NAME = "workgroupName";
 	private static final String PERSON_PROPERTY_NAME = "networkId";
+	private static final String PERSON_REVIEWER_TYPE_NAME = "userDirective";
 	private static final String ROLE_PROPERTY_NAME = "roleName";
 	private static final String DELEGATE_RULE_PROPERTY_NAME = "delegateRuleSearch";
 	private static final String RULE_DESC_PROPERTY_NAME = "ruleDescription";
@@ -146,6 +149,15 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 		fields.add(new Field("", "", Field.QUICKFINDER, false, "", "", null, PERSON_LOOKUPABLE));
 		rows.add(new Row(fields));
 
+		List options = new ArrayList();
+	        options.add(new KeyLabelPair("user", "User"));
+	        options.add(new KeyLabelPair("workgroup", "Workgroup Member"));
+	        options.add(new KeyLabelPair("both", "Either"));
+
+	        fields = new ArrayList();
+	        fields.add(new Field(PERSON_REVIEWER_TYPE_FIELD_LABEL, PERSON_REVIEWER_TYPE_FIELD_HELP, Field.RADIO, false, PERSON_REVIEWER_TYPE_NAME, "user", options, null));
+	        rows.add(new Row(fields));
+
 		fields = new ArrayList();
 		fields.add(new Field(ROLE_FIELD_LABEL, ROLE_FIELD_HELP, Field.TEXT, true, ROLE_PROPERTY_NAME, "", null, ROLE_LOOKUPABLE));
 		fields.add(new Field("", "", Field.QUICKFINDER, false, "", "", null, ROLE_LOOKUPABLE));
@@ -156,7 +168,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 		fields.add(new Field("", "", Field.HIDDEN, false, EdenConstants.DELEGATION_WIZARD, "", null, null));
 		rows.add(new Row(fields));
 
-		List options = new ArrayList();
+		options = new ArrayList();
 		options.add(new KeyLabelPair("true", "Active"));
 		options.add(new KeyLabelPair("false", "Inactive"));
 		options.add(new KeyLabelPair("ALL", "Show All"));
@@ -342,6 +354,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 		String workgroupIdParam = (String) fieldValues.get(WORKGROUP_ID_PROPERTY_NAME);
 		String workgroupNameParam = (String) fieldValues.get(WORKGROUP_PROPERTY_NAME);
 		String networkIdParam = (String) fieldValues.get(PERSON_PROPERTY_NAME);
+		String userDirectiveParam = (String) fieldValues.get(PERSON_REVIEWER_TYPE_NAME);
 		String roleNameParam = (String) fieldValues.get(ROLE_PROPERTY_NAME);
 		String activeParam = (String) fieldValues.get(ACTIVE_IND_PROPERTY_NAME);
 		String delegateRuleParam = (String) fieldValues.get(DELEGATE_RULE_PROPERTY_NAME);
@@ -479,7 +492,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 			throw new WorkflowServiceErrorException("RuleBaseValues validation errors", errors);
 		}
 
-		Iterator rules = getRuleService().search(docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, roleNameParam, isDelegateRule, isActive, attributes).iterator();
+		Iterator rules = getRuleService().search(docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, roleNameParam, isDelegateRule, isActive, attributes, userDirectiveParam).iterator();
 		List displayList = new ArrayList();
 
 		while (rules.hasNext()) {

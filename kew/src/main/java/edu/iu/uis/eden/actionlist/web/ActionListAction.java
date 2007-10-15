@@ -41,6 +41,7 @@ import org.apache.struts.action.ActionMessages;
 import org.displaytag.pagination.PaginatedList;
 import org.displaytag.properties.SortOrderEnum;
 import org.displaytag.util.LookupUtil;
+import org.kuali.rice.core.Core;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -563,6 +564,7 @@ public class ActionListAction extends WorkflowAction {
         }
         actionListForm.setRouteLogPopup(routeLogPopup.trim());
         actionListForm.setDocumentPopup(documentPopup.trim());
+        request.setAttribute("noRefresh", new Boolean(Core.getCurrentContextConfig().getProperty(EdenConstants.ACTION_LIST_NO_REFRESH)));
         LOG.info("end establishRequiredState ActionListAction");
         return null;
     }

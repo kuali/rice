@@ -77,16 +77,16 @@ public class MessageQueueAction extends KSBAction {
 	messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("routequeue.RouteQueueService.saved"));
 	saveMessages(request, messages);
 
-	routeQueueForm.setMessageId(null);
-	routeQueueForm.setMessageQueueFromDatabase(null);
-	routeQueueForm.setMessageQueueFromForm(null);
-	routeQueueForm.setShowEdit("yes");
-	routeQueueForm.setMethodToCall("");
-	establishRequiredState(request, form);
-	routeQueueForm.setMessageId(routeQueueId);
-	routeQueueForm.setMessageQueueFromForm(routeQueueForm.getMessageQueueFromDatabase());
-	routeQueueForm.setNewQueueDate(routeQueueForm.getExistingQueueDate());
-	routeQueueForm.getMessageQueueFromForm().setMethodCall(unwrapPayload(routeQueueForm.getMessageQueueFromForm()));
+//	routeQueueForm.setMessageId(null);
+////	routeQueueForm.setMessageQueueFromDatabase(null);
+////	routeQueueForm.setMessageQueueFromForm(null);
+//	routeQueueForm.setShowEdit("yes");
+//	routeQueueForm.setMethodToCall("");
+//	establishRequiredState(request, form);
+//	routeQueueForm.setMessageId(routeQueueId);
+////	routeQueueForm.setMessageQueueFromForm(routeQueueForm.getMessageQueueFromDatabase());
+//	routeQueueForm.setNewQueueDate(routeQueueForm.getExistingQueueDate());
+//	routeQueueForm.getMessageQueueFromForm().setMethodCall(unwrapPayload(routeQueueForm.getMessageQueueFromForm()));
 	return mapping.findForward("report");
     }
 
@@ -314,6 +314,7 @@ public class MessageQueueAction extends KSBAction {
          * Called by the super's Execute method on every request.
          */
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
+	request.setAttribute("rice_constant", new RiceConstants());
 	MessageQueueForm routeQueueForm = (MessageQueueForm) form;
 	routeQueueForm.setMyIpAddress(RiceUtilities.getIpNumber());
 	routeQueueForm.setMyMessageEntity(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGE_ENTITY));
@@ -422,6 +423,9 @@ public class MessageQueueAction extends KSBAction {
          * @return Returns the payload if one is present and it can be deserialized, otherwise returns null.
          */
     protected AsynchronousCall unwrapPayload(PersistedMessage message) {
+	if (message == null || message.getPayload() == null) {
+	    return null;
+	}
 	String encodedPayload = message.getPayload().getPayload();
 	if (StringUtils.isBlank(encodedPayload)) {
 	    return null;

@@ -41,96 +41,108 @@ import edu.iu.uis.eden.util.Utilities;
  */
 public class SaveActionEvent extends ActionTakenEvent {
 
-  private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SaveActionEvent.class);
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SaveActionEvent.class);
 
-  private static final String RESPONSIBILITY_DESCRIPTION = "Initiator needs to complete document.";
+    private static final String RESPONSIBILITY_DESCRIPTION = "Initiator needs to complete document.";
 
-  public SaveActionEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-    super(routeHeader, user);
-    setActionTakenCode(EdenConstants.ACTION_TAKEN_SAVED_CD);
-  }
-
-  public SaveActionEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
-      super(routeHeader, user, annotation);
-      setActionTakenCode(EdenConstants.ACTION_TAKEN_SAVED_CD);
-  }
-
-  /* (non-Javadoc)
-   * @see edu.iu.uis.eden.actions.ActionTakenEvent#requireInitiatorCheck()
-   */
-  @Override
-  protected boolean requireInitiatorCheck() {
-      return routeHeader.getDocumentType().getInitiatorMustSavePolicy().getPolicyValue().booleanValue();
-  }
-
-  /* (non-Javadoc)
-   * @see edu.iu.uis.eden.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
-   */
-  @Override
-  public String validateActionRules() throws EdenUserNotFoundException {
-      String superError = super.validateActionTakenRules();
-      if (!Utilities.isEmpty(superError)) {
-          return superError;
-      }
-      if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
-          return "Document is not in a state to be approved";
-      }
-      return "";
-  }
-
-  public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
-    MDC.put("docId", getRouteHeader().getRouteHeaderId());
-    checkLocking();
-    updateSearchableAttributesIfPossible();
-
-    if (annotation == null) {
-      annotation = "";
+    public SaveActionEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
+	super(routeHeader, user);
+	setActionTakenCode(EdenConstants.ACTION_TAKEN_SAVED_CD);
     }
 
-    LOG.debug("Checking to see if the action is legal");
-    String errorMessage = validateActionRules();
-    if (!Utilities.isEmpty(errorMessage)) {
-        throw new InvalidActionTakenException(errorMessage);
+    public SaveActionEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
+	super(routeHeader, user, annotation);
+	setActionTakenCode(EdenConstants.ACTION_TAKEN_SAVED_CD);
     }
 
-//    if (getRouteHeader().isValidActionToTake(getActionTakenCode())) {
-      if (getRouteHeader().isStateInitiated()) {
-        LOG.debug("Record the save action");
-        saveActionTaken();
-        getRouteHeader().getActionRequests().add(generateSaveRequest());
-        notifyActionTaken(this.actionTaken);
-        LOG.debug("Marking document saved");
-        try {
-          String oldStatus = getRouteHeader().getDocRouteStatus();
-          getRouteHeader().markDocumentSaved();
-          String newStatus = getRouteHeader().getDocRouteStatus();
-          notifyStatusChange(newStatus, oldStatus);
-          getRouteHeaderService().saveRouteHeader(routeHeader);
-        } catch (WorkflowException ex) {
-          LOG.warn(ex, ex);
-          throw new InvalidActionTakenException(ex.getMessage());
-        }
-      }
-//    } else {
-//      LOG.warn("Document not in state to be saved.");
-//      throw new InvalidActionTakenException("Document is not in a state to be saved");
-//    }
-  }
+    /* (non-Javadoc)
+     * @see edu.iu.uis.eden.actions.ActionTakenEvent#requireInitiatorCheck()
+     */
+    @Override
+    protected boolean requireInitiatorCheck() {
+	return routeHeader.getDocumentType().getInitiatorMustSavePolicy().getPolicyValue().booleanValue();
+    }
 
-  protected ActionRequestValue generateSaveRequest() throws EdenUserNotFoundException {
-	  RouteNodeInstance intialNode = (RouteNodeInstance) KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(routeHeaderId).get(0);
-	  ActionRequestFactory arFactory = new ActionRequestFactory(routeHeader, intialNode);
-	  ActionRequestValue saveRequest =
-		  arFactory.createActionRequest(EdenConstants.ACTION_REQUEST_COMPLETE_REQ,
-			  new Integer(0),
-			  getUser(),
-			  RESPONSIBILITY_DESCRIPTION,
-			  EdenConstants.SAVED_REQUEST_RESPONSIBILITY_ID,
-			  Boolean.TRUE,
-			  annotation);
-//      this.getActionRequestService().saveActionRequest(saveRequest);
-      this.getActionRequestService().activateRequest(saveRequest);
-      return saveRequest;
-  }
+    /* (non-Javadoc)
+     * @see edu.iu.uis.eden.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
+     */
+    @Override
+    public String validateActionRules() throws EdenUserNotFoundException {
+	return validateActionRulesCustom(true);
+    }
+
+    private String validateActionRulesCustom(boolean checkIfActionIsValid) {
+	String superError = super.validateActionTakenRules();
+	if (!Utilities.isEmpty(superError)) {
+	    return superError;
+	}
+	if (checkIfActionIsValid && (!getRouteHeader().isValidActionToTake(getActionPerformedCode()))) {
+	    return "Document is not in a state to be saved";
+	}
+	return "";
+    }
+
+    public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+	MDC.put("docId", getRouteHeader().getRouteHeaderId());
+	checkLocking();
+	LOG.debug("Checking to see if the action is legal");
+	/* Code below for variable 'checkIfActionIsValid' is used to identify when the 
+	 * DocumentRouteHeaderValue 'legal actions' should be checked for the current
+	 * document.  The 'legal actions' for a document that is in status ENROUTE or 
+	 * EXCEPTION will currently say that a Save action is not valid to be performed
+	 * however we still want to allow the Save action to occur if called for backward
+	 * compatibility issues.
+	 */
+	boolean checkIfActionIsValid = true;
+	if (getRouteHeader().isEnroute() || getRouteHeader().isInException()) {
+	    // if document is enroute or exception... don't check if the action is valid... we will assume it is valid
+	    checkIfActionIsValid = false;
+	}
+	String errorMessage = validateActionRulesCustom(checkIfActionIsValid);
+	if (!Utilities.isEmpty(errorMessage)) {
+	    throw new InvalidActionTakenException(errorMessage);
+	}
+
+	if (annotation == null) {
+	    annotation = "";
+	}
+
+	updateSearchableAttributesIfPossible();
+
+	//    if (getRouteHeader().isValidActionToTake(getActionTakenCode())) {
+	if (getRouteHeader().isStateInitiated()) {
+	    LOG.debug("Record the save action");
+	    saveActionTaken();
+	    getRouteHeader().getActionRequests().add(generateSaveRequest());
+	    notifyActionTaken(this.actionTaken);
+	    LOG.debug("Marking document saved");
+	    try {
+		String oldStatus = getRouteHeader().getDocRouteStatus();
+		getRouteHeader().markDocumentSaved();
+		String newStatus = getRouteHeader().getDocRouteStatus();
+		notifyStatusChange(newStatus, oldStatus);
+		getRouteHeaderService().saveRouteHeader(routeHeader);
+	    } catch (WorkflowException ex) {
+		LOG.warn(ex, ex);
+		throw new InvalidActionTakenException(ex.getMessage());
+	    }
+	}
+	//    } else {
+	//      LOG.warn("Document not in state to be saved.");
+	//      throw new InvalidActionTakenException("Document is not in a state to be saved");
+	//    }
+    }
+
+    protected ActionRequestValue generateSaveRequest() throws EdenUserNotFoundException {
+	RouteNodeInstance intialNode = (RouteNodeInstance) KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(
+		routeHeaderId).get(0);
+	ActionRequestFactory arFactory = new ActionRequestFactory(routeHeader, intialNode);
+	ActionRequestValue saveRequest = arFactory.createActionRequest(EdenConstants.ACTION_REQUEST_COMPLETE_REQ,
+		new Integer(0), getUser(), RESPONSIBILITY_DESCRIPTION, EdenConstants.SAVED_REQUEST_RESPONSIBILITY_ID,
+		Boolean.TRUE, annotation);
+	//      this.getActionRequestService().saveActionRequest(saveRequest);
+	this.getActionRequestService().activateRequest(saveRequest);
+	return saveRequest;
+    }
 
 }

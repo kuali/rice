@@ -20,29 +20,14 @@
 --/
 --insert into FS_PARM_T values ('CoreMaintenanceEDoc','Kuali.Supervisor.Workgroup','2409BD6AB4CC800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can perform almost any function within Kuali.','N', 'MC')
 --/
+
 insert into SH_PARM_TYP_T values ('CONFG', 3, 0,'Config',1)
 /
 insert into SH_PARM_NMSPC_T values ('KR-NS', 3, 0, 'Kuali Rice', 1)
 /
-INSERT INTO sh_parm_t
-("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
-VALUES
-('KR-NS','Lookup','RESULTS_DEFAULT_MAX_COLUMN_LENGTH','CONFG','70','If a
-maxLength attribute has not been set on a lookup result field in the
-data dictionary, then the result column''s max length will be the value
-of this parameter. Set this parameter to 0 for an unlimited default
-length or a positive value (i.e. greater than 0) for a finite max
-length.','A','KUALI_FMSOPS')
+INSERT INTO sh_parm_t ("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM") VALUES ('KR-NS','Lookup','RESULTS_DEFAULT_MAX_COLUMN_LENGTH','CONFG','70','If a maxLength attribute has not been set on a lookup result field in the data dictionary, then the result column''s max length will be the value of this parameter. Set this parameter to 0 for an unlimited default length or a positive value (i.e. greater than 0) for a finite max length.','A','KUALI_FMSOPS')
 /
-INSERT INTO sh_parm_t
-("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
-VALUES
-('KR-NS','Lookup','RESULTS_LIMIT','CONFG','200','If a
-maxLength attribute has not been set on a lookup result field in the
-data dictionary, then the result column''s max length will be the value
-of this parameter. Set this parameter to 0 for an unlimited default
-length or a positive value (i.e. greater than 0) for a finite max
-length.','A','KUALI_FMSOPS')
+INSERT INTO sh_parm_t ("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM") VALUES ('KR-NS','Lookup','RESULTS_LIMIT','CONFG','70','If a maxLength attribute has not been set on a lookup result field in the data dictionary, then the result column''s max length will be the value of this parameter. Set this parameter to 0 for an unlimited default length or a positive value (i.e. greater than 0) for a finite max length.','A','KUALI_FMSOPS')
 /
 insert into EN_APPL_CNST_T values ('Feature.CheckRouteLogAuthentication.CheckFuture', 'true', 1)
 /
@@ -141,15 +126,12 @@ element which is a String...about as simple as one can get -->
   targetNamespace="ns:notification/ContentTypeSimple"
   attributeFormDefault="unqualified" 
     elementFormDefault="qualified">
-
   <annotation>
     <documentation xml:lang="en">
       Simple Content Schema
     </documentation>
   </annotation>
-
   <import namespace="ns:notification/common" schemaLocation="resource:notification/notification-common" />
-  
   <!--  The content element is just a String -->
   <element name="content">
     <complexType>
@@ -167,15 +149,12 @@ element which is a String...about as simple as one can get -->
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
    xsi:schemaLocation="ns:notification/ContentTypeSimple resource:notification/ContentTypeSimple" 
    exclude-result-prefixes="n xsi">
-
    <xsl:output method="html" omit-xml-declaration="yes" />
-
    <xsl:template match="/n:content/n:message">
       <strong>
           <xsl:value-of select="." disable-output-escaping="yes"/>
       </strong>
-   </xsl:template>   
-
+   </xsl:template>
 </xsl:stylesheet>')/
 
 INSERT INTO NOTIFICATION_CONTENT_TYPES
@@ -189,9 +168,7 @@ to be accepted into the system. -->
   <annotation>
     <documentation xml:lang="en">Content Event Schema</documentation>
   </annotation>
-
   <import namespace="ns:notification/common" schemaLocation="resource:notification/notification-common" />
-  
   <!-- The content element describes the content of the notification.  It
   contains a message (a simple String) and a message element -->
   <element name="content">
@@ -202,7 +179,6 @@ to be accepted into the system. -->
       </sequence>
     </complexType>
   </element>
-
   <!-- This is the event element.  It describes a simple event type containing a
   summary, description, location, and start/stop times -->
   <element name="event">
@@ -227,24 +203,20 @@ to be accepted into the system. -->
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="ns:notification/ContentTypeEvent resource:notification/ContentTypeEvent" 
     exclude-result-prefixes="n xsi">
-
     <!-- output an html fragment -->
     <xsl:output method="html" indent="yes" />
-
     <!-- match everything -->
     <xsl:template match="/n:content" >
         <table class="bord-all">
             <xsl:apply-templates />
         </table>
     </xsl:template>
-   
     <!--  match message element in the default namespace and render as strong -->
     <xsl:template match="n:message" >
         <caption>
             <strong><xsl:value-of select="." disable-output-escaping="yes"/></strong>
         </caption>
     </xsl:template>
-   
     <!-- match on event in the default namespace and display all children -->
     <xsl:template match="n:event">
         <tr>

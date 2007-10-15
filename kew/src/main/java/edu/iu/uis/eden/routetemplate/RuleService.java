@@ -58,7 +58,7 @@ public interface RuleService extends XmlLoader, XmlExporter {
     public void validate2(RuleBaseValues ruleBaseValues, RuleDelegation ruleDelegation, List errors) throws Exception;
     public void delete(Long ruleBaseValuesId);
     public RuleBaseValues findRuleBaseValuesById(Long ruleBaseValuesId);
-    public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, Long workgroupId, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues);
+    public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, Long workgroupId, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective);
     public List search(String docTypeName, String ruleTemplateName, String ruleDescription, GroupId workgroupId, UserId userId, String roleName, Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) throws EdenUserNotFoundException;
     public RuleResponsibility findRuleResponsibility(Long responsibilityId);
     public void deleteRuleResponsibilityById(Long ruleResponsibilityId);

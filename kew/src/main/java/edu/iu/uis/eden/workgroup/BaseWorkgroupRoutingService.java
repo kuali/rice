@@ -41,6 +41,7 @@ import edu.iu.uis.eden.export.ExportFormat;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routeheader.Routable;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
+import edu.iu.uis.eden.routetemplate.RuleBaseValues;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.UserId;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -186,6 +187,9 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
 	}
 	for (Long workgroupId : workgroupIds) {
 	    BaseWorkgroup existingWorkgroup = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
+	    if (!shouldChangeWorkgroupInvolvement(documentId, existingWorkgroup)) {
+		continue;
+	    }
 	    BaseWorkgroup workgroup = createNewRemoveReplaceVersion(existingWorkgroup, documentId);
 	    List<BaseWorkgroupMember> finalMembers = new ArrayList<BaseWorkgroupMember>();
 	    for (BaseWorkgroupMember member : workgroup.getWorkgroupMembers()) {
@@ -241,6 +245,9 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
 	}
 	for (Long workgroupId : workgroupIds) {
 	    BaseWorkgroup existingWorkgroup = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
+	    if (!shouldChangeWorkgroupInvolvement(documentId, existingWorkgroup)) {
+		continue;
+	    }
 	    BaseWorkgroup workgroup = createNewRemoveReplaceVersion(existingWorkgroup, documentId);
 	    for (BaseWorkgroupMember member : workgroup.getWorkgroupMembers()) {
 		if (member.getMemberType().equals(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
@@ -273,6 +280,26 @@ public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
 	}
 
     }
+
+    /**
+     * If a workgroup has been modified and is no longer current since the original request was made, we need to
+     * be sure to NOT update the workgroup.
+     */
+    protected boolean shouldChangeWorkgroupInvolvement(Long documentId, BaseWorkgroup workgroup) throws WorkflowException {
+	if (!workgroup.getCurrentInd()) {
+	    LOG.warn("Workgroup requested for workgroup involvement change by document " + documentId + " is no longer current.  " +
+		    "Change will not be executed!  Workgroup id is: " + workgroup.getWorkgroupId() + " and version number is " + workgroup.getVersionNumber());
+	    return false;
+	}
+	Long lockingDocumentId = KEWServiceLocator.getWorkgroupRoutingService().getLockingDocumentId(workgroup.getWorkflowGroupId());
+	if (lockingDocumentId != null) {
+	    LOG.warn("Workgroup requested for workgroup involvement change by document " + documentId + " is locked by document " + lockingDocumentId + " and cannot be modified.  " +
+		    "Change will not be executed!  Workgroup id is: " + workgroup.getWorkgroupId() + " and version number is " + workgroup.getVersionNumber());
+	    return false;
+	}
+	return true;
+    }
+
 
     protected BaseWorkgroup createNewRemoveReplaceVersion(BaseWorkgroup workgroup, Long documentId) throws EdenUserNotFoundException {
 	BaseWorkgroup copy = (BaseWorkgroup)KEWServiceLocator.getWorkgroupService().copy(workgroup);

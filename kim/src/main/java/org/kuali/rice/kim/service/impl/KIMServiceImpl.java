@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupAttribute;
+import org.kuali.rice.kim.bo.Namespace;
 import org.kuali.rice.kim.bo.Permission;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
@@ -30,30 +32,48 @@ import org.kuali.rice.kim.service.KIMService;
  * component is developed.
  * 
  * @author Aaron Godert (agodert at cornell dot edu)
+ * @author Phillip Berres (pberres at usc dot edu)
  */
 public class KIMServiceImpl implements KIMService {
-    public List<Person> getPersons(Role role)
-    {
-	return null;
+
+    public List<Person> getPersons() {
+	// TODO pberres - THIS METHOD NEEDS JAVADOCS
+	return new ArrayList<Person>();
     }
-    public List<Role> getRoles()
-    {
-	return null;
+
+    public List<String> getPersonUsernames() {
+	// TODO pberres - THIS METHOD NEEDS JAVADOCS
+	return new ArrayList<String>();
     }
-    public List<RoleAttribute> getQualifiedRoles(Person person, Role role)
-    {
-	return null;
+
+    public List<String> getGroupNames() {
+	// TODO pberres - THIS METHOD NEEDS JAVADOCS
+	return new ArrayList<String>();
     }
-    public List<Permission> getPermissions(Role role)
-    {
-	return null;
+
+    public List<Group> getGroups() {
+	// TODO pberres - THIS METHOD NEEDS JAVADOCS
+	return new ArrayList<Group>();
     }
-    public List<Group> getGroups(Role role)
-    {
-	return null;
+
+    public List<String> getNamespaceNames() {
+	// TODO pberres - THIS METHOD NEEDS JAVADOCS
+	return new ArrayList<String>();
     }
-    public List<GroupAttribute> getQualifiedGroups(Person person, Group role)
-    {
-	return null;
-    }   
+
+    public List<Namespace> getNamespaces() {
+	// TODO pberres - THIS METHOD NEEDS JAVADOCS
+	return new ArrayList<Namespace>();
+    }
+
+    public List<String> getRoleNames() {
+	// TODO pberres - THIS METHOD NEEDS JAVADOCS
+	return new ArrayList<String>();
+    }
+
+    public List<Role> getRoles() {
+	// TODO pberres - THIS METHOD NEEDS JAVADOCS
+	return new ArrayList<Role>();
+    }
+
 }

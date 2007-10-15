@@ -45,6 +45,8 @@ insert into FP_DOC_TYPE_T values ('TRFO', '1A6FEB250342607EE043814FD881607E', 1,
 ;
 insert into FP_DOC_TYPE_T values ('TRD2', '1A6FEB250342607EE043814FD889607E', 1, 'TR',	'TRAV D2', 'N', 'Y', 'N', 0, 'N', 'N')
 ;
+insert into FP_DOC_TYPE_T values ('TRVA', '1A5FEB250342607EE043814FD889607E', 1, 'TR',	'TRAV MAINT', 'N', 'Y', 'N', 0, 'N', 'N')
+;
 --INSERT INTO FS_PARM_SEC_T VALUES('SYSTEM', '1', 0, 'WorkflowAdmin', 'desc')
 --;
 --INSERT INTO FS_PARM_SEC_T VALUES('CoreMaintenanceEDoc', '2', 0, 'WorkflowAdmin', 'desc')
@@ -67,26 +69,6 @@ insert into FP_DOC_TYPE_T values ('TRD2', '1A6FEB250342607EE043814FD889607E', 1,
 --;
 --insert into FS_PARM_T values ('CoreMaintenanceEDoc','Kuali.Supervisor.Workgroup','2409BD6AB4CC800EE043814FD881800E',1,'WorkflowAdmin','Workgroup which can perform almost any function within Kuali.','N', 'KR')
 --;
-insert into SH_PARM_TYP_T values ('CONFG', 3, 0,'Config',1);
-insert into SH_PARM_NMSPC_T values ('KR-NS', 3, 0, 'Kuali Rice', 1);
-INSERT INTO sh_parm_t
-("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
-VALUES
-('KR-NS','Lookup','RESULTS_DEFAULT_MAX_COLUMN_LENGTH','CONFG','70','If a
-maxLength attribute has not been set on a lookup result field in the
-data dictionary, then the result column''s max length will be the value
-of this parameter. Set this parameter to 0 for an unlimited default
-length or a positive value (i.e. greater than 0) for a finite max
-length.','A','KUALI_FMSOPS');
-INSERT INTO sh_parm_t
-("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
-VALUES
-('KR-NS','Lookup','RESULTS_LIMIT','CONFG','200','If a
-maxLength attribute has not been set on a lookup result field in the
-data dictionary, then the result column''s max length will be the value
-of this parameter. Set this parameter to 0 for an unlimited default
-length or a positive value (i.e. greater than 0) for a finite max
-length.','A','KUALI_FMSOPS');
 INSERT INTO kr_qrtz_locks values('TRIGGER_ACCESS')
 ;
 INSERT INTO kr_qrtz_locks values('JOB_ACCESS')
@@ -100,4 +82,12 @@ INSERT INTO kr_qrtz_locks values('MISFIRE_ACCESS')
 INSERT INTO KIM_NAMESPACES_T (ID, NAME, DESCRIPTION) VALUES (1, 'KIM', 'This record represents the actual KIM system and must always be loaded by default in order for the system to work properly.') 
 ;
 INSERT INTO KIM_PERSONS_T (ID, USERNAME, PASSWORD) VALUES (1, 'admin', 'admin')
+;
+insert into SH_PARM_TYP_T values ('CONFG', 3, 0,'Config',1)
+;
+insert into SH_PARM_NMSPC_T values ('KR-NS', 3, 0, 'Kuali Rice', 1)
+;
+INSERT INTO sh_parm_t ("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM") VALUES ('KR-NS','Lookup','RESULTS_DEFAULT_MAX_COLUMN_LENGTH','CONFG','70','If a maxLength attribute has not been set on a lookup result field in the data dictionary, then the result column''s max length will be the value of this parameter. Set this parameter to 0 for an unlimited default length or a positive value (i.e. greater than 0) for a finite max length.','A','KUALI_FMSOPS')
+;
+INSERT INTO sh_parm_t ("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM") VALUES ('KR-NS','Lookup','RESULTS_LIMIT','CONFG','70','If a maxLength attribute has not been set on a lookup result field in the data dictionary, then the result column''s max length will be the value of this parameter. Set this parameter to 0 for an unlimited default length or a positive value (i.e. greater than 0) for a finite max length.','A','KUALI_FMSOPS')
 ;

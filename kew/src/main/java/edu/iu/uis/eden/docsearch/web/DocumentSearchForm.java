@@ -200,6 +200,12 @@ public class DocumentSearchForm extends ActionForm {
 		if (docType == null) {
 			return;
 		}
+		if (!StringUtils.isBlank(getSearchableAttributes())) {
+			List<SearchAttributeCriteriaComponent> components = DocSearchUtils.buildSearchableAttributesFromString(getSearchableAttributes(), docType.getName());
+			for (SearchAttributeCriteriaComponent component : components) {
+				criteria.addSearchableAttribute(component);
+			}
+		}
 		if (!propertyFields.isEmpty()) {
 			Map criteriaComponentsByFormKey = new HashMap();
 			for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
@@ -218,12 +224,6 @@ public class DocumentSearchForm extends ActionForm {
                         sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
                         criteriaComponentsByFormKey.put(field.getPropertyName(), sacc);
 					}
-				}
-			}
-			if (!StringUtils.isBlank(getSearchableAttributes())) {
-				List<SearchAttributeCriteriaComponent> components = DocSearchUtils.buildSearchableAttributesFromString(getSearchableAttributes(), docType.getName());
-				for (SearchAttributeCriteriaComponent component : components) {
-					criteria.addSearchableAttribute(component);
 				}
 			}
 			for (Iterator iterator = propertyFields.iterator(); iterator.hasNext();) {

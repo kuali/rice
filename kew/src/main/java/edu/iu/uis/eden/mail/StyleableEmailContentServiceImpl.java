@@ -39,6 +39,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -175,8 +176,9 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         if (style == null) {
             LOG.warn("Could not find specified style, " + styleName + ", using default");
             try {
-                style = TransformerFactory.newInstance().newTemplates(new StreamSource(getClass().getResourceAsStream(DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC)));
-            } catch (TransformerConfigurationException tce) {
+        	
+                style = TransformerFactory.newInstance().newTemplates(new StreamSource(new DefaultResourceLoader().getResource("classpath:edu/iu/uis/eden/mail/" + DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC).getInputStream()));
+            } catch (Exception tce) {
                 String message = "Error obtaining default style from resource: " + DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC; 
                 LOG.error(message, tce);
                 throw new WorkflowRuntimeException("Error obtaining style '" + styleName + "'", tce);

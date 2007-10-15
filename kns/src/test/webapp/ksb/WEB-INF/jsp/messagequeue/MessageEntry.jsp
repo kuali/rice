@@ -5,7 +5,7 @@
 <%@ taglib uri="../../tld/fmt.tld" prefix="fmt" %>
 <%@ taglib uri="../../tld/displaytag.tld" prefix="display-el" %>
 
-<c:set var="Constants" value="${org.kuali.rice.RiceConstants}"/>
+
 <html>
   <head>
     <title>Message Entry</title>
@@ -152,9 +152,9 @@
 				  		    			<c:when test="${inEditMode}">
 													<html-el:select property="messageQueueFromForm.queueStatus">
 														<html-el:option value=""></html-el:option>
-														<html-el:option value="${Constants.ROUTE_QUEUE_QUEUED}"><c:out value="${Constants.ROUTE_QUEUE_QUEUED_LABEL}" /></html-el:option>
-														<html-el:option value="${Constants.ROUTE_QUEUE_ROUTING}"><c:out value="${Constants.ROUTE_QUEUE_ROUTING_LABEL}" /></html-el:option>
-														<html-el:option value="${Constants.ROUTE_QUEUE_EXCEPTION}"><c:out value="${Constants.ROUTE_QUEUE_EXCEPTION_LABEL}" /></html-el:option>
+														<html-el:option value="${rice_constant.ROUTE_QUEUE_QUEUED}"><c:out value="${rice_constant.ROUTE_QUEUE_QUEUED_LABEL}" /></html-el:option>
+														<html-el:option value="${rice_constant.ROUTE_QUEUE_ROUTING}"><c:out value="${rice_constant.ROUTE_QUEUE_ROUTING_LABEL}" /></html-el:option>
+														<html-el:option value="${rice_constant.ROUTE_QUEUE_EXCEPTION}"><c:out value="${rice_constant.ROUTE_QUEUE_EXCEPTION_LABEL}" /></html-el:option>
 													</html-el:select>
 													&nbsp;
 													<bean-el:message key="routequeue.help.queueStatus"/></td>
@@ -332,7 +332,9 @@
 		                      <a href="javascript: setMethod('queueNewMessage');document.forms[0].submit();">Queue new message</a><br>
 				                </c:otherwise>
 		                  </c:choose>
+		                  <%-- 
 	 	                  <a href="javascript: submitQueueId('clear', '<c:out value="${MessageQueueForm.messageQueueFromForm.routeQueueId}" />')">Clear Message</a>
+	 	                  --%>
 				            </td>
 		              </tr>
 					 		</table>

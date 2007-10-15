@@ -48,7 +48,7 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
  * A filter which at runtime reads a series of filter configurations, constructs
  * and initializes those filters, and invokes them when it is invoked. This
  * allows runtime user configuration of arbitrary filters in the webapp context.
- * 
+ *
  * @author Aaron Hamid (arh14 at cornell dot edu)
  * @author ewestfal
  */
@@ -158,12 +158,13 @@ public class BootstrapFilter implements Filter {
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		LOG.debug("filtering...");
+	    LOG.debug("Begin BootstrapFilter...");
 		init();
 		// build the filter chain and execute it
 		if (!filterMappings.isEmpty() && request instanceof HttpServletRequest) {
 			chain = buildChain((HttpServletRequest) request, chain);
 		}
+		LOG.debug("...ending BootstrapFilter preperation, executing BootstrapFilter Chain.");
 		chain.doFilter(request, response);
 
 	}
@@ -273,7 +274,7 @@ public class BootstrapFilter implements Filter {
 /**
  * A filter chain that invokes a series of filters with which it was
  * initialized, and then delegates to a target filterchain.
- * 
+ *
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
 class BootstrapFilterChain implements FilterChain {
@@ -323,7 +324,7 @@ class BootstrapFilterChain implements FilterChain {
 
 /**
  * Borrowed from spring-mock.
- * 
+ *
  * @author ewestfal
  */
 class BootstrapFilterConfig implements FilterConfig {

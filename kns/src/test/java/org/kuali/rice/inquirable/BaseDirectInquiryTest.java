@@ -49,12 +49,14 @@ public class BaseDirectInquiryTest extends KNSTestCase {
         final HtmlImageInput button1 = (HtmlImageInput) form2.getInputByName(page.asXml().substring(idx1, idx2).replace("&amp;", "&").replace("((&lt;&gt;))", "((<>))"));
         final HtmlPage errorPage=(HtmlPage) button1.click();
         assertTrue(errorPage.asText().contains("Kuali :: Errors in Request "));
-        final HtmlForm form3=(HtmlForm)errorPage.getForms().get(0);
-        HtmlAnchor anchor1 = (HtmlAnchor)errorPage.getHtmlElementById("closeDirectInquiry");
-        assertNotNull(anchor1);
-        final HtmlPage page1=(HtmlPage)anchor1.click();
-        final HtmlForm form4=(HtmlForm)page1.getForms().get(0);
+        // there's no close button on error page, KualiError.jsp, which is what the inquiry will forward to if no input is specified
+        //final HtmlForm form3=(HtmlForm)errorPage.getForms().get(0);
+        //HtmlAnchor anchor1 = (HtmlAnchor)errorPage.getHtmlElementById("closeDirectInquiry");
+        //assertNotNull(anchor1);
+        //final HtmlPage page1=(HtmlPage)anchor1.click();
+        //final HtmlForm form4=(HtmlForm)page1.getForms().get(0);
         assertEquals("Kuali :: Travel Doc 2", page.getTitleText());
+        final HtmlForm form4=(HtmlForm)page.getForms().get(0);
         final HtmlTextInput travelAcctNumber2 = (HtmlTextInput) form4.getInputByName("travelAccount.number");
         assertEquals(travelAcctNumber2.getValueAttribute(), "");
 

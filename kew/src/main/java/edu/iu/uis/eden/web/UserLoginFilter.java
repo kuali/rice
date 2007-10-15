@@ -64,6 +64,8 @@ public class UserLoginFilter implements Filter {
             return;
         }
 
+    	LOG.debug("Begin UserLoginFilter...");
+
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
@@ -111,6 +113,7 @@ public class UserLoginFilter implements Filter {
         try {
 			UserSession.setAuthenticatedUser(userSession);
 			if (isAuthorizedToViewResource(userSession, request)) {
+			        LOG.debug("...end UserLoginFilter.");
 				chain.doFilter(request, response);
 			} else {
 				request.getRequestDispatcher("/WEB-INF/jsp/NotAuthorized.jsp").forward(request, response);
@@ -150,8 +153,8 @@ public class UserLoginFilter implements Filter {
                 return null;
             }
             LOG.debug("Looking up user: " + id);
-			workflowUser = ((UserService) KEWServiceLocator.getUserService()).getWorkflowUser(id);
-            LOG.info("ending user lookup: " + workflowUser);
+            workflowUser = ((UserService) KEWServiceLocator.getUserService()).getWorkflowUser(id);
+            LOG.debug("ending user lookup: " + workflowUser);
             UserSession userSession = new UserSession(workflowUser);
             //load the users preferences.  The preferences action will update them if necessary
             userSession.setPreferences(KEWServiceLocator.getPreferencesService().getPreferences(workflowUser));
@@ -160,6 +163,8 @@ public class UserLoginFilter implements Filter {
             return userSession;
         } catch (Exception e) {
             LOG.error("Error in user login", e);
+        } finally {
+            LOG.info("...finished performing user login.");
         }
         return null;
     }
@@ -172,27 +177,31 @@ public class UserLoginFilter implements Filter {
     private static Set restrictedResources = new HashSet();
 
     private static boolean isAuthorizedToViewResource(UserSession userSession, HttpServletRequest request) {
-
-    	String restrictedResourceTokens = Utilities.getApplicationConstant(EdenConstants.WORKFLOW_ADMIN_URL_KEY);
-        if (restrictedResourceTokens == null) {
-            restrictedResourceTokens = "";
-        }
-    	synchronized(restrictedResources) {
-			if (restrictedResources == null || (! currentRestrictionSet.equals(restrictedResourceTokens))) {
-				currentRestrictionSet = restrictedResourceTokens;
-				restrictedResources = new HashSet();
- 				StringTokenizer tokenizer = new StringTokenizer(currentRestrictionSet, " ");
-   		    	while (tokenizer.hasMoreTokens()) {
-   		    		restrictedResources.add(tokenizer.nextElement());
-   		    	}
-			}
+	LOG.debug("Checking authorization to view resources...");
+	try {
+	    String restrictedResourceTokens = Utilities.getApplicationConstant(EdenConstants.WORKFLOW_ADMIN_URL_KEY);
+	    if (restrictedResourceTokens == null) {
+		restrictedResourceTokens = "";
+	    }
+	    synchronized (restrictedResources) {
+		if (!currentRestrictionSet.equals(restrictedResourceTokens)) {
+		    currentRestrictionSet = restrictedResourceTokens;
+		    restrictedResources = new HashSet();
+		    StringTokenizer tokenizer = new StringTokenizer(currentRestrictionSet, " ");
+		    while (tokenizer.hasMoreTokens()) {
+			restrictedResources.add(tokenizer.nextElement());
+		    }
 		}
-    	String requestedResource = request.getServletPath();
-    	if (restrictedResources.contains(requestedResource)) {
-    		return userSession.isAdmin();
-    	} else {
-    		return true;
-    	}
+	    }
+	    String requestedResource = request.getServletPath();
+	    if (restrictedResources.contains(requestedResource)) {
+		return userSession.isAdmin();
+	    } else {
+		return true;
+	    }
+	} finally {
+	    LOG.debug("...finished checking authorization to view resources.");
+	}
     }
 
     public void destroy() {

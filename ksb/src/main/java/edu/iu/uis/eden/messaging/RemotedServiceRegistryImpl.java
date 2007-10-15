@@ -169,12 +169,13 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	}
 
 	public synchronized void run() {
+	    	String messageEntity = Core.getCurrentContextConfig().getMessageEntity();
+		LOG.debug("Checking for newly published services on message entity " + messageEntity + " ...");
+
 		String serviceServletUrl = (String) Core.getObjectFromConfigHierarchy(Config.SERVICE_SERVLET_URL);
 		if (serviceServletUrl == null) {
 			throw new RuntimeException("No service url provided to locate services.  This is configured in the KSBConfigurer.");
 		}
-		String messageEntity = Core.getCurrentContextConfig().getMessageEntity();
-		LOG.debug("Checking for newly published services on message entity " + messageEntity);
 
 		List javaServices = (List) Core.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
 		// convert the ServiceDefinitions into ServiceInfos for diff comparison
@@ -208,7 +209,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		} else if (this.publishedServices.isEmpty()) {
 			publishServiceList(configuredServices);
 		}
-		LOG.info("Finished checking for remote services.");
+		LOG.debug("...Finished checking for remote services.");
 	}
 
 	private void publishServiceList(List<ServiceInfo> services) {

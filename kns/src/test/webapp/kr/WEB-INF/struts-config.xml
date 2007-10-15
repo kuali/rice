@@ -33,6 +33,12 @@
     </global-forwards>
 
     <action-mappings>
+        <action path="/portal" name="KualiForm" type="org.kuali.core.web.struts.action.KualiSimpleAction">
+            <forward name="basic" path="/index.jsp" />
+        </action>
+        <action path="/index" name="KualiForm" type="org.kuali.core.web.struts.action.KualiSimpleAction">
+            <forward name="basic" path="/index.jsp" />
+        </action>
         <action path="/Exception" name="KualiForm" type="org.kuali.core.web.struts.action.KualiExceptionAction">
             <forward name="basic" path="/WEB-INF/jsp/Exception.jsp" />
         </action>
@@ -67,6 +73,7 @@
     </action-mappings>
 
     <controller processorClass="org.kuali.core.web.struts.action.KualiRequestProcessor" />
+    <message-resources parameter="KR-ApplicationResources" />
     <plug-in className="org.kuali.core.web.struts.pojo.PojoPlugin" />
 </struts-config>
 

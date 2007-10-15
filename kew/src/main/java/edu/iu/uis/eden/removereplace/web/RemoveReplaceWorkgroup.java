@@ -28,6 +28,7 @@ public class RemoveReplaceWorkgroup {
     private String type;
     private String warning;
     private boolean selected;
+    private boolean disabled;
 
     public String getName() {
         return this.name;
@@ -58,6 +59,12 @@ public class RemoveReplaceWorkgroup {
     }
     public void setId(Long id) {
         this.id = id;
+    }
+    public boolean isDisabled() {
+        return this.disabled;
+    }
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 
 }

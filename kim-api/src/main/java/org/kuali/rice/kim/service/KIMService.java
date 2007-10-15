@@ -19,24 +19,80 @@ import java.util.List;
 
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupAttribute;
+import org.kuali.rice.kim.bo.Namespace;
 import org.kuali.rice.kim.bo.Permission;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.RoleAttribute;
 
 /**
- * This is the service API for accessing KIM services.  This contract should be used by all Kuali software that 
+ * Service API for accessing KIM services.  This contract should be used by all Kuali software that 
  * needs to leverage identity management features. 
  * 
  * @author Aaron Godert (agodert at cornell dot edu)
+ * @author Phillip Berres (pberres at usc dot edu)
  */
 public interface KIMService {
-    public List<Person> getPersons(Role role);
+    /**
+     * KIM service API method that returns a complete collection of Person objects for the application.
+     * 
+     * @return         List of Person objects for the application
+     * 
+     */
+    public List<Person> getPersons();
+    /**
+     * KIM service API method that returns a complete collection of Person user names for the 
+     * application.
+     * 
+     * @return         List of Person user names for the application
+     * 
+     */
+    public List<String> getPersonUsernames();
+    /**
+     * KIM service API method that returns a complete collection of Role objects for the application.
+     * 
+     * @return         List of Role objects for the application
+     * 
+     */
     public List<Role> getRoles();
-    public List<RoleAttribute> getQualifiedRoles(Person person, Role role);
-    public List<Permission> getPermissions(Role role);
-    public List<Group> getGroups(Role role);
-    public List<GroupAttribute> getQualifiedGroups(Person person, Group role);
+    /**
+     * KIM service API method that returns a complete collection of Role names for the application.
+     * 
+     * @return         List of Role objects for the application
+     * 
+     */
+    public List<String> getRoleNames();
+    /**
+     * KIM service API method that returns a collection of Group objects that satisfy
+     * a given Role.
+     *  
+     * @return         List of Group names satisfying the role
+     * 
+     */
+    public List<Group> getGroups();
+    /**
+     * KIM service API method that returns a collection of Group names that satisfy
+     * a given Role.
+     *   
+     * @return         List of Group names satisfying the role
+     * 
+     */
+    public List<String> getGroupNames();
+    /**
+     * KIM service API method that returns the complete collection of Namespace objects
+     * 
+     * @return         List of Namespace objects
+     * 
+     */
+    public List<Namespace> getNamespaces();
+    /**
+     * KIM service API method that returns associated List of names for all Namespace objects
+     * 
+     * @return         List of Namespace objects (String)
+     * 
+     */
+    public List<String> getNamespaceNames();
+
     
     
 }

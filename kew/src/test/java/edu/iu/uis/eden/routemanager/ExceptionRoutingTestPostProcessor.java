@@ -33,7 +33,12 @@ public class ExceptionRoutingTestPostProcessor implements PostProcessor {
 	public static boolean TRANSITIONED_OUT_OF_EXCEPTION_ROUTING = false;
 	
 	public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
-		if (THROW_ROUTE_STATUS_CHANGE_EXCEPTION) {
+	        // defend against re-entrancy by only throwing the route status change exception if the status change we are undergoing is not a transition into exception state!
+	        // if we don't do this, this postprocessor will blow up when it is subsequently notified about the transition into exception state that it previously caused
+	        // which will result in the document never actually transitioning into exception state
+	        boolean transitioningIntoException = !EdenConstants.ROUTE_HEADER_EXCEPTION_CD.equals(statusChangeEvent.getOldRouteStatus()) &&
+                                                      EdenConstants.ROUTE_HEADER_EXCEPTION_CD.equals(statusChangeEvent.getNewRouteStatus()); 
+		if (THROW_ROUTE_STATUS_CHANGE_EXCEPTION && !transitioningIntoException) {
 			throw new RuntimeException("I am the doRouteStatusChange exploder");
 		}
 		if (EdenConstants.ROUTE_HEADER_EXCEPTION_CD.equals(statusChangeEvent.getOldRouteStatus())) {

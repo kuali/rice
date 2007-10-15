@@ -100,6 +100,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         try {
             saveSearch(user, criteria);
         } catch (RuntimeException e) {
+            // TODO - should the exception be logged even though it's handled
             // swallerin it, cuz we look to be read only
         }
         DocumentSearchResultComponents searchResult = null;
@@ -387,6 +388,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
         if (! Utilities.isEmpty(criteria.getDocRouteNodeId()) && !criteria.getDocRouteNodeId().equals("-1")) {
             RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeById(new Long(criteria.getDocRouteNodeId()));
+            // this block will result in NPE if routeNode is not found; is the intent to preserve the requested criteria? if so, then the following line fixes it 
+            //savedSearchString.append(",,docRouteNodeId=" + (routeNode != null ? routeNode.getRouteNodeId() : criteria.getDocRouteNodeId()));
             savedSearchString.append(",,docRouteNodeId=" + routeNode.getRouteNodeId());
             savedSearchString.append(criteria.getDocRouteNodeLogic() == null || "".equals(criteria.getDocRouteNodeLogic()) ? "" : ",,docRouteNodeLogic=" + criteria.getDocRouteNodeLogic());
         }
@@ -413,7 +416,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
 		if (savedSearchString.toString() != null && !"".equals(savedSearchString.toString().trim())) {
 
-            savedSearchString.append(criteria.getDocRouteStatus() == null || "".equals(criteria.getIsAdvancedSearch()) ? "" : ",,isAdvancedSearch=" + criteria.getIsAdvancedSearch());
+            savedSearchString.append(criteria.getIsAdvancedSearch() == null || "".equals(criteria.getIsAdvancedSearch()) ? "" : ",,isAdvancedSearch=" + criteria.getIsAdvancedSearch());
             savedSearchString.append(criteria.getSuperUserSearch() == null || "".equals(criteria.getSuperUserSearch()) ? "" : ",,superUserSearch=" + criteria.getSuperUserSearch());
 
 			if (criteria.getNamedSearch() != null && !"".equals(criteria.getNamedSearch().trim())) {

@@ -24,6 +24,8 @@ import edu.iu.uis.eden.web.session.UserSession;
 
 public class UserAccessFilter implements Filter {
 
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UserAccessFilter.class);
+
 	private String currentDeniedRolesConst = null;
 	private String currentAllowedRolesConst = null;
 	private Set<String> deniedRoles = new HashSet<String>();
@@ -36,6 +38,7 @@ public class UserAccessFilter implements Filter {
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+	    LOG.debug("Begin UserAccessFilter...");
 		UserSession userSession = UserSession.getAuthenticatedUser();
 		AuthorizationResult result = KEWServiceLocator.getWebAuthorizationService().isAuthorized(userSession, (HttpServletRequest)request);
 		boolean isDeniedAccess = !result.isAuthorized();
@@ -63,6 +66,7 @@ public class UserAccessFilter implements Filter {
         if (isDeniedAccess) {
         	request.getRequestDispatcher("/WEB-INF/jsp/NotAuthorized.jsp").forward(request, response);
         } else {
+            LOG.debug("...end UserAccessFilter.");
         	chain.doFilter(request, response);
         }
 	}

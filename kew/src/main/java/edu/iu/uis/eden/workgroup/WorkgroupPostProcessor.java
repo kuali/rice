@@ -41,6 +41,7 @@ public class WorkgroupPostProcessor extends DefaultPostProcessor {
         if (EdenConstants.ROUTE_HEADER_PROCESSED_CD.equals(statusChangeEvent.getNewRouteStatus())) {
             KEWServiceLocator.getWorkgroupRoutingService().activateRoutedWorkgroup(statusChangeEvent.getRouteHeaderId());
         }
+        
         return new ProcessDocReport(true, "");
     }
 

@@ -36,5 +36,6 @@ public interface BaseWorkgroupDAO {
 	public BaseWorkgroup findEnrouteWorkgroupById(Long workgroupId);
 	public List<Long> getImmediateWorkgroupsGroupIds(Long workgroupId);
 	public Set<String> findWorkgroupNamesForUser(String workflowId);
+	public Set<Long> findWorkgroupIdsForUser(String workflowId);
 
 }

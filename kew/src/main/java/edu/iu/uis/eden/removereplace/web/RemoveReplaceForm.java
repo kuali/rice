@@ -25,6 +25,7 @@ import org.kuali.workflow.workgroup.WorkgroupType;
 
 import edu.iu.uis.eden.removereplace.RemoveReplaceDocument;
 import edu.iu.uis.eden.user.WorkflowUser;
+import edu.iu.uis.eden.web.ShowHideTree;
 import edu.iu.uis.eden.web.WorkflowRoutingForm;
 
 /**
@@ -34,8 +35,12 @@ import edu.iu.uis.eden.web.WorkflowRoutingForm;
  */
 public class RemoveReplaceForm extends WorkflowRoutingForm {
 
-    private String methodToCall;
+    private String methodToCall = "";
+    private String lookupableImplServiceName;
+    private String conversionFields;
     private Map actionRequestCodes;
+    private String searchLink = "";
+    private String searchLinkText = "";
 
     // input fields
     private String userId;
@@ -65,6 +70,10 @@ public class RemoveReplaceForm extends WorkflowRoutingForm {
 
     private RemoveReplaceDocument document;
 
+    private boolean operationSelected = false;
+    private ShowHideTree showHide = new ShowHideTree();
+    private boolean report = false;
+
     public RemoveReplaceForm() {
     }
 
@@ -72,7 +81,7 @@ public class RemoveReplaceForm extends WorkflowRoutingForm {
     	WorkgroupType workgroupType = new WorkgroupType();
     	workgroupType.setActive(true);
     	workgroupType.setLabel("Default");
-    	workgroupType.setName("");
+    	workgroupType.setName("Default");
     	return workgroupType;
     }
 
@@ -82,6 +91,14 @@ public class RemoveReplaceForm extends WorkflowRoutingForm {
 
     public void setMethodToCall(String methodToCall) {
         this.methodToCall = methodToCall;
+    }
+
+    public String getLookupableImplServiceName() {
+        return this.lookupableImplServiceName;
+    }
+
+    public void setLookupableImplServiceName(String lookupableImplServiceName) {
+        this.lookupableImplServiceName = lookupableImplServiceName;
     }
 
     public String getRuleDocumentTypeName() {
@@ -186,6 +203,71 @@ public class RemoveReplaceForm extends WorkflowRoutingForm {
 
     public void setDocument(RemoveReplaceDocument document) {
         this.document = document;
+    }
+
+    public String getOperationDisplayName() {
+	if (getOperation().equals(RemoveReplaceDocument.REMOVE_OPERATION)) {
+	    return "Remove";
+	} else if (getOperation().equals(RemoveReplaceDocument.REPLACE_OPERATION)) {
+	    return "Replace";
+	}
+	return "";
+    }
+
+    public boolean isReplace() {
+	return getOperation().equals(RemoveReplaceDocument.REPLACE_OPERATION);
+    }
+
+    public boolean isRemove() {
+	return getOperation().equals(RemoveReplaceDocument.REMOVE_OPERATION);
+    }
+
+    public boolean isOperationSelected() {
+        return this.operationSelected;
+    }
+
+    public void setOperationSelected(boolean operationSelected) {
+        this.operationSelected = operationSelected;
+    }
+
+    public String getConversionFields() {
+        return this.conversionFields;
+    }
+
+    public void setConversionFields(String conversionFields) {
+        this.conversionFields = conversionFields;
+    }
+
+    public ShowHideTree getShowHide() {
+        return this.showHide;
+    }
+
+    public void setShowHide(ShowHideTree showHide) {
+        this.showHide = showHide;
+    }
+
+    public boolean isReport() {
+        return this.report;
+    }
+
+    public void setReport(boolean report) {
+        this.report = report;
+    }
+
+    public String getSearchLink() {
+        return this.searchLink;
+    }
+
+    public void setSearchLink(String searchLink) {
+        this.searchLink = searchLink;
+    }
+
+    public String getSearchLinkText() {
+        return this.searchLinkText;
+    }
+
+    public void setSearchLinkText(String searchLink) {
+        this.searchLinkText = searchLink;
     }
 
 }

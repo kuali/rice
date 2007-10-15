@@ -26,7 +26,7 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
  * @author Phillip Berres (pberres at usc dot edu)
  *
  */
-public class PersonQualifiedRole extends PersistableBusinessObjectBase {
+public class PersonQualifiedRole extends QualifiedRole {
 
     	private static final long serialVersionUID = -3834313283054550673L;
     	private Long id;

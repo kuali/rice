@@ -202,6 +202,10 @@ public class BaseWorkgroupService implements WorkgroupService {
 		return getWorkgroupDAO().findWorkgroupNamesForUser(user.getWorkflowId());
 	}
 
+	public Set<Long> getUsersGroupIds(WorkflowUser user) {
+	    return getWorkgroupDAO().findWorkgroupIdsForUser(user.getWorkflowId());
+	}
+
 
 	public Workgroup copy(Workgroup workgroup) {
 		if (workgroup == null) {
@@ -219,6 +223,7 @@ public class BaseWorkgroupService implements WorkgroupService {
 		copyWorkgroup.setWorkgroupMembers(baseWorkgroup.getWorkgroupMembers());
 		copyWorkgroup.setWorkflowGroupId(baseWorkgroup.getWorkflowGroupId());
 		copyWorkgroup.setWorkgroupType(baseWorkgroup.getWorkgroupType());
+		copyWorkgroup.setExtensions(baseWorkgroup.getExtensions());
 		return copyWorkgroup;
 	}
 

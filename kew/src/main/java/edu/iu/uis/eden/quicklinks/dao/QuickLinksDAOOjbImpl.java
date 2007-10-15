@@ -124,7 +124,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     selectDistinctDocumentTypes.setString(1, workflowUser.getWorkflowUserId().getWorkflowId());
                     selectedDistinctDocumentTypes = selectDistinctDocumentTypes.executeQuery();
                     String documentNames = Utilities.getApplicationConstant(EdenConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES).trim();
-                    if (documentNames == null) {
+                    if (documentNames == null || "none".equals(documentNames)) {
                     	documentNames = "";
                     }
                     List docTypesToRestrict = new ArrayList();

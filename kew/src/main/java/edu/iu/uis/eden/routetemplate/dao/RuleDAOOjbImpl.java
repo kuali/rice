@@ -22,9 +22,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
@@ -36,10 +38,14 @@ import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routetemplate.RuleBaseValues;
 import edu.iu.uis.eden.routetemplate.RuleExtension;
 import edu.iu.uis.eden.routetemplate.RuleResponsibility;
+import edu.iu.uis.eden.user.WorkflowUser;
+import edu.iu.uis.eden.user.WorkflowUserId;
 import edu.iu.uis.eden.util.Utilities;
 
 public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleDAO {
@@ -229,7 +235,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return null;
 	}
 
-	public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, Long workgroupId, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues) {
+	public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, Long workgroupId, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
         if (ruleId != null) {
             crit.addEqualTo("ruleBaseValuesId", ruleId);
@@ -237,8 +243,39 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         if (workgroupId != null) {
             crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupId.toString()));
         }
-        if (!Utilities.isEmpty(workflowId)) {
-            crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workflowId));
+        boolean searchUser = false;
+        boolean searchUserInWorkgroups = false;
+        if ("workgroup".equals(workflowIdDirective)) {
+            searchUserInWorkgroups = true;
+        } else if ("both".equals(workflowIdDirective)) {
+            searchUser = true;
+            searchUserInWorkgroups = true;
+        } else {
+            searchUser = true;
+        }
+        Criteria orCriteria = new Criteria();
+        if (!Utilities.isEmpty(workflowId) && searchUser) {
+            Criteria userCrit = new Criteria();
+            userCrit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workflowId));
+            orCriteria.addOrCriteria(userCrit);
+        }
+        if (!Utilities.isEmpty(workflowId) && searchUserInWorkgroups) {
+            Criteria workgroupCrit = new Criteria();
+            WorkflowUser user = null;
+            try {
+        	user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
+            } catch (EdenUserNotFoundException e) {
+        	throw new WorkflowRuntimeException(e);
+            }
+            if (user == null) {
+        	throw new WorkflowRuntimeException("Failed to locate user for the given workflow id: " + workflowId);
+            }
+            Set<Long> workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user);
+            workgroupCrit.addIn("responsibilities.ruleBaseValuesId", getWorkgroupResponsibilitySubQuery(workgroupIds));
+            orCriteria.addOrCriteria(workgroupCrit);
+        }
+        if (!orCriteria.isEmpty()) {
+            crit.addAndCriteria(orCriteria);
         }
         if (!Utilities.isEmpty(roleName)) {
             crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(roleName));
@@ -398,6 +435,19 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 	private ReportQueryByCriteria getResponsibilitySubQuery(String ruleResponsibilityName) {
 		Criteria responsibilityCrit = new Criteria();
 		responsibilityCrit.addLike("ruleResponsibilityName", ruleResponsibilityName);
+		ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleResponsibility.class, responsibilityCrit);
+		query.setAttributes(new String[] { "ruleBaseValuesId" });
+		return query;
+	}
+
+	private ReportQueryByCriteria getWorkgroupResponsibilitySubQuery(Set<Long> workgroupIds) {
+	    	Set<String> workgroupIdStrings = new HashSet<String>();
+	    	for (Long workgroupId : workgroupIds) {
+	    	    workgroupIdStrings.add(workgroupId.toString());
+	    	}
+		Criteria responsibilityCrit = new Criteria();
+		responsibilityCrit.addIn("ruleResponsibilityName", workgroupIds);
+		responsibilityCrit.addEqualTo("ruleResponsibilityType", EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);
 		ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleResponsibility.class, responsibilityCrit);
 		query.setAttributes(new String[] { "ruleBaseValuesId" });
 		return query;

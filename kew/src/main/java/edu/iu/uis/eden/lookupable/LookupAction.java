@@ -105,19 +105,25 @@ public class LookupAction extends WorkflowAction {
         url.append("&docFormKey=").append(getUserSession(request).addObject(lookupForm));
         url.append("&returnLocation=").append(workflowLookupable.getReturnLocation());
 
-        StringBuffer conversionFields = new StringBuffer();
-        for (Iterator iter = workflowLookupable.getRows().iterator(); iter.hasNext();) {
-            Row row = (Row) iter.next();
+        if (Utilities.isEmpty(request.getParameter("customFieldConversions"))) {
+            StringBuffer conversionFields = new StringBuffer();
+            for (Iterator iter = workflowLookupable.getRows().iterator(); iter.hasNext();) {
+                Row row = (Row) iter.next();
 
-            for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
-                Field field = (Field) iterator.next();
-                if(!Utilities.isEmpty(field.getDefaultLookupableName())){
-                    conversionFields.append(field.getDefaultLookupableName()).append(":").append(field.getPropertyName()).append(",");
+                for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
+                    Field field = (Field) iterator.next();
+                    if(!Utilities.isEmpty(field.getDefaultLookupableName())){
+                        conversionFields.append(field.getDefaultLookupableName()).append(":").append(field.getPropertyName()).append(",");
+                    }
                 }
             }
+            if(!Utilities.isEmpty(conversionFields.toString())){
+                url.append("&conversionFields=").append(conversionFields.substring(0, conversionFields.lastIndexOf(",")));
+            }
         }
-        if(!Utilities.isEmpty(conversionFields.toString())){
-            url.append("&conversionFields=").append(conversionFields.substring(0, conversionFields.lastIndexOf(",")));
+        else {
+            String conversionFields = request.getParameter("customFieldConversions");
+            url.append("&conversionFields=").append(conversionFields);
         }
 
         return new ActionForward(url.toString(), true);
@@ -181,10 +187,9 @@ public class LookupAction extends WorkflowAction {
         	ascending = false;
         }
         String sortNameParameter = new ParamEncoder("result").encodeParameterName(TableTagParameters.PARAMETER_SORT);
-        String sortName = request.getParameter(sortNameParameter);
         WorkflowLookupable workflowLookupable = getLookupable(request.getParameter("lookupableImplServiceName"));//(WorkflowLookupable) SpringServiceLocator.getExtensionService().getLookupable(request.getParameter("lookupableImplServiceName"));
-        Column sortColumn = getSortColumn(workflowLookupable, sortName);
         Map fieldValues = constructFieldValues(workflowLookupable, lookupForm, request);
+        Column sortColumn = getSortColumn(workflowLookupable, request.getParameter(sortNameParameter));
         List displayList = workflowLookupable.getSearchResults(fieldValues, lookupForm.getFieldConversions());
         workflowLookupable.changeIdToName(fieldValues);
         sortDisplayList(sortColumn, displayList, ascending);

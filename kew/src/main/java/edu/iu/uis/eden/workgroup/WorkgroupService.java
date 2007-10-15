@@ -63,6 +63,8 @@ public interface WorkgroupService extends XmlLoader, XmlExporter {
 
     public Set<String> getUsersGroupNames(WorkflowUser member);
 
+    public Set<Long> getUsersGroupIds(WorkflowUser member);
+
     public List<Workgroup> getWorkgroupsGroups(Workgroup workgroup);
 
     public List search(Workgroup workgroup, Map<String, String> extensionValues, boolean useWildCards);
@@ -71,6 +73,9 @@ public interface WorkgroupService extends XmlLoader, XmlExporter {
 
     public boolean isUserMemberOfGroup(GroupId groupId, WorkflowUser user) throws EdenUserNotFoundException;
 
+    /**
+     * Executes a shallow copy of the given workgroup.
+     */
     public Workgroup copy(Workgroup workgroup);
 
     public void removeNameFromCache(GroupNameId name);

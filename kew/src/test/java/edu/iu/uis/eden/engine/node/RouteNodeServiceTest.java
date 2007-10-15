@@ -32,10 +32,10 @@ import edu.iu.uis.eden.test.TestUtilities;
 
 public class RouteNodeServiceTest extends KEWTestCase {
 
-    private RouteNodeService service;
+    private RouteNodeService routeNodeService;
     
     protected void setUpTransaction() throws Exception {
-        service = KEWServiceLocator.getRouteNodeService();
+        routeNodeService = KEWServiceLocator.getRouteNodeService();
     }
 
     protected void loadTestData() throws Exception {
@@ -47,7 +47,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
         document.saveDocument("");
         
         DocumentRouteHeaderValue serverDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
-        List routeNodeInstances = service.getFlattenedNodeInstances(serverDocument, true);
+        List routeNodeInstances = routeNodeService.getFlattenedNodeInstances(serverDocument, true);
         assertEquals(1, routeNodeInstances.size());
         assertEquals("AdHoc", ((RouteNodeInstance)routeNodeInstances.get(0)).getName());
         
@@ -55,7 +55,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
         assertTrue(document.stateIsProcessed());
         
         serverDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
-        routeNodeInstances = service.getFlattenedNodeInstances(serverDocument, true);
+        routeNodeInstances = routeNodeService.getFlattenedNodeInstances(serverDocument, true);
         assertEquals(4, routeNodeInstances.size());
         assertEquals("AdHoc", ((RouteNodeInstance)routeNodeInstances.get(0)).getName());
         assertEquals("WorkflowDocument", ((RouteNodeInstance)routeNodeInstances.get(1)).getName());
@@ -66,9 +66,9 @@ public class RouteNodeServiceTest extends KEWTestCase {
     @Test public void testSearchNodeGraphSequentailBackward() throws Exception {
     	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "SeqDocType");
     	document.blanketApprove("", "WorkflowDocument");
-    	List activeNodeInstances = service.getActiveNodeInstances(document.getRouteHeaderId());
+    	List activeNodeInstances = routeNodeService.getActiveNodeInstances(document.getRouteHeaderId());
     	NodeGraphSearchCriteria criteria = new NodeGraphSearchCriteria(NodeGraphSearchCriteria.SEARCH_DIRECTION_BACKWARD, activeNodeInstances, "AdHoc");
-    	NodeGraphSearchResult result = service.searchNodeGraph(criteria);
+    	NodeGraphSearchResult result = routeNodeService.searchNodeGraph(criteria);
     	assertEquals("Path should have two nodes.", 2, result.getPath().size());
     	RouteNodeInstance resultNodeInstance = result.getResultNodeInstance();
     	assertNotNull("Should have a resulting node instance.", resultNodeInstance);
@@ -77,9 +77,9 @@ public class RouteNodeServiceTest extends KEWTestCase {
     	// take it to the end
     	document.blanketApprove("");
     	assertTrue("Document should be processed.", document.stateIsProcessed());
-    	List terminalNodeInstances = service.getTerminalNodeInstances(document.getRouteHeaderId());
+    	List terminalNodeInstances = routeNodeService.getTerminalNodeInstances(document.getRouteHeaderId());
     	criteria = new NodeGraphSearchCriteria(NodeGraphSearchCriteria.SEARCH_DIRECTION_BACKWARD, terminalNodeInstances, "AdHoc");
-    	result = service.searchNodeGraph(criteria);
+    	result = routeNodeService.searchNodeGraph(criteria);
     	assertEquals("Path should have 4 nodes.", 4, result.getPath().size());
     	resultNodeInstance = result.getResultNodeInstance();
     	assertNotNull("Should have a resulting node instance.", resultNodeInstance);
@@ -98,7 +98,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
     	List startNodes = new ArrayList();
     	startNodes.add(ack1NodeInstance);
     	criteria = new NodeGraphSearchCriteria(NodeGraphSearchCriteria.SEARCH_DIRECTION_BACKWARD, startNodes, "WorkflowDocument");
-    	result = service.searchNodeGraph(criteria);
+    	result = routeNodeService.searchNodeGraph(criteria);
     	// since we started at 'Acknowledge1' there should just be 'Acknowledge1' and 'WorkflowDocument' in the path
     	assertEquals("Path should have 2 nodes.", 2, result.getPath().size());
     	resultNodeInstance = result.getResultNodeInstance();
@@ -109,7 +109,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
     @Test public void testSearchNodeGraphParallelBackward() throws Exception {
     	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "ParallelDocType");
     	document.blanketApprove("", new String[] { "WorkflowDocument2", "WorkflowDocument3" });
-    	List activeNodeInstances = service.getActiveNodeInstances(document.getRouteHeaderId());
+    	List activeNodeInstances = routeNodeService.getActiveNodeInstances(document.getRouteHeaderId());
     	assertEquals("Should be 2 active nodes.", 2, activeNodeInstances.size());
     	Set nodeNames = TestUtilities.createNodeInstanceNameSet(activeNodeInstances);
     	assertTrue("Should be at WorkflowDocument2 node.", nodeNames.contains("WorkflowDocument2"));
@@ -118,7 +118,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
     	
     	// search backward to the adhoc node
     	NodeGraphSearchCriteria criteria = new NodeGraphSearchCriteria(NodeGraphSearchCriteria.SEARCH_DIRECTION_BACKWARD, activeNodeInstances, "AdHoc");
-    	NodeGraphSearchResult result = service.searchNodeGraph(criteria);
+    	NodeGraphSearchResult result = routeNodeService.searchNodeGraph(criteria);
     	assertEquals("Path should have eight nodes.", 8, result.getPath().size());
     	RouteNodeInstance resultNodeInstance = result.getResultNodeInstance();
     	assertNotNull("Should have a resulting node instance.", resultNodeInstance);
@@ -152,7 +152,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
     	List startNodeInstances = new ArrayList();
     	startNodeInstances.add(workflowDocument2Node);
     	criteria = new NodeGraphSearchCriteria(NodeGraphSearchCriteria.SEARCH_DIRECTION_BACKWARD, activeNodeInstances, "WorkflowDocument4");
-    	result = service.searchNodeGraph(criteria);
+    	result = routeNodeService.searchNodeGraph(criteria);
     	assertEquals("Path should have three nodes.", 3, result.getPath().size());
     	resultNodeInstance = result.getResultNodeInstance();
     	assertEquals("Result node should be the WorkflowDocument4 node.", "WorkflowDocument4", resultNodeInstance.getName());
@@ -166,7 +166,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
     	startNodeInstances = new ArrayList();
     	startNodeInstances.add(workflowDocument3Node);
     	criteria = new NodeGraphSearchCriteria(NodeGraphSearchCriteria.SEARCH_DIRECTION_BACKWARD, activeNodeInstances, "WorkflowDocument5");
-    	result = service.searchNodeGraph(criteria);
+    	result = routeNodeService.searchNodeGraph(criteria);
     	assertEquals("Path should have two nodes.", 2, result.getPath().size());
     	resultNodeInstance = result.getResultNodeInstance();
     	assertEquals("Result node should be the WorkflowDocument5 node.", "WorkflowDocument5", resultNodeInstance.getName());
@@ -187,7 +187,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
     	List initialNodeInstances = KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(document.getRouteHeaderId());
     	NodeGraphSearchCriteria criteria = new NodeGraphSearchCriteria(NodeGraphSearchCriteria.SEARCH_DIRECTION_FORWARD, initialNodeInstances, "WorkflowDocument");
     	try {
-    		service.searchNodeGraph(criteria);
+    		routeNodeService.searchNodeGraph(criteria);
     		fail("Should have thrown UnsupportedOperationException");
     	} catch (UnsupportedOperationException e) {
     	}

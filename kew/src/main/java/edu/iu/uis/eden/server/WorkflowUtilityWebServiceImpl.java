@@ -17,6 +17,7 @@
 package edu.iu.uis.eden.server;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentContentVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentDetailVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
+import edu.iu.uis.eden.clientapp.vo.PropertyDefinitionVO;
 import edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO;
 import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 import edu.iu.uis.eden.clientapp.vo.RouteNodeInstanceVO;
@@ -70,6 +72,7 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routetemplate.FlexRM;
 import edu.iu.uis.eden.routetemplate.RuleBaseValues;
 import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
+import edu.iu.uis.eden.routetemplate.xmlrouting.GenericXMLRuleAttribute;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.workgroup.Workgroup;
@@ -237,13 +240,18 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         LOG.debug("Fetching ActionRequestVOs [docId="+routeHeaderId+"]");
         List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(routeHeaderId);
-        ActionRequestVO[] actionRequestVOs = new ActionRequestVO[actionRequests.size()];
-        int i = 0;
-        for (Iterator iter = actionRequests.iterator(); iter.hasNext(); i++) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-            if (actionRequestMatches(actionRequest, nodeName, userId)) {
-        	actionRequestVOs[i] = BeanConverter.convertActionRequest(actionRequest);
+        List matchingActionRequests = new ArrayList();
+        for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
+            ActionRequestValue actionRequestValue = (ActionRequestValue) iterator.next();
+            if (actionRequestMatches(actionRequestValue, nodeName, userId)) {
+                matchingActionRequests.add(actionRequestValue);
             }
+        }
+        ActionRequestVO[] actionRequestVOs = new ActionRequestVO[matchingActionRequests.size()];
+        int i = 0;
+        for (Iterator iter = matchingActionRequests.iterator(); iter.hasNext(); i++) {
+            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
+            actionRequestVOs[i] = BeanConverter.convertActionRequest(actionRequest);
         }
         return actionRequestVOs;
     }
@@ -294,6 +302,16 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         if (attributeDefinition != null) {
         	attribute = (WorkflowAttribute) GlobalResourceLoader.getObject(attributeDefinition.getObjectDefinition());
         }
+        if (attribute instanceof GenericXMLRuleAttribute) {
+            Map<String, String> attributePropMap = new HashMap<String, String>();
+            GenericXMLRuleAttribute xmlAttribute = (GenericXMLRuleAttribute)attribute;
+            xmlAttribute.setRuleAttribute(attributeDefinition.getRuleAttribute());
+            for (int i = 0; i < definition.getProperties().length; i++) {
+		PropertyDefinitionVO property = definition.getProperties()[i];
+		attributePropMap.put(property.getName(), property.getValue());
+	    }
+            xmlAttribute.setParamMap(attributePropMap);
+	}
         //validate inputs from client application if the attribute is capable
         if (attribute instanceof WorkflowAttributeXmlValidator) {
             List errors = ((WorkflowAttributeXmlValidator)attribute).validateClientRoutingData();

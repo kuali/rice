@@ -62,10 +62,19 @@
 		<property name="beanNames">
 			<list>				
 				<idref local="kimService" />
+				<idref local="personService" />
+				<idref local="groupService" />
+				<idref local="namespaceService" />
+				<idref local="qualifiedRoleService" />
+				<idref local="roleService" />
 			</list>
 		</property>
 	</bean>
 	
 	<bean id="kimService" class="org.kuali.rice.kim.service.impl.KIMServiceImpl" />
-	
+	<bean id="personService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl" />
+	<bean id="groupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl" />
+	<bean id="namespaceService" class="org.kuali.rice.kim.service.impl.NamespaceServiceImpl" />
+	<bean id="qualifiedRoleService" class="org.kuali.rice.kim.service.impl.QualifiedRoleServiceImpl" />
+	<bean id="roleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl" />
 </beans>

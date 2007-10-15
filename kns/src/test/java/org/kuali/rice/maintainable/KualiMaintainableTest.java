@@ -43,7 +43,7 @@ public class KualiMaintainableTest extends TestBase {
     @Test
     public void testGetShowInactiveRecords_Default() throws Exception {
         boolean displayInactive = maintainable.getShowInactiveRecords("fooCollection");
-        assertFalse("display setting returned true for unset collection", displayInactive);
+        assertTrue("display setting returned true for unset collection", displayInactive);
     }
     
     /**

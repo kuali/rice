@@ -17,6 +17,7 @@
 <!-- configuration file for KualiConfigurationService -->
 
 <configuration>
-    <properties fileName="ApplicationResources.properties" />
+    <properties fileName="KR-ApplicationResources.properties" />
+    <properties fileName="SampleApplicationResources.properties" allowOverrides="true" />
 </configuration>
 

@@ -96,8 +96,18 @@ public class WorkflowFunctions {
 	}
 
 	public static String escapeJavascript(String value) {
-		
 		return value.replace("\\", "\\\\").replace("\"", "\\\"");
-		
-}	
+	}
+	
+	public static boolean isNodeBetween(String firstNodeName, String lastNodeName, String id) {
+		if (isNodeInPreviousNodeList(firstNodeName, id)) {
+			if (isNodeInPreviousNodeList(lastNodeName, id)) {
+				return false;
+			}else {
+				return true;
+			}
+		} else {
+			return false;
+		}
+	}	
 }

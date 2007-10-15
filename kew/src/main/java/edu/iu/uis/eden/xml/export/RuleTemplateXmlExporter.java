@@ -64,7 +64,7 @@ public class RuleTemplateXmlExporter implements XmlExporter, XmlConstants {
         if (ruleTemplate.getDelegationTemplate() != null) {
             renderer.renderTextElement(templateElement, DELEGATION_TEMPLATE, ruleTemplate.getDelegationTemplate().getName());
         }
-        exportAttributes(templateElement, ruleTemplate.getRuleTemplateAttributes());
+        exportAttributes(templateElement, ruleTemplate.getActiveRuleTemplateAttributes());
         exportDefaults(templateElement, ruleTemplate);
     }
 

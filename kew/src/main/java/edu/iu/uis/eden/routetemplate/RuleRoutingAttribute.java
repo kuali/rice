@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -74,19 +74,7 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
     }
 
     public boolean isMatch(DocumentContent docContent, List ruleExtensions) {
-        for (Iterator extensionsIterator = ruleExtensions.iterator(); extensionsIterator.hasNext();) {
-            RuleExtension extension = (RuleExtension) extensionsIterator.next();
-            if (extension.getRuleTemplateAttribute().getRuleAttribute().getClassName().equals(getClass().getName())) {
-                for (Iterator valuesIterator = extension.getExtensionValues().iterator(); valuesIterator.hasNext();) {
-                    RuleExtensionValue extensionValue = (RuleExtensionValue) valuesIterator.next();
-                    String key = extensionValue.getKey();
-                    String value = extensionValue.getValue();
-                    if (key.equals(DOC_TYPE_NAME_KEY)) {
-                        setDoctypeName(value);
-                    }
-                }
-            }
-        }
+	setDoctypeName(getRuleDocumentTypeFromRuleExtensions(ruleExtensions));
         DocumentTypeService service = (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
         List documentTypeValues = parseDocContent(docContent);
         for (Iterator iterator = documentTypeValues.iterator(); iterator.hasNext();) {
@@ -110,6 +98,23 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
         return false;
     }
 
+    protected String getRuleDocumentTypeFromRuleExtensions(List ruleExtensions) {
+	for (Iterator extensionsIterator = ruleExtensions.iterator(); extensionsIterator.hasNext();) {
+            RuleExtension extension = (RuleExtension) extensionsIterator.next();
+            if (extension.getRuleTemplateAttribute().getRuleAttribute().getClassName().equals(getClass().getName())) {
+                for (Iterator valuesIterator = extension.getExtensionValues().iterator(); valuesIterator.hasNext();) {
+                    RuleExtensionValue extensionValue = (RuleExtensionValue) valuesIterator.next();
+                    String key = extensionValue.getKey();
+                    String value = extensionValue.getValue();
+                    if (key.equals(DOC_TYPE_NAME_KEY)) {
+                        return value;
+                    }
+                }
+            }
+        }
+	return null;
+    }
+
     public List getRuleRows() {
         return rows;
     }
@@ -126,11 +131,11 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
         }
     }
 
-    public List parseDocContent(DocumentContent docContent) {
+    public List<RuleRoutingAttribute> parseDocContent(DocumentContent docContent) {
         try {
             Document doc = XmlHelper.buildJDocument(docContent.getDocument());
-            
-            List doctypeAttributes = new ArrayList();
+
+            List<RuleRoutingAttribute> doctypeAttributes = new ArrayList<RuleRoutingAttribute>();
             List ruleRoutings = XmlHelper.findElements(doc.getRootElement(), "ruleRouting");
             for (Iterator iter = ruleRoutings.iterator(); iter.hasNext();) {
                 Element ruleRoutingElement = (Element) iter.next();
@@ -140,7 +145,7 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
                     doctypeAttributes.add(new RuleRoutingAttribute(docTypeElement.getText()));
                 }
             }
-            
+
             return doctypeAttributes;
         } catch (Exception e) {
             throw new RuntimeException(e);

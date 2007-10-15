@@ -31,6 +31,8 @@ public class RemoveReplaceRule implements Serializable {
     private String ruleTemplateName = "";;
     private String warning = "";
     private boolean isSelected;
+    private boolean disabled;
+
     public boolean isSelected() {
         return this.isSelected;
     }
@@ -54,6 +56,12 @@ public class RemoveReplaceRule implements Serializable {
     }
     public void setWarning(String warning) {
         this.warning = warning;
+    }
+    public boolean isDisabled() {
+        return this.disabled;
+    }
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 
 }

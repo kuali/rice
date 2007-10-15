@@ -10,11 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.kuali.rice.util.JSTLConstants;
+
 import edu.iu.uis.eden.clientapp.IDocHandler;
 import edu.iu.uis.eden.doctype.DocumentTypePolicyEnum;
 import edu.iu.uis.eden.engine.node.ActivationTypeEnum;
 import edu.iu.uis.eden.export.ExportFormat;
-import edu.iu.uis.eden.util.JSTLConstants;
 import edu.iu.uis.eden.web.KeyValue;
 
 public class EdenConstants extends JSTLConstants {
@@ -166,7 +167,7 @@ public class EdenConstants extends JSTLConstants {
     public static final String YEARLY_UNIT = "Yearly";
 
     //  comment for cruisecontrol change test ////
-    public static final String USER_SESSION_KEY = "edu.iu.uis.eden.web.session.UserSession";
+    public static final String USER_SESSION_KEY = "kewUserSession";
     public static final String SUDS_DATASOURCE = "SUDS";
     public static final String EDEN_APP_CODE = "en";
     public static final String WORKFLOW_ENGINE_EJB = EDEN_APP_CODE + "/WorkflowEngine";
@@ -301,7 +302,7 @@ public class EdenConstants extends JSTLConstants {
 
     // below must be negative to be 30 days in the past... positive number will push date into future
     public static final Integer DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO = new Integer(-30);
-    public static final Integer DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO = new Integer(-1);
+    public static final Integer DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO = new Integer(0);
 
     public static final List DOCUMENT_SEARCH_SEARCHABLE_DOCUMENT_STATUSES = Arrays.asList(new KeyValue[] { new KeyValue("I", "Initiated"),
     		                                                                             new KeyValue("R", "Enroute"),
@@ -810,7 +811,7 @@ public class EdenConstants extends JSTLConstants {
     public static final String WEEKLY_EMAIL_ACTIVE = "weeklyEmail.active";
 
     public static final String REMOVE_REPLACE_DOCUMENT_TYPE = "EDENSERVICE-DOCS.RemoveReplaceUser";
-
+    public static final String ACTION_LIST_NO_REFRESH = "ActionList.norefresh";
 }
 
 /*

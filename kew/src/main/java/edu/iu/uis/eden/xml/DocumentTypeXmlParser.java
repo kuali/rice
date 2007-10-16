@@ -35,6 +35,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -682,13 +683,24 @@ public class DocumentTypeXmlParser implements XmlConstants {
             routeNode.setFinalApprovalInd(Boolean.FALSE);
         }
         
-        // parse the rule selector if it is specified
-        String ruleSelector = FlexRM.DEFAULT_RULE_SELECTOR;
-        if (XmlHelper.pathExists(xpath, "./ruleSelector", node)) {
-            ruleSelector = (String) xpath.evaluate("./ruleSelector", node, XPathConstants.STRING);
+        // for every simple child element of the node, store a config parameter of the element name and text content
+        NodeList children = node.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            Node n = children.item(i);
+            if (n instanceof Element) {
+                Element e = (Element) n;
+                String name = e.getNodeName();
+                String content = XmlHelper.getTextContent(e);
+                routeNode.getConfigParams().add(new RouteNodeConfigParam(routeNode, name, content));
+            }
         }
-        routeNode.getConfigParams().add(new RouteNodeConfigParam(routeNode, RouteNode.RULE_SELECTOR_CFG_KEY, ruleSelector));
 
+        // make sure a default rule selector is set
+        Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(routeNode.getConfigParams());
+        if (!cfgMap.containsKey("ruleSelector")) {
+            routeNode.getConfigParams().add(new RouteNodeConfigParam(routeNode, "ruleSelector", FlexRM.DEFAULT_RULE_SELECTOR));
+        }
+        
         if (((Boolean) xpath.evaluate("./ruleTemplate", node, XPathConstants.BOOLEAN)).booleanValue()) {
             String ruleTemplateName = (String) xpath.evaluate("./ruleTemplate", node, XPathConstants.STRING);
             RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);

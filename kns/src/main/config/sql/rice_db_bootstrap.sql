@@ -323,6 +323,8 @@ CREATE SEQUENCE SEQ_RTE_NODE INCREMENT BY 1 START WITH 2000
 /
 CREATE SEQUENCE SEQ_RTE_NODE_CFG_PARM INCREMENT BY 1 START WITH 2000
 /
+CREATE SEQUENCE SEQ_RULE_EXPR INCREMENT BY 1 START WITH 2000
+/
 CREATE SEQUENCE SEQ_RULE_TMPL_OPTN INCREMENT BY 1 START WITH 2000
 /
 CREATE SEQUENCE SEQ_SEARCHABLE_ATTRIBUTE_VALUE INCREMENT BY 1 START WITH 2000
@@ -864,25 +866,34 @@ CREATE TABLE EN_RULE_ATTRIB_VLD_VAL_T (
 )
 /
 CREATE TABLE EN_RULE_BASE_VAL_T (
-	RULE_BASE_VAL_ID NUMBER(19) NOT NULL,
-	RULE_NM VARCHAR2(256) NULL,
-	RULE_TMPL_ID NUMBER(19) NOT NULL,
-	RULE_BASE_VAL_ACTV_IND NUMBER(1) NOT NULL,
-	RULE_BASE_VAL_DESC VARCHAR2(2000) NULL,
-	RULE_BASE_VAL_IGNR_PRVS NUMBER(1) NOT NULL,
-	DOC_TYP_NM VARCHAR2(2000) NOT NULL,
-	DOC_HDR_ID NUMBER(14) NULL,
-	TMPL_RULE_IND NUMBER(1),
-	RULE_BASE_VAL_FRM_DT   DATE NOT NULL,
-  RULE_BASE_VAL_TO_DT    DATE NOT NULL,
-  RULE_BASE_VAL_DACTVN_DT DATE NULL,
-  RULE_BASE_VAL_CUR_IND NUMBER(1) DEFAULT 0,
-  RULE_BASE_VAL_VER_NBR NUMBER(8) DEFAULT 0,
-  RULE_BASE_VAL_DLGN_IND NUMBER(1),
-  RULE_BASE_VAL_PREV_VER NUMBER(19),
-  RULE_BASE_VAL_ACTVN_DT DATE NULL,
-  DB_LOCK_VER_NBR	NUMBER(8) DEFAULT 0,
-  CONSTRAINT EN_RULE_BASE_VAL_PK PRIMARY KEY (RULE_BASE_VAL_ID) 
+    RULE_BASE_VAL_ID NUMBER(19) NOT NULL,
+    RULE_NM VARCHAR2(256) NULL,
+    RULE_TMPL_ID NUMBER(19) NULL,
+    RULE_EXPR_ID NUMBER(19) NULL,
+    RULE_BASE_VAL_ACTV_IND NUMBER(1) NOT NULL,
+    RULE_BASE_VAL_DESC VARCHAR2(2000) NULL,
+    RULE_BASE_VAL_IGNR_PRVS NUMBER(1) NOT NULL,
+    DOC_TYP_NM VARCHAR2(2000) NOT NULL,
+    DOC_HDR_ID NUMBER(14) NULL,
+    TMPL_RULE_IND NUMBER(1),
+    RULE_BASE_VAL_FRM_DT   DATE NOT NULL,
+    RULE_BASE_VAL_TO_DT    DATE NOT NULL,
+    RULE_BASE_VAL_DACTVN_DT DATE NULL,
+    RULE_BASE_VAL_CUR_IND NUMBER(1) DEFAULT 0,
+    RULE_BASE_VAL_VER_NBR NUMBER(8) DEFAULT 0,
+    RULE_BASE_VAL_DLGN_IND NUMBER(1),
+    RULE_BASE_VAL_PREV_VER NUMBER(19),
+    RULE_BASE_VAL_ACTVN_DT DATE NULL,
+    DB_LOCK_VER_NBR	NUMBER(8) DEFAULT 0,
+    CONSTRAINT EN_RULE_BASE_VAL_PK PRIMARY KEY (RULE_BASE_VAL_ID) 
+)
+/
+-- Table for RuleExpressionDef; child of EN_RULE_BASE_VAL_T/RuleBaseValue
+CREATE TABLE EN_RULE_EXPR_T (
+    RULE_EXPR_ID    NUMBER(19) NOT NULL,
+    RULE_EXPR_TYP   VARCHAR(256) NOT NULL,
+    RULE_EXPR       VARCHAR2(4000),
+    CONSTRAINT EN_RULE_EXPR_T_PK PRIMARY KEY (RULE_EXPR_ID) 
 )
 /
 CREATE TABLE EN_RULE_EXT_T (
@@ -1338,6 +1349,10 @@ CREATE UNIQUE INDEX EN_WRKGRP_TYP_TI1 ON EN_WRKGRP_TYP_T (WRKGRP_TYP_NM)
 ALTER TABLE EN_RTE_NODE_CFG_PARM_T ADD CONSTRAINT EN_RTE_NODE_CFG_PARM_TR1
 FOREIGN KEY (RTE_NODE_CFG_PARM_ND)
 REFERENCES EN_RTE_NODE_T (RTE_NODE_ID)
+/
+ALTER TABLE EN_RULE_BASE_VAL_T ADD CONSTRAINT EN_RULE_BASE_VAL_TR1
+FOREIGN KEY (RULE_EXPR_ID)
+REFERENCES EN_RULE_EXPR_T (RULE_EXPR_ID)
 /
 ALTER TABLE EN_WRKGRP_EXT_DTA_T ADD CONSTRAINT EN_WRKGRP_EXT_DTA_TR1
 FOREIGN KEY (WRKGRP_EXT_ID)
@@ -2478,14 +2493,6 @@ ID
 --insert into FS_PARM_T values ('CoreMaintenanceEDoc','Kuali.Supervisor.Workgroup','2409BD6AB4CC800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can perform almost any function within Kuali.','N', 'MC')
 --/
 
-insert into SH_PARM_TYP_T values ('CONFG', 3, 0,'Config',1)
-/
-insert into SH_PARM_NMSPC_T values ('KR-NS', 3, 0, 'Kuali Rice', 1)
-/
-INSERT INTO sh_parm_t ("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM") VALUES ('KR-NS','Lookup','RESULTS_DEFAULT_MAX_COLUMN_LENGTH','CONFG','70','If a maxLength attribute has not been set on a lookup result field in the data dictionary, then the result column''s max length will be the value of this parameter. Set this parameter to 0 for an unlimited default length or a positive value (i.e. greater than 0) for a finite max length.','A','KUALI_FMSOPS')
-/
-INSERT INTO sh_parm_t ("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM") VALUES ('KR-NS','Lookup','RESULTS_LIMIT','CONFG','70','If a maxLength attribute has not been set on a lookup result field in the data dictionary, then the result column''s max length will be the value of this parameter. Set this parameter to 0 for an unlimited default length or a positive value (i.e. greater than 0) for a finite max length.','A','KUALI_FMSOPS')
-/
 insert into EN_APPL_CNST_T values ('Feature.CheckRouteLogAuthentication.CheckFuture', 'true', 1)
 /
 insert into EN_APPL_CNST_T values ('RouteQueue.maxRetryAttempts', '0', 1)
@@ -2937,7 +2944,14 @@ insert into SH_NTE_TYP_T values ('BO', '2D3C44FE49415102E043814FD8815102',	1,	'D
 /
 insert into SH_NTE_TYP_T values ('DH', '2D3C44FE49425102E043814FD8815102',	1,	'DOCUMENT HEADER', 'Y')
 /
-
+insert into SH_PARM_TYP_T values ('CONFG', 3, 0,'Config',1)
+/
+insert into SH_PARM_NMSPC_T values ('KR-NS', 3, 0, 'Kuali Rice', 1)
+/
+INSERT INTO sh_parm_t ("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM") VALUES ('KR-NS','Lookup','RESULTS_DEFAULT_MAX_COLUMN_LENGTH','CONFG','70','If a maxLength attribute has not been set on a lookup result field in the data dictionary, then the result column''s max length will be the value of this parameter. Set this parameter to 0 for an unlimited default length or a positive value (i.e. greater than 0) for a finite max length.','A','KUALI_FMSOPS')
+/
+INSERT INTO sh_parm_t ("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM") VALUES ('KR-NS','Lookup','RESULTS_LIMIT','CONFG','70','If a maxLength attribute has not been set on a lookup result field in the data dictionary, then the result column''s max length will be the value of this parameter. Set this parameter to 0 for an unlimited default length or a positive value (i.e. greater than 0) for a finite max length.','A','KUALI_FMSOPS')
+/
 insert into TRV_ACCT_EXT values ('a1', 'IAT') 
 /
 insert into TRV_ACCT_EXT values ('a2', 'EAT') 

@@ -130,6 +130,7 @@ public interface XmlConstants {
     // rule templates
     public static final String RULE_TEMPLATES = "ruleTemplates";
     public static final String RULE_TEMPLATE = "ruleTemplate";
+    public static final String RULE_EXPRESSION = "expression";
     public static final String DELEGATION_TEMPLATE = "delegationTemplate";
     public static final String REQUIRED = "required";
     public static final String ATTRIBUTES = "attributes";

@@ -489,6 +489,7 @@
     <field-descriptor column="RULE_NM" name="name" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_BASE_VAL_VER_NBR" name="versionNbr" jdbc-type="INTEGER"/>
     <field-descriptor column="RULE_TMPL_ID" name="ruleTemplateId" jdbc-type="BIGINT" />
+    <field-descriptor column="RULE_EXPR_ID" name="ruleExpressionId" jdbc-type="BIGINT" access="anonymous" />
     <field-descriptor column="RULE_BASE_VAL_ACTV_IND" name="activeInd" jdbc-type="BIT" />
     <field-descriptor column="RULE_BASE_VAL_DESC" name="description" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_BASE_VAL_IGNR_PRVS" name="ignorePrevious" jdbc-type="BIT" />
@@ -507,6 +508,10 @@
         auto-delete="false" auto-retrieve="true" auto-update="false">
         <foreignkey field-ref="ruleTemplateId" />
     </reference-descriptor>
+    <reference-descriptor name="ruleExpressionDef" class-ref="edu.iu.uis.eden.routetemplate.RuleExpressionDef"
+        auto-delete="true" auto-retrieve="true" auto-update="true">
+        <foreignkey field-ref="ruleExpressionId" />
+    </reference-descriptor>
     <collection-descriptor name="responsibilities" element-class-ref="edu.iu.uis.eden.routetemplate.RuleResponsibility"
         auto-delete="true" auto-retrieve="true" auto-update="true" proxy="false">
       <inverse-foreignkey field-ref="ruleBaseValuesId" />
@@ -517,6 +522,12 @@
     </collection-descriptor>
   </class-descriptor>
 
+  <!-- Mapping for RuleExpressionDef/EN_RULE_EXPR_T; 1-to-1 relationship with Rule/RuleBaseValues/EN_RULE_BASE_VAL_T -->
+  <class-descriptor class="edu.iu.uis.eden.routetemplate.RuleExpressionDef" table="EN_RULE_EXPR_T">
+    <field-descriptor column="RULE_EXPR_ID" name="id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_RULE_EXPR"/>
+    <field-descriptor column="RULE_EXPR_TYP" name="type" jdbc-type="VARCHAR" />
+    <field-descriptor column="RULE_EXPR" name="expression" jdbc-type="VARCHAR" />
+  </class-descriptor>
 
   <class-descriptor class="edu.iu.uis.eden.routetemplate.RuleDelegation" table="EN_DLGN_RSP_T">
   	<field-descriptor column="DLGN_RULE_ID" name="ruleDelegationId" jdbc-type="BIGINT" primarykey="true" sequence-name="SEQ_ROUTE_TEMPLATE" autoincrement="true"/>

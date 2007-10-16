@@ -229,7 +229,7 @@ public class RoutingReportAction extends WorkflowAction {
 
 				if (!alreadyProcessedRuleTemplateNames.contains(ruleTemplate.getName())) {
 				    alreadyProcessedRuleTemplateNames.add(ruleTemplate.getName());
-				List actionRequests = flexRM.getActionRequests(routeHeader, ruleTemplate.getName());
+				List actionRequests = flexRM.getActionRequests(routeHeader, routeLevel, null, ruleTemplate.getName());
 
 				numberOfActionRequests += actionRequests.size();
 				numberOfRules += flexRM.getNumberOfMatchingRules();

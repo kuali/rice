@@ -27,6 +27,7 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -39,6 +40,7 @@ import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.routetemplate.RuleBaseValues;
 import edu.iu.uis.eden.routetemplate.RuleDelegation;
+import edu.iu.uis.eden.routetemplate.RuleExpressionDef;
 import edu.iu.uis.eden.routetemplate.RuleResponsibility;
 import edu.iu.uis.eden.routetemplate.RuleService;
 import edu.iu.uis.eden.routetemplate.RuleTemplate;
@@ -80,20 +82,6 @@ public class RuleXmlParser implements XmlConstants {
      */
     private static final String DEFAULT_ACTION_REQUESTED = EdenConstants.ACTION_REQUEST_APPROVE_REQ;
 
-    /** original code
-    public List parseRules(InputStream input) throws IOException, InvalidXmlException {
-    
-        SAXBuilder builder = new SAXBuilder(false);
-        try {
-            Document doc = builder.build(input);
-            Element root = doc.getRootElement();
-            return parseRules(root);
-        } catch (JDOMException e) {
-            throw new InvalidXmlException("Parse error.", e);
-        }
-    }
-    */
-    
     public List<RuleBaseValues> parseRules(InputStream input) throws IOException, InvalidXmlException {
         try {
             Document doc = XmlHelper.trimSAXXml(input);
@@ -102,12 +90,12 @@ public class RuleXmlParser implements XmlConstants {
         } catch (JDOMException e) {
             throw new InvalidXmlException("Parse error.", e);
         } catch (SAXException e){
-			throw new InvalidXmlException("Parse error.",e);
-		} catch(ParserConfigurationException e){
-			throw new InvalidXmlException("Parse error.",e);
-		}
+            throw new InvalidXmlException("Parse error.",e);
+        } catch(ParserConfigurationException e){
+            throw new InvalidXmlException("Parse error.",e);
+        }
     }
-    
+
     /**
      * Parses and saves rules
      * @param element top-level 'data' element which should contain a <rules> child element
@@ -149,7 +137,7 @@ public class RuleXmlParser implements XmlConstants {
             checkRuleForDuplicate(rule);
             return;
         }
-        
+
         if (rule.getDelegateRule().booleanValue()) {
             throw new InvalidXmlException("Rule delegations cannot be named!");
         }
@@ -203,7 +191,9 @@ public class RuleXmlParser implements XmlConstants {
         }
         DocumentType documentType = null;
         RuleTemplate ruleTemplate = null;
+        RuleExpressionDef ruleExpressionDef = null;
         String ruleTemplateName = element.getChildText(RULE_TEMPLATE, RULE_NAMESPACE);
+        Element exprElement = element.getChild(RULE_EXPRESSION, RULE_NAMESPACE);
 
         if (ruleDelegation != null && Utilities.isEmpty(ruleTemplateName)) {
             RuleBaseValues parentRule = ruleDelegation.getRuleResponsibility().getRuleBaseValues();
@@ -217,16 +207,28 @@ public class RuleXmlParser implements XmlConstants {
             if (documentTypeName == null) {
                 throw new InvalidXmlException("Rule must have a document type.");
             }
-            if (ruleTemplateName == null) {
-                throw new InvalidXmlException("Rule must have a rule template.");
+            if (ruleTemplateName == null && exprElement == null) {
+                throw new InvalidXmlException("Rule must have a rule template or expression.");
             }
             documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
-            ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
             if (documentType == null) {
                 throw new InvalidXmlException("Could not locate document type '" + documentTypeName + "'");
             }
-            if (ruleTemplate == null) {
-                throw new InvalidXmlException("Could not locate rule template '" + ruleTemplateName + "'");
+            if (ruleTemplateName != null) {
+                ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
+                if (ruleTemplate == null) {
+                    throw new InvalidXmlException("Could not locate rule template '" + ruleTemplateName + "'");
+                }
+            }
+            if (exprElement != null) {
+                String exprType = exprElement.getAttributeValue("type");
+                if (StringUtils.isEmpty(exprType)) {
+                    throw new InvalidXmlException("Expression type must be specified");
+                }
+                String expression = exprElement.getTextTrim();
+                ruleExpressionDef = new RuleExpressionDef();
+                ruleExpressionDef.setType(exprType);
+                ruleExpressionDef.setExpression(expression);
             }
         }
         Boolean ignorePrevious = Boolean.valueOf(DEFAULT_IGNORE_PREVIOUS);
@@ -235,13 +237,18 @@ public class RuleXmlParser implements XmlConstants {
         }
 
         rule.setDocTypeName(documentType.getName());
-        rule.setRuleTemplateId(ruleTemplate.getRuleTemplateId());
-        rule.setRuleTemplate(ruleTemplate);
+        if (ruleTemplate != null) {
+            rule.setRuleTemplateId(ruleTemplate.getRuleTemplateId());
+            rule.setRuleTemplate(ruleTemplate);
+        }
+        if (ruleExpressionDef != null) {
+            rule.setRuleExpressionDef(ruleExpressionDef);
+        }
         rule.setDescription(description);
         rule.setIgnorePrevious(ignorePrevious);
         rule.setResponsibilities(parseResponsibilities(responsibilitiesElement, rule, ruleDelegation));
         rule.setRuleExtensions(parseRuleExtensions(ruleExtensionsElement, rule));
-        
+
         return rule;
     }
 
@@ -278,9 +285,10 @@ public class RuleXmlParser implements XmlConstants {
         while (it.hasNext()) {
             RuleBaseValues r = (RuleBaseValues) it.next();
             if (Utilities.equals(docTypeName, r.getDocTypeName()) &&
-                Utilities.equals(ruleTemplateName, r.getRuleTemplateName()) &&
-                Utilities.collectionsEquivalent(responsibilities, r.getResponsibilities()) &&
-                Utilities.collectionsEquivalent(extensions, r.getRuleExtensions())) {
+                    Utilities.equals(ruleTemplateName, r.getRuleTemplateName()) &&
+                    Utilities.equals(rule.getRuleExpressionDef(), r.getRuleExpressionDef()) &&
+                    Utilities.collectionsEquivalent(responsibilities, r.getResponsibilities()) &&
+                    Utilities.collectionsEquivalent(extensions, r.getRuleExtensions())) {
                 // we have a duplicate
                 throw new InvalidXmlException("Rule '" + rule.getDescription() + "' on doc '" + rule.getDocTypeName() + "' is a duplicate of rule '" + r.getDescription() + "' on doc '" + r.getDocTypeName() + "'");
             }

@@ -656,27 +656,38 @@ public class RuleServiceImpl implements RuleService {
             }
         }
 
-        for (Iterator iter = ruleBaseValues.getRuleTemplate().getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
-			RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iter.next();
-			if (!templateAttribute.isRuleValidationAttribute()) {
-				continue;
-			}
-			RuleValidationAttribute attribute = templateAttribute.getRuleValidationAttribute();
-			UserSession userSession = UserSession.getAuthenticatedUser();
-			try {
-				RuleValidationContext validationContext = new RuleValidationContext(ruleBaseValues, ruleDelegation, userSession);
-				ValidationResults results = attribute.validate(validationContext);
-				if (results != null && !results.getValidationResults().isEmpty()) {
-					errors.add(results);
-				}
-			} catch (Exception e) {
-				if (e instanceof RuntimeException) {
-					throw (RuntimeException)e;
-				}
-				throw new RuntimeException("Problem validation rule.", e);
-			}
+        if (ruleBaseValues.getRuleTemplate() == null && ruleBaseValues.getRuleExpressionDef() == null) {
+            
+            throw new RuntimeException("Rule has neither a template nor an expression defined: " + ruleBaseValues);
+        }
 
-		}
+        if (ruleBaseValues.getRuleTemplate() != null) {
+            for (Iterator iter = ruleBaseValues.getRuleTemplate().getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
+                RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iter.next();
+                if (!templateAttribute.isRuleValidationAttribute()) {
+                    continue;
+                }
+                RuleValidationAttribute attribute = templateAttribute.getRuleValidationAttribute();
+                UserSession userSession = UserSession.getAuthenticatedUser();
+                try {
+                    RuleValidationContext validationContext = new RuleValidationContext(ruleBaseValues, ruleDelegation, userSession);
+                    ValidationResults results = attribute.validate(validationContext);
+                    if (results != null && !results.getValidationResults().isEmpty()) {
+                        errors.add(results);
+                    }
+                } catch (Exception e) {
+                    if (e instanceof RuntimeException) {
+                        throw (RuntimeException)e;
+                    }
+                    throw new RuntimeException("Problem validation rule.", e);
+                }
+
+            }
+        }
+        if (ruleBaseValues.getRuleExpressionDef() != null) {
+            // rule expressions do not require parse-/save-time validation
+        }
+
         if (!errors.isEmpty()) {
             throw new WorkflowServiceErrorException("RuleBaseValues validation errors", errors);
         }
@@ -1221,6 +1232,9 @@ public class RuleServiceImpl implements RuleService {
 	    rule.setDeactivationDate(null);
 	    rule.setLockVerNbr(0);
 	    rule.setRouteHeaderId(documentId);
+	    
+	    // TODO: FIXME: need to copy the rule expression here too?
+	    
 	    rule.setResponsibilities(new ArrayList());
 	    for (RuleResponsibility existingResponsibility : (List<RuleResponsibility>)existingRule.getResponsibilities()) {
 		RuleResponsibility responsibility = new RuleResponsibility();

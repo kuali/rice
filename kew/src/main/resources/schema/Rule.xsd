@@ -68,7 +68,8 @@
       		</documentation>
       	</annotation>
       </element>
-      <element name="ruleTemplate" type="c:ShortStringType">
+
+      <element name="ruleTemplate" type="c:ShortStringType" minOccurs="0">
       	<annotation>
       		<documentation>
       		 The rule template applies to the routing nodes.
@@ -84,20 +85,20 @@
 	  	</annotation>
 	  </element>
 	        
-      <element name="ignorePrevious" type="boolean" minOccurs="0">
-      	<annotation>
-      		<documentation>
-      		 An indicator to define if previous routing for approval will be ignored.
-      		</documentation>
-      	</annotation>
-      </element>
-      
       <element name="expression" type="rc:RuleExpressionType" minOccurs="0">
         <annotation>
             <documentation>
                 An expression which is used to evaluate the rule
             </documentation>
         </annotation>
+      </element>
+
+      <element name="ignorePrevious" type="boolean" minOccurs="0">
+      	<annotation>
+      		<documentation>
+      		 An indicator to define if previous routing for approval will be ignored.
+      		</documentation>
+      	</annotation>
       </element>
 
       <element name="ruleExtensions" type="rc:RuleExtensionsType" minOccurs="0">

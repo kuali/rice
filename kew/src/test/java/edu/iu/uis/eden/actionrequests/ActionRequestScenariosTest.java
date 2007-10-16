@@ -19,6 +19,7 @@ package edu.iu.uis.eden.actionrequests;
 import java.util.Iterator;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
 
@@ -44,6 +45,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
      * 
      * @throws Exception
      */
+    @Ignore
     @Test public void testInlineRequestsRouteModule() throws Exception {
         /*WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("arh14"), "InlineRequestsDocumentType");
         try {

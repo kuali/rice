@@ -1,0 +1,125 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package edu.iu.uis.eden.engine;
+
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.junit.Test;
+import org.kuali.workflow.test.KEWTestCase;
+
+import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.doctype.DocumentType;
+import edu.iu.uis.eden.engine.node.RouteNode;
+import edu.iu.uis.eden.util.Utilities;
+
+
+/**
+ * Tests the parsing of route node config params 
+ * @author Aaron Hamid (arh14 at cornell dot edu)
+ */
+public class RouteNodeConfigParamTest extends KEWTestCase {
+
+    private static final Logger LOG = Logger.getLogger(RouteNodeConfigParamTest.class);
+
+    protected void loadTestData() throws Exception {
+        loadXmlFile("RouteNodeConfigParams.xml");
+    }
+
+    /**
+     * Asserts that specified route node definition has the specified config parameter
+     */
+    protected void assertHasConfigParam(RouteNode routeNodeDef, String key, String value) {
+        Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(routeNodeDef.getConfigParams());
+        assertEquals(value, cfgMap.get(key));
+    }
+
+    @Test public void testRouteNodeConfigParams() {
+        DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("RouteNodeConfigParams");
+        assertNotNull(docType);
+        assertNotNull(docType.getDocumentTypeId());
+
+        // adhoc node
+        RouteNode routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "AdHoc");
+        assertNotNull(routeNodeDef);
+        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "<start name=\"AdHoc\"><activationType>P</activationType></start>");
+        assertHasConfigParam(routeNodeDef, "activationType", "P");
+
+        /*
+        routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "setStartedVar");
+        assertNotNull(routeNodeDef);
+        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "");
+        assertHasConfigParam(routeNodeDef, "type", "edu.iu.uis.eden.engine.node.var.SetVarNode");
+        assertHasConfigParam(routeNodeDef, "name", "started");
+        assertHasConfigParam(routeNodeDef, "value", "startedVariableValue");
+
+        routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "setCopiedVar");
+        assertNotNull(routeNodeDef);
+        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "");
+        assertHasConfigParam(routeNodeDef, "type", "edu.iu.uis.eden.engine.node.var.SetVarNode");
+        assertHasConfigParam(routeNodeDef, "name", "copiedVar");
+        assertHasConfigParam(routeNodeDef, "value", "var:started");
+        
+        routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "PreApprovalTestOne");
+        assertNotNull(routeNodeDef);
+        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "");
+        assertHasConfigParam(routeNodeDef, "activationType", "S");
+        assertHasConfigParam(routeNodeDef, "ruleSelector", "Named");
+        assertHasConfigParam(routeNodeDef, "ruleName", "TestRule1");
+        
+        routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "setEndedVar");
+        assertNotNull(routeNodeDef);
+        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "");
+        assertHasConfigParam(routeNodeDef, "type", "edu.iu.uis.eden.engine.node.var.SetVarNode");
+        assertHasConfigParam(routeNodeDef, "name", "ended");
+        assertHasConfigParam(routeNodeDef, "value", "endedVariableValue");
+        
+        routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "setGoogleVar");
+        assertNotNull(routeNodeDef);
+        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "");
+        assertHasConfigParam(routeNodeDef, "type", "edu.iu.uis.eden.engine.node.var.SetVarNode");
+        assertHasConfigParam(routeNodeDef, "name", "google");
+        assertHasConfigParam(routeNodeDef, "value", "url:http://google.com");
+
+        routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "setXPathVar");
+        assertNotNull(routeNodeDef);
+        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "");
+        assertHasConfigParam(routeNodeDef, "type", "edu.iu.uis.eden.engine.node.var.SetVarNode");
+        assertHasConfigParam(routeNodeDef, "name", "xpath");
+        assertHasConfigParam(routeNodeDef, "value", "xpath:concat(local-name(//documentContent),$ended)");
+
+        routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "resetStartedVar");
+        assertNotNull(routeNodeDef);
+        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "");
+        assertHasConfigParam(routeNodeDef, "type", "edu.iu.uis.eden.engine.node.var.SetVarNode");
+        assertHasConfigParam(routeNodeDef, "name", "started");
+        assertHasConfigParam(routeNodeDef, "value", "aNewStartedVariableValue");
+
+        routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "logNode");
+        assertNotNull(routeNodeDef);
+        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "");
+        assertHasConfigParam(routeNodeDef, "type", "edu.iu.uis.eden.engine.node.LogNode");
+        assertHasConfigParam(routeNodeDef, "message", "var:xpath");
+
+        routeNodeDef = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocumentTypeId(), "logNode2");
+        assertNotNull(routeNodeDef);
+        assertHasConfigParam(routeNodeDef, RouteNode.CONTENT_FRAGMENT_CFG_KEY, "");
+        assertHasConfigParam(routeNodeDef, "type", "edu.iu.uis.eden.engine.node.LogNode");
+        assertHasConfigParam(routeNodeDef, "level", "ErRoR");
+        assertHasConfigParam(routeNodeDef, "message", "THAT'S ALL FOLKS");
+        */
+    }   
+}

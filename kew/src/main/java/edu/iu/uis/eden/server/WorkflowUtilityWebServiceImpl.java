@@ -580,7 +580,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     		RouteContext context = RouteContext.getCurrentRouteContext();
     		context.setDocument(routeHeader);
     		try {
-    			List actionRequests = flexRM.getActionRequests(routeHeader, ruleTemplateName);
+    			List actionRequests = flexRM.getActionRequests(routeHeader, node, null, ruleTemplateName);
     			for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
     				ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
     				if (actionRequest.isApproveOrCompleteRequest()) {

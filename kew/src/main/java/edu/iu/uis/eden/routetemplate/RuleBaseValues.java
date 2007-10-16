@@ -69,6 +69,7 @@ public class RuleBaseValues implements WorkflowPersistable {
     private List<RuleResponsibility> responsibilities;
     private List<RuleExtension> ruleExtensions;
     private RuleTemplate ruleTemplate;
+    private RuleExpressionDef ruleExpressionDef;
     private RuleBaseValues previousVersion;
     private Timestamp activationDate;
     private Boolean delegateRule = Boolean.FALSE;
@@ -82,6 +83,20 @@ public class RuleBaseValues implements WorkflowPersistable {
     public RuleBaseValues() {
 	responsibilities = new ArrayList<RuleResponsibility>();
 	ruleExtensions = new ArrayList<RuleExtension>();
+    }
+
+    /**
+     * @return the rule expression definition for this rule, if defined
+     */
+    public RuleExpressionDef getRuleExpressionDef() {
+        return ruleExpressionDef;
+    }
+
+    /**
+     * @param ruleExpressionDef the rule expression definition to set for this rule
+     */
+    public void setRuleExpressionDef(RuleExpressionDef ruleExpressionDef) {
+        this.ruleExpressionDef = ruleExpressionDef;
     }
 
     public Map getRuleExtensionValueLabels() {

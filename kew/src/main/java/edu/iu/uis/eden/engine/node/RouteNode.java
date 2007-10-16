@@ -40,8 +40,8 @@ public class RouteNode implements Serializable {
 
     private static final long serialVersionUID = 4891233177051752726L;
 
-    private static final String CONTENT_FRAGMENT_CFG_KEY = "contentFragment";
-    public static final String RULE_SELECTOR_CFG_KEY = "rule.selector";
+    public static final String CONTENT_FRAGMENT_CFG_KEY = "contentFragment";
+    public static final String RULE_SELECTOR_CFG_KEY = "ruleSelector";
 
     private Long routeNodeId;
     private Long documentTypeId;

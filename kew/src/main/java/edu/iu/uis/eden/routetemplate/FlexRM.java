@@ -97,13 +97,15 @@ public class FlexRM {
         this.effectiveDate = effectiveDate;
     }
 
-    public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, String ruleTemplateName) throws EdenUserNotFoundException, WorkflowException {
+    /*public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, String ruleTemplateName) throws EdenUserNotFoundException, WorkflowException {
 	return getActionRequests(routeHeader, null, ruleTemplateName);
-    }
+    }*/
 
     // loads a RuleSelector implementation
-    protected RuleSelector loadRuleSelector(RouteNodeInstance nodeInstance) throws WorkflowException {
-        Map<String, String> nodeCfgParams = Utilities.getKeyValueCollectionAsMap(nodeInstance.getRouteNode().getConfigParams());
+    protected RuleSelector loadRuleSelector(RouteNode routeNodeDef) throws WorkflowException {
+        Map<String, String> nodeCfgParams = Utilities.getKeyValueCollectionAsMap(
+                routeNodeDef.
+                getConfigParams());
         String ruleSelectorName = nodeCfgParams.get(RouteNode.RULE_SELECTOR_CFG_KEY);
         if (ruleSelectorName == null) {
             ruleSelectorName = DEFAULT_RULE_SELECTOR;
@@ -131,21 +133,44 @@ public class FlexRM {
         return ruleSelector;
     }
 
+    /**
+     * Generates action requests
+     * @param routeHeader the document route header
+     * @param nodeInstance the route node instance; this may NOT be null
+     * @param ruleTemplateName the rule template
+     * @return list of action requests
+     * @throws EdenUserNotFoundException
+     * @throws WorkflowException
+     */
     public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String ruleTemplateName) throws EdenUserNotFoundException, WorkflowException {
+        return getActionRequests(routeHeader, nodeInstance.getRouteNode(), nodeInstance, ruleTemplateName);
+    }
+
+    /**
+     * Generates action requests
+     * @param routeHeader the document route header
+     * @param routeNodeDef the RouteNode definition of the route node instance
+     * @param nodeInstance the route node instance; this may be null!
+     * @param ruleTemplateName the rule template
+     * @return list of action requests
+     * @throws EdenUserNotFoundException
+     * @throws WorkflowException
+     */
+    public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, RouteNode routeNodeDef, RouteNodeInstance nodeInstance, String ruleTemplateName) throws EdenUserNotFoundException, WorkflowException {
 	RouteContext context = RouteContext.getCurrentRouteContext();
 	// TODO really the route context just needs to be able to support nested create and clears
 	// (i.e. a Stack model similar to transaction intercepting in Spring) and we wouldn't have to do this
 	if (context.getDocument() == null) {
 	    context.setDocument(routeHeader);
 	}
-	if (context.getNodeInstance() == null) {
-	    context.setNodeInstance(nodeInstance);
-	}
+        if (context.getNodeInstance() == null) {
+            context.setNodeInstance(nodeInstance);
+        }
 	DocumentContent documentContent = context.getDocumentContent();
 
 	LOG.debug("Making action requests for document " + routeHeader.getRouteHeaderId());
 	
-	RuleSelector ruleSelector = loadRuleSelector(nodeInstance);
+	RuleSelector ruleSelector = loadRuleSelector(routeNodeDef);
 
 	List<Rule> rules = ruleSelector.selectRules(context, routeHeader, nodeInstance, ruleTemplateName, effectiveDate);
 

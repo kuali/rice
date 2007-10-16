@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+    <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+        <rule>
+            <name>TestRule1</name>
+            <documentType>RouteNodeConfigParams</documentType>
+            <description>TestRule1</description>
+            <expression type="dummytype">this is some expresssion</expression>
+            <ignorePrevious>false</ignorePrevious>
+            <responsibilities>
+                <responsibility>
+                    <user>user1</user>
+                    <actionRequested>A</actionRequested>
+                    <priority>2</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
+    </rules>
+
+    <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+        <documentType>
+            <name>RouteNodeConfigParams</name>
+            <description>RouteNodeConfigParams</description>
+            <label>RouteNodeConfigParams</label>
+            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <docHandler>_blank</docHandler>
+            <active>true</active>
+            <routePaths>
+                <routePath>
+                    <start name="AdHoc" nextNode="setStartedVar" />
+                    <simple name="setStartedVar" nextNode="setCopiedVar"/>
+                    <simple name="setCopiedVar" nextNode="PreApprovalTestOne"/>
+                    <requests name="PreApprovalTestOne" nextNode="setEndedVar"/>
+                    <simple name="setEndedVar" nextNode="setGoogleVar"/>
+                    <simple name="setGoogleVar" nextNode="setXPathVar"/>
+                    <simple name="setXPathVar" nextNode="resetStartedVar"/>
+                    <simple name="resetStartedVar" nextNode="logNode"/>
+                    <simple name="logNode" nextNode="logNode2"/>
+                    <simple name="logNode2"/>
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="AdHoc">
+                    <activationType>P</activationType>
+                </start>
+                <simple name="setStartedVar">
+                  <type>edu.iu.uis.eden.engine.node.var.SetVarNode</type>
+                  <name>started</name>
+                  <value>startedVariableValue</value>
+                </simple>
+                <simple name="setCopiedVar">
+                  <type>edu.iu.uis.eden.engine.node.var.SetVarNode</type>
+                  <name>copiedVar</name>
+                  <value>var:started</value>
+                </simple>
+                <requests name="PreApprovalTestOne">
+                    <activationType>S</activationType>
+                    <ruleSelector>Named</ruleSelector>
+                    <ruleName>TestRule1</ruleName>
+                </requests>
+                <simple name="setEndedVar">
+                    <type>edu.iu.uis.eden.engine.node.var.SetVarNode</type>
+                    <name>ended</name>
+                    <value>endedVariableValue</value>
+                </simple>
+                <simple name="setGoogleVar">
+                    <type>edu.iu.uis.eden.engine.node.var.SetVarNode</type>
+                    <name>google</name>
+                    <value>url:http://google.com</value>
+                </simple>
+                <simple name="setXPathVar">
+                    <type>edu.iu.uis.eden.engine.node.var.SetVarNode</type>
+                    <name>xpath</name>
+                    <value>xpath:concat(local-name(//documentContent),$ended)</value>
+                </simple>
+                <simple name="resetStartedVar">
+                  <type>edu.iu.uis.eden.engine.node.var.SetVarNode</type>
+                  <name>started</name>
+                  <value>aNewStartedVariableValue</value>
+                </simple>
+                <simple name="logNode">
+                    <type>edu.iu.uis.eden.engine.node.LogNode</type>
+                    <message>var:xpath</message>
+                </simple>
+                <simple name="logNode2">
+                    <type>edu.iu.uis.eden.engine.node.LogNode</type>
+                    <level>ErRoR</level>
+                    <log>Custom.Logger.Name</log>
+                    <message>THAT'S ALL FOLKS</message>
+                </simple>
+            </routeNodes>
+        </documentType>
+    </documentTypes>
+</data>

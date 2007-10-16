@@ -184,7 +184,7 @@ public class RoleServiceImpl implements RoleService {
         		context.setDocument(routeHeader);
         		context.setNodeInstance(nodeInstance);
         		try {
-        			List actionRequests = flexRM.getActionRequests(routeHeader, ruleTemplate.getName());
+        			List actionRequests = flexRM.getActionRequests(routeHeader, nodeInstance, ruleTemplate.getName());
         			for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
         				ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
         				if (roleName.equals(actionRequest.getRoleName()) && qualifiedRoleNameLabel.equals(actionRequest.getQualifiedRoleNameLabel())) {
@@ -222,7 +222,7 @@ public class RoleServiceImpl implements RoleService {
         		context.setDocument(routeHeader);
         		context.setNodeInstance(nodeInstance);
         		try {
-        			List actionRequests = flexRM.getActionRequests(routeHeader, ruleTemplate.getName());
+        			List actionRequests = flexRM.getActionRequests(routeHeader, nodeInstance, ruleTemplate.getName());
         			for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
         				ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
         				if (roleName.equals(actionRequest.getRoleName())) {

@@ -54,6 +54,6 @@
     </action-mappings>
 
     <controller processorClass="org.kuali.core.web.struts.action.KualiRequestProcessor" />
-    <message-resources parameter="SampleApplicationResources" />
+    <message-resources factory="org.kuali.core.web.struts.action.KualiPropertyMessageResourcesFactory" parameter="SampleApplicationResources" />
 </struts-config>
 

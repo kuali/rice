@@ -15,6 +15,14 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
+import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowException;
 
@@ -34,8 +42,74 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
 public class KRAMetaRuleExpression implements RuleExpression {
+    private static final Logger LOG = Logger.getLogger(KRAMetaRuleExpression.class);
 
-    public RuleExpressionResult evaluate() throws EdenUserNotFoundException, WorkflowException {
+    private static enum KRA_RULE_FLAG {
+        NEXT, TRUE, FALSE
+    }
+
+    public RuleExpressionResult evaluate(RuleBaseValues ruleDefinition, RouteContext context) throws EdenUserNotFoundException, WorkflowException {
+        RuleExpressionDef exprDef = ruleDefinition.getRuleExpressionDef();
+        if (exprDef == null) {
+            throw new WorkflowException("No expression defined in rule definition: " + ruleDefinition);
+        }
+        String expression = exprDef.getExpression();
+        if (StringUtils.isEmpty(expression)) {
+            throw new WorkflowException("Empty expression in rule definition: " + ruleDefinition);
+        }
+
+        String[] statements = expression.split("[;\r\n]");
+        
+        if (statements.length == 0) {
+            throw new WorkflowException("No statements parsed in expression: " + expression);
+        }
+
+        for (int i = 0; i < statements.length; i++) {
+            int stmtNum = i + 1;
+            String statement = statements[i];
+            String[] words = statement.split(":");
+            if (words.length < 2) {
+                throw new WorkflowException("Invalid statement (#" + stmtNum + "): " + statement);
+            }
+            String ruleName = words[0];
+            if (StringUtils.isEmpty(ruleName)) {
+                throw new WorkflowException("Invalid rule in statement (#" + stmtNum + "): " + statement);
+            }
+            String flag = words[1];
+            KRA_RULE_FLAG flagCode = KRA_RULE_FLAG.valueOf(flag.toUpperCase());
+            if (flagCode == null) {
+                throw new WorkflowException("Invalid flag in statement (#" + stmtNum + "): " + statement);
+            }
+            RuleBaseValues nestedRule = KEWServiceLocator.getRuleService().getRuleByName(ruleName);
+            if (nestedRule == null) {
+                throw new WorkflowException("Rule '" + ruleName + "' in statement (#" + stmtNum + ") not found: " + statement);
+            }
+            switch (flagCode) {
+                case NEXT: {
+                    RuleImpl ruleImpl = new RuleImpl(nestedRule);
+                    RuleExpressionResult result = ruleImpl.evaluate(nestedRule, context);
+                    return result;
+                }
+                case TRUE:{
+                    RuleImpl ruleImpl = new RuleImpl(nestedRule);
+                    RuleExpressionResult result = ruleImpl.evaluate(nestedRule, context);
+                    if (!result.isSuccess()) {
+                        // failed...
+                        return result;
+                    }
+                }
+                case FALSE:{
+                    RuleImpl ruleImpl = new RuleImpl(nestedRule);
+                    RuleExpressionResult result = ruleImpl.evaluate(nestedRule, context);
+                    if (result.isSuccess()) {
+                        // failed...
+                        return new RuleExpressionResult(false, result.getResponsibilities());
+                    }
+                }
+                default:
+                    throw new WorkflowException("Unhandled statement flag: " + flagCode);
+            }
+        }
         return null;
     }
 }

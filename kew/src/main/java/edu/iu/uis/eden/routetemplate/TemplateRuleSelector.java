@@ -99,7 +99,7 @@ class TemplateRuleSelector implements RuleSelector {
 
 	List<Rule> ruleList = new ArrayList<Rule>(rules.size());
 	for (RuleBaseValues ruleDefinition: (List<RuleBaseValues>) rules) {
-	    ruleList.add(new RuleImpl(ruleDefinition, documentContent));
+	    ruleList.add(new RuleImpl(ruleDefinition));
 	}
 	return ruleList;
     }

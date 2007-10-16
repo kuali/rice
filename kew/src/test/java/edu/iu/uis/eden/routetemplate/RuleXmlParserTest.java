@@ -69,7 +69,18 @@ public class RuleXmlParserTest extends KEWTestCase {
             assertNotNull(TestUtilities.findExceptionInStack(wsee, InvalidXmlException.class));
         }
     }
-
+    
+    @Test public void testDuplicateRuleWithExpression() throws IOException, InvalidXmlException {
+        InputStream stream = getClass().getResourceAsStream("DuplicateRuleToImportWithExpression.xml");
+        assertNotNull(stream);
+        log.info("Importing duplicate again");
+        try {
+            KEWServiceLocator.getRuleService().loadXml(stream, null);
+        } catch (WorkflowServiceErrorException wsee) {
+            assertNotNull(TestUtilities.findExceptionInStack(wsee, InvalidXmlException.class));
+        }
+    }
+    
     @Test public void testNotDuplicateRule() throws IOException, InvalidXmlException {
         InputStream stream = getClass().getResourceAsStream("NotADuplicateRuleToImport.xml");
         assertNotNull(stream);
@@ -77,6 +88,17 @@ public class RuleXmlParserTest extends KEWTestCase {
         // load the unique template first
         KEWServiceLocator.getRuleTemplateService().loadXml(stream, null);
         stream = getClass().getResourceAsStream("NotADuplicateRuleToImport.xml");
+        // then the rule
+        KEWServiceLocator.getRuleService().loadXml(stream, null);
+    }
+    
+    @Test public void testNotDuplicateRuleWithExpression() throws IOException, InvalidXmlException {
+        InputStream stream = getClass().getResourceAsStream("NotADuplicateRuleToImportWithExpression.xml");
+        assertNotNull(stream);
+        log.info("Importing a unique rule");
+        // load the unique template first
+        KEWServiceLocator.getRuleTemplateService().loadXml(stream, null);
+        stream = getClass().getResourceAsStream("NotADuplicateRuleToImportWithExpression.xml");
         // then the rule
         KEWServiceLocator.getRuleService().loadXml(stream, null);
     }
@@ -115,10 +137,70 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("user1", responsibility.getWorkflowUser().getAuthenticationUserId().getId());
         assertEquals("A", responsibility.getActionRequestedCd());
     }
+    
+    @Test public void testNamedRuleWithExpression() throws EdenUserNotFoundException {
+        loadXmlFile("NamedRuleWithExpression.xml");
+        RuleService ruleService = KEWServiceLocator.getRuleService();
+        RuleBaseValues rule = ruleService.getRuleByName("ANamedRule");
+        assertNotNull(rule);
+        assertEquals("ANamedRule", rule.getName());
+        assertEquals("A named rule", rule.getDescription());
+        List extensions = rule.getRuleExtensions();
+        assertEquals(1, extensions.size());
+        RuleExtension extension = (RuleExtension) extensions.get(0);
+        assertEquals("TestRuleAttribute", extension.getRuleTemplateAttribute().getRuleAttribute().getName());
+        List extensionValues = extension.getExtensionValues();
+        assertEquals(2, extensionValues.size());
+        //RuleExtensionValue extensionValue = (RuleExtensionValue) extensionValues.get(0);
+        RuleExtensionValue extensionValue = getExtensionValue(extensionValues, "color");
+        assertEquals("color", extensionValue.getKey());
+        assertEquals("green", extensionValue.getValue());
+        //extensionValue = (RuleExtensionValue) extensionValues.get(1);
+        extensionValue = getExtensionValue(extensionValues, "shape");
+        assertEquals("shape", extensionValue.getKey());
+        assertEquals("square", extensionValue.getValue());
+        List responsibilities = rule.getResponsibilities();
+        assertEquals(1, responsibilities.size());
+        RuleResponsibility responsibility = (RuleResponsibility) responsibilities.get(0);
+        assertEquals("user1", responsibility.getWorkflowUser().getAuthenticationUserId().getId());
+        assertEquals("A", responsibility.getActionRequestedCd());
+        assertNotNull(rule.getRuleExpressionDef());
+        assertEquals("someType", rule.getRuleExpressionDef().getType());
+        assertEquals("some expression", rule.getRuleExpressionDef().getExpression());
+    }
 
     @Test public void testUpdatedRule() throws EdenUserNotFoundException {
         testNamedRule();
         loadXmlFile("UpdatedNamedRule.xml");
+        RuleService ruleService = KEWServiceLocator.getRuleService();
+        RuleBaseValues rule = ruleService.getRuleByName("ANamedRule");
+        assertNotNull(rule);
+        assertEquals("ANamedRule", rule.getName());
+        assertEquals("A named rule with an updated description, rule extension values, and responsibilities", rule.getDescription());
+        List extensions = rule.getRuleExtensions();
+        assertEquals(1, extensions.size());
+        RuleExtension extension = (RuleExtension) extensions.get(0);
+        assertEquals("TestRuleAttribute", extension.getRuleTemplateAttribute().getRuleAttribute().getName());
+        List extensionValues = extension.getExtensionValues();
+        assertEquals(2, extensionValues.size());
+        //RuleExtensionValue extensionValue = (RuleExtensionValue) extensionValues.get(0);
+        RuleExtensionValue extensionValue = getExtensionValue(extensionValues, "flavor");
+        assertEquals("flavor", extensionValue.getKey());
+        assertEquals("vanilla", extensionValue.getValue());
+        //extensionValue = (RuleExtensionValue) extensionValues.get(1);
+        extensionValue = getExtensionValue(extensionValues, "value");
+        assertEquals("value", extensionValue.getKey());
+        assertEquals("10", extensionValue.getValue());
+        List responsibilities = rule.getResponsibilities();
+        assertEquals(1, responsibilities.size());
+        RuleResponsibility responsibility = (RuleResponsibility) responsibilities.get(0);
+        assertEquals("user2", responsibility.getWorkflowUser().getAuthenticationUserId().getId());
+        assertEquals("F", responsibility.getActionRequestedCd());
+    }
+    
+    @Test public void testUpdatedRuleWithExpression() throws EdenUserNotFoundException {
+        testNamedRule();
+        loadXmlFile("UpdatedNamedRuleWithExpression.xml");
         RuleService ruleService = KEWServiceLocator.getRuleService();
         RuleBaseValues rule = ruleService.getRuleByName("ANamedRule");
         assertNotNull(rule);
@@ -153,6 +235,26 @@ public class RuleXmlParserTest extends KEWTestCase {
         testNamedRule();
 
         final InputStream stream = getClass().getResourceAsStream("DuplicateAnonymousRule.xml");
+        assertNotNull(stream);
+        log.info("Importing anonymous duplicate rule");
+        AssertThrows at = new AssertThrows(WorkflowServiceErrorException.class, "Expected exception was not thrown") {
+            @Override
+            public void test() throws Exception {
+                KEWServiceLocator.getRuleService().loadXml(stream, null);           
+            }
+        };
+        at.runTest();
+        assertNotNull("Expected exception was not thrown", TestUtilities.findExceptionInStack(at.getActualException(), InvalidXmlException.class));
+    }
+    
+    /**
+     * This test tests that an anonymous rule will still be checked against named rules for duplication.
+     * @throws EdenUserNotFoundException
+     */
+    @Test public void testAnonymousWithExpressionDuplicatesNamed() throws EdenUserNotFoundException {
+        testNamedRuleWithExpression();
+
+        final InputStream stream = getClass().getResourceAsStream("DuplicateAnonymousRuleWithExpression.xml");
         assertNotNull(stream);
         log.info("Importing anonymous duplicate rule");
         AssertThrows at = new AssertThrows(WorkflowServiceErrorException.class, "Expected exception was not thrown") {

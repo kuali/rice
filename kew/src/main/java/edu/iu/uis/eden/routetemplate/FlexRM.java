@@ -166,7 +166,6 @@ public class FlexRM {
         if (context.getNodeInstance() == null) {
             context.setNodeInstance(nodeInstance);
         }
-	DocumentContent documentContent = context.getDocumentContent();
 
 	LOG.debug("Making action requests for document " + routeHeader.getRouteHeaderId());
 	
@@ -193,7 +192,7 @@ public class FlexRM {
 	List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
 	if (rules != null) {
 	    for (Rule rule: rules) {
-	        RuleExpressionResult result = rule.evaluate();
+	        RuleExpressionResult result = rule.evaluate(rule.getDefinition(), context);
 	        if (result.isSuccess()) {
 	            // actionRequests.addAll(makeActionRequests(context, rule, routeHeader, null, null));
 	            makeActionRequests(arFactory, context, rule.getDefinition(), routeHeader, null, null);

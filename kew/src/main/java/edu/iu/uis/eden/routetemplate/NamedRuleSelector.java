@@ -32,7 +32,7 @@ import edu.iu.uis.eden.util.Utilities;
  * Rule selector that select a rule based on configured rule name 
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
-public class NamedRuleSelector implements RuleSelector {
+class NamedRuleSelector implements RuleSelector {
     /**
      * The route node config param consulted to determine the rule name to select
      */
@@ -51,7 +51,7 @@ public class NamedRuleSelector implements RuleSelector {
             throw new WorkflowException("No rule found with name '" + ruleName + "'");
         }
         List<Rule> rules = new ArrayList<Rule>(1);
-        rules.add(new RuleImpl(ruleDef, context.getDocumentContent()));
+        rules.add(new RuleImpl(ruleDef));
         return rules;
     }
 }

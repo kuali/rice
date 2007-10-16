@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
@@ -31,16 +32,8 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.GenericXMLRuleAttribute;
  * @author Aaron Hamid (arh14 at cornell dot edu)
  */
 class WorkflowAttributeRuleExpression implements RuleExpression {
-    private final RuleBaseValues ruleDefinition;
-    private final DocumentContent docContent;
-
-    WorkflowAttributeRuleExpression(RuleBaseValues ruleDefinition, DocumentContent docContent) {
-        this.ruleDefinition = ruleDefinition;
-        this.docContent = docContent;
-    }
-
-    public RuleExpressionResult evaluate() throws EdenUserNotFoundException, WorkflowException {
-        boolean match = isMatch(docContent);
+    public RuleExpressionResult evaluate(RuleBaseValues ruleDefinition, RouteContext context) throws EdenUserNotFoundException, WorkflowException {
+        boolean match = isMatch(ruleDefinition, context.getDocumentContent());
         if (match) {
             return new RuleExpressionResult(match, ruleDefinition.getResponsibilities());
         } else {
@@ -48,7 +41,7 @@ class WorkflowAttributeRuleExpression implements RuleExpression {
         }
     }
 
-    public boolean isMatch(DocumentContent docContent) {
+    public boolean isMatch(RuleBaseValues ruleDefinition, DocumentContent docContent) {
         for (Iterator iter = ruleDefinition.getRuleTemplate().getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
             RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
             if (!ruleTemplateAttribute.isWorkflowAttribute()) {

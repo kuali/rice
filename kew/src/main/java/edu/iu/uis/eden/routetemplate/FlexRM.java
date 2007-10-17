@@ -195,7 +195,7 @@ public class FlexRM {
 	        RuleExpressionResult result = rule.evaluate(rule.getDefinition(), context);
 	        if (result.isSuccess()) {
 	            // actionRequests.addAll(makeActionRequests(context, rule, routeHeader, null, null));
-	            makeActionRequests(arFactory, context, rule.getDefinition(), routeHeader, null, null);
+	            makeActionRequests(arFactory, result.getResponsibilities(), context, rule.getDefinition(), routeHeader, null, null);
 	        }
 	    }
 	}

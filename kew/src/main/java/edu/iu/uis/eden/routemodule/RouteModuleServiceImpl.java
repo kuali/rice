@@ -38,7 +38,8 @@ public class RouteModuleServiceImpl implements RouteModuleService {
         String routeMethodName = node.getRouteMethodName();
         LOG.debug("Finding route module for routeMethodName="+routeMethodName+" at route level "+node.getRouteNodeName());
         RouteModule routeModule = null;
-        if (node.isFlexRM()) {
+        // default to FlexRM module if the routeMethodName is null
+        if (routeMethodName == null || node.isFlexRM()) {
             routeModule = getFlexRMRouteModule(routeMethodName);
         } else {
             routeModule = getRouteModule(routeMethodName);

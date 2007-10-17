@@ -313,7 +313,8 @@ public class RuleXmlParser implements XmlConstants {
 
     private List parseResponsibilities(Element element, RuleBaseValues rule, RuleDelegation ruleDelegation) throws InvalidXmlException {
         if (element == null) {
-            throw new InvalidXmlException("Rule must have at least one responsibility.");
+            //throw new InvalidXmlException("Rule must have at least one responsibility.");
+            return new ArrayList<RuleResponsibility>(0);
         }
         List responsibilities = new ArrayList();
         List responsibilityElements = element.getChildren(RESPONSIBILITY, RULE_NAMESPACE);

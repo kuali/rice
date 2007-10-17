@@ -59,6 +59,11 @@ class RuleImpl implements Rule {
         if (type == null) {
             type = DEFAULT_RULE_EXPRESSION;
         }
+        // type is of the format 'category:qualifier'
+        // we just want the category
+        int colon = type.indexOf(':');
+        if (colon == -1) colon = type.length();
+        type = type.substring(0, colon);
         type = StringUtils.capitalize(type);
 
         // load up the rule expression implementation

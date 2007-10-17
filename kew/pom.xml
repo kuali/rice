@@ -31,12 +31,47 @@
       <artifactId>rice-testharness</artifactId>
       <version>0.9.2-SNAPSHOT</version>
     </dependency>
+    <!--
+    <dependency>
+      <groupId>org.apache.bsf</groupId>
+      <artifactId>bsf-all</artifactId>
+      <version>3.0-beta1</version>
+    </dependency>
+    -->
+
+    <dependency>
+      <groupId>bsf</groupId>
+      <artifactId>bsf</artifactId>
+      <version>2.4.0</version>
+    </dependency>
+    <!--
+    <dependency>
+      <groupId>groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>1.0-jsr-04</version>
+      <scope>runtime</scope>
+    </dependency>
+    -->
+<!-- 
+    <dependency>
+      <groupId>groovy</groupId>
+      <artifactId>groovy</artifactId>
+      <version>1.0-RC-1</version>
+    </dependency>
+ -->
+ <dependency>
+    <groupId>groovy</groupId>
+    <artifactId>groovy-all</artifactId>
+    <version>1.1-beta-3</version>
+</dependency>
+
+
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-mock</artifactId>
       <version>2.0.4</version>
       <scope>test</scope>
-    </dependency>
+    </dependency>  
   </dependencies>
 
 </project>

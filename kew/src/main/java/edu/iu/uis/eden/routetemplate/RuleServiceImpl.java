@@ -633,10 +633,10 @@ public class RuleServiceImpl implements RuleService {
             errors.add(new WorkflowServiceErrorImpl("Ignore Previous is required", "routetemplate.ruleservice.ignoreprevious.required"));
             LOG.error("Ignore Previous is missing");
         }
-        if (ruleBaseValues.getResponsibilities().isEmpty()) {
+        /*if (ruleBaseValues.getResponsibilities().isEmpty()) {
             errors.add(new WorkflowServiceErrorImpl("A responsibility is required", "routetemplate.ruleservice.responsibility.required"));
             LOG.error("Rule does not have a responsibility");
-        } else {
+        } else {*/
             for (Iterator iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {
                 RuleResponsibility responsibility = (RuleResponsibility) iter.next();
                 if (responsibility.getRuleResponsibilityName() != null && EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
@@ -654,7 +654,7 @@ public class RuleServiceImpl implements RuleService {
                     }
                 }
             }
-        }
+        //}
 
         if (ruleBaseValues.getRuleTemplate() == null && ruleBaseValues.getRuleExpressionDef() == null) {
             

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+    <ruleAttributes xmlns="ns:workflow/RuleAttribute"
+        xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+
+        <ruleAttribute>
+            <name>KRABizRuleAttribute</name>
+            <description>KRABizRuleAttribute description</description>
+            <label>KRABizRuleAttribute label</label>
+            <className>edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+            <type>RuleXmlAttribute</type>
+            <routingConfig>
+                <fieldDef name="field" title="some field" workflowType="ALL">
+                    <display>
+                        <type>text</type>
+                    </display>
+                    <validation required="true" />
+                    <fieldEvaluation>
+                        <xpathexpression>
+                            '1' = wf:ruledata('field')
+                        </xpathexpression>
+                    </fieldEvaluation>
+                </fieldDef>
+            </routingConfig>
+        </ruleAttribute>
+    </ruleAttributes>
+
+    <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+        <ruleTemplate>
+            <name>KRABizRule</name>
+            <description>A KRA business (non-meta) rule</description>
+            <attributes>
+                <attribute>
+                    <name>KRABizRuleAttribute</name>
+                    <required>true</required>
+                </attribute>
+            </attributes>
+        </ruleTemplate>
+    </ruleTemplates>
+
+    <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+        <documentType>
+            <name>KRAMetaRuleTest</name>
+            <label>KRAMetaRuleTest doc label</label>
+            <docHandler>has to be defined</docHandler>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <routePaths>
+                <routePath>
+                    <start name="initial" nextNode="approval" />
+                    <requests name="approval"/>
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="initial"/>
+                <requests name="approval">
+                    <activationType>P</activationType>
+                    <ruleSelector>Named</ruleSelector>
+                    <ruleName>KRAMetaRule</ruleName>
+                </requests>
+            </routeNodes>
+        </documentType>
+    </documentTypes>
+
+    <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+        <!-- this always succeeds -->
+        <rule>
+            <name>KRABizRule1</name>
+            <documentType>KRAMetaRuleTest</documentType>
+            <description>KRABizRule1 mandatory description</description>
+            <expression type="BSF:groovy">
+                import edu.iu.uis.eden.routetemplate.*
+                return new RuleExpressionResult(true)
+            </expression>
+        </rule>
+        <!-- this will fail because the extension value will not match -->
+        <rule>
+            <name>KRABizRule2</name>
+            <documentType>KRAMetaRuleTest</documentType>
+            <ruleTemplate>KRABizRule</ruleTemplate>
+            <description>KRABizRule2 mandatory description</description>
+            <ruleExtensions>
+                <ruleExtension>
+                    <attribute>KRABizRuleAttribute</attribute>
+                    <ruleTemplate>KRABizRule</ruleTemplate>
+                    <ruleExtensionValues>
+                        <ruleExtensionValue>
+                            <key>field</key>
+                            <value>5</value>
+                        </ruleExtensionValue>
+                    </ruleExtensionValues>
+                </ruleExtension>
+            </ruleExtensions>
+        </rule>
+        <!-- this will succeed because the extension value DOES match -->
+        <rule>
+            <name>KRABizRule3</name>
+            <documentType>KRAMetaRuleTest</documentType>
+            <ruleTemplate>KRABizRule</ruleTemplate>
+            <description>KRABizRule3 mandatory description</description>
+            <ruleExtensions>
+                <ruleExtension>
+                    <attribute>KRABizRuleAttribute</attribute>
+                    <ruleTemplate>KRABizRule</ruleTemplate>
+                    <ruleExtensionValues>
+                        <ruleExtensionValue>
+                            <key>field</key>
+                            <value>1</value>
+                        </ruleExtensionValue>
+                    </ruleExtensionValues>
+                </ruleExtension>
+            </ruleExtensions>
+        </rule>
+        <rule>
+            <name>KRABizRule4</name>
+            <documentType>KRAMetaRuleTest</documentType>
+            <description>KRABizRule4 mandatory description</description>
+            <expression type="BSF:groovy">
+                import edu.iu.uis.eden.routetemplate.*
+                return new RuleExpressionResult(true, rule.getResponsibilities())
+            </expression>
+            <responsibilities>
+                <responsibility><user>user2</user></responsibility>
+            </responsibilities>
+        </rule>
+        <rule>
+            <name>KRAMetaRule</name>
+            <documentType>KRAMetaRuleTest</documentType>
+            <description>KRAMetaRule mandatory description</description>
+            <expression type="KRAMeta">
+              KRABizRule1: true;
+              KRABizRule2: false;
+              KRABizRule3: true;
+              KRABizRule4: next;
+            </expression>
+        </rule>
+    </rules>
+</data>

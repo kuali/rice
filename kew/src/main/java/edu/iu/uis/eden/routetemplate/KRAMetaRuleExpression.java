@@ -58,7 +58,7 @@ public class KRAMetaRuleExpression implements RuleExpression {
             throw new WorkflowException("Empty expression in rule definition: " + ruleDefinition);
         }
 
-        String[] statements = expression.split("[;\r\n]");
+        String[] statements = expression.split("\\s*[;\r\n]\\s*");
         
         if (statements.length == 0) {
             throw new WorkflowException("No statements parsed in expression: " + expression);
@@ -67,7 +67,8 @@ public class KRAMetaRuleExpression implements RuleExpression {
         for (int i = 0; i < statements.length; i++) {
             int stmtNum = i + 1;
             String statement = statements[i];
-            String[] words = statement.split(":");
+            LOG.debug("Processing statement: " + statement);
+            String[] words = statement.split("\\s*:\\s*");
             if (words.length < 2) {
                 throw new WorkflowException("Invalid statement (#" + stmtNum + "): " + statement);
             }
@@ -76,6 +77,7 @@ public class KRAMetaRuleExpression implements RuleExpression {
                 throw new WorkflowException("Invalid rule in statement (#" + stmtNum + "): " + statement);
             }
             String flag = words[1];
+            LOG.error(flag.toUpperCase());
             KRA_RULE_FLAG flagCode = KRA_RULE_FLAG.valueOf(flag.toUpperCase());
             if (flagCode == null) {
                 throw new WorkflowException("Invalid flag in statement (#" + stmtNum + "): " + statement);
@@ -85,27 +87,32 @@ public class KRAMetaRuleExpression implements RuleExpression {
                 throw new WorkflowException("Rule '" + ruleName + "' in statement (#" + stmtNum + ") not found: " + statement);
             }
             switch (flagCode) {
-                case NEXT: {
-                    RuleImpl ruleImpl = new RuleImpl(nestedRule);
-                    RuleExpressionResult result = ruleImpl.evaluate(nestedRule, context);
-                    return result;
-                }
-                case TRUE:{
-                    RuleImpl ruleImpl = new RuleImpl(nestedRule);
-                    RuleExpressionResult result = ruleImpl.evaluate(nestedRule, context);
-                    if (!result.isSuccess()) {
-                        // failed...
+                case NEXT:
+                    {
+                        RuleImpl ruleImpl = new RuleImpl(nestedRule);
+                        RuleExpressionResult result = ruleImpl.evaluate(nestedRule, context);
                         return result;
                     }
-                }
-                case FALSE:{
-                    RuleImpl ruleImpl = new RuleImpl(nestedRule);
-                    RuleExpressionResult result = ruleImpl.evaluate(nestedRule, context);
-                    if (result.isSuccess()) {
-                        // failed...
-                        return new RuleExpressionResult(false, result.getResponsibilities());
+                case TRUE:
+                    {
+                        RuleImpl ruleImpl = new RuleImpl(nestedRule);
+                        RuleExpressionResult result = ruleImpl.evaluate(nestedRule, context);
+                        if (!result.isSuccess()) {
+                            // failed...
+                            return result;
+                        }
                     }
-                }
+                    break;
+                case FALSE:
+                    {
+                        RuleImpl ruleImpl = new RuleImpl(nestedRule);
+                        RuleExpressionResult result = ruleImpl.evaluate(nestedRule, context);
+                        if (result.isSuccess()) {
+                            // failed...
+                            return new RuleExpressionResult(false, result.getResponsibilities());
+                        }
+                    }
+                    break;
                 default:
                     throw new WorkflowException("Unhandled statement flag: " + flagCode);
             }

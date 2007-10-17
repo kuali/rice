@@ -24,7 +24,7 @@ import org.w3c.dom.ls.LSResourceResolver;
 /**
  * LSResourceResolver implementation that delegates in sequence to a list of LSResourceResolvers,
  * returning the first match. 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CompoundLSResourceResolver implements LSResourceResolver {
     private final List<LSResourceResolver> resolvers;

@@ -141,9 +141,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 /**
  * Translates Workflow server side beans into client side VO beans.
  *
- * @author rkirkend
- * @author ewestfal
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BeanConverter {
     private static final Logger LOG = Logger.getLogger(BeanConverter.class);

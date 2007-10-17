@@ -30,7 +30,7 @@ import edu.iu.uis.eden.util.Utilities;
  * A basic implementation of the JoinEngine which handles join setup and makes determinations
  * as to when a join condition has been satisfied.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BasicJoinEngine implements JoinEngine {
 

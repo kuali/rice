@@ -18,7 +18,7 @@ package org.kuali.notification.bo;
 /**
  * This class represents the different types of Notification content that the system can handle.  
  * For example, and instance of content type could be "Alert" or "Event".
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationContentType {
     private Long id;

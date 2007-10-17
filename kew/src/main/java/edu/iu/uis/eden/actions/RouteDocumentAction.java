@@ -33,9 +33,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Action that puts the document in routing.
  *
- * @author rkirkend
- * @author ewestfal
- * @author seiffert
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class RouteDocumentAction extends ActionTakenEvent {

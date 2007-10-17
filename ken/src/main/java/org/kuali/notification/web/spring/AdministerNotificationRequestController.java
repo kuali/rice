@@ -47,7 +47,7 @@ import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 /**
  * Implements reviewer Approve/Disapprove and initiator Acknowledge of a Notification requests
  * sent to channels configured with reviewers
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AdministerNotificationRequestController extends MultiActionController {
     private static final Logger LOG = Logger.getLogger(AdministerNotificationRequestController.class);

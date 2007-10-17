@@ -24,7 +24,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
 /**
  * This class extends the KEW WorkflowDocument object and becomes our gateway for 
  * get a handle on KEW documents in workflow.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationWorkflowDocument extends WorkflowDocument {
     private static final long serialVersionUID = 6125662798733898964L;

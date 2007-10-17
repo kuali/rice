@@ -20,7 +20,7 @@ package edu.iu.uis.eden.exception;
  * A generic runtime exception thrown from KEW.  Acts as the superclass for all runtime
  * exceptions in KEW.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkflowRuntimeException extends RuntimeException {
     

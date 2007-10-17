@@ -25,7 +25,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springmodules.orm.ojb.PersistenceBrokerTemplate;
 
 /**
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class OjbBeanTestCase extends KEWTestCase {
 

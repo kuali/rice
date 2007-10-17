@@ -25,7 +25,7 @@ import edu.iu.uis.eden.user.UserId;
 /**
  * A Data Access Object for {@link BaseWorkflowUser}.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface BaseUserDAO {
 	

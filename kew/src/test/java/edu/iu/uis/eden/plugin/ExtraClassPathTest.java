@@ -35,7 +35,7 @@ import edu.iu.uis.eden.test.TestUtilities;
  * libs on the classpath.  Within the lib directory is a jar called extraclasspath.jar.
  * Inside this jar is a single resource called extraclasspath-lib.txt.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ExtraClassPathTest extends KEWTestCase {
 

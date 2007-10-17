@@ -37,7 +37,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Tests email content generation
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EmailMessageTest extends KEWTestCase {
     private ActionListEmailServiceImpl actionListEmailService = new ActionListEmailServiceImpl();

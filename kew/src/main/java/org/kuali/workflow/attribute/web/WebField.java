@@ -22,7 +22,7 @@ import edu.iu.uis.eden.lookupable.Field;
  * Represents a Field that's rendered on a web form and can be used to store the value
  * for that field.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WebField {
 

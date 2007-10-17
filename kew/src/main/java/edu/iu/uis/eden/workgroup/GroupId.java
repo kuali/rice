@@ -21,6 +21,6 @@ import edu.iu.uis.eden.Id;
 /**
  * A marker interface for Id implementations for groups.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface GroupId extends Id {}

@@ -35,8 +35,7 @@ import edu.iu.uis.eden.xml.XmlConstants;
  * @see edu.iu.uis.eden.xml.StyleXmlParser
  * @see EDocLiteStyle
  *
- * @author ahamid
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StyleXmlExporter implements XmlExporter, XmlConstants {
 	private static final Logger LOG = Logger.getLogger(StyleXmlExporter.class);

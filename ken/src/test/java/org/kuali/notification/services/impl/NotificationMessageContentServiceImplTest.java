@@ -33,9 +33,7 @@ import org.kuali.notification.util.Util;
 
 /**
  * Tests NotificationMessageContentService
- * @author Aaron Hamid (arh14 at cornell dot edu)
- * @author Aaron Godert (ag266 at cornell dot edu)
- * @author John Fereira (jaf30 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationMessageContentServiceImplTest extends NotificationTestCaseBase {
     private static final String SAMPLE_EVENT_MESSAGE = "sample_message_event_type.xml";

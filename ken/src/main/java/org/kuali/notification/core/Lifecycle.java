@@ -17,7 +17,7 @@ package org.kuali.notification.core;
 
 /**
  * Interface describing an object life cycle
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Lifecycle {
     /**

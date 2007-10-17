@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 /**
  * Filter implementation that uses a regular expression
  * search/replace
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RegexReplacementFilter implements Filter {
     private Pattern pattern;

@@ -47,7 +47,7 @@ import edu.iu.uis.eden.web.session.UserSession;
 /**
  * Various static utility methods for helping with Searcha.
  *
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocSearchUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocSearchUtils.class);

@@ -21,8 +21,7 @@ import edu.iu.uis.eden.plugin.attributes.RoleAttribute;
 /**
  * A defined role on a {@link RoleAttribute}.
  *
- * @author jhopf
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Role implements java.io.Serializable {
 

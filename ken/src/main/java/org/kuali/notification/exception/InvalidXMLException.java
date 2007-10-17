@@ -19,7 +19,7 @@ package org.kuali.notification.exception;
  * This class represents an InvalidXMLException for Notification XML processing.
  * This is mostly used for <i>semantic</i> validation, as XML schema takes care
  * of syntactic validation. 
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class InvalidXMLException extends Exception {
     /**

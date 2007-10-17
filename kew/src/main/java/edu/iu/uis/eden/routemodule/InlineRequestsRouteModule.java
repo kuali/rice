@@ -45,7 +45,7 @@ import edu.iu.uis.eden.xml.XmlConstants;
 /**
  * A RouteModule that generates requests for responsibilities statically defined
  * in the config block of the node.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class InlineRequestsRouteModule extends BaseRouteModule {
     private static final Logger LOG = Logger.getLogger(InlineRequestsRouteModule.class);

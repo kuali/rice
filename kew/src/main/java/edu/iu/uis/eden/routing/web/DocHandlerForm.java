@@ -21,7 +21,7 @@ import edu.iu.uis.eden.web.WorkflowRoutingForm;
 /**
  * A Struts ActionForm for the {@link WorkflowDocHandlerAction}.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocHandlerForm extends WorkflowRoutingForm {
 

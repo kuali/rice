@@ -37,7 +37,7 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
 /**
  * Implementation of {@link SearchableAttributeProcessingService}.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SearchableAttributeProcessor implements SearchableAttributeProcessingService {
 

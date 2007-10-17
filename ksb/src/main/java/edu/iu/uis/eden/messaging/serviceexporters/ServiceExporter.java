@@ -20,7 +20,7 @@ import edu.iu.uis.eden.messaging.ServerSideRemotedServiceHolder;
 
 /**
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ServiceExporter {
 

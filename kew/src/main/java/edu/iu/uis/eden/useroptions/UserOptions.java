@@ -21,7 +21,7 @@ import edu.iu.uis.eden.preferences.Preferences;
 /**
  * An option defined for a user.  These are used to store user {@link Preferences}.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserOptions implements Comparable {
 

@@ -49,8 +49,7 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
  * and initializes those filters, and invokes them when it is invoked. This
  * allows runtime user configuration of arbitrary filters in the webapp context.
  *
- * @author Aaron Hamid (arh14 at cornell dot edu)
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BootstrapFilter implements Filter {
 	private static final Logger LOG = Logger.getLogger(BootstrapFilter.class);
@@ -275,7 +274,7 @@ public class BootstrapFilter implements Filter {
  * A filter chain that invokes a series of filters with which it was
  * initialized, and then delegates to a target filterchain.
  *
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 class BootstrapFilterChain implements FilterChain {
 
@@ -325,7 +324,7 @@ class BootstrapFilterChain implements FilterChain {
 /**
  * Borrowed from spring-mock.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 class BootstrapFilterConfig implements FilterConfig {
 

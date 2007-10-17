@@ -26,7 +26,7 @@ import org.kuali.rice.kim.service.PersonService;
  * This is the default KIM PersonService implementation that is provided by Rice.  This will mature over time as the KIM 
  * component is developed.
  * 
- * @author Phillip Berres (pberres at usc dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PersonServiceImpl implements PersonService {
 

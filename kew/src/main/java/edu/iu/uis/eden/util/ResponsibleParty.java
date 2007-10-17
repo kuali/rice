@@ -27,8 +27,7 @@ import edu.iu.uis.eden.workgroup.GroupId;
  * 
  * @see ActionRequestValue
  *
- * @author rkirkend
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ResponsibleParty implements Serializable {
 

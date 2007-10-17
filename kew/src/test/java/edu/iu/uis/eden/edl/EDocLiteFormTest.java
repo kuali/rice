@@ -31,7 +31,7 @@ import org.kuali.rice.test.LoggableTestCase;
 
 /**
  * Tests the behavior of EDocLiteForm in the presence of various types of input
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EDocLiteFormTest extends LoggableTestCase {
     /**

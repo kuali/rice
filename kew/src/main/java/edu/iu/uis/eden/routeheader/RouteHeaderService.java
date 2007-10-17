@@ -26,8 +26,7 @@ import edu.iu.uis.eden.doctype.DocumentType;
  *
  * @see DocumentRouteHeaderValue
  *
- * @author rkirkend
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RouteHeaderService {
 

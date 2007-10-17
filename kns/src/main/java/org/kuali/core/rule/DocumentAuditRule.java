@@ -20,7 +20,7 @@ import org.kuali.core.document.Document;
 /**
  * audit rule marker
  * 
- * @author Full Name (email at address dot com)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface DocumentAuditRule {

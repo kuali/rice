@@ -23,7 +23,7 @@ package edu.iu.uis.eden.engine;
  * This is just used for testing at the moment but I'm going to put it into the plugin to simplify things until
  * we fix up that portion of the testing framework.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ChartOrgDynamicDispatchNode {// extends ChartOrgRoutingNode {
 

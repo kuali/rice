@@ -25,7 +25,7 @@ import org.apache.ojb.broker.accesslayer.LookupException;
  * A service for obtaining various pieces of statistics information about the
  * KEW application.
  *
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface StatsService {
 

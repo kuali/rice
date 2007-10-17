@@ -21,7 +21,7 @@ import edu.iu.uis.eden.Id;
 /**
  * A user's Id which has a String representable value.
  *
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface UserId extends Id {
     /** 

@@ -24,8 +24,7 @@ import org.apache.struts.action.ActionForm;
 /**
  * The Struts ActionForm used with {@link RouteLogAction} to display the routelog.
  * 
- * @author rkirkend
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RouteLogForm extends ActionForm {
     

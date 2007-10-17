@@ -20,7 +20,7 @@ import edu.iu.uis.eden.doctype.DocumentType;
 
 /**
  *
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CustomDocumentSearchGenerator extends StandardDocumentSearchGenerator {
 

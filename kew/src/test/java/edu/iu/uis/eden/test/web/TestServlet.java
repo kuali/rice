@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * A trivial servlet which echoes back request params, and inserts a few
  * other parameters which can be used for testing purposes, into parseable response metadata.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TestServlet extends HttpServlet {
     private static final Random RANDOM = new Random();

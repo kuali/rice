@@ -47,7 +47,7 @@ import edu.iu.uis.eden.test.web.framework.Util;
  * <dt>filters</dt>
  * <dd>Allows applying a sequence of preconfigured filters to the value.  The list of filter names is comma-delimited.  E.g. filters="DUPLICATE_SPACES, DUPLICATE_NEWLINES"</dd>
  * </dl>
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class VariableAction extends BaseScriptAction {
     private static final String[] NAMES = { "variable" };

@@ -24,8 +24,7 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 /**
  * Logs {@link RouteNodeInstance} graphs in a format which is indented and easy to read. 
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NodeJotter {
 

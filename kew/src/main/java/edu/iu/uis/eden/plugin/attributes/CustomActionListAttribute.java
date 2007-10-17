@@ -33,8 +33,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  * @see ActionListAction
  * @see DefaultCustomActionListAttribute
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface CustomActionListAttribute extends Serializable {
 

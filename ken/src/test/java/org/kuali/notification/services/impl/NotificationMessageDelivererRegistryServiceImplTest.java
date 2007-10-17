@@ -25,7 +25,7 @@ import org.kuali.notification.test.TestConstants;
 
 /**
  * This class tests the registry service.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationMessageDelivererRegistryServiceImplTest extends NotificationTestCaseBase {
     /**

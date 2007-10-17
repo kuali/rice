@@ -21,7 +21,7 @@ import edu.iu.uis.eden.actionitem.ActionItem;
 /**
  * Service for sending immediate email reminders.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ActionListImmediateEmailReminderService {
 

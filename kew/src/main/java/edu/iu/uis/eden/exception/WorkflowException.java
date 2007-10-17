@@ -20,7 +20,7 @@ package edu.iu.uis.eden.exception;
  * A generic checked exception thrown from KEW.  Acts as the superclass for all checked
  * exceptions in KEW.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkflowException extends Exception {
 

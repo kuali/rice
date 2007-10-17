@@ -19,7 +19,7 @@ package edu.iu.uis.eden.quicklinks;
 /**
  * Stores statistics information about an initiated DocumentType
  *
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class InitiatedDocumentType {
 

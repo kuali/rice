@@ -29,7 +29,7 @@ import edu.iu.uis.eden.user.EmplId;
  * Matches university ID param to UserService to validate universityId.  Returns error message if 
  * universityId does NOT match.
  * 
- *  @author jitrue
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UniversityIdWorkflowEDLConfigComponent extends SimpleWorkflowEDLConfigComponent {
   

@@ -23,7 +23,7 @@ package edu.iu.uis.eden.plugin;
  * <p>If invocations of isReloadable() return false then calls to reload() should be
  * no-ops.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Reloadable {
 

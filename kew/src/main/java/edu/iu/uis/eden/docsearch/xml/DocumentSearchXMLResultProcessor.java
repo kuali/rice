@@ -21,7 +21,7 @@ import edu.iu.uis.eden.routetemplate.RuleAttribute;
 
 /**
  *
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DocumentSearchXMLResultProcessor extends DocumentSearchResultProcessor {
 	

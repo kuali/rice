@@ -30,7 +30,7 @@ import org.kuali.notification.service.NotificationMessageDelivererRegistryServic
 
 /**
  * NotificationMessageDelivererRegistryService implementation - for now we use a HashMap to do this registration, in the future we'll use resource loading.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationMessageDelivererRegistryServiceImpl implements NotificationMessageDelivererRegistryService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(NotificationMessageDeliveryResolverServiceImpl.class);

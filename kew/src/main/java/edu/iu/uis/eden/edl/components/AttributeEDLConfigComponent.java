@@ -34,8 +34,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 /**
  * Populates workflow rule attributes associated with the current configElement.
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class AttributeEDLConfigComponent extends SimpleWorkflowEDLConfigComponent {

@@ -27,8 +27,7 @@ import edu.iu.uis.eden.WorkflowPersistable;
  * Model bean defining a rule attribute.  Includes the classname of the attribute
  * class, as well as it's name and other information.
  *
- * @author rkirkend
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleAttribute implements WorkflowPersistable  {
 

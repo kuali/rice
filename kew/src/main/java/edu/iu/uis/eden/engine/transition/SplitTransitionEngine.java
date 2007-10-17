@@ -34,8 +34,7 @@ import edu.iu.uis.eden.engine.node.SplitResult;
  * 
  * @see SplitNode
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SplitTransitionEngine extends TransitionEngine {
 	

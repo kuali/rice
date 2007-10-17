@@ -23,7 +23,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * This class represents and instance of a NotificationMessageDelivery.  A Notification gets delivered to 
  * recipients, possibly in various ways.  For each delivery type that a recipient gets sent to them, 
  * they have an instance of this entity.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationMessageDelivery implements Lockable {
     private Long id;

@@ -22,7 +22,7 @@ import edu.iu.uis.eden.routetemplate.RuleAttribute;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AttributeDefinition {
 

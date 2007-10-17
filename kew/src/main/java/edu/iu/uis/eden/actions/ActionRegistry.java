@@ -28,7 +28,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * Maintains the registry of Workflow Actions.  Actions are (currently) identified by a one-letter
  * action code and map to a Class which should extend the edu.iu.uis.eden.actions.ActionTakenEvent class.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ActionRegistry {
 	

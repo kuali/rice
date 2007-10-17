@@ -30,7 +30,7 @@ import edu.iu.uis.eden.plugin.attributes.WorkflowAttributeXmlValidator;
 import edu.iu.uis.eden.routeheader.DocumentContent;
 
 /**
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TestRuleAttribute implements WorkflowAttribute, RoleAttribute, WorkflowAttributeXmlValidator {
 

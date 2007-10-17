@@ -47,8 +47,7 @@ import edu.iu.uis.eden.web.session.UserSession;
 /**
  * A Struts Action used to display the routelog.
  *
- * @author rkirkend
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RouteLogAction extends WorkflowAction {
 

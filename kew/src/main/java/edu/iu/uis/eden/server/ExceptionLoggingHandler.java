@@ -18,7 +18,7 @@ package edu.iu.uis.eden.server;
 
 
 /**
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ExceptionLoggingHandler {
 //	extends BasicHandler {

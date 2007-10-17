@@ -47,7 +47,7 @@ import edu.iu.uis.eden.web.UserLoginFilter;
  * Struts action that accepts uploaded files and feeds them to the XmlIngesterService
  * @see edu.iu.uis.eden.batch.XmlIngesterService
  * @see edu.iu.uis.eden.batch.web.IngesterForm
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class IngesterAction extends Action {
     private static final Logger LOG = Logger.getLogger(IngesterAction.class);

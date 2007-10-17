@@ -23,7 +23,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Created to front the BlanketApproveProcessor when it went to a service for async remoting.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface BlanketApproveProcessorService {
 	

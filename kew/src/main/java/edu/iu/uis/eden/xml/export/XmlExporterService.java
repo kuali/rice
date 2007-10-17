@@ -21,6 +21,6 @@ import edu.iu.uis.eden.export.Exporter;
 /**
  * A service which can export data to XML.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface XmlExporterService extends Exporter {}

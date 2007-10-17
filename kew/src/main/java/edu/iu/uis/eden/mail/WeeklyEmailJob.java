@@ -27,7 +27,7 @@ import edu.iu.uis.eden.KEWServiceLocator;
 /**
  * Quartz job for sending weekly email reminders.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WeeklyEmailJob implements Job {
 

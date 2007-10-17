@@ -23,7 +23,7 @@ import org.kuali.core.bo.Note;
 /**
  * The data access interface for NOte objects.
  * 
- * @author Kuali Nervous System Team (kualidev@oncourse.iu.edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NoteDao {
     /**

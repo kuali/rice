@@ -28,7 +28,7 @@ import edu.iu.uis.eden.user.AuthenticationUserId;
 /**
  * Matches network ID param to UserService to validate network Id.  Returns error message if networkId does NOT match.
  * 
- *  @author jitrue
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NetworkIdWorkflowEDLConfigComponent extends SimpleWorkflowEDLConfigComponent {
 	

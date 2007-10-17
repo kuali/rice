@@ -26,7 +26,7 @@ import edu.iu.uis.eden.messaging.bam.BAMClientProxy;
  * Abstract implementation of the ServiceConnector that holds the ServiceInfo
  * and the CredentialsSource as well as providing convenience proxy methods.
  * 
- * @author Scott Battaglia
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  * 
  */

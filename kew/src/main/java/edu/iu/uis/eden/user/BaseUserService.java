@@ -39,7 +39,7 @@ import edu.iu.uis.eden.xml.UserXmlHandler;
  * Because of the caching strategy being used, this service is not safe for use in a clustered environment.
  * The user objects maintained within this service are instances of SimpleWorkflowUser.
  *
- * @author Eric Westfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BaseUserService implements UserService {
 
@@ -180,7 +180,7 @@ public class BaseUserService implements UserService {
 	/**
 	 * A helper class which manages caching of users by various id types and retrieval of users by those id types.
 	 * 
-	 * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
 	 */
 	protected class UserCache {
 		

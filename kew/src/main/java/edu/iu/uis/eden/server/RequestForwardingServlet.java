@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet that forwards requests via the RequestDispatcher based on regular expression
  * matching and replacement on the URI
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RequestForwardingServlet extends HttpServlet {
     private LinkedHashMap<Pattern, MessageFormat> forwardTable = new LinkedHashMap<Pattern, MessageFormat>();

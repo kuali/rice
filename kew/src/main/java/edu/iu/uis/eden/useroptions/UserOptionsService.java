@@ -25,7 +25,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * Sits on top of the UserOptionsTable and manages certain aspects of action list refresh behaviors.
  * This service could probably be broken up and it's dao put somewhere else and injected in the appropriate places.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface UserOptionsService {
     public Collection findByWorkflowUser(WorkflowUser user);

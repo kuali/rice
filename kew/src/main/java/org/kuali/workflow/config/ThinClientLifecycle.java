@@ -21,7 +21,7 @@ import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ThinClientLifecycle extends BaseLifecycle {
 

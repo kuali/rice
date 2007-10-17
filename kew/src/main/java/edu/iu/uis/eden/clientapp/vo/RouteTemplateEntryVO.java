@@ -21,8 +21,7 @@ import edu.iu.uis.eden.EdenConstants;
 /**
  * Represents a route level
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @deprecated use RouteNodeVO instead
  * @workflow.webservice-object

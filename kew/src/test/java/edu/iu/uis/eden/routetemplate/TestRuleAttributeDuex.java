@@ -32,7 +32,7 @@ import edu.iu.uis.eden.routeheader.DocumentContent;
 /**
  * Another test attribute, this one doesn't implement {@link WorkflowAttributeXmlValidator}
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TestRuleAttributeDuex implements WorkflowAttribute, RoleAttribute {
 	

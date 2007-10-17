@@ -35,7 +35,7 @@ import com.sun.mail.smtp.SMTPTransport;
 
 /**
  * This class is responsible for implementing the service that sends emails to individuals.
- * @author John Fereira (jaf30 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @auther Aaron Godert (ag266 at cornell dot edu)
  */
 public class NotificationEmailServiceImpl implements NotificationEmailService {

@@ -33,7 +33,7 @@ import edu.iu.uis.eden.routetemplate.RuleCacheProcessor;
 /**
  * Utility class for accessing names of common asynchronous services.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class MessageServiceNames {
 

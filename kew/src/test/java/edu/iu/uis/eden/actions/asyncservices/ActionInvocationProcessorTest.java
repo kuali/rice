@@ -32,7 +32,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ActionInvocationProcessorTest extends KEWTestCase {

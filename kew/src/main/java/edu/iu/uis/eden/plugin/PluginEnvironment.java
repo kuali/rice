@@ -24,7 +24,7 @@ package edu.iu.uis.eden.plugin;
  * <p>The PluginEnvironment also keeps a reference to the PluginRegistry because this
  * allows it to add and remove Plugins as child resource loaders of the registry.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PluginEnvironment implements Reloadable {
 

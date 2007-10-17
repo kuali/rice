@@ -25,7 +25,7 @@ import org.kuali.rice.RiceConstants;
 /**
  * A DigitalSinger which places the alias and digital signature into the response headers of an HttpServletResponse.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ResponseHeaderDigitalSigner extends AbstractDigitalSigner {
 

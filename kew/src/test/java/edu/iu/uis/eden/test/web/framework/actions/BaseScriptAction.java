@@ -23,7 +23,7 @@ import edu.iu.uis.eden.test.web.framework.ScriptAction;
 /**
  * Abstract base ScriptAction that does nothing except define
  * a Logger 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 abstract class BaseScriptAction implements ScriptAction {
     protected Logger log = Logger.getLogger(getClass());

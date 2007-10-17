@@ -27,7 +27,7 @@ import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * Parser for Style content type, managed by StyleService
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StyleXmlParser {
 	private static final Logger LOG = Logger.getLogger(StyleXmlParser.class);

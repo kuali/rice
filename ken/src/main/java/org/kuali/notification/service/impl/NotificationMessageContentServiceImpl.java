@@ -67,8 +67,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  * NotificationMessageContentService implementation - uses both Xalan and XStream in various places to manage the marshalling/unmarshalling of 
  * Notification data for processing by various components in the system.
  * @see NotificationMessageContentService
- * @author Aaron Hamid (arh14 at cornell dot edu)
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationMessageContentServiceImpl implements NotificationMessageContentService {
     private static final Logger LOG = Logger.getLogger(NotificationMessageContentServiceImpl.class);

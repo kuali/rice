@@ -20,7 +20,7 @@ import edu.iu.uis.eden.messaging.KEWXMLService;
 /**
  * Sample remoted service 
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class SampleRemotedService implements KEWXMLService {

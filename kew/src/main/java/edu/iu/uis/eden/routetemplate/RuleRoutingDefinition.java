@@ -23,7 +23,7 @@ import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
  * 
  * @see RuleRoutingAttribute
  *
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleRoutingDefinition extends WorkflowAttributeDefinitionVO {
         

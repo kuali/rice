@@ -34,8 +34,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
  * class was copied from the Kuali Nervous System
  * (org.kuali.core.dao.BusinessObjectDao).
  * 
- * @author Bryan Hutchinson (bh79@cornell.edu)
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BusinessObjectDaoOjb extends PersistenceBrokerDaoSupport implements BusinessObjectDao {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectDaoOjb.class);

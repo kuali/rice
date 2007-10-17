@@ -23,7 +23,7 @@ import org.kuali.rice.KNSServiceLocator;
  * This base class should be used for all KIM Unit Tests that will be testing 
  * the DAO layer. 
  * 
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class KIMDaoTestBase extends KIMTestCase {
     protected BusinessObjectService bos = null;

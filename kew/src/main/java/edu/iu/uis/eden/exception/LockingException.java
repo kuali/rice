@@ -19,7 +19,7 @@ package edu.iu.uis.eden.exception;
 /**
  * An exception which is thrown when a pessimistic lock fails to be aquired.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class LockingException extends WorkflowRuntimeException {
 

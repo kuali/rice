@@ -28,7 +28,7 @@ import edu.iu.uis.eden.util.ResponsibleParty;
  * A default implementation of a {@link RouteModule}.  This implementation
  * does not generate requests or resolve responsibility IDs.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DefaultRouteModule implements RouteModule {
 

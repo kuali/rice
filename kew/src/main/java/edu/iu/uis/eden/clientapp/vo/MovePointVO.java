@@ -23,7 +23,7 @@ import edu.iu.uis.eden.actions.MovePoint;
 /**
  * Transport object for the {@link MovePoint}
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

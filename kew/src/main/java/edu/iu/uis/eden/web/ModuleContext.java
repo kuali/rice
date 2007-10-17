@@ -20,7 +20,7 @@ package edu.iu.uis.eden.web;
  * Maintains a ThreadLocal which indicates whether the current struts module we are in is the
  * KEW module.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ModuleContext {
 

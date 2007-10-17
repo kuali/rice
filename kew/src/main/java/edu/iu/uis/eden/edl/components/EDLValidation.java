@@ -3,7 +3,7 @@ package edu.iu.uis.eden.edl.components;
 /**
  * Represents an EDocLite Validation that can be executed.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EDLValidation {
 

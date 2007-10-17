@@ -47,7 +47,7 @@ import edu.iu.uis.eden.util.XmlHelper;
  *
  * @see RuleAttribute
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleAttributeXmlParser implements XmlConstants {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleAttributeXmlParser.class);

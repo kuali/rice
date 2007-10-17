@@ -52,7 +52,7 @@ import edu.iu.uis.eden.util.PerformanceLogger;
  * Document, processing nodes on the document until the document is completed or a node halts the
  * processing.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StandardWorkflowEngine implements WorkflowEngine {
 

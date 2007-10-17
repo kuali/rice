@@ -18,7 +18,7 @@ package org.kuali.workflow.identity;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public enum IdentityType {
 

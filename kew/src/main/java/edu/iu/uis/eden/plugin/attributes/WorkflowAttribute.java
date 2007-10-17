@@ -76,7 +76,7 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.GenericXMLRuleAttribute;
  * 
  * @see WorkflowAttributeDefinitionVO
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface WorkflowAttribute extends Serializable {
 

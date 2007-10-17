@@ -20,8 +20,7 @@ package edu.iu.uis.eden.help;
  * Model bean representing a piece of help information which adds extra information about fields and
  * data in the user interface.
  *
- * @author xqi
- * @author shenl
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class HelpEntry {
     private Long helpId;

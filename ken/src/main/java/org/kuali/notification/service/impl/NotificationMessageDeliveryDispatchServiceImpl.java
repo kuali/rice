@@ -41,8 +41,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 /**
  * This is the default out-of-the-box implementation that leverages KEW to process and deliver 
  * notification messages.
- * @author Aaron Hamid (arh14 at cornell dot edu)
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationMessageDeliveryDispatchServiceImpl extends ConcurrentJob<NotificationMessageDelivery> implements NotificationMessageDeliveryDispatchService {
     private BusinessObjectDao businessObjectDao;

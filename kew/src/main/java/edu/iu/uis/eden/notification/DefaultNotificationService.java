@@ -43,7 +43,7 @@ import edu.iu.uis.eden.user.WorkflowUserId;
 /**
  * The default implementation of the NotificationService.
  *   
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DefaultNotificationService implements NotificationService {
 

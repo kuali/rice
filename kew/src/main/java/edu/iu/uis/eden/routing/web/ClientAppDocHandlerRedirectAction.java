@@ -38,7 +38,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  * A Struts Action for redirecting from the KEW web application to the appropriate
  * Doc Handler for a document.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ClientAppDocHandlerRedirectAction extends WorkflowAction {
 

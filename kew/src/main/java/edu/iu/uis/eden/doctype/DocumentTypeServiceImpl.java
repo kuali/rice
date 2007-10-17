@@ -39,7 +39,7 @@ import edu.iu.uis.eden.xml.export.DocumentTypeXmlExporter;
 /**
  * The standard implementation of the DocumentTypeService.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentTypeServiceImpl implements DocumentTypeService {
 

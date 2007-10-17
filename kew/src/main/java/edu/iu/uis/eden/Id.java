@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * Superinterface of UserId and GroupId
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Id extends Serializable {
     /**

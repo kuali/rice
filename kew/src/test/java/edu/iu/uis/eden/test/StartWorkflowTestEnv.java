@@ -22,7 +22,7 @@ import org.kuali.workflow.test.KEWTestCase;
 
 /**
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StartWorkflowTestEnv extends KEWTestCase {
 

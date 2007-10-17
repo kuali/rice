@@ -24,7 +24,7 @@ import edu.iu.uis.eden.clientapp.DeleteEvent;
 /**
  * Hook for applications to perform logic due to workflow events from the engine.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface PostProcessor {
 

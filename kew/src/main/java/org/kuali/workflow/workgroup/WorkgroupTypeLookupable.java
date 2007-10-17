@@ -43,7 +43,7 @@ import edu.iu.uis.eden.util.Utilities;
  *
  * @see WorkgroupType
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkgroupTypeLookupable implements WorkflowLookupable, Exportable {
 

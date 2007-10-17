@@ -19,7 +19,7 @@ package edu.iu.uis.eden;
 /**
  * A base implementation of a WorkflowPersistable.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class BaseWorkflowPersistable implements WorkflowPersistable {
 

@@ -26,7 +26,7 @@ import edu.iu.uis.eden.test.web.WorkflowServletRequest;
 /**
  * LocalInteractionController subclass that supplies a WorkflowServletRequest initialized
  * with user session
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class LocalWorkflowInteractionController extends LocalInteractionController {
     public LocalWorkflowInteractionController(Servlet servlet) {

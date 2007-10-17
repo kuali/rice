@@ -26,7 +26,7 @@ import java.util.zip.ZipFile;
  * @see edu.iu.uis.eden.batch.XmlDoc
  * @see edu.iu.uis.eden.batch.BaseXmlDoc
  * @see edu.iu.uis.eden.batch.ZipXmlDocCollection
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 class ZipXmlDoc extends BaseXmlDoc {
     private ZipFile zipFile;

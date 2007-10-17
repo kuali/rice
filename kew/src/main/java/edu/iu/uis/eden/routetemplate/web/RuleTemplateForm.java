@@ -30,9 +30,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * A Struts ActionForm for the {@link RuleTemplateAction}.
  *
- * @author rkirkend
- * @author bmcgough
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleTemplateForm extends ActionForm {
 

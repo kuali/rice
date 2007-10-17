@@ -19,7 +19,7 @@ package edu.iu.uis.eden.mail;
 /**
  * The subject of an email message.
  *
- * @author xqi
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EmailSubject {
 

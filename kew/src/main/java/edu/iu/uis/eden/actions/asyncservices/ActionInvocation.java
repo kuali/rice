@@ -24,7 +24,7 @@ import edu.iu.uis.eden.util.Utilities;
  * Used for mass actions from the action list.
  * Represents the definition of an Action invocation against an action item.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ActionInvocation implements Serializable {

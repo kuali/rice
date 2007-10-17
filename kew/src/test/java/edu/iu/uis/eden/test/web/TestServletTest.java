@@ -30,7 +30,7 @@ import edu.iu.uis.eden.test.web.framework.Script;
 
 /**
  * Tests the script framework against a trivial TestServlet. 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TestServletTest extends TestCase {
     public void test() throws Exception {

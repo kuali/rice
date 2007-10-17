@@ -40,10 +40,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * A model bean for a Rule within the KEW rules engine.
  *
- * @author rkirkend
- * @author bmcgough
- * @author jhopf
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleBaseValues implements WorkflowPersistable {
 

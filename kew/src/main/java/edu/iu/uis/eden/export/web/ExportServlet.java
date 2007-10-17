@@ -35,7 +35,7 @@ import edu.iu.uis.eden.export.Exporter;
  * A servet which generates and returns a file conforming to the specified {@link ExportFormat} 
  * with the exported data in it.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ExportServlet extends HttpServlet {
 

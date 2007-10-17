@@ -23,7 +23,7 @@ import javax.xml.namespace.NamespaceContext;
 /**
  * An XML NamespaceContext for KEW.
  *
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkflowNamespaceContext implements NamespaceContext {
 	public String getNamespaceURI(String prefix) {

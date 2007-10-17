@@ -38,7 +38,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * A decorator for {@link Workgroup} which allows for the bean to be more
  * easily used by the web-tier.
  *
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WebWorkgroup extends WebLookupableDecorator implements Workgroup {
 

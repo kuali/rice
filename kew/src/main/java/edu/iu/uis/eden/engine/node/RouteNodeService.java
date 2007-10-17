@@ -26,8 +26,7 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
  * A service which provides data access for {@link RouteNode}, {@link RouteNodeInstance}, 
  * {@link NodeState}, and {@link Branch} objects.
  * 
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RouteNodeService {
 

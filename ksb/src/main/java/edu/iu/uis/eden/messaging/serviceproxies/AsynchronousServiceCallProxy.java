@@ -40,7 +40,7 @@ import edu.iu.uis.eden.messaging.ServiceInfo;
  * Standard default proxy used to call services asynchronously. Persists the method call to the db so call is never lost and
  * only sent when transaction is committed.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class AsynchronousServiceCallProxy extends BaseInvocationHandler implements TargetedInvocationHandler {

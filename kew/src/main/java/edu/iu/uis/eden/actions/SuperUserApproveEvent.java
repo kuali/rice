@@ -43,8 +43,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Does a super user approve action.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class SuperUserApproveEvent extends SuperUserActionTakenEvent {

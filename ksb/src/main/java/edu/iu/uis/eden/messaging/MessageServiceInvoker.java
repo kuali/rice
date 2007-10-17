@@ -32,7 +32,7 @@ import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 /**
  * Handles invocation of a {@link PersistedMessage}.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class MessageServiceInvoker implements Runnable {
 

@@ -23,7 +23,7 @@ import java.io.Serializable;
  * 
  * @see UserService
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserCapabilities implements Serializable {
 

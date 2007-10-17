@@ -33,7 +33,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Used to eliminate kauli user table and delegate user fetches to workflow User service. Wired in the CoreServiceOverride.xml file.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RiceKNSDefaultUserDAOImpl implements UniversalUserDao {
 

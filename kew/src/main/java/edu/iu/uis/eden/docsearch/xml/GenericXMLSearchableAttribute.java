@@ -24,7 +24,7 @@ import edu.iu.uis.eden.routetemplate.RuleAttribute;
 /**
  * Interface representing attributes that are backed by xml.
  *
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface GenericXMLSearchableAttribute extends SearchableAttribute {
 

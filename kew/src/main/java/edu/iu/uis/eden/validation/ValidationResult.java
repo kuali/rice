@@ -19,7 +19,7 @@ package edu.iu.uis.eden.validation;
 /**
  * Represents a simple validation result.  Includes the name of the field and the error message.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ValidationResult {
 

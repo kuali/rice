@@ -32,7 +32,7 @@ import edu.iu.uis.eden.test.TestUtilities;
  * Tests the HotDeployer and Reloader which handle hot deployment and hot reloading
  * of Plugins.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class HotDeployTest extends KEWTestCase {
 

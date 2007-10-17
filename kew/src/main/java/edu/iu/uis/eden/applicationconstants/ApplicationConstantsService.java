@@ -23,8 +23,7 @@ import edu.iu.uis.eden.XmlLoader;
 /**
  * Defines contract for interacting with {@link ApplicationConstant} objects.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ApplicationConstantsService extends XmlLoader {
 	public static final String APPLICATION_CONSTANTS_CACHE_ID = "edu.iu.uis.eden.cache.ApplicationConstantsCache";

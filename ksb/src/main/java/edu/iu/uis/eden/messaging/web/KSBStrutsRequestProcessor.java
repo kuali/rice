@@ -35,7 +35,7 @@ import org.kuali.rice.core.Core;
  * A RequestProcessor implementation for Struts which handles determining whether or not access
  * should be allowed to the requested KSB page.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KSBStrutsRequestProcessor extends RequestProcessor {
 

@@ -22,7 +22,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Used to determine store notifications to be sent in the {@link BlanketApproveEngine}.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationContext {
 

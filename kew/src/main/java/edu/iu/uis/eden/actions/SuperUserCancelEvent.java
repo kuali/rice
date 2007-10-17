@@ -24,8 +24,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * performs a cancel action as a super user
  *
- * @author rkirkend
- * @author seiffert
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SuperUserCancelEvent extends SuperUserActionTakenEvent {
     

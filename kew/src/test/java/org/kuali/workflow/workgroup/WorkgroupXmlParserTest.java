@@ -31,7 +31,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
 /**
  * Tests parsing of the XML for Workgroups.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkgroupXmlParserTest extends KEWTestCase {
 

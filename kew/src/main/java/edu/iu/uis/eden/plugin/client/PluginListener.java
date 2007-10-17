@@ -24,7 +24,7 @@ import edu.iu.uis.eden.plugin.Plugin;
  * 
  * @see Plugin
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface PluginListener {
 

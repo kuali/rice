@@ -20,7 +20,7 @@ import org.kuali.rice.lifecycle.Lifecycle;
 /**
  * Defines the simple MBean interface for ResourceLoader management.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ResourceLoaderWrapperMBean extends Lifecycle {
 

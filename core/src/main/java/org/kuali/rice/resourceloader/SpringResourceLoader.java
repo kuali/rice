@@ -27,7 +27,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  * Starts and stops the {@link ConfigurableApplicationContext}.
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SpringResourceLoader extends BaseResourceLoader {
 

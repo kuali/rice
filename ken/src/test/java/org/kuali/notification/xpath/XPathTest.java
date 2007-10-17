@@ -51,7 +51,7 @@ import com.sun.org.apache.xerces.internal.jaxp.JAXPConstants;
  *       is to predefine the prefix in the NamespaceContent (which can be done by using a CompositeNamespaceContenxt
  *       consisting of a ConfiguredNamespaceContext and a DocumentNamespaceContext).</li>
  * </ul>
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class XPathTest extends NotificationTestCaseBase {
     private static final String TEST_XML = "sample_message_event_type.xml";

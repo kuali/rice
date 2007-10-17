@@ -20,7 +20,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RouteModuleException extends WorkflowRuntimeException {
 

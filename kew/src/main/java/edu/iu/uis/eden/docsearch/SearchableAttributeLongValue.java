@@ -33,7 +33,7 @@ import edu.iu.uis.eden.util.Utilities;
 
 /**
  *
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SearchableAttributeLongValue implements WorkflowPersistable, SearchableAttributeValue {
 

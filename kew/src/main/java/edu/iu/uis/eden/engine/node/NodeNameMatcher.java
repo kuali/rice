@@ -19,7 +19,7 @@ package edu.iu.uis.eden.engine.node;
 /**
  * An implementation of a {@link NodeMatcher} which matches nodes based on the name of the node.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NodeNameMatcher implements NodeMatcher {
 

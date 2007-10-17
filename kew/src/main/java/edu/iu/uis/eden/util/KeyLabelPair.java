@@ -21,8 +21,7 @@ import java.io.Serializable;
 /**
  * A pair including a key and a label.
  *
- * @author rkirkend
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KeyLabelPair implements Serializable {
 

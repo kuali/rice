@@ -33,7 +33,7 @@ import org.w3c.dom.NodeList;
 /**
  * Builds a EDLGlobalConfig.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EDLGlobalConfigFactory {
 

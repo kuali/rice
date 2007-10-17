@@ -39,7 +39,7 @@ import edu.iu.uis.eden.web.session.UserSession;
 /**
  * The default Lookupable implementation for WorkflowUsers. 
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserLookupableImpl implements WorkflowLookupable {
 

@@ -31,7 +31,7 @@ import org.springframework.transaction.jta.JtaTransactionManager;
  * testharness {@link SpringResourceLoader} is placed in the {@link GlobalResourceLoader} 
  * this can delegate to that {@link GlobalResourceLoader}.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class TestHarnessServiceLocator {

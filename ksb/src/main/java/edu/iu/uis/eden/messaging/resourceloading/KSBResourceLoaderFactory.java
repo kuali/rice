@@ -37,7 +37,7 @@ import edu.iu.uis.eden.messaging.RemoteResourceServiceLocatorImpl;
  * Can grab any KSB specific resource loader from the resource loading stack.
  *
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class KSBResourceLoaderFactory {

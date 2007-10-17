@@ -26,7 +26,7 @@ import org.apache.ojb.broker.query.Criteria;
  * This class was copied from the Kuali Nervous System
  * (org.kuali.core.dao.BusinessObjectDao).
  * 
- * @author Bryan Hutchinson (bh79@cornell.edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface BusinessObjectDao {
     /**

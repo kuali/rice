@@ -30,10 +30,7 @@ import edu.iu.uis.eden.useroptions.UserOptionsService;
 /**
  * An implementation of the {@link PreferencesService}.
  *
- * @author rkirkend
- * @author bmcgough
- * @author temay
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PreferencesServiceImpl implements PreferencesService {
 

@@ -23,8 +23,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Transport object representing a {@link WorkflowUser}.
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author shenl
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocOperationIndexedParameter implements Serializable {
 

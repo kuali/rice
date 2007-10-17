@@ -22,7 +22,7 @@ import org.kuali.rice.ojb.BaseOjbConfigurer;
  * and OJB repository metadata location.
  * TODO: pull functionality up into base
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ConfigurableOjbConfigurer extends BaseOjbConfigurer {

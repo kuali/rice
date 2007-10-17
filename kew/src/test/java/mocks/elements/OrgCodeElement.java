@@ -33,7 +33,7 @@ import edu.iu.uis.eden.services.ServiceErrorConstants;
  *
  * <p>Copyright: Copyright (c) 2002</p>
  * <p>Company: Indiana University</p>
- * @author Ryan Kirkendall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @version 1.0
  */
 public class OrgCodeElement implements IDocElement {

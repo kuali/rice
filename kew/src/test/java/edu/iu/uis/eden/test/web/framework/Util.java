@@ -29,7 +29,7 @@ import org.w3c.dom.Node;
 
 /**
  * Utility class
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public final class Util {
     private static final Logger LOG = Logger.getLogger(Util.class);

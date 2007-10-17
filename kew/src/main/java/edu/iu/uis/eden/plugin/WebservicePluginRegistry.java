@@ -27,7 +27,7 @@ import org.kuali.rice.resourceloader.ResourceLoader;
  * services.  Inherits all functionality from the super class which is driven solely off of 
  * the client.protocol configuration parameter.
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WebservicePluginRegistry extends ClientProtocolPluginRegistry {
 	

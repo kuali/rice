@@ -19,7 +19,7 @@ package edu.iu.uis.eden.plugin;
 import edu.iu.uis.eden.plugin.client.PluginListener;
 
 /**
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TestPluginListener2 implements PluginListener {
 

@@ -21,7 +21,7 @@ package edu.iu.uis.eden.batch;
  * @see edu.iu.uis.eden.batch.BaseXmlDocCollection
  * @see edu.iu.uis.eden.batch.FileXmlDoc
  * @see edu.iu.uis.eden.batch.ZipXmlDoc
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 abstract class BaseXmlDoc implements XmlDoc {
     protected XmlDocCollection collection;

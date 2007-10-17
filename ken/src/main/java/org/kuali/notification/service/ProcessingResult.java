@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * Encapsulates the number of successes and failures in a giving processing run
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ProcessingResult {
     /**

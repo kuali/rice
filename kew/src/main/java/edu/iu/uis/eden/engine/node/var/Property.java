@@ -27,7 +27,7 @@ package edu.iu.uis.eden.engine.node.var;
  *   <dd>PropertyScheme-implementation-specific property name or URI</dd>
  * </dl>
  * 
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public final class Property {
     /**

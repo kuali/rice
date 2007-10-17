@@ -24,7 +24,7 @@ import edu.iu.uis.eden.plugin.attributes.RoleAttribute;
  * 
  * @see RoleAttribute
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RolePoker {
 	

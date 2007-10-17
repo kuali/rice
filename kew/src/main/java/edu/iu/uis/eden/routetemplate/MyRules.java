@@ -27,8 +27,7 @@ import java.util.List;
  *
  * @see RuleBaseValues
  *
- * @author jhopf
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class MyRules implements Serializable {
 

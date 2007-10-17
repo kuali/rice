@@ -51,7 +51,7 @@ import edu.iu.uis.eden.xml.XmlConstants;
  *
  * @see DocumentType
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
 

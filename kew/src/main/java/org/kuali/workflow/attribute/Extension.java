@@ -23,7 +23,7 @@ import java.util.List;
  * defines the properties of the Extension.  An Extension has a list of ExtensionData which
  * store key-values pairs that represent the extension data.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Extension {
 

@@ -23,8 +23,7 @@ import edu.iu.uis.eden.help.HelpEntry;
 /**
  * Struts ActionForm for {@link HelpAction}. 
  *
- * @author xqi
- * @author shenl
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class HelpForm extends ActionForm {
     

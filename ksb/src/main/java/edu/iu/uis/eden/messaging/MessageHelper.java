@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 /**
  * Interface for aquiring services asynchronously.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface MessageHelper {
 	public String serializeObject(Serializable object);

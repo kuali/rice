@@ -19,7 +19,7 @@ package edu.iu.uis.eden.removereplace.web;
 /**
  * Represents an input from the Remove/Replace User screen to remove or replace a user in a Workgroup.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RemoveReplaceWorkgroup {
 

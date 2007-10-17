@@ -19,7 +19,7 @@ package edu.iu.uis.eden.routetemplate;
 /**
  * Clears a rule from the rule cache by the given rule ID.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RuleCacheProcessor {
 	

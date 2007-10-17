@@ -25,7 +25,7 @@ import edu.iu.uis.eden.routetemplate.RuleAttribute;
 /**
  * Tests interaction with the default WorkgroupTypeService implementation.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkgroupTypeServiceTest extends KEWTestCase {
 

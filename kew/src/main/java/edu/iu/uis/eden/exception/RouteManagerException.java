@@ -23,7 +23,7 @@ import edu.iu.uis.eden.engine.RouteContext;
  * which contains information about the state of the engine at the time the
  * problem was encountered.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RouteManagerException extends WorkflowRuntimeException {
 

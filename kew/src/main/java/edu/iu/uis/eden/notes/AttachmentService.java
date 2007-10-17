@@ -23,7 +23,7 @@ import java.io.File;
  * 
  * @see Attachment
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface AttachmentService {
 

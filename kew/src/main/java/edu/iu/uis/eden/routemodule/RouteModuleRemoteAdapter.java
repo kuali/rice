@@ -40,7 +40,7 @@ import edu.iu.uis.eden.util.ResponsibleParty;
  * @see RouteModuleRemote
  * @see RouteModule
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RouteModuleRemoteAdapter implements RouteModule {
 

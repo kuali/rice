@@ -23,7 +23,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * An object represnting an action to take in the simulation engine
  * 
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimulationActionToTake implements Serializable {
 	private static final long serialVersionUID = 5212455086079117671L;

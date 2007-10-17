@@ -38,7 +38,7 @@ import edu.iu.uis.eden.workgroup.web.WebWorkgroup;
 /**
  * NotificationRecipientService implementation - this is the default out-of-the-box implementation of the service.  
  * These implementations rely on the the user and group management services that are built into the KEW system.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationRecipientServiceKewImpl implements NotificationRecipientService {
     /**

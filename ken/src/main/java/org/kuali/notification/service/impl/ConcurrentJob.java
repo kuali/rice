@@ -39,7 +39,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.Future;
 
 /**
  * Base class for jobs that must obtain a set of work items atomically
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class ConcurrentJob<T> {
     protected final Logger LOG = Logger.getLogger(getClass());

@@ -26,7 +26,7 @@ import edu.iu.uis.eden.messaging.PersistedMessage;
  * 
  *  Determines execution order by priority and create date.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class PriorityBlockingQueuePersistedMessageComparator implements Comparator {

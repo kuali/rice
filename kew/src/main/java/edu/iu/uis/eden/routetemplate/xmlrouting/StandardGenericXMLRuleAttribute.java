@@ -82,9 +82,7 @@ import edu.iu.uis.eden.util.XmlHelper;
  *       to validate the field value (given by the param map)</li>
  * </ol>
  *
- * @author jhopf
- * @author rkirkend
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute, WorkflowAttributeXmlValidator {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardGenericXMLRuleAttribute.class);

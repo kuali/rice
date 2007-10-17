@@ -25,7 +25,7 @@ import edu.iu.uis.eden.messaging.ServiceInfo;
 /**
  * Struts ActionForm for the {@link ServiceRegistryAction}.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ServiceRegistryForm extends ActionForm {

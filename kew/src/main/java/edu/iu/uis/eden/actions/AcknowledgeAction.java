@@ -41,9 +41,7 @@ import edu.iu.uis.eden.util.Utilities;
  * related to this user are deactivated.
  * </p>
  *
- * @author rkirkend
- * @author ewestfal
- * @author seiffert
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AcknowledgeAction extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AcknowledgeAction.class);

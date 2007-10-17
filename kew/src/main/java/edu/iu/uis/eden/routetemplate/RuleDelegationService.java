@@ -23,8 +23,7 @@ import java.util.List;
  * 
  * @see RuleDelegation
  *
- * @author ewestfal
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RuleDelegationService {
 

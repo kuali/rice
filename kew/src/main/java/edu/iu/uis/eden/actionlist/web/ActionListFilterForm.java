@@ -30,7 +30,7 @@ import edu.iu.uis.eden.actionlist.ActionListFilter;
 /**
  * Struts form class for ActionListFilterAction
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class ActionListFilterForm extends ActionForm {

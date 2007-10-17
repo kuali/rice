@@ -30,7 +30,7 @@ package edu.iu.uis.eden.clientapp.vo;
  *   <li><b>nodeName</b> - the name of the node to revoke requests at</li>
  * </ol>
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @workflow.webservice-object
  */
 public class AdHocRevokeVO implements java.io.Serializable {

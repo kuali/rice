@@ -29,7 +29,7 @@ import edu.iu.uis.eden.test.web.framework.Util;
  * &lt;user&gt;...&lt;/user&gt;
  * &lt;backdoorId&gt;...&lt;/backdoorId&gt;
  * </pre>
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserAction extends BaseScriptAction {
     private static final String[] NAMES = { "user", "backdoorId" };

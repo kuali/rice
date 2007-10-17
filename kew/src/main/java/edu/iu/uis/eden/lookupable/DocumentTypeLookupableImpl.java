@@ -47,9 +47,7 @@ import edu.iu.uis.eden.util.Utilities;
  * @see DocumentType
  * @see DocumentTypeService
  *
- * @author jhopf
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportable {
     private static final Logger LOG = Logger.getLogger(DocumentTypeLookupableImpl.class);

@@ -22,7 +22,7 @@ import org.springframework.beans.factory.InitializingBean;
 /**
  * Used from Spring to register service definitions from an already configured and started KSB.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KSBExporter implements InitializingBean {
 	

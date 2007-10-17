@@ -25,7 +25,7 @@ package edu.iu.uis.eden.responsibility;
 import edu.iu.uis.eden.responsibility.dao.ResponsibilityIdDAO;
 
 /**
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates

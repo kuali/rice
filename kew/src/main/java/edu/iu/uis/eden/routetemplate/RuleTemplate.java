@@ -32,9 +32,7 @@ import edu.iu.uis.eden.exception.ResourceUnavailableException;
  * The RuleTemplate is essentially a collection of {@link RuleAttribute}s
  * (associated vai the {@link RuleTemplateAttribute} bean).
  *
- * @author rkirkend
- * @author bmcgough
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleTemplate implements WorkflowPersistable {
 

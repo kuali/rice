@@ -20,7 +20,7 @@ package edu.iu.uis.eden.web;
  * A row which is styleable with a CSS class.  The name of the CSS class to
  * use is defined by the {@link #getRowStyleClass()} method.
  *
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RowStyleable {
     public String getRowStyleClass();

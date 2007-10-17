@@ -22,7 +22,7 @@ import org.kuali.rice.security.credentials.CredentialsSource.CredentialsType;
 
 /**
  * 
- * @author Scott Battaglia
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  * 
  */

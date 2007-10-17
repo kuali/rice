@@ -24,7 +24,7 @@ import edu.iu.uis.eden.EdenConstants;
 /**
  * model for the action list filter preferences
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionListFilter implements Serializable {
 

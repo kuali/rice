@@ -24,7 +24,7 @@ import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 /**
  * Compares an action item to another action item.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionItemComparator implements Comparator {
 

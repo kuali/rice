@@ -36,7 +36,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * 	 <li><b>workgroupId</b> - the ID of the workgroup whose requests(s) should be revoked</li>
  * </ol>
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AdHocRevoke implements java.io.Serializable {
 

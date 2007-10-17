@@ -29,7 +29,7 @@ import org.kuali.rice.resourceloader.ContextClassLoaderBinder;
 
 /**
  * Tests the ContextClassLoaderBinder
- * @author Aaron Hamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ContextClassLoaderBinderTest extends TestCase {
     

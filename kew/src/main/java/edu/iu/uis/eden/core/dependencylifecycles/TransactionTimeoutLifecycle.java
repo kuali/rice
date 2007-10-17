@@ -35,7 +35,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TransactionTimeoutLifecycle extends BaseLifecycle implements ApplicationListener, BeanFactoryAware {
 

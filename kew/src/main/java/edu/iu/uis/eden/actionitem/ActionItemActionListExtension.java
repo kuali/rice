@@ -29,8 +29,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * Alternate model object for action list fetches that do not automatically use
  * ojb collections.  This is here to make action list faster. 
  * 
- * @author bmcgough
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class ActionItemActionListExtension extends ActionItem {

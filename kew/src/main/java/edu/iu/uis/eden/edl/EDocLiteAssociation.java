@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * Association between WorkflowDocument type -&gt; EDocLite definition, EDocLite style
  * Table: en_edoclt_assoc_t
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EDocLiteAssociation implements Serializable{
 

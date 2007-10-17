@@ -76,10 +76,7 @@ import edu.iu.uis.eden.workgroup.web.WorkgroupForm.WorkgroupMember;
  *
  * @see WorkgroupService
  *
- * @author xqi
- * @author rkirkend
- * @author temay
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkgroupAction extends WorkflowAction {
 

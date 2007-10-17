@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * Represents a property used on an {@link ObjectDefinition}.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PropertyDefinition implements Serializable {
 

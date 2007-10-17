@@ -23,7 +23,7 @@ import org.kuali.workflow.role.Role;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RoleDAO {
 

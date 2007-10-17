@@ -44,7 +44,7 @@ import org.springframework.jndi.JndiTemplate;
  * <p>The config properties checked can be overridden by setting the
  *
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
 

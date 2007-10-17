@@ -23,7 +23,7 @@ package org.kuali.rice.proxy;
  * construction of the handler with the target object and implements the
  * interface by providing access to the target via the getTarget() method.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class BaseTargetedInvocationHandler extends BaseInvocationHandler implements TargetedInvocationHandler {
 

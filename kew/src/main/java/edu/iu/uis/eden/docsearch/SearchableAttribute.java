@@ -24,7 +24,7 @@ import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
 /**
  * SearchableAttribute must implement this interface
  * 
- * @author Bryan Hutchinson
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface SearchableAttribute extends Serializable {
 

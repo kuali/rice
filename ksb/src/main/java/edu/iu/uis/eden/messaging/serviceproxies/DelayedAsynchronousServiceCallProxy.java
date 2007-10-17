@@ -46,7 +46,7 @@ import edu.iu.uis.eden.messaging.quartz.MessageServiceExecutorJobListener;
 /**
  * A proxy which schedules a service to be executed asynchronously after some delay period.
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler implements TargetedInvocationHandler {
 

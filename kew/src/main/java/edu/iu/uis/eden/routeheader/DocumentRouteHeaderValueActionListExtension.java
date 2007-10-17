@@ -24,7 +24,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  * An extension of {@link DocumentRouteHeaderValue} which is mapped to OJB to help
  * with optimization of the loading of a user's Action List.
  *
- * @author bmcough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentRouteHeaderValueActionListExtension extends DocumentRouteHeaderValue {
 

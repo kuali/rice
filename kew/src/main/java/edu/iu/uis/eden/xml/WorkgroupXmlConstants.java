@@ -24,7 +24,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  *
  * @see WorkgroupXmlHandler
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface WorkgroupXmlConstants {
 

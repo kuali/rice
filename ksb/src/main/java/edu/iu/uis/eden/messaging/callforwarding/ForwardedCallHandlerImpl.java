@@ -29,7 +29,7 @@ import edu.iu.uis.eden.messaging.PersistedMessage;
 import edu.iu.uis.eden.messaging.serviceproxies.MessageSender;
 
 /**
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ForwardedCallHandlerImpl implements ForwardedCallHandler {
 

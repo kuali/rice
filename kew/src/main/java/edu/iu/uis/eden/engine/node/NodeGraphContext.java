@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * The current context of a search process within a node graph.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NodeGraphContext {
 

@@ -38,7 +38,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  * A Struts Action which permits a user to execute a backdoor login to masquerade
  * as another user.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BackdoorAction extends WorkflowAction {
 

@@ -56,7 +56,7 @@ import org.xml.sax.InputSource;
 /**
  * A utility class to generate Workgroup and Rule XML from an Excel spreadsheet.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class XmlGen {
 

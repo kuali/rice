@@ -43,10 +43,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
 /**
  * A Struts Action which provides super user functionality.
  *
- * @author bmcgough
- * @author xqi
- * @author temay
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SuperUserAction extends WorkflowAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SuperUserAction.class);

@@ -28,7 +28,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Responsible for invoking the async piece of BlanketApprove
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BlanketApproveProcessor implements BlanketApproveProcessorService {
 	

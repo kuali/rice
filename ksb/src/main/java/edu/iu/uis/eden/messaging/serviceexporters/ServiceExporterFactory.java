@@ -24,7 +24,7 @@ import edu.iu.uis.eden.messaging.ServiceInfo;
 
 /**
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ServiceExporterFactory {
 

@@ -29,7 +29,7 @@ import edu.iu.uis.eden.engine.RouteContext;
  *
  * If null, or an empty List is returned, this indicates that no QualifiedRoles matched the document.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RoleResolver {
 

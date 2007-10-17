@@ -32,7 +32,7 @@ import org.junit.Test;
 
 /**
  * Load tester for notification
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Ignore
 public class NotificationLoadTester extends NotificationUsageSimulator {

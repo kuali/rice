@@ -29,7 +29,7 @@ import edu.sampleu.travel.bo.TravelAccountType;
 /**
  * This class tests the PersistableBusinessObjectValuesFinder.
  *
- * @author Bryan Hutchinson (bh79 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class PersistableBusinessObjectValuesFinderTest extends TestBase {

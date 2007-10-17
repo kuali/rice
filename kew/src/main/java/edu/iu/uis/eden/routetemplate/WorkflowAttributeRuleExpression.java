@@ -29,7 +29,7 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.GenericXMLRuleAttribute;
 
 /**
  * Standard rule expression implementation that evaluates the attributes associated with the rule definition 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 class WorkflowAttributeRuleExpression implements RuleExpression {
     public RuleExpressionResult evaluate(RuleBaseValues ruleDefinition, RouteContext context) throws EdenUserNotFoundException, WorkflowException {

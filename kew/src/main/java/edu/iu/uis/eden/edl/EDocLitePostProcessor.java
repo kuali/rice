@@ -54,7 +54,7 @@ import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * PostProcessor responsible for posting events to a url defined in the EDL doc definition.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EDocLitePostProcessor extends DefaultPostProcessor {
     private static final Logger LOG = Logger.getLogger(EDocLitePostProcessor.class);

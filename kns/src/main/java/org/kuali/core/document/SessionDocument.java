@@ -18,7 +18,7 @@ package org.kuali.core.document;
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Full Name (email at address dot com)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface SessionDocument {

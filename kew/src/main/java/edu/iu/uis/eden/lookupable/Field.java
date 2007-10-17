@@ -34,8 +34,7 @@ import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
  *
  * @see WorkflowLookupable
  *
- * @author jhopf
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Field implements java.io.Serializable {
 

@@ -38,7 +38,7 @@ import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
  * Tests RemoteResourceLoader is working correctly by itself and working correctly with the RemoteServiceRegistry in marking
  * services bad/refreshing services/etc.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class RemoteResourceLoaderTest extends KSBTestCase {

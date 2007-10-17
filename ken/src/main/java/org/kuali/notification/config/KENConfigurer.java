@@ -26,7 +26,7 @@ import org.kuali.rice.lifecycle.Lifecycle;
 
 /**
  * The KEN Configurer
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KENConfigurer extends ModuleConfigurer {
     private static final Logger LOG = Logger.getLogger(KENConfigurer.class);

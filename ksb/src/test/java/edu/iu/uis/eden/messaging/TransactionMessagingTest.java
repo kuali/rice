@@ -28,8 +28,7 @@ import edu.iu.uis.eden.messaging.serviceproxies.MessageSendingTransactionSynchro
  * Verify that messaging works in the context of a transaction and message invokation is done via the
  * {@link TransactionSynchronization} messagei
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class TransactionMessagingTest extends KSBTestCase {

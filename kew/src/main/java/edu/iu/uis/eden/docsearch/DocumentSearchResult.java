@@ -26,7 +26,7 @@ import edu.iu.uis.eden.web.KeyValueSort;
 
 /**
  *
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentSearchResult {
 

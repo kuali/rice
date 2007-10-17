@@ -38,8 +38,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * @see WorkflowDocumentActions
  * @see ActionTakenEvent
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface WorkflowDocumentService {
 

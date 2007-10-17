@@ -29,7 +29,7 @@ import edu.iu.uis.eden.xml.XmlConstants;
  *
  * @see HelpEntry
  *
- * @author shenl
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class HelpEntryXmlExporter implements XmlExporter, XmlConstants {
 

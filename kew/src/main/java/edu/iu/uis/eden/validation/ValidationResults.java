@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * A set of results from validation of a field of data.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ValidationResults {
 

@@ -20,8 +20,7 @@ package edu.iu.uis.eden.clientapp.vo;
 /**
  * Superclass transport object for all groupid transport objects.
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object 
  */

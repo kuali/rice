@@ -23,7 +23,7 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 /**
  * A service for executing routing reports from {@link SimulationCriteria}.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RoutingReportService {
 

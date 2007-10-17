@@ -30,7 +30,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * 
  * An attribute that doesn't implement the interface should record no errors when validated.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class AttributeClientRoutingDataValidationTest extends KEWTestCase {

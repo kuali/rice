@@ -26,8 +26,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Does a return to previous as a superuser
  * 
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SuperUserReturnToPreviousNodeAction extends SuperUserActionTakenEvent {
     

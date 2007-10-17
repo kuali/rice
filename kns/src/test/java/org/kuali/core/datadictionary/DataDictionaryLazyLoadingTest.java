@@ -25,7 +25,7 @@ import org.kuali.test.KNSWithTestSpringContext;
 /**
  * Test to ensure that data dictionary lazy loading works as expected.
  * 
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @KNSWithTestSpringContext
 public class DataDictionaryLazyLoadingTest extends KNSTestBase {

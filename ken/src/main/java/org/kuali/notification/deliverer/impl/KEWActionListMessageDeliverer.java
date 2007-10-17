@@ -34,7 +34,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
 /**
  * This class is responsible for describing the default delivery mechanism for
  * the system - the KEW Action List.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KEWActionListMessageDeliverer implements NotificationMessageDeliverer {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger

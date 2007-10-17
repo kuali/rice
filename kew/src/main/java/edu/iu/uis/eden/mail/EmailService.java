@@ -19,7 +19,7 @@ package edu.iu.uis.eden.mail;
 /**
  * A service for sending email messages.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface EmailService {
 	

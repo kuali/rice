@@ -34,7 +34,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 /**
  * Store global EDL config information parsed from config file.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class EDLGlobalConfig {

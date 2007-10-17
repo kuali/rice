@@ -22,7 +22,7 @@ import edu.iu.uis.eden.engine.RouteContext;
  * The JoinEngine is responsible for maintaining join state and determining when the join condition
  * has been satisfied.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface JoinEngine {
 

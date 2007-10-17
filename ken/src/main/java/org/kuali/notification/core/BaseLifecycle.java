@@ -18,7 +18,7 @@ package org.kuali.notification.core;
 /**
  * An abstract superclass to aid in implementing lifeycles.
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class BaseLifecycle implements Lifecycle {
 

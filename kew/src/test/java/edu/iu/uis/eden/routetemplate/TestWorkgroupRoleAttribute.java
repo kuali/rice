@@ -27,7 +27,7 @@ import edu.iu.uis.eden.workgroup.GroupNameId;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TestWorkgroupRoleAttribute extends AbstractRoleAttribute {
 

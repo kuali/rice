@@ -24,7 +24,7 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
 
 /**
  * {@link Rule} implementation 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 class RuleImpl implements Rule {
     /**

@@ -37,7 +37,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
  * @see Stats
  * @see StatsService
  *
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StatsAction extends WorkflowAction {
 

@@ -22,7 +22,7 @@ import edu.iu.uis.eden.engine.RouteHelper;
 /**
  * An interface for a Split Node which allows for parallel branching of the route path within a document.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface SplitNode extends Node {
 	

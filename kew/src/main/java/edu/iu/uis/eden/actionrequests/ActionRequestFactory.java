@@ -46,7 +46,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
 /**
  * A factory to aid in creating the ever-so-gnarly ActionRequestValue object.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionRequestFactory {
 

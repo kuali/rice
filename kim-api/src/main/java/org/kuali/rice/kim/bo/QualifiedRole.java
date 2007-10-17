@@ -25,7 +25,7 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
  * For simplicity, KIM interfaces may return objects of this class, which then can be cast 
  * to the appropriate qualified role sub-class.     
  * 
- * @author Phillip Berres (email at pberres dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public abstract class QualifiedRole extends PersistableBusinessObjectBase {

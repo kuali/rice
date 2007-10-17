@@ -22,8 +22,7 @@ import edu.iu.uis.eden.engine.RouteHelper;
 /**
  * A Node type which can be used to dynamically generate a route path for a document.
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DynamicNode extends Node {
 

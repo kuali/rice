@@ -35,8 +35,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
  *
  * @see WorkflowDocument
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface WorkflowDocumentActions extends Remote {
 

@@ -34,9 +34,7 @@ import edu.iu.uis.eden.util.Utilities;
  * Saves a document.  Puts the document in the persons action list that saved the document.
  * This can currently only be done by the initiator of the document.
  *
- * @author rkirkend
- * @author ewestfal
- * @author seiffert
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class SaveActionEvent extends ActionTakenEvent {

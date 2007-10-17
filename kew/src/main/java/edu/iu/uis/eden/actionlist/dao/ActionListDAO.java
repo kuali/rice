@@ -27,8 +27,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  *
  * @see ActionItem
  *
- * @author rkirkend
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ActionListDAO {
     public Collection getActionList(WorkflowUser workflowUser, ActionListFilter filter);

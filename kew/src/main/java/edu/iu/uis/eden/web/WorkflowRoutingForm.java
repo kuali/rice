@@ -37,8 +37,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  * A Struts ActionForm which can be extended by ActionForms which need to add
  * support for document routing to a Struts Action.
  *
- * @author bmcgough
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkflowRoutingForm extends ActionForm {
 

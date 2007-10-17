@@ -27,7 +27,7 @@ import edu.iu.uis.eden.routetemplate.RuleAttribute;
  * properties, it uses a Map of parameters to represent it's
  * attribute properties.
  *
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface GenericXMLRuleAttribute extends WorkflowAttribute {
 

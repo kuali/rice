@@ -37,8 +37,7 @@ import edu.iu.uis.eden.util.Utilities;
  * Does a node level super user approve action.  All approve/complete requests outstanding for
  * this node are satisfied by this action.
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {

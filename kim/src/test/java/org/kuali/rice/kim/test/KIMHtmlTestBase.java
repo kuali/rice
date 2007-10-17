@@ -18,7 +18,7 @@ package org.kuali.rice.kim.test;
 /**
  * This is the base HTML Unit Test class that all KIM HTML Unit tests need to extend from. 
  * 
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class KIMHtmlTestBase extends KIMTestCase {
     

@@ -28,7 +28,7 @@ import edu.iu.uis.eden.routeheader.DocumentContent;
  * A simple base RoleAttribute implementation for roles that do not need to be qualified
  * prior to resolution.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class UnqualifiedRoleAttribute extends AbstractRoleAttribute {
 

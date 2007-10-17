@@ -17,7 +17,7 @@
 package edu.iu.uis.eden.routemodule;
 
 /**
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TestDelegation {
 

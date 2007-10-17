@@ -39,8 +39,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 
 /**
  * Tests NotificationMessageDeliveryResolverServiceImpl
- * @author Aaron Godert (ag266 at cornell dot edu)
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Ignore // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 public class NotificationMessageDeliveryResolverServiceImplTest extends NotificationTestCaseBase {

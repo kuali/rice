@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  * <p>This interface will most likely be deprecated in a future version of Rice and replaced with a more
  * sophisticated authorization implementation.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface AuthorizationService {

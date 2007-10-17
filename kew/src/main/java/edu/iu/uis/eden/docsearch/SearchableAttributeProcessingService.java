@@ -20,7 +20,7 @@ package edu.iu.uis.eden.docsearch;
  * Service for indexing documents searchable information that have associated searchable 
  * attributes.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface SearchableAttributeProcessingService {
 

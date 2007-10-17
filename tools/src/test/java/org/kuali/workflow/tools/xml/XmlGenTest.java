@@ -25,7 +25,7 @@ import org.junit.Test;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class XmlGenTest extends Assert {
 

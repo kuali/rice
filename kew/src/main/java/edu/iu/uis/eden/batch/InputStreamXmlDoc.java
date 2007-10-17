@@ -22,7 +22,7 @@ import java.io.InputStream;
 /**
  * Xml document that is backed by an input stream
  *
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class InputStreamXmlDoc extends BaseXmlDoc {
 

@@ -32,7 +32,7 @@ import edu.iu.uis.eden.routetemplate.web.RoutingReportAction;
  * @see WorkflowAttribute
  * @see RoutingReportAction
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AttributeDocumentContent extends StandardDocumentContent {
     

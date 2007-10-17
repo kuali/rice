@@ -28,8 +28,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Service for doing the actual work of a mass action in the action list. Represents a single action on a single document.
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionInvocationProcessor implements ActionInvocationService { // implements RouteQueueProcessor {
 

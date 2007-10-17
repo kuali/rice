@@ -30,8 +30,7 @@ import org.kuali.notification.util.NotificationConstants;
 
 /**
  * Tests NotificationMessageDeliveryDispatchServiceImpl
- * @author Aaron Godert (ag266 at cornell dot edu)
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Ignore // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 public class NotificationMessageDeliveryDispatchServiceImplTest extends NotificationTestCaseBase {

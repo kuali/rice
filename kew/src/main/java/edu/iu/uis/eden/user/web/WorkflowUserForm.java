@@ -29,7 +29,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * A Struts ActionForm for the {@link WorkflowUserAction}.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkflowUserForm extends ActionForm {
 

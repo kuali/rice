@@ -25,7 +25,7 @@ import org.kuali.notification.service.NotificationContentTypeService;
 
 /**
  * NotificationContentTypeService implementation - uses the businessObjectDao to get at the underlying data in the stock DBMS.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationContentTypeServiceImpl implements NotificationContentTypeService {
     private BusinessObjectDao businessObjectDao;

@@ -31,7 +31,7 @@ import edu.iu.uis.eden.messaging.callbacks.SimpleCallback;
  * Tests calling services in a very simple scenario.  This test could probably go 
  * now that more 'feature-full' tests are out there.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class SimpleServiceCallTest extends KSBTestCase {

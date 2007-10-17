@@ -21,6 +21,6 @@ package edu.iu.uis.eden.database.platform;
  * of the platforms supported by OJB so we want to keep our platform identifiers
  * consistent with OJB.
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Oracle9iPlatform extends OraclePlatform {}

@@ -38,8 +38,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Super user Approves a single action request.
  *
- * @author rkirkend
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SuperUserActionRequestApproveEvent.class);

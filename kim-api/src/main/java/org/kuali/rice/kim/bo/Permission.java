@@ -24,7 +24,7 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
  * is tied to permissions as these are what get checked against in the application.  A permission should describe the ability to 
  * take a certain action within a system. 
  * 
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Permission extends PersistableBusinessObjectBase {
 

@@ -19,7 +19,7 @@ package edu.iu.uis.eden.actionrequests;
 /**
  * Interface for the DocumentRequeuerImpl service.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DocumentRequeuerService {
 

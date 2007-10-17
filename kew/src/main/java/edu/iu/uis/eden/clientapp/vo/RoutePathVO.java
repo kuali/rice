@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * Transport object responsble for holding the process a document has been through.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

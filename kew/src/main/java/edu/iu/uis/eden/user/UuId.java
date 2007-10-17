@@ -23,7 +23,7 @@ import java.io.Serializable;
  * institutional, identity system.  The workflow engine does not depend upon the
  * existence of this Id on a {@link WorkflowUser}.
  * 
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public final class UuId implements UserId, Serializable {
 

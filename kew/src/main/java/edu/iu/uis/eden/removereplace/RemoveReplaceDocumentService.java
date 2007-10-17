@@ -20,7 +20,7 @@ import edu.iu.uis.eden.web.session.UserSession;
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
  *
- * @author Full Name (email at address dot com)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface RemoveReplaceDocumentService {

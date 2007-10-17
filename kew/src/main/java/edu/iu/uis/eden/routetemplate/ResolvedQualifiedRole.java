@@ -32,7 +32,7 @@ import edu.iu.uis.eden.actionrequests.ActionRequestValue;
  * @see Id
  * @see ActionRequestValue
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ResolvedQualifiedRole implements Serializable {
 

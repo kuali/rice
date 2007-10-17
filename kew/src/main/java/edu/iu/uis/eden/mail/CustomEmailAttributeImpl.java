@@ -23,7 +23,7 @@ import edu.iu.uis.eden.plugin.attributes.CustomEmailAttribute;
 /**
  * Default implementation of the {@link CustomEmailAttribute}.
  *
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CustomEmailAttributeImpl implements CustomEmailAttribute {
 

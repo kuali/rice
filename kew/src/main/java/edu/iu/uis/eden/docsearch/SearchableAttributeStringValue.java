@@ -29,7 +29,7 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 /**
  *
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SearchableAttributeStringValue implements WorkflowPersistable, SearchableAttributeValue {
 

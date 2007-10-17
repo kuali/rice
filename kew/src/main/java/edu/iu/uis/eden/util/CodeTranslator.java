@@ -24,7 +24,7 @@ import edu.iu.uis.eden.EdenConstants;
 /**
  * Utility class to translate the various codes used in Eden into labels and vice versa.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CodeTranslator {
     public static final Map arLabels = getArLabels();

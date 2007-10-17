@@ -31,7 +31,7 @@ import edu.iu.uis.eden.web.WorkflowRoutingForm;
 /**
  * A struts form for Remove/Replace.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RemoveReplaceForm extends WorkflowRoutingForm {
 

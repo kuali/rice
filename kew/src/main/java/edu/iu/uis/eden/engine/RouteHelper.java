@@ -36,7 +36,7 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
  * A helper class which provides some useful utilities for examining and generating nodes.
  * Provides access to the {@link JoinEngine} and the {@link RoutingNodeFactory}.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RouteHelper {
 

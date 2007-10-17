@@ -27,7 +27,7 @@ import edu.iu.uis.eden.exception.EdenUserNotFoundException;
  * RoleAttribute that exposes an INITIATOR abstract role which resolves to the
  * initiator of the document.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class InitiatorRoleAttribute extends UnqualifiedRoleAttribute {
     private static final String INITIATOR_ROLE_KEY = "INITIATOR";

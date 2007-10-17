@@ -28,7 +28,7 @@ import org.kuali.rice.resourceloader.SpringResourceLoader;
  * 
  * Returns the {@link ResourceLoader} ready to be started.
  *  
- * @author Aaron Godet (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KIMResourceLoaderFactory {
 

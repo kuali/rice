@@ -25,7 +25,7 @@ import edu.iu.uis.eden.util.Utilities;
  * A simple utility class which can handle translated a comma-seperated String
  * into an array of String paramters and vice-versa.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ParameterTranslator {
 

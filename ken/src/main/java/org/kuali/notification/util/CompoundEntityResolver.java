@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
 /**
  * EntityResolver implementation that delegates in sequence to a list of EntityResolvers,
  * returning the first match.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CompoundEntityResolver implements EntityResolver {
     private static final Logger LOG = Logger.getLogger(CompoundEntityResolver.class);

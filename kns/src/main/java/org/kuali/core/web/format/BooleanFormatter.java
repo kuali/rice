@@ -27,7 +27,7 @@ import org.kuali.RiceKeyConstants;
  * begin Kuali Foundation modification
  * This class is used to format boolean values.
  * end Kuali Foundation modification
- * @author <a href="mailto:jonathan@sourcebeat.com">Jonathan Lehr</a>
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BooleanFormatter extends Formatter {
     // begin Kuali Foundation modification

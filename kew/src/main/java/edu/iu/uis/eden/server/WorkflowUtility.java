@@ -42,8 +42,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * A remotable service which provides an API for performing various queries
  * and other utilities on KEW.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface WorkflowUtility extends Remote {
     public RouteHeaderVO getRouteHeaderWithUser(UserIdVO userId, Long documentId) throws RemoteException, WorkflowException;

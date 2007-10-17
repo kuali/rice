@@ -17,7 +17,7 @@ package org.kuali.notification.bo;
 
 /**
  * This class represents the data structure that will house a default recipient list for a notification channel.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationRecipientList {
     private Long id;

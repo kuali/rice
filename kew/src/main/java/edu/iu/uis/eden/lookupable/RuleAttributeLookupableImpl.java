@@ -40,7 +40,7 @@ import edu.iu.uis.eden.util.Utilities;
  * @see RuleAttribute
  * @see RuleAttributeService
  *
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleAttributeLookupableImpl implements WorkflowLookupable, Exportable {
 

@@ -23,8 +23,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * A service which allows for the sending of email reminders triggered by the state
  * of a user's Action List.
  *
- * @author xqi
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ActionListEmailService {
 	

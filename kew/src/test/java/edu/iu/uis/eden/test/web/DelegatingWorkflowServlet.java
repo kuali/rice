@@ -32,7 +32,7 @@ import edu.iu.uis.eden.web.UserLoginFilter;
 /**
  * A wrapper servlet that invokes the UserLoginFilter, and then delegates to a
  * target servlet
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DelegatingWorkflowServlet implements Servlet {
     private static final UserLoginFilter USERLOGINFILTER = new UserLoginFilter();

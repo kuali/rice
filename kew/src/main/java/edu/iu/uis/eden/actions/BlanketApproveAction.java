@@ -46,9 +46,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Does the sync work for blanket approves requested by client apps.
  *
- * @author ewestfal
- * @author rkirkend
- * @author seiffert
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BlanketApproveAction extends ActionTakenEvent {
 

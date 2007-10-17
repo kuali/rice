@@ -37,9 +37,7 @@ import edu.iu.uis.eden.xml.export.XmlExporter;
  * @see RuleBaseValues
  * @see RuleResponsibility
  *
- * @author rkirkend
- * @author jhopf
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RuleService extends XmlLoader, XmlExporter {
 

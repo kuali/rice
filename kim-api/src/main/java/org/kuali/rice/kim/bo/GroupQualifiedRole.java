@@ -23,7 +23,7 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
 /**
  * Business object that expresses the join of a given KIM Role and Group. 
  * 
- * @author Phillip Berres (email at pberres dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class GroupQualifiedRole extends QualifiedRole {

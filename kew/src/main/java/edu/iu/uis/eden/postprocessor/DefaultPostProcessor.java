@@ -27,7 +27,7 @@ import edu.iu.uis.eden.clientapp.DeleteEvent;
  * the methods on the interface.  Simply returns a "true"
  * ProcessDocReport for all events exception for deletion.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DefaultPostProcessor implements PostProcessor {
 

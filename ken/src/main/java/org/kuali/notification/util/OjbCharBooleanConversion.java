@@ -20,7 +20,7 @@ import org.apache.ojb.broker.accesslayer.conversions.FieldConversion;
 /**
  * This class originates from a similar class in the Kuali Financial System and has been adapted from 
  * that original state which was originally authored by the Kuali Nervous System team.
- * @author Kuali Nervous System Team ()
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class OjbCharBooleanConversion implements FieldConversion {
     /**

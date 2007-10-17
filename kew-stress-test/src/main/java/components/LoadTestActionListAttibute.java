@@ -24,7 +24,7 @@ import edu.iu.uis.eden.web.session.UserSession;
 /**
  * {@link CustomActionListAttribute} to be used for load testing purposes. 
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class LoadTestActionListAttibute implements CustomActionListAttribute {

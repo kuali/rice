@@ -37,7 +37,7 @@ import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 /**
  * This class is the post processor that gets run when the general notification 
  * message sending form is approved by its reviewers.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationSenderFormPostProcessor implements PostProcessorRemote {
     private static final Logger LOG = Logger.getLogger(NotificationSenderFormPostProcessor.class);

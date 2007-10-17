@@ -33,7 +33,7 @@ import org.kuali.rice.RiceConstants;
  * SignatureVerifyingInputStream which will verify the digital signature of the request after 
  * all of the data has been read from the input stream.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SignatureVerifyingRequestWrapper extends HttpServletRequestWrapper {
 

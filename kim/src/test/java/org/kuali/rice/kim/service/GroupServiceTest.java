@@ -32,7 +32,7 @@ import org.kuali.rice.resourceloader.GlobalResourceLoader;
 /**
  * Basic test to verify we can access the GroupService through the GRL. 
  * 
- * @author Phillip Berres pberres at usc dot edu
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class GroupServiceTest extends KIMTestCase {

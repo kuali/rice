@@ -19,6 +19,6 @@ package edu.iu.uis.eden.engine.node;
 /**
  * A marker interface for Nodes.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Node {}

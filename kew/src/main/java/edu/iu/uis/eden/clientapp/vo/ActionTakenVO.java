@@ -24,8 +24,7 @@ import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 /**
  * A transport object representing an {@link ActionTakenValue}
  * 
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

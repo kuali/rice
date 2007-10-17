@@ -28,7 +28,7 @@ import edu.iu.uis.eden.plugin.PluginRegistryFactory;
 /**
  * Start the GlobalResourceLoader from the AppliationInitializeListener.  When the KEW webapp starts up
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class WebApplicationGlobalResourceLifecycle extends BaseLifecycle {

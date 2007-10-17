@@ -32,7 +32,7 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 /**
  * struts form bean for {@link DocumentOperationAction}.
  *
- * @author shenl
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentOperationForm extends ActionForm{
 

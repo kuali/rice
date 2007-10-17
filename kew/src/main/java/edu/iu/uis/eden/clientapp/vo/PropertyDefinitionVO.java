@@ -19,7 +19,7 @@ package edu.iu.uis.eden.clientapp.vo;
 /**
  * Represents a property being populated on an attribute being used from the client but set on the server.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

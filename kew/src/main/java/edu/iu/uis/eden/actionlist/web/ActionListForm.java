@@ -28,9 +28,7 @@ import edu.iu.uis.eden.actionlist.ActionToTake;
 /**
  * Struts form for action ActionListAction
  *
- * @author rkirkend
- * @author ewestfal
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionListForm extends ActionForm {
 

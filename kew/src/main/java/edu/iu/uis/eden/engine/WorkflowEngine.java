@@ -23,7 +23,7 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
  * is the process method.  Document must also be initialized by the WorkflowEngine when they
  * are initially created.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface WorkflowEngine {

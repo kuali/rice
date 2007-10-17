@@ -39,9 +39,7 @@ import edu.iu.uis.eden.web.KeyValue;
 /**
  * Struts ActionForm for the {@link RoutingReportAction}.
  *
- * @author jhopf
- * @author rkirkend
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoutingReportForm extends ActionForm {
 

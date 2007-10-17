@@ -50,7 +50,7 @@ import edu.iu.uis.eden.util.XmlHelper;
 /**
  * An XML parser which parses EDocLite definitions.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EDocLiteXmlParser {
 

@@ -26,7 +26,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * TODO delyea - documentation
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DocumentSearchGenerator {
 	public void setSearchableAttributes(List searchableAttributes);

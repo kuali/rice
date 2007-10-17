@@ -35,7 +35,7 @@ import edu.iu.uis.eden.util.XmlHelper;
 /**
  * EDL pipeline component that exposes annotations from the previous array of taken actions
  * in the EDL to render.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AnnotationComponent implements EDLModelComponent {
     private static final Logger LOG = Logger.getLogger(AnnotationComponent.class);

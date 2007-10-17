@@ -28,7 +28,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  * Platform implementation that generates Mckoi-compliant SQL
- * @author arh14 at cornell dot edu
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class MckoiPlatform extends ANSISqlPlatform {
 

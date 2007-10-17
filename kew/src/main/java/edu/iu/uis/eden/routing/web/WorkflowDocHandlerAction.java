@@ -35,8 +35,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
  * A Struts Action which handles requests for the Doc Handler for all documents
  * that are part of the core workflow system (i.e. Workgroup, Rules).
  *
- * @author rkirkend
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkflowDocHandlerAction extends WorkflowAction {
 

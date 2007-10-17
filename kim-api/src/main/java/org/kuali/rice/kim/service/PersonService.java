@@ -26,7 +26,7 @@ import org.kuali.rice.kim.bo.Role;
  * Kuali software which needs to leverage identity management features that require fine-grained
  * Person attributes. 
  * 
- * @author Phillip Berres (pberres at usc dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface PersonService {
     /**

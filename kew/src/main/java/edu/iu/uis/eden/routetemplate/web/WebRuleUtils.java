@@ -28,7 +28,7 @@ import edu.iu.uis.eden.routetemplate.RuleResponsibility;
 /**
  * Some utilities which are utilized by the {@link Rule2Action}.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WebRuleUtils {
 

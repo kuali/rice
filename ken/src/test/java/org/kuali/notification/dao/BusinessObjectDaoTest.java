@@ -32,7 +32,7 @@ import org.springframework.jdbc.UncategorizedSQLException;
 /**
  * This class tests the various methods offered up by the BusinessObjectDao.
  * 
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BusinessObjectDaoTest extends BusinessObjectDaoTestCaseBase {
     private static final Map<Long, NotificationProducer> producers = new HashMap<Long, NotificationProducer>();

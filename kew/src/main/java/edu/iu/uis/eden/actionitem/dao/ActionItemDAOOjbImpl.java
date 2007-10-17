@@ -41,8 +41,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
 /**
  * OJB implementation of {@link ActionItemDAO}.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements ActionItemDAO {
 

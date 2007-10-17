@@ -49,8 +49,7 @@ import edu.iu.uis.eden.util.XmlHelper;
  *
  * @see RuleTemplate
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleTemplateXmlParser implements XmlConstants {
 

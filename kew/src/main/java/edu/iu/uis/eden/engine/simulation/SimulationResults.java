@@ -26,7 +26,7 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
  *
  * @see SimulationEngine
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimulationResults {
 

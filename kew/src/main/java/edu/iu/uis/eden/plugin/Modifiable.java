@@ -28,7 +28,7 @@ package edu.iu.uis.eden.plugin;
  * modified which result in it's modified status being reset.  Another possibility is
  * for a Modifiable to be discarded once it has been modified.
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Modifiable {
 

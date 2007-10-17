@@ -19,8 +19,7 @@ import org.kuali.notification.bo.NotificationMessageDelivery;
 
 /**
  * The NotificationEmailService class is responsible for actually sending email messages to recipients.
- * @author John Fereira (jaf30@cornell.edu)
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NotificationEmailService {
     /**

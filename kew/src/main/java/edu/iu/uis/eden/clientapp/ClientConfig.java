@@ -27,7 +27,7 @@ import edu.iu.uis.eden.EdenConstants;
 /**
  * Configuration object for client applications.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ClientConfig extends BaseConfig {
 

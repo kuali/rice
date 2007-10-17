@@ -27,7 +27,7 @@ import edu.iu.uis.eden.messaging.remotedservices.SOAPService;
 
 /**
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TestSOAPService extends KSBTestCase {
 

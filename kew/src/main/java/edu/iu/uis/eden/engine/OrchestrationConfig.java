@@ -25,7 +25,7 @@ import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 /**
  * Specifies configuration for orchestration through the engine.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class OrchestrationConfig {
 

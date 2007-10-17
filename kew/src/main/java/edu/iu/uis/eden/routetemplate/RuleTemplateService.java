@@ -25,9 +25,7 @@ import edu.iu.uis.eden.xml.export.XmlExporter;
  * A service providing data access for {@link RuleTemplate}s and 
  * {@link RuleTemplateAttribute}s.
  *
- * @author rkirkend
- * @author bmcgough
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RuleTemplateService extends XmlLoader, XmlExporter {
 

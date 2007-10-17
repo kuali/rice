@@ -5,7 +5,7 @@ import edu.iu.uis.eden.web.session.UserSession;
 /**
  * Provides some utility methods for translating user ID types.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserUtils {
 

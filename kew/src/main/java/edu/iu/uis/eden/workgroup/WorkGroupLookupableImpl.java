@@ -54,7 +54,7 @@ import edu.iu.uis.eden.workgroup.web.WebWorkgroup;
 /**
  * Default implementation of the Workgroup Lookupable.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkGroupLookupableImpl implements WorkflowLookupable, Exportable {
 

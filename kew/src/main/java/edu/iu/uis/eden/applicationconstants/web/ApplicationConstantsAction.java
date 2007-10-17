@@ -36,8 +36,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
 /**
  * Stuts Action for interaction with application constants.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ApplicationConstantsAction extends WorkflowAction {
 

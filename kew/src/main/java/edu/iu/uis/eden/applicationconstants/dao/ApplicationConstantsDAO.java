@@ -23,7 +23,7 @@ import edu.iu.uis.eden.applicationconstants.ApplicationConstant;
 /**
  * Data Access Object for {@link ApplicationConstant}s.
  *
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ApplicationConstantsDAO {
     public void saveConstant(ApplicationConstant applicationConstant);

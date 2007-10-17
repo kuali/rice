@@ -34,10 +34,7 @@ import edu.iu.uis.eden.web.WorkflowRoutingForm;
 /**
  * A Struts ActionForm for the {@link SuperUserAction}.
  *
- * @author bmcgough
- * @author xqi
- * @author temay
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SuperUserForm extends WorkflowRoutingForm {
     

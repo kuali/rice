@@ -60,7 +60,7 @@ import edu.iu.uis.eden.workgroup.web.WorkgroupForm;
 /**
  * Struts Action for the Remove/Replace User Document.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class RemoveReplaceAction extends WorkflowAction {

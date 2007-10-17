@@ -21,9 +21,7 @@ import java.io.Serializable;
 /**
  * Model bean representing an individual user's Preferences within KEW.
  *
- * @author rkirkend
- * @author temay
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Preferences implements Serializable {
 

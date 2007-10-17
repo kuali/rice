@@ -28,7 +28,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * RolePoker implementation which handles initiating refresh of the "poked" role.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RolePokerProcessor implements RolePoker {
 

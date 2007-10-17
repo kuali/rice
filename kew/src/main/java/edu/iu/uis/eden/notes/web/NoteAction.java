@@ -53,8 +53,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
  * 
  * @see NoteService
  *
- * @author temay
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NoteAction extends WorkflowAction {
 

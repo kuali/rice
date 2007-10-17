@@ -21,7 +21,7 @@ import org.junit.Test;
  * This abstract class puts forward a simple framework for testing the basic 
  * persistence of business objects in the system.
  * 
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class BusinessObjectPersistenceTestCaseBase extends BusinessObjectDaoTestCaseBase {
 

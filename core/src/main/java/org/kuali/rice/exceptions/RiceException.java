@@ -20,7 +20,7 @@ package org.kuali.rice.exceptions;
  * A generic checked exception thrown from KEW.  Acts as the superclass for all checked
  * exceptions in KEW.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RiceException extends Exception {
 

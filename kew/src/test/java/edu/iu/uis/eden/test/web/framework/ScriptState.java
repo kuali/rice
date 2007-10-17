@@ -54,7 +54,7 @@ import edu.iu.uis.eden.test.web.ChainingFilter;
  * This class provides access to "properties" which are abstract names that can be resolved in several ways: via
  * the variable map, as a resource in the classloader, as a url, and as literal text.
  * @see edu.iu.uis.eden.test.web.framework.actions.SubmitAction for information on RESPONSE Map contents
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ScriptState {
     public static final String USER = "USER";

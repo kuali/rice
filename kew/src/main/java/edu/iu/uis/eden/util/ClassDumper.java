@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 /**
  * Dumps the fields of the given class.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ClassDumper {
     private static final Logger LOG = Logger.getLogger(ClassDumper.class);

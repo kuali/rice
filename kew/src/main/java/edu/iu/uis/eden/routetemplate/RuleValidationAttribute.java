@@ -25,7 +25,7 @@ import edu.iu.uis.eden.validation.ValidationResults;
  * rule.  The user who is adding or editing the rule is passed to validate as well as the
  * rule to be validated.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RuleValidationAttribute {
 	

@@ -32,7 +32,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 /**
  * Takes edl web requests.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class EDLServlet extends HttpServlet {

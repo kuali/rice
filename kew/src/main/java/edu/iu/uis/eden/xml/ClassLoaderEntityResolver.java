@@ -31,7 +31,7 @@ import org.xml.sax.SAXException;
  * TODO: maybe prefix should be changed from "resource:" to "internal:" or just "workflow:"
  * given that it can be resolved in arbitrary ways other than ClassLoader "resources"
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ClassLoaderEntityResolver implements EntityResolver {
     private static final Logger LOG = Logger.getLogger(ClassLoaderEntityResolver.class);

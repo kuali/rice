@@ -27,7 +27,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * The language is given by the type qualifier, e.g.:
  * &lt;expression type="BSF:groovy"&gt;...
  *
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BSFRuleExpression implements RuleExpression {
     static {

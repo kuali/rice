@@ -23,8 +23,7 @@ import java.util.List;
  * The result of the processing of a {@link DynamicNode}.  May contain a single node instance of
  * multiple node instances depending on whether or not the dynamic node has generated a split.
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DynamicResult extends SimpleResult {
 

@@ -29,7 +29,7 @@ import edu.iu.uis.eden.lookupable.Row;
 /**
  * A convienance bean for use in the web tier when collecting data from custom field extensions.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WebExtensions {
 

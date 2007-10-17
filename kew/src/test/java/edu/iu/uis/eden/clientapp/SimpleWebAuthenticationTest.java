@@ -32,7 +32,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  * Verify that the {@link SimpleWebAuthenticationService} can get the logged in user
  * from the request param.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimpleWebAuthenticationTest extends KEWTestCase {
 

@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * Transport object representing a point to return to .  Used in the return to previous action.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

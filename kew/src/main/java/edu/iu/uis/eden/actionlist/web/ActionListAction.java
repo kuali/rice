@@ -72,9 +72,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
 /**
  * Action doing Action list stuff
  *
- * @author rkirkend
- * @author temay
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ActionListAction extends WorkflowAction {

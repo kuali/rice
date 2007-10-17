@@ -31,7 +31,7 @@ import edu.iu.uis.eden.routetemplate.web.WebRuleBaseValues;
  *
  * @see WebRuleBaseValues
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class MyRules2 implements Serializable {
 

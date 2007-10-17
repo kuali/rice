@@ -35,8 +35,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * 
  * Fetching that is being done is also taking into account the 'weight' of action request codes.
  * 
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ActionRequestService {
 

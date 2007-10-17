@@ -29,7 +29,7 @@ import edu.iu.uis.eden.mail.EmailReminderLifecycle;
 
 /**
  * A temporary lifecycle that lives in embedded space.  Will be removed when the embedded plugin is factored out.
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TempEmbeddedLifeCycle extends BaseCompositeLifecycle {
 

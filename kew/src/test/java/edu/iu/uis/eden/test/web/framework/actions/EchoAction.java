@@ -32,7 +32,7 @@ import edu.iu.uis.eden.test.web.framework.Util;
  * The 'value' attribute is resolved via {@link edu.iu.uis.eden.test.web.framework.Util#getResolvableAttribute(Node, String, PropertyScheme)},
  * defaulting to literal scheme.
  * If a value variant is not present, the algorithm proceeds again without a specific prefix (i.e., just looks for variable, literal, etc.).
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EchoAction extends BaseScriptAction {
     private static final String[] NAMES = { "echo" };

@@ -31,7 +31,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
  *
  * @see RoleForm
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoleAction extends WorkflowAction {
 

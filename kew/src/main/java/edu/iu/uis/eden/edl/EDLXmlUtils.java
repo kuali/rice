@@ -38,8 +38,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 /**
  * Contains a bunch of dom utility methods.
  *
- * @author rkirkend
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class EDLXmlUtils {

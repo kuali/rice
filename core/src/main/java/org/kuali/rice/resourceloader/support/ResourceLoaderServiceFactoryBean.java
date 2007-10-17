@@ -27,8 +27,7 @@ import org.springframework.beans.factory.InitializingBean;
 /**
  * Exports services in the {@link GlobalResourceLoader} as beans available to Spring.
  * 
- * @author rkirkend
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ResourceLoaderServiceFactoryBean implements BeanNameAware, FactoryBean, InitializingBean {
     /**

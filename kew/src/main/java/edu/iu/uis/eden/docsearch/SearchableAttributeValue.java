@@ -25,8 +25,7 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 /**
  * Model bean mapped to ojb that holds a single piece of searchable data for a document.
  *
- * @author bh79
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface SearchableAttributeValue {

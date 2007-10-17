@@ -21,7 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Provides some Utilities for handling common Exception scenarios.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class ExceptionUtils {
 

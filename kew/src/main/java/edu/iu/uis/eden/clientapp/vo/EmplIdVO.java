@@ -19,8 +19,7 @@ package edu.iu.uis.eden.clientapp.vo;
 /**
  * Transport object for emplIds.
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object 
  */

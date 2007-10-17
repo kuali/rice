@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
 /**
  * Entity resolver that resolves content type XSD resources to XSDs define in
  * the respective content type's NotificationContentType record
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ContentTypeEntityResolver extends ContentTypeResourceResolver implements EntityResolver {
     /**

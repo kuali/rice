@@ -20,7 +20,7 @@ package edu.iu.uis.eden.routetemplate;
  * 'Rule' is defined as an interface to make the contract in the system clear and independent of implementation.
  * @see RuleBaseValues
  * @see RuleExpression
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Rule extends RuleExpression {
     /**

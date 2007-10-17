@@ -26,8 +26,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Responsible for the data access for {@link ActionTakenValue} objects.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ActionTakenService {
 

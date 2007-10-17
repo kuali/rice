@@ -19,7 +19,7 @@ package edu.iu.uis.eden.clientapp.vo;
 /**
  * A document event representing an ActionTaken.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

@@ -43,9 +43,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Implementation of the SimpleDocumentActionsWebService
  *
- * @author Bryan G. Hutchinson (bh79 at cornell dot edu)
- * @author ewestfal
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentActionsWebService {
 

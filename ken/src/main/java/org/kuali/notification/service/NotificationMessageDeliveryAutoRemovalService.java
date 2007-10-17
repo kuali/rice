@@ -17,7 +17,7 @@ package org.kuali.notification.service;
 
 /**
  * Responsible for automatic removal of expired message deliveries
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NotificationMessageDeliveryAutoRemovalService {
     /**

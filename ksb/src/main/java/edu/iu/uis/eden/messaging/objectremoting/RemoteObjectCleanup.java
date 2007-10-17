@@ -27,7 +27,7 @@ import org.springframework.transaction.support.TransactionSynchronization;
  * {@link Synchronization} to cleanup any remote objects created during the
  * current transaction.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RemoteObjectCleanup implements TransactionSynchronization {
 

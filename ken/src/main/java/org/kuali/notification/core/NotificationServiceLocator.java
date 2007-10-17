@@ -36,7 +36,7 @@ import org.quartz.Scheduler;
 
 /**
  * Interface for obtaining Notification System services
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NotificationServiceLocator {
     /**

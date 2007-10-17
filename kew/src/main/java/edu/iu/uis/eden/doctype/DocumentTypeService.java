@@ -25,8 +25,7 @@ import edu.iu.uis.eden.xml.export.XmlExporter;
 /**
  * Service for data access and some cache behavior of document types.
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DocumentTypeService extends DocumentTypeQueryService, XmlExporter {
 

@@ -19,7 +19,7 @@ package org.kuali.workflow.tools.xml;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Responsibility {
 

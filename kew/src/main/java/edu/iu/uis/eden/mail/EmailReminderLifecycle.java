@@ -33,8 +33,7 @@ import edu.iu.uis.eden.EdenConstants;
  * A {@link Lifecycle} which is initialized on system startup that sets up
  * the daily and weekly email reminders.
  *
- * @author rkirkend
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EmailReminderLifecycle implements Lifecycle {
 

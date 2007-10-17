@@ -29,7 +29,7 @@ import edu.iu.uis.eden.messaging.threadpool.KSBThreadPool;
  * Job saves a {@link PersistedMessage} to the message queue in the state of 'R' and then puts into a
  * {@link MessageServiceInvoker} for execution in {@link KSBThreadPool}.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class MessageServiceExecutorJob implements Job, Serializable {

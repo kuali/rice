@@ -24,7 +24,7 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValueContent;
 
 
 /**
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DocumentRouteHeaderDAO {
 

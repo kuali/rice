@@ -29,7 +29,7 @@ import edu.iu.uis.eden.EdenConstants;
  * A ColumnDecorator for columns in a Lookup which adds an extra non-breaking space if the column
  * is an empty String.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class LookupColumnDecorator implements DisplaytagColumnDecorator {
 

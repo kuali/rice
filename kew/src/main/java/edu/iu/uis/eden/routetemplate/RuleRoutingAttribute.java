@@ -39,7 +39,7 @@ import edu.iu.uis.eden.util.XmlHelper;
  * A {@link WorkflowAttribute} which is used to route a rule based on the
  * {@link DocumentType} of the rule which is created.
  *
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleRoutingAttribute implements WorkflowAttribute {
 

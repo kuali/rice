@@ -45,7 +45,7 @@ import edu.iu.uis.eden.test.OldClearDatabaseLifecycle;
  * XML having unique descriptions as this is the only way for the test to identify
  * the rules from the original imported XML and the XML imported from the export.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleXmlExporterTest extends XmlExporterTestCase {
 

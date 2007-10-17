@@ -37,8 +37,7 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
  * <li>errorMessage String - error message from KEW if any</li>
  * </ul>
  *
- * @author Bryan G. Hutchinson (bh79 at cornell dot edu)
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface SimpleDocumentActionsWebService {
 

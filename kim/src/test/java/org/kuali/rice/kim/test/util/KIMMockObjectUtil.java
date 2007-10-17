@@ -21,7 +21,7 @@ import org.kuali.rice.kim.bo.AttributeType;
  * This class is a utility class for easy access to re-usable mock objects that can 
  * be used in KIM unit tests. 
  * 
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KIMMockObjectUtil {
     /**

@@ -57,7 +57,7 @@ import edu.iu.uis.eden.server.SimpleDocumentActionsWebService.UserInRouteLogResp
 
 /**
  * Tests SimpleDocumentActionsWebService
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 

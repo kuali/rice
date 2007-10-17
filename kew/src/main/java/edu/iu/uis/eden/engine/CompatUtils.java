@@ -33,7 +33,7 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
  * deprecated "route level" concept and the "node" concept which was introduced in
  * KEW 2.1.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CompatUtils {
 

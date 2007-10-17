@@ -36,7 +36,7 @@ import edu.iu.uis.eden.util.ByteArrayDataSource;
 /**
  * Maintains a Java Mail session and can be used for sending emails.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Mailer {
 

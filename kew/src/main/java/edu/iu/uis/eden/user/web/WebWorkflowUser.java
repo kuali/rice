@@ -32,8 +32,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  * A decorator on the {@link WorkflowUser} which adds some convienance methods for
  * use by the web-tier of the application.
  *
- * @author bmcgough
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WebWorkflowUser extends WebLookupableDecorator implements WorkflowUser {
 

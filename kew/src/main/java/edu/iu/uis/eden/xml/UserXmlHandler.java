@@ -45,7 +45,7 @@ import edu.iu.uis.eden.user.WorkflowUserId;
  * 
  * @see WorkflowUser
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserXmlHandler {
     

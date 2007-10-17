@@ -26,7 +26,7 @@ import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
 /**
  * Abstract base class for {@link WorkflowAttribute}s.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class AbstractWorkflowAttribute implements WorkflowAttribute {
     protected boolean required;

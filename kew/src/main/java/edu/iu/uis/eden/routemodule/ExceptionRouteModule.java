@@ -22,6 +22,6 @@ package edu.iu.uis.eden.routemodule;
  * that does not generate requests since it extends the {@link DefaultRouteModule} and does
  * not augment it's functionality.  Similar in nature to the {@link AdHocRouteModule}. 
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ExceptionRouteModule extends DefaultRouteModule {}

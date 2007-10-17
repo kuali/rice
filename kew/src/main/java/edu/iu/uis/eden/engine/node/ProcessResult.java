@@ -19,7 +19,7 @@ package edu.iu.uis.eden.engine.node;
 /**
  * Interface for node processing results.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ProcessResult {
 	

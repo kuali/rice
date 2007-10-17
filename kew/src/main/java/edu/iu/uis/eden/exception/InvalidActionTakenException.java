@@ -19,7 +19,7 @@ package edu.iu.uis.eden.exception;
 /**
  * The exception thrown whenever an ActionTaken can not be procesed for some reason.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class InvalidActionTakenException extends WorkflowException {
   /**

@@ -25,7 +25,7 @@ import edu.iu.uis.eden.test.web.framework.Filter;
 
 /**
  * Filter which invokes a series of Filters in a chain 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ChainingFilter implements Filter {
     private static final Logger LOG = Logger.getLogger(ChainingFilter.class);

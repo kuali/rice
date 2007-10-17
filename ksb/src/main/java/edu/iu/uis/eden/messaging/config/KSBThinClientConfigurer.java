@@ -36,7 +36,7 @@ import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
  * without requiring the entire service bus to be started (which requires datasources, etc.).  We need
  * to examine how better to support this sort of a concept in the future.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class KSBThinClientConfigurer extends ModuleConfigurer {

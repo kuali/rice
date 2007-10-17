@@ -20,7 +20,7 @@ package edu.iu.uis.eden.engine.node;
  * The result of the execution of a {@link SimpleNode}.  Simply wraps a boolean as
  * to whether or not the node has completed.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimpleResult implements ProcessResult {
 

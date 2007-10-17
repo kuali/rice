@@ -68,7 +68,7 @@ import com.sun.org.apache.xerces.internal.jaxp.JAXPConstants;
 
 /**
  * A general Utility class for the Notification system.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public final class Util {
     private static final Logger LOG = Logger.getLogger(Util.class);

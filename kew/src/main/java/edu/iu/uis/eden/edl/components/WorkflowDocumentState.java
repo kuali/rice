@@ -40,8 +40,7 @@ import edu.iu.uis.eden.util.XmlHelper;
 /**
  * Generates document state based on the workflow document in session.
  *
- * @author rkirkend
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class WorkflowDocumentState implements EDLModelComponent {

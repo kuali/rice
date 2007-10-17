@@ -32,7 +32,7 @@ import org.w3c.dom.ls.LSResourceResolver;
 /**
  * Resource resolver for SchemaFactory.  For now used during validation of NotificationRequest content element.
  * Looks up XSD in NotificationContentType record.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ContentTypeLSResourceResolver extends ContentTypeResourceResolver implements LSResourceResolver {
     /**

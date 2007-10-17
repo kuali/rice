@@ -23,7 +23,7 @@ import java.util.Map;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SpreadsheetOutput {
 

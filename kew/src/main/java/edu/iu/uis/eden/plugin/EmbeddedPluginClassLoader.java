@@ -54,7 +54,7 @@ import edu.iu.uis.eden.util.SimpleEnumeration;
  * class will result in a decent amount of memory use (depending on the number of jars in the embedded
  * plugin) in order to allow for the performance of access to those resources to be acceptiable.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EmbeddedPluginClassLoader extends PluginClassLoader {
     
@@ -358,7 +358,7 @@ public class EmbeddedPluginClassLoader extends PluginClassLoader {
     /**
      * A simple URLStreamHandler implementation which is backed by a connection to an array of bytes.
      * 
-     * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
      */
     private static class ByteURLStreamHandler extends URLStreamHandler {
 
@@ -378,7 +378,7 @@ public class EmbeddedPluginClassLoader extends PluginClassLoader {
      * A simple URLConnection implementation which represents a connection to an array of bytes
      * via a URL to a resource within an embedded jar
      * 
-     * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
      */
     private static class ByteURLConnection extends URLConnection {
     	

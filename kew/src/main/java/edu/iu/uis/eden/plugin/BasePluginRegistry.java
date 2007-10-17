@@ -35,7 +35,7 @@ import edu.emory.mathcs.backport.java.util.Collections;
  * @see Plugin
  * @see PluginEnvironment
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class BasePluginRegistry extends ResourceLoaderContainer implements PluginRegistry {
 	

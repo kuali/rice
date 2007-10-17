@@ -18,8 +18,8 @@ package org.kuali.rice.security.credentials;
 /**
  * Marker interface for credentials.
  * 
- * @author Scott Battaglia
- * @version $Revision: 1.2.2.1 $ $Date: 2007-08-15 16:05:03 $
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @version $Revision: 1.2.2.1.2.1 $ $Date: 2007-10-17 21:52:27 $
  * @since 0.9
  *
  */

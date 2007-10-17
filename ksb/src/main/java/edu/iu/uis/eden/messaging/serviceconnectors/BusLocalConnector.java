@@ -23,7 +23,7 @@ import edu.iu.uis.eden.messaging.bam.BAMClientProxy;
 
 /**
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BusLocalConnector extends AbstractServiceConnector {
 

@@ -24,7 +24,7 @@ import edu.iu.uis.eden.engine.transition.SubProcessTransitionEngine;
  * defers to the {@link SubProcessTransitionEngine} to handle the initiation of the
  * sub process.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimpleSubProcessNode implements SubProcessNode {
 

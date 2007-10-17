@@ -26,8 +26,7 @@ import edu.iu.uis.eden.engine.node.RouteNodeInstance;
  * 
  * @see JoinNode
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class JoinTransitionEngine extends TransitionEngine {
 

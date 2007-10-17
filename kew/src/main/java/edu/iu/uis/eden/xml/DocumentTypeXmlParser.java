@@ -69,9 +69,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 /**
  * A parser for parsing an XML file into {@link DocumentType}s.
  *
- * @author rkirkend
- * @author ewestfal
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentTypeXmlParser implements XmlConstants {
 

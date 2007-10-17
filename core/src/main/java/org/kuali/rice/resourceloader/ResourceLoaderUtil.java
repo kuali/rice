@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 /**
  * A class for {@link ResourceLoader} related utilities.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ResourceLoaderUtil {
     private static final Logger LOG = Logger.getLogger(ResourceLoaderUtil.class);

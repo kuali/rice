@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * A member of a {@link BaseWorkgroup}.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BaseWorkgroupMember implements Serializable {
 

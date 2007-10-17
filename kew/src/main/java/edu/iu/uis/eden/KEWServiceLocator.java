@@ -67,8 +67,7 @@ import edu.iu.uis.eden.xml.export.XmlExporterService;
  * application context (when it was SpringServiceLocator) but those responsibilities have been
  * moved to the SpringLoader.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public final class KEWServiceLocator {

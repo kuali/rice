@@ -24,7 +24,7 @@ import edu.iu.uis.eden.doctype.DocumentType;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocSearchTransformationTag extends TagSupport {
 

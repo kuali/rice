@@ -39,7 +39,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * </dl>
  * E.g.
  * <div><tt>bizRule1: next; bizRule2: true; bizRule3: false</tt></div>
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KRAMetaRuleExpression implements RuleExpression {
     private static final Logger LOG = Logger.getLogger(KRAMetaRuleExpression.class);

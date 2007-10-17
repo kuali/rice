@@ -31,8 +31,7 @@ import edu.iu.uis.eden.engine.node.RouteNodeInstance;
  * Common superclass for all Transition Engines.  A TransitionEngine handles transitioning into and out of
  * a {@link RouteNodeInstance}.  The TransitionEngine is also responsible for determining if a Node has completed.
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class TransitionEngine {
     

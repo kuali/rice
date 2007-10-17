@@ -21,8 +21,7 @@ import java.io.Serializable;
 /**
  * A common superclass for user and workgroup ids.
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *  
  * @workflow.webservice-object 
  */

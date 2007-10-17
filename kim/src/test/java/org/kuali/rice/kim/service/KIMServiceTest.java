@@ -23,9 +23,7 @@ import org.kuali.rice.resourceloader.GlobalResourceLoader;
 /**
  * Basic test to verify we can access the KIMService through the GRL. 
  * 
- * @author rkirkend
- * @author Aaron Godert agodert at cornell dot edu
- * @author Phillip Berres pberres at usc dot edu
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class KIMServiceTest extends KIMTestCase {

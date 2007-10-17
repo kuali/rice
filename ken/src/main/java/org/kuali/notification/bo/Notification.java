@@ -26,7 +26,7 @@ import org.kuali.notification.util.NotificationConstants;
 /**
  * This class represents an instace of a notification message that is received by the overall 
  * system.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Notification implements Lockable {
     private Long id;

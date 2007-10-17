@@ -31,7 +31,7 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
  *   </validation>
  * </validations>
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ValidationComponent extends SimpleWorkflowEDLConfigComponent implements EDLModelComponent  {
 

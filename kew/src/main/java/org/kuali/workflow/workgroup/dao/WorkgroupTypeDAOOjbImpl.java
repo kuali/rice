@@ -28,7 +28,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
  * OJB implementation of the WorkgroupTypeDAO.  Allows for simple access and persistence of
  * WorkgroupTypes.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkgroupTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implements WorkgroupTypeDAO {
 

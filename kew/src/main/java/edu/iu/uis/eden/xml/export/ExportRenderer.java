@@ -27,7 +27,7 @@ import edu.iu.uis.eden.EdenConstants;
 /**
  * A helper class which helps with building the XML for export.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ExportRenderer {
 

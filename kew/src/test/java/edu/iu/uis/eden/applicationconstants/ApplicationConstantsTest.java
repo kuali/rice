@@ -28,8 +28,7 @@ import edu.iu.uis.eden.WorkflowServiceErrorException;
 
 /**
  * Tests adding/modifying an application constant
- * @author Aaron Hamid
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ApplicationConstantsTest extends KEWTestCase {
     private static final String CONSTANT_NAME = "BogusConstant";

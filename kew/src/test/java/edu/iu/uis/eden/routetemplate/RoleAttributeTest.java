@@ -25,7 +25,7 @@ import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 /**
  * Tests the generation of Action Requests from RoleAttributes
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoleAttributeTest extends KEWTestCase {
 

@@ -35,7 +35,7 @@ import edu.iu.uis.eden.plugin.client.PluginListener;
  * KEW classloader.  It allows for loading of plugin resources from core components of the system.
  * Essentially a Plugin is a specialized ResourceLoader with a custom classloader and attached configuration.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Plugin extends BaseWrappingResourceLoader {
 

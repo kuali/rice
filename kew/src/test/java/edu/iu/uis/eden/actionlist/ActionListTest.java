@@ -52,7 +52,7 @@ import edu.iu.uis.eden.workgroup.GroupNameId;
 import edu.iu.uis.eden.workgroup.Workgroup;
 
 /**
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionListTest extends KEWTestCase {
 

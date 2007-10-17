@@ -40,7 +40,7 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
 /**
  * A PluginRegistry implementation which loads plugins from the file system on the server.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ServerPluginRegistry extends BasePluginRegistry {
 

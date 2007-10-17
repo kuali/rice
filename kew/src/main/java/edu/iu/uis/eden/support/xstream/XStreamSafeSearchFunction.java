@@ -30,7 +30,7 @@ import org.w3c.dom.Node;
  * 
  * @see XStreamSafeEvaluator
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class XStreamSafeSearchFunction implements XPathFunction {
 

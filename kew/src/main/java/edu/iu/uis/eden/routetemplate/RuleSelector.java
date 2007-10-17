@@ -25,7 +25,7 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 
 /**
  * RuleSelector is responsible for selecting the rules to be evaluated for a given rule-based requests node.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RuleSelector {
     /**

@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Identifies an object which can be exported.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Exportable {
 

@@ -20,7 +20,7 @@ package edu.iu.uis.eden.web.session;
  * Represents a basic authentication within the system which can be represented
  * by a String.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BasicAuthentication implements Authentication {
 

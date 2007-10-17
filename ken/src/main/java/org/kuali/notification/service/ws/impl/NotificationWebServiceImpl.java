@@ -34,7 +34,7 @@ import org.kuali.notification.util.PerformanceLog.PerformanceStopWatch;
  * http://javaboutique.internet.com/tutorials/axisspring/
  * This class extends ServletEndpointSupport so that it can obtain the Notification System Spring context
  * from the ServletContext via getWebApplicationContext().  It then delegates to the NotificationService.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationWebServiceImpl /*extends ServletEndpointSupport*/ implements NotificationWebService {
     private static final Logger LOG = Logger.getLogger(NotificationWebServiceImpl.class);

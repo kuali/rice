@@ -26,7 +26,7 @@ package edu.iu.uis.eden.web.session;
  * something like Acegi security for handling some of this authentication
  * stuff?
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Authentication extends java.io.Serializable {
 

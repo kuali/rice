@@ -34,7 +34,7 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
  * components within the system.  It also defines type hierarchys for the various
  * node types.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NodeType {
 

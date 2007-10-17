@@ -44,7 +44,7 @@ import edu.iu.uis.eden.util.Utilities;
  * String that it's constructed with into content with the application,
  * attribute, and searchable content sections.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StandardDocumentContent implements DocumentContent, Serializable {
 

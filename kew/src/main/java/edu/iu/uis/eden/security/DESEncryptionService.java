@@ -36,7 +36,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
  * encryption algorithm.  The secret key used for encryption can be set on this service
  * or pulled from the "encryption.key" configuration parameter.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DESEncryptionService implements EncryptionService {
 

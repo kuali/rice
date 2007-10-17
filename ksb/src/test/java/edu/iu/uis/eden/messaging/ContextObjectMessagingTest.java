@@ -25,7 +25,7 @@ import edu.iu.uis.eden.messaging.callbacks.SimpleCallback;
  * 
  * async queue async topic
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class ContextObjectMessagingTest extends KSBTestCase {

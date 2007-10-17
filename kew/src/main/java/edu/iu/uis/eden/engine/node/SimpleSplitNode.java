@@ -26,7 +26,7 @@ import edu.iu.uis.eden.engine.RouteHelper;
 /**
  * A simple {@link SplitNode} implementation which always splits to all branches that are defined for the split.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimpleSplitNode implements SplitNode {
 

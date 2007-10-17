@@ -34,7 +34,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Responsible for creating adhoc requests that are requested from the client.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AdHocAction extends ActionTakenEvent {
 

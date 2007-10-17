@@ -23,7 +23,7 @@ import java.io.InputStream;
  * 
  * @see Note
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Attachment {
 

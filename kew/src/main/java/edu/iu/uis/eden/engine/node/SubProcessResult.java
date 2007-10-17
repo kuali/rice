@@ -23,7 +23,7 @@ import edu.iu.uis.eden.engine.transition.SubProcessTransitionEngine;
  * a sub process is handled by the {@link SubProcessTransitionEngine} so this result will always wrap
  * a {@link SimpleResult} with a completion value of true.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SubProcessResult extends SimpleResult {
 

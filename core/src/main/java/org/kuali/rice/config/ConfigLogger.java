@@ -24,8 +24,7 @@ import java.util.Properties;
 /**
  * Logs information about the configuration at the DEBUG level.
  *
- * @author Eric Westfall
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ConfigLogger {
 

@@ -20,7 +20,7 @@ package org.kuali.notification.service;
  * This class is responsible for the job that will actually resolve which recipients receive a notification for specific endpoints.
  * This service will be responsible for creating NotificationDeliveryMessage object instances to be used by a later process that actually 
  * delivers the messages.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NotificationMessageDeliveryResolverService {
     /**

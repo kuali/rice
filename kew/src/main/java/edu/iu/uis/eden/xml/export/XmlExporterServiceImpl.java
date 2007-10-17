@@ -39,7 +39,7 @@ import edu.iu.uis.eden.xml.XmlConstants;
  * An implementation of the XmlExporterService which can be configured with a set of
  * services that know how to export various pieces of the {@link ExportDataSet} to XML.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class XmlExporterServiceImpl implements XmlExporterService, XmlConstants {
 

@@ -32,8 +32,7 @@ import edu.iu.uis.eden.messaging.bam.BAMServerProxy;
 
 /**
  *
- * @author rkirkend
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SOAPServiceExporter implements ServiceExporter {
 

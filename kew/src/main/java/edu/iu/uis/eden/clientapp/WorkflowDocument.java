@@ -75,8 +75,7 @@ import edu.iu.uis.eden.util.Utilities;
  *
  * <p>This class is not thread safe and must by synchronized externally for concurrent access.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkflowDocument implements java.io.Serializable {
 

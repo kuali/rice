@@ -21,7 +21,7 @@ import org.apache.commons.collections.KeyValue;
 /**
  * A simple object representing a key/value pair.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KeyValuePair implements KeyValue {
     protected String key;

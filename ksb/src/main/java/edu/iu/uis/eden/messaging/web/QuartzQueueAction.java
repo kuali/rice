@@ -36,7 +36,7 @@ import edu.iu.uis.eden.messaging.quartz.MessageServiceExecutorJob;
 /**
  * action to view messages in quartz and push them into the message queue. 
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class QuartzQueueAction extends KSBAction {

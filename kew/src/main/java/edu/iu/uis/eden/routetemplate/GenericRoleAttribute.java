@@ -54,7 +54,7 @@ import edu.iu.uis.eden.routeheader.DocumentContent;
  *   </li>
  * </ol> 
  *     
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class GenericRoleAttribute extends GenericWorkflowAttribute implements RoleAttribute {
     public GenericRoleAttribute() {

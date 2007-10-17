@@ -23,7 +23,7 @@ package edu.iu.uis.eden.export;
  * @see ExportDataSet
  * @see Exporter
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ExportFormat {
 

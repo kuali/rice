@@ -56,10 +56,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * 
  * @see RuleBaseValues
  *
- * @author ewestfal
- * @author temay
- * @author rkirkend
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleXmlParser implements XmlConstants {
 

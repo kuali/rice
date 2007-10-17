@@ -28,7 +28,7 @@ import org.kuali.notification.exception.NotificationMessageDeliveryException;
 /**
  * This class is responsible for describing the SMS delivery mechanism for
  * the system.  It is not yet fully implemented - this class is just a stub.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SMSMessageDeliverer implements NotificationMessageDeliverer {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger

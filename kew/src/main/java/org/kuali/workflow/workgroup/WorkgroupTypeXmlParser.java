@@ -42,7 +42,7 @@ import edu.iu.uis.eden.xml.XmlConstants;
  *
  * @see WorkgroupType
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkgroupTypeXmlParser implements XmlConstants {
 

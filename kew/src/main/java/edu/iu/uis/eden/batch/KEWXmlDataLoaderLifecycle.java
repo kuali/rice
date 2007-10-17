@@ -34,7 +34,7 @@ import edu.iu.uis.eden.KEWServiceLocator;
 /**
  * A lifecycle for loading KEW XML datasets.
  * 
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KEWXmlDataLoaderLifecycle implements Lifecycle {
 

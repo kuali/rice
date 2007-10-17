@@ -23,7 +23,7 @@ import edu.iu.uis.eden.doctype.DocumentType;
  * 
  * @see DocumentType
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentTypeNotFoundException extends WorkflowException {
 

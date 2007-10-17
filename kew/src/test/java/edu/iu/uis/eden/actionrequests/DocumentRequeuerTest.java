@@ -34,7 +34,7 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 /**
  * Tests the DocumentRequeuer route queue processor.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentRequeuerTest extends KEWTestCase {
 

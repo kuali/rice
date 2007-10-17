@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 
 /**
  * XPath NamespaceContext that is configured with a predefined prefix->NS map.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ConfiguredNamespaceContext implements NamespaceContext {
     private static final Logger LOG = Logger.getLogger(ConfiguredNamespaceContext.class);

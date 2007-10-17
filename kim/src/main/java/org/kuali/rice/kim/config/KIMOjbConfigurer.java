@@ -20,7 +20,7 @@ import org.kuali.rice.ojb.BaseOjbConfigurer;
 /**
  * This class defines information specific to the KIM OJB setup.
  * 
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KIMOjbConfigurer extends BaseOjbConfigurer {
 

@@ -35,7 +35,7 @@ import edu.iu.uis.eden.util.XmlHelper;
 /**
  * TransitionEngine responsible for returning the workflow engine to another RouteNode
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class LoopTransitionEngine extends TransitionEngine {
 

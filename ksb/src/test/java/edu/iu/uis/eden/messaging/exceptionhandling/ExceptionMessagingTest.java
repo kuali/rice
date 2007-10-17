@@ -42,7 +42,7 @@ import edu.iu.uis.eden.messaging.remotedservices.TesetHarnessExplodingQueue;
  * App Constant to determine the default time increment works (we need this to effectively test anyway)
  * Things work without the timeincrement constant in place
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ExceptionMessagingTest extends KSBTestCase {

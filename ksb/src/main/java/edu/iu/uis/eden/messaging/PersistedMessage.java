@@ -21,7 +21,7 @@ import org.kuali.bus.services.KSBServiceLocator;
 /**
  * A message which has been persisted to the data store.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PersistedMessage implements Serializable {
 

@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * A Remove/Replace document.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RemoveReplaceDocument implements Serializable {
 

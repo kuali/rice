@@ -25,7 +25,7 @@ import org.kuali.rice.util.ExceptionUtils;
  * An abstract base class for InvocationHanlders which can be used to implement
  * an InvocationHandler that delegates hashCode and equals methods to the proxied
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class BaseInvocationHandler implements InvocationHandler {
 

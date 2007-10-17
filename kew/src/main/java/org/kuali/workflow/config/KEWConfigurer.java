@@ -68,7 +68,7 @@ import edu.iu.uis.eden.util.Utilities;
  *   <li>Configure and startup KEW for "Embedded Mode"</li>
  * </ol>
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KEWConfigurer extends ModuleConfigurer {
 

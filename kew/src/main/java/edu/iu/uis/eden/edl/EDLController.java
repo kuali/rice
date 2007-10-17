@@ -31,7 +31,7 @@ import edu.iu.uis.eden.util.XmlHelper;
 /**
  * Responsible for notifying components associated with a particular EDL definition.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EDLController {
 	

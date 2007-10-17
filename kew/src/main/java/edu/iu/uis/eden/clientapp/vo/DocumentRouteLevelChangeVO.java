@@ -20,7 +20,7 @@ package edu.iu.uis.eden.clientapp.vo;
 /**
  * Event passed to remote post processor when document changes route levels.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentRouteLevelChangeVO extends DocumentEventVO {
 

@@ -40,8 +40,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
  * @see PreferencesService
  * @see Preferences
  * 
- * @author rkirkend
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PreferencesAction extends WorkflowAction {
 

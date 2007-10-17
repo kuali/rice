@@ -43,7 +43,7 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
  * to verify that at least one rule exists for each Document Type which is represented in the rule
  * changeset.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RemoveReplaceRuleRoutingAttribute extends RuleRoutingAttribute implements MassRuleAttribute {
 

@@ -28,7 +28,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
  * Provides utilities for obtaining XPath instances which are "good-to-go" with access to the Workflow
  * namespace and custom XPath functions.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class XPathHelper {
 

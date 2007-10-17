@@ -19,7 +19,7 @@ import java.util.Collection;
 
 /**
  * The NotificationRecipientService class is responsible for housing user/group related services.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NotificationRecipientService {
     /**

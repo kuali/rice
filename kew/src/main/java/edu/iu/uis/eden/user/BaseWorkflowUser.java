@@ -27,7 +27,7 @@ import org.springframework.beans.factory.BeanNameAware;
  * 
  * @see WorkflowUser
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BaseWorkflowUser implements WorkflowUser, BeanNameAware {
 

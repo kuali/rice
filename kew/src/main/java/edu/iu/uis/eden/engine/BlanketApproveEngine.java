@@ -45,7 +45,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * A WorkflowEngine implementation which orchestrates the document through the blanket approval process.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BlanketApproveEngine extends StandardWorkflowEngine {
 

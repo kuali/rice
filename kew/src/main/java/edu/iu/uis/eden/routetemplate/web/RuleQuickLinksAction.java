@@ -42,7 +42,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
 /**
  * A Struts Action for building and interacting with the Rule Quick Links.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleQuickLinksAction extends WorkflowAction {
 
@@ -103,7 +103,7 @@ public class RuleQuickLinksAction extends WorkflowAction {
      * A bean to hold a DocumentType with its flattened nodes for rendering purposes
      * on the quick links.
      *
-     * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
      */
     public static class DocumentTypeQuickLinksStructure {
         private DocumentType documentType;

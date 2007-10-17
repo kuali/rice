@@ -40,7 +40,7 @@ import edu.iu.uis.eden.util.Utilities;
  *
  * @see EDocLiteService
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EDocLiteLookupable implements WorkflowLookupable, Exportable {
 

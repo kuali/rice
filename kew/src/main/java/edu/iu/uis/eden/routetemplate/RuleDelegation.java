@@ -24,8 +24,7 @@ import edu.iu.uis.eden.WorkflowPersistable;
  * another rule.  Specifies the delegation type which can be either 
  * {@link EdenConstants#DELEGATION_PRIMARY} or {@link EdenConstants#DELEGATION_SECONDARY}.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleDelegation implements WorkflowPersistable {
     

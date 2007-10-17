@@ -49,8 +49,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 /**
  * Action for Action List Filter page.
  *
- * @author rkirkend
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionListFilterAction extends WorkflowAction {
     

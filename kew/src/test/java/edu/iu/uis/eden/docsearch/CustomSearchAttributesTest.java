@@ -43,7 +43,7 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
 
 /**
  *
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CustomSearchAttributesTest extends KEWTestCase {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(CustomSearchAttributesTest.class);

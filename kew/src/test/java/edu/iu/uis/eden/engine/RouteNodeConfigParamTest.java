@@ -29,7 +29,7 @@ import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Tests the parsing of route node config params 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RouteNodeConfigParamTest extends KEWTestCase {
 

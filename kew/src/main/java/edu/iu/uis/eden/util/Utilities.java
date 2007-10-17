@@ -46,10 +46,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Various static utility methods.
  *
- * @author bmcgough
- * @author rkirkend
- * @author ewestfal
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Utilities {
     /**

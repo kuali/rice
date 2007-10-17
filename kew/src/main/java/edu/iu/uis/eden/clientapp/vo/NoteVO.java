@@ -24,7 +24,7 @@ import edu.iu.uis.eden.notes.Note;
 /**
  * Transport object for a {@link Note}
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

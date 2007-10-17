@@ -21,7 +21,7 @@ import edu.iu.uis.eden.engine.RouteContext;
 /**
  * A {@link Node} which represents the initiation of a sub process.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface SubProcessNode extends Node {
 

@@ -22,7 +22,7 @@ import org.kuali.rice.core.Core;
 /**
  * Looks up Strings from the Config and Application Constants.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ConfigStringLookup extends StrLookup {
 

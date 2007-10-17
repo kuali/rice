@@ -22,7 +22,7 @@ import org.kuali.notification.util.NotificationConstants;
  * Constants reflecting test data that is used in tests.
  * If tests or test data is updated, this file need to be updated
  * to be kept in sync.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TestConstants {
     /**

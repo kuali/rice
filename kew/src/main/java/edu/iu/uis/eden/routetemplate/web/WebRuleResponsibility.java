@@ -51,8 +51,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  * convienance functions for interacting with the bean from the web-tier.
  * This helps to alleviate some of the weaknesses of JSTL.
  * 
- * @author ewestfal
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WebRuleResponsibility extends RuleResponsibility {
 
@@ -459,7 +458,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	 * on the delegation rules if they haven't been materialized from the
 	 * database yet (they are currenty proxied by OJB)
 	 * 
-	 * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
 	 */
 	private class DelegationRulesProxy implements InvocationHandler, java.io.Serializable {
 

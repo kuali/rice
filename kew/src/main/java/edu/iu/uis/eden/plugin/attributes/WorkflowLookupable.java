@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
  * we can address this in the Rice framework and it's lookupable implementation
  * when it is complete.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface WorkflowLookupable {
 

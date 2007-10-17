@@ -36,7 +36,7 @@ import edu.iu.uis.eden.plugin.manifest.PluginManifestParser;
  * 
  * @see Plugin
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ClassLoaderPluginLoader implements PluginLoader {
 	

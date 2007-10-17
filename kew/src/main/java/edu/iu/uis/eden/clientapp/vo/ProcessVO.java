@@ -23,7 +23,7 @@ import edu.iu.uis.eden.engine.node.Process;
 /**
  * Transport object for a {@link Process}.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

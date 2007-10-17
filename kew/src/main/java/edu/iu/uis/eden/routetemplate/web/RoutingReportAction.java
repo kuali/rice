@@ -72,10 +72,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
 /**
  * A Struts Action for executing routing reports and retrieving the results.
  *
- * @author rkirkend
- * @author jhopf
- * @author ewestfal
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoutingReportAction extends WorkflowAction {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RoutingReportAction.class);

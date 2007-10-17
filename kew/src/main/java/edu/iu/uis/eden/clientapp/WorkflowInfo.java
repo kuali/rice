@@ -58,8 +58,7 @@ import edu.iu.uis.eden.util.Utilities;
  * determine how to connect to KEW.  To use this API, simply create a new instance using the
  * empty constructor.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkflowInfo implements java.io.Serializable {
 

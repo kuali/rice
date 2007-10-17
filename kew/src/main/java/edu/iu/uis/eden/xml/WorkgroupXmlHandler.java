@@ -61,7 +61,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  *
  * @see Workgroup
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkgroupXmlHandler implements XmlConstants, WorkgroupXmlConstants {
 

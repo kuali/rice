@@ -22,7 +22,7 @@ import org.kuali.workflow.workgroup.WorkgroupType;
 /**
  * A Struts ActionForm for the {@link WorkgroupTypeAction}.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkgroupTypeForm extends ActionForm {
 

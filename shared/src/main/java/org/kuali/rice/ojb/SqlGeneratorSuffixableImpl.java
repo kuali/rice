@@ -33,7 +33,7 @@ import org.apache.ojb.broker.util.logging.LoggerFactory;
  * source repository, so maybe a forthcoming release will include this functionality and these kludges can be
  * removed.
  * @see AffixedSqlSelectStatement
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SqlGeneratorSuffixableImpl extends SqlGeneratorDefaultImpl {
     private Logger logger = LoggerFactory.getLogger(SqlGeneratorSuffixableImpl.class);

@@ -27,7 +27,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Interface for generating email message content for various types of messages the system needs to send
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @see EmailContent
  */
 public interface EmailContentService {

@@ -18,7 +18,7 @@ package edu.iu.uis.eden.test.web.framework;
 
 /**
  * Controls interactions with a web site
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface InteractionController {
     public String submit(String method, String uri, Script script) throws Exception;

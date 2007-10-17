@@ -19,6 +19,6 @@ package edu.iu.uis.eden.engine.node;
 /**
  * A simple node which represents the initial node in the document.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class InitialNode extends RequestActivationNode {}

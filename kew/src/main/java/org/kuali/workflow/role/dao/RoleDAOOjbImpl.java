@@ -26,7 +26,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RoleDAO {
 

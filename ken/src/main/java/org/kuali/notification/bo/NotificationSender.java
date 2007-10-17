@@ -18,7 +18,7 @@ package org.kuali.notification.bo;
 /**
  * This class represents the data structure that will house information about the non-system 
  * sender that a notification message is sent on behalf of.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationSender {
     private Long id;

@@ -27,7 +27,7 @@ import org.kuali.rice.util.ClassLoaderUtils;
  * A simple ResourceLoader implementation which will load objects from the
  * specified classloader and also locate services in an optional ServiceLocator.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BaseResourceLoader extends ResourceLoaderContainer implements ResourceLoader {
 

@@ -37,8 +37,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 /**
  * OJB implementation of the {@link ActionRequestDAO}.
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport implements ActionRequestDAO {
 

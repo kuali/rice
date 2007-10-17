@@ -28,7 +28,7 @@ import edu.iu.uis.eden.lookupable.RuleBaseValuesLookupableImpl;
  * 
  * @see RuleBaseValuesLookupableImpl
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface OddSearchAttribute {
 

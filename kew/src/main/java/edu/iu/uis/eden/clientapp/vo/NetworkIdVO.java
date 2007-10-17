@@ -21,8 +21,7 @@ import edu.iu.uis.eden.user.AuthenticationUserId;
 /**
  * Transport object for the {@link AuthenticationUserId}
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object 
  */

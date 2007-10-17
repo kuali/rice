@@ -27,7 +27,7 @@ import edu.iu.uis.eden.web.RemoteUserWebAuthenticationService;
  * feed kuali code user information instead of the kuali cas auth service.  It's wired up in the
  * core override spring beans.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RiceRemoteUserWebAuthenticationServiceImpl extends RemoteUserWebAuthenticationService implements org.kuali.core.service.WebAuthenticationService {
 

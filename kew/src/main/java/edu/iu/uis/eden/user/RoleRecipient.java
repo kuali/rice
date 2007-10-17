@@ -21,7 +21,7 @@ import edu.iu.uis.eden.routetemplate.ResolvedQualifiedRole;
 /**
  * Marks a Role to be used in an ActionRequestValue.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoleRecipient implements Recipient {
 	

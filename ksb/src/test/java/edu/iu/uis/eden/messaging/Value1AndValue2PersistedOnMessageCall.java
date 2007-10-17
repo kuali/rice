@@ -28,7 +28,7 @@ import edu.iu.uis.eden.messaging.callbacks.SimpleCallback;
 /**
  * verify that value1 and value2 are preserved when passed into message helper and making an async call.  
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class Value1AndValue2PersistedOnMessageCall extends KSBTestCase {

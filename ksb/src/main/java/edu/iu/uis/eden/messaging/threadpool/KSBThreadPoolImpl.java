@@ -28,8 +28,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 /**
  * A Thread Pool implementation for the KSB which implements a thread pool backed by a configuration store.
  * 
- * @author Ryan Kirkendall
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPool {
 
@@ -105,7 +104,7 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
          * Where <i>messageEntity</i> is the message entity of the application running the thread pool, <i>m</i> is the
          * sequence number of the factory and <i>n</i> is the sequence number of the thread within the factory.
          * 
-         * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
          */
     private static class KSBThreadFactory implements ThreadFactory {
 

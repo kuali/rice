@@ -29,7 +29,7 @@ import edu.iu.uis.eden.KEWServiceLocator;
 /**
  * Imported into client style sheets to import other style sheets in our database into their stylesheet.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class WidgetURIResolver implements URIResolver {

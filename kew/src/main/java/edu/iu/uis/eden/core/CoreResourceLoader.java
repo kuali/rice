@@ -31,7 +31,7 @@ import edu.iu.uis.eden.plugin.PluginRegistry;
  * searching for service overrides in the Institutional Plugin before falling back to default services
  * from the core.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CoreResourceLoader extends BaseWrappingResourceLoader {
 

@@ -23,7 +23,7 @@ import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 
 /**
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DocumentTypeDAO {
 

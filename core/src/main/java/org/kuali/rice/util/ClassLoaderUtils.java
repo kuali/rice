@@ -22,7 +22,7 @@ import java.lang.reflect.Proxy;
 /**
  * Provides common utility methods for dealing with Classloaders.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ClassLoaderUtils {
 

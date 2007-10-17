@@ -58,11 +58,7 @@ import edu.iu.uis.eden.workgroup.WorkflowGroupId;
  * @see RuleTemplate
  * @see RuleBaseValues
  *
- * @author rkirkend
- * @author bmcgough
- * @author ewestfal
- * @author jhopf
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class FlexRM {
 

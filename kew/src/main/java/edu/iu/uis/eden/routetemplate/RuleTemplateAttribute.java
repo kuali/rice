@@ -31,9 +31,7 @@ import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
  * A model bean which services as the link between a {@link RuleTemplate} and
  * a {@link RuleAttribute}.
  *
- * @author rkirkend
- * @author bmcgough
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleTemplateAttribute implements WorkflowPersistable, Comparable {
 

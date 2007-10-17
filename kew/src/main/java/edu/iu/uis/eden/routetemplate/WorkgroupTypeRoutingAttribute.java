@@ -46,7 +46,7 @@ import edu.iu.uis.eden.util.KeyLabelPair;
 /**
  * A {@link WorkflowAttribute} which can be used to route documents based on Workgroup Type.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkgroupTypeRoutingAttribute implements WorkflowAttribute {
 

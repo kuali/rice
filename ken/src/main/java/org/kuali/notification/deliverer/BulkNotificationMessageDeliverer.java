@@ -34,7 +34,7 @@ import org.kuali.notification.exception.NotificationMessageDeliveryException;
  * distinct from NotificationMessageDeliverer because processing in the two cases
  * will be different.  In the bulk case, the deliveries will be performed in a single
  * transaction.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface BulkNotificationMessageDeliverer extends NotificationMessageDeliverer {
     /**

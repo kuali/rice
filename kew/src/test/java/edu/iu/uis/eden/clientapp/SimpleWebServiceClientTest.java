@@ -36,7 +36,7 @@ import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
  * Tests a simple web-service only client to verfiy backward compatability
  * with the 2.2.x version of workflow.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Ignore
 public class SimpleWebServiceClientTest extends KEWTestCase {

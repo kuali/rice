@@ -18,7 +18,7 @@ package org.kuali.notification.bo;
 /**
  * This class represents an instance of a user's subscription to a specific 
  * notification channel.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserChannelSubscription {
     private Long id;

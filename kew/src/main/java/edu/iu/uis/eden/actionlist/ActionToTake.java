@@ -19,7 +19,7 @@ package edu.iu.uis.eden.actionlist;
 /**
  * Represents a mass action taken from the action list
  *
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionToTake {
 

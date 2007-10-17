@@ -24,7 +24,7 @@ import edu.iu.uis.eden.exception.ResourceUnavailableException;
 /**
  * A service for locating Route Modules.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RouteModuleService {
     

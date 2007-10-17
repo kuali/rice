@@ -20,7 +20,7 @@ package edu.iu.uis.eden.actions;
  * Represents a point to move to in the route path.  Used by the 
  * {@link MoveDocumentAction}
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class MovePoint {
 

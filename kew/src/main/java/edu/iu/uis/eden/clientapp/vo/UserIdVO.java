@@ -21,8 +21,7 @@ package edu.iu.uis.eden.clientapp.vo;
 /**
  * Super class for all user id transport objects.
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object 
  */

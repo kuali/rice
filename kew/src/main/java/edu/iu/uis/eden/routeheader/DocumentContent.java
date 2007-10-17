@@ -30,7 +30,7 @@ import edu.iu.uis.eden.engine.RouteContext;
  * not contain a particular piece, then the associated getter should return
  * null.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DocumentContent extends Serializable {
 

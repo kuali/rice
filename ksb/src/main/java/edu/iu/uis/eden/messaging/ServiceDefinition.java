@@ -35,8 +35,7 @@ import edu.iu.uis.eden.messaging.exceptionhandling.DefaultMessageExceptionHandle
 /**
  * The definition of a service on the service bus.
  * 
- * @author rkirkend
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class ServiceDefinition implements Serializable {
 

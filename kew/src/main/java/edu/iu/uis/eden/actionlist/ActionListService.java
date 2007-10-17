@@ -28,8 +28,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 /**
  * Main service for doing action list data access work
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface ActionListService {

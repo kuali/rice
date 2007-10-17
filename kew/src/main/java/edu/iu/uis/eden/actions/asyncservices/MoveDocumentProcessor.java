@@ -29,8 +29,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Service to do the async work of moving a document.
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class MoveDocumentProcessor implements MoveDocumentService { 
     

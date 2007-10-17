@@ -21,7 +21,7 @@ package edu.iu.uis.eden.workgroup;
  * 
  * @see Workgroup
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public final class WorkflowGroupId implements GroupId {
 

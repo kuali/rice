@@ -22,7 +22,7 @@ import java.util.Map;
  * This interface defines a Test fixture which is executed multiple times until the doWork method
  * return true.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface Test {

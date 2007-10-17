@@ -27,7 +27,7 @@ import edu.iu.uis.eden.util.Utilities;
  * @see RuleBaseValues
  * @see RuleExtension
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleExtensionValue implements WorkflowPersistable {
 

@@ -28,7 +28,7 @@ import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 /**
  * Routes a document.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class RouteDocumentJmeterTest extends AbstractJavaSamplerClient {

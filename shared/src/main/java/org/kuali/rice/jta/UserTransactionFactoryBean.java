@@ -33,7 +33,7 @@ import org.springframework.jndi.JndiTemplate;
  * from JNDI if {@link Config#USER_TRANSACTION_JNDI} is defined,
  * or from a default declaratively assigned in containing bean factory.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserTransactionFactoryBean implements FactoryBean {
 

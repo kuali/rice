@@ -19,8 +19,7 @@ package org.kuali.notification.service;
 /**
  * This class is responsible for the job that will actually deliver a notification message to its recipients.  It's responsible 
  * for loading and processing the proper NotificationMessageDelivery records.
- * @author Aaron Hamid (arh14 at cornell dot edu)
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NotificationMessageDeliveryDispatchService {
     /**

@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Represents a transition to a set of Node Instances.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Transition {
 

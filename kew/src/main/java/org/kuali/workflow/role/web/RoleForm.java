@@ -23,7 +23,7 @@ import org.apache.struts.action.ActionForm;
  *
  * @see RoleAction
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoleForm extends ActionForm {
 

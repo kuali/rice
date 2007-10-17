@@ -22,7 +22,7 @@ import java.util.List;
  * A snapshot of statistics for the KEW application at a particular
  * point in time.
  *
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Stats {
 

@@ -19,7 +19,7 @@ package edu.iu.uis.eden.clientapp.vo;
 /**
  * Signal to the PostProcessor that the routeHeader is being deleted.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DeleteEventVO extends DocumentEventVO {
 

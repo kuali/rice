@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * Transport object for representing the criteria for a routing report.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

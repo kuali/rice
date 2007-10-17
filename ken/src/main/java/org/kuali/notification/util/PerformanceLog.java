@@ -21,14 +21,14 @@ import org.apache.log4j.Logger;
 
 /**
  * Wrapper for the Log4J performance log
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public final class PerformanceLog {
     private static final Logger LOG = Logger.getLogger("Performance");
 
     /**
      * This class 
-     * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
      */
     public static final class PerformanceStopWatch {
         private StopWatch stopWatch = new StopWatch();

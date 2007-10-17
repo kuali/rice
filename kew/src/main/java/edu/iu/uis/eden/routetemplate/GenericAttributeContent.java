@@ -38,7 +38,7 @@ import edu.iu.uis.eden.util.XmlHelper;
  * Helper class that can parse and generate generic attribute content
  * from Map<String,String> values.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class GenericAttributeContent {
     private static final XPathExpression NAME_EXPR;

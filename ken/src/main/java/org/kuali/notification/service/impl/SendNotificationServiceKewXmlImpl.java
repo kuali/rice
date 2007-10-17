@@ -24,8 +24,7 @@ import edu.iu.uis.eden.messaging.KEWXMLService;
 /**
  * This class allows the NotificationService.sendNotification(XML) service 
  * to be invoked as a web service generically from the bus.
- * @author Aaron Godert (ag266 at cornell dot edu)
- * @author Bryan Hutchinson (bh79@cornell.edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SendNotificationServiceKewXmlImpl implements KEWXMLService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger

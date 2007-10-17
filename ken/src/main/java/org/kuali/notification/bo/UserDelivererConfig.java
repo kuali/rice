@@ -20,7 +20,7 @@ package org.kuali.notification.bo;
  * This class represents an instance of an UserDelivererConfig.  Each UserDelivererConfig instance represents a 
  * user as having applied a delivery type configuration to a channel, such that any messages, targeted at the userId, 
  * will also be delivered to the correlating delivery type (delivererName) for that user.
- * @author John Fereira (jaf30@cornell.edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserDelivererConfig {
     private Long id;

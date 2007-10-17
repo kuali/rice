@@ -24,7 +24,7 @@ import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 /**
  * Data Access Object for {@link ActionTakenValue}s.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ActionTakenDAO {
 

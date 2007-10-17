@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * This class represents an instance of who can actually submit notification messages to the system 
  * for processing.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationProducer {
     private Long id;

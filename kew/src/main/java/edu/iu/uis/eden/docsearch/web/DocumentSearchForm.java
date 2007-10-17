@@ -46,7 +46,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Struts form for document search action
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentSearchForm extends ActionForm {
 

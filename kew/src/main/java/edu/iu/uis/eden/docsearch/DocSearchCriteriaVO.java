@@ -32,8 +32,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Model bean representing document searches.  Persisted each search as part of the users saved searches.
  *
- * @author bmcgough
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocSearchCriteriaVO implements Serializable {
 

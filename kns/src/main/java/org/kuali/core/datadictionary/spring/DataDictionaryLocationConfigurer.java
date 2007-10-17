@@ -23,7 +23,7 @@ import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Puts a data dictionary file location in the data dictionary
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class DataDictionaryLocationConfigurer implements InitializingBean {

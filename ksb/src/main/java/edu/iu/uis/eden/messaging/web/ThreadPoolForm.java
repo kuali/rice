@@ -22,7 +22,7 @@ import edu.iu.uis.eden.messaging.threadpool.KSBThreadPool;
 /**
  * Struts ActionForm for the {@link ThreadPoolAction}.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ThreadPoolForm extends ActionForm {

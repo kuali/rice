@@ -24,7 +24,7 @@ import org.kuali.rice.kim.bo.Permission;
  * Kuali software which needs to leverage identity management features that require fine-grained
  * Namespace attributes. 
  * 
- * @author Phillip Berres (pberres at usc dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NamespaceService {
     /**

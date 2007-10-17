@@ -38,7 +38,7 @@ import edu.iu.uis.eden.util.PerformanceLogger;
 /**
  * The RouteModule which is responsible for generating Action Requests from Roles configured in the system.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoleRouteModule extends BaseRouteModule {
 

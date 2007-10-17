@@ -19,7 +19,7 @@ package edu.iu.uis.eden.engine.node;
 /**
  * The state of a {@link RouteNodeInstance} represented as a key-value pair of Strings.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NodeState extends State {
 

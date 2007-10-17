@@ -30,7 +30,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Old hardcoded implementation for unit testing purposes only
  * @deprecated This is the original hardcoded actionlistemailservice implementation
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class HardCodedActionListEmailServiceImpl implements ActionListEmailService {
 	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger

@@ -22,8 +22,7 @@ import edu.iu.uis.eden.WorkflowPersistable;
 /**
  * Model bean representing a policy of a document type.
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentTypePolicy implements WorkflowPersistable {
 

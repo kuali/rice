@@ -23,7 +23,7 @@ import org.kuali.bus.security.credentials.X509CredentialsSourceTest.KualiX509Cer
 
 /**
  * 
- * @author Scott Battaglia
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  *
  */

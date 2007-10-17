@@ -19,7 +19,7 @@ package org.kuali.notification.bo;
  * This class represents a recipient preference in the system.  This is a generic Key/Value structure 
  * that is used by the system to store preferences that the user has set up. This will be 
  * used by the tickler plugins which will need a generic and dynamic structure for user specific settings.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RecipientPreference {
     private Long id;

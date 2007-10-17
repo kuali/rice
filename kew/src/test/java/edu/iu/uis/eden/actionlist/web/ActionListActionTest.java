@@ -46,7 +46,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Tests the web GUI for the ActionList.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionListActionTest extends KEWTestCase {
 

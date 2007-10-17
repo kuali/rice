@@ -43,7 +43,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 /**
  * Allows the construction of DocumentContent from fragments of XML.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PartialAttributeContent implements DocumentContent {
 

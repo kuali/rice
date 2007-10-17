@@ -27,7 +27,7 @@ import edu.iu.uis.eden.messaging.remotedservices.TestHarnessSharedTopic;
  * this will result in messages being persisted to db but not delivered. from
  * there we start up the {@link MessageFetcher} and make sure he does his job.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class MessageFetcherTest extends KSBTestCase {

@@ -27,8 +27,7 @@ import edu.iu.uis.eden.util.ResponsibleParty;
  * A RouteModule is responsible for generating Action Requests for a given Route Header document.
  * Implementations of this class are potentially remotable, so this interface uses value objects.
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RouteModule {
 

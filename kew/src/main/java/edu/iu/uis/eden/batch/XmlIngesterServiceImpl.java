@@ -70,7 +70,7 @@ import edu.iu.uis.eden.xml.ClassLoaderEntityResolver;
  *
  * @see edu.iu.uis.eden.batch.XmlIngesterService
  * @see edu.iu.uis.eden.batch.XmlDigesterServiceImpl
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class XmlIngesterServiceImpl implements XmlIngesterService {
     private static final Logger LOG = Logger.getLogger(XmlIngesterServiceImpl.class);

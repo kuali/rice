@@ -30,8 +30,7 @@ import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
 /**
  * Default test base for a full KNS enabled unit test.
  * 
- * @author natjohns
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KNSTestCase extends RiceTestCase {
 

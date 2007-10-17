@@ -20,7 +20,7 @@ import org.kuali.rice.web.jetty.JettyServer;
 /**
  * Starts Jetty to run stress test web app in. 
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StressTestJettyServerStarter {
 

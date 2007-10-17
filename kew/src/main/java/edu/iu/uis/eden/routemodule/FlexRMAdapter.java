@@ -29,7 +29,7 @@ import edu.iu.uis.eden.routetemplate.FlexRM;
  * @see FlexRM
  * @see RouteModule
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class FlexRMAdapter extends FlexRM implements RouteModule {
 

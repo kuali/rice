@@ -24,7 +24,7 @@ import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 /**
  * Provides factory methods for creating {@link Branch} objects and {@link RouteNodeInstance} object.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoutingNodeFactory {
 

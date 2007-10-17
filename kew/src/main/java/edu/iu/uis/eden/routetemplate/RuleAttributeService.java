@@ -26,7 +26,7 @@ import edu.iu.uis.eden.xml.export.XmlExporter;
  * 
  * @see RuleAttribute
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RuleAttributeService extends XmlLoader, XmlExporter {
 

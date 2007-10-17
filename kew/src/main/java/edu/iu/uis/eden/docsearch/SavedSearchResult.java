@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * Bean representing a saved search result in from a document search.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SavedSearchResult implements Serializable {
 	

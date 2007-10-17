@@ -23,7 +23,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * The NotificationWorkflowDocumentService class is responsible for housing service methods for interacting with KEW.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NotificationWorkflowDocumentService {
     /**

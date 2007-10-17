@@ -41,7 +41,7 @@ import org.kuali.rice.resourceloader.SpringResourceLoader;
  * provides a template method for running custom transactional setUp. Tear down
  * handles automatic tear down of objects created inside the test environment.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  */
 public abstract class RiceTestCase extends LoggableTestCase {

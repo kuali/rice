@@ -25,7 +25,7 @@ import edu.iu.uis.eden.messaging.PersistedMessage;
  * Responsible for implementing policy to put message into threadpool for execution appropriately. Could make Spring and
  * overridable service.
  * 
- * @author Ryan Kirkendall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class MessageSender {

@@ -18,7 +18,7 @@ package org.kuali.core.bo;
 import java.util.LinkedHashMap;
 
 /**
- * @author Kuali Nervous System Team (kualidev@oncourse.iu.edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentStatus extends PersistableBusinessObjectBase {
 

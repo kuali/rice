@@ -24,7 +24,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Performs a disapprove as a super user
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SuperUserDisapproveEvent extends SuperUserActionTakenEvent {
 

@@ -34,7 +34,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * The RevokeAdHocApprove revokes the specified AdHoc requests.
  *
- *  @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RevokeAdHocAction extends ActionTakenEvent {
 

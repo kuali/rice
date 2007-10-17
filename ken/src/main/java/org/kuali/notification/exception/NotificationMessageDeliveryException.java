@@ -18,7 +18,7 @@ package org.kuali.notification.exception;
 /**
  * This class represents a delivery exception - when notifications are not properly delivered 
  * to their target audiences.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationMessageDeliveryException extends Exception {
     /**

@@ -43,8 +43,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  * @see HelpService
  * @see HelpEntry
  *
- * @author xqi
- * @author shenl
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class HelpAction extends WorkflowAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(HelpAction.class);

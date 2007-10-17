@@ -29,8 +29,8 @@ import org.junit.runner.notification.RunNotifier;
  * A Runner which invokes setName() on the Test (if the method exists) and sets
  * it to the name of the test method being invoked.
  *
- * @author Eric Westfall
- * @version $Revision: 1.2.2.2 $ $Date: 2007-08-28 02:15:45 $
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @version $Revision: 1.2.2.2.2.1 $ $Date: 2007-10-17 21:52:27 $
  * @since 0.9
  */
 public class NamedTestClassRunner extends JUnit4ClassRunner {

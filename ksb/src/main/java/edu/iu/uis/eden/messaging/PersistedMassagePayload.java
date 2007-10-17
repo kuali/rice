@@ -23,7 +23,7 @@ import org.kuali.bus.services.KSBServiceLocator;
  * Holds message payload content.  Needed to proxy the content so we don't have to 
  * take the hit when grabbing large amounts of persisted messages at time.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class PersistedMassagePayload implements Serializable {

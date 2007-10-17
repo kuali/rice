@@ -19,7 +19,7 @@ package edu.iu.uis.eden.engine.node;
 /**
  * A piece of state on a {@link Branch} stored as a key-value pair of Strings.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BranchState extends State {
     /**

@@ -32,8 +32,7 @@ import edu.iu.uis.eden.messaging.ServiceInfo;
 
 /**
  *
- * @author rkirkend
- * @author Scott Battaglia
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  */
 public class SOAPConnector extends AbstractServiceConnector {

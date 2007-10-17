@@ -51,8 +51,7 @@ import edu.iu.uis.eden.server.WorkflowUtility;
  * Currently, the only 2 services which are exposed are the utility service and
  * the document actions service.
  * 
- * @author Eric Westfall
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WebserviceResourceLoader extends BaseResourceLoader {
 	

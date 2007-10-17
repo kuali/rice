@@ -59,8 +59,7 @@ import edu.iu.uis.eden.workgroup.GroupNameId;
 /**
  * implementation of {@link GenericXMLSearchableAttribute}.
  *
- * @author jhopf
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchableAttribute {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardGenericXMLSearchableAttribute.class);

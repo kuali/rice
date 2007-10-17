@@ -23,7 +23,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  * An attribute which allows for customization of the Notes interface for
  * a particular document.
  *
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface CustomNoteAttribute {
 

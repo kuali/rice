@@ -28,7 +28,7 @@ import org.kuali.bus.services.KSBServiceLocator;
 /**
  * Struts action for interacting with the queue of messages.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ThreadPoolAction extends KSBAction {
 

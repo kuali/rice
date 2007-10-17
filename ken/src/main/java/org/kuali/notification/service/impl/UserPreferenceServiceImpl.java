@@ -33,7 +33,7 @@ import org.kuali.notification.util.NotificationConstants;
 
 /**
  * UserPreferenceService implementation - uses the businessObjectDao to get at data in the underlying database.
- * @author John Fereira (jaf30 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserPreferenceServiceImpl implements UserPreferenceService {
     private BusinessObjectDao businessObjectDao;

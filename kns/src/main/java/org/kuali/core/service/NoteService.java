@@ -29,7 +29,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
 /**
  * This interface defines methods that a Note service must provide
  *
- * @author Kuali Nervous System Team (kualidev@oncourse.iu.edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NoteService {
     /**

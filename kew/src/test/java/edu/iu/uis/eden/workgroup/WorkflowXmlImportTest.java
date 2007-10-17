@@ -23,7 +23,7 @@ import edu.iu.uis.eden.KEWServiceLocator;
 /**
  * Test workgroup import process. 
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class WorkflowXmlImportTest extends KEWTestCase {

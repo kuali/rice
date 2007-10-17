@@ -19,7 +19,7 @@ package edu.iu.uis.eden.edl;
 /**
  * EDocLite XSLT stylesheet
  * Table: en_edoclt_style_t
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EDocLiteStyle {
     /**

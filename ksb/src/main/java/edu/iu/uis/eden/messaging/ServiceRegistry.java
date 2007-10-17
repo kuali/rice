@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @see ServiceInfo
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ServiceRegistry {
 

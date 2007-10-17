@@ -32,7 +32,7 @@ import edu.iu.uis.eden.actionitem.ActionItem;
  * first argument has a higher priority then the second.  If the result returned is 0, then
  * the two action items have the same priority.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionListPriorityComparator implements Comparator {
 

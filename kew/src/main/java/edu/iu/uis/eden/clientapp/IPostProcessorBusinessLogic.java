@@ -24,7 +24,7 @@ import edu.iu.uis.eden.exception.ResourceUnavailableException;
 /**
  * Original PostProcessor remote interface.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @deprecated uses PostProcessorRemote
  */

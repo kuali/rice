@@ -73,9 +73,7 @@ import edu.iu.uis.eden.xml.XmlConstants;
 /**
  * Provides a set of utilities for XML-related operations.
  *
- * @author rkirkend
- * @author ewestfal
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class XmlHelper {
 	protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(XmlHelper.class);

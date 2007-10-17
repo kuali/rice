@@ -28,7 +28,7 @@ import edu.iu.uis.eden.workgroup.GroupNameId;
  * Implementation of the ksb AuthorizationService which returns true if the authenticated user is
  * a member of WorkflowAdmin.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class TravelAuthorizationService implements AuthorizationService {

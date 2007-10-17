@@ -26,7 +26,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  * WebAuthenticationService implementation that just propagates the Remote User
  * from the web environment into the network id
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RemoteUserWebAuthenticationService implements WebAuthenticationService {
     public UserId getUserId(HttpServletRequest request) {

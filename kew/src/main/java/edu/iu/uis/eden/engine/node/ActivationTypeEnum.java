@@ -21,7 +21,7 @@ package edu.iu.uis.eden.engine.node;
  * Sequential activation means that only a single request on a node will get activated at a time.
  * Parallel activation means that all requests on a node will be activated.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public final class ActivationTypeEnum {
     /** Routing should process the associated ActionRequests in sequence */

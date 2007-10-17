@@ -21,7 +21,7 @@ import org.kuali.notification.bo.NotificationProducer;
 /**
  * The NotificationAuthorizationService class is responsible for housing permissions and authorization 
  * related services.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NotificationAuthorizationService {
     /**

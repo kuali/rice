@@ -28,7 +28,7 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 /**
  * Default implementation of the {@link RiceCacheAdministrator}.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 

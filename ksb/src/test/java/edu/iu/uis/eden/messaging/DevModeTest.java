@@ -32,7 +32,7 @@ import edu.iu.uis.eden.messaging.serviceconnectors.ServiceConnectorFactory;
 
 /**
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DevModeTest extends KSBTestCase {
 

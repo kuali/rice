@@ -27,8 +27,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Struts ActionForm for {@link NoteAction}.
  *
- * @author temay
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NoteForm extends ActionForm {
 

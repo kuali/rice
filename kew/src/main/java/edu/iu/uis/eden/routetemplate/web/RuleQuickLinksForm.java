@@ -30,7 +30,7 @@ import edu.iu.uis.eden.util.Utilities;
  * 
  * @see RuleQuickLinksAction
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleQuickLinksForm extends ActionForm {
 

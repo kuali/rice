@@ -35,7 +35,7 @@ import org.kuali.rice.util.RiceUtilities;
  * 
  * @see HierarchicalConfigParser
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class BaseConfig implements Config {
 

@@ -19,7 +19,7 @@ package edu.iu.uis.eden.test.services;
 /**
  * A simple service which we can use to effectively "touch" the servers in a system
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ChainedRequestService {
 

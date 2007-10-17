@@ -32,7 +32,7 @@ import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * Subclass of MockHttpServletRequest that initializes the request with a user session
- * @author Aaron Hamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkflowServletRequest extends MockHttpServletRequest {
     public WorkflowServletRequest() {

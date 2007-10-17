@@ -20,7 +20,7 @@ package edu.iu.uis.eden.clientapp;
 import edu.iu.uis.eden.IDocumentEvent;
 
 /**
- * @author seiffert
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * Signal to the PostProcessor that the routeHeader is being deleted.
  * 

@@ -24,8 +24,7 @@ import edu.iu.uis.eden.web.session.UserSession;
 /**
  * A service which is used to authenticate web users from an Http request.
  * 
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface WebAuthenticationService {
 	

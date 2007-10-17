@@ -25,7 +25,7 @@ import org.kuali.notification.service.impl.NotificationEmailServiceImpl;
 
 /**
  * Mock NotificationEmailService implementation that does not actually send any mail
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class MockNotificationEmailServiceImpl extends NotificationEmailServiceImpl {
     private static final Logger LOG = Logger.getLogger(MockNotificationEmailServiceImpl.class);

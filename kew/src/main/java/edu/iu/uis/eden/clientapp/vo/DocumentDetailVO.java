@@ -25,7 +25,7 @@ import edu.iu.uis.eden.clientapp.WorkflowInfo;
  * Document plus it's requests and actions.  Primarily used by the routingReport method 
  * on the {@link WorkflowInfo}
  * 
- *  @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

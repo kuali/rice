@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * A service providing data access for {@link Branch} instances.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface BranchService {
     public void save(Branch branch);    

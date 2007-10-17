@@ -39,9 +39,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
  *
  * @see RuleTemplateService
  *
- * @author rkirkend
- * @author bmcgough
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkgroupTypeAction extends WorkflowAction {
 

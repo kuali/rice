@@ -36,7 +36,7 @@ import edu.iu.uis.eden.util.ClassDumper;
 /**
  * A node which generates {@link ActionRequestValue} objects from a {@link RouteModule}.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RequestsNode extends RequestActivationNode {
 

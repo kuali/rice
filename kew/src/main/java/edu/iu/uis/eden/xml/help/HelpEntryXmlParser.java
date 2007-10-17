@@ -60,7 +60,7 @@ import edu.iu.uis.eden.help.HelpService;
  * 
  * <p>The xml file can contain html tags as long as these tags are wrapped between "&lt;![CDATA[" and "]]&rt;"
  * 
- * @author shenl
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class HelpEntryXmlParser {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(HelpEntryXmlParser.class);

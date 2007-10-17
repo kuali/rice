@@ -19,7 +19,7 @@ package edu.iu.uis.eden.exception;
 /**
  * Thrown whenever there is a problem with XML in an XML document.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class InvalidXmlException extends WorkflowException {
 

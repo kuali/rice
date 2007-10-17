@@ -19,7 +19,7 @@ package edu.iu.uis.eden.edl.components;
 /**
  * Convenience class for representing a request param with it's value and any associated errors.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class MatchingParam {

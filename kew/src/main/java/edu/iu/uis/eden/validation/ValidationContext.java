@@ -24,7 +24,7 @@ import java.util.Map;
  * Stores context for validation.  This is essentially a Map of parameters
  * to the validation.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ValidationContext implements java.io.Serializable {
 

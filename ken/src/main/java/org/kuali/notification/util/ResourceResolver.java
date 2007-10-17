@@ -17,7 +17,7 @@ package org.kuali.notification.util;
 
 /**
  * Interface for Entity and LSResource Resolver implementations that should resolve ids to resources
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ResourceResolver {
     /**

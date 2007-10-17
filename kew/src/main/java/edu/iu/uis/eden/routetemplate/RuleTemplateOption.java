@@ -25,7 +25,7 @@ import edu.iu.uis.eden.WorkflowPersistable;
  * @see RuleBaseValues
  * @see RuleTemplate
  *
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleTemplateOption implements WorkflowPersistable {
 

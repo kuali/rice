@@ -30,7 +30,7 @@ import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 /**
  * OJB implementation of the {@link ActionTakenDAO}.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implements ActionTakenDAO {
 

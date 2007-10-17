@@ -28,7 +28,7 @@ import org.kuali.rice.resourceloader.GlobalResourceLoader;
 /**
  * Basic test to verify we can access the PersonService through the GRL.
  * 
- * @author Phillip Berres (email at usc dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class PersonServiceTest extends KIMTestCase {

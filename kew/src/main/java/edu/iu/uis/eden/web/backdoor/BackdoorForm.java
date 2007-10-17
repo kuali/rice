@@ -23,7 +23,7 @@ import org.apache.struts.action.ActionForm;
  *
  * @see BackdoorAction
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BackdoorForm extends ActionForm {
 

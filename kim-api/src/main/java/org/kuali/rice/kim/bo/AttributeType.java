@@ -25,7 +25,7 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
  * one instance of attribute type could be "text" or "radio button".  Every attribute attached to a person, group, etc 
  * in KIM will need to have an attribute type associated with it.  
  * 
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AttributeType extends PersistableBusinessObjectBase {
 

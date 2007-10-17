@@ -36,7 +36,7 @@ import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
  * Verify a locally deployed service is always called instead of a remote service in a cluster
  * Verify that a service in a cluster fails over when one of the services in the cluster goes down.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ServiceCallClusterTest extends KSBTestCase {

@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 /**
  * Utility base class for Entity and LSResource Resolvers that should resolve
  * arguments to resources in the ClassLoader.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ClassLoaderResourceResolver {
     protected final Logger LOG = Logger.getLogger(getClass());

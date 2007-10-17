@@ -39,7 +39,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  * This simple implementation could be replaced by another auth service that went against
  * an institution specific implementation.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimpleWebAuthenticationService implements WebAuthenticationService {
 

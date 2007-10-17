@@ -24,7 +24,7 @@ import edu.iu.uis.eden.clientapp.ResourceLocator;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
 
 /**
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TestRouteModulePostProcessor implements IPostProcessorBusinessLogic {
 

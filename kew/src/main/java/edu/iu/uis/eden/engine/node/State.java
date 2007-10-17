@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * A KeyValuePair that adds an id fields that makes it sufficient for storing in a database.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class State extends KeyValuePair implements Serializable {
     protected Long stateId;

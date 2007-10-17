@@ -23,7 +23,7 @@ import org.kuali.workflow.test.KEWTestCase;
 /**
  * Tests that the PluginManifestParser properly parses the plugin manifest xml file.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PluginManifestParserTest extends KEWTestCase {
 

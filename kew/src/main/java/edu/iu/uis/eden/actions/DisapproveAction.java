@@ -44,9 +44,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * Disapproves a document. This deactivates all requests on the document and sends
  * acknowlegde requests to anybody who had already completed or approved the document.
  *
- * @author rkirkend
- * @author ewestfal
- * @author seiffert
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DisapproveAction extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DisapproveAction.class);

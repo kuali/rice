@@ -30,7 +30,7 @@ import edu.iu.uis.eden.messaging.quartz.MessageServiceExecutorJobListener;
 /**
  * A {@link MessageExceptionHandler} which handles putting documents into exception routing.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentMessageExceptionHandler extends DefaultMessageExceptionHandler {
 

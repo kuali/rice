@@ -23,7 +23,7 @@ import java.util.Map;
  * flag of true or false.  Some screens may give the user the ability to not render (i.e. hide) inactive
  * collection elements.  This class has several utilities to control that behavior. 
  * 
- * @author Warren Liang (wliang@uci.edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class InactiveRecordsHidingUtils {
     /**

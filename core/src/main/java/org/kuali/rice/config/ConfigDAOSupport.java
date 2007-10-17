@@ -22,7 +22,7 @@ import org.kuali.rice.core.Core;
  * the configuration framework.  Also allows for access to the NodeSettings service which
  * allows for persistence of configuration parameters.
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ConfigDAOSupport {
 

@@ -34,7 +34,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 /**
  * Represents the prototype definition of a node in the route path of {@link DocumentType}.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RouteNode implements Serializable {    
 

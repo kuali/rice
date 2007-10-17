@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Listens on a socket and reads EDocLitePostProcessor events
- * @author Aaron Hamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 class EDocLitePostProcessorListener implements Runnable {
     private static final Logger LOG = Logger.getLogger(EDocLitePostProcessorListener.class);

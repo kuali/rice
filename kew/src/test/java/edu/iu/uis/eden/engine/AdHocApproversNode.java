@@ -23,7 +23,7 @@ import edu.iu.uis.eden.engine.node.SimpleResult;
  * This node will wait until a sibling branch has joined and it has no more pending requests
  * before it signals that it is complete.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AdHocApproversNode extends InitialNode {
 

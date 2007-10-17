@@ -35,7 +35,7 @@ import edu.iu.uis.eden.xml.XmlConstants;
  * 
  * @see RuleAttribute
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleAttributeXmlExporter implements XmlExporter, XmlConstants {
 

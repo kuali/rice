@@ -20,7 +20,7 @@ package edu.iu.uis.eden.plugin.attributes;
 /**
  * A service for locating WorkflowLookupables.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface LookupableService {
 

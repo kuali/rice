@@ -33,7 +33,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  * A login filter which forwards to a login page that allows for the desired
  * authentication ID to be entered without the need for a password.
  *
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DummyLoginFilter implements Filter {
     private String loginPath;

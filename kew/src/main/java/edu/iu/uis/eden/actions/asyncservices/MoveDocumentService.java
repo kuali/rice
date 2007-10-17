@@ -26,7 +26,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * Interface fronting {@link MoveDocumentProcessor} so it can be invoked remotely async.  Created 
  * when the {@link MoveDocumentProcessor} transitioned to a service.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface MoveDocumentService {
 

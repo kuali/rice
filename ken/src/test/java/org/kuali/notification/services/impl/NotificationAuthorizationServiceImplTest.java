@@ -26,7 +26,7 @@ import org.kuali.notification.util.NotificationConstants;
 
 /**
  * This class tests the authz aspects of KEN
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationAuthorizationServiceImplTest extends NotificationTestCaseBase {
     

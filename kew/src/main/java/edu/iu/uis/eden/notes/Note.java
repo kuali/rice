@@ -32,8 +32,7 @@ import edu.iu.uis.eden.WorkflowPersistable;
  * 
  * @see Attachment
  *
- * @author temay
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Note implements WorkflowPersistable {
 

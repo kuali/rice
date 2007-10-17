@@ -23,7 +23,7 @@ import edu.iu.uis.eden.engine.RouteHelper;
  * A simple {@link Node} implementation which is executed and returns a {@link SimpleResult}
  * indicating whether or not the node has completed.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface SimpleNode extends Node {
 

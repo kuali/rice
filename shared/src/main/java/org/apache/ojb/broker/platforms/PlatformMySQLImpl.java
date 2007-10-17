@@ -44,7 +44,7 @@ import org.apache.ojb.broker.query.LikeCriteria;
 
 /**
  * @version 1.0
- * @author jakob br�uchi
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PlatformMySQLImpl extends PlatformDefaultImpl
 {

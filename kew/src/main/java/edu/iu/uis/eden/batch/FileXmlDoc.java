@@ -27,7 +27,7 @@ import java.io.InputStream;
  * @see edu.iu.uis.eden.batch.BaseXmlDoc
  * @see edu.iu.uis.eden.batch.FileXmlDocCollection
  * @see edu.iu.uis.eden.batch.DirectoryXmlDocCollection
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 class FileXmlDoc extends BaseXmlDoc {
     private File file;

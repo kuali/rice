@@ -52,7 +52,7 @@ import org.xml.sax.InputSource;
 /**
  * Base Ojb Configurer implementation which configures OJB for a particular rice module.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class BaseOjbConfigurer extends BaseLifecycle {
 

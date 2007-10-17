@@ -30,7 +30,7 @@ import edu.iu.uis.eden.engine.node.var.PropertyScheme;
 /**
  * A property scheme that loads resources from the class loader.
  *  
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ResourceScheme implements PropertyScheme {
     private static final Logger LOG = Logger.getLogger(ResourceScheme.class);

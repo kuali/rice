@@ -25,7 +25,7 @@ import edu.iu.uis.eden.EdenConstants;
 /**
  * Specifies a set of Action codes.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionSet implements Serializable {
 

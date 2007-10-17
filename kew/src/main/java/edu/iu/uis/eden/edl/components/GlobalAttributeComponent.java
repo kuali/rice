@@ -33,7 +33,7 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
  *   </attribute>
  * </attributes>
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class GlobalAttributeComponent extends SimpleWorkflowEDLConfigComponent implements EDLModelComponent  {
 

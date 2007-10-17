@@ -19,7 +19,7 @@ package edu.iu.uis.eden.engine.node;
 /**
  * The result of the processing of a {@link JoinNode}.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class JoinResult extends SimpleResult {
 

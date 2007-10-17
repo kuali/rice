@@ -37,7 +37,7 @@ import edu.iu.uis.eden.xml.XmlConstants;
  *
  * @see EDocLiteDefinition
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EDocLiteXmlExporter implements XmlExporter, XmlConstants {
 

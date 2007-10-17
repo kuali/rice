@@ -40,7 +40,7 @@ import edu.iu.uis.eden.web.UrlResolver;
 
 /**
  *
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StandardDocumentSearchResultProcessor implements DocumentSearchResultProcessor {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardDocumentSearchResultProcessor.class);

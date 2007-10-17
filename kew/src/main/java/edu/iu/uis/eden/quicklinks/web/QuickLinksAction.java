@@ -36,7 +36,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
 /**
  * A Struts Action for interfacing with the Quick Links system
  *
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class QuickLinksAction extends WorkflowAction {
     

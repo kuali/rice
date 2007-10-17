@@ -36,7 +36,7 @@ import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
  * underlying core NotificationDocumentType that all notifications go into KEW as.  This class is responsible for changing 
  * the state of the associated notification message delivery record after someone FYIs or ACKs their notification 
  * in the KEW Action List.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationPostProcessor implements PostProcessorRemote {
     private static final Logger LOG = Logger.getLogger(NotificationPostProcessor.class);

@@ -19,7 +19,7 @@ package edu.iu.uis.eden.clientapp.vo;
 /**
  * Tracks changed to document content for lazy loading
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ModifiableDocumentContentVO extends DocumentContentVO {
 

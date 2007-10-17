@@ -39,7 +39,7 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
 /**
  * A simple implementation of an ActionRegistry which includes all of the default Workflow Actions.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionRegistryImpl implements ActionRegistry {
     private static final Logger LOG = Logger.getLogger(ActionRegistryImpl.class);

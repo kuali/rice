@@ -34,7 +34,7 @@ import edu.iu.uis.eden.messaging.serviceconnectors.HttpInvokerConnector;
 /**
  * A test which tests the RemoteResourceServiceLocatorImpl class.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class HttpInvokerConnectorConfigurationTest extends TestCase {
 

@@ -40,7 +40,7 @@ import edu.iu.uis.eden.util.Utilities;
  * This class stores configured services keyed off of the current Thread's context classloader (provided
  * it has one).  Therefore, multiple Workflow plugins can configure their workflow client access differently.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ClientServiceLocator {
 

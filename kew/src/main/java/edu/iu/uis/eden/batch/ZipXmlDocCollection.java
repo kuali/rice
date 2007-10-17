@@ -25,7 +25,7 @@ import java.util.zip.ZipFile;
 /**
  * For uploading zip files full of xml goodness.
  *
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ZipXmlDocCollection extends BaseXmlDocCollection {
     private ZipFile zipFile;

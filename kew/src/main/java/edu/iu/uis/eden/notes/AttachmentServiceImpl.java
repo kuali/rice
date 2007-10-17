@@ -25,7 +25,7 @@ import edu.iu.uis.eden.KEWServiceLocator;
 /**
  * Implementation of the {@link AttachmentService}.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AttachmentServiceImpl implements AttachmentService {
 	

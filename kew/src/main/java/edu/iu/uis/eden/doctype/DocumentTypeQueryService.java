@@ -23,8 +23,7 @@ import edu.iu.uis.eden.XmlLoader;
 /**
  * A service for querying document type stuff for plugins without exposing the document type service.
  * 
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DocumentTypeQueryService extends XmlLoader {
 

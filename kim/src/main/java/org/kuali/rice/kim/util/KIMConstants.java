@@ -17,12 +17,12 @@ package org.kuali.rice.kim.util;
 
 /**
  * This class houses all constants for KIM.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KIMConstants {
     /**
      * Different content types for the Notification System.  These are static out of the box content types that have specific UIs built for them.
-     * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
      */
     public static final class ATTRIBUTE_TYPES {
 	public static final String TEXT_ATTRIBUTE_TYPE = "Text";
@@ -31,7 +31,7 @@ public class KIMConstants {
     /**
      * This class houses constants that represent the property names for the business objects.  This should 
      * be used for building database queries.
-     * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
      */
     public static final class BO_PROPERTY_NAMES {
         public static final String ID = "id";

@@ -18,7 +18,7 @@ package org.kuali.workflow.role;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class QualifiedRoleExtensionValue {
 

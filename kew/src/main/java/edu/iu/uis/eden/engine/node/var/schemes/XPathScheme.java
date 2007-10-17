@@ -39,7 +39,7 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
  * A PropertyScheme that resolves the Property by evaluating it as an XPath expression.
  * DocumentRouteHeaderValue variables are set on the XPath instance so they are accessible.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class XPathScheme implements PropertyScheme {
     private static final Logger LOG = Logger.getLogger(XPathScheme.class);

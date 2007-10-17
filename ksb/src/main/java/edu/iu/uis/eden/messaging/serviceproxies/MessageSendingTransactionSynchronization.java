@@ -25,7 +25,7 @@ import edu.iu.uis.eden.messaging.PersistedMessage;
 /**
  * Sends message when current transaction commits.  
  * 
- * @author Ryan Kirkendall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class MessageSendingTransactionSynchronization implements TransactionSynchronization {

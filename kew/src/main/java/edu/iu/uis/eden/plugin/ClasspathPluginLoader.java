@@ -28,7 +28,7 @@ import org.kuali.rice.config.Config;
  *
  * @see Plugin
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ClasspathPluginLoader extends BasePluginLoader {
 	private static final Logger LOG = Logger.getLogger(ClasspathPluginLoader.class);

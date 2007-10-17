@@ -49,8 +49,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  * Bean mapped to DB. Represents ActionRequest to a workgroup, user or role.  Contains
  * references to children/parent if a member of a graph
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionRequestValue implements WorkflowPersistable {
 

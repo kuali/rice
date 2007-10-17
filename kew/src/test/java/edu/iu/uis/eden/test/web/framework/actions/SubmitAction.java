@@ -60,7 +60,7 @@ import edu.iu.uis.eden.test.web.framework.Util;
  * <dd>The response output after filters have been applied</dd>
  * </dl>
  * The only filter applied by default at this time is the CANONICALIZE filter.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SubmitAction extends BaseScriptAction {
     public static final String RESPONSE_OUTPUT = "OUTPUT";

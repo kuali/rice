@@ -68,9 +68,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
  * @see WebRuleBaseValues
  * @see WebRuleResponsibility
  *
- * @author jhopf
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Rule2Action extends WorkflowAction {
 

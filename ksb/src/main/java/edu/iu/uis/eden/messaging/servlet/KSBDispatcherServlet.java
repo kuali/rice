@@ -49,9 +49,7 @@ import edu.iu.uis.eden.security.SignatureVerifyingRequestWrapper;
  * A {@link DispatcherServlet} which dispatches incoming requests to the appropriate
  * service endpoint.
  *
- * @author rkirkend
- * @author ewestfal
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KSBDispatcherServlet extends DispatcherServlet {
 

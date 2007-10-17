@@ -32,7 +32,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
 /**
  * Test case that tests setting and getting variables, both programmatically
  * and via the "SetVar" node; stolen directly from ApproveActionTest.testPreapprovals
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class VariablesTest extends KEWTestCase {
 

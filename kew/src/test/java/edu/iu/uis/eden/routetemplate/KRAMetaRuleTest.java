@@ -24,7 +24,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * Tests KRA meta-rule functionality 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KRAMetaRuleTest extends KEWTestCase {
     protected void loadTestData() throws Exception {

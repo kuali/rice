@@ -29,7 +29,7 @@ import edu.iu.uis.eden.workgroup.GroupNameId;
  * A workgroup role attribute which resolves to workgroups with empty ids.  This
  * should result in an error being thrown from the engine.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TestBadWorkgroupRoleAttribute extends AbstractRoleAttribute {
 

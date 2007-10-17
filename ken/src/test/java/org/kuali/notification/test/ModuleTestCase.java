@@ -38,7 +38,7 @@ import org.kuali.rice.test.TestHarnessServiceLocator;
  * based on convention
  * configLocation: classpath:META-INF/(lowercase moduleName)-test-config.xml
  * context: classpath:(uppercase moduleName)TestHarnessSpringBeans.xml
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class ModuleTestCase extends RiceTestCase {
     protected final Logger log = Logger.getLogger(getClass());

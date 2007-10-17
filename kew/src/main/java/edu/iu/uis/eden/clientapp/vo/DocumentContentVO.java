@@ -33,7 +33,7 @@ import edu.iu.uis.eden.util.Utilities;
  * These definition VOs will be transient and will not be returned again when content is refreshed
  * from the server.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

@@ -25,7 +25,7 @@ import org.apache.struts.action.ActionMapping;
 /**
  * audit mode action marker
  * 
- * @author Full Name (email at address dot com)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface AuditModeAction {

@@ -44,9 +44,7 @@ import edu.iu.uis.eden.web.session.UserSession;
 /**
  * Struts action which handles the Feedback screen.
  *
- * @author temay
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class FeedbackAction extends WorkflowAction {
 

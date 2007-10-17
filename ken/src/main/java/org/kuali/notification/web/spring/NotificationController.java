@@ -42,8 +42,7 @@ import edu.iu.uis.eden.clientapp.IDocHandler;
 
 /**
  * This class is the controller for the basic notification related actions - viewing, etc.
- * @author John Fereira - jaf30 at cornell dot edu
- * @author Aaron Godert - ag266 at cornell dot edu
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationController extends MultiActionController {
     /** Logger for this class and subclasses */

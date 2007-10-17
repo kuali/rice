@@ -25,7 +25,7 @@ import org.apache.ojb.broker.query.QueryByCriteria;
  * can be retained for select-for-update queries.  Select for update appears to have been added in the OJB
  * source repository, so maybe a forthcoming release will include this functionality and these kludges can be
  * removed.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SuffixableQueryByCriteria extends QueryByCriteria {
     protected String suffix;

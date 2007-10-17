@@ -36,7 +36,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
  * An abstraction that allows for switching between multipart form requests and normal requests when getting
  * request params
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class RequestParser {

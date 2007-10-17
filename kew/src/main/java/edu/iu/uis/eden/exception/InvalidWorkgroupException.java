@@ -19,7 +19,7 @@ package edu.iu.uis.eden.exception;
 /**
  * Thrown whenever a problem with a workgroup exists, like one is execpected but not found.
  *
- * @author seiffert
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class InvalidWorkgroupException extends WorkflowException {
   /**

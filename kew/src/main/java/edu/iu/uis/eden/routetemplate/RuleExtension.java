@@ -32,9 +32,7 @@ import edu.iu.uis.eden.util.Utilities;
  * @see RuleAttribute
  * @see RuleExtensionValue
  *
- * @author rkirkend
- * @author jhopf
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleExtension implements WorkflowPersistable {
 

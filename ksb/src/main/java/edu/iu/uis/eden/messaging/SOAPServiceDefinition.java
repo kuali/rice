@@ -21,10 +21,8 @@ import org.kuali.rice.config.ConfigurationException;
 
 /**
  * 
- * @author natjohns
- * @author rkirkend
- * @author Scott Battaglia
- * @version $Revision: 1.2.26.1 $ $Date: 2007-10-15 19:02:40 $
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @version $Revision: 1.2.26.2 $ $Date: 2007-10-17 21:52:21 $
  * @since 0.9
  */
 public class SOAPServiceDefinition extends ServiceDefinition {

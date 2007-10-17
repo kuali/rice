@@ -22,7 +22,7 @@ import java.util.List;
 import edu.iu.uis.eden.routetemplate.dao.RuleDelegationDAO;
 
 /**
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleDelegationServiceImpl implements RuleDelegationService {
 

@@ -25,7 +25,7 @@ import edu.iu.uis.eden.actionitem.ActionItem;
  * 
  * @see ActionItem
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NotificationService {
 

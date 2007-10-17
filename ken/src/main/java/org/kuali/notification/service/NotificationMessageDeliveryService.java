@@ -23,7 +23,7 @@ import org.kuali.notification.bo.NotificationMessageDelivery;
 /**
  * The NotificationMessageDeliveryService class is responsible various functions regarding the 
  * NotificationMessageDelivery records that exist within the system.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NotificationMessageDeliveryService {
     /**

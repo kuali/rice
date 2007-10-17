@@ -31,8 +31,7 @@ import edu.iu.uis.eden.messaging.RemotedServiceRegistry;
 /**
  * A {@link HandlerMapping} which handles incoming HTTP requests from the bus.
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KSBHttpInvokerHandler extends AbstractHandlerMapping {
 

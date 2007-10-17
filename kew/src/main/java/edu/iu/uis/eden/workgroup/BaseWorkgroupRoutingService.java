@@ -52,7 +52,7 @@ import edu.iu.uis.eden.workgroup.dao.BaseWorkgroupDAO;
 /**
  * A simple implementation of the WorkgroupRoutingService
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BaseWorkgroupRoutingService implements WorkgroupRoutingService {
 

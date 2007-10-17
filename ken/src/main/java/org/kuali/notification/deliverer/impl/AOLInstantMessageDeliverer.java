@@ -28,7 +28,7 @@ import org.kuali.notification.exception.NotificationMessageDeliveryException;
 /**
  * This class is responsible for describing the AOL Instant Messenger delivery mechanism for
  * the system; however, it is not yet integrated into the system and is just a stub.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AOLInstantMessageDeliverer implements NotificationMessageDeliverer {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger

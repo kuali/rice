@@ -31,7 +31,7 @@ import edu.iu.uis.eden.util.Utilities;
  * XmlDigesterService implementation.  This class simply loads the specified xml doc
  * with the specified XmlLoader.
  * @see edu.iu.uis.eden.batch.XmlDigesterService
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class XmlDigesterServiceImpl implements XmlDigesterService {
     private static final Logger LOG = Logger.getLogger(XmlDigesterServiceImpl.class);

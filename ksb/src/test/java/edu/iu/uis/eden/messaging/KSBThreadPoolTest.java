@@ -24,7 +24,7 @@ import edu.iu.uis.eden.messaging.threadpool.KSBThreadPool;
 /**
  * This is a description of what this class does - rkirkend don't forget to fill this in. 
  * 
- * @author Full Name (email at address dot com)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class KSBThreadPoolTest extends KSBTestCase {

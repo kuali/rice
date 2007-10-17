@@ -46,8 +46,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  *
  * @see WorkgroupAction
  *
- * @author xqi
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkgroupForm extends WorkflowRoutingForm {
 

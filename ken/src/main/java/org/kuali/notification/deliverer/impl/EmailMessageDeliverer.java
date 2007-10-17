@@ -33,7 +33,7 @@ import org.kuali.notification.service.UserPreferenceService;
 /**
  * This class is responsible for describing the email delivery mechanism for
  * the system.
- * @author John Fereira (jaf30 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EmailMessageDeliverer implements NotificationMessageDeliverer {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger

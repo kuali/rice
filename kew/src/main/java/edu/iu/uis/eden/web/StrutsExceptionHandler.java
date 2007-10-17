@@ -46,9 +46,7 @@ import edu.iu.uis.eden.validation.ValidationResults;
  * exceptions are logged and directed to the mapped jsp according to the
  * exception handler mapping.
  * 
- * @author rkirkend
- * @author temay
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StrutsExceptionHandler extends ExceptionHandler {
 

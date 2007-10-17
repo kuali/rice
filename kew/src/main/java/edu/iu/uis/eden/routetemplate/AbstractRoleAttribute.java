@@ -24,7 +24,7 @@ import edu.iu.uis.eden.routeheader.DocumentContent;
 /**
  * Abstract base class for {@link RoleAttribute}s.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class AbstractRoleAttribute extends AbstractWorkflowAttribute implements RoleAttribute {
 

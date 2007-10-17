@@ -26,7 +26,7 @@ import java.security.Signature;
  * Note that the interface itself does not provide any means of retrieving the message being signed.  It
  * is up to the implementing classes to determine what consititutes "signing" of a message.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DigitalSigner {
 

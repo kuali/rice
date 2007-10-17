@@ -23,7 +23,7 @@ import edu.iu.uis.eden.util.PerformanceLogger;
  * Implementation of the {@link RuleCacheProcessor} which notifies the rule cache of
  * a change to the specified rule.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleCacheProcessorImpl implements RuleCacheProcessor {
 	

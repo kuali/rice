@@ -30,7 +30,7 @@ import edu.iu.uis.eden.edl.RequestParser;
  * This class makes xml for the instructions template of widgets.  Processes config elements
  * instructions and createInstructions.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class InstructionsEDLComponent implements EDLModelComponent {

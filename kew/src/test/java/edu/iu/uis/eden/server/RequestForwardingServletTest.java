@@ -31,7 +31,7 @@ import org.springframework.mock.web.MockServletContext;
 
 /**
  * Tests the RequestForwardingServlet used to remap WSDL location
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RequestForwardingServletTest extends TestCase {
 

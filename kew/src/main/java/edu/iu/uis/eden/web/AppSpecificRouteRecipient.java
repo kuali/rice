@@ -24,7 +24,7 @@ import edu.iu.uis.eden.util.CodeTranslator;
 /**
  * A bean for the web-tier when represents the recipient of an Ad Hoc request.
  *
- * @author xqi
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AppSpecificRouteRecipient implements Serializable {
 

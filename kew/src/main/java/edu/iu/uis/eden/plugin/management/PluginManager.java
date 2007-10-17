@@ -27,7 +27,7 @@ import edu.iu.uis.eden.plugin.PluginUtils;
 /**
  * A Management bean for interfacing with the plugin architecture.
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PluginManager {
 

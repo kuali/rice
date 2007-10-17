@@ -35,7 +35,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * @see WorkgroupType
  * @see ExtensionData
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BaseWorkgroupExtension extends BaseWorkflowPersistable implements Extension {
 

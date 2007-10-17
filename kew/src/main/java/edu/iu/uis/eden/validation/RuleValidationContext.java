@@ -31,7 +31,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  * The RuleDelegation represents the pointer to the rule from it's parent rule's RuleResponsibility.
  * This will be <code>null</code> if the rule being entered is not a delegation rule.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleValidationContext {
 

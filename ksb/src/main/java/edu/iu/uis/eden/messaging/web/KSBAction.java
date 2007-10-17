@@ -18,8 +18,7 @@ import org.apache.struts.actions.DispatchAction;
  * An abstract super class for all Struts Actions in KEW.  Adds some custom
  * dispatch behavior by extending the Struts DispatchAction.
  *
- * @author bmcgough
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class KSBAction extends DispatchAction {
 

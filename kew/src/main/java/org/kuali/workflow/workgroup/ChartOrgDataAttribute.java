@@ -28,7 +28,7 @@ import edu.iu.uis.eden.validation.ValidationResults;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ChartOrgDataAttribute implements ExtensionAttribute {
 

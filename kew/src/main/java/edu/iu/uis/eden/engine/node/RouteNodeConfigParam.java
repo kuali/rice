@@ -24,7 +24,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * extracted when the route node is parsed, and depend on route node implementation.
  * (well, they actually depend on the route node parser because the parser is what
  * will parse them, but the parser is not specialized per-node-type at this point) 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class RouteNodeConfigParam extends KeyValuePair implements Serializable {

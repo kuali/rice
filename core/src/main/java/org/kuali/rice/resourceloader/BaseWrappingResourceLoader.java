@@ -28,7 +28,7 @@ import org.kuali.rice.definition.ObjectDefinition;
  * A BaseResourceLoader implementation which wraps services with a Proxy that
  * switches the current context ClassLoader of the Thread.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BaseWrappingResourceLoader extends BaseResourceLoader {
 

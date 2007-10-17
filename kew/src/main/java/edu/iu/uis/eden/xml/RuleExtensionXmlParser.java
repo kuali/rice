@@ -41,7 +41,7 @@ import edu.iu.uis.eden.util.XmlHelper;
  * @see RuleExtension
  * @see RuleExtensionValue
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleExtensionXmlParser {
 

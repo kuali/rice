@@ -24,7 +24,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Spring proxies cannot be cast to implementation classes...
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface MockEmailNotificationService extends ActionListEmailService {
 	public void sendImmediateReminder(WorkflowUser user, ActionItem actionItem);

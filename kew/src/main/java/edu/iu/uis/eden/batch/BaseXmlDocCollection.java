@@ -27,7 +27,7 @@ import java.util.List;
  * @see edu.iu.uis.eden.batch.FileXmlDocCollection
  * @see edu.iu.uis.eden.batch.DirectoryXmlDocCollection
  * @see edu.iu.uis.eden.batch.ZipXmlDocCollection
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 abstract class BaseXmlDocCollection implements XmlDocCollection {
     protected File file;

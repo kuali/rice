@@ -58,9 +58,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
 /**
  * Default implementation of the {@link ActionListService}.
  *
- * @author rkirkend
- * @author ewestfal
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionListServiceImpl implements ActionListService {
 

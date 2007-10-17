@@ -25,7 +25,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
 /**
  *	Used in the ejb days to provide easy access to jndi resources 
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  * @deprecated just don't use this.
  */

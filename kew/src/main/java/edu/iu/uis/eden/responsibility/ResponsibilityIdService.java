@@ -19,7 +19,7 @@ package edu.iu.uis.eden.responsibility;
 /**
  * A service for obtaining responsibility IDs.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ResponsibilityIdService {
 

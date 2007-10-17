@@ -27,7 +27,7 @@ import edu.iu.uis.eden.routetemplate.FlexRM;
  * 
  * @see FlexRM
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface MassRuleAttribute {
     

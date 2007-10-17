@@ -26,7 +26,7 @@ import org.apache.struts.action.ActionForm;
  * Struts form that accepts uploaded files (in the form of <code>FormFile</code>s)
  * @see edu.iu.uis.eden.batch.web.IngesterAction
  * @see org.apache.struts.upload.FormFile
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class IngesterForm extends ActionForm {
 

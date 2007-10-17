@@ -29,7 +29,7 @@ import edu.iu.uis.eden.messaging.ServiceInfo;
 
 /**
  * 
- * @author Scott Battaglia
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  * 
  */

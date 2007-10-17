@@ -29,7 +29,7 @@ import edu.iu.uis.eden.edl.RequestParser;
  * Versions the data element if necessary by checking 'currentVersion' param on request.  If this request is 
  * a doc handler request this will configure the dom so the next request will cause the data to be incremented.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class VersioningPreprocessor implements EDLModelComponent {

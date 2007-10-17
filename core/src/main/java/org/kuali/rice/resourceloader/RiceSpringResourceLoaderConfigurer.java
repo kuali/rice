@@ -28,7 +28,7 @@ import org.springframework.beans.factory.InitializingBean;
  * Wraps {@link BeanFactory} in {@link BeanFactoryResourceLoader} and places the {@link ResourceLoader} 
  * at the top of the {@link GlobalResourceLoader} stack.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class RiceSpringResourceLoaderConfigurer implements BeanFactoryAware, InitializingBean {

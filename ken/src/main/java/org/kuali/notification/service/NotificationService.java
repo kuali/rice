@@ -27,8 +27,7 @@ import org.kuali.notification.exception.InvalidXMLException;
  * that come into the system.  It also is able to retrieve notifications that have 
  * already been entered/processed by the system.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NotificationService {
     /**

@@ -24,7 +24,7 @@ import edu.iu.uis.eden.xml.export.XmlExporter;
 /**
  * A service for interfacing with Workgroup Types.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface WorkgroupTypeService extends XmlLoader, XmlExporter {
 

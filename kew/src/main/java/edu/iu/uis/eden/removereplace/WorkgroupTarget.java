@@ -19,7 +19,7 @@ package edu.iu.uis.eden.removereplace;
  * Represents a target of a remove/replace document.  This will typically be
  * either a rule or a workgroup
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkgroupTarget {
 

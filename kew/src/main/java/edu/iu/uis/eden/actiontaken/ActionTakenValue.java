@@ -43,8 +43,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  * Model object mapped to ojb for representing actions taken on documents by 
  * users.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionTakenValue implements WorkflowPersistable {
 

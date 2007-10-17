@@ -19,7 +19,7 @@ import java.io.IOException;
 
 /**
  * 
- * @author Scott Battaglia
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  *
  */

@@ -21,8 +21,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 /**
  * Transport object representing a {@link Workgroup}.
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object 
  */

@@ -35,7 +35,7 @@ import edu.iu.uis.eden.engine.node.var.PropertyScheme;
 /**
  * A node which Logs messages to Log4j.
  *
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class LogNode implements SimpleNode {
     private static final Logger LOG = Logger.getLogger(LogNode.class);

@@ -24,7 +24,7 @@ import edu.iu.uis.eden.messaging.MessageQueueService;
 import edu.iu.uis.eden.routeheader.RouteHeaderService;
 
 /**
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class RouteManagerTestCase extends KEWTestCase {
     

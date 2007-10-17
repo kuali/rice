@@ -44,9 +44,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  * identify the appropriate responsibile parties to generate
  * {@link ActionRequestValue}s to.
  *
- * @author rkirkend
- * @author jhopf
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleResponsibility implements WorkflowPersistable {
 

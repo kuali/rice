@@ -25,8 +25,7 @@ import java.util.List;
  * @see Note
  * @see Attachment
  *
- * @author temay
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NoteService {
 

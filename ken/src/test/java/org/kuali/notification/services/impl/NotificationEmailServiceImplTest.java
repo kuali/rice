@@ -25,7 +25,7 @@ import org.kuali.notification.test.TestConstants;
 
 /**
  * This class tests the implementation of the email service.
- * @author John Fereira (jaf30 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationEmailServiceImplTest extends NotificationTestCaseBase {
     public static final String VALID_EMAIL = "";

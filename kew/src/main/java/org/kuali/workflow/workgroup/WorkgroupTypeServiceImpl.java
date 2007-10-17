@@ -33,7 +33,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Basic implementation of the WorkgroupTypeService.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkgroupTypeServiceImpl implements WorkgroupTypeService {
 

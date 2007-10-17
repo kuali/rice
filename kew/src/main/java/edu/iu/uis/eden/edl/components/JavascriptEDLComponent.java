@@ -13,7 +13,7 @@ import edu.iu.uis.eden.edl.EDLXmlUtils;
  * element of the dom destined to be transformed so the transform can include the specified
  * javascript.  This is because the EDL definition itself is no longer present in this dom.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class JavascriptEDLComponent implements EDLModelComponent {

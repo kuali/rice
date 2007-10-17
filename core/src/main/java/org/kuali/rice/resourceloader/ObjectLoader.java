@@ -23,7 +23,7 @@ import org.kuali.rice.definition.ObjectDefinition;
  *
  * @see ObjectDefinition
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ObjectLoader {
 

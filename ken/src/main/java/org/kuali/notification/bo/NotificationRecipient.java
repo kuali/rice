@@ -18,7 +18,7 @@ package org.kuali.notification.bo;
 /**
  * This class houses information pertaining to each recipient for a Notification message.  This 
  * recipient can be either a user or a group - which is specified by the recipient type.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationRecipient {
     private Long id;

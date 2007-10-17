@@ -33,7 +33,7 @@ import edu.iu.uis.eden.KEWServiceLocator;
 /**
  * A servlet which can be used to retrieve attachments from Notes.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AttachmentServlet extends HttpServlet {
 	

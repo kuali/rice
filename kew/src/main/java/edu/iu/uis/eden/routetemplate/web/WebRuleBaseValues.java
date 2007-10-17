@@ -61,8 +61,7 @@ import edu.iu.uis.eden.util.Utilities;
  * convienance functions for interacting with the bean from the web-tier.
  * This helps to alleviate some of the weaknesses of JSTL.
  * 
- * @author ewestfal
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WebRuleBaseValues extends RuleBaseValues {
 

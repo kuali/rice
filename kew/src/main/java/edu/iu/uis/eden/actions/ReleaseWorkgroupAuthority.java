@@ -33,7 +33,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * This is the inverse of the {@link TakeWorkgroupAuthority} action.  This puts the document back 
  * in all the peoples action lists that have the document routed to them.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
 

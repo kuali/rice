@@ -20,7 +20,7 @@ import org.kuali.notification.test.NotificationTestCaseBase;
 /**
  * Convenience test case implementation that just stores the BusinessObjectDao bean
  * in a protected member field for ease of use
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class BusinessObjectDaoTestCaseBase extends NotificationTestCaseBase {
     protected BusinessObjectDao businessObjectDao;

@@ -20,7 +20,7 @@ package edu.iu.uis.eden.user;
  * A {@link UserId} which represents the id a user would use to authenticate
  * with the system.  Also known as a "Network ID".
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public final class AuthenticationUserId implements UserId {
 

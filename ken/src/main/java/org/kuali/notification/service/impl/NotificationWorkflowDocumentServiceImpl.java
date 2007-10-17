@@ -31,7 +31,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This class is responsible for interacting with KEW - this is the default implementation that leverages the KEW client API.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationWorkflowDocumentServiceImpl implements NotificationWorkflowDocumentService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger

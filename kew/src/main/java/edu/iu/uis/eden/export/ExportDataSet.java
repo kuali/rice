@@ -26,7 +26,7 @@ import edu.iu.uis.eden.edl.EDocLiteStyle;
 /**
  * A set of data to be exported to a KEW XML file.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ExportDataSet {
 

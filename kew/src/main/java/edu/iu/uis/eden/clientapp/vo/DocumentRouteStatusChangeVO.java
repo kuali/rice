@@ -19,7 +19,7 @@ package edu.iu.uis.eden.clientapp.vo;
 /**
  * A document event representing the transition of a document from one status to another.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

@@ -24,7 +24,7 @@ import java.util.HashMap;
  * TODO shouldn't these be integrated into EdenConstants?  Seems that many of these are no
  * longer being used?
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ServiceConstants {
     

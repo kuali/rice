@@ -28,7 +28,7 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
  * A PluginRegistry implementation which loads the embedded plugin from the classpath
  * and loads a plugin manifest based on the client's protocol configuration.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ClientProtocolPluginRegistry extends BasePluginRegistry {
 

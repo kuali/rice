@@ -38,7 +38,7 @@ import edu.iu.uis.eden.stats.Stats;
  * 
  * @see StatsAction
  *
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StatsForm extends ActionForm {
 

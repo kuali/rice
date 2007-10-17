@@ -21,7 +21,7 @@ package edu.iu.uis.eden.clientapp.vo;
  * Transport for representing a user, workgroup, or role associated with and request
  * 
  * @workflow.webservice-object
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ResponsiblePartyVO implements java.io.Serializable {
 

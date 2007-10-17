@@ -60,7 +60,7 @@ import edu.iu.uis.eden.util.XmlHelper;
  * The global email style name is: kew.email.style
  * If this style is not found, the resource 'defaultEmailStyle.xsl' will be retrieved
  * relative to this class.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImpl {
     private static final Logger LOG = Logger.getLogger(StyleableEmailContentServiceImpl.class);

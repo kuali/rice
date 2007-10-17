@@ -22,7 +22,7 @@ import java.util.List;
  * Can be "plugged-in" to the XmlGen tool to assist with rule description generation and attribute
  * field resolution.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class XmlGenHelper {
 

@@ -26,8 +26,7 @@ import edu.iu.uis.eden.xml.export.XmlExporter;
  * 
  * @see HelpEntry
  *
- * @author xqi
- * @author shenl
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface HelpService extends XmlLoader, XmlExporter {
     public void save(HelpEntry helpEntry);    

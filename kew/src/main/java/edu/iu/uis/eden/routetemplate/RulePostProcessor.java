@@ -33,7 +33,7 @@ import edu.iu.uis.eden.routeheader.RouteHeaderService;
  *
  * @see RuleService#makeCurrent(Long)
  *
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RulePostProcessor extends DefaultPostProcessor {
 

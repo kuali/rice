@@ -25,7 +25,7 @@ import org.apache.struts.action.ActionForm;
  * 
  * @see QuickLinksAction
  *
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class QuickLinksForm extends ActionForm {
 

@@ -32,8 +32,7 @@ import edu.iu.uis.eden.web.WorkflowRoutingForm;
  *
  * @see Rule2Action
  *
- * @author jhopf
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Rule2Form extends WorkflowRoutingForm {
 

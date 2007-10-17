@@ -37,7 +37,7 @@ import org.kuali.notification.util.NotificationConstants;
 
 /**
  * Scratch test case for testing aspects of OJB under test harness
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TestOJBTest extends BusinessObjectDaoTestCaseBase {
     /**

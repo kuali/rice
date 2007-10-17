@@ -46,7 +46,7 @@ import edu.iu.uis.eden.web.UserLoginFilter;
 
 /**
  * Tests workflow Struts IngesterAction
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class IngesterActionTest extends KEWTestCase {
 

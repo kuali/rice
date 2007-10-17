@@ -55,7 +55,7 @@ import edu.iu.uis.eden.routetemplate.GenericAttributeContent;
 
 /**
  * This class is the controller for sending Simple notification messages via an end user interface.
- * @author Aaron Godert - ag266 at cornell dot edu
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SendNotificationMessageController extends MultiActionController {
     /** Logger for this class and subclasses */

@@ -20,7 +20,7 @@ import java.io.File;
 
 /**
  * A "singleton" XmlDocCollection backed by a single File (FileXmlDoc)
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class FileXmlDocCollection extends BaseXmlDocCollection {
     public FileXmlDocCollection(File file) {

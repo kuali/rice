@@ -25,7 +25,7 @@ import edu.iu.uis.eden.doctype.DocumentType;
  * simply points to an initial {@link RouteNode} which represents the beginning of the Process.
  * The path of the process can then be followed using the next nodes defined on the route nodes. 
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Process implements Serializable {
 

@@ -28,7 +28,7 @@ import org.kuali.rice.lifecycle.Lifecycle;
  * This class handles the Spring based KIM configuration that is part of the Rice Configurer that must 
  * exist in all Rice based systems and clients. 
  * 
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KIMConfigurer extends ModuleConfigurer {
     	private static final Logger LOG = Logger.getLogger(KIMConfigurer.class);

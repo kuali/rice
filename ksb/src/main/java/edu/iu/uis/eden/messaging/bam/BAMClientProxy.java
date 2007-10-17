@@ -33,7 +33,7 @@ import edu.iu.uis.eden.messaging.ServiceInfo;
  *
  * @see BAMService
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BAMClientProxy extends BaseTargetedInvocationHandler {
 

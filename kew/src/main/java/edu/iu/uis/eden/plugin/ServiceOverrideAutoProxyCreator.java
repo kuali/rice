@@ -33,7 +33,7 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
  * A {@link BeanPostProcessor} which is used to allow for service overrides from the
  * Institutional Plugin.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ServiceOverrideAutoProxyCreator implements BeanPostProcessor {
 

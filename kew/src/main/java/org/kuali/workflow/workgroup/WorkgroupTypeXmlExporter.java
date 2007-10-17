@@ -31,7 +31,7 @@ import edu.iu.uis.eden.xml.export.XmlExporter;
  *
  * @see WorkgroupType
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkgroupTypeXmlExporter implements XmlExporter, XmlConstants {
 

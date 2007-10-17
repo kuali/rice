@@ -52,7 +52,7 @@ import edu.iu.uis.eden.routeheader.DocumentContent;
  * This implementation does not (yet!) implement a generic internal map of properties, so it is up to subclasses
  * to expose specific named getters/setters to set data on an attribute of this ancestry.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class GenericWorkflowAttribute extends AbstractWorkflowAttribute {
     protected final Logger log = Logger.getLogger(getClass());

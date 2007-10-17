@@ -48,7 +48,7 @@ import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
  * embedded workflow programmatically but mostly this is a base class by which
  * to hang specific configuration behavior off of through subclassing
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class KSBConfigurer extends ModuleConfigurer {

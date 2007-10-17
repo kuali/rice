@@ -22,8 +22,7 @@ import org.kuali.notification.deliverer.NotificationMessageDeliverer;
 
 /**
  * This class is responsible for providing services for Notification Message Deliverers (delivery types)
- * @author John Fereira (jaf30@cornell.edu)
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NotificationMessageDelivererRegistryService {
     /**

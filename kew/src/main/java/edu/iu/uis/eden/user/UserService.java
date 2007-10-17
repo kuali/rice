@@ -29,9 +29,7 @@ import edu.iu.uis.eden.exception.EdenUserNotFoundException;
  * The UserService extends XmlLoader so it is possible to import users from XML
  * if the implementing class provides an xml loading implementation.
  *  
- * @author bmcgough
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface UserService extends XmlLoader {
     

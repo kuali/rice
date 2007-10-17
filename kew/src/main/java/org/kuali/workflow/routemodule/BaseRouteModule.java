@@ -26,7 +26,7 @@ import edu.iu.uis.eden.util.ResponsibleParty;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class BaseRouteModule implements RouteModule {
 

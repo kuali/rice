@@ -24,8 +24,7 @@ import org.kuali.rice.resourceloader.GlobalResourceLoader;
  * A lifecycle that wraps a service.  This fetches and calls a lifecycle available
  * in the GRL and calls lifecycle methods on that.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ServiceDelegatingLifecycle extends BaseLifecycle {
 

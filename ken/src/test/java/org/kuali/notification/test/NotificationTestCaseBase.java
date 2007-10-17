@@ -34,7 +34,7 @@ import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
 
 /**
  * Base test case for KEN that extends RiceTestCase
- * @author Aaron Hamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class NotificationTestCaseBase extends ModuleTestCase {
     private static final String KEN_MODULE_NAME = "ken";

@@ -35,8 +35,7 @@ import edu.iu.uis.eden.util.XmlHelper;
  * As a pre processor this creates/fetches the workflow document and sets it on request.
  * As a post processor this takes appropriate user action on the document if the document is not in error.
  *
- * @author rkirkend
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class WorkflowDocumentActions implements EDLModelComponent {

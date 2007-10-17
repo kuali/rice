@@ -25,7 +25,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
  * A resolver for URLs for the user, user report, workgroup and workgroup
  * report screens.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UrlResolver {
 

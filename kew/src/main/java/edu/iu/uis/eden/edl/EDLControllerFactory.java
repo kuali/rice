@@ -38,7 +38,7 @@ import edu.iu.uis.eden.util.XmlHelper;
  * Creates EDL controllers.  Contains a cache of parsed EDL configurations.  The parsed config is a definition name related to 
  * a Map containing config element and their associated class.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class EDLControllerFactory {

@@ -57,7 +57,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
  * 
  * @see RuleService
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DelegateRule2Action extends WorkflowAction {
 

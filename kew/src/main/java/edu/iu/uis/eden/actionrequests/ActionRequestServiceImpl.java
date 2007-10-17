@@ -59,8 +59,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
 /**
  * Default implementation of the {@link ActionRequestService}.
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionRequestServiceImpl implements ActionRequestService {
 

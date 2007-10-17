@@ -23,7 +23,7 @@ import edu.iu.uis.eden.engine.RouteHelper;
  * A simple implementation of a {@link JoinNode} which indicates it is complete once all branches
  * have joined.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimpleJoinNode implements JoinNode {
         

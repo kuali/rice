@@ -18,7 +18,7 @@ package edu.iu.uis.eden.messaging;
 /**
  * A service for administrative functions for a node on the service bus.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface BusAdminService {

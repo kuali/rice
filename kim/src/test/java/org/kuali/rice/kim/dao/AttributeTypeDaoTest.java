@@ -25,7 +25,7 @@ import org.kuali.rice.kim.util.KIMConstants;
 /**
  * This class tests the AttributeType BO and DAO for persistence. 
  * 
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class AttributeTypeDaoTest extends KIMDaoTestBase {

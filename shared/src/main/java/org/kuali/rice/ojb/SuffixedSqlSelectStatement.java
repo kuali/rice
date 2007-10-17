@@ -31,7 +31,7 @@ import org.apache.ojb.broker.util.logging.Logger;
  * removed.
  * @see SqlGeneratorSuffixableImpl
  * @see SuffixableQueryByCriteria
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SuffixedSqlSelectStatement extends SqlSelectStatement {
 

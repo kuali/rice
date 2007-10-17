@@ -48,7 +48,7 @@ import edu.iu.uis.eden.KEWServiceLocator;
  * it is simple enough for the <code>XmlIngesterService</code> to determine this.
  * @see edu.iu.uis.eden.batch.XmlPollerService
  * @see edu.iu.uis.eden.batch.XmlIngesterServiceImpl
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class XmlPollerServiceImpl implements XmlPollerService {
 

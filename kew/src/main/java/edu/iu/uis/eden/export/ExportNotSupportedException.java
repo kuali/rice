@@ -21,7 +21,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 /**
  * Exception thrown when an invalid export is attempted.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ExportNotSupportedException extends WorkflowRuntimeException {
 

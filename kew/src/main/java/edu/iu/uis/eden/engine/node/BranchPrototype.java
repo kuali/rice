@@ -22,7 +22,7 @@ import java.io.Serializable;
  * Represents a Branch in the definition of a DocumentType.  This should not be confused with the
  * {@link Branch} class which represents the actual instance of a branch on a document. 
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BranchPrototype implements Serializable {
 

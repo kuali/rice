@@ -70,7 +70,7 @@ import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.workgroup.Workgroup;
 
 /**
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  * this class mainly interacts with ActionEvent 'action' classes and non-vo objects.
  *

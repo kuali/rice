@@ -37,7 +37,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
 /**
  * A Struts Action for generating a report for {@link RuleAttribute}s.
  *
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleAttributeReportAction extends WorkflowAction {
     private static final Logger LOG = Logger.getLogger(RuleAttributeReportAction.class);

@@ -40,7 +40,7 @@ import edu.iu.uis.eden.workgroup.GroupNameId;
  * KEW RoleAttribute implementation that is responsible for encapsulating a list
  * of users and groups which are reviewers for a Notification Channel.
  * This implementation relies on the default XML form implemented by GenericRoleAttribute
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
     private static final Logger LOG = Logger.getLogger(ChannelReviewerRoleAttribute.class);

@@ -31,7 +31,7 @@ import edu.iu.uis.eden.xml.export.XmlExporter;
 /**
  * A service providing data access for {@link Workgroup}s.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface WorkgroupService extends XmlLoader, XmlExporter {
 

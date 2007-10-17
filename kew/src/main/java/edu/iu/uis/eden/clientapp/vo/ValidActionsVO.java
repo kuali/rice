@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * A transport object containing information about actions
  *
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  * @workflow.webservice-object
  */

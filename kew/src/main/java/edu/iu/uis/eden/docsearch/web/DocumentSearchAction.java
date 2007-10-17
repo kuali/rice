@@ -68,8 +68,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 /**
  * Document search struts action
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentSearchAction extends WorkflowAction {
 

@@ -38,7 +38,7 @@ import java.util.Map;
  * or GenerixXMLSearchableAttribute, then the properties will also be set explicitly in the <code>paramMap</code>
  * by the workflow server. 
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

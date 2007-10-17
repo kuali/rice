@@ -26,8 +26,7 @@ import org.kuali.notification.exception.ErrorList;
 
 /**
  * Service for accessing user preferences in the KEN system.{@link UserPreference}
- * @author John Fereira (jaf30 at cornell dot edu)
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface UserPreferenceService {
     /**

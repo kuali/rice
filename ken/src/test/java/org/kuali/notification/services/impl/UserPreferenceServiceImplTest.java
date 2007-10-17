@@ -34,7 +34,7 @@ import org.kuali.notification.util.NotificationConstants;
 
 /**
  * This class tests the user preferences service impl.
- * @author John Fereira (jaf30 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserPreferenceServiceImplTest extends NotificationTestCaseBase {
     public static final String VALID_USER_ID = TestConstants.TEST_USER_ONE;

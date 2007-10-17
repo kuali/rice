@@ -24,7 +24,7 @@ import org.kuali.rice.test.runners.NamedTestClassRunner;
  * TestCase subclass that merely introduces a protected 'log' member for
  * subclass access
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  */
 @RunWith(NamedTestClassRunner.class)

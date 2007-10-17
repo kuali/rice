@@ -25,7 +25,7 @@ import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
  * A Row is a collection of {@link Field} objects that represents a row of results
  * from a {@link WorkflowLookupable}.
  *
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Row implements java.io.Serializable {
     private static final long serialVersionUID = -3716365412750461233L;

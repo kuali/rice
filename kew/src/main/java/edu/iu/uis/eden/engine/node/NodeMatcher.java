@@ -19,7 +19,7 @@ package edu.iu.uis.eden.engine.node;
 /**
  * Used when searching for nodes to determine whether a node "matches" the search criteria.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NodeMatcher {
 

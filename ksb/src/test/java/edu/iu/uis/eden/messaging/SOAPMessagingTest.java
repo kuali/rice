@@ -31,7 +31,7 @@ import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 /**
  * Tests that queues work over soap
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SOAPMessagingTest extends KSBTestCase {
 

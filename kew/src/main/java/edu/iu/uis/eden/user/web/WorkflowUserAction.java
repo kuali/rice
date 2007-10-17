@@ -39,7 +39,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
  * @see UserService
  * @see WorkflowUser
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkflowUserAction extends WorkflowAction {
 

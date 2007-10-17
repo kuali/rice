@@ -26,8 +26,8 @@ import org.springframework.util.Assert;
  * Note that this implementation is for service-to-service authentication. It
  * cannot handle user-to-service authentication.
  * 
- * @author Scott Battaglia
- * @version $Revision: 1.2 $ $Date: 2007-06-19 14:35:12 $
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @version $Revision: 1.2.26.1 $ $Date: 2007-10-17 21:52:26 $
  * @since 0.9
  */
 public final class UsernamePasswordCredentialsSource implements CredentialsSource {

@@ -42,8 +42,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  * Action for doing document type stuff from the web.  This is exists for reporting purposes 
  * only at this point.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentTypeAction extends WorkflowAction {
 	private static String DOCUMENT_TYPE = "EDENSERVICE-DOCS.DocumentType";

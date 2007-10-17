@@ -19,7 +19,7 @@ package edu.iu.uis.eden.plugin;
 /**
  * A RuntimeException thrown from the plugin system when a problem is encountered.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PluginException extends RuntimeException {
 

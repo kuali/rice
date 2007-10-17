@@ -26,7 +26,7 @@ import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
  * RouteHeaderVO and ActionRequestVO have already been set so the implementing class can
  * simply call the approriate getters to retrieve the data beans.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface CustomEmailAttribute {
 

@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Represents a branch in the routing path of the document.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Branch implements Serializable {
 

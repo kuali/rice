@@ -22,7 +22,7 @@ import edu.iu.uis.eden.routetemplate.web.WebRuleBaseValues;
 /**
  * Used by the {@link WebRuleBaseValues} to hold key-value-id data for {@link Field}s.
  *
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KeyValueId {
 	private String key;

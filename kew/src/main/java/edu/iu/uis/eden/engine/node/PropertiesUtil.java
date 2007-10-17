@@ -30,7 +30,7 @@ import edu.iu.uis.eden.engine.node.var.PropertyScheme;
 /**
  * A utility class for reading properties from a document.
  *
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PropertiesUtil {
     private static final Logger LOG = Logger.getLogger(PropertiesUtil.class);

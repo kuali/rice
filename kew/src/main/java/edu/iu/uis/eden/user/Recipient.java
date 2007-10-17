@@ -25,7 +25,7 @@ import edu.iu.uis.eden.actionrequests.ActionRequestValue;
  * 
  * @see ActionRequestValue
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Recipient extends Serializable {
 	

@@ -25,8 +25,7 @@ import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 /**
  * Represents the current state of the workflow engine.
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EngineState implements Serializable {
     

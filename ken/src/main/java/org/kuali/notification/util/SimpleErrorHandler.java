@@ -23,7 +23,7 @@ import org.xml.sax.SAXParseException;
 /**
  * A simple SAX ErrorHandler implementation that logs to a global logger for this
  * class, or the one provided.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimpleErrorHandler implements ErrorHandler {
     private static final Logger LOG = Logger.getLogger(SimpleErrorHandler.class);

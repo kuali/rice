@@ -25,7 +25,7 @@ import org.kuali.notification.util.NotificationConstants;
 /**
  * This class tests basic persistence for the {@link NotificationChannelReviewer} business object.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenceTestCaseBase {
     private NotificationChannel mockChannel1 = MockObjectsUtil.getTestChannel1();

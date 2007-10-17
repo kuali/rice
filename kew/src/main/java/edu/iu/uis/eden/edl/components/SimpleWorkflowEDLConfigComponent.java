@@ -37,7 +37,7 @@ import edu.iu.uis.eden.edl.RequestParser;
  * This is the base EDL Config Component for dealing with defined elements in an edl definition.  Most 
  * custom edl element behavior can be achieved by subclassing this.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class SimpleWorkflowEDLConfigComponent implements EDLModelComponent {

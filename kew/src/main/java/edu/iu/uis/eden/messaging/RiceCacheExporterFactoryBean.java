@@ -26,7 +26,7 @@ import edu.iu.uis.eden.cache.RiceCacheAdministratorImpl;
  * Returns a {@link RiceCacheAdministrator}.  Starts and registers this 
  * cache with the bus.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RiceCacheExporterFactoryBean implements FactoryBean, InitializingBean {
 	

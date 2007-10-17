@@ -22,8 +22,7 @@ import java.util.List;
 import org.kuali.rice.resourceloader.ContextClassLoaderProxy;
 
 /**
- * @author natjohns
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class JavaServiceDefinition extends ServiceDefinition {
 

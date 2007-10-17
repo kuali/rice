@@ -18,7 +18,7 @@ package org.kuali.core.util;
 /**
  * KRA Audit Error class.
  * 
- * @author Full Name (email at address dot com)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class AuditError {

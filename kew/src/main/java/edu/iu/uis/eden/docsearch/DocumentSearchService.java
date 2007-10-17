@@ -24,7 +24,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Service for data access for document searches.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DocumentSearchService {
 

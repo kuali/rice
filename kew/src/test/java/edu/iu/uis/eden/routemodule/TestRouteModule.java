@@ -37,7 +37,7 @@ import edu.iu.uis.eden.util.ResponsibleParty;
 import edu.iu.uis.eden.workgroup.GroupNameId;
 
 /**
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TestRouteModule implements RouteModule {
 

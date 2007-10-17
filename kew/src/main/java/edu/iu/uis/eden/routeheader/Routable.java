@@ -21,7 +21,7 @@ package edu.iu.uis.eden.routeheader;
  * as to whether or not this is the current and active instance of the Routable (this is used
  * for versioning).
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Routable {
 

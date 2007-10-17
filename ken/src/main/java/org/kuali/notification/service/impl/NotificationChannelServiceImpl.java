@@ -25,7 +25,7 @@ import org.kuali.notification.service.NotificationChannelService;
 
 /**
  * NotificationChannelService implementation - uses the businessObjectDao to get at data in the underlying database.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationChannelServiceImpl implements NotificationChannelService {
     private BusinessObjectDao businessObjectDao;

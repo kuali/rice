@@ -36,7 +36,7 @@ import edu.sampleu.travel.document.keyvalue.TravelRequestType;
 /**
  * This class tests various ValuesFinders classes.
  *
- * @author Bryan Hutchinson (bh79 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ValuesFinderTest extends WebTestBase {

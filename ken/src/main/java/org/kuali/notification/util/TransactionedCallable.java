@@ -24,7 +24,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.Callable;
 /**
  * A Callable that performs work within a transaction and returns the
  * TransactionCallback's result
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TransactionedCallable implements Callable, TransactionCallback {
     private TransactionTemplate txTemplate;

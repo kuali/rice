@@ -22,7 +22,7 @@ import org.mortbay.jetty.Server;
  * Abstract class to provide convenience methods for starting and stopping a
  * Jetty Server instance.
  * 
- * @author
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  */
 public abstract class BaseTestServer implements Lifecycle {

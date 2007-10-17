@@ -25,7 +25,7 @@ import java.util.List;
  * A simple Enumeration implementation which is backed by a List and it's Iterator.
  * Provides a few convienance constructors for creating the Enumeration.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimpleEnumeration<T> implements Enumeration<T> {
 

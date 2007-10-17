@@ -30,7 +30,7 @@ import edu.iu.uis.eden.messaging.callbacks.SimpleCallback;
 /**
  * Tests distributed Queue scenarios
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class DistributedQueueTest extends KSBTestCase {

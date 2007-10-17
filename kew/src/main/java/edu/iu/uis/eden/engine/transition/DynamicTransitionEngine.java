@@ -35,8 +35,7 @@ import edu.iu.uis.eden.exception.RouteManagerException;
  * 
  * @see DynamicNode
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DynamicTransitionEngine extends TransitionEngine {
 

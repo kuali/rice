@@ -61,9 +61,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  * @see RuleBaseValues
  * @see RuleService
  *
- * @author jhopf
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exportable {
 

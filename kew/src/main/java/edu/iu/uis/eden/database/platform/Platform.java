@@ -24,7 +24,7 @@ import org.apache.ojb.broker.PersistenceBroker;
  * TODO Had to move this down into embedded source because of the OJB dependencies.  This probably will
  * go away once we get rid of the embedded plugin.
  *
- * @author arh14 at cornell dot edu
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Platform {
 

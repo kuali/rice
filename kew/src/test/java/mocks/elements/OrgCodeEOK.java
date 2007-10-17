@@ -26,7 +26,7 @@ import org.jdom.output.XMLOutputter;
  * <p>Description: </p>
  * <p>Copyright: Copyright (c) 2001</p>
  * <p>Company: UIS - Indiana University</p>
- * @author Xiaofeng Qi
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @version 1.0
  */
 public class OrgCodeEOK {

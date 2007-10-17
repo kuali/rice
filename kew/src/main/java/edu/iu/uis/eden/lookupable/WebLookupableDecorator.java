@@ -19,7 +19,7 @@ package edu.iu.uis.eden.lookupable;
 /**
  * Decorates a web-tier bean to give it necessary properties to allow for lookups.
  *
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class WebLookupableDecorator {
 

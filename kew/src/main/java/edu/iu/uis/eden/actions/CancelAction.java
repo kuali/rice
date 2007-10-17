@@ -33,9 +33,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Cancels a document at the request of a client app.
  *
- * @author rkirkend
- * @author ewestfal
- * @author seiffert
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CancelAction extends ActionTakenEvent {
 

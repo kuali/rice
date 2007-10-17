@@ -31,8 +31,7 @@ import org.kuali.rice.kim.service.KIMService;
  * This is the default implementation that is provided by Rice.  This will mature over time as the KIM 
  * component is developed.
  * 
- * @author Aaron Godert (agodert at cornell dot edu)
- * @author Phillip Berres (pberres at usc dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KIMServiceImpl implements KIMService {
 

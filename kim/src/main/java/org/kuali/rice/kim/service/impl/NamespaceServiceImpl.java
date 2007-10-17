@@ -26,7 +26,7 @@ import org.kuali.rice.kim.service.NamespaceService;
  * This is the default KIM Namespace implementation that is provided by Rice.  This will mature over time as the KIM 
  * component is developed.
  * 
- * @author Phillip Berres (pberres at usc dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NamespaceServiceImpl implements NamespaceService {
 

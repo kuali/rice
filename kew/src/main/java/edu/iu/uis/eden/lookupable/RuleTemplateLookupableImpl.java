@@ -39,7 +39,7 @@ import edu.iu.uis.eden.util.Utilities;
  * @see RuleTemplate
  * @see RuleTemplateService
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleTemplateLookupableImpl implements WorkflowLookupable, Exportable {
 

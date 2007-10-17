@@ -40,8 +40,7 @@ import edu.iu.uis.eden.applicationconstants.ApplicationConstant;
 /*
  * A parser for application constant data.  Schema is ApplicationConstants.xsd
  * 
- * @author ewestfal
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ApplicationConstantsXmlParser {
 

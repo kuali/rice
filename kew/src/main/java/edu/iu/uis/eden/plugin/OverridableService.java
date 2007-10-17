@@ -21,7 +21,7 @@ package edu.iu.uis.eden.plugin;
  * which is the service it should fall back to if no service override can
  * be found.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface OverridableService {
 

@@ -29,8 +29,7 @@ import org.kuali.rice.test.RiceTestCase;
  * This is test base that should be used for all KIM unit tests.  All non-web unit 
  * tests for KIM should extend this base class.
  * 
- * @author Ryan Kirkendall
- * @author Aaron Godert (agodert at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class KIMTestCase extends RiceTestCase {
 

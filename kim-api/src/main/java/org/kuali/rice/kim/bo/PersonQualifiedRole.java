@@ -23,7 +23,7 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
 /**
  *  Joins all role attributes assigned to a person and role. 
  * 
- * @author Phillip Berres (pberres at usc dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class PersonQualifiedRole extends QualifiedRole {

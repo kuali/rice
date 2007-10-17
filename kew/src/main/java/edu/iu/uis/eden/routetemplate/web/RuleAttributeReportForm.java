@@ -25,7 +25,7 @@ import edu.iu.uis.eden.routetemplate.RuleAttribute;
  * takes the id of the RuleAttribute to display.  It stores the RuleAttribute
  * it looks up internally, for view read purposes only.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleAttributeReportForm extends ActionForm {
     private Long ruleAttributeId;

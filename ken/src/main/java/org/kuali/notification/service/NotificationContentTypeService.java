@@ -21,7 +21,7 @@ import org.kuali.notification.bo.NotificationContentType;
 
 /**
  * Service for accessing {@link NotificationContentType}s
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NotificationContentTypeService {
     /**

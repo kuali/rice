@@ -30,7 +30,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * @see WorkflowUser
  * @see WorkgroupService
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Workgroup extends Recipient, Serializable {
 

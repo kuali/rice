@@ -22,7 +22,7 @@ import edu.iu.uis.eden.doctype.DocumentType;
  * Stores statistics about the number of times a particular {@link DocumentType}
  * appears in a particular user's Action List.
  * 
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionListStats implements Comparable {
 

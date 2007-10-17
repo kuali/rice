@@ -19,7 +19,7 @@ package edu.iu.uis.eden.exception;
 /**
  * Thrown when a resource is not available.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ResourceUnavailableException extends WorkflowException {
 

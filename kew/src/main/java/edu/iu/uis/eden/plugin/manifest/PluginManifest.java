@@ -33,7 +33,7 @@ import org.kuali.rice.config.Config;
  *
  * @see Config
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PluginManifest extends BaseConfig {
 

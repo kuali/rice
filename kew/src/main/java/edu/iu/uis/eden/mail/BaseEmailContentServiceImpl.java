@@ -37,7 +37,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Base EmailContentService implementation with a default email from address that can be
  * configured via Spring property injection
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class BaseEmailContentServiceImpl implements EmailContentService {
     protected String defaultEmailFromAddress = "workflow@indiana.edu";

@@ -23,7 +23,7 @@ import edu.iu.uis.eden.web.session.UserSession;
 /**
  * Convenience object to hang valuable objects in edl off of.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class EDLContext {

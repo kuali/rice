@@ -31,7 +31,7 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
 /**
  * Checks for plugins added to or removed from the configured plugin directories.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class HotDeployer implements Runnable {
 	private static final Logger LOG = Logger.getLogger(HotDeployer.class);

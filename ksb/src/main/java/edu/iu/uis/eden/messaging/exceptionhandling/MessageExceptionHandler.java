@@ -22,7 +22,7 @@ import edu.iu.uis.eden.messaging.PersistedMessage;
  * A MessageExceptionHandler handles exception which arrise during processing of the
  * message.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface MessageExceptionHandler {
 

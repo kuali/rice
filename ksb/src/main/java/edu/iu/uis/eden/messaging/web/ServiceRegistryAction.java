@@ -42,7 +42,7 @@ import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 /**
  * Struts action for interacting with the queue of messages.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ServiceRegistryAction extends KSBAction {
 

@@ -49,8 +49,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  * {@link ActionTakenValue} action taken (once saved), {@link WorkflowUser} user
  * that has taken the action
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class ActionTakenEvent {
 

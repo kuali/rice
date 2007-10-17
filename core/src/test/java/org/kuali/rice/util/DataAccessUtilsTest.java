@@ -25,7 +25,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 /**
  * Tests the DataAccessUtils.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class DataAccessUtilsTest extends Assert {

@@ -27,7 +27,7 @@ import edu.iu.uis.eden.web.session.UserSession;
 /**
  * A collection of handy workflow queries to be used from style sheets.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class WorkflowFunctions {

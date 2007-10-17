@@ -41,7 +41,7 @@ import edu.iu.uis.eden.util.XmlHelper;
 /**
  * A Mock attribute which mimics the concept of a Chart/Org hierarchy as it exists at Indiana University.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class MockChartOrgAttribute implements WorkflowAttribute {
 

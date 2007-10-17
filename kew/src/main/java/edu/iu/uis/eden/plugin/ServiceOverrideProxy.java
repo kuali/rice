@@ -28,7 +28,7 @@ import org.kuali.rice.resourceloader.GlobalResourceLoader;
 /**
  * A proxy for a service which can be overridden in the Institutional Plugin.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ServiceOverrideProxy extends BaseInvocationHandler implements OverridableService, TargetedInvocationHandler {
 	

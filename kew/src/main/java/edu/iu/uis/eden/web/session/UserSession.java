@@ -47,7 +47,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * <p>The current authenticated UserSession is stored in a ThreadLocal and can be 
  * accessed using UserSession.getAuthenticatedUser().
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserSession implements Serializable {
 

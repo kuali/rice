@@ -25,8 +25,7 @@ import edu.iu.uis.eden.applicationconstants.ApplicationConstant;
 /**
  * Struts form for the {@link ApplicationConstantsAction}
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ApplicationConstantsForm extends ActionForm {
 

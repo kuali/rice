@@ -40,7 +40,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * A {@link WorkflowLookupable} implementation which is used to lookup roles.
  *
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoleLookupableImpl implements WorkflowLookupable {
 

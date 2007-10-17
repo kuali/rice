@@ -31,8 +31,7 @@ import edu.iu.uis.eden.test.web.framework.Util;
  * </pre>
  * The 'seconds' attribute is resolved via {@link edu.iu.uis.eden.test.web.framework.Util#getResolvableAttribute(Node, String, PropertyScheme)},
  * defaulting to literal scheme.
- * @author Aaron Hamid (arh14 at cornell dot edu)
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SleepAction extends BaseScriptAction {
     private static final String[] NAMES = { "sleep" };

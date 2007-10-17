@@ -34,8 +34,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Super class for all super user action takens.
  *
- * @author rkirkend
- * @author seiffert
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
 

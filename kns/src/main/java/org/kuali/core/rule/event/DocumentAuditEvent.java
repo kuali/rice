@@ -22,7 +22,7 @@ import org.kuali.core.rule.DocumentAuditRule;
 /**
  * Event class for document audit  
  * 
- * @author Full Name (email at address dot com)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class DocumentAuditEvent extends KualiDocumentEventBase implements KualiDocumentEvent {

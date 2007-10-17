@@ -26,7 +26,7 @@ import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 /**
  * RoleAttribute that exposes a document's user who routed the document
  * 
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoutedByUserRoleAttribute extends UnqualifiedRoleAttribute {
     private static final String ROUTED_BY_USER_ROLE_KEY = "ROUTED_BY_USER";

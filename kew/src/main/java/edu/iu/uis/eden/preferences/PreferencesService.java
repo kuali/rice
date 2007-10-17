@@ -23,7 +23,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * 
  * @see Preferences
  * 
- * @author rkirkend 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface PreferencesService {
 

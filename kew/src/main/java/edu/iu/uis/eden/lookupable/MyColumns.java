@@ -26,7 +26,7 @@ import java.util.List;
  * 
  * @see RuleBaseValuesLookupableImpl
  *
- * @author jhopf
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class MyColumns implements Serializable {
 

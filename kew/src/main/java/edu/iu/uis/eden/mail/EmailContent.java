@@ -21,7 +21,7 @@ package edu.iu.uis.eden.mail;
 /**
  * Class representing customizable content of an email message
  * TODO: supercede this with Spring framework and/or JavaMail mail classes
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EmailContent {
     private String subject;

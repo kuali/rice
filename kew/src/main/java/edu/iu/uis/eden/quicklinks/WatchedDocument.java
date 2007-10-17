@@ -19,7 +19,7 @@ package edu.iu.uis.eden.quicklinks;
 /**
  * Represents a document that is being watched from the Quick Links.
  *
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WatchedDocument {
     private String documentHeaderId;

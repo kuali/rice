@@ -38,7 +38,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Parses a {@link PluginManifest} configuration from an XML file.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PluginManifestParser {
 

@@ -26,7 +26,7 @@ import edu.iu.uis.eden.applicationconstants.ApplicationConstant;
 /**
  * OJB implementation of the {@link ApplicationConstantsDAO}.
  *
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ApplicationConstantsDAOOjbImpl extends PersistenceBrokerDaoSupport implements ApplicationConstantsDAO {
 

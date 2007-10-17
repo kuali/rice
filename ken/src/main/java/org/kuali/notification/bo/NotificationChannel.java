@@ -23,7 +23,7 @@ import java.util.List;
  * to a specific class of notification, or in other words a specific business purpose.  For instance, 
  * all overdue books from a specific library could be a channel or a channel for concerts coming to campus 
  * could be another channel.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationChannel {
     private Long id;

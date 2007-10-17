@@ -24,7 +24,7 @@ import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
  * An interface which can be implemented by a {@link WorkflowAttribute} to allow for
  * validation of client routing data.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface WorkflowAttributeXmlValidator {
 

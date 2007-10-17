@@ -39,7 +39,7 @@ import edu.iu.uis.eden.util.Utilities;
  * A node which will activate any requests on it, returning true when there are no more requests 
  * which require activation.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RequestActivationNode implements SimpleNode {
 

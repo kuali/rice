@@ -23,7 +23,7 @@ import java.security.Signature;
 /**
  * A service for aquiring Signatures for signing and verification of messages.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DigitalSignatureService {
 

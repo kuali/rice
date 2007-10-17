@@ -24,7 +24,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  *
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DocumentSearchResultProcessor {
     

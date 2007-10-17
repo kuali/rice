@@ -25,7 +25,7 @@ import edu.iu.uis.eden.util.Utilities;
 
 /**
  *
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SearchAttributeCriteriaComponent implements Serializable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchAttributeCriteriaComponent.class);

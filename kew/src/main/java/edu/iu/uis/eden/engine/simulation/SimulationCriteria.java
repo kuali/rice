@@ -27,7 +27,7 @@ import edu.iu.uis.eden.util.Utilities;
  *
  * @see SimulationEngine
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimulationCriteria {
 

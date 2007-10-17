@@ -25,7 +25,7 @@ import edu.iu.uis.eden.export.ExportDataSet;
  * 
  * @see ExportDataSet
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface XmlExporter {
 

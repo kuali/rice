@@ -37,7 +37,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * Removes all workgroup action items for a document from everyone's action list except the person 
  * who took the workgroup authority
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class TakeWorkgroupAuthority extends ActionTakenEvent {

@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * A runnable which continuously polls Reloadable to see if they need to be reloaded.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Reloader implements Runnable {
 

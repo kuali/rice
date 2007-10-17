@@ -18,7 +18,7 @@ package org.kuali.notification.exception;
 /**
  * This class represents a notification message deliverer not found exception - when a deliverer 
  * that is thought to be registered is not found in the registry.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationMessageDelivererNotFoundException extends Exception {
     /**

@@ -33,7 +33,7 @@ import edu.iu.uis.eden.messaging.serviceconnectors.ServiceConnectorFactory;
  * Holds the reference to an endpoint of a service as well as the {@link ServiceInfo}
  * that defines the service.  Provides lazy loading of services at call time.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RemotedServiceHolder implements ServiceHolder {
     

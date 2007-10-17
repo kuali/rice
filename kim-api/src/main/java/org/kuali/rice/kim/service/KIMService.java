@@ -29,8 +29,7 @@ import org.kuali.rice.kim.bo.RoleAttribute;
  * Service API for accessing KIM services.  This contract should be used by all Kuali software that 
  * needs to leverage identity management features. 
  * 
- * @author Aaron Godert (agodert at cornell dot edu)
- * @author Phillip Berres (pberres at usc dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface KIMService {
     /**

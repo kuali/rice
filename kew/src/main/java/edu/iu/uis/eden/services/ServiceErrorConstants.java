@@ -20,7 +20,7 @@ package edu.iu.uis.eden.services;
  * A random assortment of constants which are used by the code in the
  * edu.iu.uuis.eden.services.docelements package.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ServiceErrorConstants {
   public static final String CHILDREN_IN_ERROR = "-1";

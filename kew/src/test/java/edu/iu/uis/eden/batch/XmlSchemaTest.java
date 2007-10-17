@@ -48,7 +48,7 @@ import edu.iu.uis.eden.xml.ClassLoaderEntityResolver;
 
 /**
  * Test schema validation
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class XmlSchemaTest extends LoggableTestCase {
     private Document validate(InputStream stream) throws ParserConfigurationException, IOException , SAXException {

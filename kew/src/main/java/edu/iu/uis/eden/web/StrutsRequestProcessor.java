@@ -35,9 +35,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  * {@link ActionForm}s when leaving one context in the web GUI for another and then
  * returning.  This uses the {@link #DOC_FORM_KEY_ATTRIBUTE} to store the saved forms.
  *
- * @author bmcgough
- * @author rkirkend
- * @author ahamid
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StrutsRequestProcessor extends RequestProcessor {
 

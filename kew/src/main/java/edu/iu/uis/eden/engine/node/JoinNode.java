@@ -22,7 +22,7 @@ import edu.iu.uis.eden.engine.RouteHelper;
 /**
  * A node which is responsible for joining 1 or more branches in the route path of a document.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface JoinNode extends Node {
 	

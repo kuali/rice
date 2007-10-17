@@ -24,7 +24,7 @@ import org.kuali.rice.proxy.TargetedInvocationHandler;
 /**
  * Provides common utility methods for dealing with Classloaders.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ClassLoaderUtils {
 

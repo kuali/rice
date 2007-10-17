@@ -21,7 +21,7 @@ import edu.iu.uis.eden.engine.node.SimpleResult;
 
 /**
  * A node which notifies the AdHocApproversNode that it can transition and attempts to process it.
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotifyAdHocApproversNode implements SimpleNode {
 

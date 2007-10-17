@@ -25,7 +25,7 @@ import edu.iu.uis.eden.routetemplate.RuleAttributeService;
  * Data bean representing an attribute associated at the document type level.  e.g. NoteAttribute, 
  * EmailAttribute, SearchableAttribute, etc.
  * 
- * @author bh79
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {

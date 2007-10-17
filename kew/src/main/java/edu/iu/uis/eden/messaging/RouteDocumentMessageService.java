@@ -24,7 +24,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 /**
  * An XML services which is used to submit documents to the engine.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RouteDocumentMessageService implements KEWXMLService {
 

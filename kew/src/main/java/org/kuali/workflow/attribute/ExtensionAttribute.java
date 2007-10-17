@@ -26,7 +26,7 @@ import edu.iu.uis.eden.validation.ValidationResults;
  * An attribute that defines extensions fields on a business object to allow for render on a
  * screen for data collection.  Also performs validation on the extension data.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ExtensionAttribute {
 

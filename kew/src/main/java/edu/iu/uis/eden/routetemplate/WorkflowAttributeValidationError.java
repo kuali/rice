@@ -28,7 +28,7 @@ import edu.iu.uis.eden.plugin.attributes.WorkflowAttributeXmlValidator;
  * Returned by a call to {@link WorkflowAttributeXmlValidator#validateClientRoutingData()}
  * and {@link SearchableAttribute#validateUserSearchInputs(Map)}
  *
- * @author bghutchi
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkflowAttributeValidationError implements Serializable {
 

@@ -50,7 +50,7 @@ import edu.iu.uis.eden.exception.InvalidXmlException;
  * @see PropertyScheme
  * @see Property
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SetVarNode implements SimpleNode {
     private static final Logger LOG = Logger.getLogger(SetVarNode.class);

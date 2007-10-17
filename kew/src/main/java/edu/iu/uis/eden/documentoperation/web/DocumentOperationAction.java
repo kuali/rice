@@ -82,7 +82,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
 /**
  * Struts Action for doing editing of workflow documents.
  *
- * @author shenl
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentOperationAction extends WorkflowAction {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentOperationAction.class);

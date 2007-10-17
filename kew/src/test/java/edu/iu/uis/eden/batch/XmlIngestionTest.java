@@ -36,7 +36,7 @@ import org.springframework.util.FileCopyUtils;
 
 /**
  * Tests XML "ingestion" pipeline
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class XmlIngestionTest extends KEWTestCase {
 

@@ -22,7 +22,7 @@ import edu.iu.uis.eden.engine.RouteHelper;
 /**
  * A {@link SimpleNode} implementation which does nothing.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NoOpNode implements SimpleNode {
 

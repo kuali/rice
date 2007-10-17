@@ -36,7 +36,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Tests adding a delegation rule
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AddRuleDelegationTest extends KEWTestCase {
 

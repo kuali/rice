@@ -24,7 +24,7 @@ import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 /**
  * PostProcessor implementation for the Remove/Replace Document.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class RemoveReplacePostProcessor extends DefaultPostProcessor {

@@ -22,7 +22,7 @@ package edu.iu.uis.eden.user;
  * 
  * @see UserService
  * 
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface WorkflowUser extends Recipient {
 

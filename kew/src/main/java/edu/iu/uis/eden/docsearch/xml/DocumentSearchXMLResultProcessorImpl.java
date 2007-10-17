@@ -41,7 +41,7 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
 
 /**
  *
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentSearchXMLResultProcessorImpl extends StandardDocumentSearchResultProcessor implements DocumentSearchXMLResultProcessor {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSearchXMLResultProcessorImpl.class);

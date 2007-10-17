@@ -20,7 +20,7 @@ package edu.iu.uis.eden.exception;
  * The exception used from the Simulation Engine when it has problems routing a
  * document
  * 
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentSimulatedRouteException extends WorkflowException {
 

@@ -29,7 +29,7 @@ import edu.iu.uis.eden.engine.node.var.PropertyScheme;
 /**
  * A property scheme that looks the property up in the state variable map
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public final class VariableScheme implements PropertyScheme {
     private static final Logger LOG = Logger.getLogger(VariableScheme.class);

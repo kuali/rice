@@ -25,7 +25,7 @@ import org.kuali.notification.util.NotificationConstants;
 /**
  * This class test basic persistence for the NotificationContentType business object.
  * 
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationContentTypeDaoTest extends BusinessObjectPersistenceTestCaseBase {
     NotificationContentType mockType1 = MockObjectsUtil.getTestContentType1();

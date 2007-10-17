@@ -31,7 +31,7 @@ import org.xml.sax.InputSource;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Attribute {
 

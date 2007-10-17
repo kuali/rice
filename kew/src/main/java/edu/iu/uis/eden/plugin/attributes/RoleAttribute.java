@@ -67,7 +67,7 @@ import edu.iu.uis.eden.routetemplate.Role;
  * 
  * @see WorkflowAttribute
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RoleAttribute {
 

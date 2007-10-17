@@ -27,7 +27,7 @@ import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
  * A RouteModule is responsible for generating Action Requests for a given Route Header document.
  * Implementations of this Interface are potentially remotable, so this Interface uses value objects.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RouteModuleRemote {
 

@@ -25,7 +25,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * Links provide quick information and access to various functions
  * in the Quick Links GUI of the web application.
  *
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface QuickLinksService {
     public List getWatchedDocuments(WorkflowUser workflowUser);

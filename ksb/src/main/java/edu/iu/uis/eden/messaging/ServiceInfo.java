@@ -30,7 +30,7 @@ import org.kuali.rice.util.RiceUtilities;
  * 
  * @see ServiceDefinition
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ServiceInfo implements Serializable {
 	

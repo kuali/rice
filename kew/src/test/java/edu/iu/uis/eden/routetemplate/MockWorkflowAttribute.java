@@ -29,7 +29,7 @@ import edu.iu.uis.eden.routeheader.DocumentContent;
 import edu.iu.uis.eden.util.XmlHelper;
 
 /**
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class MockWorkflowAttribute implements WorkflowAttribute {
     

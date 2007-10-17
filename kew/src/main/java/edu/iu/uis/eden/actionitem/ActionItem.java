@@ -37,8 +37,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 /**
  * This is the model for action items. These are displayed as the action list as well. Mapped to ActionItemService.
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class ActionItem implements WorkflowPersistable, RowStyleable {

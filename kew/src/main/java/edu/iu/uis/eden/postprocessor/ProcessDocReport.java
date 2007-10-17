@@ -23,7 +23,7 @@ package edu.iu.uis.eden.postprocessor;
  * 
  * @see PostProcessor
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ProcessDocReport implements java.io.Serializable {
 

@@ -23,7 +23,7 @@ import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 /**
  * Transport object representing a {@link RouteNodeInstance}.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

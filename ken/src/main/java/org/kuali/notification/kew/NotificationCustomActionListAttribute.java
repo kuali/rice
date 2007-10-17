@@ -24,8 +24,7 @@ import edu.iu.uis.eden.web.session.UserSession;
 /**
  * This class is our custom action list for Notifications in KEW.  It's wired in as the implementation to use as part of the NotificationData.xml 
  * bootstrap file for KEW.
- * @author Aaron Hamid (arh at cornell dot edu)
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationCustomActionListAttribute implements CustomActionListAttribute {
     /**

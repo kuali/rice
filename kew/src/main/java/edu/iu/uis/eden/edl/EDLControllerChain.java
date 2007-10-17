@@ -36,7 +36,7 @@ import edu.iu.uis.eden.web.UserLoginFilter;
  * being that this is how you would page between edls.  Uses the template associated with the last edl controller 
  * to render the dom of the last edl controller.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class EDLControllerChain {

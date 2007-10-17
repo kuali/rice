@@ -19,7 +19,7 @@ package edu.iu.uis.eden.routetemplate;
 /**
  * Helper class that encapsulates a qualified rolename, and can encode and decode to String representation.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class QualifiedRoleName {
     private final String baseRoleName;

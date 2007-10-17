@@ -45,7 +45,7 @@ import edu.iu.uis.eden.xml.export.WorkgroupXmlExporter;
  *
  * This implementation utilizes caching of workgroups which is safe in a clustered environment.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BaseWorkgroupService implements WorkgroupService {
 

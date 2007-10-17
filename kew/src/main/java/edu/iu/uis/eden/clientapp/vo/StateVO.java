@@ -24,7 +24,7 @@ import edu.iu.uis.eden.engine.node.State;
  * Transport object for {@link State}.  Essentially an empty "marker" subclass of state to use as a VO
  * Inherits all functionality.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  * @workflow.webservice-object
  */

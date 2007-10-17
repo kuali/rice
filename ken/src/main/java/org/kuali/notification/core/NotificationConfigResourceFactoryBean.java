@@ -38,7 +38,7 @@ import org.springframework.core.io.ResourceLoader;
  *               <property name="ignoreResourceNotFound" value="true" />
  *       </bean>
  * see Wired in Freenode #spring channel
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationConfigResourceFactoryBean extends ResourceFactoryBean implements InitializingBean, ResourceLoaderAware {
     private static final String CFG_LOCATION_PROPERTY = "notification.config";

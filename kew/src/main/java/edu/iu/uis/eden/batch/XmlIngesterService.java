@@ -32,7 +32,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  *   <li>Digestion: XmlDigesterService</li>
  * </ol>
  * @see edu.iu.uis.eden.batch.XmlDigesterService
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface XmlIngesterService {
     /**

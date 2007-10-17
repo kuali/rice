@@ -30,7 +30,7 @@ import org.kuali.rice.resourceloader.SpringResourceLoader;
  *  
  * Ripped from KIMResourceLoaderFactory
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KENResourceLoaderFactory {
 

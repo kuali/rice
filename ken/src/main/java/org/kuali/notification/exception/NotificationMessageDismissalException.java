@@ -18,7 +18,7 @@ package org.kuali.notification.exception;
 /**
  * This class represents a dismissal exception - when notifications are not properly dismissed 
  * by a deliverer
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationMessageDismissalException extends Exception {
     /**

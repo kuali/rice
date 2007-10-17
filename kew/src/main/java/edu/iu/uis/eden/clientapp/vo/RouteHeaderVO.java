@@ -32,8 +32,7 @@ import edu.iu.uis.eden.util.Utilities;
  * Transport object for the {@link DocumentRouteHeaderValue}.  Represents a document to the
  * client programmer
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  * @workflow.webservice-object
  */

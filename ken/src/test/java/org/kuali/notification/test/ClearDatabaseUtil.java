@@ -48,7 +48,7 @@ import org.springframework.transaction.support.TransactionTemplate;
  * {{@link #clearTables(PlatformTransactionManager, DataSource, String, List, boolean, String)} can
  * be called directly on this class, or an instance can be created and used as a command.
  *
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ClearDatabaseUtil {
     private static final Logger LOG = Logger.getLogger(ClearDatabaseUtil.class);

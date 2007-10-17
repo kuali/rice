@@ -26,7 +26,7 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 
 /**
  * Interceptor implementation that simply logs the JTA transaction status
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TracingTransactionInterceptor implements MethodInterceptor {
     private static final Logger LOG = Logger.getLogger(TracingTransactionInterceptor.class);

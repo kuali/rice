@@ -22,7 +22,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * Interface for defining the contract for the remoting of ActionInvocationProcessor.  
  * Created when the ActionInvocationProcessor went to a service.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ActionInvocationService {
 

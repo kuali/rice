@@ -22,7 +22,7 @@ import edu.iu.uis.eden.web.session.UserSession;
 /**
  * Default implementation of the {@link CustomNoteAttribute}.
  * 
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CustomNoteAttributeImpl implements CustomNoteAttribute {
 

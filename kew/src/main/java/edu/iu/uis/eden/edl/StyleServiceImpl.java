@@ -51,7 +51,7 @@ import edu.iu.uis.eden.xml.export.StyleXmlExporter;
 
 /**
  * Implements generic StyleService via existing EDL style table
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StyleServiceImpl implements StyleService {
     private static final Logger LOG = Logger.getLogger(StyleServiceImpl.class);

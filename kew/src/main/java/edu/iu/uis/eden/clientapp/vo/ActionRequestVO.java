@@ -25,8 +25,7 @@ import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 /**
  * A transport object representing a {@link ActionRequestValue}.
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  * @workflow.webservice-object
  */

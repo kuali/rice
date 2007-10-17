@@ -22,7 +22,7 @@ import org.kuali.workflow.workgroup.WorkgroupType;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface WorkgroupTypeDAO {
 

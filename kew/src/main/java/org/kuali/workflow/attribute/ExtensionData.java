@@ -19,7 +19,7 @@ package org.kuali.workflow.attribute;
 /**
  * A key-value representation of an extension to a data object.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ExtensionData {
 

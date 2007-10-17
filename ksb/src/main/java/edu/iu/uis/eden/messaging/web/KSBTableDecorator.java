@@ -22,7 +22,7 @@ import org.displaytag.decorator.TableDecorator;
  * A {@link TableDecorator} for the Display Tag library which is used to add mouseover 
  * highlighting to rows in the results on the Document Search screen.
  *
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KSBTableDecorator extends TableDecorator {
     

@@ -32,7 +32,7 @@ import edu.iu.uis.eden.test.TestUtilities;
 /**
  * This test exercises various Action Request graph scenarios and tests them for correctness.
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionRequestScenariosTest extends KEWTestCase {
 

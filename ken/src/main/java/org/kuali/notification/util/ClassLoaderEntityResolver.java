@@ -25,7 +25,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Internal notification EntityResolver which resolves system ids with the "resource:" prefix to ClassLoader resources
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ClassLoaderEntityResolver extends ClassLoaderResourceResolver implements EntityResolver {
     /**

@@ -22,7 +22,7 @@ import org.w3c.dom.Element;
 /**
  * The interface you implement if you want a component to be called from EDL.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface EDLModelComponent {

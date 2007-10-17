@@ -23,8 +23,7 @@ import org.apache.struts.action.ActionForm;
  * 
  * @see FeedbackAction
  *
- * @author temay
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 /* Action Form for Feedback and Support Web form */
 public class FeedbackForm extends ActionForm {

@@ -8,8 +8,8 @@ import java.io.Serializable;
  * <p><Description> </p>
  * <p><p><p>Copyright: Copyright (c) 2002</p>
  * <p><p>Company: UIS - Indiana University</p>
- * @author <a href="mailto:seiffert@indiana.edu">Kurt A. Seiffert</a>
- * @version $Revision: 1.1.2.1 $ - $Date: 2007-08-22 16:19:35 $
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @version $Revision: 1.1.2.1.2.1 $ - $Date: 2007-10-17 21:52:21 $
  */
 public interface IDocumentEvent extends Serializable {
   public static final String ROUTE_LEVEL_CHANGE = "rt_lvl_change";

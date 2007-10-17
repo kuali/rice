@@ -26,8 +26,7 @@ import edu.iu.uis.eden.engine.node.SimpleNode;
  *
  * @see SimpleNode
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimpleTransitionEngine extends TransitionEngine {
     

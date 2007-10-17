@@ -34,8 +34,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * Default implementation of the {@link ApplicationConstantsService}.
  *
- * @author natjohns
- * @author xqi
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ApplicationConstantsServiceImpl implements ApplicationConstantsService {
 	private static final Logger LOG = Logger.getLogger(ApplicationConstantsServiceImpl.class);

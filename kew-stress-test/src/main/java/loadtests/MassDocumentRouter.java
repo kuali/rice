@@ -25,7 +25,7 @@ import edu.iu.uis.eden.test.stress.TestInfo;
 
 /**
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class MassDocumentRouter extends BasicTest {

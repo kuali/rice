@@ -9,7 +9,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  * A service which is used to authorize access to certain screens in the application
  * for certain users.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface WebAuthorizationService {
 

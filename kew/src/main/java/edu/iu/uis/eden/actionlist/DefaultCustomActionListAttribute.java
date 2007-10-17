@@ -25,7 +25,7 @@ import edu.iu.uis.eden.web.session.UserSession;
 /**
  * The default implementation of a CustomActionListAttribute.  Shows only FYI actions.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DefaultCustomActionListAttribute implements CustomActionListAttribute {
 

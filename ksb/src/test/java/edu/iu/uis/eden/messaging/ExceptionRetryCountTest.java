@@ -31,7 +31,7 @@ import edu.iu.uis.eden.messaging.remotedservices.TesetHarnessExplodingQueue;
 /**
  * This is a description of what this class does - rkirkend don't forget to fill this in.
  *
- * @author Full Name (email at address dot com)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ExceptionRetryCountTest extends KSBTestCase {

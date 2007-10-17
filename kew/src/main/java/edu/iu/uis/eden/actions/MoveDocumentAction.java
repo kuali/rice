@@ -46,7 +46,7 @@ import edu.iu.uis.eden.util.Utilities;
  * Current implementation only supports returning to a node on the main branch of the
  * document.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class MoveDocumentAction extends ActionTakenEvent {
 

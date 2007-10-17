@@ -26,7 +26,7 @@ import java.sql.Timestamp;
 
 /**
  * Interface for objects which can be locked
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Lockable {
     /**

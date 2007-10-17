@@ -25,7 +25,7 @@ import edu.iu.uis.eden.messaging.KEWJavaService;
  * A service that is registered as a queue for both the client apps.  Used to test queue 
  * call scenarios.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ClientApp2SharedQueue implements KEWJavaService {

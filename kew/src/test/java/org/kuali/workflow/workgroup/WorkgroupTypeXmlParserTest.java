@@ -25,7 +25,7 @@ import edu.iu.uis.eden.doctype.DocumentTypeService;
 
 /**
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkgroupTypeXmlParserTest extends KEWTestCase {
 

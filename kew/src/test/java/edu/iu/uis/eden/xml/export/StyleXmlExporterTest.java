@@ -33,7 +33,7 @@ import edu.iu.uis.eden.util.XmlHelper;
 
 /**
  * Tests exporting Styles
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StyleXmlExporterTest extends XmlExporterTestCase {
 

@@ -43,8 +43,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 /**
  * OJB implementation of the {@link ActionListDAO}.
  *
- * @author rkirkend
- * @author temay
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements ActionListDAO {
 

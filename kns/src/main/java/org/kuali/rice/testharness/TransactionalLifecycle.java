@@ -22,7 +22,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 /**
  * A lifecycle for testing with database transactional rollback.
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TransactionalLifecycle implements Lifecycle {
 

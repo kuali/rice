@@ -21,7 +21,7 @@ import org.kuali.rice.ojb.BaseOjbConfigurer;
 /**
  * KEW implementation of the OjbConfigurer.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class OjbConfigurer extends BaseOjbConfigurer {
 

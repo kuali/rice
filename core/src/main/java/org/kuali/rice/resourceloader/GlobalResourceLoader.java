@@ -31,8 +31,7 @@ import org.kuali.rice.util.ClassLoaderUtils;
  * Wrapper on all the Resource loaders.  This is what programmers typically use to get in the resource loading
  * framework.
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class GlobalResourceLoader {
 

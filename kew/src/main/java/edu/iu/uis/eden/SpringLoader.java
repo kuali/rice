@@ -32,8 +32,7 @@ import edu.iu.uis.eden.core.ContextualConfigLock;
 /**
  * ServiceLocator that starts and wraps the primary workflow Spring Application Context.
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public final class SpringLoader extends BaseLifecycle implements ServiceLocator {

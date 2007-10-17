@@ -25,7 +25,7 @@ import edu.iu.uis.eden.preferences.Preferences;
  * 
  * @see PreferencesAction
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PreferencesForm extends ActionForm {
     

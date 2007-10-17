@@ -31,7 +31,7 @@ import edu.iu.uis.eden.engine.node.var.schemes.XPathScheme;
  * Interface representing an implementation that can resolve Property objects to
  * values.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface PropertyScheme {
     public static final PropertyScheme VARIABLE_SCHEME = new VariableScheme();

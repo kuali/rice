@@ -19,7 +19,7 @@ package edu.iu.uis.eden.exception;
 /**
  * An exception which is thrown when a user cannot be found.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EdenUserNotFoundException extends WorkflowException {
 	

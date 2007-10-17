@@ -29,7 +29,7 @@ import edu.iu.uis.eden.EdenConstants;
  * A ColumnDecorator for columns in Document Search results which adds an extra 
  * non-breaking space if the column is an empty String.
  *
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentSearchColumnDecorator implements DisplaytagColumnDecorator {
 

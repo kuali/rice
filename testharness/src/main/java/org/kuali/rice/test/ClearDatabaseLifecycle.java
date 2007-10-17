@@ -41,7 +41,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 /**
  * Lifecycle class to clean up the database for use in testing.
  *
- * @author
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  *
  */

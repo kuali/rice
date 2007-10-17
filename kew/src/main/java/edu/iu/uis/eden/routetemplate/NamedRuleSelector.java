@@ -30,7 +30,7 @@ import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Rule selector that select a rule based on configured rule name 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 class NamedRuleSelector implements RuleSelector {
     /**

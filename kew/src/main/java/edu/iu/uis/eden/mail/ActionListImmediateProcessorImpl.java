@@ -25,7 +25,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 /**
  * Implementation of the {@link ActionListImmediateEmailReminderService}.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionListImmediateProcessorImpl implements ActionListImmediateEmailReminderService {
 	

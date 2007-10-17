@@ -63,7 +63,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * A WorkflowEngine implementation which runs simulations.  This object is not thread-safe
  * and therefore a new instance needs to be instantiated on every use.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimulationEngine extends StandardWorkflowEngine {
 

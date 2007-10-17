@@ -51,7 +51,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 
 /**
  *
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StandardDocumentSearchGenerator implements DocumentSearchGenerator {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardDocumentSearchGenerator.class);

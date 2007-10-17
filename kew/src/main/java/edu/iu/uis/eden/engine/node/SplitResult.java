@@ -23,7 +23,7 @@ import java.util.List;
  * The result of the processing of a {@link SplitNode}.  Contains a List of branch names that
  * the document's route path should split to.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SplitResult extends SimpleResult {
 

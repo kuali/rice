@@ -29,7 +29,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  * Defines a service for routing of Workgroups within Workflow.  This interface should be implemented to
  * provide routing capabilities for a Workgroup implementation.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface WorkgroupRoutingService {
 

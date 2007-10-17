@@ -26,7 +26,7 @@ import org.springframework.transaction.PlatformTransactionManager;
  * An implementation of the Quartz SchedulerFactoryBean which uses a database-backed quartz if the useQuartzDatabase property
  * is set.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
 

@@ -49,8 +49,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  *
  * @see UserSession
  *
- * @author ahamid
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserLoginFilter implements Filter {
     private static final Logger LOG = Logger.getLogger(UserLoginFilter.class);

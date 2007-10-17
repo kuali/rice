@@ -34,7 +34,7 @@ import junit.framework.TestCase;
 
 /**
  * 
- * @author Scott Battaglia
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  *
  */

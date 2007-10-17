@@ -37,8 +37,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
 /**
  * Default implementation of the {@link ActionTakenService}.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionTakenServiceImpl implements ActionTakenService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionTakenServiceImpl.class);

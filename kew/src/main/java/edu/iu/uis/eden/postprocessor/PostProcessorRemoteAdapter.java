@@ -29,7 +29,7 @@ import edu.iu.uis.eden.server.BeanConverter;
  * @see PostProcessorRemote
  * @see PostProcessor
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PostProcessorRemoteAdapter implements PostProcessor {
 

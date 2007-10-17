@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  *
- * @author delyea
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ValidActions implements Serializable {
 

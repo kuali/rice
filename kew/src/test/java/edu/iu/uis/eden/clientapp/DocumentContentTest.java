@@ -33,7 +33,7 @@ import edu.iu.uis.eden.routetemplate.TestRuleAttribute;
 /**
  * Tests that client interaction with document content behaves approriately.
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentContentTest extends KEWTestCase {
 

@@ -25,8 +25,7 @@ import org.apache.struts.action.ActionForm;
 /**
  * Struts ActionForm for the {@link LookupAction}.
  *
- * @author jhopf
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class LookupForm extends ActionForm {
     

@@ -24,7 +24,7 @@ import edu.iu.uis.eden.docsearch.SearchableAttributeValue;
  * tasks. Right now it is used to hold information that will be display on a jsp
  * for drop down boxes.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KeyValueSort extends KeyValue {
 

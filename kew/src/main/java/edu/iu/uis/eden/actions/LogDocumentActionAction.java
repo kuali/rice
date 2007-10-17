@@ -28,7 +28,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Simply records an action taken with an annotation.  
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class LogDocumentActionAction extends ActionTakenEvent {
 

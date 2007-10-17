@@ -12,7 +12,7 @@ import edu.iu.uis.eden.web.session.UserSession;
  * a user is a member of a workgroup or a role, it is not necessary to requery the
  * workgroup or role for information on whether that user is a member.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SecuritySession implements Serializable {
 

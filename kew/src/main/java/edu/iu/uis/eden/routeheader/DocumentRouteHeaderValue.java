@@ -92,9 +92,7 @@ import edu.iu.uis.eden.util.Utilities;
  * @see RouteNodeInstance
  * @see EdenConstants
  *
- * @author rkirkend
- * @author bmcough
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentRouteHeaderValue implements WorkflowPersistable {
     private static final long serialVersionUID = -4700736340527913220L;

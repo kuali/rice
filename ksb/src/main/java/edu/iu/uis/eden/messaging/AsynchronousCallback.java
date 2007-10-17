@@ -23,7 +23,7 @@ import java.io.Serializable;
  * 
  * @see AsynchronousCall
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface AsynchronousCallback extends Serializable {
 	

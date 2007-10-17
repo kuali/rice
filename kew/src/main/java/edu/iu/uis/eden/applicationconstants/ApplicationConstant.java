@@ -23,8 +23,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * Model object for application constants mapped ot ojb.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class ApplicationConstant implements Serializable {

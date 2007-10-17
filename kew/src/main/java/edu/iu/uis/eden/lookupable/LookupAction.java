@@ -53,10 +53,7 @@ import edu.iu.uis.eden.web.WorkflowAction;
  *
  * @see WorkflowLookupable
  *
- * @author jhopf
- * @author bmcgough
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class LookupAction extends WorkflowAction {
 

@@ -27,7 +27,7 @@ import edu.iu.uis.eden.web.session.UserSession;
 /**
  * WebAuthenticationService that returns a fixed, configured user.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ConfiguredUserWebAuthenticationService implements WebAuthenticationService, InitializingBean {
 

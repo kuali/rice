@@ -24,7 +24,7 @@ import edu.iu.uis.eden.plugin.attributes.CustomEmailAttribute;
 
 /**
  * Test CustomEmailAttribute for EmailMessageTestCase
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EmailMessageTestCaseCustomEmailAttribute implements CustomEmailAttribute {
 

@@ -27,7 +27,7 @@ import org.springframework.jmx.export.MBeanExporter;
  * Exports MBeans configured from an Embedded KEW client.  By fetching them
  * from the mBeans Config parameter.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ClientMBeanExporter extends MBeanExporter {
 

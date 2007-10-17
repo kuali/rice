@@ -39,7 +39,7 @@ import org.kuali.workflow.test.TestUtils;
 /**
  * Tests the web GUI for the ActionList.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class OfficeOfAffirmativeActionTest extends KEWTestCase {
 

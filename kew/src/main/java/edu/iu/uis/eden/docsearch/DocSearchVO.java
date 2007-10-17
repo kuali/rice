@@ -28,7 +28,7 @@ import edu.iu.uis.eden.web.RowStyleable;
 /**
  * Bean that representing a row displayed in a document search.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocSearchVO implements Serializable, RowStyleable {
 

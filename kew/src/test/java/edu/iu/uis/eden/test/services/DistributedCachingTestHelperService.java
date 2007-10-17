@@ -21,7 +21,7 @@ import edu.iu.uis.eden.doctype.DocumentType;
 /**
  * Defines an interface with methods that help us test distributed caching.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DistributedCachingTestHelperService {
 

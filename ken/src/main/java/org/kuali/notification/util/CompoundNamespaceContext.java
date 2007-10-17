@@ -24,7 +24,7 @@ import javax.xml.namespace.NamespaceContext;
 /**
  * XPath NamespaceContext implementation that delegates in sequence to a list of NamespaceContexts,
  * returning the first match. 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CompoundNamespaceContext implements NamespaceContext {
     private final List<NamespaceContext> contexts;

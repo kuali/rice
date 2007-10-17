@@ -37,7 +37,7 @@ import org.quartz.SchedulerException;
 
 /**
  * This class tests the notification service impl.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Ignore // this whole test case is suspect
 public class NotificationServiceImplTest extends NotificationTestCaseBase {

@@ -34,7 +34,7 @@ import edu.iu.uis.eden.messaging.quartz.MessageServiceExecutorJobListener;
 /**
  * Default implementation of the {@link MessageExceptionHandler} which handles exceptions thrown from message processing.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
 

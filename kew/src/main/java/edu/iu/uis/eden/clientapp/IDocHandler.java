@@ -20,7 +20,7 @@ package edu.iu.uis.eden.clientapp;
  * Convenience interface holding all the request parameters a client application 
  * may need to use from a doc handler
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface IDocHandler {
   public static final String ACTIONLIST_COMMAND = "displayActionListView";

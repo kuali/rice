@@ -19,7 +19,7 @@ package edu.iu.uis.eden.util;
 /**
  * Records and logs performance information about an elapsed time period.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PerformanceLogger {
 

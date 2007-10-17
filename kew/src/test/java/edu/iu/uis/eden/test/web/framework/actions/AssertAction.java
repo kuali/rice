@@ -37,7 +37,7 @@ import edu.iu.uis.eden.test.web.framework.Util;
  * The 'actual', 'regex' and 'expected' attributes are resolved via {@link edu.iu.uis.eden.test.web.framework.Util#getResolvableAttribute(Node, String, PropertyScheme)}.
  * The 'actual' attribute defautls to variable scheme.
  * The 'regex' and 'expected' attributes default to literal scheme.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AssertAction extends BaseScriptAction {
     private static final String[] NAMES = { "assert" };

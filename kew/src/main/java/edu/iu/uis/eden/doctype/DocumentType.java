@@ -61,8 +61,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * can construct {@link ObjectDefinition} objects correctly to account for MessageEntity inheritance.
  * Can also navigate parent hierarchy when getting data/components.
  *
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentType implements WorkflowPersistable {
 

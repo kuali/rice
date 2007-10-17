@@ -34,8 +34,7 @@ import edu.iu.uis.eden.util.PerformanceLogger;
  * 
  * Intended to be called async and wired that way in server/client spring beans.
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentRequeuerImpl implements DocumentRequeuerService {
 	

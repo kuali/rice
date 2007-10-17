@@ -32,7 +32,7 @@ import edu.iu.uis.eden.messaging.exceptionhandling.MessageExceptionHandler;
  * @see RemotedServiceHolder
  * @see ServiceInfo
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RemoteResourceServiceLocator extends ResourceLoader {
 

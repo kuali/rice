@@ -31,7 +31,7 @@ import edu.iu.uis.eden.test.web.framework.Util;
 
 /**
  * A property scheme that interprets the locator as a URL
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class URLScheme implements PropertyScheme {
     private static final Logger LOG = Logger.getLogger(URLScheme.class);

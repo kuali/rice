@@ -29,7 +29,7 @@ import org.kuali.notification.util.NotificationConstants;
 /**
  * NotificationService implementation - this is the default out-of-the-box implementation of the service that uses the 
  * businessObjectDao to get at the data via our OOTB DBMS.
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationMessageDeliveryServiceImpl implements NotificationMessageDeliveryService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger

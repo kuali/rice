@@ -21,7 +21,7 @@ package edu.iu.uis.eden.doctype;
  * Encapsulates  policies of the document.
  * There are 4 policies 'DEFAULT_APPROVE', 'INITIATOR_MUST_ROUTE' and 'LOOK_FUTURE'.
  * FIXME:: fix the docs on this... are there 3, 4 or 5 policies?  what about PRE_APPROVE and DISAPPROVE?
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public final class DocumentTypePolicyEnum {
     /**

@@ -25,7 +25,7 @@ import org.junit.Test;
 
 /**
  * Tests XFire Notification web service.  See KEW SimpleDocumentActionsWebServiceTest
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Ignore // requires webapp to be up
 public class NotificationWebServiceTest {

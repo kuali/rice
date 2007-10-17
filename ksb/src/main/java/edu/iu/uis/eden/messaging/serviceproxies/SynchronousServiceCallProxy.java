@@ -34,7 +34,7 @@ import edu.iu.uis.eden.messaging.RemotedServiceHolder;
  * Used to Call a service synchronously but through the messaging code within workflow. Used to when switching generally
  * asynchronously called services to synchronously called services. Generally for testing purposes.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class SynchronousServiceCallProxy extends AsynchronousServiceCallProxy {

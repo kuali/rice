@@ -20,7 +20,7 @@ import java.rmi.RemoteException;
 
 /**
  * Web service interface to NotificationService - allows remote sending of notifications from other systems via Web Service interaction.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NotificationWebService extends Remote {
     /**

@@ -37,7 +37,7 @@ import edu.iu.uis.eden.util.XmlHelper;
 /**
  * A node which will generate an FYI request to a university ID specified in the document content.
  *
- * @author jitrue
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class FYIByUniversityId extends RequestActivationNode {
     private static final Logger LOG = Logger.getLogger(FYIByUniversityId.class);

@@ -38,7 +38,7 @@ import edu.iu.uis.eden.batch.XmlIngesterService;
 /**
  * Base test case that loads the unit test Spring context and wraps unit tests with a
  * transaction that automatically rolls back all changes.
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class NotificationTestCaseBaseOld extends AbstractTransactionalSpringContextTests {
     protected final Logger LOG = Logger.getLogger(getClass());

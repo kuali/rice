@@ -42,7 +42,7 @@ import edu.iu.uis.eden.util.Utilities;
 /**
  * ActionListEmailService implementation whose content is configurable/parameterizable
  * via a pluggable EmailContentService
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CustomizableActionListEmailServiceImpl implements ActionListEmailService {
     private static final Logger LOG = Logger.getLogger(CustomizableActionListEmailServiceImpl.class);

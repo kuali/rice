@@ -48,7 +48,7 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
  * as an XPath function, than it could be used as follows on the second expression to produce the desired result of "hello": 
  * xstreamsafe('/test/b/a', root())
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class XStreamSafeEvaluator {
 	

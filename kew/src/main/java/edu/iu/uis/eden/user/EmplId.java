@@ -23,7 +23,7 @@ package edu.iu.uis.eden.user;
  * 
  * @see WorkflowUser
  * 
- * @author bmcgough
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public final class EmplId implements UserId {
 

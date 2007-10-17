@@ -19,7 +19,7 @@ package edu.iu.uis.eden.edl;
 /**
  * EDocLite document definition
  * Table: en_edoclt_def_t
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EDocLiteDefinition {
     /**

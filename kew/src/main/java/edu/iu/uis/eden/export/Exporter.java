@@ -25,7 +25,7 @@ import java.util.List;
  * @see ExportDataSet
  * @see ExportFormat
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface Exporter {
 

@@ -47,7 +47,7 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
  * <p>
  * The workflow.xml file has 2 params in it and includes the workflow2.xml file.
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ZipFilePluginLoaderTest extends KEWTestCase {
 

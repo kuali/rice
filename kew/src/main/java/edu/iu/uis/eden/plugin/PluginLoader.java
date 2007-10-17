@@ -19,7 +19,7 @@ package edu.iu.uis.eden.plugin;
 /**
  * Loads a plugin from some source (i.e. filesytem, classpath, network...)
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface PluginLoader extends Modifiable {
 

@@ -40,8 +40,7 @@ import edu.iu.uis.eden.util.Utilities;
  * Delegates to template methods to obtain plugin ClassLoader and plugin manifest file URL,
  * then load the manifest under the plugin ClassLoader, and constructs a Plugin object.
  *
- * @author ahamid
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class BasePluginLoader implements PluginLoader {
     private static final Logger LOG = Logger.getLogger(BasePluginLoader.class);

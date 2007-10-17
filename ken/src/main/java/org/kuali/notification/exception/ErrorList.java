@@ -22,8 +22,7 @@ import java.util.List;
 /**
  * This class is a valud added datastructure that is used to house a list of Exceptions and is 
  * recognized as an Exception so that it can be thrown from methods and handled like an Exception.
- * @author Aaron Hamid (arh14 at cornell dot edu)
- * @author Aaron Godert (ag266 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ErrorList extends Exception {
     private static final long serialVersionUID = -8045847343472018601L;

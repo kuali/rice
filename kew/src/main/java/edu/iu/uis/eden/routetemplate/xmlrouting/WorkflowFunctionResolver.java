@@ -34,8 +34,7 @@ import edu.iu.uis.eden.support.xstream.XStreamSafeSearchFunction;
 /**
  * A function resolver for XPath functions provided by KEW.
  *
- * @author jhopf
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkflowFunctionResolver implements XPathFunctionResolver {
 	

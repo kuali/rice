@@ -34,8 +34,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * 
  * @see SubProcessNode
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SubProcessTransitionEngine extends TransitionEngine {
     

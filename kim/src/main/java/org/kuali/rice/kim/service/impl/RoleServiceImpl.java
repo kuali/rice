@@ -30,7 +30,7 @@ import org.kuali.rice.kim.service.RoleService;
  * This is the default KIM RoleService implementation that is provided by Rice.  This will mature over time as the KIM 
  * component is developed.
  * 
- * @author Phillip Berres (pberres at usc dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoleServiceImpl implements RoleService {
 

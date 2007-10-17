@@ -43,7 +43,7 @@ import edu.iu.uis.eden.xml.XmlConstants;
  * to verify that at least one rule exists for each Document Type which is represented in the rule
  * changeset.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RemoveReplaceWorkgroupTypeRoutingAttribute extends WorkgroupTypeRoutingAttribute implements MassRuleAttribute {
 

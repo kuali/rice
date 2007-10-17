@@ -29,7 +29,7 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  * Platform implementation that generates Oracle-compliant SQL
- * @author arh14 at cornell dot edu
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class OraclePlatform extends ANSISqlPlatform {
 

@@ -29,7 +29,7 @@ import edu.iu.uis.eden.web.WorkflowRoutingForm;
 /**
  * Struts form for {@link DocumentTypeAction}
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentTypeForm extends WorkflowRoutingForm {
 	private static final long serialVersionUID = 6490421152680911514L;

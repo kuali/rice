@@ -23,6 +23,10 @@ import java.util.List;
  */
 public class RuleExpressionResult {
     /**
+     * The rule whose evaluation yielded this result
+     */
+    private final Rule rule;
+    /**
      * Whether the expression succeeded
      */
     private final boolean success;
@@ -35,7 +39,8 @@ public class RuleExpressionResult {
      * Constructs a rule expression result with a success indicator but no responsibilities 
      * @param success whether the expression succeeded
      */
-    public RuleExpressionResult(boolean success) {
+    public RuleExpressionResult(Rule rule, boolean success) {
+        this.rule = rule;
         this.success = success;
         this.responsibilities = null;
     }
@@ -45,9 +50,17 @@ public class RuleExpressionResult {
      * @param success whether the expression succeeded
      * @param responsibilities any responsibilities generated from a successful evaluation
      */
-    public RuleExpressionResult(boolean success, List<RuleResponsibility> responsibilities) {
+    public RuleExpressionResult(Rule rule, boolean success, List<RuleResponsibility> responsibilities) {
+        this.rule = rule;
         this.success = success;
         this.responsibilities = responsibilities;
+    }
+
+    /**
+     * @return the rule that this expression result is associated with
+     */
+    public Rule getRule() {
+        return rule;
     }
 
     /**

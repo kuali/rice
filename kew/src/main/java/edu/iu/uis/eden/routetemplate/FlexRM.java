@@ -188,7 +188,7 @@ public class FlexRM {
 	List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
 	if (rules != null) {
 	    for (Rule rule: rules) {
-	        RuleExpressionResult result = rule.evaluate(rule.getDefinition(), context);
+	        RuleExpressionResult result = rule.evaluate(rule, context);
 	        if (result.isSuccess()) {
 	            // actionRequests.addAll(makeActionRequests(context, rule, routeHeader, null, null));
 	            makeActionRequests(arFactory, result.getResponsibilities(), context, rule.getDefinition(), routeHeader, null, null);

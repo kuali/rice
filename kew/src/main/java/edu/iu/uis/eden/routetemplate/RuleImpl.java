@@ -87,13 +87,14 @@ class RuleImpl implements Rule {
         return ruleExpression;
     }
 
-    public RuleExpressionResult evaluate(RuleBaseValues ruleDefinition, RouteContext context) throws EdenUserNotFoundException, WorkflowException {
+    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws EdenUserNotFoundException, WorkflowException {
+        RuleBaseValues ruleDefinition = rule.getDefinition();
         RuleExpressionDef ruleExprDef = ruleDefinition.getRuleExpressionDef();
         String type = DEFAULT_RULE_EXPRESSION;
         if (ruleExprDef != null) {
             type = ruleExprDef.getType();
         }
         RuleExpression ruleExpression = loadRuleExpression(type);        
-        return ruleExpression.evaluate(ruleDefinition, context);
+        return ruleExpression.evaluate(rule, context);
     }
 }

@@ -15,6 +15,7 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,8 @@ public class KRAMetaRuleExpression implements RuleExpression {
         NEXT, TRUE, FALSE
     }
 
-    public RuleExpressionResult evaluate(RuleBaseValues ruleDefinition, RouteContext context) throws EdenUserNotFoundException, WorkflowException {
+    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws EdenUserNotFoundException, WorkflowException {
+        RuleBaseValues ruleDefinition = rule.getDefinition();
         RuleExpressionDef exprDef = ruleDefinition.getRuleExpressionDef();
         if (exprDef == null) {
             throw new WorkflowException("No expression defined in rule definition: " + ruleDefinition);
@@ -58,13 +60,20 @@ public class KRAMetaRuleExpression implements RuleExpression {
             throw new WorkflowException("Empty expression in rule definition: " + ruleDefinition);
         }
 
-        String[] statements = expression.split("\\s*[;\r\n]\\s*");
-        
-        if (statements.length == 0) {
-            throw new WorkflowException("No statements parsed in expression: " + expression);
+        try {
+            KRAMetaRuleEngine engine = new KRAMetaRuleEngine(expression);
+    
+            RuleExpressionResult result = null;
+            while (!engine.isDone()) {
+                result = engine.processSingleStatement(context);
+            }
+            return result;
+        } catch (ParseException pe) {
+            throw new WorkflowException("Error parsing expression", pe);
         }
-
-        for (int i = 0; i < statements.length; i++) {
+/*
+        for (int i = 0; i < engine.getStatements().length; i++) {
+            
             int stmtNum = i + 1;
             String statement = statements[i];
             LOG.debug("Processing statement: " + statement);
@@ -117,6 +126,6 @@ public class KRAMetaRuleExpression implements RuleExpression {
                     throw new WorkflowException("Unhandled statement flag: " + flagCode);
             }
         }
-        return null;
+        return null;*/
     }
 }

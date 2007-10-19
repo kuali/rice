@@ -69,7 +69,7 @@
             <description>KRABizRule1 mandatory description</description>
             <expression type="BSF:groovy">
                 import edu.iu.uis.eden.routetemplate.*
-                return new RuleExpressionResult(true)
+                return new RuleExpressionResult(rule, true)
             </expression>
         </rule>
         <!-- this will fail because the extension value will not match -->
@@ -116,7 +116,7 @@
             <description>KRABizRule4 mandatory description</description>
             <expression type="BSF:groovy">
                 import edu.iu.uis.eden.routetemplate.*
-                return new RuleExpressionResult(true, rule.getResponsibilities())
+                return new RuleExpressionResult(rule, true, rule.getDefinition().getResponsibilities())
             </expression>
             <responsibilities>
                 <responsibility><user>user2</user></responsibility>

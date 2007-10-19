@@ -15,6 +15,7 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
 
@@ -26,6 +27,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * Tests KRA meta-rule functionality 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Ignore // until groovy dependencies issue gets resolved
 public class KRAMetaRuleTest extends KEWTestCase {
     protected void loadTestData() throws Exception {
         loadXmlFile("KRAMetaRule.xml");

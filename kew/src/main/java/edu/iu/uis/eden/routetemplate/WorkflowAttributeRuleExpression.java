@@ -32,12 +32,13 @@ import edu.iu.uis.eden.routetemplate.xmlrouting.GenericXMLRuleAttribute;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 class WorkflowAttributeRuleExpression implements RuleExpression {
-    public RuleExpressionResult evaluate(RuleBaseValues ruleDefinition, RouteContext context) throws EdenUserNotFoundException, WorkflowException {
+    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws EdenUserNotFoundException, WorkflowException {
+        RuleBaseValues ruleDefinition = rule.getDefinition();
         boolean match = isMatch(ruleDefinition, context.getDocumentContent());
         if (match) {
-            return new RuleExpressionResult(match, ruleDefinition.getResponsibilities());
+            return new RuleExpressionResult(rule, match, ruleDefinition.getResponsibilities());
         } else {
-            return new RuleExpressionResult(match);
+            return new RuleExpressionResult(rule, match);
         }
     }
 

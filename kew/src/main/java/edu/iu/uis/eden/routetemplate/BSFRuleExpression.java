@@ -37,7 +37,8 @@ public class BSFRuleExpression implements RuleExpression {
                 new String[] { "groovy", "gy" }
         );
     }
-    public RuleExpressionResult evaluate(RuleBaseValues ruleDefinition, RouteContext context) throws EdenUserNotFoundException, WorkflowException {
+    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws EdenUserNotFoundException, WorkflowException {
+        RuleBaseValues ruleDefinition = rule.getDefinition();
         String type = ruleDefinition.getRuleExpressionDef().getType();
         String lang = "groovy";
         int colon = type.indexOf(':');
@@ -48,13 +49,13 @@ public class BSFRuleExpression implements RuleExpression {
         RuleExpressionResult result;
         BSFManager manager = new BSFManager();
         try {
-            manager.declareBean("rule", ruleDefinition, RuleBaseValues.class);
+            manager.declareBean("rule", rule, RuleBaseValues.class);
             result = (RuleExpressionResult) manager.eval(lang, ruleDefinition.toString(), 0, 0, expression);
         } catch (BSFException e) {
             throw new WorkflowException("Error evaluating " + type + " expression: '" + expression + "'", e);
         }
         if (result == null) {
-            return new RuleExpressionResult(false);
+            return new RuleExpressionResult(rule, false);
         } else {
             return result;
         }

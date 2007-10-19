@@ -29,11 +29,11 @@ import edu.iu.uis.eden.exception.WorkflowException;
 public interface RuleExpression {
     /**
      * Performs an evaluation and returns a list of 0 or more {@link RuleResponsibility}s to which to dispatch action requests
-     * @param ruleDefinition the rule definition that this rule expression applies to
+     * @param rule the rule that this rule expression applies to
      * @param context the RouteContext under which the expression is being evaluated
      * @return the result of the rule evaluation
      * @throws EdenUserNotFoundException
      * @throws WorkflowException
      */
-    public RuleExpressionResult evaluate(RuleBaseValues ruleDefinition, RouteContext context) throws EdenUserNotFoundException, WorkflowException;
+    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws EdenUserNotFoundException, WorkflowException;
 }

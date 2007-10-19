@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.MDC;
-import org.junit.Assert;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -37,13 +36,9 @@ import edu.iu.uis.eden.util.PerformanceLogger;
 import edu.iu.uis.eden.util.Utilities;
 
 /**
- * A node which will activate any requests pending on it.  Subclasses are responsible for generating the requests
- * to be activated, and then delegating to superclass {@link #process(RouteContext, RouteHelper)} to activate
- * those requests.
- *
- * This node transitions/completes when there are no remaining <i>blocking</i> action requests (i.e., no approval or
- * completion requests).
- *
+ * A node which will activate any requests on it, returning true when there are no more requests 
+ * which require activation.
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RequestActivationNode implements SimpleNode {
@@ -52,81 +47,47 @@ public class RequestActivationNode implements SimpleNode {
     private static long generatedRequestPriority = 0;
 
     public SimpleResult process(RouteContext routeContext, RouteHelper routeHelper) throws Exception {
-        generateNewRequests(routeContext, routeHelper);
-        return new SimpleResult(!activateRequests(routeContext));
-    }
-
-    /**
-     * Template method that subclasses should override to generates new requests
-     * @throws Exception 
-     */
-    protected void generateNewRequests(RouteContext context, RouteHelper routeHelper) throws WorkflowException, Exception {
-    }
-    
-    /**
-     * Activates any pending requests and returns whether there are outstanding blocking requests
-     * @param context the RouteContext
-     * @throws WorkflowException if anything goes wrong...
-     * @return whether there are outstanding blocking requests
-     */
-    protected boolean activateRequests(RouteContext routeContext) throws WorkflowException {
         DocumentRouteHeaderValue document = routeContext.getDocument();
         RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
         if (routeContext.isSimulation()) {
-            // this seems to indicate whether, when we are simulating, to activate requests...
             if (routeContext.getActivationContext().isActionsToPerform()) {
                 activateRequests(routeContext, document, nodeInstance);
             }
-            // if we are in simulation, don't block, just transition out
-            return false;
+            return new SimpleResult(true);
+        } else if (!activateRequests(routeContext, document, nodeInstance) && shouldTransition(document, nodeInstance)) {
+            return new SimpleResult(true);
         } else {
-            // activate any unactivated pending requests on this node instance
-            boolean activatedBlockingRequests = activateRequests(routeContext, document, nodeInstance);
-            // determine whether there are any pending blocking requests
-            if (activatedBlockingRequests) {
-                // if we just activated blocking requests then surely there are pending blocking requests
-                assert(activatedBlockingRequests == blockingRequestsArePending(routeContext, document, nodeInstance)) : "Blocking requests were activated but none were subsequently found";
-                return true;
-            } else {
-                // otherwise let's see if there are any pre-existing blocking requests associated with this node instance
-                return blockingRequestsArePending(routeContext, document, nodeInstance);
-            }
-        }
+            return new SimpleResult(false);
+        }            
     }
-
-    /**
-     * @return whether there are any pending requests at the given route node instance which are blocking (i.e., 'approve' or 'complete')
-     */
-    private boolean blockingRequestsArePending(RouteContext routeContext, DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) {
-        List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());
-        boolean blockingRequestsArePending = false;
-        for (ActionRequestValue request: requests) {
+    
+    public boolean shouldTransition(DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) {
+        List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());
+        boolean shouldTransition = true;
+        for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
+            ActionRequestValue request = (ActionRequestValue) iterator.next();
             if (request.isApproveOrCompleteRequest()) {
-                blockingRequestsArePending = true;
+                shouldTransition = false;
                 break;
             }
         }
-        return blockingRequestsArePending;
+        return shouldTransition;
     }
 
     /**
-     * Activates the action requests that are pending at this routelevel of the document. The requests are processed by priority and then request ID.
-     * It is implicit in the access that the requests are activated according to the route level above all.
+     * Activates the action requests that are pending at this routelevel of the document. The requests are processed by priority and then request ID. It is implicit in the access that the requests are activated according to the route level above all.
      * <p>
-     * FYI and acknowledgement requests do not cause the processing to stop. Only action requests for approval or completion cause the processing to
-     * stop and then only for route level with a serialized activation policy. Only requests at the current document's current route level are activated.
-     * Inactive requests at a lower level cause a routing exception.
+     * FYI and acknowledement requests do not cause the processing to stop. Only action requests for approval or completion cause the processing to stop and then only for route level with a serialized activation policy. Only requests at the current document's current route level are activated. Inactive requests at a lower level cause a routing exception.
      * <p>
      * Exception routing and adhoc routing are processed slightly differently.
      * 
-     * @param context the RouteContext
-     * @param document the document we are processing
-     * @param nodeInstance the node instance we are processing
-     * @return True if the any blocking actions requests (approve or complete) were activated.
+     * @param rh
+     *            RouteHeaderBean object for which requests are activated
+     * @return True if the any approval actions were activated.
      * @throws ResourceUnavailableException
      * @throws WorkflowException
      */
-    private boolean activateRequests(RouteContext context, DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) throws WorkflowException {
+    public boolean activateRequests(RouteContext context, DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) throws WorkflowException {
         MDC.put("docID", document.getRouteHeaderId());
         PerformanceLogger performanceLogger = new PerformanceLogger(document.getRouteHeaderId());
         List generatedActionItems = new ArrayList();
@@ -190,7 +151,7 @@ public class RequestActivationNode implements SimpleNode {
         
     }
     
-    private void saveDocument(RouteContext context, DocumentRouteHeaderValue document) {
+    protected void saveDocument(RouteContext context, DocumentRouteHeaderValue document) {
         if (!context.isSimulation()) {
             KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
         }
@@ -198,7 +159,7 @@ public class RequestActivationNode implements SimpleNode {
 
     private void logProcessingMessage(ActionRequestValue request) {
         if (LOG.isDebugEnabled()) {
-        	RouteNodeInstance nodeInstance = request.getNodeInstance();
+                RouteNodeInstance nodeInstance = request.getNodeInstance();
             StringBuffer buffer = new StringBuffer();
             buffer.append("Processing AR: ").append(request.getActionRequestId()).append("\n");
             buffer.append("AR Node Name: ").append(nodeInstance != null ? nodeInstance.getName() : "null").append("\n");

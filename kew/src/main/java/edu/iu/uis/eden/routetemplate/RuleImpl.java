@@ -28,16 +28,16 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
  */
 class RuleImpl implements Rule {
     /**
-     * The default type of rule selector implementation to use if none is explicitly
+     * The default type of rule expression implementation to use if none is explicitly
      * specified for the node.
      */
     public static final String DEFAULT_RULE_EXPRESSION = "WorkflowAttribute";
     /**
-     * Package in which rule selector implementations live
+     * Package in which rule expression implementations live
      */
     private static final String RULE_EXPRESSION_PACKAGE = "edu.iu.uis.eden.routetemplate";
     /**
-     * The class name suffix all rule selectors should have; e.g. FooRuleExpression
+     * The class name suffix all rule expressions should have; e.g. FooRuleExpression
      */
     private static final String RULE_EXPRESSION_SUFFIX= "RuleExpression";
 

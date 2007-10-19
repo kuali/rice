@@ -27,7 +27,10 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * Tests KRA meta-rule functionality 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Ignore // until groovy dependencies issue gets resolved
+// until groovy dependencies issue gets resolved this test needs to be ignored in CI
+// to re-enable this test, uncomment this @Ignore and uncomment the Groovy dependencies
+// in the root pom
+@Ignore
 public class KRAMetaRuleTest extends KEWTestCase {
     protected void loadTestData() throws Exception {
         loadXmlFile("KRAMetaRule.xml");
@@ -39,12 +42,28 @@ public class KRAMetaRuleTest extends KEWTestCase {
 
         doc = new WorkflowDocument(new NetworkIdVO("user2"), doc.getRouteHeaderId());
 
+        // user2 defined on bizRule4...the first rule that yields responsibilities
         assertTrue(doc.isApprovalRequested());
         
         doc.approve("approving as user2");
         
         doc = new WorkflowDocument(new NetworkIdVO("user2"), doc.getRouteHeaderId());
         
+        assertFalse(doc.isApprovalRequested());
+        
+        // now load it up as user3
+        doc = new WorkflowDocument(new NetworkIdVO("user3"), doc.getRouteHeaderId());
+
+        // user1 defined on bizRule5...the second rule that yields responsibilities
+        assertTrue(doc.isApprovalRequested());
+        
+        doc.approve("approving as user3");
+
+        doc = new WorkflowDocument(new NetworkIdVO("user3"), doc.getRouteHeaderId());
+        assertFalse(doc.isApprovalRequested());
+        doc = new WorkflowDocument(new NetworkIdVO("user2"), doc.getRouteHeaderId());
+        assertFalse(doc.isApprovalRequested());
+        doc = new WorkflowDocument(new NetworkIdVO("user1"), doc.getRouteHeaderId());
         assertFalse(doc.isApprovalRequested());
      
         assertTrue(doc.stateIsFinal());

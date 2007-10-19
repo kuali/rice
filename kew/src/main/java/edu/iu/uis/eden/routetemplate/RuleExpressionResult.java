@@ -17,6 +17,8 @@ package edu.iu.uis.eden.routetemplate;
 
 import java.util.List;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * Result of a {@link RuleExpression} evaluation 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -75,5 +77,11 @@ public class RuleExpressionResult {
      */
     public List<RuleResponsibility> getResponsibilities() {
         return responsibilities;
+    }
+
+    public String toString() {
+        return new ToStringBuilder(this).append("rule", rule)
+                                        .append("success", success)
+                                        .append("responsibilities", responsibilities).toString();
     }
 }

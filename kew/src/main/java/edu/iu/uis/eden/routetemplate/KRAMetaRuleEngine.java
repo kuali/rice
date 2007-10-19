@@ -104,7 +104,7 @@ public class KRAMetaRuleEngine {
 
         int stmtNum = curStatement + 1;
         String statement = statements[curStatement];
-        LOG.info("Processing statement: " + statement);
+        LOG.debug("Processing statement: " + statement);
         String[] words = statement.split("\\s*:\\s*");
         if (words.length < 2) {
             throw new ParseException("Invalid statement (#" + stmtNum + "): " + statement, 0);
@@ -114,7 +114,7 @@ public class KRAMetaRuleEngine {
             throw new ParseException("Invalid rule in statement (#" + stmtNum + "): " + statement, 0);
         }
         String flag = words[1];
-        LOG.error(flag.toUpperCase());
+        LOG.debug(flag.toUpperCase());
         KRA_RULE_FLAG flagCode = KRA_RULE_FLAG.valueOf(flag.toUpperCase());
         if (flagCode == null) {
             throw new ParseException("Invalid flag in statement (#" + stmtNum + "): " + statement, 0);
@@ -123,39 +123,34 @@ public class KRAMetaRuleEngine {
         if (nestedRule == null) {
             throw new ParseException("Rule '" + ruleName + "' in statement (#" + stmtNum + ") not found: " + statement, 0);
         }
-        
+
         Rule rule = new RuleImpl(nestedRule);
+        RuleExpressionResult result;
         switch (flagCode) {
             case NEXT:
-                {
-                    RuleImpl ruleImpl = new RuleImpl(nestedRule);
-                    RuleExpressionResult result = ruleImpl.evaluate(rule, context);
-                    curStatement++;
-                    return result;
-                }
+                result = rule.evaluate(rule, context);
+                break;
             case TRUE:
-                {
-                    RuleImpl ruleImpl = new RuleImpl(nestedRule);
-                    RuleExpressionResult result = ruleImpl.evaluate(rule, context);
-                    if (!result.isSuccess()) {
-                        stop = true;
-                    }
-                    curStatement++;
-                    return result;
+                result = rule.evaluate(rule, context);
+                if (!result.isSuccess()) {
+                    stop = true;
                 }
+                break;
             case FALSE:
-                {
-                    RuleImpl ruleImpl = new RuleImpl(nestedRule);
-                    RuleExpressionResult result = ruleImpl.evaluate(rule, context);
-                    if (result.isSuccess()) {
-                        stop = true;
-                    }
-                    curStatement++;
-                    return result;
-                    //return new RuleExpressionResult(false, result.getResponsibilities());
+                result = rule.evaluate(rule, context);
+                if (result.isSuccess()) {
+                    stop = true;
+                    // we need to just invert the ultimate expression result success, because in this case
+                    // we wanted the expression to fail but it didn't
+                    result = new RuleExpressionResult(rule, false, result.getResponsibilities());
                 }
+                break;
             default:
                 throw new WorkflowException("Unhandled statement flag: " + flagCode);
         }
+
+        curStatement++;
+        LOG.info("Result of statement '" + statement + "': " + result);
+        return result;
     }
 }

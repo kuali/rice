@@ -31,7 +31,10 @@ import groovy.lang.GroovyShell;
 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Ignore // until groovy dependencies issue gets resolved
+// until groovy dependencies issue gets resolved this test needs to be ignored in CI
+// to re-enable this test, uncomment this @Ignore and uncomment the Groovy dependencies
+// in the root pom
+@Ignore
 public class LoadEmbeddedGroovyTest {
     @Test public void testNativeGroovy() {
         Binding binding = new Binding();

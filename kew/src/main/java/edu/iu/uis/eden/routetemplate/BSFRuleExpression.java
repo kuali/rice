@@ -50,6 +50,7 @@ public class BSFRuleExpression implements RuleExpression {
         BSFManager manager = new BSFManager();
         try {
             manager.declareBean("rule", rule, RuleBaseValues.class);
+            manager.declareBean("routeContext", context, RouteContext.class);
             result = (RuleExpressionResult) manager.eval(lang, ruleDefinition.toString(), 0, 0, expression);
         } catch (BSFException e) {
             throw new WorkflowException("Error evaluating " + type + " expression: '" + expression + "'", e);

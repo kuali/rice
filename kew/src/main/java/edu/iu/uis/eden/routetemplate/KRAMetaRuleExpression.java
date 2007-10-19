@@ -62,11 +62,27 @@ public class KRAMetaRuleExpression implements RuleExpression {
 
         try {
             KRAMetaRuleEngine engine = new KRAMetaRuleEngine(expression);
-    
+
+            int responsibilityPriority = 0; // responsibility priority, lower value means higher priority (due to sort)...increment as we go
             RuleExpressionResult result = null;
+            boolean success = false;
+            List<RuleResponsibility> responsibilities = new ArrayList<RuleResponsibility>();
             while (!engine.isDone()) {
                 result = engine.processSingleStatement(context);
+                if (result.isSuccess() && result.getResponsibilities() != null) {
+                    // accumulate responsibilities if the evaluation was successful
+                    // make sure to reduce priority for each subsequent rule in order for sequential activation to work as desired
+                    for (RuleResponsibility responsibility: result.getResponsibilities()) {
+                        responsibility.setPriority(Integer.valueOf(responsibilityPriority));
+                        responsibilities.add(responsibility);
+                    }
+                    // decrement responsibilityPriority for next rule expression result responsibilities
+                    responsibilityPriority++;
+                    success = true;
+                }
             }
+            result = new RuleExpressionResult(rule, success, responsibilities);
+            LOG.info("KRAMetaRuleExpression returning result: " + result);
             return result;
         } catch (ParseException pe) {
             throw new WorkflowException("Error parsing expression", pe);

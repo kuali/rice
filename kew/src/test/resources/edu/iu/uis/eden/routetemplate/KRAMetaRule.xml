@@ -53,7 +53,11 @@
             <routeNodes>
                 <start name="initial"/>
                 <requests name="approval">
-                    <activationType>P</activationType>
+                    <!--
+                      serial activation so that when results of multiple rule evaluations are accumulated/collated
+                      they are activated in turn...
+                    -->
+                    <activationType>S</activationType>
                     <ruleSelector>Named</ruleSelector>
                     <ruleName>KRAMetaRule</ruleName>
                 </requests>
@@ -69,6 +73,17 @@
             <description>KRABizRule1 mandatory description</description>
             <expression type="BSF:groovy">
                 import edu.iu.uis.eden.routetemplate.*
+                import edu.iu.uis.eden.engine.node.*
+
+                print 'KRABizRule1 is executing...'
+                
+                // do something fancy...store some state 
+                BranchState state = new BranchState()
+                state.setKey("cookie")
+                state.setValue("I'm a cookie from KRABizRule1 and at the tone it's " + new java.util.Date())
+                state.setBranch(routeContext.getNodeInstance().getBranch())
+                routeContext.getNodeInstance().getBranch().addBranchState(state)
+           
                 return new RuleExpressionResult(rule, true)
             </expression>
         </rule>
@@ -90,6 +105,9 @@
                     </ruleExtensionValues>
                 </ruleExtension>
             </ruleExtensions>
+            <responsibilities>
+                <responsibility><user>user1</user></responsibility>
+            </responsibilities>
         </rule>
         <!-- this will succeed because the extension value DOES match -->
         <rule>
@@ -116,10 +134,33 @@
             <description>KRABizRule4 mandatory description</description>
             <expression type="BSF:groovy">
                 import edu.iu.uis.eden.routetemplate.*
+                import edu.iu.uis.eden.engine.node.*
+
+                print 'KRABizRule4 is executing...'
+                
+                BranchState state = routeContext.getNodeInstance().getBranch().getBranchState("cookie")
+                if (state == null)
+                    throw new RuntimeException("Hey, where's my cookie!")
+
+                print 'KRABizRule4 found a cookie from KRABizRule1: ' + state.getValue()
+
                 return new RuleExpressionResult(rule, true, rule.getDefinition().getResponsibilities())
             </expression>
             <responsibilities>
                 <responsibility><user>user2</user></responsibility>
+            </responsibilities>
+        </rule>
+        <rule>
+            <name>KRABizRule5</name>
+            <documentType>KRAMetaRuleTest</documentType>
+            <description>KRABizRule4 mandatory description</description>
+            <expression type="BSF:groovy">
+                import edu.iu.uis.eden.routetemplate.*
+                print "KRABizRule5 is executing..."
+                return new RuleExpressionResult(rule, true, rule.getDefinition().getResponsibilities())
+            </expression>
+            <responsibilities>
+                <responsibility><user>user3</user></responsibility>
             </responsibilities>
         </rule>
         <rule>
@@ -131,6 +172,7 @@
               KRABizRule2: false;
               KRABizRule3: true;
               KRABizRule4: next;
+              KRABizRule5: true;
             </expression>
         </rule>
     </rules>

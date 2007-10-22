@@ -568,7 +568,10 @@ public class ActionListAction extends WorkflowAction {
     
     public ActionForward removeOutboxItems(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 	ActionListForm alForm = (ActionListForm)form;
-	KEWServiceLocator.getActionListService().removeOutboxItems(getUserSession(request).getWorkflowUser(), Arrays.asList(alForm.getOutboxItems()));
+	if (alForm.getOutboxItems() != null) {
+	    KEWServiceLocator.getActionListService().removeOutboxItems(getUserSession(request).getWorkflowUser(), Arrays.asList(alForm.getOutboxItems()));	    
+	}
+	
 	alForm.setViewOutbox("true");
 	return start(mapping, form, request, response);
     }

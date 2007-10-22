@@ -86,16 +86,36 @@
       <table width="100%" border=0 cellspacing=0 cellpadding=0>
         <tr>
           <td>
-            <strong><bean-el:message key="actionList.ActionList.title"/></strong>
+            <c:choose>
+	            <c:when test="${ActionListForm.viewOutbox && ActionListForm.showOutbox}">
+		            <a href="<c:url value="ActionList.do?viewOutbox=false" />"><bean-el:message key="actionList.ActionList.title"/></a>
+		            | <strong><bean-el:message key="actionList.Outbox.title"/></strong>
+		             <c:if test="${! ActionListForm.outBoxEmpty }">
+			            <td align="right">
+			  	        	<html-el:image src="images/buttonsmall_delselitems.gif" align="absmiddle" property="methodToCall.removeOutboxItems"/>
+			          	</td>
+			          </c:if>
+	            </c:when>
+	            <c:otherwise>
+	                <strong><bean-el:message key="actionList.ActionList.title"/></strong>
+	                <c:if test="${ActionListForm.showOutbox }">
+		            	| <a href="<c:url value="ActionList.do?viewOutbox=true" />"><bean-el:message key="actionList.Outbox.title"/></a>
+	            	</c:if>
+	            	<c:if test="${kewUserSession.helpDeskActionListUser == null && ! empty actionList && ! empty ActionListForm.defaultActions}">
+			            <td align="right">
+			               <c:set var="defaultActions" value="${ActionListForm.defaultActions}" scope="request" />
+			               <html-el:select styleId='defaultAction' property="defaultActionToTake">
+			                 <html-el:options collection="defaultActions" labelProperty="value" property="key" filter="false"/>
+			               </html-el:select>&nbsp;<html-el:img src="images/tinybutton-applydflt.gif" align="absmiddle" onclick="setActions();" /><br>
+			            </td>
+			          </c:if>
+	            </c:otherwise>
+            </c:choose>
           </td>
-          <c:if test="${kewUserSession.helpDeskActionListUser == null && ! empty actionList && ! empty ActionListForm.defaultActions}">
-            <td align="right">
-               <c:set var="defaultActions" value="${ActionListForm.defaultActions}" scope="request" />
-               <html-el:select styleId='defaultAction' property="defaultActionToTake">
-                 <html-el:options collection="defaultActions" labelProperty="value" property="key" filter="false"/>
-               </html-el:select>&nbsp;<html-el:img src="images/tinybutton-applydflt.gif" align="absmiddle" onclick="setActions();" /><br>
-            </td>
-          </c:if>
+          
+
+          
+          
         </tr>
       </table>
     </td>
@@ -162,6 +182,9 @@
   </bean:define>
   <bean:define id="routeLogLabel">
  	<bean-el:message key="actionList.ActionList.results.label.routeLog"/>
+  </bean:define>
+  <bean:define id="outboxActionItemDelete">
+  	Delete Item
   </bean:define>
 
   <display-el:table class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="actionListPage" pagesize="${preferences.pageSize}" export="true" id="result"
@@ -268,7 +291,7 @@
 	</display-el:column>
   </c:if>
 
-  <c:if test="${kewUserSession.helpDeskActionListUser == null && ActionListForm.hasCustomActions && (ActionListForm.customActionList || (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL))}">
+  <c:if test="${! ActionListForm.viewOutbox && kewUserSession.helpDeskActionListUser == null && ActionListForm.hasCustomActions && (ActionListForm.customActionList || (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL))}">
     <display-el:column title="${actionsLabel}" class="display-column">
         <c:if test="${! empty result.customActions}">
           <c:set var="customActions" value="${result.customActions}" scope="request" />
@@ -278,6 +301,12 @@
           </html-el:select>
           <c:set var="customActionsPresent" value="true" />
         </c:if>&nbsp;
+    </display-el:column>
+  </c:if>
+  
+  <c:if test="${ActionListForm.viewOutbox }">
+      <display-el:column title="${outboxActionItemDelete}" class="display-column">
+          <html-el:checkbox property="outboxItems" value="${result.actionItemId}"/>
     </display-el:column>
   </c:if>
 

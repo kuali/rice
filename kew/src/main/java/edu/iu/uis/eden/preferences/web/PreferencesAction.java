@@ -26,6 +26,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.core.Core;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -65,6 +66,8 @@ public class PreferencesAction extends WorkflowAction {
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
         request.setAttribute("actionListContent", EdenConstants.ACTION_LIST_CONTENT);
         getDelegatorFilterChoices(request);
+        PreferencesForm prefForm = (PreferencesForm)form;
+        prefForm.setShowOutbox(Core.getCurrentContextConfig().getOutBoxOn());
         return null;
     }
 

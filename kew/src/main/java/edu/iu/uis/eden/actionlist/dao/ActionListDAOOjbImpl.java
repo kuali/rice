@@ -24,6 +24,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ojb.broker.PersistenceBroker;
@@ -36,6 +37,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actionitem.ActionItemActionListExtension;
+import edu.iu.uis.eden.actionitem.OutboxItemActionListExtension;
 import edu.iu.uis.eden.actionlist.ActionListFilter;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -281,6 +283,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
      *
      * @return the Action List as a Collection of ActionItems
      */
+    @SuppressWarnings("unchecked")
     private Collection createActionList(Collection actionItems) {
     	Map actionItemMap = new HashMap();
     	ActionListPriorityComparator comparator = new ActionListPriorityComparator();
@@ -292,5 +295,51 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 			}
 		}
     	return actionItemMap.values();
+    }
+
+    
+    @SuppressWarnings("unchecked")
+    public Collection getOutbox(WorkflowUser workflowUser, ActionListFilter filter) {
+	LOG.info("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+        Criteria crit = new Criteria();
+        crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
+        if (filter != null) {
+            setUpActionListCriteria(crit, filter);
+        }
+        LOG.info("running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+        Collection collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
+        LOG.info("finished running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+        return createActionList(collection);
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see edu.iu.uis.eden.actionlist.dao.ActionListDAO#removeOutboxItems(edu.iu.uis.eden.user.WorkflowUser, java.util.List)
+     */
+    public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems) {
+	Criteria crit = new Criteria();
+	crit.addIn("actionItemId", outboxItems);
+	getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see edu.iu.uis.eden.actionlist.dao.ActionListDAO#saveOutboxItem(edu.iu.uis.eden.actionitem.OutboxItemActionListExtension)
+     */
+    public void saveOutboxItem(OutboxItemActionListExtension outboxItem) {
+	this.getPersistenceBrokerTemplate().store(outboxItem);
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see edu.iu.uis.eden.actionlist.dao.ActionListDAO#getOutboxByDocumentId(java.lang.Long)
+     */
+    public OutboxItemActionListExtension getOutboxByDocumentId(Long documentId) {
+	Criteria crit = new Criteria();
+	crit.addEqualTo("routeHeaderId", documentId);
+	return (OutboxItemActionListExtension)getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
     }
 }

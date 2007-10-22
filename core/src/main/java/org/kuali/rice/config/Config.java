@@ -141,6 +141,8 @@ public interface Config {
 	public static final String FIRST_WEEKLY_EMAIL_DELIVERY_DATE = "email.weekly.firstDeliveryDate";
 
 	public static final String RUNNING_SERVER_IN_EMBEDDED = "embedded.server";
+	
+	public static final String OUT_BOX_MODE = "actionlist.outbox.off";
 
 	public void parseConfig() throws IOException;
 
@@ -219,4 +221,5 @@ public interface Config {
 	public Boolean getDevMode();
 	
 	public Boolean getStoreAndForward();
+	public Boolean getOutBoxOn();
 }

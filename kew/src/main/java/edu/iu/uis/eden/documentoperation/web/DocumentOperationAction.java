@@ -231,7 +231,7 @@ public class DocumentOperationAction extends WorkflowAction {
 				for (Iterator childIter = actionRequest.getChildrenRequests().iterator(); childIter.hasNext();) {
 					getActionRequestService().deleteByActionRequestId(((ActionRequestValue) childIter.next()).getActionRequestId());
 				}
-				getActionListService().deleteActionItems(actionRequest.getActionRequestId());
+				getActionListService().deleteActionItems(actionRequest);
 				if (actionRequest.getActionTakenId() != null) {
 					ActionTakenValue actionTaken = getActionTakenService().findByActionTakenId(actionRequest.getActionTakenId());
 					getActionTakenService().delete(actionTaken);

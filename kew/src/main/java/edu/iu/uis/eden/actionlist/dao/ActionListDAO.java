@@ -17,8 +17,10 @@
 package edu.iu.uis.eden.actionlist.dao;
 
 import java.util.Collection;
+import java.util.List;
 
 import edu.iu.uis.eden.actionitem.ActionItem;
+import edu.iu.uis.eden.actionitem.OutboxItemActionListExtension;
 import edu.iu.uis.eden.actionlist.ActionListFilter;
 import edu.iu.uis.eden.user.WorkflowUser;
 
@@ -32,4 +34,17 @@ import edu.iu.uis.eden.user.WorkflowUser;
 public interface ActionListDAO {
     public Collection getActionList(WorkflowUser workflowUser, ActionListFilter filter);
     public int getCount(String workflowId);
+    
+    /**
+     * 
+     * Retrieves {@link OutboxItemActionListExtension} items for the given user
+     * 
+     * @param workflowUser
+     * @param filter
+     * @return
+     */
+    public Collection getOutbox(WorkflowUser workflowUser, ActionListFilter filter);
+    public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems);
+    public void saveOutboxItem(OutboxItemActionListExtension outboxItem);
+    public OutboxItemActionListExtension getOutboxByDocumentId(Long documentId);
 }

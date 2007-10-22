@@ -1,22 +1,20 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- *
- *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
+ * 
+ * 
+ * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * 
  * http://www.opensource.org/licenses/ecl1.php
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
  */
 package edu.iu.uis.eden.actionlist.web;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,14 +25,14 @@ import edu.iu.uis.eden.actionlist.ActionToTake;
 
 /**
  * Struts form for action ActionListAction
- *
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionListForm extends ActionForm {
 
-	private static final long serialVersionUID = -6246391732337228007L;
+    private static final long serialVersionUID = -6246391732337228007L;
 
-	private String delegator;
+    private String delegator;
     private String methodToCall = "";
     private String helpDeskActionListUserName;
     private String docType;
@@ -64,229 +62,255 @@ public class ActionListForm extends ActionForm {
     private int count;
     private String cssFile = "screen.css";
     private String logoAlign = "left";
+    private String viewOutbox;
+    private Long[] outboxItems;
+    private boolean outBoxEmpty;
+    private Boolean showOutbox;
 
     public String getRouteLogPopup() {
-        return routeLogPopup;
-        //return Utilities.getApplicationConstant(EdenConstants.ACTION_LIST_ROUTE_LOG_POPUP_KEY).trim();
+	return routeLogPopup;
     }
 
     public void setRouteLogPopup(String routeLogPopup) {
-        this.routeLogPopup = routeLogPopup;
+	this.routeLogPopup = routeLogPopup;
     }
 
     public String getDocumentPopup() {
-        return documentPopup;
-        //return Utilities.getApplicationConstant(EdenConstants.ACTION_LIST_DOCUMENT_POPUP_KEY).trim();
+	return documentPopup;
     }
 
     public void setDocumentPopup(String documentPopup) {
-        this.documentPopup = documentPopup;
+	this.documentPopup = documentPopup;
     }
 
     public String getHelpDeskActionListUserName() {
-        return helpDeskActionListUserName;
+	return helpDeskActionListUserName;
     }
 
     public void setHelpDeskActionListUserName(String helpDeskActionListUserName) {
-        this.helpDeskActionListUserName = helpDeskActionListUserName;
+	this.helpDeskActionListUserName = helpDeskActionListUserName;
     }
 
     public String getMethodToCall() {
-        return methodToCall;
+	return methodToCall;
     }
 
     public void setMethodToCall(String methodToCall) {
-        this.methodToCall = methodToCall;
+	this.methodToCall = methodToCall;
     }
 
     public String getDelegator() {
-        return delegator;
+	return delegator;
     }
 
     public void setDelegator(String delegator) {
-        this.delegator = delegator;
+	this.delegator = delegator;
     }
 
-//    public Long[] getFyiRequestSelect() {
-//        return fyiRequestSelect;
-//    }
-//
-//    public void setFyiRequestSelect(Long[] fyiRequestSelect) {
-//        this.fyiRequestSelect = fyiRequestSelect;
-//    }
-
     public String getDocType() {
-        return docType;
+	return docType;
     }
 
     public void setDocType(String docType) {
-        this.docType = docType;
+	this.docType = docType;
     }
 
     public String getDocTypeForceRefresh() {
-        return docTypeForceRefresh;
+	return docTypeForceRefresh;
     }
 
     public void setDocTypeForceRefresh(String docTypeForceRefresh) {
-        this.docTypeForceRefresh = docTypeForceRefresh;
+	this.docTypeForceRefresh = docTypeForceRefresh;
     }
 
     public boolean isRefreshRequired() {
-        return getDocTypeForceRefresh() != null;
+	return getDocTypeForceRefresh() != null;
     }
 
     public String getFilterLegend() {
-        return filterLegend;
+	return filterLegend;
     }
 
     public void setFilterLegend(String filterLegend) {
-        this.filterLegend = filterLegend;
+	this.filterLegend = filterLegend;
     }
 
     public String getActionListType() {
-        if (actionListType == null) {
-            setActionListType("all");
-        }
-        return actionListType;
+	if (actionListType == null) {
+	    setActionListType("all");
+	}
+	return actionListType;
     }
 
     public void setActionListType(String actionListType) {
-        this.actionListType = actionListType;
+	this.actionListType = actionListType;
     }
 
     public Boolean getCustomActionList() {
-        return customActionList;
+	return customActionList;
     }
 
     public void setCustomActionList(Boolean customActionList) {
-        this.customActionList = customActionList;
+	this.customActionList = customActionList;
     }
 
     public String getDefaultActionToTake() {
-        return defaultActionToTake;
+	return defaultActionToTake;
     }
 
     public void setDefaultActionToTake(String defaultActionToTake) {
-        this.defaultActionToTake = defaultActionToTake;
+	this.defaultActionToTake = defaultActionToTake;
     }
 
     public List getActionsToTake() {
-        return actionsToTake;
+	return actionsToTake;
     }
 
     public void setActionsToTake(List actionsToTake) {
-        this.actionsToTake = actionsToTake;
+	this.actionsToTake = actionsToTake;
     }
 
     public ActionToTake getActions(int index) {
-        while (getActionsToTake().size() <= index) {
-            getActionsToTake().add(new ActionToTake());
-        }
-        return (ActionToTake) getActionsToTake().get(index);
+	while (getActionsToTake().size() <= index) {
+	    getActionsToTake().add(new ActionToTake());
+	}
+	return (ActionToTake) getActionsToTake().get(index);
     }
 
     public Map getDefaultActions() {
-        return defaultActions;
+	return defaultActions;
     }
 
     public void setDefaultActions(Map defaultActions) {
-        this.defaultActions = defaultActions;
+	this.defaultActions = defaultActions;
     }
 
     public String getDelegationId() {
-        return delegationId;
+	return delegationId;
     }
 
     public void setDelegationId(String delegationId) {
-        this.delegationId = delegationId;
+	this.delegationId = delegationId;
     }
 
     public List getDelegators() {
-        return delegators;
+	return delegators;
     }
 
     public void setDelegators(List delegators) {
-        this.delegators = delegators;
+	this.delegators = delegators;
     }
 
     public Boolean getHasCustomActions() {
-        return hasCustomActions;
+	return hasCustomActions;
     }
 
     public void setHasCustomActions(Boolean hasCustomActions) {
-        this.hasCustomActions = hasCustomActions;
+	this.hasCustomActions = hasCustomActions;
     }
 
-	public String getDir() {
-		return dir;
-	}
+    public String getDir() {
+	return dir;
+    }
 
-	public void setDir(String dir) {
-		this.dir = dir;
-	}
+    public void setDir(String dir) {
+	this.dir = dir;
+    }
 
-	public Integer getPage() {
-		return page;
-	}
+    public Integer getPage() {
+	return page;
+    }
 
-	public void setPage(Integer page) {
-		this.page = page;
-	}
+    public void setPage(Integer page) {
+	this.page = page;
+    }
 
-	public String getSort() {
-		return sort;
-	}
+    public String getSort() {
+	return sort;
+    }
 
-	public void setSort(String sort) {
-		this.sort = sort;
-	}
+    public void setSort(String sort) {
+	this.sort = sort;
+    }
 
-	public Integer getCurrentPage() {
-		return currentPage;
-	}
+    public Integer getCurrentPage() {
+	return currentPage;
+    }
 
-	public void setCurrentPage(Integer currentPage) {
-		this.currentPage = currentPage;
-	}
+    public void setCurrentPage(Integer currentPage) {
+	this.currentPage = currentPage;
+    }
 
-	public String getCurrentDir() {
-		return currentDir;
-	}
+    public String getCurrentDir() {
+	return currentDir;
+    }
 
-	public void setCurrentDir(String currentDir) {
-		this.currentDir = currentDir;
-	}
+    public void setCurrentDir(String currentDir) {
+	this.currentDir = currentDir;
+    }
 
-	public String getCurrentSort() {
-		return currentSort;
-	}
+    public String getCurrentSort() {
+	return currentSort;
+    }
 
-	public void setCurrentSort(String currentSort) {
-		this.currentSort = currentSort;
-	}
+    public void setCurrentSort(String currentSort) {
+	this.currentSort = currentSort;
+    }
 
-	public int getCount() {
-		return count;
-	}
+    public int getCount() {
+	return count;
+    }
 
-	public void setCount(int count) {
-		this.count = count;
-	}
+    public void setCount(int count) {
+	this.count = count;
+    }
 
-	public String getCssFile() {
-		return cssFile;
-	}
+    public String getCssFile() {
+	return cssFile;
+    }
 
-	public void setCssFile(String cssFile) {
-		this.cssFile = cssFile;
-	}
+    public void setCssFile(String cssFile) {
+	this.cssFile = cssFile;
+    }
 
-	public String getLogoAlign() {
-		return logoAlign;
-	}
+    public String getLogoAlign() {
+	return logoAlign;
+    }
 
-	public void setLogoAlign(String logoAlign) {
-		this.logoAlign = logoAlign;
-	}
+    public void setLogoAlign(String logoAlign) {
+	this.logoAlign = logoAlign;
+    }
+
+    public String getViewOutbox() {
+	return this.viewOutbox;
+    }
+
+    public void setViewOutbox(String viewOutbox) {
+	this.viewOutbox = viewOutbox;
+    }
+
+    public Long[] getOutboxItems() {
+	return outboxItems;
+    }
+
+    public void setOutboxItems(Long[] outboxItems) {
+	this.outboxItems = outboxItems;
+    }
+
+    public boolean isOutBoxEmpty() {
+        return this.outBoxEmpty;
+    }
+
+    public void setOutBoxEmpty(boolean outBoxEmpty) {
+        this.outBoxEmpty = outBoxEmpty;
+    }
+
+    public Boolean getShowOutbox() {
+        return this.showOutbox;
+    }
+
+    public void setShowOutbox(Boolean showOutbox) {
+        this.showOutbox = showOutbox;
+    }
 
 }

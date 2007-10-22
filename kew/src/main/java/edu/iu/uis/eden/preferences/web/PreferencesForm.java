@@ -33,6 +33,7 @@ public class PreferencesForm extends ActionForm {
 	private Preferences preferences;
     private String methodToCall = "";
     private String returnMapping;
+    private boolean showOutbox = true;
     
     public String getReturnMapping() {
         return returnMapping;
@@ -54,6 +55,12 @@ public class PreferencesForm extends ActionForm {
     }
     public void setPreferences(Preferences preferences) {
         this.preferences = preferences;
+    }
+    public boolean isShowOutbox() {
+        return this.showOutbox;
+    }
+    public void setShowOutbox(boolean showOutbox) {
+        this.showOutbox = showOutbox;
     }
 }
 

@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 import edu.iu.uis.eden.actionitem.ActionItem;
+import edu.iu.uis.eden.actionitem.OutboxItemActionListExtension;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -45,13 +46,11 @@ public interface ActionListService {
 
     public void deleteByRouteHeaderId(Long routeHeaderId);
 
-    public void deleteActionItems(Long actionRequestId);
+    public void deleteActionItems(ActionRequestValue actionRequest);
 
     public List generateActionItems(ActionRequestValue actionRequest, boolean simulate) throws EdenUserNotFoundException;
 
     public Collection findByWorkflowUser(WorkflowUser workflowUser);
-
-//    public Collection findByWorkgroupId(Long workgroupId);
 
     public Collection findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId);
 
@@ -93,5 +92,17 @@ public interface ActionListService {
      * Retrieves the number of Action List items in the given user's primary Action List (does not include secondary delegations)
      */
     public int getCount(WorkflowUser user);
-
+    
+    
+    /**
+     * 
+     * Retrieves {@link OutboxItemActionListExtension} items for the given user
+     * 
+     * @param workflowUser
+     * @param filter
+     * @return
+     */
+    public Collection getOutbox(WorkflowUser workflowUser, ActionListFilter filter);
+    public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems);
+    public void saveOutboxItem(OutboxItemActionListExtension outboxItem);
 }

@@ -43,19 +43,11 @@ public interface ActionItemDAO {
 
     public Collection findByWorkflowUser(WorkflowUser workflowUser);
 
-//    public Collection findByWorkgroupId(Long workgroupId);
-
     public Collection findByRouteHeaderId(Long routeHeaderId);
     
     public Collection findByActionRequestId(Long actionRequestId);
 
     public Collection findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId);
-
-    //  public void deleteWorkgroupActionItems(Long routeHeaderId, Long
-    // workGroupId);
-    //  public void deleteUserActionItems(Long routeHeaderId, WorkflowUser
-    // workflowUser);
-    public void deleteActionItems(Long actionRequestId);
     
     public Collection findDelegators(WorkflowUser user, String delegationType) throws EdenUserNotFoundException;
     

@@ -172,6 +172,29 @@
       <foreignkey field-ref="routeHeaderId" />
     </reference-descriptor>
   </class-descriptor>
+  
+  <class-descriptor class="edu.iu.uis.eden.actionitem.OutboxItemActionListExtension" table="EN_OUT_BOX_ITM_T">
+    <field-descriptor column="ACTN_ITM_ID" name="actionItemId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_OUT_BOX_ITM" />
+    <field-descriptor name="workflowId" column="ACTN_ITM_PRSN_EN_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="dateAssigned" column="ACTN_ITM_ASND_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="actionRequestCd" column="ACTN_ITM_RQST_CD" jdbc-type="CHAR" />
+    <field-descriptor name="actionRequestId" column="ACTN_RQST_ID" jdbc-type="BIGINT" />
+    <field-descriptor name="routeHeaderId" column="DOC_HDR_ID" jdbc-type="BIGINT"  />
+    <field-descriptor name="responsibilityId" column="ACTN_ITM_RESP_ID" jdbc-type="BIGINT" />
+    <field-descriptor name="workgroupId" column="WRKGRP_ID" jdbc-type="BIGINT" />
+    <field-descriptor name="roleName" column="ROLE_NM" jdbc-type="VARCHAR" />
+    <field-descriptor name="docTitle" column="DOC_TTL" jdbc-type="VARCHAR" />
+    <field-descriptor name="docLabel" column="DOC_TYP_LBL_TXT" jdbc-type="VARCHAR" />
+    <field-descriptor name="docHandlerURL" column="DOC_TYP_HDLR_URL_ADDR" jdbc-type="VARCHAR" />
+    <field-descriptor name="docName" column="DOC_TYP_NM" jdbc-type="VARCHAR" />
+    <field-descriptor name="delegatorWorkflowId" column="ACTN_ITM_DLGN_PRSN_EN_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="delegatorWorkgroupId" column="ACTN_ITM_DLGN_WRKGRP_ID" jdbc-type="BIGINT" />
+    <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
+    <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
+    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
+      <foreignkey field-ref="routeHeaderId" />
+    </reference-descriptor>
+  </class-descriptor>
 
   <class-descriptor class="edu.iu.uis.eden.actiontaken.ActionTakenValue" table="EN_ACTN_TKN_T">
     <field-descriptor name="actionTakenId" column="ACTN_TKN_ID" jdbc-type="BIGINT" primarykey="true"

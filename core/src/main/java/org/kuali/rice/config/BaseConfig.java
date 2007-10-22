@@ -269,4 +269,11 @@ public abstract class BaseConfig implements Config {
 	public Boolean getStoreAndForward() {
 		return new Boolean(getProperty(Config.STORE_AND_FORWARD));
 	}
+	
+	public Boolean getOutBoxOn() {
+	    if (getProperty(Config.OUT_BOX_MODE) == null) {
+		return true;
+	    } 
+	    return new Boolean(getProperty(Config.OUT_BOX_MODE));
+	}
 }

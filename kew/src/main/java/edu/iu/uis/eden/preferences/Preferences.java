@@ -18,6 +18,8 @@ package edu.iu.uis.eden.preferences;
 
 import java.io.Serializable;
 
+import edu.iu.uis.eden.EdenConstants;
+
 /**
  * Model bean representing an individual user's Preferences within KEW.
  *
@@ -52,8 +54,8 @@ public class Preferences implements Serializable {
     private String colorProccessed;
     private String colorException;
     private String colorCanceled;
-//    private String actionListContentType;
     private String delegatorFilter;
+    private String useOutbox;
     
     /**
      * @return Returns the colorApproved.
@@ -339,14 +341,6 @@ public class Preferences implements Serializable {
     public void setShowClearFyi(String showClearFyi) {
         this.showClearFyi = showClearFyi;
     }
- 
-//    public String getActionListContentType() {
-//        return actionListContentType;
-//    }
-//
-//    public void setActionListContentType(String actionListContentType) {
-//        this.actionListContentType = actionListContentType;
-//    }
 
     public String getDelegatorFilter() {
         return delegatorFilter;
@@ -354,5 +348,17 @@ public class Preferences implements Serializable {
 
     public void setDelegatorFilter(String delegatorFilter) {
         this.delegatorFilter = delegatorFilter;
+    }
+    public String getUseOutbox() {
+        return this.useOutbox;
+    }
+    public void setUseOutbox(String useOutbox) {
+        this.useOutbox = useOutbox;
+    }
+    public boolean isUsingOutbox() {
+	if (this.getUseOutbox() != null && this.getUseOutbox().equals(EdenConstants.PREFERENCES_YES_VAL)) {
+	    return true;
+	}
+	return false;
     }
 }

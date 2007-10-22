@@ -147,6 +147,9 @@ public class TestRuleAttribute implements WorkflowAttribute, RoleAttribute, Work
 		Map qualifiedRoles = getRole(roleName);
 		if (qualifiedRoles == null) {
 		    addRole(roleName);
+		}
+		if (qualifiedRoles == null) {
+		    addRole(roleName);
 		    addQualifiedRole(roleName, qualifiedRoleName);
 		    qualifiedRoles = getRole(roleName);
 		}

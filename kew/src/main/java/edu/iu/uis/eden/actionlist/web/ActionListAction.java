@@ -17,6 +17,7 @@
 package edu.iu.uis.eden.actionlist.web;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -160,25 +161,31 @@ public class ActionListAction extends WorkflowAction {
                 actionList = null;
             }
 
-            if (actionList == null) {
-            	// fetch the action list
-                actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
-                request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
-            } else if (actionListSrv.refreshActionList(getUserSession(request).getWorkflowUser())) {
-                actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
-                request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
-            } else if (form.isRefreshRequired()) {
-                actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
-                request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
-            } else if (request.getSession().getAttribute(REQUERY_ACTION_LIST_KEY) != null) {
-                actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
-                request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
+            if (isOutboxMode(form, request)) {
+        	actionList = new ArrayList(actionListSrv.getOutbox(workflowUser, uSession.getActionListFilter()));
+        	form.setOutBoxEmpty(actionList.isEmpty());
             } else {
-            	freshActionList = false;
+                if (actionList == null) {
+                	// fetch the action list
+                    actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
+                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
+                } else if (actionListSrv.refreshActionList(getUserSession(request).getWorkflowUser())) {
+                    actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
+                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
+                } else if (form.isRefreshRequired()) {
+                    actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
+                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
+                } else if (request.getSession().getAttribute(REQUERY_ACTION_LIST_KEY) != null) {
+                    actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
+                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
+                } else {
+                	freshActionList = false;
+                }
+                request.getSession().setAttribute(ACTION_LIST_KEY, actionList);
             }
             // reset the requery action list key
             request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, null);
-
+            
             // build the drop-down of delegators
             if (EdenConstants.DELEGATORS_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getDelegatorFilter())) {
                 form.setDelegators(getDelegators(actionListSrv, workflowUser, EdenConstants.DELEGATION_SECONDARY));
@@ -205,7 +212,7 @@ public class ActionListAction extends WorkflowAction {
             }
             PaginatedList currentPage = buildCurrentPage(actionList, form.getCurrentPage(), form.getCurrentSort(), form.getCurrentDir(), pageSize, preferences, errors, form);
             request.setAttribute(ACTION_LIST_PAGE_KEY, currentPage);
-            request.getSession().setAttribute(ACTION_LIST_KEY, actionList);
+            
             plog.log("finished setting attributes, finishing action list fetch");
         } catch (Exception e) {
             LOG.error("Error loading action list.", e);
@@ -215,7 +222,7 @@ public class ActionListAction extends WorkflowAction {
         LOG.info("end start ActionListAction");
         return mapping.findForward("viewActionList");
     }
-
+    
     private SortOrderEnum parseSortOrder(String dir) throws WorkflowException {
     	if ("asc".equals(dir)) {
     		return SortOrderEnum.ASCENDING;
@@ -232,6 +239,55 @@ public class ActionListAction extends WorkflowAction {
     		return "desc";
     	}
     	return null;
+    }
+    
+    private static final String OUT_BOX_MODE = "_OUT_BOX_MODE";
+    
+    /**
+     * this method is setting 2 props on the {@link ActionListForm} that controls outbox behavior.
+     *  alForm.setViewOutbox("false"); -> this is set by user preferences and the actionlist.outbox.off config prop
+     *  alForm.setShowOutbox(false); -> this is set by user action clicking the ActionList vs. Outbox links.
+     * 
+     * @param alForm
+     * @param request
+     * @return boolean indication whether the outbox should be fetched
+     */
+    private boolean isOutboxMode(ActionListForm alForm, HttpServletRequest request) {
+	
+	boolean outBoxView = false;
+	
+	WorkflowUser user = UserSession.getAuthenticatedUser().getWorkflowUser();
+
+	if (! KEWServiceLocator.getPreferencesService().getPreferences(user).isUsingOutbox() || ! Core.getCurrentContextConfig().getOutBoxOn()) {
+	    request.getSession().setAttribute(OUT_BOX_MODE, new Boolean(false));
+	    alForm.setViewOutbox("false");
+	    alForm.setShowOutbox(false);
+	    return false;
+	}
+	
+	alForm.setShowOutbox(true);
+	if (StringUtils.isNotEmpty(alForm.getViewOutbox())) {
+	    if (!new Boolean(alForm.getViewOutbox())) {
+		request.getSession().setAttribute(OUT_BOX_MODE, new Boolean(false));
+		outBoxView = false;
+	    } else {
+		request.getSession().setAttribute(OUT_BOX_MODE, new Boolean(true));
+		outBoxView = true;
+	    }
+	} else {
+
+	    if (request.getSession().getAttribute(OUT_BOX_MODE) == null) {
+		outBoxView = false;
+	    } else {
+		outBoxView = (Boolean) request.getSession().getAttribute(OUT_BOX_MODE);
+	    }
+	}
+	if (outBoxView) {
+	    alForm.setViewOutbox("true");
+	} else {
+	    alForm.setViewOutbox("false");
+	}
+	return outBoxView;
     }
 
     private void sortActionList(List actionList, String sortName, SortOrderEnum sortOrder) {
@@ -508,6 +564,13 @@ public class ActionListAction extends WorkflowAction {
     	alForm.setCount(KEWServiceLocator.getActionListService().getCount(user));
     	LOG.info("Fetcher Action List count of " + alForm.getCount() + " for user " + user.getAuthenticationUserId().getId());
     	return mapping.findForward("count");
+    }
+    
+    public ActionForward removeOutboxItems(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	ActionListForm alForm = (ActionListForm)form;
+	KEWServiceLocator.getActionListService().removeOutboxItems(getUserSession(request).getWorkflowUser(), Arrays.asList(alForm.getOutboxItems()));
+	alForm.setViewOutbox("true");
+	return start(mapping, form, request, response);
     }
 
     private boolean isActionCompatibleRequest(ActionItemActionListExtension actionItem, String actionTakenCode) {

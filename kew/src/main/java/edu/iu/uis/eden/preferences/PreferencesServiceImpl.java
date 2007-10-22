@@ -19,6 +19,8 @@ package edu.iu.uis.eden.preferences;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.kuali.rice.core.Core;
+
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -68,6 +70,7 @@ public class PreferencesServiceImpl implements PreferencesService {
     private static final String ERR_KEY_REFRESH_RATE_WHOLE_NUM = "preferences.preferencesservice.refreshRate.wholenum";
     private static final String ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM = "preferences.preferencesservice.pagesize.wholenum";
     private static final String DELEGATOR_FILTER_KEY = "DELEGATOR_FILTER";
+    public static final String USE_OUT_BOX = "USE_OUT_BOX";
 
     public Preferences getPreferences(WorkflowUser user) {
         LOG.debug("start preferences fetch user " + user);
@@ -97,8 +100,9 @@ public class PreferencesServiceImpl implements PreferencesService {
         preferences.setShowDocTitle(getOption(COLUMN_TITLE_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
         preferences.setShowWorkgroupRequest(getOption(COLUMN_WORKGROUP_REQUEST_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
         preferences.setShowClearFyi(getOption(COLUMN_CLEAR_FYI_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
-//        preferences.setActionListContentType(getOption(ACTION_LIST_CONTENT_KEY, EdenConstants.ACTION_LIST_ALL_REQUESTS, user).getOptionVal());
         preferences.setDelegatorFilter(getOption(DELEGATOR_FILTER_KEY, EdenConstants.DELEGATORS_ON_ACTION_LIST_PAGE, user).getOptionVal());
+        preferences.setUseOutbox(getOption(USE_OUT_BOX, EdenConstants.PREFERENCES_NO_VAL, user).getOptionVal());
+        
         LOG.debug("end preferences fetch user " + user);
         return preferences;
     }
@@ -147,8 +151,10 @@ public class PreferencesServiceImpl implements PreferencesService {
         optionSrv.save(user, EMAIL_REMINDER_KEY, preferences.getEmailNotification());
         optionSrv.save(user, EMAIL_NOTIFY_PRIMARY_KEY, preferences.getNotifyPrimaryDelegation());
         optionSrv.save(user, EMAIL_NOTIFY_SECONDARY_KEY, preferences.getNotifySecondaryDelegation());
-//        optionSrv.save(user, ACTION_LIST_CONTENT_KEY, preferences.getActionListContentType());
         optionSrv.save(user, DELEGATOR_FILTER_KEY, preferences.getDelegatorFilter());
+        if (Core.getCurrentContextConfig().getOutBoxOn()) {
+            optionSrv.save(user, USE_OUT_BOX, preferences.getUseOutbox());
+        }
         LOG.debug("saved preferences user " + user.getAuthenticationUserId());
     }
 

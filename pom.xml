@@ -470,26 +470,7 @@
 			<version>2.0.2</version>
 		</dependency>
         
-        <!--
-          Groovy runtime dependencies for KEW module
-          These must be defined here so they override older versions pulled
-          in by other root dependencies
-         -->
-        <!-- 
-        <dependency>
-          <groupId>antlr</groupId>
-          <artifactId>antlr</artifactId>
-          <version>2.7.5</version>
-        </dependency>
 
-        this breaks CGLib which seems to require 1.5.3 
-        <dependency>
-          <groupId>asm</groupId>
-          <artifactId>asm</artifactId>
-          <version>2.2</version>
-          <scope>runtime</scope>
-        </dependency>
-         -->
 	</dependencies>
 	<reporting>
 		<plugins>

@@ -106,6 +106,7 @@
 						<artifactId>maven-deploy-plugin</artifactId>
 						<version>2.3</version>
 					</plugin>
+					<!--
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
@@ -116,6 +117,7 @@
 							<attach>false</attach>
 						</configuration>
 					</plugin>
+					-->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>

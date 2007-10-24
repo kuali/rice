@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.config.Config;
+import org.kuali.rice.core.Core;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -30,6 +32,7 @@ import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
+import edu.iu.uis.eden.preferences.Preferences;
 import edu.iu.uis.eden.preferences.PreferencesServiceImpl;
 import edu.iu.uis.eden.routetemplate.TestRuleAttribute;
 import edu.iu.uis.eden.user.AuthenticationUserId;
@@ -139,6 +142,17 @@ public class OutboxTest extends KEWTestCase {
 	
 	outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter());
 	assertEquals("there should be an outbox item", 1, outbox.size());
+    }
+    
+    @Test public void testOutBoxDefaultPreferenceOnConfigParam() throws Exception {
+	WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
+	Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(user1);
+	assertTrue("By default the user's pref should be outbox on", prefs.isUsingOutbox());
+	
+	Core.getCurrentContextConfig().overrideProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON, "false");
+	WorkflowUser natjohns = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("natjohns"));
+	prefs = KEWServiceLocator.getPreferencesService().getPreferences(natjohns);
+	assertFalse("The user's pref should be outbox off", prefs.isUsingOutbox());
     }
      
 }

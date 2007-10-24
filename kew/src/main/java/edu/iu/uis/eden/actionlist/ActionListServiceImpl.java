@@ -94,13 +94,7 @@ public class ActionListServiceImpl implements ActionListService {
 	    LOG.error("error saving refreshUserOption", e);
 	}
 	getActionItemDAO().deleteActionItem(actionItem);
-	try {
-	    if (KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getUser()).isUsingOutbox() && Core.getCurrentContextConfig().getOutBoxOn()) {
-		this.saveOutboxItem(new OutboxItemActionListExtension(actionItem));
-	    }
-	} catch (EdenUserNotFoundException eunfe) {
-	    throw new WorkflowRuntimeException(eunfe);
-	}
+	this.saveOutboxItem(actionItem);
     }
 
     public void deleteActionItems(ActionRequestValue actionRequest) {
@@ -486,14 +480,23 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     /**
-     * 
-     * save the ouboxitem unless the document is saved or the user already has the item in their outbox.
-     * 
-     * @see edu.iu.uis.eden.actionlist.ActionListService#saveOutboxItem(edu.iu.uis.eden.actionitem.OutboxItemActionListExtension)
-     */
-    public void saveOutboxItem(OutboxItemActionListExtension outboxItem) {
-	if (getActionListDAO().getOutboxByDocumentId(outboxItem.getRouteHeaderId()) == null && ! outboxItem.getRouteHeader().getDocRouteStatus().equals(EdenConstants.ROUTE_HEADER_SAVED_CD)) {
-	    this.getActionListDAO().saveOutboxItem(outboxItem);    
+         * 
+         * save the ouboxitem unless the document is saved or the user already has the item in their outbox.
+         * 
+         * @see edu.iu.uis.eden.actionlist.ActionListService#saveOutboxItem(edu.iu.uis.eden.actionitem.OutboxItemActionListExtension)
+         */
+    public void saveOutboxItem(ActionItem actionItem) {
+	try {
+	    if (KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getUser()).isUsingOutbox()
+		&& Core.getCurrentContextConfig().getOutBoxOn() 
+		&& getActionListDAO().getOutboxByDocumentId(actionItem.getRouteHeaderId()) == null
+		&& !actionItem.getRouteHeader().getDocRouteStatus().equals(EdenConstants.ROUTE_HEADER_SAVED_CD)) {
+		
+		this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));
+		
+	    }
+	} catch (EdenUserNotFoundException eunfe) {
+	    throw new WorkflowRuntimeException(eunfe);
 	}
     }
 }

@@ -101,7 +101,12 @@ public class PreferencesServiceImpl implements PreferencesService {
         preferences.setShowWorkgroupRequest(getOption(COLUMN_WORKGROUP_REQUEST_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
         preferences.setShowClearFyi(getOption(COLUMN_CLEAR_FYI_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
         preferences.setDelegatorFilter(getOption(DELEGATOR_FILTER_KEY, EdenConstants.DELEGATORS_ON_ACTION_LIST_PAGE, user).getOptionVal());
-        preferences.setUseOutbox(getOption(USE_OUT_BOX, EdenConstants.PREFERENCES_NO_VAL, user).getOptionVal());
+        
+        if (Core.getCurrentContextConfig().getOutBoxDefaultPreferenceOn()) {
+            preferences.setUseOutbox(getOption(USE_OUT_BOX, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());    
+        } else {
+            preferences.setUseOutbox(getOption(USE_OUT_BOX, EdenConstants.PREFERENCES_NO_VAL, user).getOptionVal());
+        }
         
         LOG.debug("end preferences fetch user " + user);
         return preferences;

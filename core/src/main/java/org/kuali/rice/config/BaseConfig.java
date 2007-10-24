@@ -276,4 +276,11 @@ public abstract class BaseConfig implements Config {
 	    } 
 	    return new Boolean(getProperty(Config.OUT_BOX_MODE));
 	}
+	
+	public Boolean getOutBoxDefaultPreferenceOn() {
+	    if (getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON) == null) {
+		return true;
+	    }
+	    return new Boolean(getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON));
+	}
 }

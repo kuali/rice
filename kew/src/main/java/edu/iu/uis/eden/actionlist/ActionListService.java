@@ -104,5 +104,5 @@ public interface ActionListService {
      */
     public Collection getOutbox(WorkflowUser workflowUser, ActionListFilter filter);
     public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems);
-    public void saveOutboxItem(OutboxItemActionListExtension outboxItem);
+    public void saveOutboxItem(ActionItem actionItem);
 }

@@ -143,6 +143,7 @@ public interface Config {
 	public static final String RUNNING_SERVER_IN_EMBEDDED = "embedded.server";
 	
 	public static final String OUT_BOX_MODE = "actionlist.outbox.off";
+	public static final String OUT_BOX_DEFAULT_PREFERENCE_ON = "actionlist.outbox.default.preference.on";
 
 	public void parseConfig() throws IOException;
 
@@ -222,4 +223,5 @@ public interface Config {
 	
 	public Boolean getStoreAndForward();
 	public Boolean getOutBoxOn();
+	public Boolean getOutBoxDefaultPreferenceOn();
 }

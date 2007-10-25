@@ -144,6 +144,49 @@ public class OutboxTest extends KEWTestCase {
 	assertEquals("there should be an outbox item", 1, outbox.size());
     }
     
+    @Test public void testOnlyPersonWhoTookActionReceivesOutboxItem() throws Exception {
+	final WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
+	final WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
+	List<Id> recipients = new ArrayList<Id>();
+	recipients.add(new AuthenticationUserId("rkirkend"));
+	recipients.add(new AuthenticationUserId("user1"));
+	TestRuleAttribute.setRecipients("TestRole", "qualRole", recipients);
+	
+	new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager()).execute(new TransactionCallback() {
+	    public Object doInTransaction(TransactionStatus status) {
+		Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(rkirkend);
+		if (!prefs.isUsingOutbox()) {
+		    UserOptions option = KEWServiceLocator.getUserOptionsService().findByOptionId(
+			    PreferencesServiceImpl.USE_OUT_BOX, rkirkend);
+		    option.setOptionVal(EdenConstants.PREFERENCES_YES_VAL);
+		    KEWServiceLocator.getUserOptionsService().save(option);
+		}
+		
+		prefs = KEWServiceLocator.getPreferencesService().getPreferences(user1);
+		if (!prefs.isUsingOutbox()) {
+		    UserOptions option = KEWServiceLocator.getUserOptionsService().findByOptionId(
+			    PreferencesServiceImpl.USE_OUT_BOX, user1);
+		    option.setOptionVal(EdenConstants.PREFERENCES_YES_VAL);
+		    KEWServiceLocator.getUserOptionsService().save(option);
+		}
+		return null;
+	    }
+	});
+	
+	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("quickstart"), "TestDocumentType");
+	document.routeDocument("");
+	
+	//verify test is sane and users have action items
+	assertFalse(KEWServiceLocator.getActionListService().getActionList(rkirkend, new ActionListFilter()).isEmpty());
+	assertFalse(KEWServiceLocator.getActionListService().getActionList(user1, new ActionListFilter()).isEmpty());
+	
+	document = new WorkflowDocument(new NetworkIdVO("user1"), document.getRouteHeaderId());
+	document.approve("");
+	//verify only user who took action has the outbox item
+	assertTrue(KEWServiceLocator.getActionListService().getOutbox(rkirkend, new ActionListFilter()).isEmpty());
+	assertEquals(1, KEWServiceLocator.getActionListService().getOutbox(user1, new ActionListFilter()).size());
+    }
+    
     @Test public void testOutBoxDefaultPreferenceOnConfigParam() throws Exception {
 	WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
 	Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(user1);

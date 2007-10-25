@@ -41,6 +41,7 @@ import edu.iu.uis.eden.actionlist.dao.ActionListDAO;
 import edu.iu.uis.eden.actionrequests.ActionRequestService;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.doctype.DocumentType;
+import edu.iu.uis.eden.engine.ActivationContext;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.KEWXMLService;
@@ -165,21 +166,27 @@ public class ActionListServiceImpl implements ActionListService {
          * 
          * @return the List of generated ActionItems
          */
-    public List generateActionItems(ActionRequestValue actionRequest, boolean simulate) throws EdenUserNotFoundException {
+    public List generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext) throws EdenUserNotFoundException {
 	LOG.debug("generating the action items for request " + actionRequest.getActionRequestId());
 	List actionItems = new ArrayList();
 	if (!actionRequest.isPrimaryDelegator()) {
-	    if (EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD.equals(actionRequest.getRecipientTypeCd())) {
+	    if (actionRequest.isWorkgroupRequest()) {
 		List users = getWorkgroupService().getWorkgroup(new WorkflowGroupId(actionRequest.getWorkgroupId()))
 			.getUsers();
+		
+		String workgroupName = actionRequest.getWorkgroup().getGroupNameId().getNameId();
+		if (activationContext.getWorkgroupItemActivationSubset().get(workgroupName) != null && ! activationContext.getWorkgroupItemActivationSubset().get(workgroupName).isEmpty()) {
+		    users = activationContext.getWorkgroupItemActivationSubset().get(workgroupName);
+		}
+		
 		actionItems.addAll(getActionItemsFromUserList(actionRequest, users));
-	    } else if (EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(actionRequest.getRecipientTypeCd())) {
+	    } else if (actionRequest.isUserRequest()) {
 		ActionItem actionItem = new ActionItem();
 		loadActionItemFromActionRequest(actionRequest, actionItem);
 		actionItems.add(actionItem);
 	    }
 	}
-	if (!simulate) {
+	if (!activationContext.isSimulation()) {
 	    for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
 		ActionItem actionItem = (ActionItem) iterator.next();
 		saveActionItem(actionItem);
@@ -491,9 +498,11 @@ public class ActionListServiceImpl implements ActionListService {
 		&& Core.getCurrentContextConfig().getOutBoxOn() 
 		&& getActionListDAO().getOutboxByDocumentId(actionItem.getRouteHeaderId()) == null
 		&& !actionItem.getRouteHeader().getDocRouteStatus().equals(EdenConstants.ROUTE_HEADER_SAVED_CD)) {
-		
-		this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));
-		
+		//  only create an outbox item if this user has taken action on the document
+		ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(actionItem.getActionRequestId());
+		if (actionRequest.getActionTaken().getWorkflowUser().getWorkflowId().equals(actionItem.getWorkflowId())) {
+		    this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));    
+		}
 	    }
 	} catch (EdenUserNotFoundException eunfe) {
 	    throw new WorkflowRuntimeException(eunfe);

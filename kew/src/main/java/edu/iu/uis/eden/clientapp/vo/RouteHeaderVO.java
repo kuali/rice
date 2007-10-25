@@ -75,6 +75,8 @@ public class RouteHeaderVO implements Serializable {
     private NoteVO[] notes = null;
     private NoteVO[] notesToDelete = null;
     //** Modify ends
+    
+//    private StateVO[] rootBranchStates = null; 
 
     /**
      * Probably needs to be an array for web services

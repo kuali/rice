@@ -61,7 +61,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         List users = new ArrayList();
         if (actionRequest.isWorkgroupRequest()) {
             users.addAll(actionRequest.getWorkgroup().getUsers());
-        } else if (actionRequest.isUserRequest()){
+        } else if (actionRequest.isUserRequest()) {
             users.add(actionRequest.getWorkflowUser());
         }
 

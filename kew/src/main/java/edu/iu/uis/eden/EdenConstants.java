@@ -785,8 +785,6 @@ public class EdenConstants extends JSTLConstants {
     	CLIENT_PROTOCOLS.add(EMBEDDED_CLIENT_PROTOCOL);
     	CLIENT_PROTOCOLS.add(WEBSERVICE_CLIENT_PROTOCOL);
     	CLIENT_PROTOCOLS.add(RMI_CLIENT_PROTOCOL);
-    	// TODO spring invoker not currently supported
-    	//CLIENT_PROTOCOLS.add(SPRING_INVOKER_CLIENT_PROTOCOL);
     }
 
     // system branch state keys
@@ -812,6 +810,14 @@ public class EdenConstants extends JSTLConstants {
 
     public static final String REMOVE_REPLACE_DOCUMENT_TYPE = "EDENSERVICE-DOCS.RemoveReplaceUser";
     public static final String ACTION_LIST_NO_REFRESH = "ActionList.norefresh";
+    
+    
+    // receive future action request contants
+    public static final String RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY = "_receive_future_requests";
+    public static final String DEACTIVATED_FUTURE_REQUESTS_BRANCH_STATE_KEY = "_deactivated_future_requests";
+    public static final String DONT_RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE = "NO";
+    public static final String RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE = "YES";
+    public static final String CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE = "CLEAR";
 }
 
 /*

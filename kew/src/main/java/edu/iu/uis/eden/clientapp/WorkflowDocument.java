@@ -1550,6 +1550,39 @@ public class WorkflowDocument implements java.io.Serializable {
         }
         return getRouteHeader().getVariable(name);
     }
+    
+    /**
+     * 
+     * Tells workflow that the current the document is constructed as will receive all future requests routed to them 
+     * disregarding any ignore previous flags set on the action request.  Uses the setVariable method behind the seens so 
+     * an action needs taken on the document to set this state on the document.
+     * 
+     * @throws WorkflowException
+     */
+    public void setReceiveFutureRequests() throws WorkflowException {
+	this.setVariable(FutureRequestDocumentStateManager.getFutureRequestsKey(this.getUserId()), FutureRequestDocumentStateManager.getReceiveFutureRequestsValue());
+    }
+    
+    /**
+     * Tell workflow that the current document is constructed as will not receive any future requests routed to them 
+     * disregarding any ignore previous flags set on action requests.  Uses the setVariable method behind the seens so 
+     * an action needs taken on the document to set this state on the document.
+     * 
+     * @throws WorkflowException
+     */
+    public void setDoNotReceiveFutureRequests() throws WorkflowException {
+	this.setVariable(FutureRequestDocumentStateManager.getFutureRequestsKey(this.getUserId()), FutureRequestDocumentStateManager.getDoNotReceiveFutureRequestsValue());
+    }
+    
+    /**
+     * Clears any state set on the document regarding a user receiving or not receiving action requests.  Uses the setVariable method 
+     * behind the seens so an action needs taken on the document to set this state on the document.
+     * 
+     * @throws WorkflowException
+     */
+    public void setClearFutureRequests() throws WorkflowException {
+	this.setVariable(FutureRequestDocumentStateManager.getFutureRequestsKey(this.getUserId()), FutureRequestDocumentStateManager.getClearFutureRequestsValue());
+    }
 
     /**
      * Deletes the note of with the same id as that of the argument on the document.

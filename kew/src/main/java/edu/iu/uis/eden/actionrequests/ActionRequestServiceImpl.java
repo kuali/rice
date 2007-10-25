@@ -34,7 +34,9 @@ import edu.iu.uis.eden.actionlist.ActionListService;
 import edu.iu.uis.eden.actionrequests.dao.ActionRequestDAO;
 import edu.iu.uis.eden.actiontaken.ActionTakenService;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
+import edu.iu.uis.eden.clientapp.FutureRequestDocumentStateManager;
 import edu.iu.uis.eden.engine.ActivationContext;
+import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.messaging.MessageQueueService;
@@ -177,7 +179,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 	if (!activationContext.isSimulation()) {
 	    saveActionRequest(actionRequest);
 	    activationContext.getGeneratedActionItems().addAll(
-		    getActionListService().generateActionItems(actionRequest, activationContext.isSimulation()));
+		    getActionListService().generateActionItems(actionRequest, activationContext));
 	}
 	activateRequestsInternal(actionRequest.getChildrenRequests(), activationContext);
 	activateRequestInternal(actionRequest.getParentActionRequest(), activationContext);
@@ -217,7 +219,30 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     private boolean deactivateOnActionAlreadyTaken(ActionRequestValue actionRequestToActivate,
 	    ActivationContext activationContext) throws EdenUserNotFoundException {
-	if (!actionRequestToActivate.getIgnorePrevAction().booleanValue()) {
+	
+	FutureRequestDocumentStateManager futureRequestStateMngr = null;
+	
+	if (actionRequestToActivate.isWorkgroupRequest()) {
+	    futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getWorkgroup());
+	} else if (actionRequestToActivate.isUserRequest()) {
+	    futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getWorkflowUser());
+	} else {
+	    return false;
+	}
+	
+	if (futureRequestStateMngr.isReceiveFutureRequests()) {
+	    if (actionRequestToActivate.isWorkgroupRequest()) {
+		String workgroupName = actionRequestToActivate.getWorkgroup().getGroupNameId().getNameId();
+		//has someone that wants to see the group so we have to activate.  Make sure that the correct people are excluded from seeing the group
+		activationContext.getWorkgroupItemActivationSubset().put(workgroupName, futureRequestStateMngr.getWorkgroupItemsToActivate());
+		//if the rule is ignore previous put the people with no policy set in the list of people to see the group
+		if (! actionRequestToActivate.getIgnorePrevAction()) {
+		    activationContext.getWorkgroupItemActivationSubset().get(workgroupName).addAll(futureRequestStateMngr.getWorkgroupItemsWithDefaultActivation());
+		}
+	    }
+	    return false;
+	}
+	if (!actionRequestToActivate.getIgnorePrevAction() || futureRequestStateMngr.isDoNotReceiveFutureRequests()) {
 	    ActionTakenValue previousActionTaken = null;
 	    if (!activationContext.isSimulation()) {
 		previousActionTaken = getActionTakenService().getPreviousAction(actionRequestToActivate);

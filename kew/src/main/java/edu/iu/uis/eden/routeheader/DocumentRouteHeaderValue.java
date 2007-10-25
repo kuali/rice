@@ -122,13 +122,6 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
 
     private List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
 
-//      apache lazy list commented out due to not being serializable
-//    	ListUtils.lazyList(new ArrayList(),
-//            new Factory() {
-//		public Object create() {
-//			return new ActionRequestFactory().createBlankActionRequest();
-//		}
-//		});
     private List<ActionTakenValue> actionsTaken = new ArrayList<ActionTakenValue>();
     private List<ActionItem> actionItems = new ArrayList<ActionItem>();
     private List<Note> notes = new ArrayList<Note>();
@@ -705,6 +698,16 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
         return state.getValue();
     }
 
+    public void removeVariableThatContains(String name) {
+	List<BranchState> statesToRemove = new ArrayList<BranchState>();
+	for (BranchState state : this.getRootBranchState()) {
+	    if (state.getKey().contains(name)) {
+		statesToRemove.add(state);
+	    }
+	}
+	this.getRootBranchState().removeAll(statesToRemove);
+    }
+    
     /**
      * Sets a variable
      * @param name variable name
@@ -734,6 +737,10 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
                 state.setValue(value);
             }
         }
+    }
+    
+    public List<BranchState> getRootBranchState() {
+	return this.getRootBranch().getBranchState();
     }
 
     public CustomActionListAttribute getCustomActionListAttribute() throws WorkflowException, EdenUserNotFoundException {

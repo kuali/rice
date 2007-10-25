@@ -22,6 +22,7 @@ import java.util.List;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actionitem.OutboxItemActionListExtension;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.engine.ActivationContext;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.workgroup.Workgroup;
@@ -48,7 +49,7 @@ public interface ActionListService {
 
     public void deleteActionItems(ActionRequestValue actionRequest);
 
-    public List generateActionItems(ActionRequestValue actionRequest, boolean simulate) throws EdenUserNotFoundException;
+    public List generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext) throws EdenUserNotFoundException;
 
     public Collection findByWorkflowUser(WorkflowUser workflowUser);
 

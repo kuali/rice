@@ -65,10 +65,18 @@ public class WebUtils {
                 if (parameterName.startsWith(RiceConstants.DISPATCH_REQUEST_PARAMETER) && parameterName.endsWith(".x")) {
                     methodToCall = StringUtils.substringBetween(parameterName, RiceConstants.DISPATCH_REQUEST_PARAMETER + ".", ".");
                     request.setAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE, parameterName);
+                } else { 
+                    // KULRICE-1218: Check if the parameter's values match (not just the name)
+                    for (String value : request.getParameterValues(parameterName)) {
+                        if (value.startsWith(RiceConstants.DISPATCH_REQUEST_PARAMETER) && value.endsWith(".x")) {
+                            methodToCall = StringUtils.substringBetween(value, RiceConstants.DISPATCH_REQUEST_PARAMETER + ".", ".");
+                            request.setAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE, value);
+                        }
+                    }
                 }
             }
         }
-
+        
         return methodToCall;
     }
 

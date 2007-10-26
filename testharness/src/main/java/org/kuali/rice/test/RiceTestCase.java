@@ -78,6 +78,7 @@ public abstract class RiceTestCase extends LoggableTestCase {
 		report("Time to start all Lifecycles: " + (System.currentTimeMillis() - initTime));
 	    } catch (Throwable e) {
 		e.printStackTrace();
+		this.stopLifecycles(this.perTestLifeCycles);
 		throw new RuntimeException(e);
 	    }
 	}

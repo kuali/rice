@@ -121,5 +121,19 @@
 				</responsibility>
 			</responsibilities>
 		</rule>
+        <rule>
+            <name>ANamedRule</name>
+            <documentType>TestDocumentType</documentType>
+            <description>A named rule</description>
+            <expression type="someType">some expression</expression>
+            <ignorePrevious>false</ignorePrevious>
+            <responsibilities>
+                <responsibility>
+                    <user>user1</user>
+                    <actionRequested>A</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
 	</rules>
 </data>

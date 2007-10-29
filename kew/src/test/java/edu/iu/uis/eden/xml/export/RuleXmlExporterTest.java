@@ -100,6 +100,7 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         assertFalse("Ids should be different.", oldRule.getRuleBaseValuesId().equals(newRule.getRuleBaseValuesId()));
         assertEquals(oldRule.getActiveInd(), newRule.getActiveInd());
         assertEquals(DateUtils.round(oldRule.getActivationDate(), Calendar.DATE), DateUtils.round(newRule.getActivationDate(), Calendar.DATE));
+        assertEquals(oldRule.getName(), newRule.getName());
         assertEquals(oldRule.getCurrentInd(), newRule.getCurrentInd());
         assertEquals(oldRule.getDeactivationDate(), newRule.getDeactivationDate());
         assertEquals(oldRule.getDelegateRule(), newRule.getDelegateRule());
@@ -109,7 +110,17 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         assertEquals(oldRule.getIgnorePrevious(), newRule.getIgnorePrevious());
         assertEquals(oldRule.getPreviousVersionId(), newRule.getPreviousVersionId());
         assertEquals(oldRule.getRouteHeaderId(), newRule.getRouteHeaderId());
-        assertEquals(oldRule.getRuleTemplate().getName(), newRule.getRuleTemplate().getName());
+        if (oldRule.getRuleTemplate() == null) {
+            assertNull(newRule.getRuleTemplate());
+        } else { 
+            assertEquals(oldRule.getRuleTemplate().getName(), newRule.getRuleTemplate().getName());
+        }
+        if (oldRule.getRuleExpressionDef() == null) {
+            assertNull(newRule.getRuleExpressionDef());
+        } else {
+            assertEquals(oldRule.getRuleExpressionDef().getExpression(), newRule.getRuleExpressionDef().getExpression());
+            assertEquals(oldRule.getRuleExpressionDef().getType(), newRule.getRuleExpressionDef().getType());
+        }
         assertEquals(DateUtils.round(oldRule.getToDate(), Calendar.DATE), DateUtils.round(newRule.getToDate(), Calendar.DATE));
         assertEquals(oldRule.getVersionNbr(), newRule.getVersionNbr());
 

@@ -99,6 +99,7 @@ public interface XmlConstants {
     // rules
     public static final String RULES = "rules";
     public static final String RULE = "rule";
+    public static final String EXPRESSION = "expression";
     public static final String FROM_DATE = "fromDate";
     public static final String TO_DATE = "toDate";
     public static final String IGNORE_PREVIOUS = "ignorePrevious";

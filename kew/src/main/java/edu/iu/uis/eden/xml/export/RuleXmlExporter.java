@@ -64,9 +64,20 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
     
     private void exportRule(Element parent, RuleBaseValues rule, RuleDelegation delegation) {
         Element ruleElement = renderer.renderElement(parent, RULE);
+        if (rule.getName() != null) {
+            renderer.renderTextElement(ruleElement, NAME, rule.getName());
+        }
         renderer.renderTextElement(ruleElement, DOCUMENT_TYPE, rule.getDocTypeName());
-        renderer.renderTextElement(ruleElement, RULE_TEMPLATE, rule.getRuleTemplateName());
+        if (rule.getRuleTemplateName() != null) {
+            renderer.renderTextElement(ruleElement, RULE_TEMPLATE, rule.getRuleTemplateName());
+        }
         renderer.renderTextElement(ruleElement, DESCRIPTION, rule.getDescription());
+        if (rule.getRuleExpressionDef() != null) {
+            Element expressionElement = renderer.renderTextElement(ruleElement, EXPRESSION, rule.getRuleExpressionDef().getExpression());
+            if (rule.getRuleExpressionDef().getType() != null) {
+                expressionElement.setAttribute("type", rule.getRuleExpressionDef().getType());
+            }
+        }
         renderer.renderBooleanElement(ruleElement, IGNORE_PREVIOUS, rule.getIgnorePrevious(), false);
         exportRuleExtensions(ruleElement, rule.getRuleExtensions());
         exportResponsibilities(ruleElement, rule.getResponsibilities(), delegation);

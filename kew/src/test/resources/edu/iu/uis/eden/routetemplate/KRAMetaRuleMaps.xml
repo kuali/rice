@@ -28,14 +28,13 @@
     </documentTypes>
 
     <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
-        <!-- this always succeeds -->
         <rule>
             <name>KRABizRuleWithMaps1</name>
             <documentType>KRAMetaRuleMapsTest</documentType>
             <description>KRABizRule1 mandatory description</description>
             <expression type="BSF:groovy">
                 import edu.iu.uis.eden.routetemplate.*
-                print "KRABizRuleWithMaps3 is executing..."
+                print "KRABizRuleWithMaps1 is executing..."
                 return new RuleExpressionResult(rule, true, rule.getDefinition().getResponsibilities())
             </expression>
             <ignorePrevious>true</ignorePrevious>
@@ -46,11 +45,26 @@
             </responsibilities>
         </rule>
         <rule>
+            <name>KRABizRuleWithMaps2</name>
+            <documentType>KRAMetaRuleMapsTest</documentType>
+            <description>KRABizRule1 mandatory description</description>
+            <expression type="BSF:groovy">
+                import edu.iu.uis.eden.routetemplate.*
+                print "KRABizRuleWithMaps2 is executing..."
+                return new RuleExpressionResult(rule, true, rule.getDefinition().getResponsibilities())
+            </expression>
+            <ignorePrevious>true</ignorePrevious>
+            <responsibilities>
+                <responsibility><workgroup>NonSIT</workgroup></responsibility>
+            </responsibilities>
+        </rule>
+        <rule>
             <name>KRAMetaRuleWithMaps</name>
             <documentType>KRAMetaRuleTest</documentType>
             <description>KRAMetaRule mandatory description</description>
             <expression type="KRAMeta">
               KRABizRuleWithMaps1: true;
+              KRABizRuleWithMaps2: true;
             </expression>
         </rule>
     </rules>

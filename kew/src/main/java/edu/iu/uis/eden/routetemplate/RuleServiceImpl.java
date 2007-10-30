@@ -633,28 +633,24 @@ public class RuleServiceImpl implements RuleService {
             errors.add(new WorkflowServiceErrorImpl("Ignore Previous is required", "routetemplate.ruleservice.ignoreprevious.required"));
             LOG.error("Ignore Previous is missing");
         }
-        /*if (ruleBaseValues.getResponsibilities().isEmpty()) {
-            errors.add(new WorkflowServiceErrorImpl("A responsibility is required", "routetemplate.ruleservice.responsibility.required"));
-            LOG.error("Rule does not have a responsibility");
-        } else {*/
-            for (Iterator iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {
-                RuleResponsibility responsibility = (RuleResponsibility) iter.next();
-                if (responsibility.getRuleResponsibilityName() != null && EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
-                    if (getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(responsibility.getRuleResponsibilityName()))) == null) {
-                        errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
-                        LOG.error("Workgroup is invalid");
-                    }
-                } else if (responsibility.getWorkflowUser() == null && responsibility.getRole() == null) {
-                    errors.add(new WorkflowServiceErrorImpl("User is invalid", "routetemplate.ruleservice.user.invalid"));
-                    LOG.error("User is invalid");
-                } else if (responsibility.isUsingRole()) {
-                    if (responsibility.getApprovePolicy() == null || !(responsibility.getApprovePolicy().equals(EdenConstants.APPROVE_POLICY_ALL_APPROVE) || responsibility.getApprovePolicy().equals(EdenConstants.APPROVE_POLICY_FIRST_APPROVE))) {
-                        errors.add(new WorkflowServiceErrorImpl("Approve Policy is Invalid", "routetemplate.ruleservice.approve.policy.invalid"));
-                        LOG.error("Approve Policy is Invalid");
-                    }
+
+        for (Iterator iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {
+            RuleResponsibility responsibility = (RuleResponsibility) iter.next();
+            if (responsibility.getRuleResponsibilityName() != null && EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
+                if (getWorkgroupService().getWorkgroup(new WorkflowGroupId(new Long(responsibility.getRuleResponsibilityName()))) == null) {
+                    errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
+                    LOG.error("Workgroup is invalid");
+                }
+            } else if (responsibility.getWorkflowUser() == null && responsibility.getRole() == null) {
+                errors.add(new WorkflowServiceErrorImpl("User is invalid", "routetemplate.ruleservice.user.invalid"));
+                LOG.error("User is invalid");
+            } else if (responsibility.isUsingRole()) {
+                if (responsibility.getApprovePolicy() == null || !(responsibility.getApprovePolicy().equals(EdenConstants.APPROVE_POLICY_ALL_APPROVE) || responsibility.getApprovePolicy().equals(EdenConstants.APPROVE_POLICY_FIRST_APPROVE))) {
+                    errors.add(new WorkflowServiceErrorImpl("Approve Policy is Invalid", "routetemplate.ruleservice.approve.policy.invalid"));
+                    LOG.error("Approve Policy is Invalid");
                 }
             }
-        //}
+        }
 
         if (ruleBaseValues.getRuleTemplate() == null && ruleBaseValues.getRuleExpressionDef() == null) {
             

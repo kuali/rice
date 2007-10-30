@@ -189,7 +189,7 @@ public class FlexRM {
 	if (rules != null) {
 	    for (Rule rule: rules) {
 	        RuleExpressionResult result = rule.evaluate(rule, context);
-	        if (result.isSuccess()) {
+	        if (result.isSuccess() && result.getResponsibilities() != null) {
 	            // actionRequests.addAll(makeActionRequests(context, rule, routeHeader, null, null));
 	            makeActionRequests(arFactory, result.getResponsibilities(), context, rule.getDefinition(), routeHeader, null, null);
 	        }
@@ -269,7 +269,7 @@ public class FlexRM {
 	}
 	for (Iterator iter = qualifiedRoleNames.iterator(); iter.hasNext();) {
 	    String qualifiedRoleName = (String) iter.next();
-	    if (parentRequest == null && isDuplicateActionRequestDetected(rule, routeHeader, context.getNodeInstance(), resp, qualifiedRoleName)) {
+	    if (parentRequest == null && isDuplicateActionRequestDetected(routeHeader, context.getNodeInstance(), resp, qualifiedRoleName)) {
 		continue;
 	    }
 
@@ -299,7 +299,7 @@ public class FlexRM {
      */
     private void makeActionRequest(ActionRequestFactory arFactory, RouteContext context, RuleBaseValues rule, DocumentRouteHeaderValue routeHeader, RuleResponsibility resp, ActionRequestValue parentRequest,
 	    RuleDelegation ruleDelegation) throws EdenUserNotFoundException, WorkflowException {
-	if (parentRequest == null && isDuplicateActionRequestDetected(rule, routeHeader, context.getNodeInstance(), resp, null)) {
+	if (parentRequest == null && isDuplicateActionRequestDetected(routeHeader, context.getNodeInstance(), resp, null)) {
 	    return;
 	}
 	Recipient recipient;
@@ -329,7 +329,7 @@ public class FlexRM {
 	}
     }
 
-    private boolean isDuplicateActionRequestDetected(RuleBaseValues rule, DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, RuleResponsibility resp, String qualifiedRoleName) {
+    private boolean isDuplicateActionRequestDetected(DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, RuleResponsibility resp, String qualifiedRoleName) {
 	List requests = getActionRequestService().findByStatusAndDocId(EdenConstants.ACTION_REQUEST_DONE_STATE, routeHeader.getRouteHeaderId());
 	for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
 	    ActionRequestValue request = (ActionRequestValue) iterator.next();

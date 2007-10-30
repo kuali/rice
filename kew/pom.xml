@@ -44,27 +44,12 @@
       <artifactId>bsf</artifactId>
       <version>2.4.0</version>
     </dependency>
-    <!--
-    <dependency>
-      <groupId>groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-      <version>1.0-jsr-04</version>
-      <scope>runtime</scope>
-    </dependency>
-    -->
-<!-- 
-    <dependency>
-      <groupId>groovy</groupId>
-      <artifactId>groovy</artifactId>
-      <version>1.0-RC-1</version>
-    </dependency>
- -->
- <dependency>
-    <groupId>groovy</groupId>
-    <artifactId>groovy-all</artifactId>
-    <version>1.1-beta-3</version>
-</dependency>
 
+    <dependency>
+      <groupId>groovy</groupId>
+      <artifactId>groovy-all-minimal</artifactId>
+      <version>1.0</version>
+    </dependency>
 
     <dependency>
       <groupId>org.springframework</groupId>

@@ -40,6 +40,7 @@ import edu.iu.uis.eden.actionitem.dao.ActionItemDAO;
 import edu.iu.uis.eden.actionlist.dao.ActionListDAO;
 import edu.iu.uis.eden.actionrequests.ActionRequestService;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.ActivationContext;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
@@ -500,7 +501,9 @@ public class ActionListServiceImpl implements ActionListService {
 		&& !actionItem.getRouteHeader().getDocRouteStatus().equals(EdenConstants.ROUTE_HEADER_SAVED_CD)) {
 		//  only create an outbox item if this user has taken action on the document
 		ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(actionItem.getActionRequestId());
-		if (actionRequest.getActionTaken().getWorkflowUser().getWorkflowId().equals(actionItem.getWorkflowId())) {
+		ActionTakenValue actionTaken = actionRequest.getActionTaken();
+		// if an action was taken...
+		if (actionTaken != null && actionTaken.getWorkflowUser().getWorkflowId().equals(actionItem.getWorkflowId())) {
 		    this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));    
 		}
 	    }

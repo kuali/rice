@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+    <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+        <documentType>
+            <name>ServiceInvocationRuleTest</name>
+            <label>ServiceInvocationRuleTest doc label</label>
+            <docHandler>has to be defined</docHandler>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <routePaths>
+                <routePath>
+                    <start name="initial" nextNode="node1" />
+                    <requests name="node1"/>
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="initial"/>
+                <requests name="node1">
+                    <ruleSelector>Named</ruleSelector>
+                    <ruleName>ServiceInvocationRule</ruleName>
+                </requests>
+            </routeNodes>
+        </documentType>
+    </documentTypes>
+
+    <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+        <!-- this always succeeds -->
+        <rule>
+            <name>ServiceInvocationRule</name>
+            <documentType>ServiceInvocationRuleTest</documentType>
+            <description>ServiceInvocationRule mandatory description</description>
+            <expression type="BSF:groovy">
+                import edu.iu.uis.eden.routetemplate.RuleExpressionResult
+                import org.kuali.rice.resourceloader.*
+                import org.kuali.workflow.test.FakeService
+                import javax.xml.namespace.QName
+
+                println 'ServiceInvocationRule invoking FakeService...'
+                
+                FakeService fakeService = (FakeService) GlobalResourceLoader.getResourceLoader().getService(new QName("fake", "fakeService-remote"))
+                
+                println 'Found FakeService implementation on bus: ' + fakeService
+                
+                print 'Invoking fake service...'
+                
+                result = fakeService.method2("abcdef")
+                
+                println 'result: ' + result
+           
+                return new RuleExpressionResult(rule, true)
+            </expression>
+        </rule>
+    </rules>
+</data>

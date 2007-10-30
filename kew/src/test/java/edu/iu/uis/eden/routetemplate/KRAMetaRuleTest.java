@@ -24,13 +24,9 @@ import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
- * Tests KRA meta-rule functionality 
+ * Tests KRA meta-rule functionality KULRICE-1045
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-// until groovy dependencies issue gets resolved this test needs to be ignored in CI
-// to re-enable this test, uncomment this @Ignore and uncomment the Groovy dependencies
-// in the root pom
-@Ignore
 public class KRAMetaRuleTest extends KEWTestCase {
     protected void loadTestData() throws Exception {
         loadXmlFile("KRAMetaRule.xml");

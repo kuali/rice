@@ -4,5 +4,24 @@
 
   <bean id="enActionListEmailService" class="mocks.MockEmailNotificationServiceImpl" />
   <bean id="enExceptionRoutingService" class="edu.iu.uis.eden.routemanager.TestExceptionRoutingServiceImpl"/>
-  
+  <!--
+    a "fake" service, used by ServiceInvocationRuleTest; in an ideal demonstration this would live in
+    application space/context/resource loader, but for now it's still in the KEW module context  
+  -->
+  <bean id="fakeService" class="org.kuali.workflow.test.FakeServiceImpl"/>
+
+  <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+    <property name="serviceDefinition">
+      <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <property name="serviceInterface"><value>org.kuali.workflow.test.FakeService</value></property>
+        <property name="service">
+          <ref bean="fakeService"/>
+        </property>
+        <property name="localServiceName" value="fakeService-remote"/>
+        <property name="serviceNameSpaceURI" value="fake"/>
+        <property name="retryAttempts" value="0"/>
+      </bean>
+    </property>
+    <property name="forceRefresh" value="true"/>
+  </bean>
 </beans>

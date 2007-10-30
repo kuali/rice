@@ -71,11 +71,11 @@ public abstract class UnqualifiedRoleAttribute extends AbstractRoleAttribute {
         return classAndRole.substring(classAndRole.indexOf("!") + 1);
     }
 
-    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws EdenUserNotFoundException {
-        // some sanity checking
-        if (!roleName.equals(qualifiedRole)) {
-            throw new IllegalArgumentException("UnqualifiedRoleAttribute resolveQualifiedRole invoked with differing role and qualified role (they should be the same)");
-        }
+    /**
+     * @param roleName roleName to test
+     * @return whether the roleName specifies a role that this attribute can resolve
+     */
+    protected boolean isValidRoleName(String roleName) {
         // this attribute should never be called to resolve any roles other than those it advertised as supporting!
         boolean valid = false;
         for (Role role: getRoleNames()) {
@@ -84,7 +84,15 @@ public abstract class UnqualifiedRoleAttribute extends AbstractRoleAttribute {
                 break;
             }
         }
-        if (!valid) {
+        return valid;
+    }
+
+    public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) throws EdenUserNotFoundException {
+        // some sanity checking
+        if (!roleName.equals(qualifiedRole)) {
+            throw new IllegalArgumentException("UnqualifiedRoleAttribute resolveQualifiedRole invoked with differing role and qualified role (they should be the same)");
+        }
+        if (!isValidRoleName(roleName)) {
             throw new IllegalArgumentException("This attribute does not support the role: '" + roleName + "'");
         }
         return resolveRole(routeContext, roleName);

@@ -30,6 +30,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
 public class KRAMetaRuleTest extends KEWTestCase {
     protected void loadTestData() throws Exception {
         loadXmlFile("KRAMetaRule.xml");
+        loadXmlFile("KRAMetaRuleMaps.xml");
     }
 
     @Test public void testKRAMetaRule() throws WorkflowException {
@@ -61,6 +62,52 @@ public class KRAMetaRuleTest extends KEWTestCase {
         assertFalse(doc.isApprovalRequested());
         doc = new WorkflowDocument(new NetworkIdVO("user1"), doc.getRouteHeaderId());
         assertFalse(doc.isApprovalRequested());
+     
+        assertTrue(doc.stateIsFinal());
+    }
+    
+    @Test public void testKRAMetaRuleMaps() throws WorkflowException {
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("arh14"), "KRAMetaRuleMapsTest");
+        doc.routeDocument("routing");
+
+        // xqi, shenl, dewey
+
+        // test that TestWorkgroup requests get activated first
+        doc = new WorkflowDocument(new NetworkIdVO("xqi"), doc.getRouteHeaderId());
+        assertTrue(doc.isApprovalRequested());
+        doc = new WorkflowDocument(new NetworkIdVO("shenl"), doc.getRouteHeaderId());
+        assertFalse(doc.isApprovalRequested());
+        doc = new WorkflowDocument(new NetworkIdVO("dewey"), doc.getRouteHeaderId());
+        assertFalse(doc.isApprovalRequested());
+        
+        doc = new WorkflowDocument(new NetworkIdVO("xqi"), doc.getRouteHeaderId());
+        doc.approve("approving as xqi");
+        
+        // next is shenl from the mock role
+        doc = new WorkflowDocument(new NetworkIdVO("xqi"), doc.getRouteHeaderId());
+        assertFalse(doc.isApprovalRequested());
+        doc = new WorkflowDocument(new NetworkIdVO("shenl"), doc.getRouteHeaderId());
+        assertTrue(doc.isApprovalRequested());
+        doc = new WorkflowDocument(new NetworkIdVO("jhopf"), doc.getRouteHeaderId());
+        assertTrue(doc.isApprovalRequested());
+        doc = new WorkflowDocument(new NetworkIdVO("dewey"), doc.getRouteHeaderId());
+        assertFalse(doc.isApprovalRequested());
+
+        doc = new WorkflowDocument(new NetworkIdVO("shenl"), doc.getRouteHeaderId());
+        doc.approve("approving as shenl");
+        
+        // last is dewey from NonSIT workgroup
+        doc = new WorkflowDocument(new NetworkIdVO("xqi"), doc.getRouteHeaderId());
+        assertFalse(doc.isApprovalRequested());
+        doc = new WorkflowDocument(new NetworkIdVO("shenl"), doc.getRouteHeaderId());
+        assertFalse(doc.isApprovalRequested());
+        doc = new WorkflowDocument(new NetworkIdVO("jhopf"), doc.getRouteHeaderId());
+        assertFalse(doc.isApprovalRequested());
+        doc = new WorkflowDocument(new NetworkIdVO("dewey"), doc.getRouteHeaderId());
+        assertTrue(doc.isApprovalRequested());
+
+        doc = new WorkflowDocument(new NetworkIdVO("dewey"), doc.getRouteHeaderId());
+        doc.approve("approving as dewey");
      
         assertTrue(doc.stateIsFinal());
     }

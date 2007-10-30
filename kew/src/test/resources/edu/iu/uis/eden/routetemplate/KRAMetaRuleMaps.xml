@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+    <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+        <documentType>
+            <name>KRAMetaRuleMapsTest</name>
+            <label>KRAMetaRuleMapsTest doc label</label>
+            <docHandler>has to be defined</docHandler>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <routePaths>
+                <routePath>
+                    <start name="initial" nextNode="approval" />
+                    <requests name="approval"/>
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="initial"/>
+                <requests name="approval">
+                    <!--
+                      serial activation so that when results of multiple rule evaluations are accumulated/collated
+                      they are activated in turn...
+                    -->
+                    <activationType>S</activationType>
+                    <ruleSelector>Named</ruleSelector>
+                    <ruleName>KRAMetaRuleWithMaps</ruleName>
+                </requests>
+            </routeNodes>
+        </documentType>
+    </documentTypes>
+
+    <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+        <!-- this always succeeds -->
+        <rule>
+            <name>KRABizRuleWithMaps1</name>
+            <documentType>KRAMetaRuleMapsTest</documentType>
+            <description>KRABizRule1 mandatory description</description>
+            <expression type="BSF:groovy">
+                import edu.iu.uis.eden.routetemplate.*
+                print "KRABizRuleWithMaps3 is executing..."
+                return new RuleExpressionResult(rule, true, rule.getDefinition().getResponsibilities())
+            </expression>
+            <ignorePrevious>true</ignorePrevious>
+            <responsibilities>
+                <responsibility><workgroup>TestWorkgroup</workgroup></responsibility>
+                <responsibility><role>edu.iu.uis.eden.routetemplate.MockRole!shenl,jhopf</role></responsibility>
+                <responsibility><workgroup>NonSIT</workgroup></responsibility>
+            </responsibilities>
+        </rule>
+        <rule>
+            <name>KRAMetaRuleWithMaps</name>
+            <documentType>KRAMetaRuleTest</documentType>
+            <description>KRAMetaRule mandatory description</description>
+            <expression type="KRAMeta">
+              KRABizRuleWithMaps1: true;
+            </expression>
+        </rule>
+    </rules>
+</data>

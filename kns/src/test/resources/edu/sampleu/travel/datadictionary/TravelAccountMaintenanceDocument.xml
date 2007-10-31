@@ -36,7 +36,7 @@
         </authorizations>
         
         <documentTypeName>TravelAccountMaintenanceDocument</documentTypeName>
-        <documentTypeCode>TRVA</documentTypeCode>
+        <documentTypeCode>TRAV</documentTypeCode>
 
         <label>Travel AccountMaintenance Document</label>
         <shortLabel>TravelAccountDocument</shortLabel>

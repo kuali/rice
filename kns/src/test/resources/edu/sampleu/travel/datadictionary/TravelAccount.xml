@@ -94,7 +94,7 @@
             <attributeReference name="extension.accountTypeCode" sourceClassName="edu.sampleu.travel.bo.TravelAccountType" sourceAttributeName="accountTypeCode">
                 <required>true</required>
                 <control>
-                    <select valuesFinderClass="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues" />
+                    <select valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder" businessObjectClass="edu.sampleu.travel.bo.TravelAccountType" keyAttribute="accountTypeCode" labelAttribute="name" includeKeyInLabel="true"/>
                 </control>
             </attributeReference>
 

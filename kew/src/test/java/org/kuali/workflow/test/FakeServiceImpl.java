@@ -21,9 +21,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import edu.iu.uis.eden.messaging.remotedservices.GenericTestService;
-import edu.iu.uis.eden.messaging.remotedservices.TestServiceInterface;
-
 /**
  * A generic, reusable fake service that records invocations, for testing purposes
  * TODO: consider merging with {@link TestServiceInterface}/{@link GenericTestService} in KSB module 

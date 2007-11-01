@@ -19,9 +19,6 @@ import java.util.List;
 
 import org.kuali.workflow.test.FakeServiceImpl.Invocation;
 
-import edu.iu.uis.eden.messaging.remotedservices.GenericTestService;
-import edu.iu.uis.eden.messaging.remotedservices.TestServiceInterface;
-
 /**
  * Interface for a fake service
  * TODO: consider merging with {@link TestServiceInterface}/{@link GenericTestService} in KSB module 

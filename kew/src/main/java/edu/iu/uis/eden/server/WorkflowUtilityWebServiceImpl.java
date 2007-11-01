@@ -120,6 +120,18 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return routeHeaderVO;
     }
 
+    public String getDocumentStatus(Long documentId) throws WorkflowException {
+	if (documentId == null) {
+	    LOG.error("null documentId passed in.");
+            throw new IllegalArgumentException("null documentId passed in");
+	}
+	String documentStatus = KEWServiceLocator.getRouteHeaderService().getDocumentStatus(documentId);
+	if (StringUtils.isEmpty(documentStatus)) {
+	    throw new WorkflowException("Could not locate a document with the ID " + documentId);
+	}
+	return documentStatus;
+    }
+
     public DocumentDetailVO getDocumentDetail(Long documentId) throws WorkflowException {
         if (documentId == null) {
             LOG.error("null documentId passed in.");

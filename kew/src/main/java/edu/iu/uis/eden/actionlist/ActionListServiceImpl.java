@@ -163,23 +163,25 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     /**
-         * Generates ActionItems for the given ActionRequest and returns the List of generated Action Items.
-         * 
-         * @return the List of generated ActionItems
-         */
-    public List generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext) throws EdenUserNotFoundException {
+     * Generates ActionItems for the given ActionRequest and returns the List of generated Action Items.
+     * 
+     * @return the List of generated ActionItems
+     */
+    public List generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext)
+	    throws EdenUserNotFoundException {
 	LOG.debug("generating the action items for request " + actionRequest.getActionRequestId());
 	List actionItems = new ArrayList();
 	if (!actionRequest.isPrimaryDelegator()) {
 	    if (actionRequest.isWorkgroupRequest()) {
 		List users = getWorkgroupService().getWorkgroup(new WorkflowGroupId(actionRequest.getWorkgroupId()))
 			.getUsers();
-		
+
 		String workgroupName = actionRequest.getWorkgroup().getGroupNameId().getNameId();
-		if (activationContext.getWorkgroupItemActivationSubset().get(workgroupName) != null && ! activationContext.getWorkgroupItemActivationSubset().get(workgroupName).isEmpty()) {
+		if (activationContext.getWorkgroupItemActivationSubset().get(workgroupName) != null
+			&& !activationContext.getWorkgroupItemActivationSubset().get(workgroupName).isEmpty()) {
 		    users = activationContext.getWorkgroupItemActivationSubset().get(workgroupName);
 		}
-		
+
 		actionItems.addAll(getActionItemsFromUserList(actionRequest, users));
 	    } else if (actionRequest.isUserRequest()) {
 		ActionItem actionItem = new ActionItem();
@@ -210,9 +212,9 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     /**
-         * Determines the difference between the current workgroup membership and the new workgroup membership. It then
-         * schedules the action item updates to happen asynchronously.
-         */
+     * Determines the difference between the current workgroup membership and the new workgroup membership. It then
+     * schedules the action item updates to happen asynchronously.
+     */
     public void updateActionItemsForWorkgroupChange(Workgroup oldWorkgroup, Workgroup newWorkgroup)
 	    throws EdenUserNotFoundException {
 	List oldMembers = oldWorkgroup.getUsers();
@@ -244,8 +246,8 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     /**
-         * Update the user's Action List to reflect their addition to the given Workgroup.
-         */
+     * Update the user's Action List to reflect their addition to the given Workgroup.
+     */
     public void updateActionListForUserAddedToWorkgroup(WorkflowUser user, Workgroup workgroup)
 	    throws EdenUserNotFoundException {
 	// first verify that the user is still a member of the workgroup
@@ -267,8 +269,8 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     /**
-         * Update the user's Action List to reflect their removal from the given Workgroup.
-         */
+     * Update the user's Action List to reflect their removal from the given Workgroup.
+     */
     public void updateActionListForUserRemovedFromWorkgroup(WorkflowUser user, Workgroup workgroup)
 	    throws EdenUserNotFoundException {
 	// first verify that the user is no longer a member of the workgroup
@@ -468,43 +470,44 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     /**
-         * This overridden method ...
-         * 
-         * @see edu.iu.uis.eden.actionlist.ActionListService#getOutbox(edu.iu.uis.eden.user.WorkflowUser,
-         *      edu.iu.uis.eden.actionlist.ActionListFilter)
-         */
+     * This overridden method ...
+     * 
+     * @see edu.iu.uis.eden.actionlist.ActionListService#getOutbox(edu.iu.uis.eden.user.WorkflowUser,
+     *      edu.iu.uis.eden.actionlist.ActionListFilter)
+     */
     public Collection getOutbox(WorkflowUser workflowUser, ActionListFilter filter) {
 	return this.getActionListDAO().getOutbox(workflowUser, filter);
     }
 
     /**
-         * This overridden method ...
-         * 
-         * @see edu.iu.uis.eden.actionlist.ActionListService#removeOutboxItems(edu.iu.uis.eden.user.WorkflowUser,
-         *      java.util.List)
-         */
+     * This overridden method ...
+     * 
+     * @see edu.iu.uis.eden.actionlist.ActionListService#removeOutboxItems(edu.iu.uis.eden.user.WorkflowUser,
+     *      java.util.List)
+     */
     public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems) {
 	this.getActionListDAO().removeOutboxItems(workflowUser, outboxItems);
     }
 
     /**
-         * 
-         * save the ouboxitem unless the document is saved or the user already has the item in their outbox.
-         * 
-         * @see edu.iu.uis.eden.actionlist.ActionListService#saveOutboxItem(edu.iu.uis.eden.actionitem.OutboxItemActionListExtension)
-         */
+     * 
+     * save the ouboxitem unless the document is saved or the user already has the item in their outbox.
+     * 
+     * @see edu.iu.uis.eden.actionlist.ActionListService#saveOutboxItem(edu.iu.uis.eden.actionitem.OutboxItemActionListExtension)
+     */
     public void saveOutboxItem(ActionItem actionItem) {
 	try {
 	    if (KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getUser()).isUsingOutbox()
-		&& Core.getCurrentContextConfig().getOutBoxOn() 
-		&& getActionListDAO().getOutboxByDocumentId(actionItem.getRouteHeaderId()) == null
-		&& !actionItem.getRouteHeader().getDocRouteStatus().equals(EdenConstants.ROUTE_HEADER_SAVED_CD)) {
-		//  only create an outbox item if this user has taken action on the document
-		ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(actionItem.getActionRequestId());
+		    && Core.getCurrentContextConfig().getOutBoxOn()
+		    && getActionListDAO().getOutboxByDocumentId(actionItem.getRouteHeaderId()) == null
+		    && !actionItem.getRouteHeader().getDocRouteStatus().equals(EdenConstants.ROUTE_HEADER_SAVED_CD)) {
+		// only create an outbox item if this user has taken action on the document
+		ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(
+			actionItem.getActionRequestId());
 		ActionTakenValue actionTaken = actionRequest.getActionTaken();
 		// if an action was taken...
 		if (actionTaken != null && actionTaken.getWorkflowUser().getWorkflowId().equals(actionItem.getWorkflowId())) {
-		    this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));    
+		    this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));
 		}
 	    }
 	} catch (EdenUserNotFoundException eunfe) {

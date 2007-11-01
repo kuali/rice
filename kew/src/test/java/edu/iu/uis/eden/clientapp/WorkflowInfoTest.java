@@ -21,6 +21,7 @@ import org.kuali.workflow.test.KEWTestCase;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
+import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
@@ -46,6 +47,34 @@ public class WorkflowInfoTest extends KEWTestCase {
 
 	assertEquals(documentId, routeHeaderVO.getRouteHeaderId());
 	assertEquals(EdenConstants.ROUTE_HEADER_INITIATED_CD, routeHeaderVO.getDocRouteStatus());
+    }
+
+    @Test
+    public void testGetDocumentStatus() throws Exception {
+	WorkflowInfo info = new WorkflowInfo();
+	// verify that a null document id throws an exception
+	try {
+	    String status = info.getDocumentStatus(null);
+	    fail("A WorkflowException should have been thrown, instead returned status: " + status);
+	} catch (WorkflowException e) {}
+	// verify that a bad document id throws an exception
+	try {
+	    String status = info.getDocumentStatus(new Long(-1));
+	    fail("A WorkflowException Should have been thrown, instead returned status: " + status);
+	} catch (WorkflowException e) {}
+
+	// now create a doc and load it's status
+	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "TestDocumentType");
+	Long documentId = document.getRouteHeaderId();
+	assertNotNull(documentId);
+
+	String status = info.getDocumentStatus(documentId);
+	assertEquals("Document should be INITIATED.", EdenConstants.ROUTE_HEADER_INITIATED_CD, status);
+
+	// cancel the doc, it's status should be updated
+	document.cancel("");
+	status = info.getDocumentStatus(documentId);
+	assertEquals("Document should be CANCELED.", EdenConstants.ROUTE_HEADER_CANCEL_CD, status);
     }
 
 }

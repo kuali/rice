@@ -158,94 +158,64 @@ public class DocumentSearchAction extends WorkflowAction {
         return mapping.findForward("success");
     }
 
-    public ActionForward doDocSearch(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-	    HttpServletResponse response) throws Exception {
+    public ActionForward doDocSearch(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 	LOG.info("started doDocSearch");
 	DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
-	try {
-	    String previousDocTypeName = docSearchForm.getDocTypeDisplayName();
-	    DocumentSearchResultComponents results = null;
-	    SavedSearchResult result = null;
-	    if (docSearchForm.getNamedSearch() != null && !"".equals(docSearchForm.getNamedSearch()) && !"ignore".equals(docSearchForm.getNamedSearch())) {
-		result = getDocumentSearchService().getSavedSearchResults(getUserSession(request).getWorkflowUser(), docSearchForm.getNamedSearch());
-		// DocSearchCriteriaVO criteria = result.getDocSearchCriteriaVO();
-		// docSearchForm.setCriteria(criteria);
-		// String currentDocTypeName = docSearchForm.getDocTypeDisplayName();
-		// // if the previous search had no doc type and the new one does... we need to populate the potential
-		// searchable attributes
-		// if ( (previousDocTypeName == null) && (currentDocTypeName != null) ) {
-		// setDropdowns(docSearchForm, request);
-		// docSearchForm.checkForAdditionalFields();
-		// }
-		// // docSearchForm.checkForAdditionalFields(criteria.getDocTypeFullName());
-		// // docSearchForm.setPropertyFields(criteria.getSearchableAttributes());
-		//
-		// docSearchForm.setNamedSearch("");
-		// //TODO this is for historic reasons only and can be deleted after release 2.1
-		// // but we need to check and notify that any user option saved search without a key containing
-		// 'isAdvancedSearch'
-		// // will lose the search location context and will always be brought to the 'basic' search screen
-		// //if ("".equals(docSearchForm.getIsAdvancedSearch()) || "NO".equals(docSearchForm.getIsAdvancedSearch()))
-		// {
-		// // docSearchForm.setIsAdvancedSearch(result.isAdvancedSearch() ? "YES" : "NO");
-		// //}
-		docSearchForm.updateFormUsingSavedSearch(result);
-		setDropdowns(docSearchForm, request);
-		results = result.getSearchResult();
-	    } else {
-		docSearchForm.addSearchableAttributesToCriteria();
-		DocSearchCriteriaVO criteria = docSearchForm.getCriteria();
-		if (docSearchForm.isInitiatorUser()) {
-		    criteria.setInitiator(getUserSession(request).getNetworkId());
-		}
-		results = getDocumentSearchService().getList(getUserSession(request).getWorkflowUser(), docSearchForm.getCriteria());
-		result = new SavedSearchResult(criteria, results);
+	String previousDocTypeName = docSearchForm.getDocTypeDisplayName();
+	DocumentSearchResultComponents results = null;
+	SavedSearchResult result = null;
+	if (docSearchForm.getNamedSearch() != null && !"".equals(docSearchForm.getNamedSearch()) && !"ignore".equals(docSearchForm.getNamedSearch())) {
+	    result = getDocumentSearchService().getSavedSearchResults(getUserSession(request).getWorkflowUser(), docSearchForm.getNamedSearch());
+	    docSearchForm.updateFormUsingSavedSearch(result);
+	    setDropdowns(docSearchForm, request);
+	    results = result.getSearchResult();
+	} else {
+	    docSearchForm.addSearchableAttributesToCriteria();
+	    DocSearchCriteriaVO criteria = docSearchForm.getCriteria();
+	    if (docSearchForm.isInitiatorUser()) {
+		criteria.setInitiator(getUserSession(request).getNetworkId());
 	    }
-
-	    List columns = results.getColumns();
-	    MessageResources mr = getResources(request);
-	    mr.setReturnNull(true);
-	    Locale locale = (Locale) request.getAttribute(Globals.LOCALE_KEY);
-	    for (Iterator iter = columns.iterator(); iter.hasNext();) {
-		Column column = (Column) iter.next();
-		if ((column.getColumnTitle() == null) || (column.getColumnTitle().trim().length() == 0)) {
-		    String title = mr.getMessage(locale, "docSearch.DocumentSearch.results.label." + column.getKey());
-		    if (StringUtils.isBlank(title)) {
-			title = "** No Title Available **";
-		    }
-		    column.setColumnTitle(title);
-		}
-	    }
-
-	    // adjust results and result objects
-	    result = new SavedSearchResult(docSearchForm.getCriteria(), new DocumentSearchResultComponents(columns, results.getSearchResults()));
-	    request.setAttribute("reqSearchResultColumns", result.getSearchResult().getColumns());
-	    request.setAttribute("reqSearchResults", result.getSearchResult().getSearchResults());
-	    // request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
-	    request.setAttribute("key", getUserSession(request).addObject(new State(docSearchForm, result)));
-	    if (docSearchForm.getCriteria().isOverThreshold() && docSearchForm.getCriteria().getSecurityFilteredRows() > 0) {
-		ActionErrors errors = new ActionErrors();
-		errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.exceededThresholdAndSecurityFiltered", 
-			String.valueOf(results.getSearchResults().size()), docSearchForm.getCriteria().getSecurityFilteredRows()));
-		saveErrors(request, errors);
-	    } else if (docSearchForm.getCriteria().getSecurityFilteredRows() > 0) {
-		ActionErrors errors = new ActionErrors();
-		errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.securityFiltered", 
-			docSearchForm.getCriteria().getSecurityFilteredRows()));
-		saveErrors(request, errors);
-	    } else if (docSearchForm.getCriteria().isOverThreshold()) {
-		ActionErrors errors = new ActionErrors();
-		errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.exceededThreshold", 
-			String.valueOf(results.getSearchResults().size())));
-		saveErrors(request, errors);
-	    }
-
-	    LOG.info("end doDocSearch");
-	    return mapping.findForward("success");
-	} catch (Exception e) {
-	    establishFinalState(request, docSearchForm);
-	    throw e;
+	    results = getDocumentSearchService().getList(getUserSession(request).getWorkflowUser(), docSearchForm.getCriteria());
+	    result = new SavedSearchResult(criteria, results);
 	}
+
+	List columns = results.getColumns();
+	MessageResources mr = getResources(request);
+	mr.setReturnNull(true);
+	Locale locale = (Locale) request.getAttribute(Globals.LOCALE_KEY);
+	for (Iterator iter = columns.iterator(); iter.hasNext();) {
+	    Column column = (Column) iter.next();
+	    if ((column.getColumnTitle() == null) || (column.getColumnTitle().trim().length() == 0)) {
+		String title = mr.getMessage(locale, "docSearch.DocumentSearch.results.label." + column.getKey());
+		if (StringUtils.isBlank(title)) {
+		    title = "** No Title Available **";
+		}
+		column.setColumnTitle(title);
+	    }
+	}
+
+	// adjust results and result objects
+	result = new SavedSearchResult(docSearchForm.getCriteria(), new DocumentSearchResultComponents(columns, results.getSearchResults()));
+	request.setAttribute("reqSearchResultColumns", result.getSearchResult().getColumns());
+	request.setAttribute("reqSearchResults", result.getSearchResult().getSearchResults());
+	// request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
+	request.setAttribute("key", getUserSession(request).addObject(new State(docSearchForm, result)));
+	if (docSearchForm.getCriteria().isOverThreshold() && docSearchForm.getCriteria().getSecurityFilteredRows() > 0) {
+	    ActionErrors errors = new ActionErrors();
+	    errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.exceededThresholdAndSecurityFiltered", String.valueOf(results.getSearchResults().size()), docSearchForm.getCriteria().getSecurityFilteredRows()));
+	    saveErrors(request, errors);
+	} else if (docSearchForm.getCriteria().getSecurityFilteredRows() > 0) {
+	    ActionErrors errors = new ActionErrors();
+	    errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.securityFiltered", docSearchForm.getCriteria().getSecurityFilteredRows()));
+	    saveErrors(request, errors);
+	} else if (docSearchForm.getCriteria().isOverThreshold()) {
+	    ActionErrors errors = new ActionErrors();
+	    errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.exceededThreshold", String.valueOf(results.getSearchResults().size())));
+	    saveErrors(request, errors);
+	}
+
+	LOG.info("end doDocSearch");
+	return mapping.findForward("success");
     }
 
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
@@ -257,6 +227,7 @@ public class DocumentSearchAction extends WorkflowAction {
         return null;
     }
 
+    @Override
     public ActionMessages establishFinalState(HttpServletRequest request, ActionForm form) throws Exception {
         DocumentSearchForm docSearchForm = (DocumentSearchForm)form;
         request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
@@ -266,6 +237,11 @@ public class DocumentSearchAction extends WorkflowAction {
 //            request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
 //        }
         return null;
+    }
+
+    @Override
+    public void establishExceptionFinalState(HttpServletRequest request, ActionForm form) throws Exception {
+	establishFinalState(request, form);
     }
 
     private List getSavedSearches(WorkflowUser workflowUser) {

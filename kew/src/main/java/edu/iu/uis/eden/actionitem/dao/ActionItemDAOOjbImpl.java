@@ -45,8 +45,13 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     public ActionItem findByActionItemId(Long actionItemId) {
 	Criteria crit = new Criteria();
 	crit.addEqualTo("actionItemId", actionItemId);
-	return (ActionItem) this.getPersistenceBrokerTemplate()
-		.getObjectByQuery(new QueryByCriteria(ActionItem.class, crit));
+        return (ActionItem) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ActionItem.class, crit));
+    }
+
+    public void deleteActionItems(Long actionRequestId) {
+        Criteria crit = new Criteria();
+		crit.addEqualTo("actionRequestId", actionRequestId);
+		this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ActionItem.class, crit));
     }
 
     public void deleteActionItem(ActionItem actionItem) {

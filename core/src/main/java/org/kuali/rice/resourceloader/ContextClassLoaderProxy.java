@@ -31,6 +31,9 @@ import org.kuali.rice.proxy.BaseTargetedInvocationHandler;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ContextClassLoaderProxy extends BaseTargetedInvocationHandler {
+
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ContextClassLoaderProxy.class);
+
     /**
      * Convenience method that wraps a specified object with a ContextClassLoaderProxy, with a specified
      * handler classloader and proxy classloader.  If the specified object is null, or the object classloader
@@ -63,8 +66,10 @@ public class ContextClassLoaderProxy extends BaseTargetedInvocationHandler {
         // now applied to all prior uses of ContextClassLoaderProxy as a convenience
         //if (proxiedObject != null) { //&& !objectClassLoader.equals(proxyClassLoader)) {
         ContextClassLoaderProxy handler = new ContextClassLoaderProxy(objectClassLoader, proxiedObject);
+        LOG.debug("Installed a ContextClassLoaderProxy on object: " + proxiedObject.getClass().getName());
         proxiedObject = Proxy.newProxyInstance(proxyClassLoader, classesToProxy, handler);
         //}
+
         return proxiedObject;
     }
 

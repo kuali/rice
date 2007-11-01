@@ -50,6 +50,7 @@ public class EdenConstants extends JSTLConstants {
     public static final String APP_CONST_EDL_USE_XSLTC = "EDL.UseXSLTC";
     public static final String APP_CONST_EDL_DEBUG_TRANSFORM = "EDL.DebugTransform";
     public static final String APP_CONST_EMAIL_FIRST_SEND_IP_KEY = "Config.Mailer.IPAddress";
+    public static final String APP_CONST_MAX_NODES_BEFORE_RUNAWAY_PROCESS = "Config.Maximum.Nodes.Before.Runaway";
 
     public static final String BAM_CONST = "BAM";
 
@@ -83,6 +84,9 @@ public class EdenConstants extends JSTLConstants {
     public static final long DEFAULT_CACHE_REQUEUE_WAIT_TIME = 5000;
 
     public static final int DEFAULT_THREAD_POOL_SIZE = 5;
+    
+    public static final String STANDARD_DOC_SEARCH_GENERATOR_CLASS_CONFIG_PARM = "documentSearch.generator.class.name";
+    public static final String STANDARD_DOC_SEARCH_RESULT_PROCESSOR_CLASS_CONFIG_PARM = "documentSearch.resultProcessor.class.name";
 
     public static final String RULE_CHANGE_AR_GENERATION_KEY = "RuleChange.IsGenerateActionRequests";
     public static final String YES_RULE_CHANGE_AR_GENERATION_VALUE = "true";

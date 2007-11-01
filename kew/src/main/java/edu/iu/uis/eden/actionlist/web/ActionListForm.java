@@ -36,7 +36,6 @@ public class ActionListForm extends ActionForm {
     private String methodToCall = "";
     private String helpDeskActionListUserName;
     private String docType;
-    private String docTypeForceRefresh;
     private String filterLegend;
     private String actionListType;
     private Boolean customActionList;
@@ -113,18 +112,6 @@ public class ActionListForm extends ActionForm {
 
     public void setDocType(String docType) {
 	this.docType = docType;
-    }
-
-    public String getDocTypeForceRefresh() {
-	return docTypeForceRefresh;
-    }
-
-    public void setDocTypeForceRefresh(String docTypeForceRefresh) {
-	this.docTypeForceRefresh = docTypeForceRefresh;
-    }
-
-    public boolean isRefreshRequired() {
-	return getDocTypeForceRefresh() != null;
     }
 
     public String getFilterLegend() {

@@ -29,6 +29,8 @@ import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
+import org.apache.ojb.broker.query.QueryFactory;
+import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.springframework.dao.CannotAcquireLockException;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
@@ -245,4 +247,19 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         }
         return messageEntity;
     }
+
+    public String getDocumentStatus(Long documentId) {
+	Criteria crit = new Criteria();
+    	crit.addEqualTo("routeHeaderId", documentId);
+    	ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, crit);
+    	query.setAttributes(new String[] { "docRouteStatus" });
+    	String status = null;
+    	Iterator iter = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
+    	while (iter.hasNext()) {
+    	    Object[] row = (Object[]) iter.next();
+    	    status = (String)row[0];
+    	}
+    	return status;
+    }
+
 }

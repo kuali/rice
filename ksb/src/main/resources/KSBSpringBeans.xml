@@ -93,6 +93,7 @@
 				<idref local="bamService" />
 				<idref local="enRouteQueueService" />
 				<idref local="enRoutingTableService" />
+				<idref local="exceptionMessagingService" />
 			</list>
 		</property>
 	</bean>

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,13 +36,13 @@ import edu.iu.uis.eden.messaging.serviceconnectors.ServiceConnectorFactory;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RemotedServiceHolder implements ServiceHolder {
-    
-    
+
+
     	private static final Logger LOG = Logger.getLogger(RemotedServiceHolder.class);
-	
+
 	private Object service;
 	private ServiceInfo serviceInfo;
-	
+
 	public RemotedServiceHolder(ServiceInfo entry) {
 		this.setServiceInfo(entry);
 	}
@@ -60,8 +60,10 @@ public class RemotedServiceHolder implements ServiceHolder {
 	}
 
 	public Object getService() throws Exception {
-	    if (this.service == null) {
-		this.setService(ServiceConnectorFactory.getServiceConnector(serviceInfo).getService());
+	    synchronized (this) {
+		if (this.service == null) {
+		    this.setService(ServiceConnectorFactory.getServiceConnector(serviceInfo).getService());
+		}
 	    }
 	    return this.service;
 	}
@@ -69,12 +71,12 @@ public class RemotedServiceHolder implements ServiceHolder {
 	public void setService(Object service) {
 		this.service = service;
 	}
-	
+
 	/**
          * this is a hack so we don't mess with the {@link ServiceInfo} on the deployment side of things from the
          * {@link RemotedServiceRegistry}. We need the service in the {@link ServiceInfo} used on the client to be null but
          * it can't be for the server side stuff - solution serialize the object just like it was put in a datastore.
-         * 
+         *
          * @param serviceInfo
          * @return
          * @throws Exception

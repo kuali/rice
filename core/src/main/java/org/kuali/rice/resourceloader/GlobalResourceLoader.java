@@ -53,11 +53,11 @@ public class GlobalResourceLoader {
 	    }
 	    return resourceLoader;
 	}
-	
+
 	public static ResourceLoader getResourceLoader(ClassLoader classloader) {
 		return rootResourceLoaders.get(classloader);
 	}
-	
+
 //	public static ResourceLoader getResourceLoader() {
 //		ClassLoader classLoader = ClassLoaderUtils.getDefaultClassLoader();
 //		ResourceLoader resourceLoader = getResourceLoader(classLoader);
@@ -67,7 +67,7 @@ public class GlobalResourceLoader {
 //		return resourceLoader;
 //	}
 
-	public static void start() throws Exception {
+	public synchronized static void start() throws Exception {
 		try {
 			initializing = true;
 			ResourceLoader internalResourceLoader = getResourceLoader();
@@ -80,7 +80,7 @@ public class GlobalResourceLoader {
 		}
 	}
 
-	public static void addResourceLoader(ResourceLoader resourceLoader) {
+	public synchronized static void addResourceLoader(ResourceLoader resourceLoader) {
 		initialize();
 		LOG.info("Adding ResourceLoader " + resourceLoader.getName() + " to GlobalResourceLoader");
 		if (resourceLoader == null) {
@@ -89,7 +89,7 @@ public class GlobalResourceLoader {
 		getResourceLoader().addResourceLoader(resourceLoader);
 	}
 
-	public static void addResourceLoaderFirst(ResourceLoader resourceLoader) {
+	public synchronized static void addResourceLoaderFirst(ResourceLoader resourceLoader) {
 		initialize();
 		LOG.info("Adding ResourceLoader " + resourceLoader.getName() + " to GlobalResourceLoader");
 		if (resourceLoader == null) {

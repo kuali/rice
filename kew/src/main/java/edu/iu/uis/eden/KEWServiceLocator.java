@@ -84,19 +84,13 @@ public final class KEWServiceLocator {
 
 	public static final String USER_SERVICE = "enUserService";
 
-	public static final String USER_DAO = "enUserDAO";
-
 	public static final String DOCUMENT_SEARCH_SERVICE = "enDocumentSearchService";
-
-	public static final String ACTION_TAKEN_DAO = "enActionTakenDAO";
 
 	public static final String ACTION_TAKEN_SRV = "enActionTakenService";
 
 	public static final String ACTION_REQUEST_SRV = "enActionRequestService";
 
 	public static final String ACTION_LIST_SRV = "enActionListService";
-
-	public static final String DOC_ROUTE_HEADER_DAO = "enDocumentRouteHeaderDAO";
 
 	public static final String DOC_ROUTE_HEADER_SRV = "enDocumentRouteHeaderService";
 
@@ -105,10 +99,6 @@ public final class KEWServiceLocator {
 	public static final String DOCUMENT_TYPE_SERVICE = "enDocumentTypeService";
 
 	public static final String DOCUMENT_SECURITY_SERVICE = "enDocumentSecurityService";
-
-	public static final String DOCUMENT_TYPE_GROUP_DAO = "enDocumentTypeGroupDAO";
-
-	public static final String ROUTE_QUEUE_SRV = "enRouteQueueService";
 
 	public static final String WORKGROUP_SRV = "enWorkgroupService";
 
@@ -323,10 +313,6 @@ public final class KEWServiceLocator {
 
 	public static WorkflowDocumentService getWorkflowDocumentService() {
 		return (WorkflowDocumentService) getBean(WORKFLOW_DOCUMENT_SERVICE);
-	}
-
-	public static MessageQueueService getRouteQueueService() {
-		return (MessageQueueService) getBean(ROUTE_QUEUE_SRV);
 	}
 
 	public static RouteModuleService getRouteModuleService() {

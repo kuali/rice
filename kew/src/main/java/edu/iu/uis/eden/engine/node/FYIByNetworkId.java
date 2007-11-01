@@ -65,9 +65,9 @@ public class FYIByNetworkId extends RequestActivationNode {
                		}
                			//wfDoc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_FYI_REQ, "Notification Request", new NetworkIdVO(field.getChildText("value")), "Notification Request", true);
                 		LOG.debug("Sent FYI using the appSpecificRouteDocumentToUser function to NetworkID:  " + user.getAuthenticationUserId());
+                               	break;
                	}
         	}
-               	break;
         }
         }
 		return super.process(context, helper);

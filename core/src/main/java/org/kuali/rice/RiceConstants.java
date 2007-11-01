@@ -69,6 +69,8 @@ public class RiceConstants extends JSTLConstants {
 
 	public static final String SPRING_TRANSACTION_MANAGER = "SPRING_TRANSACTION_MANAGER";
 
+	public static final String SERVICES_TO_CACHE = "rice.resourceloader.servicesToCache";
+
     public static DateFormat getDefaultDateFormat() {
 	return new SimpleDateFormat(SIMPLE_DATE_FORMAT_FOR_DATE);
     }

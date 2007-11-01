@@ -132,9 +132,13 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
     	return content;
     }
 
-	public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue) {
-		return getRouteHeaderDAO().hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue);
-	}
+    public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue) {
+	return getRouteHeaderDAO().hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue);
+    }
+
+    public String getDocumentStatus(Long documentId) {
+	return getRouteHeaderDAO().getDocumentStatus(documentId);
+    }
 
     public DocumentRouteHeaderDAO getRouteHeaderDAO() {
         return routeHeaderDAO;

@@ -101,31 +101,32 @@
 				<idref local="enRouteNodeService" />
 				<idref local="enBranchService" />
 				<idref local="enExceptionRoutingService" />
-                 <idref local="enHelpService" />
+                <idref local="enHelpService" />
                 <idref local="enEDocLiteService" />
                 <idref local="enStyleService" />
                 <idref local="enXmlDigesterService" />
                 <idref local="enStatsService" />
                 <idref local="enNoteService" />
-        <idref local="enUserService"/>
-        <idref local="enWorkgroupService"/>
-        <idref local="enWorkgroupDAO"/>
-        <idref local="enWorkgroupMemberDAO"/>
-        <idref local="enWorkgroupRoutingService"/>
-        <idref local="workgroupTypeService"/>
-        <idref local="enDocumentRoutingService" />
-          <idref local="enBlanketApproveProcssor" />
-          <idref local="enSearchableAttributeProcessor" />
-          <idref local="enMoveDocumentService" />
-          <idref local="enActionInvocationService" />
-          <idref local="enImmediateEmailReminderService" />
-          <idref local="enActionListEmailService" />
-        <idref local="enWorkflowUtilityService" />
-        <idref local="enWorkflowDocumentActionsService" />
-        <idref local="enRemoveReplaceDocumentService"/>
-        <!-- it's important that this service remains non-transactionally proxied for various reasons
-        <idref local="enUserOptionsService"/>
-         -->
+                <idref local="enUserService"/>
+                <idref local="enWorkgroupService"/>
+                <idref local="enWorkgroupDAO"/>
+                <idref local="enWorkgroupMemberDAO"/>
+                <idref local="enUserDAO"/>
+                <idref local="enWorkgroupRoutingService"/>
+                <idref local="workgroupTypeService"/>
+                <idref local="enDocumentRoutingService" />
+                <idref local="enBlanketApproveProcessor" />
+                <idref local="enSearchableAttributeProcessor" />
+                <idref local="enMoveDocumentService" />
+                <idref local="enActionInvocationService" />
+                <idref local="enImmediateEmailReminderService" />
+                <idref local="enActionListEmailService" />
+                <idref local="enWorkflowUtilityService" />
+                <idref local="enWorkflowDocumentActionsService" />
+                <idref local="enRemoveReplaceDocumentService"/>
+                <!-- it's important that this service remains non-transactionally proxied for various reasons
+                <idref local="enUserOptionsService"/>
+                -->
 			</list>
 		</property>
 	</bean>
@@ -593,7 +594,9 @@
             <value>${environment}</value>
         </property>
         <property name="emailContentGenerator">
-            <bean class="edu.iu.uis.eden.mail.StyleableEmailContentServiceImpl"/>
+            <bean class="edu.iu.uis.eden.mail.StyleableEmailContentServiceImpl">
+              <property name="styleService" ref="enStyleService"/>
+            </bean>
         </property>
     </bean>
 
@@ -608,7 +611,7 @@
 
 	<bean id="enWorkflowUtilityService" class="edu.iu.uis.eden.server.WorkflowUtilityWebServiceImpl" lazy-init="true" />
     <bean id="enDocumentRoutingService" class="edu.iu.uis.eden.messaging.RouteDocumentMessageService"/>
-    <bean id="enBlanketApproveProcssor" class="edu.iu.uis.eden.actions.asyncservices.BlanketApproveProcessor"/>
+    <bean id="enBlanketApproveProcessor" class="edu.iu.uis.eden.actions.asyncservices.BlanketApproveProcessor"/>
     <bean id="enSearchableAttributeProcessor" class="edu.iu.uis.eden.docsearch.SearchableAttributeProcessor"/>
     <bean id="enMoveDocumentService" class="edu.iu.uis.eden.actions.asyncservices.MoveDocumentProcessor" />
     <bean id="enActionInvocationService" class="edu.iu.uis.eden.actions.asyncservices.ActionInvocationProcessor" />
@@ -728,7 +731,7 @@
 		<property name="serviceDefinition">
         <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
           <property name="service">
-            <ref bean="enBlanketApproveProcssor" />
+            <ref bean="enBlanketApproveProcessor" />
           </property>
           <property name="localServiceName" value="BlanketApproveProcessorService" />
           <property name="priority" value="4"/>

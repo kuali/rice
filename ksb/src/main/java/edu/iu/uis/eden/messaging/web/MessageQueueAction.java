@@ -198,6 +198,7 @@ public class MessageQueueAction extends KSBAction {
          *                The populated message to be requeued.
          */
     protected void quickRequeueMessage(PersistedMessage message) {
+	message.setQueueStatus(RiceConstants.ROUTE_QUEUE_ROUTING);
 	message.setQueueDate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 	message.setRetryCount(new Integer(0));
 	getRouteQueueService().save(message);

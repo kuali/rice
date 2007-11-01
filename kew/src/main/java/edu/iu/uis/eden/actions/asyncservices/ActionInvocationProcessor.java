@@ -36,6 +36,7 @@ public class ActionInvocationProcessor implements ActionInvocationService { // i
 
     public void invokeAction(WorkflowUser user, Long documentId, ActionInvocation invocation) {
 
+	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 
 	List<Object> parameters = new ArrayList<Object>();

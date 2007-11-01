@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,25 +29,25 @@ import edu.iu.uis.eden.SpringLoader;
 public class SpringLifeCycle extends BaseLifecycle {
 
 	protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SpringLifeCycle.class);
-	private String springFileName;
+	private String springFileNames;
 
 	public SpringLifeCycle() {
-		springFileName = SpringLoader.DEFAULT_SPRING_FILE;
+		springFileNames = SpringLoader.DEFAULT_SPRING_FILE;
 	}
 
 	public SpringLifeCycle(String springFileName) {
-		this.springFileName = springFileName;
+		this.springFileNames = springFileName;
 	}
 
 	public void start() throws Exception {
-		LOG.warn("Initializing Spring from " + springFileName);
+		LOG.warn("Initializing Spring from " + springFileNames);
 //		Config config = Core.getCurrentContextConfig();
 //		String originalME = config.getMessageEntity();
 		try {
 //			if (config.getRunningEmbeddedServerMode()) {
 //				Core.getCurrentContextConfig().overrideProperty(Config.MESSAGE_ENTITY, "KEW");
 //			}
-			SpringLoader.getInstance().setContextFile(springFileName);
+			SpringLoader.getInstance().setContextFiles(springFileNames);
 //			SpringLoader.getInstance().start();
 			super.start();
 		} catch (Exception e) {

@@ -274,10 +274,6 @@ public abstract class ActionTakenEvent {
 		return (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
 	}
 
-	public MessageQueueService getRouteQueueService() {
-		return (MessageQueueService) KEWServiceLocator.getService(KEWServiceLocator.ROUTE_QUEUE_SRV);
-	}
-
 	public RouteHeaderService getRouteHeaderService() {
 		return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
 	}

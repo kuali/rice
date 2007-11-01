@@ -136,6 +136,21 @@ public class WorkflowInfo implements java.io.Serializable {
     }
 
     /**
+     * Returns the status of the document with the given ID.
+     *
+     * @since 0.9.1
+     * @throws WorkflowException if document cannot be found for the given ID or
+     * if the given document ID is null.
+     */
+    public String getDocumentStatus(Long documentId) throws WorkflowException {
+	try {
+	    return getWorkflowUtility().getDocumentStatus(documentId);
+	} catch (Exception e) {
+	    throw handleException(e);
+	}
+    }
+
+    /**
      * Returns the WorkgroupVO given a workgroup id
      * @param workgroupId id of the workgroup to obtain
      * @return the WorkgroupVO given a workgroup id

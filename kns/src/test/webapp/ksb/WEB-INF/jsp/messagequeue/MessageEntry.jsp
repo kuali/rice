@@ -277,7 +277,7 @@
 				  		    	<td class="thnormal" align="right" width="20%">App Specific Value 1:&nbsp;</td>
 				  		    	<c:if test="${showOld}">
 					  		    	<td class="datacell">
-					  		    		<c:out value="${MessageQueueForm.messageQueueFromDatabase.value1}" />
+					  		    		<c:out value="${MessageQueueForm.messageQueueFromDatabase.value1}" default="&nbsp;" />
 					  		    	</td>
 				  		    	</c:if>
 				  		    	<td class="datacell">
@@ -287,7 +287,7 @@
 													&nbsp;
 				  		    			</c:when>
 				  		    			<c:otherwise>
-				  		    				<c:out value="${MessageQueueForm.messageQueueFromForm.value1}" />
+				  		    				<c:out value="${MessageQueueForm.messageQueueFromForm.value1}" default="&nbsp;" />
 				  		    			</c:otherwise>
 				  		    		</c:choose>
 				  		    	</td>
@@ -296,7 +296,7 @@
 				  		    	<td class="thnormal" align="right" width="20%">App Specific Value 2:&nbsp;</td>
 				  		    	<c:if test="${showOld}">
 					  		    	<td class="datacell">
-					  		    		<c:out value="${MessageQueueForm.messageQueueFromDatabase.value2}" />
+					  		    		<c:out value="${MessageQueueForm.messageQueueFromDatabase.value2}" default="&nbsp;" />
 					  		    	</td>
 				  		    	</c:if>
 				  		    	<td class="datacell">
@@ -306,7 +306,7 @@
 													&nbsp;
 				  		    			</c:when>
 				  		    			<c:otherwise>
-				  		    				<c:out value="${MessageQueueForm.messageQueueFromForm.value2}" />
+				  		    				<c:out value="${MessageQueueForm.messageQueueFromForm.value2}" default="&nbsp;" />
 				  		    			</c:otherwise>
 				  		    		</c:choose>
 				  		    	</td>

@@ -422,29 +422,6 @@ public class TestUtilities {
 	}
 
 	/**
-	 * wait until the route queue is empty because we may have some cache items to be picked up still.
-	 *
-	 * @throws Exception
-	 */
-	public static void waitForCacheNotificationsToClearFromQueue() throws Exception {
-        // NOTE: when using McKoi for units tests, route queue service never seems to be clear of items, and correspondingly
-        // this method will throw an exception
-		int iterations = 0;
-		while (true) {
-			int itemCount = KEWServiceLocator.getRouteQueueService().findAll().size();
-			if (itemCount == 0) {
-				break;
-			}
-			if (iterations > 20) {
-				throw new WorkflowRuntimeException("Waited too long for route queue to clear out cache notifications");
-			}
-			iterations++;
-			System.out.println("!!!Sleeping for 1 second to let cache notifications clear out");
-			Thread.sleep(1000);
-		}
-	}
-
-	/**
      * This method searches for an exception of the specified type in the exception stack
      * @param topLevelException the exception whose stack to traverse
      * @param exceptionClass the exception class to look for

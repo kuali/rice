@@ -78,13 +78,15 @@ public class KSBTestCase extends RiceTestCase {
 	return "ksb";
     }
 
-
-
     @Override
-    protected List<String> getTablesNotToClear() {
-	List<String> tablesNotToClear = new ArrayList<String>();
-	tablesNotToClear.add("KR_QRTZ_.*");
-	return tablesNotToClear;
+    protected List<String> getTablesToClear() {
+	List<String> tables = new ArrayList<String>();
+	tables.add("EN_MSG_QUE_T");
+	tables.add("EN_MSG_PAYLOAD_T");
+	tables.add("EN_BAM_T");
+	tables.add("EN_BAM_PARAM_T");
+	tables.add("EN_SERVICE_DEF_DUEX_T");
+	return tables;
     }
 
     @Override

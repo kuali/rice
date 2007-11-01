@@ -24,6 +24,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.PriorityBlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.ThreadFactory;
 import edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor;
 import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
+import edu.iu.uis.eden.messaging.config.KSBConfigurer;
 
 /**
  * A Thread Pool implementation for the KSB which implements a thread pool backed by a configuration store.
@@ -121,6 +122,9 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
 	public Thread newThread(Runnable runnable) {
 	    threadSequence++;
 	    Thread thread = this.defaultThreadFactory.newThread(runnable);
+	    // if the thread ends up getting spawned by an action inside of a workflow plugin or something along those lines, it will inherit the plugin's
+	    // classloader as it's ContextClassLoader.  Let's make sure it's set to the same ClassLoader that loaded the KSBConfigurer
+	    thread.setContextClassLoader(KSBConfigurer.class.getClassLoader());
 	    thread.setName(Core.getCurrentContextConfig().getMessageEntity() + "/KSB-pool-" + factorySequence + "-thread-"
 		    + threadSequence);
 	    return thread;

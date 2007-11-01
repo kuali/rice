@@ -19,6 +19,7 @@ package edu.iu.uis.eden.core;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.lifecycle.Lifecycle;
@@ -33,16 +34,19 @@ import edu.iu.uis.eden.mail.EmailReminderLifecycle;
  */
 public class TempEmbeddedLifeCycle extends BaseCompositeLifecycle {
 
-	/* (non-Javadoc)
-	 * @see org.kuali.rice.lifecycle.BaseCompositeLifecycle#loadLifecycles()
-	 */
-	@Override
-	protected List<Lifecycle> loadLifecycles() throws Exception {
-		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		String springLocation = Core.getCurrentContextConfig().getAlternateSpringFile();
-		if (springLocation == null) {
-			springLocation = "org/kuali/workflow/resources/KewSpringBeans.xml";
-		}
+    private static final String ADDITIONAL_SPRING_FILES_PARAM = "kew.additionalSpringFiles";
+
+    @Override
+    protected List<Lifecycle> loadLifecycles() throws Exception {
+	List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
+	String springLocation = Core.getCurrentContextConfig().getAlternateSpringFile();
+	if (springLocation == null) {
+	    springLocation = "org/kuali/workflow/resources/KewSpringBeans.xml";
+	}
+	String additionalSpringFiles = Core.getCurrentContextConfig().getProperty(ADDITIONAL_SPRING_FILES_PARAM);
+	if (!StringUtils.isEmpty(additionalSpringFiles)) {
+	    springLocation += "," + additionalSpringFiles;
+        }
     	lifecycles.add(new SpringLifeCycle(springLocation));
     	lifecycles.add(new WebApplicationGlobalResourceLifecycle());
     	if (Core.getCurrentContextConfig().getRunningEmbeddedServerMode()) {

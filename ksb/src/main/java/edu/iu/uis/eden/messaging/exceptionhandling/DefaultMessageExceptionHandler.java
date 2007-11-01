@@ -109,6 +109,7 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
     }
 
     protected void scheduleExecution(Throwable throwable, PersistedMessage message) throws Exception {
+	KSBServiceLocator.getRouteQueueService().delete(message);
 	Scheduler scheduler = KSBServiceLocator.getScheduler();
 	JobDataMap jobData = new JobDataMap();
 	jobData.put(MessageServiceExecutorJob.MESSAGE_KEY, message);
@@ -120,7 +121,6 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
 		.getQueueDate());
 	trigger.setJobDataMap(jobData);// 1.6 bug required or derby will choke
 	scheduler.scheduleJob(jobDetail, trigger);
-	KSBServiceLocator.getRouteQueueService().delete(message);
     }
 
     public Integer getMaxRetryAttempts() {

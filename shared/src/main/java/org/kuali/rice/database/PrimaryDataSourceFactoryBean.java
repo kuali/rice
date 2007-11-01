@@ -148,7 +148,7 @@ public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
 		dataSource.setUsername(getStringProperty(config, Config.DATASOURCE_USERNAME));
 		dataSource.setPassword(getStringProperty(config, Config.DATASOURCE_PASSWORD));
 
-		dataSource.start();
+		dataSource.afterPropertiesSet();
 
 		return dataSource;
 	}

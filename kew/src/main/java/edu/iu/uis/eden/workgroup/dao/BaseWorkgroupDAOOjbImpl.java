@@ -183,7 +183,7 @@ public class BaseWorkgroupDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
 	public BaseWorkgroup findByName(String workgroupName) {
 		List workgroups = findByName(workgroupName, true);
         if(workgroups.size() > 0){
-            return (BaseWorkgroup) findByName(workgroupName, true).get(0);
+    		return (BaseWorkgroup) workgroups.get(0);
         }
         return null;
     }

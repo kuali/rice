@@ -626,10 +626,6 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 	return parentRequest;
     }
 
-    private MessageQueueService getRouteQueueService() {
-	return (MessageQueueService) KEWServiceLocator.getService(KEWServiceLocator.ROUTE_QUEUE_SRV);
-    }
-
     public void deleteByRouteHeaderId(Long routeHeaderId) {
 	actionRequestDAO.deleteByRouteHeaderId(routeHeaderId);
     }

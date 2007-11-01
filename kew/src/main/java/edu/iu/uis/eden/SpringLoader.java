@@ -61,7 +61,7 @@ public final class SpringLoader extends BaseLifecycle implements ServiceLocator 
      */
     private final ContextualConfigLock SPRING_INIT_STARTED = new ContextualConfigLock("Spring has started initialization");
 
-    private String contextFile = DEFAULT_SPRING_FILE;
+    private String contextFiles = DEFAULT_SPRING_FILE;
     private static Set<String> suppressedServices = null;
 
     /**
@@ -93,9 +93,9 @@ public final class SpringLoader extends BaseLifecycle implements ServiceLocator 
         }
         SPRING_INIT_STARTED.fire();
 
-        LOG.info("Initializing Spring from resource: " + getContextFile());
+        LOG.info("Initializing Spring from resources: " + getContextFiles());
         try {
-        	appContext = new ClassPathXmlApplicationContext(getContextFile());
+        	appContext = new ClassPathXmlApplicationContext(getContextFiles());
         	appContext.getBeanFactory().preInstantiateSingletons();
         } finally {
             // if an exception occurs we need to signal that init is complete
@@ -189,12 +189,12 @@ public final class SpringLoader extends BaseLifecycle implements ServiceLocator 
 		return contents;
 	}
 
-	public String getContextFile() {
-		return contextFile;
+	public String getContextFiles() {
+		return contextFiles;
 	}
 
-	public void setContextFile(String contextFile) {
-		this.contextFile = contextFile;
+	public void setContextFiles(String contextFiles) {
+		this.contextFiles = contextFiles;
 	}
 
 }

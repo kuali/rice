@@ -47,6 +47,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
 	INVALID_TEMPLATE_OVERWRITE("InvalidRuleTemplateOverwrite", "RuleTemplate_Valid", new String[]{RULE_ATTRIBUTE_ONE}, new String[0], new String[]{RULE_ATTRIBUTE_ONE}, new String[0]),
 	VALID_TEMPLATE_WITH_FULL_DEFAULTS("ValidRuleTemplateWithDefaults", "RuleTemplate_Valid_Defaults", new String[]{RULE_ATTRIBUTE_TWO}, new String[0], new String[]{RULE_ATTRIBUTE_TWO}, new String[0]),
 	VALID_TEMPLATE_WITH_LIMITED_DEFAULTS("ValidRuleTemplateWithDefaults2", "RuleTemplate_Valid_Some_Defaults", new String[]{RULE_ATTRIBUTE_THREE}, new String[0], new String[0], new String[]{RULE_ATTRIBUTE_THREE}),
+	VALID_TEMPLATE_WITH_INSTRUCTIONS_DEFAULT("ValidRuleTemplateWithDefaults3", "RuleTemplate_Valid_Instructions_Default", new String[]{RULE_ATTRIBUTE_TWO}, new String[0], new String[]{RULE_ATTRIBUTE_TWO}, new String[0]),
 	;
 	
 	public String fileNameParameter;
@@ -147,6 +148,10 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
 
     @Test public void testLoadValidTemplateWithSomeDefaults() throws Exception {
         testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_LIMITED_DEFAULTS.fileNameParameter, null);
+    }
+    
+    @Test public void testLoadValidTemplateWithInstructionsDefault() throws Exception {
+        testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_INSTRUCTIONS_DEFAULT.fileNameParameter, null);
     }
     
     private enum TemplateParserAttributeActivationFixture {

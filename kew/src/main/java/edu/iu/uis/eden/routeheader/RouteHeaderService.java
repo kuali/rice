@@ -54,4 +54,5 @@ public interface RouteHeaderService {
 
     public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue);
 
+    public String getDocumentStatus(Long documentId);
 }

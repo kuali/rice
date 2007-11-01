@@ -29,6 +29,7 @@ import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.applicationconstants.ApplicationConstant;
 import edu.iu.uis.eden.engine.node.Branch;
 import edu.iu.uis.eden.engine.node.BranchState;
 import edu.iu.uis.eden.engine.node.Process;
@@ -46,6 +47,7 @@ import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routeheader.RouteHeaderService;
 import edu.iu.uis.eden.util.PerformanceLogger;
+import edu.iu.uis.eden.util.Utilities;
 
 /**
  * The standard and supported implementation of the WorkflowEngine.  Runs a processing loop against a given
@@ -539,9 +541,10 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		return KEWServiceLocator.getRouteNodeService();
 	}
 
-	private boolean isRunawayProcessDetected(EngineState engineState) {
-		// TODO make this configurable in some way
-		return engineState.getCompleteNodeInstances().size() > 20;
+	private boolean isRunawayProcessDetected(EngineState engineState) throws NumberFormatException {
+	    String maxNodesConstant = Utilities.getApplicationConstant(EdenConstants.APP_CONST_MAX_NODES_BEFORE_RUNAWAY_PROCESS);
+	    int maxNodes = (Utilities.isEmpty(maxNodesConstant)) ? 50 : Integer.valueOf(maxNodesConstant);
+	    return engineState.getCompleteNodeInstances().size() > maxNodes;
 	}
 
 	protected RouteHeaderService getRouteHeaderService() {

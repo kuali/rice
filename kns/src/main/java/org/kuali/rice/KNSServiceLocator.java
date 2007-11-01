@@ -1,22 +1,18 @@
 /*
  * Copyright 2007 The Kuali Foundation.
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
  * 
  * http://www.opensource.org/licenses/ecl1.php
  * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
  */
 package org.kuali.rice;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -77,337 +73,341 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
 public class KNSServiceLocator<T extends Object> {
 
-	public static final String VALIDATION_COMPLETION_UTILS = "validationCompletionUtils";
+    public static final String VALIDATION_COMPLETION_UTILS = "validationCompletionUtils";
 
-	public static Object getService(String serviceName) {
-		return GlobalResourceLoader.getService(serviceName);
-	}
-	
-	public static <T> T getBean(Class<T> type) {
-		Collection<T> beansOfType = getBeansOfType(type).values();
-		if (beansOfType.isEmpty()) {
-			throw new NoSuchBeanDefinitionException("No beans of this type in the KNS application context: " + type.getName());
-		}
-		if (beansOfType.size() > 1) {
-            return getBean(type, type.getSimpleName().substring(0, 1).toLowerCase() + type.getSimpleName().substring(1));
-		}
-        return beansOfType.iterator().next();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static <T> T getBean(Class<T> type, String name) {
-		return  (T) KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBean(name);
-	}
-	
-	@SuppressWarnings("unchecked")
-    public static <T> Map<String,T> getBeansOfType(Class<T> type) {
-        return new HashMap((Map)KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(type));
+    public static Object getService(String serviceName) {
+	return GlobalResourceLoader.getService(serviceName);
     }
-	
+
+    public static <T> T getBean(Class<T> type) {
+	Collection<T> beansOfType = getBeansOfType(type).values();
+	if (beansOfType.isEmpty()) {
+	    throw new NoSuchBeanDefinitionException("No beans of this type in the KNS application context: "
+		    + type.getName());
+	}
+	if (beansOfType.size() > 1) {
+	    return getBean(type, type.getSimpleName().substring(0, 1).toLowerCase() + type.getSimpleName().substring(1));
+	}
+	return beansOfType.iterator().next();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T getBean(Class<T> type, String name) {
+	return (T) KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBean(name);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> Map<String, T> getBeansOfType(Class<T> type) {
+	return new HashMap((Map) KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(type));
+    }
+
     public static String[] getBeanNames() {
-        return KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanDefinitionNames();
+	return KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanDefinitionNames();
     }
 
     public static Set<String> getSingletonNames() {
 	Set<String> singletonNames = new HashSet<String>();
-	Collections.addAll(singletonNames, KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().getSingletonNames());
+	Collections.addAll(singletonNames, KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory()
+		.getSingletonNames());
 	return singletonNames;
     }
-    
+
     public static Set<Class> getSingletonTypes() {
 	Set<Class> singletonTypes = new HashSet<Class>();
-        for (String singletonName : getSingletonNames()) {
-            singletonTypes.add(KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().getType(singletonName));
-        }
-        return singletonTypes;
+	for (String singletonName : getSingletonNames()) {
+	    singletonTypes.add(KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().getType(
+		    singletonName));
+	}
+	return singletonTypes;
     }
-    
-	public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName) {
-		List<NamedOrderedListBean> namedOrderedListBeans = new ArrayList<NamedOrderedListBean>();
-		for (Object namedOrderedListBean : KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(NamedOrderedListBean.class).values()) {
-			if (((NamedOrderedListBean) namedOrderedListBean).getName().equals(listName)) {
-				namedOrderedListBeans.add((NamedOrderedListBean) namedOrderedListBean);
-			}
-		}
-		return namedOrderedListBeans;
+
+    public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName) {
+	List<NamedOrderedListBean> namedOrderedListBeans = new ArrayList<NamedOrderedListBean>();
+	for (Object namedOrderedListBean : KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(
+		NamedOrderedListBean.class).values()) {
+	    if (((NamedOrderedListBean) namedOrderedListBean).getName().equals(listName)) {
+		namedOrderedListBeans.add((NamedOrderedListBean) namedOrderedListBean);
+	    }
 	}
+	return namedOrderedListBeans;
+    }
 
-	public static final ValidationCompletionUtils getValidationCompletionUtils() {
-		return (ValidationCompletionUtils) getService(VALIDATION_COMPLETION_UTILS);
-	}
+    public static final ValidationCompletionUtils getValidationCompletionUtils() {
+	return (ValidationCompletionUtils) getService(VALIDATION_COMPLETION_UTILS);
+    }
 
-	public static final String ENCRYPTION_SERVICE = "encryptionService";
+    public static final String ENCRYPTION_SERVICE = "encryptionService";
 
-	public static final EncryptionService getEncryptionService() {
-		return (EncryptionService) getService(ENCRYPTION_SERVICE);
-	}
+    public static final EncryptionService getEncryptionService() {
+	return (EncryptionService) getService(ENCRYPTION_SERVICE);
+    }
 
-	public static final String MAIL_SERVICE = "mailService";
+    public static final String MAIL_SERVICE = "mailService";
 
-	public static final MailService getMailService() {
-		return (MailService) getService(MAIL_SERVICE);
-	}
+    public static final MailService getMailService() {
+	return (MailService) getService(MAIL_SERVICE);
+    }
 
-	public static final String METHOD_CACHE_INTERCEPTOR = "methodCacheInterceptor";
+    public static final String METHOD_CACHE_INTERCEPTOR = "methodCacheInterceptor";
 
-	public static MethodCacheInterceptor getMethodCacheInterceptor() {
-		return (MethodCacheInterceptor) getService(METHOD_CACHE_INTERCEPTOR);
-	}
+    public static MethodCacheInterceptor getMethodCacheInterceptor() {
+	return (MethodCacheInterceptor) getService(METHOD_CACHE_INTERCEPTOR);
+    }
 
-	public static final String XML_OBJECT_SERIALIZER_SERVICE = "xmlObjectSerializerService";
+    public static final String XML_OBJECT_SERIALIZER_SERVICE = "xmlObjectSerializerService";
 
-	public static XmlObjectSerializerService getXmlObjectSerializerService() {
-		return (XmlObjectSerializerService) getService(XML_OBJECT_SERIALIZER_SERVICE);
-	}
+    public static XmlObjectSerializerService getXmlObjectSerializerService() {
+	return (XmlObjectSerializerService) getService(XML_OBJECT_SERIALIZER_SERVICE);
+    }
 
-	public static final String DOCUMENT_SERVICE = "documentService";
+    public static final String DOCUMENT_SERVICE = "documentService";
 
-	public static DocumentService getDocumentService() {
-		return (DocumentService) getService(DOCUMENT_SERVICE);
-	}
+    public static DocumentService getDocumentService() {
+	return (DocumentService) getService(DOCUMENT_SERVICE);
+    }
 
-	public static final String POST_PROCESSOR_SERVICE = "postProcessorService";
+    public static final String POST_PROCESSOR_SERVICE = "postProcessorService";
 
-	public static PostProcessorService getPostProcessorService() {
-		return (PostProcessorService) getService(POST_PROCESSOR_SERVICE);
-	}
+    public static PostProcessorService getPostProcessorService() {
+	return (PostProcessorService) getService(POST_PROCESSOR_SERVICE);
+    }
 
-	public static final String WEB_AUTHENTICATION_SERVICE = "webAuthenticationService";
+    public static final String WEB_AUTHENTICATION_SERVICE = "webAuthenticationService";
 
-	public static WebAuthenticationService getWebAuthenticationService() {
-		return (WebAuthenticationService) getService(WEB_AUTHENTICATION_SERVICE);
-	}
+    public static WebAuthenticationService getWebAuthenticationService() {
+	return (WebAuthenticationService) getService(WEB_AUTHENTICATION_SERVICE);
+    }
 
-	public static final String DATETIME_SERVICE = "dateTimeService";
+    public static final String DATETIME_SERVICE = "dateTimeService";
 
-	public static DateTimeService getDateTimeService() {
-		return (DateTimeService) getService(DATETIME_SERVICE);
-	}
+    public static DateTimeService getDateTimeService() {
+	return (DateTimeService) getService(DATETIME_SERVICE);
+    }
 
-	public static final String WORKFLOW_GROUP_SERVICE = "workflowGroupService";
+    public static final String WORKFLOW_GROUP_SERVICE = "workflowGroupService";
 
-	public static WorkflowGroupService getWorkflowGroupService() {
-		return (WorkflowGroupService) getService(WORKFLOW_GROUP_SERVICE);
-	}
+    public static WorkflowGroupService getWorkflowGroupService() {
+	return (WorkflowGroupService) getService(WORKFLOW_GROUP_SERVICE);
+    }
 
-	public static final String DOCUMENT_TYPE_SERVICE = "documentTypeService";
+    public static final String DOCUMENT_TYPE_SERVICE = "documentTypeService";
 
-	public static DocumentTypeService getDocumentTypeService() {
-		return (DocumentTypeService) getService(DOCUMENT_TYPE_SERVICE);
-	}
+    public static DocumentTypeService getDocumentTypeService() {
+	return (DocumentTypeService) getService(DOCUMENT_TYPE_SERVICE);
+    }
 
-	public static final String LOOKUP_SERVICE = "lookupService";
+    public static final String LOOKUP_SERVICE = "lookupService";
 
-	public static LookupService getLookupService() {
-		return (LookupService) getService(LOOKUP_SERVICE);
-	}
+    public static LookupService getLookupService() {
+	return (LookupService) getService(LOOKUP_SERVICE);
+    }
 
-	public static final String LOOKUP_RESULTS_SERVICE = "lookupResultsService";
+    public static final String LOOKUP_RESULTS_SERVICE = "lookupResultsService";
 
-	public static LookupResultsService getLookupResultsService() {
-		return (LookupResultsService) getService(LOOKUP_RESULTS_SERVICE);
-	}
+    public static LookupResultsService getLookupResultsService() {
+	return (LookupResultsService) getService(LOOKUP_RESULTS_SERVICE);
+    }
 
-	public static final String UNIVERSAL_USER_SERVICE = "universalUserService";
+    public static final String UNIVERSAL_USER_SERVICE = "universalUserService";
 
-	public static UniversalUserService getUniversalUserService() {
-		return (UniversalUserService) getService(UNIVERSAL_USER_SERVICE);
-	}
+    public static UniversalUserService getUniversalUserService() {
+	return (UniversalUserService) getService(UNIVERSAL_USER_SERVICE);
+    }
 
-	public static final String KUALI_MODULE_SERVICE = "kualiModuleService";
+    public static final String KUALI_MODULE_SERVICE = "kualiModuleService";
 
-	public static KualiModuleService getKualiModuleService() {
-		return (KualiModuleService) getService(KUALI_MODULE_SERVICE);
-	}
-	
-	public static final String MODULE_USER_PROPERTY_SERVICE = "kualiModuleUserPropertyService";
+    public static KualiModuleService getKualiModuleService() {
+	return (KualiModuleService) getService(KUALI_MODULE_SERVICE);
+    }
 
-	public static KualiModuleUserPropertyService getKualiModuleUserPropertyService() {
-		return (KualiModuleUserPropertyService) getService(MODULE_USER_PROPERTY_SERVICE);
-	}
+    public static final String MODULE_USER_PROPERTY_SERVICE = "kualiModuleUserPropertyService";
 
-	public static final String KUALI_GROUP_SERVICE = "kualiGroupService";
+    public static KualiModuleUserPropertyService getKualiModuleUserPropertyService() {
+	return (KualiModuleUserPropertyService) getService(MODULE_USER_PROPERTY_SERVICE);
+    }
 
-	public static KualiGroupService getKualiGroupService() {
-		return (KualiGroupService) getService(KUALI_GROUP_SERVICE);
-	}
+    public static final String KUALI_GROUP_SERVICE = "kualiGroupService";
 
-	public static final String WORKFLOW_DOCUMENT_SERVICE = "workflowDocumentService";
+    public static KualiGroupService getKualiGroupService() {
+	return (KualiGroupService) getService(KUALI_GROUP_SERVICE);
+    }
 
-	public static WorkflowDocumentService getWorkflowDocumentService() {
-		return (WorkflowDocumentService) getService(WORKFLOW_DOCUMENT_SERVICE);
-	}
+    public static final String WORKFLOW_DOCUMENT_SERVICE = "workflowDocumentService";
 
-	public static final String WORKFLOW_INFO_SERVICE = "workflowInfoService";
+    public static WorkflowDocumentService getWorkflowDocumentService() {
+	return (WorkflowDocumentService) getService(WORKFLOW_DOCUMENT_SERVICE);
+    }
 
-	public static KualiWorkflowInfo getWorkflowInfoService() {
-		return (KualiWorkflowInfo) getService(WORKFLOW_INFO_SERVICE);
-	}
+    public static final String WORKFLOW_INFO_SERVICE = "workflowInfoService";
 
-	public static final String KUALI_CONFIGURATION_SERVICE = "kualiConfigurationService";
+    public static KualiWorkflowInfo getWorkflowInfoService() {
+	return (KualiWorkflowInfo) getService(WORKFLOW_INFO_SERVICE);
+    }
 
-	public static KualiConfigurationService getKualiConfigurationService() {
-		return (KualiConfigurationService) getService(KUALI_CONFIGURATION_SERVICE);
-	}
+    public static final String KUALI_CONFIGURATION_SERVICE = "kualiConfigurationService";
 
-	public static final String BUSINESS_OBJECT_DICTIONARY_SERVICE = "businessObjectDictionaryService";
+    public static KualiConfigurationService getKualiConfigurationService() {
+	return (KualiConfigurationService) getService(KUALI_CONFIGURATION_SERVICE);
+    }
 
-	public static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
-		return (BusinessObjectDictionaryService) getService(BUSINESS_OBJECT_DICTIONARY_SERVICE);
-	}
+    public static final String BUSINESS_OBJECT_DICTIONARY_SERVICE = "businessObjectDictionaryService";
 
-	public static final String BUSINESS_OBJECT_METADATA_SERVICE = "businessObjectMetaDataService";
+    public static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
+	return (BusinessObjectDictionaryService) getService(BUSINESS_OBJECT_DICTIONARY_SERVICE);
+    }
 
-	public static BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
-		return (BusinessObjectMetaDataService) getService(BUSINESS_OBJECT_METADATA_SERVICE);
-	}
+    public static final String BUSINESS_OBJECT_METADATA_SERVICE = "businessObjectMetaDataService";
 
-	public static final String TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE = "transactionalDocumentDictionaryService";
+    public static BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
+	return (BusinessObjectMetaDataService) getService(BUSINESS_OBJECT_METADATA_SERVICE);
+    }
 
-	public static TransactionalDocumentDictionaryService getTransactionalDocumentDictionaryService() {
-		return (TransactionalDocumentDictionaryService) getService(TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE);
-	}
+    public static final String TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE = "transactionalDocumentDictionaryService";
 
-	public static final String MAINTENANCE_DOCUMENT_DICTIONARY_SERVICE = "maintenanceDocumentDictionaryService";
+    public static TransactionalDocumentDictionaryService getTransactionalDocumentDictionaryService() {
+	return (TransactionalDocumentDictionaryService) getService(TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE);
+    }
 
-	public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
-		return (MaintenanceDocumentDictionaryService) getService(MAINTENANCE_DOCUMENT_DICTIONARY_SERVICE);
-	}
+    public static final String MAINTENANCE_DOCUMENT_DICTIONARY_SERVICE = "maintenanceDocumentDictionaryService";
 
-	public static final String DATA_DICTIONARY_SERVICE = "dataDictionaryService";
+    public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+	return (MaintenanceDocumentDictionaryService) getService(MAINTENANCE_DOCUMENT_DICTIONARY_SERVICE);
+    }
 
-	public static DataDictionaryService getDataDictionaryService() {
-		return (DataDictionaryService) getService(DATA_DICTIONARY_SERVICE);
-	}
+    public static final String DATA_DICTIONARY_SERVICE = "dataDictionaryService";
 
-	public static final String MAINTENANCE_DOCUMENT_SERVICE = "maintenanceDocumentService";
+    public static DataDictionaryService getDataDictionaryService() {
+	return (DataDictionaryService) getService(DATA_DICTIONARY_SERVICE);
+    }
 
-	public static MaintenanceDocumentService getMaintenanceDocumentService() {
-		return (MaintenanceDocumentService) getService(MAINTENANCE_DOCUMENT_SERVICE);
-	}
+    public static final String MAINTENANCE_DOCUMENT_SERVICE = "maintenanceDocumentService";
 
-	public static final String NOTE_SERVICE = "noteService";
+    public static MaintenanceDocumentService getMaintenanceDocumentService() {
+	return (MaintenanceDocumentService) getService(MAINTENANCE_DOCUMENT_SERVICE);
+    }
 
-	public static NoteService getNoteService() {
-		return (NoteService) getService(NOTE_SERVICE);
-	}
+    public static final String NOTE_SERVICE = "noteService";
 
-	public static final String PERSISTENCE_SERVICE = "persistenceService";
+    public static NoteService getNoteService() {
+	return (NoteService) getService(NOTE_SERVICE);
+    }
 
-	public static PersistenceService getPersistenceService() {
-		return (PersistenceService) getService(PERSISTENCE_SERVICE);
-	}
+    public static final String PERSISTENCE_SERVICE = "persistenceService";
 
-	public static final String PERSISTENCE_STRUCTURE_SERVICE = "persistenceStructureService";
+    public static PersistenceService getPersistenceService() {
+	return (PersistenceService) getService(PERSISTENCE_SERVICE);
+    }
 
-	public static PersistenceStructureService getPersistenceStructureService() {
-		return (PersistenceStructureService) getService(PERSISTENCE_STRUCTURE_SERVICE);
-	}
+    public static final String PERSISTENCE_STRUCTURE_SERVICE = "persistenceStructureService";
 
-	public static final String KUALI_RULE_SERVICE = "kualiRuleService";
+    public static PersistenceStructureService getPersistenceStructureService() {
+	return (PersistenceStructureService) getService(PERSISTENCE_STRUCTURE_SERVICE);
+    }
 
-	public static KualiRuleService getKualiRuleService() {
-		return (KualiRuleService) getService(KUALI_RULE_SERVICE);
-	}
+    public static final String KUALI_RULE_SERVICE = "kualiRuleService";
 
-	public static final String BUSINESS_OBJECT_SERVICE = "businessObjectService";
+    public static KualiRuleService getKualiRuleService() {
+	return (KualiRuleService) getService(KUALI_RULE_SERVICE);
+    }
 
-	public static BusinessObjectService getBusinessObjectService() {
-		return (BusinessObjectService) getService(BUSINESS_OBJECT_SERVICE);
-	}
+    public static final String BUSINESS_OBJECT_SERVICE = "businessObjectService";
 
-	// special ones for Inquirable and Lookupable
-	public static final String KUALI_INQUIRABLE = "kualiInquirable";
+    public static BusinessObjectService getBusinessObjectService() {
+	return (BusinessObjectService) getService(BUSINESS_OBJECT_SERVICE);
+    }
 
-	public static Inquirable getKualiInquirable() {
-		return (Inquirable) getService(KUALI_INQUIRABLE);
-	}
+    // special ones for Inquirable and Lookupable
+    public static final String KUALI_INQUIRABLE = "kualiInquirable";
 
-	public static final String KUALI_LOOKUPABLE = "kualiLookupable";
+    public static Inquirable getKualiInquirable() {
+	return (Inquirable) getService(KUALI_INQUIRABLE);
+    }
 
-	public static Lookupable getKualiLookupable() {
-		return (Lookupable) getService(KUALI_LOOKUPABLE);
-	}
+    public static final String KUALI_LOOKUPABLE = "kualiLookupable";
 
-	public static final String GL_LOOKUPABLE = "glLookupable";
+    public static Lookupable getKualiLookupable() {
+	return (Lookupable) getService(KUALI_LOOKUPABLE);
+    }
 
-	public static Lookupable getGLLookupable() {
-		return (Lookupable) getService(GL_LOOKUPABLE);
-	}
+    public static final String GL_LOOKUPABLE = "glLookupable";
 
-	public static Lookupable getLookupable(String lookupableName) {
-		return (Lookupable) getService(lookupableName);
-	}
+    public static Lookupable getGLLookupable() {
+	return (Lookupable) getService(GL_LOOKUPABLE);
+    }
 
-	// special one for QuestionPrompt
-	public static Question getQuestion(String questionName) {
-		return (Question) getService(questionName);
-	}
+    public static Lookupable getLookupable(String lookupableName) {
+	return (Lookupable) getService(lookupableName);
+    }
 
-	// DictionaryValidationService
-	public static final String DICTIONARY_VALIDATION_SERVICE = "dictionaryValidationService";
+    // special one for QuestionPrompt
+    public static Question getQuestion(String questionName) {
+	return (Question) getService(questionName);
+    }
 
-	public static DictionaryValidationService getDictionaryValidationService() {
-		return (DictionaryValidationService) getService(DICTIONARY_VALIDATION_SERVICE);
-	}
+    // DictionaryValidationService
+    public static final String DICTIONARY_VALIDATION_SERVICE = "dictionaryValidationService";
 
-	// AuthorizationService
-	public static final String AUTHORIZATION_SERVICE = "authorizationService";
+    public static DictionaryValidationService getDictionaryValidationService() {
+	return (DictionaryValidationService) getService(DICTIONARY_VALIDATION_SERVICE);
+    }
 
-	public static AuthorizationService getAuthorizationService() {
-		return (AuthorizationService) getService(AUTHORIZATION_SERVICE);
-	}
+    // AuthorizationService
+    public static final String AUTHORIZATION_SERVICE = "authorizationService";
 
-	// AttachmentService
-	public static final String ATTACHMENT_SERVICE = "attachmentService";
+    public static AuthorizationService getAuthorizationService() {
+	return (AuthorizationService) getService(AUTHORIZATION_SERVICE);
+    }
 
-	public static AttachmentService getAttachmentService() {
-		return (AttachmentService) getService(ATTACHMENT_SERVICE);
-	}
+    // AttachmentService
+    public static final String ATTACHMENT_SERVICE = "attachmentService";
 
-	// DocumentAuthorizationService
-	public static final String DOCUMENT_AUTHORIZATION_SERVICE = "documentAuthorizationService";
+    public static AttachmentService getAttachmentService() {
+	return (AttachmentService) getService(ATTACHMENT_SERVICE);
+    }
 
-	public static DocumentAuthorizationService getDocumentAuthorizationService() {
-		return (DocumentAuthorizationService) getService(DOCUMENT_AUTHORIZATION_SERVICE);
-	}
+    // DocumentAuthorizationService
+    public static final String DOCUMENT_AUTHORIZATION_SERVICE = "documentAuthorizationService";
 
-	// SequenceAccessorService
-	public static final String SEQUENCE_ACCESSOR_SERVICE = "sequenceAccessorService";
+    public static DocumentAuthorizationService getDocumentAuthorizationService() {
+	return (DocumentAuthorizationService) getService(DOCUMENT_AUTHORIZATION_SERVICE);
+    }
 
-	public static SequenceAccessorService getSequenceAccessorService() {
-		return (SequenceAccessorService) getService(SEQUENCE_ACCESSOR_SERVICE);
-	}
+    // SequenceAccessorService
+    public static final String SEQUENCE_ACCESSOR_SERVICE = "sequenceAccessorService";
 
-	// KeyValuesService
-	public static final String KEY_VALUES_SERVICE = "keyValuesService";
+    public static SequenceAccessorService getSequenceAccessorService() {
+	return (SequenceAccessorService) getService(SEQUENCE_ACCESSOR_SERVICE);
+    }
 
-	public static KeyValuesService getKeyValuesService() {
-		return (KeyValuesService) getService(KEY_VALUES_SERVICE);
-	}
+    // KeyValuesService
+    public static final String KEY_VALUES_SERVICE = "keyValuesService";
 
-	public static final String OJB_COLLECTION_HELPER = "ojbCollectionHelper";
+    public static KeyValuesService getKeyValuesService() {
+	return (KeyValuesService) getService(KEY_VALUES_SERVICE);
+    }
 
-	public static OjbCollectionHelper getOjbCollectionHelper() {
-		return (OjbCollectionHelper) getService(OJB_COLLECTION_HELPER);
-	}
+    public static final String OJB_COLLECTION_HELPER = "ojbCollectionHelper";
 
-	public static final String PERSISTENCE_CACHE_ADMINISTRATOR = "persistenceCacheAdministrator";
+    public static OjbCollectionHelper getOjbCollectionHelper() {
+	return (OjbCollectionHelper) getService(OJB_COLLECTION_HELPER);
+    }
 
-	public static final GeneralCacheAdministrator getPersistenceCacheAdministrator() {
-		return (GeneralCacheAdministrator) getService(PERSISTENCE_CACHE_ADMINISTRATOR);
-	}
+    public static final String PERSISTENCE_CACHE_ADMINISTRATOR = "persistenceCacheAdministrator";
 
-	public static final String TRANSACTION_MANAGER = "transactionManager";
+    public static final GeneralCacheAdministrator getPersistenceCacheAdministrator() {
+	return (GeneralCacheAdministrator) getService(PERSISTENCE_CACHE_ADMINISTRATOR);
+    }
 
-	public static PlatformTransactionManager getTransactionManager() {
-		return (PlatformTransactionManager) getService(TRANSACTION_MANAGER);
-	}
+    public static final String TRANSACTION_MANAGER = "transactionManager";
 
-	public static final String TRANSACTION_TEMPLATE = "transactionTemplate";
+    public static PlatformTransactionManager getTransactionManager() {
+	return (PlatformTransactionManager) getService(TRANSACTION_MANAGER);
+    }
 
-	public static TransactionTemplate getTransactionTemplate() {
-		return (TransactionTemplate) getService(TRANSACTION_TEMPLATE);
-	}
+    public static final String TRANSACTION_TEMPLATE = "transactionTemplate";
+
+    public static TransactionTemplate getTransactionTemplate() {
+	return (TransactionTemplate) getService(TRANSACTION_TEMPLATE);
+    }
 
 }

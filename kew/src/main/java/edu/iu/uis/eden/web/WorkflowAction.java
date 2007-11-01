@@ -115,8 +115,13 @@ public abstract class WorkflowAction extends DispatchAction {
 			}
 			return returnForward;
 		} catch (Exception e) {
-			LOG.error("Error processing action " + mapping.getPath(), e);
-			throw new WorkflowRuntimeException(e);
+		    try {
+			establishExceptionFinalState(request, form);
+		    } catch (Exception ne) {
+			LOG.error("Error establishing final exception state", ne);
+		    }
+		    LOG.error("Error processing action " + mapping.getPath(), e);
+		    throw new WorkflowRuntimeException(e);
 		}
 	}
 
@@ -130,6 +135,9 @@ public abstract class WorkflowAction extends DispatchAction {
 
 	public ActionMessages establishFinalState(HttpServletRequest request, ActionForm form) throws Exception {
 		return null;
+	}
+
+	public void establishExceptionFinalState(HttpServletRequest request, ActionForm form) throws Exception {
 	}
 
 	protected ActionForward exportDataSet(HttpServletRequest request, ExportDataSet dataSet) {

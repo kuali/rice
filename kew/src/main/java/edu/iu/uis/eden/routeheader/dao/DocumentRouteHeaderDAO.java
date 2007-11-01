@@ -42,5 +42,6 @@ public interface DocumentRouteHeaderDAO {
   public String getMessageEntityByDocumentId(Long documentId);
   public DocumentRouteHeaderValueContent getContent(Long routeHeaderId);
   public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue);
+  public String getDocumentStatus(Long documentId);
 
 }

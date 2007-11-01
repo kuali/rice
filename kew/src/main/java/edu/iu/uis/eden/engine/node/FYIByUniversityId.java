@@ -59,7 +59,7 @@ public class FYIByUniversityId extends RequestActivationNode {
                		if (field.getChildText("value") != null) {
                			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new EmplId(field.getChildText("value")));
                			//WorkflowDocument wfDoc = new WorkflowDocument(new EmplIdVO(field.getChildText("value")), routeHeaderId);
-               			if(!context.isSimulation()) {
+               			if (!context.isSimulation()) {
                    			KEWServiceLocator.getWorkflowDocumentService().appSpecificRouteDocument(user, context.getDocument(), EdenConstants.ACTION_REQUEST_FYI_REQ, null, "Notification Request", user, "Notification Request", true);
                		}
                			//wfDoc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_FYI_REQ, "Notification Request", new EmplIdVO(field.getChildText("value")), "Notification Request", true);
@@ -67,7 +67,6 @@ public class FYIByUniversityId extends RequestActivationNode {
                 		break;
                	}
         	}
-//               	break;
         }
         }
 		return super.process(context, helper);

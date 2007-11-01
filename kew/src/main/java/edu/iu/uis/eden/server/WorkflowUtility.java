@@ -98,4 +98,9 @@ public interface WorkflowUtility extends Remote {
 
     // 2.4
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes) throws RemoteException;
+
+    /**
+     * @since 0.9.1
+     */
+    public String getDocumentStatus(Long documentId) throws RemoteException, WorkflowException;
 }

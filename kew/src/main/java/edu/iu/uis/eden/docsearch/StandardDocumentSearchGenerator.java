@@ -68,6 +68,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     private static DocSearchCriteriaVO criteria;
     private static WorkflowUser searchingUser;
 
+    private boolean usingAtLeastOneSearchAttribute = false;
 
 	public StandardDocumentSearchGenerator() {
 		super();
@@ -542,7 +543,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	}
     }
 
-    private DocSearchVO processRow(ResultSet rs) throws SQLException, EdenUserNotFoundException {
+    public DocSearchVO processRow(ResultSet rs) throws SQLException, EdenUserNotFoundException {
         DocSearchVO docSearchVO = new DocSearchVO();
 
         docSearchVO.setRouteHeaderId(new Long(rs.getLong("DOC_HDR_ID")));
@@ -579,21 +580,29 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         docSearchVO.setInitiatorTransposedName(UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), user));
         docSearchVO.setInitiatorEmailAddress(user.getEmailAddress());
 
+        if (usingAtLeastOneSearchAttribute) {
+            populateRowSearchableAttributes(docSearchVO,rs);
+        }
+        return docSearchVO;
+    }
+    
+    public void populateRowSearchableAttributes(DocSearchVO docSearchVO, ResultSet rs) throws SQLException {
         List searchAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
         for (Iterator iter = searchAttributeValues.iterator(); iter.hasNext();) {
-        	SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
-        	String prefixName = searchAttValue.getAttributeDataType().toUpperCase();
-        	searchAttValue.setSearchableAttributeKey(rs.getString(prefixName + "_KEY"));
-        	searchAttValue.setupAttributeValue(rs, prefixName + "_VALUE");
-        	if ( (!Utilities.isEmpty(searchAttValue.getSearchableAttributeKey())) && (searchAttValue.getSearchableAttributeValue() != null) ) {
-        	    docSearchVO.addSearchableAttribute(new KeyValueSort(searchAttValue.getSearchableAttributeKey(),searchAttValue.getSearchableAttributeDisplayValue(),searchAttValue.getSearchableAttributeValue(),searchAttValue));
-        	}
-		}
-
-        return docSearchVO;
+            SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
+            String prefixName = searchAttValue.getAttributeDataType().toUpperCase();
+            searchAttValue.setSearchableAttributeKey(rs.getString(prefixName + "_KEY"));
+            searchAttValue.setupAttributeValue(rs, prefixName + "_VALUE");
+            if ( (!Utilities.isEmpty(searchAttValue.getSearchableAttributeKey())) && (searchAttValue.getSearchableAttributeValue() != null) ) {
+        	docSearchVO.addSearchableAttribute(new KeyValueSort(searchAttValue.getSearchableAttributeKey(),searchAttValue.getSearchableAttributeDisplayValue(),searchAttValue.getSearchableAttributeValue(),searchAttValue));
+            }
+        }
     }
 
     protected String getDocSearchSQL() throws EdenUserNotFoundException {
+    	String sqlPrefix = "Select * from (";
+    	String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.DOC_HDR_ID desc";
+    	boolean possibleSearchableAttributesExist = false;
         // the DISTINCT here is important as it filters out duplicate rows which could occur as the result of doc search extension values...
         StringBuffer selectSQL = new StringBuffer("select DISTINCT(DOC_HDR.DOC_HDR_ID), DOC_HDR.DOC_INITR_PRSN_EN_ID, DOC_HDR.DOC_RTE_STAT_CD, DOC_HDR.DOC_CRTE_DT, DOC_HDR.DOC_TTL, DOC1.DOC_TYP_NM, DOC1.DOC_TYP_LBL_TXT, DOC1.DOC_TYP_HDLR_URL_ADDR, DOC1.DOC_TYP_ACTV_IND");
         StringBuffer fromSQL = new StringBuffer(" from EN_DOC_TYP_T DOC1 ");
@@ -624,8 +633,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             actionTakenTable = true;
         }
 
-        if (!("".equals(getDocTypeFullNameWhereSql(criteria.getDocTypeFullName(), getGeneratedPredicatePrefix(whereSQL.length()))))) {
-            whereSQL.append(getDocTypeFullNameWhereSql(criteria.getDocTypeFullName(), getGeneratedPredicatePrefix(whereSQL.length())));
+        String docTypeFullNameSql = getDocTypeFullNameWhereSql(criteria.getDocTypeFullName(), getGeneratedPredicatePrefix(whereSQL.length()));
+        if (!("".equals(docTypeFullNameSql))) {
+            possibleSearchableAttributesExist |= true;
+            whereSQL.append(docTypeFullNameSql);
         }
 
         if (!"".equals(getDocRouteNodeSql(criteria.getDocRouteNodeId(), criteria.getDocRouteNodeLogic(), getGeneratedPredicatePrefix(whereSQL.length())))) {
@@ -635,7 +646,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         filterOutNonQueryAttributes();
         if ((criteria.getSearchableAttributes() != null) && (criteria.getSearchableAttributes().size() > 0)) {
-        	QueryComponent queryComponent = getSearchableAttributeSql(criteria.getSearchableAttributes(), getGeneratedPredicatePrefix(whereSQL.length()));
+            possibleSearchableAttributesExist |= true;
+            QueryComponent queryComponent = getSearchableAttributeSql(criteria.getSearchableAttributes(), getGeneratedPredicatePrefix(whereSQL.length()));
             selectSQL.append(queryComponent.getSelectSql());
             fromSQL.append(queryComponent.getFromSql());
             whereSQL.append(queryComponent.getWhereSql());
@@ -666,16 +678,20 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         whereSQL.append(getDocRouteStatusSql(criteria.getDocRouteStatus(), getGeneratedPredicatePrefix(whereSQL.length())));
         whereSQL.append(getGeneratedPredicatePrefix(whereSQL.length())).append(" DOC_HDR.DOC_TYP_ID = DOC1.DOC_TYP_ID ");
 
-        String finalizedSql = generateFinalSQL(new QueryComponent(selectSQL.toString(),fromSQL.append(fromSQLForDocHeaderTable).toString(),whereSQL.toString()), docHeaderTableAlias);
-        LOG.info("*********** SQL ***************");
-        LOG.info(finalizedSql);
-        LOG.info("*******************************");
+        fromSQL.append(fromSQLForDocHeaderTable);
+        String finalizedSql = sqlPrefix + " " + selectSQL.toString() + " " + fromSQL.toString() + " " + whereSQL.toString() + " " + sqlSuffix;
+        usingAtLeastOneSearchAttribute = false;
+        if (possibleSearchableAttributesExist) {
+            usingAtLeastOneSearchAttribute = true;
+            finalizedSql = generateFinalSQL(new QueryComponent(selectSQL.toString(),fromSQL.toString(),whereSQL.toString()), docHeaderTableAlias, sqlPrefix, sqlSuffix);
+        }
+        LOG.debug("*********** SQL ***************");
+        LOG.debug(finalizedSql);
+        LOG.debug("*******************************");
         return finalizedSql;
     }
 
-    private String generateFinalSQL(QueryComponent searchSQL,String docHeaderTableAlias) {
-    	String sqlPrefix = "Select * from (";
-    	String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.DOC_HDR_ID desc";
+    protected String generateFinalSQL(QueryComponent searchSQL,String docHeaderTableAlias, String standardSqlPrefix, String standardSqlSuffix) {
     	StringBuffer finalSql = new StringBuffer();
     	List searchableAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
     	List tableAliasComponentNames = new ArrayList();
@@ -689,16 +705,16 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 			StringBuffer currentSql = new StringBuffer();
 			currentSql.append(searchSQL.getSelectSql() + qc.getSelectSql() + searchSQL.getFromSql() + qc.getFromSql() + searchSQL.getWhereSql() + qc.getWhereSql());
 			if (finalSql.length() == 0) {
-				finalSql.append(sqlPrefix).append(" ( ").append(currentSql);
+				finalSql.append(standardSqlPrefix).append(" ( ").append(currentSql);
 			} else {
 				finalSql.append(" ) UNION ( " + currentSql.toString());
 			}
 		}
-    	finalSql.append(" ) " + sqlSuffix);
+    	finalSql.append(" ) " + standardSqlSuffix);
     	return finalSql.toString();
     }
 
-    private QueryComponent generateSqlForSearchableAttributeValue(SearchableAttributeValue attributeValue, List tableAliasComponentNames, String docHeaderTableAlias) {
+    protected QueryComponent generateSqlForSearchableAttributeValue(SearchableAttributeValue attributeValue, List tableAliasComponentNames, String docHeaderTableAlias) {
     	StringBuffer selectSql = new StringBuffer();
     	StringBuffer fromSql = new StringBuffer();
     	String currentAttributeTableAlias = "SA_" + attributeValue.getAttributeDataType().toUpperCase();
@@ -811,15 +827,21 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if ((docTypeFullName != null) && (!"".equals(docTypeFullName.trim()))) {
             DocumentTypeService docSrv = (DocumentTypeService) KEWServiceLocator.getDocumentTypeService();
             DocumentType docType = docSrv.findByName(docTypeFullName.trim());
-            if (docType != null) {
-            	returnSql.append(whereClausePredicatePrefix).append("(");
-            	addDocumentTypeNameToSearchOn(returnSql,docType.getName(), "");
-                if (docType.getChildrenDocTypes() != null) {
-                    addChildDocumentTypes(returnSql, docType.getChildrenDocTypes());
-                }
-                addExtraDocumentTypesToSearch(returnSql,docType);
-                returnSql.append(")");
+            returnSql.append(getDocTypeFullNameWhereSql(docType,whereClausePredicatePrefix));
+        }
+        return returnSql.toString();
+    }
+
+    protected String getDocTypeFullNameWhereSql(DocumentType docType, String whereClausePredicatePrefix) {
+    	StringBuffer returnSql = new StringBuffer("");
+        if (docType != null) {
+        	returnSql.append(whereClausePredicatePrefix).append("(");
+        	addDocumentTypeNameToSearchOn(returnSql,docType.getName(), "");
+            if (docType.getChildrenDocTypes() != null) {
+                addChildDocumentTypes(returnSql, docType.getChildrenDocTypes());
             }
+            addExtraDocumentTypesToSearch(returnSql,docType);
+            returnSql.append(")");
         }
         return returnSql.toString();
     }

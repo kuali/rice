@@ -44,8 +44,7 @@ public class DistributedQueueTest extends KSBTestCase {
     }
 
     /**
-	 * If calling a queue with multiple subscribers only one subscriber should
-	 * be calld.
+     * If calling a queue with multiple subscribers only one subscriber should be called.
      * 
      * @throws Exception
      */

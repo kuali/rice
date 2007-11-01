@@ -61,7 +61,7 @@ public class SimpleCallback implements AsynchronousCallback {
     
     public synchronized void waitForAsyncCall(long millis) throws InterruptedException {
 	if (millis < 0) {
-	    this.wait(30000);
+	    this.wait(60000);
 	} else {
 	    this.wait(millis);    
 	}

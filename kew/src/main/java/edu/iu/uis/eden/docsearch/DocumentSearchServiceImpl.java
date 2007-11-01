@@ -21,6 +21,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.kuali.rice.core.Core;
+import org.kuali.rice.definition.ObjectDefinition;
+import org.kuali.rice.resourceloader.GlobalResourceLoader;
+
+import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceError;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -29,6 +34,7 @@ import edu.iu.uis.eden.docsearch.dao.DocumentSearchDAO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
+import edu.iu.uis.eden.notes.CustomNoteAttribute;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -91,18 +97,12 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	        docSearchGenerator = documentType.getDocumentSearchGenerator();
 	        docSearchResultProcessor = documentType.getDocumentSearchResultProcessor();
 		} else {
-			docSearchGenerator = new StandardDocumentSearchGenerator();
-	        docSearchResultProcessor = new StandardDocumentSearchResultProcessor();
+			docSearchGenerator = getStandardDocumentSearchGenerator();
+	        docSearchResultProcessor = getStandardDocumentSearchResultProcessor();
 		}
 		docSearchGenerator.setSearchingUser(user);
 		performPreSearchConditions(docSearchGenerator,user,criteria);
         validateDocumentSearchCriteria(docSearchGenerator,criteria);
-        try {
-            saveSearch(user, criteria);
-        } catch (RuntimeException e) {
-            // TODO - should the exception be logged even though it's handled
-            // swallerin it, cuz we look to be read only
-        }
         DocumentSearchResultComponents searchResult = null;
         try {
             List docListResults = docSearchDao.getList(docSearchGenerator,criteria);
@@ -112,8 +112,30 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 			LOG.error("getList() " + errorMsg,e);
             throw new WorkflowServiceErrorException(errorMsg,new WorkflowServiceErrorImpl(errorMsg,"docsearch.DocumentSearchService.generalError",errorMsg));
 		}
+        try {
+            saveSearch(user, criteria);
+        } catch (RuntimeException e) {
+            // TODO - should the exception be logged even though it's handled
+            // swallerin it, cuz we look to be read only
+        }
         return searchResult;
 	}
+	
+    public DocumentSearchGenerator getStandardDocumentSearchGenerator() {
+	String searchGeneratorClass = Core.getCurrentContextConfig().getProperty(EdenConstants.STANDARD_DOC_SEARCH_GENERATOR_CLASS_CONFIG_PARM);
+	if (searchGeneratorClass == null){
+	    return new StandardDocumentSearchGenerator();
+	}
+    	return (DocumentSearchGenerator)GlobalResourceLoader.getObject(new ObjectDefinition(searchGeneratorClass));
+    }
+    
+    public DocumentSearchResultProcessor getStandardDocumentSearchResultProcessor() {
+	String searchGeneratorClass = Core.getCurrentContextConfig().getProperty(EdenConstants.STANDARD_DOC_SEARCH_RESULT_PROCESSOR_CLASS_CONFIG_PARM);
+	if (searchGeneratorClass == null){
+	    return new StandardDocumentSearchResultProcessor();
+	}
+    	return (DocumentSearchResultProcessor)GlobalResourceLoader.getObject(new ObjectDefinition(searchGeneratorClass));
+    }
 
     public void performPreSearchConditions(DocumentSearchGenerator docSearchGenerator,WorkflowUser user,DocSearchCriteriaVO criteria) {
         List<WorkflowServiceError> errors = docSearchGenerator.performPreSearchConditions(user,criteria);
@@ -388,7 +410,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
         if (! Utilities.isEmpty(criteria.getDocRouteNodeId()) && !criteria.getDocRouteNodeId().equals("-1")) {
             RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeById(new Long(criteria.getDocRouteNodeId()));
-            // this block will result in NPE if routeNode is not found; is the intent to preserve the requested criteria? if so, then the following line fixes it 
+            // this block will result in NPE if routeNode is not found; is the intent to preserve the requested criteria? if so, then the following line fixes it
             //savedSearchString.append(",,docRouteNodeId=" + (routeNode != null ? routeNode.getRouteNodeId() : criteria.getDocRouteNodeId()));
             savedSearchString.append(",,docRouteNodeId=" + routeNode.getRouteNodeId());
             savedSearchString.append(criteria.getDocRouteNodeLogic() == null || "".equals(criteria.getDocRouteNodeLogic()) ? "" : ",,docRouteNodeLogic=" + criteria.getDocRouteNodeLogic());

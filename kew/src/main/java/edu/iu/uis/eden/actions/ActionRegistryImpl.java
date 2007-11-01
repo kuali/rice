@@ -90,7 +90,7 @@ public class ActionRegistryImpl implements ActionRegistry {
 	}
 
 	public Map getActionMap() {
-		return Collections.synchronizedMap(actionMap);
+		return Collections.unmodifiableMap(actionMap);
 	}
 
 	/* (non-Javadoc)

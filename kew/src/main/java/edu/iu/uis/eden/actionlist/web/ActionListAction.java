@@ -87,7 +87,7 @@ public class ActionListAction extends WorkflowAction {
 
     public ActionForward start(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         PerformanceLogger plog = new PerformanceLogger();
-        plog.log("starting ActionList fetch");
+        plog.log("Starting ActionList fetch");
         ActionListForm form = (ActionListForm) actionForm;
         ActionErrors errors = new ActionErrors();
         ActionListService actionListSrv = KEWServiceLocator.getActionListService();
@@ -135,15 +135,19 @@ public class ActionListAction extends WorkflowAction {
                 uSession.setActionListFilter(filter);
             }
 
+            /* 'forceListRefresh' variable used to signify that the action list filter has changed
+             * any time the filter changes the action list must be refreshed or filter may not take effect on existing
+             * list items... only exception is if action list has not loaded previous and fetching of the list has not
+             * occurred yet
+             */
+            boolean forceListRefresh = request.getSession().getAttribute(REQUERY_ACTION_LIST_KEY) != null;
             if (uSession.getHelpDeskActionListUser() != null) {
                 workflowUser = uSession.getHelpDeskActionListUser();
             } else {
                 if (!StringUtils.isEmpty(form.getDocType())) {
                     uSession.getActionListFilter().setDocumentType(form.getDocType());
                     uSession.getActionListFilter().setExcludeDocumentType(false);
-                } else if (!StringUtils.isEmpty(form.getDocTypeForceRefresh())) {
-                    uSession.getActionListFilter().setDocumentType(form.getDocTypeForceRefresh());
-                    uSession.getActionListFilter().setExcludeDocumentType(false);
+                    forceListRefresh = true;
                 }
                 workflowUser = uSession.getWorkflowUser();
             }
@@ -169,13 +173,11 @@ public class ActionListAction extends WorkflowAction {
                 	// fetch the action list
                     actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
-                } else if (actionListSrv.refreshActionList(getUserSession(request).getWorkflowUser())) {
+            } else if (forceListRefresh) {
+                // force a refresh... usually based on filter change or parameter specifying refresh needed
                     actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
-                } else if (form.isRefreshRequired()) {
-                    actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
-                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
-                } else if (request.getSession().getAttribute(REQUERY_ACTION_LIST_KEY) != null) {
+            } else if (actionListSrv.refreshActionList(getUserSession(request).getWorkflowUser())) {
                     actionList = new ArrayList(actionListSrv.getActionList(workflowUser, uSession.getActionListFilter()));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, workflowUser.getWorkflowId());
                 } else {
@@ -219,7 +221,7 @@ public class ActionListAction extends WorkflowAction {
         }
 
         saveErrors(request, errors);
-        LOG.info("end start ActionListAction");
+        LOG.debug("end start ActionListAction");
         return mapping.findForward("viewActionList");
     }
     
@@ -539,19 +541,19 @@ public class ActionListAction extends WorkflowAction {
     }
 
     public ActionForward clearFilter(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        LOG.info("clearFilter ActionListAction");
+        LOG.debug("clearFilter ActionListAction");
         UserSession session = getUserSession(request);
         session.setActionListFilter(null);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
         KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(session.getWorkflowUser());
-        LOG.info("end clearFilter ActionListAction");
+        LOG.debug("end clearFilter ActionListAction");
         return start(mapping, form, request, response);
     }
 
     public ActionForward clearHelpDeskActionListUser(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        LOG.info("clearHelpDeskActionListUser ActionListAction");
+        LOG.debug("clearHelpDeskActionListUser ActionListAction");
         getUserSession(request).setHelpDeskActionListUser(null);
-        LOG.info("end clearHelpDeskActionListUser ActionListAction");
+        LOG.debug("end clearHelpDeskActionListUser ActionListAction");
         return start(mapping, form, request, response);
     }
 
@@ -562,7 +564,7 @@ public class ActionListAction extends WorkflowAction {
     	ActionListForm alForm = (ActionListForm)form;
     	WorkflowUser user = getUserSession(request).getWorkflowUser();
     	alForm.setCount(KEWServiceLocator.getActionListService().getCount(user));
-    	LOG.info("Fetcher Action List count of " + alForm.getCount() + " for user " + user.getAuthenticationUserId().getId());
+    	LOG.info("Fetched Action List count of " + alForm.getCount() + " for user " + user.getAuthenticationUserId().getId());
     	return mapping.findForward("count");
     }
     
@@ -604,7 +606,7 @@ public class ActionListAction extends WorkflowAction {
     }
 
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
-        LOG.info("establishRequiredState ActionListAction");
+        LOG.debug("establishRequiredState ActionListAction");
         ActionListForm actionListForm = (ActionListForm) form;
 
         // take the UserSession from the HttpSession and add it to the request
@@ -629,17 +631,17 @@ public class ActionListAction extends WorkflowAction {
         actionListForm.setRouteLogPopup(routeLogPopup.trim());
         actionListForm.setDocumentPopup(documentPopup.trim());
         request.setAttribute("noRefresh", new Boolean(Core.getCurrentContextConfig().getProperty(EdenConstants.ACTION_LIST_NO_REFRESH)));
-        LOG.info("end establishRequiredState ActionListAction");
+        LOG.debug("end establishRequiredState ActionListAction");
         return null;
     }
 
     public ActionMessages establishFinalState(HttpServletRequest request, ActionForm form) throws Exception {
-        LOG.info("establishFinalState ActionListAction");
+        LOG.debug("establishFinalState ActionListAction");
         ActionListForm actionListForm = (ActionListForm) form;
         if (getUserSession(request).getHelpDeskActionListUser() != null) {
             actionListForm.setHelpDeskActionListUserName(getUserSession(request).getHelpDeskActionListUser().getAuthenticationUserId().getAuthenticationId());
         }
-        LOG.info("end establishFinalState ActionListAction");
+        LOG.debug("end establishFinalState ActionListAction");
         return null;
     }
 

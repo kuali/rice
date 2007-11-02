@@ -123,6 +123,10 @@ public interface ControlDefinition extends DataDictionaryDefinition {
      */
     public void setLabelAttribute(String labelAttribute);
 
+    /**
+     * @param includeKeyInLabel whether to include the key with the label to be displayed or not.
+     */
+    public void setIncludeKeyInLabel(Boolean includeKeyInLabel);
 
     /**
      * Sets the Script

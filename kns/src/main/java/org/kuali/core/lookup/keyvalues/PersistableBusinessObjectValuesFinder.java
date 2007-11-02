@@ -66,12 +66,15 @@ public class PersistableBusinessObjectValuesFinder extends KeyValuesBase {
     	} catch (IllegalAccessException e) {
             LOG.debug(e.getMessage(), e);
             LOG.error(e.getMessage());
+            throw new RuntimeException("IllegalAccessException occurred while trying to build keyValues List. businessObjectClass: " + businessObjectClass + "; keyAttributeName: " + keyAttributeName + "; labelAttributeName: " + labelAttributeName + "; includeKeyInDescription: " + includeKeyInDescription, e);
     	} catch (InvocationTargetException e) {
             LOG.debug(e.getMessage(), e);
             LOG.error(e.getMessage());
+            throw new RuntimeException("InvocationTargetException occurred while trying to build keyValues List. businessObjectClass: " + businessObjectClass + "; keyAttributeName: " + keyAttributeName + "; labelAttributeName: " + labelAttributeName + "; includeKeyInDescription: " + includeKeyInDescription, e);
     	} catch (NoSuchMethodException e) {
             LOG.debug(e.getMessage(), e);
             LOG.error(e.getMessage());
+            throw new RuntimeException("NoSuchMethodException occurred while trying to build keyValues List. businessObjectClass: " + businessObjectClass + "; keyAttributeName: " + keyAttributeName + "; labelAttributeName: " + labelAttributeName + "; includeKeyInDescription: " + includeKeyInDescription, e);
     	}
 
         return labels;

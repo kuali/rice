@@ -139,6 +139,6 @@ public class GlobalVariables {
         errorMaps.set(new ErrorMap());
         auditErrorMaps.set(new HashMap());
         messageLists.set(new ArrayList());
-        //TODO: does the form need to be cleared out here to?
+        kualiForms.set(null);
     }
 }

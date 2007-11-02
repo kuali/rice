@@ -5,15 +5,14 @@
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="4"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="rice"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="rice-release-0-9-2-br"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx128M"/>
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
 <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
-<listEntry value="org.eclipse.debug.ui.launchGroup.profile"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/rice"/>
+<listEntry value="/rice-release-0-9-2-br"/>
 </listAttribute>
 <booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
 </launchConfiguration>

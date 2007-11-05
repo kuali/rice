@@ -18,11 +18,7 @@ package edu.iu.uis.eden.engine;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Represents the current Activation context of the workflow engine
@@ -34,12 +30,11 @@ public class ActivationContext implements Serializable {
 
     public static final boolean CONTEXT_IS_SIMULATION = true;
 	
-	boolean simulation = !CONTEXT_IS_SIMULATION;
+    boolean simulation = !CONTEXT_IS_SIMULATION;
     boolean actionsToPerform = false;
     List simulatedActionsTaken = new ArrayList();
     List generatedActionItems = new ArrayList();
     
-    private Map<String, List<WorkflowUser>> workgroupItemActivationSubset = new HashMap<String, List<WorkflowUser>>();
     
 	public ActivationContext(boolean simulation) {
 		super();
@@ -83,28 +78,5 @@ public class ActivationContext implements Serializable {
     public void setSimulation(boolean simulation) {
         this.simulation = simulation;
     }
-
-    /**
-     * 
-     * Represents a subset of people to activate for a particular workgroup.  This is used when users 
-     * declare they do or do not want to see all items for a particular document and are in a group the document routes to.
-     * When this happens and the group would other wise be deactivated or activated we need to selectively build actionitems from the 
-     * group. 
-     * 
-     * @return
-     */
-    public Map<String, List<WorkflowUser>> getWorkgroupItemActivationSubset() {
-        return this.workgroupItemActivationSubset;
-    }
-
-    /**
-     * 
-     * 
-     * @param workgroupItemActivationSubset
-     */
-    public void setWorkgroupItemActivationSubset(Map<String, List<WorkflowUser>> workgroupItemActivationSubset) {
-        this.workgroupItemActivationSubset = workgroupItemActivationSubset;
-    }
-
 
 }

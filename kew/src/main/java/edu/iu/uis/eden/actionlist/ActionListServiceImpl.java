@@ -176,12 +176,6 @@ public class ActionListServiceImpl implements ActionListService {
 		List users = getWorkgroupService().getWorkgroup(new WorkflowGroupId(actionRequest.getWorkgroupId()))
 			.getUsers();
 
-		String workgroupName = actionRequest.getWorkgroup().getGroupNameId().getNameId();
-		if (activationContext.getWorkgroupItemActivationSubset().get(workgroupName) != null
-			&& !activationContext.getWorkgroupItemActivationSubset().get(workgroupName).isEmpty()) {
-		    users = activationContext.getWorkgroupItemActivationSubset().get(workgroupName);
-		}
-
 		actionItems.addAll(getActionItemsFromUserList(actionRequest, users));
 	    } else if (actionRequest.isUserRequest()) {
 		ActionItem actionItem = new ActionItem();

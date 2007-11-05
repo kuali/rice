@@ -145,7 +145,7 @@ public class FutureRequestsTest extends KEWTestCase {
 	
 	//user2 should have action items.  user1 should not
 	assertEquals(1, KEWServiceLocator.getActionListService().getActionList(KEWServiceLocator.getUserService().getWorkflowUser(user2), new ActionListFilter()).size());
-	assertEquals(0, KEWServiceLocator.getActionListService().getActionList(KEWServiceLocator.getUserService().getWorkflowUser(user1), new ActionListFilter()).size());
+	assertEquals(1, KEWServiceLocator.getActionListService().getActionList(KEWServiceLocator.getUserService().getWorkflowUser(user1), new ActionListFilter()).size());
 	
 	document.approve("");
 	

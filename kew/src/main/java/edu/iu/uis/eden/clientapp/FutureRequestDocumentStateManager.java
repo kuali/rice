@@ -15,7 +15,6 @@
  */
 package edu.iu.uis.eden.clientapp;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,9 +47,6 @@ public class FutureRequestDocumentStateManager {
     private boolean doNotReceiveFutureRequests;
     private boolean clearFutureRequestState;
     
-    private List<WorkflowUser> workgroupItemsToActivate = new ArrayList<WorkflowUser>();
-    private List<WorkflowUser> workgroupItemsToNotActivate = new ArrayList<WorkflowUser>();
-    private List<WorkflowUser> workgroupItemsWithDefaultActivation = new ArrayList<WorkflowUser>();
     
     public static final String FUTURE_REQUESTS_VAR_KEY = BranchState.VARIABLE_PREFIX + EdenConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY;
     public static final String DEACTIVATED_REQUESTS_VARY_KEY = BranchState.VARIABLE_PREFIX + EdenConstants.DEACTIVATED_FUTURE_REQUESTS_BRANCH_STATE_KEY;
@@ -80,14 +76,10 @@ public class FutureRequestDocumentStateManager {
 	for (WorkflowUser user : users) {
 	    FutureRequestDocumentStateManager requestStateMngr = new FutureRequestDocumentStateManager(document, user);
 	    if (requestStateMngr.isReceiveFutureRequests()) {
-		this.workgroupItemsToActivate.add(user);
 		this.receiveFutureRequests = true;
 	    } else if (requestStateMngr.isDoNotReceiveFutureRequests()) {
-		this.workgroupItemsToNotActivate.add(user);
 		this.doNotReceiveFutureRequests = true;
-	    } else {
-		this.workgroupItemsWithDefaultActivation.add(user);
-	    }
+	    } 
 	}
     }
     
@@ -165,17 +157,4 @@ public class FutureRequestDocumentStateManager {
 	return EdenConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
     }
 
-    public List<WorkflowUser> getWorkgroupItemsToActivate() {
-        return this.workgroupItemsToActivate;
-    }
-
-    public List<WorkflowUser> getWorkgroupItemsToNotActivate() {
-        return this.workgroupItemsToNotActivate;
-    }
-
-    public List<WorkflowUser> getWorkgroupItemsWithDefaultActivation() {
-        return this.workgroupItemsWithDefaultActivation;
-    }
-
-    
 }

@@ -441,6 +441,14 @@ public class KualiDocumentActionBase extends KualiAction {
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SAVED);
         kualiDocumentFormBase.setAnnotation("");
 
+        if (form instanceof KualiDocumentFormBase) {
+            UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
+            // force to recreate formkey in execute method
+            if (document instanceof SessionDocument && userSession.retrieveObject(kualiDocumentFormBase.getFormKey()) != null) {
+        	userSession.removeObject(kualiDocumentFormBase.getFormKey());;
+            }
+        }
+
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 

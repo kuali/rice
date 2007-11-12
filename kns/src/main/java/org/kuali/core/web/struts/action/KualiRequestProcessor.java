@@ -14,7 +14,11 @@ package org.kuali.core.web.struts.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,18 +32,25 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionServletWrapper;
 import org.apache.struts.action.InvalidCancelException;
 import org.apache.struts.action.RequestProcessor;
 import org.apache.struts.config.ForwardConfig;
+import org.apache.struts.config.ModuleConfig;
+import org.apache.struts.upload.MultipartRequestHandler;
+import org.apache.struts.upload.MultipartRequestWrapper;
+import org.apache.struts.util.ModuleUtils;
 import org.kuali.RiceConstants;
 import org.kuali.RiceKeyConstants;
 import org.kuali.core.UserSession;
+import org.kuali.core.exceptions.FileUploadLimitExceededException;
 import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.util.ErrorContainer;
 import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.ExceptionUtils;
 import org.kuali.core.util.GlobalVariables;
+import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.Timer;
 import org.kuali.core.web.struts.pojo.PojoForm;
 import org.kuali.rice.KNSServiceLocator;
@@ -271,7 +282,10 @@ public class KualiRequestProcessor extends RequestProcessor {
 	    if (userSession.retrieveObject(docFormKey) != null) {
 		ActionForm form = (ActionForm) userSession.retrieveObject(docFormKey);
 		request.setAttribute(mapping.getAttribute(), form);
-		userSession.removeObject(docFormKey);
+		//if (!("GET".equalsIgnoreCase(request.getMethod()) && RiceConstants.SESSION_SCOPE
+		if (!RiceConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
+		    userSession.removeObject(docFormKey);
+		}
 		t0.log();
 		return form;
 	    }

@@ -104,6 +104,14 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     }
     // end Kuali Foundation modification
 
+ 
+    /**
+     * This is for sessiondocument implementation
+     * Overide this method in KualiDocumentFormBase
+     */
+    public void restoreFromSession(HttpServletRequest request) {
+        // do nothing
+    }
 
     /**
      * Populates the form with values from the current request. Uses instances of Formatter to convert strings to the Java types of
@@ -164,6 +172,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
                         }
                     }
                 }
+                restoreFromSession(request);
             }
             catch (ServletException e) {
                 throw new ValidationException("unable to handle multipart request " + e.getMessage());

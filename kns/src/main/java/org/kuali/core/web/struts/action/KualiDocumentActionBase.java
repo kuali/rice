@@ -52,6 +52,7 @@ import org.kuali.core.exceptions.AuthorizationException;
 import org.kuali.core.exceptions.DocumentAuthorizationException;
 import org.kuali.core.exceptions.ModuleAuthorizationException;
 import org.kuali.core.exceptions.UnknownDocumentIdException;
+import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.question.ConfirmationQuestion;
 import org.kuali.core.rule.PreRulesCheck;
 import org.kuali.core.rule.event.AddAdHocRoutePersonEvent;
@@ -133,8 +134,29 @@ public class KualiDocumentActionBase extends KualiAction {
                 logOjbOptimisticLockException(ole);
             }
             else {
+        	// if exceptions are from 'save' 
                 throw e;
             }
+        }
+        catch (Exception oe) {
+        // exception from 'save' document.  What about other exception from other actions?
+            if (oe instanceof ValidationException || oe instanceof WorkflowException) {
+                // populates authorization-related fields in KualiDocumentFormBase instances, which are derived from
+                // information which is contained in the form but which may be unavailable until this point
+                if (form instanceof KualiDocumentFormBase) {
+                    KualiDocumentFormBase formBase = (KualiDocumentFormBase) form;
+                    Document document = formBase.getDocument();
+                    DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
+                    formBase.populateAuthorizationFields(documentAuthorizer);
+                    UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
+                    if (document instanceof SessionDocument && (StringUtils.isBlank(formBase.getFormKey()) || userSession.retrieveObject(formBase.getFormKey()) == null)) {
+                        // generate doc form key here if it does not exist
+                        formBase.setFormKey(GlobalVariables.getUserSession().addObject(form));
+                    }
+                }
+    
+    	  }
+          throw oe;
         }
 
         // populates authorization-related fields in KualiDocumentFormBase instances, which are derived from
@@ -387,6 +409,13 @@ public class KualiDocumentActionBase extends KualiAction {
         ActionForward actionForward = docHandler(mapping, form, request, response);
 
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_RELOADED);
+        if (form instanceof KualiDocumentFormBase) {
+            UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
+            // force to recreate formkey in execute method
+            if (document instanceof SessionDocument && userSession.retrieveObject(kualiDocumentFormBase.getFormKey()) != null) {
+        	userSession.removeObject(kualiDocumentFormBase.getFormKey());;
+            }
+        }
 
         return actionForward;
     }

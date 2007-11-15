@@ -25,9 +25,6 @@ public class Namespace extends PersistableBusinessObjectBase {
 	private Long id;
 	private String name;
 	private String description;
-	private List<NamespaceDefaultAttribute> defaultAttributes;
-	private List<PersonAttribute> personAttributes;
-	private List<Permission> permissions;
 	
 	public Long getId() {
 	    return this.id;
@@ -53,38 +50,11 @@ public class Namespace extends PersistableBusinessObjectBase {
 	    this.description = description;
 	}
 
-	public List<NamespaceDefaultAttribute> getDefaultAttributes() {
-	    return this.defaultAttributes;
-	}
-
-	public void setDefaultAttributes(List<NamespaceDefaultAttribute> defaultAttributes) {
-	    this.defaultAttributes = defaultAttributes;
-	}
-
-	public List<PersonAttribute> getPersonAttributes() {
-	    return this.personAttributes;
-	}
-
-	public void setPersonAttributes(List<PersonAttribute> personAttributes) {
-	    this.personAttributes = personAttributes;
-	}
-
-	public List<Permission> getPermissions() {
-	    return this.permissions;
-	}
-
-	public void setPermissions(List<Permission> permissions) {
-	    this.permissions = permissions;
-	}
-
 	protected LinkedHashMap toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
         propMap.put("id", getId());
         propMap.put("name", getName());
         propMap.put("description", getDescription());
-        propMap.put("defaultAttributes", getDefaultAttributes());
-        propMap.put("personAttributes", getPersonAttributes());
-        propMap.put("permissions", getPermissions());
         return propMap;
 	}
 

@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 
@@ -32,26 +33,13 @@ public class Permission extends PersistableBusinessObjectBase {
 	private Long id;
 	private String name;
 	private String description;
-	
-	private Application application;
+	private Namespace namespace;
 	
 	/**
 	 * Retrieves the associated application instance for a permission instance.
 	 * 
 	 * @return Application
 	 */
-	public Application getApplication() {
-	    return this.application;
-	}
-
-	/**
-	 * Sets the associated application instance for a permission instance.
-	 * 
-	 * @param application
-	 */
-	public void setApplication(Application application) {
-	    this.application = application;
-	}
 
 	/**
 	 * This method returns the description of a permission instance.
@@ -124,6 +112,14 @@ public class Permission extends PersistableBusinessObjectBase {
 	 */
 	public void refresh() {
 		// not implementing unless necessary
+	}
+
+	public Namespace getNamespace() {
+	    return this.namespace;
+	}
+
+	public void setNamespace(Namespace namespace) {
+	    this.namespace = namespace;
 	}
 
 }

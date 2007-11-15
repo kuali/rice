@@ -26,7 +26,6 @@ public class Person extends PersistableBusinessObjectBase {
 	private Long id;
 	private String username;
 	private String password;
-	private List<PersonAttribute> personAttributes;
 	
 	public Long getId() {
 		return id;
@@ -44,14 +43,6 @@ public class Person extends PersistableBusinessObjectBase {
 		this.password = password;
 	}
 
-	public List<PersonAttribute> getUserAttributes() {
-		return personAttributes;
-	}
-
-	public void setUserAttributes(List<PersonAttribute> personAttributes) {
-		this.personAttributes = personAttributes;
-	}
-
 	public String getUsername() {
 		return username;
 	}
@@ -65,7 +56,6 @@ public class Person extends PersistableBusinessObjectBase {
         propMap.put("id", getId());
         propMap.put("username", getUsername());
         propMap.put("password", getPassword());
-        propMap.put("personAttributes", getUserAttributes());
         return propMap;
 	}
 

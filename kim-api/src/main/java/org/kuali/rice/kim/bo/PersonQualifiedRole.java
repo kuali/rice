@@ -29,54 +29,18 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
 public class PersonQualifiedRole extends QualifiedRole {
 
     	private static final long serialVersionUID = -3834313283054550673L;
-    	private Long id;
 	private Person person;
-	private Role role;
-	private List<RoleAttribute> roleAttributes;
-
+	
 	public Person getPerson() {
 	    return this.person;
 	}
-
 	public void setPerson(Person person) {
 	    this.person = person;
 	}
-
-	public Role getRole() {
-	    return this.role;
-	}
-
-	public void setRole(Role role) {
-	    this.role = role;
-	}
-
-	public List<RoleAttribute> getRoleAttributes() {
-	    return this.roleAttributes;
-	}
-
-	public void setRoleAttributes(List<RoleAttribute> roleAttributes) {
-	    this.roleAttributes = roleAttributes;
-	}
-
 	protected LinkedHashMap toStringMapper() {
-	    LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-	    propMap.put("id", getId());
-	    propMap.put("person", getPerson());
-	    propMap.put("role", getRole());
-	    propMap.put("roleAttributes", getRoleAttributes());
-	    return propMap;
-	}
-
-	public void refresh() {
-		// not going to do this unless needed
-	}
-
-	public Long getId() {
-	    return this.id;
-	}
-
-	public void setId(Long id) {
-	    this.id = id;
-	}
+	        LinkedHashMap<String, Object> propMap = super.toStringMapper();
+	        propMap.put("person", getPerson().toStringMapper());
+	        return propMap;
+		}
 
 }

@@ -28,48 +28,16 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
  */
 public class GroupQualifiedRole extends QualifiedRole {
 	private static final long serialVersionUID = 6701917498866245651L;
-	private Long id;
-	private Long roleId;
-	private Long groupId;
-	private String attributeName;
-	private String attributeValue;
-	public Long getId() {
-	    return this.id;
+	private Group group;
+	public Group getGroup() {
+	    return this.group;
 	}
-	public void setId(Long id) {
-	    this.id = id;
-	}
-	public Long getRoleId() {
-	    return this.roleId;
-	}
-	public void setRoleId(Long roleId) {
-	    this.roleId = roleId;
-	}
-	public Long getGroupId() {
-	    return this.groupId;
-	}
-	public void setGroupId(Long groupId) {
-	    this.groupId = groupId;
-	}
-	public String getAttributeName() {
-	    return this.attributeName;
-	}
-	public void setAttributeName(String attributeName) {
-	    this.attributeName = attributeName;
-	}
-	public String getAttributeValue() {
-	    return this.attributeValue;
-	}
-	public void setAttributeValue(String attributeValue) {
-	    this.attributeValue = attributeValue;
+	public void setGroup(Group group) {
+	    this.group = group;
 	}
 	protected LinkedHashMap toStringMapper() {
-	        LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-	        propMap.put("id", getId());
-	        propMap.put("roleId", getRoleId());
-	        propMap.put("groupId", getGroupId());
-	        propMap.put("attributeName", getAttributeName());
-	        propMap.put("attributeValue", getAttributeValue());
+	        LinkedHashMap<String, Object> propMap = super.toStringMapper();
+	        propMap.put("group", getGroup().toStringMapper());
 	        return propMap;
 		}
 

@@ -25,7 +25,6 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
 	private Long attributeTypeId;
 	private String attributeName;
 	private String value;
-
 	
 	public String getAttributeName() {
 		return attributeName;

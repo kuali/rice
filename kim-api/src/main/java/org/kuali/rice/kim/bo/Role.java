@@ -27,9 +27,6 @@ public class Role extends PersistableBusinessObjectBase {
 	private Long id;
 	private String name;
 	private String description;
-	private List<Person> persons;
-	private List<Group> groups;
-	private List<Permission> permissions;
 	
 	public String getDescription() {
 		return description;
@@ -39,13 +36,6 @@ public class Role extends PersistableBusinessObjectBase {
 		this.description = description;
 	}
 
-	public List<Group> getGroups() {
-		return groups;
-	}
-
-	public void setGroups(List<Group> groups) {
-		this.groups = groups;
-	}
 
 	public Long getId() {
 		return id;
@@ -63,30 +53,11 @@ public class Role extends PersistableBusinessObjectBase {
 		this.name = name;
 	}
 
-	public List<Permission> getPermissions() {
-		return permissions;
-	}
-
-	public void setPermissions(List<Permission> permissions) {
-		this.permissions = permissions;
-	}
-
-	public List<Person> getUsers() {
-		return persons;
-	}
-
-	public void setUsers(List<Person> persons) {
-		this.persons = persons;
-	}
-
 	protected LinkedHashMap toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
         propMap.put("id", getId());
         propMap.put("name", getName());
         propMap.put("description", getDescription());
-        propMap.put("persons", getUsers());
-        propMap.put("groups", getGroups());
-        propMap.put("permissions", getPermissions());
         return propMap;
 	}
 

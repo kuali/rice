@@ -15,6 +15,7 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -56,6 +57,22 @@ public class RuleExpressionResult {
         this.rule = rule;
         this.success = success;
         this.responsibilities = responsibilities;
+    }
+
+    /**
+     * Constructs a rule expression result with both a success indicator and a single responsibilities
+     * @param success whether the expression succeeded
+     * @param responsibility a single responsibility generated from a successful evaluation
+     */
+    public RuleExpressionResult(Rule rule, boolean success, RuleResponsibility responsibility) {
+        this.rule = rule;
+        this.success = success;
+        if (responsibility != null) {
+            responsibilities = new ArrayList<RuleResponsibility>();
+            responsibilities.add(responsibility);
+        } else {
+            responsibilities = null;
+        }
     }
 
     /**

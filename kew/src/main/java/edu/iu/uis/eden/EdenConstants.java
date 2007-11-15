@@ -22,6 +22,15 @@ public class EdenConstants extends JSTLConstants {
 
     private static final long serialVersionUID = -3897059085433394648L;
 
+    /**
+     * Node state key under which rule selector can be specified on a per-nodeinstance basis
+     */
+    public static final String RULE_SELECTOR_NODE_STATE_KEY = "__RULE_SELECTOR__";
+    /**
+     * Node state key under which rule nme can be specified on a per-nodeinstance basis
+     */
+    public static final String RULE_NAME_NODE_STATE_KEY = "__RULE_NAME__";
+    
     public static final String KEW_MESSAGING_ENTITY = "KEW";
 
     public static final String MESSAGING_SYNCHRONOUS = "synchronous";

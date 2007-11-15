@@ -20,8 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.engine.RouteContext;
+import edu.iu.uis.eden.engine.node.NodeState;
 import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.exception.WorkflowException;
@@ -32,7 +34,7 @@ import edu.iu.uis.eden.util.Utilities;
  * Rule selector that select a rule based on configured rule name 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-class NamedRuleSelector implements RuleSelector {
+public class NamedRuleSelector implements RuleSelector {
     /**
      * The route node config param consulted to determine the rule name to select
      */
@@ -40,11 +42,19 @@ class NamedRuleSelector implements RuleSelector {
 
     public List<Rule> selectRules(RouteContext context, DocumentRouteHeaderValue routeHeader,
             RouteNodeInstance nodeInstance, String selectionCriterion, Timestamp effectiveDate) throws WorkflowException {
+        String ruleName = null;
         RouteNode routeNodeDef = nodeInstance.getRouteNode();
-        Map<String, String> routeNodeConfig = Utilities.getKeyValueCollectionAsMap(routeNodeDef.getConfigParams());
-        String ruleName = routeNodeConfig.get(RULE_NAME_CFG_KEY);
+        // first check to see if there is a rule name configured on the node instance
+        NodeState ns = nodeInstance.getNodeState(EdenConstants.RULE_NAME_NODE_STATE_KEY);
+        if (ns != null) {
+            ruleName = ns.getValue();
+        } else {
+            // otherwise check the node def
+            Map<String, String> routeNodeConfig = Utilities.getKeyValueCollectionAsMap(routeNodeDef.getConfigParams());
+            ruleName = routeNodeConfig.get(RULE_NAME_CFG_KEY);
+        }
         if (ruleName == null) {
-            throw new WorkflowException("No 'rule.name' configuration parameter present on route node definition: " + routeNodeDef);
+            throw new WorkflowException("No 'ruleName' configuration parameter present on route node definition: " + routeNodeDef);
         }
         RuleBaseValues ruleDef = KEWServiceLocator.getRuleService().getRuleByName(ruleName);
         if (ruleDef == null) {

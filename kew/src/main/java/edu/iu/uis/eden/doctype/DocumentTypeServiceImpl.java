@@ -44,7 +44,7 @@ import edu.iu.uis.eden.xml.export.DocumentTypeXmlExporter;
 public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentTypeServiceImpl.class);
-    private static final String XML_FILE_PARSE_ERROR = "general.error.parsexml";
+    protected static final String XML_FILE_PARSE_ERROR = "general.error.parsexml";
 
     public static final String DOCUMENT_TYPE_ID_CACHE_GROUP = "DocumentTypeId";
     public static final String DOCUMENT_TYPE_NAME_CACHE_GROUP = "DocumentTypeName";

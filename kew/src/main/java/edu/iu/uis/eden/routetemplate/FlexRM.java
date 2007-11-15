@@ -34,6 +34,7 @@ import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
 import edu.iu.uis.eden.actionrequests.ActionRequestService;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.engine.RouteContext;
+import edu.iu.uis.eden.engine.node.NodeState;
 import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
@@ -98,11 +99,20 @@ public class FlexRM {
     }*/
 
     // loads a RuleSelector implementation
-    protected RuleSelector loadRuleSelector(RouteNode routeNodeDef) throws WorkflowException {
-        Map<String, String> nodeCfgParams = Utilities.getKeyValueCollectionAsMap(
-                routeNodeDef.
-                getConfigParams());
-        String ruleSelectorName = nodeCfgParams.get(RouteNode.RULE_SELECTOR_CFG_KEY);
+    protected RuleSelector loadRuleSelector(RouteNode routeNodeDef, RouteNodeInstance nodeInstance) throws WorkflowException {
+        // first see if there ruleselector is configured on a nodeinstance basis
+        NodeState ns = nodeInstance.getNodeState(EdenConstants.RULE_SELECTOR_NODE_STATE_KEY);
+        String ruleSelectorName = null;
+        if (ns != null) {
+            ruleSelectorName = ns.getValue();
+        } else {
+            // otherwise pull it from the RouteNode definition/prototype
+            Map<String, String> nodeCfgParams = Utilities.getKeyValueCollectionAsMap(
+                    routeNodeDef.
+                    getConfigParams());
+            ruleSelectorName = nodeCfgParams.get(RouteNode.RULE_SELECTOR_CFG_KEY);
+        }
+
         if (ruleSelectorName == null) {
             ruleSelectorName = DEFAULT_RULE_SELECTOR;
         }
@@ -165,7 +175,7 @@ public class FlexRM {
 
 	LOG.debug("Making action requests for document " + routeHeader.getRouteHeaderId());
 	
-	RuleSelector ruleSelector = loadRuleSelector(routeNodeDef);
+	RuleSelector ruleSelector = loadRuleSelector(routeNodeDef, nodeInstance);
 
 	List<Rule> rules = ruleSelector.selectRules(context, routeHeader, nodeInstance, ruleTemplateName, effectiveDate);
 

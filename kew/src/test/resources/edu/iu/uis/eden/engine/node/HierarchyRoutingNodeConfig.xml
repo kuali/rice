@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">	
+		<documentType>
+            <name>HierarchyDocType</name>
+            <description>HierarchyDocType</description>
+            <label>HierarchyDocType</label>
+            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <docHandler>_blank</docHandler>
+            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <active>true</active>
+            <routePaths>
+                <routePath>
+                    <start name="initial" nextNode="hierarchy" />
+                    <dynamic name="hierarchy" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="initial">
+                    <activationType>P</activationType>
+                </start>
+                <dynamic name="hierarchy">
+                    <type>edu.iu.uis.eden.engine.node.hierarchyrouting.SimpleHierarchyRoutingNode</type>
+                    <ruleSelector>Named</ruleSelector>
+                    <ruleName>NodeInstanceRecipientRule</ruleName>
+                </dynamic>
+            </routeNodes>
+        </documentType>
+	</documentTypes>
+    <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+    <rule>
+            <name>NodeInstanceRecipientRule</name>
+            <documentType>HierarchyDocType</documentType>
+            <description>NodeInstanceRecipientRule mandatory description</description>
+            <expression type="BSF:groovy">
+                /* generates responsibility based on node instance state
+                   filled in by the hierarchyroutingnode/hierarchyprovider */
+                import edu.iu.uis.eden.routetemplate.*
+                import edu.iu.uis.eden.user.*
+                import edu.iu.uis.eden.workgroup.*
+                import edu.iu.uis.eden.engine.node.*
+                import edu.iu.uis.eden.EdenConstants
+                import edu.iu.uis.eden.KEWServiceLocator
+
+                print 'NodeInstanceRecipientRule is executing...'
+                
+                NodeState recipState = routeContext.getNodeInstance().getNodeState("recipient")
+                if (recipState == null)
+                    throw new RuntimeException("No recipient state specified")
+
+                NodeState typeState = routeContext.getNodeInstance().getNodeState("type");
+                if (typeState == null)
+                    throw new RuntimeException("No type state specified")
+                
+                RuleResponsibility responsibility = new RuleResponsibility()
+                responsibility.setResponsibilityId(EdenConstants.MACHINE_GENERATED_RESPONSIBILITY_ID)
+                responsibility.setActionRequestedCd("A")
+                String recipient = recipState.getValue()
+                
+                if (typeState.getValue().equalsIgnoreCase("user")) {
+                    WorkflowUser workflowUser = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(recipient));
+                    if (workflowUser == null) {
+                        throw new RuntimeException("Could not locate workflow user for given network id: " + recipient);
+                    }
+                    println "Generating user responsibility: " + recipient
+                    responsibility.setRuleResponsibilityName(workflowUser.getWorkflowId())
+                    responsibility.setRuleResponsibilityType(EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID)
+                } else {
+                    Workgroup workgroupObject = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(recipient));
+                    if (workgroupObject == null) {
+                        throw new RuntimeException("Could not locate workgroup: " + recipient);
+                    }
+                    println "Generating workgroup responsibility: " + recipient
+                    responsibility.setRuleResponsibilityName(workgroupObject.getWorkflowGroupId().getGroupId().toString());
+                    responsibility.setRuleResponsibilityType(EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID)
+                }
+                
+                return new RuleExpressionResult(rule, true, responsibility)
+            </expression>
+            <ignorePrevious>true</ignorePrevious>
+            <responsibilities>
+                <responsibility><user>user2</user></responsibility>
+            </responsibilities>
+        </rule>
+    </rules>
+</data>	
+		

@@ -695,8 +695,8 @@ public class DocumentTypeXmlParser implements XmlConstants {
 
         // make sure a default rule selector is set
         Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(routeNode.getConfigParams());
-        if (!cfgMap.containsKey("ruleSelector")) {
-            routeNode.getConfigParams().add(new RouteNodeConfigParam(routeNode, "ruleSelector", FlexRM.DEFAULT_RULE_SELECTOR));
+        if (!cfgMap.containsKey(RouteNode.RULE_SELECTOR_CFG_KEY)) {
+            routeNode.getConfigParams().add(new RouteNodeConfigParam(routeNode, RouteNode.RULE_SELECTOR_CFG_KEY, FlexRM.DEFAULT_RULE_SELECTOR));
         }
         
         if (((Boolean) xpath.evaluate("./ruleTemplate", node, XPathConstants.BOOLEAN)).booleanValue()) {

@@ -18,17 +18,17 @@ package edu.iu.uis.eden.messaging.threadpool;
 import org.apache.log4j.Logger;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.PriorityBlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.ThreadFactory;
 import edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor;
 import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
-import edu.iu.uis.eden.messaging.config.KSBConfigurer;
 
 /**
  * A Thread Pool implementation for the KSB which implements a thread pool backed by a configuration store.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPool {
@@ -41,7 +41,7 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
     private boolean poolSizeSet;
 
     public KSBThreadPoolImpl() {
-	super(DEFAULT_POOL_SIZE, DEFAULT_POOL_SIZE, 60, TimeUnit.SECONDS, new PriorityBlockingQueue(1, new PriorityBlockingQueuePersistedMessageComparator()),  new KSBThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
+	super(DEFAULT_POOL_SIZE, DEFAULT_POOL_SIZE, 60, TimeUnit.SECONDS, new PriorityBlockingQueue(1, new PriorityBlockingQueuePersistedMessageComparator()),  new KSBThreadFactory(ClassLoaderUtils.getDefaultClassLoader()), new ThreadPoolExecutor.AbortPolicy());
     }
 
     public void setCorePoolSize(int corePoolSize) {
@@ -53,7 +53,7 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
     public long getKeepAliveTime() {
 	return super.getKeepAliveTime(TimeUnit.MILLISECONDS);
     }
-    
+
     public boolean isStarted() {
 	return this.started;
     }
@@ -98,13 +98,13 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
     /**
          * A simple ThreadFactory which names the thread as follows:<br>
          * <br>
-         * 
+         *
          * <i>messageEntity</i>/KSB-pool-<i>m</i>-thread-<i>n</i><br>
          * <br>
-         * 
+         *
          * Where <i>messageEntity</i> is the message entity of the application running the thread pool, <i>m</i> is the
          * sequence number of the factory and <i>n</i> is the sequence number of the thread within the factory.
-         * 
+         *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
          */
     private static class KSBThreadFactory implements ThreadFactory {
@@ -115,7 +115,10 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
 
 	private ThreadFactory defaultThreadFactory = Executors.defaultThreadFactory();
 
-	public KSBThreadFactory() {
+	private ClassLoader contextClassLoader;
+
+	public KSBThreadFactory(ClassLoader contextClassLoader) {
+	    this.contextClassLoader = contextClassLoader;
 	    factorySequence++;
 	}
 
@@ -124,7 +127,7 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
 	    Thread thread = this.defaultThreadFactory.newThread(runnable);
 	    // if the thread ends up getting spawned by an action inside of a workflow plugin or something along those lines, it will inherit the plugin's
 	    // classloader as it's ContextClassLoader.  Let's make sure it's set to the same ClassLoader that loaded the KSBConfigurer
-	    thread.setContextClassLoader(KSBConfigurer.class.getClassLoader());
+	    thread.setContextClassLoader(contextClassLoader);
 	    thread.setName(Core.getCurrentContextConfig().getMessageEntity() + "/KSB-pool-" + factorySequence + "-thread-"
 		    + threadSequence);
 	    return thread;

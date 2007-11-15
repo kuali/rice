@@ -23,7 +23,6 @@
     </documentTypes>
 
     <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
-        <!-- this always succeeds -->
         <rule>
             <name>ServiceInvocationRule</name>
             <documentType>ServiceInvocationRuleTest</documentType>

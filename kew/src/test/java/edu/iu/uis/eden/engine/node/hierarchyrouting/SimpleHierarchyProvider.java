@@ -32,6 +32,7 @@ import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.engine.node.RouteNodeConfigParam;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.routeheader.DocumentContent;
+import edu.iu.uis.eden.routeheader.StandardDocumentContent;
 import edu.iu.uis.eden.routetemplate.NamedRuleSelector;
 import edu.iu.uis.eden.util.Utilities;
 
@@ -48,6 +49,11 @@ import edu.iu.uis.eden.util.Utilities;
 public class SimpleHierarchyProvider implements HierarchyProvider {
     private static final Logger LOG = Logger.getLogger(SimpleHierarchyProvider.class);
 
+    /**
+     * Simple implementation of Stop.  Contains stop recipient type,
+     * recipient string, and string id, and maintains pointers to
+     * parent and children stops.
+     */
     private static class SimpleStop implements Stop {
         private static enum RecipientType { USER, WORKGROUP };
         public SimpleStop parent;
@@ -55,7 +61,7 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
         public RecipientType type;
         public String recipient;
         public String id;
-        
+
         public String toString() {
             return ToStringBuilder.reflectionToString(this);
         }
@@ -70,18 +76,33 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
         }
     }
 
+    /**
+     * The root stop
+     */
     private SimpleStop root;
+    /**
+     * Map of Stop id-to-Stop instance
+     */
     private Map<String, SimpleStop> stops = new HashMap<String, SimpleStop>();
 
     public SimpleHierarchyProvider(RouteContext context) {
         this(context.getDocumentContent().getDocument().getDocumentElement());
     }
 
+    /**
+     * This constructor can be used in tests
+     * @param element the root Element of the hierarchy XML
+     */
     public SimpleHierarchyProvider(Element element) {
         Element rootStop = findRootStop(element);
         root = parseStops(rootStop, null);
     }
 
+    /**
+     * @param e the element at which to start the search
+     * @return the first stop element encountered
+     * @throws RuntimeException if no stop elements were encountered 
+     */
     protected Element findRootStop(Element e) {
         if ("stop".equals(e.getNodeName())) return e;
         NodeList nl = e.getElementsByTagName("stop");
@@ -91,6 +112,12 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
         return (Element) nl.item(0);
     }
 
+    /**
+     * Parses a hierarchy of stop elements recursively, and populates the stops Map.
+     * @param e a stop element
+     * @param parent the parent of the current element (if any)
+     * @return the SimpleStop instance for the initial element
+     */
     protected SimpleStop parseStops(Element e, SimpleStop parent) {
         LOG.error("parsing element: " + e + " parent: " + parent);
         SimpleStop stop = parseStop(e);
@@ -109,6 +136,11 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
         return stop;
     }
 
+    /**
+     * Parses stop info from a stop element
+     * @param e the stop element
+     * @return a SimpleStop initialized with attribute/property information
+     */
     protected SimpleStop parseStop(Element e) {
         SimpleStop ss = new SimpleStop();
         String recipient = e.getAttribute("recipient");
@@ -133,7 +165,8 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
         return ss;
     }
 
-    public List<Stop> getLeafStops(DocumentContent docContent) {
+    /* Returns the list of stops in the stops Map which have 0 children */
+    public List<Stop> getLeafStops(RouteContext context) {
         List<Stop> leafStops = new ArrayList<Stop>();
         for (SimpleStop stop: stops.values()) {
             if (stop.children.size() == 0) {
@@ -143,23 +176,21 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
         return leafStops;
     }
 
+    /* Looks up a stop in the stops map by identifier */
     public Stop getStopByIdentifier(String stopId) {
         return stops.get(stopId);
     }
 
+    /* Returns the identifier for the specified stop */
     public String getStopIdentifier(Stop stop) {
         return ((SimpleStop) stop).id;
     }
 
-    public boolean requestNodeHasStopState(RouteNodeInstance nodeInstance) {
+    public boolean hasStop(RouteNodeInstance nodeInstance) {
         return nodeInstance.getNodeState("id") != null;
     }
     
-    public boolean requestNodeIsAtStop(RouteNodeInstance nodeInstance) {
-        return requestNodeHasStopState(nodeInstance);
-    }
-
-    public void setRequestNodeInstanceState(RouteNodeInstance requestNodeInstance, Stop stop) {
+    public void setStop(RouteNodeInstance requestNodeInstance, Stop stop) {
         requestNodeInstance.addNodeState(new NodeState("id", getStopIdentifier(stop)));
         //requestNodeInstance.addNodeState(new NodeState(EdenConstants.RULE_SELECTOR_NODE_STATE_KEY, "named"));
         //requestNodeInstance.addNodeState(new NodeState(EdenConstants.RULE_NAME_NODE_STATE_KEY, "NodeInstanceRecipientRule"));
@@ -179,12 +210,7 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
         return equals(stop, root);
     }
 
-    public void configureRequestNodeInstance(RouteNodeInstance nodeInstance) {
-        // TODO arh14 - THIS METHOD NEEDS JAVADOCS
-        
-    }
-
-    public Stop getStopAtRouteNode(RouteNodeInstance nodeInstance) {
+    public Stop getStop(RouteNodeInstance nodeInstance) {
         NodeState state = nodeInstance.getNodeState("id");
         if (state == null) {
             return null;
@@ -193,6 +219,7 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
         }
     }
 
+    /* Propagates the rule selector and rule name from the hierarchy node to the request node */
     public void configureRequestNode(RouteNodeInstance hierarchyNodeInstance, RouteNode node) {
         Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(node.getConfigParams());
         // propagate rule selector and name from hierarchy node

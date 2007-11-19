@@ -17,9 +17,9 @@ package edu.iu.uis.eden.engine.node.hierarchyrouting;
 
 import java.util.List;
 
+import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
-import edu.iu.uis.eden.routeheader.DocumentContent;
 
 /**
  * HierarchyProvider is responsible for exposing the hierarchy that the HierarchyRoutingNode
@@ -35,11 +35,24 @@ public interface HierarchyProvider {
 
     /**
      * Find all leaf stops in the xml and convert them into a list of Stop objects
-     * 
-     * @param docContent
-     * @return List Organization objects
+     * @param context the RouteContext
+     * @return List Stop objects
      */
-    public List<Stop> getLeafStops(DocumentContent docContent);
+    public List<Stop> getLeafStops(RouteContext context);
+
+    /**
+     * @param nodeInstance the node instance
+     * @return whether stop state is associated with the specified node instance
+     */
+    public boolean hasStop(RouteNodeInstance nodeInstance);
+
+    /**
+     * Returns the Stop at the specified routeNodeInstance, or null if the node instance
+     * is not associated with a Stop
+     * @param nodeInstance the node instance to check
+     * @return the Stop at the route node instance
+     */
+    public Stop getStop(RouteNodeInstance nodeInstance);
 
     /**
      * Set any state necessary on the request node instance for a given stop.  E.g. for chart/org routing
@@ -47,14 +60,8 @@ public interface HierarchyProvider {
      * @param requestNodeInstance the request node instance
      * @param stop the stop for the request node
      */
-    public void setRequestNodeInstanceState(RouteNodeInstance requestNodeInstance, Stop stop);
+    public void setStop(RouteNodeInstance requestNodeInstance, Stop stop);
 
-    /**
-     * @param nodeInstance the node instance
-     * @return whether stop state is associated with the specified node instance
-     */
-    public boolean requestNodeHasStopState(RouteNodeInstance nodeInstance);
-        
     /**
      * @param stop the stop
      * @return a a string that can be used to uniquely identify the stop.  E.g. for chart/org routing,
@@ -87,26 +94,11 @@ public interface HierarchyProvider {
      * @return whether stops are equivalent
      */
     public boolean equals(Stop a, Stop b);
-    
-    /**
-     * Configures the request node instance as necessary for the stop
-     * @param nodeInstance
-     */
-    public void configureRequestNodeInstance(RouteNodeInstance nodeInstance);
-    
+
     /**
      * Configures the single request node definition/prototype used for all node instances
      * @param hiearchyNodeInstance the hierarchy node instance
      * @param node the request node definition/prototype
      */
     public void configureRequestNode(RouteNodeInstance hiearchyNodeInstance, RouteNode node);
-    
-    /**
-     * Returns the Stop at the specified routeNodeInstance, or null if the node instance
-     * is not associated with a Stop
-     * @param nodeInstance the node instance to check
-     * @return the Stop at the route node instance
-     */
-    public Stop getStopAtRouteNode(RouteNodeInstance nodeInstance);
-    
 }

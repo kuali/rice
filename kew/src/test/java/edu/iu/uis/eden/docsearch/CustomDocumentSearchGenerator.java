@@ -23,6 +23,8 @@ import edu.iu.uis.eden.doctype.DocumentType;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CustomDocumentSearchGenerator extends StandardDocumentSearchGenerator {
+	
+	public static final int RESULT_SET_LIMIT = 5000;
 
 	/* (non-Javadoc)
 	 * @see edu.iu.uis.eden.docsearch.StandardDocumentSearchGenerator#addExtraDocumentTypesToSearch(java.lang.StringBuffer, edu.iu.uis.eden.doctype.DocumentType)
@@ -35,4 +37,10 @@ public class CustomDocumentSearchGenerator extends StandardDocumentSearchGenerat
 			addDocumentTypeNameToSearchOn(whereSql, "SearchDocType_DefaultCustomProcessor_2");
 		}
 	}
+	
+	@Override
+	public int getDocumentSearchResultSetLimit() {
+	    return RESULT_SET_LIMIT;
+	}
+
 }

@@ -32,9 +32,11 @@ import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.clientapp.PostProcessorRemote;
 import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
+import edu.iu.uis.eden.docsearch.DocumentSearchCriteriaProcessor;
 import edu.iu.uis.eden.docsearch.DocumentSearchGenerator;
 import edu.iu.uis.eden.docsearch.DocumentSearchResultProcessor;
 import edu.iu.uis.eden.docsearch.SearchableAttribute;
+import edu.iu.uis.eden.docsearch.StandardDocumentSearchCriteriaProcessor;
 import edu.iu.uis.eden.docsearch.StandardDocumentSearchGenerator;
 import edu.iu.uis.eden.docsearch.StandardDocumentSearchResultProcessor;
 import edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessor;
@@ -579,7 +581,11 @@ public class DocumentType implements WorkflowPersistable {
     public DocumentSearchGenerator getDocumentSearchGenerator() {
     	ObjectDefinition objDef = getAttributeObjectDefinition(EdenConstants.SEARCH_GENERATOR_ATTRIBUTE_TYPE);
     	if (objDef == null) {
-            return new StandardDocumentSearchGenerator(getSearchableAttributes());
+    		if (getParentDocType() != null) {
+    			return getParentDocType().getDocumentSearchGenerator();
+    		} else {
+                return new StandardDocumentSearchGenerator(getSearchableAttributes());
+    		}
     	}
         Object searchGenerator = GlobalResourceLoader.getObject(objDef);
         if (searchGenerator == null) {
@@ -588,6 +594,22 @@ public class DocumentType implements WorkflowPersistable {
         DocumentSearchGenerator docSearchGenerator = (DocumentSearchGenerator)searchGenerator;
         docSearchGenerator.setSearchableAttributes(getSearchableAttributes());
         return docSearchGenerator;
+    }
+
+    public DocumentSearchCriteriaProcessor getDocumentSearchCriteriaProcessor() {
+    	ObjectDefinition objDef = getAttributeObjectDefinition(EdenConstants.SEARCH_CRITERIA_PROCESSOR_ATTRIBUTE_TYPE);
+    	if (objDef == null) {
+    		if (getParentDocType() != null) {
+    			return getParentDocType().getDocumentSearchCriteriaProcessor();
+    		} else {
+                return new StandardDocumentSearchCriteriaProcessor();
+    		}
+    	}
+        Object criteriaProcessor = GlobalResourceLoader.getObject(objDef);
+        if (criteriaProcessor == null) {
+            throw new WorkflowRuntimeException("Could not locate DocumentSearchCriteriaProcessor in this JVM or at message entity " + getMessageEntity() + ": " + objDef.getClassName());
+        }
+        return (DocumentSearchCriteriaProcessor) criteriaProcessor;
     }
 
     public DocumentSearchResultProcessor getDocumentSearchResultProcessor() {

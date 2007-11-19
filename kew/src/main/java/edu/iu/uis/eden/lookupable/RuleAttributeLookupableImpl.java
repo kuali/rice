@@ -102,6 +102,7 @@ public class RuleAttributeLookupableImpl implements WorkflowLookupable, Exportab
         options.add(new KeyLabelPair(EdenConstants.NOTE_ATTRIBUTE_TYPE, "Note Attribute"));
         options.add(new KeyLabelPair(EdenConstants.ACTION_LIST_ATTRIBUTE_TYPE, "Action List Attribute"));
         options.add(new KeyLabelPair(EdenConstants.RULE_VALIDATION_ATTRIBUTE_TYPE, "Rule Validation Attribute"));
+        options.add(new KeyLabelPair(EdenConstants.SEARCH_CRITERIA_PROCESSOR_ATTRIBUTE_TYPE, "Document Search Criteria Processor Attribute"));
         options.add(new KeyLabelPair(EdenConstants.SEARCH_GENERATOR_ATTRIBUTE_TYPE, "Document Search Generator Attribute"));
         options.add(new KeyLabelPair(EdenConstants.SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE, "Document Search Result Processor Attribute"));
         options.add(new KeyLabelPair(EdenConstants.SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE, "Document Search Result Processor XML Attribute"));

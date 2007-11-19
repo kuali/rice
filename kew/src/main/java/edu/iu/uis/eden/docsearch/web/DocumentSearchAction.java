@@ -47,6 +47,7 @@ import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
+import edu.iu.uis.eden.docsearch.DocumentSearchCriteriaProcessor;
 import edu.iu.uis.eden.docsearch.DocumentSearchGenerator;
 import edu.iu.uis.eden.docsearch.DocumentSearchResult;
 import edu.iu.uis.eden.docsearch.DocumentSearchResultComponents;
@@ -62,6 +63,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.web.KeyValue;
 import edu.iu.uis.eden.web.WorkflowAction;
+import edu.iu.uis.eden.web.session.UserSession;
 import edu.iu.uis.eden.workgroup.WorkflowGroupId;
 import edu.iu.uis.eden.workgroup.Workgroup;
 
@@ -76,6 +78,9 @@ public class DocumentSearchAction extends WorkflowAction {
 
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
+    	State state = setupState((State)getUserSession(request).retrieveObject(request.getParameter("key")), docSearchForm, getUserSession(request));
+    	state.setResult(null);
+    	request.setAttribute("key", getUserSession(request).addObject(state));
     	// if there's no search criteria, just execute the search
     	if (!docSearchForm.isSearchCriteriaEnabled()) {
     		return doDocSearch(mapping, form, request, response);
@@ -117,7 +122,6 @@ public class DocumentSearchAction extends WorkflowAction {
 
     public ActionForward resetNamedSearches(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, RuntimeException {
         getDocumentSearchService().clearNamedSearches(getUserSession(request).getWorkflowUser());
-//        request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
         return mapping.findForward("success");
     }
 
@@ -144,11 +148,7 @@ public class DocumentSearchAction extends WorkflowAction {
         //retain screen placement vars
         DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
         if (StringUtils.isNotBlank(docSearchForm.getCriteria().getDocTypeFullName())) {
-            DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(docSearchForm.getCriteria().getDocTypeFullName());
-            if (documentType == null) {
-                throw new RuntimeException("Document Type invalid : " + docSearchForm.getCriteria().getDocTypeFullName());
-            }
-            DocumentSearchGenerator generator = documentType.getDocumentSearchGenerator();
+            DocumentSearchGenerator generator = getValidDocumentType(docSearchForm.getCriteria().getDocTypeFullName()).getDocumentSearchGenerator();
             criteria = generator.clearSearch(docSearchForm.getCriteria());
         }
         criteria.setIsAdvancedSearch(docSearchForm.getIsAdvancedSearch());
@@ -170,12 +170,13 @@ public class DocumentSearchAction extends WorkflowAction {
 	    setDropdowns(docSearchForm, request);
 	    results = result.getSearchResult();
 	} else {
-	    docSearchForm.addSearchableAttributesToCriteria();
-	    DocSearchCriteriaVO criteria = docSearchForm.getCriteria();
-	    if (docSearchForm.isInitiatorUser()) {
-		criteria.setInitiator(getUserSession(request).getNetworkId());
-	    }
-	    results = getDocumentSearchService().getList(getUserSession(request).getWorkflowUser(), docSearchForm.getCriteria());
+//	    docSearchForm.addSearchableAttributesToCriteria();
+//	    DocSearchCriteriaVO criteria = docSearchForm.getCriteria();
+//	    if (docSearchForm.isInitiatorUser()) {
+//		criteria.setInitiator(getUserSession(request).getNetworkId());
+//	    }
+	    DocSearchCriteriaVO criteria = generateDocSearchCriteriaVO(getUserSession(request), docSearchForm);
+	    results = getDocumentSearchService().getList(getUserSession(request).getWorkflowUser(), criteria);
 	    result = new SavedSearchResult(criteria, results);
 	}
 
@@ -199,7 +200,9 @@ public class DocumentSearchAction extends WorkflowAction {
 	request.setAttribute("reqSearchResultColumns", result.getSearchResult().getColumns());
 	request.setAttribute("reqSearchResults", result.getSearchResult().getSearchResults());
 	// request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
-	request.setAttribute("key", getUserSession(request).addObject(new State(docSearchForm, result)));
+	State state = setupState((State)getUserSession(request).retrieveObject(request.getParameter("key")), docSearchForm, getUserSession(request));
+	state.setResult(result);
+	request.setAttribute("key", getUserSession(request).addObject(state));
 	if (docSearchForm.getCriteria().isOverThreshold() && docSearchForm.getCriteria().getSecurityFilteredRows() > 0) {
 	    ActionErrors errors = new ActionErrors();
 	    errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.exceededThresholdAndSecurityFiltered", String.valueOf(results.getSearchResults().size()), docSearchForm.getCriteria().getSecurityFilteredRows()));
@@ -217,7 +220,38 @@ public class DocumentSearchAction extends WorkflowAction {
 	LOG.info("end doDocSearch");
 	return mapping.findForward("success");
     }
-
+    
+    private static DocumentType getValidDocumentType(String docTypeName) {
+        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(docTypeName);
+        if (documentType == null) {
+            throw new RuntimeException("Document Type invalid : " + docTypeName);
+        }
+        return documentType;
+    }
+    
+    private State setupState(State state, DocumentSearchForm docSearchForm, UserSession userSession) {
+    	if (state == null) {
+        	state = new State(docSearchForm);
+    	}
+        if (StringUtils.isNotBlank(docSearchForm.getCriteria().getDocTypeFullName())) {
+            DocumentSearchCriteriaProcessor criteriaProcessor = getValidDocumentType(docSearchForm.getCriteria().getDocTypeFullName()).getDocumentSearchCriteriaProcessor();
+            criteriaProcessor.setDocSearchCriteriaVO(generateDocSearchCriteriaVO(userSession, docSearchForm));
+            criteriaProcessor.setSearchingUser(userSession.getWorkflowUser());
+            state = new State(criteriaProcessor);
+        }
+        state.updateForm(docSearchForm);
+        return state;
+    }
+    
+    private DocSearchCriteriaVO generateDocSearchCriteriaVO(UserSession userSession, DocumentSearchForm docSearchForm) {
+	    docSearchForm.addSearchableAttributesToCriteria();
+	    DocSearchCriteriaVO criteria = docSearchForm.getCriteria();
+	    if (docSearchForm.isInitiatorUser()) {
+	    	criteria.setInitiator(userSession.getNetworkId());
+	    }
+	    return criteria;
+    }
+    
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
         DocumentSearchForm docSearchForm = (DocumentSearchForm)form;
         Preferences preferences = getUserSession(request).getPreferences();
@@ -229,9 +263,11 @@ public class DocumentSearchAction extends WorkflowAction {
 
     @Override
     public ActionMessages establishFinalState(HttpServletRequest request, ActionForm form) throws Exception {
-        DocumentSearchForm docSearchForm = (DocumentSearchForm)form;
         request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
-        docSearchForm.checkForAdditionalFields();
+        DocumentSearchForm docSearchForm = (DocumentSearchForm)form;
+        if (docSearchForm != null) {
+        	docSearchForm.checkForAdditionalFields();
+        }
 //        List namedSearches = (List)request.getAttribute("namedSearches");
 //        if ( (namedSearches == null) || (namedSearches.isEmpty()) ) {
 //            request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
@@ -241,7 +277,11 @@ public class DocumentSearchAction extends WorkflowAction {
 
     @Override
     public void establishExceptionFinalState(HttpServletRequest request, ActionForm form) throws Exception {
-	establishFinalState(request, form);
+    	try {
+    		establishFinalState(request, form);
+    	} catch (Exception e) {
+    		LOG.warn("Swallowing exception thrown by establishFinalState since we already had a source exception.",e);
+    	}
     }
 
     private List getSavedSearches(WorkflowUser workflowUser) {
@@ -301,11 +341,7 @@ public class DocumentSearchAction extends WorkflowAction {
 
             //people are going to be feeding us doctype names by url for inline doc search so check for a null doctype to give
             //a sensible error
-            DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(dsForm.getCriteria().getDocTypeFullName());
-            if (documentType == null) {
-                throw new RuntimeException("Document Type invalid : " + dsForm.getCriteria().getDocTypeFullName());
-            }
-            List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, true);
+            List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(getValidDocumentType(dsForm.getCriteria().getDocTypeFullName()), true);
             RouteNode blankNode = new RouteNode();//for a default no choice option
             blankNode.setRouteNodeId(new Long(-1));
             blankNode.setRouteNodeName("");
@@ -454,20 +490,27 @@ public class DocumentSearchAction extends WorkflowAction {
 
     }
 
-
     private class State {
     	private boolean headerBarEnabled = true;
     	private boolean searchCriteriaEnabled = true;
     	private SavedSearchResult result;
-    	public State(DocumentSearchForm form, SavedSearchResult result) {
+    	public State(DocumentSearchForm form) {
     		this.headerBarEnabled = form.isHeaderBarEnabled();
     		this.searchCriteriaEnabled = form.isSearchCriteriaEnabled();
-    		this.result = result;
+    	}
+    	public State(DocumentSearchCriteriaProcessor criteriaProcessor) {
+    		this.headerBarEnabled = criteriaProcessor.isHeaderBarDisplayed();
+    		this.searchCriteriaEnabled = criteriaProcessor.isSearchCriteriaDisplayed();
     	}
     	public void updateForm(DocumentSearchForm form) {
-    		form.setCriteria(result.getDocSearchCriteriaVO());
+    		if (result != null) {
+        		form.setCriteria(result.getDocSearchCriteriaVO());
+    		}
     		form.setHeaderBarEnabled(isHeaderBarEnabled());
     		form.setSearchCriteriaEnabled(isSearchCriteriaEnabled());
+    	}
+    	public void setResult(SavedSearchResult result) {
+    		this.result = result;
     	}
 		public SavedSearchResult getResult() {
 			return result;

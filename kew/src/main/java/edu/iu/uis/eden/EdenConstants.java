@@ -742,6 +742,7 @@ public class EdenConstants extends JSTLConstants {
     public static final String NOTE_ATTRIBUTE_TYPE = "NoteAttribute";
     public static final String ACTION_LIST_ATTRIBUTE_TYPE = "ActionListAttribute";
     public static final String RULE_VALIDATION_ATTRIBUTE_TYPE = "RuleValidationAttribute";
+    public static final String SEARCH_CRITERIA_PROCESSOR_ATTRIBUTE_TYPE = "DocumentSearchCriteriaProcessorAttribute";
     public static final String SEARCH_GENERATOR_ATTRIBUTE_TYPE = "DocumentSearchGeneratorAttribute";
     public static final String SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE = "DocumentSearchResultProcessorAttribute";
     public static final String SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE = "DocumentSearchXMLResultProcessorAttribute";

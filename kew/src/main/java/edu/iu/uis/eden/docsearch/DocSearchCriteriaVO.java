@@ -26,6 +26,8 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
 import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.doctype.DocumentType;
+import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.util.Utilities;
 
@@ -35,9 +37,11 @@ import edu.iu.uis.eden.util.Utilities;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocSearchCriteriaVO implements Serializable {
+	
+	private static final String PERSON_LOOKUPABLE = "UserLookupableImplService";
+	private static final String DOC_TYP_LOOKUPABLE = "DocumentTypeLookupableImplService";
 
 	private static final long serialVersionUID = -5738747438282249790L;
-	public static final int DEFAULT_SEARCH_RESULT_CAP = 500;
     public static final int DEFAULT_PAGE_SIZE = 10;
     private String namedSearch;           // if populated the name of the search that they want to save
     private Integer pageSize;             // the number of items to display on a page of results
@@ -48,10 +52,10 @@ public class DocSearchCriteriaVO implements Serializable {
     private String overrideInd;           // flag to indicate overridden business values - set by app
     private String initiator;             // network Id of the person who initiated the document
     private String viewer;                // network Id of the person who is currently viewing the document
-    private String workgroupViewerName;         // workgroup Id that has had an action request to the document
+    private String workgroupViewerName;   // workgroup Id that has had an action request to the document
     private String approver;              // network Id of the person who is approving the document
-    private String docRouteNodeId;         // current level of routing, i.e. which route method is the document currently in
-    private String docRouteNodeLogic;    // exactly, before or after
+    private String docRouteNodeId;        // current level of routing, i.e. which route method is the document currently in
+    private String docRouteNodeLogic;     // exactly, before or after
     private String docVersion;            // document version
     private String docTypeFullName;       // the fullname for the document's docType
 
@@ -64,16 +68,26 @@ public class DocSearchCriteriaVO implements Serializable {
     private String toDateLastModified;    // the end range for last modified
     private String toDateApproved;        // the end range for approved
     private String toDateFinalized;       // the end range for finalized
+    
+    // standard search criteria holders
+    StandardDocSearchCriteriaManager basicSearch = new StandardDocSearchCriteriaManager(1,1);
+    StandardDocSearchCriteriaManager advancedSearch = new StandardDocSearchCriteriaManager(2,1);
 
+    static {
+    	List<StandardDocSearchCriteriaFieldContainer> postSearchAttributeContainers = new ArrayList<StandardDocSearchCriteriaFieldContainer>();
+    	postSearchAttributeContainers.add(new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.searchName", new StandardSearchCriteriaField("namedSearch","criteria.namedSearch",StandardSearchCriteriaField.TEXT,null,null,"DocSearchNamedSearch",false,null,null,false)));
+
+    }
+    
     // searchable attribute properties
-    private List searchableAttributes = new ArrayList();
+    private List<SearchAttributeCriteriaComponent> searchableAttributes = new ArrayList<SearchAttributeCriteriaComponent>();
 
     //properties to preserve view from saved and history searches as well as generate results
     private String isAdvancedSearch;
     private String superUserSearch = "NO";
 
     // used as an "out" parameter to indicate the threshold for the search
-    private int threshhold = DEFAULT_SEARCH_RESULT_CAP;
+    private int threshhold = DocumentSearchGenerator.DEFAULT_SEARCH_RESULT_CAP;
     private int fetchLimit = 0;
 
     // used as an "out" parameter to indicate that the rows fetched for this criteria are over the indicated threshold
@@ -81,6 +95,53 @@ public class DocSearchCriteriaVO implements Serializable {
 
     // used as an "out" prameter to indicate the number of rows that were filtered for security
     private int securityFilteredRows = 0;
+    
+    public DocSearchCriteriaVO() {
+    	this(new StandardDocumentSearchCriteriaProcessor());
+    }
+    
+    public DocSearchCriteriaVO(DocumentSearchCriteriaProcessor criteriaProcessor) {
+    	buildStandardCriteria(criteriaProcessor);
+    }
+    
+    public List<StandardDocSearchCriteriaFieldContainer> getAdvancedFieldsPreSearchAttributes() {
+    	return null;
+    }
+    
+    public List<StandardDocSearchCriteriaFieldContainer> getAdvancedFieldsPostSearchAttributes() {
+    	return null;
+    }
+    
+    public List<StandardDocSearchCriteriaFieldContainer> getBasicFieldsPreSearchAttributes() {
+    	List<StandardDocSearchCriteriaFieldContainer> containers = new ArrayList<StandardDocSearchCriteriaFieldContainer>();
+    	StandardDocSearchCriteriaFieldContainer docTypeContainer = new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.documentType", new StandardSearchCriteriaField("docTypeFullName","criteria.docTypeFullName",StandardSearchCriteriaField.TEXT,null,null,"DocSearchDocumentType",false,"docTypeDisplayName",DOC_TYP_LOOKUPABLE,false));
+    	docTypeContainer.setLabelFieldWidthValue("22%");
+    	docTypeContainer.setDataFieldWidthValue("78%");
+    	containers.add(docTypeContainer);
+    	StandardDocSearchCriteriaFieldContainer initiatorContainer = new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.initiatorId", new StandardSearchCriteriaField("initiator","criteria.initiator",StandardSearchCriteriaField.TEXT,null,null,"DocSearchInitiator",false,null,PERSON_LOOKUPABLE,true));
+    	containers.add(initiatorContainer);
+    	StandardDocSearchCriteriaFieldContainer docIdContainer = new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.documentId", new StandardSearchCriteriaField("documentId","criteria.routeHeaderId",StandardSearchCriteriaField.TEXT,null,null,"DocSearchDocumentId",false,null,null,false));
+    	containers.add(docIdContainer);
+    	List<StandardSearchCriteriaField> createDateFields = new ArrayList<StandardSearchCriteriaField>();
+    	createDateFields.add(new StandardSearchCriteriaField("fromCreateDate","fromDateCreated",StandardSearchCriteriaField.TEXT,"fromDateCreated","docSearch.DocumentSearch.criteria.label.from","DocSearchDateCreated",false,null,null,false));
+    	createDateFields.add(new StandardSearchCriteriaField("toCreateDate","toDateCreated",StandardSearchCriteriaField.TEXT,"toDateCreated","docSearch.DocumentSearch.criteria.label.to",null,false,null,null,false));
+    	StandardDocSearchCriteriaFieldContainer createDateContainer = new StandardDocSearchCriteriaFieldContainer("createDate", "docSearch.DocumentSearch.criteria.label.dateCreated", createDateFields);
+    	containers.add(createDateContainer);
+    	return containers;
+    }
+    
+    public List<StandardDocSearchCriteriaFieldContainer> getBasicFieldsPostSearchAttributes() {
+    	List<StandardDocSearchCriteriaFieldContainer> containers = new ArrayList<StandardDocSearchCriteriaFieldContainer>();
+    	StandardDocSearchCriteriaFieldContainer namedSearchContainer = new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.searchName", new StandardSearchCriteriaField("namedSearch","criteria.namedSearch",StandardSearchCriteriaField.TEXT,null,null,"DocSearchNamedSearch",false,null,null,false));
+    	containers.add(namedSearchContainer);
+    	return containers;
+    }
+    
+    public void buildStandardCriteria(DocumentSearchCriteriaProcessor criteriaProcessor) {
+//    	initiatorField = new StandardSearchCriteriaField("Test Initiator Field", "", Field.TEXT, true, "initiator", "", null, PERSON_LOOKUPABLE));
+//    	standardSearchCriteria.add(new StandardSearchCriteriaField("", "", Field.QUICKFINDER, false, "", "", null, PERSON_LOOKUPABLE));
+//    	standardSearchCriteriaRows.add(row);
+    }
 
     public boolean isStandardCriteriaConsideredEmpty(boolean excludeDocumentTypeName) {
         boolean docTypeNameIsEmpty = Utilities.isEmpty(this.docTypeFullName);
@@ -163,6 +224,21 @@ public class DocSearchCriteriaVO implements Serializable {
     public void setDocTitle(String docTitle) {
         this.docTitle = docTitle;
     }
+
+	public String getDocTypeDisplayName() {
+		DocumentType docType = getDocumentType();
+		if (docType != null) {
+			return docType.getLabel();
+		}
+		return null;
+	}
+
+	public DocumentType getDocumentType() {
+		if (getDocTypeFullName() != null && !"".equals(getDocTypeFullName())) {
+		    return ((DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(getDocTypeFullName());
+		}
+		return null;
+	}
 
     public String getDocTypeFullName() {
         return docTypeFullName;
@@ -441,23 +517,6 @@ public class DocSearchCriteriaVO implements Serializable {
                 (fromDateLastModified != null && !"".equals(fromDateLastModified.trim())));
     }
 
-    public void addSearchableAttribute(SearchAttributeCriteriaComponent searchableAttribute) {
-    	searchableAttributes.add(searchableAttribute);
-    }
-
-	/**
-	 * @param searchableAttributes The searchableAttributes to set.
-	 */
-	public void setSearchableAttributes(List searchableAttributes) {
-		this.searchableAttributes = searchableAttributes;
-	}
-	/**
-	 * @return Returns the searchableAttributes.
-	 */
-	public List getSearchableAttributes() {
-		return searchableAttributes;
-	}
-
     public String getWorkgroupViewerName() {
         return workgroupViewerName;
     }
@@ -499,6 +558,23 @@ public class DocSearchCriteriaVO implements Serializable {
 	}
 	public void setFetchLimit(int fetchLimit) {
 		this.fetchLimit = fetchLimit;
+	}
+
+    public void addSearchableAttribute(SearchAttributeCriteriaComponent searchableAttribute) {
+    	searchableAttributes.add(searchableAttribute);
+    }
+
+	/**
+	 * @param searchableAttributes The searchableAttributes to set.
+	 */
+	public void setSearchableAttributes(List<SearchAttributeCriteriaComponent> searchableAttributes) {
+		this.searchableAttributes = searchableAttributes;
+	}
+	/**
+	 * @return Returns the searchableAttributes.
+	 */
+	public List<SearchAttributeCriteriaComponent> getSearchableAttributes() {
+		return searchableAttributes;
 	}
 
 }

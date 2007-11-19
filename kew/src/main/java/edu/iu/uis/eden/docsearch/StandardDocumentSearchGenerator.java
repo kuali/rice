@@ -928,4 +928,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             }
         }
     }
+    
+    public int getDocumentSearchResultSetLimit() {
+	return DEFAULT_SEARCH_RESULT_CAP;
+    }
 }

@@ -29,6 +29,8 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DocumentSearchGenerator {
+	public static final int DEFAULT_SEARCH_RESULT_CAP = 500;
+
 	public void setSearchableAttributes(List searchableAttributes);
 	public void setSearchingUser(WorkflowUser searchingUser);
     public List<WorkflowServiceError> performPreSearchConditions(WorkflowUser user, DocSearchCriteriaVO searchCriteria);
@@ -36,4 +38,5 @@ public interface DocumentSearchGenerator {
     public String generateSearchSql(DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException;
     public List<DocSearchVO> processResultSet(ResultSet resultSet,DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException, SQLException;
     public DocSearchCriteriaVO clearSearch(DocSearchCriteriaVO searchCriteria);
+    public int getDocumentSearchResultSetLimit();
 }

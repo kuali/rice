@@ -40,6 +40,7 @@ public class Row implements java.io.Serializable {
     public Row(List<Field> fields) {
         this.fields = fields;
     }
+    
     public Row(List<Field> fields, String rowsGroupLabel, int numberOfGroupRows) {
         this.fields = fields;
         this.rowsGroupLabel = rowsGroupLabel;
@@ -81,4 +82,5 @@ public class Row implements java.io.Serializable {
     public void setNumberOfGroupRows(int numberOfGroupRows) {
         this.numberOfGroupRows = numberOfGroupRows;
     }
+
 }

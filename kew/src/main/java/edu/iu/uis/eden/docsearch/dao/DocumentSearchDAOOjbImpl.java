@@ -46,7 +46,7 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
 
     public List getList(DocumentSearchGenerator documentSearchGenerator,DocSearchCriteriaVO criteria) throws EdenUserNotFoundException {
         LOG.info("start getList");
-        int searchResultCap = getSearchResultCap();
+        int searchResultCap = getSearchResultCap(documentSearchGenerator);
         int fetchMoreIterationLimit = getFetchMoreIterationLimit();
         DocumentSecurityService documentSecurityService = KEWServiceLocator.getDocumentSecurityService();
         List docList = new ArrayList();
@@ -106,16 +106,19 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         return docList;
     }
 
-    private int getSearchResultCap() {
-    	int resultCap = DocSearchCriteriaVO.DEFAULT_SEARCH_RESULT_CAP;
+    private int getSearchResultCap(DocumentSearchGenerator docSearchGenerator) {
+    	int resultCap = docSearchGenerator.getDocumentSearchResultSetLimit();
     	String resultCapValue = Utilities.getApplicationConstant(EdenConstants.DOC_SEARCH_RESULT_CAP_KEY);
     	if (!StringUtils.isBlank(resultCapValue)) {
     		try {
-    			resultCap = Integer.parseInt(resultCapValue);
-    			if (resultCap <= 0) {
-    				LOG.warn(EdenConstants.DOC_SEARCH_RESULT_CAP_KEY + " was less than or equal to zero.  Please use a positive integer.");
-    				resultCap = DocSearchCriteriaVO.DEFAULT_SEARCH_RESULT_CAP;
-    			}
+    		    Integer maxResultCap = Integer.parseInt(resultCapValue);
+    		    if (resultCap > maxResultCap) {
+    			LOG.warn("Document Search Generator (" + docSearchGenerator.getClass().getName() + ") gives result set cap of " + resultCap + " which is greater than app constant " + EdenConstants.DOC_SEARCH_RESULT_CAP_KEY + " value of " + maxResultCap);
+    			resultCap = maxResultCap;
+    		    }
+    		    else if (maxResultCap <= 0) {
+    			LOG.warn(EdenConstants.DOC_SEARCH_RESULT_CAP_KEY + " was less than or equal to zero.  Please use a positive integer.");
+    		    }
     		} catch (NumberFormatException e) {
     			LOG.warn(EdenConstants.DOC_SEARCH_RESULT_CAP_KEY + " is not a valid number.  Value was " + resultCapValue);
     		}
@@ -123,6 +126,7 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
     	return resultCap;
     }
 
+    // TODO delyea: use searchable attribute count here?
     private int getFetchMoreIterationLimit() {
     	int fetchMoreLimit = DEFAULT_FETCH_MORE_ITERATION_LIMIT;
     	String fetchMoreLimitValue = Utilities.getApplicationConstant(EdenConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT_KEY);

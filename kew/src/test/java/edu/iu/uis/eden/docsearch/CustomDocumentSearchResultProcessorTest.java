@@ -24,9 +24,6 @@ import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.clientapp.WorkflowDocument;
-import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
 import edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessor;
 import edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl;
 import edu.iu.uis.eden.doctype.DocumentType;
@@ -45,8 +42,8 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class CustomSearchAttributesTest extends KEWTestCase {
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(CustomSearchAttributesTest.class);
+public class CustomDocumentSearchResultProcessorTest extends KEWTestCase {
+//	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(CustomSearchAttributesTest.class);
 
     protected void loadTestData() throws Exception {
         loadXmlFile("SearchAttributeConfig.xml");
@@ -83,14 +80,6 @@ public class CustomSearchAttributesTest extends KEWTestCase {
 			}
 		}
 		return null;
-    }
-
-    @Test public void testCustomDocumentSearchGeneratorUse() throws Exception {
-    	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName("SearchDocType");
-    	assertTrue("The document search Generator class should be of type CustomDocumentSearchGenerator",(ClassLoaderUtils.unwrapFromProxy(docType.getDocumentSearchGenerator()) instanceof StandardDocumentSearchGenerator));
-    	docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName("SearchDocType_DefaultCustomProcessor");
-    	LOG.error("testCustomDocumentSearchGeneratorUse() Class name is " + docType.getDocumentSearchGenerator().getClass().getName()); 
-    	assertTrue("The document search Generator class should be of type CustomDocumentSearchGenerator",(ClassLoaderUtils.unwrapFromProxy(docType.getDocumentSearchGenerator()) instanceof CustomDocumentSearchGenerator));
     }
 
     @Test public void testCustomDocumentSearchResultProcessorOverrideUse() throws Exception {
@@ -341,102 +330,5 @@ public class CustomSearchAttributesTest extends KEWTestCase {
         		}), Arrays.asList(new String[]{
                 		searchableAttributeKey_Hidden
         		}));
-    }
-    
-    /**
-     * Tests function of adding extra document type names to search including using searchable attributes
-     * that may or may not exist on all the document type names being searched on.
-     * 
-     * @throws Exception
-     */
-    @Test public void testSearchOnExtraDocType() throws Exception {
-        String userNetworkId = "rkirkend";
-        DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
-        WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
-
-        String documentTypeName1 = "SearchDocType_DefaultCustomProcessor";
-        WorkflowDocument workDoc_Matching1 = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName1);
-    	DocumentType docType1 = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName1);
-        WorkflowAttributeDefinitionVO stringXMLDef1 = new WorkflowAttributeDefinitionVO("SearchableAttributeVisible");
-        stringXMLDef1.addProperty(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE);
-        workDoc_Matching1.addSearchableDefinition(stringXMLDef1);
-        workDoc_Matching1.routeDocument("");
-
-        String documentTypeName2 = "SearchDocType_DefaultCustomProcessor_2";
-        WorkflowDocument workDoc_Matching2 = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName2);
-    	DocumentType docType2 = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName2);
-        WorkflowAttributeDefinitionVO stringXMLDef2 = new WorkflowAttributeDefinitionVO("SearchableAttributeVisible");
-        stringXMLDef2.addProperty(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE);
-        workDoc_Matching2.addSearchableDefinition(stringXMLDef2);
-        workDoc_Matching2.routeDocument("");
-        
-        // do search with attribute using doc type 1... make sure both docs are returned
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
-        criteria.setDocTypeFullName(documentTypeName1);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, docType1));
-        DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
-        assertEquals("Search results should have one document.", 2, result.getSearchResults().size());
-
-        // do search with attribute using doc type 2... make sure both docs are returned
-        criteria = new DocSearchCriteriaVO();
-        criteria.setDocTypeFullName(documentTypeName2);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, docType2));
-        result = docSearchService.getList(user, criteria);
-        assertEquals("Search results should have one document.", 2, result.getSearchResults().size());
-
-        // do search without attribute using doc type 1... make sure both docs are returned
-        criteria = new DocSearchCriteriaVO();
-        criteria.setDocTypeFullName(documentTypeName1);
-        result = docSearchService.getList(user, criteria);
-        assertEquals("Search results should have one document.", 2, result.getSearchResults().size());
-
-        // do search without attribute using doc type 2... make sure both docs are returned
-        criteria = new DocSearchCriteriaVO();
-        criteria.setDocTypeFullName(documentTypeName2);
-        result = docSearchService.getList(user, criteria);
-        assertEquals("Search results should have one document.", 2, result.getSearchResults().size());
-        
-        String documentTypeName3 = "SearchDocType_DefaultCustomProcessor_3";
-        WorkflowDocument workDoc_Matching3 = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName3);
-    	DocumentType docType3 = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName3);
-        WorkflowAttributeDefinitionVO stringXMLDef3 = new WorkflowAttributeDefinitionVO("SearchableAttributeVisible");
-        stringXMLDef3.addProperty(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE);
-        workDoc_Matching3.addSearchableDefinition(stringXMLDef3);
-        workDoc_Matching3.routeDocument("");
-        
-        // do search with attribute using doc type 3... make sure 1 doc is returned
-        criteria = new DocSearchCriteriaVO();
-        criteria.setDocTypeFullName(documentTypeName3);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, docType3));
-        result = docSearchService.getList(user, criteria);
-        assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
-        
-        // do search without attribute using doc type 3... make sure 1 doc is returned
-        criteria = new DocSearchCriteriaVO();
-        criteria.setDocTypeFullName(documentTypeName3);
-        result = docSearchService.getList(user, criteria);
-        assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
-
-        WorkflowDocument workDoc_NonMatching2 = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName2);
-        WorkflowAttributeDefinitionVO stringXMLDef1a = new WorkflowAttributeDefinitionVO("SearchableAttributeVisible");
-        // TODO delyea - adding underscore below invalidates via REGEX but doesn't blow up on route or addSearchable?
-        String searchAttributeValue = TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE + "nonMatching";
-        stringXMLDef1a.addProperty(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, searchAttributeValue);
-        workDoc_NonMatching2.addSearchableDefinition(stringXMLDef1a);
-        workDoc_NonMatching2.routeDocument("");
-        
-        // do search with attribute using doc type 1... make sure 1 doc is returned
-        criteria = new DocSearchCriteriaVO();
-        criteria.setDocTypeFullName(documentTypeName1);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, searchAttributeValue, docType1));
-        result = docSearchService.getList(user, criteria);
-        assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
-
-        // do search without attribute using doc type 1... make sure all 3 docs are returned
-        criteria = new DocSearchCriteriaVO();
-        criteria.setDocTypeFullName(documentTypeName1);
-        result = docSearchService.getList(user, criteria);
-        assertEquals("Search results should have one document.", 3, result.getSearchResults().size());
     }
 }

@@ -98,6 +98,7 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
 		if (schemaName == null || schemaName.equals("")) {
 			Assert.fail("Empty schema name given");
 		}
+		try {
 		new TransactionTemplate(transactionManager).execute(new TransactionCallback() {
 			public Object doInTransaction(final TransactionStatus status) {
 				verifyTestEnvironment(dataSource);
@@ -136,6 +137,10 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
 				});
 			}
 		});
+		} catch (Exception e) {
+			LOG.error(e);
+			throw new RuntimeException(e);
+		}
 		LOG.info("Tables successfully cleared for schema " + schemaName);
 	}
 

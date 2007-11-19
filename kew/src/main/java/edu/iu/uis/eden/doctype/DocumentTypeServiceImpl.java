@@ -33,6 +33,7 @@ import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.server.BeanConverter;
 import edu.iu.uis.eden.user.WorkflowUser;
+import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.xml.DocumentTypeXmlParser;
 import edu.iu.uis.eden.xml.export.DocumentTypeXmlExporter;
 
@@ -183,13 +184,21 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     		//oldDocumentType.resetChildren();
     		Long existingDocTypeId = (oldDocumentType == null ? null : oldDocumentType.getDocumentTypeId());
     		if (oldDocumentType != null && existingDocTypeId.longValue() > 0) {
+    		    	// set version number on the new doc type using the max version from the database
+			Integer maxVersionNumber = documentTypeDAO.getMaxVersionNumber(documentType.getName());
+    			documentType.setVersion((maxVersionNumber != null) ? new Integer(maxVersionNumber.intValue() + 1) : new Integer(0));
+    			// set up the previous current doc type on the new doc type
     			documentType.setPreviousVersionId(existingDocTypeId);
-    			//TODO this used to be a query that I can't see being necessary if all our fetch code is working...
-    			//delete if you're looking at this message in 2.4 release cycle
-    			documentType.setVersion(new Integer(oldDocumentType.getVersion().intValue() + 1));
     			oldDocumentType.setCurrentInd(Boolean.FALSE);
     			LOG.debug("Saving old document type Id " + oldDocumentType.getDocumentTypeId() + " name " + oldDocumentType.getName());
     			save(oldDocumentType, false);
+    		}
+
+    		// check to see that no current documents exist in database
+    		if (!Utilities.isEmpty(documentTypeDAO.findAllCurrentByName(documentType.getName()))) {
+    		    String errorMsg = "Found invalid 'current' document with name '" + documentType.getName() + "'.  None should exist.";
+    		    LOG.error(errorMsg);
+    		    throw new RuntimeException(errorMsg);
     		}
     		documentType.setCurrentInd(Boolean.TRUE);
 
@@ -218,7 +227,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     	} finally {
     		// the double flush here is necessary because of a series of events which occur inside of
     		// notifyCacheOfDocumentTypeChange, see the documentation inside that service method for
-    		// more information on the problem.  Esentially, the method ends up invoking methods on
+    		// more information on the problem.  Essentially, the method ends up invoking methods on
     		// this service which re-cache document types, however the document types that get
     		// re-cached are ones pulled from the OJB cache that don't have the proper children
     		// on them

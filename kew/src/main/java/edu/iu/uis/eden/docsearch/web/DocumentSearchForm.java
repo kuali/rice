@@ -268,18 +268,11 @@ public class DocumentSearchForm extends ActionForm {
     }
 
 	public String getDocTypeDisplayName() {
-		DocumentType docType = getDocumentType();
-		if (docType != null) {
-			return docType.getLabel();
-		}
-		return null;
+		return criteria.getDocTypeDisplayName();
 	}
 
 	private DocumentType getDocumentType() {
-		if (criteria.getDocTypeFullName() != null && !"".equals(criteria.getDocTypeFullName())) {
-		    return ((DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(criteria.getDocTypeFullName());
-		}
-		return null;
+		return criteria.getDocumentType();
 	}
 
 	public String getRouteLogPopup() {
@@ -303,7 +296,9 @@ public class DocumentSearchForm extends ActionForm {
 	}
 
 	public void setCriteria(DocSearchCriteriaVO criteria) {
-        // TODO JIRA KULOWF-254 - populate searchable attributes
+		if (criteria == null) {
+			throw new RuntimeException("Criteria should never be null");
+		}
 		this.criteria = criteria;
 	}
 

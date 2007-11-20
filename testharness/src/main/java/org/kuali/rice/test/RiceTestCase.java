@@ -1,17 +1,14 @@
 /*
  * Copyright 2007 The Kuali Foundation
- *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
+ * 
+ * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * 
  * http://www.opensource.org/licenses/ecl1.php
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
  */
 package org.kuali.rice.test;
 
@@ -33,18 +30,15 @@ import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.resourceloader.SpringResourceLoader;
+import org.kuali.rice.test.lifecycles.PerSuiteDataLoaderLifecycle;
 
 /**
- * Useful superclass for all Workflow test cases. Handles setup of test
- * utilities and a test environment. Configures the Spring test environment
- * providing a template method for custom context files in test mode. Also
- * provides a template method for running custom transactional setUp. Tear down
- * handles automatic tear down of objects created inside the test environment.
- *
+ * To Be Updated...
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  */
-public abstract class RiceTestCase extends LoggableTestCase {
+public abstract class RiceTestCase extends BaseRiceTestCase {
 
 	private static final Logger LOG = Logger.getLogger(RiceTestCase.class);
 
@@ -61,34 +55,37 @@ public abstract class RiceTestCase extends LoggableTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-	    try {
-		beforeRun();
-		configureLogging();
-		LOG.info("test, test, test");
-		final long initTime = System.currentTimeMillis();
-		this.perTestLifeCycles = getPerTestLifecycles();
-		this.suiteLifeCycles = getSuiteLifecycles();
+		try {
+			beforeRun();
+			configureLogging();
 
-		startLifecycles(this.perTestLifeCycles);
+			LOG.info("test, test, test");
 
-		if (!SUITE_LIFE_CYCLES_RAN) {
-		    startLifecycles(this.suiteLifeCycles);
-		    SUITE_LIFE_CYCLES_RAN = true;
+			final long initTime = System.currentTimeMillis();
+
+			this.perTestLifeCycles = getPerTestLifecycles();
+			this.suiteLifeCycles = getSuiteLifecycles();
+
+			if (!SUITE_LIFE_CYCLES_RAN) {
+				startLifecycles(this.suiteLifeCycles);
+				SUITE_LIFE_CYCLES_RAN = true;
+			}
+
+			startLifecycles(this.perTestLifeCycles);
+
+			report("Time to start all Lifecycles: " + (System.currentTimeMillis() - initTime));
+		} catch (Throwable e) {
+			e.printStackTrace();
+			this.stopLifecycles(this.perTestLifeCycles);
+			throw new RuntimeException(e);
 		}
-		report("Time to start all Lifecycles: " + (System.currentTimeMillis() - initTime));
-	    } catch (Throwable e) {
-		e.printStackTrace();
-		this.stopLifecycles(this.perTestLifeCycles);
-		throw new RuntimeException(e);
-	    }
 	}
 
 	/**
-	 * maven will set this property and find resources from the config based on
-	 * it. This makes eclipse testing work because we have to put the basedir in
-	 * our config files in order to find things when testing from maven
-	 *
-	 */
+     * maven will set this property and find resources from the config based on it. This makes eclipse testing work because
+     * we have to put the basedir in our config files in order to find things when testing from maven
+     * 
+     */
 	protected void setBaseDirSystemProperty(String moduleBaseDir) {
 		if (System.getProperty("basedir") == null) {
 			System.setProperty("basedir", System.getProperty("user.dir") + "/" + moduleBaseDir);
@@ -96,10 +93,10 @@ public abstract class RiceTestCase extends LoggableTestCase {
 	}
 
 	/**
-	 * Returns the basedir for the module under which the tests are currently executing.
-	 */
+     * Returns the basedir for the module under which the tests are currently executing.
+     */
 	protected String getBaseDir() {
-	    return System.getProperty("basedir");
+		return System.getProperty("basedir");
 	}
 
 	protected void setModuleName(String moduleName) {
@@ -115,10 +112,10 @@ public abstract class RiceTestCase extends LoggableTestCase {
 	}
 
 	protected void beforeRun() {
-	    System.out.println("##############################################################");
-	    System.out.println("# Starting test " + getClass().getSimpleName() + "...");
-	    System.out.println("# " + dumpMemory());
-	    System.out.println("##############################################################");
+		System.out.println("##############################################################");
+		System.out.println("# Starting test " + getClass().getSimpleName() + "...");
+		System.out.println("# " + dumpMemory());
+		System.out.println("##############################################################");
 	}
 
 	protected void afterRun() {
@@ -132,9 +129,9 @@ public abstract class RiceTestCase extends LoggableTestCase {
 	}
 
 	protected void configureLogging() throws IOException {
-	    Properties p = new Properties();
-	    p.load(getClass().getClassLoader().getResourceAsStream(DEFAULT_LOG4J_CONFIG));
-	    PropertyConfigurator.configure(p);
+		Properties p = new Properties();
+		p.load(getClass().getClassLoader().getResourceAsStream(DEFAULT_LOG4J_CONFIG));
+		PropertyConfigurator.configure(p);
 	}
 
 	protected void startLifecycles(List<Lifecycle> lifecycles) throws Exception {
@@ -159,12 +156,12 @@ public abstract class RiceTestCase extends LoggableTestCase {
 	}
 
 	/**
-	 *
-	 * @return Lifecycles ran every test run
-	 */
-	protected List<Lifecycle> getPerTestLifecycles() {
-		LinkedList<Lifecycle> lifeCycles = new LinkedList<Lifecycle>();
-		lifeCycles.add(new Lifecycle() {
+     * 
+     * @return Lifecycles run once during the suite
+     */
+	protected List<Lifecycle> getSuiteLifecycles() {
+		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
+		lifecycles.add(new Lifecycle() {
 			boolean started = false;
 
 			public boolean isStarted() {
@@ -183,8 +180,8 @@ public abstract class RiceTestCase extends LoggableTestCase {
 				this.started = false;
 			}
 		});
-		lifeCycles.add(getTestHarnessSpringResourceLoader());
-		lifeCycles.add(new Lifecycle() {
+		lifecycles.add(getTestHarnessSpringResourceLoader());
+		lifecycles.add(new Lifecycle() {
 			boolean started = false;
 
 			public boolean isStarted() {
@@ -200,25 +197,28 @@ public abstract class RiceTestCase extends LoggableTestCase {
 				this.started = false;
 			}
 		});
-		lifeCycles.add(new DerbyDBCreationLifecycle(getDerbySQLFileLocation()));
-		lifeCycles.add(new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
-		return lifeCycles;
-	}
-
-	protected List<String> getTablesToClear() {
-	    return new ArrayList<String>();
-	}
-
-	protected List<String> getTablesNotToClear() {
-	    return new ArrayList<String>();
+		lifecycles.add(new DerbyDBCreationLifecycle(getDerbySQLFileLocation()));
+		lifecycles.add(new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
+		lifecycles.add(new PerSuiteDataLoaderLifecycle(getClass()));
+		return lifecycles;
 	}
 
 	/**
-	 *
-	 * @return Lifecycles run once during the suite
-	 */
-	protected List<Lifecycle> getSuiteLifecycles() {
-		return new LinkedList<Lifecycle>();
+     * 
+     * @return Lifecycles run every test run
+     */
+	protected List<Lifecycle> getPerTestLifecycles() {
+		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
+		lifecycles.add(getPerTestDataLoaderLifecycle());
+		return lifecycles;
+	}
+
+	protected List<String> getTablesToClear() {
+		return new ArrayList<String>();
+	}
+
+	protected List<String> getTablesNotToClear() {
+		return new ArrayList<String>();
 	}
 
 	protected void report(final String report) {
@@ -234,7 +234,8 @@ public abstract class RiceTestCase extends LoggableTestCase {
 
 	public SpringResourceLoader getTestHarnessSpringResourceLoader() {
 		if (testHarnessSpringResourceLoader == null) {
-			testHarnessSpringResourceLoader = new SpringResourceLoader(new QName("TestHarnessSpringContext"), "classpath:TestHarnessSpringBeans.xml");
+			testHarnessSpringResourceLoader = new SpringResourceLoader(new QName("TestHarnessSpringContext"),
+					"classpath:TestHarnessSpringBeans.xml");
 		}
 		return testHarnessSpringResourceLoader;
 	}
@@ -246,25 +247,23 @@ public abstract class RiceTestCase extends LoggableTestCase {
 	}
 
 	/**
-	 * @return List of config locations to add to this tests config location.
-	 */
+     * @return List of config locations to add to this tests config location.
+     */
 	protected abstract List<String> getConfigLocations();
 
 	/**
-	 * same as the module directory in the project.
-	 *
-	 * @return name of module that the tests located
-	 */
+     * same as the module directory in the project.
+     * 
+     * @return name of module that the tests located
+     */
 	protected abstract String getModuleName();
 
 	/**
-	 * Note: We may want to make this more automagical and base this off of
-	 * convention from the module name Typical return value
-	 * "classpath:db/derby/testharness.sql"
-	 *
-	 * @return location of sql file containing ddl for a derby db to be ran
-	 *         before start up.
-	 */
+     * Note: We may want to make this more automagical and base this off of convention from the module name Typical return
+     * value "classpath:db/derby/testharness.sql"
+     * 
+     * @return location of sql file containing ddl for a derby db to be ran before start up.
+     */
 	protected abstract String getDerbySQLFileLocation();
 
 }

@@ -14,36 +14,45 @@ package org.kuali.rice;
 
 import org.junit.After;
 import org.junit.Before;
+import org.kuali.rice.test.data.PerSuiteUnitTestData;
+import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.rice.test.data.UnitTestFile;
+import org.kuali.rice.test.data.UnitTestSql;
 import org.kuali.rice.testharness.KNSTestCase;
 import org.kuali.rice.testharness.TransactionalLifecycle;
 
+@PerSuiteUnitTestData(
+    @UnitTestData(
+        sqlStatements = {
+            @UnitTestSql("insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (1, 'fred')"),
+            @UnitTestSql("insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (2, 'fran')"),
+            @UnitTestSql("insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (3, 'frank')")
+        },
+        sqlFiles = {@UnitTestFile(filename = "classpath:DefaultTestData-MinusFirstThreeStatements.sql", delimiter = ";")}))
 public class TestBase extends KNSTestCase {
 
-    private TransactionalLifecycle transactionalLifecycle;
+	private TransactionalLifecycle transactionalLifecycle;
 
-    @Before
-    public void setUp() throws Exception {
-	setContextName("/SampleRiceClient");
-	setRelativeWebappRoot("/src/test/webapp");
-	setSqlFilename("classpath:DefaultTestData.sql");
-	setSqlDelimiter(";");
-	setXmlFilename("classpath:DefaultTestData.xml");
-	setTestConfigFilename("classpath:META-INF/sample-app-test-config.xml");
-	super.setUp();
-	transactionalLifecycle = new TransactionalLifecycle();
-	transactionalLifecycle.start();
-    }
+	@Before
+	public void setUp() throws Exception {
+		setContextName("/SampleRiceClient");
+		setRelativeWebappRoot("/src/test/webapp");
+		setXmlFilename("classpath:DefaultTestData.xml");
+		setTestConfigFilename("classpath:META-INF/sample-app-test-config.xml");
+		super.setUp();
+		transactionalLifecycle = new TransactionalLifecycle();
+		transactionalLifecycle.start();
+	}
 
-    @After
-    public void tearDown() throws Exception {
-	transactionalLifecycle.stop();
-	super.tearDown();
-    }
+	@After
+	public void tearDown() throws Exception {
+		transactionalLifecycle.stop();
+		super.tearDown();
+	}
 
-    @Override
-    protected String getModuleName() {
-	return "kns";
-    }
+	@Override
+	protected String getModuleName() {
+		return "kns";
+	}
 
-    
 }

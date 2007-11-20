@@ -27,13 +27,13 @@ import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;*/
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.test.LoggableTestCase;
+import org.kuali.rice.test.BaseRiceTestCase;
 
 /**
  * Tests the behavior of EDocLiteForm in the presence of various types of input
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class EDocLiteFormTest extends LoggableTestCase {
+public class EDocLiteFormTest extends BaseRiceTestCase {
     /**
      * Tests how EDocLiteForm handles parameters with multiple values
      */

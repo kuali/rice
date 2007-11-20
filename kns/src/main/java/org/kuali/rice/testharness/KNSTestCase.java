@@ -1,21 +1,17 @@
 /*
  * Copyright 2007 The Kuali Foundation
- *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
+ * 
+ * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * 
  * http://www.opensource.org/licenses/ecl1.php
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
  */
 package org.kuali.rice.testharness;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,7 +19,6 @@ import org.kuali.rice.config.spring.ConfigFactoryBean;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
-import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 
 import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
 
@@ -32,25 +27,18 @@ import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+
 public class KNSTestCase extends RiceTestCase {
 
 	private String contextName = "/SampleRiceClient";
 	private String relativeWebappRoot = "/src/test/webapp";
-	private String sqlFilename = "classpath:DefaultTestData.sql";
-	private String sqlDelimiter = ";";
 	private String xmlFilename = "classpath:DefaultTestData.xml";
 	private String testConfigFilename = "classpath:META-INF/sample-app-test-config.xml";
-	
-	@Override
-	public List<Lifecycle> getPerTestLifecycles() {
-		return new ArrayList<Lifecycle>();
-	}
 
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
-		List<Lifecycle> lifeCycles = super.getPerTestLifecycles();
-		lifeCycles.add(new Lifecycle() {
-
+		List<Lifecycle> lifecycles = super.getSuiteLifecycles();
+		lifecycles.add(new Lifecycle() {
 			boolean started = false;
 
 			public boolean isStarted() {
@@ -59,10 +47,8 @@ public class KNSTestCase extends RiceTestCase {
 
 			public void start() throws Exception {
 				ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();
-				new SQLDataLoaderLifecycle(getSqlFilename(), getSqlDelimiter()).start();
 				new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
 				new KEWXmlDataLoaderLifecycle(getXmlFilename()).start();
-
 				this.started = true;
 			}
 
@@ -71,12 +57,12 @@ public class KNSTestCase extends RiceTestCase {
 			}
 
 		});
-		return lifeCycles;
+		return lifecycles;
 	}
 
 	@Override
 	protected List<String> getConfigLocations() {
-		return Arrays.asList(new String[] { getTestConfigFilename() });
+		return Arrays.asList(new String[]{getTestConfigFilename()});
 	}
 
 	@Override
@@ -88,7 +74,7 @@ public class KNSTestCase extends RiceTestCase {
 	protected String getModuleName() {
 		return "kns";
 	}
-	
+
 	protected String getTestConfigFilename() {
 		return testConfigFilename;
 	}
@@ -117,28 +103,12 @@ public class KNSTestCase extends RiceTestCase {
 		this.relativeWebappRoot = relativeWebappRoot;
 	}
 
-	protected String getSqlFilename() {
-		return sqlFilename;
-	}
-
-	protected void setSqlFilename(String sqlFilename) {
-		this.sqlFilename = sqlFilename;
-	}
-
 	protected String getXmlFilename() {
 		return xmlFilename;
 	}
 
 	protected void setXmlFilename(String xmlFilename) {
 		this.xmlFilename = xmlFilename;
-	}
-
-	protected String getSqlDelimiter() {
-		return sqlDelimiter;
-	}
-
-	protected void setSqlDelimiter(String sqlDelimiter) {
-		this.sqlDelimiter = sqlDelimiter;
 	}
 
 }

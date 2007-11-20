@@ -34,7 +34,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.junit.Test;
-import org.kuali.rice.test.LoggableTestCase;
+import org.kuali.rice.test.BaseRiceTestCase;
 import org.kuali.workflow.test.TestUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -50,7 +50,7 @@ import edu.iu.uis.eden.xml.ClassLoaderEntityResolver;
  * Test schema validation
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class XmlSchemaTest extends LoggableTestCase {
+public class XmlSchemaTest extends BaseRiceTestCase {
     private Document validate(InputStream stream) throws ParserConfigurationException, IOException , SAXException {
         /*DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance();
           factory.setIgnoringElementContentWhitespace(true);

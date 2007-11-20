@@ -26,13 +26,13 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.junit.Test;
-import org.kuali.rice.test.LoggableTestCase;
+import org.kuali.rice.test.BaseRiceTestCase;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 
 import edu.iu.uis.eden.util.XmlHelper;
 
-public class DocumentTypeXmlValidationTest extends LoggableTestCase {
+public class DocumentTypeXmlValidationTest extends BaseRiceTestCase {
     private final XPath xpath = XPathFactory.newInstance().newXPath();
 
     /**

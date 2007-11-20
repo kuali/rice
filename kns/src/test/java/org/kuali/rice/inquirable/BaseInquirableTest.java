@@ -24,6 +24,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 @PerTestUnitTestData(
     @UnitTestData(
+        order = { UnitTestData.Type.SQL_FILES, UnitTestData.Type.SQL_STATEMENTS },
         sqlStatements = {
             @UnitTestSql("select 1 from dual"),
             @UnitTestSql("select 1 from dual")

@@ -14,11 +14,9 @@ package org.kuali.rice.test.lifecycles;
 
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.test.RiceTestCase;
-import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
-import org.kuali.rice.test.data.UnitTestFile;
-import org.kuali.rice.test.data.UnitTestSql;
+import org.kuali.rice.test.data.UnitTestDataUtils;
 
 /**
  * A lifecycle for loading SQL datasets based on the PerSuiteUnitTestData annotation. The individual SQL statements are
@@ -30,7 +28,6 @@ import org.kuali.rice.test.data.UnitTestSql;
 public class PerSuiteDataLoaderLifecycle implements Lifecycle {
 	private boolean started;
 
-	private SQLDataLoader sqlDataLoader;
 	private Class<? extends RiceTestCase> annotatedClass;
 
 	public PerSuiteDataLoaderLifecycle(Class<? extends RiceTestCase> annotatedClass) {
@@ -44,14 +41,7 @@ public class PerSuiteDataLoaderLifecycle implements Lifecycle {
 	public void start() throws Exception {
 		if (annotatedClass.isAnnotationPresent(PerSuiteUnitTestData.class)) {
 			UnitTestData data = annotatedClass.getAnnotation(PerSuiteUnitTestData.class).value();
-			for (UnitTestSql statement : data.sqlStatements()) {
-				sqlDataLoader = new SQLDataLoader(statement.value());
-				sqlDataLoader.runSql();
-			}
-			for (UnitTestFile file : data.sqlFiles()) {
-				sqlDataLoader = new SQLDataLoader(file.filename(), file.delimiter());
-				sqlDataLoader.runSql();
-			}
+            UnitTestDataUtils.executeDataLoader(data);
 		}
 		started = true;
 	}

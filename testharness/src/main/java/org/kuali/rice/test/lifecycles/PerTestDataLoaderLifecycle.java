@@ -15,11 +15,9 @@ package org.kuali.rice.test.lifecycles;
 import java.lang.reflect.Method;
 
 import org.kuali.rice.lifecycle.Lifecycle;
-import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
-import org.kuali.rice.test.data.UnitTestFile;
-import org.kuali.rice.test.data.UnitTestSql;
+import org.kuali.rice.test.data.UnitTestDataUtils;
 
 /**
  * A lifecycle for loading SQL datasets based on the PerSuiteUnitTestData annotation. The individual SQL statements are
@@ -30,8 +28,6 @@ import org.kuali.rice.test.data.UnitTestSql;
  */
 public class PerTestDataLoaderLifecycle implements Lifecycle {
 	private boolean started;
-
-	private SQLDataLoader sqlDataLoader;
 	private Method method;
 
 	public PerTestDataLoaderLifecycle(Method method) {
@@ -45,25 +41,11 @@ public class PerTestDataLoaderLifecycle implements Lifecycle {
 	public void start() throws Exception {
 		if (method.getDeclaringClass().isAnnotationPresent(PerTestUnitTestData.class)) {
 			UnitTestData data = method.getDeclaringClass().getAnnotation(PerTestUnitTestData.class).value();
-			for (UnitTestSql statement : data.sqlStatements()) {
-				sqlDataLoader = new SQLDataLoader(statement.value());
-				sqlDataLoader.runSql();
-			}
-			for (UnitTestFile file : data.sqlFiles()) {
-				sqlDataLoader = new SQLDataLoader(file.filename(), file.delimiter());
-				sqlDataLoader.runSql();
-			}
+            UnitTestDataUtils.executeDataLoader(data);
 		}
 		if (method.isAnnotationPresent(UnitTestData.class)) {
 			UnitTestData data = method.getAnnotation(UnitTestData.class);
-			for (UnitTestSql statement : data.sqlStatements()) {
-				sqlDataLoader = new SQLDataLoader(statement.value());
-				sqlDataLoader.runSql();
-			}
-			for (UnitTestFile file : data.sqlFiles()) {
-				sqlDataLoader = new SQLDataLoader(file.filename(), file.delimiter());
-				sqlDataLoader.runSql();
-			}
+            UnitTestDataUtils.executeDataLoader(data);
 		}
 		started = true;
 	}
@@ -71,5 +53,4 @@ public class PerTestDataLoaderLifecycle implements Lifecycle {
 	public void stop() throws Exception {
 		started = false;
 	}
-
 }

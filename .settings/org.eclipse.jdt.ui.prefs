@@ -1,4 +1,4 @@
-#Mon Nov 12 11:49:36 MST 2007
+#Tue Nov 20 08:38:05 EST 2007
 cleanup.add_default_serial_version_id=true
 cleanup.add_generated_serial_version_id=false
 cleanup.add_missing_annotations=true
@@ -48,8 +48,8 @@ cleanup.use_this_for_non_static_method_access_only_if_necessary=true
 cleanup_profile=_Kuali
 cleanup_settings_version=2
 eclipse.preferences.version=1
-formatter_profile=_rice temp
-formatter_settings_version=11
+formatter_profile=_Rice
+formatter_settings_version=10
 instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true
 org.eclipse.jdt.ui.exception.name=e
 org.eclipse.jdt.ui.gettersetter.use.is=true

@@ -652,11 +652,6 @@ public class RuleServiceImpl implements RuleService {
             }
         }
 
-        if (ruleBaseValues.getRuleTemplate() == null && ruleBaseValues.getRuleExpressionDef() == null) {
-            
-            throw new RuntimeException("Rule has neither a template nor an expression defined: " + ruleBaseValues);
-        }
-
         if (ruleBaseValues.getRuleTemplate() != null) {
             for (Iterator iter = ruleBaseValues.getRuleTemplate().getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
                 RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iter.next();

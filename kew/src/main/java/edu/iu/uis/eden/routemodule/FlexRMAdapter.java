@@ -47,4 +47,7 @@ public class FlexRMAdapter extends FlexRM implements RouteModule {
         return getActionRequests(routeHeader, ruleTemplateName);
     }*/
 
+    public String toString() {
+        return "FlexRMAdapter";
+    }
 }

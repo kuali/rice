@@ -40,7 +40,10 @@ public class NamedRuleSelector implements RuleSelector {
      */
     public static final String RULE_NAME_CFG_KEY = "ruleName";
 
-    public List<Rule> selectRules(RouteContext context, DocumentRouteHeaderValue routeHeader,
+    /**
+     * @return the name of the rule that should be selected
+     */
+    protected String getName(RouteContext context, DocumentRouteHeaderValue routeHeader,
             RouteNodeInstance nodeInstance, String selectionCriterion, Timestamp effectiveDate) throws WorkflowException {
         String ruleName = null;
         RouteNode routeNodeDef = nodeInstance.getRouteNode();
@@ -53,13 +56,23 @@ public class NamedRuleSelector implements RuleSelector {
             Map<String, String> routeNodeConfig = Utilities.getKeyValueCollectionAsMap(routeNodeDef.getConfigParams());
             ruleName = routeNodeConfig.get(RULE_NAME_CFG_KEY);
         }
+        return ruleName;
+    }
+
+    public List<Rule> selectRules(RouteContext context, DocumentRouteHeaderValue routeHeader,
+            RouteNodeInstance nodeInstance, String selectionCriterion, Timestamp effectiveDate) throws WorkflowException {
+
+        String ruleName = getName(context, routeHeader, nodeInstance, selectionCriterion, effectiveDate);
+
         if (ruleName == null) {
-            throw new WorkflowException("No 'ruleName' configuration parameter present on route node definition: " + routeNodeDef);
+            throw new WorkflowException("No 'ruleName' configuration parameter present on route node definition: " + nodeInstance.getRouteNode());
         }
+
         RuleBaseValues ruleDef = KEWServiceLocator.getRuleService().getRuleByName(ruleName);
         if (ruleDef == null) {
             throw new WorkflowException("No rule found with name '" + ruleName + "'");
         }
+
         List<Rule> rules = new ArrayList<Rule>(1);
         rules.add(new RuleImpl(ruleDef));
         return rules;

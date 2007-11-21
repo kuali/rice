@@ -20,7 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Transformer;
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
@@ -31,8 +34,6 @@ import edu.iu.uis.eden.engine.node.NodeState;
 import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.engine.node.RouteNodeConfigParam;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
-import edu.iu.uis.eden.routeheader.DocumentContent;
-import edu.iu.uis.eden.routeheader.StandardDocumentContent;
 import edu.iu.uis.eden.routetemplate.NamedRuleSelector;
 import edu.iu.uis.eden.util.Utilities;
 
@@ -54,7 +55,7 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
      * recipient string, and string id, and maintains pointers to
      * parent and children stops.
      */
-    private static class SimpleStop implements Stop {
+    static class SimpleStop implements Stop {
         private static enum RecipientType { USER, WORKGROUP };
         public SimpleStop parent;
         public List<SimpleStop> children = new ArrayList<SimpleStop>();
@@ -63,7 +64,16 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
         public String id;
 
         public String toString() {
-            return ToStringBuilder.reflectionToString(this);
+            return new ToStringBuilder(this).append("id", id)
+                                            .append("recipient", recipient)
+                                            .append("type", type)
+                                            .append("parent", parent == null ? null : parent.id)
+                                            .append("children", StringUtils.join(CollectionUtils.collect(children, new Transformer() {
+                                                        public Object transform(Object o) { return ((SimpleStop) o).id; }
+                                                    })
+                                                    , ','))
+                                            .toString();
+                                                    
         }
         
         public boolean equals(Object o) {
@@ -85,15 +95,15 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
      */
     private Map<String, SimpleStop> stops = new HashMap<String, SimpleStop>();
 
-    public SimpleHierarchyProvider(RouteContext context) {
-        this(context.getDocumentContent().getDocument().getDocumentElement());
+    public void init(RouteNodeInstance nodeInstance, RouteContext context) {
+        init(context.getDocumentContent().getDocument().getDocumentElement());
     }
 
     /**
      * This constructor can be used in tests
      * @param element the root Element of the hierarchy XML
      */
-    public SimpleHierarchyProvider(Element element) {
+    public void init(Element element) {
         Element rootStop = findRootStop(element);
         root = parseStops(rootStop, null);
     }
@@ -119,9 +129,9 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
      * @return the SimpleStop instance for the initial element
      */
     protected SimpleStop parseStops(Element e, SimpleStop parent) {
-        LOG.error("parsing element: " + e + " parent: " + parent);
+        LOG.debug("parsing element: " + e + " parent: " + parent);
         SimpleStop stop = parseStop(e);
-        LOG.error("parsed stop: "+ stop);
+        LOG.debug("parsed stop: "+ stop);
         stop.parent = parent;
         if (parent != null) {
             parent.children.add(stop);
@@ -146,22 +156,26 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
         String recipient = e.getAttribute("recipient");
         String type = e.getAttribute("type");
         String id = e.getAttribute("id");
+        if (id == null) {
+            throw new RuntimeException("malformed document content, missing id attribute: " + e);
+        }
+        /* make optional, since ruleselector/rules can govern this ? */
+        /*
         if (recipient == null) {
             throw new RuntimeException("malformed document content, missing recipient attribute: " + e);
         }
         if (type == null) {
             throw new RuntimeException("malformed document content, missing type attribute: " + e);
         }
-        if (id == null) {
-            throw new RuntimeException("malformed document content, missing id attribute: " + e);
-        }
+        */
         ss.id = id;
         ss.recipient = recipient;
-        SimpleStop.RecipientType rtype = SimpleStop.RecipientType.valueOf(type.toUpperCase());
-        if (type == null) {
-            throw new RuntimeException("Invalid type: " + type);
+
+        if (!StringUtils.isEmpty(type)) {
+            SimpleStop.RecipientType rtype = SimpleStop.RecipientType.valueOf(type.toUpperCase());
+            ss.type = rtype;
         }
-        ss.type = rtype;
+
         return ss;
     }
 
@@ -191,11 +205,16 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
     }
     
     public void setStop(RouteNodeInstance requestNodeInstance, Stop stop) {
+        SimpleStop ss = (SimpleStop) stop;
         requestNodeInstance.addNodeState(new NodeState("id", getStopIdentifier(stop)));
         //requestNodeInstance.addNodeState(new NodeState(EdenConstants.RULE_SELECTOR_NODE_STATE_KEY, "named"));
         //requestNodeInstance.addNodeState(new NodeState(EdenConstants.RULE_NAME_NODE_STATE_KEY, "NodeInstanceRecipientRule"));
-        requestNodeInstance.addNodeState(new NodeState("recipient", ((SimpleStop) stop).recipient));
-        requestNodeInstance.addNodeState(new NodeState("type", ((SimpleStop) stop).type.name().toLowerCase()));
+        if (ss.recipient != null) {
+            requestNodeInstance.addNodeState(new NodeState("recipient", ((SimpleStop) stop).recipient));
+        }
+        if (ss.type != null) {
+            requestNodeInstance.addNodeState(new NodeState("type", ((SimpleStop) stop).type.name().toLowerCase()));
+        }
     }
     
     public boolean equals(Stop a, Stop b) {
@@ -213,8 +232,10 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
     public Stop getStop(RouteNodeInstance nodeInstance) {
         NodeState state = nodeInstance.getNodeState("id");
         if (state == null) {
-            return null;
+            //return null;
+            throw new RuntimeException();
         } else {
+            LOG.warn("id Node state on nodeinstance " + nodeInstance + ": " + state);
             return stops.get(state.getValue());
         }
     }

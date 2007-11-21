@@ -24,7 +24,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.definition.ObjectDefinition;
+import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
@@ -43,15 +49,25 @@ import edu.iu.uis.eden.engine.node.SimpleJoinNode;
 import edu.iu.uis.eden.engine.node.SimpleSplitNode;
 import edu.iu.uis.eden.engine.node.hierarchyrouting.HierarchyProvider.Stop;
 import edu.iu.uis.eden.engine.transition.SplitTransitionEngine;
-import edu.iu.uis.eden.routeheader.StandardDocumentContent;
+import edu.iu.uis.eden.exception.WorkflowRuntimeException;
+import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Generic hierarchy routing node
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public abstract class HierarchyRoutingNode implements DynamicNode {
+public class HierarchyRoutingNode implements DynamicNode {
     protected final Logger LOG = Logger.getLogger(getClass());
-        
+
+    /**
+     * The RouteNode configuration parameter that specifies the hierarchy provider implementation
+     */
+    public static final String HIERARCHY_PROVIDER = "hierarchyProvider";
+    /**
+     * RouteNodeInstance NodeState key for id of stop
+     */
+    public static final String STOP_ID = "stop_id";
+
     protected static final String SPLIT_PROCESS_NAME = "Hierarchy Split";
     protected static final String JOIN_PROCESS_NAME = "Hierarchy Join";
     protected static final String REQUEST_PROCESS_NAME = "Hierarchy Request";
@@ -63,11 +79,33 @@ public abstract class HierarchyRoutingNode implements DynamicNode {
     
     private static final String INITIAL_SPLIT_NODE_MARKER = "InitialSplitNode";
 
-    protected abstract HierarchyProvider getHierarchyProvider(RouteContext context);
+    /**
+     * Loads hierarchy provider class via the GlobalResourceLoader
+     * @param nodeInstance the current RouteNodeInstance
+     * @param context the current RouteContext
+     * @return the HierarchyProvider implementation, as specified by the HIERARCHY_PROVIDER config parameter
+     */
+    protected HierarchyProvider getHierarchyProvider(RouteNodeInstance nodeInstance, RouteContext context) {
+        Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(nodeInstance.getRouteNode().getConfigParams());
+        String hierarchyProviderClass = cfgMap.get(HIERARCHY_PROVIDER);
+        if (StringUtils.isEmpty(hierarchyProviderClass)) {
+            throw new WorkflowRuntimeException("hierarchyProvider configuration parameter not set for HierarchyRoutingNode: " + nodeInstance.getName());
+        }
+        QName qn = QName.valueOf(hierarchyProviderClass);
+        ObjectDefinition od;
+        if (XMLConstants.NULL_NS_URI.equals(qn.getNamespaceURI())) {
+            od = new ObjectDefinition(qn.getLocalPart());
+        } else {
+            od = new ObjectDefinition(qn.getLocalPart(), qn.getNamespaceURI());
+        }
+        HierarchyProvider hp = (HierarchyProvider) GlobalResourceLoader.getObject(od);
+        hp.init(nodeInstance, context);
+        return hp;
+    }
 
     public DynamicResult transitioningInto(RouteContext context, RouteNodeInstance dynamicNodeInstance, RouteHelper helper) throws Exception {
 
-        HierarchyProvider provider = getHierarchyProvider(context);
+        HierarchyProvider provider = getHierarchyProvider(dynamicNodeInstance, context);
         DocumentType documentType = setUpDocumentType(provider, context.getDocument().getDocumentType(), dynamicNodeInstance);
         RouteNode splitNode = documentType.getNamedProcess(SPLIT_PROCESS_NAME).getInitialRouteNode();
 
@@ -83,10 +121,9 @@ public abstract class HierarchyRoutingNode implements DynamicNode {
             RouteNode noStopNode = documentType.getNamedProcess(NO_STOP_NAME).getInitialRouteNode();
             RouteNodeInstance noChartOrgInstance = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getRouteHeaderId(), noStopNode);
             noChartOrgInstance.setBranch(dynamicNodeInstance.getBranch());
-            
+
             provider.setStop(noChartOrgInstance, null);
-            //noChartOrgInstance.addNodeState(new NodeState(CHART_NODE_STATE_KEY, "IU"));
-            //noChartOrgInstance.addNodeState(new NodeState(ORG_NODE_STATE_KEY, "UNIV"));
+
             return new DynamicResult(true, noChartOrgInstance);
         }
         for (Stop stop: stops) {
@@ -98,21 +135,14 @@ public abstract class HierarchyRoutingNode implements DynamicNode {
     }
 
     public DynamicResult transitioningOutOf(RouteContext context, RouteHelper helper) throws Exception {
-        HierarchyProvider provider = getHierarchyProvider(context);
+        // process initial nodes govern transitioning within the process
+        // the process node will be the hierarchy node, so that's what we need to grab
+        HierarchyProvider provider = getHierarchyProvider(context.getNodeInstance().getProcess(), context);
         
         RouteNodeInstance processInstance = context.getNodeInstance().getProcess();
         RouteNodeInstance curStopNode = context.getNodeInstance();
         Map<Long, RouteNodeInstance> stopRequestNodeMap = new HashMap<Long, RouteNodeInstance>();
         findStopRequestNodes(provider, context, stopRequestNodeMap);//SpringServiceLocator.getRouteNodeService().findProcessNodeInstances(processInstance);
-        
-        /*
-        String chartCd = chartOrgNode.getNodeState(CHART_NODE_STATE_KEY).getValue();
-        String orgCd = chartOrgNode.getNodeState(ORG_NODE_STATE_KEY).getValue();
-        if (chartCd.equals("IU") && orgCd.equals("UNIV")) {
-            return new DynamicResult(true, null);
-        }
-        Organization org = IUServiceLocator.getFISDataService().findOrganization(chartCd, orgCd);
-        */
         
         Stop stop = provider.getStop(curStopNode);
 
@@ -126,31 +156,36 @@ public abstract class HierarchyRoutingNode implements DynamicNode {
         DynamicResult result = null;
         if (transition.isCanTransition()) {
             DocumentType documentType = context.getDocument().getDocumentType();
-            //          make a simple requests node
+            // make a simple requests node
             RouteNodeInstance requestNode = createNextStopRequestNodeInstance(provider, context, stop, processInstance, helper);
 
             if (transition.getSiblings().isEmpty()) {
                 result = new DynamicResult(false, requestNode);
             } else {
+                /* join stuff not working
 
-                if (true) {
-                throw new RuntimeException("SDFDFS");
-                }
                 //create a join to transition us to the next org
                 RouteNode joinPrototype = documentType.getNamedProcess(JOIN_PROCESS_NAME).getInitialRouteNode();
                 RouteNodeInstance joinNode = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getRouteHeaderId(), joinPrototype);
-                String branchName = "Branch " + getHierarchyProvider(context).getStopIdentifier(stop);
+                LOG.debug("Created join node: " + joinNode);
+                String branchName = "Branch for join " + provider.getStopIdentifier(stop);
                 Branch joinBranch = helper.getNodeFactory().createBranch(branchName, null, joinNode);
+                LOG.debug("Created branch for join node: " + joinBranch);
                 joinNode.setBranch(joinBranch);
 
                 for (RouteNodeInstance sibling: transition.getSiblings()) {
+                    LOG.debug("Adding expected joiner: " + sibling.getRouteNodeInstanceId() + " " + provider.getStop(sibling));
                     helper.getJoinEngine().addExpectedJoiner(joinNode, sibling.getBranch());
                 }
 
+                ///XXX: can't get stop from node that hasn't been saved yet maybe...need to follow up on this...comes back as 'root'
+                LOG.debug("Adding as stop after join: " + requestNode.getRouteNodeInstanceId() + " " + provider.getStop(requestNode));
                 //set the next org after the join
                 joinNode.addNextNodeInstance(requestNode);
 
                 result = new DynamicResult(false, joinNode);
+                
+                */
             }
 
         } else {
@@ -161,82 +196,25 @@ public abstract class HierarchyRoutingNode implements DynamicNode {
     }
     
     private void findStopRequestNodes(HierarchyProvider provider, RouteContext context, Map<Long, RouteNodeInstance> stopRequestNodes) {
-        List nodeInstances = KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(context.getDocument(), true);
-        for (Iterator iterator = nodeInstances.iterator(); iterator.hasNext();) {
-            RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
-            /*if (nodeInstance.getNodeState(CHART_NODE_STATE_KEY) != null && nodeInstance.getNodeState(ORG_NODE_STATE_KEY) != null) {
-                chartOrgNodes.put(nodeInstance.getRouteNodeInstanceId(), nodeInstance);
-            }*/
+        List<RouteNodeInstance> nodeInstances = KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(context.getDocument(), true);
+        for (RouteNodeInstance nodeInstance: nodeInstances) {
             if (provider.hasStop(nodeInstance)) {
+                LOG.debug("Stop node instance: " + nodeInstance);
                 stopRequestNodes.put(nodeInstance.getRouteNodeInstanceId(), nodeInstance);
             }
         }
-    }
-    
-    /**
-     * Constructs a Map of RouteNodeInstances which represent the ChartOrgNodes attached the the currently running
-     * dynamic node process.  The initial invocation of this method should pass an empty map which will be used as the
-     * accumulator for the return value;
-     * 
-     * We can't go to the db for this because when in simulation these RouteNodeInstances will be in memory
-     */
-    /*private void findChartOrgNodes(RouteHelper helper, RouteNodeInstance chartOrgNode, RouteNodeInstance process, Map chartOrgNodes) {
-        if (chartOrgNode.getProcess() != null &&
-                process.getRouteNodeInstanceId().equals(chartOrgNode.getProcess().getRouteNodeInstanceId()) &&
-                !chartOrgNodes.containsKey(chartOrgNode.getRouteNodeInstanceId())) {
-            if (chartOrgNode.getNodeState(CHART_NODE_STATE_KEY) != null && chartOrgNode.getNodeState(ORG_NODE_STATE_KEY) != null) {
-                chartOrgNodes.put(chartOrgNode.getRouteNodeInstanceId(), chartOrgNode);
-            }
-            // this will only be used in the case where the dynamic node returns a sub process and that sub process is given the organization state
-            // that would normally be applied to the node, this will usually happen as a result of overriding the getChartOrgNode method below.
-            // ERA example: ERADOC -> DynamicChartOrgNode -> ChartOrgRoutingNode -> SubProcess -> (RSP -> RSP Dispatch), so in this case
-            // we are getting the ChartOrgRoutingNode as the passed in process, but the RSP or RSP Dispatch node is the chartOrgNode and the
-            // chart+org state is on the SubProcess.
-            else if (chartOrgNode.getProcess().getNodeState(CHART_NODE_STATE_KEY) != null && chartOrgNode.getProcess().getNodeState(ORG_NODE_STATE_KEY) != null) {
-                chartOrgNodes.put(chartOrgNode.getProcess().getRouteNodeInstanceId(), chartOrgNode.getProcess());
-            }
-            // We are attempting to get a flattened view of the entire graph of nodes created by
-            // this dynamic node and since our initial node of entry into this method is a leaf,
-            // we'll look backward and forward.
-            // The containsKey check above will prevent us from recursing infinitely.
-            chartOrgNode = findNavigationalNodeInstance(chartOrgNode);
-            findChartOrgNodes(helper, chartOrgNode.getNextNodeInstances(), process, chartOrgNodes);
-            findChartOrgNodes(helper, chartOrgNode.getPreviousNodeInstances(), process, chartOrgNodes);
-        }
-    }
-    
-    private void findChartOrgNodes(RouteHelper helper, List nodeInstances, RouteNodeInstance process, Map chartOrgNodes) {
-        if (nodeInstances != null) {
-            for (Iterator iterator = nodeInstances.iterator(); iterator.hasNext();) {
-                RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
-                findChartOrgNodes(helper, nodeInstance, process, chartOrgNodes);
-            }
-        }
-    }*/
-    
-    /**
-     * If the given node actually represents a sub process or a dynamic node, this method will return the initial node within
-     * that process.  We need to be able to do this because a sub process node instance has no previous or next nodes so we need
-     * to be able to have a way to hook into the navigational structure of the document route to be able to walk backwards and
-     * forwards along the route path. 
-     */
-    //private RouteNodeInstance findNavigationalNodeInstance(DocumentRouteHeaderValue document, RouteNodeInstance processNodeInstance) {
-    //    List flattenedNodeInstances = SpringServiceLocator.getRouteNodeService().getF
         
-    //}
+    }
 
     private RouteNodeInstance createNextStopRequestNodeInstance(HierarchyProvider provider, RouteContext context, Stop stop, RouteNodeInstance processInstance, RouteHelper helper) {
-        /*Organization futureOrg = new Organization();
-        futureOrg.setFinCoaCd(stop.getReportsToChart());
-        futureOrg.setOrgCd(stop.getReportsToOrg());*/
         Stop futureStop = provider.getParent(stop);
+        LOG.debug("Creating next stop request node instance " + provider.getStopIdentifier(futureStop) + " as parent of " + provider.getStopIdentifier(stop));
         RouteNode requestsPrototype = getStopRequestNode(futureStop, context.getDocument().getDocumentType());
         RouteNodeInstance requestNode = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getRouteHeaderId(), requestsPrototype);
         requestNode.setBranch(processInstance.getBranch());
-        getHierarchyProvider(context).setStop(requestNode, futureStop);
-        /*requestNode.addNodeState(new NodeState(CHART_NODE_STATE_KEY, futureOrg.getFinCoaCd()));
-        requestNode.addNodeState(new NodeState(ORG_NODE_STATE_KEY, futureOrg.getOrgCd()));
-        */
+        requestNode.addNodeState(new NodeState(STOP_ID, provider.getStopIdentifier(futureStop)));
+        provider.setStop(requestNode, futureStop);
+        LOG.debug("Stop set on request node: " + provider.getStop(requestNode));
         addStopToProcessState(provider, processInstance, futureStop);
         return requestNode;
     }
@@ -249,56 +227,60 @@ public abstract class HierarchyRoutingNode implements DynamicNode {
      * @return List of Nodes that are siblings to the org passed in
      */
     private InnerTransitionResult canTransitionFrom(HierarchyProvider provider, Stop currentStop, Collection<RouteNodeInstance> requestNodes, RouteHelper helper) {
-
+        LOG.debug("Testing whether we can transition from stop: " + currentStop);
+        Stop parent = provider.getParent(currentStop);
         InnerTransitionResult result = new InnerTransitionResult();
         result.setCanTransition(false);
 
         for (RouteNodeInstance requestNode: requestNodes) {
-            /*NodeState chartState = chartOrgNode.getNodeState(CHART_NODE_STATE_KEY);
-            NodeState orgState = chartOrgNode.getNodeState(ORG_NODE_STATE_KEY);
-            // continue if this node has no chart/org state
-            if (chartState == null || orgState == null) {
-                continue;
-            }*/
             if (!provider.hasStop(requestNode)) {
-                continue;
-            }
-            
-            
-            /*String chartCd = chartState.getValue();
-            String orgCd = orgState.getValue();
-            if (currentOrg.getFinCoaCd().equals(chartCd) && currentOrg.getOrgCd().equals(orgCd)) {
-                continue;
-            }*/
-            
-            Stop requestNodeStop = provider.getStop(requestNode);
-            LOG.error("Request node: " + requestNode.getRouteNodeInstanceId() + " has stop " + requestNodeStop.toString());
-            if (requestNodeStop != null && provider.equals(currentStop, requestNodeStop)) {
+                LOG.debug("request node " + requestNode.getName() + " does not have a stop associated with it");
                 continue;
             }
 
-            
-            /*Organization nodeOrg = IUServiceLocator.getFISDataService().findOrganization(chartCd, orgCd);
-            Organization parent = IUServiceLocator.getFISDataService().findOrganization(currentOrg.getReportsToChart(), currentOrg.getReportsToOrg());
-            */
-            Stop nodeOrg = provider.getStop(requestNode);
-            Stop parent = provider.getParent(currentStop);
-            if (provider.isRoot(parent) || hasAsParent(provider, parent, nodeOrg)) {
+            Stop requestNodeStop = provider.getStop(requestNode);
+            LOG.debug("Request node: " + requestNode.getRouteNodeInstanceId() + " has stop " + requestNodeStop.toString());
+            if (requestNodeStop != null && provider.equals(currentStop, requestNodeStop)) {
+                LOG.debug("Skipping node " + requestNode.getName() + " because it is associated with the current stop");
+                continue;
+            }
+
+
+            Stop stop = provider.getStop(requestNode);
+
+            LOG.debug("Found an outstanding stop: " + stop);
+
+            boolean isChildOfMyParent = isDescendent(provider, parent, stop);
+
+            if (isChildOfMyParent) {
+                LOG.debug("Found stop node whose parent is my parent:");
+                LOG.debug("Stop: " + stop);
+                LOG.debug("Node: " + requestNode);
+
+                // if any sibling request node is active, then I can't transition
                 if (requestNode.isActive()) {
+                    // can't transition
+                    result.getSiblings().clear();
                     return result;
                 }
-                //it's done and has our parent as a parent is it a direct sibling? if not let the other branch(s) catch up
-                //if (parent.getFinCoaCd().equals(currentStop.getFinCoaCd()) && parent.getOrgCd().equals(currentStop.getOrgCd())) {
-                if (false) {
-                  result.getSiblings().add(requestNode);
+
+                /* join stuff not working
+                // if it's a direct sibling
+                if (provider.equals(parent, provider.getParent(stop))) {
+                    LOG.debug("Adding stop " + provider.getStopIdentifier(stop) + " as sibling to " + provider.getStopIdentifier(currentStop));
+                    result.getSiblings().add(requestNode);
                 }
+                */
             }
         }
         result.setCanTransition(true);
         return result;
     }
 
-    
+    protected boolean isDescendent(HierarchyProvider provider, Stop parent, Stop otherStop) {
+        return provider.isRoot(parent) || hasAsParent(provider, parent, otherStop);
+    }
+
     private static class InnerTransitionResult {
         private boolean canTransition;
         private List<RouteNodeInstance> siblings = new ArrayList<RouteNodeInstance>();
@@ -373,8 +355,6 @@ public abstract class HierarchyRoutingNode implements DynamicNode {
         //determine if we will eventually route to this chart anyway
         for (Iterator<String> iter = visitedOrgs.iterator(); iter.hasNext() && willEventualRouteThere == false; ) {
             String visitedStopStateName = iter.next();
-            //String[] orgStrings = ((String) iter.next()).split(CHART_ORG_DEL);
-            //Organization visitedOrg = IUServiceLocator.getFISDataService().findOrganization(orgStrings[0], orgStrings[1]);
             Stop visitedStop = provider.getStopByIdentifier(visitedStopStateName);
             willEventualRouteThere = hasAsParent(provider, stop, visitedStop) || willEventualRouteThere;
         }
@@ -394,9 +374,8 @@ public abstract class HierarchyRoutingNode implements DynamicNode {
         String branchName = "Branch " + provider.getStopIdentifier(stop);
         RouteNodeInstance orgRequestInstance = SplitTransitionEngine.createSplitChild(branchName, requestsNode, splitNodeInstance);
         splitNodeInstance.addNextNodeInstance(orgRequestInstance);
+        orgRequestInstance.addNodeState(new NodeState(STOP_ID, provider.getStopIdentifier(stop)));
         provider.setStop(orgRequestInstance, stop);
-        //orgRequestInstance.addNodeState(new NodeState(CHART_NODE_STATE_KEY, org.getFinCoaCd()));
-        //orgRequestInstance.addNodeState(new NodeState(ORG_NODE_STATE_KEY, org.getOrgCd()));
         addStopToProcessState(provider, processInstance, stop);
         return orgRequestInstance;
     }

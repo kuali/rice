@@ -16,8 +16,7 @@
 package edu.iu.uis.eden.engine.node.hierarchyrouting;
 
 import edu.iu.uis.eden.engine.RouteContext;
-import edu.iu.uis.eden.engine.node.hierarchyrouting.HierarchyProvider;
-import edu.iu.uis.eden.engine.node.hierarchyrouting.HierarchyRoutingNode;
+import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 
 /**
  * A simple hierarchy routing node for testing
@@ -26,7 +25,9 @@ import edu.iu.uis.eden.engine.node.hierarchyrouting.HierarchyRoutingNode;
  */
 public class SimpleHierarchyRoutingNode extends HierarchyRoutingNode {
     @Override
-    protected HierarchyProvider getHierarchyProvider(RouteContext context) {
-        return new SimpleHierarchyProvider(context);
+    protected HierarchyProvider getHierarchyProvider(RouteNodeInstance nodeInstance, RouteContext context) {
+        HierarchyProvider hp = new SimpleHierarchyProvider();
+        hp.init(nodeInstance, context);
+        return hp;
     }
 }

@@ -34,6 +34,13 @@ public interface HierarchyProvider {
     public interface Stop { }
 
     /**
+     * Initializer for the hierarchy provider.
+     * @param nodeInstance the HierarchyRouteNode instance
+     * @param context the RouteContext (nodeInstance may NOT be the HierarchyRouteNode instance; e.g. when transitioning into)
+     */
+    public void init(RouteNodeInstance nodeInstance, RouteContext context);
+    
+    /**
      * Find all leaf stops in the xml and convert them into a list of Stop objects
      * @param context the RouteContext
      * @return List Stop objects

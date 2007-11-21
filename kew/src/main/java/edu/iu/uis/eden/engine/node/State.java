@@ -18,6 +18,8 @@ package edu.iu.uis.eden.engine.node;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * A KeyValuePair that adds an id fields that makes it sufficient for storing in a database.
  * 
@@ -38,5 +40,13 @@ public abstract class State extends KeyValuePair implements Serializable {
 
     public void setStateId(Long stateId) {
         this.stateId = stateId;
+    }
+    
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("stateId", stateId)
+            .append("key", key)
+            .append("value", value)
+            .toString();
     }
 }

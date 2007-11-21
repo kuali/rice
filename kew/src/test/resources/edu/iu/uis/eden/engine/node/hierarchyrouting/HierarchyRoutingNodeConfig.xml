@@ -22,7 +22,8 @@
                     <activationType>P</activationType>
                 </start>
                 <dynamic name="hierarchy">
-                    <type>edu.iu.uis.eden.engine.node.hierarchyrouting.SimpleHierarchyRoutingNode</type>
+                    <type>edu.iu.uis.eden.engine.node.hierarchyrouting.HierarchyRoutingNode</type>
+                    <hierarchyProvider>edu.iu.uis.eden.engine.node.hierarchyrouting.SimpleHierarchyProvider</hierarchyProvider>
                     <ruleSelector>Named</ruleSelector>
                     <ruleName>NodeInstanceRecipientRule</ruleName>
                 </dynamic>

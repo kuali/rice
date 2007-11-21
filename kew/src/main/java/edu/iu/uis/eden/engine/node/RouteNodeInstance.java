@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -206,4 +208,19 @@ public class RouteNodeInstance implements Serializable {
         this.state.addAll(state);
      }
 
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("routeNodeInstanceId", routeNodeInstanceId)
+            .append("documentId", documentId)
+            .append("branch", branch == null ? null : branch.getBranchId())
+            .append("routeNode", routeNode == null ? null : routeNode.getRouteNodeName())
+            .append("active", active)
+            .append("complete", complete)
+            .append("initial", initial)
+            .append("process", process)
+            .append("nextNodeInstances", nextNodeInstances == null ? null : nextNodeInstances.size())
+            .append("previousNodeInstances", previousNodeInstances == null ? null : previousNodeInstances.size())
+            .append("state", state == null ? null : state.size())
+            .toString();
+    }
 }

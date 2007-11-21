@@ -150,7 +150,7 @@ public class KRAMetaRuleEngine {
         }
 
         curStatement++;
-        LOG.info("Result of statement '" + statement + "': " + result);
+        LOG.debug("Result of statement '" + statement + "': " + result);
         return result;
     }
 }

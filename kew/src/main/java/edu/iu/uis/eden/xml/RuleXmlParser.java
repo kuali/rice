@@ -204,13 +204,11 @@ public class RuleXmlParser implements XmlConstants {
             if (documentTypeName == null) {
                 throw new InvalidXmlException("Rule must have a document type.");
             }
-            if (ruleTemplateName == null && exprElement == null) {
-                throw new InvalidXmlException("Rule must have a rule template or expression.");
-            }
             documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
             if (documentType == null) {
                 throw new InvalidXmlException("Could not locate document type '" + documentTypeName + "'");
             }
+
             if (ruleTemplateName != null) {
                 ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
                 if (ruleTemplate == null) {
@@ -227,6 +225,16 @@ public class RuleXmlParser implements XmlConstants {
                 ruleExpressionDef.setType(exprType);
                 ruleExpressionDef.setExpression(expression);
             }
+            // both null
+            // if (ruleTemplateName == null && exprElement == null) {
+                //throw new InvalidXmlException("Rule must have a rule template or expression.");
+                /* implement the default firing in the default WorkflowAttributeExpression
+                   implementation.  that avoids setting up a mandatory default association
+                   which could introduce backwards-compatibility/migration issues
+                ruleExpressionDef = new RuleExpressionDef();
+                ruleExpressionDef.setType("Default");
+                */
+            // }
         }
         Boolean ignorePrevious = Boolean.valueOf(DEFAULT_IGNORE_PREVIOUS);
         if (ignorePreviousValue != null) {

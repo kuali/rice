@@ -22,7 +22,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowException;
@@ -82,7 +81,7 @@ public class KRAMetaRuleExpression implements RuleExpression {
                 }
             }
             result = new RuleExpressionResult(rule, success, responsibilities);
-            LOG.info("KRAMetaRuleExpression returning result: " + result);
+            LOG.debug("KRAMetaRuleExpression returning result: " + result);
             return result;
         } catch (ParseException pe) {
             throw new WorkflowException("Error parsing expression", pe);

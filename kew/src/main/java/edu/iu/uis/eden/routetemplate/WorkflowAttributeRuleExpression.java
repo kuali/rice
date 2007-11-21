@@ -43,6 +43,18 @@ class WorkflowAttributeRuleExpression implements RuleExpression {
     }
 
     public boolean isMatch(RuleBaseValues ruleDefinition, DocumentContent docContent) {
+        if (ruleDefinition.getRuleTemplate() == null) {
+            // this can happen if neither rule template nor expression was specified in the rule definition
+            // because WorkflowAttributeRuleExpression is the default expression implementation, we should
+            // handle this here in order to support rules that fire unconditionally (and just return a statically
+            // configured list of responsibilities)
+            // the alternative is to either detect this situation in the rule xml parser or RuleImpl, and either substitute
+            // a different RuleExpression implementation (a "default default" one) in the configuration, or at runtime,
+            // that simply implements the one-liner of returning responsibilities.
+            // doing this in the existing WorkflowAttributeRuleExpression implementation introduces the least change
+            // or compatibilities issues, and avoids pushing compensating logic into RuleImpl
+            return true;
+        }
         for (Iterator iter = ruleDefinition.getRuleTemplate().getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
             RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
             if (!ruleTemplateAttribute.isWorkflowAttribute()) {

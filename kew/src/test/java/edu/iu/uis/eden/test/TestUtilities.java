@@ -59,7 +59,6 @@ import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowException;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;
@@ -288,6 +287,39 @@ public class TestUtilities {
 			}
 		}
     	Assert.assertTrue("Could not locate pending request for the given user: " + networkId, foundRequest);
+    }
+
+    /**
+     * Asserts that the specified users do or do not have outstanding approvals
+     * @param docId the id of the document
+     * @param users the list of users
+     * @param shouldHaveApproval whether they should have an approval outstanding
+     * @throws WorkflowException
+     */
+    public static void assertApprovals(Long docId, String[] users, boolean shouldHaveApproval) throws WorkflowException {
+        List<String> failedUsers = new ArrayList<String>();
+        for (String user: users) {
+            WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO(user), docId);
+            boolean appRqsted = doc.isApprovalRequested();
+            if (shouldHaveApproval != appRqsted) {
+                failedUsers.add(user);
+            }
+            LOG.info("User " + user + (appRqsted ? " HAS " : " HAS NO ") + "approval request");
+        }
+        for (String user: failedUsers) {
+            LOG.error("User " + user + (shouldHaveApproval ? " should have " : " should NOT have ") + " approval");
+        }
+        if (failedUsers.size() > 0) {
+            Assert.fail("Outstanding approvals are incorrect");
+        }
+    }
+
+    public static void logActionRequests(Long docId) {
+        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(docId);
+        LOG.info("Current action requests:");
+        for (ActionRequestValue ar: actionRequests) {
+            LOG.info(ar);
+        }
     }
 
     public static PersistenceBrokerTemplate getPersistenceBrokerTemplate() {

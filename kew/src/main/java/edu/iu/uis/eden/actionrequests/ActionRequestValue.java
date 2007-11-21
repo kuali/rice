@@ -23,6 +23,8 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -773,4 +775,39 @@ public class ActionRequestValue implements WorkflowPersistable {
     	return getResponsibilityId().longValue() > 0;
     }
 
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+            .append("actionRequestId", actionRequestId)
+            .append("actionRequested", actionRequested)
+            .append("routeHeaderId", routeHeaderId)
+            .append("status", status)
+            .append("responsibilityId", responsibilityId)
+            .append("workgroupId", workgroupId)
+            .append("recipientTypeCd", recipientTypeCd)
+            .append("priority", priority)
+            .append("routeLevel", routeLevel)
+            .append("actionTakenId", actionTakenId)
+            .append("docVersion", docVersion)
+            .append("createDate", createDate)
+            .append("responsibilityDesc", responsibilityDesc)
+            .append("annotation", annotation)
+            .append("jrfVerNbr", jrfVerNbr)
+            .append("workflowId", workflowId)
+            .append("ignorePrevAction", ignorePrevAction)
+            .append("parentActionRequestId", parentActionRequestId)
+            .append("qualifiedRoleName", qualifiedRoleName)
+            .append("roleName", roleName)
+            .append("qualifiedRoleNameLabel", qualifiedRoleNameLabel)
+            .append("displayStatus", displayStatus)
+            .append("ruleBaseValuesId", ruleBaseValuesId)
+            .append("delegationType", delegationType)
+            .append("approvePolicy", approvePolicy)
+            .append("childrenRequests", childrenRequests == null ? null : childrenRequests.size())
+            .append("actionTaken", actionTaken)
+            .append("routeHeader", routeHeader)
+            .append("actionItems", actionItems == null ? null : actionItems.size())
+            .append("currentIndicator", currentIndicator)
+            .append("createDateString", createDateString)
+            .append("nodeInstance", nodeInstance).toString();
+    }
 }

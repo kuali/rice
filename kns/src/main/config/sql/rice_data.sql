@@ -249,3 +249,13 @@ INSERT INTO sh_parm_t
 VALUES 
 ('KR-NS','Lookup','RESULTS_LIMIT','CONFG','70','If a maxLength attribute has not been set on a lookup result field in the data dictionary, then the result column''s max length will be the value of this parameter. Set this parameter to 0 for an unlimited default length or a positive value (i.e. greater than 0) for a finite max length.','A','KUALI_FMSOPS')
 /
+INSERT INTO SH_PARM_T 
+(SH_PARM_NMSPC_CD, SH_PARM_DTL_TYP_CD, SH_PARM_NM, SH_PARM_TYP_CD, SH_PARM_TXT, SH_PARM_DESC, SH_PARM_CONS_CD, ACTIVE_IND) 
+VALUES 
+('KR-NS','Lookup','MULTIPLE_VALUE_RESULTS_EXPIRATION_SECONDS','CONFG','60','Limit results returned for lookup - seconds expiration','A','Y')
+/
+INSERT INTO SH_PARM_T 
+(SH_PARM_NMSPC_CD, SH_PARM_DTL_TYP_CD, SH_PARM_NM, SH_PARM_TYP_CD, SH_PARM_TXT, SH_PARM_DESC, SH_PARM_CONS_CD, ACTIVE_IND) 
+VALUES 
+('KR-NS','Lookup','MULTIPLE_VALUE_RESULTS_PER_PAGE','CONFG','100','Limit results returned for lookup - page','A','Y')
+/

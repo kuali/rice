@@ -259,3 +259,12 @@ INSERT INTO SH_PARM_T
 VALUES 
 ('KR-NS','Lookup','MULTIPLE_VALUE_RESULTS_PER_PAGE','CONFG','100','Limit results returned for lookup - page','A','Y')
 /
+insert into SH_NTE_TYP_T values ('BO', '2D3C44FE49415102E043814FD8815102',	1,	'DOCUMENT BUSINESS OBJECT', 'Y')
+/
+insert into SH_NTE_TYP_T values ('DH', '2D3C44FE49425102E043814FD8815102',	1,	'DOCUMENT HEADER', 'Y')
+/
+INSERT INTO NOTIFICATION_PRODUCERS 
+(ID, NAME, DESCRIPTION, CONTACT_INFO) 
+VALUES 
+(1, 'Notification System', 'This producer represents messages sent from the general message sending forms.', 'kuali-ken-testing@cornell.edu')
+/

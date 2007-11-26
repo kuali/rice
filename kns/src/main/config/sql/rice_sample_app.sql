@@ -109,10 +109,6 @@ insert into FP_DOC_TYPE_T values ('BR', '1A6FRB253343337EE043814FD889607E', 1, '
 /
 insert into FP_DOC_TYPE_T values ('TRVA', '1A5FEB250342607EE043814FD889607E', 1, 'TR',  'TRAV MAINT', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-insert into SH_NTE_TYP_T values ('BO', '2D3C44FE49415102E043814FD8815102',	1,	'DOCUMENT BUSINESS OBJECT', 'Y')
-/
-insert into SH_NTE_TYP_T values ('DH', '2D3C44FE49425102E043814FD8815102',	1,	'DOCUMENT HEADER', 'Y')
-/
 insert into TRV_ACCT_EXT values ('a1', 'IAT') 
 /
 insert into TRV_ACCT_EXT values ('a2', 'EAT') 
@@ -128,11 +124,6 @@ insert into TRV_ACCT_TYPE values ('IAT', ' Income Account Type')
 -- KEN sample data --
 
 -- NOTIFICATION_PRODUCERS --
-INSERT INTO NOTIFICATION_PRODUCERS 
-(ID, NAME, DESCRIPTION, CONTACT_INFO) 
-VALUES 
-(1, 'Notification System', 'This producer represents messages sent from the general message sending forms.', 'kuali-ken-testing@cornell.edu')/
-
 INSERT INTO NOTIFICATION_PRODUCERS 
 (ID, NAME, DESCRIPTION, CONTACT_INFO) 
 VALUES 

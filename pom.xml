@@ -151,6 +151,8 @@
 		<module>kim</module>
 		<module>kew</module>
 		<module>ken</module>
+		<module>kom-api</module>
+		<module>kom</module>
 	</modules>
 	<repositories>
 		<repository>

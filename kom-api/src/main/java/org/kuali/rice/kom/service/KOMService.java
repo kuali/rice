@@ -1,0 +1,35 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.kom.service;
+
+import java.util.List;
+
+import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.GroupAttribute;
+import org.kuali.rice.kim.bo.Namespace;
+import org.kuali.rice.kim.bo.Permission;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.RoleAttribute;
+
+/**
+ * Service API for accessing KOM services.  This contract should be used by all Kuali software that 
+ * needs to leverage organization management features. 
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ */
+public interface KOMService {
+}

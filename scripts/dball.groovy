@@ -18,7 +18,7 @@ for (arg in args) {
 // set up variables based on PROJECT_DIR
 // Just add comma separated values for ignored DDL
 IGNORES = ['FS_UNIVERSAL_USR_T']
-MODULES = ['kns', 'kew', 'ksb', 'kim', 'ken']
+MODULES = ['kns', 'kew', 'ksb', 'kim', 'ken', 'kom']
 MASTER_DESTROY_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_db_destroy.sql' 
 MASTER_CREATE_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_db_bootstrap.sql'
 

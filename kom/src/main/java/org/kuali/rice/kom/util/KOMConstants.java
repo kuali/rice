@@ -28,6 +28,7 @@ public class KOMConstants {
      */
     public static final class BO_PROPERTY_NAMES {
         public static final String ID = "id";
+        public static final String NAME = "name";
         public static final String DESCRIPTION = "description";
     }
 }

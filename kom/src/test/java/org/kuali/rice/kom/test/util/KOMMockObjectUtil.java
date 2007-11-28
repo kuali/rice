@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kom.test.util;
 
+import org.kuali.rice.kom.bo.OrganizationCategory;
+
 /**
  * This class is a utility class for easy access to re-usable mock objects that can 
  * be used in KOM unit tests. 
@@ -22,4 +24,31 @@ package org.kuali.rice.kom.test.util;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KOMMockObjectUtil {
+    /**
+     * This method is a helper to build an OrganizationCategory instance.
+     * @param name
+     * @return OrganizationCategory
+     */
+    public static final OrganizationCategory buildTestOrganizationCategory(String name) {
+        OrganizationCategory oc = new OrganizationCategory();
+        oc.setName(name);
+        oc.setVersionNumber(new Long(1));
+        return oc;
+    }       
+    
+    /**
+     * This method returns back a specific test mock object.
+     * @return OrganizationCategory
+     */
+    public static final OrganizationCategory getTestOrganizationCategory_1() {
+        return buildTestOrganizationCategory("Test Organization Category 1");
+    }
+
+    /**
+     * This method returns back a specific test mock object.
+     * @return OrganizationCategory
+     */
+    public static final OrganizationCategory getTestOrganizationCategory_2() {
+        return buildTestOrganizationCategory("Test Organization Category 2");
+    }
 }

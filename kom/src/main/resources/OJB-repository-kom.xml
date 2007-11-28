@@ -22,4 +22,12 @@
 		</sequence-manager>
 		<object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
 	</jdbc-connection-descriptor>
+	
+	<!-- ORGANIZATION CATEGORY -->
+	<class-descriptor class="org.kuali.rice.kom.bo.OrganizationCategory" table="KOM_ORGANIZATION_CATEGORY_T">
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KOM_ORGNZTN_CTGRY_ID" index="true" />
+		<field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+	</class-descriptor>
 </descriptor-repository>

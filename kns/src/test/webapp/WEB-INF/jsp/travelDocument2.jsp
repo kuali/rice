@@ -1,12 +1,12 @@
 <%--
  Copyright 2005-2006 The Kuali Foundation.
- 
+
  Licensed under the Educational Community License, Version 1.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.opensource.org/licenses/ecl1.php
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,18 +17,18 @@
 
 <c:set var="travelAttributes" value="${DataDictionary.TravelRequest.attributes}" />
 <c:set var="accountAttributes" value="${DataDictionary.TravelAccount.attributes}" />
-<kul:documentPage 
+<kul:documentPage
 	showDocumentInfo="true"
 	htmlFormAction="travelDocument2"
-	documentTypeName="TravelRequest" 
+	documentTypeName="TravelRequest"
 	renderMultipart="true"
-	showTabButtons="true" 
+	showTabButtons="true"
 	auditCount="0">
 
  	<kul:hiddenDocumentFields isTransactionalDocument="false" isFinancialDocument="true" excludePostingYear="true"/>
 
-	<kul:documentOverview editingMode="${KualiForm.editingMode}" /> 
-	<kul:tab tabTitle="Travel Stuff" defaultOpen="true" tabErrorKey="bs">
+	<kul:documentOverview editingMode="${KualiForm.editingMode}" />
+	<kul:tab tabTitle="Travel Stuff" defaultOpen="true" tabErrorKey="document.traveler,document.origin,document.destination,document.requestType,travelAccount.number">
 		<div class="tab-container" align="center">
 		<div class="h2-container">
 		    <h2>Travel Request</h2>
@@ -55,7 +55,7 @@
 				 		</tr>
 						<tr>
 						<th align="left">
-				 		&nbsp;&nbsp;* Travel Account  
+				 		&nbsp;&nbsp;* Travel Account
 				 		</th>
 				 		<td>
 				 		<kul:htmlControlAttribute property="travelAccount.number" attributeEntry="${accountAttributes.number}" readOnly="false" />
@@ -78,7 +78,7 @@
 			 		</table>
 			 	</td>
 			 </tr>
-		</table>			 
+		</table>
 		</div>
 	</kul:tab>
 	<kul:notes />

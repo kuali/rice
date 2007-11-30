@@ -15,15 +15,12 @@
  */
 package org.kuali.rice.kom.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.kom.service.KOMService;
 
 /**
- * This is the default implementation that is provided by Rice.  This will mature over time as the KOM 
+ * This is the default implementation that is provided by Rice.  This will mature over time as the KOM
  * component is developed.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KOMServiceImpl implements KOMService {

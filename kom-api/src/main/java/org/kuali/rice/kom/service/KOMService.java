@@ -15,20 +15,11 @@
  */
 package org.kuali.rice.kom.service;
 
-import java.util.List;
-
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.GroupAttribute;
-import org.kuali.rice.kim.bo.Namespace;
-import org.kuali.rice.kim.bo.Permission;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.RoleAttribute;
 
 /**
- * Service API for accessing KOM services.  This contract should be used by all Kuali software that 
- * needs to leverage organization management features. 
- * 
+ * Service API for accessing KOM services.  This contract should be used by all Kuali software that
+ * needs to leverage organization management features.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface KOMService {

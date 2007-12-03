@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+  <bean id="ksbServerConfigurer" class="edu.iu.uis.eden.config.spring.KSBServerRemoteServiceConfigurer">
+		<property name="httpServices">
+			<list>		
+				<bean class="edu.iu.uis.eden.messaging.ServiceDefinition">
+					<property name="service">
+						<bean class="edu.iu.uis.eden.test.stress.StressTestEchoServiceImpl"/>
+					</property>
+					<property name="serviceInterface" value="edu.iu.uis.eden.test.stress.StressTestEchoService" />
+					<property name="serviceName" value="StressTestEchoService" />
+				</bean>
+			</list>
+		</property>
+  </bean>
+
+</beans>

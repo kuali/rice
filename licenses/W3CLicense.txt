@@ -49,5 +49,3 @@ questions about this notice can be directed to site-policy@w3.org.
 
 
 Joseph Reagle <site-policy@w3.org>
-
-Last revised $Id: W3CLicense.txt,v 1.2.2.2 2007-08-15 16:04:53 ewestfal Exp $

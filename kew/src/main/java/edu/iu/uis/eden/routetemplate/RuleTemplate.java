@@ -18,7 +18,6 @@ package edu.iu.uis.eden.routetemplate;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -44,19 +43,22 @@ public class RuleTemplate implements WorkflowPersistable {
     private Long delegationTemplateId;
     private RuleTemplate delegationTemplate;
 
-    private List ruleTemplateAttributes;
-    private List ruleTemplateOptions;
+    private List<RuleTemplateAttribute> ruleTemplateAttributes;
+    private List<RuleTemplateOption> ruleTemplateOptions;
 
     // required to be lookupable
     private String returnUrl;
 
     public RuleTemplate() {
-        ruleTemplateAttributes = new ArrayList();
+        ruleTemplateAttributes = new ArrayList<RuleTemplateAttribute>();
         initializeOptions();
     }
 
+    /**
+     * Sets some default RuleTemplateOptions for this RuleTemplate
+     */
     public void initializeOptions() {
-        ruleTemplateOptions = new ArrayList();
+        ruleTemplateOptions = new ArrayList<RuleTemplateOption>();
         ruleTemplateOptions.add(new RuleTemplateOption(EdenConstants.RULE_INSTRUCTIONS_CD, null));
         ruleTemplateOptions.add(new RuleTemplateOption(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, null));
         ruleTemplateOptions.add(new RuleTemplateOption(EdenConstants.ACTION_REQUEST_APPROVE_REQ, null));
@@ -65,6 +67,21 @@ public class RuleTemplate implements WorkflowPersistable {
         ruleTemplateOptions.add(new RuleTemplateOption(EdenConstants.ACTION_REQUEST_DEFAULT_CD, null));
     }
 
+    /* TODO: Fill in implementation which initializes default options, resetting existing ones if they already exist
+     * (they should always exist as they are added in the constructor) and removing any non-default options
+     * possibly break into two methods to accomplish this */
+    /*
+    public void resetOptions() {
+        List<RuleTemplateOption> addedOptions = new ArrayList<RuleTemplateOption>();
+        
+        getInstructions().setValue(null);
+        getAcknowledge().setValue(null);
+        getApprove().setValue(null);
+        getComplete().setValue(null);
+        getFyi().setValue(null);
+        get
+    }*/
+    
     public String getDelegateTemplateName() {
         if (delegationTemplate != null) {
             return delegationTemplate.getName();
@@ -102,9 +119,12 @@ public class RuleTemplate implements WorkflowPersistable {
 //        }
 //    }
     
+    /**
+     * Returns the rule template attribute on this instance whose name matches the name of the rule template attribute
+     * passed as a parameter, qualified by it's active state, or null if a match was not found.
+     */
     private RuleTemplateAttribute getRuleTemplateAttribute(RuleTemplateAttribute ruleTemplateAttribute, Boolean active) {
-        for (Iterator iter = getRuleTemplateAttributes().iterator(); iter.hasNext();) {
-            RuleTemplateAttribute currentRuleTemplateAttribute = (RuleTemplateAttribute) iter.next();
+        for (RuleTemplateAttribute currentRuleTemplateAttribute: getRuleTemplateAttributes()) {
             if (currentRuleTemplateAttribute.getRuleAttribute().getName().equals(ruleTemplateAttribute.getRuleAttribute().getName())) {
                 if (active == null) {
                     return currentRuleTemplateAttribute;
@@ -144,11 +164,11 @@ public class RuleTemplate implements WorkflowPersistable {
 //        return (RuleTemplateOption) getRuleTemplateOptions().get(index);
 //    }
 
-    public List getRuleTemplateAttributes() {
+    public List<RuleTemplateAttribute> getRuleTemplateAttributes() {
         return ruleTemplateAttributes;
     }
 
-    public List getActiveRuleTemplateAttributes() {
+    public List<RuleTemplateAttribute> getActiveRuleTemplateAttributes() {
         // TODO delyea - fix this once active is persisting
         return getRuleTemplateAttributes();
 //        List activeAttributes = new ArrayList();
@@ -189,7 +209,7 @@ public class RuleTemplate implements WorkflowPersistable {
 //        throw new RuntimeException("Didn't locate RoleAttribute " + className);
 //    }
 
-    public void setRuleTemplateAttributes(List ruleTemplateAttributes) {
+    public void setRuleTemplateAttributes(List<RuleTemplateAttribute> ruleTemplateAttributes) {
         this.ruleTemplateAttributes = ruleTemplateAttributes;
     }
 
@@ -241,6 +261,10 @@ public class RuleTemplate implements WorkflowPersistable {
         this.delegationTemplate = delegationTemplate;
     }
 
+    /**
+     * Returns a copy of this object and its dependents
+     * @see edu.iu.uis.eden.WorkflowPersistable#copy(boolean)
+     */
     public Object copy(boolean preserveKeys) {
         RuleTemplate ruleTemplateClone = new RuleTemplate();
 
@@ -254,10 +278,9 @@ public class RuleTemplate implements WorkflowPersistable {
             ruleTemplateClone.setRuleTemplateId(new Long(ruleTemplateId.longValue()));
         }
         if ((getRuleTemplateAttributes() != null) && !getRuleTemplateAttributes().isEmpty()) {
-            List ruleTemplateAttributeList = new ArrayList();
+            List<RuleTemplateAttribute> ruleTemplateAttributeList = new ArrayList<RuleTemplateAttribute>();
 
-            for (Iterator i = getRuleTemplateAttributes().iterator(); i.hasNext();) {
-                RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) i.next();
+            for (RuleTemplateAttribute ruleTemplateAttribute: getRuleTemplateAttributes()) {
                 RuleTemplateAttribute ruleTemplateAttributeCopy = (RuleTemplateAttribute) ruleTemplateAttribute.copy(preserveKeys);
                 ruleTemplateAttributeCopy.setRuleTemplate(ruleTemplateClone);
                 ruleTemplateAttributeList.add(ruleTemplateAttributeCopy);
@@ -265,10 +288,9 @@ public class RuleTemplate implements WorkflowPersistable {
             ruleTemplateClone.setRuleTemplateAttributes(ruleTemplateAttributeList);
         }
         if ((ruleTemplateOptions != null) && !ruleTemplateOptions.isEmpty()) {
-            List ruleTemplateOptionList = new ArrayList();
+            List<RuleTemplateOption> ruleTemplateOptionList = new ArrayList<RuleTemplateOption>();
 
-            for (Iterator i = ruleTemplateOptions.iterator(); i.hasNext();) {
-                RuleTemplateOption ruleTemplateOption = (RuleTemplateOption) i.next();
+            for (RuleTemplateOption ruleTemplateOption: ruleTemplateOptions) {
                 RuleTemplateOption ruleTemplateOptionCopy = (RuleTemplateOption) ruleTemplateOption.copy(preserveKeys);
                 ruleTemplateOptionCopy.setRuleTemplate(ruleTemplateClone);
                 ruleTemplateOptionList.add(ruleTemplateOptionCopy);
@@ -294,17 +316,16 @@ public class RuleTemplate implements WorkflowPersistable {
         return URLEncoder.encode(getName());
     }
 
-    public List getRuleTemplateOptions() {
+    public List<RuleTemplateOption> getRuleTemplateOptions() {
         return ruleTemplateOptions;
     }
 
-    public void setRuleTemplateOptions(List ruleTemplateOptions) {
+    public void setRuleTemplateOptions(List<RuleTemplateOption> ruleTemplateOptions) {
         this.ruleTemplateOptions = ruleTemplateOptions;
     }
 
     public RuleTemplateOption getRuleTemplateOption(String key) {
-        for (Iterator iter = ruleTemplateOptions.iterator(); iter.hasNext();) {
-            RuleTemplateOption option = (RuleTemplateOption) iter.next();
+        for (RuleTemplateOption option: ruleTemplateOptions) {
             if (option.getKey().equals(key)) {
                 return option;
             }

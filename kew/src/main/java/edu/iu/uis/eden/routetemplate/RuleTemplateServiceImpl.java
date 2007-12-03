@@ -143,20 +143,28 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
         }
     }
 
+    /**
+     * Ensures that dependent objects have a reference to the specified rule template 
+     * @param ruleTemplate the rule template whose associates to check
+     */
     private void fixAssociations(RuleTemplate ruleTemplate) {
+        // if it's a valid rule template instance
         if (ruleTemplate != null && ruleTemplate.getRuleTemplateId() != null) {
-            for (Iterator iter = ruleTemplate.getRuleTemplateAttributes().iterator(); iter.hasNext();) {
-                RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
+            // for every rule template attribute
+            for (RuleTemplateAttribute ruleTemplateAttribute: ruleTemplate.getRuleTemplateAttributes()) {
+                // if the rule template is not set on the attribute, set it
                 if (ruleTemplateAttribute.getRuleTemplate() == null || ruleTemplateAttribute.getRuleTemplateId() == null) {
                     ruleTemplateAttribute.setRuleTemplate(ruleTemplate);
                 }
+                // if the rule attribute is set, load up the rule attribute and set the BO on the ruletemplateattribute association object
                 if (ruleTemplateAttribute.getRuleAttribute() == null) {
                     RuleAttributeService ruleAttributeService = (RuleAttributeService) KEWServiceLocator.getService(KEWServiceLocator.RULE_ATTRIBUTE_SERVICE);
                     ruleTemplateAttribute.setRuleAttribute(ruleAttributeService.findByRuleAttributeId(ruleTemplateAttribute.getRuleAttributeId()));
                 }
             }
-            for (Iterator iter = ruleTemplate.getRuleTemplateOptions().iterator(); iter.hasNext();) {
-                RuleTemplateOption option = (RuleTemplateOption) iter.next();
+            // for every rule template option
+            for (RuleTemplateOption option: ruleTemplate.getRuleTemplateOptions()) {
+                // if the rule template is not set on the option, set it
                 if (option.getRuleTemplate() == null || option.getRuleTemplateId() == null) {
                     option.setRuleTemplate(ruleTemplate);
                 }

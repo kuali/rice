@@ -33,19 +33,19 @@ import edu.iu.uis.eden.messaging.RemoteResourceServiceLocatorImpl;
 /**
  * Creates KSBs root resource loader with all the correct children attached ready for starting.
  * Uses config object to store QNames so everything is good with the current context classloader.
- * 
+ *
  * Can grab any KSB specific resource loader from the resource loading stack.
- * 
- * 
- * @author rkirkend
+ *
+ *
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class KSBResourceLoaderFactory {
-	
+
 	private static final String KSB_ROOT_RESOURCE_LOACER_NAME = "KSB_ROOT_RESOURCE_LOADER";
 	private static final String KSB_SPRING_RESOURCE_LOADER_LOCAL_NAME = "KSB_SPRING_RESOURCE_LOADER";
 	private static final String KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME = "KSB_REMOTE_RESOURCE_LOADER";
-	
+
 	private static void initialize() {
 		Config config = Core.getCurrentContextConfig();
 		if (config.getMessageEntity() == null) {
@@ -61,34 +61,40 @@ public class KSBResourceLoaderFactory {
 			setRemoteResourceLoaderName(new QName(Core.getCurrentContextConfig().getMessageEntity(), KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME));
 		}
 	}
-	
+
 	public static ResourceLoader createRootKSBResourceLoader() {
 		initialize();
 		ResourceLoader rootResourceLoader = new BaseResourceLoader(getRootResourceLoaderName(), new SimpleServiceLocator());
-		ResourceLoader springResourceLoader = new SpringResourceLoader(getSpringResourceLoaderName(), 
+		ResourceLoader springResourceLoader = new SpringResourceLoader(getSpringResourceLoaderName(),
 				"KSBSpringBeans.xml");
 		GlobalResourceLoader.addResourceLoader(rootResourceLoader);
 		rootResourceLoader.addResourceLoader(springResourceLoader);
 		rootResourceLoader.addResourceLoader(new RemoteResourceServiceLocatorImpl(getRemoteResourceLoaderName()));
 		return rootResourceLoader;
 	}
-	
+
+	public static ResourceLoader createThinClientKSBResourceLoader() {
+		ResourceLoader resourceLoader = new SpringResourceLoader(new QName("", "KSB_THIN_CLIENT_RESOURCE_LOADER"), "KSBThinClientSpringBeans.xml");
+		GlobalResourceLoader.addResourceLoader(resourceLoader);
+		return resourceLoader;
+	}
+
 	public static BaseResourceLoader getRootResourceLoader() {
 		return (BaseResourceLoader)GlobalResourceLoader.getResourceLoader(getRootResourceLoaderName());
 	}
-	
+
 	public static SpringResourceLoader getSpringResourceLoader() {
 		return (SpringResourceLoader)GlobalResourceLoader.getResourceLoader(getSpringResourceLoaderName());
 	}
-	
+
 	public static RemoteResourceServiceLocator getRemoteResourceLocator() {
 		return (RemoteResourceServiceLocator)GlobalResourceLoader.getResourceLoader(getRemoteResourceLoaderName());
 	}
-	
+
 	public static QName getRootResourceLoaderName() {
 		return (QName)Core.getCurrentContextConfig().getObject(KSB_ROOT_RESOURCE_LOACER_NAME);
 	}
-	
+
 	public static void setRootResourceLoaderName(QName name) {
 		Core.getCurrentContextConfig().getObjects().put(KSB_ROOT_RESOURCE_LOACER_NAME, name);
 	}
@@ -96,7 +102,7 @@ public class KSBResourceLoaderFactory {
 	public static QName getSpringResourceLoaderName() {
 		return (QName)Core.getCurrentContextConfig().getObject(KSB_SPRING_RESOURCE_LOADER_LOCAL_NAME);
 	}
-	
+
 	public static void setSpringResourceLoaderName(QName ksbRsourceLoaderName) {
 		Core.getCurrentContextConfig().getObjects().put(KSB_SPRING_RESOURCE_LOADER_LOCAL_NAME, ksbRsourceLoaderName);
 	}

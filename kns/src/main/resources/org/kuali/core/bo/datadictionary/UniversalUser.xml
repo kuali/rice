@@ -16,7 +16,7 @@
 -->
 <!DOCTYPE dictionaryEntry PUBLIC
     "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "../../datadictionary/dataDictionary-1_0.dtd">
+    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
 <dictionaryEntry>
 	<businessObject businessObjectClass="org.kuali.core.bo.user.UniversalUser">
 
@@ -68,12 +68,8 @@
 				<lookupField attributeName="faculty" />
 				<lookupField attributeName="student" />
 				<lookupField attributeName="affiliate" />
-				<lookupField attributeName="employeeStatusCode" required="false">
-					<defaultValue>A</defaultValue>
-				</lookupField>
-				<lookupField attributeName="employeeTypeCode" required="false">
-					<defaultValue>P</defaultValue>
-				</lookupField>
+				<lookupField attributeName="employeeStatusCode" required="false" />
+				<lookupField attributeName="employeeTypeCode" required="false" />
 				<lookupField attributeName="activeModuleCodeString" required="false" />
 			</lookupFields>
 
@@ -134,9 +130,6 @@
 				<shortLabel>Empl ID</shortLabel>
 
 				<maxLength>11</maxLength>
-				<validationPattern>
-					<numeric />
-				</validationPattern>
 				<required>false</required>
 
 				<control>
@@ -325,13 +318,13 @@
 				<label>Local Phone Number</label>
 				<shortLabel>Phn Nbr</shortLabel>
 
-				<maxLength>15</maxLength>
+				<maxLength>10</maxLength>
 				<validationPattern>
 					<anyCharacter />
 				</validationPattern>
 
 				<control>
-					<text size="10" />
+					<text size="11" />
 				</control>
 
 				<summary>Person Local Phone Number</summary>

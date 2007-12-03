@@ -22,7 +22,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 /**
  * A lifecycle for testing with database transactional rollback.
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TransactionalLifecycle implements Lifecycle {
 
@@ -35,7 +35,7 @@ public class TransactionalLifecycle implements Lifecycle {
 
 		public void start() throws Exception {
 			DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
-			defaultTransactionDefinition.setTimeout(30);
+			defaultTransactionDefinition.setTimeout(3600);
 			TRANSACTION_STATUS = KNSServiceLocator.getTransactionManager().getTransaction(defaultTransactionDefinition);
 			started = true;
 		}

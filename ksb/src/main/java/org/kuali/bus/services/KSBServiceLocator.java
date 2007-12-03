@@ -16,14 +16,12 @@
 package org.kuali.bus.services;
 
 import javax.sql.DataSource;
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
 
 import org.codehaus.xfire.XFire;
 import org.codehaus.xfire.service.ServiceFactory;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.quartz.Scheduler;
-import org.springframework.transaction.jta.JtaTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import edu.iu.uis.eden.messaging.BusAdminService;
@@ -36,8 +34,6 @@ import edu.iu.uis.eden.messaging.exceptionhandling.ExceptionRoutingService;
 import edu.iu.uis.eden.messaging.threadpool.KSBScheduledPool;
 import edu.iu.uis.eden.messaging.threadpool.KSBThreadPool;
 import edu.iu.uis.eden.security.DigitalSignatureService;
-import edu.iu.uis.eden.security.EncryptionService;
-import edu.iu.uis.eden.util.OptimisticLockFailureService;
 
 public class KSBServiceLocator {
 
@@ -57,20 +53,12 @@ public class KSBServiceLocator {
 	return GlobalResourceLoader.getService(name);
     }
 
-    public static UserTransaction getUserTransaction() {
-	return (UserTransaction) getService("userTransaction");
-    }
-
-    public static JtaTransactionManager getTransactionManager() {
-	return (JtaTransactionManager) getService("transactionManager");
-    }
-    
-    public static TransactionManager getJtaTransactionManager() {
-	return (TransactionManager) getService(JTA_TRANSACTION_MANAGER);
-    }
-
     public static TransactionTemplate getTransactionTemplate() {
 	return (TransactionTemplate) getService("transactionTemplate");
+    }
+
+    public static PlatformTransactionManager getPlatformTransactionManager() {
+	return (PlatformTransactionManager) getService("transactionManager");
     }
 
     public static BAMService getBAMService() {
@@ -93,10 +81,6 @@ public class KSBServiceLocator {
 	return (RemotedServiceRegistry) getService(REMOTED_SERVICE_REGISTRY);
     }
 
-    public static EncryptionService getEncryptionService() {
-	return (EncryptionService) getService(ENCRYPTION_SERVICE);
-    }
-
     public static DigitalSignatureService getDigitalSignatureService() {
 	return (DigitalSignatureService) getService(DIGITAL_SIGNATURE_SERVICE);
     }
@@ -111,10 +95,6 @@ public class KSBServiceLocator {
 
     public static ServiceRegistry getIPTableService() {
 	return (ServiceRegistry) getService("enRoutingTableService");
-    }
-
-    public static OptimisticLockFailureService getOptimisticLockFailureService() {
-	return (OptimisticLockFailureService) getService("enOptimisticLockFailureService");
     }
 
     public static ServiceFactory getXFireServiceFactory() {
@@ -132,13 +112,13 @@ public class KSBServiceLocator {
     public static DataSource getRegistryDataSource() {
 	return (DataSource) getService("ksbRegistryDataSource");
     }
-    
+
     public static Scheduler getScheduler() {
     	return (Scheduler) getService("ksbScheduler");
     }
-    
+
     public static BusAdminService getService() {
 	return (BusAdminService) getService(BUS_ADMIN_SERVICE);
     }
-    
+
 }

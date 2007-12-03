@@ -15,6 +15,8 @@
  */
 package edu.sampleu.travel.rice;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.kuali.bus.auth.AuthorizationService;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -26,7 +28,7 @@ import edu.iu.uis.eden.workgroup.GroupNameId;
  * Implementation of the ksb AuthorizationService which returns true if the authenticated user is
  * a member of WorkflowAdmin.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class TravelAuthorizationService implements AuthorizationService {
@@ -36,7 +38,7 @@ public class TravelAuthorizationService implements AuthorizationService {
      *
      * @see org.kuali.bus.auth.AuthorizationService#isAdministrator()
      */
-    public boolean isAdministrator() {
+    public boolean isAdministrator(HttpServletRequest request) {
 	UserSession userSession = UserSession.getAuthenticatedUser();
 	if (userSession == null) {
 	    throw new RuntimeException("Could not determine authenticated user.  UserSession was null.");

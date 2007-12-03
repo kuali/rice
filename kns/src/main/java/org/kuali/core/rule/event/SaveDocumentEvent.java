@@ -30,7 +30,7 @@ import org.kuali.rice.KNSServiceLocator;
  * 
  * 
  */
-public final class SaveDocumentEvent extends KualiDocumentEventBase {
+public class SaveDocumentEvent extends KualiDocumentEventBase implements SaveEvent {
     /**
      * Constructs a SaveDocumentEvent with the specified errorPathPrefix and document
      * 
@@ -38,7 +38,7 @@ public final class SaveDocumentEvent extends KualiDocumentEventBase {
      * @param errorPathPrefix
      */
     public SaveDocumentEvent(String errorPathPrefix, Document document) {
-        super("creating save event for document " + getDocumentId(document), errorPathPrefix, document);
+        this("creating save event for document " + getDocumentId(document), errorPathPrefix, document);
     }
 
     /**
@@ -49,7 +49,14 @@ public final class SaveDocumentEvent extends KualiDocumentEventBase {
     public SaveDocumentEvent(Document document) {
         this("", document);
     }
-
+    
+    /**
+     * @see org.kuali.core.rule.event.KualiDocumentEventBase#KualiDocumentEventBase(java.lang.String, java.lang.String, org.kuali.core.document.Document)
+     */
+    public SaveDocumentEvent(String description, String errorPathPrefix, Document document) {
+	super(description, errorPathPrefix, document);
+    }
+    
     /**
      * @see org.kuali.core.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
      */

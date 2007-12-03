@@ -80,6 +80,9 @@ public abstract class KualiDocumentFormBase extends KualiForm {
 
     private boolean returnToActionList;
 
+    // for session enhancement ?
+    private String formKey;
+    
     /** Special list class which doesn't blow up when setting an index which doesn't exist. */
     private static class AutoExpandingList extends AutoPopulatingList implements Serializable {
         AutoExpandingList( Class listClass ) {
@@ -579,5 +582,13 @@ public abstract class KualiDocumentFormBase extends KualiForm {
      */
     public void setBoNotes(List boNotes) {
         this.boNotes = boNotes;
+    }
+
+    public String getFormKey() {
+        return this.formKey;
+    }
+
+    public void setFormKey(String formKey) {
+        this.formKey = formKey;
     }
 }

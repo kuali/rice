@@ -145,13 +145,14 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	}
 
 	public Object getService(QName qname) {
-		RemotedServiceHolder serviceHolder = getRemotedServiceHolder(qname);
+		ServiceHolder serviceHolder = getRemotedServiceHolder(qname);
 		if (serviceHolder != null) {
+		    	try {
 			Object service = serviceHolder.getService();
-			if (service == null) {
-				throw new RuntimeException("Retreived null service using " + qname + ".  This means the service exporter returned " + "a null object to this servers service repository.");
-			}
 			return service;
+		    	} catch (Exception e) {
+		    	    this.removeRemoteServiceFromRegistry(qname);
+		}
 		}
 		if (!StringUtils.isEmpty(qname.getNamespaceURI())) {
 			return getService(new QName(qname.getLocalPart()));
@@ -168,12 +169,13 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	}
 
 	public synchronized void run() {
+	    	String messageEntity = Core.getCurrentContextConfig().getMessageEntity();
+		LOG.debug("Checking for newly published services on message entity " + messageEntity + " ...");
+
 		String serviceServletUrl = (String) Core.getObjectFromConfigHierarchy(Config.SERVICE_SERVLET_URL);
 		if (serviceServletUrl == null) {
 			throw new RuntimeException("No service url provided to locate services.  This is configured in the KSBConfigurer.");
 		}
-		String messageEntity = Core.getCurrentContextConfig().getMessageEntity();
-		LOG.debug("Checking for newly published services on message entity " + messageEntity);
 
 		List javaServices = (List) Core.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
 		// convert the ServiceDefinitions into ServiceInfos for diff comparison
@@ -207,7 +209,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		} else if (this.publishedServices.isEmpty()) {
 			publishServiceList(configuredServices);
 		}
-		LOG.info("Finished checking for remote services.");
+		LOG.debug("...Finished checking for remote services.");
 	}
 
 	private void publishServiceList(List<ServiceInfo> services) {
@@ -256,7 +258,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	public String getContents(String indent, boolean servicePerLine) {
 		String content = indent + "RemotedServiceRegistryImpl services=";
 
-		for (RemotedServiceHolder serviceHolder : this.publishedServices.values()) {
+		for (ServiceHolder serviceHolder : this.publishedServices.values()) {
 			if (servicePerLine) {
 				content += indent + "+++" + serviceHolder.getServiceInfo().toString() + "\n";
 			} else {

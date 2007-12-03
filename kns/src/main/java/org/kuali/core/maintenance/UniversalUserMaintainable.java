@@ -222,7 +222,7 @@ public class UniversalUserMaintainable extends KualiMaintainableImpl {
             universalUserService = KNSServiceLocator.getUniversalUserService();
             moduleUserPropertyService = KNSServiceLocator.getKualiModuleUserPropertyService();
             documentService = KNSServiceLocator.getDocumentService();
-            userEditWorkgroupName = configService.getApplicationParameterValue(RiceConstants.CoreApcParms.GROUP_CORE_MAINT_EDOCS, RiceConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
+            userEditWorkgroupName = configService.getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, RiceConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
             // check whether users are editable within Kuali
             usersMaintainedByKuali = configService.getPropertyAsBoolean( RiceConstants.MAINTAIN_USERS_LOCALLY_KEY );
             kualiModuleService = KNSServiceLocator.getKualiModuleService();

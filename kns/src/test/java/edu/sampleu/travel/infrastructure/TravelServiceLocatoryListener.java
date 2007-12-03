@@ -15,8 +15,12 @@
  */
 package edu.sampleu.travel.infrastructure;
 
+import java.io.FileNotFoundException;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
+import org.springframework.util.Log4jConfigurer;
 
 public class TravelServiceLocatoryListener implements ServletContextListener {
 
@@ -25,6 +29,11 @@ public class TravelServiceLocatoryListener implements ServletContextListener {
 	}
 
 	public void contextInitialized(ServletContextEvent sce) {
+	    	try {
+		    Log4jConfigurer.initLogging("classpath:log4j.properties");
+		} catch (FileNotFoundException e) {
+		    throw new RuntimeException("Failed to start sample application.", e);
+		}
 		TravelServiceLocator.getAppContext();
 	}
 

@@ -32,13 +32,13 @@ import edu.iu.uis.eden.messaging.exceptionhandling.MessageExceptionHandler;
  * @see RemotedServiceHolder
  * @see ServiceInfo
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RemoteResourceServiceLocator extends ResourceLoader {
 
 	public List<RemotedServiceHolder> getAllServices(QName qName);
 	public Map<QName, List<RemotedServiceHolder>> getClients();
-	public void removeService(ServiceInfo serviceInfo, Object service);
+	public void removeService(ServiceInfo serviceInfo);
 	public Object getService(QName qName, String url);
 	public MessageExceptionHandler getMessageExceptionHandler(QName qName);
 	public void refresh();

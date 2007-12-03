@@ -20,7 +20,7 @@ import org.kuali.rice.core.Core;
 
 /**
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SOAPServiceImpl implements SOAPService {
 	

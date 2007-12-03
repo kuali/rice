@@ -22,7 +22,7 @@
 
     <!DOCTYPE dictionaryEntry PUBLIC
         "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-        "http://kuali.org/dtds/dataDictionary-1_0.dtd">
+        "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
 -->
 
 <!--
@@ -305,7 +305,8 @@
                     * valuesFinderClass (String)
                     
                     apcSelect:
-                    * group
+                    * parameterNamespace
+                    * parameterDetailType
                     * parameterName
                     
                     text:
@@ -353,7 +354,8 @@
                     
                     <!ELEMENT apcSelect EMPTY>
                     <!ATTLIST apcSelect
-                        group CDATA #REQUIRED
+                        parameterNamespace CDATA #REQUIRED
+                        parameterDetailType CDATA  "N/A"
                         parameterName CDATA #REQUIRED
                     >
 
@@ -489,7 +491,8 @@
        
        <!ELEMENT objectHelp (#PCDATA) >
         	<!ATTLIST objectHelp
-        		securityGroupName CDATA #REQUIRED
+        		parameterNamespace CDATA #REQUIRED
+        		parameterDetailType CDATA "N/A" 
         		parameterName CDATA #REQUIRED
         	>
 
@@ -528,7 +531,8 @@
         
         <!ELEMENT help (#PCDATA) >
         	<!ATTLIST help
-        		securityGroupName CDATA #REQUIRED
+        		parameterNamespace CDATA #REQUIRED
+        		parameterDetailType CDATA "N/A"
         		parameterName CDATA #REQUIRED
         	>
         	
@@ -538,7 +542,8 @@
         		<!ELEMENT displayName (#PCDATA) >
         		<!ELEMENT pageHelp (#PCDATA) >
         			<!ATTLIST pageHelp
-        				securityGroupName CDATA #REQUIRED
+        				parameterNamespace CDATA #REQUIRED
+		        		parameterDetailType CDATA  "N/A" 
         				parameterName CDATA #REQUIRED
         			>
 
@@ -622,15 +627,17 @@
                 <!--
                     JSTL: apcRules are Maps with the following keys:
                     * attributeName (String)
-                    * apcGroup (String)
-                    * apcRule (String)
+                    * parameterNamespace (String)
+                    * parameterDetailType (String)                    
+                    * parameterName (String)
                     * errorMessage (String)
                 -->
                 <!ELEMENT apcRule EMPTY>
                 <!ATTLIST apcRule
                     attributeName CDATA #REQUIRED
-                    apcGroup CDATA #REQUIRED
-                    apcRule CDATA #REQUIRED
+                    parameterNamespace CDATA #REQUIRED
+	        		parameterDetailType CDATA  "N/A"
+                    parameterName CDATA #REQUIRED
                     errorMessage CDATA #REQUIRED
                 >
         

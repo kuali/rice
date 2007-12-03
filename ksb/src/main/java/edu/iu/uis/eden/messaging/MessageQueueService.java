@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
  * 
  * @see PersistedMessage
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface MessageQueueService {
 

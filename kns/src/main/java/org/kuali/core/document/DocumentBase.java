@@ -72,15 +72,6 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * @see org.kuali.core.bo.PersistableBusinessObjectBase#supportsBoNotes()
-     */
-    @Override
-    protected Boolean supportsBoNotes() {
-        //TODO: Chris add a lookup method similar to one for BusinessObject notes to document service and point here
-        return false;
-    }
-
-    /**
      * @see org.kuali.core.document.Document#getAllowsCopy()
      */
     public boolean getAllowsCopy() {
@@ -332,27 +323,19 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
+     * @see org.kuali.core.document.Document#getXmlForRouteReport()
+     */
+    public String getXmlForRouteReport() {
+	prepareForSave();
+	populateDocumentForRouting();
+	return getDocumentHeader().getWorkflowDocument().getApplicationContent();
+    }
+
+    /**
      * @see org.kuali.core.document.Document#populateDocumentForRouting()
      */
     public void populateDocumentForRouting() {
-        String xml = serializeDocumentToXml();
-//        KualiTransactionalDocumentInformation transInfo = new KualiTransactionalDocumentInformation();
-//        DocumentInitiator initiatior = new DocumentInitiator();
-//        String initiatorNetworkId = documentHeader.getWorkflowDocument().getInitiatorNetworkId();
-//        try {
-//            UniversalUser initiatorUser = KNSServiceLocator.getUniversalUserService().getUniversalUser(new AuthenticationUserId(initiatorNetworkId));
-//            initiatorUser.getModuleUsers(); // init the module users map for serialization
-//            initiatior.setUniversalUser(initiatorUser);
-//        }
-//        catch (UserNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//        transInfo.setDocumentInitiator(initiatior);
-//        KualiDocumentXmlMaterializer xmlWrapper = new KualiDocumentXmlMaterializer();
-//        xmlWrapper.setDocument(this);
-//        xmlWrapper.setKualiTransactionalDocumentInformation(transInfo);
-//        String xml = KNSServiceLocator.getXmlObjectSerializerService().toXml(xmlWrapper);
-        documentHeader.getWorkflowDocument().setApplicationContent(xml);
+        documentHeader.getWorkflowDocument().setApplicationContent(serializeDocumentToXml());
     }
     
     public String serializeDocumentToXml() {
@@ -369,10 +352,21 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         }
         transInfo.setDocumentInitiator(initiatior);
         KualiDocumentXmlMaterializer xmlWrapper = new KualiDocumentXmlMaterializer();
-        xmlWrapper.setDocument(this);
+        xmlWrapper.setDocument(getDocumentRepresentationForSerialization());
         xmlWrapper.setKualiTransactionalDocumentInformation(transInfo);
         String xml = KNSServiceLocator.getXmlObjectSerializerService().toXml(xmlWrapper);
         return xml;
+    }
+
+    /**
+     * This method was added because of performance problems with the default workflow xml serialization strategy.
+     * This allows individual "big" document implementations to defer to a service that can be overriden for translation
+     * of the real document into a much smaller object structure for serialization.
+     * 
+     * @return the Document instance that should be used to generate the xml for workfow
+     */
+    protected Document getDocumentRepresentationForSerialization() {
+	return this;
     }
 
     /**

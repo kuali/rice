@@ -21,7 +21,7 @@ import edu.iu.uis.eden.messaging.remotedservices.ServiceCallInformationHolder;
 
 /**
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Client2SOAPService implements SOAPService {
 

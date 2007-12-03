@@ -45,7 +45,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
 /**
  * This class is the service implementation for the Note structure.
  * 
- * @author Kuali Nervous System Team (kualidev@oncourse.iu.edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Transactional
 public class NoteServiceImpl implements NoteService {

@@ -29,7 +29,7 @@ import edu.iu.uis.eden.messaging.bam.BAMTargetEntry;
 /**
  * Tests distributed Queue scenarios
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class DelayedAsynchronousServiceTest extends KSBTestCase {

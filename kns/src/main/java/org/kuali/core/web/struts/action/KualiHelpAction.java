@@ -32,7 +32,6 @@ import org.kuali.core.datadictionary.DocumentEntry;
 import org.kuali.core.datadictionary.HeaderNavigation;
 import org.kuali.core.datadictionary.HelpDefinition;
 import org.kuali.core.datadictionary.MaintainableFieldDefinition;
-import org.kuali.core.exceptions.ApplicationParameterException;
 import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.service.MaintenanceDocumentDictionaryService;
@@ -221,23 +220,13 @@ public class KualiHelpAction extends KualiAction {
             description = entry.getDescription();
             helpDefinition = entry.getHelpDefinition();
 
-            if (null != helpDefinition && null != helpDefinition.getSecurityGroupName() && null != helpDefinition.getParameterName()) {
-
-                try {
-
-                    apcHelpUrl = getHelpUrl(helpDefinition.getSecurityGroupName(), helpDefinition.getParameterName());
-
+            if (null != helpDefinition && null != helpDefinition.getParameterNamespace() && null != helpDefinition.getParameterDetailType() && null != helpDefinition.getParameterName()) {
+                apcHelpUrl = getHelpUrl(helpDefinition.getParameterNamespace(), helpDefinition.getParameterDetailType(), helpDefinition.getParameterName());
                 }
-                catch (ApplicationParameterException ape) {
-
-                    LOG.warn("APC value not found.", ape);
-
                 }
-            }
-        }
         
 
-        if (apcHelpUrl != null) {
+        if ( !StringUtils.isBlank(apcHelpUrl) ) {
             response.sendRedirect(apcHelpUrl);
             return null;
         }
@@ -273,22 +262,12 @@ public class KualiHelpAction extends KualiAction {
             helpDefinition = entry.getHelpDefinition();
             label = entry.getObjectLabel();
             objectDescription = entry.getObjectDescription();
-            if (null != helpDefinition && null != helpDefinition.getSecurityGroupName() && null != helpDefinition.getParameterName()) {
-
-                try {
-
-                    apcHelpUrl = getHelpUrl(helpDefinition.getSecurityGroupName(), helpDefinition.getParameterName());
-
+            if (null != helpDefinition && null != helpDefinition.getParameterNamespace() && null != helpDefinition.getParameterDetailType() && null != helpDefinition.getParameterName()) {
+                apcHelpUrl = getHelpUrl(helpDefinition.getParameterNamespace(), helpDefinition.getParameterDetailType(), helpDefinition.getParameterName());
                 }
-                catch (ApplicationParameterException ape) {
-
-                    LOG.warn("APC value not found.", ape);
-
                 }
-            }
-        }
 
-        if (apcHelpUrl != null) {
+        if ( !StringUtils.isBlank(apcHelpUrl) ) {
             response.sendRedirect(apcHelpUrl);
             return null;
         }
@@ -328,19 +307,14 @@ public class KualiHelpAction extends KualiAction {
                 HeaderNavigation headerNavigation = (HeaderNavigation) headerTabNavigation[i];
                 if (headerNavigation.getHeaderTabDisplayName().equals(pageName)) {
                     HelpDefinition helpDefinition = headerNavigation.getHelpDefinition();
-                    if (null != helpDefinition && null != helpDefinition.getSecurityGroupName() && null != helpDefinition.getParameterName()) {
-                        try {
-                            apcHelpUrl = getHelpUrl(helpDefinition.getSecurityGroupName(), helpDefinition.getParameterName());
+                    if (null != helpDefinition && null != helpDefinition.getParameterNamespace() && null != helpDefinition.getParameterDetailType() && null != helpDefinition.getParameterName()) {
+                        apcHelpUrl = getHelpUrl(helpDefinition.getParameterNamespace(), helpDefinition.getParameterDetailType(), helpDefinition.getParameterName());
                         }
-                        catch (ApplicationParameterException ape) {
-                            LOG.warn("APC value not found.", ape);
                         }
                     }
                 }
-            }
-        }
 
-        if (apcHelpUrl != null) {
+        if ( !StringUtils.isBlank(apcHelpUrl) ) {
             response.sendRedirect(apcHelpUrl);
             return null;
         }
@@ -356,25 +330,25 @@ public class KualiHelpAction extends KualiAction {
     public ActionForward getStoredHelpUrl(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiHelpForm helpForm = (KualiHelpForm) form;
         
-        String helpSecurityGroupName = helpForm.getHelpSecurityGroupName();
+        String helpParameterNamespace = helpForm.getHelpParameterNamespace();
+        String helpParameterDetailType = helpForm.getHelpParameterDetailType();
         String helpParameterName = helpForm.getHelpParameterName();
         
-        if (StringUtils.isBlank(helpSecurityGroupName)) {
-            throw new RuntimeException("Security Group Name not specified.");
+        if (StringUtils.isBlank(helpParameterNamespace)) {
+            throw new RuntimeException("Parameter Namespace not specified.");
         }
         
+        if (StringUtils.isBlank(helpParameterDetailType)) {
+            throw new RuntimeException("Detail Type not specified.");
+        }
+
         if (StringUtils.isBlank(helpParameterName)) {
             throw new RuntimeException("Parameter Name not specified.");
         }
         
-        String apcHelpUrl = null;
-        try {
-            apcHelpUrl = getHelpUrl(helpSecurityGroupName, helpParameterName);
-        } catch (ApplicationParameterException ape) {
-            LOG.warn("APC value not found.", ape);
-        }
+        String apcHelpUrl = getHelpUrl(helpParameterNamespace, helpParameterDetailType, helpParameterName);
         
-        if (apcHelpUrl != null) {
+        if ( !StringUtils.isBlank(apcHelpUrl) ) {
             response.sendRedirect(apcHelpUrl);
             return null;
         }
@@ -401,21 +375,7 @@ public class KualiHelpAction extends KualiAction {
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
-    /**
-     * Forwards to DV per diem link page.
-     * 
-     * @param mapping
-     * @param form
-     * @param request
-     * @param response
-     * @return
-     * @throws Exception
-     */
-    public ActionForward showTravelPerDiemLinks(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return mapping.findForward(RiceConstants.MAPPING_DV_PER_DIEM_LINKS);
+    private String getHelpUrl(String parameterNamespace, String parameterDetailTypeCode, String parameterName) {
+        return getConfigurationService().getPropertyString(RiceConstants.EXTERNALIZABLE_HELP_URL_KEY) + getConfigurationService().getParameterValue(parameterNamespace, parameterDetailTypeCode, parameterName);
     }
-
-    private String getHelpUrl(String securityGroupName, String parameterName) {
-        return getConfigurationService().getPropertyString(RiceConstants.EXTERNALIZABLE_HELP_URL_KEY) + getConfigurationService().getApplicationParameterValue(securityGroupName, parameterName);
     }
-}

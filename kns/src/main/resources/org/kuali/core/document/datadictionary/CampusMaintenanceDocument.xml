@@ -16,7 +16,7 @@
 -->
 <!DOCTYPE dictionaryEntry PUBLIC
     "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "../../../../core/datadictionary/dataDictionary-1_0.dtd">
+    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
 
 <dictionaryEntry>
     <maintenanceDocument>
@@ -40,7 +40,7 @@
 
         <summary>Campus maintenance document</summary>
         <description>Document used to create or update Campus objects</description>
-        <help securityGroupName="ChartMaintenanceEDoc" parameterName="CHART_HELP_CAMPUS" />
+        <help parameterNamespace="KR-NS" parameterDetailType="Campus" parameterName="CAMPUS" />
 
         <lockingKeys>
             <field attributeName="campusCode" />

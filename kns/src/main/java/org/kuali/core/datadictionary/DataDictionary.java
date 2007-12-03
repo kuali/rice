@@ -262,7 +262,7 @@ public class DataDictionary implements Serializable {
 	/**
 	 * @return List of businessObject classnames
 	 */
-	public List getBusinessObjectClassNames() {
+	public List<String> getBusinessObjectClassNames() {
 		List classNames = new ArrayList();
 		classNames.addAll(this.businessObjectEntries.keySet());
 
@@ -388,4 +388,15 @@ public class DataDictionary implements Serializable {
 	public boolean isAllowOverrides() {
 		return allowOverrides;
 	}
+	
+	private boolean completelyLoaded = false;
+    public void forceCompleteDataDictionaryLoad() {
+        if ( !completelyLoaded ) {
+    		for ( String key : getFileLocationMap().keySet() ) {
+    		    getDictionaryObjectEntry(key);
+}    		completelyLoaded = true;
+        }
+    }
+
+	
 }

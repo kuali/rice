@@ -23,7 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.KNSServiceLocator;
 
 /**
- * @author Kuali Nervous System Team (kualidev@oncourse.iu.edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Attachment extends PersistableBusinessObjectBase {
 

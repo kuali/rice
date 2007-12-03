@@ -43,7 +43,7 @@ public class KualiInquirableTest extends KNSTestBase {
      * Tests the inquiry url output for a given bo and property name.
      */
     @Test public final void testBuildInquiryUrl() {
-        String inquiryUrl = KualiInquirableImpl.getInquiryUrl(fo, "id", true);
+        String inquiryUrl = new KualiInquirableImpl().getInquiryUrl(fo, "id", true);
         assertTrue("An inquiry URL to Organization should be built", StringUtils.contains(inquiryUrl, "id=1"));
         assertTrue("An inquiry URL to Organization should be built", StringUtils.contains(inquiryUrl, "businessObjectClassName=edu.sampleu.travel.bo.FiscalOfficer"));
     }

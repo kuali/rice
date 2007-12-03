@@ -22,6 +22,7 @@ import java.net.URLEncoder;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.core.Core;
@@ -34,8 +35,7 @@ import edu.iu.uis.eden.messaging.exceptionhandling.DefaultMessageExceptionHandle
 /**
  * The definition of a service on the service bus.
  * 
- * @author rkirkend
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class ServiceDefinition implements Serializable {
 
@@ -224,5 +224,9 @@ public abstract class ServiceDefinition implements Serializable {
 		this.getServiceEndPoint().equals(serviceDefinition.getServiceEndPoint()) &&
 		this.getServiceName().equals(serviceDefinition.getServiceName()) &&
 		this.getCredentialsType() == serviceDefinition.getCredentialsType();
+	}
+	
+	public String toString() {
+	    return ReflectionToStringBuilder.toString(this);
 	}
 }

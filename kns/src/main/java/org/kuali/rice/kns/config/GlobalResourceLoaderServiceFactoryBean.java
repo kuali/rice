@@ -8,7 +8,7 @@ import org.springframework.beans.factory.InitializingBean;
 /**
  * Exports services in the {@link GlobalResourceLoader} as beans available to Spring.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class GlobalResourceLoaderServiceFactoryBean implements FactoryBean, InitializingBean {

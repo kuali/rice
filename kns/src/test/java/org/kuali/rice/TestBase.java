@@ -14,7 +14,6 @@ package org.kuali.rice;
 
 import org.junit.After;
 import org.junit.Before;
-import org.kuali.rice.testharness.HtmlUnitUtil;
 import org.kuali.rice.testharness.KNSTestCase;
 import org.kuali.rice.testharness.TransactionalLifecycle;
 

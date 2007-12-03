@@ -28,7 +28,7 @@ import edu.iu.uis.eden.messaging.PersistedMessage;
  * Tests that the {@link PriorityBlockingQueuePersistedMessageComparator} is sorting by 
  * priority and date. 
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class PriorityBlockingQueuePersistedMessageComparatorTest extends TestCase {

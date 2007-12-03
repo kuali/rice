@@ -16,7 +16,7 @@
 -->
 <!DOCTYPE dictionaryEntry PUBLIC
     "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "../../../../core/datadictionary/dataDictionary-1_0.dtd">
+    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
 
 <dictionaryEntry>
     <maintenanceDocument>
@@ -39,7 +39,7 @@
 
         <summary>User maintenance document</summary>
         <description>Document used to create or update User objects</description>
-        <help securityGroupName="Kuali.User.Help" parameterName="USER_HELP_UNIVERSAL_USER" />
+        <help parameterNamespace="KR-NS" parameterDetailType="UniversalUser" parameterName="UNIVERSAL_USER" />
 
         <lockingKeys>
             <field attributeName="personUniversalIdentifier" />

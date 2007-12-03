@@ -20,7 +20,7 @@ package edu.iu.uis.eden.messaging;
  * A service which can be invoked with a String message that contains
  * XML content.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface KEWXMLService {
 

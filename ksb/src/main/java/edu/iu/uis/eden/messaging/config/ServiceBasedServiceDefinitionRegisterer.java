@@ -26,7 +26,7 @@ import edu.iu.uis.eden.messaging.ServiceDefinition;
  * service registry.
  *  
  *  
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ServiceBasedServiceDefinitionRegisterer {

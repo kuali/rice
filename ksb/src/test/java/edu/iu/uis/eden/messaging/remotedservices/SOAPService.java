@@ -18,7 +18,7 @@ package edu.iu.uis.eden.messaging.remotedservices;
 
 /**
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface SOAPService {
 

@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * A parameter of a method invocation recorded by the BAM.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BAMParam {
 

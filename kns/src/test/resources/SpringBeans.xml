@@ -63,6 +63,10 @@
 						</list>
 					</property>
 				</bean>
+                <bean class="org.kuali.notification.config.KENConfigurer" />
+				<!-- Removing KIM temporarily until we can get the module dependencies between KIM and KNS figured out
+                <bean class="org.kuali.rice.kim.config.KIMConfigurer"/>
+                -->
 			</list>
 		</property>
 	</bean>

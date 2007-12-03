@@ -21,9 +21,10 @@ import edu.iu.uis.eden.messaging.AsynchronousCall;
 import edu.iu.uis.eden.messaging.AsynchronousCallback;
 
 /**
- * This is a description of what this class does - rkirkend don't forget to fill this in. 
+ * This is a description of what this class does - rkirkend don't forget to fill
+ * this in.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class SimpleCallback implements AsynchronousCallback {
@@ -60,7 +61,7 @@ public class SimpleCallback implements AsynchronousCallback {
     
     public synchronized void waitForAsyncCall(long millis) throws InterruptedException {
 	if (millis < 0) {
-	    this.wait(30000);
+	    this.wait(60000);
 	} else {
 	    this.wait(millis);    
 	}

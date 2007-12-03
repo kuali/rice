@@ -18,7 +18,7 @@ package edu.iu.uis.eden.messaging.web;
 /**
  * A bean to be used by the web tier for holding Values and Labels for a SELECT box.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ValueLabelPair {
 

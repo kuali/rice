@@ -167,6 +167,15 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         }
     }
 
+    public ActionRequestVO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdVO userId) throws WorkflowException {
+        try {
+            return getWorkflowUtility().getActionRequests(routeHeaderId, nodeName, userId);
+        }
+        catch (Exception e) {
+            throw new WorkflowException(e);
+        }
+    }
+
     public ActionTakenVO[] getActionsTaken(Long routeHeaderId) throws WorkflowException {
         try {
             return getWorkflowUtility().getActionsTaken(routeHeaderId);

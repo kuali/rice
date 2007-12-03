@@ -18,7 +18,6 @@ package org.kuali.core.document.authorization;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.kuali.RiceConstants;
 import org.kuali.RicePropertyConstants;
 import org.kuali.core.authorization.AuthorizationConstants;
@@ -35,7 +34,7 @@ import org.kuali.rice.KNSServiceLocator;
  */
 public class UniversalUserDocumentAuthorizer extends MaintenanceDocumentAuthorizerBase {
 
-    private static final Logger LOG = Logger.getLogger(UniversalUserDocumentAuthorizer.class);
+    //private static final Logger LOG = Logger.getLogger(UniversalUserDocumentAuthorizer.class);
 
     private transient static KualiConfigurationService configService;
     private transient static String userEditWorkgroupName;
@@ -113,7 +112,7 @@ public class UniversalUserDocumentAuthorizer extends MaintenanceDocumentAuthoriz
         }
         // get the group name that we need here
         if ( userEditWorkgroupName == null ) {
-            userEditWorkgroupName = configService.getApplicationParameterValue(RiceConstants.CoreApcParms.GROUP_CORE_MAINT_EDOCS, RiceConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
+            userEditWorkgroupName = configService.getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, RiceConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
             // check whether users are editable within Kuali
             usersMaintainedByKuali = configService.getPropertyAsBoolean( RiceConstants.MAINTAIN_USERS_LOCALLY_KEY );
             // check whether local CAS is in use

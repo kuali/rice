@@ -37,14 +37,12 @@ import org.kuali.rice.core.Core;
 import edu.iu.uis.eden.messaging.HttpClientHelper;
 import edu.iu.uis.eden.messaging.KEWHttpInvokerProxyFactoryBean;
 import edu.iu.uis.eden.messaging.KEWHttpInvokerRequestExecutor;
-import edu.iu.uis.eden.messaging.RemotedServiceHolder;
 import edu.iu.uis.eden.messaging.ServiceInfo;
 
 /**
  * 
- * @author rkirkend
- * @author Scott Battaglia
- * @version $Revision: 1.2 $ $Date: 2007-06-19 14:35:13 $
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @version $Revision: 1.3 $ $Date: 2007-12-03 02:51:29 $
  * @since 0.9
  */
 public class HttpInvokerConnector extends AbstractServiceConnector {
@@ -59,9 +57,9 @@ public class HttpInvokerConnector extends AbstractServiceConnector {
 		super(serviceInfo);
 		initializeHttpClientParams();
 	}
-
-	public RemotedServiceHolder getServiceHolder() throws Exception {
-		LOG.debug("Getting connector for endpoint " + this.getServiceInfo().getEndpointUrl());
+	
+	public Object getService() throws Exception {
+	    LOG.debug("Getting connector for endpoint " + this.getServiceInfo().getEndpointUrl());
 		KEWHttpInvokerProxyFactoryBean client = new KEWHttpInvokerProxyFactoryBean();
 		client.setServiceUrl(this.getServiceInfo().getEndpointUrl());
 		client.setServiceInfo(this.getServiceInfo());
@@ -76,7 +74,7 @@ public class HttpInvokerConnector extends AbstractServiceConnector {
 		executor.setSecure(this.getServiceInfo().getServiceDefinition().getBusSecurity());
 		client.setHttpInvokerRequestExecutor(executor);	
 		client.afterPropertiesSet();
-		return new RemotedServiceHolder(getServiceProxyWithFailureMode(client.getObject(), this.getServiceInfo()), this.getServiceInfo());
+		return getServiceProxyWithFailureMode(client.getObject(), this.getServiceInfo());
 	}
 
 	/**

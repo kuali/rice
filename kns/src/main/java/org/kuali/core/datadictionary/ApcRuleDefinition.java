@@ -24,8 +24,9 @@ import org.kuali.core.datadictionary.exception.ClassValidationException;
 public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
 
     private String attributeName;
-    private String apcGroup;
-    private String apcRule;
+    private String parameterNamespace;
+    private String parameterDetailType;
+    private String parameterName;
     private String errorMessage;
 
     // logger
@@ -57,28 +58,31 @@ public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
 
     }
 
-    public String getApcGroup() {
-        return apcGroup;
+    public String getParameterNamespace() {
+        return parameterNamespace;
     }
 
-    public void setApcGroup(String apcGroup) {
-        if (StringUtils.isBlank(apcGroup)) {
-            throw new IllegalArgumentException("invalid (blank) apcGroup");
+    public void setParameterNamespace(String parameterNamespace) {
+        if (StringUtils.isBlank(parameterNamespace)) {
+            throw new IllegalArgumentException("invalid (blank) parameterNamespace");
         }
-        LOG.debug("calling setApcGroup '" + apcGroup + "'");
-        this.apcGroup = apcGroup;
-    }
-
-    public String getApcRule() {
-        return apcRule;
-    }
-
-    public void setApcRule(String apcRule) {
-        if (StringUtils.isBlank(apcRule)) {
-            throw new IllegalArgumentException("invalid (blank) apcRule");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("calling parameterNamespace '" + parameterNamespace + "'");
         }
-        LOG.debug("calling setApcRule '" + apcRule + "'");
-        this.apcRule = apcRule;
+        this.parameterNamespace = parameterNamespace;
+    }
+
+    public String getParameterName() {
+        return parameterName;
+    }
+    void setParameterName(String parameterName) {
+        if (StringUtils.isBlank(parameterName)) {
+            throw new IllegalArgumentException("invalid (blank) parameterName");
+        }
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("calling parameterName '" + parameterName + "'");
+        }
+        this.parameterName = parameterName;
     }
 
     public String getAttributeName() {
@@ -89,7 +93,9 @@ public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
         }
-        LOG.debug("calling setAttributeName '" + attributeName + "'");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("calling setAttributeName '" + attributeName + "'");
+        }
         this.attributeName = attributeName;
     }
 
@@ -101,7 +107,9 @@ public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(errorMessage)) {
             throw new IllegalArgumentException("invalid (blank) errorMessage");
         }
-        LOG.debug("calling setErrorMessage '" + errorMessage + "'");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("calling setErrorMessage '" + errorMessage + "'");
+        }
         this.errorMessage = errorMessage;
     }
 
@@ -111,4 +119,18 @@ public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
     public String toString() {
         return "ApcRuleDefinition for attribute " + getAttributeName();
     }
+
+	public String getParameterDetailType() {
+		return this.parameterDetailType;
+	}
+
+	public void setParameterDetailType(String parameterDetailType) {
+        if (StringUtils.isBlank(parameterDetailType)) {
+            throw new IllegalArgumentException("invalid (blank) parameterDetailType");
+        }
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("calling setParameterDetailType '" + parameterDetailType + "'");
+        }
+		this.parameterDetailType = parameterDetailType;
+	}
 }

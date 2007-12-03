@@ -24,7 +24,6 @@ import java.util.Iterator;
 import org.apache.commons.digester.AbstractObjectCreationFactory;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.ObjectCreationFactory;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.core.exceptions.PropertiesException;
@@ -44,7 +43,8 @@ public class KualiPropertiesFactory {
 
     // config-file tag attribute
     private static final String CONFIG_PROPERTIES_ATTR_FILENAME = "fileName";
-
+    private static final String CONFIG_PROPERTIES_ATTR_OVVERRIDE = "allowOverrides";
+    
 
     private static Log log = LogFactory.getLog(KualiPropertiesFactory.class);
 
@@ -167,6 +167,7 @@ public class KualiPropertiesFactory {
         public Object createObject(Attributes attributes) throws Exception {
             FilePropertySource source = (FilePropertySource) clazz.newInstance();
             source.setFileName(attributes.getValue(CONFIG_PROPERTIES_ATTR_FILENAME));
+            source.setFileName(attributes.getValue(CONFIG_PROPERTIES_ATTR_OVVERRIDE));
             log.info("Created FilePropertySource '" + source.getFileName() + "'");
 
             return source;

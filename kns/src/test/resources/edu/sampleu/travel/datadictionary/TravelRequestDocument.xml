@@ -16,7 +16,7 @@
 -->
 <!DOCTYPE dictionaryEntry PUBLIC
     "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "../../../../../../../../kns/src/main/resources/org/kuali/core/datadictionary/dataDictionary-1_0.dtd">
+    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
 
 <dictionaryEntry>
     <transactionalDocument>
@@ -120,7 +120,7 @@
         </summary>
         <description>Doing it right</description>
  		<!-- 
-        <help securityGroupName="WorkflowAdmin" parameterName="FINANCIAL_HELP_INTERNAL_BILLING" />
+        <help parameterNamespace="KR-NS" parameterDetailType="N/A" parameterName="FINANCIAL_HELP_INTERNAL_BILLING" />
  		-->
         <allowsCopy>false</allowsCopy>
         <allowsErrorCorrection>false</allowsErrorCorrection>

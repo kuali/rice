@@ -28,7 +28,7 @@ import edu.iu.uis.eden.messaging.ServiceInfo;
 /**
  * Service for recording and accessing entries in the BAM.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface BAMService {
 

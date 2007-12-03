@@ -28,8 +28,8 @@ import org.springframework.util.Assert;
  * Note that this class is for service-to-service authentication, not
  * user-to-service authentication.
  * 
- * @author Scott Battaglia
- * @version $Revision: 1.2 $ $Date: 2007-06-19 14:35:11 $
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @version $Revision: 1.3 $ $Date: 2007-12-03 02:51:30 $
  * @since 0.9
  * 
  * @see X509Certificate

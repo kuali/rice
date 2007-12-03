@@ -21,7 +21,7 @@ import java.security.GeneralSecurityException;
 /**
  * A service which allows for encryption and decryption of data.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface EncryptionService {
 

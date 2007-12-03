@@ -37,45 +37,57 @@ import org.kuali.rice.lifecycle.ServiceDelegatingLifecycle;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.util.ClassLoaderUtils;
 import org.quartz.Scheduler;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import edu.iu.uis.eden.cache.RiceCacheAdministrator;
 import edu.iu.uis.eden.messaging.ServiceDefinition;
 import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 
 /**
- * Used to configure the embedded workflow.  This could be used to configure embedded workflow programmatically
- * but mostly this is a base class by which to hang specific configuration behavior off of through
- * subclassing
- *
- * @author rkirkend
- *
+ * Used to configure the embedded workflow. This could be used to configure
+ * embedded workflow programmatically but mostly this is a base class by which
+ * to hang specific configuration behavior off of through subclassing
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * 
  */
 public class KSBConfigurer extends ModuleConfigurer {
 
 	private static final Logger LOG = Logger.getLogger(KSBConfigurer.class);
-	
+
 	private List<ServiceHolder> overrideServices;
+
 	private List<ServiceDefinition> services = new ArrayList<ServiceDefinition>();
 
 	private String serviceServletUrl;
+
 	private String keystoreAlias;
+
 	private String keystorePassword;
+
 	private String keystoreFile;
+
 	private String webservicesUrl;
+
 	private String webserviceRetry;
+
 	private RiceCacheAdministrator cache;
-	
+
 	private DataSource registryDataSource;
+
 	private DataSource messageDataSource;
+
 	private String registryDataSourceJndiName;
+
 	private String messageDataSourceJndiName;
+
 	private Scheduler exceptionMessagingScheduler;
 
 	private AuthorizationService authorizationService;
+	private PlatformTransactionManager platformTransactionManager;
 
 	private boolean isStarted = false;
 
-	
 	public Config loadConfig(Config parentConfig) throws Exception {
 		LOG.info("Starting configuration of KEW for message entity " + getMessageEntity(parentConfig));
 		Config currentConfig = Core.getCurrentContextConfig();
@@ -83,32 +95,36 @@ public class KSBConfigurer extends ModuleConfigurer {
 		configureBus(currentConfig);
 		configureKeystore(currentConfig);
 		configureScheduler(currentConfig);
+		configurePlatformTransactionManager(currentConfig);
 		configureAuthorization(currentConfig);
 		if (getServiceServletUrl() != null) {
 			currentConfig.overrideProperty("http.service.url", getServiceServletUrl());
 		}
 		return currentConfig;
 	}
-	
+
 	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		
-		
-		//this validation of our service list needs to happen after we've loaded our configs so it's a lifecycle
+
+		// this validation of our service list needs to happen after we've
+		// loaded our configs so it's a lifecycle
 		lifecycles.add(new Lifecycle() {
 			boolean started = false;
+
 			public boolean isStarted() {
 				return this.started;
 			}
+
 			public void start() throws Exception {
-			    for (final ServiceDefinition serviceDef : KSBConfigurer.this.services) {
-			        serviceDef.validate();
-			    }
+				for (final ServiceDefinition serviceDef : KSBConfigurer.this.services) {
+					serviceDef.validate();
+				}
 				this.started = true;
 			}
+
 			public void stop() throws Exception {
-			    this.started = false;
+				this.started = false;
 			}
 		});
 		lifecycles.add(new OjbConfigurer());
@@ -122,17 +138,17 @@ public class KSBConfigurer extends ModuleConfigurer {
 		if (getCache() != null) {
 			lifecycles.add(getCache());
 		}
-    	lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.REMOTED_SERVICE_REGISTRY));
-    	return lifecycles;
+		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.REMOTED_SERVICE_REGISTRY));
+		return lifecycles;
 	}
-	
+
 	protected String getMessageEntity(Config config) {
 		if (StringUtils.isBlank(config.getMessageEntity())) {
 			throw new ConfigurationException("The 'message.entity' property was not properly configured.");
 		}
 		return config.getMessageEntity();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected void configureBus(Config config) throws Exception {
 		LOG.debug("Configuring services for Message Entity " + Core.getCurrentContextConfig().getMessageEntity() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
@@ -150,20 +166,21 @@ public class KSBConfigurer extends ModuleConfigurer {
 			serviceDefinitions.addAll(services);
 		}
 
-		// if it's empty, then we want to be able to inherit it from the parent configuration
+		// if it's empty, then we want to be able to inherit it from the parent
+		// configuration
 		if (!StringUtils.isEmpty(this.serviceServletUrl)) {
 			config.getObjects().put(Config.SERVICE_SERVLET_URL, this.serviceServletUrl);
 			config.overrideProperty(Config.SERVICE_SERVLET_URL, this.serviceServletUrl);
 		}
 	}
-	
+
 	protected void configureScheduler(Config config) {
-	    if (this.getExceptionMessagingScheduler() != null) {
-		LOG.info("Configuring injected exception messaging Scheduler");
-		config.getObjects().put(RiceConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY, this.getExceptionMessagingScheduler());
-	    }
+		if (this.getExceptionMessagingScheduler() != null) {
+			LOG.info("Configuring injected exception messaging Scheduler");
+			config.getObjects().put(RiceConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY, this.getExceptionMessagingScheduler());
+		}
 	}
-	
+
 	protected void configureAuthorization(Config config) {
 	    if (this.getAuthorizationService() != null) {
 		LOG.info("Configuring injected AuthorizationService: " + getAuthorizationService().getClass().getName());
@@ -185,13 +202,13 @@ public class KSBConfigurer extends ModuleConfigurer {
 	}
 
 	protected void configureDataSource(Config config) {
-	    	if (getMessageDataSource() != null && getRegistryDataSource() == null) {
-	    	    throw new ConfigurationException("A message data source was defined but a registry data source was not defined.  Both must be specified.");
-	    	}
-	    	if (getMessageDataSource() == null && getRegistryDataSource() != null) {
-	    	    throw new ConfigurationException("A registry data source was defined but a message data source was not defined.  Both must be specified.");
-	    	}
-	    	
+		if (getMessageDataSource() != null && getRegistryDataSource() == null) {
+			throw new ConfigurationException("A message data source was defined but a registry data source was not defined.  Both must be specified.");
+		}
+		if (getMessageDataSource() == null && getRegistryDataSource() != null) {
+			throw new ConfigurationException("A registry data source was defined but a message data source was not defined.  Both must be specified.");
+		}
+
 		if (getMessageDataSource() != null) {
 			config.getObjects().put(RiceConstants.KSB_MESSAGE_DATASOURCE, getMessageDataSource());
 		} else if (!StringUtils.isBlank(getMessageDataSourceJndiName())) {
@@ -203,12 +220,20 @@ public class KSBConfigurer extends ModuleConfigurer {
 			config.getProperties().put(RiceConstants.KSB_REGISTRY_DATASOURCE_JNDI, getRegistryDataSourceJndiName());
 		}
 	}
-	
+
+	protected void configurePlatformTransactionManager(Config config) {
+		if (getPlatformTransactionManager() == null) {
+			return;
+		}
+		config.getObjects().put(RiceConstants.SPRING_TRANSACTION_MANAGER, getPlatformTransactionManager());
+	}
+
 	public void stop() throws Exception {
+	    	super.stop();
 		try {
 			GlobalResourceLoader.stop();
 		} finally {
-		    this.isStarted = false;
+			this.isStarted = false;
 		}
 	}
 
@@ -278,39 +303,37 @@ public class KSBConfigurer extends ModuleConfigurer {
 		}
 		this.serviceServletUrl = serviceServletUrl;
 	}
-	
-	
-	
+
 	public DataSource getMessageDataSource() {
-	    return this.messageDataSource;
+		return this.messageDataSource;
 	}
 
 	public void setMessageDataSource(DataSource messageDataSource) {
-	    this.messageDataSource = messageDataSource;
+		this.messageDataSource = messageDataSource;
 	}
 
 	public String getMessageDataSourceJndiName() {
-	    return this.messageDataSourceJndiName;
+		return this.messageDataSourceJndiName;
 	}
 
 	public void setMessageDataSourceJndiName(String messageDataSourceJndiName) {
-	    this.messageDataSourceJndiName = messageDataSourceJndiName;
+		this.messageDataSourceJndiName = messageDataSourceJndiName;
 	}
 
 	public DataSource getRegistryDataSource() {
-	    return this.registryDataSource;
+		return this.registryDataSource;
 	}
 
 	public void setRegistryDataSource(DataSource registryDataSource) {
-	    this.registryDataSource = registryDataSource;
+		this.registryDataSource = registryDataSource;
 	}
 
 	public String getRegistryDataSourceJndiName() {
-	    return this.registryDataSourceJndiName;
+		return this.registryDataSourceJndiName;
 	}
 
 	public void setRegistryDataSourceJndiName(String registryDataSourceJndiName) {
-	    this.registryDataSourceJndiName = registryDataSourceJndiName;
+		this.registryDataSourceJndiName = registryDataSourceJndiName;
 	}
 
 	public List<ServiceHolder> getOverrideServices() {
@@ -330,19 +353,26 @@ public class KSBConfigurer extends ModuleConfigurer {
 	}
 
 	public Scheduler getExceptionMessagingScheduler() {
-	    return this.exceptionMessagingScheduler;
+		return this.exceptionMessagingScheduler;
 	}
 
 	public void setExceptionMessagingScheduler(Scheduler exceptionMessagingScheduler) {
-	    this.exceptionMessagingScheduler = exceptionMessagingScheduler;
+		this.exceptionMessagingScheduler = exceptionMessagingScheduler;
 	}
-	
+
+	public PlatformTransactionManager getPlatformTransactionManager() {
+		return platformTransactionManager;
+	}
+
 	public AuthorizationService getAuthorizationService() {
 	    return this.authorizationService;
 	}
 
+	public void setPlatformTransactionManager(PlatformTransactionManager springTransactionManager) {
+		this.platformTransactionManager = springTransactionManager;
+	}
+
 	public void setAuthorizationService(AuthorizationService authorizationService) {
 	    this.authorizationService = authorizationService;
-	}
-	
+}
 }

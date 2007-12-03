@@ -35,8 +35,7 @@ import edu.iu.uis.eden.messaging.ServiceInfo;
 
 /**
  *
- * @author rkirkend
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class WorkflowXFireWSS4JInHandler extends WSS4JInHandler {
 

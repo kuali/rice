@@ -38,8 +38,7 @@ import edu.iu.uis.eden.security.SignatureVerifyingInputStream;
  * At HttpInvokerRequestExecutor which is capable of digitally signing and verifying messages.  It's capabilities
  * to execute the signing and verification can be turned on or off via an application constant.
  * 
- * @author ewestfal
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KEWHttpInvokerRequestExecutor extends CommonsHttpInvokerRequestExecutor {
 	

@@ -32,7 +32,7 @@ import edu.iu.uis.eden.messaging.bam.BAMTargetEntry;
 /**
  * Test store and forward capabilities in calling services
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StoreAndForwardTest extends KSBTestCase {
 

@@ -22,10 +22,12 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.RiceConstants;
 import org.kuali.core.authorization.AuthorizationConstants;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.document.Document;
 import org.kuali.core.exceptions.DocumentInitiationAuthorizationException;
+import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
 
@@ -97,17 +99,15 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
             // default normal documents to be unable to copy
             flags.setCanCopy(false);
             // default route report to false and set individually based on workflow doc status below
-            flags.setCanPerformRouteReport(false);
+            flags.setCanPerformRouteReport(allowsPerformRouteReport(document, user));
 
             if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
                 ValidActionsVO validActions = workflowDocument.getRouteHeader().getValidActions();
-                flags.setCanCancel(hasInitiateAuthorization || validActions.contains(EdenConstants.ACTION_TAKEN_CANCELED_CD));
+                flags.setCanCancel(hasInitiateAuthorization && validActions.contains(EdenConstants.ACTION_TAKEN_CANCELED_CD));
 
-                flags.setCanSave(hasInitiateAuthorization || validActions.contains(EdenConstants.ACTION_TAKEN_SAVED_CD));
+                flags.setCanSave(hasInitiateAuthorization && validActions.contains(EdenConstants.ACTION_TAKEN_SAVED_CD));
 
-                flags.setCanRoute(hasInitiateAuthorization || validActions.contains(EdenConstants.ACTION_TAKEN_ROUTED_CD));
-
-                flags.setCanPerformRouteReport(allowsPerformRouteReport(document, user));
+                flags.setCanRoute(hasInitiateAuthorization && validActions.contains(EdenConstants.ACTION_TAKEN_ROUTED_CD));
 
                 flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
                 flags.setCanFYI(workflowDocument.isFYIRequested());
@@ -118,8 +118,6 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
                 flags.setCanApprove(workflowDocument.isApprovalRequested());
 
                 flags.setCanDisapprove(workflowDocument.isApprovalRequested());
-
-                flags.setCanPerformRouteReport(allowsPerformRouteReport(document, user));
 
                 flags.setCanAcknowledge(workflowDocument.isAcknowledgeRequested());
                 flags.setCanFYI(workflowDocument.isFYIRequested());
@@ -153,7 +151,8 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * @return boolean to allow or disallow route report button to show for user
      */
     public boolean allowsPerformRouteReport(Document document, UniversalUser user) {
-        return true;
+        KualiConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+        return kualiConfigurationService.getIndicatorParameter( RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, RiceConstants.SystemGroupParameterNames.DEFAULT_CAN_PERFORM_ROUTE_REPORT);
     }
 
     /**

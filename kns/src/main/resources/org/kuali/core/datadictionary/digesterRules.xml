@@ -361,7 +361,8 @@
                 <object-create-rule classname="org.kuali.core.datadictionary.HelpDefinition" />
                 <set-properties-rule />
 
-                <call-method-rule pattern="securityGroupName" methodname="setSecurityGroupName" paramcount="0" />
+                <call-method-rule pattern="parameterNamespace" methodname="setParameterNamespace" paramcount="0" />
+                <call-method-rule pattern="parameterDetailType" methodname="setParameterDetailType" paramcount="0" />
                 <call-method-rule pattern="parameterName" methodname="setParameterName" paramcount="0" />
 
                 <set-next-rule methodname="setHelpDefinition" />
@@ -401,7 +402,8 @@
                 <object-create-rule classname="org.kuali.core.datadictionary.HelpDefinition" />
                 <set-properties-rule />
 
-                <call-method-rule pattern="securityGroupName" methodname="setSecurityGroupName" paramcount="0" />
+                <call-method-rule pattern="parameterNamespace" methodname="setParameterNamespace" paramcount="0" />
+                <call-method-rule pattern="parameterDetailType" methodname="setParameterDetailType" paramcount="0" />
                 <call-method-rule pattern="parameterName" methodname="setParameterName" paramcount="0" />
 
                 <set-next-rule methodname="setHelpDefinition" />
@@ -419,7 +421,8 @@
                 		<object-create-rule classname="org.kuali.core.datadictionary.HelpDefinition" />
                 		<set-properties-rule />
 
-                		<call-method-rule pattern="securityGroupName" methodname="setSecurityGroupName" paramcount="0" />
+                        <call-method-rule pattern="parameterNamespace" methodname="setParameterNamespace" paramcount="0" />
+                        <call-method-rule pattern="parameterDetailType" methodname="setParameterDetailType" paramcount="0" />
                 		<call-method-rule pattern="parameterName" methodname="setParameterName" paramcount="0" />
 
                 		<set-next-rule methodname="setHelpDefinition" />
@@ -666,7 +669,8 @@
                 		<object-create-rule classname="org.kuali.core.datadictionary.HelpDefinition" />
                 		<set-properties-rule />
 
-                		<call-method-rule pattern="securityGroupName" methodname="setSecurityGroupName" paramcount="0" />
+                        <call-method-rule pattern="parameterNamespace" methodname="setParameterNamespace" paramcount="0" />
+                        <call-method-rule pattern="parameterDetailType" methodname="setParameterDetailType" paramcount="0" />
                 		<call-method-rule pattern="parameterName" methodname="setParameterName" paramcount="0" />
 
                 		<set-next-rule methodname="setHelpDefinition" />
@@ -687,7 +691,8 @@
                 <object-create-rule classname="org.kuali.core.datadictionary.HelpDefinition" />
                 <set-properties-rule />
 
-                <call-method-rule pattern="securityGroupName" methodname="setSecurityGroupName" paramcount="0" />
+                <call-method-rule pattern="parameterNamespace" methodname="setParameterNamespace" paramcount="0" />
+                <call-method-rule pattern="parameterDetailType" methodname="setParameterDetailType" paramcount="0" />
                 <call-method-rule pattern="parameterName" methodname="setParameterName" paramcount="0" />
 
                 <set-next-rule methodname="setHelpDefinition" />

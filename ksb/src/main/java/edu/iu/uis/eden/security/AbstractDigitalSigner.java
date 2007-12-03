@@ -24,7 +24,7 @@ import org.apache.commons.codec.binary.Base64;
  * An abstract implementation of a DigitalSigner which provides convienance utilities for storing a reference
  * to the Signature and also generating and encoding the actual digital signature.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class AbstractDigitalSigner implements DigitalSigner {
 

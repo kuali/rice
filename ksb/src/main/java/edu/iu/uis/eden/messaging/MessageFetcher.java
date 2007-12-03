@@ -24,7 +24,7 @@ import org.springframework.transaction.support.TransactionCallback;
 /**
  * Fetches messages from the db. Marks as 'R'. Gives messages to ThreadPool for execution
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class MessageFetcher implements Runnable {

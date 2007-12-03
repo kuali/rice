@@ -65,7 +65,7 @@ public class RemotedServiceRegistryTest extends KSBTestCase {
 	private void verifyServiceAdded(int originalSize, int newSize, ServiceDefinition mockServiceDef) {
 		//adding +2 here because of the service and the forwarding service.
 		assertTrue("new service didn't get added to the registry", originalSize + 2 == newSize);
-		RemotedServiceHolder serviceHolder = KSBServiceLocator.getServiceDeployer().getPublishedServices().get(this.mockServiceName);
+		ServiceHolder serviceHolder = KSBServiceLocator.getServiceDeployer().getPublishedServices().get(this.mockServiceName);
 		assertNotNull("Mock service never put in registry memory", serviceHolder);
 		assertEquals("End point url of service info is wrong", mockServiceDef.getServiceEndPoint().toString(), serviceHolder.getServiceInfo().getEndpointUrl());
 	}
@@ -174,7 +174,7 @@ public class RemotedServiceRegistryTest extends KSBTestCase {
 	private void verifyServiceRemoved(int originalSize, int newSize) {
 		//-2 because of store and forward service registered for each service.
 		assertEquals("new service didn't get removed from the registry", originalSize - 2, newSize);
-		RemotedServiceHolder serviceHolder = KSBServiceLocator.getServiceDeployer().getPublishedServices().get(this.testTopicName);
+		ServiceHolder serviceHolder = KSBServiceLocator.getServiceDeployer().getPublishedServices().get(this.testTopicName);
 		assertNull("Service should be removed from memory", serviceHolder);
 		
 		//should be gone from table

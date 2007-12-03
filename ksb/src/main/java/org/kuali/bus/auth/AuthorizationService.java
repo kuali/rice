@@ -15,21 +15,23 @@
  */
 package org.kuali.bus.auth;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * A simple authorization mechinism which can be used to determine whether or not the authenticated user
  * is an administrator and therefore has the permissions to view the KSB.  The KSB itself has no
  * concept of identity available to it, so the application which is using the bus needs to have some
- * mechanism by which to determine identity at the time that the {@link #isAdministrator()}
- * method is invoked (i.e. via a statically available ThreadLocal).
+ * mechanism by which to determine identity at the time that the {@link #isAdministrator(HttpServletRequest)}
+ * method is invoked (i.e. via a statically available ThreadLocal or from the HttpServletRequest).
  *
  * <p>This interface will most likely be deprecated in a future version of Rice and replaced with a more
  * sophisticated authorization implementation.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface AuthorizationService {
 
-    public boolean isAdministrator();
+    public boolean isAdministrator(HttpServletRequest request);
 
 }

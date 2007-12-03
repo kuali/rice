@@ -43,9 +43,6 @@ import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.util.RiceUtilities;
 
-import edu.iu.uis.eden.EdenConstants;
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.messaging.AsynchronousCall;
 import edu.iu.uis.eden.messaging.MessageFetcher;
 import edu.iu.uis.eden.messaging.MessageQueueService;
@@ -55,14 +52,13 @@ import edu.iu.uis.eden.messaging.RemoteResourceServiceLocator;
 import edu.iu.uis.eden.messaging.ServiceInfo;
 import edu.iu.uis.eden.messaging.callforwarding.ForwardedCallHandler;
 import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
-import edu.iu.uis.eden.web.WorkflowAction;
 
 /**
  * Struts action for interacting with the queue of messages.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class MessageQueueAction extends WorkflowAction {
+public class MessageQueueAction extends KSBAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MessageQueueAction.class);
 
@@ -81,16 +77,16 @@ public class MessageQueueAction extends WorkflowAction {
 	messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("routequeue.RouteQueueService.saved"));
 	saveMessages(request, messages);
 
-	routeQueueForm.setMessageId(null);
-	routeQueueForm.setMessageQueueFromDatabase(null);
-	routeQueueForm.setMessageQueueFromForm(null);
-	routeQueueForm.setShowEdit("yes");
-	routeQueueForm.setMethodToCall("");
-	establishRequiredState(request, form);
-	routeQueueForm.setMessageId(routeQueueId);
-	routeQueueForm.setMessageQueueFromForm(routeQueueForm.getMessageQueueFromDatabase());
-	routeQueueForm.setNewQueueDate(routeQueueForm.getExistingQueueDate());
-	routeQueueForm.getMessageQueueFromForm().setMethodCall(unwrapPayload(routeQueueForm.getMessageQueueFromForm()));
+//	routeQueueForm.setMessageId(null);
+////	routeQueueForm.setMessageQueueFromDatabase(null);
+////	routeQueueForm.setMessageQueueFromForm(null);
+//	routeQueueForm.setShowEdit("yes");
+//	routeQueueForm.setMethodToCall("");
+//	establishRequiredState(request, form);
+//	routeQueueForm.setMessageId(routeQueueId);
+////	routeQueueForm.setMessageQueueFromForm(routeQueueForm.getMessageQueueFromDatabase());
+//	routeQueueForm.setNewQueueDate(routeQueueForm.getExistingQueueDate());
+//	routeQueueForm.getMessageQueueFromForm().setMethodCall(unwrapPayload(routeQueueForm.getMessageQueueFromForm()));
 	return mapping.findForward("report");
     }
 
@@ -154,9 +150,9 @@ public class MessageQueueAction extends WorkflowAction {
 	PersistedMessage message = routeQueueForm.getMessageQueueFromForm();
 	// copy the new values over
 	if (existingMessage == null) {
-	    // TODO better error processing
-	    throw new WorkflowServiceErrorException("Could locate the existing message, it may have already been processed.");
+	    throw new RuntimeException("Could locate the existing message, it may have already been processed.");
 	}
+
 	existingMessage.setQueuePriority(message.getQueuePriority());
 	existingMessage.setIpNumber(message.getIpNumber());
 	existingMessage.setLockVerNbr(message.getLockVerNbr());
@@ -188,7 +184,7 @@ public class MessageQueueAction extends WorkflowAction {
 		}
 	    }
 	}
-	throw new WorkflowServiceErrorException("Could not locate the BusAdminService for ip " + ip
+	throw new RuntimeException("Could not locate the BusAdminService for ip " + ip
 		+ " in order to forward the message.");
     }
 
@@ -202,6 +198,7 @@ public class MessageQueueAction extends WorkflowAction {
          *                The populated message to be requeued.
          */
     protected void quickRequeueMessage(PersistedMessage message) {
+	message.setQueueStatus(RiceConstants.ROUTE_QUEUE_ROUTING);
 	message.setQueueDate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 	message.setRetryCount(new Integer(0));
 	getRouteQueueService().save(message);
@@ -318,6 +315,7 @@ public class MessageQueueAction extends WorkflowAction {
          * Called by the super's Execute method on every request.
          */
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
+	request.setAttribute("rice_constant", new RiceConstants());
 	MessageQueueForm routeQueueForm = (MessageQueueForm) form;
 	routeQueueForm.setMyIpAddress(RiceUtilities.getIpNumber());
 	routeQueueForm.setMyMessageEntity(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGE_ENTITY));
@@ -328,8 +326,7 @@ public class MessageQueueAction extends WorkflowAction {
 	if (routeQueueForm.getMessageId() != null) {
 	    PersistedMessage rq = getRouteQueueService().findByRouteQueueId(routeQueueForm.getMessageId());
 	    if (rq != null) {
-		// routeQueueForm.setExistingQueueDate(EdenConstants.getDefaultDateFormat().format(rq.getQueueDate()));
-		routeQueueForm.setExistingQueueDate(EdenConstants.getDefaultDateFormat().format(new Date()));
+		routeQueueForm.setExistingQueueDate(RiceConstants.getDefaultDateFormat().format(new Date()));
 		routeQueueForm.setMessageQueueFromDatabase(rq);
 		// establish IP addresses where this message could safely be forwarded to
 		String serviceName = rq.getServiceName();
@@ -389,7 +386,7 @@ public class MessageQueueAction extends WorkflowAction {
 	    if (!StringUtils.isBlank(routeQueueForm.getRouteQueueIdFilter())) {
 		if (!NumberUtils.isNumber(routeQueueForm.getRouteQueueIdFilter())) {
 		    // TODO better error handling here
-		    throw new WorkflowServiceErrorException("Message Id must be a number.");
+		    throw new RuntimeException("Message Id must be a number.");
 		}
 	    }
 
@@ -399,10 +396,10 @@ public class MessageQueueAction extends WorkflowAction {
 	    String trimmedKey = null;
 	    for (Iterator iter = request.getParameterMap().keySet().iterator(); iter.hasNext();) {
 		key = (String) iter.next();
-		if (key.endsWith(EdenConstants.ROUTE_QUEUE_FILTER_SUFFIX)) {
+		if (key.endsWith(RiceConstants.ROUTE_QUEUE_FILTER_SUFFIX)) {
 		    value = request.getParameter(key);
 		    if (StringUtils.isNotBlank(value)) {
-			trimmedKey = key.substring(0, key.indexOf(EdenConstants.ROUTE_QUEUE_FILTER_SUFFIX));
+			trimmedKey = key.substring(0, key.indexOf(RiceConstants.ROUTE_QUEUE_FILTER_SUFFIX));
 			criteriaValues.put(trimmedKey, value);
 		    }
 		}
@@ -413,7 +410,7 @@ public class MessageQueueAction extends WorkflowAction {
     }
 
     private MessageQueueService getRouteQueueService() {
-	return (MessageQueueService) KEWServiceLocator.getService(KEWServiceLocator.ROUTE_QUEUE_SRV);
+	return KSBServiceLocator.getRouteQueueService();
     }
 
     /**
@@ -427,6 +424,9 @@ public class MessageQueueAction extends WorkflowAction {
          * @return Returns the payload if one is present and it can be deserialized, otherwise returns null.
          */
     protected AsynchronousCall unwrapPayload(PersistedMessage message) {
+	if (message == null || message.getPayload() == null) {
+	    return null;
+	}
 	String encodedPayload = message.getPayload().getPayload();
 	if (StringUtils.isBlank(encodedPayload)) {
 	    return null;

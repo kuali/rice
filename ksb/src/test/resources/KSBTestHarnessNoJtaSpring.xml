@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<bean id="config" class="org.kuali.rice.config.spring.ConfigFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:META-INF/ksb-test-config.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="config" />
+		<property name="targetMethod" value="getProperties" />
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" ref="configProperties" />
+	</bean>
+	
+	<bean id="ojbConfigurer" class="org.springmodules.orm.ojb.support.LocalOjbConfigurer" />
+
+	<bean id="transactionManager" class="org.springmodules.orm.ojb.PersistenceBrokerTransactionManager">
+		<property name="jcdAlias" value="dataSource" />
+	</bean>
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>${datasource.driver.name}</value>
+		</property>
+		<property name="url">
+			<value>${datasource.url}</value>
+		</property>
+		<property name="username">
+			<value>${datasource.username}</value>
+		</property>
+		<property name="password">
+			<value>${datasource.password}</value>
+		</property>
+	</bean>
+
+	<bean id="cache" class="edu.iu.uis.eden.cache.RiceCacheAdministratorImpl" />
+
+	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
+		<property name="messageEntity" value="KEW" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="rootConfig" ref="config" />
+		<property name="modules">
+			<list>
+				<bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
+					<property name="serviceServletUrl" value="http://localhost:${ksb.testharness.port}/en-test/remoting/" />
+					<property name="overrideServices">
+						<list>
+							<bean class="edu.iu.uis.eden.messaging.config.ServiceHolder">
+								<property name="localServiceName" value="exceptionMessagingService" />
+								<property name="service" ref="testExceptionHandlerService" />
+							</bean>
+						</list>
+					</property>
+					<property name="platformTransactionManager" ref="transactionManager" />
+					<property name="cache">
+						<ref bean="cache" />
+					</property>
+					<property name="services">
+						<list>
+							<bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+								<property name="service">
+									<ref bean="soapService" />
+								</property>
+								<property name="localServiceName" value="soap-Queue" />
+								<property name="serviceNameSpaceURI" value="testNameSpace" />
+								<property name="priority" value="3" />
+								<property name="retryAttempts" value="1" />
+								<property name="busSecurity" value="false"></property>
+							</bean>
+							<bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+								<property name="service">
+									<ref bean="soapService" />
+								</property>
+								<property name="localServiceName" value="soap-repeatTopic" />
+								<property name="serviceNameSpaceURI" value="testNameSpace" />
+								<property name="priority" value="3" />
+								<property name="queue" value="false" />
+								<property name="retryAttempts" value="1" />
+							</bean>
+							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+								<property name="service">
+									<ref bean="testLocalServiceFavoriteCall" />
+								</property>
+								<property name="localServiceName" value="testLocalServiceFavoriteCall" />
+							</bean>
+							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+								<property name="service">
+									<ref bean="testExplodingServiceWithDefaults" />
+								</property>
+								<property name="localServiceName" value="testExplodingServiceWithDefaults" />
+							</bean>
+							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+								<property name="service">
+									<ref bean="testExplodingRetryCount" />
+								</property>
+								<property name="localServiceName" value="testExplodingRetryCount" />
+								<property name="retryAttempts" value="2" />
+							</bean>
+							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+								<property name="service">
+									<ref bean="testExplodingQueueTimeLimit" />
+								</property>
+								<property name="localServiceName" value="explodingQueueTimeLimit" />
+								<property name="millisToLive" value="2000" />
+							</bean>
+							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+								<property name="service">
+									<ref bean="testHarnessSharedTopic" />
+								</property>
+								<property name="localServiceName" value="repeatTopic" />
+								<property name="priority" value="3" />
+								<property name="queue" value="false" />
+								<property name="retryAttempts" value="1" />
+							</bean>
+							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+								<property name="service">
+									<ref bean="testHarnessSharedTopic" />
+								</property>
+								<property name="serviceNameSpaceURI" value="testAppsSharedTopic" />
+								<property name="localServiceName" value="sharedTopic" />
+								<property name="priority" value="3" />
+								<property name="queue" value="false" />
+								<property name="retryAttempts" value="1" />
+							</bean>
+							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+								<property name="service">
+									<ref bean="testRepeatMessageQueue" />
+								</property>
+								<property name="localServiceName" value="testRepeatMessageQueue" />
+								<property name="priority" value="3" />
+								<property name="retryAttempts" value="1" />
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="testHarnessSharedTopic" class="edu.iu.uis.eden.messaging.remotedservices.TestHarnessSharedTopic" />
+	<bean id="testRepeatMessageQueue" class="edu.iu.uis.eden.messaging.remotedservices.TestRepeatMessageQueue" />
+	<bean id="testExplodingQueueTimeLimit" class="edu.iu.uis.eden.messaging.remotedservices.TesetHarnessExplodingQueue" />
+	<bean id="testExplodingRetryCount" class="edu.iu.uis.eden.messaging.remotedservices.TesetHarnessExplodingQueue" />
+	<bean id="testExplodingServiceWithDefaults" class="edu.iu.uis.eden.messaging.remotedservices.TesetHarnessExplodingQueue" />
+	<bean id="testLocalServiceFavoriteCall" class="edu.iu.uis.eden.messaging.remotedservices.GenericTestService" />
+	<bean id="soapService" class="edu.iu.uis.eden.messaging.remotedservices.SOAPServiceImpl" />
+
+
+	<bean id="matchAllWithPropReq" class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource" lazy-init="true">
+		<property name="transactionAttribute">
+			<value>PROPAGATION_REQUIRED</value>
+		</property>
+	</bean>
+	<bean id="matchAllTxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor" lazy-init="true">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="transactionAttributeSource">
+			<ref bean="matchAllWithPropReq" />
+		</property>
+	</bean>
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
+		<property name="interceptorNames">
+			<list>
+				<idref local="matchAllTxInterceptor" />
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<idref local="testExceptionHandlerService" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="testExceptionHandlerService" class="edu.iu.uis.eden.messaging.exceptionhandling.TestExceptionHandlerServiceImpl" />
+
+</beans>

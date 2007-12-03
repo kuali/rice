@@ -18,6 +18,7 @@ package org.kuali.core.util.properties;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.kuali.core.exceptions.DuplicateKeyException;
 import org.kuali.core.exceptions.PropertiesException;
 
@@ -27,6 +28,8 @@ import org.kuali.core.exceptions.PropertiesException;
  * 
  */
 public class PropertyHolder {
+    private static Logger LOG = Logger.getLogger(PropertyHolder.class);
+    
     Properties heldProperties;
 
     /**
@@ -66,6 +69,7 @@ public class PropertyHolder {
         return this.heldProperties.getProperty(key);
     }
 
+
     /**
      * Associates the given value with the given key
      * 
@@ -76,11 +80,29 @@ public class PropertyHolder {
      * @throws DuplicateKeyException if a property with the given key already exists
      */
     public void setProperty(String key, String value) {
+	setProperty(null, key, value);	
+    }
+    
+    /**
+     * Associates the given value with the given key
+     * 
+     * @param source
+     * @param key
+     * @param value
+     * @throws IllegalArgumentException if the given key is null
+     * @throws IllegalArgumentException if the given value is null
+     * @throws DuplicateKeyException if a property with the given key already exists
+     */
+    public void setProperty(PropertySource source, String key, String value) {
         validateKey(key);
         validateValue(value);
 
         if (containsKey(key)) {
-            throw new DuplicateKeyException("duplicate key '" + key + "'");
+            if (source != null && source instanceof FilePropertySource && ((FilePropertySource)source).isAllowOverrides()) {
+                LOG.info("Duplicate Key: Override is enabled [key=" + key + ", new value=" + value + ", old value=" + this.heldProperties.getProperty(key) + "]");
+            } else {
+                throw new DuplicateKeyException("duplicate key '" + key + "'");
+            }
         }
         this.heldProperties.setProperty(key, value);
     }
@@ -115,7 +137,7 @@ public class PropertyHolder {
 
         for (Iterator i = newProperties.keySet().iterator(); i.hasNext();) {
             String key = (String) i.next();
-            setProperty(key, newProperties.getProperty(key));
+            setProperty(source, key, newProperties.getProperty(key));
         }
     }
 

@@ -16,12 +16,11 @@
 -->
 <!DOCTYPE dictionaryEntry PUBLIC
     "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "../dataDictionary-1_0.dtd">
+    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
 
 <!-- very loosely based on ObjectCode.xml-->
 <dictionaryEntry>
     <businessObject businessObjectClass="org.kuali.module.chart.bo.ObjectCode">
-
 
         <inquiry>
             <title>Object Code Inquiry</title>

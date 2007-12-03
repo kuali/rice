@@ -35,7 +35,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * Override kuali workgroup service because it's going directly against the workflow group service but 
  * toUppering every networkid witch is messing things up.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RiceGroupServiceImpl extends KualiGroupServiceImpl {
 

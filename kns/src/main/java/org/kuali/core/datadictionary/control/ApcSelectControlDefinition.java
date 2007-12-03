@@ -20,23 +20,24 @@ import org.kuali.core.lookup.keyvalues.ApcValuesFinder;
 
 public class ApcSelectControlDefinition extends SelectControlDefinition {
 
-    private String group;
+    private String parameterNamespace;
+    private String parameterDetailType;
     private String parameterName;
 
     public ApcSelectControlDefinition() {
         super();
-        setValuesFinderClass(new ApcValuesFinder().getClass());
+        setValuesFinderClass(ApcValuesFinder.class);
     }
 
-    public String getGroup() {
-        return group;
+    public String getParameterNamespace() {
+        return parameterNamespace;
     }
 
-    public void setGroup(String group) {
-        if (StringUtils.isBlank(group)) {
-            throw new IllegalArgumentException("invalid (blank) group in <apcSelect>");
+    public void setParameterNamespace(String parameterNamespace) {
+        if (StringUtils.isBlank(parameterNamespace)) {
+            throw new IllegalArgumentException("invalid (blank) parameterNamespace in <apcSelect>");
         }
-        this.group = group;
+        this.parameterNamespace = parameterNamespace;
     }
 
     public String getParameterName() {
@@ -53,5 +54,16 @@ public class ApcSelectControlDefinition extends SelectControlDefinition {
     public boolean isApcSelect() {
         return true;
     }
+
+	public String getParameterDetailType() {
+		return this.parameterDetailType;
+	}
+
+	public void setParameterDetailType(String parameterDetailType) {
+        if (StringUtils.isBlank(parameterDetailType)) {
+            throw new IllegalArgumentException("invalid (blank) parameterDetailType in <apcSelect>");
+        }
+		this.parameterDetailType = parameterDetailType;
+	}
 
 }

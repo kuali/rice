@@ -16,13 +16,15 @@
 package edu.iu.uis.eden.messaging.web;
 
 import org.apache.struts.action.ActionForm;
+import org.kuali.rice.RiceConstants;
+import org.kuali.rice.core.Core;
 
 import edu.iu.uis.eden.messaging.threadpool.KSBThreadPool;
 
 /**
  * Struts ActionForm for the {@link ThreadPoolAction}.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ThreadPoolForm extends ActionForm {
@@ -33,6 +35,10 @@ public class ThreadPoolForm extends ActionForm {
     private KSBThreadPool threadPool;
     private Integer corePoolSize; //editable
     private Integer maximumPoolSize; //editable
+
+    private boolean allServers;
+    private Long timeIncrement;
+    private Long maxRetryAttempts;
 
     public String getMethodToCall() {
         return this.methodToCall;
@@ -57,6 +63,27 @@ public class ThreadPoolForm extends ActionForm {
     }
     public void setThreadPool(KSBThreadPool threadPool) {
         this.threadPool = threadPool;
+    }
+    public boolean isAllServers() {
+        return this.allServers;
+    }
+    public void setAllServers(boolean allServers) {
+        this.allServers = allServers;
+    }
+    public String getMessageEntity() {
+	return Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGE_ENTITY);
+    }
+    public Long getMaxRetryAttempts() {
+        return this.maxRetryAttempts;
+    }
+    public void setMaxRetryAttempts(Long maxRetryAttempts) {
+        this.maxRetryAttempts = maxRetryAttempts;
+    }
+    public Long getTimeIncrement() {
+        return this.timeIncrement;
+    }
+    public void setTimeIncrement(Long timeIncrement) {
+        this.timeIncrement = timeIncrement;
     }
 
 }

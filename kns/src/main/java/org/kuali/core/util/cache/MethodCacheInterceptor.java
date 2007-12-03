@@ -42,7 +42,7 @@ import com.opensymphony.oscache.base.NeedsRefreshException;
  * called and the result cached for future use.
  * end Kuali Foundation modification
  * 
- * @author <a href="mailto:irbouh@gmail.com">Omar Irbouh </a>
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 2004.10.07
  */
 public class MethodCacheInterceptor implements MethodInterceptor, InitializingBean {

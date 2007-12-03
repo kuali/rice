@@ -39,7 +39,7 @@ import edu.iu.uis.eden.messaging.KEWJavaService;
  * them to a Topic on the bus so that all other entities on the bus can flush
  * their cache if neccessary.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RiceDistributedCacheListener extends AbstractBroadcastingListener implements KEWJavaService {
 

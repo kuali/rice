@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.core.bo.AdHocRouteRecipient;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.exceptions.UnknownDocumentIdException;
+import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.Timer;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
@@ -265,14 +266,19 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
 
     /**
-     * @see org.kuali.core.workflow.service.WorkflowDocumentService#save(edu.iu.uis.eden.routetemplate.FlexDoc)
+     * @see org.kuali.core.workflow.service.WorkflowDocumentService#save(org.kuali.core.workflow.service.KualiWorkflowDocument, java.lang.String)
      */
-    public void save(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
+    public void save(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
+        if (workflowDocument.isStandardSaveAllowed()) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("saving flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
         }
         
         workflowDocument.saveDocument(annotation);
+    }
+        else {
+            this.saveRoutingData(workflowDocument);
+        }
     }
     
     /**
@@ -293,7 +299,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         if (LOG.isDebugEnabled()) {
             LOG.debug("getting current route level name for flexDoc(" + workflowDocument.getRouteHeaderId());
         }
-        return KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId()).getCurrentRouteLevelName();
+//        return KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId()).getCurrentRouteLevelName();
+        KualiWorkflowDocument freshCopyWorkflowDoc = createWorkflowDocument(workflowDocument.getRouteHeaderId(), GlobalVariables.getUserSession().getUniversalUser());
+        return freshCopyWorkflowDoc.getCurrentRouteNodeNames();
     }
 
     /**

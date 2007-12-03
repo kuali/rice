@@ -35,6 +35,7 @@ import org.kuali.core.datadictionary.control.CurrencyControlDefinition;
 import org.kuali.core.datadictionary.control.KualiUserControlDefinition;
 import org.kuali.core.document.authorization.MaintenanceDocumentAuthorizations;
 import org.kuali.core.exceptions.UnknownBusinessClassAttributeException;
+import org.kuali.core.inquiry.Inquirable;
 import org.kuali.core.inquiry.KualiInquirableImpl;
 import org.kuali.core.lookup.LookupUtils;
 import org.kuali.core.lookup.keyvalues.ApcValuesFinder;
@@ -67,8 +68,24 @@ public class FieldUtils {
 
         Boolean b = businessObjectDictionaryService.noInquiryFieldInquiry(bo.getClass(), propertyName);
         if (b == null || !b.booleanValue()) {
+            Class<Inquirable> inquirableClass = businessObjectDictionaryService.getInquirableClass(bo.getClass());
             Boolean b2 = businessObjectDictionaryService.forceLookupResultFieldInquiry(bo.getClass(), propertyName);
-            inquiryUrl = KualiInquirableImpl.getInquiryUrl(bo, propertyName, null == b2 ? false : b2.booleanValue());
+            Inquirable inq = null;
+            try {
+                if ( inquirableClass != null ) {
+                    inq = inquirableClass.newInstance();
+                } else {
+                    inq = KNSServiceLocator.getKualiInquirable();              
+                    if ( LOG.isDebugEnabled() ) {
+                        LOG.debug( "Default Inquirable Class: " + inq.getClass() );
+        }
+                }
+
+                inquiryUrl = inq.getInquiryUrl(bo, propertyName, null == b2 ? false : b2.booleanValue() );
+                
+            } catch ( Exception ex ) {
+                LOG.error("unable to create inquirable to get inquiry URL", ex );
+            }
         }
 
         field.setInquiryURL(inquiryUrl);
@@ -204,7 +221,8 @@ public class FieldUtils {
 
                         if (finder != null) {
                             if (finder instanceof ApcValuesFinder && control instanceof ApcSelectControlDefinition) {
-                                ((ApcValuesFinder) finder).setGroup(((ApcSelectControlDefinition) control).getGroup());
+                                ((ApcValuesFinder) finder).setParameterNamespace(((ApcSelectControlDefinition) control).getParameterNamespace());
+                                ((ApcValuesFinder) finder).setParameterDetailType(((ApcSelectControlDefinition) control).getParameterDetailType());
                                 ((ApcValuesFinder) finder).setParameterName(((ApcSelectControlDefinition) control).getParameterName());
                             }
                             field.setFieldValidValues(finder.getKeyValues());

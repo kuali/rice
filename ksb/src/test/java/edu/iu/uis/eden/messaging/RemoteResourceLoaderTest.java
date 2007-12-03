@@ -16,6 +16,7 @@
 package edu.iu.uis.eden.messaging;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.bus.test.KSBTestCase;
 import org.kuali.rice.exceptions.RiceRuntimeException;
 import org.kuali.rice.util.ClassLoaderUtils;
+import org.kuali.rice.util.DataAccessUtils;
 
 import edu.iu.uis.eden.messaging.exceptionhandling.DefaultMessageExceptionHandler;
 import edu.iu.uis.eden.messaging.exceptionhandling.MessageExceptionHandler;
@@ -35,9 +37,9 @@ import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 /**
  * Tests RemoteResourceLoader is working correctly by itself and working correctly with the RemoteServiceRegistry in marking
  * services bad/refreshing services/etc.
- * 
- * @author rkirkend
- * 
+ *
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
  */
 public class RemoteResourceLoaderTest extends KSBTestCase {
 
@@ -49,7 +51,7 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
     public void setUp() throws Exception {
 	super.setUp();
 	this.rrl = KSBResourceLoaderFactory.getRemoteResourceLocator();
-	KSBServiceLocator.getScheduledPool().stop();	
+	KSBServiceLocator.getScheduledPool().stop();
 	KSBServiceLocator.getServiceDeployer().getPublishedServices().clear();
 }
 
@@ -89,7 +91,7 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
 
     /**
          * change service start rrl. make sure service isn't there.
-         * 
+         *
          * @throws Exception
          */
     @Test
@@ -109,7 +111,7 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
 
     /**
          * add service refresh rrl. make sure it's there.
-         * 
+         *
          * @throws Exception
          */
     @Test
@@ -122,7 +124,7 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
 
     /**
          * add service start rrl. make sure it's there.
-         * 
+         *
          * @throws Exception
          */
     @Test
@@ -170,9 +172,9 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
 
     /**
      * put in because of a weird bug where inactive services were forcing client refreshes no matter what.
-     * 
+     *
      * this test verifies that setting a service inactive will for a refresh ONCE.  but not again.
-     * 
+     *
      * @throws Exception
      */
     @Test public void testInactiveServiceDoesntForceRefresh() throws Exception {
@@ -189,6 +191,29 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
 	    List<RemotedServiceHolder> remotedServices2 = clients2.get(name);
 	    assertEquals(remotedServices1, remotedServices2);
 	}
+    }
+
+    @Test public void testAddingServiceWithDifferentIPSameURL() throws Exception {
+	KSBServiceLocator.getIPTableService().remove(KSBServiceLocator.getIPTableService().fetchAll());
+	assertTrue(KSBServiceLocator.getIPTableService().fetchAll().isEmpty());
+	ServiceDefinition serviceDef = addServiceToDB();
+	
+//	ServiceInfo servInfo1 = new ServiceInfo(serviceDef);
+	ServiceInfo servInfo2 = new ServiceInfo(serviceDef);
+	servInfo2.setServerIp("somethingnew");
+	
+	List<ServiceInfo> fetchedServices = KSBServiceLocator.getIPTableService().fetchAll();
+	assertEquals(1, fetchedServices.size());
+//	fetchedServices.add(servInfo1);
+	List<ServiceInfo> configuredServices = new ArrayList<ServiceInfo>();
+	configuredServices.add(servInfo2);
+	
+	RoutingTableDiffCalculator diffCalc = new RoutingTableDiffCalculator();
+	diffCalc.calculateServerSideUpdateLists(configuredServices, fetchedServices);
+	diffCalc.getMasterServiceList();
+	KSBServiceLocator.getIPTableService().save(diffCalc.getServicesNeedUpdated());
+	
+	assertEquals(1, KSBServiceLocator.getIPTableService().fetchAll().size());
     }
     
     private ServiceInfo findServiceInfo(QName serviceName, List<ServiceInfo> serviceInfos) {
@@ -207,17 +232,18 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
 	try {
 	    KSBServiceLocator.getIPTableService().saveEntry(serviceInfo);
 	} catch (Exception e) {
-	    if (KSBServiceLocator.getOptimisticLockFailureService().checkForOptimisticLockFailure(e)) {
+	    if (DataAccessUtils.isOptimisticLockFailure(e)) {
 		saveServiceInfo(serviceInfo, count);
 	    }
 	}
     }
-    
-    private void addServiceToDB() throws Exception {
+
+    private ServiceDefinition addServiceToDB() throws Exception {
 	ServiceDefinition mockServiceDef = getMockServiceDefinition();
 	mockServiceDef.validate();
 	ServiceInfo mockService = new ServiceInfo(mockServiceDef);
 	saveServiceInfo(mockService, 0);
+	return mockServiceDef;
     }
 
     private ServiceDefinition getMockServiceDefinition() throws Exception {

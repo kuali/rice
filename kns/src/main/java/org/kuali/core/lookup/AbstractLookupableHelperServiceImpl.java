@@ -31,6 +31,7 @@ import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.mask.Mask;
 import org.kuali.core.exceptions.ValidationException;
+import org.kuali.core.inquiry.Inquirable;
 import org.kuali.core.inquiry.KualiInquirableImpl;
 import org.kuali.core.service.BusinessObjectDictionaryService;
 import org.kuali.core.service.BusinessObjectMetaDataService;
@@ -337,7 +338,21 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         String inquiryUrl = "";
 
         if (getBusinessObjectDictionaryService().noLookupResultFieldInquiry(bo.getClass(), propertyName) != null && !(getBusinessObjectDictionaryService().noLookupResultFieldInquiry(bo.getClass(), propertyName)).booleanValue()) {
-            inquiryUrl = KualiInquirableImpl.getInquiryUrl(bo, propertyName, (getBusinessObjectDictionaryService().forceLookupResultFieldInquiry(bo.getClass(), propertyName)).booleanValue());
+            Class<Inquirable> inquirableClass = businessObjectDictionaryService.getInquirableClass(bo.getClass());
+            Inquirable inq = null;
+            try {
+                if ( inquirableClass != null ) {
+                    inq = inquirableClass.newInstance();
+                } else {
+                    inq = KNSServiceLocator.getKualiInquirable();                
+                    if ( LOG.isDebugEnabled() ) {
+                        LOG.debug( "Default Inquirable Class: " + inq.getClass() );
+        }
+                }
+                inquiryUrl = inq.getInquiryUrl(bo, propertyName, (getBusinessObjectDictionaryService().forceLookupResultFieldInquiry(bo.getClass(), propertyName)).booleanValue());
+            } catch ( Exception ex ) {
+                LOG.error("unable to create inquirable to get inquiry URL", ex );
+            }
         }
 
         return inquiryUrl;

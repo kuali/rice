@@ -17,19 +17,15 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.bus.test.KSBTestCase;
-import org.kuali.rice.RiceConstants;
-import org.kuali.rice.config.Config;
-import org.kuali.rice.core.Core;
 
 import edu.iu.uis.eden.messaging.callbacks.SimpleCallback;
-import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 
 /**
  * Test that a context object passed through messaging is preserved in
  * 
  * async queue async topic
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class ContextObjectMessagingTest extends KSBTestCase {
@@ -46,8 +42,7 @@ public class ContextObjectMessagingTest extends KSBTestCase {
 	String contextObject = "my_context_object";
 	SimpleCallback callback = new SimpleCallback();
 	
-	KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper()
-		.getServiceAsynchronously(serviceName, callback, contextObject);
+		KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, callback, contextObject);
 	    
 	synchronized (callback) {
 	    testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
@@ -65,8 +60,7 @@ public class ContextObjectMessagingTest extends KSBTestCase {
 
 	SimpleCallback callback = new SimpleCallback();
 	String contextObject = "my_context_object";
-	KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper()
-		.getServiceAsynchronously(serviceName, callback, contextObject);
+		KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, callback, contextObject);
 	
 	synchronized (callback) {
 	    testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));

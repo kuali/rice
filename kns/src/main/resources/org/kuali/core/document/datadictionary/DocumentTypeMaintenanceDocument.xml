@@ -16,7 +16,7 @@
 -->
 <!DOCTYPE dictionaryEntry PUBLIC
     "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "../../../../core/datadictionary/dataDictionary-1_0.dtd">
+    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
 
 <dictionaryEntry>
     <maintenanceDocument>
@@ -41,7 +41,7 @@
             <![CDATA[&nbsp;]]>
         </summary>
         <description>Document used to create or update a document types in the system.</description>
-        <help securityGroupName="ChartMaintenanceEDoc" parameterName="CHART_HELP_DOCUMENT_TYPE" />
+        <help parameterNamespace="KR-NS" parameterDetailType="DocumentType" parameterName="DOCUMENT_TYPE" />
 
         <lockingKeys>
             <field attributeName="financialDocumentTypeCode" />

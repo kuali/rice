@@ -23,7 +23,6 @@ import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.bus.test.KSBTestCase;
 import org.kuali.rice.RiceConstants;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.test.TestUtilities;
 
 import edu.iu.uis.eden.messaging.GlobalCallbackRegistry;
@@ -34,25 +33,25 @@ import edu.iu.uis.eden.messaging.remotedservices.TesetHarnessExplodingQueue;
 
 /**
  * Tests various exception messaging cases
- * 
+ *
  * Millis to live - that a message with no home is still sending messages while it's time to live hasn't expired
  * Retry count - that a message configured with a retry count will send x number of messages before being marked exception
  * Being marked as exception - that a message in exception is in the route log and marked with a status of 'E'
- * Defuault retry count - that a message configured with no retry or time to live is retry the default number of times as 
+ * Defuault retry count - that a message configured with no retry or time to live is retry the default number of times as
  * 	noted in an app constant and a class default if that constant is not a number or doesn't exist
  * App Constant to determine the default time increment works (we need this to effectively test anyway)
  * Things work without the timeincrement constant in place
- * 
- * @author rkirkend
+ *
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ExceptionMessagingTest extends KSBTestCase {
 
-	
+
 	private QName queueTimeToLiveServiceName = new QName("KEW", "explodingQueueTimeLimit");
-	private QName retryCountServiceName = new QName("KEW", "testExplodingRetryCount");
+//	private QName retryCountServiceName = new QName("KEW", "testExplodingRetryCount");
 	private TestCallback callback = new TestCallback();
-	
+
 	@Override
 	public void setUp() throws Exception {
 		System.setProperty(RiceConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "500");
@@ -64,11 +63,14 @@ public class ExceptionMessagingTest extends KSBTestCase {
 		TestCallback.clearCallbacks();
 		TesetHarnessExplodingQueue.NUM_CALLS = 0;
 	}
-	
+
 	@Override
 	public void tearDown() throws Exception {
-	    KSBServiceLocator.getScheduler().shutdown();
-	    super.tearDown();
+	    try {
+		KSBServiceLocator.getScheduler().shutdown();
+	    } finally {
+		super.tearDown();
+	    }
 	}
 
 
@@ -78,13 +80,13 @@ public class ExceptionMessagingTest extends KSBTestCase {
 	 * @throws Exception
 	 */
 	@Test public void testTimeToLive() throws Exception {
-	
+
 		KEWJavaService explodingQueue = (KEWJavaService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(this.queueTimeToLiveServiceName);
 		explodingQueue.invoke("");
 		TestUtilities.waitForExceptionRouting();
 		//this service is on a 3 second wait the queue is on a 1 sec.
 		Thread.sleep(10000);
-		
+
 		//verify the entry is in exception routing
 		List<PersistedMessage> messagesQueued = KSBServiceLocator.getRouteQueueService().findByServiceName(this.queueTimeToLiveServiceName, "invoke");
 		PersistedMessage message = messagesQueued.get(0);

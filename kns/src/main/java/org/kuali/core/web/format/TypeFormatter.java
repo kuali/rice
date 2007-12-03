@@ -22,7 +22,7 @@ package org.kuali.core.web.format;
  * This class is used to format objects.
  * end Kuali Foundation modification
  * 
- * @author <a href="mailto:jonathan@sourcebeat.com">Jonathan Lehr</a>
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TypeFormatter extends Formatter {
 	// begin Kuali Foundation modification

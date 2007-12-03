@@ -18,22 +18,18 @@ package edu.iu.uis.eden.messaging.callforwarding;
 
 import java.sql.Timestamp;
 
-import javax.transaction.Status;
-
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.RiceConstants;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.util.RiceUtilities;
 
 import edu.iu.uis.eden.messaging.AsynchronousCall;
-import edu.iu.uis.eden.messaging.MessageServiceInvoker;
 import edu.iu.uis.eden.messaging.PersistedMassagePayload;
 import edu.iu.uis.eden.messaging.PersistedMessage;
-import edu.iu.uis.eden.messaging.serviceproxies.AsynchronousMessageCaller;
+import edu.iu.uis.eden.messaging.serviceproxies.MessageSender;
 
 /**
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ForwardedCallHandlerImpl implements ForwardedCallHandler {
 
@@ -55,30 +51,8 @@ public class ForwardedCallHandlerImpl implements ForwardedCallHandler {
 		methodCall.setIgnoreStoreAndForward(true);
 		copy.setPayload(new PersistedMassagePayload(methodCall, copy));
 		copy.setServiceName(message.getServiceName());
-		saveMessage(copy);
-		executeMessage(copy);
-
-	}
-
-	// TODO copied from AsynchronousServiceCallProxy
-	protected void saveMessage(PersistedMessage message) {
-		if (new Boolean(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGE_PERSISTENCE))) {
-		    if (LOG.isDebugEnabled()) {
-			LOG.debug("Persisting Message " + message);
-}		    message.setQueueStatus(RiceConstants.ROUTE_QUEUE_ROUTING);
-		    KSBServiceLocator.getRouteQueueService().save(message);
-		}
-	    }
-
-	// TODO copied from AsynchronousServiceCallProxy
-	protected void executeMessage(PersistedMessage message) throws Exception {
-	    if (!new Boolean(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGING_OFF))) {
-		if (KSBServiceLocator.getJtaTransactionManager().getStatus() == Status.STATUS_ACTIVE) {
-		    KSBServiceLocator.getJtaTransactionManager().getTransaction().registerSynchronization(
-			    new AsynchronousMessageCaller(message));
-		} else {
-		    KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));
-		}
-	    }
+		message.setQueueStatus(RiceConstants.ROUTE_QUEUE_ROUTING);
+		KSBServiceLocator.getRouteQueueService().save(message);
+		MessageSender.sendMessage(message);
 	}
 }

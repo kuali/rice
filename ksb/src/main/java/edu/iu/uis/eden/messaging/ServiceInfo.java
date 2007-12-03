@@ -20,6 +20,7 @@ import java.io.Serializable;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.util.RiceUtilities;
@@ -29,7 +30,7 @@ import org.kuali.rice.util.RiceUtilities;
  * 
  * @see ServiceDefinition
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ServiceInfo implements Serializable {
 	
@@ -136,5 +137,7 @@ public class ServiceInfo implements Serializable {
 		this.serviceName = serviceName;
 	}
 
-	
+	public String toString() {
+	    return ReflectionToStringBuilder.toString(this);
+	}
 }

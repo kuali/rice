@@ -38,14 +38,13 @@ import edu.iu.uis.eden.messaging.RemotedServiceRegistry;
 import edu.iu.uis.eden.messaging.ServerSideRemotedServiceHolder;
 import edu.iu.uis.eden.messaging.ServiceInfo;
 import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
-import edu.iu.uis.eden.web.WorkflowAction;
 
 /**
  * Struts action for interacting with the queue of messages.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class ServiceRegistryAction extends WorkflowAction {
+public class ServiceRegistryAction extends KSBAction {
 
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 	    HttpServletResponse response) throws IOException, ServletException {

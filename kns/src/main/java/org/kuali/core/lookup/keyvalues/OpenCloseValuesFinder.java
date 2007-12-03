@@ -32,7 +32,6 @@ public class OpenCloseValuesFinder extends KeyValuesBase {
      */
     public List getKeyValues() {
         List keyValues = new ArrayList();
-        keyValues.add(new KeyLabelPair(" ", " "));
         keyValues.add(new KeyLabelPair("O", "Open"));
         keyValues.add(new KeyLabelPair("C", "Closed"));
         return keyValues;

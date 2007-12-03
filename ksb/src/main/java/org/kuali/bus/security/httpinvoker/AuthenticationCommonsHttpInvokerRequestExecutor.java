@@ -34,8 +34,7 @@ import edu.iu.uis.eden.messaging.ServiceInfo;
  * credentials from the CredentialsSource and places them in a BASIC HTTP
  * Authorization header.
  * 
- * @author Scott Battaglia
- * @version $Revision: 1.3 $ $Date: 2007-08-15 15:49:56 $
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  */
 public final class AuthenticationCommonsHttpInvokerRequestExecutor extends

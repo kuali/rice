@@ -15,17 +15,22 @@
  */
 package edu.iu.uis.eden.messaging;
 
+import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.BaseLifecycle;
 
 import edu.iu.uis.eden.messaging.callforwarding.ForwardedCallHandlerImpl;
 import edu.iu.uis.eden.messaging.config.ServiceBasedServiceDefinitionRegisterer;
+import edu.iu.uis.eden.messaging.threadpool.KSBThreadPool;
 
 /**
  * Implementation of the Bus Admin service.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BusAdminServiceImpl extends BaseLifecycle implements BusAdminService {
+
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusAdminServiceImpl.class);
 
     private ServiceBasedServiceDefinitionRegisterer defRegisterer;
 
@@ -38,6 +43,30 @@ public class BusAdminServiceImpl extends BaseLifecycle implements BusAdminServic
     }
 
     public void ping() {
+    }
+
+    public void setCorePoolSize(int corePoolSize) {
+	LOG.info("Setting core pool size to " + corePoolSize);
+	KSBServiceLocator.getThreadPool().setCorePoolSize(corePoolSize);
+    }
+
+    public void setMaximumPoolSize(int maxPoolSize) {
+	LOG.info("Setting max pool size to " + maxPoolSize);
+	KSBThreadPool threadPool = KSBServiceLocator.getThreadPool();
+	if (maxPoolSize < threadPool.getCorePoolSize()) {
+	    maxPoolSize = threadPool.getCorePoolSize();
+	}
+	threadPool.setMaximumPoolSize(maxPoolSize);
+    }
+
+    public void setConfigProperty(String propertyName, String propertyValue) {
+	String originalValue = Core.getCurrentContextConfig().getProperty(propertyName);
+	LOG.info("Changing config property '" + propertyName + "' from " + originalValue + " to " + propertyValue);
+	if (propertyValue == null) {
+	    Core.getCurrentContextConfig().getProperties().remove(propertyName);
+	} else {
+	    Core.getCurrentContextConfig().getProperties().put(propertyName, propertyValue);
+	}
     }
 
     public void start() throws Exception {

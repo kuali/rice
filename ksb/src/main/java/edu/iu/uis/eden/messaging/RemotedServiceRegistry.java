@@ -28,7 +28,7 @@ import org.kuali.rice.resourceloader.ServiceLocator;
  *
  * @see ServiceDefinition
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RemotedServiceRegistry extends ServiceLocator {
 

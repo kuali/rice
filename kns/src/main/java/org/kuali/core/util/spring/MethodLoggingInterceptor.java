@@ -40,8 +40,8 @@ public class MethodLoggingInterceptor implements MethodInterceptor {
      * @see org.aopalliance.intercept.MethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)
      */
     public Object invoke(MethodInvocation invocation) throws Throwable {
+        long startTime = System.currentTimeMillis();
         Object methodResult = null;
-
         String invocationLabel = buildInvocationLabel(invocation);
         try {
             LOG.fatal("entering " + invocationLabel);
@@ -54,8 +54,7 @@ public class MethodLoggingInterceptor implements MethodInterceptor {
 
             throw invocationException;
         }
-
-        LOG.fatal("leaving  " + invocationLabel);
+        LOG.fatal(new StringBuffer("leaving  ").append(invocationLabel).append(" / took ").append(System.currentTimeMillis() - startTime).append(" ms"));
 
         return methodResult;
     }

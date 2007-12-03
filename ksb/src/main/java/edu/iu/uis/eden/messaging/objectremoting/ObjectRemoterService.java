@@ -28,7 +28,7 @@ import edu.iu.uis.eden.messaging.ServiceInfo;
  * used for remoting attributes which are defined by class name rather than a
  * service name.  For example, this would includes PostProcessor, WorkflowAttribute, etc.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ObjectRemoterService {
 

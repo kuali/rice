@@ -28,7 +28,7 @@ import javax.servlet.ServletInputStream;
  * of the data after the last piece of data is read.  The digital signature to verify against is
  * passed into the constructor of this stream.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SignatureVerifyingInputStream extends ServletInputStream {
 

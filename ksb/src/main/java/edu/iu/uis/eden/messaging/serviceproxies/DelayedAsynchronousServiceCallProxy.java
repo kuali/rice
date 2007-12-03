@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.exceptions.RiceRuntimeException;
 import org.kuali.rice.proxy.BaseInvocationHandler;
 import org.kuali.rice.proxy.TargetedInvocationHandler;
 import org.kuali.rice.resourceloader.ContextClassLoaderProxy;
@@ -44,8 +45,8 @@ import edu.iu.uis.eden.messaging.quartz.MessageServiceExecutorJobListener;
 
 /**
  * A proxy which schedules a service to be executed asynchronously after some delay period.
- *
- * @author Eric Westfall
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler implements TargetedInvocationHandler {
 
@@ -57,7 +58,8 @@ public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler i
     private String value2;
     private long delayMilliseconds;
 
-    protected DelayedAsynchronousServiceCallProxy(List<RemotedServiceHolder> serviceDefs, Serializable context, String value1, String value2, long delayMilliseconds) {
+    protected DelayedAsynchronousServiceCallProxy(List<RemotedServiceHolder> serviceDefs, Serializable context,
+	    String value1, String value2, long delayMilliseconds) {
 	this.serviceDefs = serviceDefs;
 	this.context = context;
 	this.value1 = value1;
@@ -65,13 +67,18 @@ public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler i
 	this.delayMilliseconds = delayMilliseconds;
     }
 
-    public static Object createInstance(List<RemotedServiceHolder> serviceDefs, Serializable context, String value1, String value2, long delayMilliseconds) {
+    public static Object createInstance(List<RemotedServiceHolder> serviceDefs, Serializable context, String value1,
+	    String value2, long delayMilliseconds) {
 	if (serviceDefs == null || serviceDefs.isEmpty()) {
 	    throw new RuntimeException("Cannot create service proxy, no service(s) passed in.");
 	}
-	return Proxy.newProxyInstance(ClassLoaderUtils.getDefaultClassLoader(), ContextClassLoaderProxy
-		.getInterfacesToProxyIncludeSpring(serviceDefs.get(0).getService()), new DelayedAsynchronousServiceCallProxy(
-		serviceDefs, context, value1, value2, delayMilliseconds));
+	try {
+	    return Proxy.newProxyInstance(ClassLoaderUtils.getDefaultClassLoader(), ContextClassLoaderProxy
+		    .getInterfacesToProxyIncludeSpring(serviceDefs.get(0).getService()),
+		    new DelayedAsynchronousServiceCallProxy(serviceDefs, context, value1, value2, delayMilliseconds));
+	} catch (Exception e) {
+	    throw new RiceRuntimeException(e);
+	}
     }
 
     @Override
@@ -90,7 +97,7 @@ public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler i
 		message.setValue1(this.value1);
 		message.setValue2(this.value2);
 		Calendar now = Calendar.getInstance();
-		now.add(Calendar.MILLISECOND, (int)delayMilliseconds);
+		now.add(Calendar.MILLISECOND, (int) delayMilliseconds);
 		message.setQueueDate(new Timestamp(now.getTimeInMillis()));
 		scheduleMessage(message);
 		// only do one iteration if this is a queue. The load balancing
@@ -110,11 +117,13 @@ public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler i
 	Scheduler scheduler = KSBServiceLocator.getScheduler();
 	JobDataMap jobData = new JobDataMap();
 	jobData.put(MessageServiceExecutorJob.MESSAGE_KEY, message);
-	JobDetail jobDetail = new JobDetail("Delayed_Asynchronous_Call-" + Math.random(), "Delayed_Asynchronous_Call", MessageServiceExecutorJob.class);
+	JobDetail jobDetail = new JobDetail("Delayed_Asynchronous_Call-" + Math.random(), "Delayed_Asynchronous_Call",
+		MessageServiceExecutorJob.class);
 	jobDetail.setJobDataMap(jobData);
 	jobDetail.addJobListener(MessageServiceExecutorJobListener.NAME);
-	Trigger trigger = new SimpleTrigger("Delayed_Asynchronous_Call_Trigger-" + Math.random(), "Delayed_Asynchronous_Call", message.getQueueDate());
-	trigger.setJobDataMap(jobData);//1.6 bug required or derby will choke
+	Trigger trigger = new SimpleTrigger("Delayed_Asynchronous_Call_Trigger-" + Math.random(),
+		"Delayed_Asynchronous_Call", message.getQueueDate());
+	trigger.setJobDataMap(jobData);// 1.6 bug required or derby will choke
 	scheduler.scheduleJob(jobDetail, trigger);
     }
 

@@ -29,7 +29,7 @@ import org.kuali.rice.resourceloader.SpringResourceLoader;
  * 
  * Returns the {@link ResourceLoader} ready to be started.
  *  
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class KNSResourceLoaderFactory {

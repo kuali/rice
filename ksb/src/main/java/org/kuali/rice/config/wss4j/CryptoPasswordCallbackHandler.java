@@ -33,7 +33,7 @@ import org.kuali.rice.core.Core;
  * Workflow CryptoPasswordCallbackHandler which retrieves the keystore password
  * from the workflow Config.
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CryptoPasswordCallbackHandler implements CallbackHandler {
 

@@ -30,8 +30,8 @@ import org.logicblaze.lingo.jms.JmsServiceExporter;
  * {@link AuthenticationJmsProxyFactoryBean#CONST_KUALI_JMS_AUTHENTICATION} and
  * place it in an Acegi {@link SecurityContext}.
  * 
- * @author Scott Battaglia
- * @version $Revision: 1.3 $ $Date: 2007-08-15 15:49:54 $
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @version $Revision: 1.4 $ $Date: 2007-12-03 02:51:29 $
  * @since 0.9
  * 
  */

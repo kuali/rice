@@ -20,8 +20,6 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.bus.test.KSBTestCase;
-import org.kuali.rice.config.Config;
-import org.kuali.rice.core.Core;
 
 import edu.iu.uis.eden.messaging.bam.BAMService;
 import edu.iu.uis.eden.messaging.bam.BAMTargetEntry;
@@ -33,7 +31,7 @@ import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 /**
  * Tests that queues work over soap
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SOAPMessagingTest extends KSBTestCase {
 
@@ -48,15 +46,12 @@ public class SOAPMessagingTest extends KSBTestCase {
 
 	QName serviceName = new QName("testNameSpace", "soap-repeatTopic");
 
-	SOAPService testJavaAsyncService = (SOAPService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(
-		serviceName);
+		SOAPService testJavaAsyncService = (SOAPService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 	testJavaAsyncService.doTheThing("The param");
 	verifyServiceCalls(serviceName);
 
-	assertTrue("Test harness topic never called",
-		((Boolean) ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
-	assertTrue("Cliet1 app topic never called", ((Boolean) ServiceCallInformationHolder.stuff
-		.get("Client1SOAPServiceCalled")).booleanValue());
+		assertTrue("Test harness topic never called", ((Boolean) ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
+		assertTrue("Cliet1 app topic never called", ((Boolean) ServiceCallInformationHolder.stuff.get("Client1SOAPServiceCalled")).booleanValue());
     }
 
     @Test
@@ -70,10 +65,8 @@ public class SOAPMessagingTest extends KSBTestCase {
 	testJavaAsyncService.doTheThing("The param");
 	callback.waitForAsyncCall(3000);
 	verifyServiceCalls(serviceName);
-	assertTrue("Test harness topic never called",
-		((Boolean) ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
-	assertTrue("Cliet1 app topic never called", ((Boolean) ServiceCallInformationHolder.stuff
-		.get("Client1SOAPServiceCalled")).booleanValue());
+		assertTrue("Test harness topic never called", ((Boolean) ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
+		assertTrue("Cliet1 app topic never called", ((Boolean) ServiceCallInformationHolder.stuff.get("Client1SOAPServiceCalled")).booleanValue());
     }
 
     private void verifyServiceCalls(QName serviceName) throws Exception {

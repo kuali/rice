@@ -22,7 +22,7 @@ import edu.iu.uis.eden.messaging.PersistedMessage;
  *
  * Takes a call made on a remote machine and forwarded here to be invoked.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ForwardedCallHandler {
 

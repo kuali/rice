@@ -25,7 +25,7 @@ import java.util.List;
  * 
  * @see AsynchronousCallback
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class GlobalCallbackRegistry {
 

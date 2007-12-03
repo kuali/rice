@@ -29,7 +29,7 @@ import org.kuali.rice.exceptions.RiceRuntimeException;
  * of code and diffs the two.
  * 
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class RoutingTableDiffCalculator {
@@ -69,7 +69,7 @@ public class RoutingTableDiffCalculator {
 	private List<ServiceInfo> deconstructRemoteServiceLocatorClientMap(Map<QName, List<RemotedServiceHolder>> clients) {
 		List<ServiceInfo> clientServices = new ArrayList<ServiceInfo>();
 		for (List<RemotedServiceHolder> remoteServiceHolders : clients.values()) {
-			for (RemotedServiceHolder holder : remoteServiceHolders) {
+			for (ServiceHolder holder : remoteServiceHolders) {
 				clientServices.add(holder.getServiceInfo());
 			}
 		}
@@ -85,6 +85,12 @@ public class RoutingTableDiffCalculator {
 			if (deployedServices.containsKey(infoEntry.getKey())) {
 				ServiceInfo deployedServiceInfo = deployedServices.get(infoEntry.getKey());
 				if (! isSame(infoEntry.getValue(), deployedServiceInfo)) {
+				    // if the ip number is changing and the url is the same then someone is 
+				    // trying to move a url to a new IP address.  This is bad
+//				    if (infoEntry.getValue().getServerIp().equals(deployedServiceInfo.getServerIp())) {
+//					throw new RiceRuntimeException("You are trying to register a service already registered under an existing " +
+//							"IP Address.");
+//				    }
 				    this.servicesNeedUpdated.add(deployedServiceInfo);
 				}
 				updateDeployedServiceInfo(infoEntry.getValue(), deployedServiceInfo);

@@ -18,7 +18,7 @@ package edu.iu.uis.eden.messaging;
 /**
  * A service for administrative functions for a node on the service bus.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface BusAdminService {
@@ -29,5 +29,11 @@ public interface BusAdminService {
     public void forward(PersistedMessage message) throws Exception;
 
     public void ping();
+
+    public void setCorePoolSize(int corePoolSize);
+
+    public void setMaximumPoolSize(int maxPoolSize);
+
+    public void setConfigProperty(String propertyName, String propertyValue);
 
 }

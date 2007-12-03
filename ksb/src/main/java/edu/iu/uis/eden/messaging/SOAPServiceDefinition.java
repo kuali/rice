@@ -21,10 +21,8 @@ import org.kuali.rice.config.ConfigurationException;
 
 /**
  * 
- * @author natjohns
- * @author rkirkend
- * @author Scott Battaglia
- * @version $Revision: 1.2 $ $Date: 2007-06-19 14:35:12 $
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @version $Revision: 1.3 $ $Date: 2007-12-03 02:51:28 $
  * @since 0.9
  */
 public class SOAPServiceDefinition extends ServiceDefinition {
@@ -37,7 +35,7 @@ public class SOAPServiceDefinition extends ServiceDefinition {
 	 * Constructor that sets the bus security (i.e. digital signing) to FALSE by default.
 	 */
 	public SOAPServiceDefinition() {
-	    super(Boolean.FALSE);
+	    super(Boolean.TRUE);
 	}
 
 	public String getServiceInterface() {

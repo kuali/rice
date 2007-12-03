@@ -62,6 +62,7 @@ import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.BaseUserService;
 import edu.iu.uis.eden.user.BaseWorkflowUser;
+import edu.iu.uis.eden.user.UserCapabilities;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.user.WorkflowUserId;
 
@@ -88,6 +89,23 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
     
     private String supervisorWorkgroup;
     private String workflowExceptionWorkgroup;
+    private UserCapabilities workflowUserCapabilities;
+
+    /**
+     * Overriding inherited method which returns true for all to allow configuration
+     * 
+     * @see edu.iu.uis.eden.user.BaseUserService#getCapabilities()
+     */
+    public UserCapabilities getCapabilities() {
+	if (workflowUserCapabilities == null) {
+	    workflowUserCapabilities = super.capabilities;
+	}
+	return workflowUserCapabilities;
+    }
+    
+    public void setWorkflowUserCapabilities(UserCapabilities workflowUserCapabilities) {
+	this.workflowUserCapabilities = workflowUserCapabilities;
+    }
 
     /**
      * @see org.kuali.core.service.UniversalUserService#getUniversalUser(org.kuali.core.bo.user.UserId)
@@ -458,14 +476,14 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
 
     private String getSupervisorWorkgroup() {
         if (supervisorWorkgroup == null) {
-            supervisorWorkgroup = KNSServiceLocator.getKualiConfigurationService().getApplicationParameterValue(RiceConstants.CoreApcParms.GROUP_CORE_MAINT_EDOCS, RiceConstants.CoreApcParms.SUPERVISOR_WORKGROUP);
+            supervisorWorkgroup = KNSServiceLocator.getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, RiceConstants.CoreApcParms.SUPERVISOR_WORKGROUP);
         }
         return supervisorWorkgroup;
     }
 
     private String getWorkflowExceptionWorkgroup() {
         if (workflowExceptionWorkgroup == null) {
-            workflowExceptionWorkgroup = KNSServiceLocator.getKualiConfigurationService().getApplicationParameterValue(RiceConstants.CoreApcParms.GROUP_CORE_MAINT_EDOCS, RiceConstants.CoreApcParms.WORKFLOW_EXCEPTION_WORKGROUP);
+            workflowExceptionWorkgroup = KNSServiceLocator.getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, RiceConstants.CoreApcParms.WORKFLOW_EXCEPTION_WORKGROUP);
         }
         return workflowExceptionWorkgroup;
     }

@@ -28,7 +28,7 @@ import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 /**
  * simple test verifying if distributed topics are working.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class DistributedTopicTest extends KSBTestCase {

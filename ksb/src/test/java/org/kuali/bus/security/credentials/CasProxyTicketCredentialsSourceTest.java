@@ -38,8 +38,7 @@ import edu.yale.its.tp.cas.proxy.ProxyTicketReceptor;
 
 /**
  * 
- * @author Scott Battaglia
- * @version $Revision: 1.3 $ $Date: 2007-08-15 15:49:52 $
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  *
  */

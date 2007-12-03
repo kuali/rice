@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * Interface for a service which is invoked with a single Serializable payload.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface KEWJavaService {
 

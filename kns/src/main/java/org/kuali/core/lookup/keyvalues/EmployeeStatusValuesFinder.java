@@ -17,6 +17,8 @@ package org.kuali.core.lookup.keyvalues;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,7 +35,16 @@ public class EmployeeStatusValuesFinder extends KeyValuesBase {
      */
     public List getKeyValues() {
         KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
-        Collection codes = boService.findAll(EmployeeStatus.class);
+        List<EmployeeStatus> codes = new ArrayList<EmployeeStatus>();
+        for (Object employeeStatusAsObj: boService.findAll(EmployeeStatus.class)) {
+            codes.add((EmployeeStatus)employeeStatusAsObj);
+        }
+        Collections.sort(codes, new Comparator<EmployeeStatus>() {
+	    public int compare(EmployeeStatus empStatusA, EmployeeStatus empStatusB) {
+		return empStatusA.getCode().compareTo(empStatusB.getCode());
+	    }
+            
+        });
         List labels = new ArrayList();
         labels.add(new KeyLabelPair("", ""));
         Iterator iter = codes.iterator();

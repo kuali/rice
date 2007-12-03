@@ -15,9 +15,10 @@
  */
 package org.kuali.core.rule.event;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.core.document.Document;
-import org.kuali.core.rule.BusinessRule;
-import org.kuali.core.rule.SaveDocumentRule;
 
 /**
  * This class represents the save event that is part of an eDoc in Kuali. This could be triggered when a user presses the save
@@ -26,7 +27,7 @@ import org.kuali.core.rule.SaveDocumentRule;
  * 
  * 
  */
-public final class SaveOnlyDocumentEvent extends KualiDocumentEventBase {
+public class SaveOnlyDocumentEvent extends SaveDocumentEvent {
     /**
      * Constructs a SaveOnlyDocumentEvent with the specified errorPathPrefix and document
      * 
@@ -34,29 +35,34 @@ public final class SaveOnlyDocumentEvent extends KualiDocumentEventBase {
      * @param errorPathPrefix
      */
     public SaveOnlyDocumentEvent(String errorPathPrefix, Document document) {
-        super("creating unvalidated save event for document " + getDocumentId(document), errorPathPrefix, document);
+        this("creating save event using no generated events for document " + getDocumentId(document), errorPathPrefix, document);
     }
 
     /**
-     * Constructs a UnvalidatedSaveDocumentEvent with the given document
+     * Constructs a SaveDocumentEvent with the given document
      * 
      * @param document
      */
     public SaveOnlyDocumentEvent(Document document) {
         this("", document);
     }
-
+    
     /**
-     * @see org.kuali.core.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
+     * @see org.kuali.core.rule.event.KualiDocumentEventBase#KualiDocumentEventBase(java.lang.String, java.lang.String, org.kuali.core.document.Document)
      */
-    public Class getRuleInterfaceClass() {
-        return SaveDocumentRule.class;
+    public SaveOnlyDocumentEvent(String description, String errorPathPrefix, Document document) {
+	super(description, errorPathPrefix, document);
     }
 
     /**
-     * @see org.kuali.core.rule.event.KualiDocumentEvent#invokeRuleMethod(org.kuali.core.rule.BusinessRule)
+     * This overridden method returns an empty list always
+     * 
+     * @see org.kuali.core.rule.event.SaveDocumentEvent#generateEvents()
      */
-    public boolean invokeRuleMethod(BusinessRule rule) {
-        return ((SaveDocumentRule) rule).processSaveDocument(document);
+    @Override
+    public List generateEvents() {
+	return new ArrayList();
     }
+    
+    
 }

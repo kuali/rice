@@ -24,6 +24,7 @@ import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.bo.AdHocRoutePerson;
 import org.kuali.core.bo.AdHocRouteWorkgroup;
 import org.kuali.core.bo.Note;
+import org.kuali.core.bo.Parameter;
 import org.kuali.core.bo.user.AuthenticationUserId;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.document.Document;
@@ -33,7 +34,6 @@ import org.kuali.core.rule.AddAdHocRoutePersonRule;
 import org.kuali.core.rule.AddAdHocRouteWorkgroupRule;
 import org.kuali.core.rule.AddNoteRule;
 import org.kuali.core.rule.ApproveDocumentRule;
-import org.kuali.core.rule.KualiParameterRule;
 import org.kuali.core.rule.RouteDocumentRule;
 import org.kuali.core.rule.SaveDocumentRule;
 import org.kuali.core.rule.event.ApproveDocumentEvent;
@@ -478,8 +478,13 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
      */
     protected boolean failsRule(String parameterName, String value) {
         LOG.debug("failsRule(String, String) - start");
+        Parameter rule = getParameterRule(parameterName);
+        boolean returnboolean = true;
 
-        boolean returnboolean = getParameterRule(parameterName).failsRule(value);
+        if ( rule != null ) {
+        	returnboolean = getKualiConfigurationService().failsRule(rule,value);
+        }
+
         LOG.debug("failsRule(String, String) - end");
         return returnboolean;
     }
@@ -493,8 +498,11 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
      */
     protected boolean succeedsRule(String parameterName, String value) {
         LOG.debug("succeedsRule(String, String) - start");
-
-        boolean returnboolean = getParameterRule(parameterName).succeedsRule(value);
+        Parameter rule = getParameterRule(parameterName);
+        boolean returnboolean = false;
+        if ( rule != null ) {
+        	returnboolean = getKualiConfigurationService().succeedsRule(rule,value);
+        }
         LOG.debug("succeedsRule(String, String) - end");
         return returnboolean;
     }
@@ -504,41 +512,48 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
      * 
      * @return String
      */
-    protected String getDefaultSecurityGrouping() {
+    protected String getDefaultParameterNamespace() {
         return null;
+    }
+
+    protected String getDefaultParameterDetailTypeCode() {
+    	return null;
     }
 
     /**
      * Uses default security grouping specified with the <code>getDefaultSecurityGrouping()</code> method to obtain a
-     * <code>{@link KualiParameterRule}</code> instance for the given <code>parameterName</code>
+     * <code>{@link Parameter}</code> instance for the given <code>parameterName</code>
      * 
      * @param parameterName
-     * @return KualiParameterRule
+     * @return Parameter
      * @see #getDefaultSecurityGrouping()
      */
-    protected KualiParameterRule getParameterRule(String parameterName) {
+    protected Parameter getParameterRule(String parameterName) {
         LOG.debug("getParameterRule(String) - start");
 
-        if (StringUtils.isBlank(getDefaultSecurityGrouping())) {
-            throw new IllegalArgumentException("No Security Grouping Supplied for ParameterRule " + parameterName);
+        if (StringUtils.isBlank(getDefaultParameterNamespace())) {
+            throw new IllegalArgumentException("No Namespace Supplied for ParameterRule " + parameterName);
         }
-        KualiParameterRule returnKualiParameterRule = getParameterRule(getDefaultSecurityGrouping(), parameterName);
+        if (StringUtils.isBlank(getDefaultParameterDetailTypeCode())) {
+            throw new IllegalArgumentException("No Detail Type Code Supplied for ParameterRule " + parameterName);
+        }
+        Parameter returnKualiParameterRule = getParameterRule(getDefaultParameterNamespace(), getDefaultParameterDetailTypeCode(), parameterName);
         LOG.debug("getParameterRule(String) - end");
         return returnKualiParameterRule;
     }
 
     /**
-     * Obtain access to an instance of <code>{@link KualiParameterRule}</code> for the given <code>securityGrouping</code> and
+     * Obtain access to an instance of <code>{@link Parameter}</code> for the given <code>securityGrouping</code> and
      * <code>parameterName</code>
      * 
      * @param securityGrouping
      * @param parameterName
      * @return KualiDocumentRule
      */
-    protected KualiParameterRule getParameterRule(String securityGrouping, String parameterName) {
+    protected Parameter getParameterRule(String parameterNamespace, String parameterDetailTypeCode, String parameterName) {
         LOG.debug("getParameterRule(String, String) - start");
 
-        KualiParameterRule returnKualiParameterRule = getKualiConfigurationService().getApplicationParameterRule(securityGrouping, parameterName);
+        Parameter returnKualiParameterRule = getKualiConfigurationService().getParameter(parameterNamespace, parameterDetailTypeCode, parameterName);
         LOG.debug("getParameterRule(String, String) - end");
         return returnKualiParameterRule;
     }
@@ -554,23 +569,51 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
      * @param errorParameter - String parameter for the restriction error message
      * @return boolean indicating whether or not the rule passed
      */
-    protected boolean executeApplicationParameterRestriction(String parameterGroupName, String parameterName, String restrictedFieldValue, String errorField, String errorParameter) {
-        LOG.debug("executeApplicationParameterRestriction(String, String, String, String, String) - start");
+    protected boolean executeParameterRestriction(String parameterNamespace, String parameterDetailTypeCode, String parameterName, String restrictedFieldValue, String errorField, String errorParameter) {
+        LOG.debug("executeParameterRestriction(String, String, String, String, String) - start");
 
         boolean rulePassed = true;
 
-        if (getKualiConfigurationService().hasApplicationParameterRule(parameterGroupName, parameterName)) {
-            KualiParameterRule rule = getKualiConfigurationService().getApplicationParameterRule(parameterGroupName, parameterName);
-            if (rule.failsRule(restrictedFieldValue)) {
-                GlobalVariables.getErrorMap().putError(errorField, rule.getErrorMessageKey(), new String[] { errorParameter, restrictedFieldValue, parameterName, parameterGroupName, rule.getParameterText() });
+        Parameter rule = getKualiConfigurationService().getParameter(parameterNamespace, parameterDetailTypeCode, parameterName);
+        if ( rule != null ) {        	
+            if (getKualiConfigurationService().failsRule(rule, restrictedFieldValue)) {
+                GlobalVariables.getErrorMap().putError(errorField, getKualiConfigurationService().getErrorMessageKey( rule ), new String[] { errorParameter, restrictedFieldValue, parameterName, parameterNamespace, rule.getParameterValue() });
                 rulePassed = false;
             }
         }
-        else {
-            LOG.warn("Did not find apc parameter record for group " + parameterGroupName + " with parm name " + parameterName);
+
+        LOG.debug("executeParameterRestriction(String, String, String, String, String) - end");
+        return rulePassed;
         }
 
-        LOG.debug("executeApplicationParameterRestriction(String, String, String, String, String) - end");
+    /**
+     * Checks the given field value against a restriction defined in the application parameters table. If the rule fails, an error
+     * is added to the global error map.
+     * 
+     * @param parameterGroupName - Security Group name
+     * @param parameterName - Parameter Name
+     * @param restrictedFieldValue - Value to check
+     * @param errorField - Key to associate error with in error map
+     * @param errorParameter - String parameter for the restriction error message
+     * @return boolean indicating whether or not the rule passed
+     */
+    protected boolean executeConstrainedParameterRestriction(String parameterNamespace, String parameterDetailTypeCode, String allowedParameterName, String disallowedParameterName, String constrainingValue, String restrictedFieldValue, String errorField, String errorParameter) {
+        LOG.debug("executeConstrainedParameterRestriction(String, String, String, String, String, String) - start");
+
+        boolean rulePassed = true;
+
+        Parameter allowedRule = getKualiConfigurationService().getParameter(parameterNamespace, parameterDetailTypeCode, allowedParameterName);
+        Parameter disallowedRule = getKualiConfigurationService().getParameter(parameterNamespace, parameterDetailTypeCode, disallowedParameterName);
+        if ( allowedRule != null || disallowedRule != null ) {           
+            rulePassed = getKualiConfigurationService().evaluateConstrainedParameter(allowedRule, disallowedRule, constrainingValue, restrictedFieldValue);
+            if ( !rulePassed ) {
+                Parameter ruleToUseInError = (allowedRule !=null)?allowedRule:disallowedRule;
+                GlobalVariables.getErrorMap().putError(errorField, getKualiConfigurationService().getErrorMessageKey( ruleToUseInError ), new String[] { errorParameter, restrictedFieldValue, ruleToUseInError.getParameterName()+"/"+constrainingValue, parameterNamespace+"/"+parameterDetailTypeCode, ruleToUseInError.getParameterValue() });
+                rulePassed = false;
+            }
+        }
+
+        LOG.debug("executeConstrainedParameterRestriction(String, String, String, String, String, String) - end");
         return rulePassed;
     }
 }

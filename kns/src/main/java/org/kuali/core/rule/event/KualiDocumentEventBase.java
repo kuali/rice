@@ -63,6 +63,12 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
         this.description = description;
         this.errorPathPrefix = errorPathPrefix;
 
+        setDocument(document);
+
+        LOG.debug(description);
+    }
+
+    private final void setDocument(Document document) {
         try {
             // by doing a deep copy, we are ensuring that the business rule class can't update
             // the original object by reference
@@ -70,15 +76,12 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
             // have to manually set the FlexDoc b/c it is transient and the deepCopy won't actually copy that object over
             // for a serialization based copy
             this.document.getDocumentHeader().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
-        }
-        catch (Exception e) {
+	} catch (Exception e) {
             LOG.warn( "Unable to perform deep copy on document", e);
             // just set to the passed in document
             this.document = document;
             // throw new RuntimeException("Failed to invoke deep copy of document.", e);
         }
-
-        LOG.debug(description);
     }
 
 

@@ -22,7 +22,7 @@ import org.kuali.rice.config.ConfigurationException;
 
 /**
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class JmsServiceDefinition extends ServiceDefinition {
 

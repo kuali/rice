@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
  * Object to hold a service and it's qname when injecting services into the KSBConfigurer for overriding workflow services 
  * when using embedded workflow. 
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ServiceHolder {
 

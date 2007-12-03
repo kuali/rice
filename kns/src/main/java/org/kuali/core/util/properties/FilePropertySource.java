@@ -35,6 +35,7 @@ public class FilePropertySource implements PropertySource {
 
 
     private String fileName;
+    private boolean allowOverrides;
 
     /**
      * Set source fileName.
@@ -52,6 +53,14 @@ public class FilePropertySource implements PropertySource {
         return this.fileName;
     }
 
+    public boolean isAllowOverrides() {
+        return this.allowOverrides;
+    }
+
+    public void setAllowOverrides(boolean allowOverrides) {
+        this.allowOverrides = allowOverrides;
+    }
+    
     /**
      * Attempts to load properties from a properties file which has the current fileName and is located on the classpath.
      * 
@@ -94,4 +103,5 @@ public class FilePropertySource implements PropertySource {
 
         return properties;
     }
+
 }

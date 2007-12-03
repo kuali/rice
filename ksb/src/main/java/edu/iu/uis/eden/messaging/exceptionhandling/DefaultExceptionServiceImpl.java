@@ -28,7 +28,7 @@ import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
  * the message in the queue as is, which should be marked Exception by the 
  * {@link MessageExceptionHandler}.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class DefaultExceptionServiceImpl implements ExceptionRoutingService {

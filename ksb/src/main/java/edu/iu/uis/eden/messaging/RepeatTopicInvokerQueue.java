@@ -24,7 +24,7 @@ package edu.iu.uis.eden.messaging;
  * repeated every original topic call when the call was first made we would miss all the 
  * original topic calls.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface RepeatTopicInvokerQueue {
 

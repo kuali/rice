@@ -26,7 +26,7 @@ import edu.iu.uis.eden.messaging.AsynchronousCallback;
 /**
  * An entry in the BAM representing a service method invocation.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BAMTargetEntry implements Serializable {
 

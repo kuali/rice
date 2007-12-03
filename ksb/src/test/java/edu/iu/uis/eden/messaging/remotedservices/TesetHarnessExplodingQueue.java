@@ -23,7 +23,7 @@ import edu.iu.uis.eden.messaging.KEWJavaService;
 
 /**
  * A service that throws exceptions
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class TesetHarnessExplodingQueue implements KEWJavaService {

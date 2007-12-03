@@ -31,7 +31,7 @@ import org.springframework.dao.DataAccessException;
 /**
  * This class is the OJB implementation of the NoteDao interface.
  *
- * @author Kuali Nervous System Team (kualidev@oncourse.iu.edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NoteDaoOjb extends PlatformAwareDaoBaseOjb implements NoteDao {
     private static Logger LOG = Logger.getLogger(NoteDaoOjb.class);

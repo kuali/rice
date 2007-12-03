@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.core.KualiModule;
 import org.kuali.core.bo.Campus;
 import org.kuali.core.bo.EmployeeStatus;
@@ -512,7 +513,7 @@ public class UniversalUser extends PersistableBusinessObjectBase {
      * @return Returns the groups.
      */
     public List<KualiGroup> getGroups() {
-        if ( groups == null ) {
+        if (groups == null) {
             refreshUserGroups();
         }
         return groups;
@@ -530,7 +531,9 @@ public class UniversalUser extends PersistableBusinessObjectBase {
         if ( universalUserService == null ) {
             universalUserService = KNSServiceLocator.getUniversalUserService();
         }
-        setGroups(universalUserService.getUsersGroups( this ));
+        if (!StringUtils.isBlank(personUserIdentifier)) {
+        	setGroups(universalUserService.getUsersGroups( this ));
+    	}
     }
     
     /**

@@ -35,7 +35,7 @@ import org.apache.struts.config.ModuleConfig;
  * This class is the POJO Plugin implementation of the PlugIn interface.
  * end Kuali Foundation modification
  * 
- * @author <a href="mailto:jonathan@sourcebeat.com">Jonathan Lehr</a>
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 // Kuali Foundation modification: class originally named SL plugin
 public class PojoPlugin implements PlugIn {

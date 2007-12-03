@@ -22,8 +22,7 @@ import java.util.List;
 import org.kuali.core.bo.Note;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.document.Document;
-import org.kuali.core.exceptions.ValidationException;
-import org.kuali.core.rule.event.KualiDocumentEvent;
+import org.kuali.core.rule.event.SaveEvent;
 
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowException;
@@ -123,32 +122,33 @@ public interface DocumentService {
      * @throws WorkflowException
      * @throws ValidationException
      */
-    public void validateAndPersistDocument(Document document, KualiDocumentEvent event) throws WorkflowException, ValidationException;
+//    public void validateAndPersistDocument(Document document, KualiDocumentEvent event) throws WorkflowException, ValidationException;
+
+    /**
+     * This is a helper method that performs the same as the {@link #saveDocument(Document, Class)} method.  The convenience
+     * of this method is that the event being used is the standard SaveDocumentEvent.
+     * 
+     * @see org.kuali.core.service.DocumentService#saveDocument(Document, Class)
+     */
+    public Document saveDocument(Document document) throws WorkflowException;
 
     /**
      * Saves the passed-in document. This will persist it both to the Kuali database, and also initiate it (if necessary) within
-     * workflow, so its available in the initiator's action list.
+     * workflow, so its available in the initiator's action list.  This method uses the passed in KualiDocumentEvent class when saving
+     * the document.  The KualiDocumentEvent class must implement the {@link SaveEvent} interface.
      *
      * Note that the system does not support passing in Workflow Annotations or AdHoc Route Recipients on a SaveDocument call. These
      * are sent to workflow on a routeDocument action, or any of the others which actually causes a routing action to happen in
      * workflow.
      *
-     * @param document The document to be saved.
-     * @return Returns the document that was passed in.
-     * @throws EdenException
-     * @throws ValidationErrorList
-     */
-    public Document saveDocument(Document document) throws WorkflowException;
-
-    /**
-     * Saves the passed-in document without running validation.  The method also populates and saves routing data to the workflow
-     * system so that any potential searchable attributes will be updated.
+     * NOTE: This method will not check the document action flags to check if a save is valid
      * 
-     * @param document
-     * @return
+     * @param document The document to be saved
+     * @param kualiDocumentEventClass The event class to use when saving (class must implement the SaveEvent interface)
+     * @return the document that was passed in
      * @throws WorkflowException
      */
-    public Document saveDocumentWithoutRunningValidation(Document document) throws WorkflowException;
+    public Document saveDocument(Document document, Class kualiDocumentEventClass) throws WorkflowException;
     
     /**
      * start the route the document for approval, optionally providing a list of ad hoc recipients, and additionally provideing a

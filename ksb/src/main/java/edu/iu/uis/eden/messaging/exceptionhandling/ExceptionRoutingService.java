@@ -21,7 +21,7 @@ import edu.iu.uis.eden.messaging.PersistedMessage;
 /**
  * A service for putting a document into exception routing.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ExceptionRoutingService {
 

@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.exceptions.RiceRuntimeException;
 import org.kuali.rice.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.util.ClassLoaderUtils;
 
@@ -33,7 +34,7 @@ import edu.iu.uis.eden.messaging.RemotedServiceHolder;
  * Used to Call a service synchronously but through the messaging code within workflow. Used to when switching generally
  * asynchronously called services to synchronously called services. Generally for testing purposes.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class SynchronousServiceCallProxy extends AsynchronousServiceCallProxy {
@@ -48,9 +49,13 @@ public class SynchronousServiceCallProxy extends AsynchronousServiceCallProxy {
 	if (serviceDefs == null || serviceDefs.isEmpty()) {
 	    throw new RuntimeException("Cannot create service proxy, no service(s) passed in.");
 	}
+	try {
 	return Proxy.newProxyInstance(ClassLoaderUtils.getDefaultClassLoader(), ContextClassLoaderProxy
 		.getInterfacesToProxyIncludeSpring(serviceDefs.get(0).getService()), new SynchronousServiceCallProxy(
 		serviceDefs, callback, context, value1, value2));
+	} catch (Exception e) {
+	    throw new RiceRuntimeException(e);
+    }
     }
 
     @Override

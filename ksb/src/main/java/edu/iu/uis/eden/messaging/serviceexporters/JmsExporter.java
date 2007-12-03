@@ -32,7 +32,7 @@ import edu.iu.uis.eden.messaging.bam.BAMServerProxy;
 
 /**
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class JmsExporter implements ServiceExporter {
 

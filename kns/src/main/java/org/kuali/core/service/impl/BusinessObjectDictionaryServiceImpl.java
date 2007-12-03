@@ -292,6 +292,19 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
         return title;
     }
 
+    /**
+     * @see org.kuali.core.service.BusinessObjectDictionaryService#getInquirableClass(java.lang.Class)
+     */
+    public Class getInquirableClass(Class businessObjectClass) {
+        Class clazz = null;
+
+        InquiryDefinition inquiryDefinition = getInquiryDefinition(businessObjectClass);
+        if (inquiryDefinition != null) {
+            clazz = inquiryDefinition.getInquirableClass();
+        }
+
+        return clazz;
+    }
 
     /**
      * @see org.kuali.core.service.BusinessObjectDictionaryService#getMaintainableTitle(java.lang.Class)

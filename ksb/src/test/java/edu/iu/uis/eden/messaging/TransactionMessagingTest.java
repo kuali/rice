@@ -22,14 +22,13 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionSynchronization;
 
 import edu.iu.uis.eden.messaging.callbacks.SimpleCallback;
-import edu.iu.uis.eden.messaging.serviceproxies.AsynchronousMessageCaller;
+import edu.iu.uis.eden.messaging.serviceproxies.MessageSendingTransactionSynchronization;
 
 /**
  * Verify that messaging works in the context of a transaction and message invokation is done via the
  * {@link TransactionSynchronization} messagei
  * 
- * @author rkirkend
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class TransactionMessagingTest extends KSBTestCase {
@@ -42,8 +41,8 @@ public class TransactionMessagingTest extends KSBTestCase {
     @Override
     public void setUp() throws Exception {
 	super.setUp();
-	AsynchronousMessageCaller.CALLED_TRANS_COMMITTED = false;
-	AsynchronousMessageCaller.CALLED_TRANS_ROLLEDBACKED = false;
+	MessageSendingTransactionSynchronization.CALLED_TRANS_COMMITTED = false;
+	MessageSendingTransactionSynchronization.CALLED_TRANS_ROLLEDBACKED = false;
     }
 
     @Test
@@ -61,12 +60,12 @@ public class TransactionMessagingTest extends KSBTestCase {
 
 		// this is a sanity check that we haven't sent the message before the trans is committed. dont remove this
                 // line.
-		assertFalse(AsynchronousMessageCaller.CALLED_TRANS_COMMITTED);
+		assertFalse(MessageSendingTransactionSynchronization.CALLED_TRANS_COMMITTED);
 		return null;
 	    }
 	});
 
-	assertTrue("Message not sent transactionallY", AsynchronousMessageCaller.CALLED_TRANS_COMMITTED);
+	assertTrue("Message not sent transactionallY", MessageSendingTransactionSynchronization.CALLED_TRANS_COMMITTED);
 
     }
 
@@ -86,13 +85,13 @@ public class TransactionMessagingTest extends KSBTestCase {
 		status.setRollbackOnly();
 		// this is a sanity check that we haven't sent the message before the trans is committed. dont remove this
                 // line.
-		assertFalse(AsynchronousMessageCaller.CALLED_TRANS_ROLLEDBACKED);
+		assertFalse(MessageSendingTransactionSynchronization.CALLED_TRANS_ROLLEDBACKED);
 		return null;
 	    }
 	});
 
-	assertFalse("Message not sent transactionallY", AsynchronousMessageCaller.CALLED_TRANS_COMMITTED);
-	assertTrue("Message not sent transactionallY", AsynchronousMessageCaller.CALLED_TRANS_ROLLEDBACKED);
+	assertFalse("Message not sent transactionallY", MessageSendingTransactionSynchronization.CALLED_TRANS_COMMITTED);
+	assertTrue("Message not sent transactionallY", MessageSendingTransactionSynchronization.CALLED_TRANS_ROLLEDBACKED);
 
     }
 

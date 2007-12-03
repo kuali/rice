@@ -18,6 +18,7 @@ package org.kuali.core.inquiry;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ import org.kuali.core.service.EncryptionService;
 import org.kuali.core.service.LookupService;
 import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.service.UniversalUserService;
+import org.kuali.core.util.InactiveRecordsHidingUtils;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.UrlFactory;
 import org.kuali.core.web.format.Formatter;
@@ -45,6 +47,9 @@ import org.kuali.rice.KNSServiceLocator;
 
 /**
  * Kuali inquirable implementation. Implements methods necessary to retrieve the business object and render the ui.
+ * 
+ * NOTE: this class is not thread safe.  When using this class or any subclasses in Spring, make sure that this is not a singleton service, or
+ * serious errors may occur.
  */
 public class KualiInquirableImpl implements Inquirable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiInquirableImpl.class);
@@ -53,6 +58,7 @@ public class KualiInquirableImpl implements Inquirable {
     private LookupService lookupService;
     private Class businessObjectClass;
 
+    private Map<String, Boolean> inactiveRecordDisplay;
     
     public static List<Class> HACK_LIST = new ArrayList<Class>();
 
@@ -62,6 +68,7 @@ public class KualiInquirableImpl implements Inquirable {
     public KualiInquirableImpl() {
         lookupService = KNSServiceLocator.getLookupService();
         dataDictionary = KNSServiceLocator.getBusinessObjectDictionaryService();
+        inactiveRecordDisplay = new HashMap<String, Boolean>();
     }
 
     /**
@@ -106,7 +113,7 @@ public class KualiInquirableImpl implements Inquirable {
         for (Iterator iter = inquirySections.iterator(); iter.hasNext();) {
             
             InquirySectionDefinition inquirySection = (InquirySectionDefinition) iter.next();
-            Section section = SectionBridge.toSection(inquirySection, bo);
+            Section section = SectionBridge.toSection(this, inquirySection, bo);
             sections.add(section);
             
         }
@@ -121,25 +128,9 @@ public class KualiInquirableImpl implements Inquirable {
      * @param propertyName the property which links to an inquirable
      * @return String url to inquiry
      */
-    public static String getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
+    public String getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
         Properties parameters = new Properties();
         parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, "start");
-
-        // If the field is subAccountNumber, financialSubObjectCode or projectCode and the value is dashes, don't give a url
-        if ("subAccountNumber".equals(attributeName) || "financialSubObjectCode".equals(attributeName) || "projectCode".equals(attributeName)) {
-            Object objFieldValue = ObjectUtils.getPropertyValue(businessObject, attributeName);
-            String fieldValue = objFieldValue == null ? "" : objFieldValue.toString();
-
-            if ("subAccountNumber".equals(attributeName) && fieldValue.equals(RiceConstants.DASHES_SUB_ACCOUNT_NUMBER)) {
-                return "";
-            }
-            if ("financialSubObjectCode".equals(attributeName) && fieldValue.equals(RiceConstants.DASHES_SUB_OBJECT_CODE)) {
-                return "";
-            }
-            if ("projectCode".equals(attributeName) && fieldValue.equals(RiceConstants.DASHES_PROJECT_CODE)) {
-                return "";
-            }
-        }
 
         BusinessObjectDictionaryService businessDictionary = KNSServiceLocator.getBusinessObjectDictionaryService();
         PersistenceStructureService persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
@@ -292,4 +283,23 @@ public class KualiInquirableImpl implements Inquirable {
         return KNSServiceLocator.getUniversalUserService();
     }
 
+    /**
+     * @see org.kuali.core.inquiry.Inquirable#getInactiveRecordDisplay()
+     */
+    public Map<String, Boolean> getInactiveRecordDisplay() {
+	return inactiveRecordDisplay;
+}
+    /**
+     * @see org.kuali.core.inquiry.Inquirable#getShowInactiveRecords(java.lang.String)
+     */
+    public boolean getShowInactiveRecords(String collectionName) {
+	return InactiveRecordsHidingUtils.getShowInactiveRecords(inactiveRecordDisplay, collectionName);
+    }
+
+    /**
+     * @see org.kuali.core.inquiry.Inquirable#setShowInactiveRecords(java.lang.String, boolean)
+     */
+    public void setShowInactiveRecords(String collectionName, boolean showInactive) {
+	InactiveRecordsHidingUtils.setShowInactiveRecords(inactiveRecordDisplay, collectionName, showInactive);
+    }
 }

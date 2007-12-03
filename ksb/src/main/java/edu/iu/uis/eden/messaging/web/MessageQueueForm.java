@@ -23,15 +23,15 @@ import java.util.List;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.struts.action.ActionForm;
+import org.kuali.bus.util.CodeTranslator;
+import org.kuali.rice.util.SqlTimestampConverter;
 
 import edu.iu.uis.eden.messaging.PersistedMessage;
-import edu.iu.uis.eden.util.CodeTranslator;
-import edu.iu.uis.eden.util.converters.KEWSqlTimestampConverter;
 
 /**
  * Struts ActionForm for the {@link MessageQueueAction}.
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class MessageQueueForm extends ActionForm {
 
@@ -72,7 +72,7 @@ public class MessageQueueForm extends ActionForm {
     private List<ValueLabelPair> ipAddresses = new ArrayList<ValueLabelPair>();
 
     static {
-        ConvertUtils.register(new KEWSqlTimestampConverter(), Timestamp.class);
+        ConvertUtils.register(new SqlTimestampConverter(), Timestamp.class);
     }
 
     public MessageQueueForm() {

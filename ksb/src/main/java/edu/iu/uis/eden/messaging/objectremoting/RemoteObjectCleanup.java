@@ -21,14 +21,15 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.springframework.transaction.support.TransactionSynchronization;
 
 /**
  * {@link Synchronization} to cleanup any remote objects created during the
  * current transaction.
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RemoteObjectCleanup implements Synchronization {
+public class RemoteObjectCleanup implements TransactionSynchronization {
 
 	private static final Logger LOG = Logger.getLogger(RemoteObjectCleanup.class);
 
@@ -65,5 +66,17 @@ public class RemoteObjectCleanup implements Synchronization {
 
 	public void setServiceToRemove(QName serviceToRemove) {
 		this.serviceToRemove = serviceToRemove;
+	}
+
+	public void afterCommit() {
+	}
+
+	public void beforeCommit(boolean readOnly) {
+	}
+
+	public void resume() {
+	}
+
+	public void suspend() {
 	}
 }

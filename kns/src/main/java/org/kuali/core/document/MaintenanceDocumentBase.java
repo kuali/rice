@@ -34,6 +34,9 @@ import org.kuali.RiceKeyConstants;
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.GlobalBusinessObject;
 import org.kuali.core.bo.PersistableBusinessObject;
+import org.kuali.core.bo.user.AuthenticationUserId;
+import org.kuali.core.bo.user.UniversalUser;
+import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.rule.event.KualiDocumentEvent;
@@ -41,6 +44,9 @@ import org.kuali.core.rule.event.SaveDocumentEvent;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.UrlFactory;
+import org.kuali.core.workflow.DocumentInitiator;
+import org.kuali.core.workflow.KualiDocumentXmlMaterializer;
+import org.kuali.core.workflow.KualiTransactionalDocumentInformation;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
 import org.w3c.dom.Document;
@@ -545,6 +551,18 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
      */
     public void setDisplayTopicFieldInNotes(boolean displayTopicFieldInNotes) {
         this.displayTopicFieldInNotes = displayTopicFieldInNotes;
+    }
+
+    @Override
+    /**
+     * Overridden to avoid serializing the xml twice, because of the xmlDocumentContents property of this object
+     */
+    public String serializeDocumentToXml() {
+	String tempXmlDocumentContents = xmlDocumentContents;
+	xmlDocumentContents = null;
+	String xmlForWorkflow = super.serializeDocumentToXml();
+	xmlDocumentContents = tempXmlDocumentContents;
+	return xmlForWorkflow;
     }
 
     @Override

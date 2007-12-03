@@ -31,8 +31,8 @@ import edu.iu.uis.eden.messaging.ServiceInfo;
  * the CredentialsSource and passes it along with the JMS message via the object
  * property <code>CONST_KUALI_JMS_AUTHENTICATION</code>.
  * 
- * @author Scott Battaglia
- * @version $Revision: 1.3 $ $Date: 2007-08-15 15:49:54 $
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @version $Revision: 1.4 $ $Date: 2007-12-03 02:51:29 $
  * @since 0.9
  */
 public class AuthenticationJmsProxyFactoryBean extends JmsProxyFactoryBean {

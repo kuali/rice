@@ -26,7 +26,7 @@ import org.springframework.transaction.PlatformTransactionManager;
  * An implementation of the Quartz SchedulerFactoryBean which uses a database-backed quartz if the useQuartzDatabase property
  * is set.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
 
@@ -36,8 +36,7 @@ public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
 	protected Scheduler createScheduler(SchedulerFactory schedulerFactory, String schedulerName) throws SchedulerException {
     	if (Core.getCurrentContextConfig().getObject(RiceConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY) != null) {
     	    try {
-    	    	Scheduler scheduler = (Scheduler) Core.getCurrentContextConfig().getObject(
-    			RiceConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY);
+				Scheduler scheduler = (Scheduler) Core.getCurrentContextConfig().getObject(RiceConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY);
     	    	scheduler.addJobListener(new MessageServiceExecutorJobListener());
     	    	return scheduler;
     	    } catch (Exception e) {
@@ -50,8 +49,7 @@ public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
     @Override
     public void afterPropertiesSet() throws Exception {
 
-	boolean useQuartzDatabase = new Boolean(Core.getCurrentContextConfig()
-		.getProperty(RiceConstants.USE_QUARTZ_DATABASE));
+		boolean useQuartzDatabase = new Boolean(Core.getCurrentContextConfig().getProperty(RiceConstants.USE_QUARTZ_DATABASE));
 	if (useQuartzDatabase) {
 	    if (jtaTransactionManager == null) {
 		throw new ConfigurationException("No jta transaction manager was configured for the KSB Quartz Scheduler");

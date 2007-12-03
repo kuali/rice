@@ -30,7 +30,7 @@ import edu.iu.uis.eden.messaging.callbacks.SimpleCallback;
 /**
  * Tests distributed Queue scenarios
  * 
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class DistributedQueueTest extends KSBTestCase {
@@ -44,11 +44,12 @@ public class DistributedQueueTest extends KSBTestCase {
     }
 
     /**
-     * If calling a queue with multiple subscribers only one subscriber should be calld.
+     * If calling a queue with multiple subscribers only one subscriber should be called.
      * 
      * @throws Exception
      */
-    @Test public void testSuccessfullyCallingQueueOnce() throws Exception {
+	@Test
+	public void testSuccessfullyCallingQueueOnce() throws Exception {
 
 	QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
 
@@ -58,7 +59,8 @@ public class DistributedQueueTest extends KSBTestCase {
 
     }
     
-    @Test public void testCallingQueueAsnyc() throws Exception {
+	@Test
+	public void testCallingQueueAsnyc() throws Exception {
 	KSBTestUtils.setMessagingToAsync();
 	
 	QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");

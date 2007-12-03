@@ -24,6 +24,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
  */
 public abstract class TransactionalDocumentBase extends DocumentBase implements TransactionalDocument {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TransactionalDocumentBase.class);
+    private boolean sessionDocument;
 
     /**
      * Default constructor.
@@ -65,6 +66,14 @@ public abstract class TransactionalDocumentBase extends DocumentBase implements 
         setNewDocumentHeader();
         getDocumentHeader().setFinancialDocumentInErrorNumber(sourceDocumentHeaderId);
         addCopyErrorDocumentNote("error-correction for document " + sourceDocumentHeaderId);
+    }
+
+    public boolean isSessionDocument() {
+        return SessionDocument.class.isAssignableFrom(this.getClass());
+    }
+
+    public void setSessionDocument(boolean sessionDocument) {
+        this.sessionDocument = sessionDocument;
     }
     
 }

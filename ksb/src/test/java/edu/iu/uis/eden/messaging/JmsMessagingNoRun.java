@@ -20,7 +20,7 @@ package edu.iu.uis.eden.messaging;
 
 /**
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class JmsMessagingNoRun {
     // TODO renable this test

@@ -24,7 +24,7 @@ import org.kuali.rice.RiceConstants;
  * A DigitalSigner implementation which places the alias and digital signature into the request
  * headers of the commons HttpClient's HttpMethod.
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class HttpClientHeaderDigitalSigner extends AbstractDigitalSigner {
 

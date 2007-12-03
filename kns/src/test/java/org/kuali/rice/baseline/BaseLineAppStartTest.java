@@ -18,13 +18,13 @@ package org.kuali.rice.baseline;
 import java.net.URL;
 
 import org.junit.Test;
+import org.kuali.rice.TestBase;
 import org.kuali.rice.testharness.HtmlUnitUtil;
-import org.kuali.rice.testharness.KNSTestCase;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-public class BaseLineAppStartTest extends KNSTestCase {
+public class BaseLineAppStartTest extends TestBase {
 
     @Test public void testHomePage() throws Exception {
         final WebClient webClient = new WebClient();

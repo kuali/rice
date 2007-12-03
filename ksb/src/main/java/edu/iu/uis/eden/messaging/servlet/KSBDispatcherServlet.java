@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,6 +18,7 @@ package edu.iu.uis.eden.messaging.servlet;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.RiceConstants;
 import org.kuali.rice.exceptions.RiceRuntimeException;
 import org.springframework.beans.BeansException;
 import org.springframework.web.HttpRequestHandler;
@@ -38,6 +40,7 @@ import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
 import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
 
 import edu.iu.uis.eden.messaging.SOAPServiceDefinition;
+import edu.iu.uis.eden.messaging.ServerSideRemotedServiceHolder;
 import edu.iu.uis.eden.messaging.ServiceInfo;
 import edu.iu.uis.eden.security.SignatureSigningResponseWrapper;
 import edu.iu.uis.eden.security.SignatureVerifyingRequestWrapper;
@@ -46,17 +49,24 @@ import edu.iu.uis.eden.security.SignatureVerifyingRequestWrapper;
  * A {@link DispatcherServlet} which dispatches incoming requests to the appropriate
  * service endpoint.
  *
- * @author rkirkend
- * @author ewestfal
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KSBDispatcherServlet extends DispatcherServlet {
 
 	private static final Logger LOG = Logger.getLogger(KSBDispatcherServlet.class);
-	
+
 	private static final long serialVersionUID = 6790121225857950019L;
 	private KSBHttpInvokerHandler httpInvokerHandler;
-	
+
+
+
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+	    // initialize RiceConstants for KSB interfaces
+	    config.getServletContext().setAttribute("org.kuali.rice.RiceConstants", new RiceConstants());
+	    super.init(config);
+	}
+
 	/**
 	 * Instantiate the WebApplicationContext for this servlet, either a default
 	 * XmlWebApplicationContext or a custom context class if set. This implementation
@@ -76,16 +86,16 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 		this.httpInvokerHandler = new KSBHttpInvokerHandler();
 		this.setPublishEvents(false);
 	}
-	
+
 	protected HandlerAdapter getHandlerAdapter(Object handler) throws ServletException {
 		if (handler instanceof HttpRequestHandler) {
-			return new HttpRequestHandlerAdapter();	
+			return new HttpRequestHandlerAdapter();
 		} else if (handler instanceof Controller) {
 			return new SimpleControllerHandlerAdapter();
 		}
 		throw new RiceRuntimeException("handler of type " + handler.getClass().getName() + " is not known and can't be used by " + KSBDispatcherServlet.class.getName());
 	}
-	
+
 	/**
 	 * Return the HandlerExecutionChain for this request.
 	 * Try all handler mappings in order.
@@ -120,10 +130,18 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 			super.service(request, response);
 		}
 	}
-	
+
 	protected boolean isSecure(HttpServletRequest request) {
 		QName serviceName = this.httpInvokerHandler.getServiceNameFromRequest(request);
-		ServiceInfo serviceInfo = KSBServiceLocator.getServiceDeployer().getRemotedServiceHolder(serviceName).getServiceInfo();
+		if (LOG.isDebugEnabled()) {
+		    LOG.debug("Checking service " + serviceName + " for security enabled");
+		}
+		ServerSideRemotedServiceHolder serviceHolder = KSBServiceLocator.getServiceDeployer().getRemotedServiceHolder(serviceName);
+		if (serviceHolder == null) {
+		    LOG.error("Attempting to acquire non-existent service " + serviceName);
+		    throw new RiceRuntimeException("Attempting to acquire non-existent service " + serviceName);
+		}
+		ServiceInfo serviceInfo = serviceHolder.getServiceInfo();
 		if (serviceInfo.getServiceDefinition() instanceof SOAPServiceDefinition) {
 		    return false;
 		}

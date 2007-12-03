@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+    <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+        <ruleAttribute>
+            <name>RemoveReplaceWorkgroupTypeRoutingAttribute</name>
+            <className>edu.iu.uis.eden.routetemplate.RemoveReplaceWorkgroupTypeRoutingAttribute</className>
+            <label>RemoveReplaceWorkgroupTypeRoutingAttribute</label>
+            <description>An attribute for routing workgroups that have been changed via the Remove/Replace User document</description>
+            <type>RuleAttribute</type>
+        </ruleAttribute>
+        <ruleAttribute>
+			<name>RemoveReplaceRuleRoutingAttribute</name>
+			<className>edu.iu.uis.eden.routetemplate.RemoveReplaceRuleRoutingAttribute</className>
+			<label>RemoveReplaceRuleRoutingAttribute</label>
+			<description>An attribute for routing rules that have been changed via the Remove/Replace User document</description>
+			<type>RuleAttribute</type>
+		</ruleAttribute>
+    </ruleAttributes>
+    <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+        <ruleTemplate>
+			<name>RemoveReplaceWorkgroupTemplate</name>
+			<description>Remove/Replace Workgroup Routing</description>
+			<attributes>
+				<attribute>
+					<name>RemoveReplaceWorkgroupTypeRoutingAttribute</name>
+					<required>true</required>
+				</attribute>
+			</attributes>
+		</ruleTemplate>
+        <ruleTemplate>
+            <name>RemoveReplaceRuleTemplate</name>
+            <description>Remove/Replace Rule Routing</description>
+                <attributes>
+                    <attribute>
+                        <name>RemoveReplaceRuleRoutingAttribute</name>
+                        <required>true</required>
+                    </attribute>
+                </attributes>
+        </ruleTemplate>
+    </ruleTemplates>
+    <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+        <documentType>
+            <name>EDENSERVICE-DOCS.RemoveReplaceUser</name>
+            <parent>EDENSERVICE-DOCS</parent>
+            <description>A document to remove or replace users within rules and workgroups.</description>
+            <label>Remove/Replace User</label>
+            <postProcessorName>edu.iu.uis.eden.removereplace.RemoveReplacePostProcessor</postProcessorName>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <docHandler>http://localhost:8080/kr-dev/en/RemoveReplace.do?methodToCall=docHandler</docHandler>
+            <active>true</active>
+            <routingVersion>1</routingVersion>
+            <routePaths>
+                <routePath>
+                    <start name="Adhoc Routing" nextNode="Workgroup Approval"/>
+                    <requests name="Workgroup Approval" nextNode="Rule Approval"/>
+                    <requests name="Rule Approval"/>
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="Adhoc Routing">
+                    <activationType>P</activationType>
+                    <mandatoryRoute>false</mandatoryRoute>
+                    <finalApproval>false</finalApproval>
+                </start>
+                <requests name="Workgroup Approval">
+                    <activationType>P</activationType>
+                    <ruleTemplate>RemoveReplaceWorkgroupTemplate</ruleTemplate>
+                    <mandatoryRoute>false</mandatoryRoute>
+                    <finalApproval>false</finalApproval>
+                </requests>
+                <requests name="Rule Approval">
+                    <activationType>P</activationType>
+                    <ruleTemplate>RemoveReplaceRuleTemplate</ruleTemplate>
+                    <mandatoryRoute>false</mandatoryRoute>
+                    <finalApproval>false</finalApproval>
+                </requests>
+
+            </routeNodes>
+        </documentType>
+    </documentTypes>
+</data>

@@ -52,11 +52,15 @@ Copyright 2005-2007  The Kuali Foundation.  All rights reserved.  Kuali is licen
 
 <p>This product includes software licensed under Mozilla Public License (<span class="nobr"><a href="http://www.mozilla.org/MPL/">http://www.mozilla.org/MPL/</a></span>).</p>
 
+<p>This product includes software developed by the SAAJ Project part of Project GlassFish (<span class="nobr"><a href="https://saaj.dev.java.net/">https://saaj.dev.java.net/</a></span>).</p>
+
 <p>Portions Copyright (c) 2000-2006 The Legion of the Bouncy Castle. All Rights Reserved. (<span class="nobr"><a href="http://www.bouncycastle.org">http://www.bouncycastle.org</a></span>).</p>
 
 <p>Portions Copyright (c) 2000-2005 INRIA, France Telecom. All Rights Reserved.</p>
 
 <p>Portions Copyright (c) 2001-2006 Sun Microsystems, Inc. All Rights Reserved.</p>
+
+<p>Portions Copyright (c) 2002, 2003 Mihai Bazon. All Rights Reserved.  Licensed under GNU Lesser General Public License (<span class="nobr"><a href="http://www.opensource.org/licenses/lgpl-license.php">http://www.opensource.org/licenses/lgpl-license.php</a></span>).</p>
 
 <p>Portions Copyright (c) 2005 Envoi Solutions LLC. All Rights Reserved. (<span class="nobr"><a href="http://xfire.codehaus.org/">http://xfire.codehaus.org/</a></span>)</p>
 
@@ -69,6 +73,8 @@ Copyright 2005-2007  The Kuali Foundation.  All rights reserved.  Kuali is licen
 <p>Portions Copyright (c) 1999-2004 Bull S. A. All Rights Reserved.</p>
 
 <p>Portions Copyright (c) 2003-2005 Joe Walnes. All Rights Reserved. (<span class="nobr"><a href="http://xstream.codehaus.org/">http://xstream.codehaus.org/</a></span>)</p>
+
+<p>Portions Copyright (c) 2002, 2004 Elliotte Rusty Harold. All Rights Reserved. </p>
 
 <p>Portions Copyright (c) 1998-2003 World Wide Web Consortium (Massachusetts Institute of Technology, European Research Consortium for Informatics and Mathematics, Keio University). All Rights Reserved. This work is distributed under the W3C® Software License in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
 

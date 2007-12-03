@@ -26,61 +26,41 @@ function toggleTab(doc, tabKey) {
 }
 
 function expandAllTab(doc, tabStatesSize) {
-//	for (var tabIndex = 0; tabIndex <= tabStatesSize.value; tabIndex++) {
-//        showTab(doc, tabIndex);
-//	}
-    for ( i = 0; i < doc.forms[0].elements.length; i++ ) {  
-        var theTabElement = doc.forms[0].elements[i];
-        if ((doc.forms[0].elements[i].name.indexOf('tabStates(') >= 0) && (doc.forms[0].elements[i].name.indexOf(')') > 0)) {
-            var tabKeyEnd = theTabElement.name.indexOf(')');
-            var tabKey = theTabElement.name.substring(10, tabKeyEnd);
-            showTab(doc, tabKey);
-        }
-    }
+	for (var tabIndex = 0; tabIndex <= tabStatesSize.value; tabIndex++) {
+        showTab(doc, tabIndex);
+	}
 	return false;
 }
 
 function collapseAllTab(doc, tabStatesSize) {
-//	for (var tabIndex = 0; tabIndex <= tabStatesSize.value; tabIndex++) {
-//        hideTab(doc, tabIndex);
-//	}
-    for ( i = 0; i < doc.forms[0].elements.length; i++ ) {  
-        var theTabElement = doc.forms[0].elements[i];
-        if ((doc.forms[0].elements[i].name.indexOf('tabStates(') >= 0) && (doc.forms[0].elements[i].name.indexOf(')') > 0)) {
-            var tabKeyEnd = theTabElement.name.indexOf(')');
-            var tabKey = theTabElement.name.substring(10, tabKeyEnd);
-            hideTab(doc, tabKey);
-        }
-    }
+	for (var tabIndex = 0; tabIndex <= tabStatesSize.value; tabIndex++) {
+        hideTab(doc, tabIndex);
+	}
 	return false;
 }
 
 function showTab(doc, tabKey) {
     // replaced 'block' with '' to make budgetExpensesRow.tag happy.
-    if (tabKey != 'hiddenTabTitle') {
-        doc.getElementById('tab-' + tabKey + '-div').style.display = '';
-        doc.forms[0].elements['tabStates(' + tabKey + ')'].value = 'OPEN';
-        var image = doc.getElementById('tab-' + tabKey + '-imageToggle');
-        image.src = jsContextPath + '/kr/images/tinybutton-hide.gif';
-        image.alt = image.alt.replace(/^show/, 'hide');
-        image.alt = image.alt.replace(/^open/, 'close');
-        image.title = image.title.replace(/^show/, 'hide');
-        image.title = image.title.replace(/^open/, 'close');
-    }
+    doc.getElementById('tab-' + tabKey + '-div').style.display = '';
+    doc.forms[0].elements['tabStates(' + tabKey + ')'].value = 'OPEN';
+    var image = doc.getElementById('tab-' + tabKey + '-imageToggle');
+    image.src = jsContextPath + '/kr/images/tinybutton-hide.gif';
+    image.alt = image.alt.replace(/^show/, 'hide');
+    image.alt = image.alt.replace(/^open/, 'close');
+    image.title = image.title.replace(/^show/, 'hide');
+    image.title = image.title.replace(/^open/, 'close');
     return false;
 }
 
 function hideTab(doc, tabKey) {
-    if (tabKey != 'hiddenTabTitle') {
-        doc.getElementById('tab-' + tabKey + '-div').style.display = 'none';
-        doc.forms[0].elements['tabStates(' + tabKey + ')'].value = 'CLOSE';
-        var image = doc.getElementById('tab-' + tabKey + '-imageToggle');
-        image.src = jsContextPath + '/kr/images/tinybutton-show.gif';
-        image.alt = image.alt.replace(/^hide/, 'show');
-        image.alt = image.alt.replace(/^close/, 'open');
-        image.title = image.title.replace(/^hide/, 'show');
-        image.title = image.title.replace(/^close/, 'open');
-    }
+    doc.getElementById('tab-' + tabKey + '-div').style.display = 'none';
+    doc.forms[0].elements['tabStates(' + tabKey + ')'].value = 'CLOSE';
+    var image = doc.getElementById('tab-' + tabKey + '-imageToggle');
+    image.src = jsContextPath + '/kr/images/tinybutton-show.gif';
+    image.alt = image.alt.replace(/^hide/, 'show');
+    image.alt = image.alt.replace(/^close/, 'open');
+    image.title = image.title.replace(/^hide/, 'show');
+    image.title = image.title.replace(/^close/, 'open');
     return false;
 }
 
@@ -168,3 +148,27 @@ function setRouteLogIframeDimensions() {
 function resizeTheRouteLogFrame() {
   setRouteLogIframeDimensions();
 }
+
+// should be in rice for direct inquiry 
+ function inquiryPop(boClassName, inquiryParameters){
+  parameterPairs = inquiryParameters.split(",");
+  queryString="businessObjectClassName="+boClassName+"&methodToCall=start"
+  for (i in parameterPairs) {
+  
+    parameters = parameterPairs[i].split(":");
+  	if (document.forms[0].elements[parameters[0]].value=="") {
+//    	queryString=queryString+"&"+parameters[1]+"=directInquiryParameterNotSpecified";
+		return false;
+  	} else {
+    	queryString=queryString+"&"+parameters[1]+"="+document.forms[0].elements[parameters[0]].value;
+  	}
+  }
+  url=window.location.href
+  pathname=window.location.pathname
+  idx1=url.indexOf(pathname);
+  idx2=url.indexOf("/",idx1+1);
+  baseUrl=url.substr(0,idx2)
+  window.open(baseUrl+"/kr/directInquiry.do?"+queryString, "_blank", "width=640, height=600, scrollbars=yes");
+}
+ 
+

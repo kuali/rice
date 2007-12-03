@@ -95,7 +95,7 @@ INSERT INTO FP_DOC_GROUP_T VALUES ('TR', '054EDFB3B260C8D2E043814FD881C8D2', 1,	
 /
 INSERT INTO FP_DOC_GROUP_T VALUES ('KR', '054EDFB3B260C8D2E043816FD881C8D2', 1,	'Kuali Rice', null)
 /
-insert into FP_DOC_TYPE_T values ('TRVA', '1A6FEB2501C7607EE043814FD881607E', 1, 'TR', 'TRAV ACCNT', 'N', 'Y', 'N', 0, 'N', 'N')
+insert into FP_DOC_TYPE_T values ('TRAV', '1A6FEB2501C7607EE043814FD881607E', 1, 'TR', 'TRAV ACCNT', 'N', 'Y', 'N', 0, 'N', 'N')
 /
 insert into FP_DOC_TYPE_T values ('TRFO', '1A6FEB250342607EE043814FD881607E', 1, 'TR', 'TRAV FO', 'N', 'Y', 'N', 0, 'N', 'N')
 /
@@ -106,6 +106,8 @@ insert into FP_DOC_TYPE_T values ('RUSR', '1A6FEB253342607EE043814FD889607E', 1,
 insert into FP_DOC_TYPE_T values ('PARM', '1A6FRB253342607EE043814FD889607E', 1, 'TR', 'System Parms', 'N', 'Y', 'N', 0, 'N', 'N') 
 /
 insert into FP_DOC_TYPE_T values ('BR', '1A6FRB253343337EE043814FD889607E', 1, 'TR', 'Biz Rules', 'N', 'Y', 'N', 0, 'N', 'N') 
+/
+insert into FP_DOC_TYPE_T values ('TRVA', '1A5FEB250342607EE043814FD889607E', 1, 'TR',  'TRAV MAINT', 'N', 'Y', 'N', 0, 'N', 'N')
 /
 insert into SH_NTE_TYP_T values ('BO', '2D3C44FE49415102E043814FD8815102',	1,	'DOCUMENT BUSINESS OBJECT', 'Y')
 /
@@ -125,18 +127,6 @@ insert into TRV_ACCT_TYPE values ('EAT', 'Expense Account Type')
 /
 insert into TRV_ACCT_TYPE values ('IAT', ' Income Account Type') 
 /
-
-INSERT INTO kr_qrtz_locks values('TRIGGER_ACCESS')
-/
-INSERT INTO kr_qrtz_locks values('JOB_ACCESS')
-/
-INSERT INTO kr_qrtz_locks values('CALENDAR_ACCESS')
-/
-INSERT INTO kr_qrtz_locks values('STATE_ACCESS')
-/
-INSERT INTO kr_qrtz_locks values('MISFIRE_ACCESS')
-/
-
 
 commit 
 /

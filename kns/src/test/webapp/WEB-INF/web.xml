@@ -13,15 +13,51 @@
 		<filter-class>edu.iu.uis.eden.web.UserLoginFilter</filter-class>
 	</filter>
 
+    <filter>
+        <filter-name>UserAccessFilter</filter-name>
+        <filter-class>edu.iu.uis.eden.web.UserAccessFilter</filter-class>
+    </filter>
+
 	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
 		<servlet-name>action</servlet-name>
 	</filter-mapping>
-
 	<filter-mapping>
 		<filter-name>UserLoginFilter</filter-name>
 		<servlet-name>action</servlet-name>
 	</filter-mapping>
+    <filter-mapping>
+        <filter-name>UserAccessFilter</filter-name>
+        <servlet-name>action</servlet-name>
+    </filter-mapping>
+
+    <!-- for KEN Spring Web MVC pages -->
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <servlet-name>notification</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>UserLoginFilter</filter-name>
+        <servlet-name>notification</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>UserAccessFilter</filter-name>
+        <servlet-name>notification</servlet-name>
+    </filter-mapping>
+
+    <!-- for EDocLite -->
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <servlet-name>edoclite</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>UserLoginFilter</filter-name>
+        <servlet-name>edoclite</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>UserAccessFilter</filter-name>
+        <servlet-name>edoclite</servlet-name>
+    </filter-mapping>
 
 	<listener>
 		<listener-class>edu.sampleu.travel.infrastructure.TravelServiceLocatoryListener</listener-class>
@@ -51,6 +87,10 @@
           <param-name>config/ksb</param-name>
           <param-value>/ksb/WEB-INF/struts-config.xml</param-value>
         </init-param>
+        <init-param>
+          <param-name>config/kim</param-name>
+          <param-value>/kim/WEB-INF/struts-config.xml</param-value>
+        </init-param>
 		<init-param>
 			<param-name>debug</param-name>
 			<param-value>3</param-value>
@@ -61,6 +101,25 @@
 		</init-param>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
+
+    <!-- Notification system servlets -->
+    <!-- Notification System Spring MVC UI -->
+    <servlet>
+        <servlet-name>notification</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+          <param-name>contextConfigLocation</param-name>
+          <param-value>ken/WEB-INF/notification-servlet.xml</param-value>
+        </init-param>
+        <init-param>
+          <description>this init parameter is Ken's module prefix within the containing webapp, it is propagated as a
+                       property in the XmlApplicationContext
+          </description>
+          <param-name>prefix</param-name>
+          <param-value>/ken</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
 
 	<servlet>
 		<servlet-name>dwr-invoker</servlet-name>
@@ -106,6 +165,11 @@
 		<servlet-name>action</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>notification</servlet-name>
+        <url-pattern>*.form</url-pattern>
+    </servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>dwr-invoker</servlet-name>

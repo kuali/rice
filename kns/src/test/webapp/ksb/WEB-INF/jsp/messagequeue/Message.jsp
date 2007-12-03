@@ -76,11 +76,11 @@
 					  		  </tr>
 					  		  <tr>
 								<td class="thnormal" align="right" width="20%">Date:</td>
-						  		  <td class="datacell"><fmt:formatDate value="${MessageQueueForm.messageQueueFromForm.queueDate}" pattern="${Constants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
+						  		  <td class="datacell"><fmt:formatDate value="${MessageQueueForm.messageQueueFromForm.queueDate}" pattern="${rice_constant.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
 					  		  </tr>
 					  		  <tr>
 								<td class="thnormal" align="right" width="20%">Expiration Date:</td>
-						  		  <td class="datacell"><fmt:formatDate value="${MessageQueueForm.messageQueueFromForm.expirationDate}" pattern="${Constants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
+						  		  <td class="datacell"><fmt:formatDate value="${MessageQueueForm.messageQueueFromForm.expirationDate}" pattern="${rice_constant.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
 					  		  </tr>
 					  		  <tr>
 								<td class="thnormal" align="right" width="20%">Priority:</td>

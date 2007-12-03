@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project>
-	<name>kns</name>
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.kuali.rice</groupId>
-		<artifactId>rice</artifactId>
-		<version>0.9.0.1</version>
-	</parent>
-	<artifactId>rice-kns</artifactId>
-	
-	<dependencies>
-		<dependency>
-			<groupId>org.kuali.rice</groupId>
-			<artifactId>rice-ksb</artifactId>
-			<version>0.9.0.1</version>
-		</dependency>
-	</dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <name>kns</name>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.kuali.rice</groupId>
+    <artifactId>rice</artifactId>
+    <version>0.9.1</version>
+  </parent>
+  <artifactId>rice-kns</artifactId>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <artifactId>rice-ksb</artifactId>
+      <version>0.9.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <artifactId>rice-kew</artifactId>
+      <version>0.9.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <artifactId>rice-ken</artifactId>
+      <version>0.9.1</version>
+    </dependency>
+  </dependencies>
 
 </project>

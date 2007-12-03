@@ -4,7 +4,7 @@
 <struts-config>
     <data-sources />
   
-    <form-beans >
+    <form-beans>
     	<!-- Begin required KNS forms -->
         <form-bean name="KualiForm" type="org.kuali.core.web.struts.form.KualiForm" />
     	<!-- End required KNS forms -->
@@ -20,7 +20,7 @@
        	<!-- End required KNS exceptions -->
     </global-exceptions>  
 
-    <global-forwards >
+    <global-forwards>
        	<!-- Begin required KNS forwards -->
         <forward name="save" path="/index.html" redirect="true" />
         <forward name="cancel" path="/index.html" redirect="true" />
@@ -33,7 +33,13 @@
 
 
     <action-mappings>
-       	<!-- Begin required KNS mappings -->
+       	<!-- Begin required KNS mappings -->       
+        <action path="/portal" name="KualiForm" type="org.kuali.core.web.struts.action.KualiSimpleAction">
+            <forward name="basic" path="/portal.jsp" />
+        </action>
+        <action path="/index" name="KualiForm" type="org.kuali.core.web.struts.action.KualiSimpleAction">
+            <forward name="basic" path="/portal.jsp" />
+        </action>
         <action path="/authorizationException" name="KualiForm" type="org.kuali.core.web.struts.action.KualiAuthorizationExceptionAction">
             <forward name="basic" path="/kr/WEB-INF/jsp/authorizationException.jsp" />
         </action>        
@@ -48,6 +54,6 @@
     </action-mappings>
 
     <controller processorClass="org.kuali.core.web.struts.action.KualiRequestProcessor" />
-    <message-resources parameter="ApplicationResources" />
+    <message-resources factory="org.kuali.core.web.struts.action.KualiPropertyMessageResourcesFactory" parameter="SampleApplicationResources" />
 </struts-config>
 

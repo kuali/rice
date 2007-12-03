@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+    <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
+        <!-- Quickstart admin user -->
+        <user>
+            <workflowId>admin</workflowId>
+            <emplId>admin</emplId>
+            <authenticationId>admin</authenticationId>
+            <uuId>admin</uuId>
+            <emailAddress>admin@localhost</emailAddress>
+            <displayName>Administrator</displayName>
+            <givenName>admin</givenName>
+            <lastName>admin</lastName>
+        </user>
+    </users>
+
+    <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
+        <workgroup>
+            <workgroupName>WorkflowAdmin</workgroupName>
+            <description>WorkflowAdmin</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>admin</workflowId>
+            </members>
+        </workgroup>
+    </workgroups>
+
+</data>

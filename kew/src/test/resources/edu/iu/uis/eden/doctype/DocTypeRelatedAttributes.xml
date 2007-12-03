@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+		<ruleAttribute>
+			<name>SchoolSearchAttribute</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>SchoolSearchAttribute</label>
+			<description>SchoolSearchAttribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="school" title="School">
+					<display>
+						<type>select</type>
+						<values title="None"></values>
+						<values title="College of Arts and Sciences">COAS</values>
+						<values title="School of Business">BUS</values>
+						<values title="School of Education">EDUC</values>
+						<values title="School of Health, Physical Education &amp; Recreation">HPER</values>
+						<values title="School of Informatics">INFO</values>
+						<values title="School of Law">LAW</values>
+						<values title="School of Library &amp; Information Schiences">SLIS</values>
+						<values title="Medical Sciences Program">MSP</values>
+						<values title="School of Music">MUS</values>
+						<values title="School of Vision Science">VSCI</values>
+						<values title="School of Public &amp; Environmental Affairs">SPEA</values>
+						<values title="University Graduate School">UGS</values>
+					</display>
+					<fieldEvaluation>
+						<xpathexpression>normalize-space(substring-after(//department, ' '))</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+			</searchingConfig>
+		</ruleAttribute>
+	</ruleAttributes>
+</data>

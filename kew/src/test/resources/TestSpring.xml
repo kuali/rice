@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!-- The workflow engine Spring configuration is bifurcated into data source and bean configuration
+     to allow independent replacement of the data source configuration (for example for unit tests) -->
+<beans>
+
+  <import resource="org/kuali/workflow/resources/KewSpringBeans.xml"/>
+  <import resource="OverrideTestSpringBeans.xml"/>
+
+</beans>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+    <ruleAttribute>
+      <name>WorkgroupTypeAttribute1</name>
+      <label>WorkgroupTypeAttribute1</label>
+      <className>org.kuali.workflow.workgroup.WorkgroupTypeAttribute1</className>
+      <type>ExtensionAttribute</type>
+    </ruleAttribute>
+    <ruleAttribute>
+      <name>WorkgroupTypeAttribute2</name>
+      <label>WorkgroupTypeAttribute2</label>
+      <className>org.kuali.workflow.workgroup.WorkgroupTypeAttribute2</className>
+      <type>ExtensionAttribute</type>
+    </ruleAttribute>
+  </ruleAttributes>
+  <workgroupTypes xmlns="ns:workflow/WorkgroupType" xsi:schemaLocation="ns:workflow/WorkgroupType resource:WorkgroupType">
+    <workgroupType>
+      <name>WorkgroupType1</name>
+      <attributes>
+        <attribute>
+          <name>WorkgroupTypeAttribute1</name>
+        </attribute>
+      </attributes>
+    </workgroupType>
+    <workgroupType>
+      <name>WorkgroupType2</name>
+      <label>Workgroup Type 2</label>
+      <description>The Second Workgroup Type</description>
+      <attributes>
+        <attribute>
+          <name>WorkgroupTypeAttribute1</name>
+        </attribute>
+        <attribute>
+          <name>WorkgroupTypeAttribute2</name>
+        </attribute>
+      </attributes>
+    </workgroupType>
+    <workgroupType>
+      <name>WorkgroupType3</name>
+      <documentType>WorkgroupType3DocType</documentType>
+    </workgroupType>
+  </workgroupTypes>
+</data>

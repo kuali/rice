@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+    <documentType>
+      <name>BlanketApprovePolicy1</name>
+      <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy1</label>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+      <blanketApprovePolicy>ANY</blanketApprovePolicy>
+      <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+    <documentType>
+      <name>BlanketApprovePolicy2</name>
+      <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy2</label>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <superUserWorkgroupName>BlanketApproveWorkgroup</superUserWorkgroupName>
+      <blanketApprovePolicy>NONE</blanketApprovePolicy>
+      <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+    <documentType>
+      <name>BlanketApprovePolicy3</name>
+      <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy3</label>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+      <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+    <documentType>
+      <name>BlanketApprovePolicy4</name>
+      <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy4</label>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <blanketApproveWorkgroupName>BlanketApproveWorkgroup</blanketApproveWorkgroupName>
+      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+      <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+    <documentType>
+      <name>BlanketApprovePolicy5</name>
+      <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy5</label>
+      <parent>BlanketApprovePolicy4</parent>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+      <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+   <documentType>
+      <name>BlanketApprovePolicy6</name>
+      <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy6</label>
+      <parent>BlanketApprovePolicy5</parent>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <blanketApprovePolicy>NONE</blanketApprovePolicy>
+      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+      <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+    <documentType>
+      <name>BlanketApprovePolicy7</name>
+      <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy7</label>
+      <parent>BlanketApprovePolicy5</parent>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <blanketApprovePolicy>ANY</blanketApprovePolicy>
+      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+      <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+      <active>true</active>
+      <policies>
+        <policy>
+          <name>INITIATOR_MUST_BLANKET_APPROVE</name>
+          <value>false</value>
+        </policy>
+      </policies>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+    <documentType>
+      <name>BlanketApprovePolicy_OverridedParent</name>
+      <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy_OverridedParent</label>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>BlanketApproveWorkgroup</blanketApproveWorkgroupName>
+      <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+      <active>true</active>
+      <policies>
+        <policy>
+          <name>INITIATOR_MUST_BLANKET_APPROVE</name>
+          <value>false</value>
+        </policy>
+      </policies>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+   <documentType>
+      <name>BlanketApprovePolicy_Override_NONE</name>
+      <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy_Override_NONE</label>
+      <parent>BlanketApprovePolicy_OverridedParent</parent>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <blanketApprovePolicy>NONE</blanketApprovePolicy>
+      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+      <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+    <documentType>
+      <name>BlanketApprovePolicy_Override_ANY</name>
+      <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy_Override_ANY</label>
+      <parent>BlanketApprovePolicy_OverridedParent</parent>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <blanketApprovePolicy>ANY</blanketApprovePolicy>
+      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+      <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+    <documentType>
+      <name>BlanketApprovePolicy_NoOverride</name>
+      <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy_NoOverride</label>
+      <parent>BlanketApprovePolicy_OverridedParent</parent>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+      <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+  </documentTypes>
+</data>

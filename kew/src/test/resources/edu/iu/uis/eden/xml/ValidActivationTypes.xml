@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+    <documentType>
+      <name>DocumentTypeXmlParserTestDoc_ValidActivationTypes</name>
+      <description>This document has variations of valid activation types</description>
+      <label>DocumentTypeXmlParserTestDoc_ValidActivationTypes</label>
+      <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" nextNode="1" />
+          <requests name="1" nextNode="2"/>
+          <requests name="2" nextNode="3" />
+          <requests name="3" nextNode="4" />
+          <requests name="4"/>
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+          <activationType>S</activationType>
+        </start>
+        <requests name="1">
+          <exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+          <activationType>P</activationType>
+        </requests>
+        <requests name="2">
+          <exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+          <activationType>sequential</activationType>
+        </requests>
+        <requests name="3">
+          <exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+          <activationType>SEQUENCE</activationType>
+        </requests>
+        <requests name="4">
+          <exceptionWorkgroupName>TestWorkgroup</exceptionWorkgroupName>
+          <activationType>parallel</activationType>
+        </requests>
+      </routeNodes>
+    </documentType>
+  </documentTypes>
+</data>

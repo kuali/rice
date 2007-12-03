@@ -1,0 +1,9 @@
+<?xml-stylesheet type="text/xsl" href="example.xsl"?>
+
+<sms id="m101">
+ <title>Hot Languages</title>
+ <mesg>Some like it Hot. While <tm>Java</tm> may be cool, <like>Ruby</like>
+ is hot. 
+ </mesg>
+</sms>
+

@@ -1,0 +1,17 @@
+<edlConfig>
+	<preProcessors>
+		<preProcessor>edu.iu.uis.eden.edl.TestPreProcessor</preProcessor>
+	</preProcessors>
+	<postProcessors>
+		<postProcessor>edu.iu.uis.eden.edl.TestPostProcessor</postProcessor>
+	</postProcessors>
+	<configProcessors>
+		<configProcessor>
+			<xpathExp>display/type = 'select'</xpathExp>
+			<className>edu.iu.uis.eden.edl.TestConfigProcessor</className>
+		</configProcessor>
+	</configProcessors>
+	<stateComponents>
+		<stateComponent>edu.iu.uis.eden.edl.TestStateComponent</stateComponent>
+	</stateComponents>
+</edlConfig>

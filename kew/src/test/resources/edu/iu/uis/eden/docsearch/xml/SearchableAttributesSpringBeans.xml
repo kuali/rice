@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+  
+  <!--  RouteQueueService -->
+  <bean id="enRouteQueueService" class="edu.iu.uis.eden.routequeue.RouteQueueServiceImpl">
+		<property name="routeQueueDAO">
+			<ref bean="enRouteQueueDAO" />
+		</property>
+	</bean>
+	<bean id="enRouteQueueDAO" class="edu.iu.uis.eden.routequeue.dao.RouteQueueDAOOjbImpl">
+		<property name="dataSource">
+			<ref bean="enWorkflowDataSource" />
+		</property>
+  </bean>
+  <!-- <bean id="enUserService" class="mocks.MockUserService"/>
+  <bean id="enWorkgroupService" class="mocks.MockWorkgroupService"/>-->  
+
+</beans>

@@ -1,0 +1,1860 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://server.eden.uis.iu.edu/WorkflowUtility" xmlns:impl="http://server.eden.uis.iu.edu/WorkflowUtility" xmlns:intf="http://server.eden.uis.iu.edu/WorkflowUtility" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns2="http://exception.eden.uis.iu.edu" xmlns:tns1="http://vo.clientapp.eden.uis.iu.edu" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<!--WSDL created by Apache Axis version: 1.2.1
+Built on Jun 14, 2005 (09:15:57 EDT)-->
+ <wsdl:types>
+  <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://vo.clientapp.eden.uis.iu.edu">
+   <import namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+   <import namespace="http://exception.eden.uis.iu.edu"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="RecipientIdVO">
+    <sequence/>
+   </complexType>
+   <complexType abstract="true" name="UserIdVO">
+    <complexContent>
+     <extension base="tns1:RecipientIdVO">
+      <sequence/>
+     </extension>
+    </complexContent>
+   </complexType>
+   <complexType name="PropertyDefinitionVO">
+    <sequence>
+     <element name="name" nillable="true" type="soapenc:string"/>
+     <element name="value" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="WorkflowAttributeDefinitionVO">
+    <sequence>
+     <element name="attributeName" nillable="true" type="soapenc:string"/>
+     <element name="constructorParameters" nillable="true" type="impl:ArrayOf_soapenc_string"/>
+     <element name="properties" nillable="true" type="impl:ArrayOf_tns1_PropertyDefinitionVO"/>
+    </sequence>
+   </complexType>
+   <complexType name="DocumentContentVO">
+    <sequence>
+     <element name="applicationContent" nillable="true" type="soapenc:string"/>
+     <element name="attributeContent" nillable="true" type="soapenc:string"/>
+     <element name="attributeDefinitions" nillable="true" type="impl:ArrayOf_tns1_WorkflowAttributeDefinitionVO"/>
+     <element name="fullContent" nillable="true" type="soapenc:string"/>
+     <element name="routeHeaderId" nillable="true" type="soapenc:long"/>
+     <element name="searchableContent" nillable="true" type="soapenc:string"/>
+     <element name="searchableDefinitions" nillable="true" type="impl:ArrayOf_tns1_WorkflowAttributeDefinitionVO"/>
+    </sequence>
+   </complexType>
+   <complexType name="UserVO">
+    <sequence>
+     <element name="displayName" nillable="true" type="soapenc:string"/>
+     <element name="emailAddress" nillable="true" type="soapenc:string"/>
+     <element name="emplId" nillable="true" type="soapenc:string"/>
+     <element name="firstName" nillable="true" type="soapenc:string"/>
+     <element name="lastName" nillable="true" type="soapenc:string"/>
+     <element name="networkId" nillable="true" type="soapenc:string"/>
+     <element name="userPreferencePopDocHandler" type="xsd:boolean"/>
+     <element name="uuId" nillable="true" type="soapenc:string"/>
+     <element name="workflowId" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="NoteVO">
+    <sequence>
+     <element name="lockVerNbr" nillable="true" type="soapenc:int"/>
+     <element name="noteAuthorWorkflowId" nillable="true" type="soapenc:string"/>
+     <element name="noteCreateDate" nillable="true" type="xsd:dateTime"/>
+     <element name="noteId" nillable="true" type="soapenc:long"/>
+     <element name="noteText" nillable="true" type="soapenc:string"/>
+     <element name="routeHeaderId" nillable="true" type="soapenc:long"/>
+    </sequence>
+   </complexType>
+   <complexType name="RouteHeaderVO">
+    <sequence>
+     <element name="ackRequested" type="xsd:boolean"/>
+     <element name="appDocId" nillable="true" type="soapenc:string"/>
+     <element name="approveRequested" type="xsd:boolean"/>
+     <element name="completeRequested" type="xsd:boolean"/>
+     <element name="dateApproved" nillable="true" type="xsd:dateTime"/>
+     <element name="dateCreated" nillable="true" type="xsd:dateTime"/>
+     <element name="dateFinalized" nillable="true" type="xsd:dateTime"/>
+     <element name="dateLastModified" nillable="true" type="xsd:dateTime"/>
+     <element name="docRouteLevel" nillable="true" type="soapenc:int"/>
+     <element name="docRouteStatus" nillable="true" type="soapenc:string"/>
+     <element name="docTitle" nillable="true" type="soapenc:string"/>
+     <element name="docTypeId" nillable="true" type="soapenc:long"/>
+     <element name="docTypeName" nillable="true" type="soapenc:string"/>
+     <element name="docVersion" nillable="true" type="soapenc:int"/>
+     <element name="documentContent" nillable="true" type="tns1:DocumentContentVO"/>
+     <element name="documentUrl" nillable="true" type="soapenc:string"/>
+     <element name="fyiRequested" type="xsd:boolean"/>
+     <element name="initiator" nillable="true" type="tns1:UserVO"/>
+     <element name="notes" nillable="true" type="impl:ArrayOf_tns1_NoteVO"/>
+     <element name="notesToDelete" nillable="true" type="impl:ArrayOf_tns1_NoteVO"/>
+     <element name="overrideInd" nillable="true" type="soapenc:string"/>
+     <element name="routeHeaderId" nillable="true" type="soapenc:long"/>
+     <element name="userBlanketApprover" type="xsd:boolean"/>
+    </sequence>
+   </complexType>
+   <complexType name="ActionTakenVO">
+    <sequence>
+     <element name="actionDate" nillable="true" type="xsd:dateTime"/>
+     <element name="actionTaken" nillable="true" type="soapenc:string"/>
+     <element name="actionTakenId" nillable="true" type="soapenc:long"/>
+     <element name="annotation" nillable="true" type="soapenc:string"/>
+     <element name="delegatorVO" nillable="true" type="tns1:UserVO"/>
+     <element name="docVersion" nillable="true" type="soapenc:int"/>
+     <element name="routeHeaderId" nillable="true" type="soapenc:long"/>
+     <element name="userVO" nillable="true" type="tns1:UserVO"/>
+    </sequence>
+   </complexType>
+   <complexType name="WorkgroupVO">
+    <sequence>
+     <element name="activeInd" type="xsd:boolean"/>
+     <element name="activeLabel" nillable="true" type="soapenc:string"/>
+     <element name="description" nillable="true" type="soapenc:string"/>
+     <element name="members" nillable="true" type="impl:ArrayOf_tns1_UserVO"/>
+     <element name="workgroupId" nillable="true" type="soapenc:long"/>
+     <element name="workgroupName" nillable="true" type="soapenc:string"/>
+     <element name="workgroupType" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="ActionRequestVO">
+    <sequence>
+     <element name="acknowledgeRequest" type="xsd:boolean"/>
+     <element name="actionRequestId" nillable="true" type="soapenc:long"/>
+     <element name="actionRequested" nillable="true" type="soapenc:string"/>
+     <element name="actionTaken" nillable="true" type="tns1:ActionTakenVO"/>
+     <element name="actionTakenId" nillable="true" type="soapenc:long"/>
+     <element name="activated" type="xsd:boolean"/>
+     <element name="adHocRequest" type="xsd:boolean"/>
+     <element name="annotation" nillable="true" type="soapenc:string"/>
+     <element name="approvalRequest" type="xsd:boolean"/>
+     <element name="approvePolicy" nillable="true" type="soapenc:string"/>
+     <element name="childrenRequests" nillable="true" type="impl:ArrayOf_tns1_ActionRequestVO"/>
+     <element name="completeRequest" type="xsd:boolean"/>
+     <element name="currentIndicator" nillable="true" type="soapenc:boolean"/>
+     <element name="dateCreated" nillable="true" type="xsd:dateTime"/>
+     <element name="delegateRequest" type="xsd:boolean"/>
+     <element name="delegationType" nillable="true" type="soapenc:string"/>
+     <element name="docVersion" nillable="true" type="soapenc:int"/>
+     <element name="done" type="xsd:boolean"/>
+     <element name="emplyId" nillable="true" type="soapenc:string"/>
+     <element name="exceptionRequest" type="xsd:boolean"/>
+     <element name="generatedRequest" type="xsd:boolean"/>
+     <element name="ignorePrevAction" nillable="true" type="soapenc:boolean"/>
+     <element name="initialized" type="xsd:boolean"/>
+     <element name="nodeInstanceId" nillable="true" type="soapenc:long"/>
+     <element name="nodeName" nillable="true" type="soapenc:string"/>
+     <element name="notificationRequest" type="xsd:boolean"/>
+     <element name="parentActionRequest" nillable="true" type="tns1:ActionRequestVO"/>
+     <element name="parentActionRequestId" nillable="true" type="soapenc:long"/>
+     <element name="pending" type="xsd:boolean"/>
+     <element name="priority" nillable="true" type="soapenc:int"/>
+     <element name="qualifiedRoleName" nillable="true" type="soapenc:string"/>
+     <element name="qualifiedRoleNameLabel" nillable="true" type="soapenc:string"/>
+     <element name="recipientTypeCd" nillable="true" type="soapenc:string"/>
+     <element name="responsibilityDesc" nillable="true" type="soapenc:string"/>
+     <element name="responsibilityId" nillable="true" type="soapenc:long"/>
+     <element name="roleName" nillable="true" type="soapenc:string"/>
+     <element name="roleRequest" type="xsd:boolean"/>
+     <element name="routeHeaderId" nillable="true" type="soapenc:long"/>
+     <element name="routeLevel" nillable="true" type="soapenc:int"/>
+     <element name="routeMethodName" nillable="true" type="soapenc:string"/>
+     <element name="routeModuleRequest" type="xsd:boolean"/>
+     <element name="status" nillable="true" type="soapenc:string"/>
+     <element name="userIdVO" nillable="true" type="tns1:UserIdVO"/>
+     <element name="userRequest" type="xsd:boolean"/>
+     <element name="userVO" nillable="true" type="tns1:UserVO"/>
+     <element name="workgroupId" nillable="true" type="soapenc:long"/>
+     <element name="workgroupRequest" type="xsd:boolean"/>
+     <element name="workgroupVO" nillable="true" type="tns1:WorkgroupVO"/>
+    </sequence>
+   </complexType>
+   <complexType name="StateVO">
+    <sequence>
+     <element name="key" nillable="true" type="soapenc:string"/>
+     <element name="stateId" nillable="true" type="soapenc:long"/>
+     <element name="value" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="RouteNodeInstanceVO">
+    <sequence>
+     <element name="active" type="xsd:boolean"/>
+     <element name="branchId" nillable="true" type="soapenc:long"/>
+     <element name="complete" type="xsd:boolean"/>
+     <element name="documentId" nillable="true" type="soapenc:long"/>
+     <element name="initial" type="xsd:boolean"/>
+     <element name="name" nillable="true" type="soapenc:string"/>
+     <element name="nextNodes" nillable="true" type="impl:ArrayOf_tns1_RouteNodeInstanceVO"/>
+     <element name="processId" nillable="true" type="soapenc:long"/>
+     <element name="routeNodeId" nillable="true" type="soapenc:long"/>
+     <element name="routeNodeInstanceId" nillable="true" type="soapenc:long"/>
+     <element name="state" nillable="true" type="impl:ArrayOf_tns1_StateVO"/>
+    </sequence>
+   </complexType>
+   <complexType name="DocumentDetailVO">
+    <complexContent>
+     <extension base="tns1:RouteHeaderVO">
+      <sequence>
+       <element name="actionRequests" nillable="true" type="impl:ArrayOf_tns1_ActionRequestVO"/>
+       <element name="actionsTaken" nillable="true" type="impl:ArrayOf_tns1_ActionTakenVO"/>
+       <element name="nodeInstances" nillable="true" type="impl:ArrayOf_tns1_RouteNodeInstanceVO"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <complexType abstract="true" name="WorkgroupIdVO">
+    <complexContent>
+     <extension base="tns1:RecipientIdVO">
+      <sequence/>
+     </extension>
+    </complexContent>
+   </complexType>
+   <complexType name="RouteTemplateEntryVO">
+    <sequence>
+     <element name="docTypeId" nillable="true" type="soapenc:long"/>
+     <element name="exceptionWorkgroupId" nillable="true" type="soapenc:long"/>
+     <element name="finalApprover" type="xsd:boolean"/>
+     <element name="jrf_ver_nbr" nillable="true" type="soapenc:int"/>
+     <element name="mandatoryRoute" type="xsd:boolean"/>
+     <element name="routeLevel" nillable="true" type="soapenc:int"/>
+     <element name="routeLevelName" nillable="true" type="soapenc:string"/>
+     <element name="routeMethodName" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="RouteNodeVO">
+    <sequence>
+     <element name="activationType" nillable="true" type="soapenc:string"/>
+     <element name="branchName" nillable="true" type="soapenc:string"/>
+     <element name="documentTypeId" nillable="true" type="soapenc:long"/>
+     <element name="exceptionWorkgroup" nillable="true" type="tns1:WorkgroupVO"/>
+     <element name="finalApprovalInd" type="xsd:boolean"/>
+     <element name="mandatoryRouteInd" type="xsd:boolean"/>
+     <element name="nextNodeIds" nillable="true" type="impl:ArrayOf_soapenc_long"/>
+     <element name="nodeType" nillable="true" type="soapenc:string"/>
+     <element name="previousNodeIds" nillable="true" type="impl:ArrayOf_soapenc_long"/>
+     <element name="routeMethodCode" nillable="true" type="soapenc:string"/>
+     <element name="routeMethodName" nillable="true" type="soapenc:string"/>
+     <element name="routeNodeId" nillable="true" type="soapenc:long"/>
+     <element name="routeNodeName" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="ProcessVO">
+    <sequence>
+     <element name="initial" type="xsd:boolean"/>
+     <element name="initialRouteNode" nillable="true" type="tns1:RouteNodeVO"/>
+     <element name="name" nillable="true" type="soapenc:string"/>
+     <element name="processId" nillable="true" type="soapenc:long"/>
+    </sequence>
+   </complexType>
+   <complexType name="RoutePathVO">
+    <sequence>
+     <element name="primaryProcess" nillable="true" type="tns1:ProcessVO"/>
+     <element name="processes" nillable="true" type="impl:ArrayOf_tns1_ProcessVO"/>
+    </sequence>
+   </complexType>
+   <complexType name="DocumentTypeVO">
+    <sequence>
+     <element name="blanketApproveWorkgroupId" nillable="true" type="soapenc:long"/>
+     <element name="defaultApprovePolicy" type="xsd:boolean"/>
+     <element name="docTypeActiveInd" type="xsd:boolean"/>
+     <element name="docTypeActiveInherited" type="xsd:boolean"/>
+     <element name="docTypeCurrentInd" nillable="true" type="soapenc:string"/>
+     <element name="docTypeDefaultApprovePolicy" type="xsd:boolean"/>
+     <element name="docTypeDefaultApprovePolicyInherited" type="xsd:boolean"/>
+     <element name="docTypeDescription" nillable="true" type="soapenc:string"/>
+     <element name="docTypeHandlerUrl" nillable="true" type="soapenc:string"/>
+     <element name="docTypeId" nillable="true" type="soapenc:long"/>
+     <element name="docTypeJndiFactoryClass" nillable="true" type="soapenc:string"/>
+     <element name="docTypeJndiUrl" nillable="true" type="soapenc:string"/>
+     <element name="docTypeLabel" nillable="true" type="soapenc:string"/>
+     <element name="docTypeName" nillable="true" type="soapenc:string"/>
+     <element name="docTypeParentId" nillable="true" type="soapenc:long"/>
+     <element name="docTypeParentName" nillable="true" type="soapenc:string"/>
+     <element name="docTypePreApprovalPolicy" type="xsd:boolean"/>
+     <element name="docTypePreApprovalPolicyInherited" type="xsd:boolean"/>
+     <element name="docTypeVersion" nillable="true" type="soapenc:int"/>
+     <element name="name" nillable="true" type="soapenc:string"/>
+     <element name="postProcessorName" nillable="true" type="soapenc:string"/>
+     <element name="routePath" nillable="true" type="tns1:RoutePathVO"/>
+     <element name="routeTemplateInherited" type="xsd:boolean"/>
+     <element name="routeTemplates" nillable="true" type="impl:ArrayOf_tns1_RouteTemplateEntryVO"/>
+    </sequence>
+   </complexType>
+   <complexType name="WorkflowAttributeValidationErrorVO">
+    <sequence>
+     <element name="key" nillable="true" type="soapenc:string"/>
+     <element name="message" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="ReportCriteriaVO">
+    <sequence>
+     <element name="documentTypeName" nillable="true" type="soapenc:string"/>
+     <element name="nodeNames" nillable="true" type="impl:ArrayOf_soapenc_string"/>
+     <element name="routeHeaderId" nillable="true" type="soapenc:long"/>
+     <element name="ruleTemplateNames" nillable="true" type="impl:ArrayOf_soapenc_string"/>
+     <element name="targetNodeName" nillable="true" type="soapenc:string"/>
+     <element name="targetUsers" nillable="true" type="impl:ArrayOf_tns1_UserIdVO"/>
+     <element name="xmlContent" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="EmplIdVO">
+    <complexContent>
+     <extension base="tns1:UserIdVO">
+      <sequence>
+       <element name="emplId" nillable="true" type="soapenc:string"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <complexType name="NetworkIdVO">
+    <complexContent>
+     <extension base="tns1:UserIdVO">
+      <sequence>
+       <element name="networkId" nillable="true" type="soapenc:string"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <complexType name="UuIdVO">
+    <complexContent>
+     <extension base="tns1:UserIdVO">
+      <sequence>
+       <element name="uuId" nillable="true" type="soapenc:string"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <complexType name="WorkflowIdVO">
+    <complexContent>
+     <extension base="tns1:UserIdVO">
+      <sequence>
+       <element name="workflowId" nillable="true" type="soapenc:string"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <complexType name="WorkflowGroupIdVO">
+    <complexContent>
+     <extension base="tns1:WorkgroupIdVO">
+      <sequence>
+       <element name="workgroupId" nillable="true" type="soapenc:long"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <complexType name="WorkgroupNameIdVO">
+    <complexContent>
+     <extension base="tns1:WorkgroupIdVO">
+      <sequence>
+       <element name="workgroupName" nillable="true" type="soapenc:string"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+  </schema>
+  <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://server.eden.uis.iu.edu/WorkflowUtility">
+   <import namespace="http://vo.clientapp.eden.uis.iu.edu"/>
+   <import namespace="http://exception.eden.uis.iu.edu"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="ArrayOf_soapenc_string">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="soapenc:string[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_PropertyDefinitionVO">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:PropertyDefinitionVO[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_WorkflowAttributeDefinitionVO">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:WorkflowAttributeDefinitionVO[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_NoteVO">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:NoteVO[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_UserVO">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:UserVO[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_ActionRequestVO">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:ActionRequestVO[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_ActionTakenVO">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:ActionTakenVO[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_StateVO">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:StateVO[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_RouteNodeInstanceVO">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:RouteNodeInstanceVO[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_RouteTemplateEntryVO">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:RouteTemplateEntryVO[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_soapenc_long">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="soapenc:long[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_ProcessVO">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:ProcessVO[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_WorkgroupVO">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:WorkgroupVO[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_WorkflowAttributeValidationErrorVO">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:WorkflowAttributeValidationErrorVO[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_UserIdVO">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:UserIdVO[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+  </schema>
+  <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://exception.eden.uis.iu.edu">
+   <import namespace="http://vo.clientapp.eden.uis.iu.edu"/>
+   <import namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="WorkflowException">
+    <sequence/>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="getActionsTakenRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="validateWorkflowAttributeDefinitionVORequest">
+
+      <wsdl:part name="in0" type="tns1:WorkflowAttributeDefinitionVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getNewResponsibilityIdRequest">
+
+   </wsdl:message>
+
+   <wsdl:message name="getPreviousRouteNodeNamesResponse">
+
+      <wsdl:part name="getPreviousRouteNodeNamesReturn" type="impl:ArrayOf_soapenc_string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getWorkflowUserResponse">
+
+      <wsdl:part name="getWorkflowUserReturn" type="tns1:UserVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="isLastApproverInRouteLevelResponse">
+
+      <wsdl:part name="isLastApproverInRouteLevelReturn" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="validateWorkflowAttributeDefinitionVOResponse">
+
+      <wsdl:part name="validateWorkflowAttributeDefinitionVOReturn" type="impl:ArrayOf_tns1_WorkflowAttributeValidationErrorVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="reResolveRoleResponse">
+
+   </wsdl:message>
+
+   <wsdl:message name="getNodeInstanceResponse">
+
+      <wsdl:part name="getNodeInstanceReturn" type="tns1:RouteNodeInstanceVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getNewResponsibilityIdResponse">
+
+      <wsdl:part name="getNewResponsibilityIdReturn" type="soapenc:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDocumentTypeByNameResponse">
+
+      <wsdl:part name="getDocumentTypeByNameReturn" type="tns1:DocumentTypeVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="routeLevelHasApproverActionRequestRequest">
+
+      <wsdl:part name="in0" type="soapenc:string"/>
+
+      <wsdl:part name="in1" type="soapenc:string"/>
+
+      <wsdl:part name="in2" type="soapenc:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getWorkgroupResponse">
+
+      <wsdl:part name="getWorkgroupReturn" type="tns1:WorkgroupVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDocRouteRequest">
+
+      <wsdl:part name="in0" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="isSuperUserForDocumentTypeRequest">
+
+      <wsdl:part name="in0" type="tns1:UserIdVO"/>
+
+      <wsdl:part name="in1" type="soapenc:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getActionRequestsRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="isUserInRouteLogRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+      <wsdl:part name="in1" type="tns1:UserIdVO"/>
+
+      <wsdl:part name="in2" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDocumentRouteNodeInstancesRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="routeNodeHasApproverActionRequestRequest">
+
+      <wsdl:part name="in0" type="soapenc:string"/>
+
+      <wsdl:part name="in1" type="soapenc:string"/>
+
+      <wsdl:part name="in2" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getRouteHeaderWithUserRequest">
+
+      <wsdl:part name="in0" type="tns1:UserIdVO"/>
+
+      <wsdl:part name="in1" type="soapenc:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDocRouteResponse">
+
+      <wsdl:part name="getDocRouteReturn" type="impl:ArrayOf_tns1_RouteTemplateEntryVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getRouteHeaderWithUserResponse">
+
+      <wsdl:part name="getRouteHeaderWithUserReturn" type="tns1:RouteHeaderVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="isLastApproverAtNodeRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+      <wsdl:part name="in1" type="tns1:UserIdVO"/>
+
+      <wsdl:part name="in2" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="routingReportRequest">
+
+      <wsdl:part name="in0" type="tns1:ReportCriteriaVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="isLastApproverInRouteLevelRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+      <wsdl:part name="in1" type="tns1:UserIdVO"/>
+
+      <wsdl:part name="in2" type="soapenc:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDocumentTypeByNameRequest">
+
+      <wsdl:part name="in0" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDocumentTypeResponse">
+
+      <wsdl:part name="getDocumentTypeReturn" type="tns1:DocumentTypeVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="routingReportResponse">
+
+      <wsdl:part name="routingReportReturn" type="tns1:DocumentDetailVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="routeNodeHasApproverActionRequestResponse">
+
+      <wsdl:part name="routeNodeHasApproverActionRequestReturn" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDocumentContentResponse">
+
+      <wsdl:part name="getDocumentContentReturn" type="tns1:DocumentContentVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getWorkgroupRequest">
+
+      <wsdl:part name="in0" type="tns1:WorkgroupIdVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDocumentContentRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="isFinalApproverRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+      <wsdl:part name="in1" type="tns1:UserIdVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getTerminalNodeInstancesRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDocumentDetailResponse">
+
+      <wsdl:part name="getDocumentDetailReturn" type="tns1:DocumentDetailVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="isSuperUserForDocumentTypeResponse">
+
+      <wsdl:part name="isSuperUserForDocumentTypeReturn" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="routeLevelHasApproverActionRequestResponse">
+
+      <wsdl:part name="routeLevelHasApproverActionRequestReturn" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="isUserInRouteLogResponse">
+
+      <wsdl:part name="isUserInRouteLogReturn" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="isFinalApproverResponse">
+
+      <wsdl:part name="isFinalApproverReturn" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getUserWorkgroupsResponse">
+
+      <wsdl:part name="getUserWorkgroupsReturn" type="impl:ArrayOf_tns1_WorkgroupVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getUserWorkgroupsRequest">
+
+      <wsdl:part name="in0" type="tns1:UserIdVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="reResolveRoleRequest">
+
+      <wsdl:part name="in0" type="soapenc:string"/>
+
+      <wsdl:part name="in1" type="soapenc:string"/>
+
+      <wsdl:part name="in2" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getWorkflowUserRequest">
+
+      <wsdl:part name="in0" type="tns1:UserIdVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getNodeInstanceRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDocumentDetailRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDocumentRouteNodeInstancesResponse">
+
+      <wsdl:part name="getDocumentRouteNodeInstancesReturn" type="impl:ArrayOf_tns1_RouteNodeInstanceVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getActiveNodeInstancesRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getTerminalNodeInstancesResponse">
+
+      <wsdl:part name="getTerminalNodeInstancesReturn" type="impl:ArrayOf_tns1_RouteNodeInstanceVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="isLastApproverAtNodeResponse">
+
+      <wsdl:part name="isLastApproverAtNodeReturn" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="WorkflowException">
+
+      <wsdl:part name="fault" type="tns2:WorkflowException"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getRouteHeaderRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getPreviousRouteNodeNamesRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="reResolveRoleByDocumentIdRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+      <wsdl:part name="in1" type="soapenc:string"/>
+
+      <wsdl:part name="in2" type="soapenc:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getActionsTakenResponse">
+
+      <wsdl:part name="getActionsTakenReturn" type="impl:ArrayOf_tns1_ActionTakenVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getActiveNodeInstancesResponse">
+
+      <wsdl:part name="getActiveNodeInstancesReturn" type="impl:ArrayOf_tns1_RouteNodeInstanceVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDocumentTypeRequest">
+
+      <wsdl:part name="in0" type="soapenc:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getActionRequestsResponse">
+
+      <wsdl:part name="getActionRequestsReturn" type="impl:ArrayOf_tns1_ActionRequestVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getRouteHeaderResponse">
+
+      <wsdl:part name="getRouteHeaderReturn" type="tns1:RouteHeaderVO"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="reResolveRoleByDocumentIdResponse">
+
+   </wsdl:message>
+
+   <wsdl:portType name="WorkflowUtility">
+
+      <wsdl:operation name="getRouteHeaderWithUser" parameterOrder="in0 in1">
+
+         <wsdl:input name="getRouteHeaderWithUserRequest" message="impl:getRouteHeaderWithUserRequest"/>
+
+         <wsdl:output name="getRouteHeaderWithUserResponse" message="impl:getRouteHeaderWithUserResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getRouteHeader" parameterOrder="in0">
+
+         <wsdl:input name="getRouteHeaderRequest" message="impl:getRouteHeaderRequest"/>
+
+         <wsdl:output name="getRouteHeaderResponse" message="impl:getRouteHeaderResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDocumentDetail" parameterOrder="in0">
+
+         <wsdl:input name="getDocumentDetailRequest" message="impl:getDocumentDetailRequest"/>
+
+         <wsdl:output name="getDocumentDetailResponse" message="impl:getDocumentDetailResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getNodeInstance" parameterOrder="in0">
+
+         <wsdl:input name="getNodeInstanceRequest" message="impl:getNodeInstanceRequest"/>
+
+         <wsdl:output name="getNodeInstanceResponse" message="impl:getNodeInstanceResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getWorkgroup" parameterOrder="in0">
+
+         <wsdl:input name="getWorkgroupRequest" message="impl:getWorkgroupRequest"/>
+
+         <wsdl:output name="getWorkgroupResponse" message="impl:getWorkgroupResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getWorkflowUser" parameterOrder="in0">
+
+         <wsdl:input name="getWorkflowUserRequest" message="impl:getWorkflowUserRequest"/>
+
+         <wsdl:output name="getWorkflowUserResponse" message="impl:getWorkflowUserResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDocRoute" parameterOrder="in0">
+
+         <wsdl:input name="getDocRouteRequest" message="impl:getDocRouteRequest"/>
+
+         <wsdl:output name="getDocRouteResponse" message="impl:getDocRouteResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDocumentType" parameterOrder="in0">
+
+         <wsdl:input name="getDocumentTypeRequest" message="impl:getDocumentTypeRequest"/>
+
+         <wsdl:output name="getDocumentTypeResponse" message="impl:getDocumentTypeResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDocumentTypeByName" parameterOrder="in0">
+
+         <wsdl:input name="getDocumentTypeByNameRequest" message="impl:getDocumentTypeByNameRequest"/>
+
+         <wsdl:output name="getDocumentTypeByNameResponse" message="impl:getDocumentTypeByNameResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getNewResponsibilityId">
+
+         <wsdl:input name="getNewResponsibilityIdRequest" message="impl:getNewResponsibilityIdRequest"/>
+
+         <wsdl:output name="getNewResponsibilityIdResponse" message="impl:getNewResponsibilityIdResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getUserWorkgroups" parameterOrder="in0">
+
+         <wsdl:input name="getUserWorkgroupsRequest" message="impl:getUserWorkgroupsRequest"/>
+
+         <wsdl:output name="getUserWorkgroupsResponse" message="impl:getUserWorkgroupsResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getActionRequests" parameterOrder="in0">
+
+         <wsdl:input name="getActionRequestsRequest" message="impl:getActionRequestsRequest"/>
+
+         <wsdl:output name="getActionRequestsResponse" message="impl:getActionRequestsResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getActionsTaken" parameterOrder="in0">
+
+         <wsdl:input name="getActionsTakenRequest" message="impl:getActionsTakenRequest"/>
+
+         <wsdl:output name="getActionsTakenResponse" message="impl:getActionsTakenResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="validateWorkflowAttributeDefinitionVO" parameterOrder="in0">
+
+         <wsdl:input name="validateWorkflowAttributeDefinitionVORequest" message="impl:validateWorkflowAttributeDefinitionVORequest"/>
+
+         <wsdl:output name="validateWorkflowAttributeDefinitionVOResponse" message="impl:validateWorkflowAttributeDefinitionVOResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="isUserInRouteLog" parameterOrder="in0 in1 in2">
+
+         <wsdl:input name="isUserInRouteLogRequest" message="impl:isUserInRouteLogRequest"/>
+
+         <wsdl:output name="isUserInRouteLogResponse" message="impl:isUserInRouteLogResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="reResolveRole" parameterOrder="in0 in1 in2">
+
+         <wsdl:input name="reResolveRoleRequest" message="impl:reResolveRoleRequest"/>
+
+         <wsdl:output name="reResolveRoleResponse" message="impl:reResolveRoleResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="reResolveRoleByDocumentId" parameterOrder="in0 in1 in2">
+
+         <wsdl:input name="reResolveRoleByDocumentIdRequest" message="impl:reResolveRoleByDocumentIdRequest"/>
+
+         <wsdl:output name="reResolveRoleByDocumentIdResponse" message="impl:reResolveRoleByDocumentIdResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="routingReport" parameterOrder="in0">
+
+         <wsdl:input name="routingReportRequest" message="impl:routingReportRequest"/>
+
+         <wsdl:output name="routingReportResponse" message="impl:routingReportResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="isFinalApprover" parameterOrder="in0 in1">
+
+         <wsdl:input name="isFinalApproverRequest" message="impl:isFinalApproverRequest"/>
+
+         <wsdl:output name="isFinalApproverResponse" message="impl:isFinalApproverResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="isSuperUserForDocumentType" parameterOrder="in0 in1">
+
+         <wsdl:input name="isSuperUserForDocumentTypeRequest" message="impl:isSuperUserForDocumentTypeRequest"/>
+
+         <wsdl:output name="isSuperUserForDocumentTypeResponse" message="impl:isSuperUserForDocumentTypeResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="isLastApproverInRouteLevel" parameterOrder="in0 in1 in2">
+
+         <wsdl:input name="isLastApproverInRouteLevelRequest" message="impl:isLastApproverInRouteLevelRequest"/>
+
+         <wsdl:output name="isLastApproverInRouteLevelResponse" message="impl:isLastApproverInRouteLevelResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="routeLevelHasApproverActionRequest" parameterOrder="in0 in1 in2">
+
+         <wsdl:input name="routeLevelHasApproverActionRequestRequest" message="impl:routeLevelHasApproverActionRequestRequest"/>
+
+         <wsdl:output name="routeLevelHasApproverActionRequestResponse" message="impl:routeLevelHasApproverActionRequestResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="isLastApproverAtNode" parameterOrder="in0 in1 in2">
+
+         <wsdl:input name="isLastApproverAtNodeRequest" message="impl:isLastApproverAtNodeRequest"/>
+
+         <wsdl:output name="isLastApproverAtNodeResponse" message="impl:isLastApproverAtNodeResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="routeNodeHasApproverActionRequest" parameterOrder="in0 in1 in2">
+
+         <wsdl:input name="routeNodeHasApproverActionRequestRequest" message="impl:routeNodeHasApproverActionRequestRequest"/>
+
+         <wsdl:output name="routeNodeHasApproverActionRequestResponse" message="impl:routeNodeHasApproverActionRequestResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDocumentRouteNodeInstances" parameterOrder="in0">
+
+         <wsdl:input name="getDocumentRouteNodeInstancesRequest" message="impl:getDocumentRouteNodeInstancesRequest"/>
+
+         <wsdl:output name="getDocumentRouteNodeInstancesResponse" message="impl:getDocumentRouteNodeInstancesResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getActiveNodeInstances" parameterOrder="in0">
+
+         <wsdl:input name="getActiveNodeInstancesRequest" message="impl:getActiveNodeInstancesRequest"/>
+
+         <wsdl:output name="getActiveNodeInstancesResponse" message="impl:getActiveNodeInstancesResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getTerminalNodeInstances" parameterOrder="in0">
+
+         <wsdl:input name="getTerminalNodeInstancesRequest" message="impl:getTerminalNodeInstancesRequest"/>
+
+         <wsdl:output name="getTerminalNodeInstancesResponse" message="impl:getTerminalNodeInstancesResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDocumentContent" parameterOrder="in0">
+
+         <wsdl:input name="getDocumentContentRequest" message="impl:getDocumentContentRequest"/>
+
+         <wsdl:output name="getDocumentContentResponse" message="impl:getDocumentContentResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getPreviousRouteNodeNames" parameterOrder="in0">
+
+         <wsdl:input name="getPreviousRouteNodeNamesRequest" message="impl:getPreviousRouteNodeNamesRequest"/>
+
+         <wsdl:output name="getPreviousRouteNodeNamesResponse" message="impl:getPreviousRouteNodeNamesResponse"/>
+
+         <wsdl:fault name="WorkflowException" message="impl:WorkflowException"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="WorkflowUtilityServiceSoapBinding" type="impl:WorkflowUtility">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getRouteHeaderWithUser">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getRouteHeaderWithUserRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getRouteHeaderWithUserResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getRouteHeader">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getRouteHeaderRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getRouteHeaderResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDocumentDetail">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getDocumentDetailRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getDocumentDetailResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getNodeInstance">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getNodeInstanceRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getNodeInstanceResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getWorkgroup">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getWorkgroupRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getWorkgroupResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getWorkflowUser">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getWorkflowUserRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getWorkflowUserResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDocRoute">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getDocRouteRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getDocRouteResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDocumentType">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getDocumentTypeRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getDocumentTypeResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDocumentTypeByName">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getDocumentTypeByNameRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getDocumentTypeByNameResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getNewResponsibilityId">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getNewResponsibilityIdRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getNewResponsibilityIdResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getUserWorkgroups">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getUserWorkgroupsRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getUserWorkgroupsResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getActionRequests">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getActionRequestsRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getActionRequestsResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getActionsTaken">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getActionsTakenRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getActionsTakenResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="validateWorkflowAttributeDefinitionVO">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="validateWorkflowAttributeDefinitionVORequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="validateWorkflowAttributeDefinitionVOResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="isUserInRouteLog">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="isUserInRouteLogRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="isUserInRouteLogResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="reResolveRole">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="reResolveRoleRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="reResolveRoleResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="reResolveRoleByDocumentId">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="reResolveRoleByDocumentIdRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="reResolveRoleByDocumentIdResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="routingReport">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="routingReportRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="routingReportResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="isFinalApprover">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="isFinalApproverRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="isFinalApproverResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="isSuperUserForDocumentType">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="isSuperUserForDocumentTypeRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="isSuperUserForDocumentTypeResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="isLastApproverInRouteLevel">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="isLastApproverInRouteLevelRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="isLastApproverInRouteLevelResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="routeLevelHasApproverActionRequest">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="routeLevelHasApproverActionRequestRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="routeLevelHasApproverActionRequestResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="isLastApproverAtNode">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="isLastApproverAtNodeRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="isLastApproverAtNodeResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="routeNodeHasApproverActionRequest">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="routeNodeHasApproverActionRequestRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="routeNodeHasApproverActionRequestResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDocumentRouteNodeInstances">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getDocumentRouteNodeInstancesRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getDocumentRouteNodeInstancesResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getActiveNodeInstances">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getActiveNodeInstancesRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getActiveNodeInstancesResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getTerminalNodeInstances">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getTerminalNodeInstancesRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getTerminalNodeInstancesResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDocumentContent">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getDocumentContentRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getDocumentContentResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getPreviousRouteNodeNames">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getPreviousRouteNodeNamesRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getPreviousRouteNodeNamesResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="WorkflowException">
+
+            <wsdlsoap:fault name="WorkflowException" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.eden.uis.iu.edu/WorkflowUtility"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="WorkflowUtilityService">
+
+      <wsdl:port name="WorkflowUtilityService" binding="impl:WorkflowUtilityServiceSoapBinding">
+
+         <wsdlsoap:address location="RESOLVE_URL/WorkflowUtilityService"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

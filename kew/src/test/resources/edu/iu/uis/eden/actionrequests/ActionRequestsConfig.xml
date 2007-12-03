@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleAttribute">
+		<ruleAttribute>
+			<name>RoleToRoleDelegationAttribute</name>
+			<className>edu.iu.uis.eden.actionrequests.RoleToRoleDelegationRole</className>
+			<label>Role To Role Delegation Attribute</label>
+			<description>Role To Role Delegation Attribute</description>
+		</ruleAttribute>
+	</ruleAttributes>
+	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+		<ruleTemplate>
+			<name>WorkflowDocumentTemplate</name>
+			<description>Workflow Document Template</description>
+		</ruleTemplate>
+		<ruleTemplate>
+			<name>WorkflowDocument2Template</name>
+			<description>Workflow Document 2 Template</description>
+		</ruleTemplate>
+		<ruleTemplate>
+			<name>Node1Template</name>
+			<description>Node 1 Template</description>
+		</ruleTemplate>
+		<ruleTemplate>
+			<name>RoleToRoleDelegationTemplate</name>
+			<description>Role To Role Delegation Template</description>
+			<attributes>
+				<attribute>
+					<name>RoleToRoleDelegationAttribute</name>
+				</attribute>
+			</attributes>
+		</ruleTemplate>
+		<ruleTemplate>
+			<name>RoleToRoleTemplate</name>
+			<description>Role To Role Template</description>
+			<delegationTemplate>RoleToRoleDelegationTemplate</delegationTemplate>
+			<attributes>
+				<attribute>
+					<name>RoleToRoleDelegationAttribute</name>
+				</attribute>
+			</attributes>
+		</ruleTemplate>
+	</ruleTemplates>
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>DRDocType</name>
+			<description>DRDocType</description>
+			<label>DRDocType</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+		</documentType>
+		<documentType>
+			<name>DRSeqDocType</name>
+			<parent>DRDocType</parent>
+			<description>DRSeqDocType</description>
+			<label>SeqDocType</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="WorkflowDocument" />
+					<requests name="WorkflowDocument" nextNode="WorkflowDocument2" />
+					<requests name="WorkflowDocument2" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="WorkflowDocument">
+					<activationType>P</activationType>
+					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+				</requests>
+				<requests name="WorkflowDocument2">
+					<activationType>P</activationType>
+					<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+
+		<!-- DocumentType for the ActionRequestServiceTest -->
+		<documentType>
+			<name>testIgnorePreviousWithDelegation</name>
+			<description>DocType for testIgnorePreviousWithDelegation</description>
+			<label>DocType for testIgnorePreviousWithDelegation</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>about:blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="Node1" />
+					<requests name="Node1" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="Node1">
+					<activationType>P</activationType>
+					<ruleTemplate>Node1Template</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+
+		<documentType>
+			<name>testRoleToRoleDelegation</name>
+			<description>DocType for testRoleToRoleDelegation</description>
+			<label>DocType for testRoleToRoleDelegation</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>about:blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="Node1" />
+					<requests name="Node1" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="Node1">
+					<activationType>P</activationType>
+					<ruleTemplate>RoleToRoleTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+
+<!--  for testing role to role delegations with mixes of all approve and first approve in role delegations -->
+		<documentType>
+			<name>testMixedbagRoleToRoleDelegation</name>
+			<description>DocType for testRoleToRoleDelegation</description>
+			<label>DocType for testRoleToRoleDelegation</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>about:blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="Node1" />
+					<requests name="Node1" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="Node1">
+					<activationType>P</activationType>
+					<ruleTemplate>RoleToRoleTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+<documentType>
+            <name>InlineRequestsDocumentType</name>
+            <description>InlineRequestsDocumentType</description>
+            <label>InlineRequestsDocumentType</label>
+            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <docHandler>_blank</docHandler>
+            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <active>true</active>
+            <policies>
+                <policy>
+                    <name>PRE_APPROVE</name>
+                    <value>false</value>
+                </policy>
+                <policy>
+                    <name>DEFAULT_APPROVE</name>
+                    <value>false</value>
+                </policy>
+            </policies>
+            <routePaths>
+                <routePath>
+                    <start name="step1" nextNode="step2" />
+                    <requests name="step2" nextNode="step3" />
+                    <requests name="step3" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <!-- route straight to a user -->
+                <requests name="step1">
+                    <activationType>S</activationType>
+                    <routeModule>edu.iu.uis.eden.routemodule.InlineRequestsRouteModule</routeModule>
+                    <match>//step = 'step1'</match>
+                    <responsibility xmlns="ns:workflow/Rule">
+                        <user>user1</user>
+                        <actionRequested>A</actionRequested>
+                    </responsibility>
+                </requests>
+                <!-- route straight to a workgroup -->
+                <requests name="step2">
+                    <activationType>S</activationType>
+                    <match>//step = 'step2'</match>
+                    <routeModule>edu.iu.uis.eden.routemodule.InlineRequestsRouteModule</routeModule>
+                    <responsibility xmlns="ns:workflow/Rule">
+                        <workgroup>TestWorkgroup</workgroup>
+                        <actionRequested>A</actionRequested>
+                    </responsibility>
+                </requests>
+                <!-- route straight to a role -->
+                <requests name="step3">
+                    <activationType>S</activationType>
+                    <routeModule>edu.iu.uis.eden.routemodule.InlineRequestsRouteModule</routeModule>
+                    <match>//step = 'step3'</match>
+                    <responsibility xmlns="ns:workflow/Rule">
+                        <role>edu.iu.uis.eden.routetemplate.InitiatorRoleAttribute!INITIATOR</role>
+                        <actionRequested>A</actionRequested>
+                    </responsibility>
+                </requests>
+            </routeNodes>
+        </documentType>
+	</documentTypes>
+	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<rule>
+			<documentType>DRDocType</documentType>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<description>WorkflowDocumentTemplate Rule 1</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>bmcgough</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>DRDocType</documentType>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<description>WorkflowDocumentTemplate Rule 2</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>rkirkend</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>DRDocType</documentType>
+			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+			<description>WorkflowDocument2Template Rule 1</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>pmckown</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+
+		<!-- Rules for ActionRequestServiceTest -->
+		<rule>
+			<documentType>testIgnorePreviousWithDelegation</documentType>
+			<ruleTemplate>Node1Template</ruleTemplate>
+			<description>testIgnorePreviousWithDelegation node 1 rule</description>
+			<ignorePrevious>true</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>ewestfal</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+					<delegations>
+						<rule>
+							<documentType>testIgnorePreviousWithDelegation</documentType>
+							<ruleTemplate>Node1Template</ruleTemplate>
+							<description>Node1 Primary Delegation</description>
+							<ignorePrevious>false</ignorePrevious>
+							<responsibilities>
+								<responsibility>
+									<user>rkirkend</user>
+									<approvePolicy>F</approvePolicy>
+								</responsibility>
+							</responsibilities>
+							<delegationType>P</delegationType>
+						</rule>
+					</delegations>
+				</responsibility>
+			</responsibilities>
+		</rule>
+
+<!-- this is for testing all approve role to role delegation -->
+		<rule>
+			<documentType>testRoleToRoleDelegation</documentType>
+			<ruleTemplate>RoleToRoleTemplate</ruleTemplate>
+			<description>testRoleToRoleDelegation node 1 role</description>
+			<ignorePrevious>true</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<role>edu.iu.uis.eden.actionrequests.RoleToRoleDelegationRole!MAIN</role>
+					<approvePolicy>A</approvePolicy>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+					<delegations>
+						<rule>
+							<documentType>testRoleToRoleDelegation</documentType>
+							<ruleTemplate>RoleToRoleDelegationTemplate</ruleTemplate>
+							<description>Role To Role Primary Delegation</description>
+							<ignorePrevious>true</ignorePrevious>
+							<responsibilities>
+								<responsibility>
+									<role>edu.iu.uis.eden.actionrequests.RoleToRoleDelegationRole!PRIMARY_DELEGATE</role>
+									<approvePolicy>A</approvePolicy>
+								</responsibility>
+							</responsibilities>
+							<delegationType>P</delegationType>
+						</rule>
+						<rule>
+							<documentType>testRoleToRoleDelegation</documentType>
+							<ruleTemplate>RoleToRoleDelegationTemplate</ruleTemplate>
+							<description>Role To Role SECONDARY Delegation</description>
+							<ignorePrevious>true</ignorePrevious>
+							<responsibilities>
+								<responsibility>
+									<role>edu.iu.uis.eden.actionrequests.RoleToRoleDelegationRole!SECONDARY_DELEGATE</role>
+									<approvePolicy>A</approvePolicy>
+								</responsibility>
+							</responsibilities>
+							<delegationType>S</delegationType>
+						</rule>
+					</delegations>
+				</responsibility>
+			</responsibilities>
+		</rule>
+
+
+<!-- this is for testing all mixed bag approval policies in role action requests (some all approves and some first approves )on role to role delegation -->
+		<rule>
+			<documentType>testMixedbagRoleToRoleDelegation</documentType>
+			<ruleTemplate>RoleToRoleTemplate</ruleTemplate>
+			<description>testRoleToRoleDelegation node 1 role</description>
+			<ignorePrevious>true</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<role>edu.iu.uis.eden.actionrequests.RoleToRoleDelegationRole!MAIN</role>
+					<approvePolicy>A</approvePolicy>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+					<delegations>
+						<rule>
+							<documentType>testMixedbagRoleToRoleDelegation</documentType>
+							<ruleTemplate>RoleToRoleDelegationTemplate</ruleTemplate>
+							<description>Role To Role Primary Delegation</description>
+							<ignorePrevious>true</ignorePrevious>
+							<responsibilities>
+								<responsibility>
+									<role>edu.iu.uis.eden.actionrequests.RoleToRoleDelegationRole!PRIMARY_DELEGATE</role>
+									<approvePolicy>F</approvePolicy>
+								</responsibility>
+							</responsibilities>
+							<delegationType>P</delegationType>
+						</rule>
+						<rule>
+							<documentType>testMixedbagRoleToRoleDelegation</documentType>
+							<ruleTemplate>RoleToRoleDelegationTemplate</ruleTemplate>
+							<description>Role To Role SECONDARY Delegation</description>
+							<ignorePrevious>true</ignorePrevious>
+							<responsibilities>
+								<responsibility>
+									<role>edu.iu.uis.eden.actionrequests.RoleToRoleDelegationRole!SECONDARY_DELEGATE</role>
+									<approvePolicy>F</approvePolicy>
+								</responsibility>
+							</responsibilities>
+							<delegationType>S</delegationType>
+						</rule>
+					</delegations>
+				</responsibility>
+			</responsibilities>
+		</rule>
+
+	</rules>
+
+</data>

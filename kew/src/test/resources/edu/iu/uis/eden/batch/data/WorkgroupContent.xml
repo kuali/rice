@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="ns:workflow resource:WorkflowData">
+
+  <workgroups xmlns="ns:workflow/Workgroup"
+              xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
+    <workgroup>
+      <workgroupName>Unit Test Workgroup 1</workgroupName>
+      <description>fake group 1 for testing xml</description>
+      <activeInd>true</activeInd>
+      <workgroupType>W</workgroupType>
+      <workgroupCurInd>false</workgroupCurInd>
+
+      <members>
+        <workflowId>5000</workflowId>
+        <authenticationId>Unit Test User 2</authenticationId>
+      </members>
+    </workgroup>
+
+    <workgroup>
+      <workgroupName>Unit Test Workgroup 2</workgroupName>
+      <description>fake group 2 for testing xml</description>
+      <activeInd>false</activeInd>
+      <workgroupType>W</workgroupType>
+      <workgroupCurInd>false</workgroupCurInd>
+
+      <members>
+        <authenticationId>Unit Test User 1</authenticationId>
+        <uuId>5001</uuId>
+        <emplId>5002</emplId>
+      </members>
+    </workgroup>
+  </workgroups>
+</data>

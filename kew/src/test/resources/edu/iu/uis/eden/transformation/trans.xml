@@ -1,0 +1,23 @@
+<?xml version="1.0"?> 
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xalan/java/edu.iu.uis.eden.edoclite.WorkflowFunctions">	
+
+<xsl:template match="*">
+  <xsl:value-of select="."/>
+</xsl:template>
+
+<xsl:template match="//display">
+	<xsl:call-template name="widget_render">
+		<xsl:with-param name="fieldName">
+			<xsl:attribute name="select">
+				<xsl:value-of select="@name"/>
+			</xsl:attribute>
+		</xsl:with-param>
+		<xsl:with-param name="renderCmd">
+			<xsl:attribute name="select">
+				<xsl:value-of select="@content"/>
+			</xsl:attribute>
+		</xsl:with-param>
+	</xsl:call-template>
+</xsl:template>
+</xsl:stylesheet>
+

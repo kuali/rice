@@ -1,0 +1,32 @@
+<config>
+
+	<param name="base.url">http://localhost/</param>
+
+	<!-- default note attribute to use when none is given -->
+	<param name="default.note.class">DefaultNoteAttribute</param>
+
+	<!-- default edl config location -->
+	<param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
+
+	<!-- shared class loader in workflow war - don't change -->
+	<param name="en.plugin.dir">${workflow.base}WEB-INF/plugins</param>
+
+	<!-- Default configurations for workgroups and users -->
+	<param name="workgroup.url">Workgroup.do</param>
+	<param name="workgroup.report.url">Workgroup.do</param>
+	<param name="user.url">WorkflowUser.do</param>
+	<param name="user.report.url">WorkflowUserReport.do</param>
+
+	<!-- Axis Configuration -->
+    <param name="keystore.alias">onestartsharedservices-devandtst</param>
+    <param name="keystore.password">s1t0spss!xX-tst</param>
+    <param name="keystore.file">conf/webservice_security/onestartsharedservices-devandtst_keystore</param>
+
+	<!-- default config files -->
+	<param name="config.location">classpath:META-INF/kew-test-config.xml</param>
+
+	<!-- Override the message entity for the server -->
+	<param name="message.entity">KEW</param>
+
+    <param name="config.location">${alt.config.location}</param>
+</config>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="ns:workflow resource:WorkflowData">
+
+  <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+		<ruleAttribute>
+			<name>TestAttribute_ForRuleTem</name>
+			<className>edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+			<label>TestAttribute_ForRuleTem</label>
+			<description>TestAttribute_ForRuleTemg</description>
+			<type>RuleXmlAttribute</type>
+			<routingConfig>
+				<fieldDef name="testAttr" title="testAttr" workflowType="RULE">
+					<display>
+						<type>text</type>
+					</display>
+					<!-- enforce attrib-level validation -->
+					<validation required="false" />
+					<fieldEvaluation>
+						<xpathexpression>normalize-space(substring-before(//testAttr, ' ')) = wf:ruledata('testAttr')</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlDocumentContent>
+					<department>%department%</department>
+				</xmlDocumentContent>
+			</routingConfig>
+		</ruleAttribute>		
+		
+
+	</ruleAttributes>
+	
+  <ruleTemplates xmlns="ns:workflow/RuleTemplate"
+                 xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+
+    <ruleTemplate allowOverwrite="ture">
+      <name>KualiAccountTemplate_test</name>
+      <description>Kuali Account Template Test</description>
+      <attributes>
+        <attribute>
+          <name>
+             TestAttribute_ForRuleTem
+          </name>
+          <required>false</required>
+        </attribute>
+      </attributes>
+    </ruleTemplate>
+  </ruleTemplates>
+</data>

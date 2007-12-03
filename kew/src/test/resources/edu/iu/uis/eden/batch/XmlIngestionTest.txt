@@ -1,0 +1,10 @@
+${basedir}/src/main/config/bootstrap/BootstrapData.xml=true
+${basedir}/src/test/resources/edu/iu/uis/eden/batch/data/ApplicationConstantsContent.xml=true
+${basedir}/src/test/resources/edu/iu/uis/eden/batch/data/UserContent.xml=true
+${basedir}/src/test/resources/edu/iu/uis/eden/batch/data/WorkgroupContent.xml=true
+${basedir}/src/test/resources/edu/iu/uis/eden/batch/data/RuleAttributeContent.xml=true
+${basedir}/src/test/resources/edu/iu/uis/eden/batch/data/HelpContent.xml=true
+${basedir}/src/test/resources/edu/iu/uis/eden/batch/data/EDocLiteContent.xml=true
+${basedir}/src/test/resources/edu/iu/uis/eden/batch/data/EDocLiteRouting.xml=true
+${basedir}/src/test/resources/edu/iu/uis/eden/batch/data/EDocLiteStyle.xml=true
+${basedir}/src/test/resources/edu/iu/uis/eden/batch/data/BadFile.xml=false

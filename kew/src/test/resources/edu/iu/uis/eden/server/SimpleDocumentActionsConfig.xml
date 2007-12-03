@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ns:workflow resource:WorkflowData">
+    <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
+    <workgroup>
+      <workgroupName>TestAdhocWorkgroup</workgroupName>
+      <description>Test Adhoc Workgroup</description>
+      <members>
+        <authenticationId>user1</authenticationId>
+      </members>
+    </workgroup>
+  </workgroups>
+  <ruleTemplates xmlns="ns:workflow/RuleTemplate"
+        xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+        <ruleTemplate allowOverwrite="true">
+            <name>testApproveTemplate</name>
+            <description>Test Approve Template</description>
+    </ruleTemplate>
+        <ruleTemplate allowOverwrite="true">
+            <name>testAcknowledgeTemplate</name>
+            <description>Test Acknowledge Template</description>
+    </ruleTemplate>
+        <ruleTemplate allowOverwrite="true">
+            <name>testFYITemplate</name>
+            <description>Test FYI Template</description>
+    </ruleTemplate>
+    </ruleTemplates>
+    <documentTypes xmlns="ns:workflow/DocumentType"
+        xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+        <documentType>
+            <name>servicesTestRequest</name>
+            <description>Services Test Request</description>
+            <label>Services Test Request</label>
+            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <superUserWorkgroupName>TestAdhocWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>TestAdhocWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>TestAdhocWorkgroup</defaultExceptionWorkgroupName>
+            <docHandler>null</docHandler>
+            <active>true</active>
+            <policies>
+                <policy>
+                    <name>PRE_APPROVE</name>
+                    <value>false</value>
+                </policy>
+                <policy>
+                    <name>DEFAULT_APPROVE</name>
+                    <value>true</value>
+                    <!-- this should be false in a production scenario -->
+                </policy>
+                <policy>
+                    <name>LOOK_FUTURE</name>
+                    <value>true</value>
+                </policy>
+            </policies>
+            <routePaths>
+                <routePath>
+                    <start name="Initiated" nextNode="TestApprove"/>
+                    <requests name="TestApprove" nextNode="TestAcknowledge" />
+                    <requests name="TestAcknowledge" nextNode="TestFYI" />
+                    <requests name="TestFYI" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="Initiated">
+                    <activationType>S</activationType>
+                </start>
+        <requests name="TestApprove">
+                    <activationType>S</activationType>
+                    <ruleTemplate>testApproveTemplate</ruleTemplate>
+                </requests>
+                <requests name="TestAcknowledge">
+                    <activationType>S</activationType>
+                    <ruleTemplate>testAcknowledgeTemplate</ruleTemplate>
+                </requests>
+                <requests name="TestFYI">
+                    <activationType>S</activationType>
+                    <ruleTemplate>testFYITemplate</ruleTemplate>
+                </requests>
+            </routeNodes>
+        </documentType>
+    </documentTypes>
+      <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+    <rule>
+      <documentType>servicesTestRequest</documentType>
+      <ruleTemplate>testApproveTemplate</ruleTemplate>
+      <description>Test Approve</description>
+      <ignorePrevious>true</ignorePrevious>
+      <responsibilities>
+        <responsibility>
+          <user>user1</user>
+          <actionRequested>A</actionRequested>
+          <priority>1</priority>
+        </responsibility>
+      </responsibilities>
+    </rule>
+    <rule>
+      <documentType>servicesTestRequest</documentType>
+      <ruleTemplate>testAcknowledgeTemplate</ruleTemplate>
+      <description>Test Acknowledge</description>
+      <ignorePrevious>true</ignorePrevious>
+      <responsibilities>
+        <responsibility>
+          <user>user1</user>
+          <actionRequested>K</actionRequested>
+          <priority>1</priority>
+        </responsibility>
+      </responsibilities>
+    </rule>
+    <rule>
+      <documentType>servicesTestRequest</documentType>
+      <ruleTemplate>testFYITemplate</ruleTemplate>
+      <description>Test FYI</description>
+      <ignorePrevious>true</ignorePrevious>
+      <responsibilities>
+        <responsibility>
+          <user>user2</user>
+          <actionRequested>F</actionRequested>
+          <priority>1</priority>
+        </responsibility>
+      </responsibilities>
+    </rule>
+  </rules>
+</data>

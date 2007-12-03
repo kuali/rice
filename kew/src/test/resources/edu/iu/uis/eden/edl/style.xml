@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<styles xmlns="ns:workflow/Style" xsi:schemaLocation="ns:workflow/Style resource:Style">
+		<style name="an_arbitrary_style">
+			<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xalan/java/edu.iu.uis.eden.edoclite.WorkflowFunctions">	
+				<xsl:include href="widgets"/>	
+				<xsl:output doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="yes" method="html" omit-xml-declaration="yes"/>
+				<xsl:param name="overrideMain" select="'false'"/>
+				<xsl:template name="mainBody">
+					<table align="center" border="0" cellpadding="0" cellspacing="0" class="bord-r-t" width="80%">
+						<xsl:for-each select="//fieldDef">
+							<tr>
+								<td class="thnormal" width="30%">
+								 	<xsl:call-template name="widget_render">
+										<xsl:with-param name="fieldName" select="@name"/>
+										<xsl:with-param name="renderCmd" select="'title'"/>
+									</xsl:call-template>							 
+								</td>
+								<td class="datacell">							 
+									<xsl:call-template name="widget_render">
+										<xsl:with-param name="fieldName" select="@name"/>
+										<xsl:with-param name="renderCmd" select="'input'"/>
+									</xsl:call-template>							
+								</td>
+							</tr>
+						</xsl:for-each>
+					</table>
+				</xsl:template>
+				<xsl:template name="mainForm">
+					Set overrideMain=true and what you can call widget templates as you see fit...
+				</xsl:template>
+			</xsl:stylesheet>
+		</style>
+        
+        <!-- for inclusion tests -->
+
+        <style name="test_included">
+            <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xalan/java/edu.iu.uis.eden.edoclite.WorkflowFunctions">    
+              <xsl:template match="a">11111</xsl:template>
+              <xsl:template match="b">22222</xsl:template>
+            </xsl:stylesheet>
+        </style>
+
+        <style name="test_imported">
+            <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xalan/java/edu.iu.uis.eden.edoclite.WorkflowFunctions">    
+                <xsl:template match="a">aaaaa</xsl:template>
+                <xsl:template match="b">bbbbb</xsl:template>
+            </xsl:stylesheet>
+        </style>
+
+        <!-- duplicate template definition behavior seems to be implementation-specific
+        <style name="test_includer">
+            <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xalan/java/edu.iu.uis.eden.edoclite.WorkflowFunctions">    
+                <xsl:output omit-xml-declaration="yes"/>
+                <xsl:include href="test_included"/>   
+                <xsl:template match="a">oneoneoneoneone</xsl:template>
+            </xsl:stylesheet>
+        </style>
+         -->
+
+        <style name="test_includer2">
+            <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xalan/java/edu.iu.uis.eden.edoclite.WorkflowFunctions">    
+                <xsl:output omit-xml-declaration="yes"/>
+                <xsl:include href="test_included"/>   
+                <xsl:template match="/a">oneoneoneoneone</xsl:template> <!-- this one wins, it's more specific? -->
+            </xsl:stylesheet>
+        </style>
+
+        <style name="test_importer">
+            <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xalan/java/edu.iu.uis.eden.edoclite.WorkflowFunctions">  
+                <xsl:import href="test_imported"/>
+                <xsl:output omit-xml-declaration="yes"/>
+                <xsl:template match="b">BBBBB</xsl:template> <!-- this one should win -->
+                <xsl:template match="c">CCCCC</xsl:template>
+            </xsl:stylesheet>
+        </style>
+	</styles>
+</data>

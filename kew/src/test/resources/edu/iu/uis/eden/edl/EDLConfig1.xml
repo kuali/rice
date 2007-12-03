@@ -1,0 +1,24 @@
+<edlConfig>
+	<preProcessors>
+		<preProcessor>edu.iu.uis.eden.edl.components.WorkflowDocumentActions</preProcessor>
+	</preProcessors>
+	<postProcessors>
+		<postProcessor>edu.iu.uis.eden.edl.components.WorkflowDocumentActions</postProcessor>
+		<postProcessor>edu.iu.uis.eden.edl.components.WorkflowDocumentState</postProcessor>
+	</postProcessors>
+	<configProcessors>
+		<configProcessor>
+			<xpathExp>display/type = 'select' or display/type = 'text' or display/type = 'password' or display/type = 'radio' or display/type = 'checkbox' or display/type = 'textarea'</xpathExp>
+			<className>edu.iu.uis.eden.edl.components.SimpleWorkflowEDLConfigComponent</className>
+		</configProcessor>
+		<configProcessor>
+			<xpathExp>name() = 'instructions'</xpathExp>
+			<className>edu.iu.uis.eden.edl.components.SimpleWorkflowEDLConfigComponent</className>
+		</configProcessor>
+	</configProcessors>
+	<!-- 
+	<stateComponents>
+		<stateComponent>edu.iu.uis.eden.edl.TestStateComponent</stateComponent>
+	</stateComponents>
+	 -->
+</edlConfig>

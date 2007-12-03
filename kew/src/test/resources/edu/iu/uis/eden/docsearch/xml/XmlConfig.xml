@@ -1,0 +1,847 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+		<ruleAttribute>
+			<name>XMLSearchableAttribute</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="givenname" title="First name">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition autoWildcardLocation="prefixonly"/>
+					<validation required="true">
+						<regex>^[a-zA-Z ]+$</regex>
+						<message>Invalid first name</message>
+					</validation>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/givenname/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<givenname>
+							<value>%givenname%</value>
+						</givenname>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttribute_CaseInsensitive</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="givenname_nocase" title="First name">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition autoWildcardLocation="prefixonly" caseSensitive="false"/>
+					<validation required="true">
+						<regex>^[a-zA-Z ]+$</regex>
+						<message>Invalid first name</message>
+					</validation>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/givenname/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<givenname>
+							<value>%givenname%</value>
+						</givenname>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttributeStdLong</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="testLongKey" title="Certain Long Value">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition dataType="long" allowWildcards="true" autoWildcardLocation="suffixOnly"/>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/testLongKey/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<testLongKey>
+							<value>%testLongKey%</value>
+						</testLongKey>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttributeStdFloat</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="testFloatKey" title="Float in the Water">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition dataType="float"/>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/testFloatKey/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<testFloatKey>
+							<value>%testFloatKey%</value>
+						</testFloatKey>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttributeStdCurrency</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="testCurrencyKey" title="Dollars Here">
+					<display>
+						<type>text</type>
+                        <parameters name="displayFormatPattern">#.00</parameters>
+					</display>
+					<searchDefinition dataType="float"/>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/testCurrencyKey/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<testCurrencyKey>
+							<value>%testCurrencyKey%</value>
+						</testCurrencyKey>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttributeStdDateTime</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="testDateTimeKey" title="Searchable Date Field">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition dataType="datetime" datePicker="false"/>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/testDateTimeKey/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<testDateTimeKey>
+							<value>%testDateTimeKey%</value>
+						</testDateTimeKey>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+<!--  Following are for range search testing -->
+		<ruleAttribute>
+			<name>XMLSearchableAttributeStringRange</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="givenname" title="First name">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition rangeSearch="true"/>
+					<validation required="true">
+						<regex>^[a-zA-Z ]+$</regex>
+						<message>Invalid first name</message>
+					</validation>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/givenname/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<givenname>
+							<value>%givenname%</value>
+						</givenname>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttributeStdLongRange</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="testLongKey" title="Certain Long Value">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition dataType="long" rangeSearch="true"/>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/testLongKey/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<testLongKey>
+							<value>%testLongKey%</value>
+						</testLongKey>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttributeStdFloatRange</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="testFloatKey" title="Float in the Water">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition dataType="float">
+					    <rangeDefinition inclusive="false">
+					        <lower label="starting"/>
+					        <upper label="ending"/>
+					    </rangeDefinition>
+					</searchDefinition>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/testFloatKey/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<testFloatKey>
+							<value>%testFloatKey%</value>
+						</testFloatKey>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttributeStdDateTimeRange</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="testDateTimeKey" title="Searchable Date Field">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition dataType="datetime" datePicker="false">
+					    <rangeDefinition inclusive="false">
+					        <lower/>
+					        <upper inclusive="true" datePicker="true"/>
+					    </rangeDefinition>
+					</searchDefinition>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/testDateTimeKey/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<testDateTimeKey>
+							<value>%testDateTimeKey%</value>
+						</testDateTimeKey>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+<!--  Ends attributes for range search testing -->
+		<ruleAttribute>
+			<name>BlankDropDownSearchAttribute</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>DepartmentSearchAttribute</label>
+			<description>DepartmentSearchAttribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="department" title="Department">
+					<display>
+						<type>select</type>
+						<values title=""></values>
+						<values title="African American/African Diaspora Studies">AAAD</values>
+						<values title="African Studies">AFRI</values>
+						<values title="American Studies" selected="true">AMST</values>
+						<values title="Ancient Studies">ANCS</values>
+					</display>
+					<fieldEvaluation>
+						<xpathexpression>normalize-space(substring-before(//department, ' '))</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+			</searchingConfig>
+		</ruleAttribute>
+		<!-- Test the XStreamSafeEvaluator against searchable attributes to resolve EN-63 and KULWF-723 -->
+		<ruleAttribute>
+			<name>XMLXStreamSearchableAttribute</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML XStream Searchable attribute</label>
+			<description>XML XStream Searchable attribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="givenname" title="First name">
+					<display>
+						<type>text</type>
+					</display>
+					<validation required="true">
+						<regex>^[a-zA-Z ]+$</regex>
+						<message>Invalid first name</message>
+					</validation>
+					<fieldEvaluation>
+						<xpathexpression>wf:xstreamsafe('//putWhateverWordsIwantInsideThisTag/givenname/value')</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<givenname>
+							<value reference="../../thisIsTheRealSlimShadyValue"/>
+						</givenname>
+						<thisIsTheRealSlimShadyValue>%givenname%</thisIsTheRealSlimShadyValue>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<!-- Add a non-searchable attribute to the document type, this will test the fix to KULWF-654 -->
+		<ruleAttribute>
+			<name>CustomActionListAttribute</name>
+			<className>edu.iu.uis.eden.actionlist.DefaultCustomActionListAttribute</className>
+			<label>CustomActionListAttribute</label>
+			<description>CustomActionListAttribute</description>
+			<type>ActionListAttribute</type>
+		</ruleAttribute>
+		<!-- Test the use of a quickfinder to resolve EN-95 -->
+		<ruleAttribute>
+			<name>SearchableAttributeWithQuickfinder</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>Searchable attribute wth Quickfinder</label>
+			<description>Searchable attribute wth Quickfinder</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="chart" title="Chart">
+					<display>
+						<type>text</type>
+					</display>
+					<!-- the service and appliesTo are completey fake here because we aren't actually going to render this thing -->
+					<quickfinder service="myLookuable" appliesTo="MyBean.data" draw="true" />
+					<fieldEvaluation>
+						<xpathexpression>//chart</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<chart>%chart%</chart>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<!-- Test the hiding of columns and the use of hidden fields -->
+		<ruleAttribute>
+			<name>SearchableAttributeWithHiddens</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>Searchable attribute wth Hidden fields and columns</label>
+			<description>Searchable attribute wth Hidden fields and columns</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="chart" title="Chart">
+					<display>
+						<type>text</type>
+					</display>
+					<visibility>
+						<column visible="false"/>
+					</visibility>
+					<quickfinder service="ChartLookuable" appliesTo="chart" draw="true" />
+					<fieldEvaluation>
+						<xpathexpression>//chart</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<fieldDef name="org" title="Org">
+					<display>
+						<type>hidden</type>
+					</display>
+					<fieldEvaluation>
+						<xpathexpression>//org</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<fieldDef name="dollar" title="Dollar">
+					<display>
+						<type>text</type>
+					</display>
+					<visibility>
+						<field visible="false"/>
+					</visibility>
+					<fieldEvaluation>
+						<xpathexpression>//dollar</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<chartOrg><chart>%chart%</chart><org>%org%</org><dollar>%dollar%</dollar></chartOrg>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+	</ruleAttributes>
+	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+		<ruleTemplate>
+			<name>searchTemplate</name>
+			<description>search template</description>
+			<!--
+				<attributes>
+				<attribute>
+				<name>XMLSearchableAttribute</name>
+				<required>true</required>
+				</attribute>
+				</attributes>
+			-->
+		</ruleTemplate>
+	</ruleTemplates>
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>SearchDocType</name>
+			<description>SearchDocType</description>
+			<label>SearchDocType</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<!-- Add the CustomActionListAttribute to this document type to verify the resolution to KULWF-654 -->
+				<attribute>
+					<name>CustomActionListAttribute</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttribute</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>SearchDocType2</name>
+			<description>SearchDocType2</description>
+			<label>SearchDocType2</label>
+			<postProcessorName>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttributePostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<!-- Add the CustomActionListAttribute to this document type to verify the resolution to KULWF-654 -->
+				<attribute>
+					<name>CustomActionListAttribute</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttribute</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>SearchDocTypeCaseSensitivity</name>
+			<description>SearchDocTypeCaseSensitivity</description>
+			<label>SearchDocTypeCaseSensitivity</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<!-- Add the CustomActionListAttribute to this document type to verify the resolution to KULWF-654 -->
+				<attribute>
+					<name>CustomActionListAttribute</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttribute</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttribute_CaseInsensitive</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>SearchDocTypeStandardSearchDataType</name>
+			<description>SearchDocTypeStandardSearchDataType</description>
+			<label>SearchDocTypeStandardSearchDataType</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>XMLSearchableAttribute</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttributeStdLong</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttributeStdFloat</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttributeStdDateTime</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>SearchDocTypeRangeSearchDataType</name>
+			<description>SearchDocTypeRangeSearchDataType</description>
+			<label>SearchDocTypeRangeSearchDataType</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>XMLSearchableAttributeStringRange</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttributeStdLongRange</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttributeStdFloatRange</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttributeStdDateTimeRange</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>SearchDocTypeXStream</name>
+			<description>SearchDocTypeXStream</description>
+			<label>SearchDocTypeXStream</label>
+			<postProcessorName>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttributePostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>XMLXStreamSearchableAttribute</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>searchTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>AttributeWithQuickfinderDocType</name>
+			<label>AttributeWithQuickfinderDocType</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>SearchableAttributeWithQuickfinder</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial"/>
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>AttributeWithHiddensDocType</name>
+			<label>AttributeWithHiddensDocType</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>SearchableAttributeWithHiddens</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial"/>
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+			</routeNodes>
+		</documentType>
+	</documentTypes>
+	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<rule>
+			<documentType>SearchDocType</documentType>
+			<ruleTemplate>searchTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocTypeCaseSensitivity</documentType>
+			<ruleTemplate>searchTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>C</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocTypeStandardSearchDataType</documentType>
+			<ruleTemplate>searchTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>C</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocTypeRangeSearchDataType</documentType>
+			<ruleTemplate>searchTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>C</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocTypeXStream</documentType>
+			<ruleTemplate>searchTemplate</ruleTemplate>
+			<description>Search XStream attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+	</rules>
+</data>

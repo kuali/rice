@@ -30,9 +30,7 @@ import edu.iu.uis.eden.messaging.JmsServiceDefinition;
 import edu.iu.uis.eden.messaging.ServiceInfo;
 
 /**
- * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * @version $Revision: 1.2.2.1.2.1 $ $Date: 2007-10-17 21:52:25 $
  * @since 0.9
  */
 public class JmsConnector extends AbstractServiceConnector {

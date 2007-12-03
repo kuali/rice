@@ -30,7 +30,6 @@ import org.kuali.rice.test.lifecycles.PerTestDataLoaderLifecycle;
  * reads the test data annotations and bootstraps the database for test runs.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * @version $Revision: 1.1.2.1 $ $Date: 2007-11-20 15:01:23 $
  * @since 0.9
  */
 public class RiceUnitTestClassRunner extends JUnit4ClassRunner {

@@ -41,7 +41,7 @@ import edu.iu.uis.eden.services.ServiceErrorConstants;
  * </p>
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * @version 1.0
+ *
  */
 public class UniversityOrganizationElement implements IDocElement {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UniversityOrganizationElement.class);

@@ -29,7 +29,6 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
  * <p>Copyright: Copyright (c) 2001</p>
  * <p>Company: UIS - Indiana University</p>
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * @version 1.0
  */
 public class ChartCodeEOK {
   public final static String CHART_CODE_EOK = "financial_chart_of_accounts_eok";

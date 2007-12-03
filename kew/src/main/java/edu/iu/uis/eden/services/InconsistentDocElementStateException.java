@@ -25,7 +25,6 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * <p><p><p>Copyright: Copyright (c) 2002</p>
  * <p><p>Company: UIS - Indiana University</p>
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * @version $Revision: 1.1.2.1.2.1 $ - $Date: 2007-10-17 21:52:22 $
  */
 public class InconsistentDocElementStateException extends WorkflowException {
   /**

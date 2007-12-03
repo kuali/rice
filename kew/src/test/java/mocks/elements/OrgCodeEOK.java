@@ -27,7 +27,6 @@ import org.jdom.output.XMLOutputter;
  * <p>Copyright: Copyright (c) 2001</p>
  * <p>Company: UIS - Indiana University</p>
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * @version 1.0
  */
 public class OrgCodeEOK {
   public final static String ORG_CODE_EOK = "university_organization_eok";

@@ -32,7 +32,6 @@ import edu.iu.uis.eden.messaging.ServiceInfo;
  * property <code>CONST_KUALI_JMS_AUTHENTICATION</code>.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * @version $Revision: 1.2.2.1.2.1 $ $Date: 2007-10-17 21:52:23 $
  * @since 0.9
  */
 public class AuthenticationJmsProxyFactoryBean extends JmsProxyFactoryBean {

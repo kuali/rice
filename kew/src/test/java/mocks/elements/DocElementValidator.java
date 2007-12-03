@@ -30,7 +30,6 @@ import edu.iu.uis.eden.services.InconsistentDocElementStateException;
  * <p>Copyright: Copyright (c) 2002</p>
  * <p>Company: Indiana University</p>
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * @version 1.0
  */
 public class DocElementValidator {
   private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocElementValidator.class);

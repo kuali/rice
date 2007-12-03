@@ -18,11 +18,8 @@ package edu.iu.uis.eden.messaging;
 
 import org.kuali.rice.config.ConfigurationException;
 
-
 /**
- * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * @version $Revision: 1.2.26.2 $ $Date: 2007-10-17 21:52:21 $
  * @since 0.9
  */
 public class SOAPServiceDefinition extends ServiceDefinition {

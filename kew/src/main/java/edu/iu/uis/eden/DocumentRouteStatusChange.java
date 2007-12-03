@@ -18,7 +18,6 @@ package edu.iu.uis.eden;
  * </p>
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * @version $Revision: 1.1.2.1.2.1 $ - $Date: 2007-10-17 21:52:21 $
  */
 public class DocumentRouteStatusChange implements IDocumentEvent {
 

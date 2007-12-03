@@ -32,7 +32,6 @@ import edu.iu.uis.eden.services.InconsistentDocElementStateException;
  * <p>Copyright: Copyright (c) 2002</p>
  * <p>Company: Indiana University</p>
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * @version revision
  */
 public interface IDocElement extends Serializable {
   /**

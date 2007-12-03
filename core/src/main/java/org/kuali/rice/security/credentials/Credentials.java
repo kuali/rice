@@ -19,9 +19,7 @@ package org.kuali.rice.security.credentials;
  * Marker interface for credentials.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * @version $Revision: 1.2.2.1.2.1 $ $Date: 2007-10-17 21:52:27 $
  * @since 0.9
- *
  */
 public interface Credentials {
 	// marker interface

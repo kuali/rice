@@ -16,6 +16,17 @@ mergeandstrip(PROJECT_DIR + '/kew/src/main/config/ddl/tables')
 mergeandstrip(PROJECT_DIR + '/kew/src/main/config/ddl/indexes')
 mergeandstrip(PROJECT_DIR + '/kew/src/main/config/ddl/constraints')
 
+// Do the KSB DDL Creates
+mergeandstrip(PROJECT_DIR + '/ksb/src/main/config/ddl/tables')
+mergeandstrip(PROJECT_DIR + '/ksb/src/main/config/ddl/indexes')
+mergeandstrip(PROJECT_DIR + '/ksb/src/main/config/ddl/constraints')
+
+// Do the KIM DDL
+mergeandstrip(PROJECT_DIR + '/kim/src/main/config/ddl/sequences')
+mergeandstrip(PROJECT_DIR + '/kim/src/main/config/ddl/tables')
+mergeandstrip(PROJECT_DIR + '/kim/src/main/config/ddl/indexes')
+mergeandstrip(PROJECT_DIR + '/kim/src/main/config/ddl/constraints')
+
 System.exit(0)
 
 

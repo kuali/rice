@@ -25,6 +25,8 @@ if (!"yes".equals(answer.trim().toLowerCase())) {
 
 removeFile("${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME.toLowerCase()}-config.xml")
 removeFile("${System.getProperty('user.home')}/kuali/test/dev/${PROJECT_NAME.toLowerCase()}-test-config.xml")
+removeFile("${System.getProperty('user.home')}/kuali/main/dev/ricekeystore")
+removeFile("${System.getProperty('user.home')}/kuali/test/dev/ricekeystore")
 
 buildDir("${System.getProperty('user.home')}/kuali/main/dev/")
 buildDir("${System.getProperty('user.home')}/kuali/test/dev/")
@@ -59,6 +61,12 @@ ant.copy(todir:PROJECT_PATH + '/src/main/config/xml') {
 }
 ant.copy(todir:PROJECT_PATH + '/src/main/webapp') { 
     fileset(dir:RICE_DIR + '/kns/src/test/webapp', includes:'**/*', excludes:'CVS*,.cvs*') 
+}
+ant.copy(todir:"${System.getProperty('user.home')}/kuali/main/dev") { 
+    fileset(dir:RICE_DIR + '/security', includes:'ricekeystore', excludes:'CVS*,.cvs*') 
+}
+ant.copy(todir:"${System.getProperty('user.home')}/kuali/test/dev") { 
+    fileset(dir:RICE_DIR + '/security', includes:'ricekeystore', excludes:'CVS*,.cvs*') 
 }
 ant.delete(dir:PROJECT_PATH + '/src/main/resources/org')
 
@@ -124,6 +132,7 @@ testbasetext = ""
 testbase.eachLine { 
     line -> 
 		line = line.replace('return "kns"', 'return ""')
+		line = line.replace('"/src/test/webapp"', '"/src/main/webapp"')
 		line = line.replace('sample-app', "${PROJECT_NAME.toLowerCase()}")
     	testbasetext += line + "\n" 
 }
@@ -216,9 +225,9 @@ def userhomeconfigtext() {
 	<param name="datasource.pool.minSize">0</param>
 	<param name="datasource.pool.maxSize">50</param>
 
-	<param name="keystore.alias">onestartsharedservices-devandtst</param>
-	<param name="keystore.location">/opt/sa_forms/java/dev/edu/iu/uis/security/en/onestartsharedservices-devandtst_keystore</param>
-	<param name="keystore.password">s1t0spss!xX-tst</param>
+	<param name="keystore.alias">rice</param>
+	<param name="keystore.location">''' + System.getProperty('user.home') + '''/kuali/main/dev/ricekeystore</param>
+	<param name="keystore.password">r1c3pw</param>
 
 	<param name="dev.mode">true</param>
 	<param name="message.persistence">false</param>
@@ -246,6 +255,33 @@ def userhomeconfigtext() {
 	<param name="encryption.key">7IC64w6ksLU</param>
 	<param name="kfsLocator.useAppContext">true</param>
 	<param name="production.environment.code">prd</param>
+
+    <!-- Ken stuffs... -->
+    <!-- stock notification system configuration properties -->
+
+    <!-- Quartz Jobs (MS = Milli Seconds) -->
+    <param name="notification.resolveMessageDeliveriesJob.startDelayMS">5000</param>
+    <param name="notification.resolveMessageDeliveriesJob.intervalMS">10000</param>
+
+    <param name="notification.processUndeliveredJob.startDelayMS">10000</param>
+    <param name="notification.processUndeliveredJob.intervalMS">10000</param>
+
+    <param name="notification.processAutoRemovalJob.startDelayMS">60000</param>
+    <param name="notification.processAutoRemovalJob.intervalMS">60000</param>
+
+    <param name="notification.quartz.autostartup">true</param>
+    <param name="notification.concurrent.jobs">true</param>
+
+    <param name="notification.basewebappurl">http://localhost:8080/kr-dev/ken</param>
+    
+    <param name="notification.ojb.platform">Oracle</param>
+    
+    <!-- Email Plugin Properties -->
+    <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
+    
+
+    <param name="css.files">kr/css/kuali.css</param>
+    <param name="javascript.files">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/documents.js,kr/scripts/my_common.js,kr/scripts/objectInfo.js</param>
 </config>'''	
 }
 
@@ -300,9 +336,9 @@ def userhometestconfigtext() {
 	<param name="datasource.pool.minSize">0</param>
 	<param name="datasource.pool.maxSize">50</param>
 
-	<param name="keystore.alias">onestartsharedservices-devandtst</param>
-	<param name="keystore.location">/opt/sa_forms/java/dev/edu/iu/uis/security/en/onestartsharedservices-devandtst_keystore</param>
-	<param name="keystore.password">s1t0spss!xX-tst</param>
+	<param name="keystore.alias">rice</param>
+	<param name="keystore.location">''' + System.getProperty('user.home') + '''/kuali/test/dev/ricekeystore</param>
+	<param name="keystore.password">r1c3pw</param>
 
 	<param name="dev.mode">true</param>
 	<param name="message.persistence">false</param>
@@ -330,6 +366,33 @@ def userhometestconfigtext() {
 	<param name="encryption.key">7IC64w6ksLU</param>
 	<param name="kfsLocator.useAppContext">true</param>
 	<param name="production.environment.code">prd</param>
+
+    <!-- Ken stuffs... -->
+    <!-- stock notification system configuration properties -->
+
+    <!-- Quartz Jobs (MS = Milli Seconds) -->
+    <param name="notification.resolveMessageDeliveriesJob.startDelayMS">5000</param>
+    <param name="notification.resolveMessageDeliveriesJob.intervalMS">10000</param>
+
+    <param name="notification.processUndeliveredJob.startDelayMS">10000</param>
+    <param name="notification.processUndeliveredJob.intervalMS">10000</param>
+
+    <param name="notification.processAutoRemovalJob.startDelayMS">60000</param>
+    <param name="notification.processAutoRemovalJob.intervalMS">60000</param>
+
+    <param name="notification.quartz.autostartup">true</param>
+    <param name="notification.concurrent.jobs">true</param>
+
+    <param name="notification.basewebappurl">http://localhost:8080/kr-dev/ken</param>
+    
+    <param name="notification.ojb.platform">Oracle</param>
+    
+    <!-- Email Plugin Properties -->
+    <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
+    
+
+    <param name="css.files">kr/css/kuali.css</param>
+    <param name="javascript.files">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/documents.js,kr/scripts/my_common.js,kr/scripts/objectInfo.js</param>
 </config>'''	
 }
 
@@ -411,6 +474,15 @@ def pomtext() {
 	<name>${PROJECT_NAME.toLowerCase()}</name>
 	<version>SNAPSHOT-0.1</version>
 	<url>http://kuali.org</url>
+	<profiles>
+		<profile>
+			<id>war</id>
+			<activation>
+				<property>
+					<name>war</name>
+					<value>true</value>
+				</property>
+			</activation>
 	<build>
 		<plugins>
 			<plugin>
@@ -420,7 +492,109 @@ def pomtext() {
 					<target>1.5</target>
 				</configuration>
 			</plugin>
+				</plugins>
+			</build>
+			<dependencies>
+				<dependency>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+					<version>2.4</version>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+					<version>2.3</version>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.mortbay.jetty</groupId>
+					<artifactId>jetty</artifactId>
+					<version>6.1.1</version>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>tomcat</groupId>
+					<artifactId>jasper-compiler</artifactId>
+					<version>5.5.15</version>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>tomcat</groupId>
+					<artifactId>jasper-runtime</artifactId>
+					<version>5.5.15</version>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>tomcat</groupId>
+					<artifactId>jasper-compiler-jdt</artifactId>
+					<version>5.5.15</version>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.activemq</groupId>
+					<artifactId>activemq-core</artifactId>
+					<version>4.1.1</version>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.derby</groupId>
+					<artifactId>derby</artifactId>
+					<version>10.2.2.0</version>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.kuali.rice</groupId>
+					<artifactId>rice-kns</artifactId>
+					<version>0.9.0.3.1</version>
+					<exclusions>
+						<exclusion>
+							<groupId>junit</groupId>
+							<artifactId>junit</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>htmlunit</groupId>
+							<artifactId>htmlunit</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>jmock</groupId>
+							<artifactId>jmock</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>nekohtml</groupId>
+							<artifactId>nekohtml</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.apache.activemq</groupId>
+							<artifactId>activemq-core</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.apache.derby</groupId>
+							<artifactId>derby</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.springframework</groupId>
+							<artifactId>spring-mock</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
 			<plugin>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<source>1.5</source>
+							<target>1.5</target>
+						</configuration>
+					</plugin>
+					<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.3</version>
 				<configuration>
@@ -435,6 +609,15 @@ def pomtext() {
 			</plugin>
 		</plugins>
 	</build>
+			<dependencies>
+				<dependency>
+					<groupId>org.kuali.rice</groupId>
+					<artifactId>rice-kns</artifactId>
+					<version>0.9.0.3.1</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 	<repositories>
 		<repository>
 			<id>connector</id>
@@ -444,16 +627,9 @@ def pomtext() {
 		<repository>
 			<id>kuali</id>
 			<name>Kuali Repository</name>
-			<url>https://onestart.iu.edu/dav/MY/maven-mirror/maven2</url>
+			<url>https://test.kuali.org/maven</url>
 		</repository>
 	</repositories>
-	<dependencies>
-		<dependency>
-			<groupId>org.kuali.rice</groupId>
-			<artifactId>rice-kns</artifactId>
-			<version>0.9</version>
-		</dependency>
-	</dependencies>
 	<reporting>
 		<plugins>
 			<plugin>
@@ -476,6 +652,8 @@ with a new project:
 It will also create or replace the following files in USER_HOME:
     1) ${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME.toLowerCase()}-config.xml
     2) ${System.getProperty('user.home')}/kuali/test/dev/${PROJECT_NAME.toLowerCase()}-test-config.xml
+    3) ${System.getProperty('user.home')}/kuali/main/dev/ricekeystore
+    4) ${System.getProperty('user.home')}/kuali/test/dev/ricekeystore
 
 If this is not what you want, please supply more information:
     usage: groovy createproject -name PROJECT_NAME [-pdir PROJECT_DIR] [-rdir RICE_DIR]

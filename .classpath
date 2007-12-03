@@ -18,6 +18,25 @@
 	<classpathentry kind="src" path="kns/src/main/resources"/>
 	<classpathentry kind="src" path="kns/src/test/java"/>
 	<classpathentry kind="src" path="kns/src/test/resources"/>
+	<classpathentry kind="src" path="kim-api/src/main/java"/>
+	<classpathentry kind="src" path="kim/src/main/java"/>
+	<classpathentry kind="src" path="kim/src/main/resources"/>
+	<classpathentry kind="src" path="kim/src/test/java"/>
+	<classpathentry kind="src" path="kim/src/test/resources"/>
+	<classpathentry kind="src" path="kew/src/main/java"/>
+	<classpathentry kind="src" path="kew/src/main/resources"/>
+	<classpathentry kind="src" path="kew/src/test/java"/>
+	<classpathentry kind="src" path="kew/src/test/resources"/>
+	<classpathentry kind="src" path="ken/src/main/java"/>
+	<classpathentry kind="src" path="ken/src/main/resources"/>
+	<classpathentry kind="src" path="ken/src/test/java"/>
+	<classpathentry kind="src" path="ken/src/test/resources"/>
+	<classpathentry kind="src" path="tools/src/main/java"/>
+	<classpathentry kind="src" path="tools/src/test/java"/>
+	<classpathentry kind="src" path="kew-stress-test/src/main/java"/>
+	<classpathentry kind="src" path="kew-stress-test/src/main/resources"/>
+	<classpathentry kind="src" path="standalone/src/main/java"/>
+	<classpathentry kind="src" path="standalone/src/main/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
 	<classpathentry kind="lib" path="scripts/groovy-1.0/groovy-1.0.jar"/>

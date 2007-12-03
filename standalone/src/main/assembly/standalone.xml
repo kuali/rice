@@ -1,0 +1,43 @@
+<assembly>
+  <id>standalone</id>
+  <formats>
+    <format>war</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+      <sources>
+        <includeModuleDirectory>false</includeModuleDirectory>
+        <fileSets>
+          <fileSet>
+            <directory>kns/src/test/webapp</directory>
+            <outputDirectory>/</outputDirectory>
+            <!-- Don't include the pieces from the sample app -->
+            <excludes>
+              <exclude>*</exclude>
+              <exclude>WEB-INF/*</exclude>
+            </excludes>
+          </fileSet>
+          <fileSet>
+            <directory>standalone/src/main/config</directory>
+            <outputDirectory>/</outputDirectory>
+          </fileSet>
+        </fileSets>
+      </sources>
+      <moduleSets>
+        <moduleSet>
+          <includes>
+            <!--<include>org.kuali.rice:*</include>-->
+            <include>org.kuali.rice:rice-standalone</include>
+            <include>org.kuali.rice:rice-core</include>
+            <include>org.kuali.rice:rice-shared</include>
+            <include>org.kuali.rice:rice-ksb</include>
+            <include>org.kuali.rice:rice-kns</include>
+            <include>org.kuali.rice:rice-kew</include>
+            <include>org.kuali.rice:rice-ken</include>
+          </includes>
+          <binaries>
+            <unpack>false</unpack>
+            <outputDirectory>WEB-INF/lib</outputDirectory>
+          </binaries>
+        </moduleSet>
+      </moduleSets>
+</assembly>

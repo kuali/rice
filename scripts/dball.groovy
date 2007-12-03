@@ -1,11 +1,13 @@
-if (args.length > 2) { 
-	println 'usage: groovy dball.groovy [-pdir PROJECT_DIR]'
-	println '       PROJECT_DIR defaults to /java/projects/rice'
-	System.exit(1)	
-}
+// generates master drop and create sql
 
 PROJECT_DIR = '/java/projects/rice'
 //PROJECT_DIR = '/Users/natjohns/eclipse-3.3-workspace/rice'
+
+if (args.length > 2) { 
+	println 'usage: groovy dball.groovy [-pdir PROJECT_DIR]'
+	println '       PROJECT_DIR defaults to ' + PROJECT_DIR
+	System.exit(1)	
+}
 
 count = 0
 for (arg in args) {
@@ -13,77 +15,93 @@ for (arg in args) {
 	count++
 }	
 
+// set up variables based on PROJECT_DIR
+// Just add comma separated values for ignored DDL
+IGNORES = ['FS_UNIVERSAL_USR_T']
+MODULES = ['kns', 'kew', 'ksb', 'kim', 'ken']
+MASTER_DESTROY_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_db_destroy.sql' 
+MASTER_CREATE_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_db_bootstrap.sql'
+
+SAMPLEAPP_DESTROY_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_sample_app_drops.sql'
+
+RICE_DATA_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_data.sql' 
+SAMPLEAPP_DATA_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_sample_app.sql'
+
+// prompt and read user input
 println warningtext()
 input = new BufferedReader(new InputStreamReader(System.in))
 answer = input.readLine()
 if (!"yes".equals(answer.trim().toLowerCase())) {
-	System.exit(2)
+    System.exit(2)
 }
 
-// Just add comma separated values for ignored DDL
-ignores = ['FS_UNIVERSAL_USR_T']
+println "Creating master drop SQL: " + MASTER_DESTROY_SQL
 
 // The file that contains drop statements
-db = new File(PROJECT_DIR + '/kns/src/main/config/sql/rice_db_destroy.sql')
+db = new File(MASTER_DESTROY_SQL)
 if (db.exists()) {
     db.delete()
 }       
 
-// Do the KNS DDL Drops
-createdrops(db, PROJECT_DIR + '/kns/src/main/config/ddl/sequences')
-createdrops(db, PROJECT_DIR + '/kns/src/main/config/ddl/tables')
+// concatenate all sequence and table drops
+MODULES.each() {
+    moduleName ->
+    println "Concatenating drop SQL for module " + moduleName 
+    createdrops(db, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/sequences');
+    createdrops(db, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/tables');
+}
 
-// Do the KEW DDL Drops
-createdrops(db, PROJECT_DIR + '/kew/src/main/config/ddl/sequences')
-createdrops(db, PROJECT_DIR + '/kew/src/main/config/ddl/tables')
+println "Concatenating sample app drop SQL"
+merge(db, SAMPLEAPP_DESTROY_SQL)
 
-// Do the KSB DDL Drops (at this point it only quartz tables)
-createdrops(db, PROJECT_DIR + '/ksb/src/main/config/ddl')
+println "Done."
 
-merge(db, PROJECT_DIR + '/kns/src/main/config/sql/rice_sample_app_drops.sql')
+
+println "Creating master drop SQL: " + MASTER_CREATE_SQL
 
 // The file that contains bootstrap statements
-db = new File(PROJECT_DIR + '/kns/src/main/config/sql/rice_db_bootstrap.sql')
+db = new File(MASTER_CREATE_SQL)
 if (db.exists()) {
     db.delete()
 }       
 
-// Do the KNS DDL Creates
-mergeandstrip(db, PROJECT_DIR + '/kns/src/main/config/ddl/sequences')
-mergeandstrip(db, PROJECT_DIR + '/kns/src/main/config/ddl/tables')
-mergeandstrip(db, PROJECT_DIR + '/kns/src/main/config/ddl/indexes')
-mergeandstrip(db, PROJECT_DIR + '/kns/src/main/config/ddl/constraints')
+MODULES.each() {
+    moduleName ->
+    println "Concatenating create SQL for module " + moduleName
+    mergeandstrip(db, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/sequences')
+    mergeandstrip(db, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/tables')
+    mergeandstrip(db, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/indexes')
+    mergeandstrip(db, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/constraints')
+}
 
-// Do the KEW DDL Creates
-mergeandstrip(db, PROJECT_DIR + '/kew/src/main/config/ddl/sequences')
-mergeandstrip(db, PROJECT_DIR + '/kew/src/main/config/ddl/tables')
-mergeandstrip(db, PROJECT_DIR + '/kew/src/main/config/ddl/indexes')
-mergeandstrip(db, PROJECT_DIR + '/kew/src/main/config/ddl/constraints')
+println "Concatenating Rice data SQL"
+merge(db, RICE_DATA_SQL)
+println "Concatenating Sample app data SQL"
+merge(db, SAMPLEAPP_DATA_SQL)
 
-// Do the KSB DDL Drops (at this point it only quartz tables)
-mergeandstrip(db, PROJECT_DIR + '/ksb/src/main/config/ddl')
-
-merge(db, PROJECT_DIR + '/kns/src/main/config/sql/rice_data.sql')
-merge(db, PROJECT_DIR + '/kns/src/main/config/sql/rice_sample_app.sql')
+println "Done."
 
 System.exit(0)
 
 
+// functions
+
 def merge(db, file) {
 	f = new File(file)
-    f.eachLine {
-	    ln ->
-        db << ln           
-        db << '\n'
-	}
+	db << f.getText()
 }
 
 def mergeandstrip(db, dir) {
-	def p = ~/.*\.ddl/
-	new File(dir).eachFileMatch(p) {
+	d = new File(dir)
+    if (!d.isDirectory()) {
+       println dir + " does not exist...skipping"
+       return
+    }
+    def p = ~/.*\.ddl/
+	d.eachFileMatch(p) {
 	    f ->
 	    name = f.getName()
-	    if (! ignores.contains(name.substring(0, name.indexOf(".")))) {
+	    if (! IGNORES.contains(name.substring(0, name.indexOf(".")))) {
 		    f.eachLine {
 		        ln -> 
 		        if (! (ln.trim().startsWith("TABLESPACE") || ln.trim().startsWith("/*") || ln.trim().startsWith("*"))) {
@@ -100,21 +118,27 @@ def mergeandstrip(db, dir) {
 }
 
 def createdrops(db, dir) {
-	def p = ~/.*\.ddl/
-	new File(dir).eachFileMatch(p) {
+	d = new File(dir)
+	if (!d.isDirectory()) {
+	   println dir + " does not exist...skipping"
+	   return
+	}
+    def p = ~/.*\.ddl/
+	d.eachFileMatch(p) {
 	    f ->
 	    name = f.getName()
-	    if (! ignores.contains(name.substring(0, name.indexOf(".")))) {
+	    if (! IGNORES.contains(name.substring(0, name.indexOf(".")))) {
 		    f.eachLine {
-		        ln -> 
-		        if (ln.trim().toUpperCase().startsWith("CREATE TABLE")) {				
-		            drop = ln.substring("CREATE TABLE".length() + 1)
-		            db << "DROP TABLE ${drop[0 .. (drop.indexOf(' '))]} CASCADE CONSTRAINTS"
+		        ln ->
+				line = ln.trim().toUpperCase()
+				def matcher = line =~ /CREATE TABLE ([\p{Alnum}[_]]+)[ \(]*/
+		        if (matcher.matches()) {
+		            db << "DROP TABLE ${matcher[0][1]} CASCADE CONSTRAINTS"
 		            db << '\n'
 		            db << "/"
 		            db << '\n'
 		        }
-		        if (ln.trim().toUpperCase().startsWith("CREATE SEQUENCE")) {				
+		        if (line.startsWith("CREATE SEQUENCE")) {				
 		            drop = ln.substring("CREATE SEQUENCE".length() + 1)
 		            db << "DROP SEQUENCE ${drop[0 .. (drop.indexOf(' '))]}"
 		            db << '\n'
@@ -131,9 +155,9 @@ def warningtext() {
 ==================================================================
                             WARNING 
 ==================================================================
-It will create or replace the following files in ${PROJECT_DIR}/kns/src/main/config/sql/:
-    1) ${PROJECT_DIR}/kns/src/main/config/sql/rice_db_destroy.sql
-    2) ${PROJECT_DIR}/kns/src/main/config/sql/rice_db_bootstrap.sql
+It will create or replace the following files:
+    1) ${MASTER_DESTROY_SQL}
+    2) ${MASTER_CREATE_SQL}
 
 If this is not what you want, please supply more information:
     usage: groovy dball.groovy [-pdir PROJECT_DIR]

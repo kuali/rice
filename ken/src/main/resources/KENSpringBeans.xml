@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!-- KENSpringBeans - standard KEN module spring context
+     includes common notification spring beans
+     as well as CAS security beans required for web layer -->
+<beans>
+  <import resource="common-beans.xml"/>
+</beans>

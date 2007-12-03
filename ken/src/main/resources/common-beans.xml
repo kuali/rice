@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer"/>
+  
+    <bean id="userTransaction" class="org.kuali.rice.jta.UserTransactionFactoryBean" lazy-init="true" />
+    <bean id="jtaTransactionManager" class="org.kuali.rice.jta.TransactionManagerFactoryBean" lazy-init="true" />
+
+    <bean id="ojbConfigurer" class="org.kuali.rice.ojb.JtaOjbConfigurer">
+        <property name="transactionManager" ref="jtaTransactionManager" />
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
+        <property name="userTransaction">
+            <ref local="userTransaction" />
+        </property>
+        <property name="transactionManager">
+            <ref local="jtaTransactionManager" />
+        </property>
+    </bean>
+
+    <bean id="kenDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean">
+        <property name="transactionManager">
+            <ref local="jtaTransactionManager" />
+        </property>
+        <property name="preferredDataSourceParams">
+            <list>
+                <value>org.kuali.ken.datasource</value>
+            </list>
+        </property>
+        <property name="preferredDataSourceJndiParams">
+            <list>
+                <value>org.kuali.ken.datasource.jndi.location</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- ken stuff -->
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <!-- resource for "system" properties that do not need to be internationalized -->
+                <value>system-messages</value>
+                <!-- resources for textual/ui properties may need to be internationalized -->
+                <value>messages</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Eager-initnotification lifecycle; sets OJB platform dynamically for now -->
+    <bean id="lifecycle" class="org.kuali.notification.core.NotificationLifeCycle" lazy-init="false" depends-on="ojbConfigurer">
+        <property name="ojbPlatform"><value>${notification.ojb.platform}</value></property>
+    </bean>
+
+	<!-- Applys a transaction template to the actual transaction manager bean -->
+	<!-- This is needed to recognize services as transactions -->
+	<bean id="transactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+	</bean>
+
+	<!-- PROPAGATION REQUIRED TX DECLARATIONS -->
+	<!-- Sets up pattern matching for transaction recognition -->
+	<!-- This is needed to recognize services as transactions -->
+	<bean id="matchAllWithPropReq"
+		class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource">
+		<property name="transactionAttribute">
+			<value>PROPAGATION_REQUIRED</value>
+        </property>
+	</bean>
+
+	<!-- Applys the pattern matching to the transaction manager bean -->
+	<!-- This is needed to recognize servi ces as transactions -->
+	<bean id="matchAllTxInterceptor"
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="transactionAttributeSource">
+			<ref bean="matchAllWithPropReq" />
+		</property>
+	</bean>
+
+	<!-- All of the beans listed in the beanNames/list section are considered transactional -->
+	<bean id="autoProxyCreator"
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<idref local="matchAllTxInterceptor" />
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+              <value>messageContentService</value>
+              <value>notificationService</value>
+              <value>notificationContentTypeService</value>
+              <value>notificationAuthorizationService</value>
+              <value>notificationRecipientService</value>
+              <value>notificationWorkflowDocumentService</value>
+              <value>sendNotificationKewXmlService</value>
+              <value>notificationMessageDeliveryService</value>
+              <value>userPreferencesService</value>
+              <value>businessObjectDao</value>
+              <value>notificationMessageDelivererRegistryService</value>
+            </list>
+		</property>
+	</bean>
+	<!--  END PROPAGATION REQUIRED TX DECLARATIONS -->
+
+	<!-- SERVICES -->
+    <bean id="messageContentService" class="org.kuali.notification.service.impl.NotificationMessageContentServiceImpl">
+      <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
+      <constructor-arg><ref local="notificationContentTypeService"/></constructor-arg>
+    </bean>
+
+    <bean id="notificationService" class="org.kuali.notification.service.impl.NotificationServiceImpl">
+      <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
+      <constructor-arg><ref local="messageContentService"/></constructor-arg>
+      <constructor-arg><ref local="notificationAuthorizationService"/></constructor-arg>
+      <constructor-arg><ref local="notificationRecipientService"/></constructor-arg>
+      <constructor-arg><ref local="notificationWorkflowDocumentService"/></constructor-arg>
+      <constructor-arg><ref local="notificationMessageDeliveryService"/></constructor-arg>
+      <constructor-arg><ref local="notificationMessageDelivererRegistryService"/></constructor-arg>
+    </bean>
+
+    <bean id="notificationContentTypeService" class="org.kuali.notification.service.impl.NotificationContentTypeServiceImpl">
+      <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
+    </bean>
+    
+    <bean id="notificationChannelService" class="org.kuali.notification.service.impl.NotificationChannelServiceImpl">
+      <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
+    </bean>
+    
+    <bean id="userPreferenceService" class="org.kuali.notification.service.impl.UserPreferenceServiceImpl">
+      <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
+      <constructor-arg><ref local="notificationChannelService"/></constructor-arg>
+    </bean>
+    
+    <bean id="notificationAuthorizationService" class="org.kuali.notification.service.impl.NotificationAuthorizationServiceImpl">
+      <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
+    </bean>
+
+    <bean id="notificationRecipientService" class="org.kuali.notification.service.impl.NotificationRecipientServiceKewImpl" />
+    
+    <bean id="notificationWorkflowDocumentService" class="org.kuali.notification.service.impl.NotificationWorkflowDocumentServiceImpl">
+      <constructor-arg><ref local="messageContentService"/></constructor-arg>
+    </bean>
+    
+    <bean id="notificationMessageDeliveryDispatchService" class="org.kuali.notification.service.impl.NotificationMessageDeliveryDispatchServiceImpl">
+      <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
+      <constructor-arg><ref bean="transactionManager"/></constructor-arg>
+      <constructor-arg><ref bean="dispatcherExecutor"/></constructor-arg>
+      <constructor-arg><ref local="notificationMessageDeliveryService"/></constructor-arg>
+      <constructor-arg><ref local="notificationMessageDelivererRegistryService"/></constructor-arg>
+    </bean>
+    
+    <bean id="notificationMessageDeliveryResolverService" class="org.kuali.notification.service.impl.NotificationMessageDeliveryResolverServiceImpl">
+      <constructor-arg><ref local="notificationService"/></constructor-arg>
+      <constructor-arg><ref local="notificationRecipientService"/></constructor-arg>
+      <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
+      <constructor-arg><ref bean="transactionManager"/></constructor-arg>
+      <constructor-arg><ref bean="resolverExecutor"/></constructor-arg>
+      <constructor-arg><ref local="userPreferenceService"/></constructor-arg>
+    </bean>
+
+    <bean id="notificationMessageDeliveryAutoRemovalService" class="org.kuali.notification.service.impl.NotificationMessageDeliveryAutoRemovalServiceImpl">
+      <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
+      <constructor-arg><ref bean="transactionManager"/></constructor-arg>
+      <constructor-arg><ref bean="autoRemovalExecutor"/></constructor-arg>
+      <constructor-arg><ref local="notificationMessageDeliveryService"/></constructor-arg>
+      <constructor-arg><ref local="notificationMessageDelivererRegistryService"/></constructor-arg>
+    </bean>
+
+    <bean id="sendNotificationKewXmlService" class="org.kuali.notification.service.impl.SendNotificationServiceKewXmlImpl">
+      <constructor-arg><ref local="notificationService"/></constructor-arg>
+    </bean>
+    
+    <bean id="notificationMessageDeliveryService" class="org.kuali.notification.service.impl.NotificationMessageDeliveryServiceImpl">
+      <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
+    </bean>
+    
+    <bean id="notificationMessageDelivererRegistryService" class="org.kuali.notification.service.impl.NotificationMessageDelivererRegistryServiceImpl" />
+    
+    <bean id="notificationEmailService" class="org.kuali.notification.service.impl.NotificationEmailServiceImpl" >
+       <property name="weburl"><value>${notification.basewebappurl}</value></property>
+       <property name="smtpHost"><value>${emailDeliverer.smtp.host}</value></property>
+    </bean>
+    
+    
+    <!-- END SERVICES -->
+       
+
+	<!-- DAOS -->
+	
+	<bean id="businessObjectDao" class="org.kuali.notification.dao.ojb.BusinessObjectDaoOjb">
+		<property name="jcdAlias">
+			<value>kenDataSource</value>
+		</property>
+	</bean>
+	
+	<!-- END DAOS -->
+
+    <bean id="resolverExecutor" class="edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor">
+        <constructor-arg><value>5</value></constructor-arg> <!--  core pool size -->
+        <constructor-arg><value>10</value></constructor-arg> <!-- max pool size -->
+        <constructor-arg><value>30</value></constructor-arg> <!-- idle thread keepalive time -->
+        <constructor-arg>
+            <bean class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+                <property name="staticField"><value>edu.emory.mathcs.backport.java.util.concurrent.TimeUnit.SECONDS</value></property>
+            </bean>
+        </constructor-arg>
+        <constructor-arg><bean class="edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue"/></constructor-arg>
+    </bean>
+    
+    <bean id="dispatcherExecutor" class="edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor">
+        <constructor-arg><value>5</value></constructor-arg> <!--  core pool size -->
+        <constructor-arg><value>10</value></constructor-arg> <!-- max pool size -->
+        <constructor-arg><value>30</value></constructor-arg> <!-- idle thread keepalive time -->
+        <constructor-arg>
+            <bean class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+                <property name="staticField"><value>edu.emory.mathcs.backport.java.util.concurrent.TimeUnit.SECONDS</value></property>
+            </bean>
+        </constructor-arg>
+        <constructor-arg><bean class="edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue"/></constructor-arg>
+    </bean>
+    
+    <bean id="autoRemovalExecutor" class="edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor">
+        <constructor-arg><value>1</value></constructor-arg> <!--  core pool size -->
+        <constructor-arg><value>1</value></constructor-arg> <!-- max pool size -->
+        <constructor-arg><value>30</value></constructor-arg> <!-- idle thread keepalive time -->
+        <constructor-arg>
+            <bean class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+                <property name="staticField"><value>edu.emory.mathcs.backport.java.util.concurrent.TimeUnit.SECONDS</value></property>
+            </bean>
+        </constructor-arg>
+        <constructor-arg><bean class="edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue"/></constructor-arg>
+    </bean>
+
+
+    <!-- export our sendNotificationKewXmlService -->
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+        <property name="serviceDefinition">
+            <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+                <property name="service">
+                    <ref bean="sendNotificationKewXmlService" />
+                </property>
+                <property name="localServiceName" value="sendNotificationKewXmlService" />
+                <property name="priority" value="10" />
+                <property name="retryAttempts" value="1" />
+            </bean>
+        </property>
+        <!-- THIS IS NEEDED FOR THE KEWINTEGRATIONTEST TO OBSERVE THE SERVICE ON THE BUS... -->
+        <property name="forceRefresh" value="true"/>
+    </bean>
+    
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+        <property name="serviceDefinition">
+            <bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+                <property name="service">
+                    <ref bean="sendNotificationKewXmlService" />
+                </property>
+                <property name="localServiceName" value="sendNotificationKewXmlSOAPService" />
+                <property name="priority" value="10" />
+                <property name="retryAttempts" value="1" />
+            </bean>
+        </property>
+        <!-- THIS IS NEEDED FOR THE KEWINTEGRATIONTEST TO OBSERVE THE SERVICE ON THE BUS... -->
+        <property name="forceRefresh" value="true"/>
+    </bean>
+    
+	<!-- Quartz beans -->    
+
+    <!-- Define the job(s) -->
+    <!-- Resolve Notification Message Deliveries Job -->
+    <bean id="resolveNotificationMessageDeliveriesJob"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="notificationMessageDeliveryResolverService" />
+        <property name="targetMethod" value="resolveNotificationMessageDeliveries" />
+        <property name="concurrent" value="${notification.concurrent.jobs}" />
+    </bean>
+    <!-- Notification Message Delivery Job -->
+    <bean id="processUndeliveredNotificationMessageDeliveriesJob"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="notificationMessageDeliveryDispatchService" />
+        <property name="targetMethod" value="processUndeliveredNotificationMessageDeliveries" />
+        <property name="concurrent" value="${notification.concurrent.jobs}" />
+    </bean>
+    <!-- Message Delivery Auto Remove Job -->
+    <bean id="processAutoRemovalOfDeliveredNotificationMessageDeliveriesJob"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="notificationMessageDeliveryAutoRemovalService" />
+        <property name="targetMethod" value="processAutoRemovalOfDeliveredNotificationMessageDeliveries" />
+        <property name="concurrent" value="${notification.concurrent.jobs}" />
+    </bean>
+
+    <!-- Define the trigger(s) -->
+    <!-- Set up the trigger for Resolving the Notification Message Deliveries (a.k.a. the periodic interval that this will run at) -->
+    <bean id="resolveNotificationMessageDeliveriesJobTrigger"
+        class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="resolveNotificationMessageDeliveriesJob" />
+        <!-- Start delay = 30 seconds -->
+        <property name="startDelay" value="${notification.resolveMessageDeliveriesJob.startDelayMS}" />
+        <!-- Repeat every 30 seconds -->
+        <property name="repeatInterval" value="${notification.resolveMessageDeliveriesJob.intervalMS}" />
+    </bean>
+    <!-- Set up the trigger for the Notification Message Delivery (a.k.a. the periodic interval that this will run at) -->
+    <bean id="processUndeliveredNotificationMessageDeliveriesJobTrigger"
+        class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="processUndeliveredNotificationMessageDeliveriesJob" />
+        <!-- Start delay = 30 seconds -->
+        <property name="startDelay" value="${notification.processUndeliveredJob.startDelayMS}" />
+        <!-- Repeat every 30 seconds -->
+        <property name="repeatInterval" value="${notification.processUndeliveredJob.intervalMS}" />
+    </bean>
+    <!-- Set up the trigger for the Notification Message Delivery Auto-Remove Job (a.k.a. the periodic interval that this will run at) -->
+    <bean id="processAutoRemovalOfDeliveredNotificationMessageDeliveriesJobTrigger"
+        class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="processAutoRemovalOfDeliveredNotificationMessageDeliveriesJob" />
+        <!-- Start delay = 60 seconds -->
+        <property name="startDelay" value="${notification.processAutoRemovalJob.startDelayMS}" />
+        <!-- Repeat every 30 seconds -->
+        <property name="repeatInterval" value="${notification.processAutoRemovalJob.intervalMS}" />
+    </bean>
+
+    <!-- Configure the Quartz job scheduler -->
+    <bean id="notificationScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="resolveNotificationMessageDeliveriesJobTrigger" />
+                <ref bean="processUndeliveredNotificationMessageDeliveriesJobTrigger" />
+                <ref bean="processAutoRemovalOfDeliveredNotificationMessageDeliveriesJobTrigger" />
+            </list>
+        </property>
+        <property name="autoStartup"><value>${notification.quartz.autostartup}</value></property>
+    </bean>
+</beans>

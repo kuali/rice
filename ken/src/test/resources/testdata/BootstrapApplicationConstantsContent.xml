@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+<!-- CHANGES TO THIS FILE WILL ONLY TAKE EFFECT IF YOU RUN THE "reinit-unit-test-db" ANT TASK AND THEN THE NEXT TIME YOU RUN THE TESTS -->
+<!-- THIS DATA WILL GET LOADED AS A BOOTSTRAP DATA BY THE SETUP IN THE NotificationTestCaseBase CLASS -->
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+<data xmlns="ns:workflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="ns:workflow resource:WorkflowData">
+
+  <ApplicationConstants xmlns="ns:workflow/ApplicationConstants"
+                        xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">
+
+    <ApplicationConstant>
+      <ConstantName>Config.Application.MinutesToCacheUsers</ConstantName>
+      <ConstantValue>2620</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>RuleChange.IsGenerateActionRequests</ConstantName>
+      <ConstantValue>true</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>RuleService.IsCaching</ConstantName>
+      <ConstantValue>true</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Config.Application.AdminUserList</ConstantName>
+      <ConstantValue>rkirkend jhopf temay ewestfal natjohns xqi bmcgough bghutchi quickstart</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>DocumentSearch.IsRouteLogPopup</ConstantName>
+      <ConstantValue>true</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>DocumentSearch.IsDocumentPopup</ConstantName>
+      <ConstantValue>true</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>ActionList.IsRouteLogPopup</ConstantName>
+      <ConstantValue>true</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>ActionList.IsDocumentPopup</ConstantName>
+      <ConstantValue>true</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>RouteTypeSearch.Instructions</ConstantName>
+      <ConstantValue>Enter search criteria and click the search button to view the results.</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>RouteQueue.isRoutingByIPNumber</ConstantName>
+      <ConstantValue>true</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>RouteQueue.maxRetryAttempts</ConstantName>
+      <ConstantValue>3</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>RouteQueue.timeIncrement</ConstantName>
+      <ConstantValue>1000</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>RouteManagerQueue.initialDelay</ConstantName>
+      <ConstantValue>1000</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>RouteManagerQueue.waitTime</ConstantName>
+      <ConstantValue>1000</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>RouteManagerPool.numWorkers</ConstantName>
+      <ConstantValue>10</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>RouteManagerDriver.isRunning</ConstantName>
+      <ConstantValue>true</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>ActionList.sendEmailNotification</ConstantName>
+      <ConstantValue>false</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>RuleTemplate.CreateNew.Instruction</ConstantName>
+      <ConstantValue>Enter a rule template name and description. Please select all necessary rule attributes for this template.</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Rule.CreateNew.Instruction</ConstantName>
+      <ConstantValue>Please select a rule template and document type.</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Workgroup.Search.Instruction</ConstantName>
+      <ConstantValue>Enter criteria to search for a workgroup.</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>RuleAttribute.CreateNew.Instruction</ConstantName>
+      <ConstantValue>Enter the rule attributes name and full class name.</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>RuleTemplate.Search.Instruction</ConstantName>
+      <ConstantValue>Use fields below to search for rule templates.</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Rule.Search.Instruction</ConstantName>
+      <ConstantValue>Use fields below to search for rules.</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>GlobalReviewer.Replace.Instruction</ConstantName>
+      <ConstantValue>Enter the reviewer to replace.</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>DocumentType.Search.Instruction</ConstantName>
+      <ConstantValue>Enter document type information below and click search.</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Config.Backdoor.TargetFrameName</ConstantName>
+      <ConstantValue>iframe_51148</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>ApplicationContext</ConstantName>
+      <ConstantValue>en-dev</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>RuleAttribute.Search.Instruction</ConstantName>
+      <ConstantValue>Enter rule attribute criteria and click the search button.</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>User.Search.Instruction</ConstantName>
+      <ConstantValue>Enter search criteria and click the search button to view the results.</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>QuickLinks.restrictDocumentTypes</ConstantName>
+      <ConstantValue>HREDOC,PURDOCS,ERADOCS,IeAccessRequest,ERA_HumanSubjects,MainStudy,TRAVELDOCS</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Workgroup.CreateNew.Instruction</ConstantName>
+      <ConstantValue>Enter/edit the workgroup data and click the route button to route the document.</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Workflow.AdminWorkgroup</ConstantName>
+      <ConstantValue>WorkflowAdmin</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Workgroup.IsRouteLogPopup</ConstantName>
+      <ConstantValue>false</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>DocumentType.IsRouteLogPopup</ConstantName>
+      <ConstantValue>false</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Rule.IsRouteLogPopup</ConstantName>
+      <ConstantValue>false</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Config.Application.RuleLockingOn</ConstantName>
+      <ConstantValue>true</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Config.Application.DelegateLimit</ConstantName>
+      <ConstantValue>20</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Config.Mailer.IPAddress</ConstantName>
+      <ConstantValue>127.0.0.1</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Config.Mailer.FromAddress</ConstantName>
+      <ConstantValue>quickstart@localhost</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Backdoor.ShowbackDoorLogin</ConstantName>
+      <ConstantValue>true</ConstantValue>
+    </ApplicationConstant>
+    <!--
+    <ApplicationConstant>
+      <ConstantName>Config.Application.RunDeactivationDate</ConstantName>
+      <ConstantValue>true</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Config.Application.UseOneStartPortalUrl</ConstantName>
+      <ConstantValue>true</ConstantValue>
+    </ApplicationConstant>
+    -->
+    <!--
+      new
+    -->
+    <ApplicationConstant>
+      <ConstantName>HelpDeskActionList.helpDeskActionListName</ConstantName>
+      <ConstantValue>WorkflowAdmin</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Config.Mailer.LastDailyReminderDate</ConstantName>
+      <ConstantValue>1112663586040</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Config.Mailer.LastWeeklyReminderDate</ConstantName>
+      <ConstantValue>1112663586068</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>User.CreateNew.Instruction</ConstantName>
+      <ConstantValue>Create or modify user information.</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Workflow.AdminUrls</ConstantName>
+      <ConstantValue>/RouteType.do /RouteManagerDriver.do /ApplicationConstants.do /RuleAttribute.do /RuleTemplate.do /WorkflowUser.do /DocumentOperation.do /RouteQueue.do /Ingester.do /Plugin.do</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Feature.CheckRouteLogAuthentication.CheckFuture</ConstantName>
+      <ConstantValue>true</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>Note.CreateNew.Instruction</ConstantName>
+      <ConstantValue>Create or modify note information.</ConstantValue>
+    </ApplicationConstant>
+    <!--
+    <ApplicationConstant>
+      <ConstantName>ActionList.EmailNotification.TestAddress</ConstantName>
+      <ConstantValue>rkirkend@indiana.edu</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+      <ConstantName>RouteQueue.CreateNew.Instruction</ConstantName>
+      <ConstantValue>Create or modify a Route Queue entry.</ConstantValue>
+    </ApplicationConstant>
+    -->
+    <ApplicationConstant>
+      <ConstantName>RouteQueue.requeueWaitTime</ConstantName>
+      <ConstantValue>5000</ConstantValue>
+    </ApplicationConstant>
+        <ApplicationConstant>
+        <ConstantName>showAttachments</ConstantName>
+        <ConstantValue>true</ConstantValue>
+    </ApplicationConstant>
+   <ApplicationConstant>
+        <ConstantName>EDL.UseXSLTC</ConstantName>
+        <ConstantValue>false</ConstantValue>
+    </ApplicationConstant>
+    <ApplicationConstant>
+        <ConstantName>EDL.DebugTransform</ConstantName>
+        <ConstantValue>true</ConstantValue>
+    </ApplicationConstant>
+  </ApplicationConstants>
+
+</data>

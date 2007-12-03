@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+     <!-- APP CONSTANTS SETUP -->
+     <ApplicationConstants xmlns="ns:workflow/ApplicationConstants"
+                        xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">
+         <ApplicationConstant>
+            <ConstantName>Backdoor.ShowbackDoorLogin</ConstantName>
+            <ConstantValue>false</ConstantValue>
+         </ApplicationConstant>
+     </ApplicationConstants>
+    
+    <!-- USER SETUP -->
+     <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
+     	<!-- NOTIFICATION USERS -->
+     	<!-- The NotSys user is needed for the message sending forms that come with the system -->
+     	<user>
+            <workflowId>NotSys</workflowId>
+            <emplId>NotSys</emplId>
+            <authenticationId>NotSys</authenticationId>
+            <uuId>NotSys</uuId>
+            <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
+            <displayName>Notification System</displayName>
+            <givenName>Notification</givenName>
+            <lastName>System</lastName>
+        </user>
+        <user>
+            <workflowId>TestAdmin1</workflowId>
+            <emplId>TestAdmin1</emplId>
+            <authenticationId>TestAdmin1</authenticationId>
+            <uuId>TestAdmin1</uuId>
+            <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
+            <displayName>Test Admin 1</displayName>
+            <givenName>Test</givenName>
+            <lastName>Admin 1</lastName>
+        </user>
+        <user>
+            <workflowId>TestAdmin2</workflowId>
+            <emplId>TestAdmin2</emplId>
+            <authenticationId>TestAdmin2</authenticationId>
+            <uuId>TestAdmin2</uuId>
+            <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
+            <displayName>Test Admin 2</displayName>
+            <givenName>Test</givenName>
+            <lastName>Admin 2</lastName>
+        </user>
+        <user>
+            <workflowId>TestUser1</workflowId>
+            <emplId>TestUser1</emplId>
+            <authenticationId>TestUser1</authenticationId>
+            <uuId>TestUser1</uuId>
+            <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
+            <displayName>Test User 1</displayName>
+            <givenName>Test</givenName>
+            <lastName>User 1</lastName>
+        </user>
+        <user>
+            <workflowId>TestUser2</workflowId>
+            <emplId>TestUser2</emplId>
+            <authenticationId>TestUser2</authenticationId>
+            <uuId>TestUser2</uuId>
+            <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
+            <displayName>Test User 2</displayName>
+            <givenName>Test</givenName>
+            <lastName>User 2</lastName>
+        </user>
+        <user>
+            <workflowId>TestUser3</workflowId>
+            <emplId>TestUser3</emplId>
+            <authenticationId>TestUser3</authenticationId>
+            <uuId>TestUser3</uuId>
+            <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
+            <displayName>Test User 3</displayName>
+            <givenName>Test</givenName>
+            <lastName>User 3</lastName>
+        </user>
+        <user>
+            <workflowId>TestUser4</workflowId>
+            <emplId>TestUser4</emplId>
+            <authenticationId>TestUser4</authenticationId>
+            <uuId>TestUser4</uuId>
+            <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
+            <displayName>Test User 4</displayName>
+            <givenName>Test</givenName>
+            <lastName>User 4</lastName>
+        </user>
+        <user>
+            <workflowId>TestUser5</workflowId>
+            <emplId>TestUser5</emplId>
+            <authenticationId>TestUser5</authenticationId>
+            <uuId>TestUser5</uuId>
+            <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
+            <displayName>Test User 5</displayName>
+            <givenName>Test</givenName>
+            <lastName>User 5</lastName>
+        </user>
+        <user>
+            <workflowId>TestUser6</workflowId>
+            <emplId>TestUser6</emplId>
+            <authenticationId>TestUser6</authenticationId>
+            <uuId>TestUser6</uuId>
+            <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
+            <displayName>Test User 6</displayName>
+            <givenName>Test</givenName>
+            <lastName>User 6</lastName>
+        </user>
+        
+     	<!-- WORKFLOW USERS (STANDARD WORKFLOW QUICKSTART USERS) -->
+     	<user>
+            <workflowId>quickstart</workflowId>
+            <emplId>quickstart</emplId>
+            <authenticationId>quickstart</authenticationId>
+            <uuId>quickstart</uuId>
+            <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
+            <displayName>Quick Start</displayName>
+            <givenName>Quick</givenName>
+            <lastName>Start</lastName>
+        </user>
+        <user>
+            <workflowId>user1</workflowId>
+            <emplId>user1</emplId>
+            <authenticationId>user1</authenticationId>
+            <uuId>user1</uuId>
+            <emailAddress>user1@indiana.edu</emailAddress>
+            <displayName>User One</displayName>
+            <givenName>User</givenName>
+            <lastName>One</lastName>
+        </user>
+        <user>
+            <workflowId>user2</workflowId>
+            <emplId>user2</emplId>
+            <authenticationId>user2</authenticationId>
+            <uuId>user2</uuId>
+            <emailAddress>user2@indiana.edu</emailAddress>
+            <displayName>User Two</displayName>
+            <givenName>User</givenName>
+            <lastName>Two</lastName>
+        </user>
+        <user>
+            <workflowId>user3</workflowId>
+            <emplId>user3</emplId>
+            <authenticationId>user3</authenticationId>
+            <uuId>user3</uuId>
+            <emailAddress>user3@indiana.edu</emailAddress>
+            <displayName>User Three</displayName>
+            <givenName>User</givenName>
+            <lastName>Three</lastName>
+        </user>
+        <user>
+            <workflowId>user4</workflowId>
+            <emplId>user4</emplId>
+            <authenticationId>user4</authenticationId>
+            <uuId>user4</uuId>
+            <emailAddress>user4@indiana.edu</emailAddress>
+            <displayName>User 4</displayName>
+            <givenName>user4</givenName>
+            <lastName>user4</lastName>
+        </user>
+        <user>
+            <workflowId>edna</workflowId>
+            <emplId>employee1</emplId>
+            <authenticationId>edna</authenticationId>
+            <uuId>edna</uuId>
+            <emailAddress>edna@localhost.edu</emailAddress>
+            <displayName>Edna Employee</displayName>
+            <givenName>Edna</givenName>
+            <lastName>Employee</lastName>
+        </user>
+        <user>
+            <workflowId>eric</workflowId>
+            <emplId>employee2</emplId>
+            <authenticationId>eric</authenticationId>
+            <uuId>eric</uuId>
+            <emailAddress>eric@localhost.edu</emailAddress>
+            <displayName>Eric Employee</displayName>
+            <givenName>Eric</givenName>
+            <lastName>Employee</lastName>
+        </user>
+        <user>
+            <workflowId>earl</workflowId>
+            <emplId>employee3</emplId>
+            <authenticationId>earl</authenticationId>
+            <uuId>earl</uuId>
+            <emailAddress>earl@localhost.edu</emailAddress>
+            <displayName>Earl Employee</displayName>
+            <givenName>Earl</givenName>
+            <lastName>Employee</lastName>
+        </user>
+        <user>
+            <workflowId>erin</workflowId>
+            <emplId>employee4</emplId>
+            <authenticationId>erin</authenticationId>
+            <uuId>erin</uuId>
+            <emailAddress>erin@localhost.edu</emailAddress>
+            <displayName>Erin Employee</displayName>
+            <givenName>Erin</givenName>
+            <lastName>Employee</lastName>
+        </user>
+        <user>
+            <workflowId>fred</workflowId>
+            <emplId>fiscaloff1</emplId>
+            <authenticationId>fred</authenticationId>
+            <uuId>fred</uuId>
+            <emailAddress>fred@localhost.edu</emailAddress>
+            <displayName>Fred FiscalOfficer</displayName>
+            <givenName>Fred</givenName>
+            <lastName>FiscalOfficer</lastName>
+        </user>
+        <user>
+            <workflowId>fran</workflowId>
+            <emplId>fiscaloff2</emplId>
+            <authenticationId>fran</authenticationId>
+            <uuId>fran</uuId>
+            <emailAddress>fran@localhost.edu</emailAddress>
+            <displayName>Fran FiscalOfficer</displayName>
+            <givenName>Fran</givenName>
+            <lastName>FiscalOfficer</lastName>
+        </user>
+        <user>
+            <workflowId>frank</workflowId>
+            <emplId>fiscaloff3</emplId>
+            <authenticationId>frank</authenticationId>
+            <uuId>frank</uuId>
+            <emailAddress>Frank@localhost.edu</emailAddress>
+            <displayName>Frank FiscalOfficer</displayName>
+            <givenName>Frank</givenName>
+            <lastName>FiscalOfficer</lastName>
+        </user>
+        <user>
+            <workflowId>doug</workflowId>
+            <emplId>doug</emplId>
+            <authenticationId>doug</authenticationId>
+            <uuId>doug</uuId>
+            <emailAddress>doug@localhost.edu</emailAddress>
+            <displayName>Doug Neidermeyer</displayName>
+            <givenName>Doug</givenName>
+            <lastName>Neidermeyer</lastName>
+        </user>
+    </users>
+
+	<!-- WORKGROUPS SETUP -->
+    <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
+        <!-- NOTIFICATION SPECIFIC WORKGROUPS -->
+        <workgroup allowOverwrite="true">
+            <workgroupName>NotificationAdmin</workgroupName>
+            <description>Notification system admin group for automation.</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>TestAdmin1</workflowId>
+            </members>
+        </workgroup>
+        <workgroup allowOverwrite="true">
+            <workgroupName>TestGroup1</workgroupName>
+            <description>Test group 1 for KEN testing.</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>TestUser1</workflowId>
+                <workflowId>TestUser2</workflowId>
+            </members>
+        </workgroup>
+        <workgroup allowOverwrite="true">
+            <workgroupName>TestGroup2</workgroupName>
+            <description>Test group 2 for KEN testing.</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>TestUser2</workflowId>
+                <workflowId>TestUser3</workflowId>
+            </members>
+        </workgroup>
+        <workgroup allowOverwrite="true">
+            <workgroupName>RiceTeam</workgroupName>
+            <description>A test workgroup for KEN.</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>TestUser1</workflowId>
+                <workflowId>TestUser2</workflowId>
+                <workflowId>TestUser6</workflowId>
+                <workflowId>TestUser4</workflowId>
+                <workflowId>TestUser5</workflowId>
+                <workflowId>quickstart</workflowId>
+            </members>
+        </workgroup>
+        
+        <!-- WORKFLOW SPECIFIC WORKGROUPS (NEEDED FOR QUICKSTART INTEGRATION) -->
+		<workgroup allowOverwrite="true">
+            <workgroupName>WorkflowAdmin</workgroupName>
+            <description>WorkflowAdmin</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>NotSys</workflowId>
+                <workflowId>quickstart</workflowId>
+                <workflowId>TestAdmin2</workflowId>
+            </members>
+        </workgroup>
+        <workgroup allowOverwrite="true">
+            <workgroupName>Group0</workgroupName>
+            <description>Group0</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>quickstart</workflowId>
+                <workflowId>user1</workflowId>
+                <workflowId>user2</workflowId>
+            </members>
+        </workgroup>
+        <workgroup allowOverwrite="true">
+            <workgroupName>Group1</workgroupName>
+            <description>Group1</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>user3</workflowId>
+            </members>
+        </workgroup>
+        <workgroup allowOverwrite="true">
+            <workgroupName>Group2</workgroupName>
+            <description>Group2</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>user2</workflowId>
+            </members>
+        </workgroup>
+    </workgroups>
+    
+    <!-- CUSTOM ACTION LIST SETUP -->
+    <!-- applies the custom action list and various searchable attributes to Notification document types -->
+    <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+      <ruleAttribute>
+        <name>NotificationCustomActionListAttribute</name>
+        <className>org.kuali.notification.kew.NotificationCustomActionListAttribute</className>
+        <label>Notification Action List Attribute</label>
+        <description>Notification Action List Attribute</description>
+        <type>ActionListAttribute</type>
+        <!--
+        <messageEntity>KEN</messageEntity>
+         -->
+      </ruleAttribute>
+      <ruleAttribute>
+           <name>NotificationChannelSearchableAttribute</name>
+           <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <label>Notification Channel</label>
+           <description>The associated channel that this message was sent on.</description>
+           <type>SearchableXmlAttribute</type>
+           <searchingConfig>
+              <fieldDef name="notificationChannel" title="Notification Channel">
+                  <display>
+                      <type>text</type>
+                  </display>
+                  <validation required="false" />
+                  <fieldEvaluation>
+                      <xpathexpression>string(/documentContent/applicationContent/notification/channel/name)</xpathexpression>
+                  </fieldEvaluation>
+              </fieldDef>
+           </searchingConfig>
+       </ruleAttribute>
+       <ruleAttribute>
+           <name>NotificationPrioritySearchableAttribute</name>
+           <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <label>Notification Priority</label>
+           <description>The priority of this notification.</description>
+           <type>SearchableXmlAttribute</type>
+           <searchingConfig>
+              <fieldDef name="notificationPriority" title="Notification Priority">
+                  <display>
+                      <type>text</type>
+                  </display>
+                  <validation required="false" />
+                  <fieldEvaluation>
+                      <xpathexpression>string(/documentContent/applicationContent/notification/priority/name)</xpathexpression>
+                  </fieldEvaluation>
+              </fieldDef>
+           </searchingConfig>
+       </ruleAttribute>
+       <ruleAttribute>
+           <name>NotificationContentTypeSearchableAttribute</name>
+           <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <label>Notification Content Type</label>
+           <description>The content type of this notification.</description>
+           <type>SearchableXmlAttribute</type>
+           <searchingConfig>
+              <fieldDef name="notificationContentType" title="Notification Content Type">
+                  <display>
+                      <type>text</type>
+                  </display>
+                  <validation required="false" />
+                  <fieldEvaluation>
+                      <xpathexpression>string(/documentContent/applicationContent/notification/contentType/name)</xpathexpression>
+                  </fieldEvaluation>
+              </fieldDef>
+           </searchingConfig>
+       </ruleAttribute>
+       <ruleAttribute>
+           <name>NotificationProducerSearchableAttribute</name>
+           <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <label>Notification Producer</label>
+           <description>The producer of this notification.</description>
+           <type>SearchableXmlAttribute</type>
+           <searchingConfig>
+              <fieldDef name="notificationProducer" title="Notification Producer">
+                  <display>
+                      <type>text</type>
+                  </display>
+                  <validation required="false" />
+                  <fieldEvaluation>
+                      <xpathexpression>string(/documentContent/applicationContent/notification/producer/name)</xpathexpression>
+                  </fieldEvaluation>
+              </fieldDef>
+           </searchingConfig>
+       </ruleAttribute>
+       <ruleAttribute>
+           <name>NotificationRecipientsSearchableAttribute</name>
+           <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <label>Notification Recipient</label>
+           <description>Those who are receiving this notification.</description>
+           <type>SearchableXmlAttribute</type>
+           <searchingConfig>
+              <fieldDef name="notificationRecipients" title="Notification Recipients">
+                  <display>
+                      <type>text</type>
+                  </display>
+                  <validation required="false" />
+                  <fieldEvaluation>
+                      <xpathexpression>string(/documentContent/applicationContent/notification//recipients)</xpathexpression>
+                  </fieldEvaluation>
+              </fieldDef>
+           </searchingConfig>
+       </ruleAttribute>
+       <ruleAttribute>
+           <name>NotificationSendersSearchableAttribute</name>
+           <className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+           <label>Notification Senders</label>
+           <description>Those who this notification is being sent on behalf of.</description>
+           <type>SearchableXmlAttribute</type>
+           <searchingConfig>
+              <fieldDef name="notificationSenders" title="Notification Senders">
+                  <display>
+                      <type>text</type>
+                  </display>
+                  <validation required="false" />
+                  <fieldEvaluation>
+                      <xpathexpression>string(/documentContent/applicationContent/notification//senders)</xpathexpression>
+                  </fieldEvaluation>
+              </fieldDef>
+           </searchingConfig>
+       </ruleAttribute>
+    </ruleAttributes>
+  
+    <!-- "bootstrap" doc types to be loaded upon initial startup -->
+    <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+        <!-- Notification Document Type -->
+        <documentType>
+          <name>KualiNotification</name>
+          <description>This is the re-usable notification document type that will be used for delivering all notifications with KEW.</description>
+          <label>Notification</label>
+          <!--
+          <messageEntity>KEN</messageEntity>
+          -->
+          <postProcessorName>org.kuali.notification.postprocessor.kew.NotificationPostProcessor</postProcessorName>
+          <superUserWorkgroupName>NotificationAdmin</superUserWorkgroupName>
+          <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+          <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+          <docHandler>${notification.basewebappurl}/DetailView.form</docHandler>
+          <active>true</active>
+          <attributes>
+		      <attribute>
+		      	<name>NotificationCustomActionListAttribute</name>
+		      </attribute>
+		      <attribute>
+		        <name>NotificationContentTypeSearchableAttribute</name>
+		      </attribute>
+		      <attribute>
+		        <name>NotificationChannelSearchableAttribute</name>
+		      </attribute>
+		      <attribute>
+		        <name>NotificationProducerSearchableAttribute</name>
+		      </attribute>
+		      <attribute>
+		        <name>NotificationPrioritySearchableAttribute</name>
+		      </attribute>
+		      <attribute>
+		        <name>NotificationRecipientsSearchableAttribute</name>
+		      </attribute>
+		      <attribute>
+		        <name>NotificationSendersSearchableAttribute</name>
+		      </attribute>
+      	  </attributes> 
+          <routingVersion>1</routingVersion>
+          <routePaths>
+            <routePath>
+              <start name="Adhoc Routing" />
+            </routePath>
+          </routePaths>
+          <routeNodes>
+            <start name="Adhoc Routing">
+              <activationType>S</activationType>
+              <mandatoryRoute>false</mandatoryRoute>
+              <finalApproval>true</finalApproval>
+            </start>
+          </routeNodes>
+        </documentType>
+    </documentTypes>
+</data>

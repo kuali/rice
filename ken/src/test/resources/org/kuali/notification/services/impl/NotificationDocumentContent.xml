@@ -1,0 +1,53 @@
+<documentContent><applicationContent><notification>
+  <id>1001</id>
+  <deliveryType>FYI</deliveryType>
+  <creationDateTime>2007-04-02 10:09:41.851</creationDateTime>
+  <sendDateTime>2007-04-02 10:09:41.851</sendDateTime>
+  <content>&lt;content xmlns="ns:notification/ContentTypeSimple" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:notification/ContentTypeSimple resource:notification/ContentTypeSimple"&gt;
+        &lt;message&gt;Holiday-Ho-Out Starts Next Week - 11/20/2006!&lt;/message&gt;
+    &lt;/content&gt;
+</content>
+  <processingFlag>RESOLVED</processingFlag>
+  <priority>
+    <id>2</id>
+    <name>Low</name>
+    <description>A low priority</description>
+    <order>3</order>
+  </priority>
+  <contentType>
+    <id>1</id>
+    <name>Simple</name>
+    <description>Simple content type</description>
+    <namespace>notification/ContentSimple</namespace>
+  </contentType>
+  <channel>
+    <id>3</id>
+    <name>Test Channel #2</name>
+    <description>Second Channel for Unit Tests</description>
+    <subscribable>false</subscribable>
+    <recipientLists/>
+    <producers/>
+  </channel>
+  <producer>
+    <id>2</id>
+    <name>University Library System</name>
+    <description>This producer represents messages sent from the University Library system.</description>
+    <contactInfo>kuali-ken-testing@cornell.edu</contactInfo>
+    <channels/>
+  </producer>
+  <recipients>
+    <recipient>
+      <recipientType>USER</recipientType>
+      <recipientId>TestUser3</recipientId>
+    </recipient>
+    <recipient>
+      <recipientType>GROUP</recipientType>
+      <recipientId>TestGroup1</recipientId>
+    </recipient>
+  </recipients>
+  <senders>
+    <sender>
+      <senderName>NotificationTestUsageGenerator</senderName>
+    </sender>
+  </senders>
+</notification></applicationContent></documentContent>

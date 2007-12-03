@@ -26,7 +26,7 @@ import java.util.List;
  * NOTE: maybe implement stricter checks, by matching some contextual object or original
  * classloader on bind to the unbind so that they are always matched (within a given context)
  * 
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public final class ContextClassLoaderBinder {
     

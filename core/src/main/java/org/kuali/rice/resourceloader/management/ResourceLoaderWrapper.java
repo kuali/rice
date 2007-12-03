@@ -24,7 +24,7 @@ import org.kuali.rice.resourceloader.ResourceLoader;
 /**
  * A simple MBean which wraps a ResourceLoader to provide management functions.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ResourceLoaderWrapper implements ResourceLoaderWrapperMBean {
 

@@ -27,8 +27,7 @@ import org.kuali.rice.lifecycle.BaseLifecycle;
  * A simple {@link ServiceLocator} that allows users to put services into workflow's resource loading
  * wihout creating their own {@link ServiceLocator}.
  *
- * @author rkirkend
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class SimpleServiceLocator extends BaseLifecycle implements ServiceLocator {

@@ -22,7 +22,7 @@ import org.kuali.rice.exceptions.RiceRuntimeException;
 /**
  * Exception representing a configuration problem.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ConfigurationException extends RiceRuntimeException {
 

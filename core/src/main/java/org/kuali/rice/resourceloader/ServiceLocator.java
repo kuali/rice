@@ -23,7 +23,7 @@ import org.kuali.rice.lifecycle.Lifecycle;
 /**
  * Uses to locate services for the given service name.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ServiceLocator extends Lifecycle {
 

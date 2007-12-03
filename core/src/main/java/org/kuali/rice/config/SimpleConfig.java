@@ -26,7 +26,7 @@ import java.util.Properties;
  * A simple Config implementation which has no base properties
  * or base objects.
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SimpleConfig extends BaseConfig {
 

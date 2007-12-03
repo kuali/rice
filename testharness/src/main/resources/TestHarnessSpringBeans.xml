@@ -31,7 +31,7 @@
 		</property>
 	</bean>
 
-  <bean id="dataSource" class="org.kuali.rice.database.XAPoolDataSource" init-method="start" destroy-method="stop">
+  <bean id="dataSource" class="org.kuali.rice.database.XAPoolDataSource">
     <property name="transactionManager"><ref local="jtaTransactionManager"/></property>
     <property name="driverClassName"><value>${datasource.driver.name}</value></property>
     <property name="url"><value>${datasource.url}</value></property>

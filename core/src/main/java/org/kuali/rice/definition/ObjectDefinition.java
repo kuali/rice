@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * A marker interface for object definitions.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ObjectDefinition implements Serializable {
 

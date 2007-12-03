@@ -7,9 +7,7 @@ ${module.name} set by
 -->
 
 <config>
-
-	<param name="environment" override="false">dev</param>
+	<param name="environment" override="false">dev</param> <!--  NOTE: This environment parameter must be the first parameter in the file. -->
 	<param name="config.location">${user.home}/kuali/test/${environment}/common-test-config.xml</param>
 	<param name="config.location">${user.home}/kuali/test/${environment}/${module.name}-test-config.xml</param>
-	
 </config>

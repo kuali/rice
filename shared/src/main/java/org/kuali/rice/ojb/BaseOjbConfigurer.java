@@ -52,13 +52,13 @@ import org.xml.sax.InputSource;
 /**
  * Base Ojb Configurer implementation which configures OJB for a particular rice module.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class BaseOjbConfigurer extends BaseLifecycle {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BaseOjbConfigurer.class);
 
-	private static final String OJB_PROPERTIES_PROP = "OJB.properties";
+	public static final String OJB_PROPERTIES_PROP = "OJB.properties";
 	private static final String DEFAULT_OJB_PROPERTIES = "org/kuali/rice/ojb/RiceOJB.properties";
 
 	@Override
@@ -66,7 +66,7 @@ public abstract class BaseOjbConfigurer extends BaseLifecycle {
 		// if OJB has not already been loaded, let's trigger a load using our built-in OJB properties file
 		String currentValue = System.getProperty(OJB_PROPERTIES_PROP);
 		try {
-			System.setProperty(OJB_PROPERTIES_PROP, DEFAULT_OJB_PROPERTIES);
+			System.setProperty(OJB_PROPERTIES_PROP, getOjbPropertiesLocation());
 			MetadataManager mm = MetadataManager.getInstance();
 			establishConnectionMetaData(mm);
 			establishRepositoryMetaData(mm);
@@ -79,6 +79,13 @@ public abstract class BaseOjbConfigurer extends BaseLifecycle {
 		}
 		super.start();
 	}
+
+	@Override
+	public void stop() throws Exception {
+	    super.stop();
+	}
+
+
 
 	protected String getOjbPropertiesLocation() {
 		return DEFAULT_OJB_PROPERTIES;

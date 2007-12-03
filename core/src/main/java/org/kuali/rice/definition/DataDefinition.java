@@ -19,7 +19,7 @@ package org.kuali.rice.definition;
 /**
  * Constructor param on an {@link ObjectDefinition}.  Represents an object and it's type.
  * 
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DataDefinition implements java.io.Serializable {
 

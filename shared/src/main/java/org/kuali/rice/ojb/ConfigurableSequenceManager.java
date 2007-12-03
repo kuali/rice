@@ -38,7 +38,7 @@ import org.kuali.rice.util.ClassLoaderUtils;
  * A sequence manager implementation which can be configured at runtime via the KEW
  * Configuration API.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ConfigurableSequenceManager implements SequenceManager {
 

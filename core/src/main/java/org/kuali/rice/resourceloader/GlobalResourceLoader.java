@@ -31,8 +31,7 @@ import org.kuali.rice.util.ClassLoaderUtils;
  * Wrapper on all the Resource loaders.  This is what programmers typically use to get in the resource loading
  * framework.
  *
- * @author ewestfal
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class GlobalResourceLoader {
 
@@ -44,18 +43,37 @@ public class GlobalResourceLoader {
 
 	public static ResourceLoader getResourceLoader() {
 		ClassLoader classLoader = ClassLoaderUtils.getDefaultClassLoader();
-		ResourceLoader resourceLoader = getResourceLoader(classLoader);
-		if (resourceLoader == null && classLoader.getParent() != null) {
-			resourceLoader = getResourceLoader(classLoader.getParent());
+		return getResourceLoaderCheckParent(classLoader);
+	}
+
+	private static ResourceLoader getResourceLoaderCheckParent(ClassLoader classLoader) {
+	    ResourceLoader resourceLoader = getResourceLoader(classLoader);
+	    if (resourceLoader != null && classLoader.getParent() != null) {
+		ResourceLoader parentResourceLoader = getResourceLoaderCheckParent(classLoader.getParent());
+		if (parentResourceLoader != null) {
+		    resourceLoader = new ParentChildResourceLoader(parentResourceLoader, resourceLoader);
 		}
-		return resourceLoader;
+	    }
+	    if (resourceLoader == null && classLoader.getParent() != null) {
+		resourceLoader = getResourceLoaderCheckParent(classLoader.getParent());
+	    }
+	    return resourceLoader;
 	}
 
 	public static ResourceLoader getResourceLoader(ClassLoader classloader) {
 		return rootResourceLoaders.get(classloader);
 	}
 
-	public static void start() throws Exception {
+//	public static ResourceLoader getResourceLoader() {
+//		ClassLoader classLoader = ClassLoaderUtils.getDefaultClassLoader();
+//		ResourceLoader resourceLoader = getResourceLoader(classLoader);
+//		if (resourceLoader == null && classLoader.getParent() != null) {
+//			resourceLoader = getResourceLoader(classLoader.getParent());
+//		}
+//		return resourceLoader;
+//	}
+
+	public synchronized static void start() throws Exception {
 		try {
 			initializing = true;
 			ResourceLoader internalResourceLoader = getResourceLoader();
@@ -68,7 +86,7 @@ public class GlobalResourceLoader {
 		}
 	}
 
-	public static void addResourceLoader(ResourceLoader resourceLoader) {
+	public synchronized static void addResourceLoader(ResourceLoader resourceLoader) {
 		initialize();
 		LOG.info("Adding ResourceLoader " + resourceLoader.getName() + " to GlobalResourceLoader");
 		if (resourceLoader == null) {
@@ -77,7 +95,7 @@ public class GlobalResourceLoader {
 		getResourceLoader().addResourceLoader(resourceLoader);
 	}
 
-	public static void addResourceLoaderFirst(ResourceLoader resourceLoader) {
+	public synchronized static void addResourceLoaderFirst(ResourceLoader resourceLoader) {
 		initialize();
 		LOG.info("Adding ResourceLoader " + resourceLoader.getName() + " to GlobalResourceLoader");
 		if (resourceLoader == null) {

@@ -33,8 +33,7 @@ import org.kuali.rice.util.ClassLoaderUtils;
  * Singleton that holds references to global engine objects.
  *
  *
- * @author rkirkend
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Core {
     private static final Logger LOG = Logger.getLogger(Core.class);

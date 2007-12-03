@@ -31,7 +31,7 @@ import org.springframework.beans.factory.InitializingBean;
  * at run time, so that it can be parameterized by Spring/Workflow configuration.
  * A map of jcdalias/datasource bean names to OJB platforms is accepted as the 'platforms' propery.
  * An empty key, or "DEFAULT" key is interpreted as specifying the default PersistenceBroker/jcdalias
- * @author Aaron Hamid (arh14 at cornell dot edu)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class OjbPlatformConfigurer implements InitializingBean {
     private static final Logger LOG = Logger.getLogger(OjbPlatformConfigurer.class);

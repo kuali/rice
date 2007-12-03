@@ -27,7 +27,7 @@ import org.mortbay.jetty.webapp.WebAppClassLoader;
 
 /**
  * A lifecycle for running a jetty web server.
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class JettyServerLifecycle implements Lifecycle {
 

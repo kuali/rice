@@ -25,7 +25,7 @@ import org.kuali.rice.exceptions.RiceRuntimeException;
 
 /**
  *
- * @author rkirkend
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RiceUtilities {
 	

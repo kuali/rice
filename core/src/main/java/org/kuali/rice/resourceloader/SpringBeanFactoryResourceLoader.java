@@ -26,7 +26,7 @@ import org.springframework.beans.factory.BeanFactoryAware;
  * A ResourceLoader that is BeanFactoryAware and can be wired inside of Spring to provide
  * resource loading capabilities to that Spring BeanFactory.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SpringBeanFactoryResourceLoader extends BaseResourceLoader implements BeanFactoryAware {
 

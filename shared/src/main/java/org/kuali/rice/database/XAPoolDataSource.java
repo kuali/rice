@@ -22,12 +22,13 @@ import javax.transaction.TransactionManager;
 import org.enhydra.jdbc.pool.StandardXAPoolDataSource;
 import org.enhydra.jdbc.standard.StandardXADataSource;
 import org.kuali.rice.exceptions.RiceRuntimeException;
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * StandardXAPoolDataSource subclass that adds some convienance getters and setters and implements our Lifecycle interface.
  */
-public class XAPoolDataSource extends StandardXAPoolDataSource implements Lifecycle {
+public class XAPoolDataSource extends StandardXAPoolDataSource implements InitializingBean, DisposableBean {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(XAPoolDataSource.class);
 
@@ -46,18 +47,17 @@ public class XAPoolDataSource extends StandardXAPoolDataSource implements Lifecy
 
     public XAPoolDataSource() {
     	setDataSource(this.dataSource);
-    }
-
-    public void start() {
-        // NOTE: the following line prevents a bug in XAPool from manifesting itself where
+//    	 NOTE: the following line prevents a bug in XAPool from manifesting itself where
         // prepared statements aren't closed resulting in a "maximum open cursors exceeded" message
         // from the Oracle JDBC driver
         this.dataSource.setPreparedStmtCacheSize(0);
         setCheckLevelObject(2);
-        this.started = true;
     }
 
-    public void stop() {
+    public void afterPropertiesSet() throws Exception {
+    }
+
+    public void destroy() throws Exception {
     	LOG.info("Destroying WorkflowManagedDatasource.");
         shutdown(true);
         this.started = false;

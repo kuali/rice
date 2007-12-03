@@ -40,22 +40,30 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * Lifecycle class to clean up the database for use in testing.
- * 
- * @author
- * @version $Revision: 1.3 $ $Date: 2007-08-15 15:49:48 $
+ *
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
- * 
+ *
  */
 public class ClearDatabaseLifecycle extends BaseLifecycle {
 
 	protected static final Logger LOG = Logger.getLogger(ClearDatabaseLifecycle.class);
 
 	private List<String> tablesToClear = new ArrayList<String>();
+	private List<String> tablesNotToClear = new ArrayList<String>();
 
-	public ClearDatabaseLifecycle() {}
+	public ClearDatabaseLifecycle() {
+	    addStandardTables();
+	}
 
-	public ClearDatabaseLifecycle(TestHarnessServiceLocator testHarnessServiceLocator, List<String> tablesToClear) {
+	public ClearDatabaseLifecycle(List<String> tablesToClear, List<String> tablesNotToClear) {
 		this.tablesToClear = tablesToClear;
+		this.tablesNotToClear = tablesNotToClear;
+		addStandardTables();
+	}
+
+	protected void addStandardTables() {
+	    tablesNotToClear.add("BIN.*");
 	}
 
 	public static final String TEST_TABLE_NAME = "EN_UNITTEST_T";
@@ -99,30 +107,27 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
 						final ResultSet resultSet = statement.getConnection().getMetaData().getTables(null, schemaName, null, new String[] { "TABLE" });
 						while (resultSet.next()) {
 							String tableName = resultSet.getString("TABLE_NAME");
-							// if (tableName.startsWith("EN_")) {
-							if (!getTablesToClear().isEmpty() && getTablesToClear() != null && !getTablesToClear().contains(tableName)) {
-								continue;
+							if (shouldTableBeCleared(tableName)) {
+							    if (!isUsingDerby()) {
+									ResultSet keyResultSet = statement.getConnection().getMetaData().getExportedKeys(null, schemaName, tableName);
+									while (keyResultSet.next()) {
+										final String fkName = keyResultSet.getString("FK_NAME");
+										final String fkTableName = keyResultSet.getString("FKTABLE_NAME");
+										final String disableConstraint = "ALTER TABLE " + fkTableName + " DISABLE CONSTRAINT " + fkName;
+										LOG.info("Disabling constraints using statement ->" + disableConstraint + "<-");
+										statement.addBatch(disableConstraint);
+										reEnableConstraints.add("ALTER TABLE " + fkTableName + " ENABLE CONSTRAINT " + fkName);
+									}
+									keyResultSet.close();
+							    }
+							    String deleteStatement = "DELETE FROM " + tableName;
+							    LOG.info("Clearing contents using statement ->" + deleteStatement + "<-");
+							    statement.addBatch(deleteStatement);
 							}
-							if (!isUsingDerby()) {
-								ResultSet keyResultSet = statement.getConnection().getMetaData().getExportedKeys(null, schemaName, tableName);
-								while (keyResultSet.next()) {
-									final String fkName = keyResultSet.getString("FK_NAME");
-									final String fkTableName = keyResultSet.getString("FKTABLE_NAME");
-									final String disableConstraint = "ALTER TABLE " + fkTableName + " DISABLE CONSTRAINT " + fkName;
-									LOG.info("Disabling constraints using statement ->" + disableConstraint + "<-");
-									statement.addBatch(disableConstraint);
-									reEnableConstraints.add("ALTER TABLE " + fkTableName + " ENABLE CONSTRAINT " + fkName);
-								}
-								keyResultSet.close();
-							}
-							String deleteStatement = "DELETE FROM " + tableName;
-							LOG.info("Clearing contents using statement ->" + deleteStatement + "<-");
-							statement.addBatch(deleteStatement);
-
 						}
 						for (final String constraint : reEnableConstraints) {
-							LOG.info("Enabling constraints using statement ->" + constraint + "<-");
-							statement.addBatch(constraint);
+						    LOG.info("Enabling constraints using statement ->" + constraint + "<-");
+						    statement.addBatch(constraint);
 						}
 						statement.executeBatch();
 						resultSet.close();
@@ -134,11 +139,34 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
 		LOG.info("Tables successfully cleared for schema " + schemaName);
 	}
 
+	private boolean shouldTableBeCleared(String tableName) {
+	    if (getTablesToClear() != null && !getTablesToClear().isEmpty()) {
+		for (String tableToClear : getTablesToClear()) {
+		    if (tableName.matches(tableToClear)) {
+			return true;
+		    }
+		}
+		return false;
+	    }
+	    if (getTablesNotToClear() != null && !getTablesNotToClear().isEmpty()) {
+		for (String tableNotToClear : getTablesNotToClear()) {
+		    if (tableName.matches(tableNotToClear)) {
+			return false;
+		    }
+		}
+	    }
+	    return true;
+	}
+
 	private boolean isUsingDerby() throws SQLException {
 		return TestHarnessServiceLocator.getDataSource().getDriverClassName().toLowerCase().indexOf("derby") > -1;
 	}
 
 	public List<String> getTablesToClear() {
 		return this.tablesToClear;
+	}
+
+	public List<String> getTablesNotToClear() {
+		return this.tablesNotToClear;
 	}
 }

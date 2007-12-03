@@ -45,7 +45,7 @@ import org.kuali.rice.exceptions.RiceRuntimeException;
  *   </code>
  * </blockquote>
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class TransactionManagerFactory implements org.apache.ojb.broker.transaction.tm.TransactionManagerFactory {
 

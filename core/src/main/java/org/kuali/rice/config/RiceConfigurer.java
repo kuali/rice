@@ -39,7 +39,7 @@ import org.springframework.beans.factory.InitializingBean;
 /**
  * Used to configure common Rice configuration properties.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean {

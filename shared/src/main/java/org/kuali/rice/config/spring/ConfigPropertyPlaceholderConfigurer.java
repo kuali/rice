@@ -24,7 +24,7 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
  * Configures a property placeholder in Spring which will allow access to the properties configured in
  * the workflow configuration.
  *
- * @author ewestfal
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ConfigPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer {
         protected final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(getClass());

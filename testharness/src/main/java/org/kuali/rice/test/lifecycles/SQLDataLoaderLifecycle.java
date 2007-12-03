@@ -22,7 +22,7 @@ import org.kuali.rice.test.SQLDataLoader;
 /**
  * A lifecycle for loading SQL datasets.
  * 
- * @author natjohns
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SQLDataLoaderLifecycle implements Lifecycle {
 	private boolean started;

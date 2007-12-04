@@ -18,8 +18,11 @@ package edu.iu.uis.eden.routetemplate;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -36,6 +39,19 @@ import edu.iu.uis.eden.exception.ResourceUnavailableException;
 public class RuleTemplate implements WorkflowPersistable {
 
     private static final long serialVersionUID = -3387940485523951302L;
+
+    /**
+     * A list of default rule template option keys.
+     */
+    public static final String[] DEFAULT_OPTION_KEYS = {
+        EdenConstants.RULE_INSTRUCTIONS_CD,
+        EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ,
+        EdenConstants.ACTION_REQUEST_APPROVE_REQ,
+        EdenConstants.ACTION_REQUEST_COMPLETE_REQ,
+        EdenConstants.ACTION_REQUEST_FYI_REQ,
+        EdenConstants.ACTION_REQUEST_DEFAULT_CD
+    };
+    
     private Long ruleTemplateId;
     private String name;
     private String description;
@@ -59,29 +75,40 @@ public class RuleTemplate implements WorkflowPersistable {
      */
     public void initializeOptions() {
         ruleTemplateOptions = new ArrayList<RuleTemplateOption>();
-        ruleTemplateOptions.add(new RuleTemplateOption(EdenConstants.RULE_INSTRUCTIONS_CD, null));
-        ruleTemplateOptions.add(new RuleTemplateOption(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, null));
-        ruleTemplateOptions.add(new RuleTemplateOption(EdenConstants.ACTION_REQUEST_APPROVE_REQ, null));
-        ruleTemplateOptions.add(new RuleTemplateOption(EdenConstants.ACTION_REQUEST_COMPLETE_REQ, null));
-        ruleTemplateOptions.add(new RuleTemplateOption(EdenConstants.ACTION_REQUEST_FYI_REQ, null));
-        ruleTemplateOptions.add(new RuleTemplateOption(EdenConstants.ACTION_REQUEST_DEFAULT_CD, null));
+        // add all the default options, initialized to null
+        for (String optionKey: DEFAULT_OPTION_KEYS) {
+            ruleTemplateOptions.add(new RuleTemplateOption(optionKey, null));    
+        }
     }
 
-    /* TODO: Fill in implementation which initializes default options, resetting existing ones if they already exist
-     * (they should always exist as they are added in the constructor) and removing any non-default options
-     * possibly break into two methods to accomplish this */
-    /*
-    public void resetOptions() {
-        List<RuleTemplateOption> addedOptions = new ArrayList<RuleTemplateOption>();
-        
+    /**
+     * Resets the default options to their default values.  These options must <i>already</i> be present
+     * (is should always be the case as they are created in the constructor for new objects), as it will not
+     * create them, but only reset them.
+     */
+    public void resetDefaultOptions() {
         getInstructions().setValue(null);
         getAcknowledge().setValue(null);
         getApprove().setValue(null);
         getComplete().setValue(null);
         getFyi().setValue(null);
-        get
-    }*/
-    
+        getDefaultActionRequestValue().setValue(null);
+    }
+
+    /**
+     * Removes any non-default rule template options on the template
+     */
+    public void removeNonDefaultOptions() {
+        Iterator<RuleTemplateOption> it = ruleTemplateOptions.iterator();
+        while (it.hasNext()) {
+            RuleTemplateOption option = it.next();
+            // if it's not one of the default options, remove it
+            if (!ArrayUtils.contains(DEFAULT_OPTION_KEYS, option.getKey())) {
+                it.remove();
+            }
+        }
+    }
+
     public String getDelegateTemplateName() {
         if (delegationTemplate != null) {
             return delegationTemplate.getName();

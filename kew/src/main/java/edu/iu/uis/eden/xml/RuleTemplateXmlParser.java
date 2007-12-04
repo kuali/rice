@@ -115,12 +115,19 @@ public class RuleTemplateXmlParser implements XmlConstants {
         if (ruleTemplate == null) {
             // if it does not exist create a new one
             ruleTemplate = new RuleTemplate();
-        } else if (!allowOverwrite) {
-            throw new RuntimeException("Attempting to overwrite template " + name + " without allowOverwrite set");
-        }
+        } else {
+            // if it does exist, update it, only if allowOverwrite is set
+            if (!allowOverwrite) {
+                throw new RuntimeException("Attempting to overwrite template " + name + " without allowOverwrite set");
+            }
+
+            // the name should be equal if one was actually found
+            assert(name.equals(ruleTemplate.getName())) : "Existing template definition name does not match incoming definition name";
+        } 
 
         ruleTemplate.setName(name);
         ruleTemplate.setDescription(description);
+
         String delegateTemplateName = element.getChildText(DELEGATION_TEMPLATE, RULE_TEMPLATE_NAMESPACE);
 
         if (delegateTemplateName != null) {
@@ -260,6 +267,7 @@ public class RuleTemplateXmlParser implements XmlConstants {
                     KEWServiceLocator.getRuleDelegationService().delete(ruleDelegation.getRuleDelegationId());
                 }
             }
+            /*
             if (ruleTemplate.getAcknowledge().getRuleTemplateOptionId() != null) {
                 KEWServiceLocator.getRuleTemplateService().deleteRuleTemplateOption(ruleTemplate.getAcknowledge().getRuleTemplateOptionId());
             }
@@ -274,9 +282,12 @@ public class RuleTemplateXmlParser implements XmlConstants {
             }
             if (ruleTemplate.getDefaultActionRequestValue().getRuleTemplateOptionId() != null) {
                 KEWServiceLocator.getRuleTemplateService().deleteRuleTemplateOption(ruleTemplate.getDefaultActionRequestValue().getRuleTemplateOptionId());
-            }
-
+            }*/
+            
+            ruleTemplate.resetDefaultOptions();
+            ruleTemplate.removeNonDefaultOptions();
         }
+
         // now create the defaults
         String delegationType = defaultsElement.getChildText(DELEGATION_TYPE, RULE_TEMPLATE_NAMESPACE);
         boolean isDelegation = !Utilities.isEmpty(delegationType);

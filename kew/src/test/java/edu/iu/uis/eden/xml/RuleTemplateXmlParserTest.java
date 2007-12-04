@@ -133,6 +133,9 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_MIN_XML.fileNameParameter, null);
         RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_MIN_XML.ruleTemplateName);
         testListOfTemplateAttributes(template.getRuleTemplateAttributes(), TemplateParserGeneralFixture.VALID_TEMPLATE_MIN_XML.activeAttributeNames, TemplateParserGeneralFixture.VALID_TEMPLATE_MIN_XML.requiredAttributeNames);
+        
+        assertRuleDefaultsArePresent(template);
+        assertRuleDefaultsAreNull(template);
     }
 
     @Test public void testLoadValidTemplateWithOverwrite() throws Exception {
@@ -146,7 +149,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         assertEquals(6, options.size());
         System.err.println("RuleTemplateOptions: " + options.size());
         
-        testRuleDefaultsArePresent(template);
+        assertRuleDefaultsArePresent(template);
     }
     
     @Test public void testLoadValidTemplateFullWithOverwrite() throws Exception {
@@ -159,22 +162,9 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         List<RuleTemplateOption> options = template.getRuleTemplateOptions();
         System.err.println("RuleTemplateOptions: " + options.size());
         
-        testRuleDefaultsArePresent(template);
+        assertRuleDefaultsArePresent(template);
     }
 
-    /**
-     * Tests that the rule default template options are present.  Must be kept in sync with defaults
-     * defined in RuleTemplate object
-     * @param ruleTemplate the ruleTemplate to check
-     */
-    protected void testRuleDefaultsArePresent(RuleTemplate template) {
-        assertOptionPresence(template, EdenConstants.RULE_INSTRUCTIONS_CD, true);
-        assertOptionPresence(template, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, true);
-        assertOptionPresence(template, EdenConstants.ACTION_REQUEST_APPROVE_REQ, true);
-        assertOptionPresence(template, EdenConstants.ACTION_REQUEST_COMPLETE_REQ, true);
-        assertOptionPresence(template, EdenConstants.ACTION_REQUEST_FYI_REQ, true);
-        assertOptionPresence(template, EdenConstants.ACTION_REQUEST_DEFAULT_CD, true);
-    }
 
     @Test public void testLoadInvalidTemplateWithOverwrite() throws Exception {
         testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_MIN_XML.fileNameParameter, null);
@@ -207,7 +197,9 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         assertEquals("01/01/2100", ruleDefaults.getToDateString());
         
         testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_LIMITED_DEFAULTS_OVERWRITE.fileNameParameter, null);
-        
+
+        template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_LIMITED_DEFAULTS.ruleTemplateName);
+
         // we overwrite the template and specify a new subset of defaults...any setting omitted should be removed, i.e. reset to a default
         // value
         assertOptionValue(template, EdenConstants.RULE_INSTRUCTIONS_CD, "New instructions.");
@@ -220,6 +212,34 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
         assertEquals(null, ruleDefaults.getFromDateString());
         assertEquals(null, ruleDefaults.getToDateString());
+    }
+
+   
+    @Test public void testLoadValidTemplateWithInstructionsDefault() throws Exception {
+        testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_INSTRUCTIONS_DEFAULT.fileNameParameter, null);
+    }
+
+
+    /**
+     * Tests that the rule default template options are present.  Must be kept in sync with defaults
+     * defined in RuleTemplate object
+     * @param ruleTemplate the ruleTemplate to check
+     */
+    protected void assertRuleDefaultsArePresent(RuleTemplate template) {
+        for (String key: RuleTemplate.DEFAULT_OPTION_KEYS) {
+            assertOptionPresence(template, key, true);
+        }
+    }
+
+    /**
+     * Tests that the rule default template options are present and set to null.  Must be kept in sync with defaults
+     * defined in RuleTemplate object
+     * @param ruleTemplate the ruleTemplate to check
+     */
+    protected void assertRuleDefaultsAreNull(RuleTemplate template) {
+        for (String key: RuleTemplate.DEFAULT_OPTION_KEYS) {
+            assertOptionValue(template, key, null);
+        }
     }
 
     /**
@@ -247,10 +267,6 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         RuleTemplateOption option = template.getRuleTemplateOption(key);
         if (option == null) fail("Rule template option '" + key + "' not defined on template: " + template);
         assertEquals("Incorrect rule template option value for key '" + key + "'.  Expected '" + value + "' but found '" + option.getValue() + "'", value, option.getValue());
-    }
-    
-    @Test public void testLoadValidTemplateWithInstructionsDefault() throws Exception {
-        testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_INSTRUCTIONS_DEFAULT.fileNameParameter, null);
     }
 
     private enum TemplateParserAttributeActivationFixture {

@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,13 +33,13 @@ import org.kuali.core.web.struts.form.QuestionPromptForm;
 
 /**
  * This class handles Actions for QuestionPromp.
- * 
- * 
+ *
+ *
  */
 public class QuestionPromptAction extends KualiAction {
     /**
      * This method is the entry point action for the question prompt component.
-     * 
+     *
      * @param mapping
      * @param form
      * @param request
@@ -56,7 +56,7 @@ public class QuestionPromptAction extends KualiAction {
 
     /**
      * This method handles gathering all input and passing control back to the caller action.
-     * 
+     *
      * @param mapping
      * @param form
      * @param request
@@ -87,7 +87,7 @@ public class QuestionPromptAction extends KualiAction {
         if (StringUtils.isNotBlank(reason)) {
             parameters.put(RiceConstants.QUESTION_REASON_ATTRIBUTE_NAME, reason);
         }
-        if (StringUtils.isNotBlank(questionPromptForm.getMethodToCallPath()) && ConfirmationQuestion.YES.equals(getSelectedButton(request))) {
+        if (StringUtils.isNotBlank(questionPromptForm.getMethodToCallPath())) {
             // For header tab navigation. Leaving it blank will just kick user back to page.
             parameters.put(RiceConstants.METHOD_TO_CALL_PATH, questionPromptForm.getMethodToCallPath());
         }
@@ -99,7 +99,7 @@ public class QuestionPromptAction extends KualiAction {
 
     /**
      * Parses the method to call attribute to pick off the button number that was pressed.
-     * 
+     *
      * @param request
      * @return int
      */
@@ -115,7 +115,7 @@ public class QuestionPromptAction extends KualiAction {
 
     /**
      * This method handles processing any error messages coming in the door.
-     * 
+     *
      * @param request
      */
     private void processErrorMessages(HttpServletRequest request) {

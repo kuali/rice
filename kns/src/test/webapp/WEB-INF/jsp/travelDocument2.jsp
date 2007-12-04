@@ -21,7 +21,7 @@
 	showDocumentInfo="true"
 	htmlFormAction="travelDocument2"
 	documentTypeName="TravelRequest"
-	renderMultipart="true"
+	renderMultipart="false"
 	showTabButtons="true"
 	auditCount="0">
 
@@ -81,7 +81,10 @@
 		</table>
 		</div>
 	</kul:tab>
+	<!-- temporarily commented out notes section and made non-multipart form
+	     for KULRICE-1344
 	<kul:notes />
+	 -->
 	<kul:adHocRecipients />
 	<kul:routeLog />
 	<kul:panelFooter />

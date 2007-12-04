@@ -33,15 +33,15 @@ import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 public class WebTestBase extends TestBase {
 
     private static final Logger LOG = Logger.getLogger(WebTestBase.class);
-    private static final int TEXT_INPUT = 0;
-    private static final int TEXT_AREA = 1;
-    private static final int SELECTED_INPUT = 2;
-    private static final int HIDDEN_INPUT = 3;
-    private static final int IMAGE_INPUT = 4;
-    private static final int SUBMIT_INPUT_BY_NAME = 5;
-    private static final int SUBMIT_INPUT_BY_VALUE = 6;
-    private static final int CHECK_BOX_INPUT = 7;
-    private static final String ERRORS_FOUND_ON_PAGE = "error(s) found on page";
+    protected static final int TEXT_INPUT = 0;
+    protected static final int TEXT_AREA = 1;
+    protected static final int SELECTED_INPUT = 2;
+    protected static final int HIDDEN_INPUT = 3;
+    protected static final int IMAGE_INPUT = 4;
+    protected static final int SUBMIT_INPUT_BY_NAME = 5;
+    protected static final int SUBMIT_INPUT_BY_VALUE = 6;
+    protected static final int CHECK_BOX_INPUT = 7;
+    protected static final String ERRORS_FOUND_ON_PAGE = "error(s) found on page";
 
     protected HtmlPage clickButton(HtmlPage page, HtmlForm htmlForm, String buttonName, int type) throws Exception {
         String completeButtonName=getImageTagName(page, buttonName);

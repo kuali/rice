@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,6 +15,9 @@
  */
 package edu.sampleu.travel.web.form;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts.action.ActionMapping;
 import org.kuali.core.web.struts.form.KualiDocumentFormBase;
 
 import edu.sampleu.travel.bo.TravelAccount;
@@ -29,6 +32,19 @@ public class TravelDocumentForm2 extends KualiDocumentFormBase {
         this.setDocument(new TravelDocument2());
     }
 
+    /*
+     * Reset method - reset attributes of form retrieved from session otherwise
+     * we will always call docHandler action
+     * @param mapping
+     * @param request
+     */
+    public void reset(ActionMapping mapping, HttpServletRequest request) {
+        this.setMethodToCall(null);
+        this.setRefreshCaller(null);
+        this.setAnchor(null);
+        this.setCurrentTabIndex(0);
+    }
+
     public TravelAccount getTravelAccount() {
         return travelAccount;
     }
@@ -36,5 +52,5 @@ public class TravelDocumentForm2 extends KualiDocumentFormBase {
     public void setTravelAccount(TravelAccount travelAccount) {
         this.travelAccount = travelAccount;
     }
-    
+
 }

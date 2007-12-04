@@ -162,10 +162,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         boolean isValid = true;
 
         isValid &= isDocumentOverviewValid(document);
-
-        if (isValid) {
-            isValid &= processCustomSaveDocumentBusinessRules(document);
-        }
+        isValid &= processCustomSaveDocumentBusinessRules(document);
 
         LOG.debug("processSaveDocument(Document) - end");
         return isValid;

@@ -67,32 +67,7 @@ public class RuleTemplate implements WorkflowPersistable {
 
     public RuleTemplate() {
         ruleTemplateAttributes = new ArrayList<RuleTemplateAttribute>();
-        initializeOptions();
-    }
-
-    /**
-     * Sets some default RuleTemplateOptions for this RuleTemplate
-     */
-    public void initializeOptions() {
         ruleTemplateOptions = new ArrayList<RuleTemplateOption>();
-        // add all the default options, initialized to null
-        for (String optionKey: DEFAULT_OPTION_KEYS) {
-            ruleTemplateOptions.add(new RuleTemplateOption(optionKey, null));    
-        }
-    }
-
-    /**
-     * Resets the default options to their default values.  These options must <i>already</i> be present
-     * (is should always be the case as they are created in the constructor for new objects), as it will not
-     * create them, but only reset them.
-     */
-    public void resetDefaultOptions() {
-        getInstructions().setValue(null);
-        getAcknowledge().setValue(null);
-        getApprove().setValue(null);
-        getComplete().setValue(null);
-        getFyi().setValue(null);
-        getDefaultActionRequestValue().setValue(null);
     }
 
     /**

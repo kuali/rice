@@ -4,7 +4,7 @@
       xsi:schemaLocation="ns:workflow resource:WorkflowData">
 
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
-		<ruleTemplate>
+		<ruleTemplate allowOverwrite="true">
 			<name>RuleTemplate_Valid_Some_Defaults</name>
 			<description>TestRuleTemplate</description>
 			<attributes>
@@ -15,13 +15,15 @@
 				</attribute>
 			</attributes>
 			<ruleDefaults>
-				<fromDate>01/11/2006</fromDate>
-				<toDate>01/01/2100</toDate>
-				<defaultActionRequested>A</defaultActionRequested>
-				<supportsComplete>false</supportsComplete>
-				<supportsApprove>true</supportsApprove>
-				<supportsAcknowledge>false</supportsAcknowledge>
-				<supportsFYI>false</supportsFYI>
+                <!--
+                  existing values should be reset to defaults ("overwritten")
+                  and only these new and updated values should be defined
+                -->
+                <ruleInstructions>
+                    New instructions.
+                </ruleInstructions>
+                <description>a rule based on (updated) RuleTemplate_Valid_Some_Defaults</description>
+				<supportsAcknowledge>true</supportsAcknowledge>
 			</ruleDefaults>
 		</ruleTemplate>
 	</ruleTemplates>

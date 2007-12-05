@@ -15,10 +15,9 @@
  */
 package edu.iu.uis.eden.xml;
 
-import java.util.HashMap;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
@@ -51,10 +50,10 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         VALID_TEMPLATE_OVERWRITE("ValidRuleTemplateOverwrite", "RuleTemplate_Valid", new String[]{RULE_ATTRIBUTE_ONE}, new String[]{RULE_ATTRIBUTE_FOUR}, new String[]{RULE_ATTRIBUTE_FOUR}, new String[]{RULE_ATTRIBUTE_ONE}),
         VALID_TEMPLATE_FULL_OVERWRITE("ValidRuleTemplateFullOverwrite", "RuleTemplate_Valid_Full", new String[]{RULE_ATTRIBUTE_ONE}, new String[]{RULE_ATTRIBUTE_FOUR}, new String[]{RULE_ATTRIBUTE_FOUR}, new String[]{RULE_ATTRIBUTE_ONE}),
         INVALID_TEMPLATE_OVERWRITE("InvalidRuleTemplateOverwrite", "RuleTemplate_Valid", new String[]{RULE_ATTRIBUTE_ONE}, new String[0], new String[]{RULE_ATTRIBUTE_ONE}, new String[0]),
-        VALID_TEMPLATE_WITH_FULL_DEFAULTS("ValidRuleTemplateWithDefaults", "RuleTemplate_Valid_Defaults", new String[]{RULE_ATTRIBUTE_TWO}, new String[0], new String[]{RULE_ATTRIBUTE_TWO}, new String[0]),
-        VALID_TEMPLATE_WITH_LIMITED_DEFAULTS("ValidRuleTemplateWithDefaults2", "RuleTemplate_Valid_Some_Defaults", new String[]{RULE_ATTRIBUTE_THREE}, new String[0], new String[0], new String[]{RULE_ATTRIBUTE_THREE}),
-        VALID_TEMPLATE_WITH_LIMITED_DEFAULTS_OVERWRITE("ValidRuleTemplateWithDefaults2Overwrite", "RuleTemplate_Valid_Some_Defaults", new String[]{RULE_ATTRIBUTE_THREE}, new String[0], new String[0], new String[]{RULE_ATTRIBUTE_THREE}),
-        VALID_TEMPLATE_WITH_INSTRUCTIONS_DEFAULT("ValidRuleTemplateWithDefaults3", "RuleTemplate_Valid_Instructions_Default", new String[]{RULE_ATTRIBUTE_TWO}, new String[0], new String[]{RULE_ATTRIBUTE_TWO}, new String[0]),
+        VALID_TEMPLATE_WITH_FULL_DEFAULTS("ValidRuleTemplateWithFullDefaults", "RuleTemplate_Valid_Defaults", new String[]{RULE_ATTRIBUTE_TWO}, new String[0], new String[]{RULE_ATTRIBUTE_TWO}, new String[0]),
+        VALID_TEMPLATE_WITH_LIMITED_DEFAULTS("ValidRuleTemplateWithSomeDefaults", "RuleTemplate_Valid_Some_Defaults", new String[]{RULE_ATTRIBUTE_THREE}, new String[0], new String[0], new String[]{RULE_ATTRIBUTE_THREE}),
+        VALID_TEMPLATE_WITH_LIMITED_DEFAULTS_OVERWRITE("ValidRuleTemplateWithSomeDefaultsOverwrite", "RuleTemplate_Valid_Some_Defaults", new String[]{RULE_ATTRIBUTE_THREE}, new String[0], new String[0], new String[]{RULE_ATTRIBUTE_THREE}),
+        VALID_TEMPLATE_WITH_INSTRUCTIONS_DEFAULT("ValidRuleTemplateWithDefaultsInstrOnly", "RuleTemplate_Valid_Instructions_Default", new String[]{RULE_ATTRIBUTE_TWO}, new String[0], new String[]{RULE_ATTRIBUTE_TWO}, new String[0]),
         ;
 
         public String fileNameParameter;
@@ -133,9 +132,8 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_MIN_XML.fileNameParameter, null);
         RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_MIN_XML.ruleTemplateName);
         testListOfTemplateAttributes(template.getRuleTemplateAttributes(), TemplateParserGeneralFixture.VALID_TEMPLATE_MIN_XML.activeAttributeNames, TemplateParserGeneralFixture.VALID_TEMPLATE_MIN_XML.requiredAttributeNames);
-        
-        assertRuleDefaultsArePresent(template);
-        assertRuleDefaultsAreNull(template);
+
+        assertNoDefaultsSpecified(template);
     }
 
     @Test public void testLoadValidTemplateWithOverwrite() throws Exception {
@@ -145,11 +143,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_OVERWRITE.ruleTemplateName);
         testListOfTemplateAttributes(template.getRuleTemplateAttributes(), TemplateParserGeneralFixture.VALID_TEMPLATE_OVERWRITE.activeAttributeNames, TemplateParserGeneralFixture.VALID_TEMPLATE_OVERWRITE.requiredAttributeNames);
 
-        List<RuleTemplateOption> options = template.getRuleTemplateOptions();
-        assertEquals(6, options.size());
-        System.err.println("RuleTemplateOptions: " + options.size());
-        
-        assertRuleDefaultsArePresent(template);
+        assertNoDefaultsSpecified(template);
     }
     
     @Test public void testLoadValidTemplateFullWithOverwrite() throws Exception {
@@ -159,10 +153,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_FULL_OVERWRITE.ruleTemplateName);
         testListOfTemplateAttributes(template.getRuleTemplateAttributes(), TemplateParserGeneralFixture.VALID_TEMPLATE_FULL_OVERWRITE.activeAttributeNames, TemplateParserGeneralFixture.VALID_TEMPLATE_FULL_OVERWRITE.requiredAttributeNames);
 
-        List<RuleTemplateOption> options = template.getRuleTemplateOptions();
-        System.err.println("RuleTemplateOptions: " + options.size());
-        
-        assertRuleDefaultsArePresent(template);
+        assertNoDefaultsSpecified(template);
     }
 
 
@@ -172,12 +163,57 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         testTemplate(TemplateParserGeneralFixture.INVALID_TEMPLATE_OVERWRITE.fileNameParameter, RuntimeException.class);  // allowOverwrite=false
     }
 
-    @Test public void testLoadValidTemplateWithDefaults() throws Exception {
+    @Test public void testLoadValidTemplateWithFullDefaults() throws Exception {
         testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_FULL_DEFAULTS.fileNameParameter, null);
+
+        RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_FULL_DEFAULTS.ruleTemplateName);
+
+        // test the rule template options
+        List<RuleTemplateOption> options = template.getRuleTemplateOptions();
+        assertEquals(6, options.size());
+        assertOptionValue(template, EdenConstants.RULE_INSTRUCTIONS_CD, "This is the most custom instructions evar.");
+        assertOptionValue(template, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
+        assertOptionValue(template, EdenConstants.ACTION_REQUEST_APPROVE_REQ, "true");
+        assertOptionValue(template, EdenConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
+        assertOptionValue(template, EdenConstants.ACTION_REQUEST_FYI_REQ, "false");
+        assertOptionValue(template, EdenConstants.ACTION_REQUEST_DEFAULT_CD, "A");
+
+        // test those set in the default/template rule
+        RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
+        assertTrue(ruleDefaults.getTemplateRuleInd());
+        assertEquals("Testy Me A Template", ruleDefaults.getDescription());
+        assertEquals("01/11/2006", ruleDefaults.getFromDateString());
+        assertEquals("01/01/2100", ruleDefaults.getToDateString());
+        assertTrue(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getActiveInd());
     }
 
     @Test public void testLoadValidTemplateWithSomeDefaults() throws Exception {
         testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_LIMITED_DEFAULTS.fileNameParameter, null);
+        
+        RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_LIMITED_DEFAULTS.ruleTemplateName);
+
+        // test the rule template options
+        List<RuleTemplateOption> options = template.getRuleTemplateOptions();
+        assertEquals(6, options.size());
+        assertOptionValue(template, EdenConstants.RULE_INSTRUCTIONS_CD, "fill out");
+        assertOptionValue(template, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
+        assertOptionValue(template, EdenConstants.ACTION_REQUEST_APPROVE_REQ, "true");
+        assertOptionValue(template, EdenConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
+        assertOptionValue(template, EdenConstants.ACTION_REQUEST_FYI_REQ, "false");
+        assertOptionValue(template, EdenConstants.ACTION_REQUEST_DEFAULT_CD, "A");
+
+        // test those set in the default/template rule
+        RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
+        assertTrue(ruleDefaults.getTemplateRuleInd());
+        assertEquals("a rule based on RuleTemplate_Valid_Some_Defaults", ruleDefaults.getDescription());
+        assertFalse(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getActiveInd());
+        assertEquals("01/11/2006", ruleDefaults.getFromDateString());
+        assertEquals("01/01/2100", ruleDefaults.getToDateString());
+        assertNotNull(ruleDefaults.getActivationDate());
+        assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getActivationDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getActivationDate()));
+        assertNotNull(ruleDefaults.getDeactivationDate());
     }
     
     @Test public void testLoadValidTemplateWithSomeDefaultsOverwrite() throws Exception {
@@ -185,49 +221,126 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         
         RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_LIMITED_DEFAULTS.ruleTemplateName);
         
-        assertOptionValue(template, EdenConstants.RULE_INSTRUCTIONS_CD, null);
+        // test the rule template options
+        List<RuleTemplateOption> options = template.getRuleTemplateOptions();
+        assertEquals(6, options.size());
+        assertOptionValue(template, EdenConstants.RULE_INSTRUCTIONS_CD, "fill out");
         assertOptionValue(template, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
         assertOptionValue(template, EdenConstants.ACTION_REQUEST_APPROVE_REQ, "true");
         assertOptionValue(template, EdenConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
         assertOptionValue(template, EdenConstants.ACTION_REQUEST_FYI_REQ, "false");
         assertOptionValue(template, EdenConstants.ACTION_REQUEST_DEFAULT_CD, "A");
 
+        // test those set in the default/template rule
         RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
+        assertTrue(ruleDefaults.getTemplateRuleInd());
+        assertEquals("a rule based on RuleTemplate_Valid_Some_Defaults", ruleDefaults.getDescription());
+        assertFalse(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getActiveInd());
         assertEquals("01/11/2006", ruleDefaults.getFromDateString());
         assertEquals("01/01/2100", ruleDefaults.getToDateString());
         
         testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_LIMITED_DEFAULTS_OVERWRITE.fileNameParameter, null);
 
-        template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_LIMITED_DEFAULTS.ruleTemplateName);
+        template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_LIMITED_DEFAULTS_OVERWRITE.ruleTemplateName);
 
         // we overwrite the template and specify a new subset of defaults...any setting omitted should be removed, i.e. reset to a default
         // value
+        options = template.getRuleTemplateOptions();
+        assertEquals(2, options.size());
         assertOptionValue(template, EdenConstants.RULE_INSTRUCTIONS_CD, "New instructions.");
         assertOptionValue(template, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "true");
-        assertOptionValue(template, EdenConstants.ACTION_REQUEST_APPROVE_REQ, null);
-        assertOptionValue(template, EdenConstants.ACTION_REQUEST_COMPLETE_REQ, null);
-        assertOptionValue(template, EdenConstants.ACTION_REQUEST_FYI_REQ, null);
-        assertOptionValue(template, EdenConstants.ACTION_REQUEST_DEFAULT_CD, null);
 
+        // test those set in the default/template rule
         ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
-        assertEquals(null, ruleDefaults.getFromDateString());
-        assertEquals(null, ruleDefaults.getToDateString());
-    }
+        assertTrue(ruleDefaults.getTemplateRuleInd());
+        assertEquals("a rule based on (updated) RuleTemplate_Valid_Some_Defaults", ruleDefaults.getDescription());
+        assertFalse(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getActiveInd());
+        // from and activation date defaults to current time
+        assertNotNull(ruleDefaults.getFromDate());
+        assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getFromDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getFromDate()));
+        assertNotNull(ruleDefaults.getActivationDate());
+        assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getActivationDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getActivationDate()));
+        assertNotNull(ruleDefaults.getToDateString());
+        assertNotNull(ruleDefaults.getDeactivationDate());    }
 
    
     @Test public void testLoadValidTemplateWithInstructionsDefault() throws Exception {
         testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_INSTRUCTIONS_DEFAULT.fileNameParameter, null);
+        
+        RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_INSTRUCTIONS_DEFAULT.ruleTemplateName);
+
+        // test the rule template options; this one just has the instructions, nothing else
+        List<RuleTemplateOption> options = template.getRuleTemplateOptions();
+        assertEquals(1, options.size());
+        assertOptionValue(template, EdenConstants.RULE_INSTRUCTIONS_CD, "This is the most custom instructions evar.");
+
+        // test those set in the default/template rule; everything default exception description which is specified
+        RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
+        assertTrue(ruleDefaults.getTemplateRuleInd());
+        assertEquals("a description", ruleDefaults.getDescription());
+        assertFalse(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getActiveInd());
+        // from and activation date defaults to current time
+        assertNotNull(ruleDefaults.getFromDate());
+        assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getFromDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getFromDate()));
+        assertNotNull(ruleDefaults.getActivationDate());
+        assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getActivationDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getActivationDate()));
+        assertNotNull(ruleDefaults.getToDateString());
+        assertNotNull(ruleDefaults.getDeactivationDate());
     }
 
+    /**
+     * Asserts that if the defaults element is omitted, the correct defaults are set
+     * @param template the RuleTemplate to check
+     */
+    protected void assertNoDefaultsSpecified(RuleTemplate template) {
+        // test the rule template options
+        assertDefaultTemplateOptions(template);
+
+        // test those set in the default/template rule
+        assertDefaultRuleDefaults(template);
+    }
+
+    /**
+     * Asserts that if the defaults element is omitted, the correct RuleTemplateOptions are set (or not set)
+     * @param template the RuleTemplate to check
+     */
+    protected void assertDefaultTemplateOptions(RuleTemplate template) {
+        List<RuleTemplateOption> options = template.getRuleTemplateOptions();
+        assertEquals(1, options.size());
+        assertOptionValue(template, EdenConstants.RULE_INSTRUCTIONS_CD, "No default instructions specified");
+    }
+
+    /**
+     * Asserts that if the defaults element is omitted, the correct template rule defaults are set
+     * @param template the RuleTemplate to check
+     */
+    protected void assertDefaultRuleDefaults(RuleTemplate template) {
+        RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
+        assertTrue(ruleDefaults.getTemplateRuleInd());
+        assertEquals("No default description specified", ruleDefaults.getDescription());
+        assertFalse(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getActiveInd());
+        // from and activation date defaults to current time
+        assertNotNull(ruleDefaults.getFromDate());
+        assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getFromDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getFromDate()));
+        assertNotNull(ruleDefaults.getActivationDate());
+        assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getActivationDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getActivationDate()));
+        assertNotNull(ruleDefaults.getToDateString());
+        assertNotNull(ruleDefaults.getDeactivationDate());
+    }
 
     /**
      * Tests that the rule default template options are present.  Must be kept in sync with defaults
      * defined in RuleTemplate object
      * @param ruleTemplate the ruleTemplate to check
+     * @param present whether the option should be present or not
      */
-    protected void assertRuleDefaultsArePresent(RuleTemplate template) {
+    protected void assertRuleDefaultsArePresent(RuleTemplate template, boolean present) {
         for (String key: RuleTemplate.DEFAULT_OPTION_KEYS) {
-            assertOptionPresence(template, key, true);
+            assertOptionPresence(template, key, present);
         }
     }
 

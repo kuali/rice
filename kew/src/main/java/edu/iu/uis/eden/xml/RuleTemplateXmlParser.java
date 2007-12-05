@@ -32,7 +32,6 @@ import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.kuali.notification.exception.InvalidXMLException;
 import org.xml.sax.SAXException;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -167,7 +166,7 @@ public class RuleTemplateXmlParser implements XmlConstants {
      * Updates the rule template default options.  Updates any existing options, removes any omitted ones.
      * @param ruleTemplateElement the rule template XML element
      * @param updatedRuleTemplate the RuleTemplate being updated
-     * @throws InvalidXMLException
+     * @throws InvalidXmlException
      */
     /*
      <element name="ruleInstructions" type="c:LongStringType"/>

@@ -29,6 +29,10 @@ public class KOMConstants {
     public static final class BO_PROPERTY_NAMES {
         public static final String ID = "id";
         public static final String NAME = "name";
+        public static final String SHORT_NAME = "shortName";
         public static final String DESCRIPTION = "description";
+        public static final String ORGANIZATION_ID = "organizationId";
+        public static final String CONTEXT_ID = "contextId";
+        public static final String CATEGORY_ID = "categoryId";
     }
 }

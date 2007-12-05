@@ -15,6 +15,8 @@
  */
 package edu.iu.uis.eden.docsearch;
 
+import java.util.List;
+
 /**
  * Class to test custom search criteria processor implementation
  * 
@@ -23,6 +25,26 @@ package edu.iu.uis.eden.docsearch;
  */
 public class CustomDocumentSearchCriteriaProcessor extends StandardDocumentSearchCriteriaProcessor {
 
-	
-	
+    @Override
+    public List<String> getAdvancedSearchHiddenFieldKeys() {
+        List<String> hiddenKeys = super.getAdvancedSearchHiddenFieldKeys();
+        hiddenKeys.add(DocumentSearchCriteriaProcessor.CRITERIA_KEY_DOCUMENT_TITLE);
+        hiddenKeys.add("givenname");
+        return hiddenKeys;
+    }
+
+    @Override
+    public List<String> getBasicSearchHiddenFieldKeys() {
+        List<String> hiddenKeys = super.getBasicSearchHiddenFieldKeys();
+        hiddenKeys.add(DocumentSearchCriteriaProcessor.CRITERIA_KEY_CREATE_DATE);
+        return hiddenKeys;
+    }
+
+    @Override
+    public List<String> getGlobalHiddenFieldKeys() {
+        List<String> hiddenKeys = super.getGlobalHiddenFieldKeys();
+        hiddenKeys.add(DocumentSearchCriteriaProcessor.CRITERIA_KEY_INITIATOR);
+        return hiddenKeys;
+    }
+
 }

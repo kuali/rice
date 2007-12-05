@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import edu.iu.uis.eden.clientapp.IDocHandler;
+import edu.iu.uis.eden.docsearch.web.DocumentSearchForm;
 import edu.iu.uis.eden.web.KeyValueSort;
 import edu.iu.uis.eden.web.RowStyleable;
 
@@ -42,7 +43,7 @@ public class DocSearchVO implements Serializable, RowStyleable {
 	private java.sql.Timestamp dateCreated;
 	private String documentTitle;
 	private String activeIndicatorCode;
-  private String docTypeName;
+	private String docTypeName;
 	private String docTypeLabel;
 	private String initiatorNetworkId;
 	private String initiatorWorkflowId;
@@ -199,7 +200,7 @@ public class DocSearchVO implements Serializable, RowStyleable {
     }
 
     public boolean isUsingSuperUserSearch() {
-    	return "YES".equalsIgnoreCase(superUserSearch);
+    	return DocumentSearchForm.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase(superUserSearch);
     }
 
     public String getRouteLogUrl() {

@@ -45,7 +45,7 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
 	private static final int DEFAULT_FETCH_MORE_ITERATION_LIMIT = 5;
 
     public List getList(DocumentSearchGenerator documentSearchGenerator,DocSearchCriteriaVO criteria) throws EdenUserNotFoundException {
-        LOG.info("start getList");
+        LOG.debug("start getList");
         int searchResultCap = getSearchResultCap(documentSearchGenerator);
         int fetchMoreIterationLimit = getFetchMoreIterationLimit();
         DocumentSecurityService documentSecurityService = KEWServiceLocator.getDocumentSecurityService();

@@ -146,6 +146,17 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	setCriteria(searchCriteria);
         return getDocSearchSQL();
     }
+    
+    public DocumentType getValidDocumentType(String documentTypeFullName) {
+    	if (!Utilities.isEmpty(documentTypeFullName)) {
+            DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeFullName);
+            if (documentType == null) {
+    			throw new RuntimeException("No Valid Document Type Found for document type name '" + documentTypeFullName + "'");
+            }
+            return documentType;
+    	}
+    	return null;
+    }
 
     /* (non-Javadoc)
      * @see edu.iu.uis.eden.docsearch.DocumentSearchGenerator#validateSearchableAttributes()
@@ -164,7 +175,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                     paramMap.put(component.getFormKey(),component.getValue());
                 }
             }
-            DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocTypeFullName());
+            DocumentType documentType = getValidDocumentType(criteria.getDocTypeFullName());
             try {
 	            for (Iterator iter = documentType.getSearchableAttributes().iterator(); iter.hasNext();) {
 	            	SearchableAttribute searchableAttribute = (SearchableAttribute) iter.next();

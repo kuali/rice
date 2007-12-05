@@ -12,13 +12,19 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.definition.ObjectDefinition;
+import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
+import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.web.KeyValue;
@@ -32,6 +38,7 @@ public class DocumentTypeSecurity {
   private List<String> workgroups = new ArrayList<String>();
   private List<String> allowedRoles = new ArrayList<String>();
   private List<String> disallowedRoles = new ArrayList<String>();
+  private List<SecurityAttribute> securityAttributes = new ArrayList<SecurityAttribute>();
 
   private static XPath xpath = XPathHelper.newXPath();
 
@@ -41,7 +48,7 @@ public class DocumentTypeSecurity {
    * @throws ParserConfigurationException
    * @throws IOException
    * @throws SAXException */
-  public DocumentTypeSecurity(String documentTypeSecurityXml)
+  public DocumentTypeSecurity(String standardMessageEntity, String documentTypeSecurityXml)
   {
     try {
       if (Utilities.isEmpty(documentTypeSecurityXml)) {
@@ -128,9 +135,50 @@ public class DocumentTypeSecurity {
           }
         }
       }
+
+      NodeList attributeNodes = (NodeList) xpath.evaluate("./securityAttribute", securityElement, XPathConstants.NODESET);
+      if (attributeNodes != null && attributeNodes.getLength()>0) {
+          for (int i = 0; i < attributeNodes.getLength(); i++) {
+            Element attributeElement = (Element)attributeNodes.item(i);
+            NamedNodeMap elemAttributes = attributeElement.getAttributes();
+            String className = null;
+            String messageEntity = standardMessageEntity;
+            if (elemAttributes.getNamedItem("name") != null) {
+                // found a name attribute so find the class name
+                String ruleAttributeName = elemAttributes.getNamedItem("name").getNodeValue().trim();
+                RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(ruleAttributeName);
+                if (ruleAttribute == null) {
+                    throw new WorkflowException("Could not find rule attribute: " + ruleAttributeName);
+                }
+                messageEntity = ruleAttribute.getMessageEntity();
+                className = ruleAttribute.getClassName();
+            } else if (elemAttributes.getNamedItem("class") != null) {
+                // class name defined
+                className = elemAttributes.getNamedItem("class").getNodeValue().trim();
+            } else {
+                throw new WorkflowException("Cannot find attribute 'name' or attribute 'class' for securityAttribute Node");
+            }
+            ObjectDefinition objDef = new ObjectDefinition(className, messageEntity);
+            if (objDef != null) {
+                try {
+                    this.securityAttributes.add((SecurityAttribute)GlobalResourceLoader.getObject(objDef));
+                } catch (RuntimeException e) {
+                    throw new WorkflowException("Error obtaining security attribute: " + objDef,e);
+                }
+            }
+          }
+        }
     } catch (Exception err) {
       throw new WorkflowRuntimeException(err);
     }
+  }
+  
+  public List<SecurityAttribute> getSecurityAttributes() {
+    return this.securityAttributes;
+  }
+
+  public void setSecurityAttributes(List<SecurityAttribute> securityAttributes) {
+    this.securityAttributes = securityAttributes;
   }
 
   public Boolean getInitiatorOk() {

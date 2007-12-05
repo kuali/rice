@@ -819,6 +819,7 @@ Definitions are applied to the names in the routeNodes section.
       <element name="searchableAttribute" type="dt:SecuritySearchableAttributeType"/>
       <element name="workgroup" type="c:ShortStringType"/>
       <element name="role" type="dt:SecurityRoleType"/>
+      <element name="securityAttribute" type="dt:SecurityAttribute"/>
     </choice>
     <attribute name="active" type="boolean" default="true" />
   </complexType>
@@ -828,12 +829,22 @@ Definitions are applied to the names in the routeNodes section.
       <attribute name="idType" type="dt:SecuritySearchableAttributeIDType" use="required" />
   </complexType>
 
+  <complexType name="SecurityAttribute">
+      <attribute name="name" type="c:LongStringType" />
+      <attribute name="class" type="c:LongStringType" />
+  </complexType>
+
   <simpleType name="SecuritySearchableAttributeIDType">
     <restriction base="string">
       <enumeration value="emplid"/>
+      <enumeration value="emplId"/>
       <enumeration value="EMPLID"/>
-      <enumeration value="networkid"/>
-      <enumeration value="NETWORKID"/>
+      <enumeration value="authenticationid"/>
+      <enumeration value="authenticationId"/>
+      <enumeration value="AUTHENTICATIONID"/>
+      <enumeration value="uuid"/>
+      <enumeration value="uuId"/>
+      <enumeration value="UUID"/>
     </restriction>
   </simpleType>
 

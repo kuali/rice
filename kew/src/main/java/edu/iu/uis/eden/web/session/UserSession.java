@@ -223,7 +223,8 @@ public class UserSession implements Serializable {
     		Authentication auth = (Authentication) iterator.next();
     		if (auth.getAuthority().equalsIgnoreCase(role)) {
     			return true;
-}    	}
+    		}
+    	}
     	return false;
     }
 

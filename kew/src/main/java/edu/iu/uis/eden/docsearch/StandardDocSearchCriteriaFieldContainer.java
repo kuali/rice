@@ -16,7 +16,9 @@
 package edu.iu.uis.eden.docsearch;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import edu.iu.uis.eden.util.Utilities;
 
@@ -58,9 +60,38 @@ public class StandardDocSearchCriteriaFieldContainer implements java.io.Serializ
 		this.fields = fields;
 	}
 
+	public StandardDocSearchCriteriaFieldContainer(StandardDocSearchCriteriaFieldContainer sourceContainer) {
+		this.fieldKey = sourceContainer.getFieldKey();
+		this.labelMessageKey = sourceContainer.getLabelMessageKey();
+		this.labelFieldHeightValue = sourceContainer.getLabelFieldHeightValue();
+		this.labelFieldWidthValue = sourceContainer.getLabelFieldWidthValue();
+		this.dataFieldHeightValue = sourceContainer.getDataFieldHeightValue();
+		this.dataFieldWidthValue = sourceContainer.getDataFieldWidthValue();
+		this.fields = sourceContainer.getFields();
+	}
+
 	public void addField(StandardSearchCriteriaField field) {
 		fields.add(field);
 	}
+
+    public boolean isHidden() {
+        for (Iterator iterator = fields.iterator(); iterator.hasNext();) {
+            StandardSearchCriteriaField field = (StandardSearchCriteriaField) iterator.next();
+            if (!field.isHidden()) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public void hideFieldsIfNecessary(Set<String> hiddenFieldKeys) {
+        for (Iterator iterator = fields.iterator(); iterator.hasNext();) {
+            StandardSearchCriteriaField field = (StandardSearchCriteriaField) iterator.next();
+            if ( (hiddenFieldKeys.contains(getFieldKey())) || (hiddenFieldKeys.contains(field.getKey())) ) {
+                field.setHidden(true);
+            }
+        }
+    }
 
 	public String getFieldKey() {
 		return this.fieldKey;

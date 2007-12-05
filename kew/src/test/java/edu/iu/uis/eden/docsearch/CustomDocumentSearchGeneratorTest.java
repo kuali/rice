@@ -34,6 +34,7 @@ import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.ClassLoaderUtils;
+import edu.iu.uis.eden.util.Utilities;
 
 /**
  *
@@ -86,6 +87,18 @@ public class CustomDocumentSearchGeneratorTest extends KEWTestCase {
     	assertTrue("The document search Generator class should be of type CustomDocumentSearchGenerator",(ClassLoaderUtils.unwrapFromProxy(docType.getDocumentSearchGenerator()) instanceof CustomDocumentSearchGenerator));
     }
     
+	private DocumentType getValidDocumentType(String documentTypeFullName) {
+		if (Utilities.isEmpty(documentTypeFullName)) {
+			return null;
+		}
+		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeFullName);
+		if (docType == null) {
+			throw new RuntimeException("No Valid Document Type Found for document type name '" + documentTypeFullName + "'");
+		} else {
+			return docType;
+		}
+	}
+
     @Test public void testCustomDocSearchGeneratorResultSetLimit() throws Exception {
         String documentTypeName = "SearchDocType_DefaultCustomProcessor";
         String userNetworkId = "rkirkend";

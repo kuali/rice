@@ -145,6 +145,7 @@ public class SearchableAttributeTest extends KEWTestCase {
         UserService userService = (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
         WorkflowUser user = userService.getWorkflowUser(new AuthenticationUserId(userNetworkId));
 
+        
         DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, null, docType));

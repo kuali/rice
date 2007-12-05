@@ -29,6 +29,7 @@ public class StandardSearchCriteriaField implements java.io.Serializable {
 	
     public static final String TEXT = "text";
     public static final String DROPDOWN = "dropdown";
+    public static final String DROPDOWN_HIDE_EMPTY = "dropdown_hide_empty";
 
     private String key;
 	private String property;
@@ -40,6 +41,12 @@ public class StandardSearchCriteriaField implements java.io.Serializable {
 	private boolean lookupTypeRequired = false;
 	private String labelMessageKey;
 	private String helpMessageKeyArgument;
+	
+	// values for field types with multiple options
+	private String optionsCollectionProperty;
+	private String collectionLabelProperty;
+	private String collectionKeyProperty;
+	private String emptyCollectionMessage;
 
 	public StandardSearchCriteriaField() {}
 	
@@ -121,11 +128,57 @@ public class StandardSearchCriteriaField implements java.io.Serializable {
 		this.helpMessageKeyArgument = helpMessageKeyArgument;
 	}
 
-    /**
+    public String getOptionsCollectionProperty() {
+		return this.optionsCollectionProperty;
+	}
+
+	public void setOptionsCollectionProperty(String optionsCollectionProperty) {
+		this.optionsCollectionProperty = optionsCollectionProperty;
+	}
+
+	public String getCollectionLabelProperty() {
+		return this.collectionLabelProperty;
+	}
+
+	public void setCollectionLabelProperty(String collectionLabelProperty) {
+		this.collectionLabelProperty = collectionLabelProperty;
+	}
+
+	public String getCollectionKeyProperty() {
+		return this.collectionKeyProperty;
+	}
+
+	public void setCollectionKeyProperty(String collectionKeyProperty) {
+		this.collectionKeyProperty = collectionKeyProperty;
+	}
+
+	public String getEmptyCollectionMessage() {
+		return this.emptyCollectionMessage;
+	}
+
+	public void setEmptyCollectionMessage(String emptyCollectionMessage) {
+		this.emptyCollectionMessage = emptyCollectionMessage;
+	}
+
+	/**
      * @return the tEXT
      */
     public String getTEXT() {
         return TEXT;
+    }
+    
+    /**
+     * @return the dROPDOWN
+     */
+    public String getDROPDOWN() {
+        return DROPDOWN;
+    }
+
+    /**
+     * @return the dROPDOWN
+     */
+    public String getDROPDOWN_HIDE_EMPTY() {
+        return DROPDOWN_HIDE_EMPTY;
     }
 
 }

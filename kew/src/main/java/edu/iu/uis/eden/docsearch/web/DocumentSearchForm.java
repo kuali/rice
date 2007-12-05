@@ -32,10 +32,12 @@ import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
 import edu.iu.uis.eden.docsearch.DocSearchUtils;
-import edu.iu.uis.eden.docsearch.SavedSearchResult;
+import edu.iu.uis.eden.docsearch.DocumentSearchCriteriaProcessor;
 import edu.iu.uis.eden.docsearch.SearchAttributeCriteriaComponent;
 import edu.iu.uis.eden.docsearch.SearchableAttribute;
 import edu.iu.uis.eden.docsearch.SearchableAttributeValue;
+import edu.iu.uis.eden.docsearch.StandardDocSearchCriteriaManager;
+import edu.iu.uis.eden.docsearch.StandardDocumentSearchCriteriaProcessor;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.lookupable.Column;
@@ -52,7 +54,10 @@ public class DocumentSearchForm extends ActionForm {
 
     private static final long serialVersionUID = 8680419749805107805L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSearchForm.class);
-	private DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+    public static final String ADVANCED_SEARCH_INDICATOR_STRING = "YES";
+    public static final String SUPER_USER_SEARCH_INDICATOR_STRING = "YES";
+//	private DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+    private DocumentSearchCriteriaProcessor criteriaProcessor = new StandardDocumentSearchCriteriaProcessor();
 
 	private String searchTarget;
 	private String searchIdValue;
@@ -81,42 +86,49 @@ public class DocumentSearchForm extends ActionForm {
 
 	public DocumentSearchForm() {
 		super();
-		searchableAttributeRows = new ArrayList();
+		searchableAttributeRows = new ArrayList<Row>();
 		searchableAttributeColumns = new ArrayList();
 		propertyFields = new ArrayList();
 	}
 
-	public DocSearchCriteriaVO getCriteria() {
-		return this.criteria;
+	public DocumentSearchCriteriaProcessor getCriteriaProcessor() {
+        return this.criteriaProcessor;
+    }
+
+    public void setCriteriaProcessor(DocumentSearchCriteriaProcessor criteriaProcessor) {
+        this.criteriaProcessor = criteriaProcessor;
+    }
+
+    public DocSearchCriteriaVO getCriteria() {
+        if (this.criteriaProcessor == null) {
+            return null;
+        }
+		return this.criteriaProcessor.getDocSearchCriteriaVO();
 	}
 
+//    public void setCriteria(DocSearchCriteriaVO criteria) {
+//        if (criteria == null) {
+//            throw new RuntimeException("Criteria should never be null");
+//        }
+//        this.criteriaProcessor.setDocSearchCriteriaVO(criteria);
+//    }
+//
 	public void setDocTypeFullName(String docTypeFullName) {
-		criteria.setDocTypeFullName(docTypeFullName);
+		getCriteria().setDocTypeFullName(docTypeFullName);
+	}
+	
+	public String getDocTypeFullName() {
+	    return getCriteria().getDocTypeFullName();
 	}
 
 	public void clearSearchableAttributes() {
-		searchableAttributeRows = new ArrayList();
+		searchableAttributeRows = new ArrayList<Row>();
 		searchableAttributeColumns = new ArrayList();
         propertyFields = new ArrayList();
 	}
 
-    public void updateFormUsingSavedSearch(SavedSearchResult result) {
-        setCriteria(result.getDocSearchCriteriaVO());
-        clearSearchableAttributes();
-        checkForAdditionalFields();
-        setupPropertyFieldsUsingCriteria();
-        setNamedSearch("");
-        //TODO this is for historic reasons only and can be deleted after release 2.1
-        // but we need to check and notify that any user option saved search without a key containing 'isAdvancedSearch'
-        // will lose the search location context and will always be brought to the 'basic' search screen
-        //if ("".equals(getIsAdvancedSearch()) || "NO".equals(getIsAdvancedSearch())) {
-        //    setIsAdvancedSearch(result.isAdvancedSearch() ? "YES" : "NO");
-        //}
-    }
-
 	public void checkForAdditionalFields() {
 		DocumentType documentType = getDocumentType();
-//		String docTypeFullName = criteria.getDocTypeFullName();
 		if (documentType != null) {
 			List<SearchableAttribute> searchableAttributes = documentType.getSearchableAttributes();
 			// we only want to initialize the searchable attribute fields, rows,
@@ -163,7 +175,7 @@ public class DocumentSearchForm extends ActionForm {
 								}
 							}
 						}
-						searchableAttributeRows.add(row);
+						addSearchableAttributeRow(row);
 					}
 				}
 			} else {
@@ -182,7 +194,7 @@ public class DocumentSearchForm extends ActionForm {
 		for (SearchableAttribute searchableAttribute : searchableAttributes) {
 			List<Row> rows = searchableAttribute.getSearchingRows();
 			for (Row row : rows) {
-				Row existingRow = (Row)searchableAttributeRows.get(totalRowIndex++);
+				Row existingRow = (Row)getSearchableAttributeRows().get(totalRowIndex++);
 				int fieldIndex = 0;
 				for (Field field : row.getFields()) {
 					// get existing field
@@ -203,7 +215,7 @@ public class DocumentSearchForm extends ActionForm {
 		if (!StringUtils.isBlank(getSearchableAttributes())) {
 			List<SearchAttributeCriteriaComponent> components = DocSearchUtils.buildSearchableAttributesFromString(getSearchableAttributes(), docType.getName());
 			for (SearchAttributeCriteriaComponent component : components) {
-				criteria.addSearchableAttribute(component);
+				getCriteria().addSearchableAttribute(component);
 			}
 		}
 		if (!propertyFields.isEmpty()) {
@@ -248,31 +260,25 @@ public class DocumentSearchForm extends ActionForm {
                     } else {
                         sacc.setValue(propertyField.getValue());
                     }
-					criteria.addSearchableAttribute(sacc);
+					getCriteria().addSearchableAttribute(sacc);
 				}
 			}
 		}
 	}
 
-    private void setupPropertyFieldsUsingCriteria() {
-        for (Iterator iter = criteria.getSearchableAttributes().iterator(); iter.hasNext();) {
-            SearchAttributeCriteriaComponent searchableAttribute = (SearchAttributeCriteriaComponent) iter.next();
-            SearchAttributeFormContainer container = getPropertyField(searchableAttribute.getFormKey());
-            if (container != null) {
-                container.setValue(searchableAttribute.getValue());
-                if (searchableAttribute.getValues() != null) {
-                    container.setValues(searchableAttribute.getValues().toArray(new String[searchableAttribute.getValues().size()]));
-                }
-            }
-        }
-    }
-
 	public String getDocTypeDisplayName() {
-		return criteria.getDocTypeDisplayName();
+		DocumentType docType = getDocumentType();
+		if (docType != null) {
+			return docType.getLabel();
+		}
+		return null;
 	}
 
 	private DocumentType getDocumentType() {
-		return criteria.getDocumentType();
+		if ( (getCriteria() != null) && (getCriteria().getDocTypeFullName() != null && !"".equals(getCriteria().getDocTypeFullName())) ) {
+		    return ((DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(getCriteria().getDocTypeFullName());
+		}
+		return null;
 	}
 
 	public String getRouteLogPopup() {
@@ -284,35 +290,28 @@ public class DocumentSearchForm extends ActionForm {
 	}
 
 	public void setInitiator(String initiator) {
-		criteria.setInitiator(initiator);
+		getCriteria().setInitiator(initiator);
 	}
 
 	public void setApprover(String approver) {
-		criteria.setApprover(approver);
+		getCriteria().setApprover(approver);
 	}
 
 	public void setViewer(String viewer) {
-		criteria.setViewer(viewer);
-	}
-
-	public void setCriteria(DocSearchCriteriaVO criteria) {
-		if (criteria == null) {
-			throw new RuntimeException("Criteria should never be null");
-		}
-		this.criteria = criteria;
+		getCriteria().setViewer(viewer);
 	}
 
     /*
-     * the super user search methods used to live here but were moved to the crieteria so search
+     * the super user search methods used to live here but were moved to the criteria so search
      * context could be saved along with search data.  I kept these methods here to minimize impact on jsp.
      * Feel free to remove this call through methods and modify the jsp.
      */
 	public String getSuperUserSearch() {
-		return criteria.getSuperUserSearch();
+		return getCriteria().getSuperUserSearch();
 	}
 
 	public void setSuperUserSearch(String superUserSearch) {
-		this.criteria.setSuperUserSearch(superUserSearch);
+		getCriteria().setSuperUserSearch(superUserSearch);
 	}
 
 	public void setSearchTarget(String searchTarget) {
@@ -385,11 +384,11 @@ public class DocumentSearchForm extends ActionForm {
      * Feel free to remove this call through methods and modify the jsp.
      */
 	public String getIsAdvancedSearch() {
-		return criteria.getIsAdvancedSearch();
+		return getCriteria().getIsAdvancedSearch();
 	}
 
 	public void setIsAdvancedSearch(String string) {
-        this.criteria.setIsAdvancedSearch(string);
+        getCriteria().setIsAdvancedSearch(string);
 	}
 
 	public String getReturnAction() {
@@ -401,67 +400,67 @@ public class DocumentSearchForm extends ActionForm {
 	}
 
 	public void setFromDateCreated(String fromDateCreated) {
-		criteria.setFromDateCreated(fromDateCreated);
+		getCriteria().setFromDateCreated(fromDateCreated);
 	}
 
 	public void setToDateCreated(String toDateCreated) {
-		criteria.setToDateCreated(toDateCreated);
+		getCriteria().setToDateCreated(toDateCreated);
 	}
 
 	public String getFromDateCreated() {
-		return criteria.getFromDateCreated();
+		return getCriteria().getFromDateCreated();
 	}
 
 	public String getToDateCreated() {
-		return criteria.getToDateCreated();
+		return getCriteria().getToDateCreated();
 	}
 
 	public void setFromDateLastModified(String fromDateLastModified) {
-		criteria.setFromDateLastModified(fromDateLastModified);
+		getCriteria().setFromDateLastModified(fromDateLastModified);
 	}
 
 	public void setToDateLastModified(String toDateLastModified) {
-		criteria.setToDateLastModified(toDateLastModified);
+		getCriteria().setToDateLastModified(toDateLastModified);
 	}
 
 	public String getFromDateLastModified() {
-		return criteria.getFromDateLastModified();
+		return getCriteria().getFromDateLastModified();
 	}
 
 	public String getToDateLastModified() {
-		return criteria.getToDateLastModified();
+		return getCriteria().getToDateLastModified();
 	}
 
 	public void setFromDateApproved(String fromDateApproved) {
-		criteria.setFromDateApproved(fromDateApproved);
+		getCriteria().setFromDateApproved(fromDateApproved);
 	}
 
 	public void setToDateApproved(String toDateApproved) {
-		criteria.setToDateApproved(toDateApproved);
+		getCriteria().setToDateApproved(toDateApproved);
 	}
 
 	public String getFromDateApproved() {
-		return criteria.getFromDateApproved();
+		return getCriteria().getFromDateApproved();
 	}
 
 	public String getToDateApproved() {
-		return criteria.getToDateApproved();
+		return getCriteria().getToDateApproved();
 	}
 
 	public void setFromDateFinalized(String fromDateFinalized) {
-		criteria.setFromDateFinalized(fromDateFinalized);
+		getCriteria().setFromDateFinalized(fromDateFinalized);
 	}
 
 	public void setToDateFinalized(String toDateFinalized) {
-		criteria.setToDateFinalized(toDateFinalized);
+		getCriteria().setToDateFinalized(toDateFinalized);
 	}
 
 	public String getFromDateFinalized() {
-		return criteria.getFromDateFinalized();
+		return getCriteria().getFromDateFinalized();
 	}
 
 	public String getToDateFinalized() {
-		return criteria.getToDateFinalized();
+		return getCriteria().getToDateFinalized();
 	}
 
 
@@ -520,36 +519,37 @@ public class DocumentSearchForm extends ActionForm {
 	public void setLookupType(String lookupType) {
 		this.lookupType = lookupType;
 	}
-
-	/**
-	 * @param searchableAttributeRows
-	 *            The searchableAttributeRows to set.
-	 */
-	public void setSearchableAttributeRows(List searchableAttributeRows) {
-		this.searchableAttributeRows = searchableAttributeRows;
+	
+	public List<Row> getProcessedSearchableAttributeRows() {
+	    if (isAdvancedSearch()) {
+	        return this.criteriaProcessor.processSearchableAttributeRowsForAdvancedSearch(getSearchableAttributeRows());
+	    } else {
+            return this.criteriaProcessor.processSearchableAttributeRowsForBasicSearch(getSearchableAttributeRows());
+	    }
 	}
 
-	/**
-	 * @return Returns the searchableAttributeRows.
-	 */
+	public void setSearchableAttributeRows(List searchableAttributeRows) {
+	    this.searchableAttributeRows = searchableAttributeRows;
+	}
+
 	public List getSearchableAttributeRows() {
-		return searchableAttributeRows;
+	    return this.searchableAttributeRows;
 	}
 
 	public void addSearchableAttributeRow(Row row) {
-		searchableAttributeRows.add(row);
+	    getSearchableAttributeRows().add(row);
 	}
 
 	public Row getSearchableAttributeRow(int index) {
-		while (getSearchableAttributeRows().size() <= index) {
-			Row row = new Row(new ArrayList());
-			getSearchableAttributeRows().add(row);
-		}
-		return (Row) getSearchableAttributeRows().get(index);
+        while (getSearchableAttributeRows().size() <= index) {
+            Row row = new Row(new ArrayList<Field>());
+            getSearchableAttributeRows().add(row);
+        }
+        return (Row) getSearchableAttributeRows().get(index);
 	}
 
 	public void setSearchableAttributeRow(int index, Row row) {
-		searchableAttributeRows.set(index, row);
+	    getSearchableAttributeRows().set(index, row);
 	}
 
 	/**
@@ -626,7 +626,18 @@ public class DocumentSearchForm extends ActionForm {
 	public void setPropertyField(int index, SearchAttributeFormContainer attributeContainer) {
 		propertyFields.set(index, attributeContainer);
 	}
+	
+    public boolean isAdvancedSearch() {
+        return (StringUtils.equals(ADVANCED_SEARCH_INDICATOR_STRING,getCriteria().getIsAdvancedSearch()));
+    }
 
+	public StandardDocSearchCriteriaManager getDocumentSearchCriteriaManager() {
+	    if (isAdvancedSearch()) {
+	        return this.criteriaProcessor.getAdvancedSearchManager();
+	    } else {
+	        return this.criteriaProcessor.getBasicSearchManager();
+	    }
+	}
 
 	public boolean isHeaderBarEnabled() {
 		return headerBarEnabled;
@@ -642,6 +653,24 @@ public class DocumentSearchForm extends ActionForm {
 
 	public void setSearchCriteriaEnabled(boolean searchCriteriaEnabled) {
 		this.searchCriteriaEnabled = searchCriteriaEnabled;
+	}
+	
+	public boolean isShowSearchCriteria() {
+		if (!isSearchCriteriaEnabled()) {
+			return false;
+		}
+		if (isAdvancedSearch()) {
+		    return this.criteriaProcessor.isAdvancedSearchCriteriaDisplayed();
+		} else {
+		    return this.criteriaProcessor.isBasicSearchCriteriaDisplayed();
+		}
+	}
+
+	public boolean isShowHeaderBar() {
+		if (!isHeaderBarEnabled()) {
+			return false;
+		}
+		return this.criteriaProcessor.isHeaderBarDisplayed();
 	}
 
 	public String getSearchableAttributes() {

@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
 import org.apache.ojb.broker.query.Criteria;
@@ -195,14 +196,20 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         return routeHeaderIds;
     }
 
-
     public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue) {
     	Criteria crit = new Criteria();
         crit.addEqualTo("routeHeaderId", documentId);
         crit.addEqualTo("searchableAttributeKey", searchableAttributeKey);
-        crit.addEqualTo("searchableAttributeKey", searchableAttributeValue);
-        int count = getPersistenceBrokerTemplate().getCount(new QueryByCriteria(SearchableAttributeValue.class, crit));
-        return count > 0;
+        Collection results = getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(SearchableAttributeValue.class, crit));
+        if (!results.isEmpty()) {
+            for (Iterator iterator = results.iterator(); iterator.hasNext();) {
+                SearchableAttributeValue attribute = (SearchableAttributeValue) iterator.next();
+                if (StringUtils.equals(attribute.getSearchableAttributeDisplayValue(), searchableAttributeValue)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public String getMessageEntityByDocumentId(Long documentId) {

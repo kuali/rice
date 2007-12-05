@@ -287,7 +287,7 @@ public class DocumentType implements WorkflowPersistable {
     public void setDocumentTypeSecurityXml(String documentTypeSecurityXml) {
       this.documentTypeSecurityXml = documentTypeSecurityXml;
       if (!Utilities.isEmpty(documentTypeSecurityXml.trim())) {
-        this.documentTypeSecurity = new DocumentTypeSecurity(documentTypeSecurityXml);
+        this.documentTypeSecurity = new DocumentTypeSecurity(this.getMessageEntity(), documentTypeSecurityXml);
       }
       else {
         this.documentTypeSecurity = null;
@@ -299,7 +299,7 @@ public class DocumentType implements WorkflowPersistable {
           this.documentTypeSecurityXml != null &&
           !Utilities.isEmpty(documentTypeSecurityXml.trim()))
       {
-           this.documentTypeSecurity = new DocumentTypeSecurity(documentTypeSecurityXml);
+           this.documentTypeSecurity = new DocumentTypeSecurity(this.getMessageEntity(), documentTypeSecurityXml);
       }
       if ( (this.documentTypeSecurity == null) && (getParentDocType() != null) ) {
     	  return getParentDocType().getDocumentTypeSecurity();

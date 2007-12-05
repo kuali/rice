@@ -48,11 +48,12 @@ import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
 import edu.iu.uis.eden.docsearch.DocumentSearchCriteriaProcessor;
-import edu.iu.uis.eden.docsearch.DocumentSearchGenerator;
 import edu.iu.uis.eden.docsearch.DocumentSearchResult;
 import edu.iu.uis.eden.docsearch.DocumentSearchResultComponents;
 import edu.iu.uis.eden.docsearch.DocumentSearchService;
 import edu.iu.uis.eden.docsearch.SavedSearchResult;
+import edu.iu.uis.eden.docsearch.SearchAttributeCriteriaComponent;
+import edu.iu.uis.eden.docsearch.StandardDocumentSearchCriteriaProcessor;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
@@ -69,7 +70,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 
 /**
  * Document search struts action
- *
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentSearchAction extends WorkflowAction {
@@ -77,20 +78,19 @@ public class DocumentSearchAction extends WorkflowAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSearchAction.class);
 
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
-    	State state = setupState((State)getUserSession(request).retrieveObject(request.getParameter("key")), docSearchForm, getUserSession(request));
-    	state.setResult(null);
-    	request.setAttribute("key", getUserSession(request).addObject(state));
-    	// if there's no search criteria, just execute the search
-    	if (!docSearchForm.isSearchCriteriaEnabled()) {
-    		return doDocSearch(mapping, form, request, response);
-    	}
-    	return mapping.findForward("success");
+        DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
+        setupPropertyFieldsUsingCriteria(docSearchForm);
+        adjustStateAndForm(getCurrentState(request), docSearchForm, getUserSession(request));
+        // if there's no search criteria, just execute the search
+        if (!docSearchForm.isShowSearchCriteria()) {
+            return doDocSearch(mapping, form, request, response);
+        }
+        return mapping.findForward("success");
     }
 
     public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
-        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();;
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();
         StringBuffer lookupUrl = new StringBuffer(basePath);
 
         String lookupType = docSearchForm.getLookupType();
@@ -100,7 +100,8 @@ public class DocumentSearchAction extends WorkflowAction {
 
         if (lookupType != null && !lookupType.equals("")) {
             lookupUrl.append("&conversionFields=");
-            WorkflowLookupable workflowLookupable =  (WorkflowLookupable) GlobalResourceLoader.getService(request.getParameter("lookupableImplServiceName"));//(WorkflowLookupable) SpringServiceLocator.getExtensionService().getLookupable(request.getParameter("lookupableImplServiceName"));
+            WorkflowLookupable workflowLookupable = (WorkflowLookupable) GlobalResourceLoader.getService(request.getParameter("lookupableImplServiceName"));// (WorkflowLookupable)
+                                                                                                                                                            // SpringServiceLocator.getExtensionService().getLookupable(request.getParameter("lookupableImplServiceName"));
             for (Iterator iterator = workflowLookupable.getDefaultReturnType().iterator(); iterator.hasNext();) {
                 String returnType = (String) iterator.next();
                 lookupUrl.append(returnType).append(":").append(lookupType);
@@ -127,13 +128,13 @@ public class DocumentSearchAction extends WorkflowAction {
 
     public ActionForward advanced(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
-        docSearchForm.setIsAdvancedSearch("YES");
+        docSearchForm.setIsAdvancedSearch(DocumentSearchForm.ADVANCED_SEARCH_INDICATOR_STRING);
         return mapping.findForward("success");
     }
 
     public ActionForward superUserSearch(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
-        docSearchForm.setSuperUserSearch("YES");
+        docSearchForm.setSuperUserSearch(DocumentSearchForm.SUPER_USER_SEARCH_INDICATOR_STRING);
         return mapping.findForward("success");
     }
 
@@ -145,82 +146,131 @@ public class DocumentSearchAction extends WorkflowAction {
 
     public ActionForward clear(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
-        //retain screen placement vars
-        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
-        if (StringUtils.isNotBlank(docSearchForm.getCriteria().getDocTypeFullName())) {
-            DocumentSearchGenerator generator = getValidDocumentType(docSearchForm.getCriteria().getDocTypeFullName()).getDocumentSearchGenerator();
-            criteria = generator.clearSearch(docSearchForm.getCriteria());
+        String currentDocTypeName = docSearchForm.getCriteria().getDocTypeFullName();
+        String advancedSearchValue = docSearchForm.getIsAdvancedSearch();
+        String superUserSearchValue = docSearchForm.getSuperUserSearch();
+        // set up new criteria object using generator class if possible
+        DocSearchCriteriaVO newCriteria = null;
+        if (StringUtils.isNotBlank(currentDocTypeName)) {
+            newCriteria = getValidDocumentType(currentDocTypeName).getDocumentSearchGenerator().clearSearch(docSearchForm.getCriteria());
         }
-        criteria.setIsAdvancedSearch(docSearchForm.getIsAdvancedSearch());
-        criteria.setSuperUserSearch(docSearchForm.getSuperUserSearch());
-        docSearchForm.setCriteria(criteria);
-        docSearchForm.clearSearchableAttributes();
-        return mapping.findForward("success");
+        if (newCriteria == null) {
+            newCriteria = new DocSearchCriteriaVO();
+        }
+        newCriteria.setIsAdvancedSearch(advancedSearchValue);
+        newCriteria.setSuperUserSearch(superUserSearchValue);
+        // adjust the processor class and state if necessary
+        State state = getCurrentState(request);
+        DocumentSearchCriteriaProcessor currentProcessor = state.getCriteriaProcessor();
+        if (StringUtils.equals(currentProcessor.getDocSearchCriteriaVO().getDocTypeFullName(),newCriteria.getDocTypeFullName())) {
+            // since doc type names are equal do not reset the state or processor only the criteria object
+            state.getCriteriaProcessor().setDocSearchCriteriaVO(newCriteria);
+        } else {
+            // document types are not equal so reset the state and processor using the new criteria
+            state = adjustStateAndForm(null, docSearchForm, newCriteria, getUserSession(request));
+        }
+        setAdjustedState(request, state);
+//        DocumentSearchCriteriaProcessor processor = buildCriteriaProcessor((state != null) ? state.getCriteriaProcessor() : null, docSearchForm, getUserSession(request));
+//        if (StringUtils.isNotBlank(docSearchForm.getCriteria().getDocTypeFullName())) {
+//            DocumentSearchGenerator generator = getValidDocumentType(docSearchForm.getCriteria().getDocTypeFullName()).getDocumentSearchGenerator();
+//            DocSearchCriteriaVO newCriteria = generator.clearSearch(processor.getDocSearchCriteriaVO());
+//            if (newCriteria == null) {
+//                newCriteria = new DocSearchCriteriaVO();
+//            }
+//            newCriteria.setIsAdvancedSearch(processor.getDocSearchCriteriaVO().getIsAdvancedSearch());
+//            newCriteria.setSuperUserSearch(processor.getDocSearchCriteriaVO().getSuperUserSearch());
+//            processor = buildCriteriaProcessor(processor, docSearchForm, newCriteria, getUserSession(request));
+//            setAdjustedState(request, state);
+//        }
+       docSearchForm.clearSearchableAttributes();
+       return mapping.findForward("success");
     }
 
     public ActionForward doDocSearch(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-	LOG.info("started doDocSearch");
-	DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
-	String previousDocTypeName = docSearchForm.getDocTypeDisplayName();
-	DocumentSearchResultComponents results = null;
-	SavedSearchResult result = null;
-	if (docSearchForm.getNamedSearch() != null && !"".equals(docSearchForm.getNamedSearch()) && !"ignore".equals(docSearchForm.getNamedSearch())) {
-	    result = getDocumentSearchService().getSavedSearchResults(getUserSession(request).getWorkflowUser(), docSearchForm.getNamedSearch());
-	    docSearchForm.updateFormUsingSavedSearch(result);
-	    setDropdowns(docSearchForm, request);
-	    results = result.getSearchResult();
-	} else {
-//	    docSearchForm.addSearchableAttributesToCriteria();
-//	    DocSearchCriteriaVO criteria = docSearchForm.getCriteria();
-//	    if (docSearchForm.isInitiatorUser()) {
-//		criteria.setInitiator(getUserSession(request).getNetworkId());
-//	    }
-	    DocSearchCriteriaVO criteria = generateDocSearchCriteriaVO(getUserSession(request), docSearchForm);
-	    results = getDocumentSearchService().getList(getUserSession(request).getWorkflowUser(), criteria);
-	    result = new SavedSearchResult(criteria, results);
-	}
+        LOG.info("started doDocSearch");
+        DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
+        // String previousDocTypeName = docSearchForm.getDocTypeDisplayName();
+        DocumentSearchResultComponents results = null;
+        SavedSearchResult result = null;
+        State currentState = getCurrentState(request);
+        if (docSearchForm.getNamedSearch() != null && !"".equals(docSearchForm.getNamedSearch()) && !"ignore".equals(docSearchForm.getNamedSearch())) {
+            result = getDocumentSearchService().getSavedSearchResults(getUserSession(request).getWorkflowUser(), docSearchForm.getNamedSearch());
+            // if using a saved search assume new state needs created by discarding old state
+            currentState = null;
+            // docSearchForm.updateFormUsingSavedSearch(result);
+            docSearchForm.setCriteriaProcessor(buildCriteriaProcessor(null, docSearchForm, getUserSession(request)));
+            docSearchForm.getCriteriaProcessor().setDocSearchCriteriaVO(result.getDocSearchCriteriaVO());
+            docSearchForm.clearSearchableAttributes();
+            docSearchForm.checkForAdditionalFields();
+            setupPropertyFieldsUsingCriteria(docSearchForm);
+            docSearchForm.setNamedSearch("");
+            setDropdowns(docSearchForm, request);
+            results = result.getSearchResult();
+        } else {
+            docSearchForm.addSearchableAttributesToCriteria();
+            DocSearchCriteriaVO criteria = docSearchForm.getCriteria();
+            if (docSearchForm.isInitiatorUser()) {
+                criteria.setInitiator(getUserSession(request).getNetworkId());
+            }
+            results = getDocumentSearchService().getList(getUserSession(request).getWorkflowUser(), criteria);
+            result = new SavedSearchResult(criteria, results);
+        }
 
-	List columns = results.getColumns();
-	MessageResources mr = getResources(request);
-	mr.setReturnNull(true);
-	Locale locale = (Locale) request.getAttribute(Globals.LOCALE_KEY);
-	for (Iterator iter = columns.iterator(); iter.hasNext();) {
-	    Column column = (Column) iter.next();
-	    if ((column.getColumnTitle() == null) || (column.getColumnTitle().trim().length() == 0)) {
-		String title = mr.getMessage(locale, "docSearch.DocumentSearch.results.label." + column.getKey());
-		if (StringUtils.isBlank(title)) {
-		    title = "** No Title Available **";
-		}
-		column.setColumnTitle(title);
-	    }
-	}
+        List columns = results.getColumns();
+        MessageResources mr = getResources(request);
+        mr.setReturnNull(true);
+        Locale locale = (Locale) request.getAttribute(Globals.LOCALE_KEY);
+        for (Iterator iter = columns.iterator(); iter.hasNext();) {
+            Column column = (Column) iter.next();
+            if ((column.getColumnTitle() == null) || (column.getColumnTitle().trim().length() == 0)) {
+                String title = mr.getMessage(locale, "docSearch.DocumentSearch.results.label." + column.getKey());
+                if (StringUtils.isBlank(title)) {
+                    title = "** No Title Available **";
+                }
+                column.setColumnTitle(title);
+            }
+        }
 
-	// adjust results and result objects
-	result = new SavedSearchResult(docSearchForm.getCriteria(), new DocumentSearchResultComponents(columns, results.getSearchResults()));
-	request.setAttribute("reqSearchResultColumns", result.getSearchResult().getColumns());
-	request.setAttribute("reqSearchResults", result.getSearchResult().getSearchResults());
-	// request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
-	State state = setupState((State)getUserSession(request).retrieveObject(request.getParameter("key")), docSearchForm, getUserSession(request));
-	state.setResult(result);
-	request.setAttribute("key", getUserSession(request).addObject(state));
-	if (docSearchForm.getCriteria().isOverThreshold() && docSearchForm.getCriteria().getSecurityFilteredRows() > 0) {
-	    ActionErrors errors = new ActionErrors();
-	    errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.exceededThresholdAndSecurityFiltered", String.valueOf(results.getSearchResults().size()), docSearchForm.getCriteria().getSecurityFilteredRows()));
-	    saveErrors(request, errors);
-	} else if (docSearchForm.getCriteria().getSecurityFilteredRows() > 0) {
-	    ActionErrors errors = new ActionErrors();
-	    errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.securityFiltered", docSearchForm.getCriteria().getSecurityFilteredRows()));
-	    saveErrors(request, errors);
-	} else if (docSearchForm.getCriteria().isOverThreshold()) {
-	    ActionErrors errors = new ActionErrors();
-	    errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.exceededThreshold", String.valueOf(results.getSearchResults().size())));
-	    saveErrors(request, errors);
-	}
+        // adjust results and result objects
+        result = new SavedSearchResult(docSearchForm.getCriteria(), new DocumentSearchResultComponents(columns, results.getSearchResults()));
+        request.setAttribute("reqSearchResultColumns", result.getSearchResult().getColumns());
+        request.setAttribute("reqSearchResults", result.getSearchResult().getSearchResults());
+        // request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
+        State state = adjustStateAndForm(currentState, docSearchForm, getUserSession(request));
+        state.setResult(result);
+        setAdjustedState(request, state);
+//        setStateForUse(request, state);
+        if (docSearchForm.getCriteria().isOverThreshold() && docSearchForm.getCriteria().getSecurityFilteredRows() > 0) {
+            ActionErrors errors = new ActionErrors();
+            errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.exceededThresholdAndSecurityFiltered", String.valueOf(results.getSearchResults().size()), docSearchForm.getCriteria().getSecurityFilteredRows()));
+            saveErrors(request, errors);
+        } else if (docSearchForm.getCriteria().getSecurityFilteredRows() > 0) {
+            ActionErrors errors = new ActionErrors();
+            errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.securityFiltered", docSearchForm.getCriteria().getSecurityFilteredRows()));
+            saveErrors(request, errors);
+        } else if (docSearchForm.getCriteria().isOverThreshold()) {
+            ActionErrors errors = new ActionErrors();
+            errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.exceededThreshold", String.valueOf(results.getSearchResults().size())));
+            saveErrors(request, errors);
+        }
 
-	LOG.info("end doDocSearch");
-	return mapping.findForward("success");
+        LOG.info("end doDocSearch");
+        return mapping.findForward("success");
     }
-    
+
+    private void setupPropertyFieldsUsingCriteria(DocumentSearchForm docSearchForm) {
+        for (Iterator iter = docSearchForm.getCriteria().getSearchableAttributes().iterator(); iter.hasNext();) {
+            SearchAttributeCriteriaComponent searchableAttribute = (SearchAttributeCriteriaComponent) iter.next();
+            SearchAttributeFormContainer container = docSearchForm.getPropertyField(searchableAttribute.getFormKey());
+            if (container != null) {
+                container.setValue(searchableAttribute.getValue());
+                if (searchableAttribute.getValues() != null) {
+                    container.setValues(searchableAttribute.getValues().toArray(new String[searchableAttribute.getValues().size()]));
+                }
+            }
+        }
+    }
+
     private static DocumentType getValidDocumentType(String docTypeName) {
         DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(docTypeName);
         if (documentType == null) {
@@ -228,60 +278,135 @@ public class DocumentSearchAction extends WorkflowAction {
         }
         return documentType;
     }
+
+    private State getCurrentState(HttpServletRequest request) {
+        return (State)request.getAttribute("currentSearchState");
+    }
+
+    private void setAdjustedState(HttpServletRequest request, State state) {
+        request.removeAttribute("currentSearchState");
+        request.setAttribute("currentSearchState", state);
+    }
     
-    private State setupState(State state, DocumentSearchForm docSearchForm, UserSession userSession) {
-    	if (state == null) {
-        	state = new State(docSearchForm);
-    	}
-        if (StringUtils.isNotBlank(docSearchForm.getCriteria().getDocTypeFullName())) {
-            DocumentSearchCriteriaProcessor criteriaProcessor = getValidDocumentType(docSearchForm.getCriteria().getDocTypeFullName()).getDocumentSearchCriteriaProcessor();
-            criteriaProcessor.setDocSearchCriteriaVO(generateDocSearchCriteriaVO(userSession, docSearchForm));
-            criteriaProcessor.setSearchingUser(userSession.getWorkflowUser());
-            state = new State(criteriaProcessor);
+//    private void setStateForUse(HttpServletRequest request, State state) {
+//        request.setAttribute("searchStateKey", getUserSession(request).addObject(state));
+//    }
+//
+//    private void setupState(HttpServletRequest request, DocumentSearchForm form) {
+//        setStateForUse(request, buildState(getCurrentState(request), form, getUserSession(request)));
+//    }
+
+    private State adjustStateAndForm(State currentState, DocumentSearchForm docSearchForm, UserSession userSession) {
+        State state = new State(docSearchForm);
+        if (currentState != null) {
+            state = new State(currentState);
         }
+        state.setCriteriaProcessor(buildCriteriaProcessor(state.getCriteriaProcessor(), docSearchForm, userSession));
         state.updateForm(docSearchForm);
         return state;
     }
     
-    private DocSearchCriteriaVO generateDocSearchCriteriaVO(UserSession userSession, DocumentSearchForm docSearchForm) {
-	    docSearchForm.addSearchableAttributesToCriteria();
-	    DocSearchCriteriaVO criteria = docSearchForm.getCriteria();
-	    if (docSearchForm.isInitiatorUser()) {
-	    	criteria.setInitiator(userSession.getNetworkId());
-	    }
-	    return criteria;
+    private State adjustStateAndForm(State currentState, DocumentSearchForm docSearchForm, DocSearchCriteriaVO criteria, UserSession userSession) {
+        State state = new State(docSearchForm);
+        if (currentState != null) {
+            state = new State(currentState);
+        }
+        state.setCriteriaProcessor(buildCriteriaProcessor(state.getCriteriaProcessor(), docSearchForm, criteria, userSession));
+        state.updateForm(docSearchForm);
+        return state;
     }
     
+    private DocumentSearchCriteriaProcessor buildCriteriaProcessor(DocumentSearchCriteriaProcessor processor, DocumentSearchForm docSearchForm, UserSession userSession) {
+        return buildCriteriaProcessor(processor, docSearchForm, docSearchForm.getCriteria(), userSession);
+    }
+    
+    private DocumentSearchCriteriaProcessor buildCriteriaProcessor(DocumentSearchCriteriaProcessor processor, DocumentSearchForm docSearchForm, DocSearchCriteriaVO criteria, UserSession userSession) {
+        if (processor == null) {
+            // no criteria processor... set one up
+            if ( (criteria != null) && (StringUtils.isNotBlank(criteria.getDocTypeFullName())) ) {
+                processor = getValidDocumentType(criteria.getDocTypeFullName()).getDocumentSearchCriteriaProcessor();
+            } else {
+                processor = new StandardDocumentSearchCriteriaProcessor();
+            }
+        } else {
+            // criteria processor exists in state... check for match against form criteria doc type name
+            if (Utilities.isEmpty(criteria.getDocTypeFullName())) {
+                // document type name was cleared out... clear the criteria processor
+                processor = new StandardDocumentSearchCriteriaProcessor();
+            } else if (!StringUtils.equals(criteria.getDocTypeFullName(), processor.getDocSearchCriteriaVO().getDocTypeFullName())) {
+                // document type name is not the same as previous state's criteria... update criteria processor
+                processor = getValidDocumentType(criteria.getDocTypeFullName()).getDocumentSearchCriteriaProcessor();
+            }
+        }
+        docSearchForm.addSearchableAttributesToCriteria();
+        DocSearchCriteriaVO newCriteria = criteria;
+        if (docSearchForm.isInitiatorUser()) {
+            newCriteria.setInitiator(userSession.getNetworkId());
+        }
+        if (newCriteria != null) {
+            processor.setDocSearchCriteriaVO(newCriteria);
+        }
+//        processor.getDocSearchCriteriaVO().setSuperUserSearch(formCriteria.getSuperUserSearch());
+//        processor.getDocSearchCriteriaVO().setIsAdvancedSearch(docSearchForm.getIsAdvancedSearch());
+        processor.setSearchingUser(userSession.getWorkflowUser());
+        return processor;
+    }
+
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
-        DocumentSearchForm docSearchForm = (DocumentSearchForm)form;
+        DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
         Preferences preferences = getUserSession(request).getPreferences();
+//        setupState(request, docSearchForm);
+        State currentState = getOriginalState(request); 
+        State newState = adjustStateAndForm(currentState, docSearchForm, getUserSession(request));
+//        if (currentState == null) {
+            newState.updateForm(docSearchForm);
+//        }
+        setAdjustedState(request, newState);
         request.setAttribute("preferences", preferences);
-// request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
+        // request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
         setDropdowns(docSearchForm, request);
+        docSearchForm.checkForAdditionalFields();
         return null;
+    }
+    
+    private State getOriginalState(HttpServletRequest request) {
+        String searchStateKeyValue = request.getParameter("searchStateKey");
+        if (Utilities.isEmpty(searchStateKeyValue)) {
+            searchStateKeyValue = (String) request.getAttribute("searchStateKey");
+        }
+        return (State) getUserSession(request).retrieveObject(searchStateKeyValue); 
     }
 
     @Override
     public ActionMessages establishFinalState(HttpServletRequest request, ActionForm form) throws Exception {
-        request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
-        DocumentSearchForm docSearchForm = (DocumentSearchForm)form;
-        if (docSearchForm != null) {
-        	docSearchForm.checkForAdditionalFields();
+//        request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
+        DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
+        State currentState = getCurrentState(request);
+        if (currentState == null) {
+            throw new RuntimeException("Search state is empty and search cannot proceed");
         }
-//        List namedSearches = (List)request.getAttribute("namedSearches");
-//        if ( (namedSearches == null) || (namedSearches.isEmpty()) ) {
-//            request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
-//        }
+        currentState.updateForm(docSearchForm);
+        request.setAttribute("searchStateKey", getUserSession(request).addObject(currentState));
+        request.removeAttribute("currentSearchState");
+//        setupState(request, docSearchForm);
+//        docSearchForm.checkForAdditionalFields();
+        updateNamedSearches(request, docSearchForm);
         return null;
+    }
+    
+    private void updateNamedSearches(HttpServletRequest request, DocumentSearchForm docSearchForm) {
+        request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
+        docSearchForm.checkForAdditionalFields();
+        setupPropertyFieldsUsingCriteria(docSearchForm);
     }
 
     @Override
     public void establishExceptionFinalState(HttpServletRequest request, ActionForm form) throws Exception {
-    	try {
-    		establishFinalState(request, form);
-    	} catch (Exception e) {
-    		LOG.warn("Swallowing exception thrown by establishFinalState since we already had a source exception.",e);
-    	}
+        try {
+            updateNamedSearches(request, (DocumentSearchForm)form);
+        } catch (Exception e) {
+            LOG.warn("Swallowing exception thrown by establishFinalState since we already had a source exception: " + e.getLocalizedMessage());
+        }
     }
 
     private List getSavedSearches(WorkflowUser workflowUser) {
@@ -311,10 +436,17 @@ public class DocumentSearchAction extends WorkflowAction {
     public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         DocumentSearchForm documentSearchForm = (DocumentSearchForm) form;
 
-        if (request.getParameter("docTypeFullName") != null) {
-        	documentSearchForm.setNamedSearch("");
-        	documentSearchForm.getCriteria().setNamedSearch("");
-        	documentSearchForm.clearSearchableAttributes();
+        String docTypeFullName = request.getParameter("docTypeFullName");
+        if (docTypeFullName != null) {
+            documentSearchForm.setNamedSearch("");
+            documentSearchForm.getCriteria().setNamedSearch("");
+            // State state = getCurrentState(request);
+            // DocumentSearchCriteriaProcessor processor =
+            // getValidDocumentType(docTypeFullName).getDocumentSearchCriteriaProcessor();
+            // processor.setDocSearchCriteriaVO(generateDocSearchCriteriaVO(getUserSession(request), documentSearchForm));
+            // processor.setSearchingUser(getUserSession(request).getWorkflowUser());
+            // state.setCriteriaProcessor(processor);
+            documentSearchForm.clearSearchableAttributes();
         }
         if (request.getParameter("workgroupId") != null) {
             Long groupId = new Long(request.getParameter("workgroupId"));
@@ -332,17 +464,18 @@ public class DocumentSearchAction extends WorkflowAction {
         documentRouteStatus.addAll(EdenConstants.DOCUMENT_SEARCH_SEARCHABLE_DOCUMENT_STATUSES);
         request.setAttribute("documentRouteStatus", documentRouteStatus);
 
-        if (! Utilities.isEmpty(dsForm.getCriteria().getDocTypeFullName())) {
+        if (!Utilities.isEmpty(dsForm.getCriteria().getDocTypeFullName())) {
             List qualifierLogic = new ArrayList();
             qualifierLogic.add(new KeyValue("equal", "Exactly"));
             qualifierLogic.add(new KeyValue("before", "Before"));
             qualifierLogic.add(new KeyValue("after", "After"));
             request.setAttribute("qualifierLogic", qualifierLogic);
 
-            //people are going to be feeding us doctype names by url for inline doc search so check for a null doctype to give
-            //a sensible error
+            // people are going to be feeding us doctype names by url for inline doc search so check for a null doctype to
+            // give
+            // a sensible error
             List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(getValidDocumentType(dsForm.getCriteria().getDocTypeFullName()), true);
-            RouteNode blankNode = new RouteNode();//for a default no choice option
+            RouteNode blankNode = new RouteNode();// for a default no choice option
             blankNode.setRouteNodeId(new Long(-1));
             blankNode.setRouteNodeName("");
             routeNodes.add(0, blankNode);
@@ -354,14 +487,16 @@ public class DocumentSearchAction extends WorkflowAction {
     public ActionForward viewResults(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
 
-        State state = (State)getUserSession(request).retrieveObject(request.getParameter("key"));
+        State state = getCurrentState(request);
         state.updateForm(docSearchForm);
+        State originalState = getOriginalState(request);
+        docSearchForm.getCriteriaProcessor().setDocSearchCriteriaVO(originalState.getCriteriaProcessor().getDocSearchCriteriaVO());
         DocumentSearchResultComponents searchComponents = state.getResult().getSearchResult();
         List<Column> columns = searchComponents.getColumns();
         List<DocumentSearchResult> displayResults = searchComponents.getSearchResults();
-        DocSearchCriteriaVO criteria = state.getResult().getDocSearchCriteriaVO();
 
-        docSearchForm.setCriteria(criteria);
+//        docSearchForm.setCriteriaProcessor(state.getCriteriaProcessor());
+//        docSearchForm.setCriteria(state.getResult().getDocSearchCriteriaVO());
         setDropdowns(docSearchForm, request);
         docSearchForm.setNamedSearch("");
 
@@ -369,83 +504,82 @@ public class DocumentSearchAction extends WorkflowAction {
         String sortOrderParameter = new ParamEncoder("result").encodeParameterName(TableTagParameters.PARAMETER_ORDER);
         String sortOrder = request.getParameter(sortOrderParameter);
         if (sortOrder == null) {
-        	sortOrder = "1";
+            sortOrder = "1";
         }
-        if (sortOrder.equals("2") ){
-        	ascending = false;
+        if (sortOrder.equals("2")) {
+            ascending = false;
         }
         String sortNameParameter = new ParamEncoder("result").encodeParameterName(TableTagParameters.PARAMETER_SORT);
         String sortName = request.getParameter(sortNameParameter);
         Column sortColumn = getSortColumn(columns, sortName);
         sortDisplayList(sortColumn, displayResults, ascending);
-        state.getResult().setSearchResult(new DocumentSearchResultComponents(columns,displayResults));
-        request.setAttribute("key", getUserSession(request).addObject(state));
+        state.getResult().setSearchResult(new DocumentSearchResultComponents(columns, displayResults));
+        setAdjustedState(request, state);
+//        setStateForUse(request, state);
         request.setAttribute("reqSearchResultColumns", state.getResult().getSearchResult().getColumns());
         request.setAttribute("reqSearchResults", state.getResult().getSearchResult().getSearchResults());
         return mapping.findForward("success");
     }
 
     private Column getSortColumn(List columns, String sortName) {
-    	if (StringUtils.isEmpty(sortName)) {
-    		return (Column)columns.get(0);
-    	}
-    	for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
-			Column column = (Column) iterator.next();
-			if (column.getSortName().equals(sortName)) {
-				return column;
-			}
-		}
-    	throw new WorkflowRuntimeException("Could not sort based on the given sort name of " + sortName);
+        if (StringUtils.isEmpty(sortName)) {
+            return (Column) columns.get(0);
+        }
+        for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
+            Column column = (Column) iterator.next();
+            if (column.getSortName().equals(sortName)) {
+                return column;
+            }
+        }
+        throw new WorkflowRuntimeException("Could not sort based on the given sort name of " + sortName);
     }
 
     private void sortDisplayList(Column sortColumn, List<DocumentSearchResult> displayList, boolean ascending) {
-    	Collections.sort(displayList, new ColumnComparator(sortColumn, ascending));
+        Collections.sort(displayList, new ColumnComparator(sortColumn, ascending));
     }
 
     private class ColumnComparator implements Comparator<Object> {
 
-    	private Column column;
-    	private boolean ascending;
+        private Column column;
+        private boolean ascending;
 
-    	public ColumnComparator(Column column, boolean ascending) {
-    		this.column = column;
-    		this.ascending = ascending;
-    	}
+        public ColumnComparator(Column column, boolean ascending) {
+            this.column = column;
+            this.ascending = ascending;
+        }
 
-		public int compare(Object row1, Object row2) {
-			try {
+        public int compare(Object row1, Object row2) {
+            try {
                 Object property1 = PropertyUtils.getProperty(row1, column.getSortName());
                 Object property2 = PropertyUtils.getProperty(row2, column.getSortName());
                 int compare = 0;
                 if ((property1 != null) || (property2 != null)) {
-                    if ( (property1 != null) && (property2 != null) && (!(property1.getClass().equals(property2.getClass()))) ) {
+                    if ((property1 != null) && (property2 != null) && (!(property1.getClass().equals(property2.getClass())))) {
                         // two classes are unequal... throw exception
                         String errorMessage = "Found classes in this comparator that are unequal (property class '" + property1.getClass().getName() + "' is not equal to property class '" + property2.getClass().getName() + "')";
                         LOG.error("compare() " + errorMessage);
                         throw new RuntimeException(errorMessage);
                     }
-                    if ( (property1 instanceof Integer) || (property2 instanceof Integer) ) {
+                    if ((property1 instanceof Integer) || (property2 instanceof Integer)) {
                         Integer value1 = (property1 != null) ? (Integer) property1 : Integer.MIN_VALUE;
                         Integer value2 = (property2 != null) ? (Integer) property2 : Integer.MIN_VALUE;
                         compare = value1.compareTo(value2);
-                    } else if ( (property1 instanceof Long) || (property2 instanceof Long) ) {
+                    } else if ((property1 instanceof Long) || (property2 instanceof Long)) {
                         Long value1 = (property1 != null) ? (Long) property1 : Long.MIN_VALUE;
                         Long value2 = (property2 != null) ? (Long) property2 : Long.MIN_VALUE;
                         compare = value1.compareTo(value2);
-                    } else if ( (property1 instanceof BigDecimal) || (property2 instanceof BigDecimal) ) {
+                    } else if ((property1 instanceof BigDecimal) || (property2 instanceof BigDecimal)) {
                         BigDecimal value1 = (property1 != null) ? (BigDecimal) property1 : BigDecimal.ZERO;
                         BigDecimal value2 = (property2 != null) ? (BigDecimal) property2 : BigDecimal.ZERO;
                         compare = value1.compareTo(value2);
-                    } else if ( (property1 instanceof Timestamp) || (property2 instanceof Timestamp) ) {
+                    } else if ((property1 instanceof Timestamp) || (property2 instanceof Timestamp)) {
                         Timestamp value1 = (Timestamp) property1;
                         Timestamp value2 = (Timestamp) property2;
-                        if ( (value1 != null) && (value2 != null) ) {
+                        if ((value1 != null) && (value2 != null)) {
                             compare = value1.compareTo(value2);
-                        }
-                        else if ( (value1 == null) && (value2 != null) ) {
+                        } else if ((value1 == null) && (value2 != null)) {
                             compare = -1;
-                        }
-                        else if ( (value1 != null) && (value2 == null) ) {
+                        } else if ((value1 != null) && (value2 == null)) {
                             compare = 1;
                         }
                     } else {
@@ -456,71 +590,92 @@ public class DocumentSearchAction extends WorkflowAction {
                     }
                 }
 
-
-//				String property1Value = (property1 != null) ? property1.toString() : "";
-//				String property2Value = (property2 != null) ? property2.toString() : "";
-//				if (Column.INTEGER.equals(column.getType())) {
-//					Integer i1 = Integer.valueOf(property1Value);
-//					Integer i2 = Integer.valueOf(property2Value);
-//					compare = i1.compareTo(i2);
-//				} else if (Column.LONG.equals(column.getType())) {
-//					Long l1 = Long.valueOf(property1Value);
-//					Long l2 = Long.valueOf(property2Value);
-//					compare = l1.compareTo(l2);
-//				} else if (Column.FLOAT.equals(column.getType())) {
-//					Float f1 = Float.valueOf(property1Value);
-//					Float f2 = Float.valueOf(property2Value);
-//					compare = f1.compareTo(f2);
-//				} else if (Column.DATETIME.equals(column.getType())) {
-//					Timestamp t1 = Timestamp.valueOf(property1Value);
-//					Timestamp t2 = Timestamp.valueOf(property2Value);
-//					compare = t1.compareTo(t2);
-//				} else {
-//					compare = property1Value.compareTo(property2Value);
-//				}
-				if (!ascending) {
-					compare *= -1;
-				}
-				return compare;
-			} catch (Exception e) {
-				throw new WorkflowRuntimeException(e);
-			}
-		}
-
+                // String property1Value = (property1 != null) ? property1.toString() : "";
+                // String property2Value = (property2 != null) ? property2.toString() : "";
+                // if (Column.INTEGER.equals(column.getType())) {
+                // Integer i1 = Integer.valueOf(property1Value);
+                // Integer i2 = Integer.valueOf(property2Value);
+                // compare = i1.compareTo(i2);
+                // } else if (Column.LONG.equals(column.getType())) {
+                // Long l1 = Long.valueOf(property1Value);
+                // Long l2 = Long.valueOf(property2Value);
+                // compare = l1.compareTo(l2);
+                // } else if (Column.FLOAT.equals(column.getType())) {
+                // Float f1 = Float.valueOf(property1Value);
+                // Float f2 = Float.valueOf(property2Value);
+                // compare = f1.compareTo(f2);
+                // } else if (Column.DATETIME.equals(column.getType())) {
+                // Timestamp t1 = Timestamp.valueOf(property1Value);
+                // Timestamp t2 = Timestamp.valueOf(property2Value);
+                // compare = t1.compareTo(t2);
+                // } else {
+                // compare = property1Value.compareTo(property2Value);
+                // }
+                if (!ascending) {
+                    compare *= -1;
+                }
+                return compare;
+            } catch (Exception e) {
+                throw new WorkflowRuntimeException(e);
+            }
+        }
 
     }
 
     private class State {
-    	private boolean headerBarEnabled = true;
-    	private boolean searchCriteriaEnabled = true;
-    	private SavedSearchResult result;
-    	public State(DocumentSearchForm form) {
-    		this.headerBarEnabled = form.isHeaderBarEnabled();
-    		this.searchCriteriaEnabled = form.isSearchCriteriaEnabled();
-    	}
-    	public State(DocumentSearchCriteriaProcessor criteriaProcessor) {
-    		this.headerBarEnabled = criteriaProcessor.isHeaderBarDisplayed();
-    		this.searchCriteriaEnabled = criteriaProcessor.isSearchCriteriaDisplayed();
-    	}
-    	public void updateForm(DocumentSearchForm form) {
-    		if (result != null) {
-        		form.setCriteria(result.getDocSearchCriteriaVO());
-    		}
-    		form.setHeaderBarEnabled(isHeaderBarEnabled());
-    		form.setSearchCriteriaEnabled(isSearchCriteriaEnabled());
-    	}
-    	public void setResult(SavedSearchResult result) {
-    		this.result = result;
-    	}
-		public SavedSearchResult getResult() {
-			return result;
-		}
-		public boolean isHeaderBarEnabled() {
-			return headerBarEnabled;
-		}
-		public boolean isSearchCriteriaEnabled() {
-			return searchCriteriaEnabled;
-		}
+        private boolean headerBarEnabled = true;
+        private boolean searchCriteriaEnabled = true;
+        private DocumentSearchCriteriaProcessor criteriaProcessor = null;
+        private SavedSearchResult result = null;
+
+        public State(DocumentSearchForm form) {
+            this.headerBarEnabled = form.isHeaderBarEnabled();
+            this.searchCriteriaEnabled = form.isSearchCriteriaEnabled();
+        }
+        
+        public State(State state) {
+            this.headerBarEnabled = state.isHeaderBarEnabled();
+            this.searchCriteriaEnabled = state.isSearchCriteriaEnabled();
+            this.criteriaProcessor = state.getCriteriaProcessor();
+            this.result = state.getResult();
+        }
+
+        public void updateForm(DocumentSearchForm form) {
+            updateForm(form, null);
+        }
+
+        public void updateForm(DocumentSearchForm form, DocSearchCriteriaVO criteria) {
+            form.setCriteriaProcessor(getCriteriaProcessor());
+            if (criteria != null) {
+                form.getCriteriaProcessor().setDocSearchCriteriaVO(criteria);
+            }
+            form.setHeaderBarEnabled(isHeaderBarEnabled());
+            form.setSearchCriteriaEnabled(isSearchCriteriaEnabled());
+        }
+
+        public void setResult(SavedSearchResult result) {
+            this.result = result;
+        }
+
+        public SavedSearchResult getResult() {
+            return result;
+        }
+
+        public DocumentSearchCriteriaProcessor getCriteriaProcessor() {
+            return criteriaProcessor;
+        }
+
+        public void setCriteriaProcessor(DocumentSearchCriteriaProcessor processor) {
+            this.criteriaProcessor = processor;
+        }
+
+        public boolean isHeaderBarEnabled() {
+            return headerBarEnabled;
+        }
+
+        public boolean isSearchCriteriaEnabled() {
+            return searchCriteriaEnabled;
+        }
 
     }
 

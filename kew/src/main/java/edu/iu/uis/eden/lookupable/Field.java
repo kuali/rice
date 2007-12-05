@@ -90,6 +90,9 @@ public class Field implements java.io.Serializable {
     private String quickFinderClassNameImpl;
     private Map<String,String> displayParameters = new HashMap<String,String>();
     private List<KeyValuePair> customConversions;
+    
+    // below boolean used by criteria processor to hide field without removing classic 'field type' variable
+    private boolean hidden = false;
 
     // this field is currently a hack to allow us to indicate whether or not the column of data associated
     // with a particular field will be visible in the result set of a search or not
@@ -556,6 +559,20 @@ public class Field implements java.io.Serializable {
      */
     public void setSearchable(boolean searchable) {
         this.searchable = searchable;
+    }
+
+    /**
+     * @return the hidden
+     */
+    public boolean isHidden() {
+        return this.hidden;
+    }
+
+    /**
+     * @param hidden the hidden to set
+     */
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 
     /**

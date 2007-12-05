@@ -746,6 +746,7 @@ public class EdenConstants extends JSTLConstants {
     public static final String SEARCH_GENERATOR_ATTRIBUTE_TYPE = "DocumentSearchGeneratorAttribute";
     public static final String SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE = "DocumentSearchResultProcessorAttribute";
     public static final String SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE = "DocumentSearchXMLResultProcessorAttribute";
+    public static final String DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE = "DocumentSearchSecurityFilterAttribute";
 
     public static final String DAILY = "daily";
     public static final String WEEKLY = "weekly";

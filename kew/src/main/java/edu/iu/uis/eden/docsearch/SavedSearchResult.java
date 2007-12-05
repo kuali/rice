@@ -42,9 +42,9 @@ public class SavedSearchResult implements Serializable {
     public DocSearchCriteriaVO getDocSearchCriteriaVO() {
         return docSearchCriteriaVO;
     }
-    public void setDocSearchCriteriaVO(DocSearchCriteriaVO docSearchCriteriaVO) {
-        this.docSearchCriteriaVO = docSearchCriteriaVO;
-    }
+//    public void setDocSearchCriteriaVO(DocSearchCriteriaVO docSearchCriteriaVO) {
+//        this.docSearchCriteriaVO = docSearchCriteriaVO;
+//    }
 	public DocumentSearchResultComponents getSearchResult() {
 		return searchResult;
 	}

@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+		<ruleAttribute>
+			<name>XMLSearchableAttributeString</name>
+			<className>edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeString</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>CustomSecurityFilterAttribute</name>
+			<className>edu.iu.uis.eden.docsearch.CustomSecurityFilterAttribute</className>
+			<label>CustomSecurityFilterAttribute</label>
+			<description>CustomSecurityFilterAttribute</description>
+			<type>DocumentSearchSecurityFilterAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>UserEmployeeId</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>Visible Search Attribute</label>
+			<description>Searchable attribute is visible</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="employeeId" title="Employee Id">
+					<display>
+						<type>text</type>
+					</display>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/employeeId/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<employeeId>
+							<value>%employeeId%</value>
+						</employeeId>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+<!--
+		<ruleAttribute>
+			<name>XMLSearchableAttributeLong</name>
+			<className>edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeLong</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttributeFloat</name>
+			<className>edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeFloat</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttributeDateTime</name>
+			<className>edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeDateTime</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>DocumentSearchGeneratorAttribute</name>
+			<className>edu.iu.uis.eden.docsearch.CustomDocumentSearchGenerator</className>
+			<label>DocumentSearchGeneratorAttribute</label>
+			<description>DocumentSearchGeneratorAttribute</description>
+			<type>DocumentSearchGeneratorAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>DocumentSearchResultProcessorAttribute</name>
+			<className>edu.iu.uis.eden.docsearch.CustomSearchResultProcessor</className>
+			<label>DocumentSearchResultProcessorAttributeCustom</label>
+			<description>DocumentSearchResultProcessorAttributeCustom</description>
+			<type>DocumentSearchResultProcessorAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>SearchableAttributeNotVisible</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>Non-Visible Search Attribute</label>
+			<description>Searchable attribute is not visible</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="givenname_hidden" title="First name">
+					<display>
+						<type>text</type>
+					</display>
+					<visibility>
+						<column visible="false"/>
+					</visibility>					
+					<searchDefinition autoWildcardLocation="prefixonly"/>
+					<validation required="true">
+						<regex>^[a-zA-Z ]+$</regex>
+						<message>Invalid first name</message>
+					</validation>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/givenname_hidden/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<givenname_hidden>
+							<value>%givenname_hidden%</value>
+						</givenname_hidden>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLResultProcessorDetails</name>
+			<className>edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>DocumentSearchXMLResultProcessorAttribute</type>
+			<searchResultConfig>
+				<column name="docTypeLabel" title="" sortable="true"/>
+				<column name="documentTitle" sortable="false"/>
+				<column name="initiator" title="Initiator Dude"/>
+				<column name="docRouteStatusCodeDesc"/>
+			</searchResultConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLResultProcessorDefault</name>
+			<className>edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>DocumentSearchXMLResultProcessorAttribute</type>
+			<searchResultConfig>
+				<column name="docTypeLabel" title="" sortable="true"/>
+				<column name="givenname_hidden" sortable="false"/>
+				<column name="documentTitle" sortable="false"/>
+				<column name="initiator" title="Initiator Dude"/>
+				<column name="docRouteStatusCodeDesc"/>
+			</searchResultConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLResultProcessorAllCustom</name>
+			<className>edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>DocumentSearchXMLResultProcessorAttribute</type>
+			<searchResultConfig showStandardSearchFields="false" overrideSearchableAttributes="true">
+				<column name="docTypeLabel"/>
+				<column name="documentTitle"/>
+				<column name="initiator"/>
+				<column name="givenname_hidden" sortable="false"/>
+				<column name="docRouteStatusCodeDesc"/>
+			</searchResultConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLResultProcessorSearchAttributeCustom</name>
+			<className>edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>DocumentSearchXMLResultProcessorAttribute</type>
+			<searchResultConfig showStandardSearchFields="true" overrideSearchableAttributes="true">
+				<column name="givenname_hidden" sortable="false"/>
+			</searchResultConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLResultProcessorStandardCustom</name>
+			<className>edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>DocumentSearchXMLResultProcessorAttribute</type>
+			<searchResultConfig showStandardSearchFields="false" overrideSearchableAttributes="false">
+				<column name="documentTitle"/>
+				<column name="docTypeLabel"/>
+				<column name="docRouteStatusCodeDesc"/>
+				<column name="initiator"/>
+				<column name="givenname_hidden" sortable="false"/>
+			</searchResultConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLResultProcessorNormalCustom</name>
+			<className>edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>DocumentSearchXMLResultProcessorAttribute</type>
+			<searchResultConfig showStandardSearchFields="true" overrideSearchableAttributes="false">
+				<column name="givenname_hidden" sortable="false"/>
+			</searchResultConfig>
+		</ruleAttribute>
+-->
+	</ruleAttributes>
+	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+		<ruleTemplate>
+			<name>MatchAllTemplate</name>
+			<description>Template that matches always</description>
+		</ruleTemplate>
+	</ruleTemplates>
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>SecurityDocument</name>
+			<description>SecurityDocument</description>
+			<label>SecurityDocument</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<attributesInherited>false</attributesInherited>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>XMLSearchableAttributeString</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial" nextNode="First" />
+					<requests name="First" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+				<requests name="First">
+					<activationType>S</activationType>
+					<ruleTemplate>MatchAllTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>SecurityDoc_InitiatorOnly</name>
+			<parent>SecurityDocument</parent>
+			<label>SecurityDoc_InitiatorOnly</label>
+			<docHandler>_blank</docHandler>
+			<security>
+			    <initiator>true</initiator>
+			</security>
+		</documentType>
+		<documentType>
+			<name>SecurityDoc_RouteLogAuthOnly</name>
+			<parent>SecurityDocument</parent>
+			<label>SecurityDoc_RouteLogAuthOnly</label>
+			<docHandler>_blank</docHandler>
+			<security>
+			    <routeLogAuthenticated>true</routeLogAuthenticated>
+			</security>
+		</documentType>
+		<documentType>
+			<name>SecurityDoc_WorkgroupOnly</name>
+			<parent>SecurityDocument</parent>
+			<label>SecurityDoc_WorkgroupOnly</label>
+			<docHandler>_blank</docHandler>
+			<security>
+			    <workgroup>Test_Security_Group</workgroup>
+			</security>
+		</documentType>
+		<documentType>
+			<name>SecurityDoc_SearchAttributeOnly</name>
+			<parent>SecurityDocument</parent>
+			<label>SecurityDoc_SearchAttributeOnly</label>
+			<docHandler>_blank</docHandler>
+			<attributes>
+				<attribute>
+					<name>XMLSearchableAttributeString</name>
+				</attribute>
+				<attribute>
+					<name>UserEmployeeId</name>
+				</attribute>
+			</attributes>
+			<security>
+			    <searchableAttribute name="employeeId" idType="authenticationId"/>
+			</security>
+		</documentType>
+		<documentType>
+			<name>SecurityDoc_SecurityAttributeOnly_Class</name>
+			<parent>SecurityDocument</parent>
+			<label>SecurityDoc_SecurityAttributeOnly_Class</label>
+			<docHandler>_blank</docHandler>
+			<security>
+			    <securityAttribute class="edu.iu.uis.eden.docsearch.CustomSecurityFilterAttribute" />
+			</security>
+		</documentType>
+		<documentType>
+			<name>SecurityDoc_SecurityAttributeOnly_Name</name>
+			<parent>SecurityDocument</parent>
+			<label>SecurityDoc_SecurityAttributeOnly_Name</label>
+			<docHandler>_blank</docHandler>
+			<security>
+			    <securityAttribute name="CustomSecurityFilterAttribute" />
+			</security>
+		</documentType>
+		<documentType>
+			<name>SecurityDoc_RoleOnly</name>
+			<parent>SecurityDocument</parent>
+			<label>SecurityDoc_RoleOnly</label>
+			<docHandler>_blank</docHandler>
+			<security>
+			    <role allowed="true">STAFF</role>
+			    <role allowed="false">STUDENT</role>
+			</security>
+		</documentType>
+		<documentType>
+			<name>SecurityDoc_RoleOnly_DisallowOnly</name>
+			<parent>SecurityDocument</parent>
+			<label>SecurityDoc_RoleOnly</label>
+			<docHandler>_blank</docHandler>
+			<security>
+			    <role allowed="false">ALUMNI</role>
+			</security>
+		</documentType>
+		<documentType>
+			<name>SecurityDoc_RoleOnly_Overlaps</name>
+			<parent>SecurityDocument</parent>
+			<label>SecurityDoc_RoleOnly_Overlaps</label>
+			<docHandler>_blank</docHandler>
+			<security>
+			    <role allowed="true">ALUMNI</role>
+			    <role allowed="false">STAFF</role>
+			    <role allowed="true">STUDENT</role>
+			    <role allowed="false">STUDENT</role>
+			</security>
+		</documentType>
+		<documentType>
+			<name>SecurityDoc_RoleAndInitiator</name>
+			<parent>SecurityDocument</parent>
+			<label>SecurityDoc_RoleOnly</label>
+			<docHandler>_blank</docHandler>
+			<security>
+			    <initiator>true</initiator>
+			    <role allowed="false">ALUMNI</role>
+			</security>
+		</documentType>
+	</documentTypes>
+	<users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
+		<user>
+			<workflowId>9876</workflowId>
+			<emplId>9867</emplId>
+			<authenticationId>security_user</authenticationId>
+			<uuId>9867</uuId>
+			<emailAddress>security_user@indiana.edu</emailAddress>
+			<displayName>Secure User</displayName>
+			<givenName>Secure</givenName>
+			<lastName>User</lastName>
+		</user>
+	</users>
+	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
+		<workgroup>
+			<id>9776</id>
+			<workgroupName>Test_Security_Group</workgroupName>
+			<description>Test_Security_Group</description>
+			<members>
+				<authenticationId>security_user</authenticationId>
+			</members>
+		</workgroup>
+	</workgroups>
+	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<rule>
+			<documentType>SecurityDocument</documentType>
+			<ruleTemplate>MatchAllTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>true</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>user2</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+<!--
+		<rule>
+			<documentType>SearchDocType2</documentType>
+			<ruleTemplate>MatchAllTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocType_DefaultCustomProcessor</documentType>
+			<ruleTemplate>MatchAllTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocType_DefaultCustomProcessor_2</documentType>
+			<ruleTemplate>MatchAllTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocType_DefaultCustomProcessor_3</documentType>
+			<ruleTemplate>MatchAllTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocType_AllCustomProcessor</documentType>
+			<ruleTemplate>MatchAllTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocType_SearchAttCustomProcessor</documentType>
+			<ruleTemplate>MatchAllTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocType_StandardCustomProcessor</documentType>
+			<ruleTemplate>MatchAllTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchDocType_NormalCustomProcessor</documentType>
+			<ruleTemplate>MatchAllTemplate</ruleTemplate>
+			<description>Search attribute rule test</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+-->
+	</rules>
+</data>

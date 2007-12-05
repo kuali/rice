@@ -16,74 +16,45 @@
  */
 package edu.iu.uis.eden.actionlist.web;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.workflow.test.KEWHtmlUnitTestCase;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
-import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlOption;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSelect;
-import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.preferences.Preferences;
-import edu.iu.uis.eden.user.AuthenticationUserId;
-import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * Tests the web GUI for the ActionList.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class ActionListActionTest extends KEWTestCase {
-
-	private static final String URL_PREFIX = "http://localhost:9952/en-test/";
-
-	private WebClient webClient;
-	private WorkflowUser quickstartUser;
+public class ActionListActionTest extends KEWHtmlUnitTestCase {
+    
+    private static final String ACTION_LIST_URL_SUFFIX = "ActionList.do";
 
 	protected void loadTestData() throws Exception {
         loadXmlFile("ActionListWebConfig.xml");
     }
 
-	@Override
-	protected void setUpTransaction() throws Exception {
-		super.setUpTransaction();
-		webClient = new WebClient();
-
-		// Set the user preference refresh rate to 0 to prevent a <META HTTP-EQUIV="Refresh" .../> tag from being rendered.
-		// If it is rendered than HtmlUnit will immediately redirect, causing an error to be thrown.
-		this.quickstartUser = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("quickstart"));
-		Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(quickstartUser);
-		preferences.setRefreshRate("0");
-		KEWServiceLocator.getPreferencesService().savePreferences(quickstartUser, preferences);
-	}
-
 	/**
 	 * Tests the mass action list.
 	 */
 	@Test public void testMassActionList() throws Exception {
-		URL url = new URL (URL_PREFIX + "ActionList.do");
-		HtmlPage page = (HtmlPage)webClient.getPage(url);
-
-		// On the first access, we should end up on the backdoor and login as quickstart
-		HtmlForm form = (HtmlForm) page.getForms().get(0);
-		HtmlTextInput textInput = (HtmlTextInput)form.getInputByName("__login_user");
-		assertEquals("quickstart", textInput.getDefaultValue());
-		page = (HtmlPage)form.submit();
+        HtmlPage page = performLogin(QUICKSTART_USER_NETWORK_ID, ACTION_LIST_URL_SUFFIX);
 
 		// we should be on the Action List now, check that theres a form here
 		assertEquals("Should be one form.", 1, page.getForms().size());
@@ -92,19 +63,19 @@ public class ActionListActionTest extends KEWTestCase {
 		int numDocs = 10;
 		for (int i = 0; i < numDocs; i++) {
 			WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "MassActionListTest");
-			document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_FYI_REQ, "", new NetworkIdVO("quickstart"), "", true);
+			document.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_FYI_REQ, "", new NetworkIdVO(QUICKSTART_USER_NETWORK_ID), "", true);
 			document.routeDocument("");
 			assertTrue("Document should be FINAL.", document.stateIsFinal());
 		}
 
 		// check that the quickstart user has 10 action items
-		Collection actionList = KEWServiceLocator.getActionListService().findByWorkflowUser(quickstartUser);
+		Collection actionList = KEWServiceLocator.getActionListService().findByWorkflowUser(getQuickstartUser());
 		assertEquals("Should have 10 items.", 10, actionList.size());
 
 		// now refresh the Action List
-		page = (HtmlPage)webClient.getPage(url);
+		page = getPage(ACTION_LIST_URL_SUFFIX);
 
-		form = (HtmlForm) page.getForms().get(0);
+		HtmlForm form = (HtmlForm) page.getForms().get(0);
 		for (int i = 0; i < numDocs; i++) {
 			String actionTakenCodeFieldName = "actions[" + i + "].actionTakenCd";
 			HtmlSelect select = form.getSelectByName(actionTakenCodeFieldName);
@@ -131,7 +102,7 @@ public class ActionListActionTest extends KEWTestCase {
 		anchor.click();
 
 		// after taking mass actions, user should have no requests left in their action list
-		actionList = KEWServiceLocator.getActionListService().findByWorkflowUser(quickstartUser);
+		actionList = KEWServiceLocator.getActionListService().findByWorkflowUser(getQuickstartUser());
 		assertEquals("Should have 0 items.", 0, actionList.size());
 
 		// now let's route some and intersperse them with documents that won't have the Mass Action option,
@@ -143,7 +114,7 @@ public class ActionListActionTest extends KEWTestCase {
 			boolean isMassActionable = (i % 2 == 0);
 			String actionRequested = (isMassActionable ? EdenConstants.ACTION_REQUEST_FYI_REQ : EdenConstants.ACTION_REQUEST_APPROVE_REQ);
 			WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "MassActionListTest");
-			document.appSpecificRouteDocumentToUser(actionRequested, "", new NetworkIdVO("quickstart"), "", true);
+			document.appSpecificRouteDocumentToUser(actionRequested, "", new NetworkIdVO(QUICKSTART_USER_NETWORK_ID), "", true);
 			document.routeDocument("");
 			if (isMassActionable) {
 				massActionable.add(new Doc(i, document.getRouteHeaderId()));
@@ -153,11 +124,11 @@ public class ActionListActionTest extends KEWTestCase {
 		}
 
 		// check that the quickstart user has 10 action items
-		actionList = KEWServiceLocator.getActionListService().findByWorkflowUser(quickstartUser);
+		actionList = KEWServiceLocator.getActionListService().findByWorkflowUser(getQuickstartUser());
 		assertEquals("Should have 10 items.", 10, actionList.size());
 
 		// refresh the Action List
-		page = (HtmlPage)webClient.getPage(url);
+        page = getPage(ACTION_LIST_URL_SUFFIX);
 		assertEquals("Should be one form on the page.", 1, page.getForms().size());
 		form = (HtmlForm) page.getForms().get(0);
 
@@ -196,7 +167,7 @@ public class ActionListActionTest extends KEWTestCase {
 		anchor.click();
 
 		// since only half the actions were "mass actionable", we should have 5 now
-		actionList = KEWServiceLocator.getActionListService().findByWorkflowUser(quickstartUser);
+		actionList = KEWServiceLocator.getActionListService().findByWorkflowUser(getQuickstartUser());
 		assertEquals("Should have 5 items.", 5, actionList.size());
 		// check that the documents remaining are the ones which are approve requests and not the mass actionable fyi requests
 		for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {

@@ -26,8 +26,8 @@ import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
 
 public class TestXMLSearchableAttributeString implements SearchableAttribute {
 
-    private static final long serialVersionUID = 1309952222293029643L;
-
+    private static final long serialVersionUID = 7069672825797402460L;
+    
     public static final String SEARCH_STORAGE_KEY = "givenname";
     public static final String SEARCH_STORAGE_VALUE = "jack";
 

@@ -34,7 +34,6 @@ import edu.iu.uis.eden.docsearch.dao.DocumentSearchDAO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.notes.CustomNoteAttribute;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -645,10 +644,27 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 //
 //		return searchableAttributes;
 //	}
+	
+	private DocumentType getValidDocumentType(String documentTypeFullName) {
+		if (Utilities.isEmpty(documentTypeFullName)) {
+			return null;
+		}
+		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeFullName);
+		if (docType == null) {
+			throw new RuntimeException("No Valid Document Type Found for document type name '" + documentTypeFullName + "'");
+		} else {
+			return docType;
+		}
+	}
 
 	private DocSearchCriteriaVO getCriteriaFromSavedSearch(UserOptions savedSearch) {
 		DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
 		if (savedSearch != null) {
+			String docTypeFullName = getOptionCriteriaField(savedSearch, "docTypeFullName");
+			if (!Utilities.isEmpty(docTypeFullName)) {
+				criteria = new DocSearchCriteriaVO();
+			}
+			criteria.setDocTypeFullName(getOptionCriteriaField(savedSearch, "docTypeFullName"));
 			criteria.setAppDocId(getOptionCriteriaField(savedSearch, "appDocId"));
 			criteria.setApprover(getOptionCriteriaField(savedSearch, "approver"));
 			criteria.setDocRouteNodeId(getOptionCriteriaField(savedSearch, "docRouteNodeId"));
@@ -659,7 +675,6 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             criteria.setSuperUserSearch(getOptionCriteriaField(savedSearch, "superUserSearch"));
 			criteria.setDocRouteStatus(getOptionCriteriaField(savedSearch, "docRouteStatus"));
 			criteria.setDocTitle(getOptionCriteriaField(savedSearch, "docTitle"));
-			criteria.setDocTypeFullName(getOptionCriteriaField(savedSearch, "docTypeFullName"));
 			criteria.setDocVersion(getOptionCriteriaField(savedSearch, "docVersion"));
 			criteria.setFromDateApproved(getOptionCriteriaField(savedSearch, "fromDateApproved"));
 			criteria.setFromDateCreated(getOptionCriteriaField(savedSearch, "fromDateCreated"));

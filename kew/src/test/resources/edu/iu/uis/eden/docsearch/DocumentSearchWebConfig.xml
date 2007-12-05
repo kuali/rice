@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+		<ruleAttribute>
+			<name>CustomDocumentSearchCriteriaProcessor</name>
+			<className>edu.iu.uis.eden.docsearch.CustomDocumentSearchCriteriaProcessor</className>
+			<label>CustomDocumentSearchCriteriaProcessor</label>
+			<description>CustomDocumentSearchCriteriaProcessor</description>
+			<type>DocumentSearchCriteriaProcessorAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>CustomDocumentSearchCriteriaProcessor_HideAll</name>
+			<className>edu.iu.uis.eden.docsearch.CustomDocumentSearchCriteriaProcessor_HideAll</className>
+			<label>CustomDocumentSearchCriteriaProcessor_HideAll</label>
+			<description>CustomDocumentSearchCriteriaProcessor_HideAll</description>
+			<type>DocumentSearchCriteriaProcessorAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>TestSearchAttribute</name>
+			<className>edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute</label>
+			<description>XML Searchable attribute</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="givenname" title="First name">
+					<display>
+						<type>text</type>
+					</display>
+					<validation required="true">
+						<regex>^[a-zA-Z ]+$</regex>
+						<message>Invalid first name</message>
+					</validation>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/givenname/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<givenname>
+							<value>%givenname%</value>
+						</givenname>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+	</ruleAttributes>
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>DocumentSearchActionTest_NoProcessor</name>
+			<label>DocumentSearchActionTest</label>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<docHandler>_blank</docHandler>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>true</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>TestSearchAttribute</name>
+				</attribute>
+			</attributes>
+            <routePaths>
+				<routePath>
+					<start name="start"/>
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="start">
+					<activationType>P</activationType>
+				</start>
+            </routeNodes>    
+		</documentType>
+		<documentType>
+			<name>DocumentSearchActionTest_HideSpecific</name>
+			<label>DocumentSearchActionTest</label>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<docHandler>_blank</docHandler>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>true</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>CustomDocumentSearchCriteriaProcessor</name>
+				</attribute>
+				<attribute>
+					<name>TestSearchAttribute</name>
+				</attribute>
+			</attributes>
+            <routePaths>
+				<routePath>
+					<start name="start"/>
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="start">
+					<activationType>P</activationType>
+				</start>
+            </routeNodes>    
+		</documentType>
+		<documentType>
+			<name>DocumentSearchActionTest_HideAll</name>
+			<label>DocumentSearchActionTest_HideAll</label>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<docHandler>_blank</docHandler>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>true</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>CustomDocumentSearchCriteriaProcessor_HideAll</name>
+				</attribute>
+				<attribute>
+					<name>TestSearchAttribute</name>
+				</attribute>
+			</attributes>
+            <routePaths>
+				<routePath>
+					<start name="start"/>
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="start">
+					<activationType>P</activationType>
+				</start>
+            </routeNodes>    
+		</documentType>
+    </documentTypes>
+</data>		

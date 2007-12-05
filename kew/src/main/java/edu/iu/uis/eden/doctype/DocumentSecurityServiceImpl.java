@@ -22,25 +22,46 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
   public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSecurityServiceImpl.class);
 
   public boolean docSearchAuthorized(UserSession userSession, DocSearchVO docSearchVO, SecuritySession session) {
-    return checkAuthorization(userSession, docSearchVO.getDocTypeName(), docSearchVO.getRouteHeaderId(), docSearchVO.getInitiatorWorkflowId(), session);
+      return checkAuthorization(userSession, session, docSearchVO.getDocTypeName(), docSearchVO.getRouteHeaderId(), docSearchVO.getInitiatorWorkflowId());
   }
 
   public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderValue routeHeader, SecuritySession session) {
-    return checkAuthorization(userSession, routeHeader.getDocumentType().getName(), routeHeader.getRouteHeaderId(), routeHeader.getInitiatorWorkflowId(), session);
+      return checkAuthorization(userSession, session, routeHeader.getDocumentType().getName(), routeHeader.getRouteHeaderId(), routeHeader.getInitiatorWorkflowId());
+  }
+  
+  protected boolean checkAuthorization(UserSession userSession, SecuritySession session, String documentTypeName, Long routeHeaderId, String initiatorWorkflowId) {
+      DocumentTypeSecurity security = getDocumentTypeSecurity(userSession, documentTypeName, session);
+      if (security == null || !security.isActive()) {
+        // Security is not enabled for this doctype.  Everyone can see this doc.
+        return true;
+      }
+      if (isWorkflowAdmin(session)) {
+          return true;
+      }
+      for (SecurityAttribute securityAttribute : security.getSecurityAttributes()) {
+          Boolean authorized = securityAttribute.docSearchAuthorized(security, userSession.getWorkflowUser(), userSession.getAuthentications(), documentTypeName, routeHeaderId, initiatorWorkflowId, session);
+          if (authorized != null) {
+              return authorized.booleanValue();
+          }
+      }
+      return checkStandardAuthorization(security, userSession, documentTypeName, routeHeaderId, initiatorWorkflowId, session); 
+  }
+  
+  protected boolean isWorkflowAdmin(SecuritySession session) {
+      List<String> workgroups = getAdminWorkgroups();
+      if (workgroups != null && !workgroups.isEmpty()) {
+        for (String workgroupName : workgroups) {
+          if (isWorkgroupAuthenticated(workgroupName, session)) {
+              return true;
+          }
+        }
+      }
+      return false;
   }
 
-  protected boolean checkAuthorization(UserSession userSession, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {
-	if (session == null) {
-		session = new SecuritySession(userSession);
-	}
+  protected boolean checkStandardAuthorization(DocumentTypeSecurity security, UserSession userSession, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {
 	WorkflowUser user = userSession.getWorkflowUser();
     LOG.debug("auth check user=" + user.getEmplId() +" docId=" + documentId);
-    DocumentTypeSecurity security = getDocumentTypeSecurity(docTypeName, session);
-
-    if (security == null || !security.isActive()) {
-      // Security is not enabled for this doctype.  Everyone can see this doc.
-      return true;
-    }
 
     // Doc Initiator Authorization
     if (security.getInitiatorOk() != null && security.getInitiatorOk()) {
@@ -71,13 +92,9 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
     }
 
     //  Workgroup Authorization
-    List<String> workgroups = getAdminWorkgroups();
     List<String> securityWorkgroups = security.getWorkgroups();
     if (securityWorkgroups != null) {
-    	workgroups.addAll(securityWorkgroups);
-    }
-    if (workgroups != null && !workgroups.isEmpty()) {
-      for (String workgroupName : workgroups) {
+      for (String workgroupName : securityWorkgroups) {
         if (isWorkgroupAuthenticated(workgroupName, session)) {
         	return true;
         }
@@ -120,7 +137,10 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
     return false;
   }
 
-  protected DocumentTypeSecurity getDocumentTypeSecurity(String documentTypeName, SecuritySession session) {
+  protected DocumentTypeSecurity getDocumentTypeSecurity(UserSession userSession, String documentTypeName, SecuritySession session) {
+      if (session == null) {
+          session = new SecuritySession(userSession);
+      }
 	  DocumentTypeSecurity security = session.getDocumentTypeSecurity().get(documentTypeName);
 	  if (security == null) {
 		  DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
@@ -148,7 +168,8 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
 		  String role = auth.getAuthority();
 		  if (disallowedRoles.contains(role)) {
 			  disallowed = true;
-		  } else if (allowedRoles.contains(role)) {
+		  }
+		  if (allowedRoles.contains(role)) {
 			  allowed = true;
 		  }
 	  }

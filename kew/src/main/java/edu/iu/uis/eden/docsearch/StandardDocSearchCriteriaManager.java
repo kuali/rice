@@ -28,14 +28,12 @@ import java.util.List;
  */
 public class StandardDocSearchCriteriaManager implements java.io.Serializable {
 	
-	private List<List<StandardDocSearchCriteriaFieldContainer>> columnsPreSearchAttributes = new ArrayList<List<StandardDocSearchCriteriaFieldContainer>>();
+	private static final long serialVersionUID = -1898076444679158722L;
+	
+    private List<List<StandardDocSearchCriteriaFieldContainer>> columnsPreSearchAttributes = new ArrayList<List<StandardDocSearchCriteriaFieldContainer>>();
 	private List<List<StandardDocSearchCriteriaFieldContainer>> columnsPostSearchAttributes = new ArrayList<List<StandardDocSearchCriteriaFieldContainer>>();
 	
-	public StandardDocSearchCriteriaManager() {
-		this(1,1);
-	}
-
-	public StandardDocSearchCriteriaManager(int preSearchAttributeColumns, int postSearchAttributeColumns) {
+	public StandardDocSearchCriteriaManager(int preSearchAttributeColumns, int postSearchAttributeColumns, boolean searchCriteriaDisplayed, boolean headerBarDisplayed) {
 		setupColumns(preSearchAttributeColumns,postSearchAttributeColumns);
 	}
 	
@@ -48,10 +46,18 @@ public class StandardDocSearchCriteriaManager implements java.io.Serializable {
 		}
 	}
 	
+	public List<StandardDocSearchCriteriaFieldContainer> getPreSearchAttributeMaxRows() {
+		return getMaxRowsForList(columnsPreSearchAttributes);
+	}
+	
+	public List<StandardDocSearchCriteriaFieldContainer> getPostSearchAttributeMaxRows() {
+		return getMaxRowsForList(columnsPostSearchAttributes);
+	}
+	
 	@SuppressWarnings("unchecked")
-	public List<StandardDocSearchCriteriaFieldContainer> getColumnWithLargestFieldCount() {
+	private List<StandardDocSearchCriteriaFieldContainer> getMaxRowsForList(List<List<StandardDocSearchCriteriaFieldContainer>> columns) {
 		List<StandardDocSearchCriteriaFieldContainer> biggestFieldContainerList = null;
-		for (Iterator iter = columnsPreSearchAttributes.iterator(); iter.hasNext();) {
+		for (Iterator iter = columns.iterator(); iter.hasNext();) {
 			List<StandardDocSearchCriteriaFieldContainer> fieldContainerList = (List<StandardDocSearchCriteriaFieldContainer>) iter.next();
 			if (biggestFieldContainerList == null) {
 				biggestFieldContainerList = fieldContainerList;
@@ -63,5 +69,25 @@ public class StandardDocSearchCriteriaManager implements java.io.Serializable {
 		}
 		return biggestFieldContainerList;
 	}
+	
+	public int getMaxColumnCount() {
+		return Math.max(columnsPreSearchAttributes.size(), columnsPostSearchAttributes.size());
+	}
 
+    public List<List<StandardDocSearchCriteriaFieldContainer>> getColumnsPreSearchAttributes() {
+		return this.columnsPreSearchAttributes;
+	}
+
+	public void setColumnsPreSearchAttributes(List<List<StandardDocSearchCriteriaFieldContainer>> columnsPreSearchAttributes) {
+		this.columnsPreSearchAttributes = columnsPreSearchAttributes;
+	}
+
+	public List<List<StandardDocSearchCriteriaFieldContainer>> getColumnsPostSearchAttributes() {
+		return this.columnsPostSearchAttributes;
+	}
+
+	public void setColumnsPostSearchAttributes(List<List<StandardDocSearchCriteriaFieldContainer>> columnsPostSearchAttributes) {
+		this.columnsPostSearchAttributes = columnsPostSearchAttributes;
+	}
+	
 }

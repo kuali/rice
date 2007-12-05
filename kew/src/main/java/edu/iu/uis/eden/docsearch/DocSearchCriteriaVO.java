@@ -26,9 +26,9 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.doctype.DocumentType;
-import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.engine.node.RouteNode;
+import edu.iu.uis.eden.lookupable.Field;
+import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.util.Utilities;
 
 /**
@@ -38,9 +38,6 @@ import edu.iu.uis.eden.util.Utilities;
  */
 public class DocSearchCriteriaVO implements Serializable {
 	
-	private static final String PERSON_LOOKUPABLE = "UserLookupableImplService";
-	private static final String DOC_TYP_LOOKUPABLE = "DocumentTypeLookupableImplService";
-
 	private static final long serialVersionUID = -5738747438282249790L;
     public static final int DEFAULT_PAGE_SIZE = 10;
     private String namedSearch;           // if populated the name of the search that they want to save
@@ -69,15 +66,8 @@ public class DocSearchCriteriaVO implements Serializable {
     private String toDateApproved;        // the end range for approved
     private String toDateFinalized;       // the end range for finalized
     
-    // standard search criteria holders
-    StandardDocSearchCriteriaManager basicSearch = new StandardDocSearchCriteriaManager(1,1);
-    StandardDocSearchCriteriaManager advancedSearch = new StandardDocSearchCriteriaManager(2,1);
-
-    static {
-    	List<StandardDocSearchCriteriaFieldContainer> postSearchAttributeContainers = new ArrayList<StandardDocSearchCriteriaFieldContainer>();
-    	postSearchAttributeContainers.add(new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.searchName", new StandardSearchCriteriaField("namedSearch","criteria.namedSearch",StandardSearchCriteriaField.TEXT,null,null,"DocSearchNamedSearch",false,null,null,false)));
-
-    }
+    // criteria processing
+    private List<Row> searchableAttributeRows = new ArrayList<Row>();
     
     // searchable attribute properties
     private List<SearchAttributeCriteriaComponent> searchableAttributes = new ArrayList<SearchAttributeCriteriaComponent>();
@@ -97,52 +87,9 @@ public class DocSearchCriteriaVO implements Serializable {
     private int securityFilteredRows = 0;
     
     public DocSearchCriteriaVO() {
-    	this(new StandardDocumentSearchCriteriaProcessor());
+    	super();
     }
     
-    public DocSearchCriteriaVO(DocumentSearchCriteriaProcessor criteriaProcessor) {
-    	buildStandardCriteria(criteriaProcessor);
-    }
-    
-    public List<StandardDocSearchCriteriaFieldContainer> getAdvancedFieldsPreSearchAttributes() {
-    	return null;
-    }
-    
-    public List<StandardDocSearchCriteriaFieldContainer> getAdvancedFieldsPostSearchAttributes() {
-    	return null;
-    }
-    
-    public List<StandardDocSearchCriteriaFieldContainer> getBasicFieldsPreSearchAttributes() {
-    	List<StandardDocSearchCriteriaFieldContainer> containers = new ArrayList<StandardDocSearchCriteriaFieldContainer>();
-    	StandardDocSearchCriteriaFieldContainer docTypeContainer = new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.documentType", new StandardSearchCriteriaField("docTypeFullName","criteria.docTypeFullName",StandardSearchCriteriaField.TEXT,null,null,"DocSearchDocumentType",false,"docTypeDisplayName",DOC_TYP_LOOKUPABLE,false));
-    	docTypeContainer.setLabelFieldWidthValue("22%");
-    	docTypeContainer.setDataFieldWidthValue("78%");
-    	containers.add(docTypeContainer);
-    	StandardDocSearchCriteriaFieldContainer initiatorContainer = new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.initiatorId", new StandardSearchCriteriaField("initiator","criteria.initiator",StandardSearchCriteriaField.TEXT,null,null,"DocSearchInitiator",false,null,PERSON_LOOKUPABLE,true));
-    	containers.add(initiatorContainer);
-    	StandardDocSearchCriteriaFieldContainer docIdContainer = new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.documentId", new StandardSearchCriteriaField("documentId","criteria.routeHeaderId",StandardSearchCriteriaField.TEXT,null,null,"DocSearchDocumentId",false,null,null,false));
-    	containers.add(docIdContainer);
-    	List<StandardSearchCriteriaField> createDateFields = new ArrayList<StandardSearchCriteriaField>();
-    	createDateFields.add(new StandardSearchCriteriaField("fromCreateDate","fromDateCreated",StandardSearchCriteriaField.TEXT,"fromDateCreated","docSearch.DocumentSearch.criteria.label.from","DocSearchDateCreated",false,null,null,false));
-    	createDateFields.add(new StandardSearchCriteriaField("toCreateDate","toDateCreated",StandardSearchCriteriaField.TEXT,"toDateCreated","docSearch.DocumentSearch.criteria.label.to",null,false,null,null,false));
-    	StandardDocSearchCriteriaFieldContainer createDateContainer = new StandardDocSearchCriteriaFieldContainer("createDate", "docSearch.DocumentSearch.criteria.label.dateCreated", createDateFields);
-    	containers.add(createDateContainer);
-    	return containers;
-    }
-    
-    public List<StandardDocSearchCriteriaFieldContainer> getBasicFieldsPostSearchAttributes() {
-    	List<StandardDocSearchCriteriaFieldContainer> containers = new ArrayList<StandardDocSearchCriteriaFieldContainer>();
-    	StandardDocSearchCriteriaFieldContainer namedSearchContainer = new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.searchName", new StandardSearchCriteriaField("namedSearch","criteria.namedSearch",StandardSearchCriteriaField.TEXT,null,null,"DocSearchNamedSearch",false,null,null,false));
-    	containers.add(namedSearchContainer);
-    	return containers;
-    }
-    
-    public void buildStandardCriteria(DocumentSearchCriteriaProcessor criteriaProcessor) {
-//    	initiatorField = new StandardSearchCriteriaField("Test Initiator Field", "", Field.TEXT, true, "initiator", "", null, PERSON_LOOKUPABLE));
-//    	standardSearchCriteria.add(new StandardSearchCriteriaField("", "", Field.QUICKFINDER, false, "", "", null, PERSON_LOOKUPABLE));
-//    	standardSearchCriteriaRows.add(row);
-    }
-
     public boolean isStandardCriteriaConsideredEmpty(boolean excludeDocumentTypeName) {
         boolean docTypeNameIsEmpty = Utilities.isEmpty(this.docTypeFullName);
         boolean standardFieldsAreEmpty = (
@@ -224,21 +171,6 @@ public class DocSearchCriteriaVO implements Serializable {
     public void setDocTitle(String docTitle) {
         this.docTitle = docTitle;
     }
-
-	public String getDocTypeDisplayName() {
-		DocumentType docType = getDocumentType();
-		if (docType != null) {
-			return docType.getLabel();
-		}
-		return null;
-	}
-
-	public DocumentType getDocumentType() {
-		if (getDocTypeFullName() != null && !"".equals(getDocTypeFullName())) {
-		    return ((DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(getDocTypeFullName());
-		}
-		return null;
-	}
 
     public String getDocTypeFullName() {
         return docTypeFullName;
@@ -575,6 +507,36 @@ public class DocSearchCriteriaVO implements Serializable {
 	 */
 	public List<SearchAttributeCriteriaComponent> getSearchableAttributes() {
 		return searchableAttributes;
+	}
+
+	public void setSearchableAttributeRows(List<Row> searchableAttributeRows) {
+		this.searchableAttributeRows = searchableAttributeRows;
+	}
+
+	public List<Row> getSearchableAttributeRows() {
+		return searchableAttributeRows;
+	}
+
+	public List<Row> getProcessedSearchableAttributeRows() {
+		// TODO delyea - use procssor here for hidden fields?
+		return searchableAttributeRows;
+	}
+
+	public void addSearchableAttributeRow(Row row) {
+		// TODO delyea - use processor here for hidden fields?
+		searchableAttributeRows.add(row);
+	}
+
+	public Row getSearchableAttributeRow(int index) {
+		while (getSearchableAttributeRows().size() <= index) {
+			Row row = new Row(new ArrayList<Field>());
+			getSearchableAttributeRows().add(row);
+		}
+		return (Row) getSearchableAttributeRows().get(index);
+	}
+
+	public void setSearchableAttributeRow(int index, Row row) {
+		searchableAttributeRows.set(index, row);
 	}
 
 }

@@ -152,7 +152,7 @@ public class RuleTemplateXmlParser implements XmlConstants {
         updateRuleTemplateAttributes(element, ruleTemplate);
 
         // save the rule template first so that the default/template rule that is generated
-        // in the process of setting defaults is associated properly
+        // in the process of setting defaults is associated properly with this rule template
         KEWServiceLocator.getRuleTemplateService().save(ruleTemplate);
 
         // update the default options
@@ -185,50 +185,44 @@ public class RuleTemplateXmlParser implements XmlConstants {
     protected void updateRuleTemplateDefaultOptions(Element ruleTemplateElement, RuleTemplate updatedRuleTemplate) throws InvalidXmlException {
         Element defaultsElement = ruleTemplateElement.getChild(RULE_DEFAULTS, RULE_TEMPLATE_NAMESPACE);
 
+        // update the rule defaults; this yields whether or not this is a delegation rule template
+        boolean isDelegation = updateRuleDefaults(defaultsElement, updatedRuleTemplate);
+
+        // update the rule template options
+        updateRuleTemplateOptions(defaultsElement, updatedRuleTemplate, isDelegation);
+
+    }
+
+    /**
+     * Updates the rule template defaults options with those in the defaults element
+     * @param defaultsElement the ruleDefaults element
+     * @param updatedRuleTemplate the Rule Template being updated
+     */
+    protected void updateRuleTemplateOptions(Element defaultsElement, RuleTemplate updatedRuleTemplate, boolean isDelegation) throws InvalidXmlException {
         // the possible defaults options
-        // NOTE: the current implementation will remove any existing RuleTemplateOption records for any values which are null,
-        // i.e. not set in the incoming XML.
-        // to pro-actively set default values for omitted options, simply set those values here, and records will be added
-        // if not present
-        String delegationType = null;
+        // NOTE: the current implementation will remove any existing RuleTemplateOption records for any values which are null, i.e. not set in the incoming XML.
+        // to pro-actively set default values for omitted options, simply set those values here, and records will be added if not present
         // note, rule instructions is mandatory in rule template defaults XSD
         String ruleInstructions = null;
-
-        // note, description is mandatory in rule template defaults XSD
-        String description = null;
-        String fromDate = null;
-        String toDate = null;
-        Boolean ignorePrevious = null;
-        Boolean active = null;
-        
         String defaultActionRequested = null;
         Boolean supportsComplete = null;
         Boolean supportsApprove = null;
         Boolean supportsAcknowledge = null;
         Boolean supportsFYI = null;
-
+        
+        // remove any RuleTemplateOptions the template may have but that we know we aren't going to update/reset
+        // (not sure if this case even exists...does anything else set rule template options?)
+        updatedRuleTemplate.removeNonDefaultOptions();
+        
+        // read in new settings
         if (defaultsElement != null) {
             // there's a defaults element, parse the values
-
-            delegationType = defaultsElement.getChildText(DELEGATION_TYPE, RULE_TEMPLATE_NAMESPACE);
             ruleInstructions = defaultsElement.getChildText(RULE_INSTRUCTIONS, RULE_TEMPLATE_NAMESPACE);
 
-            description = defaultsElement.getChildText(DESCRIPTION, RULE_TEMPLATE_NAMESPACE);
-            
-            // catch two fields that would normally be validated via schema but might not be present if invoking RuleXmlParser directly
-            if (description == null) {
-                throw new InvalidXmlException("Description must be specified in rule defaults");
-            }
             if (ruleInstructions == null) {
                 throw new InvalidXmlException("Instructions must be specified in rule defaults");
             }
 
-            fromDate = defaultsElement.getChildText(FROM_DATE, RULE_TEMPLATE_NAMESPACE);
-            toDate = defaultsElement.getChildText(TO_DATE, RULE_TEMPLATE_NAMESPACE);
-            // toBooleanObject ensures that if the value is null (not set) that the Boolean object will likewise be null (will not default to a value)
-            ignorePrevious = BooleanUtils.toBooleanObject(defaultsElement.getChildText(IGNORE_PREVIOUS, RULE_TEMPLATE_NAMESPACE));
-            active = BooleanUtils.toBooleanObject(defaultsElement.getChildText(ACTIVE, RULE_TEMPLATE_NAMESPACE));
-            
             defaultActionRequested = defaultsElement.getChildText(DEFAULT_ACTION_REQUESTED, RULE_TEMPLATE_NAMESPACE);
             supportsComplete = BooleanUtils.toBooleanObject(defaultsElement.getChildText(SUPPORTS_COMPLETE, RULE_TEMPLATE_NAMESPACE));
             supportsApprove = BooleanUtils.toBooleanObject(defaultsElement.getChildText(SUPPORTS_APPROVE, RULE_TEMPLATE_NAMESPACE));
@@ -236,21 +230,37 @@ public class RuleTemplateXmlParser implements XmlConstants {
             supportsFYI = BooleanUtils.toBooleanObject(defaultsElement.getChildText(SUPPORTS_FYI, RULE_TEMPLATE_NAMESPACE));
         }
 
-        // corner case: rule template is updated but defaults are not specified (this is permitted)
-        // in which case we need to initialize the otherwise mandatory rule defaults
-        if (ruleInstructions == null) {
-            ruleInstructions = "No default instructions specified";
-        }
-        if (description == null) {
-            description = "No default description specified";
+        if (!isDelegation) {
+            // if this is not a delegation template, store the template options that govern rule action constraints
+            // in the RuleTemplateOptions of the template
+            // we have two options for this behavior:
+            // 1) conditionally parse above, and then unconditionally set/unset the properties; this will have the effect of REMOVING
+            //    any of these previously specified rule template options (and is arguably the right thing to do)
+            // 2) unconditionally parse above, and then conditionally set/unset the properties; this will have the effect of PRESERVING
+            //    the existing rule template options on this template if it is a delegation template (which of course will be overwritten
+            //    by this very same code if they subsequently upload without the delegation flag)
+            // This is a minor point, but the second implementation is chosen as it preserved the current behavior
+            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.ACTION_REQUEST_DEFAULT_CD, defaultActionRequested);
+            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.ACTION_REQUEST_APPROVE_REQ, supportsApprove);
+            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, supportsAcknowledge);
+            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.ACTION_REQUEST_FYI_REQ, supportsFYI);
+            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.ACTION_REQUEST_COMPLETE_REQ, supportsComplete);
         }
 
-        // remove any RuleTemplateOptions the template may have but that we know we aren't going to update/reset
-        // (not sure if this case even exists...does anything else set rule template options?)
-        updatedRuleTemplate.removeNonDefaultOptions();
-
+        // always update the instructions RuleTemplateOption in either case
+        updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.RULE_INSTRUCTIONS_CD, ruleInstructions);
+    }
+    
+    /**
+     * 
+     * Updates the default/template rule options with those in the defaults element
+     * @param defaultsElement the ruleDefaults element
+     * @param updatedRuleTemplate the Rule Template being updated
+     * @return whether this is a delegation rule template
+     */
+    protected boolean updateRuleDefaults(Element defaultsElement, RuleTemplate updatedRuleTemplate) throws InvalidXmlException {
         // NOTE: implementation detail: in contrast with the other options, the delegate template, and the rule attributes,
-        // we unilaterally blow away the default rule and re-create it (we don't update the existing one, if there is one)
+        // we unconditionally blow away the default rule and re-create it (we don't update the existing one, if there is one)
         if (updatedRuleTemplate.getRuleTemplateId() != null) {
             RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(updatedRuleTemplate.getRuleTemplateId());
             if (ruleDefaults != null) {
@@ -263,99 +273,90 @@ public class RuleTemplateXmlParser implements XmlConstants {
                     KEWServiceLocator.getRuleDelegationService().delete(ruleDelegation.getRuleDelegationId());
                 }
             }
-            /*
-            if (ruleTemplate.getAcknowledge().getRuleTemplateOptionId() != null) {
-                KEWServiceLocator.getRuleTemplateService().deleteRuleTemplateOption(ruleTemplate.getAcknowledge().getRuleTemplateOptionId());
+        }
+
+        boolean isDelegation = false;
+
+        if (defaultsElement != null) {
+            String delegationType = defaultsElement.getChildText(DELEGATION_TYPE, RULE_TEMPLATE_NAMESPACE);
+            isDelegation = !Utilities.isEmpty(delegationType);
+
+            String description = defaultsElement.getChildText(DESCRIPTION, RULE_TEMPLATE_NAMESPACE);
+            
+            // would normally be validated via schema but might not be present if invoking RuleXmlParser directly
+            if (description == null) {
+                throw new InvalidXmlException("Description must be specified in rule defaults");
             }
-            if (ruleTemplate.getApprove().getRuleTemplateOptionId() != null) {
-                KEWServiceLocator.getRuleTemplateService().deleteRuleTemplateOption(ruleTemplate.getApprove().getRuleTemplateOptionId());
+            
+            String fromDate = defaultsElement.getChildText(FROM_DATE, RULE_TEMPLATE_NAMESPACE);
+            String toDate = defaultsElement.getChildText(TO_DATE, RULE_TEMPLATE_NAMESPACE);
+            // toBooleanObject ensures that if the value is null (not set) that the Boolean object will likewise be null (will not default to a value)
+            Boolean ignorePrevious = BooleanUtils.toBooleanObject(defaultsElement.getChildText(IGNORE_PREVIOUS, RULE_TEMPLATE_NAMESPACE));
+            Boolean active = BooleanUtils.toBooleanObject(defaultsElement.getChildText(ACTIVE, RULE_TEMPLATE_NAMESPACE));
+
+            if (isDelegation && !EdenConstants.DELEGATION_PRIMARY.equals(delegationType) && !EdenConstants.DELEGATION_SECONDARY.equals(delegationType)) {
+                throw new InvalidXmlException("Invalid delegation type '" + delegationType + "'." + "  Expected one of: "
+                        + EdenConstants.DELEGATION_PRIMARY + "," + EdenConstants.DELEGATION_SECONDARY);
             }
-            if (ruleTemplate.getComplete().getRuleTemplateOptionId() != null) {
-                KEWServiceLocator.getRuleTemplateService().deleteRuleTemplateOption(ruleTemplate.getComplete().getRuleTemplateOptionId());
+    
+            // create our "default rule" which encapsulates the defaults for the rule
+            RuleBaseValues ruleDefaults = new RuleBaseValues();
+    
+            // set simple values
+            ruleDefaults.setRuleTemplate(updatedRuleTemplate);
+            ruleDefaults.setDocTypeName(DUMMY_DOCUMENT_TYPE);
+            ruleDefaults.setTemplateRuleInd(Boolean.TRUE);
+            ruleDefaults.setCurrentInd(Boolean.TRUE);
+            ruleDefaults.setVersionNbr(new Integer(0));
+            ruleDefaults.setDescription(description);
+    
+            // these are non-nullable fields, so default them if they were not set in the defaults section
+            ruleDefaults.setIgnorePrevious(Boolean.valueOf(BooleanUtils.isTrue(ignorePrevious)));
+            ruleDefaults.setActiveInd(Boolean.valueOf(BooleanUtils.isTrue(active)));
+    
+            // set dates
+            long farInTheFutureTime = -1;
+            try {
+                farInTheFutureTime = EdenConstants.getDefaultDateFormat().parse(FAR_IN_THE_FUTURE).getTime();
+            } catch (ParseException e) {
+                assert(false) : "This should never happen - fix the hardcoded date"; // or put it in a static initializer
+                LOG.error("Error parsing default future date: " + FAR_IN_THE_FUTURE, e);
             }
-            if (ruleTemplate.getFyi().getRuleTemplateOptionId() != null) {
-                KEWServiceLocator.getRuleTemplateService().deleteRuleTemplateOption(ruleTemplate.getFyi().getRuleTemplateOptionId());
+    
+            // if the future date is legit, set it
+            if (farInTheFutureTime != -1) {
+                ruleDefaults.setDeactivationDate(new Timestamp(farInTheFutureTime));
             }
-            if (ruleTemplate.getDefaultActionRequestValue().getRuleTemplateOptionId() != null) {
-                KEWServiceLocator.getRuleTemplateService().deleteRuleTemplateOption(ruleTemplate.getDefaultActionRequestValue().getRuleTemplateOptionId());
-            }*/
+            if (ruleDefaults.getActivationDate() == null) {
+                ruleDefaults.setActivationDate(new Timestamp(System.currentTimeMillis()));
+            }
+    
+            if (Utilities.isEmpty(fromDate)) {
+                ruleDefaults.setFromDate(new Timestamp(System.currentTimeMillis()));
+            } else {
+                ruleDefaults.setFromDateString(fromDate);
+            }
+            if (Utilities.isEmpty(toDate)) {
+                ruleDefaults.setToDate(new Timestamp(farInTheFutureTime));
+            } else {
+                ruleDefaults.setToDateString(toDate);
+            }
+            
+            // ok, if this is a "Delegate Template", then we need to set this other RuleDelegation object which contains
+            // some delegation-related info
+            RuleDelegation ruleDelegationDefaults = null;
+            if (isDelegation) {
+                ruleDelegationDefaults = new RuleDelegation();
+                ruleDelegationDefaults.setDelegationRuleBaseValues(ruleDefaults);
+                ruleDelegationDefaults.setDelegationType(delegationType);
+                ruleDelegationDefaults.setRuleResponsibilityId(new Long(-1));
+            }
 
+            // explicitly save the new rule delegation defaults and default rule
+            KEWServiceLocator.getRuleTemplateService().save(ruleDelegationDefaults, ruleDefaults);
         }
-
-        // now update the values
-
-        boolean isDelegation = !Utilities.isEmpty(delegationType);
-        if (isDelegation && !EdenConstants.DELEGATION_PRIMARY.equals(delegationType) && !EdenConstants.DELEGATION_SECONDARY.equals(delegationType)) {
-            throw new InvalidXmlException("Invalid delegation type '" + delegationType + "'." + "  Expected one of: "
-                    + EdenConstants.DELEGATION_PRIMARY + "," + EdenConstants.DELEGATION_SECONDARY);
-        }
-
-        // create our "default rule" which encapsulates the defaults for the rule
-        RuleBaseValues ruleDefaults = new RuleBaseValues();
-
-        // set simple values
-        ruleDefaults.setRuleTemplate(updatedRuleTemplate);
-        ruleDefaults.setDocTypeName(DUMMY_DOCUMENT_TYPE);
-        ruleDefaults.setTemplateRuleInd(Boolean.TRUE);
-        ruleDefaults.setCurrentInd(Boolean.TRUE);
-        ruleDefaults.setVersionNbr(new Integer(0));
-        ruleDefaults.setDescription(description);
-
-        // these are non-nullable fields, so default them if they were not set in the defaults section
-        ruleDefaults.setIgnorePrevious(Boolean.valueOf(BooleanUtils.isTrue(ignorePrevious)));
-        ruleDefaults.setActiveInd(Boolean.valueOf(BooleanUtils.isTrue(active)));
-
-        // set dates
-        long farInTheFutureTime = -1;
-        try {
-            farInTheFutureTime = EdenConstants.getDefaultDateFormat().parse(FAR_IN_THE_FUTURE).getTime();
-        } catch (ParseException e) {
-            assert(false) : "This should never happen - fix the hardcoded date"; // or put it in a static initializer
-            LOG.error("Error parsing default future date: " + FAR_IN_THE_FUTURE, e);
-        }
-
-        // if the future date is legit, set it
-        if (farInTheFutureTime != -1) {
-            ruleDefaults.setDeactivationDate(new Timestamp(farInTheFutureTime));
-        }
-        if (ruleDefaults.getActivationDate() == null) {
-            ruleDefaults.setActivationDate(new Timestamp(System.currentTimeMillis()));
-        }
-
-        if (Utilities.isEmpty(fromDate)) {
-            ruleDefaults.setFromDate(new Timestamp(System.currentTimeMillis()));
-        } else {
-            ruleDefaults.setFromDateString(fromDate);
-        }
-        if (Utilities.isEmpty(toDate)) {
-            ruleDefaults.setToDate(new Timestamp(farInTheFutureTime));
-        } else {
-            ruleDefaults.setToDateString(toDate);
-        }
-
-        // ok, if this is a "Delegate Template", then we need to set this other RuleDelegation object which contains
-        // some delegation-related info
-        RuleDelegation ruleDelegationDefaults = null;
-        if (isDelegation) {
-            ruleDelegationDefaults = new RuleDelegation();
-            ruleDelegationDefaults.setDelegationRuleBaseValues(ruleDefaults);
-            ruleDelegationDefaults.setDelegationType(delegationType);
-            ruleDelegationDefaults.setRuleResponsibilityId(new Long(-1));
-        } else {
-            // _otherwise_ it's a  normal template...store the template options that govern rule action constraints
-            // in the RuleTemplateOptions of the template
-            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.ACTION_REQUEST_DEFAULT_CD, defaultActionRequested);
-            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.ACTION_REQUEST_APPROVE_REQ, supportsApprove);
-            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, supportsAcknowledge);
-            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.ACTION_REQUEST_FYI_REQ, supportsFYI);
-            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.ACTION_REQUEST_COMPLETE_REQ, supportsComplete);
-        }
-
-        // always update the instructions RuleTemplateOption in either case
-        updateOrDeleteRuleTemplateOption(updatedRuleTemplate, EdenConstants.RULE_INSTRUCTIONS_CD, ruleInstructions);
-
-        // explicitly save the new rule delegation defaults and default rule
-        KEWServiceLocator.getRuleTemplateService().save(ruleDelegationDefaults, ruleDefaults);
+        
+        return isDelegation;
     }
 
     /**
@@ -380,7 +381,6 @@ public class RuleTemplateXmlParser implements XmlConstants {
                 RuleTemplateOption opt = options.next();
                 if (key.equals(opt.getKey())) {
                     options.remove();
-                    //KEWServiceLocator.getRuleTemplateService().deleteRuleTemplateOption(opt.getRuleTemplateOptionId());
                     break;
                 }
             }
@@ -422,9 +422,6 @@ public class RuleTemplateXmlParser implements XmlConstants {
             updatedRuleTemplate.setDelegationTemplateId(delegateTemplate.getDelegationTemplateId());
             updatedRuleTemplate.setDelegationTemplate(delegateTemplate);           
         } else {
-            // remove the rule template association (...?)
-            /*updatedRuleTemplate.setDelegationTemplate(null);
-            updatedRuleTemplate.setDelegationTemplateId(null);*/
             // the previously referenced template is left in the system
         }
     }
@@ -454,8 +451,6 @@ public class RuleTemplateXmlParser implements XmlConstants {
             currentRuleTemplateAttribute.setActive(Boolean.FALSE);
         }
         // NOTE: attributes are deactivated, not removed
-        // remove any attributes that were omitted
-        //removeOmittedAttributes(updatedRuleTemplate, incomingAttributes);
 
         // add/update any new attributes
         for (RuleTemplateAttribute ruleTemplateAttribute: incomingAttributes) {
@@ -470,34 +465,6 @@ public class RuleTemplateXmlParser implements XmlConstants {
             }
         }
     }
-
-    /**
-     * Removes any attributes which are defined on the rule template but omitted from the incoming list of attributes
-     * @param updatedRuleTemplate the RuleTemplate being updated
-     * @param incomingAttributes the incoming list of attributes
-     */
-//    protected void removeOmittedAttributes(RuleTemplate updatedRuleTemplate, List<RuleTemplateAttribute> incomingAttributes) {
-//        Iterator<RuleTemplateAttribute> it = updatedRuleTemplate.getRuleTemplateAttributes().iterator();
-//        while (it.hasNext()) {
-//            if (!containsRuleTemplateAttributeName(incomingAttributes, it.next().getRuleAttribute().getName())) {
-//                it.remove();
-//            }
-//        }
-//    }
-
-    /**
-     * @param attributes a list of RuleTemplateAttribute
-     * @param name name of RuleTemplateAttribute to find
-     * @return whether the specified list of rule template attributes specifies the named attribute 
-     */
-//    protected boolean containsRuleTemplateAttributeName(List<RuleTemplateAttribute> attributes, String name) {
-//        for (RuleTemplateAttribute rta: attributes) {
-//            if (rta.getRuleAttribute() != null && name.equals(rta.getRuleAttribute().getName())) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 
     /**
      * Parses the RuleTemplateAttributes defined on the rule template element
@@ -550,113 +517,4 @@ public class RuleTemplateXmlParser implements XmlConstants {
         templateAttribute.setDisplayOrder(new Integer(templateAttributeCounter++));
         return templateAttribute;
     }
-
-    /**
-     * Parses the defaults for this RuleTemplate.
-     * @deprecated implementation moved to {@link #updateRuleTemplateDefaultOptions(Element, RuleTemplate)}
-     */
-    private void parseDefaults(Element defaultsElement, RuleTemplate ruleTemplate) throws InvalidXmlException {
-        // delete any existing defaults, we're going to replace them
-        if (ruleTemplate.getRuleTemplateId() != null) {
-            RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(ruleTemplate.getRuleTemplateId());
-            if (ruleDefaults != null) {
-                List ruleDelegationDefaults = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(ruleDefaults.getRuleBaseValuesId());
-                KEWServiceLocator.getRuleService().delete(ruleDefaults.getRuleBaseValuesId());
-                for (Iterator iterator = ruleDelegationDefaults.iterator(); iterator.hasNext();) {
-                    RuleDelegation ruleDelegation = (RuleDelegation) iterator.next();
-                    KEWServiceLocator.getRuleDelegationService().delete(ruleDelegation.getRuleDelegationId());
-                }
-            }
-            /*
-            if (ruleTemplate.getAcknowledge().getRuleTemplateOptionId() != null) {
-                KEWServiceLocator.getRuleTemplateService().deleteRuleTemplateOption(ruleTemplate.getAcknowledge().getRuleTemplateOptionId());
-            }
-            if (ruleTemplate.getApprove().getRuleTemplateOptionId() != null) {
-                KEWServiceLocator.getRuleTemplateService().deleteRuleTemplateOption(ruleTemplate.getApprove().getRuleTemplateOptionId());
-            }
-            if (ruleTemplate.getComplete().getRuleTemplateOptionId() != null) {
-                KEWServiceLocator.getRuleTemplateService().deleteRuleTemplateOption(ruleTemplate.getComplete().getRuleTemplateOptionId());
-            }
-            if (ruleTemplate.getFyi().getRuleTemplateOptionId() != null) {
-                KEWServiceLocator.getRuleTemplateService().deleteRuleTemplateOption(ruleTemplate.getFyi().getRuleTemplateOptionId());
-            }
-            if (ruleTemplate.getDefaultActionRequestValue().getRuleTemplateOptionId() != null) {
-                KEWServiceLocator.getRuleTemplateService().deleteRuleTemplateOption(ruleTemplate.getDefaultActionRequestValue().getRuleTemplateOptionId());
-            }*/
-
-        }
-
-        // now create the defaults
-        String delegationType = defaultsElement.getChildText(DELEGATION_TYPE, RULE_TEMPLATE_NAMESPACE);
-        boolean isDelegation = !Utilities.isEmpty(delegationType);
-        if (isDelegation && !EdenConstants.DELEGATION_PRIMARY.equals(delegationType) && !EdenConstants.DELEGATION_SECONDARY.equals(delegationType)) {
-            throw new InvalidXmlException("Invalid delegation type '" + delegationType + "'." + "  Expected one of: "
-                    + EdenConstants.DELEGATION_PRIMARY + "," + EdenConstants.DELEGATION_SECONDARY);
-        }
-
-        RuleBaseValues ruleDefaults = new RuleBaseValues();
-
-        // set up the default values
-        ruleDefaults.setRuleTemplate(ruleTemplate);
-        ruleDefaults.setDocTypeName("dummyDocumentType");
-        ruleDefaults.setTemplateRuleInd(Boolean.TRUE);
-        ruleDefaults.setCurrentInd(Boolean.TRUE);
-        ruleDefaults.setVersionNbr(new Integer(0));
-        try {
-            ruleDefaults.setDeactivationDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
-            if (ruleDefaults.getActivationDate() == null) {
-                ruleDefaults.setActivationDate(new Timestamp(System.currentTimeMillis()));
-            }
-        } catch (ParseException e) {
-        }
-
-        String ruleInstructions = defaultsElement.getChildText(RULE_INSTRUCTIONS, RULE_TEMPLATE_NAMESPACE);
-
-        String description = defaultsElement.getChildText(DESCRIPTION, RULE_TEMPLATE_NAMESPACE);
-        String fromDate = defaultsElement.getChildText(FROM_DATE, RULE_TEMPLATE_NAMESPACE);
-        String toDate = defaultsElement.getChildText(TO_DATE, RULE_TEMPLATE_NAMESPACE);
-        Boolean ignorePrevious = Boolean.valueOf(defaultsElement.getChildText(IGNORE_PREVIOUS, RULE_TEMPLATE_NAMESPACE));
-        Boolean active = Boolean.valueOf(defaultsElement.getChildText(ACTIVE, RULE_TEMPLATE_NAMESPACE));
-        
-        String defaultActionRequested = defaultsElement.getChildText(DEFAULT_ACTION_REQUESTED, RULE_TEMPLATE_NAMESPACE);
-        Boolean supportsComplete = Boolean.valueOf(defaultsElement.getChildText(SUPPORTS_COMPLETE, RULE_TEMPLATE_NAMESPACE));
-        Boolean supportsApprove = Boolean.valueOf(defaultsElement.getChildText(SUPPORTS_APPROVE, RULE_TEMPLATE_NAMESPACE));
-        Boolean supportsAcknowledge = Boolean.valueOf(defaultsElement.getChildText(SUPPORTS_ACKNOWLEDGE, RULE_TEMPLATE_NAMESPACE));
-        Boolean supportsFYI = Boolean.valueOf(defaultsElement.getChildText(SUPPORTS_FYI, RULE_TEMPLATE_NAMESPACE));
-
-        RuleDelegation ruleDelegationDefaults = null;
-        if (isDelegation) {
-            ruleDelegationDefaults = new RuleDelegation();
-            ruleDelegationDefaults.setDelegationRuleBaseValues(ruleDefaults);
-            ruleDelegationDefaults.setDelegationType(delegationType);
-            ruleDelegationDefaults.setRuleResponsibilityId(new Long(-1));
-        } else {
-            ruleTemplate.getDefaultActionRequestValue().setValue(defaultActionRequested);
-            ruleTemplate.getComplete().setValue(supportsComplete.toString());
-            ruleTemplate.getApprove().setValue(supportsApprove.toString());
-            ruleTemplate.getAcknowledge().setValue(supportsAcknowledge.toString());
-            ruleTemplate.getFyi().setValue(supportsFYI.toString());
-        }
-        ruleTemplate.getInstructions().setValue(ruleInstructions);
-
-        ruleDefaults.setDescription(description);
-
-        if (Utilities.isEmpty(fromDate)) {
-            ruleDefaults.setFromDate(new Timestamp(System.currentTimeMillis()));
-        } else {
-            ruleDefaults.setFromDateString(fromDate);
-        }
-        if (Utilities.isEmpty(toDate)) {
-            try {
-                ruleDefaults.setToDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
-            } catch (ParseException e) {}
-        } else {
-            ruleDefaults.setToDateString(toDate);
-        }
-        ruleDefaults.setIgnorePrevious(ignorePrevious);
-        ruleDefaults.setActiveInd(active);
-
-        KEWServiceLocator.getRuleTemplateService().save(ruleDelegationDefaults, ruleDefaults);
-    }
-
 }

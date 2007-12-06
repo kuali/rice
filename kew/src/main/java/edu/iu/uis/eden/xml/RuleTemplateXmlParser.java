@@ -323,9 +323,7 @@ public class RuleTemplateXmlParser implements XmlConstants {
             }
     
             // if the future date is legit, set it
-            if (farInTheFutureTime != -1) {
-                ruleDefaults.setDeactivationDate(new Timestamp(farInTheFutureTime));
-            }
+            ruleDefaults.setDeactivationDate(new Timestamp(farInTheFutureTime));
             if (ruleDefaults.getActivationDate() == null) {
                 ruleDefaults.setActivationDate(new Timestamp(System.currentTimeMillis()));
             }
@@ -353,9 +351,51 @@ public class RuleTemplateXmlParser implements XmlConstants {
 
             // explicitly save the new rule delegation defaults and default rule
             KEWServiceLocator.getRuleTemplateService().save(ruleDelegationDefaults, ruleDefaults);
+        } else {
+            // insert a dummy defaults rule - testing to see if this affects the failing actionitemservicetest
+
+            //RuleBaseValues standInRuleDefaults = createStandInRuleDefaults(updatedRuleTemplate);
+            //KEWServiceLocator.getRuleTemplateService().save(null, standInRuleDefaults);
+            
         }
         
         return isDelegation;
+    }
+
+    /**
+     * Creates a "stand in" rule defaults rule if ruleDefaults is omitted.  This is only for testing and will be removed shortly.
+     * @param updatedRuleTemplate
+     */
+    protected RuleBaseValues createStandInRuleDefaults(RuleTemplate updatedRuleTemplate) {
+        RuleBaseValues ruleDefaults = new RuleBaseValues();
+        
+        // set simple values
+        ruleDefaults.setRuleTemplate(updatedRuleTemplate);
+        ruleDefaults.setDocTypeName(DUMMY_DOCUMENT_TYPE);
+        ruleDefaults.setTemplateRuleInd(Boolean.TRUE);
+        ruleDefaults.setCurrentInd(Boolean.TRUE);
+        ruleDefaults.setVersionNbr(new Integer(0));
+        ruleDefaults.setDescription("SDFSDDSF");
+
+        // these are non-nullable fields, so default them if they were not set in the defaults section
+        ruleDefaults.setIgnorePrevious(Boolean.FALSE);
+        ruleDefaults.setActiveInd(Boolean.FALSE);
+        
+        // set dates
+        long farInTheFutureTime = -1;
+        try {
+            farInTheFutureTime = EdenConstants.getDefaultDateFormat().parse(FAR_IN_THE_FUTURE).getTime();
+        } catch (ParseException e) {
+            assert(false) : "This should never happen - fix the hardcoded date"; // or put it in a static initializer
+            LOG.error("Error parsing default future date: " + FAR_IN_THE_FUTURE, e);
+        }
+
+        ruleDefaults.setDeactivationDate(new Timestamp(farInTheFutureTime));
+        ruleDefaults.setActivationDate(new Timestamp(System.currentTimeMillis()));
+        ruleDefaults.setFromDate(new Timestamp(System.currentTimeMillis()));
+        ruleDefaults.setToDate(new Timestamp(farInTheFutureTime));
+        
+        return ruleDefaults;
     }
 
     /**

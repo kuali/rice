@@ -29,7 +29,7 @@ public class OrganizationCategoryDaoTest extends KOMDaoTestBase {
 	OrganizationCategory oc_1 = KOMMockObjectUtil.getTestOrganizationCategory_1();
 	OrganizationCategory oc_2 = KOMMockObjectUtil.getTestOrganizationCategory_2();
 
-	private String[] updatedNames = {"Test 1 - updated name", "Test 2 - updated name"};
+	String[] updatedNames = {"Test 1 - updated name", "Test 2 - updated name"};
 
 	/**
      * @see org.kuali.rice.kim.test.KOMDaoTestBase#setupReferences()

@@ -25,9 +25,37 @@
 	
 	<!-- ORGANIZATION CATEGORIES -->
 	<class-descriptor class="org.kuali.rice.kom.bo.OrganizationCategory" table="KOM_ORGANIZATION_CATEGORIES_T">
-		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KOM_ORGNZTN_CTGRY_ID" index="true" />
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KOM_ORGNZTN_CTGRS_ID" index="true" />
 		<field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	</class-descriptor>
-</descriptor-repository>
+	
+	<!-- ORGANIZATIONS -->
+	<class-descriptor class="org.kuali.rice.kom.bo.Organization" table="KOM_ORGANIZATIONS_T">
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KOM_ORGANIZATIONS_ID" index="true" />
+		<field-descriptor name="shortName" column="SHORT_NAME" jdbc-type="VARCHAR" />
+		<field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
+		<field-descriptor name="parentOrganizationId" column="PARENT_ORGANIZATION_ID" jdbc-type="BIGINT" />
+		<field-descriptor name="categoryId" column="CATEGORY_ID" jdbc-type="BIGINT" />
+		<field-descriptor name="active" column="ACTIVE" jdbc-type="VARCHAR" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+	</class-descriptor>
+	
+	<!-- ORGANIZATION CONTEXTS -->
+	<class-descriptor class="org.kuali.rice.kom.bo.OrganizationContext" table="KOM_ORGANIZATION_CONTEXTS_T">
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KOM_ORGNZTN_CNTXTS_ID" index="true" />
+		<field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
+		<field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+	</class-descriptor>
+	
+	<!-- ORGANIZATIONS CONTEXTS -->
+	<class-descriptor class="org.kuali.rice.kom.bo.OrganizationsContexts" table="KOM_ORGANIZATIONS_CONTEXTS_T">
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KOM_ORGNZTNS_CNTXTS_ID" index="true" />
+		<field-descriptor name="organizationId" column="ORGANIZATION_ID" jdbc-type="BIGINT" />
+		<field-descriptor name="contextId" column="CONTEXT_ID" jdbc-type="BIGINT" />
+		<field-descriptor name="active" column="ACTIVE" jdbc-type="VARCHAR" />
+	</class-descriptor></descriptor-repository>

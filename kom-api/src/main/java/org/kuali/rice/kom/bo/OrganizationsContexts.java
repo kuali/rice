@@ -18,6 +18,7 @@ package org.kuali.rice.kom.bo;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.core.util.OjbCharBooleanConversion;
 
 /**
  * This is a description of what this class does - pberres don't forget to fill this in. 
@@ -28,7 +29,35 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
 public class OrganizationsContexts extends PersistableBusinessObjectBase {
 
     private static final long serialVersionUID = 9021359708162166484L;
+    private Long id;
+    private Long organizationId;
+    private Long contextId;
+    private String active;
+    public Long getId() {
+        return this.id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public Long getOrganizationId() {
+        return this.organizationId;
+    }
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
+    }
+    public Long getContextId() {
+        return this.contextId;
+    }
+    public void setContextId(Long contextId) {
+        this.contextId = contextId;
+    }
+    public Boolean getActive() {
+        return (Boolean)(new OjbCharBooleanConversion()).sqlToJava(active);
+    }
 
+    public void setActive(Boolean active) {
+        this.active = (String)(new OjbCharBooleanConversion()).javaToSql(active);
+    }
     /**
      * This overridden method ...
      * 
@@ -36,8 +65,12 @@ public class OrganizationsContexts extends PersistableBusinessObjectBase {
      */
     @Override
     protected LinkedHashMap toStringMapper() {
-        // TODO pberres - THIS METHOD NEEDS JAVADOCS
-        return null;
+        LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
+        propMap.put("id", getId());
+        propMap.put("organizationId", getOrganizationId());
+        propMap.put("contextId", getContextId());
+        propMap.put("active", getActive());
+        return propMap;
     }
 
 }

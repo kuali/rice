@@ -182,18 +182,19 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     		DocumentType oldDocumentType = findByName(documentType.getName());
     		// reset the children on the oldDocumentType
     		//oldDocumentType.resetChildren();
-    		Long existingDocTypeId = (oldDocumentType == null ? null : oldDocumentType.getDocumentTypeId());
-    		if (oldDocumentType != null && existingDocTypeId.longValue() > 0) {
-    		    	// set version number on the new doc type using the max version from the database
-			Integer maxVersionNumber = documentTypeDAO.getMaxVersionNumber(documentType.getName());
-    			documentType.setVersion((maxVersionNumber != null) ? new Integer(maxVersionNumber.intValue() + 1) : new Integer(0));
-    			// set up the previous current doc type on the new doc type
-    			documentType.setPreviousVersionId(existingDocTypeId);
-    			oldDocumentType.setCurrentInd(Boolean.FALSE);
-    			LOG.debug("Saving old document type Id " + oldDocumentType.getDocumentTypeId() + " name " + oldDocumentType.getName());
-    			save(oldDocumentType, false);
+    		if (oldDocumentType != null) {
+        		Long existingDocTypeId = oldDocumentType.getDocumentTypeId();
+        		if (existingDocTypeId.longValue() > 0) {
+                    // set up the previous current doc type on the new doc type
+                    documentType.setPreviousVersionId(existingDocTypeId);
+        		    // set version number on the new doc type using the max version from the database
+        		    Integer maxVersionNumber = documentTypeDAO.getMaxVersionNumber(documentType.getName());
+        			documentType.setVersion((maxVersionNumber != null) ? new Integer(maxVersionNumber.intValue() + 1) : new Integer(0));
+        			oldDocumentType.setCurrentInd(Boolean.FALSE);
+        			LOG.debug("Saving old document type Id " + oldDocumentType.getDocumentTypeId() + " name " + oldDocumentType.getName());
+        			save(oldDocumentType, false);
+        		}
     		}
-
     		// check to see that no current documents exist in database
     		if (!Utilities.isEmpty(documentTypeDAO.findAllCurrentByName(documentType.getName()))) {
     		    String errorMsg = "Found invalid 'current' document with name '" + documentType.getName() + "'.  None should exist.";

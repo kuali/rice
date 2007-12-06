@@ -22,8 +22,10 @@ import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
+import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.exception.InvalidWorkgroupException;
 import edu.iu.uis.eden.exception.InvalidXmlException;
 
@@ -170,5 +172,50 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	assertFalse(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	document = new WorkflowDocument (new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
     	assertTrue(document.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    }
+    
+    @Test public void testCurrentDocumentNotMaxVersionNumber() throws Exception {
+        String fileNameToIngest = "VersionNumberCheck";
+        String documentTypeName = "VersionCheckDocument";
+        testDoc(fileNameToIngest, null);
+        testDoc(fileNameToIngest, null);
+        testDoc(fileNameToIngest, null);
+        
+        DocumentType originalCurrentDocType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+        assertNotNull("Should have found document for doc type '" + documentTypeName + "'",originalCurrentDocType);
+        assertNotNull("Doc Type should have previous doc type id",originalCurrentDocType.getPreviousVersionId());
+        assertEquals("Doc Type should be current",Boolean.TRUE,originalCurrentDocType.getCurrentInd());
+        DocumentType previousDocType1 = KEWServiceLocator.getDocumentTypeService().findById(originalCurrentDocType.getPreviousVersionId());
+        assertNotNull("Should have found document for doc type '" + documentTypeName + "' and previous version " + originalCurrentDocType.getPreviousVersionId(),previousDocType1);
+        assertNotNull("Doc Type should have previous doc type id",previousDocType1.getPreviousVersionId());
+        DocumentType firstDocType = KEWServiceLocator.getDocumentTypeService().findById(previousDocType1.getPreviousVersionId());
+        assertNotNull("Should have found document for doc type '" + documentTypeName + "' and previous version " + previousDocType1.getPreviousVersionId(),firstDocType);
+        assertNull("Doc type retrieved should have been first doc type",firstDocType.getPreviousVersionId());
+        
+        // reset the current document to the previous one to replicate bug conditions
+        originalCurrentDocType.setCurrentInd(Boolean.FALSE);
+        KEWServiceLocator.getDocumentTypeService().save(originalCurrentDocType);
+        firstDocType.setCurrentInd(Boolean.TRUE);
+        KEWServiceLocator.getDocumentTypeService().save(firstDocType);
+        DocumentType newCurrentDocType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+        assertNotNull("Should have found document for doc type '" + documentTypeName + "'",newCurrentDocType);
+        assertEquals("Version of new doc type should match that of first doc type", firstDocType.getVersion(), newCurrentDocType.getVersion());
+        
+        // ingest the doc type again and verify correct version number
+        try {
+            testDoc(fileNameToIngest, null);
+        } catch (Exception e) {
+            fail("File should have ingested correctly" + e.getLocalizedMessage());
+        }
+        
+        DocumentType currentDocType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+        assertNotNull("Should have found document for doc type '" + documentTypeName + "'",currentDocType);
+        assertEquals("Doc Type should be current",Boolean.TRUE,currentDocType.getCurrentInd());
+        assertNotNull("Doc Type should have previous doc type id",currentDocType.getPreviousVersionId());
+        assertEquals("New current document should have version 1 greater than ", Integer.valueOf(originalCurrentDocType.getVersion().intValue() + 1), currentDocType.getVersion());
+        previousDocType1 = KEWServiceLocator.getDocumentTypeService().findById(currentDocType.getPreviousVersionId());
+        assertNotNull("Should have found document for doc type '" + documentTypeName + "' and previous version " + newCurrentDocType.getPreviousVersionId(),previousDocType1);
+        assertFalse("Doc Type should be current",previousDocType1.getCurrentInd());
+        assertNull("Doc type retrieved should not have previous doc type",previousDocType1.getPreviousVersionId());
     }
 }

@@ -81,10 +81,10 @@
 		</table>
 		</div>
 	</kul:tab>
-	<!-- temporarily commented out notes section and made non-multipart form
+	<%-- temporarily commented out notes section and made non-multipart form
 	     for KULRICE-1344
 	<kul:notes />
-	 -->
+	 --%>
 	<kul:adHocRecipients />
 	<kul:routeLog />
 	<kul:panelFooter />

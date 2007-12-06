@@ -10,7 +10,7 @@ Relies on props ${basedir} and ${module.name} to be set.  These are either set b
 	<param name="db.location">${basedir}/src/test/resources/db/derby/${module.name}-db</param>
 	<param name="datasource.url">jdbc:derby:${db.location};user=${module.name};create=true</param>
 	<param name="datasource.driver.name">org.apache.derby.jdbc.EmbeddedDriver</param>	 	
-	<param name="datasource.pool.validationQuery">select '1' from EN_UNITTEST_T</param>
+	<param name="datasource.pool.validationQuery">values(1)</param>
 	<param name="datasource.username">${module.name}</param>
 	<param name="datasource.password">r1c3</param>
 	<param name="datasource.pool.maxWait">30000</param>

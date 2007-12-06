@@ -17,29 +17,8 @@
 		<property name="targetObject" ref="config" />
 		<property name="targetMethod" value="getProperties" />
 	</bean>
-<!--
-	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean">
-      <property name="defaultTimeout" value="3600"/>
-    </bean>
- 
-	<bean id="dataSource" class="org.kuali.rice.database.XAPoolDataSource">
-		<property name="transactionManager" ref="jotm" />
-		<property name="driverClassName" value="${datasource.driver.name}" />
-		<property name="maxSize" value="${datasource.pool.maxSize}" />
-		<property name="minSize" value="${datasource.pool.minSize}" />
-		<property name="maxWait" value="${datasource.pool.maxWait}" />
-		<property name="validationQuery" value="${datasource.pool.validationQuery}" />
-		<property name="url" value="${datasource.url}" />
-		<property name="username" value="${datasource.username}" />
-		<property name="password" value="${datasource.password}" />
-	</bean>
- -->
+
 	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
-	<!-- 
-		<property name="dataSource" ref="dataSource" />
-		<property name="transactionManager" ref="jotm" />
-		<property name="userTransaction" ref="jotm" />
-		 -->
 		<property name="rootConfig" ref="config" />
 		<property name="messageEntity" value="STRESSTEST" />
 		<property name="modules">

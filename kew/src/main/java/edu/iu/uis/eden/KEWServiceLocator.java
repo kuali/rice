@@ -10,7 +10,6 @@ import org.kuali.rice.config.NodeSettings;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.workflow.role.RoleService;
 import org.kuali.workflow.workgroup.WorkgroupTypeService;
-import org.objectweb.jotm.Current;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import edu.iu.uis.eden.actionlist.ActionListService;
@@ -36,7 +35,6 @@ import edu.iu.uis.eden.help.HelpService;
 import edu.iu.uis.eden.mail.ActionListEmailService;
 import edu.iu.uis.eden.mail.EmailContentService;
 import edu.iu.uis.eden.mail.EmailService;
-import edu.iu.uis.eden.messaging.MessageQueueService;
 import edu.iu.uis.eden.notes.NoteService;
 import edu.iu.uis.eden.notification.NotificationService;
 import edu.iu.uis.eden.preferences.PreferencesService;
@@ -220,8 +218,6 @@ public final class KEWServiceLocator {
 
 	public static final String TRANSACTION_TEMPLATE = "transactionTemplate";
 
-	public static final String JOTM = "jotm";
-
 	public static final String HELP_SERVICE = "enHelpService";
 
 	public static final String WORKFLOW_DOCUMENT_SERVICE = "enWorkflowDocumentService";
@@ -333,13 +329,6 @@ public final class KEWServiceLocator {
 
 	public static RuleDelegationService getRuleDelegationService() {
 		return (RuleDelegationService) getBean(RULE_DELEGATION_SERVICE);
-	}
-
-	public static Current getJotm() {
-		Object jotm = getBean(JOTM);
-		if (jotm == null)
-			throw new RuntimeException("Could not locate JOTM.");
-		return (Current) jotm;
 	}
 
 	public static HelpService getHelpService() {

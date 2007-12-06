@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.test;
 
+import javax.sql.DataSource;
 import javax.transaction.UserTransaction;
 
-import org.kuali.rice.database.XAPoolDataSource;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.resourceloader.SpringResourceLoader;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -46,8 +46,8 @@ public class TestHarnessServiceLocator {
 		return getContext().getBean(serviceName);
 	}
 	
-	public static XAPoolDataSource getDataSource() {
-		return (XAPoolDataSource)getService(DATA_SOURCE);
+	public static DataSource getDataSource() {
+		return (DataSource)getService(DATA_SOURCE);
 	}
 	
 	public static JtaTransactionManager getJtaTransactionManager() {

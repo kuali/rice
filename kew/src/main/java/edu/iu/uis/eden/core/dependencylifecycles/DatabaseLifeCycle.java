@@ -63,25 +63,6 @@ public class DatabaseLifeCycle extends BaseLifecycle implements ApplicationListe
 		LOG.info("Setting OJB platform to: " + platform);
 		OjbPlatformConfigurer.configureDefaultOJBConnectionDescriptor(platform);
 
-		// important to fetch this directory from the SpringLoader because we
-		// don't want it wrapped in a proxy so that instanceof Current works
-		// properly
-//        TransactionManager transactionManager = (TransactionManager)SpringLoader.getInstance().getService(new QName(KEWServiceLocator.JTA_TRANSACTION_MANAGER));
-//		if (transactionManager instanceof Current) {
-//			Current jotm = (Current) transactionManager;
-//			if (!Utilities.isEmpty(Core.getRootConfig().getTransactionTimeout())) {
-//				jotm.setDefaultTimeout(Integer.parseInt(Core.getRootConfig().getTransactionTimeout()));
-//				jotm.setTransactionTimeout(jotm.getDefaultTimeout());
-//			} else {
-//				jotm.setDefaultTimeout(EdenConstants.DEFAULT_TRANSACTION_TIMEOUT_SECONDS);
-//				jotm.setTransactionTimeout(jotm.getDefaultTimeout());
-//			}
-//		}
-//
-//		Platform p = KEWServiceLocator.getDbPlatform();
-//		LOG.info("Workflow database Platform from Spring: " + p);
-
-		LOG.info("Trying to clear OJB cache from start()");
 		super.start();
 	}
 

@@ -66,7 +66,7 @@ public class ApproveActionTest extends KEWTestCase {
 
         assertFalse("the document should NOT be final", doc.stateIsFinal());
 
-        //approve as the person the doc is routed (initiator) to so we can move the documen on and hopefully to final
+        //approve as the person the doc is routed (initiator) to so we can move the document on and hopefully to final
         doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), doc.getRouteHeaderId());
         doc.approve("");
         

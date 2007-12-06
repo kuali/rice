@@ -16,6 +16,7 @@
 package org.kuali.rice.test;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,9 +27,9 @@ import javax.sql.DataSource;
 
 import junit.framework.Assert;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.database.XAPoolDataSource;
 import org.kuali.rice.lifecycle.BaseLifecycle;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -70,15 +71,20 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
 
 	public void start() throws Exception {
 		if (new Boolean(Core.getCurrentContextConfig().getProperty("use.clearDatabaseLifecycle"))) {
-			final XAPoolDataSource dataSource = TestHarnessServiceLocator.getDataSource();
-			final String schemaName = dataSource.getUser().toUpperCase();
-			clearTables((PlatformTransactionManager) TestHarnessServiceLocator.getJtaTransactionManager(), dataSource, schemaName);
+			final DataSource dataSource = TestHarnessServiceLocator.getDataSource();
+			clearTables(TestHarnessServiceLocator.getJtaTransactionManager(), dataSource);
 			super.start();
 		}
 	}
 
 	protected Boolean isTestTableInSchema(final DataSource dataSource) {
 		Assert.assertNotNull("DataSource could not be located.", dataSource);
+		try {
+		Connection connection = dataSource.getConnection();
+		connection.close();
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		}
 		return (Boolean) new JdbcTemplate(dataSource).execute(new ConnectionCallback() {
 			public Object doInConnection(final Connection connection) throws SQLException {
 				final ResultSet resultSet = connection.getMetaData().getTables(null, null, TEST_TABLE_NAME, null);
@@ -91,25 +97,25 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
 		Assert.assertTrue("No table named '" + TEST_TABLE_NAME + "' was found in the configured database.  " + "You are attempting to run tests against a non-test database!!!", isTestTableInSchema(dataSource));
 	}
 
-	protected void clearTables(final PlatformTransactionManager transactionManager, final DataSource dataSource, final String schemaName) {
-		LOG.info("Clearing tables for schema " + schemaName);
-		Assert.assertNotNull("DataSource could not be located.", dataSource);
-
-		if (schemaName == null || schemaName.equals("")) {
-			Assert.fail("Empty schema name given");
-		}
+	protected void clearTables(final PlatformTransactionManager transactionManager, final DataSource dataSource) {
+	    Assert.assertNotNull("DataSource could not be located.", dataSource);
 		try {
 		new TransactionTemplate(transactionManager).execute(new TransactionCallback() {
 			public Object doInTransaction(final TransactionStatus status) {
 				verifyTestEnvironment(dataSource);
 				return new JdbcTemplate(dataSource).execute(new StatementCallback() {
 					public Object doInStatement(Statement statement) throws SQLException {
+					    String schemaName = statement.getConnection().getMetaData().getUserName().toUpperCase();
+					    LOG.info("Clearing tables for schema " + schemaName);
+					    if (StringUtils.isBlank(schemaName)) {
+					        Assert.fail("Empty schema name given");
+					    }
 						final List<String> reEnableConstraints = new ArrayList<String>();
 						final ResultSet resultSet = statement.getConnection().getMetaData().getTables(null, schemaName, null, new String[] { "TABLE" });
 						while (resultSet.next()) {
 							String tableName = resultSet.getString("TABLE_NAME");
 							if (shouldTableBeCleared(tableName)) {
-							    if (!isUsingDerby()) {
+							    if (!isUsingDerby(statement.getConnection().getMetaData())) {
 									ResultSet keyResultSet = statement.getConnection().getMetaData().getExportedKeys(null, schemaName, tableName);
 									while (keyResultSet.next()) {
 										final String fkName = keyResultSet.getString("FK_NAME");
@@ -132,6 +138,7 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
 						}
 						statement.executeBatch();
 						resultSet.close();
+						LOG.info("Tables successfully cleared for schema " + schemaName);
 						return null;
 					}
 				});
@@ -141,7 +148,6 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
 			LOG.error(e);
 			throw new RuntimeException(e);
 		}
-		LOG.info("Tables successfully cleared for schema " + schemaName);
 	}
 
 	private boolean shouldTableBeCleared(String tableName) {
@@ -163,8 +169,8 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
 	    return true;
 	}
 
-	private boolean isUsingDerby() throws SQLException {
-		return TestHarnessServiceLocator.getDataSource().getDriverClassName().toLowerCase().indexOf("derby") > -1;
+	private boolean isUsingDerby(DatabaseMetaData metaData) throws SQLException {
+		return metaData.getDriverName().toLowerCase().indexOf("derby") > -1;
 	}
 
 	public List<String> getTablesToClear() {

@@ -28,7 +28,6 @@ import javax.sql.DataSource;
 import junit.framework.Assert;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.database.XAPoolDataSource;
 import org.kuali.rice.lifecycle.BaseLifecycle;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.ConnectionCallback;
@@ -70,8 +69,14 @@ public class OldClearDatabaseLifecycle extends BaseLifecycle {
     public void start() throws Exception {
     	try {
         final ClassPathXmlApplicationContext bootstrapContext = new ClassPathXmlApplicationContext(SPRING_FILE);
-        final XAPoolDataSource dataSource = (XAPoolDataSource) bootstrapContext.getBean(DATA_SOURCE);
-        final String schemaName = dataSource.getUser().toUpperCase();
+        final DataSource dataSource = (DataSource) bootstrapContext.getBean(DATA_SOURCE);
+        Connection connection = dataSource.getConnection();
+        String schemaName = null;
+        try {
+            schemaName = connection.getMetaData().getUserName().toUpperCase();
+        } finally {
+            connection.close();
+        }
         try {
         	clearTables((PlatformTransactionManager)bootstrapContext.getBean(TRANSACTION_MANAGER), dataSource, schemaName);
         } finally {

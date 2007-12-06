@@ -51,49 +51,4 @@ public class StressTestInitializer implements ServletContextListener {
 	}
     }
 
-    // private RiceConfigurer configureEmbeddedClient() throws Exception {
-    // JotmFactoryBean jotmFactoryBean = new JotmFactoryBean();
-    // jotmFactoryBean.setDefaultTimeout(600000);
-    // Current jotm = (Current)jotmFactoryBean.getObject();
-    //
-    // // configure the datasource
-    // XAPoolDataSource dataSource = new XAPoolDataSource();
-    // dataSource.setTransactionManager(jotm);
-    // dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
-    // dataSource.setMaxSize(70);
-    // dataSource.setMinSize(20);
-    // dataSource.setMaxWait(15000);
-    // dataSource.setValidationQuery("select 1 from dual");
-    // dataSource.setUrl("jdbc:oracle:thin:@es01.uits.indiana.edu:1521:GEN2DEV");
-    // dataSource.setUsername("en");
-    // dataSource.setPassword("endev");
-    //
-    // RiceConfigurer configurer = new RiceConfigurer();
-    // configurer.setEnvironment("dev");
-    // configurer.setMessageEntity("StressTest");
-    // configurer.setPlatform("Oracle9i");
-    // configurer.setDataSource(dataSource);
-    // configurer.setTransactionManager(jotm);
-    // configurer.setUserTransaction(jotm);
-    // KEWConfigurer kewConfig = new KEWConfigurer();
-    // kewConfig.setServiceServletUrl("http://localhost:8080/en-stress/remoting");
-    // kewConfig.setClientProtocol("embedded");
-    // configurer.getModules().add(kewConfig);
-    // return configurer;
-    // }
-    //
-    // private String loadXML(String resourceName) {
-    // try {
-    // InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourceName);
-    // StringWriter writer = new StringWriter();
-    // int data = -1;
-    // while ((data = inputStream.read()) != -1) {
-    // writer.write(data);
-    // }
-    // return writer.toString();
-    // } catch (IOException e) {
-    // throw new RuntimeException("Fatal error initializing Stress Tests", e);
-    // }
-    // }
-
 }

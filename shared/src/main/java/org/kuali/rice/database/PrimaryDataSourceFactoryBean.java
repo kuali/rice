@@ -76,7 +76,7 @@ public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
 		if (this.transactionManager == null) {
 			throw new ConfigurationException("A transactionManager must be specified!");
 		}
-		return createDefaultDataSource(config, this.transactionManager);
+		throw new ConfigurationException("Failed to configure the Primary Data Source.");
 	}
 
 	protected DataSource createDataSource(Config config) throws Exception {
@@ -133,24 +133,6 @@ public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
 			}
 		}
 		return null;
-	}
-
-	protected DataSource createDefaultDataSource(Config config, TransactionManager transactionManager) throws Exception {
-		XAPoolDataSource dataSource = new XAPoolDataSource();
-		dataSource.setTransactionManager(transactionManager);
-
-		dataSource.setDriverClassName(getStringProperty(config, Config.DATASOURCE_DRIVER_NAME));
-		dataSource.setUrl(getStringProperty(config, Config.DATASOURCE_URL));
-		dataSource.setMaxSize(getIntProperty(config, Config.DATASOURCE_POOL_MAXSIZE));
-		dataSource.setMinSize(getIntProperty(config, Config.DATASOURCE_POOL_MINSIZE));
-		dataSource.setMaxWait(getIntProperty(config, Config.DATASOURCE_POOL_MAXWAIT));
-		dataSource.setValidationQuery(getStringProperty(config, Config.DATASOURCE_POOL_VALIDATION_QUERY));
-		dataSource.setUsername(getStringProperty(config, Config.DATASOURCE_USERNAME));
-		dataSource.setPassword(getStringProperty(config, Config.DATASOURCE_PASSWORD));
-
-		dataSource.afterPropertiesSet();
-
-		return dataSource;
 	}
 
 	protected void destroyInstance(Object instance) throws Exception {

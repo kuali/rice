@@ -18,21 +18,26 @@
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="properties" ref="configProperties" />
 	</bean>
+	
+	<bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init" destroy-method="close">
+	<property name="forceShutdown" value="true"/>
+	<property name="transactionTimeout" value="${transaction.timeout}"/>
+  </bean>
+  
+  <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+    <property name="transactionTimeout" value="${transaction.timeout}"/>
+  </bean>
 
-	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean" />
-
-	<bean id="dataSource" class="org.kuali.rice.database.XAPoolDataSource">
-		<property name="transactionManager" ref="jotm" />
-		<property name="driverClassName" value="${datasource.driver.name}" />
-		<property name="url" value="${datasource.url}" />
-		<property name="maxSize" value="${datasource.pool.maxSize}" />
-		<property name="minSize" value="${datasource.pool.minSize}" />
-		<property name="maxWait" value="${datasource.pool.maxWait}" />
-		<property name="validationQuery" value="${datasource.pool.validationQuery}" />
-		<property name="username" value="${datasource.username}" />
-		<property name="password" value="${datasource.password}" />
-	</bean>
-
+  <bean id="dataSource" class="com.atomikos.jdbc.nonxa.NonXADataSourceBean">
+  	<property name="driverClassName" value="${datasource.driver.name}"/>
+  	<property name="url" value="${datasource.url}"/>
+  	<property name="poolSize" value="${datasource.pool.maxSize}"/>
+  	<property name="connectionTimeout" value="${datasource.pool.maxWait}"/>
+  	<property name="validatingQuery" value="${datasource.pool.validationQuery}"/>
+  	<property name="testOnBorrow" value="true"/>
+  	<property name="user" value="${datasource.username}"/>
+  	<property name="password" value="${datasource.password}"/>
+  </bean>
 
 	<bean id="echoService" class="edu.iu.uis.eden.testclient2.EchoService2Impl" />
 	<bean id="chainedRequestService" class="edu.iu.uis.eden.testclient2.ChainedRequestService2Impl" />
@@ -44,8 +49,8 @@
 
 	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
 		<property name="dataSource" ref="dataSource" />
-		<property name="transactionManager" ref="jotm" />
-		<property name="userTransaction" ref="jotm" />
+		<property name="transactionManager" ref="atomikosTransactionManager" />
+		<property name="userTransaction" ref="atomikosUserTransaction" />
 		<property name="credentialsSourceFactory" ref="credentialsSourceFactory" />
 		<property name="rootConfig" ref="config" />
 		<property name="messageEntity" value="TestCl2" />

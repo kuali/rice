@@ -20,6 +20,7 @@ import java.util.Collection;
 
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
+import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
@@ -41,14 +42,14 @@ public interface ActionItemDAO {
 
     public void saveActionItem(ActionItem actionItem);
 
-    public Collection findByWorkflowUser(WorkflowUser workflowUser);
+    public Collection<ActionItem> findByWorkflowUser(WorkflowUser workflowUser);
 
-    public Collection findByRouteHeaderId(Long routeHeaderId);
+    public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId);
     
-    public Collection findByActionRequestId(Long actionRequestId);
+    public Collection<ActionItem> findByActionRequestId(Long actionRequestId);
 
-    public Collection findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId);
+    public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId);
     
-    public Collection findDelegators(WorkflowUser user, String delegationType) throws EdenUserNotFoundException;
+    public Collection<Recipient> findDelegators(WorkflowUser user, String delegationType) throws EdenUserNotFoundException;
     
 }

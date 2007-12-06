@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -294,4 +295,31 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
         this.delegationType = delegationType;
     }
     
+    public String toString() {
+        return new ToStringBuilder(this).append("actionItemId", actionItemId)
+                                        .append("workflowId", workflowId)
+                                        .append("actionItemId", actionItemId)
+                                        .append("workflowId", workflowId)
+                                        .append("dateAssigned", dateAssigned)
+                                        .append("actionRequestCd", actionRequestCd)
+                                        .append("actionRequestId", actionRequestId)
+                                        .append("routeHeaderId", routeHeaderId)
+                                        .append("workgroupId", workgroupId)
+                                        .append("docTitle", docTitle)
+                                        .append("docLabel", docLabel)
+                                        .append("docHandlerURL", docHandlerURL)
+                                        .append("lockVerNbr", lockVerNbr)
+                                        .append("docName", docName)
+                                        .append("responsibilityId", responsibilityId)
+                                        .append("rowStyleClass", rowStyleClass)
+                                        .append("roleName", roleName)
+                                        .append("delegatorWorkflowId", delegatorWorkflowId)
+                                        .append("delegatorWorkgroupId", delegatorWorkgroupId)
+                                        .append("dateAssignedString", dateAssignedString)
+                                        .append("actionToTake", actionToTake)
+                                        .append("delegationType", delegationType)
+                                        .append("actionItemIndex", actionItemIndex)
+                                        .append("customActions", customActions)
+                                        .toString();
+    }
 }

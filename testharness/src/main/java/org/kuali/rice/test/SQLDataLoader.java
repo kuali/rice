@@ -15,13 +15,17 @@ package org.kuali.rice.test;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
-
-import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.jdbc.core.ConnectionCallback;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 public class SQLDataLoader {
 
@@ -43,7 +47,7 @@ public class SQLDataLoader {
 	this.seperatorChar = seperatorChar;
 	this.statement = null;
     }
-
+    
     public void runSql() throws Exception {
 	String[] sqlStatements = null;
 	if (statement == null) {
@@ -52,30 +56,30 @@ public class SQLDataLoader {
 	} else {
 	    sqlStatements = new String[]{statement};
 	}
-	Connection conn = ((DataSource) TestHarnessServiceLocator.getDataSource()).getConnection();
-	Statement statement = conn.createStatement();
-	LOG.info("################################");
-	LOG.info("#");
-	LOG.info("#");
-	for (String sqlStatement : sqlStatements) {
-	    if (StringUtils.isNotBlank(sqlStatement)) {
-		LOG.info("# Executing sql statement ->" + sqlStatement + "<-");
-		statement.execute(sqlStatement);
-	    }
-	}
-	LOG.info("#");
-	LOG.info("#");
-	LOG.info("################################");
-	try {
-	    statement.close();
-	} catch (Exception e) {
-	    LOG.error(e);
-	}
-	try {
-	    conn.close();
-	} catch (Exception e) {
-	    LOG.error(e);
-	}
+	final String[] finalSqlStatements = sqlStatements;
+	new TransactionTemplate(TestHarnessServiceLocator.getJtaTransactionManager()).execute(new TransactionCallback() {
+        public Object doInTransaction(TransactionStatus status) {
+        return new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute(new ConnectionCallback() {
+            public Object doInConnection(Connection connection) throws SQLException {
+            Statement statement = connection.createStatement();
+            LOG.info("################################");
+            LOG.info("#");
+            LOG.info("#");
+            for (String sqlStatement : finalSqlStatements) {
+                if (StringUtils.isNotBlank(sqlStatement)) {
+                LOG.info("# Executing sql statement ->" + sqlStatement + "<-");
+                statement.execute(sqlStatement);    
+                }            
+            }
+            LOG.info("#");
+            LOG.info("#");
+            LOG.info("################################");
+            statement.close();
+            return null;
+            }
+        });
+        }
+    });	
     }
 
     private String getContentsAsString(String fileLoc) throws Exception {

@@ -32,7 +32,6 @@ import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.doctype.DocumentType;
-import edu.iu.uis.eden.doctype.dao.DocumentTypeDAO;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.postprocessor.DefaultPostProcessor;
 import edu.iu.uis.eden.postprocessor.ProcessDocReport;
@@ -162,7 +161,8 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
     	DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(ParallelSetup.DOCUMENT_TYPE_NAME);
     	docType.setPostProcessorName(ReturnToPreviousPostProcessor.class.getName());
     	//side step the normal validation of the service
-    	((DocumentTypeDAO)KEWServiceLocator.getService("enDocumentTypeDAO")).save(docType);
+    	//((DocumentTypeDAO)KEWServiceLocator.getService("enDocumentTypeDAO")).save(docType);
+    	KEWServiceLocator.getDocumentTypeService().save(docType);
     	
     	// route a document
         WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);

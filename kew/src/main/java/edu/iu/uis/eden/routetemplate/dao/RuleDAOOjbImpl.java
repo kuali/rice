@@ -243,24 +243,20 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         if (workgroupId != null) {
             crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupId.toString()));
         }
-        boolean searchUser = false;
-        boolean searchUserInWorkgroups = false;
-        if ("workgroup".equals(workflowIdDirective)) {
-            searchUserInWorkgroups = true;
-        } else if ("both".equals(workflowIdDirective)) {
-            searchUser = true;
-            searchUserInWorkgroups = true;
-        } else {
-            searchUser = true;
-        }
-        Criteria orCriteria = new Criteria();
-        if (!Utilities.isEmpty(workflowId) && searchUser) {
-            Criteria userCrit = new Criteria();
-            userCrit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workflowId));
-            orCriteria.addOrCriteria(userCrit);
+        Set<Long> workgroupIds = new HashSet<Long>();
+        Boolean searchUser = Boolean.FALSE;
+        Boolean searchUserInWorkgroups = Boolean.FALSE;
+        if (!Utilities.isEmpty(workflowIdDirective)) {
+            if ("workgroup".equals(workflowIdDirective)) {
+                searchUserInWorkgroups = Boolean.TRUE;
+            } else if ("both".equals(workflowIdDirective)) {
+                searchUser = Boolean.TRUE;
+                searchUserInWorkgroups = Boolean.TRUE;
+            } else {
+                searchUser = Boolean.TRUE;
+            }
         }
         if (!Utilities.isEmpty(workflowId) && searchUserInWorkgroups) {
-            Criteria workgroupCrit = new Criteria();
             WorkflowUser user = null;
             try {
         	user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
@@ -270,58 +266,27 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
             if (user == null) {
         	throw new WorkflowRuntimeException("Failed to locate user for the given workflow id: " + workflowId);
             }
-            Set<Long> workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user);
-            workgroupCrit.addIn("responsibilities.ruleBaseValuesId", getWorkgroupResponsibilitySubQuery(workgroupIds));
-            orCriteria.addOrCriteria(workgroupCrit);
+            workgroupIds = KEWServiceLocator.getWorkgroupService().getUsersGroupIds(user);
         }
-        if (!orCriteria.isEmpty()) {
-            crit.addAndCriteria(orCriteria);
-        }
-        if (!Utilities.isEmpty(roleName)) {
-            crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(roleName));
-        }
+        crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, roleName, searchUser, searchUserInWorkgroups));
 
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit, true));
 	}
 
     public List search(String docTypeName, Long ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, String roleName, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection actionRequestCodes) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
-//        if (!Utilities.isEmpty(roleName)) {
-//            crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(roleName));
-//        }
-//        if ( (actionRequestCodes != null) && (!actionRequestCodes.isEmpty()) ) {
-//            crit.addIn("responsibilities.actionRequestedCd", actionRequestCodes);
-//        }
-//        // user id -- no workgroups
-//        // user id -- workgroups
-//        // no user id -- workgroups
-//        Criteria userResponsibilityCrit = null;
-//        if ( (!Utilities.isEmpty(workflowId)) &&
-//             ( (workgroupIds != null) && (!workgroupIds.isEmpty()) ) ) {
-//            // have user id and at least one workgroup id
-//            userResponsibilityCrit = new Criteria();
-//            userResponsibilityCrit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workflowId));
-//            Criteria workgroupCrit = this.getWorkgroupOrCriteria(workgroupIds);
-//            userResponsibilityCrit.addOrCriteria(workgroupCrit);
-//        } else if ( (!Utilities.isEmpty(workflowId)) &&
-//                    ( (workgroupIds == null) || (workgroupIds.isEmpty()) ) ) {
-//            // have user id and no workgroup ids
-//            userResponsibilityCrit = new Criteria();
-//            userResponsibilityCrit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workflowId));
-//        } else if ( (Utilities.isEmpty(workflowId)) &&
-//                    ( (workgroupIds != null) && (!workgroupIds.isEmpty()) ) ) {
-//            // have no user id and at least one workgroup id
-//            userResponsibilityCrit = this.getWorkgroupOrCriteria(workgroupIds);
-//        }
-//        if (userResponsibilityCrit != null) {
-//            crit.addAndCriteria(userResponsibilityCrit);
-//        }
-        crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, roleName, actionRequestCodes));
-
+        crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, roleName, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty())));
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit, true));
     }
 
-    private ReportQueryByCriteria getResponsibilitySubQuery(Collection<String> workgroupIds, String workflowId, String roleName, Collection actionRequestCodes) {
+    private ReportQueryByCriteria getResponsibilitySubQuery(Set<Long> workgroupIds, String workflowId, String roleName, Boolean searchUser, Boolean searchUserInWorkgroups) {
+        Collection<String> workgroupIdStrings = new ArrayList<String>();
+        for (Long workgroupId : workgroupIds) {
+            workgroupIdStrings.add(workgroupId.toString());
+        }
+        return getResponsibilitySubQuery(workgroupIdStrings,workflowId,roleName,new ArrayList<String>(), searchUser, searchUserInWorkgroups);
+    }
+    private ReportQueryByCriteria getResponsibilitySubQuery(Collection<String> workgroupIds, String workflowId, String roleName, Collection actionRequestCodes, Boolean searchUser, Boolean searchUserInWorkgroups) {
         Criteria responsibilityCrit = new Criteria();
         if ( (actionRequestCodes != null) && (!actionRequestCodes.isEmpty()) ) {
             responsibilityCrit.addIn("actionRequestedCd", actionRequestCodes);
@@ -336,11 +301,17 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         } else {
             if (!Utilities.isEmpty(workflowId)) {
                 // workflow user id exists
-                ruleResponsibilityNameCrit = new Criteria();
-                ruleResponsibilityNameCrit.addLike("ruleResponsibilityName", workflowId);
-                ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
-                if ( (workgroupIds != null) && (!workgroupIds.isEmpty()) ) {
-                    // at least one workgroup id exists
+                if (searchUser != null && searchUser) {
+                    // searching user wishes to search for rules specific to user
+                    ruleResponsibilityNameCrit = new Criteria();
+                    ruleResponsibilityNameCrit.addLike("ruleResponsibilityName", workflowId);
+                    ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", EdenConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+                }
+                if ( (searchUserInWorkgroups != null && searchUserInWorkgroups) && (workgroupIds != null) && (!workgroupIds.isEmpty()) ) {
+                    // at least one workgroup id exists and user wishes to search on workgroups
+                    if (ruleResponsibilityNameCrit == null) {
+                        ruleResponsibilityNameCrit = new Criteria();
+                    }
                     Criteria workgroupCrit = new Criteria();
                     workgroupCrit.addIn("ruleResponsibilityName", workgroupIds);
                     workgroupCrit.addEqualTo("ruleResponsibilityType", EdenConstants.RULE_RESPONSIBILITY_WORKGROUP_ID);

@@ -39,6 +39,7 @@ import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.apache.struts.util.ModuleUtils;
+import org.kuali.RiceConstants;
 import org.kuali.core.exceptions.FileUploadLimitExceededException;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.util.GlobalVariables;
@@ -105,13 +106,6 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     // end Kuali Foundation modification
 
  
-    /**
-     * This is for sessiondocument implementation
-     * Overide this method in KualiDocumentFormBase
-     */
-    public void restoreFromSession(HttpServletRequest request) {
-        // do nothing
-    }
 
     /**
      * Populates the form with values from the current request. Uses instances of Formatter to convert strings to the Java types of
@@ -172,13 +166,21 @@ public class PojoFormBase extends ActionForm implements PojoForm {
                         }
                     }
                 }
-                restoreFromSession(request);
+                //restoreFromSession(request);
             }
             catch (ServletException e) {
                 throw new ValidationException("unable to handle multipart request " + e.getMessage());
             }
         }
 
+        if (RiceConstants.SESSION_SCOPE.equalsIgnoreCase(request.getParameter(RiceConstants.DOCUMENT_WEB_SCOPE)) && ("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data"))) {
+            Map fileElements = (HashMap)request.getAttribute("fileElements");
+            Enumeration names = Collections.enumeration(fileElements.keySet());
+            while (names.hasMoreElements()) {
+                String name = (String) names.nextElement();
+                params.put(name, fileElements.get(name));
+            }
+        }
 
         postprocessRequestParameters(params);
 

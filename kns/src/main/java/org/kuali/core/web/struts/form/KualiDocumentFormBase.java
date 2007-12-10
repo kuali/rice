@@ -595,41 +595,17 @@ public abstract class KualiDocumentFormBase extends KualiForm {
         this.formKey = formKey;
     }
 
-    /**
-     * 
-     * This overridden method ...
-     * 
-     * @see org.kuali.core.web.struts.pojo.PojoFormBase#restoreFromSession(javax.servlet.http.HttpServletRequest)
+    /* Reset method
+     * This is initially created for session document implementation
+     * @param mapping
+     * @param request
      */
-    @Override
-    public void restoreFromSession(HttpServletRequest request) {
-	super.restoreFromSession(request);
-        // test sessiondoc issue
+    public void reset(ActionMapping mapping, HttpServletRequest request) {
+        this.setMethodToCall(null);
+        this.setRefreshCaller(null);
+        this.setAnchor(null);
+        this.setCurrentTabIndex(0);
         
-    	UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
-    	String docFormKey = request.getParameter(RiceConstants.DOC_FORM_KEY);
-	String methodToCall = request.getParameter(RiceConstants.DISPATCH_REQUEST_PARAMETER);
-	String refreshCaller = request.getParameter(RiceConstants.REFRESH_CALLER);
-	String searchListRequestKey = request.getParameter(RiceConstants.SEARCH_LIST_REQUEST_KEY);
-	String documentWebScope = request.getParameter(RiceConstants.DOCUMENT_WEB_SCOPE);
- 
-	
-	if (StringUtils.isNotBlank(docFormKey)
-		&& RiceConstants.SESSION_SCOPE
-			.equalsIgnoreCase(documentWebScope)) {
-
-	    // check for search result storage and clear
-	    GlobalVariables.getUserSession().removeObjectsByPrefix(RiceConstants.SEARCH_LIST_KEY_PREFIX);
-
-	    if (userSession.retrieveObject(docFormKey) != null) {
-		ActionForm form = (ActionForm) userSession.retrieveObject(docFormKey);
-		// popup new window should not remove the saved formobj
-		//if ("POST".equalsIgnoreCase(request.getMethod())) {
-		    //userSession.removeObject(docFormKey);
-		//}
-		this.setDocument(((KualiDocumentFormBase)form).getDocument());
-	    }
-	}
-
     }
+
 }

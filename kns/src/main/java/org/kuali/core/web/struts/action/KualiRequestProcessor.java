@@ -32,7 +32,6 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionServletWrapper;
 import org.apache.struts.action.InvalidCancelException;
 import org.apache.struts.action.RequestProcessor;
 import org.apache.struts.config.ForwardConfig;
@@ -50,8 +49,8 @@ import org.kuali.core.util.ErrorContainer;
 import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.ExceptionUtils;
 import org.kuali.core.util.GlobalVariables;
-import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.Timer;
+import org.kuali.core.util.WebUtils;
 import org.kuali.core.web.struts.pojo.PojoForm;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.Core;
@@ -282,7 +281,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 	    if (userSession.retrieveObject(docFormKey) != null) {
 		ActionForm form = (ActionForm) userSession.retrieveObject(docFormKey);
 		request.setAttribute(mapping.getAttribute(), form);
-		//if (!("GET".equalsIgnoreCase(request.getMethod()) && RiceConstants.SESSION_SCOPE
 		if (!RiceConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
 		    userSession.removeObject(docFormKey);
 		}
@@ -290,6 +288,27 @@ public class KualiRequestProcessor extends RequestProcessor {
 		return form;
 	    }
 	}
+
+	// for sessiondocument with multipart request
+	String contentType = request.getContentType();
+    String method = request.getMethod(); 
+
+    if (("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data")) ) {            
+    	Map params = WebUtils.getMultipartParameters(request, mapping);
+        docFormKey = request.getParameter(RiceConstants.DOC_FORM_KEY);
+        documentWebScope = request.getParameter(RiceConstants.DOCUMENT_WEB_SCOPE);
+
+        if (StringUtils.isNotBlank(docFormKey)
+            &&  RiceConstants.SESSION_SCOPE
+                .equalsIgnoreCase(documentWebScope)) {
+            if (userSession.retrieveObject(docFormKey) != null) {
+            ActionForm form = (ActionForm) userSession.retrieveObject(docFormKey);
+            request.setAttribute(mapping.getAttribute(), form);
+            return form;
+            }
+        }
+    }
+    
 	t0.log();
 	return super.processActionForm(request, response, mapping);
     }

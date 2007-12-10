@@ -138,26 +138,6 @@ public class KualiDocumentActionBase extends KualiAction {
                 throw e;
             }
         }
-        catch (Exception oe) {
-        // exception from 'save' document.  What about other exception from other actions?
-            if (oe instanceof ValidationException || oe instanceof WorkflowException) {
-                // populates authorization-related fields in KualiDocumentFormBase instances, which are derived from
-                // information which is contained in the form but which may be unavailable until this point
-                if (form instanceof KualiDocumentFormBase) {
-                    KualiDocumentFormBase formBase = (KualiDocumentFormBase) form;
-                    Document document = formBase.getDocument();
-                    DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
-                    formBase.populateAuthorizationFields(documentAuthorizer);
-                    UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
-                    if (document instanceof SessionDocument && (StringUtils.isBlank(formBase.getFormKey()) || userSession.retrieveObject(formBase.getFormKey()) == null)) {
-                        // generate doc form key here if it does not exist
-                        formBase.setFormKey(GlobalVariables.getUserSession().addObject(form));
-                    }
-                }
-    
-    	  }
-          throw oe;
-        }
 
         // populates authorization-related fields in KualiDocumentFormBase instances, which are derived from
         // information which is contained in the form but which may be unavailable until this point
@@ -167,9 +147,13 @@ public class KualiDocumentActionBase extends KualiAction {
             DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
             formBase.populateAuthorizationFields(documentAuthorizer);
             UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
-            if (document instanceof SessionDocument && (StringUtils.isBlank(formBase.getFormKey()) || userSession.retrieveObject(formBase.getFormKey()) == null)) {
+            if (document instanceof SessionDocument) {
+                if (StringUtils.isBlank(formBase.getFormKey()) || userSession.retrieveObject(formBase.getFormKey()) == null) {
                 // generate doc form key here if it does not exist
-        	formBase.setFormKey(GlobalVariables.getUserSession().addObject(form));
+                    formBase.setFormKey(GlobalVariables.getUserSession().addObject(form));
+                //}  else {
+                   // GlobalVariables.getUserSession().addObject(formBase.getFormKey(),form);                    
+                }
             }
             // set returnToActionList flag, if needed
             if ("displayActionListView".equals(formBase.getCommand())) {
@@ -409,13 +393,14 @@ public class KualiDocumentActionBase extends KualiAction {
         ActionForward actionForward = docHandler(mapping, form, request, response);
 
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_RELOADED);
-        if (form instanceof KualiDocumentFormBase) {
-            UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
-            // force to recreate formkey in execute method
-            if (document instanceof SessionDocument && userSession.retrieveObject(kualiDocumentFormBase.getFormKey()) != null) {
-        	userSession.removeObject(kualiDocumentFormBase.getFormKey());;
-            }
-        }
+        // TODO: remove this when further testing passed
+//        if (form instanceof KualiDocumentFormBase) {
+//            UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
+//            // force to recreate formkey in execute method
+//            if (document instanceof SessionDocument && userSession.retrieveObject(kualiDocumentFormBase.getFormKey()) != null) {
+//        	userSession.removeObject(kualiDocumentFormBase.getFormKey());;
+//            }
+//        }
 
         return actionForward;
     }
@@ -441,13 +426,14 @@ public class KualiDocumentActionBase extends KualiAction {
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SAVED);
         kualiDocumentFormBase.setAnnotation("");
 
-        if (form instanceof KualiDocumentFormBase) {
-            UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
-            // force to recreate formkey in execute method
-            if (document instanceof SessionDocument && userSession.retrieveObject(kualiDocumentFormBase.getFormKey()) != null) {
-        	userSession.removeObject(kualiDocumentFormBase.getFormKey());;
-            }
-        }
+        // TODO: remove this when further testing passed
+//        if (form instanceof KualiDocumentFormBase) {
+//            UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
+//            // force to recreate formkey in execute method
+//            if (document instanceof SessionDocument && userSession.retrieveObject(kualiDocumentFormBase.getFormKey()) != null) {
+//        	userSession.removeObject(kualiDocumentFormBase.getFormKey());;
+//            }
+//        }
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }

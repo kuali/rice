@@ -16,7 +16,7 @@
 package org.kuali.core.document;
 
 /**
- * This is a description of what this class does - shyu don't forget to fill this in. 
+ * This is a marker interface for implementing session in document. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

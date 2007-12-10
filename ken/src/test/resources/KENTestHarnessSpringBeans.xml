@@ -29,6 +29,7 @@
   </bean>
 
   <bean id="dataSource" class="com.atomikos.jdbc.nonxa.NonXADataSourceBean">
+  	<property name="uniqueResourceName" value="kenDataSource"/>
   	<property name="driverClassName" value="${datasource.driver.name}"/>
   	<property name="url" value="${datasource.url}"/>
   	<property name="poolSize" value="${datasource.pool.maxSize}"/>

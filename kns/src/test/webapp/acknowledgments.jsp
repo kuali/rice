@@ -22,6 +22,8 @@ Copyright 2005-2007  The Kuali Foundation.  All rights reserved.  Kuali is licen
 
 <h3><a name="Acknowledgements-ThirdPartyContributions"></a>Third Party Contributions</h3>
 
+<p>Portions of Kuali were developed by Indiana University, Cornell University, University of Hawaii, Michigan State University, University of Arizona, San Joaquin Delta Community College, University of California, Rutgers University, University of Southern California, and <a href="http://www.rsmart.com/">The rSmart Group.</a> (<span class="nobr"><a href="http://www.kuali.org/" title="kuali" rel="nofollow">http://www.kuali.org/</a></span>).</p>
+
 <p>This product includes software developed by the Apache Software Foundation (<span class="nobr"><a href="http://www.apache.org/">http://www.apache.org/</a></span>).</p>
 
 <p>This product includes software developed by ANTLR (<span class="nobr"><a href="http://www.antlr.org/">http://www.antlr.org/</a></span>).</p>
@@ -36,11 +38,11 @@ Copyright 2005-2007  The Kuali Foundation.  All rights reserved.  Kuali is licen
 
 <p>This product includes software developed by the Indiana University Extreme! Lab (<span class="nobr"><a href="http://www.extreme.indiana.edu/">http://www.extreme.indiana.edu/</a></span>).</p>
 
+<p>This product includes software developed by the SAXPath Project (<span class="nobr"><a href="http://www.saxpath.org/">http://www.saxpath.org/</a></span>).</p>
+
 <p>This product includes software developed by the JA-SIG Collaborative (<span class="nobr"><a href="http://www.ja-sig.org/">http://www.ja-sig.org/</a></span>).</p>
 
 <p>This product includes software developed by Gargoyle Software Inc. (<span class="nobr"><a href="http://www.GargoyleSoftware.com/">http://www.GargoyleSoftware.com/</a></span>).</p>
-
-<p>This product includes software developed by the MX4J project (<span class="nobr"><a href="http://mx4j.sourceforge.net/">http://mx4j.sourceforge.net/</a></span>).</p>
 
 <p>This product includes software developed by Andy Clark. (<span class="nobr"><a href="http://people.apache.org/~andyc/neko/doc/html/">http://people.apache.org/~andyc/neko/doc/html/</a></span>)</p>
 
@@ -60,6 +62,10 @@ Copyright 2005-2007  The Kuali Foundation.  All rights reserved.  Kuali is licen
 
 <p>Portions Copyright (c) 2001-2006 Sun Microsystems, Inc. All Rights Reserved.</p>
 
+<p>Portions Copyright (c) 1995-2006 International Business Machines Corporation and others. All Rights Reserved. </p>
+
+<p>Portions Copyright (c) 2002, 2003 BEA Systems, Inc. All Rights Reserved. </p>
+
 <p>Portions Copyright (c) 2002, 2003 Mihai Bazon. All Rights Reserved.  Licensed under GNU Lesser General Public License (<span class="nobr"><a href="http://www.opensource.org/licenses/lgpl-license.php">http://www.opensource.org/licenses/lgpl-license.php</a></span>).</p>
 
 <p>Portions Copyright (c) 2005 Envoi Solutions LLC. All Rights Reserved. (<span class="nobr"><a href="http://xfire.codehaus.org/">http://xfire.codehaus.org/</a></span>)</p>
@@ -73,6 +79,8 @@ Copyright 2005-2007  The Kuali Foundation.  All rights reserved.  Kuali is licen
 <p>Portions Copyright (c) 1999-2004 Bull S. A. All Rights Reserved.</p>
 
 <p>Portions Copyright (c) 2003-2005 Joe Walnes. All Rights Reserved. (<span class="nobr"><a href="http://xstream.codehaus.org/">http://xstream.codehaus.org/</a></span>)</p>
+
+<p>Portions Copyright (c) 2002-2005 Jonas Bon?r, Alexandre Vasseur. All Rights Reserved. </p>
 
 <p>Portions Copyright (c) 2002, 2004 Elliotte Rusty Harold. All Rights Reserved. </p>
 

@@ -25,16 +25,26 @@
       <moduleSets>
         <moduleSet>
           <includes>
-            <!--<include>org.kuali.rice:*</include>-->
-            <include>org.kuali.rice:rice-standalone</include>
-            <include>org.kuali.rice:rice-core</include>
-            <include>org.kuali.rice:rice-shared</include>
-            <include>org.kuali.rice:rice-ksb</include>
-            <include>org.kuali.rice:rice-kns</include>
-            <include>org.kuali.rice:rice-kew</include>
-            <include>org.kuali.rice:rice-ken</include>
+          	<include>org.kuali.rice:*</include>
           </includes>
+          <!-- For some reason, this exclude is not working.  Not a big deal but it's annoying. -->
+          <excludes>
+            <exclude>org.kuali.rice:rice-testharness</exclude>
+          </excludes>
           <binaries>
+            <dependencySets>
+    			<dependencySet>
+    			    <useTransitiveFiltering>true</useTransitiveFiltering>
+      				<excludes>
+        				<exclude>junit:*</exclude>
+        				<exclude>org.mortbay.jetty:*</exclude>
+        				<exclude>tomcat:*</exclude>
+        				<exclude>com.oracle:*</exclude>
+        				<exclude>*:servlet-api</exclude>
+        				<exclude>*:jsp-api</exclude>
+      				</excludes>
+    			</dependencySet>
+			</dependencySets>
             <unpack>false</unpack>
             <outputDirectory>WEB-INF/lib</outputDirectory>
           </binaries>

@@ -123,8 +123,10 @@
 					</plugin>
                     <plugin>
                       <artifactId>maven-assembly-plugin</artifactId>
+                      <version>2.2-beta-2.nrm.1</version>
                       <configuration>
                         <descriptors>
+                          <descriptor>core/src/main/assembly/project.xml</descriptor>
                           <descriptor>standalone/src/main/assembly/standalone.xml</descriptor>
                         </descriptors>
                       </configuration>
@@ -171,6 +173,14 @@
 			<url>http://julien.dubois.free.fr/maven2/</url>
 		</repository>
 	</repositories>
+	
+	<!-- Using the following plugin repository gives us a copy of the Maven assembly plugin which actually works -->
+	<pluginRepositories>
+		<pluginRepository>
+			<id>googlecode</id>
+			<url>http://mavenversionedsnapshots.googlecode.com/svn/trunk/</url>
+		</pluginRepository>
+	</pluginRepositories>
 	<dependencies>
 
 		<dependency>

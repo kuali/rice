@@ -160,24 +160,29 @@ public class XmlPollerServiceImpl implements XmlPollerService {
             if (failed.contains(container)) {
                 // some docs must have failed, move the whole
                 // container to the failed dir
-                LOG.error("Moving " + container.getFile() + " to problem dir.");
-                if ((!failedDir.isDirectory() && !failedDir.mkdirs())
-                    || !moveFile(failedDir, container.getFile())) {
-                    LOG.error("Could not move: " + container.getFile());
-                    recordUnmovablePendingFile(container.getFile(), LOAD_TIME);         
+                if (container.getFile() != null) {
+                    LOG.error("Moving " + container.getFile() + " to problem dir.");
+                    if ((!failedDir.isDirectory() && !failedDir.mkdirs())
+                        || !moveFile(failedDir, container.getFile())) {
+                        LOG.error("Could not move: " + container.getFile());
+                        recordUnmovablePendingFile(container.getFile(), LOAD_TIME);         
+                    }
                 }
             } else {
-                LOG.info("Moving " + container.getFile() + " to loaded dir.");
-                if((!completeDir.isDirectory() && !completeDir.mkdirs())
-                    || !moveFile(completeDir, container.getFile())){
-                    LOG.error("Could not move: " + container.getFile());
-                    recordUnmovablePendingFile(container.getFile(), LOAD_TIME);         
+                if (container.getFile() != null) {
+                    LOG.info("Moving " + container.getFile() + " to loaded dir.");
+                    if((!completeDir.isDirectory() && !completeDir.mkdirs())
+                        || !moveFile(completeDir, container.getFile())){
+                        LOG.error("Could not move: " + container.getFile());
+                        recordUnmovablePendingFile(container.getFile(), LOAD_TIME);         
+                    }
                 }
             }
         }
     }
 
     private boolean inPendingMoveFailedArchive(File xmlDataFile){
+        if (xmlDataFile == null) return false;
         BufferedReader inFile = null;
         File movesFailedFile = new File(getXmlPendingDir(), PENDING_MOVE_FAILED_ARCHIVE_FILE);
         if (!movesFailedFile.isFile()) return false;

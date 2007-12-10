@@ -45,6 +45,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.batch.FileXmlDocCollection;
+import edu.iu.uis.eden.batch.StreamXmlDocCollection;
 import edu.iu.uis.eden.batch.XmlDoc;
 import edu.iu.uis.eden.batch.XmlDocCollection;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
@@ -293,6 +294,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 		try {
 			List<XmlDocCollection> xmlFiles = new ArrayList<XmlDocCollection>();
 			XmlDocCollection docCollection = getFileXmlDocCollection(xmlStream, "WorkflowUnitTestTemp");
+			//XmlDocCollection docCollection = new StreamXmlDocCollection(xmlStream);
 			xmlFiles.add(docCollection);
 			KEWServiceLocator.getXmlIngesterService().ingest(xmlFiles);
 			for (Iterator iterator = docCollection.getXmlDocs().iterator(); iterator.hasNext();) {

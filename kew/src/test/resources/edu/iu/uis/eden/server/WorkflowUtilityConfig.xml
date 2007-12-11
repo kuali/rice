@@ -2,6 +2,54 @@
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
+			<name>SimulationTestDocumenType_IgnorePrevious</name>
+			<description>SimulationTestDocumenType_IgnorePrevious</description>
+			<label>SimulationTestDocumenType_IgnorePrevious</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="WorkflowDocument" />
+					<requests name="WorkflowDocument" nextNode="WorkflowDocument2" />
+					<requests name="WorkflowDocument2" nextNode="WorkflowDocument3" />
+					<requests name="WorkflowDocument3" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="WorkflowDocument">
+					<activationType>P</activationType>
+					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+				</requests>
+				<requests name="WorkflowDocument2">
+					<activationType>P</activationType>
+					<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+					<finalApproval>false</finalApproval>
+				</requests>
+				<requests name="WorkflowDocument3">
+					<activationType>P</activationType>
+					<ruleTemplate>WorkflowDocument3Template</ruleTemplate>
+					<finalApproval>true</finalApproval>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
 			<name>SeqDocType</name>
 			<description>SeqDocType</description>
 			<label>SeqDocType</label>
@@ -184,6 +232,45 @@
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocumentTemplate Rule 2</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>rkirkend</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
+			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocument2Template Rule 1</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>rkirkend</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
+			<ruleTemplate>WorkflowDocument3Template</ruleTemplate>
+			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocument3Template Rule 1</description>
+			<ignorePrevious>true</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>rkirkend</user>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>

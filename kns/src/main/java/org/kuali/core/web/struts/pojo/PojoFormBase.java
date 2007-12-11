@@ -45,6 +45,7 @@ import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.Timer;
+import org.kuali.core.util.WebUtils;
 import org.kuali.core.web.format.EncryptionFormatter;
 import org.kuali.core.web.format.FormatException;
 import org.kuali.core.web.format.Formatter;
@@ -123,54 +124,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
         String method = request.getMethod();
         // handle multipart requests
         if ((params == null || params.isEmpty()) && ("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data")) ) {            
-            params = new HashMap();
-
-            // Get the ActionServletWrapper from the form bean
-            ActionServletWrapper servletWrapper = getServletWrapper();
-            boolean isMultipart = false;
-            try {
-                // Obtain a MultipartRequestHandler
-                MultipartRequestHandler multipartHandler = getMultipartHandler(request);
-
-                if (multipartHandler != null) {
-                    isMultipart = true;
-                    // Set servlet and mapping info
-                    servletWrapper.setServletFor(multipartHandler);
-                    multipartHandler.setMapping((ActionMapping) request.getAttribute(Globals.MAPPING_KEY));
-                    // Initialize multipart request class handler
-                    multipartHandler.handleRequest(request);
-                    // stop here if the maximum length has been exceeded
-                    Boolean maxLengthExceeded = (Boolean) request.getAttribute(MultipartRequestHandler.ATTRIBUTE_MAX_LENGTH_EXCEEDED);
-                    if ((maxLengthExceeded != null) && (maxLengthExceeded.booleanValue())) {
-                        throw new FileUploadLimitExceededException("");
-                    }
-                    // retrieve form values and put into properties
-                    Map multipartParameters = getAllParametersForMultipartRequest(request, multipartHandler);
-                    Enumeration names = Collections.enumeration(multipartParameters.keySet());
-
-                    while (names.hasMoreElements()) {
-                        String name = (String) names.nextElement();
-                        String stripped = name;
-                        Object parameterValue = null;
-                        if (isMultipart) {
-                            parameterValue = multipartParameters.get(name);
-                        }
-                        else {
-                            parameterValue = request.getParameterValues(name);
-                        }
-
-                        // Populate parameters, except "standard" struts attributes
-                        // such as 'org.apache.struts.action.CANCEL'
-                        if (!(stripped.startsWith("org.apache.struts."))) {
-                            params.put(name, parameterValue);
-                        }
-                    }
-                }
-                //restoreFromSession(request);
-            }
-            catch (ServletException e) {
-                throw new ValidationException("unable to handle multipart request " + e.getMessage());
-            }
+            params = WebUtils.getMultipartParameters(request, getServletWrapper());
         }
 
         if (RiceConstants.SESSION_SCOPE.equalsIgnoreCase(request.getParameter(RiceConstants.DOCUMENT_WEB_SCOPE)) && ("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data"))) {
@@ -291,117 +245,6 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     }
     // end Kuali Foundation modification
 
-    // TODO: refactor, cleanup
-    /**
-     * <p>
-     * Try to locate a multipart request handler for this request. First, look for a mapping-specific handler stored for us under an
-     * attribute. If one is not present, use the global multipart handler, if there is one.
-     * </p>
-     *
-     * @param request The HTTP request for which the multipart handler should be found.
-     * @return the multipart handler to use, or null if none is found.
-     *
-     * @exception ServletException if any exception is thrown while attempting to locate the multipart handler.
-     */
-    private static MultipartRequestHandler getMultipartHandler(HttpServletRequest request) throws ServletException {
-        Timer t0 = new Timer("PojoFormBase.getMultipartHandler");
-
-        MultipartRequestHandler multipartHandler = null;
-        String multipartClass = (String) request.getAttribute(Globals.MULTIPART_KEY);
-        request.removeAttribute(Globals.MULTIPART_KEY);
-
-        // Try to initialize the mapping specific request handler
-        if (multipartClass != null) {
-            try {
-                multipartHandler = (MultipartRequestHandler) Thread.currentThread().getContextClassLoader().loadClass(multipartClass).newInstance();
-            }
-            catch (ClassNotFoundException cnfe) {
-                LOG.error("MultipartRequestHandler class \"" + multipartClass + "\" in mapping class not found, " + "defaulting to global multipart class");
-            }
-            catch (InstantiationException ie) {
-                LOG.error("InstantiationException when instantiating " + "MultipartRequestHandler \"" + multipartClass + "\", " + "defaulting to global multipart class, exception: " + ie.getMessage());
-            }
-            catch (IllegalAccessException iae) {
-                LOG.error("IllegalAccessException when instantiating " + "MultipartRequestHandler \"" + multipartClass + "\", " + "defaulting to global multipart class, exception: " + iae.getMessage());
-            }
-
-            if (multipartHandler != null) {
-                t0.log();
-                return multipartHandler;
-            }
-        }
-
-        ModuleConfig moduleConfig = ModuleUtils.getInstance().getModuleConfig(request);
-
-        multipartClass = moduleConfig.getControllerConfig().getMultipartClass();
-
-        // Try to initialize the global request handler
-        if (multipartClass != null) {
-            try {
-                multipartHandler = (MultipartRequestHandler) Thread.currentThread().getContextClassLoader().loadClass(multipartClass).newInstance();
-
-            }
-            catch (ClassNotFoundException cnfe) {
-                throw new ServletException("Cannot find multipart class \"" + multipartClass + "\"" + ", exception: " + cnfe.getMessage());
-
-            }
-            catch (InstantiationException ie) {
-                throw new ServletException("InstantiationException when instantiating " + "multipart class \"" + multipartClass + "\", exception: " + ie.getMessage());
-
-            }
-            catch (IllegalAccessException iae) {
-                throw new ServletException("IllegalAccessException when instantiating " + "multipart class \"" + multipartClass + "\", exception: " + iae.getMessage());
-            }
-
-            if (multipartHandler != null) {
-                t0.log();
-                return multipartHandler;
-            }
-        }
-
-        t0.log();
-        return multipartHandler;
-    }
-
-	// begin Kuali Foundation modification
-    /**
-     * <p>
-     * Create a <code>Map</code> containing all of the parameters supplied for a multipart request, keyed by parameter name. In
-     * addition to text and file elements from the multipart body, query string parameters are included as well.
-     * </p>
-     *
-     * @param request The (wrapped) HTTP request whose parameters are to be added to the map.
-     * @param multipartHandler The multipart handler used to parse the request.
-     *
-     * @return the map containing all parameters for this multipart request.
-     */
-    private static Map getAllParametersForMultipartRequest(HttpServletRequest request, MultipartRequestHandler multipartHandler) {
-        Timer t0 = new Timer("PojoFormBase.getAllParametersForMultipartRequest");
-
-        Map parameters = new HashMap();
-        Hashtable elements = multipartHandler.getAllElements();
-        Enumeration e = elements.keys();
-        while (e.hasMoreElements()) {
-            String key = (String) e.nextElement();
-            parameters.put(key, elements.get(key));
-        }
-
-        if (request instanceof MultipartRequestWrapper) {
-            request = ((MultipartRequestWrapper) request).getRequest();
-            e = request.getParameterNames();
-            while (e.hasMoreElements()) {
-                String key = (String) e.nextElement();
-                parameters.put(key, request.getParameterValues(key));
-            }
-        }
-        else {
-            LOG.debug("Gathering multipart parameters for unwrapped request");
-        }
-
-        t0.log();
-        return parameters;
-    }
-    // end Kuali Foundation modification
 
     /**
      * Delegates to {@link PropertyUtils#getPropertyType(Object, String)}to look up the property type for the provided keypath.

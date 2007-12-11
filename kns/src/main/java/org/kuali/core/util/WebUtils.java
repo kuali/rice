@@ -37,6 +37,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionServletWrapper;
 import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
@@ -264,8 +265,9 @@ public class WebUtils {
         return key;
     }
     
-    // start multipart
-    public static Map getMultipartParameters(HttpServletRequest request,ActionMapping mapping) {
+    // start multipart - refactored to be shared by pojoformbase & kualirequestprocessor
+    
+    public static Map getMultipartParameters(HttpServletRequest request, ActionServletWrapper servletWrapper) {
         Map params = new HashMap();
         
         // Get the ActionServletWrapper from the form bean
@@ -277,6 +279,12 @@ public class WebUtils {
 
             if (multipartHandler != null) {
                 isMultipart = true;
+                // Set servlet and mapping info
+                if (servletWrapper != null) {
+                    // from pojoformbase
+                    // servlet only affects tempdir on local disk
+                    servletWrapper.setServletFor(multipartHandler);
+                }
                 multipartHandler.setMapping((ActionMapping) request.getAttribute(Globals.MAPPING_KEY));
                 // Initialize multipart request class handler
                 multipartHandler.handleRequest(request);
@@ -285,8 +293,10 @@ public class WebUtils {
                 if ((maxLengthExceeded != null) && (maxLengthExceeded.booleanValue())) {
                     throw new FileUploadLimitExceededException("");
                 }
-                // get file elements
-                request.setAttribute("fileElements",getFileParametersForMultipartRequest(request, multipartHandler));
+                // get file elements for kualirequestprocessor
+                if (servletWrapper == null) {
+                    request.setAttribute("fileElements",getFileParametersForMultipartRequest(request, multipartHandler));
+                }
                 // retrieve form values and put into properties
                 Map multipartParameters = getAllParametersForMultipartRequest(request, multipartHandler);
                 Enumeration names = Collections.enumeration(multipartParameters.keySet());
@@ -375,7 +385,6 @@ public class WebUtils {
         return multipartHandler;
     }
 
-    // begin Kuali Foundation modification
     /**
      * <p>
      * Create a <code>Map</code> containing all of the parameters supplied for a multipart request, keyed by parameter name. In

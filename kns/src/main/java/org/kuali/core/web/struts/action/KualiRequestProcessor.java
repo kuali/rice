@@ -294,7 +294,7 @@ public class KualiRequestProcessor extends RequestProcessor {
     String method = request.getMethod(); 
 
     if (("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data")) ) {            
-    	Map params = WebUtils.getMultipartParameters(request, mapping);
+    	Map params = WebUtils.getMultipartParameters(request, null);
         docFormKey = request.getParameter(RiceConstants.DOC_FORM_KEY);
         documentWebScope = request.getParameter(RiceConstants.DOCUMENT_WEB_SCOPE);
 

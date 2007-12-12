@@ -156,7 +156,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public boolean isPending() {
-        return EdenConstants.ACTION_REQUEST_INITIALIZED.equals(status) || EdenConstants.ACTION_REQUEST_ACTIVATED.equals(status);
+        return EdenConstants.ACTION_REQUEST_INITIALIZED.equals(getStatus()) || EdenConstants.ACTION_REQUEST_ACTIVATED.equals(getStatus());
     }
 
     public DocumentRouteHeaderValue getRouteHeader() {

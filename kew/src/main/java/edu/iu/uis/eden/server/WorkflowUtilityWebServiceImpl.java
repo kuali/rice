@@ -65,6 +65,7 @@ import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.engine.simulation.SimulationCriteria;
 import edu.iu.uis.eden.engine.simulation.SimulationEngine;
 import edu.iu.uis.eden.engine.simulation.SimulationResults;
+import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
 import edu.iu.uis.eden.plugin.attributes.WorkflowAttributeXmlValidator;
@@ -425,6 +426,15 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         return false;
     }
+    
+    private boolean isRecipientRoutedRequest(ActionRequestValue actionRequest, List<WorkflowUser> users) throws WorkflowException {
+        for (WorkflowUser user : users) {
+            if (actionRequest.isRecipientRoutedRequest(user)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes) throws RemoteException {
     	try {
@@ -445,14 +455,18 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 		    		return true;
 		    	}
 		    	// check the action requested codes passed in
+		    	WorkflowUser actionRequestUser = actionRequest.getWorkflowUser();
 		    	for (int i = 0; i < actionRequestedCodes.length; i++) {
 					String requestedActionRequestCode = actionRequestedCodes[i];
 					if (requestedActionRequestCode.equals(actionRequest.getActionRequested())) {
-                        if (StringUtils.isBlank(reportCriteriaVO.getTargetNodeName())) {
-                            return true;
-                        } else if (reportCriteriaVO.getTargetNodeName().equals(actionRequest.getNodeInstance().getName())) {
-                            return true;
-                        }
+					    boolean satisfiesDestinationUserCriteria = (criteria.getDestinationRecipients().isEmpty()) || (isRecipientRoutedRequest(actionRequest,criteria.getDestinationRecipients()));
+					    if (satisfiesDestinationUserCriteria) {
+					        if (StringUtils.isBlank(criteria.getDestinationNodeName())) {
+					            return true;
+					        } else if (StringUtils.equals(criteria.getDestinationNodeName(),actionRequest.getNodeInstance().getName())) {
+					            return true;
+					        }
+					    }
 					}
 				}
 			}

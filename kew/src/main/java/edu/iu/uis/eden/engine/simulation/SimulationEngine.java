@@ -52,6 +52,7 @@ import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.exception.DocumentSimulatedRouteException;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
+import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -466,6 +467,9 @@ public class SimulationEngine extends StandardWorkflowEngine {
 
     // below is fairly a copy of RouteDocumentAction... but actions have to be faked for now
     private void simulateDocumentRoute(ActionTakenValue actionTaken, DocumentRouteHeaderValue document, WorkflowUser user, RouteContext routeContext) throws InvalidActionTakenException {
+        if (document.isRouted()) {
+            throw new WorkflowRuntimeException("Document can not simulate a route if it has already been routed");
+        }
     	ActionRequestService actionRequestService = KEWServiceLocator.getActionRequestService();
         // TODO delyea - deep copy below
         List actionRequests = new ArrayList();

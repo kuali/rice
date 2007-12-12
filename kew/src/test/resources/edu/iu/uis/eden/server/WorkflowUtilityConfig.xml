@@ -26,7 +26,8 @@
 					<start name="AdHoc" nextNode="WorkflowDocument" />
 					<requests name="WorkflowDocument" nextNode="WorkflowDocument2" />
 					<requests name="WorkflowDocument2" nextNode="WorkflowDocument3" />
-					<requests name="WorkflowDocument3" />
+					<requests name="WorkflowDocument3" nextNode="WorkflowDocument4" />
+					<requests name="WorkflowDocument4" />
 				</routePath>
 			</routePaths>
 			<routeNodes>
@@ -34,17 +35,22 @@
 					<activationType>P</activationType>
 				</start>
 				<requests name="WorkflowDocument">
-					<activationType>P</activationType>
+					<activationType>S</activationType>
 					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 				</requests>
 				<requests name="WorkflowDocument2">
-					<activationType>P</activationType>
+					<activationType>S</activationType>
 					<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 					<finalApproval>false</finalApproval>
 				</requests>
 				<requests name="WorkflowDocument3">
-					<activationType>P</activationType>
+					<activationType>S</activationType>
 					<ruleTemplate>WorkflowDocument3Template</ruleTemplate>
+					<finalApproval>false</finalApproval>
+				</requests>
+				<requests name="WorkflowDocument4">
+					<activationType>S</activationType>
+					<ruleTemplate>WorkflowDocument4Template</ruleTemplate>
 					<finalApproval>true</finalApproval>
 				</requests>
 			</routeNodes>
@@ -215,6 +221,10 @@
 			<description>Workflow Document 3 Template</description>
 		</ruleTemplate>
 		<ruleTemplate>
+			<name>WorkflowDocument4Template</name>
+			<description>Workflow Document 4 Template</description>
+		</ruleTemplate>
+		<ruleTemplate>
 			<name>Ack1Template</name>
 			<description>Acknowledgement 1 Template</description>
 		</ruleTemplate>
@@ -268,6 +278,32 @@
 			<ruleTemplate>WorkflowDocument3Template</ruleTemplate>
 			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocument3Template Rule 1</description>
 			<ignorePrevious>true</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>rkirkend</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
+			<ruleTemplate>WorkflowDocument4Template</ruleTemplate>
+			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocument4Template Rule 1</description>
+			<ignorePrevious>true</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>jitrue</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
+			<ruleTemplate>WorkflowDocument4Template</ruleTemplate>
+			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocument4Template Rule 1</description>
+			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>

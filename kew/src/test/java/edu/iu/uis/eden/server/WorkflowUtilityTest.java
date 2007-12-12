@@ -91,65 +91,109 @@ public class WorkflowUtilityTest extends KEWTestCase {
     
     public abstract interface ReportCriteriaGenerator { public abstract ReportCriteriaVO buildCriteria(WorkflowDocument workflowDoc) throws Exception; }
     
+    private class ReportCriteriaGeneratorUsingXML implements ReportCriteriaGenerator {
+        public ReportCriteriaVO buildCriteria(WorkflowDocument workflowDoc) throws Exception {
+            ReportCriteriaVO criteria = new ReportCriteriaVO(workflowDoc.getDocumentType());
+            criteria.setXmlContent(workflowDoc.getDocumentContent().getApplicationContent());
+            return criteria;
+        }
+    }
+
+    private class ReportCriteriaGeneratorUsingRouteHeaderId implements ReportCriteriaGenerator {
+        public ReportCriteriaVO buildCriteria(WorkflowDocument workflowDoc) throws Exception {
+            ReportCriteriaVO criteria = new ReportCriteriaVO(workflowDoc.getRouteHeaderId());
+            return criteria;
+        }
+    }
+
     @Test public void testDocumentWillHaveApproveOrCompleteRequestAtNode_RouteHeaderId() throws Exception {
-        ReportCriteriaGenerator generator = new ReportCriteriaGenerator() {
-            public ReportCriteriaVO buildCriteria(WorkflowDocument workflowDoc) throws Exception {
-                ReportCriteriaVO criteria = new ReportCriteriaVO(workflowDoc.getRouteHeaderId());
-                return criteria;
-            }
-        };
-        runDocumentWillHaveApproveOrCompleteRequestAtNode(generator);
+        runDocumentWillHaveApproveOrCompleteRequestAtNode(new ReportCriteriaGeneratorUsingRouteHeaderId());
     }
     
     @Test public void testDocumentWillHaveApproveOrCompleteRequestAtNode_XmlContent() throws Exception {
-        ReportCriteriaGenerator generator = new ReportCriteriaGenerator() {
-            public ReportCriteriaVO buildCriteria(WorkflowDocument workflowDoc) throws Exception {
-                ReportCriteriaVO criteria = new ReportCriteriaVO(workflowDoc.getDocumentType());
-                criteria.setXmlContent(workflowDoc.getDocumentContent().getApplicationContent());
-                return criteria;
-            }
-        };
-        runDocumentWillHaveApproveOrCompleteRequestAtNode(generator);
+        runDocumentWillHaveApproveOrCompleteRequestAtNode(new ReportCriteriaGeneratorUsingXML());
     }
     
     @Ignore
-    @Test public void testTemp() throws Exception {
-        /*
+    @Test public void testDocumentWillHaveApproveOrCompleteRequestAtNode_IgnorePrevious_RouteHeaderId() throws Exception {
+        runDocumentWillHaveApproveOrCompleteRequestAtNode_IgnorePrevious(new ReportCriteriaGeneratorUsingRouteHeaderId());
+    }
+
+    @Ignore
+    @Test public void testDocumentWillHaveApproveOrCompleteRequestAtNode_IgnorePrevious_XmlContent() throws Exception {
+        runDocumentWillHaveApproveOrCompleteRequestAtNode_IgnorePrevious(new ReportCriteriaGeneratorUsingXML());
+    }
+    
+    private void runDocumentWillHaveApproveOrCompleteRequestAtNode_IgnorePrevious(ReportCriteriaGenerator generator) throws Exception {
+        String documentType = "SimulationTestDocumenType_IgnorePrevious";
+      /*
         name="WorkflowDocument"
           -  rkirkend - Approve - false
         name="WorkflowDocument2"
           -  rkirkend - Approve - false
-        name="WorkflowDocument2"
+        name="WorkflowDocument3"
           -  rkirkend - Approve - true
+        name="WorkflowDocument4"
+          -  rkirkend - Approve - false
+          -  jitrue   - Approve - true
       */
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "SimulationTestDocumenType_IgnorePrevious");
-        ReportCriteriaVO reportCriteriaVO = new ReportCriteriaVO(document.getRouteHeaderId());
+        ReportCriteriaVO reportCriteriaVO = generator.buildCriteria(new WorkflowDocument(new NetworkIdVO("ewestfal"), documentType));
         reportCriteriaVO.setTargetNodeName("WorkflowDocument2");
         reportCriteriaVO.setRoutingUser(new NetworkIdVO("bmcgough"));
         assertTrue("Document should have at least one unfulfilled approve/complete request",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ,EdenConstants.ACTION_REQUEST_COMPLETE_REQ}));
         reportCriteriaVO.setTargetUsers(new UserIdVO[]{new NetworkIdVO("bmcgough")});
         assertFalse("Document should not have any unfulfilled approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ,EdenConstants.ACTION_REQUEST_COMPLETE_REQ}));
         
-        reportCriteriaVO = new ReportCriteriaVO(document.getRouteHeaderId());
-        reportCriteriaVO.setTargetNodeName("WorkflowDocument2");
+        reportCriteriaVO = generator.buildCriteria(new WorkflowDocument(new NetworkIdVO("ewestfal"), documentType));
+        reportCriteriaVO.setTargetNodeName("WorkflowDocument4");
         reportCriteriaVO.setRoutingUser(new NetworkIdVO("bmcgough"));
-        ReportActionToTakeVO[] actionsToTake = new ReportActionToTakeVO[1];
-        actionsToTake[0] = new ReportActionToTakeVO(EdenConstants.ACTION_TAKEN_APPROVED_CD,new NetworkIdVO("rkirkend"),"WorkflowDocument");
+        ReportActionToTakeVO[] actionsToTake = new ReportActionToTakeVO[2];
+        actionsToTake[0] = new ReportActionToTakeVO(EdenConstants.ACTION_TAKEN_APPROVED_CD,new NetworkIdVO("rkirkend"),"WorkflowDocument3");
+        actionsToTake[1] = new ReportActionToTakeVO(EdenConstants.ACTION_TAKEN_APPROVED_CD,new NetworkIdVO("jitrue"),"WorkflowDocument4");
         reportCriteriaVO.setActionsToTake(actionsToTake);
         assertFalse("Document should not have any unfulfilled approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ,EdenConstants.ACTION_REQUEST_COMPLETE_REQ}));
 
-        reportCriteriaVO = new ReportCriteriaVO(document.getRouteHeaderId());
-        reportCriteriaVO.setTargetNodeName("WorkflowDocument2");
-        actionsToTake = new ReportActionToTakeVO[2];
-        actionsToTake[0] = new ReportActionToTakeVO(EdenConstants.ACTION_TAKEN_APPROVED_CD,new NetworkIdVO("bmcgough"),"WorkflowDocument");
-        actionsToTake[1] = new ReportActionToTakeVO(EdenConstants.ACTION_TAKEN_APPROVED_CD,new NetworkIdVO("rkirkend"),"WorkflowDocument");
-        reportCriteriaVO.setActionsToTake(actionsToTake);
+        reportCriteriaVO = generator.buildCriteria(new WorkflowDocument(new NetworkIdVO("ewestfal"), documentType));
         reportCriteriaVO.setRoutingUser(new NetworkIdVO("pmckown"));
+        reportCriteriaVO.setTargetNodeName("WorkflowDocument4");
+        actionsToTake = new ReportActionToTakeVO[2];
+        actionsToTake[0] = new ReportActionToTakeVO(EdenConstants.ACTION_TAKEN_APPROVED_CD,new NetworkIdVO("rkirkend"),"WorkflowDocument3");
+        actionsToTake[1] = new ReportActionToTakeVO(EdenConstants.ACTION_TAKEN_APPROVED_CD,new NetworkIdVO("jitrue"),"WorkflowDocument4");
+        reportCriteriaVO.setActionsToTake(actionsToTake);
         assertFalse("Document should not have any unfulfilled approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ,EdenConstants.ACTION_REQUEST_COMPLETE_REQ}));
         
-        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), documentType);
+        reportCriteriaVO = generator.buildCriteria(document);
+        reportCriteriaVO.setRoutingUser(new NetworkIdVO("rkirkend"));
+        reportCriteriaVO.setTargetNodeName("WorkflowDocument");
+        assertFalse("Document should not have any approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ,EdenConstants.ACTION_REQUEST_COMPLETE_REQ}));
+
+        reportCriteriaVO = generator.buildCriteria(document);
+        reportCriteriaVO.setRoutingUser(new NetworkIdVO("rkirkend"));
+        reportCriteriaVO.setTargetNodeName("WorkflowDocument2");
+        assertFalse("Document should not have any approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ,EdenConstants.ACTION_REQUEST_COMPLETE_REQ}));
+
+        reportCriteriaVO = generator.buildCriteria(document);
+        reportCriteriaVO.setRoutingUser(new NetworkIdVO("rkirkend"));
+        reportCriteriaVO.setTargetUsers(new UserIdVO[]{new NetworkIdVO("rkirkend")});
+        assertFalse("Document should not have any approve/complete requests for user rkirkend",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ,EdenConstants.ACTION_REQUEST_COMPLETE_REQ}));
+
         document.routeDocument("");
-        assertTrue(document.stateIsEnroute());
+        assertEquals("Document should be enroute", EdenConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
+        assertEquals("Document route node is incorrect", "WorkflowDocument3", document.getNodeNames()[0]);
+        reportCriteriaVO = generator.buildCriteria(document);
+        reportCriteriaVO.setTargetNodeName("WorkflowDocument4");
+        assertTrue("Document should not have any approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ,EdenConstants.ACTION_REQUEST_COMPLETE_REQ}));
+
+        reportCriteriaVO = generator.buildCriteria(document);
+        reportCriteriaVO.setTargetNodeName("WorkflowDocument4");
+        assertTrue("Document should have at least one unfulfilled approve/complete request",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ,EdenConstants.ACTION_REQUEST_COMPLETE_REQ}));
+        reportCriteriaVO.setTargetUsers(new UserIdVO[]{new NetworkIdVO("rkirkend")});
+        assertFalse("Document should not have any approve/complete requests for user rkirkend",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ,EdenConstants.ACTION_REQUEST_COMPLETE_REQ}));
+
+        reportCriteriaVO = generator.buildCriteria(document);
+        reportCriteriaVO.setTargetUsers(new UserIdVO[]{new NetworkIdVO("rkirkend")});
+        assertFalse("Document should not have any approve/complete requests for user rkirkend",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, new String[]{EdenConstants.ACTION_REQUEST_APPROVE_REQ,EdenConstants.ACTION_REQUEST_COMPLETE_REQ}));
     }
     
     private void runDocumentWillHaveApproveOrCompleteRequestAtNode(ReportCriteriaGenerator generator) throws Exception {

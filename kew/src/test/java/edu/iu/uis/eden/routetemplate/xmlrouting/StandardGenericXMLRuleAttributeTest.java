@@ -216,7 +216,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
         Long id = doc.getRouteHeaderId();
 
         doc = new WorkflowDocument(new NetworkIdVO("user1"), id);
-        assertFalse("Unexpected approval request to user1", doc.isApprovalRequested());
+        assertTrue("Request should have been generated to user1", doc.isApprovalRequested());
 
         doc = new WorkflowDocument(new NetworkIdVO("user2"), id);
         assertTrue("Expected approval request to user2", doc.isApprovalRequested());
@@ -259,7 +259,17 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		valueNew.setKey("givenname");
 		valueNew.setValue("Jack");
 
+		RuleExtensionValue minDollar = new RuleExtensionValue();
+		minDollar.setKey("minDollar");
+		minDollar.setValue("300");
+        RuleExtensionValue maxDollar = new RuleExtensionValue();
+        maxDollar.setKey("maxDollar");
+        maxDollar.setValue("600");
+
+		
 		values2.add(valueNew);
+		values2.add(minDollar);
+		values2.add(maxDollar);
 		extension2.setExtensionValues(values2);
 		RuleTemplateAttribute ruleTemplateAttribute2 = new RuleTemplateAttribute();
 
@@ -273,7 +283,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		extensions.add(extension);
 		extensions.add(extension2);
 
-		assertTrue("Givenname did not match Dave, gender did not match female, or color did not match green",attribute.isMatch(docContent, extensions));
+		assertTrue("Givenname did not match Dave, gender did not match female, or color did not match green", attribute.isMatch(docContent, extensions));
 
 		extension = new RuleExtension();
 		values = new ArrayList();
@@ -322,33 +332,36 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		extensions.add(extension2);
 		assertFalse("Gender female != male.", attribute.isMatch(docContent, extensions));
 
+		///////
+		
 		extension = new RuleExtension();
 		values = new ArrayList();
+		
 		RuleExtensionValue value7 = new RuleExtensionValue();
 		value7.setKey("maxDollar");
 		value7.setValue("500");
-		values.add(value7);
+
 
 		RuleExtensionValue value8 = new RuleExtensionValue();
 		value8.setKey("minDollar");
 		value8.setValue("100");
+		
+        values.add(value7);
 		values.add(value8);
-
 		extension.setExtensionValues(values);
 		ruleTemplateAttribute = new RuleTemplateAttribute();
-
 		ruleAttribute = new RuleAttribute();
 		ruleAttribute.setName("MyUniqueRuleAttribute1");
-
 		ruleTemplateAttribute.setRuleAttribute(ruleAttribute);
 		extension.setRuleTemplateAttribute(ruleTemplateAttribute);
 
 		values2 = new ArrayList();
+		
 		valueNew = new RuleExtensionValue();
 		valueNew.setKey("givenname");
 		valueNew.setValue("Jack");
-
 		values2.add(valueNew);
+		
 		extension2.setExtensionValues(values2);
 		ruleTemplateAttribute2 = new RuleTemplateAttribute();
 

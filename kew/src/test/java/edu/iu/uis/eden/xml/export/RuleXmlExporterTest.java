@@ -27,6 +27,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
+import org.kuali.rice.test.ClearDatabaseLifecycle;
+import org.kuali.workflow.test.KEWTestCase.ClearCacheLifecycle;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.export.ExportDataSet;
@@ -36,7 +38,6 @@ import edu.iu.uis.eden.routetemplate.RuleDelegation;
 import edu.iu.uis.eden.routetemplate.RuleExtension;
 import edu.iu.uis.eden.routetemplate.RuleExtensionValue;
 import edu.iu.uis.eden.routetemplate.RuleResponsibility;
-import edu.iu.uis.eden.test.OldClearDatabaseLifecycle;
 
 /**
  * Tests the RuleXmlExporter by importing XML, exporting it, and then re-importing the xml.<br><br>
@@ -75,7 +76,13 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
 
         // now clear the tables
-        new OldClearDatabaseLifecycle().start();
+        ClearDatabaseLifecycle clearLifeCycle = new ClearDatabaseLifecycle();
+        clearLifeCycle.getTablesToClear().add("EN_RULE_BASE_VAL_T");
+        clearLifeCycle.getTablesToClear().add("EN_RULE_ATTRIB_T");
+        clearLifeCycle.getTablesToClear().add("EN_RULE_TMPL_T");
+        clearLifeCycle.getTablesToClear().add("EN_DOC_TYP_T");
+        clearLifeCycle.start();
+        new ClearCacheLifecycle().stop();
 
         // import the exported xml
         loadXmlStream(new BufferedInputStream(new ByteArrayInputStream(xmlBytes)));

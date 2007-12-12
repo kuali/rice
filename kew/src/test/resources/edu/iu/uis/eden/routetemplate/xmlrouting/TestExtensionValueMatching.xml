@@ -66,6 +66,7 @@
                 <start name="Initiated"/>
                 <requests name="Requests1">
                     <ruleTemplate>Attr1Template</ruleTemplate>
+                    <activationType>P</activationType>
                 </requests>
             </routeNodes>
         </documentType>
@@ -84,9 +85,8 @@
                     <ruleTemplate>Attr1Template</ruleTemplate>
                     <ruleExtensionValues>
                         <ruleExtensionValue>
-                            <!-- if this is changed to 'attr1' to match an attribute field NAME
-                                 then that attribute field match xpath expression will be run,
-                                 otherwise it will NOT, and will default to a match -->
+                            <!-- this does not match the field name in the attribute definition but the rule
+                                 will still be evaluated and could be matched -->
                             <key>doesNotMatchFieldName</key>
                             <value>1</value>
                         </ruleExtensionValue>

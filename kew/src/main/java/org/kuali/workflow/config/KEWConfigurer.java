@@ -59,9 +59,7 @@ import edu.iu.uis.eden.util.Utilities;
  *   <li>Parse and load configuration for:</li>
  *     <ul>
  *       <li>Client Protocol</li>
- *		 <li>The KSB</li>
- * 		 <li>Webservices</li>
- *		 <li>JMX</li>
+ *       <li>Database</li>
  *	   </ul>
  *   </li>
  *   <li>Configure and startup KEW for "Thin Client" mode OR</li>
@@ -77,32 +75,11 @@ public class KEWConfigurer extends ModuleConfigurer {
 	public static final String KEW_DATASOURCE_OBJ = "org.kuali.workflow.datasource";
 	public static final String KEW_DATASOURCE_JNDI = "org.kuali.workflow.datasource.jndi.location";
 
-	private static final String DEFAULT_JMX_PROTOCOL = "hessian+sig";
-	private static final String DEFAULT_JMX_SERVICE_URL = "service:jmx:"+DEFAULT_JMX_PROTOCOL+"://localhost:8080/remoting/jmx";
-
 	private String clientProtocol;
 
-	private List<ServiceHolder> overrideServices;
 	private PluginRegistry pluginRegistry;
 	private DataSource dataSource;
 	private String dataSourceJndiName;
-
-	//bus stuff
-	private List<ServiceDefinition> services = new ArrayList<ServiceDefinition>();
-
-	private String serviceServletUrl;
-
-	// webservice related parameters
-	private String keystoreAlias;
-	private String keystorePassword;
-	private String keystoreFile;
-	private String webservicesUrl;
-	private String webserviceRetry;
-
-	// jmx parameters
-	private String jmxProtocol;
-	private String jmxServiceUrl;
-	private Map mBeans = new HashMap();
 
 	private boolean useDefaultUserService = false;
 	private boolean useDefaultWorkgroupService = false;
@@ -131,7 +108,6 @@ public class KEWConfigurer extends ModuleConfigurer {
 	public void start() throws Exception {
 		super.start();
 		registerOptionalDefaultServices(Core.getCurrentContextConfig());
-		configureInjectedOverrideServices(GlobalResourceLoader.getResourceLoader());
 	}
 
 	@Override
@@ -156,10 +132,6 @@ public class KEWConfigurer extends ModuleConfigurer {
 		Config currentConfig = parseConfig(parentConfig);
 		configureClientProtocol(currentConfig);
 		configureDataSource(currentConfig);
-		configureBus(currentConfig);
-		configureKeystore(currentConfig);
-		configureWebservices(currentConfig);
-		configureManagement(currentConfig);
 		return currentConfig;
 	}
 
@@ -220,98 +192,6 @@ public class KEWConfigurer extends ModuleConfigurer {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	protected void configureBus(Config config) throws Exception {
-		if (getServiceServletUrl() != null) {
-			Core.getCurrentContextConfig().overrideProperty(Config.SERVICE_SERVLET_URL, getServiceServletUrl());
-		}
-		LOG.debug("Configuring services for Message Entity " + getMessageEntity(config) + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
-		configureServiceList(config, Config.BUS_DEPLOYED_SERVICES, getServices());
-	}
-
-	protected void configureKeystore(Config config) {
-		if (!Utilities.isEmpty(keystoreAlias)) {
-			config.getProperties().put(Config.KEYSTORE_ALIAS, keystoreAlias);
-		}
-		if (!Utilities.isEmpty(keystorePassword)) {
-			config.getProperties().put(Config.KEYSTORE_PASSWORD, keystorePassword);
-		}
-		if (!Utilities.isEmpty(keystoreFile)) {
-			config.getProperties().put(Config.KEYSTORE_FILE, keystoreFile);
-		}
-		if (Utilities.isEmpty(config.getProperty(EdenConstants.SIMPLE_DOCUMENT_ACTIONS_SECURITY))) {
-			config.getProperties().put(EdenConstants.SIMPLE_DOCUMENT_ACTIONS_SECURITY, "true");
-		}
-	}
-
-	protected void configureWebservices(Config config) {
-		if (!Utilities.isEmpty(webservicesUrl)) {
-			config.getProperties().put(Config.BASE_WEB_SERVICE_URL_WORKFLOW_CLIENT_FILE, webservicesUrl);
-		}
-		if (!Utilities.isEmpty(webserviceRetry)) {
-			config.getProperties().put(Config.WEB_SERVICE_CONNECT_RETRY, webserviceRetry);
-		}
-	}
-
-	protected void configureManagement(Config config) {
-		// configure JMX Protocol
-		String jmxProtocol = getJmxProtocol();
-		if (Utilities.isEmpty(jmxProtocol)) {
-			jmxProtocol = DEFAULT_JMX_PROTOCOL;
-		}
-		setJmxProtocol(jmxProtocol);
-		config.getProperties().put(Config.JMX_PROTOCOL, jmxProtocol);
-
-		// configure JMX Service Url
-		String jmxServiceUrl = getJmxServiceUrl();
-		if (Utilities.isEmpty(jmxServiceUrl)) {
-			String serviceServletUrl = getServiceServletUrl();
-			if (Utilities.isEmpty(serviceServletUrl)) {
-				jmxServiceUrl = DEFAULT_JMX_SERVICE_URL;
-				LOG.warn("Could not determine the JMX Service URL.  Defaulting to " + jmxServiceUrl);
-			} else {
-				// derive the jmx url from the service servlet url
-				int protocolIndex = serviceServletUrl.indexOf("/");
-				if (protocolIndex < 0) {
-					throw new WorkflowRuntimeException("Failed to derive jmx url from servlet url: " + serviceServletUrl);
-				}
-				jmxServiceUrl = "service:jmx:"+getJmxProtocol()+":"+serviceServletUrl.substring(protocolIndex);
-				if (!jmxServiceUrl.endsWith("/")) {
-					jmxServiceUrl += "/";
-				}
-				jmxServiceUrl += "jmx";
-			}
-		}
-		setJmxServiceUrl(jmxServiceUrl);
-		config.getProperties().put(Config.JMX_SERVICE_URL, jmxServiceUrl);
-
-		// configure mBeans
-		if (getMBeans() != null && !getMBeans().isEmpty()) {
-			config.getObjects().put(Config.M_BEANS, getMBeans());
-		}
-	}
-
-	private void configureServiceList(Config config, String key, List<ServiceDefinition> services) throws Exception {
-		LOG.debug("Configuring services for Message Entity " + getMessageEntity(config) + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
-		List<ServiceDefinition> serviceDefinitions = (List<ServiceDefinition>) config.getObject(key);
-		if (serviceDefinitions == null) {
-			config.getObjects().put(key, services);
-		} else if (services != null) {
-			LOG.debug("Services already exist.  Adding additional services");
-			serviceDefinitions.addAll(services);
-		}
-
-		String serviceServletUrl = Core.getCurrentContextConfig().getProperty(Config.SERVICE_SERVLET_URL);
-		// if it's empty, then we want to be able to inherit it from the parent configuration
-		if (!StringUtils.isEmpty(serviceServletUrl)) {
-			config.getObjects().put(Config.SERVICE_SERVLET_URL, serviceServletUrl);
-		}
-		for (Iterator iter = services.iterator(); iter.hasNext();) {
-			ServiceDefinition serviceDef = (ServiceDefinition) iter.next();
-			serviceDef.validate();
-		}
-	}
-
 	protected void registerOptionalDefaultServices(Config config) throws Exception {
 		LOG.debug("Checking for optional default workgroup and user service to load from the embedded plugin");
 		if (isUseDefaultUserService()) {
@@ -338,98 +218,12 @@ public class KEWConfigurer extends ModuleConfigurer {
 		KSBServiceLocator.getServiceDeployer().registerService(serviceDef, false);
 	}
 
-	protected void configureInjectedOverrideServices(ResourceLoader embeddedClientServiceRL) {
-		if (this.getOverrideServices() == null) {
-			return;
-		}
-//		ResourceLoader embeddedClientServiceRL = GlobalResourceLoader.getResourceLoader(new QName(ResourceLoader.EMBEDDED_CLIENT_APP_RESOURCE_LOADER));
-		//can be null if they've injected they're own RL that doesn't follow our name
-		if (embeddedClientServiceRL == null) {
-			return;
-		}
-		if (! (embeddedClientServiceRL instanceof BaseResourceLoader)) {
-			LOG.info("Client application has injected its own implmentation of ResourceLoader to override workflow servcies");
-			return;
-		}
-		ServiceLocator sl = ((BaseResourceLoader)embeddedClientServiceRL).getServiceLocator();
-		if (! (sl instanceof SimpleServiceLocator)) {
-			LOG.info("Client application has used its own implementation of ServiceLocator to override workflow services");
-			return;
-		}
-		for (ServiceHolder serviceHolder : this.getOverrideServices()) {
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("Loading override service " + serviceHolder.getServiceName() + " " + serviceHolder.getService());
-			}
-			((SimpleServiceLocator)sl).addService(serviceHolder.getServiceName(), serviceHolder.getService());
-		}
-	}
-
-	protected void addServiceDefinitionsToRegistry(List<ServiceDefinition> serviceDefinition) {
-
-	}
-
 	public String getClientProtocol() {
 		return clientProtocol;
 	}
 
 	public void setClientProtocol(String clientProtocol) {
 		this.clientProtocol = clientProtocol;
-	}
-
-	public String getJmxProtocol() {
-		return jmxProtocol;
-	}
-
-	public void setJmxProtocol(String jmxProtocol) {
-		this.jmxProtocol = jmxProtocol;
-	}
-
-	public String getJmxServiceUrl() {
-		return jmxServiceUrl;
-	}
-
-	public void setJmxServiceUrl(String jmxServiceUrl) {
-		this.jmxServiceUrl = jmxServiceUrl;
-	}
-
-	public String getKeystoreAlias() {
-		return keystoreAlias;
-	}
-
-	public void setKeystoreAlias(String keystoreAlias) {
-		this.keystoreAlias = keystoreAlias;
-	}
-
-	public String getKeystoreFile() {
-		return keystoreFile;
-	}
-
-	public void setKeystoreFile(String keystoreFile) {
-		this.keystoreFile = keystoreFile;
-	}
-
-	public String getKeystorePassword() {
-		return keystorePassword;
-	}
-
-	public void setKeystorePassword(String keystorePassword) {
-		this.keystorePassword = keystorePassword;
-	}
-
-	public Map getMBeans() {
-		return mBeans;
-	}
-
-	public void setMBeans(Map beans) {
-		mBeans = beans;
-	}
-
-	public List<ServiceHolder> getOverrideServices() {
-		return overrideServices;
-	}
-
-	public void setOverrideServices(List<ServiceHolder> overrideServices) {
-		this.overrideServices = overrideServices;
 	}
 
 	public PluginRegistry getPluginRegistry() {
@@ -448,22 +242,6 @@ public class KEWConfigurer extends ModuleConfigurer {
 		this.runEmbeddedServer = runEmbeddedServer;
 	}
 
-	public List<ServiceDefinition> getServices() {
-		return services;
-	}
-
-	public void setServices(List<ServiceDefinition> services) {
-		this.services = services;
-	}
-
-	public String getServiceServletUrl() {
-		return serviceServletUrl;
-	}
-
-	public void setServiceServletUrl(String serviceServletUrl) {
-		this.serviceServletUrl = serviceServletUrl;
-	}
-
 	public boolean isUseDefaultUserService() {
 		return useDefaultUserService;
 	}
@@ -478,22 +256,6 @@ public class KEWConfigurer extends ModuleConfigurer {
 
 	public void setUseDefaultWorkgroupService(boolean useDefaultWorkgroupService) {
 		this.useDefaultWorkgroupService = useDefaultWorkgroupService;
-	}
-
-	public String getWebserviceRetry() {
-		return webserviceRetry;
-	}
-
-	public void setWebserviceRetry(String webserviceRetry) {
-		this.webserviceRetry = webserviceRetry;
-	}
-
-	public String getWebservicesUrl() {
-		return webservicesUrl;
-	}
-
-	public void setWebservicesUrl(String webservicesUrl) {
-		this.webservicesUrl = webservicesUrl;
 	}
 
 	public DataSource getDataSource() {
@@ -511,7 +273,5 @@ public class KEWConfigurer extends ModuleConfigurer {
 	public void setDataSourceJndiName(String jndiDatasourceLocation) {
 		this.dataSourceJndiName = jndiDatasourceLocation;
 	}
-
-
 
 }

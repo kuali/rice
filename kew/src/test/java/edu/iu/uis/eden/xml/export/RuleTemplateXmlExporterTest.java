@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.test.ClearDatabaseLifecycle;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.export.ExportDataSet;
@@ -48,8 +49,7 @@ public class RuleTemplateXmlExporterTest extends XmlExporterTestCase {
         assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
 
         // now clear the tables
-//        TestUtilities.clearDatabase();
-        new OldClearDatabaseLifecycle().start();
+        new ClearDatabaseLifecycle().start();
 
         // import the exported xml
         loadXmlStream(new BufferedInputStream(new ByteArrayInputStream(xmlBytes)));

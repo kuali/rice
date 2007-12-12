@@ -30,6 +30,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
+import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -37,6 +38,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
+import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.plugin.attributes.WorkflowAttributeXmlValidator;
@@ -89,6 +91,8 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
 
     private static final String FIELD_DEF_E = "fieldDef";
 
+    private boolean evaluateForMissingExtensions = false;
+    
     private static NodeList getFields(XPath xpath, Element root, String[] types) throws XPathExpressionException {
         final String OR = " or ";
         StringBuffer findField = new StringBuffer("//routingConfig/" + FIELD_DEF_E);
@@ -239,61 +243,155 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
         this.ruleAttribute = ruleAttribute;
     }
 
+//    public boolean isMatch(DocumentContent docContent, List ruleExtensions) {
+//        XPath xpath = XPathHelper.newXPath(docContent.getDocument());
+//        WorkflowFunctionResolver resolver = XPathHelper.extractFunctionResolver(xpath);
+//        for (Iterator iter = ruleExtensions.iterator(); iter.hasNext();) {
+//            RuleExtension extension = (RuleExtension) iter.next();
+//            if (extension.getRuleTemplateAttribute().getRuleAttribute().getName().equals(ruleAttribute.getName())) {
+//                List extensions = new ArrayList();
+//                extensions.add(extension);
+//                resolver.setRuleExtensions(extensions);
+//                //xpath.setXPathFunctionResolver(resolver);
+//                for (Iterator iterator = extension.getExtensionValues().iterator(); iterator.hasNext();) {
+//                    RuleExtensionValue value = (RuleExtensionValue) iterator.next();
+//                    String findXpathExpression = "//routingConfig/" + FIELD_DEF_E + "[@name='" + value.getKey() + "']/fieldEvaluation/xpathexpression";
+//                    String xpathExpression = null;
+//                    try {
+//                        xpathExpression = (String) xpath.evaluate(findXpathExpression, getConfigXML(), XPathConstants.STRING);
+//                        LOG.debug("routingConfig XPath expression: " + xpathExpression);
+//                        if (!Utilities.isEmpty(xpathExpression)) {
+//                            LOG.debug("DocContent: " + docContent.getDocContent());
+//                            Boolean match = (Boolean) xpath.evaluate(xpathExpression, docContent.getDocument(), XPathConstants.BOOLEAN);
+//                            LOG.debug("routingConfig match? " + match);
+//                            if (match != null && !match.booleanValue()) {
+//                                return false;
+//                            }
+//                        }
+//                    } catch (XPathExpressionException e) {
+//                        LOG.error("error in isMatch ", e);
+//                        throw new RuntimeException("Error trying to find xml content with xpath expressions: " + findXpathExpression + " or " + xpathExpression, e);
+//                    }
+//                }
+//                resolver.setRuleExtensions(null);
+//            }
+//        }
+//        String findXpathExpression = "//routingConfig/globalEvaluations/xpathexpression";
+//        String xpathExpression = "";
+//        try {
+//            NodeList xpathExpressions = (NodeList) xpath.evaluate(findXpathExpression, getConfigXML(), XPathConstants.NODESET);
+//            for (int i = 0; i < xpathExpressions.getLength(); i++) {
+//                Node xpathNode = xpathExpressions.item(i);
+//                xpathExpression = xpathNode.getFirstChild().getNodeValue();
+//                LOG.debug("global XPath expression: " + xpathExpression);
+//                if (!Utilities.isEmpty(xpathExpression)) {
+//                    LOG.debug("DocContent: " + docContent.getDocContent());
+//                    Boolean match = (Boolean) xpath.evaluate(xpathExpression, docContent.getDocument(), XPathConstants.BOOLEAN);
+//                    LOG.debug("Global match? " + match);
+//                    if (match != null && !match.booleanValue()) {
+//                        return false;
+//                    }
+//                }
+//            }
+//        } catch (XPathExpressionException e) {
+//            LOG.error("error in isMatch ", e);
+//            throw new RuntimeException("Error trying to find xml content with xpath expressions: " + findXpathExpression, e);
+//        }
+//        return true;
+//    }
+    
     public boolean isMatch(DocumentContent docContent, List ruleExtensions) {
         XPath xpath = XPathHelper.newXPath(docContent.getDocument());
         WorkflowFunctionResolver resolver = XPathHelper.extractFunctionResolver(xpath);
-        for (Iterator iter = ruleExtensions.iterator(); iter.hasNext();) {
-            RuleExtension extension = (RuleExtension) iter.next();
-            if (extension.getRuleTemplateAttribute().getRuleAttribute().getName().equals(ruleAttribute.getName())) {
-                resolver.setRuleExtension(extension);
-                //xpath.setXPathFunctionResolver(resolver);
-                for (Iterator iterator = extension.getExtensionValues().iterator(); iterator.hasNext();) {
-                    RuleExtensionValue value = (RuleExtensionValue) iterator.next();
-                    String findXpathExpression = "//routingConfig/" + FIELD_DEF_E + "[@name='" + value.getKey() + "']/fieldEvaluation/xpathexpression";
-                    String xpathExpression = null;
-                    try {
-                        xpathExpression = (String) xpath.evaluate(findXpathExpression, getConfigXML(), XPathConstants.STRING);
-                        LOG.debug("routingConfig XPath expression: " + xpathExpression);
-                        if (!Utilities.isEmpty(xpathExpression)) {
-                            LOG.debug("DocContent: " + docContent.getDocContent());
-                            Boolean match = (Boolean) xpath.evaluate(xpathExpression, docContent.getDocument(), XPathConstants.BOOLEAN);
-                            LOG.debug("routingConfig match? " + match);
-                            if (match != null && !match.booleanValue()) {
-                                return false;
-                            }
-                        }
-                    } catch (XPathExpressionException e) {
-                        LOG.error("error in isMatch ", e);
-                        throw new RuntimeException("Error trying to find xml content with xpath expressions: " + findXpathExpression + " or " + xpathExpression, e);
-                    }
-                }
-                resolver.setRuleExtension(null);
+        resolver.setRuleExtensions(ruleExtensions);
+        List<String> xPathExpressionsToEvaluate = extractExpressionsToEvaluate(xpath, docContent, ruleExtensions);
+        for (String xPathExpressionToEvaluate : xPathExpressionsToEvaluate) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Evaluating xPath expression: " + xPathExpressionToEvaluate);
             }
-        }
-        String findXpathExpression = "//routingConfig/globalEvaluations/xpathexpression";
-        String xpathExpression = "";
-        try {
-            NodeList xpathExpressions = (NodeList) xpath.evaluate(findXpathExpression, getConfigXML(), XPathConstants.NODESET);
-            for (int i = 0; i < xpathExpressions.getLength(); i++) {
-                Node xpathNode = xpathExpressions.item(i);
-                xpathExpression = xpathNode.getFirstChild().getNodeValue();
-                LOG.debug("global XPath expression: " + xpathExpression);
-                if (!Utilities.isEmpty(xpathExpression)) {
-                    LOG.debug("DocContent: " + docContent.getDocContent());
-                    Boolean match = (Boolean) xpath.evaluate(xpathExpression, docContent.getDocument(), XPathConstants.BOOLEAN);
-                    LOG.debug("Global match? " + match);
-                    if (match != null && !match.booleanValue()) {
-                        return false;
-                    }
+            try {
+                Boolean match = (Boolean) xpath.evaluate(xPathExpressionToEvaluate, docContent.getDocument(), XPathConstants.BOOLEAN);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Expression match result: " + match);
                 }
+                if (match != null && !match.booleanValue()) {
+                    return false;
+                }
+            } catch (XPathExpressionException e) {
+                LOG.error("Error in isMatch ", e);
+                throw new RuntimeException("Error trying to evalute xml content with xpath expression: " + xPathExpressionToEvaluate, e);
             }
-        } catch (XPathExpressionException e) {
-            LOG.error("error in isMatch ", e);
-            throw new RuntimeException("Error trying to find xml content with xpath expressions: " + findXpathExpression, e);
         }
         return true;
     }
 
+    /**
+     * Extracts the xPath expressions that should be evaluated in order to determine whether or not the rule matches.  THis should take
+     * into account the value of evaluateForMissingExtensions.
+     */
+    protected List<String> extractExpressionsToEvaluate(XPath xpath, DocumentContent docContent, List ruleExtensions) {
+        List<String> expressionsToEvaluate = new ArrayList<String>(ruleExtensions.size() + 1);
+        Element configXml = getConfigXML();
+        String findFieldExpressions = "//routingConfig/" + FIELD_DEF_E + "/fieldEvaluation/xpathexpression";
+        try {
+            NodeList xPathExpressions = (NodeList) xpath.evaluate(findFieldExpressions, configXml, XPathConstants.NODESET);
+            for (int index = 0; index < xPathExpressions.getLength(); index++) {
+                Element expressionElement = (Element) xPathExpressions.item(index);
+                String expression = XmlHelper.getTextContent(expressionElement);
+                if (!isEvaluateForMissingExtensions()) {
+                    Node parentNode = expressionElement.getParentNode().getParentNode();
+                    Node fieldAttribute = parentNode.getAttributes().getNamedItem("name");
+                    if (fieldAttribute == null || StringUtils.isEmpty(fieldAttribute.getNodeValue())) {
+                        throw new WorkflowRuntimeException("Could not determine field name defined on fieldDef for xpath expression: " + expression);
+                    }
+                    String fieldName = fieldAttribute.getNodeValue();
+                    boolean foundExtension = false;
+                    outer:for (Iterator iterator = ruleExtensions.iterator(); iterator.hasNext();) {
+                        RuleExtension ruleExtension = (RuleExtension) iterator.next();
+                        if (ruleExtension.getRuleTemplateAttribute().getRuleAttribute().getName().equals(ruleAttribute.getName())) {
+                            for (RuleExtensionValue ruleExtensionValue : ruleExtension.getExtensionValues()) {
+                                if (fieldName.equals(ruleExtensionValue.getKey())) {
+                                    foundExtension = true;
+                                    break outer;
+                                }
+                            }
+                        }
+                    }
+                    if (!foundExtension) {
+                        // if the rule does not have an extension value for the xpath expression on the corresponding field def, let's skip it
+                        continue;
+                    }
+                }
+                
+                if (!StringUtils.isEmpty(expression)) {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Adding routingConfig XPath expression: " + expression);
+                    }
+                    expressionsToEvaluate.add(expression);
+                }
+            }
+        } catch (XPathExpressionException e) {
+            throw new WorkflowRuntimeException("Failed to evalute XPath expression for fieldDefs: " + findFieldExpressions);
+        }
+        String findGlobalExpressions = "//routingConfig/globalEvaluations/xpathexpression";
+        try {
+            NodeList xPathExpressions = (NodeList) xpath.evaluate(findGlobalExpressions, configXml, XPathConstants.NODESET);
+            for (int index = 0; index < xPathExpressions.getLength(); index++) {
+                Element expressionElement = (Element) xPathExpressions.item(index);
+                String expression = XmlHelper.getTextContent(expressionElement);
+                if (!StringUtils.isEmpty(expression)) {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Adding global XPath expression: " + expression);
+                    }
+                    expressionsToEvaluate.add(expression);
+                }
+            }
+        } catch (XPathExpressionException e) {
+            throw new WorkflowRuntimeException("Failed to evalute global XPath expression: " + findGlobalExpressions);
+        }
+        return expressionsToEvaluate;
+    }
+    
     public List getRuleRows() {
         if (ruleRows.isEmpty()) {
             ruleRows = getRows(getConfigXML(), new String[] { "ALL", "RULE" });
@@ -562,4 +660,25 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
     public void setParamMap(Map paramMap) {
         this.paramMap = paramMap;
     }
+
+    /**
+     * @return the evaluateForMissingExtensions
+     */
+    public boolean isEvaluateForMissingExtensions() {
+        return this.evaluateForMissingExtensions;
+    }
+
+    /**
+     * Sets whether or not to evaluate expressions if the extension corresponding to that expressions is not present on the rule.
+     * The correspondence is made by comparing the name of the field declared on the fieldDef element and the name of the
+     * rule extension key.  If this value is set to true then all xpath expressions defined on all fieldDefs will be evaluated
+     * regardless of whether or not the rule has a corresponding extension value.
+     * 
+     * <p>By default this is false to preserve backward compatible behavior.
+     */
+    public void setEvaluateForMissingExtensions(boolean evaluateForMissingExtensions) {
+        this.evaluateForMissingExtensions = evaluateForMissingExtensions;
+    }
+    
+    
 }

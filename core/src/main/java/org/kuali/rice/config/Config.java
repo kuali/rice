@@ -127,9 +127,7 @@ public interface Config {
 	public static final String BUS_DEPLOYED_SERVICES = "bus.services";
 	public static final String SERVICE_SERVLET_URL = "serviceServletUrl";
 	public static final String MESSAGE_PERSISTENCE = "message.persistence";
-	public static final String JMX_SERVICE_URL = "jmx.service.url";
 	public static final String STORE_AND_FORWARD = "bus.storeAndForward";
-	public static final String JMX_PROTOCOL = "jmx.protocol";
 	public static final String REFRESH_RATE = "bus.refresh.rate";
 	public static final String DEV_MODE = "dev.mode";
 	

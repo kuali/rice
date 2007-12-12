@@ -17,6 +17,7 @@
 package edu.iu.uis.eden.routetemplate.xmlrouting;
 
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 import javax.xml.xpath.XPath;
@@ -38,7 +39,7 @@ import edu.iu.uis.eden.support.xstream.XStreamSafeSearchFunction;
  */
 public class WorkflowFunctionResolver implements XPathFunctionResolver {
 	
-	private RuleExtension ruleExtension;
+	private List<RuleExtension> ruleExtensions;
 	private Node rootNode;
 	private XPath xpath;
 
@@ -48,18 +49,20 @@ public class WorkflowFunctionResolver implements XPathFunctionResolver {
 			throw new NullPointerException("The function name cannot be null.");
 		}
 		if (fname.equals(new QName("http://nothingfornowwf.com", "ruledata", "wf"))) {
-			if (ruleExtension == null) {
-				throw new NullPointerException("There are no rule extensions.");
+			if (ruleExtensions == null) {
+				throw new IllegalArgumentException("There are no rule extensions.");
 			}
 			return new XPathFunction() {
-				public Object evaluate(java.util.List args) {
+				public Object evaluate(List args) {
 					if (args.size() == 1) {
 						String name = (String) args.get(0);
-						for (Iterator iter = ruleExtension.getExtensionValues().iterator(); iter.hasNext();) {
-							RuleExtensionValue value = (RuleExtensionValue) iter.next();
-							if (value.getKey().equals(name)) {
-								return value.getValue();
-							}
+						for (RuleExtension ruleExtension : ruleExtensions) {
+						    for (Iterator iter = ruleExtension.getExtensionValues().iterator(); iter.hasNext();) {
+						        RuleExtensionValue value = (RuleExtensionValue) iter.next();
+						        if (value.getKey().equals(name)) {
+						            return value.getValue();
+						        }
+						    }
 						}
 					}
 					return "";
@@ -106,15 +109,15 @@ public class WorkflowFunctionResolver implements XPathFunctionResolver {
 	    return object == null;
 	}
 
-	public RuleExtension getRuleExtension() {
-		return ruleExtension;
-	}
+	public List<RuleExtension> getRuleExtensions() {
+        return this.ruleExtensions;
+    }
 
-	public void setRuleExtension(RuleExtension ruleExtension) {
-		this.ruleExtension = ruleExtension;
-	}
+    public void setRuleExtensions(List<RuleExtension> ruleExtensions) {
+        this.ruleExtensions = ruleExtensions;
+    }
 
-	public Node getRootNode() {
+    public Node getRootNode() {
 		return rootNode;
 	}
 

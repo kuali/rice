@@ -9,8 +9,6 @@
 	<param name="dev.mode">true</param>
     <param name="message.delivery">synchronous</param>
 	<param name="message.persistence">true</param>
-	<param name="jmx.protocol">hessian+sig</param>
-	<param name="jmx.service.url">service:jmx:${jmx.protocol}://nothingtoseehere</param>
 	<param name="threadPool.size">5</param>
 	<param name="embedded.plugin.default.current.classloader">true</param>
 	<param name="keystore.alias">onestartsharedservices-devandtst</param>

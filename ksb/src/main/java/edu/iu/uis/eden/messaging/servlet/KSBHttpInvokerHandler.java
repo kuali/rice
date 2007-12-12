@@ -40,12 +40,8 @@ public class KSBHttpInvokerHandler extends AbstractHandlerMapping {
     private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
     protected Object getHandlerInternal(HttpServletRequest request) throws Exception {
-	QName serviceName = getServiceNameFromRequest(request);
-	// load the servlet for handling JMX communication
-	if (serviceName.equals(new QName(Core.getCurrentContextConfig().getMessageEntity(), "jmx"))) {
-	    return GlobalResourceLoader.getService("jmxWrappingController");
-	}
-	return ((RemotedServiceRegistry) GlobalResourceLoader.getService("enServiceInvoker")).getService(serviceName);
+        QName serviceName = getServiceNameFromRequest(request);
+        return ((RemotedServiceRegistry) GlobalResourceLoader.getService("enServiceInvoker")).getService(serviceName);
     }
 
     public QName getServiceNameFromRequest(HttpServletRequest request) {

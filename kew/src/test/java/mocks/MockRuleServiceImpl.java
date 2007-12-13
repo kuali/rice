@@ -75,6 +75,12 @@ public class MockRuleServiceImpl implements RuleService {
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType) {
     }
 
+
+
+    public void flushRuleCache() {
+	// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
+
+    }
     public RuleBaseValues getRuleByName(String name) {
         return rulesByName.get(name);
     }

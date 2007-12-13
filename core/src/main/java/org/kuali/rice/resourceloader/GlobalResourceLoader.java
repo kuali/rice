@@ -48,6 +48,12 @@ public class GlobalResourceLoader {
 
 	private static ResourceLoader getResourceLoaderCheckParent(ClassLoader classLoader) {
 	    ResourceLoader resourceLoader = getResourceLoader(classLoader);
+	    if (resourceLoader != null && classLoader.getParent() != null) {
+		ResourceLoader parentResourceLoader = getResourceLoaderCheckParent(classLoader.getParent());
+		if (parentResourceLoader != null) {
+		    resourceLoader = new ParentChildResourceLoader(parentResourceLoader, resourceLoader);
+		}
+	    }
 	    if (resourceLoader == null && classLoader.getParent() != null) {
 		resourceLoader = getResourceLoaderCheckParent(classLoader.getParent());
 	    }

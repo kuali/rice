@@ -42,7 +42,7 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
 
     public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSearchDAOOjbImpl.class);
 
-	private static final int DEFAULT_FETCH_MORE_ITERATION_LIMIT = 5;
+	private static final int DEFAULT_FETCH_MORE_ITERATION_LIMIT = 10;
 
     public List getList(DocumentSearchGenerator documentSearchGenerator,DocSearchCriteriaVO criteria) throws EdenUserNotFoundException {
         LOG.debug("start getList");
@@ -53,6 +53,7 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         PersistenceBroker broker = null;
         Connection conn = null;
         Statement statement = null;
+        Statement searchAttributeStatement = null;
         ResultSet rs = null;
         try {
             broker = getPersistenceBroker(false);
@@ -69,7 +70,8 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             rs = statement.executeQuery(sql);
             perfLog.log("Time to execute doc search database query.", true);
             // TODO delyea - look at refactoring
-            docList = documentSearchGenerator.processResultSet(rs, criteria);
+            searchAttributeStatement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            docList = documentSearchGenerator.processResultSet(searchAttributeStatement, rs, criteria);
         } catch (SQLException sqle) {
         	String errorMsg = "SQLException: " + sqle.getMessage();
             LOG.error("getList() " + errorMsg, sqle);
@@ -87,12 +89,19 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         		}
         	}
         	if (statement != null) {
-        		try {
-        			statement.close();
-        		} catch (SQLException e) {
-        			LOG.warn("Could not close statement.");
-        		}
-        	}
+    		try {
+    			statement.close();
+    		} catch (SQLException e) {
+    			LOG.warn("Could not close statement.");
+    		}
+    	}
+        	if (searchAttributeStatement != null) {
+    		try {
+    		searchAttributeStatement.close();
+    		} catch (SQLException e) {
+    			LOG.warn("Could not close search attribute statement.");
+    		}
+    	}
         	if (broker != null) {
         		try {
         			OjbFactoryUtils.releasePersistenceBroker(broker, this.getPersistenceBrokerTemplate().getPbKey());

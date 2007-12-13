@@ -207,7 +207,7 @@ public class SuperUserAction extends WorkflowAction {
             }
         }
 
-        lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getModuleConfig().getPrefix()).append(mapping.getPath()).append(".do");
+        lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getPath()).append(".do");
         return new ActionForward(lookupUrl.toString(), true);
     }
 

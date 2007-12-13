@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.iu.uis.eden.Id;
+import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.XmlLoader;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
@@ -83,6 +84,8 @@ public interface RuleService extends XmlLoader, XmlExporter {
      * DocumentType hierarchy in place.
      */
     public void notifyCacheOfDocumentTypeChange(DocumentType documentType);
+
+    public void flushRuleCache();
 
     /**
      * Returns the name of the document type definition that should be used to route the given List of rules.  This method will never

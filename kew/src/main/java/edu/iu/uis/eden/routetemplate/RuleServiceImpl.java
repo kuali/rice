@@ -31,6 +31,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.collections.ComparatorUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 
@@ -74,6 +76,7 @@ public class RuleServiceImpl implements RuleService {
 
     private static final String USING_RULE_CACHE_KEY = "RuleService.IsCaching";
     private static final String XML_PARSE_ERROR = "general.error.parsexml";
+    private static final String RULE_GROUP_CACHE = "org.kuali.workflow.rules.RuleCache";
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleServiceImpl.class);
 
@@ -224,6 +227,85 @@ public class RuleServiceImpl implements RuleService {
         performanceLogger.log("Time to make current");
     }
 
+    /**
+     * TODO consolidate this method with makeCurrent.  The reason there's a seperate implementation is because the
+     * original makeCurrent(...) could not properly handle versioning a List of multiple rules (including multiple
+     * delegates rules for a single parent.  ALso, this work is being done for a patch so we want to mitigate the
+     * impact on the existing rule code.
+     *
+     * <p>This version will only work for remove/replace operations where rules
+     * aren't being added or removed.  This is why it doesn't perform some of the functions like checking
+     * for delegation rules that were removed from a parent rule.
+     */
+    public void makeCurrent2(List rules) throws EdenUserNotFoundException {
+        PerformanceLogger performanceLogger = new PerformanceLogger();
+
+        boolean isGenerateRuleArs = true;
+        String generateRuleArs = Utilities.getApplicationConstant(EdenConstants.RULE_CHANGE_AR_GENERATION_KEY);
+        if (!StringUtils.isBlank(generateRuleArs)) {
+            isGenerateRuleArs = EdenConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
+    }
+        Set<Long> responsibilityIds = new HashSet<Long>();
+        Map<Long, RuleBaseValues> rulesToSave = new HashMap<Long, RuleBaseValues>();
+
+        Collections.sort(rules, new RuleDelegationSorter());
+        for (Iterator iter = rules.iterator(); iter.hasNext();) {
+            RuleBaseValues rule = (RuleBaseValues) iter.next();
+
+            performanceLogger.log("Preparing rule: " + rule.getDescription());
+
+            rule.setCurrentInd(Boolean.TRUE);
+            Timestamp date = new Timestamp(System.currentTimeMillis());
+            rule.setActivationDate(date);
+            try {
+                rule.setDeactivationDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
+            } catch (Exception e) {
+                LOG.error("Parse Exception", e);
+            }
+            rulesToSave.put(rule.getRuleBaseValuesId(), rule);
+            RuleBaseValues oldRule = rule.getPreviousVersion();
+            if (oldRule != null) {
+            	performanceLogger.log("Setting previous rule: " + oldRule.getRuleBaseValuesId() + " to non current.");
+                oldRule.setCurrentInd(Boolean.FALSE);
+                oldRule.setDeactivationDate(date);
+                rulesToSave.put(oldRule.getRuleBaseValuesId(), oldRule);
+                responsibilityIds.addAll(getModifiedResponsibilityIds(oldRule, rule));
+            }
+            for (Iterator iterator = rule.getResponsibilities().iterator(); iterator.hasNext();) {
+                RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
+                for (Iterator delIterator = responsibility.getDelegationRules().iterator(); delIterator.hasNext();) {
+                    RuleDelegation delegation = (RuleDelegation) delIterator.next();
+                    RuleBaseValues delegateRule = delegation.getDelegationRuleBaseValues();
+                    delegateRule.setCurrentInd(Boolean.TRUE);
+                    performanceLogger.log("Setting delegate rule: " + delegateRule.getDescription() + " to current.");
+                    if (delegateRule.getActivationDate() == null) {
+                        delegateRule.setActivationDate(date);
+                    }
+                    try {
+                        delegateRule.setDeactivationDate(new Timestamp(EdenConstants.getDefaultDateFormat().parse("01/01/2100").getTime()));
+                    } catch (Exception e) {
+                        LOG.error("Parse Exception", e);
+                    }
+                    rulesToSave.put(delegateRule.getRuleBaseValuesId(), delegateRule);
+                }
+            }
+        }
+        Map<String, Long> notifyMap = new HashMap<String, Long>();
+        for (RuleBaseValues rule : rulesToSave.values()) {
+            getRuleDAO().save(rule);
+            performanceLogger.log("Saved rule: " + rule.getRuleBaseValuesId());
+            installNotification(rule, notifyMap);
+        }
+        LOG.info("Notifying rule cache of "+notifyMap.size()+" cache changes.");
+        for (Iterator iterator = notifyMap.values().iterator(); iterator.hasNext();) {
+            queueRuleCache((Long)iterator.next());
+        }
+        if (isGenerateRuleArs) {
+            getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
+        }
+        performanceLogger.log("Time to make current");
+    }
+
 	private void queueRuleCache(Long ruleId){
 //        PersistedMessage ruleCache = new PersistedMessage();
 //        ruleCache.setQueuePriority(EdenConstants.ROUTE_QUEUE_RULE_CACHE_PRIORITY);
@@ -361,7 +443,8 @@ public class RuleServiceImpl implements RuleService {
 
     protected void putListInCache(String ruleTemplateName, String documentTypeName, List<RuleBaseValues> rules) {
     	LOG.info("Caching " + rules.size() + " rules for ruleTemplate='" + ruleTemplateName + "' and documentType='" + documentTypeName + "'");
-    	KEWServiceLocator.getCacheAdministrator().putInCache(getRuleCacheKey(ruleTemplateName, documentTypeName), rules, getDocumentTypeRuleCacheGroupName(documentTypeName));
+    	String groups[] = new String[] { getDocumentTypeRuleCacheGroupName(documentTypeName), RULE_GROUP_CACHE };
+    	KEWServiceLocator.getCacheAdministrator().putInCache(getRuleCacheKey(ruleTemplateName, documentTypeName), rules, groups);
     }
 
     protected void flushDocumentTypeFromCache(String documentTypeName) {
@@ -374,6 +457,11 @@ public class RuleServiceImpl implements RuleService {
     	KEWServiceLocator.getCacheAdministrator().flushEntry(getRuleCacheKey(ruleTemplateName, documentTypeName));
     }
 
+    public void flushRuleCache() {
+	LOG.info("Flushing entire Rule Cache.");
+	KEWServiceLocator.getCacheAdministrator().flushGroup(RULE_GROUP_CACHE);
+    }
+
     private Set getResponsibilityIdsFromGraph(RuleBaseValues rule, boolean isRuleCollecting) {
         Set responsibilityIds = new HashSet();
         for (Iterator iterator = rule.getResponsibilities().iterator(); iterator.hasNext();) {
@@ -381,23 +469,44 @@ public class RuleServiceImpl implements RuleService {
             if (isRuleCollecting) {
             	responsibilityIds.add(responsibility.getResponsibilityId());
             }
-            // TODO why is this commented out? - Good question.
-            //            if (isDelegationCollecting && responsibility.isDelegating()) {
-            //                for (Iterator iter =
-            // responsibility.getDelegationRules().iterator(); iter.hasNext();)
-            // {
-            //                    RuleDelegation ruleDelegation = (RuleDelegation) iter.next();
-            //                    for (Iterator iterator2 =
-            // ruleDelegation.getDelegationRuleBaseValues().getResponsibilities().iterator();
-            // iterator2.hasNext();) {
-            //                        RuleResponsibility delegationResp = (RuleResponsibility)
-            // iterator2.next();
-            //                        responsibilityIds.add(delegationResp.getRuleResponsibilityId());
-            //                    }
-            //                }
-            //            }
         }
         return responsibilityIds;
+    }
+
+    /**
+     * Returns the responsibility IDs that were modified between the 2 given versions of the rule.  Any added
+     * or removed responsibilities are also included in the returned Set.
+     */
+    private Set<Long> getModifiedResponsibilityIds(RuleBaseValues oldRule, RuleBaseValues newRule) {
+        Map<Long, RuleResponsibility> modifiedResponsibilityMap = new HashMap<Long, RuleResponsibility>();
+        for (Iterator iterator = oldRule.getResponsibilities().iterator(); iterator.hasNext();) {
+            RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
+            modifiedResponsibilityMap.put(responsibility.getResponsibilityId(), responsibility);
+        }
+        for (Iterator iterator = newRule.getResponsibilities().iterator(); iterator.hasNext();) {
+            RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
+            RuleResponsibility oldResponsibility = modifiedResponsibilityMap.get(responsibility.getResponsibilityId());
+            if (oldResponsibility == null) {
+        	// if there's no old responsibility then it's a new responsibility, add it
+        	modifiedResponsibilityMap.put(responsibility.getResponsibilityId(), responsibility);
+            } else if (!hasResponsibilityChanged(oldResponsibility, responsibility)) {
+        	// if it hasn't been modified, remove it from the collection of modified ids
+        	modifiedResponsibilityMap.remove(responsibility.getResponsibilityId());
+            }
+        }
+        return modifiedResponsibilityMap.keySet();
+    }
+
+    /**
+     * Determines if the given responsibilities are different or not.
+     */
+    private boolean hasResponsibilityChanged(RuleResponsibility oldResponsibility, RuleResponsibility newResponsibility) {
+	return !ObjectUtils.equals(oldResponsibility.getActionRequestedCd(), newResponsibility.getActionRequestedCd()) ||
+	!ObjectUtils.equals(oldResponsibility.getApprovePolicy(), newResponsibility.getActionRequestedCd()) ||
+	!ObjectUtils.equals(oldResponsibility.getPriority(), newResponsibility.getPriority()) ||
+	!ObjectUtils.equals(oldResponsibility.getRole(), newResponsibility.getRole()) ||
+	!ObjectUtils.equals(oldResponsibility.getRuleResponsibilityName(), newResponsibility.getRuleResponsibilityName()) ||
+	!ObjectUtils.equals(oldResponsibility.getRuleResponsibilityType(), newResponsibility.getRuleResponsibilityType());
     }
 
     /*
@@ -481,16 +590,33 @@ public class RuleServiceImpl implements RuleService {
         }
 
         // if the parent rule is new, unsaved, then save it
-        boolean isRoutingParent = parentRule.getRuleBaseValuesId() == null;
-        if (isRoutingParent) {
-            save2(parentRule, null, true);
-        }
+//        boolean isRoutingParent = parentRule.getRuleBaseValuesId() == null;
+//        if (isRoutingParent) {
+//            // it's very important that we do not save delegations here (that's what the false parameter is for)
+//            // this is because, if we save the delegations, the existing delegations on our parent rule will become
+//            // saved as "non current" before the rule is approved!!!
+//            save2(parentRule, null, false);
+//            //save2(parentRule, null, true);
+//        }
 
         // XXX: added when the RuleValidation stuff was added, basically we just need to get the RuleDelegation
         // that points to our delegate rule, this rule code is scary...
         RuleDelegation ruleDelegation = getRuleDelegation(parentRule, delegateRule);
 
         save2(delegateRule, ruleDelegation, true);
+
+//      if the parent rule is new, unsaved, then save it
+        // It's important to save the parent rule after the delegate rule is saved, that way we can ensure that any new rule
+        // delegations have a valid, saved, delegation rule to point to (otherwise we end up with a null constraint violation)
+        boolean isRoutingParent = parentRule.getRuleBaseValuesId() == null;
+        if (isRoutingParent) {
+            // it's very important that we do not save delegations here (that's what the false parameter is for)
+            // this is because, if we save the delegations, the existing delegations on our parent rule will become
+            // saved as "non current" before the rule is approved!!!
+            save2(parentRule, null, false);
+            //save2(parentRule, null, true);
+        }
+
         WorkflowDocument flexDoc = null;
         if (routeHeaderId != null) {
             flexDoc = new WorkflowDocument(new WorkflowIdVO(user.getWorkflowId()), routeHeaderId);
@@ -524,9 +650,7 @@ public class RuleServiceImpl implements RuleService {
 			RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
 			for (Iterator respIt = responsibility.getDelegationRules().iterator(); respIt.hasNext(); ) {
 				RuleDelegation ruleDelegation = (RuleDelegation) respIt.next();
-				// they should be the same object in memory...I think...I'm going to try and unit test some
-				// of this stuff because I don't like trying to divine what this stuff is doing everytime
-				// I look at it
+				// they should be the same object in memory
 				if (ruleDelegation.getDelegationRuleBaseValues().equals(delegateRule)) {
 					return ruleDelegation;
 				}
@@ -1016,6 +1140,9 @@ public class RuleServiceImpl implements RuleService {
         return (UserService) KEWServiceLocator.getService(KEWServiceLocator.USER_SERVICE);
     }
 
+    /**
+     * A comparator implementation which compares RuleBaseValues and puts all delegate rules first.
+     */
     public class RuleDelegationSorter implements Comparator {
         public int compare(Object arg0, Object arg1) {
             RuleBaseValues rule1 = (RuleBaseValues) arg0;
@@ -1059,13 +1186,18 @@ public class RuleServiceImpl implements RuleService {
 	if (userToRemove == null && workgroupToRemove == null) {
 	    throw new WorkflowRuntimeException("Could not resolve entity to be removed with id: " + entityToBeRemoved);
 	}
-	for (Long ruleId : ruleIds) {
-	    RuleBaseValues existingRule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(ruleId);
+	List<RuleBaseValues> existingRules = loadRules(ruleIds);
+	// sort the rules so that delegations are last, very important in order to deal with parent-child versioning properly
+	Collections.sort(existingRules, ComparatorUtils.reversedComparator(new RuleDelegationSorter()));
+	// we maintain the old-new mapping so we can associate versioned delegate rules with their appropriate re-versioned parents when applicable
+	Map<Long, RuleBaseValues> oldIdNewRuleMapping = new HashMap<Long, RuleBaseValues>();
+	Map<Long, RuleBaseValues> rulesToVersion = new HashMap<Long, RuleBaseValues>();
+	for (RuleBaseValues existingRule : existingRules) {
 	    if (!shouldChangeRuleInvolvement(documentId, existingRule)) {
 		continue;
-	    }
+	}
 	    List<RuleResponsibility> finalResponsibilities = new ArrayList<RuleResponsibility>();
-	    RuleVersion ruleVersion = createNewRemoveReplaceVersion(existingRule, documentId);
+	    RuleVersion ruleVersion = createNewRemoveReplaceVersion(existingRule, oldIdNewRuleMapping, documentId);
 	    boolean modified = false;
 	    for (RuleResponsibility responsibility : (List<RuleResponsibility>)ruleVersion.rule.getResponsibilities()) {
 		if (responsibility.isUsingWorkflowUser()) {
@@ -1082,25 +1214,41 @@ public class RuleServiceImpl implements RuleService {
 		finalResponsibilities.add(responsibility);
 	    }
 	    if (modified) {
+		// if this is a delegation rule, we need to hook it up to the parent rule
+		if (ruleVersion.parent != null && ruleVersion.delegation != null) {
+		    hookUpDelegateRuleToParentRule(ruleVersion.parent, ruleVersion.rule, ruleVersion.delegation);
+		}
 		if (finalResponsibilities.isEmpty()) {
-		    // deactivate the workgroup instead
+		    // deactivate the rule instead
 		    ruleVersion.rule.setActiveInd(false);
 		} else {
 		    ruleVersion.rule.setResponsibilities(finalResponsibilities);
 		}
 		try {
-		    save2(ruleVersion.rule, ruleVersion.delegation, true);
+		    save2(ruleVersion.rule, ruleVersion.delegation, false);
 		    if (ruleVersion.delegation != null) {
 			KEWServiceLocator.getRuleDelegationService().save(ruleVersion.delegation);
+		    }
+		    rulesToVersion.put(ruleVersion.rule.getRuleBaseValuesId(), ruleVersion.rule);
+		    if (ruleVersion.parent != null) {
+			save2(ruleVersion.parent, null, false);
+			rulesToVersion.put(ruleVersion.parent.getRuleBaseValuesId(), ruleVersion.parent);
 		    }
 		} catch (Exception e) {
 		    throw new WorkflowRuntimeException(e);
 		}
-		List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();
-		rules.add(ruleVersion.rule);
-		makeCurrent(rules);
 	    }
 	}
+	makeCurrent2(new ArrayList<RuleBaseValues>(rulesToVersion.values()));
+		}
+
+    protected List<RuleBaseValues> loadRules(List<Long> ruleIds) {
+		List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();
+	for (Long ruleId : ruleIds) {
+	    RuleBaseValues rule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(ruleId);
+	    rules.add(rule);
+	    }
+	return rules;
     }
 
     public void replaceRuleInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> ruleIds, Long documentId) throws WorkflowException {
@@ -1128,12 +1276,17 @@ public class RuleServiceImpl implements RuleService {
 	if (newUser == null && newWorkgroup == null) {
 	    throw new WorkflowRuntimeException("Could not resolve new replacement entity with id: " + newEntity);
 	}
-	for (Long ruleId : ruleIds) {
-	    RuleBaseValues existingRule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(ruleId);
+	List<RuleBaseValues> existingRules = loadRules(ruleIds);
+	// sort the rules so that delegations are last, very important in order to deal with parent-child versioning properly
+	Collections.sort(existingRules, ComparatorUtils.reversedComparator(new RuleDelegationSorter()));
+	// we maintain the old-new mapping so we can associate versioned delegate rules with their appropriate re-versioned parents when applicable
+	Map<Long, RuleBaseValues> oldIdNewRuleMapping = new HashMap<Long, RuleBaseValues>();
+	Map<Long, RuleBaseValues> rulesToVersion = new HashMap<Long, RuleBaseValues>();
+	for (RuleBaseValues existingRule : existingRules) {
 	    if (!shouldChangeRuleInvolvement(documentId, existingRule)) {
 		continue;
 	    }
-	    RuleVersion ruleVersion = createNewRemoveReplaceVersion(existingRule, documentId);
+	    RuleVersion ruleVersion = createNewRemoveReplaceVersion(existingRule, oldIdNewRuleMapping, documentId);
 	    RuleBaseValues rule = ruleVersion.rule;
 	    boolean modified = false;
 	    for (RuleResponsibility responsibility : (List<RuleResponsibility>)rule.getResponsibilities()) {
@@ -1165,20 +1318,28 @@ public class RuleServiceImpl implements RuleService {
 	    }
 	    if (modified) {
 		try {
-		    save2(ruleVersion.rule, ruleVersion.delegation, true);
+		    // if this is a delegation rule, we need to hook it up to the parent rule
+		    if (ruleVersion.parent != null && ruleVersion.delegation != null) {
+			hookUpDelegateRuleToParentRule(ruleVersion.parent, ruleVersion.rule, ruleVersion.delegation);
+		    }
+		    save2(ruleVersion.rule, ruleVersion.delegation, false);
 		    if (ruleVersion.delegation != null) {
 			KEWServiceLocator.getRuleDelegationService().save(ruleVersion.delegation);
+		    }
+		    rulesToVersion.put(ruleVersion.rule.getRuleBaseValuesId(), ruleVersion.rule);
+		    if (ruleVersion.parent != null) {
+			save2(ruleVersion.parent, null, false);
+			rulesToVersion.put(ruleVersion.parent.getRuleBaseValuesId(), ruleVersion.parent);
 		    }
 		} catch (Exception e) {
 		    throw new WorkflowRuntimeException(e);
 		}
-		List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();
-		rules.add(rule);
-		makeCurrent(rules);
 	    }
-	}
+	    }
 
-    }
+	makeCurrent2(new ArrayList<RuleBaseValues>(rulesToVersion.values()));
+
+	}
 
     /**
      * If a rule has been modified and is no longer current since the original request was made, we need to
@@ -1212,8 +1373,77 @@ public class RuleServiceImpl implements RuleService {
 	return null;
     }
 
-    protected RuleVersion createNewRemoveReplaceVersion(RuleBaseValues existingRule, Long documentId) {
+    /**
+     * This is essentially the code required to create a new version of a rule.  While this is being done in the Rule
+     * GUI It's not sufficiently abstracted at the web-tier so we must essentially re-implement it here :(
+     * This would be a good place to do some work to clean this up.
+     *
+     * <p>The oldNewMapping which is passed in allows us to attach the existing rule that gets reversioned to an already re-versioned
+     * parent rule in the case where that is applicable.  This case would occur whenever both a parent and one or more of it's delegate rules are changed
+     * as part of the same transaction.
+     */
+    protected RuleVersion createNewRemoveReplaceVersion(RuleBaseValues existingRule, Map<Long, RuleBaseValues> originalIdNewRuleMapping, Long documentId) {
 	try {
+	    // first check if the rule has already been re-versioned
+	    RuleBaseValues rule = null;
+	    if (originalIdNewRuleMapping.containsKey(existingRule.getRuleBaseValuesId())) {
+		rule = originalIdNewRuleMapping.get(existingRule.getRuleBaseValuesId());
+	    } else {
+		rule = createNewRuleVersion(existingRule, documentId);
+	    }
+
+	    RuleVersion ruleVersion = new RuleVersion();
+	    RuleBaseValues existingParentRule = null;
+	    RuleBaseValues newParentRule = null;
+	    // if it's a delegate rule, we need to find the appropriate parent and attach it
+	    if (rule.getDelegateRule()) {
+		RuleDelegation existingBaseDelegation = getRuleDelegationForDelegateRule(existingRule);
+		ruleVersion.delegation = existingBaseDelegation;
+		existingParentRule = existingBaseDelegation.getRuleResponsibility().getRuleBaseValues();
+		if (originalIdNewRuleMapping.containsKey(existingParentRule.getRuleBaseValuesId())) {
+		    newParentRule = originalIdNewRuleMapping.get(existingParentRule.getRuleBaseValuesId());
+		} else {
+		    // re-version the parent rule
+		    newParentRule = createNewRuleVersion(existingParentRule, documentId);
+		}
+	    }
+
+	    // put our newly created rules into the map
+	    originalIdNewRuleMapping.put(existingRule.getRuleBaseValuesId(), rule);
+	    if (existingParentRule != null && !originalIdNewRuleMapping.containsKey(existingParentRule.getRuleBaseValuesId())) {
+		originalIdNewRuleMapping.put(existingParentRule.getRuleBaseValuesId(), newParentRule);
+	    }
+
+	    ruleVersion.rule = rule;
+	    ruleVersion.parent = newParentRule;
+	    return ruleVersion;
+	} catch (Exception e) {
+	    if (e instanceof RuntimeException) {
+		throw (RuntimeException)e;
+	    }
+	    throw new WorkflowRuntimeException(e);
+	}
+    }
+
+    protected void hookUpDelegateRuleToParentRule(RuleBaseValues newParentRule, RuleBaseValues newDelegationRule, RuleDelegation existingRuleDelegation) {
+	// hook up parent rule to new rule delegation
+	boolean foundDelegation = false;
+	outer:for (RuleResponsibility responsibility : (List<RuleResponsibility>)newParentRule.getResponsibilities()) {
+	    for (RuleDelegation ruleDelegation : (List<RuleDelegation>)responsibility.getDelegationRules()) {
+		if (ruleDelegation.getDelegationRuleBaseValues().getRuleBaseValuesId().equals(existingRuleDelegation.getDelegationRuleBaseValues().getRuleBaseValuesId())) {
+		    ruleDelegation.setDelegationRuleBaseValues(newDelegationRule);
+		    foundDelegation = true;
+		    break outer;
+		}
+	    }
+	}
+	if (!foundDelegation) {
+	    throw new WorkflowRuntimeException("Failed to locate the existing rule delegation with id: " + existingRuleDelegation.getDelegationRuleBaseValues().getRuleBaseValuesId());
+	}
+
+    }
+
+    protected RuleBaseValues createNewRuleVersion(RuleBaseValues existingRule, Long documentId) throws Exception {
 	    RuleBaseValues rule = new RuleBaseValues();
 	    PropertyUtils.copyProperties(rule, existingRule);
 	    rule.setPreviousVersion(existingRule);
@@ -1243,6 +1473,8 @@ public class RuleServiceImpl implements RuleService {
 		    delegation.setRuleResponsibility(responsibility);
 		    delegation.setRuleResponsibilityId(null);
 		    delegation.setLockVerNbr(0);
+		    // it's very important that we do NOT recurse down into the delegation rules and reversion those,
+		    // this is important to how rule versioning works
 		    responsibility.getDelegationRules().add(delegation);
 		}
 	    }
@@ -1266,41 +1498,12 @@ public class RuleServiceImpl implements RuleService {
 		    extension.getExtensionValues().add(extensionValue);
 		}
 	    }
-	    RuleDelegation existingBaseDelegation = getRuleDelegationForDelegateRule(existingRule);
-	    RuleDelegation ruleDelegation = null;
-	    if (existingBaseDelegation != null) {
-		ruleDelegation = new RuleDelegation();
-		PropertyUtils.copyProperties(ruleDelegation, existingBaseDelegation);
-		ruleDelegation.setDelegateRuleId(null);
-		ruleDelegation.setDelegationRuleBaseValues(rule);
-		ruleDelegation.setLockVerNbr(0);
-		ruleDelegation.setRuleDelegationId(null);
-		existingBaseDelegation.getRuleResponsibility().getDelegationRules().add(ruleDelegation);
-		// now remove existingBaseDelegation from it's responsibilities list of rules, this is because we build this collection
-		// off of RuleResponsibility via a query customizer based on RuleDelegations with "current" delegation rules on them.
-		// If we don't remove this non-current delegation from the list, ojb's persistence broker cache will cause us problems
-		for (Iterator iterator = existingBaseDelegation.getRuleResponsibility().getDelegationRules().iterator(); iterator.hasNext();) {
-		    RuleDelegation existingRuleDelegation = (RuleDelegation) iterator.next();
-		    if (existingBaseDelegation.getDelegationRuleBaseValues().getRuleBaseValuesId().equals(existingRuleDelegation.getDelegationRuleBaseValues().getRuleBaseValuesId())) {
-			iterator.remove();
-			break;
-		    }
+	    return rule;
 		}
-	    }
-	    RuleVersion ruleVersion = new RuleVersion();
-	    ruleVersion.rule = rule;
-	    ruleVersion.delegation = ruleDelegation;
-	    return ruleVersion;
-	} catch (Exception e) {
-	    if (e instanceof RuntimeException) {
-		throw (RuntimeException)e;
-	    }
-	    throw new WorkflowRuntimeException(e);
-	}
-    }
 
     private static class RuleVersion {
 	public RuleBaseValues rule;
+	public RuleBaseValues parent;
 	public RuleDelegation delegation;
     }
 

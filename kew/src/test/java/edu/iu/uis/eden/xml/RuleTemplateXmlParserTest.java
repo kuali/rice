@@ -54,7 +54,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         VALID_TEMPLATE_WITH_LIMITED_DEFAULTS("ValidRuleTemplateWithSomeDefaults", "RuleTemplate_Valid_Some_Defaults", new String[]{RULE_ATTRIBUTE_THREE}, new String[0], new String[0], new String[]{RULE_ATTRIBUTE_THREE}),
         VALID_TEMPLATE_WITH_LIMITED_DEFAULTS_OVERWRITE("ValidRuleTemplateWithSomeDefaultsOverwrite", "RuleTemplate_Valid_Some_Defaults", new String[]{RULE_ATTRIBUTE_THREE}, new String[0], new String[0], new String[]{RULE_ATTRIBUTE_THREE}),
         VALID_TEMPLATE_WITH_INSTRUCTIONS_DEFAULT("ValidRuleTemplateWithDefaultsInstrOnly", "RuleTemplate_Valid_Instructions_Default", new String[]{RULE_ATTRIBUTE_TWO}, new String[0], new String[]{RULE_ATTRIBUTE_TWO}, new String[0]),
-        VALID_TEMPLATE_WITH_LIMITED_DEFAULTS_REMOVED("ValidRuleTemplateWithSomeRemovedDefaultsOverwrite", "RuleTemplate_Valid_Some_Defaults", new String[]{RULE_ATTRIBUTE_THREE}, new String[0], new String[0], new String[]{RULE_ATTRIBUTE_THREE}),
+        VALID_TEMPLATE_WITH_LIMITED_DEFAULTS_REMOVED("ValidRuleTemplateWithSomeRemovedDefaultsOverwrite", "RuleTemplate_Valid_Some_Defaults", new String[]{RULE_ATTRIBUTE_THREE}, new String[0], new String[0], new String[]{RULE_ATTRIBUTE_THREE})
         ;
 
         public String fileNameParameter;
@@ -233,7 +233,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         assertTrue(new Date(System.currentTimeMillis() - 10000).before(ruleDefaults.getActivationDate()) && new Date(System.currentTimeMillis() + 100).after(ruleDefaults.getActivationDate()));
         assertNotNull(ruleDefaults.getDeactivationDate());
     }
-    
+        
     /**
      * Tests loading a template with a partial ruleDefaults section and then updating/overwriting it
      */

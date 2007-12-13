@@ -33,4 +33,8 @@ public interface DocumentSearchService {
     public void clearNamedSearches(WorkflowUser user);
     public List getNamedSearches(WorkflowUser user);
     public List getMostRecentSearches(WorkflowUser user);
+    
+    public DocumentSearchGenerator getStandardDocumentSearchGenerator();
+    public DocumentSearchResultProcessor getStandardDocumentSearchResultProcessor();
+
 }

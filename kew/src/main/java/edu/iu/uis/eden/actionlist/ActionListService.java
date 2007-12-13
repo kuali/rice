@@ -93,6 +93,8 @@ public interface ActionListService {
      * Retrieves the number of Action List items in the given user's primary Action List (does not include secondary delegations)
      */
     public int getCount(WorkflowUser user);
+
+    public void saveRefreshUserOption(WorkflowUser user);
     
     
     /**

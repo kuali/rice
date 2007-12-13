@@ -50,7 +50,7 @@
 		    	<c:out value="${result.jobDetail.description}"/>&nbsp;
 		    </display-el:column>
 		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Time to execute</div>" sortProperty="trigger.startTime.time">
-		    	<c:out value="${result.trigger.startTime}"/>&nbsp;
+		    	<c:out value="${result.trigger.nextFireTime}"/>&nbsp;
 		    </display-el:column>
 		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>FullName</div>" >
 		    	<c:out value="${result.jobDetail.fullName}"/>&nbsp;

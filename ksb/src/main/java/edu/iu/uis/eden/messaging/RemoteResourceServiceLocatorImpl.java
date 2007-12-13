@@ -283,7 +283,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		}
 	}
 
-	public synchronized MessageExceptionHandler getMessageExceptionHandler(QName qname) {
+	public MessageExceptionHandler getMessageExceptionHandler(QName qname) {
 		List<RemotedServiceHolder> remotedServices = getAllServices(qname);
 		if (remotedServices == null || remotedServices.isEmpty()) {
 			throw new RiceRuntimeException("No services found for name " + qname);

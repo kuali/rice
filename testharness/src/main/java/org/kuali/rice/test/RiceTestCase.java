@@ -33,8 +33,12 @@ import org.kuali.rice.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.lifecycles.PerSuiteDataLoaderLifecycle;
 
 /**
- * To Be Updated...
- * 
+ * Useful superclass for all Workflow test cases. Handles setup of test
+ * utilities and a test environment. Configures the Spring test environment
+ * providing a template method for custom context files in test mode. Also
+ * provides a template method for running custom transactional setUp. Tear down
+ * handles automatic tear down of objects created inside the test environment.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  */

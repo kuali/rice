@@ -100,8 +100,7 @@ public class DocumentSearchAction extends WorkflowAction {
 
         if (lookupType != null && !lookupType.equals("")) {
             lookupUrl.append("&conversionFields=");
-            WorkflowLookupable workflowLookupable = (WorkflowLookupable) GlobalResourceLoader.getService(request.getParameter("lookupableImplServiceName"));// (WorkflowLookupable)
-                                                                                                                                                            // SpringServiceLocator.getExtensionService().getLookupable(request.getParameter("lookupableImplServiceName"));
+            WorkflowLookupable workflowLookupable = (WorkflowLookupable) GlobalResourceLoader.getService(request.getParameter("lookupableImplServiceName"));
             for (Iterator iterator = workflowLookupable.getDefaultReturnType().iterator(); iterator.hasNext();) {
                 String returnType = (String) iterator.next();
                 lookupUrl.append(returnType).append(":").append(lookupType);
@@ -189,15 +188,14 @@ public class DocumentSearchAction extends WorkflowAction {
     public ActionForward doDocSearch(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("started doDocSearch");
         DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
-        // String previousDocTypeName = docSearchForm.getDocTypeDisplayName();
         DocumentSearchResultComponents results = null;
         SavedSearchResult result = null;
         State currentState = getCurrentState(request);
         if (docSearchForm.getNamedSearch() != null && !"".equals(docSearchForm.getNamedSearch()) && !"ignore".equals(docSearchForm.getNamedSearch())) {
             result = getDocumentSearchService().getSavedSearchResults(getUserSession(request).getWorkflowUser(), docSearchForm.getNamedSearch());
+            if (result != null) {
             // if using a saved search assume new state needs created by discarding old state
             currentState = null;
-            // docSearchForm.updateFormUsingSavedSearch(result);
             docSearchForm.setCriteriaProcessor(buildCriteriaProcessor(null, docSearchForm, getUserSession(request)));
             docSearchForm.getCriteriaProcessor().setDocSearchCriteriaVO(result.getDocSearchCriteriaVO());
             docSearchForm.clearSearchableAttributes();
@@ -206,6 +204,13 @@ public class DocumentSearchAction extends WorkflowAction {
             docSearchForm.setNamedSearch("");
             setDropdowns(docSearchForm, request);
             results = result.getSearchResult();
+	    } else {
+		LOG.warn("Could not find saved search with name '" + docSearchForm.getNamedSearch() + "' for user " + getUserSession(request).getWorkflowUser());
+		ActionErrors errors = new ActionErrors();
+		errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.savedSearches.notFound", docSearchForm.getNamedSearch()));
+		saveErrors(request, errors);
+		return mapping.findForward("success");
+	    }
         } else {
             docSearchForm.addSearchableAttributesToCriteria();
             DocSearchCriteriaVO criteria = docSearchForm.getCriteria();
@@ -235,11 +240,9 @@ public class DocumentSearchAction extends WorkflowAction {
         result = new SavedSearchResult(docSearchForm.getCriteria(), new DocumentSearchResultComponents(columns, results.getSearchResults()));
         request.setAttribute("reqSearchResultColumns", result.getSearchResult().getColumns());
         request.setAttribute("reqSearchResults", result.getSearchResult().getSearchResults());
-        // request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
         State state = adjustStateAndForm(currentState, docSearchForm, getUserSession(request));
         state.setResult(result);
         setAdjustedState(request, state);
-//        setStateForUse(request, state);
         if (docSearchForm.getCriteria().isOverThreshold() && docSearchForm.getCriteria().getSecurityFilteredRows() > 0) {
             ActionErrors errors = new ActionErrors();
             errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.exceededThresholdAndSecurityFiltered", String.valueOf(results.getSearchResults().size()), docSearchForm.getCriteria().getSecurityFilteredRows()));
@@ -440,12 +443,6 @@ public class DocumentSearchAction extends WorkflowAction {
         if (docTypeFullName != null) {
             documentSearchForm.setNamedSearch("");
             documentSearchForm.getCriteria().setNamedSearch("");
-            // State state = getCurrentState(request);
-            // DocumentSearchCriteriaProcessor processor =
-            // getValidDocumentType(docTypeFullName).getDocumentSearchCriteriaProcessor();
-            // processor.setDocSearchCriteriaVO(generateDocSearchCriteriaVO(getUserSession(request), documentSearchForm));
-            // processor.setSearchingUser(getUserSession(request).getWorkflowUser());
-            // state.setCriteriaProcessor(processor);
             documentSearchForm.clearSearchableAttributes();
         }
         if (request.getParameter("workgroupId") != null) {

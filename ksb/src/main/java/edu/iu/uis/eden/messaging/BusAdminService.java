@@ -30,4 +30,10 @@ public interface BusAdminService {
 
     public void ping();
 
+    public void setCorePoolSize(int corePoolSize);
+
+    public void setMaximumPoolSize(int maxPoolSize);
+
+    public void setConfigProperty(String propertyName, String propertyValue);
+
 }

@@ -18,6 +18,7 @@ package edu.iu.uis.eden.docsearch;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -470,7 +471,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * @throws EdenUserNotFoundException
      * @throws SQLException
      */
-    public List<DocSearchVO> processResultSet(ResultSet resultSet,DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException, SQLException {
+    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException, SQLException {
     	setCriteria(searchCriteria);
         int size = 0;
         List docList = new ArrayList();
@@ -479,7 +480,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         int iteration = 0;
         while ((resultMap.size() < searchCriteria.getThreshhold()) && resultSet.next() && iteration < searchCriteria.getFetchLimit()) {
         	iteration++;
-            DocSearchVO docSearchVO = processRow(resultSet);
+            DocSearchVO docSearchVO = processRow(searchAttributeStatement, resultSet);
             docSearchVO.setSuperUserSearch(getCriteria().getSuperUserSearch());
             if (!resultMap.containsKey(docSearchVO.getRouteHeaderId())) {
                 docList.add(docSearchVO);
@@ -554,7 +555,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	}
     }
 
-    public DocSearchVO processRow(ResultSet rs) throws SQLException, EdenUserNotFoundException {
+    public DocSearchVO processRow(Statement searchAttributeStatement, ResultSet rs) throws SQLException, EdenUserNotFoundException {
         DocSearchVO docSearchVO = new DocSearchVO();
 
         docSearchVO.setRouteHeaderId(new Long(rs.getLong("DOC_HDR_ID")));
@@ -592,12 +593,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         docSearchVO.setInitiatorEmailAddress(user.getEmailAddress());
 
         if (usingAtLeastOneSearchAttribute) {
-            populateRowSearchableAttributes(docSearchVO,rs);
+            populateRowSearchableAttributes(docSearchVO,searchAttributeStatement,rs);
         }
         return docSearchVO;
     }
-    
-    public void populateRowSearchableAttributes(DocSearchVO docSearchVO, ResultSet rs) throws SQLException {
+
+    public void populateRowSearchableAttributes(DocSearchVO docSearchVO, Statement searchAttributeStatement, ResultSet rs) throws SQLException {
         List searchAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
         for (Iterator iter = searchAttributeValues.iterator(); iter.hasNext();) {
             SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();

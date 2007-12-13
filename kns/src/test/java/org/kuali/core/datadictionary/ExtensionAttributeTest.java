@@ -117,20 +117,27 @@ public class ExtensionAttributeTest extends KNSTestBase {
 	@Test
 	public void testObjectUtils_getPropertyType() throws Exception {
 		TravelAccount ta = new TravelAccount();
-		assertEquals( "physical property type mismatch", PersistableBusinessObjectExtension.class, PropertyUtils.getPropertyType( ta, "extension" ) );
-		assertEquals( "DD property type mismatch", TravelAccountExtension.class, ObjectUtils.getPropertyType( ta, "extension", KNSServiceLocator.getPersistenceStructureService() ) );
-		assertEquals( "extension.accountType attribute class mismatch", TravelAccountType.class, ObjectUtils.getPropertyType( ta, "extension.accountType", KNSServiceLocator.getPersistenceStructureService() ) );
-		assertEquals( "extension.accountType.codeAndDescription attribute class mismatch", String.class, ObjectUtils.getPropertyType( ta, "extension.accountType.codeAndDescription", KNSServiceLocator.getPersistenceStructureService() ) );
+	assertEquals("physical property type mismatch", PersistableBusinessObjectExtension.class, PropertyUtils
+		.getPropertyType(ta, "extension"));
+	assertEquals("DD property type mismatch", TravelAccountExtension.class, ObjectUtils.getPropertyType(ta, "extension",
+		KNSServiceLocator.getPersistenceStructureService()));
+	assertEquals("extension.accountType attribute class mismatch", TravelAccountType.class, ObjectUtils.getPropertyType(
+		ta, "extension.accountType", KNSServiceLocator.getPersistenceStructureService()));
+	assertEquals("extension.accountType.codeAndDescription attribute class mismatch", String.class, ObjectUtils
+		.getPropertyType(ta, "extension.accountType.codeAndDescription", KNSServiceLocator
+			.getPersistenceStructureService()));
 	}
 
 	@Test
 	public void testBOMetaDataService() throws Exception {
 		TravelAccount ta = new TravelAccount();
-		BusinessObjectRelationship br = KNSServiceLocator.getBusinessObjectMetaDataService().getBusinessObjectRelationship( ta, "extension.accountType" );
+	BusinessObjectRelationship br = KNSServiceLocator.getBusinessObjectMetaDataService().getBusinessObjectRelationship(
+		ta, "extension.accountType");
 		assertEquals( "mismatch on parent class", TravelAccount.class, br.getParentClass() );
 		assertEquals( "mismatch on related class", TravelAccountType.class, br.getRelatedClass() );
 		System.out.println( br.getParentToChildReferences() );
-		assertEquals( "parent/child key not correct - should be extension.accountTypeCode/accountTypeCode", "accountTypeCode", br.getParentToChildReferences().get( "extension.accountTypeCode" ));
+	assertEquals("parent/child key not correct - should be extension.accountTypeCode/accountTypeCode",
+		"accountTypeCode", br.getParentToChildReferences().get("extension.accountTypeCode"));
 		br = KNSServiceLocator.getBusinessObjectMetaDataService().getBusinessObjectRelationship( ta, "extension" );
 		assertNull( "extension is not lookupable, should have returned null", br );
 	}
@@ -143,11 +150,14 @@ public class ExtensionAttributeTest extends KNSTestBase {
 
         Field field = FieldUtils.getPropertyField(ta.getClass(), "extension.accountTypeCode", true);
 
-        field = LookupUtils.setFieldQuickfinder((BusinessObject) ta, "extension.accountTypeCode", field, lookupFieldAttributeList);
+	field = LookupUtils.setFieldQuickfinder((BusinessObject) ta, "extension.accountTypeCode", field,
+		lookupFieldAttributeList);
 
 		assertEquals( "lookup class not correct", TravelAccountType.class.getName(), field.getQuickFinderClassNameImpl() );
-		assertEquals( "field lookup params not correct", "extension.accountTypeCode:accountTypeCode", field.getLookupParameters() );
-		assertEquals( "lookup field conversions not correct", "accountTypeCode:extension.accountTypeCode", field.getFieldConversions() );
+	assertEquals("field lookup params not correct", "extension.accountTypeCode:accountTypeCode", field
+		.getLookupParameters());
+	assertEquals("lookup field conversions not correct", "accountTypeCode:extension.accountTypeCode", field
+		.getFieldConversions());
 	}
 
 	@Test
@@ -157,7 +167,8 @@ public class ExtensionAttributeTest extends KNSTestBase {
 		ta.setName( "Test Name" );
 		ta.setNumber( "1234567" );
         GlobalVariables.setUserSession(new UserSession("quickstart"));
-        MaintenanceDocument document = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getNewDocument("TravelAccountMaintenanceDocument");
+	MaintenanceDocument document = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getNewDocument(
+		"TravelAccountMaintenanceDocument");
         assertNotNull( "new document must not be null", document );
         document.getDocumentHeader().setFinancialDocumentDescription( getClass().getSimpleName() + "test" );
         document.getOldMaintainableObject().setBusinessObject(null);
@@ -174,7 +185,9 @@ public class ExtensionAttributeTest extends KNSTestBase {
         assertTrue( "validation should have failed", failedAsExpected );
         System.out.println( "document errors: " + GlobalVariables.getErrorMap() );
         assertTrue( "there should be errors", GlobalVariables.getErrorMap().getErrorCount() > 0 );
-        assertTrue( "should be an error on the account type code", GlobalVariables.getErrorMap().containsKey( "document.newMaintainableObject.extension.accountTypeCode" ) );
-        assertTrue( "account type code should have an existence error", GlobalVariables.getErrorMap().fieldHasMessage( "document.newMaintainableObject.extension.accountTypeCode", "error.existence" ) );
+	assertTrue("should be an error on the account type code", GlobalVariables.getErrorMap().containsKey(
+		"document.newMaintainableObject.extension.accountTypeCode"));
+	assertTrue("account type code should have an existence error", GlobalVariables.getErrorMap().fieldHasMessage(
+		"document.newMaintainableObject.extension.accountTypeCode", "error.existence"));
 	}
 }

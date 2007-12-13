@@ -584,7 +584,9 @@ public class DocumentType implements WorkflowPersistable {
     		if (getParentDocType() != null) {
     			return getParentDocType().getDocumentSearchGenerator();
     		} else {
-                return new StandardDocumentSearchGenerator(getSearchableAttributes());
+                DocumentSearchGenerator generator = KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
+    	    	generator.setSearchableAttributes(getSearchableAttributes());
+    	    	return generator;
     		}
     	}
         Object searchGenerator = GlobalResourceLoader.getObject(objDef);
@@ -617,7 +619,8 @@ public class DocumentType implements WorkflowPersistable {
     		if (getParentDocType() != null) {
     			return getParentDocType().getDocumentSearchResultProcessor();
     		} else {
-    			return new StandardDocumentSearchResultProcessor();
+    		    return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchResultProcessor();
+// 		    return new StandardDocumentSearchResultProcessor();
     		}
     	}
     	for (Iterator iterator = documentTypeAttributes.iterator(); iterator.hasNext();) {
@@ -634,7 +637,8 @@ public class DocumentType implements WorkflowPersistable {
 				return resultProcessor;
 			}
 		}
-    	return new StandardDocumentSearchResultProcessor();
+	    return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchResultProcessor();
+//    	return new StandardDocumentSearchResultProcessor();
     }
 
     public CustomActionListAttribute getCustomActionListAttribute() throws ResourceUnavailableException {

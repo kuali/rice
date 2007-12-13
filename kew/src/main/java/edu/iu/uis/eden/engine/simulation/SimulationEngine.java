@@ -247,7 +247,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
     	List requests = new ArrayList();
         for (Iterator iterator = generatedRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue request = (ActionRequestValue) iterator.next();
-            if ( (request.isPending()) && (nodeName.equals(request.getNodeInstance().getName())) ) {
+            if ( (request.isPending()) && request.getNodeInstance() != null && nodeName.equals(request.getNodeInstance().getName())) {
             	requests.add(request);
             }
         }

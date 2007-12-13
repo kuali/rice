@@ -461,6 +461,10 @@ public class ActionListServiceImpl implements ActionListService {
 
     public int getCount(WorkflowUser user) {
 	return getActionListDAO().getCount(user.getWorkflowId());
+	}
+
+	public void saveRefreshUserOption(WorkflowUser user) {
+	    KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(user);
     }
 
     /**

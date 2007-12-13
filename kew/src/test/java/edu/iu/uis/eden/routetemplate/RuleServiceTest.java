@@ -414,9 +414,10 @@ public class RuleServiceTest extends KEWTestCase {
         ruleIds.add(ewestfalDelegation.getRuleBaseValuesId());
         parentRuleId = parentRule.getRuleBaseValuesId();
         KEWServiceLocator.getRuleService().replaceRuleInvolvement(new AuthenticationUserId("ewestfal"), new AuthenticationUserId("xqi"), ruleIds, null);
-        // verify that the parent rule didn't get re-versioned
+	// verify that the parent rule was properly re-versioned
         parentRule = KEWServiceLocator.getRuleService().getRuleByName("RuleWithDelegations1");
-        assertEquals("Parent rule should not have been re-versioned.", parentRuleId, parentRule.getRuleBaseValuesId());
+	assertFalse("Parent rule should have been re-versioned.", parentRuleId.equals(parentRule.getRuleBaseValuesId()));
+	assertEquals("Parent rule's previous version is incorrect", parentRuleId, parentRule.getPreviousVersionId());
         assertEquals("Should still be 2 delegations", 2, parentRule.getResponsibility(0).getDelegationRules().size());
 
         WorkflowUser xqi = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("xqi"));
@@ -445,6 +446,21 @@ public class RuleServiceTest extends KEWTestCase {
     @Test public void testReplaceRuleInvolvementDelegateToSelf() throws Exception {
         loadXmlFile("RuleRemoveReplaceWithDelegateToSelf.xml");
 
+	// after import, verify there is only 1 of each rule
+	List<RuleBaseValues> rules = (List<RuleBaseValues>)KEWServiceLocator.getRuleService().fetchAllRules(false);
+	rules.addAll(KEWServiceLocator.getRuleService().fetchAllRules(true));
+	int numParents = 0;
+	int numDelegates = 0;
+	for (RuleBaseValues rule : rules) {
+	    if (rule.getRuleTemplate().getName().equals("RuleRouting2")) {
+		numParents++;
+	    } else if (rule.getRuleTemplate().getName().equals("SimpleTemplate")) {
+		numDelegates++;
+	    }
+	}
+	assertEquals(1, numParents);
+	assertEquals(1, numDelegates);
+
         WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
 
         // load the parent rule
@@ -464,6 +480,21 @@ public class RuleServiceTest extends KEWTestCase {
         ruleIds.add(parentRuleId);
 
         KEWServiceLocator.getRuleService().replaceRuleInvolvement(new AuthenticationUserId("ewestfal"), new AuthenticationUserId("rkirkend"), ruleIds, new Long(10000));
+
+	// after first re-versioning, we should have 1 new versions of each rule for a total of 4
+	rules = (List<RuleBaseValues>)KEWServiceLocator.getRuleService().fetchAllRules(false);
+	rules.addAll(KEWServiceLocator.getRuleService().fetchAllRules(true));
+	numParents = 0;
+	numDelegates = 0;
+	for (RuleBaseValues rule : rules) {
+	    if (rule.getRuleTemplate().getName().equals("RuleRouting2")) {
+		numParents++;
+	    } else if (rule.getRuleTemplate().getName().equals("SimpleTemplate")) {
+		numDelegates++;
+	    }
+	}
+	assertEquals(2, numParents);
+	assertEquals(2, numDelegates);
 
         WorkflowUser rkirkend = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
 
@@ -504,6 +535,21 @@ public class RuleServiceTest extends KEWTestCase {
         ruleIds.add(parentRule.getRuleBaseValuesId());
         KEWServiceLocator.getRuleService().replaceRuleInvolvement(new AuthenticationUserId("rkirkend"), new AuthenticationUserId("xqi"), ruleIds, null);
 
+	// after second re-versioning, we should have 1 new version of each rule for a total of 6
+	rules = (List<RuleBaseValues>)KEWServiceLocator.getRuleService().fetchAllRules(false);
+	rules.addAll(KEWServiceLocator.getRuleService().fetchAllRules(true));
+	numParents = 0;
+	numDelegates = 0;
+	for (RuleBaseValues rule : rules) {
+	    if (rule.getRuleTemplate().getName().equals("RuleRouting2")) {
+		numParents++;
+	    } else if (rule.getRuleTemplate().getName().equals("SimpleTemplate")) {
+		numDelegates++;
+	    }
+	}
+	assertEquals(3, numParents);
+	assertEquals(3, numDelegates);
+
         parentRule = KEWServiceLocator.getRuleService().getRuleByName("RuleWithDelegateToSelf");
         assertNotNull(parentRule);
         assertFalse("Parent rule should have been re-versioned.", parentRuleId.equals(parentRule.getRuleBaseValuesId()));
@@ -529,6 +575,42 @@ public class RuleServiceTest extends KEWTestCase {
         ruleDelegation = parentRule.getResponsibility(0).getDelegationRule(0);
         assertTrue("Delegate rule should NOT have been re-versioned.", delegateRuleId.equals(ruleDelegation.getDelegationRuleBaseValues().getRuleBaseValuesId()));
     }
+
+    /**
+     * This tests removing involvement of a user from multiple delegation rules on a parent.  The setup includes a parent rule with 4 delegations on it.
+     */
+    @Test public void testRemoveRuleInvolvementMultipleDelegations() throws Exception {
+	loadXmlFile("RuleRemoveReplaceMultipleDelegations.xml");
+
+	// load the parent rule
+	RuleBaseValues parentRule = KEWServiceLocator.getRuleService().getRuleByName("RuleWithMultipleDelegations1");
+	assertNotNull(parentRule);
+	assertEquals(2, parentRule.getResponsibilities().size());
+	assertEquals(3, parentRule.getResponsibility(0).getDelegationRules().size());
+	assertEquals(0, parentRule.getResponsibility(1).getDelegationRules().size());
+	Long parentRuleId = parentRule.getRuleBaseValuesId();
+	Long ruleDelegationId1 = parentRule.getResponsibility(0).getDelegationRule(0).getRuleDelegationId();
+	Long ruleDelegationId2 = parentRule.getResponsibility(0).getDelegationRule(1).getRuleDelegationId();
+	Long ruleDelegationId3 = parentRule.getResponsibility(0).getDelegationRule(2).getRuleDelegationId();
+	Long delegateRuleId1 = parentRule.getResponsibility(0).getDelegationRule(0).getDelegationRuleBaseValues().getRuleBaseValuesId();
+	Long delegateRuleId2 = parentRule.getResponsibility(0).getDelegationRule(1).getDelegationRuleBaseValues().getRuleBaseValuesId();
+	Long delegateRuleId3 = parentRule.getResponsibility(0).getDelegationRule(2).getDelegationRuleBaseValues().getRuleBaseValuesId();
+
+	List<Long> ruleIds = new ArrayList<Long>();
+	ruleIds.add(parentRule.getRuleBaseValuesId());
+	ruleIds.add(delegateRuleId1);
+	ruleIds.add(delegateRuleId2);
+	ruleIds.add(delegateRuleId3);
+
+	KEWServiceLocator.getRuleService().removeRuleInvolvement(new AuthenticationUserId("jhopf"), ruleIds, new Long(10001));
+
+	// re-fetch the parent rule and lets check it
+	parentRule = KEWServiceLocator.getRuleService().getRuleByName("RuleWithMultipleDelegations1");
+	assertNotNull(parentRule);
+
+	// TODO improve this, add some more assertions
+    }
+
 
     /**
      * Tests the effect of adding a rule with an extension that has an empty value.

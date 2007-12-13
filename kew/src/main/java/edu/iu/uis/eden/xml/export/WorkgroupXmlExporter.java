@@ -27,6 +27,7 @@ import org.kuali.workflow.attribute.ExtensionData;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;
+import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.workgroup.Workgroup;
 import edu.iu.uis.eden.xml.WorkgroupXmlConstants;
 import edu.iu.uis.eden.xml.XmlConstants;
@@ -77,10 +78,16 @@ public class WorkgroupXmlExporter implements XmlExporter, XmlConstants, Workgrou
     		for (Extension extension : extensions) {
     			Element extensionElement = renderer.renderElement(extensionsElement, EXTENSION);
     			extensionElement.setAttribute(ATTRIBUTE, extension.getAttributeName());
+    	    	        if (extension.getData() != null && !extension.getData().isEmpty()) {
     			for (ExtensionData extensionData : extension.getData()) {
-    				Element dataElement = renderer.renderTextElement(extensionElement, DATA, extensionData.getValue());
+    			    Element dataElement = renderer.renderElement(extensionElement, DATA);
+    			    if (!Utilities.isEmpty(extensionData.getValue())) {
+    			        dataElement.setText(extensionData.getValue());
+    			    }
+//    				Element dataElement = renderer.renderTextElement(extensionElement, DATA, extensionData.getValue());
     				dataElement.setAttribute(KEY, extensionData.getKey());
     			}
+    	    	        }
     		}
     	}
     }

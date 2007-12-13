@@ -18,18 +18,16 @@ package org.kuali.rice.resourceloader;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.definition.ObjectDefinition;
+import org.kuali.rice.util.ClassLoaderUtils;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 
@@ -95,7 +93,7 @@ public class BaseWrappingResourceLoader extends BaseResourceLoader {
 
 	protected Object postProcessService(QName serviceName, Object service) {
 		if (service != null && shouldWrapService(serviceName, service)) {
-			service = ContextClassLoaderProxy.wrap(service, getInterfacesToProxy(service), getClassLoader());
+			service = ContextClassLoaderProxy.wrap(service, ClassLoaderUtils.getInterfacesToProxy(service, getClassLoader(), getPackageNamesToFilter()), getClassLoader());
 		}
 		cacheService(serviceName, service);
 		return service;
@@ -103,7 +101,7 @@ public class BaseWrappingResourceLoader extends BaseResourceLoader {
 
 	protected Object postProcessObject(ObjectDefinition definition, Object object) {
 		if (object != null && shouldWrapObject(definition, object)) {
-			return ContextClassLoaderProxy.wrap(object, getInterfacesToProxy(object), getClassLoader());
+			return ContextClassLoaderProxy.wrap(object, ClassLoaderUtils.getInterfacesToProxy(object, getClassLoader(), getPackageNamesToFilter()), getClassLoader(), getClassLoader());
 		}
 		return object;
 	}
@@ -113,20 +111,6 @@ public class BaseWrappingResourceLoader extends BaseResourceLoader {
 		LOG.debug("Adding service " + serviceName + " to the service cache.");
 		serviceCache.put(serviceName, service);
 	    }
-	}
-
-	protected Class[] getInterfacesToProxy(Object object) {
-		List interfaces = ClassUtils.getAllInterfaces(object.getClass());
-		for (Iterator iterator = interfaces.iterator(); iterator.hasNext();) {
-			Class objectInterface = (Class) iterator.next();
-			for (String packageNames : getPackageNamesToFilter()) {
-				if (objectInterface.getName().startsWith(packageNames)) {
-					iterator.remove();
-				}
-			}
-		}
-		Class[] interfaceArray = new Class[interfaces.size()];
-		return (Class[]) interfaces.toArray(interfaceArray);
 	}
 
 	protected String[] getPackageNamesToFilter() {

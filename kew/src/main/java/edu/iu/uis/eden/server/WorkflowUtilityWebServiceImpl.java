@@ -741,7 +741,8 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 			}
 
 			List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(document, false);
-			Set nodeNames = new HashSet();
+			List nodeNames = new ArrayList();
+			
 			for (Iterator iter = routeNodes.iterator(); iter.hasNext();) {
 				RouteNodeInstance routeNode = (RouteNodeInstance) iter.next();
 				if (routeNode.isComplete() && !nodeNames.contains(routeNode.getName())) {

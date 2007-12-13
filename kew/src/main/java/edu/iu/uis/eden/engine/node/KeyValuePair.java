@@ -17,13 +17,17 @@
 package edu.iu.uis.eden.engine.node;
 
 import org.apache.commons.collections.KeyValue;
+import java.io.Serializable;
 
 /**
  * A simple object representing a key/value pair.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KeyValuePair implements KeyValue {
+public class KeyValuePair implements KeyValue, Serializable {
+
+	private static final long serialVersionUID = -3819394562029060331L;
+
     protected String key;
     protected String value;
 

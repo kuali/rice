@@ -16,18 +16,13 @@
  */
 package edu.iu.uis.eden.mail;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.Lifecycle;
-import org.quartz.CronTrigger;
-import org.quartz.JobDetail;
-import org.quartz.ObjectAlreadyExistsException;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
 
-import edu.iu.uis.eden.EdenConstants;
+import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.lifecycle.Lifecycle;
+import org.quartz.Scheduler;
+
+import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * A {@link Lifecycle} which is initialized on system startup that sets up
@@ -37,13 +32,6 @@ import edu.iu.uis.eden.EdenConstants;
  */
 public class EmailReminderLifecycle implements Lifecycle {
 
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(EmailReminderLifecycle.class);
-
-	private static final String DAILY_TRIGGER_NAME = "Daily Email Trigger";
-	private static final String DAILY_JOB_NAME = "Daily Email";
-	private static final String WEEKLY_TRIGGER_NAME = "Weekly Email Trigger";
-	private static final String WEEKLY_JOB_NAME = "Weekly Email";
-
 	private boolean started;
 
 	public boolean isStarted() {
@@ -51,60 +39,17 @@ public class EmailReminderLifecycle implements Lifecycle {
 	}
 
 	public void start() throws Exception {
-		String emailBatchGroup = "Email Batch";
-
-		String dailyCron = Core.getCurrentContextConfig().getProperty(EdenConstants.DAILY_EMAIL_CRON_EXPRESSION);
-		if (!StringUtils.isBlank(dailyCron)) {
-		    LOG.info("Scheduling Daily Email batch with cron expression: " + dailyCron);
-		    CronTrigger dailyTrigger = new CronTrigger(DAILY_TRIGGER_NAME, emailBatchGroup, dailyCron);
-		    JobDetail dailyJobDetail = new JobDetail(DAILY_JOB_NAME, emailBatchGroup, DailyEmailJob.class);
-		    dailyTrigger.setJobName(dailyJobDetail.getName());
-		    dailyTrigger.setJobGroup(dailyJobDetail.getGroup());
-		    addJobToScheduler(dailyJobDetail);
-		    addTriggerToScheduler(dailyTrigger);
-		} else {
-		    LOG.warn("No " + EdenConstants.DAILY_EMAIL_CRON_EXPRESSION + " parameter was configured.  Daily Email batch was not scheduled!");
-		}
-
-		String weeklyCron = Core.getCurrentContextConfig().getProperty(EdenConstants.WEEKLY_EMAIL_CRON_EXPRESSION);
-		if (!StringUtils.isBlank(dailyCron)) {
-		    LOG.info("Scheduling Weekly Email batch with cron expression: " + weeklyCron);
-		    CronTrigger weeklyTrigger = new CronTrigger(WEEKLY_TRIGGER_NAME, emailBatchGroup, weeklyCron);
-		    JobDetail weeklyJobDetail = new JobDetail(WEEKLY_JOB_NAME, emailBatchGroup, WeeklyEmailJob.class);
-		    weeklyTrigger.setJobName(weeklyJobDetail.getName());
-		    weeklyTrigger.setJobGroup(weeklyJobDetail.getGroup());
-		    addJobToScheduler(weeklyJobDetail);
-		    addTriggerToScheduler(weeklyTrigger);
-		} else {
-		    LOG.warn("No " + EdenConstants.WEEKLY_EMAIL_CRON_EXPRESSION + " parameter was configured.  Weekly Email batch was not scheduled!");
-		}
-
-		started = true;
+		// fetch scheduler here to initialize it ouside of a transactional context, otherwise we get weird transaction errors
+	    Scheduler scheduler = KSBServiceLocator.getScheduler();
+	    if (scheduler == null) {
+		throw new WorkflowException("Failed to locate Quartz Scheduler Service.");
+	    }
+	    KEWServiceLocator.getActionListEmailService().scheduleBatchEmailReminders();
+	    started = true;
 	}
 
 	public void stop() throws Exception {
 		started = false;
-	}
-
-	private void addJobToScheduler(JobDetail jobDetail) throws SchedulerException {
-		getScheduler().addJob(jobDetail, true);
-	}
-
-	private void addTriggerToScheduler(Trigger trigger) throws SchedulerException {
-		boolean triggerExists = (getScheduler().getTrigger(trigger.getName(), trigger.getGroup()) != null);
-		if (!triggerExists) {
-			try {
-				getScheduler().scheduleJob(trigger);
-			} catch (ObjectAlreadyExistsException ex) {
-				getScheduler().rescheduleJob(trigger.getName(), trigger.getGroup(), trigger);
-			}
-		} else {
-			getScheduler().rescheduleJob(trigger.getName(), trigger.getGroup(), trigger);
-		}
-	}
-
-	private Scheduler getScheduler() {
-		return KSBServiceLocator.getScheduler();
 	}
 
 }

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -52,7 +52,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionListFilterAction extends WorkflowAction {
-    
+
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
         if (getUserSession(request).getActionListFilter() != null) {
@@ -64,17 +64,17 @@ public class ActionListFilterAction extends WorkflowAction {
             } else {
                 filterForm.setFilter(actionListFilter);
                 filterForm.setDocTypeFullName(actionListFilter.getDocumentType());
-            }    
+            }
         }
         return mapping.findForward("viewFilter");
     }
-    
+
     public ActionForward filter(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
         //validate the filter through the actionitem/actionlist service (I'm thinking actionlistservice)
         UserSession session = getUserSession(request);
         session.setActionListFilter(filterForm.getLoadedFilter());
-        KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(session.getWorkflowUser());
+        KEWServiceLocator.getActionListService().saveRefreshUserOption(session.getWorkflowUser());
         return mapping.findForward("viewActionList");
     }
 
@@ -88,7 +88,7 @@ public class ActionListFilterAction extends WorkflowAction {
         filterForm.setDocTypeFullName("");
         UserSession session = getUserSession(request);
         session.setActionListFilter(null);
-        KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(session.getWorkflowUser());
+        KEWServiceLocator.getActionListService().saveRefreshUserOption(session.getWorkflowUser());
         return mapping.findForward("viewFilter");
     }
 
@@ -97,16 +97,16 @@ public class ActionListFilterAction extends WorkflowAction {
         filterForm.setUserWorkgroups(getUserWorkgroupsDropDownList(getUserSession(request).getWorkflowUser()));
         PreferencesService prefSrv = (PreferencesService) KEWServiceLocator.getPreferencesService();
         Preferences preferences = prefSrv.getPreferences(getUserSession(request).getWorkflowUser());
-        request.setAttribute("preferences", preferences);        
+        request.setAttribute("preferences", preferences);
         ActionListService actionListSrv = (ActionListService) KEWServiceLocator.getActionListService();
         Collection delegators = actionListSrv.findUserDelegators(getUserSession(request).getWorkflowUser(), EdenConstants.DELEGATION_SECONDARY);
         request.setAttribute("delegators", getWebFriendlyRecipients(delegators));
-        if (! filterForm.getMethodToCall().equalsIgnoreCase("clear")) { 
+        if (! filterForm.getMethodToCall().equalsIgnoreCase("clear")) {
             filterForm.validateDates();
         }
         return null;
     }
-    
+
     private List getUserWorkgroupsDropDownList(WorkflowUser user) throws EdenUserNotFoundException {
     	List userWorkgroups = KEWServiceLocator.getWorkgroupService().getUsersGroups(user);
     	List sortedUserWorkgroups = new ArrayList();
@@ -129,7 +129,7 @@ public class ActionListFilterAction extends WorkflowAction {
     	}
     	return sortedUserWorkgroups;
     }
-    
+
     private List getWebFriendlyRecipients(Collection recipients) {
         Collection newRecipients = new ArrayList(recipients.size());
         for (Iterator iterator = recipients.iterator(); iterator.hasNext();) {
@@ -144,7 +144,7 @@ public class ActionListFilterAction extends WorkflowAction {
         });
         return recipientList;
     }
-    
+
     public class WebFriendlyRecipient {
         private String displayName;
         private String recipientId;
@@ -164,5 +164,5 @@ public class ActionListFilterAction extends WorkflowAction {
             return displayName;
         }
     }
-    
+
 }

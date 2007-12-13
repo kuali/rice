@@ -32,7 +32,7 @@ import edu.iu.uis.eden.util.Utilities;
  * @deprecated This is the original hardcoded actionlistemailservice implementation
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class HardCodedActionListEmailServiceImpl implements ActionListEmailService {
+public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceImpl {
 	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(HardCodedActionListEmailServiceImpl.class);
 
@@ -332,7 +332,7 @@ public class HardCodedActionListEmailServiceImpl implements ActionListEmailServi
 		return sf.toString();
 	}
 
-	private String getDailyWeeklyMessageBody(Collection actionItems) {
+	protected String getDailyWeeklyMessageBody(Collection actionItems) {
 		StringBuffer sf = new StringBuffer();
 		HashMap docTypes = getActionListItemsStat(actionItems);
 

@@ -97,16 +97,18 @@ public class RouteHeaderServiceTest extends KEWTestCase {
         }  catch (LockingException e) {
         	// should have been thrown!
         }
+
         long millisEnd = System.currentTimeMillis();
         long timeLocked = (millisEnd - millisStart);
-        // assert that the time locked was close to 2 seconds += .25 of a second
-        assertTrue("Time locked should have been around 2 seconds but was " + timeLocked, timeLocked > (2000-250) && timeLocked < (2000+250));
 
         synchronized(lock) {
         	lock.notify();
         }
         locker.join();
 
+        // assert that the time locked was close to 2 seconds += .25 of a second
+        assertTrue("Time locked should have been around 2 seconds but was " + timeLocked, timeLocked > (2000-250) && timeLocked < (2000+250));
+        
         // document should be unlocked again
         routeHeaderService.lockRouteHeader(document.getRouteHeaderId(), false);
         assertTrue("Locker thread should have completed.", locker.isCompleted());

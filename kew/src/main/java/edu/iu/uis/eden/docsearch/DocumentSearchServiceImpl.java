@@ -34,6 +34,7 @@ import edu.iu.uis.eden.docsearch.dao.DocumentSearchDAO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
+import edu.iu.uis.eden.notes.CustomNoteAttribute;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -110,6 +111,12 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 			String errorMsg = "Error received trying to execute search: " + e.getLocalizedMessage();
 			LOG.error("getList() " + errorMsg,e);
             throw new WorkflowServiceErrorException(errorMsg,new WorkflowServiceErrorImpl(errorMsg,"docsearch.DocumentSearchService.generalError",errorMsg));
+		}
+        try {
+            saveSearch(user, criteria);
+        } catch (RuntimeException e) {
+            // TODO - should the exception be logged even though it's handled
+            // swallerin it, cuz we look to be read only
 		}
         try {
             saveSearch(user, criteria);

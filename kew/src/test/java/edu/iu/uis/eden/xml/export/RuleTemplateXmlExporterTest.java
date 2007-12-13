@@ -96,7 +96,7 @@ public class RuleTemplateXmlExporterTest extends XmlExporterTestCase {
                     foundAttribute = true;
                 }
             }
-            assertTrue("Could not locate " + errorMessageAttributeLabel + " '" + oldAttribute.getRuleAttribute().getName() + "' in new attributes list.", foundAttribute);
+            assertTrue("Could not locate " + errorMessageAttributeLabel + " with name '" + oldAttribute.getRuleAttribute().getName() + "' in new attributes list.", foundAttribute);
         }
     }
 

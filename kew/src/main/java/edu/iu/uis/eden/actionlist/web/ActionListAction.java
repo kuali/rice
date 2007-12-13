@@ -545,7 +545,7 @@ public class ActionListAction extends WorkflowAction {
         UserSession session = getUserSession(request);
         session.setActionListFilter(null);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
-        KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(session.getWorkflowUser());
+        KEWServiceLocator.getActionListService().saveRefreshUserOption(session.getWorkflowUser());
         LOG.debug("end clearFilter ActionListAction");
         return start(mapping, form, request, response);
     }

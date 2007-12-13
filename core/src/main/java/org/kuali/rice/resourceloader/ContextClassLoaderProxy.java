@@ -19,10 +19,9 @@ package org.kuali.rice.resourceloader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.List;
 
-import org.apache.commons.lang.ClassUtils;
 import org.kuali.rice.proxy.BaseTargetedInvocationHandler;
+import org.kuali.rice.util.ClassLoaderUtils;
 
 /**
  * A Proxy that sets the thread Context ClassLoader before invocation of the
@@ -55,7 +54,7 @@ public class ContextClassLoaderProxy extends BaseTargetedInvocationHandler {
             objectClassLoader = proxiedObject.getClass().getClassLoader();
         }
         if (classesToProxy == null) {
-        	classesToProxy = getInterfacesToProxy(proxiedObject);
+            classesToProxy = getInterfacesToProxy(proxyClassLoader, proxiedObject);
         }
         // this classloader comparison looks fishy
         // it is testing the classloader of the proxy against the intended *context* classloader of the proxiedObject
@@ -106,21 +105,27 @@ public class ContextClassLoaderProxy extends BaseTargetedInvocationHandler {
 //    	return (Class[]) interfaces.toArray(interfaceArray);
 //    }
 
+    public static Class[] getInterfacesToProxyIncludeSpring(Object proxiedObject) {
+	return getInterfacesToProxyIncludeSpring(null, proxiedObject);
+    }
+
     /**
      * @deprecated use getInterfacesToProxy instead.  Removed the filtering of Spring because it is no longer
      * needed since the embedded plugin went away (we may have to revisit this at some point in the future).
      */
-    public static Class[] getInterfacesToProxyIncludeSpring(Object proxiedObject) {
-    	return getInterfacesToProxy(proxiedObject);
+    public static Class[] getInterfacesToProxyIncludeSpring(ClassLoader proxyClassLoader, Object proxiedObject) {
+    	return getInterfacesToProxy(proxyClassLoader, proxiedObject);
+    }
+
+    public static Class[] getInterfacesToProxy(Object proxiedObject) {
+	return getInterfacesToProxy(null, proxiedObject);
     }
 
     /**
-     * Determines the interfaces which need to be proxied.
+     * Determines the interfaces which need to be proxied and are visable to the given proxy ClassLoader.
      */
-    public static Class[] getInterfacesToProxy(Object proxiedObject) {
-    	List interfaces = ClassUtils.getAllInterfaces(proxiedObject.getClass());
-    	Class[] interfaceArray = new Class[interfaces.size()];
-    	return (Class[]) interfaces.toArray(interfaceArray);
+    public static Class[] getInterfacesToProxy(ClassLoader proxyClassLoader, Object proxiedObject) {
+    	return ClassLoaderUtils.getInterfacesToProxy(proxiedObject, proxyClassLoader, null);
     }
 
     private ClassLoader classLoader;

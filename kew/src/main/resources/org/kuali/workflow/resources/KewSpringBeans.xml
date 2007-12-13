@@ -589,7 +589,14 @@
       <property name="workgroupTypeDAO" ref="workgroupTypeDAO"/>
     </bean>
 
-    <bean id="enActionListEmailService" class="edu.iu.uis.eden.mail.CustomizableActionListEmailServiceImpl">
+    <bean id="enActionListEmailService" class="edu.iu.uis.eden.mail.ActionListEmailServiceImpl">
+      <property name="deploymentEnvironment">
+        <value>${environment}</value>
+      </property>
+    </bean>
+
+    <!-- The CustomizableActionListEmailServiceImpl is not quite reqdy for prime-time yet, it generates too much XML when doing daily and weekly batches -->
+    <!-- <bean id="enActionListEmailService" class="edu.iu.uis.eden.mail.CustomizableActionListEmailServiceImpl">
         <property name="deploymentEnvironment">
             <value>${environment}</value>
         </property>
@@ -598,7 +605,7 @@
               <property name="styleService" ref="enStyleService"/>
             </bean>
         </property>
-    </bean>
+    </bean> -->
 
     <bean id="enRemoveReplaceDocumentService" class="edu.iu.uis.eden.removereplace.RemoveReplaceDocumentServiceImpl">
       <property name="removeReplaceDocumentDAO">

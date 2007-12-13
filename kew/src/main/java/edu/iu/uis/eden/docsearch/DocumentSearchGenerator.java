@@ -18,6 +18,7 @@ package edu.iu.uis.eden.docsearch;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import edu.iu.uis.eden.WorkflowServiceError;
@@ -36,7 +37,7 @@ public interface DocumentSearchGenerator {
     public List<WorkflowServiceError> performPreSearchConditions(WorkflowUser user, DocSearchCriteriaVO searchCriteria);
     public List<WorkflowServiceError> validateSearchableAttributes(DocSearchCriteriaVO searchCriteria);
     public String generateSearchSql(DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException;
-    public List<DocSearchVO> processResultSet(ResultSet resultSet,DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException, SQLException;
+    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException, SQLException;
     public DocSearchCriteriaVO clearSearch(DocSearchCriteriaVO searchCriteria);
     public int getDocumentSearchResultSetLimit();
 }

@@ -41,6 +41,7 @@ import edu.iu.uis.eden.clientapp.vo.RuleResponsibilityVO;
 import edu.iu.uis.eden.clientapp.vo.RuleVO;
 import edu.iu.uis.eden.clientapp.vo.UserIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
+import edu.iu.uis.eden.test.TestUtilities;
 import edu.iu.uis.eden.util.Utilities;
 
 public class WorkflowUtilityTest extends KEWTestCase {
@@ -87,6 +88,86 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("pmckown"), true));
         assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("temay"), true));
         assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("jhopf"), true));
+    }
+
+    @Test public void testIsUserInRouteLogAfterReturnToPrevious() throws Exception {
+	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
+        document.routeDocument("");
+        assertTrue(document.stateIsEnroute());
+
+        document = new WorkflowDocument(new NetworkIdVO("bmcgough"), document.getRouteHeaderId());
+        assertTrue(document.isApprovalRequested());
+        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        assertTrue(document.isApprovalRequested());
+
+        // bmcgough and rkirkend should be in route log
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("bmcgough"), false));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("rkirkend"), false));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("bmcgough"), true));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("rkirkend"), true));
+        assertFalse("User should NOT be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("pmckown"), false));
+        // Phil of the future
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("pmckown"), true));
+        TestUtilities.assertAtNode(document, "WorkflowDocument");
+
+        document.returnToPreviousNode("", "AdHoc");
+        TestUtilities.assertAtNode(document, "AdHoc");
+        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+        assertTrue(document.isApprovalRequested());
+
+        document.approve("");
+
+        // we should be back where we were
+        document = new WorkflowDocument(new NetworkIdVO("bmcgough"), document.getRouteHeaderId());
+        assertTrue(document.isApprovalRequested());
+        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        assertTrue(document.isApprovalRequested());
+        TestUtilities.assertAtNode(document, "WorkflowDocument");
+
+        // now verify that is route log authenticated still works
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("bmcgough"), false));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("rkirkend"), false));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("bmcgough"), true));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("rkirkend"), true));
+        assertFalse("User should NOT be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("pmckown"), false));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("pmckown"), true));
+
+        // let's look at the revoked node instances
+
+        List revokedNodeInstances = KEWServiceLocator.getRouteNodeService().getRevokedNodeInstances(KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId()));
+        assertNotNull(revokedNodeInstances);
+        assertEquals(2, revokedNodeInstances.size());
+
+        // let's approve past this node and another
+        document = new WorkflowDocument(new NetworkIdVO("bmcgough"), document.getRouteHeaderId());
+        document.approve("");
+        document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
+        document.approve("");
+
+        // should be at WorkflowDocument2
+        document = new WorkflowDocument(new NetworkIdVO("pmckown"), document.getRouteHeaderId());
+        TestUtilities.assertAtNode(document, "WorkflowDocument2");
+        assertTrue(document.isApprovalRequested());
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("bmcgough"), false));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("rkirkend"), false));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("bmcgough"), true));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("rkirkend"), true));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("pmckown"), false));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("pmckown"), true));
+
+        // now return back to WorkflowDocument
+        document.returnToPreviousNode("", "WorkflowDocument");
+        document = new WorkflowDocument(new NetworkIdVO("bmcgough"), document.getRouteHeaderId());
+        assertTrue(document.isApprovalRequested());
+        // Phil should no longer be non-future route log authenticated
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("bmcgough"), false));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("rkirkend"), false));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("bmcgough"), true));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("rkirkend"), true));
+        assertFalse("User should NOT be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("pmckown"), false));
+        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), new NetworkIdVO("pmckown"), true));
+
+
     }
     
     public abstract interface ReportCriteriaGenerator { public abstract ReportCriteriaVO buildCriteria(WorkflowDocument workflowDoc) throws Exception; }

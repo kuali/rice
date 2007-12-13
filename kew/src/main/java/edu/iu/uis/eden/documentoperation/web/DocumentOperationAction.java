@@ -171,6 +171,11 @@ public class DocumentOperationAction extends WorkflowAction {
 		return null;
 	}
 
+	public ActionForward flushRuleCache(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	    KEWServiceLocator.getRuleService().flushRuleCache();
+	    return mapping.findForward("basic");
+	}
+
 	public ActionForward save(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
 		boolean change = false;

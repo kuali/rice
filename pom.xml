@@ -123,6 +123,16 @@
 						<artifactId>maven-javadoc-plugin</artifactId>
 						<version>2.2</version>
 					</plugin>
+                    <plugin>
+                      <artifactId>maven-assembly-plugin</artifactId>
+                      <version>2.2-beta-2.nrm.1</version>
+                      <configuration>
+                        <descriptors>
+                          <descriptor>core/src/main/assembly/project.xml</descriptor>
+                          <descriptor>standalone/src/main/assembly/standalone.xml</descriptor>
+                        </descriptors>
+                      </configuration>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -153,6 +163,7 @@
 		<module>ken</module>
 		<module>kom-api</module>
 		<module>kom</module>
+        <module>standalone</module>
 	</modules>
 	<repositories>
 		<repository>
@@ -166,6 +177,14 @@
 			<url>http://julien.dubois.free.fr/maven2/</url>
 		</repository>
 	</repositories>
+	
+	<!-- Using the following plugin repository gives us a copy of the Maven assembly plugin which actually works -->
+	<pluginRepositories>
+		<pluginRepository>
+			<id>googlecode</id>
+			<url>http://mavenversionedsnapshots.googlecode.com/svn/trunk/</url>
+		</pluginRepository>
+	</pluginRepositories>
 	<dependencies>
 
 		<dependency>
@@ -450,6 +469,7 @@
 			<version>1.1.1</version>
 			<scope>compile</scope>
 		</dependency>
+    <!--
 		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-deploy-plugin</artifactId>
@@ -467,6 +487,7 @@
 		</dependency>
         
 
+    -->
 	</dependencies>
 	<reporting>
 		<plugins>

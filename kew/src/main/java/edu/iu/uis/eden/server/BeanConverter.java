@@ -525,8 +525,6 @@ public class BeanConverter {
                 } else if (EdenConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
                 	((GenericXMLSearchableAttribute) attribute).setRuleAttribute(ruleAttribute);
                 	propertiesAsMap = true;
-                } else {
-                	LOG.error("Unknown/invalid attribute type: " + ruleAttribute + " " + ruleAttribute.getType() + "; must be '" + EdenConstants.RULE_XML_ATTRIBUTE_TYPE + "' or '" + EdenConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE + "'");
                 }
                 if (propertiesAsMap) {
                 	for (PropertyDefinitionVO propertyDefinitionVO : definitionVO.getProperties()) {

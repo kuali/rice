@@ -158,8 +158,7 @@ public abstract class WorkflowAction extends DispatchAction {
 
 	public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();
-		String lookupUrl = basePath + "/Lookup.do?methodToCall=start&docFormKey=" + getUserSession(request).addObject(form) + "&lookupableImplServiceName=" + request.getParameter("lookupableImplServiceName") + "&returnLocation=" + basePath
-				+ mapping.getModuleConfig().getPrefix() + mapping.getPath() + ".do";
+		String lookupUrl = basePath + "/Lookup.do?methodToCall=start&docFormKey=" + getUserSession(request).addObject(form) + "&lookupableImplServiceName=" + request.getParameter("lookupableImplServiceName") + "&returnLocation=" + basePath + mapping.getPath() + ".do";
 		return new ActionForward(lookupUrl, true);
 	}
 

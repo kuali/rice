@@ -33,6 +33,7 @@ import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
+import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Implementation of {@link SearchableAttributeProcessingService}.
@@ -89,6 +90,10 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 
 	protected boolean shouldIndex(DocumentRouteHeaderValue document) throws XPathExpressionException {
 		XPath xpath = XPathHelper.newXPath();
+		if (Utilities.isEmpty(document.getDocumentContent().getDocumentContent())) {
+		    // returning true since the 'do not index' variable does not exist in the doc content xml since there is no doc content xml
+		    return true;
+		}
 		return !(Boolean)xpath.evaluate("//"+DONT_INDEX, new InputSource(new StringReader(document.getDocumentContent().getDocumentContent())), XPathConstants.BOOLEAN);
 	}
 

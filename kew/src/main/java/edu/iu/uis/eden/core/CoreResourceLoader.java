@@ -59,7 +59,7 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 				Object service = institutionalPlugin.getService(serviceName);
 				if (service != null) {
 					if (LOG.isDebugEnabled()) {
-						LOG.info("Retrieved service override for '" + serviceName + "' from the institutional plugin.");
+						LOG.debug("Retrieved service override for '" + serviceName + "' from the institutional plugin.");
 					}
 					return postProcessService(serviceName, service);
 				}

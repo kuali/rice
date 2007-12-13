@@ -25,7 +25,15 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
+import org.quartz.CronTrigger;
+import org.quartz.JobDetail;
+import org.quartz.ObjectAlreadyExistsException;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -65,6 +73,11 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     private static final String IMMEDIATE_REMINDER_EMAIL_MESSAGE_KEY = "immediate.reminder.email.message";
 
     private static final String IMMEDIATE_REMINDER_EMAIL_SUBJECT_KEY = "immediate.reminder.email.subject";
+
+    private static final String DAILY_TRIGGER_NAME = "Daily Email Trigger";
+    private static final String DAILY_JOB_NAME = "Daily Email";
+    private static final String WEEKLY_TRIGGER_NAME = "Weekly Email Trigger";
+    private static final String WEEKLY_JOB_NAME = "Weekly Email";
 
 	private String deploymentEnvironment;
 
@@ -391,7 +404,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         }
         String initiatorUser = "";
         try {
-            initiatorUser = actionItem.getRouteHeader().getInitiatorUser().getDisplayName(); 
+            initiatorUser = actionItem.getRouteHeader().getInitiatorUser().getDisplayName();
         } catch (Exception e) {
             LOG.error("Error retrieving initiator for action item "
                     + actionItem.getRouteHeaderId());
@@ -508,6 +521,56 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		return EdenConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE
 				.equals(Utilities
 						.getApplicationConstant(EdenConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_KEY));
+	}
+
+	public void scheduleBatchEmailReminders() throws Exception {
+	    String emailBatchGroup = "Email Batch";
+	    String dailyCron = Core.getCurrentContextConfig().getProperty(EdenConstants.DAILY_EMAIL_CRON_EXPRESSION);
+	    if (!StringUtils.isBlank(dailyCron)) {
+		LOG.info("Scheduling Daily Email batch with cron expression: " + dailyCron);
+		CronTrigger dailyTrigger = new CronTrigger(DAILY_TRIGGER_NAME, emailBatchGroup, dailyCron);
+		JobDetail dailyJobDetail = new JobDetail(DAILY_JOB_NAME, emailBatchGroup, DailyEmailJob.class);
+		dailyTrigger.setJobName(dailyJobDetail.getName());
+		dailyTrigger.setJobGroup(dailyJobDetail.getGroup());
+		addJobToScheduler(dailyJobDetail);
+		addTriggerToScheduler(dailyTrigger);
+	    } else {
+		LOG.warn("No " + EdenConstants.DAILY_EMAIL_CRON_EXPRESSION + " parameter was configured.  Daily Email batch was not scheduled!");
+	    }
+
+	    String weeklyCron = Core.getCurrentContextConfig().getProperty(EdenConstants.WEEKLY_EMAIL_CRON_EXPRESSION);
+	    if (!StringUtils.isBlank(dailyCron)) {
+		LOG.info("Scheduling Weekly Email batch with cron expression: " + weeklyCron);
+		CronTrigger weeklyTrigger = new CronTrigger(WEEKLY_TRIGGER_NAME, emailBatchGroup, weeklyCron);
+		JobDetail weeklyJobDetail = new JobDetail(WEEKLY_JOB_NAME, emailBatchGroup, WeeklyEmailJob.class);
+		weeklyTrigger.setJobName(weeklyJobDetail.getName());
+		weeklyTrigger.setJobGroup(weeklyJobDetail.getGroup());
+		addJobToScheduler(weeklyJobDetail);
+		addTriggerToScheduler(weeklyTrigger);
+	    } else {
+		LOG.warn("No " + EdenConstants.WEEKLY_EMAIL_CRON_EXPRESSION + " parameter was configured.  Weekly Email batch was not scheduled!");
+	    }
+	}
+
+	private void addJobToScheduler(JobDetail jobDetail) throws SchedulerException {
+		getScheduler().addJob(jobDetail, true);
+	}
+
+	private void addTriggerToScheduler(Trigger trigger) throws SchedulerException {
+		boolean triggerExists = (getScheduler().getTrigger(trigger.getName(), trigger.getGroup()) != null);
+		if (!triggerExists) {
+			try {
+				getScheduler().scheduleJob(trigger);
+			} catch (ObjectAlreadyExistsException ex) {
+				getScheduler().rescheduleJob(trigger.getName(), trigger.getGroup(), trigger);
+			}
+		} else {
+		    getScheduler().rescheduleJob(trigger.getName(), trigger.getGroup(), trigger);
+		}
+	}
+
+	private Scheduler getScheduler() {
+		return KSBServiceLocator.getScheduler();
 	}
 
 	public UserService getUserService() {

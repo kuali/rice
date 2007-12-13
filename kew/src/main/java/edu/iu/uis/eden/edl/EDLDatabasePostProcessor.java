@@ -86,6 +86,9 @@ public class EDLDatabasePostProcessor extends EDocLitePostProcessor {
 
 	    private String[] getNodeNames(Long documentId) throws WorkflowException {
 	            RouteNodeInstanceVO[] activeNodeInstances = new WorkflowInfo().getActiveNodeInstances(documentId);
+	            if (activeNodeInstances == null || activeNodeInstances.length == 0) {
+	        	activeNodeInstances = new WorkflowInfo().getTerminalNodeInstances(documentId);
+	            }
 	            String[] nodeNames = new String[(activeNodeInstances == null ? 0 : activeNodeInstances.length)];
 	            for (int index = 0; index < activeNodeInstances.length; index++) {
 	                nodeNames[index] = activeNodeInstances[index].getName();

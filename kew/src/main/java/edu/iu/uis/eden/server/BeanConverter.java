@@ -1384,6 +1384,7 @@ public class BeanConverter {
     	criteria.setDocumentId(criteriaVO.getRouteHeaderId());
     	criteria.setDocumentTypeName(criteriaVO.getDocumentTypeName());
     	criteria.setXmlContent(criteriaVO.getXmlContent());
+    	criteria.setActivateRequests(criteriaVO.getActivateRequests());
     	if (criteriaVO.getRoutingUser() != null) {
 			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(criteriaVO.getRoutingUser());
 			if (user == null) {

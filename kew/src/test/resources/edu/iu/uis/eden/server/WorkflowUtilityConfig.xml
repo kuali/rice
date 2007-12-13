@@ -32,7 +32,7 @@
 			</routePaths>
 			<routeNodes>
 				<start name="AdHoc">
-					<activationType>P</activationType>
+					<activationType>S</activationType>
 				</start>
 				<requests name="WorkflowDocument">
 					<activationType>S</activationType>
@@ -49,7 +49,7 @@
 					<finalApproval>false</finalApproval>
 				</requests>
 				<requests name="WorkflowDocument4">
-					<activationType>S</activationType>
+					<activationType>P</activationType>
 					<ruleTemplate>WorkflowDocument4Template</ruleTemplate>
 					<finalApproval>true</finalApproval>
 				</requests>
@@ -235,19 +235,6 @@
 	</ruleTemplates>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
-			<documentType>SeqDocType</documentType>
-			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
-			<description>WorkflowDocumentTemplate Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
-			<responsibilities>
-				<responsibility>
-					<user>bmcgough</user>
-					<actionRequested>A</actionRequested>
-					<priority>1</priority>
-				</responsibility>
-			</responsibilities>
-		</rule>
-		<rule>
 			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocumentTemplate Rule 2</description>
@@ -307,6 +294,19 @@
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SeqDocType</documentType>
+			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<description>WorkflowDocumentTemplate Rule 1</description>
+			<ignorePrevious>false</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<user>bmcgough</user>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>

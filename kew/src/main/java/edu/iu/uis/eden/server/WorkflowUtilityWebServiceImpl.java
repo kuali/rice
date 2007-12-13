@@ -440,6 +440,8 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     	try {
 	        SimulationEngine simulationEngine = new SimulationEngine();
 	        SimulationCriteria criteria = BeanConverter.convertReportCriteriaVO(reportCriteriaVO);
+	        // set activate requests to true by default so ignore previous works correctly
+	        criteria.setActivateRequests(Boolean.TRUE);
 	        SimulationResults results = simulationEngine.runSimulation(criteria);
             List actionRequestsToProcess = results.getSimulatedActionRequests();
             actionRequestsToProcess.addAll(results.getDocument().getActionRequests());

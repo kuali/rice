@@ -2,6 +2,7 @@
 to get the override location in place.  -->
 <config>
 
+	<param name="transaction.timeout">3600</param>
 	<param name="config.location">classpath:META-INF/common-derby-connection-config.xml</param>
 	<param name="config.location">classpath:META-INF/common-locations-test-config.xml</param>
 	<param name="config.location">${alt.config.location}</param>

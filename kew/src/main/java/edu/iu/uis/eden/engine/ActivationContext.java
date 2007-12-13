@@ -31,7 +31,7 @@ public class ActivationContext implements Serializable {
     public static final boolean CONTEXT_IS_SIMULATION = true;
 	
     boolean simulation = !CONTEXT_IS_SIMULATION;
-    boolean actionsToPerform = false;
+    boolean activateRequests = false;
     List simulatedActionsTaken = new ArrayList();
     List generatedActionItems = new ArrayList();
     
@@ -47,12 +47,12 @@ public class ActivationContext implements Serializable {
 		this.simulatedActionsTaken = simulatedActionsTaken;
 	}
 
-    public boolean isActionsToPerform() {
-        return actionsToPerform;
+    public boolean isActivateRequests() {
+        return this.activateRequests;
     }
 
-    public void setActionsToPerform(boolean actionsToPerform) {
-        this.actionsToPerform = actionsToPerform;
+    public void setActivateRequests(boolean activateRequests) {
+        this.activateRequests = activateRequests;
     }
 
     public List getGeneratedActionItems() {

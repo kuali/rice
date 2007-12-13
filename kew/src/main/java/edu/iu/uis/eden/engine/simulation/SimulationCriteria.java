@@ -43,6 +43,7 @@ public class SimulationCriteria {
     private List ruleTemplateNames = new ArrayList();
     
     // fields related to both simulation types
+    private Boolean activateRequests = null;
     private WorkflowUser routingUser;
     private List actionsToTake = new ArrayList();
     
@@ -56,6 +57,14 @@ public class SimulationCriteria {
     	this.documentTypeName = documentTypeName;
     }
     
+    public Boolean getActivateRequests() {
+        return this.activateRequests;
+    }
+
+    public void setActivateRequests(Boolean activateRequests) {
+        this.activateRequests = activateRequests;
+    }
+
     public Long getDocumentId() {
 		return documentId;
 	}

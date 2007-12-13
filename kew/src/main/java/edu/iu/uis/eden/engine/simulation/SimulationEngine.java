@@ -83,7 +83,11 @@ public class SimulationEngine extends StandardWorkflowEngine {
     	RouteContext context = RouteContext.createNewRouteContext();
     	try {
     		ActivationContext activationContext = new ActivationContext(ActivationContext.CONTEXT_IS_SIMULATION);
-    		activationContext.setActionsToPerform(!criteria.getActionsToTake().isEmpty());
+    		if (criteria.getActivateRequests() == null) {
+    		    activationContext.setActivateRequests(!criteria.getActionsToTake().isEmpty());
+    		} else {
+    		    activationContext.setActivateRequests(criteria.getActivateRequests().booleanValue());
+    		}
     		context.setActivationContext(activationContext);
     		context.setEngineState(new EngineState());
     		DocumentRouteHeaderValue document = createSimulationDocument(documentId, criteria, context);
@@ -203,14 +207,15 @@ public class SimulationEngine extends StandardWorkflowEngine {
                 for (Iterator userIt = criteria.getDestinationRecipients().iterator(); userIt.hasNext();) {
                     Recipient recipient = (Recipient) userIt.next();
                     if (request.isRecipientRoutedRequest(recipient)) {
-                        return true;
+                        if ( (Utilities.isEmpty(criteria.getDestinationNodeName())) || (criteria.getDestinationNodeName().equals(request.getNodeInstance().getName())) ) {
+                            return true;
+                        }
                     }
                 }
             }
         }
-        String nodeName = criteria.getDestinationNodeName();
-        return (Utilities.isEmpty(nodeName) && processContext.isComplete() && processContext.getNextNodeInstances().isEmpty())
-            || nodeInstance.getRouteNode().getRouteNodeName().equals(nodeName);
+        return (Utilities.isEmpty(criteria.getDestinationNodeName()) && processContext.isComplete() && processContext.getNextNodeInstances().isEmpty())
+            || nodeInstance.getRouteNode().getRouteNodeName().equals(criteria.getDestinationNodeName());
     }
 
     private List processPotentialActionsTaken(RouteContext routeContext, DocumentRouteHeaderValue routeHeader, RouteNodeInstance justProcessedNode, SimulationCriteria criteria) throws EdenUserNotFoundException {

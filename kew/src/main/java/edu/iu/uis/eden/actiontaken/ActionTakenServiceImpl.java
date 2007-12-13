@@ -69,7 +69,12 @@ public class ActionTakenServiceImpl implements ActionTakenService {
             WorkflowUser user = (WorkflowUser) iter.next();
             List actionsTakenByUser = getActionTakenDAO().findByRouteHeaderIdWorkflowId(actionRequest.getRouteHeaderId(), user.getWorkflowUserId().getWorkflowId());
             if (simulatedActionsTaken != null) {
-            	actionsTakenByUser.addAll(simulatedActionsTaken);
+                for (Iterator iterator = simulatedActionsTaken.iterator(); iterator.hasNext();) {
+                    ActionTakenValue simulatedAction = (ActionTakenValue) iterator.next();
+                    if (user.getWorkflowId().equals(simulatedAction.getWorkflowId())) {
+                        actionsTakenByUser.add(simulatedAction);
+                    }
+                }
             }
 
             for (Iterator iterator = actionsTakenByUser.iterator(); iterator.hasNext();) {

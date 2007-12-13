@@ -50,7 +50,7 @@ public class RequestActivationNode implements SimpleNode {
         DocumentRouteHeaderValue document = routeContext.getDocument();
         RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
         if (routeContext.isSimulation()) {
-            if (routeContext.getActivationContext().isActionsToPerform()) {
+            if (routeContext.getActivationContext().isActivateRequests()) {
                 activateRequests(routeContext, document, nodeInstance);
             }
             return new SimpleResult(true);

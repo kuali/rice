@@ -39,6 +39,7 @@ public class ReportCriteriaVO implements Serializable {
     private String[] ruleTemplateNames;
     private String[] nodeNames;
     private ReportActionToTakeVO[] actionsToTake;
+    private Boolean activateRequests = null;
 
 	public ReportCriteriaVO() {}
 	
@@ -55,7 +56,15 @@ public class ReportCriteriaVO implements Serializable {
 		this.documentTypeName = documentTypeName;
 	}
 		
-	public Long getRouteHeaderId() {
+	public Boolean getActivateRequests() {
+        return this.activateRequests;
+    }
+
+    public void setActivateRequests(Boolean activateRequests) {
+        this.activateRequests = activateRequests;
+    }
+
+    public Long getRouteHeaderId() {
 		return routeHeaderId;
 	}
 

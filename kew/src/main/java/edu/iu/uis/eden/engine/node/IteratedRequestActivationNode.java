@@ -158,7 +158,7 @@ public class IteratedRequestActivationNode implements SimpleNode {
         RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
         if (routeContext.isSimulation()) {
             // this seems to indicate whether, when we are simulating, to activate requests...
-            if (routeContext.getActivationContext().isActionsToPerform()) {
+            if (routeContext.getActivationContext().isActivateRequests()) {
                 activateRequests(routeContext, document, nodeInstance);
             }
             // if we are in simulation, don't block, just transition out

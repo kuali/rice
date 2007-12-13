@@ -2,17 +2,20 @@
 INSERT INTO NOTIFICATION_PRIORITIES
 (ID, NAME, DESCRIPTION, PRIORITY_ORDER)
 VALUES
-(1, 'Normal', 'Normal priority', 2);
+(1, 'Normal', 'Normal priority', 2)
+/
 
 INSERT INTO NOTIFICATION_PRIORITIES
 (ID, NAME, DESCRIPTION, PRIORITY_ORDER)
 VALUES
-(2, 'Low', 'A low priority', 3);
+(2, 'Low', 'A low priority', 3)
+/
 
 INSERT INTO NOTIFICATION_PRIORITIES
 (ID, NAME, DESCRIPTION, PRIORITY_ORDER)
 VALUES
-(3, 'High', 'A high priority', 1);
+(3, 'High', 'A high priority', 1)
+/
 
 -- NOTIFICATION_CONTENT_TYPES --
 INSERT INTO NOTIFICATION_CONTENT_TYPES
@@ -57,7 +60,8 @@ element which is a String...about as simple as one can get -->
           <xsl:value-of select="." disable-output-escaping="yes"/>
       </strong>
    </xsl:template>
-</xsl:stylesheet>');
+</xsl:stylesheet>')
+/
 
 INSERT INTO NOTIFICATION_CONTENT_TYPES
 (ID, NAME, DESCRIPTION, NAMESPACE, XSD, XSL)
@@ -142,4 +146,5 @@ to be accepted into the system. -->
             <td class="thnormal"><xsl:value-of select="n:stopDateTime" /></td>
         </tr>
     </xsl:template> 
-</xsl:stylesheet>');
+</xsl:stylesheet>')
+/

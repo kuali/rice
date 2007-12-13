@@ -21,9 +21,9 @@
 --insert into FS_PARM_T values ('CoreMaintenanceEDoc','Kuali.Supervisor.Workgroup','2409BD6AB4CC800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can perform almost any function within Kuali.','N', 'MC')
 --/
 
-insert into SH_PARM_TYP_T values ('CONFG', 3, 0,'Config',1)
+insert into SH_PARM_TYP_T values ('CONFG', 3, 0,'Config', 'Y')
 /
-insert into SH_PARM_NMSPC_T values ('KR-NS', 3, 0, 'Kuali Rice', 1)
+insert into SH_PARM_NMSPC_T values ('KR-NS', 3, 0, 'Kuali Rice', 'Y')
 /
 INSERT INTO sh_parm_t ("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM") VALUES ('KR-NS','Lookup','RESULTS_DEFAULT_MAX_COLUMN_LENGTH','CONFG','70','If a maxLength attribute has not been set on a lookup result field in the data dictionary, then the result column''s max length will be the value of this parameter. Set this parameter to 0 for an unlimited default length or a positive value (i.e. greater than 0) for a finite max length.','A','KUALI_FMSOPS')
 /
@@ -79,6 +79,101 @@ insert into FP_DOC_STATUS_T values ('V',	'2E0671732A744002E043814FD8814002',	1,	
 /
 insert into FP_DOC_STATUS_T values ('Q',	'2E0671732A754002E043814FD8814002',	1,	'Doc Specif')
 /
+
+INSERT INTO sh_parm_typ_t
+("SH_PARM_TYP_CD","OBJ_ID","VER_NBR","SH_PARM_TYP_NM","ACTIVE_IND")
+VALUES
+('VALID','3A6A61E1427C414AE043814FD881414A',1,'Document Validation','Y')
+/
+INSERT INTO sh_parm_typ_t
+("SH_PARM_TYP_CD","OBJ_ID","VER_NBR","SH_PARM_TYP_NM","ACTIVE_IND")
+VALUES
+('AUTH','3A6A61E1427D414AE043814FD881414A',1,'Authorization','Y')
+/
+INSERT INTO sh_parm_typ_t
+("SH_PARM_TYP_CD","OBJ_ID","VER_NBR","SH_PARM_TYP_NM","ACTIVE_IND")
+VALUES
+('HELP','3A6A61E1427E414AE043814FD881414A',1,'Help','Y')
+/
+
+INSERT INTO sh_parm_dtl_typ_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","OBJ_ID","VER_NBR","SH_PARM_DTL_TYP_NM","ACTIVE_IND")
+VALUES
+('KR-NS','All','5DA619601EC14DC8B5533631F153915C',1,'All','Y')
+/
+INSERT INTO sh_parm_dtl_typ_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","OBJ_ID","VER_NBR","SH_PARM_DTL_TYP_NM","ACTIVE_IND")
+VALUES
+('KR-NS','Document','76F469D2EBE347F8AFA946F8D98ABB12',1,'Document','Y')
+/
+INSERT INTO sh_parm_dtl_typ_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","OBJ_ID","VER_NBR","SH_PARM_DTL_TYP_NM","ACTIVE_IND")
+VALUES
+('KR-NS','Lookup','BE854CD08B004FF499E441778A55DEA2',1,'Lookup','Y')
+/
+INSERT INTO sh_parm_dtl_typ_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","OBJ_ID","VER_NBR","SH_PARM_DTL_TYP_NM","ACTIVE_IND")
+VALUES
+('KR-NS','N/A','4C4AE503F3644C97B6C90540B10751CA',1,'Not Applicable','Y')
+/
+
+
+
+
+INSERT INTO sh_parm_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","OBJ_ID","VER_NBR","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
+VALUES
+('KR-NS','All','CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND','C6D1ECCA75C6426CBBE7BD84556D7528',1,'CONFG','Y','Flag for enabling/disabling the demonstration encryption check.','A','WorkflowAdmin')
+/
+INSERT INTO sh_parm_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","OBJ_ID","VER_NBR","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
+VALUES
+('KR-NS','Document','DEFAULT_CAN_PERFORM_ROUTE_REPORT','8DE1B1CC0D2D413DAD28C845940F0119',1,'CONFG','N','If Y, the "route report" button will be displayed on the document actions bar if the document is using the default DocumentAuthorizerBase.getDocumentActionFlags to set the canPerformRouteReport property of the returned DocumentActionFlags instance.','A','WorkflowAdmin')
+/
+INSERT INTO sh_parm_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","OBJ_ID","VER_NBR","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
+VALUES
+('KR-NS','Document','EXCEPTION_GROUP','604D7BC43D914B68A490C9443B7D4299',1,'CONFG','KUALI_ROLE_EXCEPTION','Workgroup which can perform functions on documents in exception routing status.','A','WorkflowAdmin')
+/
+INSERT INTO sh_parm_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","OBJ_ID","VER_NBR","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
+VALUES
+('KR-NS','Document','SUPERVISOR_GROUP','21273383BDF544C192978FE1A4EDDE6F',1,'AUTH','KUALI_ROLE_SUPERVISOR','Workgroup which can perform almost any function within Kuali.','A','WorkflowAdmin')
+/
+INSERT INTO sh_parm_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","OBJ_ID","VER_NBR","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
+VALUES
+('KR-NS','Lookup','MULTIPLE_VALUE_RESULTS_EXPIRATION_SECONDS','5B413AA4AD7F40C7BBC4C75CE99E743A',1,'CONFG','86400','Lookup results may continue to be persisted in the DB long after they are needed. This parameter represents the minimum amount of time, in seconds, that the results will be allowed to persist in the DB before they are deleted from the DB.','A','WorkflowAdmin')
+/
+INSERT INTO sh_parm_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","OBJ_ID","VER_NBR","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
+VALUES
+('KR-NS','Lookup','MULTIPLE_VALUE_RESULTS_PER_PAGE','90D766F2396C4C9DAE37FDECA0682233',1,'CONFG','100','The max number of rows that will be displayed on a lookup results screen','A','WorkflowAdmin')
+/
+
+
+INSERT INTO sh_parm_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","OBJ_ID","VER_NBR","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
+VALUES
+('KR-NS','UniversalUser','UNIVERSAL_USER_EDIT_GROUP','F8ED3336B99546878BE7B41311E4F63E',1,'AUTH','UNIVERSAL_USER_MAINTAINERS','Workgroup which can edit the universal user table.','A','WorkflowAdmin')
+/
+INSERT INTO sh_parm_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
+VALUES
+('KR-NS','All','DEFAULT_MAX_UPLOAD_FILE_SIZE','CONFG','5M','Maximum file upload size for the application. Used by PojoFormBase. Must be an integer, optionally followed by "K", "M", or "G". Only used if no other upload limits are in effect.','A','KUALI_FMSOPS')
+/
+INSERT INTO sh_parm_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
+VALUES
+('KR-NS','Document','ATTACHMENT_MAX_FILE_SIZE','CONFG','5M','Maximum attachment upload size for the application. Used by KualiDocumentFormBase. Must be an integer, optionally followed by "K", "M", or "G".','A','KUALI_FMSOPS')
+/
+INSERT INTO SH_PARM_T
+(SH_PARM_NMSPC_CD, SH_PARM_DTL_TYP_CD, SH_PARM_NM, OBJ_ID, VER_NBR, SH_PARM_TYP_CD, SH_PARM_TXT, SH_PARM_DESC, SH_PARM_CONS_CD, WRKGRP_NM) 
+VALUES
+('KR-NS', 'Document', 'SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS', sys_guid(), 0, 'CONFG', 'K', 'Some documents provide the functionality to send notes to another user using a workflow FYI or acknowledge functionality. This parameter specifies the default action that will be used when sending notes. This parameter should be one of the following 2 values: "K" for acknowledge or "F" for fyi. Depending on the notes and workflow service implementation, other values may be possible (see edu.iu.uis.eden.EdenConstants javadocs for details).', 'A', 'KUALI_FMSOPS')
+/
+
+
 INSERT INTO kr_qrtz_locks values('TRIGGER_ACCESS')
 /
 INSERT INTO kr_qrtz_locks values('JOB_ACCESS')
@@ -100,17 +195,20 @@ INSERT INTO KIM_PERSONS_T (ID, USERNAME, PASSWORD) VALUES (1, 'admin', 'admin')
 INSERT INTO NOTIFICATION_PRIORITIES
 (ID, NAME, DESCRIPTION, PRIORITY_ORDER)
 VALUES
-(1, 'Normal', 'Normal priority', 2)/
+(1, 'Normal', 'Normal priority', 2)
+/
 
 INSERT INTO NOTIFICATION_PRIORITIES
 (ID, NAME, DESCRIPTION, PRIORITY_ORDER)
 VALUES
-(2, 'Low', 'A low priority', 3)/
+(2, 'Low', 'A low priority', 3)
+/
 
 INSERT INTO NOTIFICATION_PRIORITIES
 (ID, NAME, DESCRIPTION, PRIORITY_ORDER)
 VALUES
-(3, 'High', 'A high priority', 1)/
+(3, 'High', 'A high priority', 1)
+/
 
 -- NOTIFICATION_CONTENT_TYPES --
 INSERT INTO NOTIFICATION_CONTENT_TYPES
@@ -155,7 +253,8 @@ element which is a String...about as simple as one can get -->
           <xsl:value-of select="." disable-output-escaping="yes"/>
       </strong>
    </xsl:template>
-</xsl:stylesheet>')/
+</xsl:stylesheet>')
+/
 
 INSERT INTO NOTIFICATION_CONTENT_TYPES
 (ID, NAME, DESCRIPTION, NAMESPACE, XSD, XSL)
@@ -240,128 +339,153 @@ to be accepted into the system. -->
             <td class="thnormal"><xsl:value-of select="n:stopDateTime" /></td>
         </tr>
     </xsl:template> 
-</xsl:stylesheet>')/
+</xsl:stylesheet>')
+/
 
 -- NOTIFICATION_PRODUCERS --
 INSERT INTO NOTIFICATION_PRODUCERS 
 (ID, NAME, DESCRIPTION, CONTACT_INFO) 
 VALUES 
-(1, 'Notification System', 'This producer represents messages sent from the general message sending forms.', 'kuali-ken-testing@cornell.edu')/
+(1, 'Notification System', 'This producer represents messages sent from the general message sending forms.', 'kuali-ken-testing@cornell.edu')
+/
 
 INSERT INTO NOTIFICATION_PRODUCERS 
 (ID, NAME, DESCRIPTION, CONTACT_INFO) 
 VALUES 
-(2, 'University Library System', 'This producer represents messages sent from the University Library system.', 'kuali-ken-testing@cornell.edu')/
+(2, 'University Library System', 'This producer represents messages sent from the University Library system.', 'kuali-ken-testing@cornell.edu')
+/
 
 INSERT INTO NOTIFICATION_PRODUCERS 
 (ID, NAME, DESCRIPTION, CONTACT_INFO) 
 VALUES 
-(3, 'University Events Office', 'This producer represents messages sent from the University Events system.', 'kuali-ken-testing@cornell.edu')/
+(3, 'University Events Office', 'This producer represents messages sent from the University Events system.', 'kuali-ken-testing@cornell.edu')
+/
 
 -- NOTIFICATION_CHANNELS --
-DELETE FROM NOTIFICATION_CHANNELS/
+DELETE FROM NOTIFICATION_CHANNELS
+/
 
 INSERT INTO NOTIFICATION_CHANNELS
 (ID, NAME, DESCRIPTION, SUBSCRIBABLE)
 VALUES
-(1, 'Kuali Rice Channel', 'This channel is used for sending out information about the Kuali Rice effort.', 'Y')/
+(1, 'Kuali Rice Channel', 'This channel is used for sending out information about the Kuali Rice effort.', 'Y')
+/
 
 INSERT INTO NOTIFICATION_CHANNELS
 (ID, NAME, DESCRIPTION, SUBSCRIBABLE)
 VALUES
-(2, 'Library Events Channel', 'This channel is used for sending out information about Library Events.', 'Y')/
+(2, 'Library Events Channel', 'This channel is used for sending out information about Library Events.', 'Y')
+/
 
 INSERT INTO NOTIFICATION_CHANNELS
 (ID, NAME, DESCRIPTION, SUBSCRIBABLE)
 VALUES
-(3, 'Overdue Library Books', 'This channel is used for sending out information about your overdue books.', 'N')/
+(3, 'Overdue Library Books', 'This channel is used for sending out information about your overdue books.', 'N')
+/
 
 INSERT INTO NOTIFICATION_CHANNELS
 (ID, NAME, DESCRIPTION, SUBSCRIBABLE)
 VALUES
-(4, 'Concerts Coming to Campus', 'This channel broadcasts any concerts coming to campus.', 'Y')/
+(4, 'Concerts Coming to Campus', 'This channel broadcasts any concerts coming to campus.', 'Y')
+/
 
 INSERT INTO NOTIFICATION_CHANNELS
 (ID, NAME, DESCRIPTION, SUBSCRIBABLE)
 VALUES
-(5, 'University Alerts', 'This channel broadcasts general announcements for the university.', 'N')/
+(5, 'University Alerts', 'This channel broadcasts general announcements for the university.', 'N')
+/
 
 -- NOTIFICATION_CHANNEL_SUBSCRIPTIONS
 
 INSERT INTO USER_CHANNEL_SUBSCRIPTIONS
 (ID, CHANNEL_ID, USER_ID)
 VALUES
-(1, 1, 'TestUser4')/
+(1, 1, 'TestUser4')
+/
 
 -- NOTIFICATION_RECIPIENTS_LISTS
 
 INSERT INTO NOTIFICATION_RECIPIENTS_LISTS
 (ID, CHANNEL_ID, RECIPIENT_TYPE, RECIPIENT_ID)
 values
-(1, 4, 'USER', 'TestUser1')/
+(1, 4, 'USER', 'TestUser1')
+/
 
 INSERT INTO NOTIFICATION_RECIPIENTS_LISTS
 (ID, CHANNEL_ID, RECIPIENT_TYPE, RECIPIENT_ID)
 values
-(2, 4, 'USER', 'TestUser3')/
+(2, 4, 'USER', 'TestUser3')
+/
 
 -- NOTIFICATION_CHANNEL_REVIEWERS
 
 INSERT INTO NOTIFICATION_REVIEWERS
 (ID, CHANNEL_ID, REVIEWER_TYPE, REVIEWER_ID) 
 VALUES 
-(1, 1, 'GROUP', 'RiceTeam')/
+(1, 1, 'GROUP', 'RiceTeam')
+/
 
 INSERT INTO NOTIFICATION_REVIEWERS
 (ID, CHANNEL_ID, REVIEWER_TYPE, REVIEWER_ID) 
 VALUES 
-(2, 5, 'USER', 'TestUser3')/
+(2, 5, 'USER', 'TestUser3')
+/
 
 INSERT INTO NOTIFICATION_REVIEWERS
 (ID, CHANNEL_ID, REVIEWER_TYPE, REVIEWER_ID) 
 VALUES 
-(3, 5, 'GROUP', 'TestGroup1')/
+(3, 5, 'GROUP', 'TestGroup1')
+/
 
 -- NOTIFICATION_CHANNEL_PRODUCERS --
-DELETE FROM NOTIFICATION_CHANNEL_PRODUCERS/
+DELETE FROM NOTIFICATION_CHANNEL_PRODUCERS
+/
 
 INSERT INTO NOTIFICATION_CHANNEL_PRODUCERS 
 (CHANNEL_ID, PRODUCER_ID) 
 VALUES 
-(1, 1)/
+(1, 1)
+/
 
 INSERT INTO NOTIFICATION_CHANNEL_PRODUCERS 
 (CHANNEL_ID, PRODUCER_ID) 
 VALUES 
-(2, 1)/
+(2, 1)
+/
 
 INSERT INTO NOTIFICATION_CHANNEL_PRODUCERS 
 (CHANNEL_ID, PRODUCER_ID) 
 VALUES 
-(3, 1)/
+(3, 1)
+/
 
 INSERT INTO NOTIFICATION_CHANNEL_PRODUCERS 
 (CHANNEL_ID, PRODUCER_ID) 
 VALUES 
-(4, 1)/
+(4, 1)
+/
 
 INSERT INTO NOTIFICATION_CHANNEL_PRODUCERS 
 (CHANNEL_ID, PRODUCER_ID) 
 VALUES 
-(5, 1)/
+(5, 1)
+/
 
 INSERT INTO NOTIFICATION_CHANNEL_PRODUCERS 
 (CHANNEL_ID, PRODUCER_ID) 
 VALUES 
-(2, 2)/
+(2, 2)
+/
 
 INSERT INTO NOTIFICATION_CHANNEL_PRODUCERS 
 (CHANNEL_ID, PRODUCER_ID) 
 VALUES 
-(3, 2)/
+(3, 2)
+/
 
 INSERT INTO NOTIFICATION_CHANNEL_PRODUCERS 
 (CHANNEL_ID, PRODUCER_ID) 
 VALUES 
-(4, 3)/
+(4, 3)
+/
 

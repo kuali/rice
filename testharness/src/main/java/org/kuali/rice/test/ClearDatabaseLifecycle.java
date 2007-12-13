@@ -87,7 +87,7 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
 		}
 		return (Boolean) new JdbcTemplate(dataSource).execute(new ConnectionCallback() {
 			public Object doInConnection(final Connection connection) throws SQLException {
-				final ResultSet resultSet = connection.getMetaData().getTables(null, null, TEST_TABLE_NAME, null);
+				final ResultSet resultSet = connection.getMetaData().getTables(null, connection.getMetaData().getUserName().toUpperCase(), TEST_TABLE_NAME, null);
 				return new Boolean(resultSet.next());
 			}
 		});

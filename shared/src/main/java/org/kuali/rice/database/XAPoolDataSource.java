@@ -27,6 +27,10 @@ import org.springframework.beans.factory.InitializingBean;
 
 /**
  * StandardXAPoolDataSource subclass that adds some convienance getters and setters and implements our Lifecycle interface.
+ * 
+ * @deprecated We will be removing this file from a future release in order to get rid of our dependencies on XAPool.  If you
+ * desire to continue using JOTM and XAPool, please configure using org.enhyrdra.jdbc.standard.StandardXADataSource directly
+ * instead of using this class.
  */
 public class XAPoolDataSource extends StandardXAPoolDataSource implements InitializingBean, DisposableBean {
 

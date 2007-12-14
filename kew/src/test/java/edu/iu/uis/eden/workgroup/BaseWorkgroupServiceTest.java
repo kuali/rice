@@ -16,7 +16,9 @@
  */
 package edu.iu.uis.eden.workgroup;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -26,6 +28,7 @@ import org.kuali.workflow.test.KEWTestCase;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.user.AuthenticationUserId;
+import edu.iu.uis.eden.user.BaseWorkflowUser;
 import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
@@ -231,6 +234,33 @@ public class BaseWorkgroupServiceTest extends KEWTestCase {
 		return false;
 	}
 
+	@Test
+	public void testSearch() throws Exception {
+	    loadXmlFile("NestedWorkgroups.xml");
+	    
+	    // test that searching by workgroup member handles nested workgroups properly
+	    WorkgroupService wgService = KEWServiceLocator.getWorkgroupService();
+	    WorkflowUser exampleUser = KEWServiceLocator.getUserService().getBlankUser();
+	    exampleUser.setAuthenticationUserId(new AuthenticationUserId("ewestfal"));
+	    Workgroup exampleWorkgroup = wgService.getBlankWorkgroup();
+	    // find the ones that have "WG" in them
+	    exampleWorkgroup.setGroupNameId(new GroupNameId("WG"));
+	    List workgroupResults = wgService.search(exampleWorkgroup, null, exampleUser);
+	    assertEquals("ewestfal should be member of 7 workgroups", 7, workgroupResults.size());
+	    List<String> groupNames = new ArrayList<String>();
+	    for (Iterator iterator = workgroupResults.iterator(); iterator.hasNext();) {
+            Workgroup workgroupResult = (Workgroup) iterator.next();
+            groupNames.add(workgroupResult.getGroupNameId().getNameId());
+        }
+	    assertTrue(groupNames.contains("NWG1"));
+	    assertTrue(groupNames.contains("NWGNested1"));
+	    assertTrue(groupNames.contains("NWGNested2"));
+	    assertTrue(groupNames.contains("NestedWGDupe1"));
+	    assertTrue(groupNames.contains("NestedWGDupe2"));
+	    assertTrue(groupNames.contains("NestedWGDupe3"));
+	    assertTrue(groupNames.contains("NestedWGDupe4"));
+	}
+	
 //	@Test public void testNestedWorkgroupsCycles() throws Exception {
 //		BaseWorkgroup workgroup1 = new BaseWorkgroup();
 //		workgroup1.setActiveInd(Boolean.TRUE);

@@ -84,6 +84,7 @@ public class BaseWorkgroupDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
                 workflowIds.add(wfUser.getWorkflowUserId().getWorkflowId());
             }
             crit.addIn("workgroupMembers.workflowId", workflowIds);
+            crit.addEqualTo("workgroupMembers.memberType", EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
         }
         return (List) getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(BaseWorkgroup.class, crit));
 	}

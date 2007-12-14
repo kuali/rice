@@ -18,6 +18,7 @@ package edu.iu.uis.eden.workgroup;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +89,9 @@ public class BaseWorkgroupService implements WorkgroupService {
 	}
 
 	public List search(Workgroup workgroup, Map<String, String> extensionValues, WorkflowUser user) throws EdenUserNotFoundException {
-		List workgroups = getWorkgroupDAO().find(workgroup, extensionValues, user);
+	    List<Workgroup> workgroups = (List<Workgroup>)getWorkgroupDAO().find(workgroup, extensionValues, user);
+	    // climb up to find all groups that we're nested in
+	    workgroups = getWorkgroupsGroups(workgroups);
 		materializeMembers(workgroups);
 		return workgroups;
 	}
@@ -196,6 +199,20 @@ public class BaseWorkgroupService implements WorkgroupService {
 			parentWorkgroups.addAll(getWorkgroupsGroups(parentWorkgroup));
 		}
     	return parentWorkgroups;
+    }
+
+    public List<Workgroup> getWorkgroupsGroups(List<Workgroup> workgroups) {
+        Map<Long, Workgroup> groupMap = new HashMap<Long, Workgroup>();
+        for (Workgroup workgroup : workgroups) {   
+            List<Workgroup> workgroupsGroups = getWorkgroupsGroups(workgroup);
+            if (workgroupsGroups != null) {
+                for (Workgroup workgroupGroup : workgroupsGroups) {
+                    groupMap.put(workgroupGroup.getWorkflowGroupId().getGroupId(), workgroupGroup);
+                }
+            }
+            groupMap.put(workgroup.getWorkflowGroupId().getGroupId(), workgroup);
+        }
+        return new ArrayList<Workgroup>(groupMap.values());
     }
 
 	public Set<String> getUsersGroupNames(WorkflowUser user) {

@@ -2,7 +2,7 @@
 <config>
     <param name="environment">${environment}</param>
     <param name="module.name">ken</param>
-
+	<param name="transaction.timeout">3600</param>
     <param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
     <param name="config.location">${alt.config.location}</param>
 </config>

@@ -129,6 +129,7 @@
                       <configuration>
                         <descriptors>
                           <descriptor>core/src/main/assembly/project.xml</descriptor>
+                          <descriptor>core/src/main/assembly/binary.xml</descriptor>
                           <descriptor>standalone/src/main/assembly/standalone.xml</descriptor>
                         </descriptors>
                       </configuration>

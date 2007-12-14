@@ -17,6 +17,8 @@
 package edu.iu.uis.eden.routeheader;
 
 
+import java.sql.Timestamp;
+
 import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
@@ -24,9 +26,11 @@ import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
+import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
+import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.exception.LockingException;
 
 public class RouteHeaderServiceTest extends KEWTestCase {
@@ -37,6 +41,40 @@ public class RouteHeaderServiceTest extends KEWTestCase {
     protected void setUpTransaction() throws Exception {
         super.setUpTransaction();
         routeHeaderService = KEWServiceLocator.getRouteHeaderService();
+    }
+    
+    /**
+     * Tests the saving of a document with large XML content.  This verifies that large CLOBs (> 4000 bytes)
+     * can be saved by OJB.  This can cause paticular issues with Oracle and OJB has to unwrap the native jdbc
+     * Connections and Statements from the pooled connection.  We need to make sure this is working for our
+     * pooling software of choice (Atomikos in this case).
+     */
+    @Test
+    public void testLargeDocumentContent() throws Exception {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("<content>");
+        for (int index = 0; index < 10000; index++) {
+            buffer.append("abcdefghijklmnopqrstuvwxyz");
+        }
+        buffer.append("</content>");
+        DocumentRouteHeaderValue document = new DocumentRouteHeaderValue();
+        document.setDocContent(buffer.toString());
+        document.setDocRouteStatus(EdenConstants.ROUTE_HEADER_INITIATED_CD);
+        document.setDocRouteLevel(0);
+        document.setStatusModDate(new Timestamp(System.currentTimeMillis()));
+        document.setCreateDate(new Timestamp(System.currentTimeMillis()));
+        document.setInitiatorWorkflowId("1");
+        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("TestDocumentType");
+        assertNotNull(documentType);
+        document.setDocumentTypeId(documentType.getDocumentTypeId());
+        routeHeaderService.saveRouteHeader(document);
+        assertNotNull("Document was saved, it should have an ID now.", document.getRouteHeaderId());
+        
+        // now reload from database and verify it's the right size
+        document = routeHeaderService.getRouteHeader(document.getRouteHeaderId());
+        String docContent = document.getDocContent();
+        assertEquals("Doc content should be the same size as original string buffer.", buffer.length(), docContent.length());
+        assertTrue("Should be greater than about 5000 bytes.", docContent.getBytes().length > 5000);
     }
 
     @Test public void testGetMessageEntityByDocumentId() throws Exception {

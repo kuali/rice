@@ -189,6 +189,7 @@ public class ActionListServiceImpl implements ActionListService {
 		saveActionItem(actionItem);
 	    }
 	}
+	actionRequest.setActionItems(actionItems);
 	return actionItems;
     }
 

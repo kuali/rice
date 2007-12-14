@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>OutboxTestDocumentType</name>
+			<description>OutboxTestDocumentType</description>
+			<label>OutboxTestDocumentType</label>
+			<postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+			<superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+			<docHandler>_blank</docHandler>
+			<blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+			<policies>
+				<policy>
+					<name>PRE_APPROVE</name>
+					<value>false</value>
+				</policy>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="RuleTemplate1" />
+					<requests name="RuleTemplate1" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="RuleTemplate1">
+					<activationType>S</activationType>
+					<ruleTemplate>OutboxTemplate1</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+	</documentTypes>
+	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
+      <workgroup>
+        <workgroupName>OutboxApprovers</workgroupName>
+        <description>OutboxApprovers</description>
+        <members>
+          <authenticationId>ewestfal</authenticationId>
+          <authenticationId>rkirkend</authenticationId>
+          <authenticationId>user1</authenticationId>
+        </members>
+      </workgroup>
+	</workgroups>
+    <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+		<ruleTemplate>
+			<name>OutboxTemplate1</name>
+			<description>OutboxTemplate1</description>
+		</ruleTemplate>
+	</ruleTemplates>
+	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<rule>
+			<documentType>OutboxTestDocumentType</documentType>
+			<ruleTemplate>OutboxTemplate1</ruleTemplate>
+			<description>Rule for OutboxTemplate1 and OutboxTestDocumentType</description>
+			<ignorePrevious>true</ignorePrevious>
+			<responsibilities>
+				<responsibility>
+					<workgroup>OutboxApprovers</workgroup>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+	</rules>
+</data>

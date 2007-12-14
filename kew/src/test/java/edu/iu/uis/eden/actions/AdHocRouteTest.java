@@ -16,6 +16,8 @@
  */
 package edu.iu.uis.eden.actions;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
@@ -212,22 +214,35 @@ public class AdHocRouteTest extends KEWTestCase {
     	WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), ADHOC_DOC);
     	docId = doc.getRouteHeaderId();
     	doc.routeDocument("");
-    	doc = getDocument("user1");
+    	// find all current request and get a list of ids for elimination purposes later
+    	List<Long> oldRequestIds = new ArrayList<Long>();
+        for (Iterator iterator = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(doc.getRouteHeaderId()).iterator(); iterator.hasNext();) {
+            oldRequestIds.add(((ActionRequestValue) iterator.next()).getActionRequestId());
+        }
+
+        // send the adhoc route request
+        doc = getDocument("user1");
     	doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, "One", "annotation1", new NetworkIdVO("user2"), "respDesc", false);
+ 
+    	// adhoc request should be only new request on document
+    	ActionRequestValue request = null;
+    	for (Iterator iter = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(doc.getRouteHeaderId()).iterator(); iter.hasNext();) {
+            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
+            if (!oldRequestIds.contains(actionRequest.getActionRequestId())) {
+                request = actionRequest;
+                break;
+            }
+        }
+    	assertNotNull("Could not find adhoc routed action request", request);
 
-    	List requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(doc.getRouteHeaderId());
-		// if sync routequeue is working our adhoc request should always be the
-		// second one out
-    	ActionRequestValue request = (ActionRequestValue)requests.get(1);
-
+    	// verify request data
+        assertEquals("wrong person", request.getWorkflowUser().getAuthenticationUserId().getAuthenticationId(), "user2");
     	assertEquals("annotation incorrect", "annotation1", request.getAnnotation());
     	assertEquals("action requested code incorrect", request.getActionRequested(), EdenConstants.ACTION_REQUEST_APPROVE_REQ);
     	assertEquals("responsibility desc incorrect", request.getResponsibilityDesc(), "respDesc");
-    	assertEquals("wrong person", request.getWorkflowUser().getAuthenticationUserId().getAuthenticationId(), "user2");
     	assertEquals("wrong ignore previous", request.getIgnorePrevAction(), Boolean.FALSE);
 
     }
-
 
 	@Test
 	public void testAdHocDissaprovedDocument() throws Exception {

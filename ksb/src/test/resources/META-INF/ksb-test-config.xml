@@ -13,6 +13,7 @@
 	<param name="threadPool.fetchFrequency">3000</param>
 	<param name="bus.refresh.rate">3000</param>
 	<param name="bam.enabled">true</param>
+	<param name="transaction.timeout">3600</param>
 	
 	
 	<!-- 

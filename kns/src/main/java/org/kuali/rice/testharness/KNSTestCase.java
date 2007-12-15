@@ -32,6 +32,8 @@ public class KNSTestCase extends RiceTestCase {
 
 	private String contextName = "/SampleRiceClient";
 	private String relativeWebappRoot = "/src/test/webapp";
+//    private String sqlFilename = "classpath:DefaultTestData.sql";
+//    private String sqlDelimiter = ";";
 	private String xmlFilename = "classpath:DefaultTestData.xml";
 	private String testConfigFilename = "classpath:META-INF/sample-app-test-config.xml";
 
@@ -47,6 +49,7 @@ public class KNSTestCase extends RiceTestCase {
 
 			public void start() throws Exception {
 				ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();
+//                new SQLDataLoaderLifecycle(getSqlFilename(), getSqlDelimiter()).start();
 				new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
 				new KEWXmlDataLoaderLifecycle(getXmlFilename()).start();
 				this.started = true;
@@ -111,4 +114,19 @@ public class KNSTestCase extends RiceTestCase {
 		this.xmlFilename = xmlFilename;
 	}
 
+//    protected String getSqlDelimiter() {
+//        return sqlDelimiter;
+//    }
+//
+//    protected void setSqlDelimiter(String sqlDelimiter) {
+//        this.sqlDelimiter = sqlDelimiter;
+//    }
+//
+//    protected String getSqlFilename() {
+//        return sqlFilename;
+//    }
+//
+//    protected void setSqlFilename(String sqlFilename) {
+//        this.sqlFilename = sqlFilename;
+//    }
 }

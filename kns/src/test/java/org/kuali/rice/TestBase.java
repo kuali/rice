@@ -21,6 +21,7 @@ import org.kuali.rice.test.data.UnitTestSql;
 import org.kuali.rice.testharness.KNSTestCase;
 import org.kuali.rice.testharness.TransactionalLifecycle;
 
+// TODO - managing both below SQL file and regular DefaultTestData.sql file is a problem
 @PerSuiteUnitTestData(
     @UnitTestData(
         sqlStatements = {
@@ -37,6 +38,8 @@ public class TestBase extends KNSTestCase {
 	public void setUp() throws Exception {
 		setContextName("/SampleRiceClient");
 		setRelativeWebappRoot("/src/test/webapp");
+//	    setSqlFilename("classpath:DefaultTestData.sql");
+//	    setSqlDelimiter(";");
 		setXmlFilename("classpath:DefaultTestData.xml");
 		setTestConfigFilename("classpath:META-INF/sample-app-test-config.xml");
 		super.setUp();

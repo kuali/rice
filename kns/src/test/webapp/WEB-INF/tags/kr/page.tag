@@ -82,6 +82,9 @@
 			  var excludeSubmitRestriction = false;
 			  function hasFormAlreadyBeenSubmitted()
 			  {
+			  
+				if ( document.getElementById( "formComplete" ) ) { 
+		  		
 				  if (formHasAlreadyBeenSubmitted && !excludeSubmitRestriction) {
 					 alert("Page already being processed by the server.");
 					 return false;
@@ -90,6 +93,11 @@
 					 return true;
 				  }
 				  excludeSubmitRestriction = false;
+				} else {
+	       		  alert("Page has not finished loading.");
+	       		  return false;
+				}
+				 				
 			  }
 			  </script>
 		</c:when>
@@ -337,5 +345,6 @@
 </c:if>
 
 </html:form>
+<div id="formComplete"></div> 
 </body>
 </html:html>

@@ -90,11 +90,12 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 
 	protected boolean shouldIndex(DocumentRouteHeaderValue document) throws XPathExpressionException {
 		XPath xpath = XPathHelper.newXPath();
-		if (Utilities.isEmpty(document.getDocumentContent().getDocumentContent())) {
+		String documentContent = document.getDocumentContent().getDocumentContent();
+		if (Utilities.isEmpty(documentContent)) {
 		    // returning true since the 'do not index' variable does not exist in the doc content xml since there is no doc content xml
 		    return true;
 		}
-		return !(Boolean)xpath.evaluate("//"+DONT_INDEX, new InputSource(new StringReader(document.getDocumentContent().getDocumentContent())), XPathConstants.BOOLEAN);
+		return !(Boolean)xpath.evaluate("//"+DONT_INDEX, new InputSource(new StringReader(documentContent)), XPathConstants.BOOLEAN);
 	}
 
 }

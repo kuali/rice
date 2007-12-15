@@ -47,6 +47,7 @@ import org.kuali.core.service.BusinessObjectDictionaryService;
 import org.kuali.core.service.BusinessObjectMetaDataService;
 import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.service.EncryptionService;
+import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.web.format.FormatException;
 import org.kuali.core.web.format.Formatter;
 import org.kuali.core.web.ui.Field;
@@ -63,6 +64,7 @@ public class FieldUtils {
     private static DataDictionaryService dictionaryService = KNSServiceLocator.getDataDictionaryService();
     private static BusinessObjectMetaDataService businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
     private static BusinessObjectDictionaryService businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
+    private static KualiConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
 
     public static void setInquiryURL(Field field, BusinessObject bo, String propertyName) {
         String inquiryUrl = "";
@@ -924,6 +926,38 @@ public class FieldUtils {
         return meshedFields;
     }
 
+    /**
+     * Determines whether field level help is enabled for the field corresponding to the businessObjectClass and attribute name
+     * 
+     * If this value is true, then the field level help will be enabled.
+     * If false, then whether a field is enabled is determined by the value returned by {@link #isLookupFieldLevelHelpDisabled(Class, String)} and the system-wide
+     * parameter setting.  Note that if a field is read-only, that may cause field-level help to not be rendered.
+     * 
+     * @param businessObjectClass the looked up class
+     * @param attributeName the attribute for the field
+     * @return true if field level help is enabled, false if the value of this method should NOT be used to determine whether this method's return value
+     * affects the enablement of field level help
+     */
+    protected static boolean isLookupFieldLevelHelpEnabled(Class businessObjectClass, String attributeName) {
+        return false;
+    }
+    
+    /**
+     * Determines whether field level help is disabled for the field corresponding to the businessObjectClass and attribute name
+     * 
+     * If this value is true and {@link #isLookupFieldLevelHelpEnabled(Class, String)} returns false,
+     * then the field level help will not be rendered.  If both this and {@link #isLookupFieldLevelHelpEnabled(Class, String)} return false, then the system-wide
+     * setting will determine whether field level help is enabled.  Note that if a field is read-only, that may cause field-level help to not be rendered.
+     * 
+     * @param businessObjectClass the looked up class
+     * @param attributeName the attribute for the field
+     * @return true if field level help is disabled, false if the value of this method should NOT be used to determine whether this method's return value
+     * affects the enablement of field level help
+     */
+    protected static boolean isLookupFieldLevelHelpDisabled(Class businessObjectClass, String attributeName) {
+        return false;
+    }
+    
     public static List createAndPopulateFieldsForLookup(List<String> lookupFieldAttributeList, List<String> readOnlyFieldsList, Class businessObjectClass) throws InstantiationException, IllegalAccessException {
         List<Field> fields = new ArrayList<Field>();
         for (Iterator iter = lookupFieldAttributeList.iterator(); iter.hasNext();) {
@@ -953,6 +987,9 @@ public class FieldUtils {
             if (readOnlyFieldsList != null && readOnlyFieldsList.contains(field.getPropertyName())) {
                 field.setReadOnly(true);
             }
+            
+            field.setFieldLevelHelpEnabled(isLookupFieldLevelHelpEnabled(businessObjectClass, attributeName));
+            field.setFieldLevelHelpDisabled(isLookupFieldLevelHelpDisabled(businessObjectClass, attributeName));
         }
         return fields;
     }

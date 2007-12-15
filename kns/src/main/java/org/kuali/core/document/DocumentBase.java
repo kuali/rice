@@ -221,11 +221,22 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * This is the default implementation which does nothing.
+     * This is the default implementation which ensures that document note attachment references are loaded.
      *
      * @see org.kuali.core.document.Document#processAfterRetrieve()
      */
     public void processAfterRetrieve() {
+	// KULRNE-5692 - force a refresh of the attachments
+	// they are not (non-updateable) references and don't seem to update properly upon load
+	DocumentHeader dh = getDocumentHeader();
+	if ( dh != null ) {
+	    List<Note> notes = dh.getBoNotes();
+	    if ( notes != null ) {
+		for ( Note note : notes ) {
+		    note.refreshReferenceObject( "attachment" );
+		}
+	    }
+	}
     }
 
     /**

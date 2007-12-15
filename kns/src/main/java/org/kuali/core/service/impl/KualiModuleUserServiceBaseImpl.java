@@ -111,7 +111,7 @@ public abstract class KualiModuleUserServiceBaseImpl<T extends KualiModuleUser> 
 	}
     
 	public Object getActiveFacultyStaffAffiliateCriteria() {
-        String[] allowedEmployeeStatusValues = getConfigService().getParameterValues( RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.KUALI_MODULE_USER_DETAIL_TYPE, RiceConstants.ALLOWED_EMPLOYEE_STATUS_RULE);
+        String[] allowedEmployeeStatusValues = getConfigService().getParameterValues( RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, RiceConstants.ALLOWED_EMPLOYEE_STATUS_RULE).toArray(new String[]{});
 		return kualiModuleUserDao.getActiveFacultyStaffAffiliateCriteria(allowedEmployeeStatusValues);
 	}
 }

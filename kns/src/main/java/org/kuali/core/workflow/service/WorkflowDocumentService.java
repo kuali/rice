@@ -205,12 +205,13 @@ public interface WorkflowDocumentService {
     public String getCurrentRouteLevelName(KualiWorkflowDocument workflowDocument) throws WorkflowException;
     
     /**
-     * Sends FYI to the list of ad hoc recipients.
+     * Sends workflow notification to the list of ad hoc recipients.  This method is usually used to notify users of a note that has been added to a
+     * document
      * 
      * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
      * @throws WorkflowException
      */
-    public void sendFYI(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
+    public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
 }

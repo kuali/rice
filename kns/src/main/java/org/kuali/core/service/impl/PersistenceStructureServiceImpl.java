@@ -694,14 +694,14 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
     public boolean isReferenceUpdatable(Class boClass, String referenceName) {
         ClassDescriptor classDescriptor = getClassDescriptor(boClass);
         ObjectReferenceDescriptor refDesc = classDescriptor.getObjectReferenceDescriptorByName(referenceName);
-        return refDesc.getCascadingStore() == ObjectReferenceDescriptor.CASCADE_OBJECT;
+        return refDesc.getCascadingStore() != ObjectReferenceDescriptor.CASCADE_NONE;
     }
     
     @Cached
     public boolean isCollectionUpdatable(Class boClass, String collectionName) {
         ClassDescriptor cd = getClassDescriptor(boClass);
         CollectionDescriptor collDesc = cd.getCollectionDescriptorByName(collectionName);
-        return collDesc.getCascadingStore() == ObjectReferenceDescriptor.CASCADE_OBJECT;
+        return collDesc.getCascadingStore() != ObjectReferenceDescriptor.CASCADE_NONE;
     }
 
 

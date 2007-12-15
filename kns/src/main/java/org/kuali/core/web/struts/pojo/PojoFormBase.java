@@ -35,7 +35,6 @@ import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
-import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.apache.struts.util.ModuleUtils;
@@ -49,6 +48,8 @@ import org.kuali.core.util.WebUtils;
 import org.kuali.core.web.format.EncryptionFormatter;
 import org.kuali.core.web.format.FormatException;
 import org.kuali.core.web.format.Formatter;
+import org.kuali.core.web.struts.action.KualiMultipartRequestHandler;
+import org.kuali.rice.KNSServiceLocator;
 
 /**
  * This class is the base form which implements the PojoForm interface.
@@ -73,6 +74,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     private List unknownKeys = new ArrayList();
     private Map formatterTypes = new HashMap();
     private Map encryptedProperties = new HashMap();
+    private List<String> maxUploadFileSizes = new ArrayList<String>();
 
     // removed methods: PojoFormBase()/SLActionForm(), addFormLevelMessageInfo, addGlobalMessage, addIgnoredKey, addIgnoredKeys, addLengthValidation, addMessageIfAbsent
     //     addPatternValidation, addPropertyValidationRules, addRangeValidation, addRequiredField, addRequiredFields
@@ -124,7 +126,57 @@ public class PojoFormBase extends ActionForm implements PojoForm {
         String method = request.getMethod();
         // handle multipart requests
         if ((params == null || params.isEmpty()) && ("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data")) ) {            
-            params = WebUtils.getMultipartParameters(request, getServletWrapper());
+            params = new HashMap();
+
+            // Get the ActionServletWrapper from the form bean
+            ActionServletWrapper servletWrapper = getServletWrapper();
+            boolean isMultipart = false;
+            try {
+                // Obtain a MultipartRequestHandler
+                MultipartRequestHandler multipartHandler = getMultipartHandler(request);
+
+                if (multipartHandler != null) {
+                    isMultipart = true;
+                    // Set servlet and mapping info
+                    servletWrapper.setServletFor(multipartHandler);
+                    multipartHandler.setMapping((ActionMapping) request.getAttribute(Globals.MAPPING_KEY));
+                    // Initialize multipart request class handler
+                    multipartHandler.handleRequest(request);
+                    // stop here if the maximum length has been exceeded
+                    Boolean maxLengthExceeded = (Boolean) request.getAttribute(MultipartRequestHandler.ATTRIBUTE_MAX_LENGTH_EXCEEDED);
+                    if ((maxLengthExceeded != null) && (maxLengthExceeded.booleanValue())) {
+                	if ( multipartHandler instanceof KualiMultipartRequestHandler ) {
+                	    throw new FileUploadLimitExceededException("Current Max: " + ((KualiMultipartRequestHandler)multipartHandler).getSizeMaxString() );
+                	} else {
+                	    throw new FileUploadLimitExceededException("");
+                	}
+                    }
+                    // retrieve form values and put into properties
+                    Map multipartParameters = getAllParametersForMultipartRequest(request, multipartHandler);
+                    Enumeration names = Collections.enumeration(multipartParameters.keySet());
+
+                    while (names.hasMoreElements()) {
+                        String name = (String) names.nextElement();
+                        String stripped = name;
+                        Object parameterValue = null;
+                        if (isMultipart) {
+                            parameterValue = multipartParameters.get(name);
+                        }
+                        else {
+                            parameterValue = request.getParameterValues(name);
+                        }
+
+                        // Populate parameters, except "standard" struts attributes
+                        // such as 'org.apache.struts.action.CANCEL'
+                        if (!(stripped.startsWith("org.apache.struts."))) {
+                            params.put(name, parameterValue);
+                        }
+                    }
+                }
+            }
+            catch (ServletException e) {
+                throw new ValidationException("unable to handle multipart request " + e.getMessage());
+            }
         }
 
         if (RiceConstants.SESSION_SCOPE.equalsIgnoreCase(request.getParameter(RiceConstants.DOCUMENT_WEB_SCOPE)) && ("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data"))) {
@@ -245,6 +297,68 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     }
     // end Kuali Foundation modification
 
+ // TODO: refactor, cleanup
+    /**
+     * <p>
+     * 
+     * </p>
+     *
+     * @param request The HTTP request for which the multipart handler should be found.
+     * @return the multipart handler to use, or null if none is found.
+     *
+     * @exception ServletException if any exception is thrown while attempting to locate the multipart handler.
+     */
+    private MultipartRequestHandler getMultipartHandler(HttpServletRequest request) throws ServletException {
+        Timer t0 = new Timer("PojoFormBase.getMultipartHandler");
+
+        KualiMultipartRequestHandler multipartHandler = new KualiMultipartRequestHandler();
+        multipartHandler.setMaxUploadSizeToMaxOfList( getMaxUploadSizes() );
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug( "Max File Upload Size: " + multipartHandler.getSizeMaxString() );
+        }
+        t0.log();
+        return multipartHandler;
+    }
+
+	// begin Kuali Foundation modification
+    /**
+     * <p>
+     * Create a <code>Map</code> containing all of the parameters supplied for a multipart request, keyed by parameter name. In
+     * addition to text and file elements from the multipart body, query string parameters are included as well.
+     * </p>
+     *
+     * @param request The (wrapped) HTTP request whose parameters are to be added to the map.
+     * @param multipartHandler The multipart handler used to parse the request.
+     *
+     * @return the map containing all parameters for this multipart request.
+     */
+    private static Map getAllParametersForMultipartRequest(HttpServletRequest request, MultipartRequestHandler multipartHandler) {
+        Timer t0 = new Timer("PojoFormBase.getAllParametersForMultipartRequest");
+
+        Map parameters = new HashMap();
+        Hashtable elements = multipartHandler.getAllElements();
+        Enumeration e = elements.keys();
+        while (e.hasMoreElements()) {
+            String key = (String) e.nextElement();
+            parameters.put(key, elements.get(key));
+        }
+
+        if (request instanceof MultipartRequestWrapper) {
+            request = ((MultipartRequestWrapper) request).getRequest();
+            e = request.getParameterNames();
+            while (e.hasMoreElements()) {
+                String key = (String) e.nextElement();
+                parameters.put(key, request.getParameterValues(key));
+            }
+        }
+        else {
+            LOG.debug("Gathering multipart parameters for unwrapped request");
+        }
+
+        t0.log();
+        return parameters;
+    }
+    // end Kuali Foundation modification
 
     /**
      * Delegates to {@link PropertyUtils#getPropertyType(Object, String)}to look up the property type for the provided keypath.
@@ -417,6 +531,43 @@ public class PojoFormBase extends ActionForm implements PojoForm {
      */
     public void setEncryptedProperties(Map encryptedProperties) {
         this.encryptedProperties = encryptedProperties;
+    }
+
+    /**
+     * Adds the given string as a maximum size to the form.  It will be used if a file upload is used.
+     * 
+     * @param sizeString
+     */
+    protected final void addMaxUploadSize( String sizeString ) {
+	maxUploadFileSizes.add( sizeString );
+    }
+
+    /**
+     * Initializes the list of max upload sizes if necessary. 
+     *
+     */
+    protected final void initMaxUploadSizes() {
+	if ( maxUploadFileSizes.isEmpty() ) {
+	    customInitMaxUploadSizes();
+	    // if it's still empty, add the default
+	    if ( maxUploadFileSizes.isEmpty() ) {
+		addMaxUploadSize(KNSServiceLocator.getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.ALL_DETAIL_TYPE, RiceConstants.MAX_UPLOAD_SIZE_PARM_NM));
+    }
+	}	
+    }
+    
+    /**
+     * Subclasses can override this to add their own max upload size to the list.  Only the largest passed will be used.
+     *
+     */
+    protected void customInitMaxUploadSizes() {
+	// nothing here
+    }
+    
+    protected final List<String> getMaxUploadSizes() {
+	initMaxUploadSizes();
+	
+	return maxUploadFileSizes;
     }
     // end Kuali Foundation modification
     

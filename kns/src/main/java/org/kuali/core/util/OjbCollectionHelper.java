@@ -120,7 +120,6 @@ public class OjbCollectionHelper {
      */
     private void cleanse(OjbCollectionAware template, Collection origSource, List unwantedItems) {
         if (unwantedItems.size() > 0) {
-            origSource.removeAll(unwantedItems);
             Iterator iter = unwantedItems.iterator();
             while (iter.hasNext()) {
                 template.getPersistenceBrokerTemplate().delete(iter.next());

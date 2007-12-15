@@ -68,7 +68,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		}
 		MDC.put("docID", documentId);
 		boolean success = true;
-		RouteContext context = RouteContext.getCurrentRouteContext();
+		RouteContext context = RouteContext.createNewRouteContext();
 		try {
 			LOG.debug("Aquiring lock on document " + documentId);
 			KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);

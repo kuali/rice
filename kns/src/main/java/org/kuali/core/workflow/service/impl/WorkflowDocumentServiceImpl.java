@@ -232,9 +232,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
     
     /**
-     * @see org.kuali.core.workflow.service.WorkflowDocumentService#sendFYI(org.kuali.core.workflow.service.KualiWorkflowDocument, java.lang.String, java.util.List)
+     * @see org.kuali.core.workflow.service.WorkflowDocumentService#sendWorkflowNotification(org.kuali.core.workflow.service.KualiWorkflowDocument, java.lang.String, java.util.List)
      */
-    public void sendFYI(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
+    public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
             LOG.debug("sending FYI for flexDoc(" + workflowDocument.getRouteHeaderId() + ")");
         }

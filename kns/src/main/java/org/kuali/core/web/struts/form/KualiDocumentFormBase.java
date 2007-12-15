@@ -608,4 +608,15 @@ public abstract class KualiDocumentFormBase extends KualiForm {
         
     }
 
+    
+    /**
+     * Adds the attachment file size to the list of max file sizes.
+     * 
+     * @see org.kuali.core.web.struts.pojo.PojoFormBase#customInitMaxUploadSizes()
+     */
+    @Override
+    protected void customInitMaxUploadSizes() {
+        super.customInitMaxUploadSizes();
+        addMaxUploadSize(KNSServiceLocator.getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, RiceConstants.ATTACHMENT_MAX_FILE_SIZE_PARM_NM));
+    }
 }

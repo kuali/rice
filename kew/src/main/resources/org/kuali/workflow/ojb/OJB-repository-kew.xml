@@ -271,22 +271,6 @@
     </collection-descriptor>
   </class-descriptor>
 
-<!--
-  <class-descriptor class="edu.iu.uis.eden.docsearch.SearchableAttributeValue" table="EN_DOC_HDR_EXT_T">
-    <field-descriptor column="DOC_HDR_EXT_ID" name="searchableAttributeValueId" jdbc-type="BIGINT" primarykey="true"
-      autoincrement="true" sequence-name="SEQ_SEARCHABLE_ATTRIBUTE_VALUE"/>
-    <field-descriptor column="DOC_HDR_ID" name="routeHeaderId" jdbc-type="BIGINT"/>
-    <field-descriptor column="DOC_HDR_EXT_VAL_KEY" name="searchableAttributeKey" jdbc-type="VARCHAR" />
-    <field-descriptor column="DOC_HDR_EXT_VAL" name="searchableAttributeValue" jdbc-type="VARCHAR"/>
-
-    <reference-descriptor class-ref="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue" name="routeHeader"
-      auto-delete="false" auto-retrieve="true" auto-update="false">
-      <foreignkey field-ref="routeHeaderId" />
-    </reference-descriptor>
-
-  </class-descriptor>
--->
-
   <class-descriptor class="edu.iu.uis.eden.docsearch.SearchableAttributeValue">
   	<extent-class class-ref="edu.iu.uis.eden.docsearch.SearchableAttributeStringValue" />
   	<extent-class class-ref="edu.iu.uis.eden.docsearch.SearchableAttributeFloatValue" />
@@ -381,6 +365,7 @@
     </collection-descriptor>
     <collection-descriptor element-class-ref="edu.iu.uis.eden.doctype.DocumentTypeAttribute" name="documentTypeAttributes"
 	    auto-delete="true" auto-retrieve="true" auto-update="true" proxy="false">
+	  <orderby name="orderIndex" sort="ASC"/>
       <inverse-foreignkey field-ref="documentTypeId" />
     </collection-descriptor>
     <collection-descriptor name="processes"	element-class-ref="edu.iu.uis.eden.engine.node.Process"
@@ -405,6 +390,7 @@
       primarykey="true" autoincrement="true" sequence-name="SEQ_DOCUMENT_TYPE_ATTRIBUTE"/>
     <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" access="anonymous"/>
     <field-descriptor column="RULE_ATTRIB_ID" name="ruleAttributeId" jdbc-type="BIGINT"/>
+    <field-descriptor column="ORD_INDX" name="orderIndex" jdbc-type="INTEGER"/>
     <reference-descriptor class-ref="edu.iu.uis.eden.routetemplate.RuleAttribute" name="ruleAttribute" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleAttributeId" />
     </reference-descriptor>

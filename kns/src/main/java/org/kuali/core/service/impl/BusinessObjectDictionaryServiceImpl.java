@@ -232,10 +232,10 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
     /**
      * @see org.kuali.core.service.BusinessObjectDictionaryService#getLookupResultFieldMaxLength(java.lang.Class, java.lang.String)
      */
-    public int getLookupResultFieldMaxLength(Class businessObjectClass, String resultFieldName) {
+    public Integer getLookupResultFieldMaxLength(Class businessObjectClass, String resultFieldName) {
         LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
         FieldDefinition field = lookupDefinition.getResultField(resultFieldName);
-        return Integer.parseInt(field.getMaxLength());
+        return field.getMaxLength();
     }
 
     /**

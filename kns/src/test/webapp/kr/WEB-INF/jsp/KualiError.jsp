@@ -16,7 +16,7 @@
 <%@ include file="tldHeader.jsp"%>
 
 <kul:page showDocumentInfo="false" headerTitle="Errors in Request"
-	docTitle="" transactionalDocument="false" htmlFormAction="portal">
+	docTitle="" transactionalDocument="false" htmlFormAction="Exception">
 
 	<br>
 

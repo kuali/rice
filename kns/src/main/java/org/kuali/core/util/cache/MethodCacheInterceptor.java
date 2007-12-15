@@ -138,7 +138,7 @@ public class MethodCacheInterceptor implements MethodInterceptor, InitializingBe
                 methodResult = invocation.proceed();
             }
             catch (Exception invocationException) {
-                LOG.error("unable to cache methodResult: caught exception invoking intercepted method: '" + invocationException);
+                LOG.warn("unable to cache methodResult: caught exception invoking intercepted method: '" + invocationException);
                 throw invocationException;
             }
 

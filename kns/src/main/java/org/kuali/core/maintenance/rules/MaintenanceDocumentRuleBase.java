@@ -1233,7 +1233,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         boolean success = true;
 
         // apply the rule, see if it fails
-        if (configService.failsRule(parameterNamespace, parameterDetailTypeCode, parameterName, valueToTest)) {
+        if (!configService.evaluateConstrainedValue(parameterNamespace, parameterDetailTypeCode, parameterName, valueToTest)) {
             success = false;
         }
 

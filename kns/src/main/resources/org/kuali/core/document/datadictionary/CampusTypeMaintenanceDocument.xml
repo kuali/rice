@@ -34,10 +34,10 @@
 
         <documentTypeName>KualiCampusTypeMaintenanceDocument</documentTypeName>
         <documentTypeCode>CTYP</documentTypeCode>
-        <label>Campus Type Maintenance Document</label>
-        <shortLabel>CampusTypeMaintDoc</shortLabel>
+        <label>Campus Type</label>
         <summary>Campus Type Maintenance Document</summary>
         <description>Maintenance document which allows you to create new Campus Types, or modify existing Campus Types.</description>
+        <help parameterNamespace="KR-NS" parameterDetailType="CampusType" parameterName="CAMPUS_TYPE_CODE" />
 
         <lockingKeys>
             <field attributeName="campusTypeCode" />
@@ -48,6 +48,7 @@
                 <maintainableItems>
                     <maintainableField name="campusTypeCode" required="true" />
                     <maintainableField name="campusTypeName" required="true" />
+                    <maintainableField name="dataObjectMaintenanceCodeActiveIndicator" />
                     <maintainableField name="versionNumber" />
                 </maintainableItems>
             </maintainableSection>

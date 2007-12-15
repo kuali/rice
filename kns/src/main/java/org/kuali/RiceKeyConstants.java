@@ -48,14 +48,15 @@ public class RiceKeyConstants {
     public static final String ERROR_INVALID_ADHOC_PERSON_ID = "error.adhoc.invalid.person";
     public static final String ERROR_MISSING_ADHOC_PERSON_ID = "error.adhoc.missing.person";
     public static final String ERROR_UNAUTHORIZED_ADHOC_PERSON_ID = "error.adhoc.unauthorized.person";
+    public static final String ERROR_INACTIVE_ADHOC_PERSON_ID = "error.adhoc.inactive.person";
     public static final String ERROR_INVALID_ADHOC_WORKGROUP_ID = "error.adhoc.invalid.workgroup";
     public static final String ERROR_MISSING_ADHOC_WORKGROUP_ID = "error.adhoc.missing.workgroup";
 
     public static final String ERROR_SECURE_FIELD = "error.secureField";
-    public static final String ERROR_SEND_FYI_RECIPIENT = "error.sendFYI.recipient";
-    public static final String ERROR_SEND_FYI_DOCSTATUS = "error.sendFYI.docStatus";
-    public static final String MESSAGE_SEND_FYI_SUCCESSFUL = "message.sendFYI.successful";
-    public static final String MESSAGE_NOTE_FYI_ANNOTATION = "message.noteFYI.annotation";
+    public static final String ERROR_SEND_NOTE_NOTIFICATION_RECIPIENT = "error.send.note.notification.recipient";
+    public static final String ERROR_SEND_NOTE_NOTIFICATION_DOCSTATUS = "error.send.note.notification.docStatus";
+    public static final String MESSAGE_SEND_NOTE_NOTIFICATION_SUCCESSFUL = "message.send.note.notification.successful";
+    public static final String MESSAGE_NOTE_NOTIFICATION_ANNOTATION = "message.note.notification.annotation";
 
     public static final String UNAUTHORIZED_INQUIRY = "unauthorized.inquiry";
     public static final String UNAUTHORIZED_LOOKUP = "unauthorized.lookup";

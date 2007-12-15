@@ -118,12 +118,6 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             // TODO - should the exception be logged even though it's handled
             // swallerin it, cuz we look to be read only
 		}
-        try {
-            saveSearch(user, criteria);
-        } catch (RuntimeException e) {
-            // TODO - should the exception be logged even though it's handled
-            // swallerin it, cuz we look to be read only
-        }
         return searchResult;
 	}
 	

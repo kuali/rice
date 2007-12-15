@@ -70,13 +70,13 @@ public interface NoteService {
     public String extractNoteProperty(Note note);
     
     /**
-     * Builds an FYI request for the note and sends fyi to note recipient.
+     * Builds an workflow notification request for the note and sends it to note recipient.
      * 
      * @param document - document that contains the note
-     * @param note - note to fyi
-     * @param sender - user who is sending the fyi
+     * @param note - note to notify
+     * @param sender - user who is sending the notification
      * @throws UserNotFoundException 
      * @throws WorkflowException 
      */
-    public void sendNoteFYI(Document document, Note note, UniversalUser sender) throws UserNotFoundException, WorkflowException;
+    public void sendNoteRouteNotification(Document document, Note note, UniversalUser sender) throws UserNotFoundException, WorkflowException;
 }

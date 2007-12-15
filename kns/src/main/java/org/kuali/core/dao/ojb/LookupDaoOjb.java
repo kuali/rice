@@ -355,7 +355,14 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             }
 
             if (StringUtils.isNotBlank(searchValue) & PropertyUtils.isWriteable(example, propertyName)) {
-                criteria.addEqualTo(propertyName, searchValue);
+        	Class propertyType = ObjectUtils.getPropertyType(example, propertyName, persistenceStructureService);
+        	if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) ) {
+        	    criteria.addEqualTo(propertyName, cleanNumeric(searchValue));
+        	} else if (TypeUtils.isTemporalClass(propertyType)) {
+        	    criteria.addEqualTo(propertyName, parseDate( ObjectUtils.clean(searchValue) ) );
+        	} else {
+        	    criteria.addEqualTo(propertyName, searchValue);
+        	}
             }
         }
 

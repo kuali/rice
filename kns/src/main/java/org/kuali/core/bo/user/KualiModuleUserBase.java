@@ -57,7 +57,7 @@ public class KualiModuleUserBase extends TransientBusinessObjectBase implements 
     
     protected boolean isActiveFacultyStaffAffiliate() {
         return (getUniversalUser().isFaculty() || getUniversalUser().isStaff() || getUniversalUser().isAffiliate()) 
-        		&& !KNSServiceLocator.getKualiConfigurationService().failsRule(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.KUALI_MODULE_USER_DETAIL_TYPE, RiceConstants.ALLOWED_EMPLOYEE_STATUS_RULE,getUniversalUser().getEmployeeStatusCode());
+        		&& KNSServiceLocator.getKualiConfigurationService().evaluateConstrainedValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, RiceConstants.ALLOWED_EMPLOYEE_STATUS_RULE,getUniversalUser().getEmployeeStatusCode());
     }
 
     public void setActive(boolean active) {

@@ -50,8 +50,12 @@ public abstract class DocumentEntryMapper {
         entryMap.set("label", entry.getLabel());
         entryMap.set("shortLabel", entry.getShortLabel());
 
-        entryMap.set("summary", entry.getSummary());
-        entryMap.set("description", entry.getDescription());
+        if (entry.getSummary() != null) {
+            entryMap.set("summary", entry.getSummary());
+        }
+        if (entry.getDescription() != null) {
+            entryMap.set("description", entry.getDescription());
+        }
 
         entryMap.set("documentAuthorizerClass", entry.getDocumentAuthorizerClass().getName());
 

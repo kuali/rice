@@ -15,14 +15,11 @@
  */
 package org.kuali.core.document.authorization;
 
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.core.bo.Parameter;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.document.Document;
 import org.kuali.core.document.MaintenanceDocument;
-import org.kuali.core.exceptions.AuthorizationException;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -43,31 +40,19 @@ public class ParameterMaintenanceDocumentAuthorizer extends MaintenanceDocumentA
         
         // user can not initiate if they are not in the workgroup
         if ( hasInitiateAuth ) {
-            Parameter parm = (Parameter)((MaintenanceDocument)document).getNewMaintainableObject().getBusinessObject();
-            if ( parm != null 
-        	    && StringUtils.isNotBlank( parm.getParameterWorkgroupName() ) 
-        	    && !user.isMember( parm.getParameterWorkgroupName() ) ) {
-            	hasInitiateAuth = false;
+            Parameter oldParm = (Parameter)((MaintenanceDocument)document).getOldMaintainableObject().getBusinessObject();
+            // don't enforce the workgroup limitation when creating a new parameter
+            if ( oldParm != null && oldParm.getParameterName() != null ) {
+                Parameter parm = (Parameter)((MaintenanceDocument)document).getNewMaintainableObject().getBusinessObject();
+                if ( parm != null 
+            	    && StringUtils.isNotBlank( parm.getParameterWorkgroupName() ) 
+            	    && !user.isMember( parm.getParameterWorkgroupName() ) ) {
+                	hasInitiateAuth = false;
+                }
             }
         }
         
         return hasInitiateAuth;
     }
     
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase#getEditMode(org.kuali.core.document.Document, org.kuali.core.bo.user.UniversalUser)
-     */
-    @Override
-    public Map getEditMode(Document document, UniversalUser user) {
-        
-        Map editModes = super.getEditMode(document, user);        
-        if ( document.getDocumentHeader().getWorkflowDocument().stateIsInitiated() && !hasInitiateAuthorization(document, user) ) {
-            Parameter parm = (Parameter)((MaintenanceDocument)document).getNewMaintainableObject().getBusinessObject();
-       	    throw new AuthorizationException( user.getPersonUserIdentifier(), "edit parameter", parm.getParameterNamespaceCode()+"/"+parm.getParameterDetailTypeCode()+"/" + parm.getParameterName() );
-        }
-            
-        return editModes;
-    }
 }

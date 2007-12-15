@@ -142,8 +142,8 @@ public class CancelAction extends ActionTakenEvent {
         try {
             String oldStatus = getRouteHeader().getDocRouteStatus();
             getRouteHeader().markDocumentCanceled();
-
             String newStatus = getRouteHeader().getDocRouteStatus();
+            getRouteHeaderService().saveRouteHeader(getRouteHeader());
             notifyStatusChange(newStatus, oldStatus);
         } catch (WorkflowException ex) {
             LOG.warn(ex, ex);

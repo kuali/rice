@@ -46,8 +46,11 @@ public class TestBase extends KNSTestCase {
 
 	@After
 	public void tearDown() throws Exception {
+	try {
 		transactionalLifecycle.stop();
+	} finally {
 		super.tearDown();
+	}
 	}
 
 	@Override

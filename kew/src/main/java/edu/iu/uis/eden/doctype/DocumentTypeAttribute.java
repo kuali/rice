@@ -37,6 +37,7 @@ public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
     private RuleAttribute ruleAttribute;
     private Long documentTypeId;
     private DocumentType documentType;
+    private int orderIndex;
     private Integer lockVerNbr;
     
 	/**
@@ -128,6 +129,14 @@ public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
 	public void setDocumentType(DocumentType documentType) {
 		this.documentType = documentType;
 	}
+	
+    public int getOrderIndex() {
+        return orderIndex;
+    }
+
+    public void setOrderIndex(int orderIndex) {
+        this.orderIndex = orderIndex;
+    }
 
 	public Integer getLockVerNbr() {
 		return lockVerNbr;

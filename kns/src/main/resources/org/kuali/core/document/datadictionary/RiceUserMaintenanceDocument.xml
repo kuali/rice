@@ -39,7 +39,6 @@
 
         <summary>User maintenance document</summary>
         <description>Document used to create or update User objects</description>
-        <help parameterNamespace="KR-NS" parameterDetailType="UniversalUser" parameterName="UNIVERSAL_USER" />
 
         <lockingKeys>
             <field attributeName="personUniversalIdentifier" />

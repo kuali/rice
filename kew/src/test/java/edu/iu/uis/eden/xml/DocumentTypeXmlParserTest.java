@@ -18,6 +18,9 @@
 
 package edu.iu.uis.eden.xml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
 
@@ -26,22 +29,25 @@ import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.doctype.DocumentType;
+import edu.iu.uis.eden.doctype.DocumentTypeAttribute;
 import edu.iu.uis.eden.exception.InvalidWorkgroupException;
 import edu.iu.uis.eden.exception.InvalidXmlException;
 
 public class DocumentTypeXmlParserTest extends KEWTestCase {
-    private void testDoc(String docName, Class expectedException) throws Exception {
+    private List testDoc(String docName, Class expectedException) throws Exception {
         DocumentTypeXmlParser parser = new DocumentTypeXmlParser();
         try {
-            parser.parseDocumentTypes(getClass().getResourceAsStream(docName + ".xml"));
+            List docTypes = parser.parseDocumentTypes(getClass().getResourceAsStream(docName + ".xml"));
             if (expectedException != null) {
                 fail(docName + " successfully loaded");
             }
+            return docTypes;
         } catch (Exception e) {
             if (expectedException == null || !(expectedException.isAssignableFrom(e.getClass()))) {
                 throw e;
             } else {
                 log.error(docName + " exception: " + e);
+                return new ArrayList();
             }
         }
     }
@@ -218,4 +224,32 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
         assertFalse("Doc Type should be current",previousDocType1.getCurrentInd());
         assertNull("Doc type retrieved should not have previous doc type",previousDocType1.getPreviousVersionId());
     }
+    
+    @Test public void testLoadDocWithOrderedAttributes() throws Exception {
+        List documentTypes = testDoc("ValidActivationTypes", null);
+        assertEquals("Should only be one doc type parsed", 1, documentTypes.size());
+        DocumentType docType = (DocumentType) documentTypes.get(0);
+        for (int i = 0; i < docType.getDocumentTypeAttributes().size(); i++) {
+            DocumentTypeAttribute attribute = docType.getDocumentTypeAttributes().get(i);
+            assertEquals("Invalid Index Number", i+1, attribute.getOrderIndex());
+        }
+        
+        DocumentType docTypeFresh = KEWServiceLocator.getDocumentTypeService().findByName("DocumentTypeXmlParserTestDoc_ValidActivationTypes");
+        assertEquals("Should be 3 doc type attributes", 3, docTypeFresh.getDocumentTypeAttributes().size());
+        int index = 0;
+        DocumentTypeAttribute attribute = docTypeFresh.getDocumentTypeAttributes().get(index);
+        assertEquals("Invalid Index Number", index+1, attribute.getOrderIndex());
+        assertEquals("Invalid attribute name for order value " + index+1, "TestRuleAttribute2", attribute.getRuleAttribute().getName());
+        
+        index = 1;
+        attribute = docTypeFresh.getDocumentTypeAttributes().get(index);
+        assertEquals("Invalid Index Number", index+1, attribute.getOrderIndex());
+        assertEquals("Invalid attribute name for order value " + index+1, "TestRuleAttribute3", attribute.getRuleAttribute().getName());
+
+        index = 2;
+        attribute = docTypeFresh.getDocumentTypeAttributes().get(index);
+        assertEquals("Invalid Index Number", index+1, attribute.getOrderIndex());
+        assertEquals("Invalid attribute name for order value " + index+1, "TestRuleAttribute", attribute.getRuleAttribute().getName());
+    }
+
 }

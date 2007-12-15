@@ -27,12 +27,17 @@ import org.kuali.core.authorization.AuthorizationConstants;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.document.Document;
 import org.kuali.core.exceptions.DocumentInitiationAuthorizationException;
+import org.kuali.core.service.AuthorizationService;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
+import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.KNSServiceLocator;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
+import edu.iu.uis.eden.clientapp.vo.UserVO;
 import edu.iu.uis.eden.clientapp.vo.ValidActionsVO;
+import edu.iu.uis.eden.exception.WorkflowException;
 
 /**
  * DocumentAuthorizer containing common, reusable document-level authorization code.
@@ -40,6 +45,10 @@ import edu.iu.uis.eden.clientapp.vo.ValidActionsVO;
 public class DocumentAuthorizerBase implements DocumentAuthorizer {
     private static Log LOG = LogFactory.getLog(DocumentAuthorizerBase.class);
 
+    private static AuthorizationService authorizationService;
+    private static KualiWorkflowInfo kualiWorkflowInfo;
+    private static KualiConfigurationService kualiConfigurationService;
+    
     /**
      * @see org.kuali.core.authorization.DocumentAuthorizer#getEditMode(org.kuali.core.document.Document,
      *      org.kuali.core.bo.user.KualiUser)
@@ -131,9 +140,34 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
                 flags.setCanAdHocRoute(false);
             }
             else if (workflowDocument.stateIsException()) {
-                flags.setCanCancel(user.isWorkflowExceptionUser());
-                flags.setCanApprove(user.isWorkflowExceptionUser());
-                flags.setCanDisapprove(user.isWorkflowExceptionUser());
+        	try {
+                    ActionRequestVO[] requests = getKualiWorkflowInfo().getActionRequests(workflowDocument.getRouteHeaderId());
+                    boolean reqFound = false;
+                    for ( ActionRequestVO req : requests ) {
+                        if ( req.isExceptionRequest() && req.getActionTakenId() == null ) {
+                	    if ( req.getWorkgroupVO() != null ) {
+                		UserVO[] users = req.getWorkgroupVO().getMembers();
+                		for ( UserVO usr : users ) {
+                		    if ( usr.getUuId().equals( user.getPersonUniversalIdentifier() ) ) {
+                			flags.setCanCancel( true );
+            		            	flags.setCanApprove( true );
+            		            	flags.setCanDisapprove( true );
+            		            	reqFound = true; // used to break out of outer loop
+            		            	break;
+                		    }
+                		}
+                		if ( reqFound ) {
+                		    break;
+                		}
+                	    } else {
+                		LOG.error( "Unable to retrieve user list for exception workgroup.  ActionRequestVO.getWorkgroupVO() returned null" );
+                		LOG.error( "request: " + req );
+                	    }
+                	}
+                    }
+        	} catch( WorkflowException ex ) {
+        	    LOG.error("Unable to retrieve action requests for document: " + document.getDocumentNumber(),ex);
+        	}
 
                 flags.setCanAdHocRoute(false);
             }
@@ -144,6 +178,27 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
         return flags;
     }
     
+    protected KualiConfigurationService getKualiConfigurationService() {
+	if ( kualiConfigurationService == null ) {
+	    kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+	}
+	return kualiConfigurationService;
+    }
+    
+    protected AuthorizationService getAuthorizationService() {
+	if ( authorizationService == null ) {
+	    authorizationService = KNSServiceLocator.getAuthorizationService();
+	}
+	return authorizationService;
+    }
+    
+    protected KualiWorkflowInfo getKualiWorkflowInfo() {
+	if ( kualiWorkflowInfo == null ) {
+	    kualiWorkflowInfo = KNSServiceLocator.getWorkflowInfoService();
+	}
+	return kualiWorkflowInfo;
+    }
+    
     /**
      * Helper method to disallow the perform route report button globally for a particular authorizer class
      * @param document - current document
@@ -152,7 +207,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      */
     public boolean allowsPerformRouteReport(Document document, UniversalUser user) {
         KualiConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
-        return kualiConfigurationService.getIndicatorParameter( RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, RiceConstants.SystemGroupParameterNames.DEFAULT_CAN_PERFORM_ROUTE_REPORT);
+        return kualiConfigurationService.getIndicatorParameter( RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, RiceConstants.SystemGroupParameterNames.DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND);
     }
 
     /**
@@ -169,9 +224,9 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * @see org.kuali.core.authorization.DocumentAuthorizer#canInitiate(java.lang.String, org.kuali.core.bo.user.KualiUser)
      */
     public void canInitiate(String documentTypeName, UniversalUser user) {
-        if (! KNSServiceLocator.getAuthorizationService().isAuthorized(user, "initiate", documentTypeName)) {
+        if (!getAuthorizationService().isAuthorized(user, "initiate", documentTypeName)) {
             // build authorized workgroup list for error message
-            Set authorizedWorkgroups = KNSServiceLocator.getAuthorizationService().getAuthorizedWorkgroups("initiate", documentTypeName);
+            Set authorizedWorkgroups = getAuthorizationService().getAuthorizedWorkgroups("initiate", documentTypeName);
             String workgroupList = StringUtils.join(authorizedWorkgroups.toArray(), ",");
             throw new DocumentInitiationAuthorizationException(new String[] {workgroupList,documentTypeName});
         }
@@ -182,7 +237,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
      * @see org.kuali.core.authorization.DocumentAuthorizer#canCopy(java.lang.String, org.kuali.core.bo.user.KualiUser)
      */
     public boolean canCopy(String documentTypeName, UniversalUser user) {
-        return KNSServiceLocator.getAuthorizationService().isAuthorized(user, "initiate", documentTypeName);
+        return getAuthorizationService().isAuthorized(user, "initiate", documentTypeName);
     }
 
     /**

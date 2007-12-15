@@ -44,7 +44,10 @@ public class RiceConstants extends JstlConstants {
     	public static final String DOCUMENT_TYPE_DETAIL_TYPE = "DocumentType";
     }
     
+    public static final String MAX_UPLOAD_SIZE_PARM_NM = "MAX_FILE_SIZE_DEFAULT_UPLOAD";
     
+    public static final String SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM = "SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS";
+    public static final String ATTACHMENT_MAX_FILE_SIZE_PARM_NM = "MAX_FILE_SIZE_ATTACHMENT";
     
     public static final String CONFIGURATION_FILE_NAME = "configuration";
     public static final String ENVIRONMENT_KEY = "environment";
@@ -132,9 +135,10 @@ public class RiceConstants extends JstlConstants {
     public static final String OVERRIDE_KEYS = "overrideKeys";
 
     /**
-     * This value denotes that a max length has not been defined for a given lookup results field
+     * This value is the name of the param for the default max column length of a lookup result field if 
+     * the field maxLength has not been defined in the DD
      */
-    public static final int LOOKUP_RESULT_FIELD_MAX_LENGTH_NOT_DEFINED = -1;
+    public static final String RESULTS_DEFAULT_MAX_COLUMN_LENGTH = "RESULTS_DEFAULT_MAX_COLUMN_LENGTH";
     
     /**
      * The number of levels BusinessObjectDictionaryServiceImpl will recurse.  If this number is high, it may lead to serious
@@ -399,9 +403,15 @@ public class RiceConstants extends JstlConstants {
         public static final String LOOKUP_RESULTS_LIMIT = "RESULTS_LIMIT";
         public static final String MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE = "MULTIPLE_VALUE_RESULTS_PER_PAGE";
         public static final String MULTIPLE_VALUE_LOOKUP_RESULTS_EXPIRATION_AGE = "MULTIPLE_VALUE_RESULTS_EXPIRATION_SECONDS";
+        
+        public static final String DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND = "DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND";
 
-        public static final String DEFAULT_CAN_PERFORM_ROUTE_REPORT = "DEFAULT_CAN_PERFORM_ROUTE_REPORT";
-
+        /**
+         * Used to indicate whether field level help is enabled.  Depending on the namespace this parameter is in, it may
+         * affect either lookups (i.e. the search criteria fields) or maintenance documents.
+         */
+        public static final String ENABLE_FIELD_LEVEL_HELP_IND = "ENABLE_FIELD_LEVEL_HELP_IND";
+        
         /**
          * Used by PurgePendingAttachmentsJob to compute the maximum amount of time a pending attachment is allowed to
          * persist on the file system before being deleted.

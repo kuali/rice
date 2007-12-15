@@ -146,31 +146,30 @@ public class NoteServiceImpl implements NoteService {
     }
 
     /**
-     * @see org.kuali.core.service.NoteService#sendNoteFYI(org.kuali.core.document.Document, org.kuali.core.bo.Note,
+     * @see org.kuali.core.service.NoteService#sendNoteNotification(org.kuali.core.document.Document, org.kuali.core.bo.Note,
      *      org.kuali.core.bo.user.UniversalUser)
      */
-    public void sendNoteFYI(Document document, Note note, UniversalUser sender) throws UserNotFoundException, WorkflowException {
-        AdHocRouteRecipient fyiRecipient = note.getFyiNoteRecipient();
+    public void sendNoteRouteNotification(Document document, Note note, UniversalUser sender) throws UserNotFoundException, WorkflowException {
+        AdHocRouteRecipient routeRecipient = note.getAdHocRouteRecipient();
 
-        // build fyi request
-        UniversalUser requestedUser = universalUserService.getUniversalUserByAuthenticationUserId(fyiRecipient.getId());
+        // build notification request
+        UniversalUser requestedUser = universalUserService.getUniversalUserByAuthenticationUserId(routeRecipient.getId());
         String senderName = sender.getPersonFirstName() + " " + sender.getPersonLastName();
         String requestedName = requestedUser.getPersonFirstName() + " " + requestedUser.getPersonLastName();
         
-        String fyiText = kualiConfigurationService.getPropertyString(RiceKeyConstants.MESSAGE_NOTE_FYI_ANNOTATION);
-        if (StringUtils.isBlank(fyiText)) {
-            throw new RuntimeException("No annotation message found for note fyi. Message needs added to application resources with key:" + RiceKeyConstants.MESSAGE_NOTE_FYI_ANNOTATION);
+        String notificationText = kualiConfigurationService.getPropertyString(RiceKeyConstants.MESSAGE_NOTE_NOTIFICATION_ANNOTATION);
+        if (StringUtils.isBlank(notificationText)) {
+            throw new RuntimeException("No annotation message found for note notification. Message needs added to application resources with key:" + RiceKeyConstants.MESSAGE_NOTE_NOTIFICATION_ANNOTATION);
         }
-        fyiText = MessageFormat.format(fyiText, new Object[] { senderName, requestedName, note.getNoteText() });
+        notificationText = MessageFormat.format(notificationText, new Object[] { senderName, requestedName, note.getNoteText() });
 
-        fyiRecipient.setActionRequested(EdenConstants.ACTION_REQUEST_FYI_REQ);
-        List<AdHocRouteRecipient> fyiRecipients = new ArrayList<AdHocRouteRecipient>();
-        fyiRecipients.add(fyiRecipient);
+        List<AdHocRouteRecipient> routeRecipients = new ArrayList<AdHocRouteRecipient>();
+        routeRecipients.add(routeRecipient);
 
-        workflowDocumentService.sendFYI(document.getDocumentHeader().getWorkflowDocument(), fyiText, fyiRecipients);
+        workflowDocumentService.sendWorkflowNotification(document.getDocumentHeader().getWorkflowDocument(), notificationText, routeRecipients);
 
-        // clear recipient allowing an fyi to be sent to another person
-        note.setFyiNoteRecipient(new AdHocRoutePerson());
+        // clear recipient allowing an notification to be sent to another person
+        note.setAdHocRouteRecipient(new AdHocRoutePerson());
     }
 
     /**

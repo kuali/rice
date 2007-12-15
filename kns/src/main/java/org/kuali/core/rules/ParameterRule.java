@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.core.bo.Parameter;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.document.MaintenanceDocument;
+import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.KNSServiceLocator;
@@ -47,7 +48,13 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 					newBO.getParameterWorkgroupName() );
 			if ( result ) {
 				// get the initiator user record
-				UniversalUser user = GlobalVariables.getUserSession().getUniversalUser();
+			    	UniversalUser user = null; 
+			    	try {
+			    	    user = KNSServiceLocator.getUniversalUserService().getUniversalUserByAuthenticationUserId(initiatorUserId);
+			    	} catch ( UserNotFoundException ex ) {
+			    	    LOG.error( "Unable to find initiator user: " + initiatorUserId + " via user service" );
+			    	    throw new RuntimeException( "Unable to find initiator user: " + initiatorUserId + " via user service", ex );
+			    	}
 				if ( oldBO == null || StringUtils.isBlank( oldBO.getParameterWorkgroupName() ) ) { // creating
 																									// a
 																									// new

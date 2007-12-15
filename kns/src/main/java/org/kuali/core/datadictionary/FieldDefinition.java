@@ -48,7 +48,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
      * This field is stored as a String because apache digester does not make it
      * easy to detect number format exceptions because it swallows parsing exceptions.
      */
-    private String maxLength = String.valueOf(RiceConstants.LOOKUP_RESULT_FIELD_MAX_LENGTH_NOT_DEFINED);
+    private Integer maxLength;
 
     private String displayEditMode;
     private Mask displayMask;
@@ -61,7 +61,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
         this.noInquiry = false;
         this.forceLookup = false;
         this.noLookup = false;
-        this.maxLength = String.valueOf(RiceConstants.LOOKUP_RESULT_FIELD_MAX_LENGTH_NOT_DEFINED);
+        this.maxLength = null;
     }
 
 
@@ -272,7 +272,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
      * Gets the maxLength attribute. 
      * @return Returns the maxLength.
      */
-    public String getMaxLength() {
+    public Integer getMaxLength() {
         return maxLength;
     }
 
@@ -281,11 +281,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
      * Sets the maxLength attribute value.
      * @param maxLength The maxLength to set.
      */
-    public void setMaxLength(String maxLength) {
-        int maxLengthInt = Integer.parseInt(maxLength);
-        if (maxLengthInt < 0) {
-            throw new AttributeValidationException("Cannot have maxLength < 0");
-        }
+    public void setMaxLength(Integer maxLength) {
         this.maxLength = maxLength;
     }
 }

@@ -48,7 +48,7 @@ public class LookupServiceImpl implements LookupService {
     private PersistenceStructureService persistenceStructureService;
     
     public Collection findCollectionBySearchUnbounded(Class example, Map formProps) {
-        return findCollectionBySearchHelper(example, formProps, false);
+        return findCollectionBySearchHelper(example, formProps, true);
     }
 
     /**
@@ -57,7 +57,7 @@ public class LookupServiceImpl implements LookupService {
      * @return Collection returned from the search
      */
     public Collection findCollectionBySearch(Class example, Map formProps) {
-        return findCollectionBySearchHelper(example, formProps, true);
+        return findCollectionBySearchHelper(example, formProps, false);
     }
 
     public Collection findCollectionBySearchHelper(Class example, Map formProps, boolean unbounded) {

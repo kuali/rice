@@ -33,6 +33,7 @@ import org.kuali.rice.KNSServiceLocator;
  * 
  */
 public class ActionFormUtilMap extends HashMap {
+    private boolean cacheValueFinderResults;
     
     /**
      * This method parses from the key the actual method to run.
@@ -40,6 +41,13 @@ public class ActionFormUtilMap extends HashMap {
      * @see java.util.Map#get(java.lang.Object)
      */
     public Object get(Object key) {
+	if (cacheValueFinderResults) {
+	    if (super.containsKey(key)) {
+		// doing a 2 step retrieval allows us to also cache the null key correctly
+		Object cachedObject = super.get(key);
+	    	return cachedObject;
+	    }
+	}
         String[] methodKey = StringUtils.split((String) key, RiceConstants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER);
      
         String methodToCall = methodKey[0];
@@ -62,6 +70,10 @@ public class ActionFormUtilMap extends HashMap {
         }
         catch (Exception e) {
             throw new RuntimeException("Unable to invoke method " + e.getMessage());
+        }
+
+        if (cacheValueFinderResults) {
+            super.put(key, methodValue);
         }
         
         return methodValue;
@@ -126,6 +138,10 @@ public class ActionFormUtilMap extends HashMap {
         }
         
         return encrypted;
+    }
+
+    public void setCacheValueFinderResults(boolean cacheValueFinderResults) {
+        this.cacheValueFinderResults = cacheValueFinderResults;
     }
     
     

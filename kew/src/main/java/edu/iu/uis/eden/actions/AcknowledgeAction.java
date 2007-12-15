@@ -72,6 +72,11 @@ public class AcknowledgeAction extends ActionTakenEvent {
         setActionTakenCode(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD);
     }
 
+    @Override
+    protected boolean requireInitiatorCheck() {
+        return false;
+    }
+    
     /**
      * Method to check if the Action is currently valid on the given document
      * @return  returns an error message to give system better identifier for problem

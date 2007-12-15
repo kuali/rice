@@ -814,14 +814,6 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         return cachedValues;
     }
 
-    public void overrideDataDictionaryFieldConfiguration(DataDictionaryDefinitionBase definition) {
-        // Default no-op implemenation
-    }
-
-    public void overrideDataDictionarySectionConfiguration(DataDictionaryDefinitionBase definition) {
-        // Default no-op implemenation
-    }
-
     public Collection<String> getAffectedReferencesFromLookup(BusinessObject baseBO, String attributeName, String collectionPrefix) {
         PersistenceStructureService pss = KNSServiceLocator.getPersistenceStructureService();
         String nestedBOPrefix = "";

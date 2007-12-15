@@ -10,6 +10,11 @@
       <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
       <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
       <active>true</active>
+      <attributes>
+        <attribute><name>TestRuleAttribute2</name></attribute>
+        <attribute><name>TestRuleAttribute3</name></attribute>
+        <attribute><name>TestRuleAttribute</name></attribute>
+      </attributes>
       <routePaths>
         <routePath>
           <start name="AdHoc" nextNode="1" />

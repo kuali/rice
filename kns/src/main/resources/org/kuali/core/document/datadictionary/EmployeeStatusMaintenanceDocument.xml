@@ -35,11 +35,11 @@
         <documentTypeName>KualiEmployeeStatusMaintenanceDocument</documentTypeName>
         <documentTypeCode>EMST</documentTypeCode>
 
-        <label>Employee Status Maintenance Document</label>
-        <shortLabel>EmployeeStatusMaintenanceDocument</shortLabel>
+        <label>Employee Status</label>
 
-        <summary>Employee Status maintenance document</summary>
+        <summary>Employee Status</summary>
         <description>Document used to create or update Employee Status objects</description>
+        <help parameterNamespace="KR-NS" parameterDetailType="EmployeeStatus" parameterName="EMPLOYEE_STATUS" />
 
         <lockingKeys>
             <field attributeName="code" />

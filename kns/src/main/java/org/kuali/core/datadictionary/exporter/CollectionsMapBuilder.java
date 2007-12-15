@@ -58,8 +58,12 @@ public class CollectionsMapBuilder {
         collectionMap.set("name", collection.getName());
         collectionMap.set("label", collection.getLabel());
         collectionMap.set("shortLabel", collection.getShortLabel());
-        collectionMap.set("summary", collection.getSummary());
-        collectionMap.set("description", collection.getDescription());
+        if (collection.getSummary() != null) {
+            collectionMap.set("summary", collection.getSummary());
+        }
+        if (collection.getDescription() != null) {
+            collectionMap.set("description", collection.getDescription());
+        }
 
         return collectionMap;
     }

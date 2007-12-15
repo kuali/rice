@@ -572,6 +572,7 @@ CREATE TABLE EN_DOC_TYP_ATTRIB_T (
    	DOC_TYP_ATTRIB_ID          	NUMBER(19) NOT NULL,
    	DOC_TYP_ID               	NUMBER(19) NOT NULL,
 	RULE_ATTRIB_ID				NUMBER(19) NOT NULL,
+	ORD_INDX                    NUMBER(4)  DEFAULT 0,
 	CONSTRAINT EN_DOC_TYP_ATTRIB_T_PK PRIMARY KEY (DOC_TYP_ATTRIB_ID) 
 )
 /
@@ -2865,7 +2866,21 @@ INSERT INTO NOTIFICATION_PRODUCERS
 VALUES 
 (1, 'Notification System', 'This producer represents messages sent from the general message sending forms.', 'kuali-ken-testing@cornell.edu')
 /
-create table trv_doc_2 (
+INSERT INTO sh_parm_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
+VALUES
+('KR-NS','All','DEFAULT_MAX_UPLOAD_FILE_SIZE','CONFG','5M','Maximum file upload size for the application. Used by PojoFormBase. Must be an integer, optionally followed by "K", "M", or "G". Only used if no other upload limits are in effect.','A','KUALI_FMSOPS')
+/
+INSERT INTO sh_parm_t
+("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
+VALUES
+('KR-NS','Document','ATTACHMENT_MAX_FILE_SIZE','CONFG','5M','Maximum attachment upload size for the application. Used by KualiDocumentFormBase. Must be an integer, optionally followed by "K", "M", or "G".','A','KUALI_FMSOPS')
+/
+INSERT INTO SH_PARM_T
+(SH_PARM_NMSPC_CD, SH_PARM_DTL_TYP_CD, SH_PARM_NM, OBJ_ID, VER_NBR, SH_PARM_TYP_CD, SH_PARM_TXT, SH_PARM_DESC, SH_PARM_CONS_CD, WRKGRP_NM) 
+VALUES
+('KR-NS', 'Document', 'SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS', sys_guid(), 0, 'CONFG', 'K', 'Some documents provide the functionality to send notes to another user using a workflow FYI or acknowledge functionality. This parameter specifies the default action that will be used when sending notes. This parameter should be one of the following 2 values: "K" for acknowledge or "F" for fyi. Depending on the notes and workflow service implementation, other values may be possible (see edu.iu.uis.eden.EdenConstants javadocs for details).', 'A', 'KUALI_FMSOPS')
+/create table trv_doc_2 (
         FDOC_NBR                       VARCHAR2(14) CONSTRAINT FP_INT_BILL_DOC_TN1 NOT NULL,
         OBJ_ID                         VARCHAR2(36) DEFAULT SYS_GUID() CONSTRAINT FP_INT_BILL_DOC_TN2 NOT NULL,
         VER_NBR                        NUMBER(8) DEFAULT 1 CONSTRAINT FP_INT_BILL_DOC_TN3 NOT NULL,
@@ -2962,6 +2977,10 @@ INSERT INTO FP_DOC_GROUP_T VALUES ('TR', '054EDFB3B260C8D2E043814FD881C8D2', 1,	
 /
 INSERT INTO FP_DOC_GROUP_T VALUES ('KR', '054EDFB3B260C8D2E043816FD881C8D2', 1,	'Kuali Rice', null)
 /
+INSERT INTO FP_DOC_GROUP_T VALUES ('MO', '054EDFB3B260C8D2E043816FD881C8EE', 1,	'Obsolete Maintenance Table', null)
+/
+INSERT INTO FP_DOC_GROUP_T VALUES ('MR', '054EDFB3B260C8D2E043816FD881C8EA', 1,	'Reference Table Maintenance', null)
+/
 insert into FP_DOC_TYPE_T values ('TRAV', '1A6FEB2501C7607EE043814FD881607E', 1, 'TR', 'TRAV ACCNT', 'N', 'Y', 'N', 0, 'N', 'N')
 /
 insert into FP_DOC_TYPE_T values ('TRFO', '1A6FEB250342607EE043814FD881607E', 1, 'TR', 'TRAV FO', 'N', 'Y', 'N', 0, 'N', 'N')
@@ -2973,6 +2992,14 @@ insert into FP_DOC_TYPE_T values ('RUSR', '1A6FEB253342607EE043814FD889607E', 1,
 insert into FP_DOC_TYPE_T values ('PARM', '1A6FRB253342607EE043814FD889607E', 1, 'TR', 'System Parms', 'N', 'Y', 'N', 0, 'N', 'N') 
 /
 insert into FP_DOC_TYPE_T values ('BR', '1A6FRB253343337EE043814FD889607E', 1, 'TR', 'Biz Rules', 'N', 'Y', 'N', 0, 'N', 'N') 
+/
+insert into FP_DOC_TYPE_T values ('TRVA', '1A5FEB250342607EE043814FD889607E', 1, 'TR',  'TRAV MAINT', 'N', 'Y', 'N', 0, 'N', 'N')
+/
+INSERT INTO FP_DOC_TYPE_T VALUES ('PTYP', '1A6FEB2501C7607EE043814FD111607E', 1, 'MO', 'Parameter Type', 'N', 'Y', 'N', 0, 'N', 'N')
+/
+INSERT INTO FP_DOC_TYPE_T VALUES ('PDTP', '1A6FEB2501C7607EE043814FD112607E', 1, 'MR', 'Parameter Detailed Type', 'N', 'Y', 'N', 0, 'N', 'N')
+/
+INSERT INTO FP_DOC_TYPE_T VALUES ('PNMS', '1A6FEB2501C7607EE043814FD113607E', 1, 'MR', 'Parameter Namespace', 'N', 'Y', 'N', 0, 'N', 'N')
 /
 insert into FP_DOC_TYPE_T values ('TRVA', '1A5FEB250342607EE043814FD889607E', 1, 'TR',  'TRAV MAINT', 'N', 'Y', 'N', 0, 'N', 'N')
 /

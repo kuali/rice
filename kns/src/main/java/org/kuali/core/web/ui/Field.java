@@ -128,6 +128,10 @@ public class Field implements java.io.Serializable {
     public String cellAlign;
     private String inquiryParameters;
 
+    public boolean fieldLevelHelpEnabled;
+    
+    public boolean fieldLevelHelpDisabled;
+
     /**
      * For container fields (i.e. fieldType.equals(CONTAINER)) with MV lookups enabled, the DD defined objectLabel of the class on which a multiple value lookup is performed.
      * The user friendly name
@@ -185,6 +189,7 @@ public class Field implements java.io.Serializable {
      * No-args constructor
      */
     public Field() {
+	this.fieldLevelHelpEnabled = false;
     }
 
     /**
@@ -200,6 +205,7 @@ public class Field implements java.io.Serializable {
         this.upperCase = false;
         this.keyField = false;
         this.secure = false;
+        this.fieldLevelHelpEnabled = false;
     }
 
     /**
@@ -232,6 +238,7 @@ public class Field implements java.io.Serializable {
         this.isReadOnly = false;
         this.upperCase = false;
         this.keyField = false;
+        this.fieldLevelHelpEnabled = false;
     }
 
     /**
@@ -276,6 +283,7 @@ public class Field implements java.io.Serializable {
         }
         this.isReadOnly = false;
         this.keyField = false;
+        this.fieldLevelHelpEnabled = false;
     }
 
     public boolean containsBOData() {
@@ -1271,6 +1279,38 @@ public class Field implements java.io.Serializable {
 
     public void setInquiryParameters(String inquiryParameters) {
         this.inquiryParameters = inquiryParameters;
+    }
+
+    /**
+     * Returns whether field level help is enabled for this field.  If this value is true, then the field level help will be enabled.
+     * If false, then whether a field is enabled is determined by the value returned by {@link #isFieldLevelHelpDisabled()} and the system-wide
+     * parameter setting.  Note that if a field is read-only, that may cause field-level help to not be rendered.
+     * 
+     * @return true if field level help is enabled, false if the value of this method should NOT be used to determine whether this method's return value
+     * affects the enablement of field level help
+     */
+    public boolean isFieldLevelHelpEnabled() {
+        return this.fieldLevelHelpEnabled;
+    }
+
+    public void setFieldLevelHelpEnabled(boolean fieldLevelHelpEnabled) {
+        this.fieldLevelHelpEnabled = fieldLevelHelpEnabled;
+    }
+
+    /**
+     * Returns whether field level help is disabled for this field.  If this value is true and {@link #isFieldLevelHelpEnabled()} returns false,
+     * then the field level help will not be rendered.  If both this and {@link #isFieldLevelHelpEnabled()} return false, then the system-wide
+     * setting will determine whether field level help is enabled.  Note that if a field is read-only, that may cause field-level help to not be rendered.
+     * 
+     * @return true if field level help is disabled, false if the value of this method should NOT be used to determine whether this method's return value
+     * affects the enablement of field level help
+     */
+    public boolean isFieldLevelHelpDisabled() {
+        return this.fieldLevelHelpDisabled;
+    }
+
+    public void setFieldLevelHelpDisabled(boolean fieldLevelHelpDisabled) {
+        this.fieldLevelHelpDisabled = fieldLevelHelpDisabled;
     }
     
     

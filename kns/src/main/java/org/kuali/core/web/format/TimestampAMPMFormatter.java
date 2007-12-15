@@ -19,6 +19,7 @@ package org.kuali.core.web.format;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.RiceKeyConstants;
 import org.kuali.rice.KNSServiceLocator;
 
@@ -50,8 +51,12 @@ public class TimestampAMPMFormatter extends Formatter {
      * @return a formatted String
      */
     public Object format(Object value) {
-        if (value == null)
+        if (value == null) {
             return null;
+        }
+        if (value instanceof String && StringUtils.isEmpty((String) value)) {
+            return null;
+        }
         return KNSServiceLocator.getDateTimeService().toDateTimeString((Date)value);
     }
 }

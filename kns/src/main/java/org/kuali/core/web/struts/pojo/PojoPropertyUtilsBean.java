@@ -65,7 +65,13 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
             return unconvertedValues.get(key);
 
         Object val = getNestedProperty(bean, key);
-        Class type = getPropertyType(bean, key);
+        Class type = String.class;
+        try {
+            type = getPropertyType(bean, key);
+        } catch ( Exception ex ) {
+            type = String.class;
+            logger.warn( "Unable to get property type for Class: " + bean.getClass().getName() + "/Property: " + key );
+        }
 
         return (Formatter.isSupportedType(type) ? form.formatValue(val, key, type) : val);
         // end Kuali Foundation modification

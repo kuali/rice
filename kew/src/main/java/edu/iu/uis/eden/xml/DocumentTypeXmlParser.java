@@ -807,6 +807,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
             }
             attribute.setDocumentType(documentType);
             attribute.setRuleAttribute(ruleAttribute);
+            attribute.setOrderIndex(i+1);
             attributes.add(attribute);
         }
         return attributes;

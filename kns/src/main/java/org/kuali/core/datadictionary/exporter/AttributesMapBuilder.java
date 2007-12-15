@@ -74,8 +74,12 @@ public class AttributesMapBuilder {
         }
 
         attributeMap.set("required", attribute.isRequired().toString());
-        attributeMap.set("summary", attribute.getSummary());
-        attributeMap.set("description", attribute.getDescription());
+        if (attribute.getSummary() != null) { 
+            attributeMap.set("summary", attribute.getSummary());
+        }
+        if (attribute.getDescription() != null) {
+            attributeMap.set("description", attribute.getDescription());
+        }
         if (attribute.hasFormatterClass()) {
             attributeMap.set("formatterClass", attribute.getFormatterClass().getName());
         }

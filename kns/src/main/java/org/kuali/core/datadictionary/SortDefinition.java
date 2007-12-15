@@ -115,7 +115,10 @@ public class SortDefinition extends DataDictionaryDefinitionBase {
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
         if (this.attributeName != null) {
+            boolean oldIsParsingFile = isParsingFile;
+            isParsingFile = false;
             SortAttributeDefinition syntheticAttribute = new SortAttributeDefinition();
+            isParsingFile = oldIsParsingFile;
             syntheticAttribute.setAttributeName(this.attributeName);
             this.attributeName = null;
 

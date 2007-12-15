@@ -29,7 +29,6 @@ import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.Inactivateable;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.CollectionDefinitionI;
-import org.kuali.core.datadictionary.DataDictionaryDefinitionBase;
 import org.kuali.core.datadictionary.FieldDefinition;
 import org.kuali.core.datadictionary.FieldDefinitionI;
 import org.kuali.core.datadictionary.InquiryCollectionDefinition;
@@ -118,11 +117,6 @@ public class SectionBridge {
      * @throws IllegalAccessException
      */
     public static final Section toSection(MaintainableSectionDefinition sd, BusinessObject o, Maintainable maintainable, Maintainable oldMaintainable, String maintenanceAction, boolean autoFillDefaultValues, boolean autoFillBlankRequiredValues, List<String> displayedFieldNames) throws InstantiationException, IllegalAccessException {
-        if (null != maintainable) {
-            sd = (MaintainableSectionDefinition) ObjectUtils.deepCopy(sd);
-            maintainable.overrideDataDictionarySectionConfiguration(sd);
-        }
-
         Section section = new Section();
 
         section.setSectionTitle(sd.getTitle());
@@ -205,11 +199,6 @@ public class SectionBridge {
         List<Field> collFields = new ArrayList<Field>();
         
         String collectionName = collectionDefinition.getName();
-
-        if (m != null && collectionDefinition instanceof DataDictionaryDefinitionBase) {
-            collectionDefinition = (CollectionDefinitionI) ObjectUtils.deepCopy((DataDictionaryDefinitionBase) collectionDefinition);
-            m.overrideDataDictionaryFieldConfiguration((DataDictionaryDefinitionBase) collectionDefinition);
-        }
         
         // add the toggle inactive record display button for the collection
         if (m != null && Inactivateable.class.isAssignableFrom(collectionDefinition.getBusinessObjectClass()) && StringUtils.isBlank(parents)) {

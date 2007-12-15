@@ -23,10 +23,6 @@ import java.util.Properties;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.RiceConstants;
@@ -34,9 +30,6 @@ import org.kuali.RiceKeyConstants;
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.GlobalBusinessObject;
 import org.kuali.core.bo.PersistableBusinessObject;
-import org.kuali.core.bo.user.AuthenticationUserId;
-import org.kuali.core.bo.user.UniversalUser;
-import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.rule.event.KualiDocumentEvent;
@@ -44,9 +37,6 @@ import org.kuali.core.rule.event.SaveDocumentEvent;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.UrlFactory;
-import org.kuali.core.workflow.DocumentInitiator;
-import org.kuali.core.workflow.KualiDocumentXmlMaterializer;
-import org.kuali.core.workflow.KualiTransactionalDocumentInformation;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
 import org.w3c.dom.Document;
@@ -320,26 +310,6 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
     }
 
     /**
-     * Convenience method to return a SINGLE node from the current document's XML contents, based on the XPath string indicated.
-     *
-     * @param expression - valid XPath expression
-     * @return a populated node if possible, null otherwise
-     */
-    private Node getXPathNode(String expression) {
-
-        XPath xpath = XPathFactory.newInstance().newXPath();
-        InputSource inputSource = new InputSource(new StringReader(xmlDocumentContents));
-        Node node;
-        try {
-            node = (Node) xpath.evaluate(expression, inputSource, XPathConstants.NODE);
-        }
-        catch (XPathExpressionException e) {
-            throw new RuntimeException(e);
-        }
-        return node;
-    }
-
-    /**
      * Retrieves substring of document contents from maintainable tag name. Then use xml service to translate xml into a business
      * object.
      */
@@ -406,7 +376,7 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
             KNSServiceLocator.getMaintenanceDocumentService().deleteLocks(documentNumber);
         }
 
-        // unlock the document when its cancelled or disapproved
+        // unlock the document when its canceled or disapproved
         if (workflowDocument.stateIsCanceled() || workflowDocument.stateIsDisapproved()) {
             String documentNumber = getDocumentHeader().getDocumentNumber();
             KNSServiceLocator.getMaintenanceDocumentService().deleteLocks(documentNumber);
@@ -430,6 +400,7 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
      */
     @Override
     public void processAfterRetrieve() {
+	super.processAfterRetrieve();
         populateMaintainablesFromXmlDocumentContents();
         if (newMaintainableObject != null) {
             newMaintainableObject.processAfterRetrieve();

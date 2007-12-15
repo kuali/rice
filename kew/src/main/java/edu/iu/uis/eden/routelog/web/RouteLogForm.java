@@ -21,6 +21,8 @@ import java.util.List;
 
 import org.apache.struts.action.ActionForm;
 
+import edu.iu.uis.eden.util.Utilities;
+
 /**
  * The Struts ActionForm used with {@link RouteLogAction} to display the routelog.
  * 
@@ -36,6 +38,7 @@ public class RouteLogForm extends ActionForm {
     private List futureRootRequests = new ArrayList();
     private int futureActionRequestCount;
     private boolean showFuture;
+    private String showFutureError;
     private boolean removeHeader;
     private boolean lookFuture;
     private boolean showNotes;
@@ -60,6 +63,15 @@ public class RouteLogForm extends ActionForm {
     }
     public void setDocId(String docId) {
         this.docId = docId;
+    }
+    public boolean isShowFutureHasError() {
+        return !Utilities.isEmpty(getShowFutureError());
+    }
+    public String getShowFutureError() {
+        return showFutureError;
+    }
+    public void setShowFutureError(String showFutureError) {
+        this.showFutureError = showFutureError;
     }
     public boolean isShowFuture() {
         return showFuture;

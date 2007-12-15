@@ -21,7 +21,7 @@
 	<businessObject businessObjectClass="org.kuali.core.bo.user.UniversalUser">
 
 		<inquiry>
-			<title>Universal User Inquiry</title>
+			<title>User Inquiry</title>
 
 			<inquirySections>
 				<inquirySection title="Header Text">

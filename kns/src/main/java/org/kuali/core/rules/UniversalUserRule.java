@@ -159,16 +159,11 @@ public class UniversalUserRule extends MaintenanceDocumentRuleBase {
         
     @Override
     public boolean processApproveDocument(ApproveDocumentEvent approveEvent) {
-        MaintenanceDocument maintenanceDocument = (MaintenanceDocument) approveEvent.getDocument();
+	boolean success = super.processApproveDocument(approveEvent);
 
         // remove all items from the errorPath temporarily (because it may not
         // be what we expect, or what we need)
         clearErrorPath();
-
-        boolean success = true;
-        
-        // apply rules that are common across all maintenance documents, regardless of class
-        success &= processGlobalApproveDocumentBusinessRules(maintenanceDocument);
         
         // loop over all installed modules and run their user rules
         MaintenanceDocumentRule rule = null;

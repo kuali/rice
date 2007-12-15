@@ -35,11 +35,11 @@
         <documentTypeName>KualiEmployeeTypeMaintenanceDocument</documentTypeName>
         <documentTypeCode>EMTY</documentTypeCode>
 
-        <label>Employee Type Maintenance Document</label>
-        <shortLabel>EmployeeTypeMaintenanceDocument</shortLabel>
+        <label>Employee Type</label>
 
         <summary>Employee Type maintenance document</summary>
         <description>Document used to create or update Employee Type objects</description>
+        <help parameterNamespace="KR-NS" parameterDetailType="EmployeeType" parameterName="EMPLOYEE_TYPE" />
 
         <lockingKeys>
             <field attributeName="code" />

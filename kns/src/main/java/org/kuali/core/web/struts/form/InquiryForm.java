@@ -50,9 +50,12 @@ public class InquiryForm extends KualiForm {
     private String formKey;
 
     /**
-     * The following map is used to pass primary key values between invocations of the inquiry screens after the start method has been called.
+     * The following map is used to pass primary key values between invocations of the inquiry screens after the start method has been called.  Values in this map will remain encrypted
+     * if the value was passed in as encrypted 
      */
     private Map<String, String> inquiryPrimaryKeys;
+    
+    private Map<String, String> inquiryDecryptedPrimaryKeys;
 
     /**
      * A comma separated list of field names.  Each field name in this list has an encrypted value in the request.
@@ -94,8 +97,11 @@ public class InquiryForm extends KualiForm {
         // There is no requirement that an inquiry screen must display the primary key values.  However, when clicking on hide/show (without javascript) and
         // hide/show inactive, the PK values are needed to allow the server to properly render results after the user clicks on a hide/show button that results
         // in server processing.  This line will populate the form with the PK values so that they may be used in subsequent requests.  Note that encrypted
-        // values will remain encrypted in the form.
-        this.inquiryPrimaryKeys = getPKFieldValues(request, getBusinessObjectClassName(), passedFromPreviousInquiry);
+        // values will remain encrypted in this map.
+        this.inquiryPrimaryKeys = new HashMap<String, String>();
+        this.inquiryDecryptedPrimaryKeys = new HashMap<String, String>();
+        
+        populatePKFieldValues(request, getBusinessObjectClassName(), passedFromPreviousInquiry);
 
         populateInactiveRecordsInIntoInquirable(inquirable, request);
     }
@@ -129,7 +135,7 @@ public class InquiryForm extends KualiForm {
         }
     }
 
-    protected Map<String, String> getPKFieldValues(HttpServletRequest request, String boClassName, boolean passedFromPreviousInquiry) {
+    protected void populatePKFieldValues(HttpServletRequest request, String boClassName, boolean passedFromPreviousInquiry) {
     try {
             EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
 
@@ -144,7 +150,6 @@ public class InquiryForm extends KualiForm {
             DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
             // build list of key values from request, if all keys not given throw error
             List boKeys = KNSServiceLocator.getPersistenceStructureService().listPrimaryKeyFieldNames(businessObjectClass);
-            Map<String, String> fieldValues = new HashMap<String, String>();
             for (Iterator iter = boKeys.iterator(); iter.hasNext();) {
                 String realPkFieldName = (String) iter.next();
                 String pkParamName = realPkFieldName;
@@ -155,35 +160,37 @@ public class InquiryForm extends KualiForm {
                 if (request.getParameter(pkParamName) != null) {
                     String parameter = (String) request.getParameter(pkParamName);
 
+                    inquiryPrimaryKeys.put(realPkFieldName, parameter);
                     if (StringUtils.isNotBlank(dataDictionaryService.getAttributeDisplayWorkgroup(boClassName, realPkFieldName))) {
                         // This PK field needs to be encrypted coming in from the request, if it was decrypt it, if not, throw exception
 
                         // this check prevents a brute-force attacker from passing in an unencrypted PK value that's supposed to be encrypted and determining whether
                         // a record with that guessed PK value exists in the DB, effectively bypassing encryption
                         if (encryptedList.contains(realPkFieldName)) {
-                            parameter = encryptionService.decrypt(parameter);
+                            inquiryDecryptedPrimaryKeys.put(realPkFieldName, encryptionService.decrypt(parameter));
                         }
                         else {
                             LOG.error("All PK fields that are specified as encrypted in the DD must be encrypted when passed into the inquiry page.  Field not encrypted is " + realPkFieldName);
                             throw new RuntimeException("All PK fields that are specified as encrypted in the DD must be encrypted when passed into the inquiry page");
                         }
                     }
-                    fieldValues.put(realPkFieldName, parameter);
+                    else {
+                	inquiryDecryptedPrimaryKeys.put(realPkFieldName, parameter);
+                    }
                 }
                 else {
                     LOG.error("All keys not given to lookup for bo class name " + businessObjectClass.getName());
                     throw new RuntimeException("All keys not given to lookup for bo class name " + businessObjectClass.getName());
                 }
             }
-            return fieldValues;
         }
         catch (ClassNotFoundException e) {
 	     LOG.error("Can't instantiate class: " + boClassName, e);
           throw new RuntimeException("Can't instantiate class: " + boClassName);
         }
         catch (GeneralSecurityException e) {
-            LOG.error("Error occured trying to decrypt value", e);
-            throw new RuntimeException("Error occured trying to decrypt value");
+            LOG.error("Can't decrypt value", e);
+            throw new RuntimeException("Can't decrypt value");
         }
     }
 
@@ -254,12 +261,24 @@ public class InquiryForm extends KualiForm {
     }
 
     /**
-     * Gets the map used to pass primary key values between invocations of the inquiry screens after the start method has been called.
+     * Gets the map used to pass primary key values between invocations of the inquiry screens after the start method has been called.  All field values that were passed in encrypted will
+     * be encrypted in this map
      *
      * @return
      */
     public Map<String, String> getInquiryPrimaryKeys() {
         return this.inquiryPrimaryKeys;
+    }
+    
+    /**
+     * Gets the map used to pass primary key values between invocations of the inquiry screens after the start method has been called.  All fields will be decrypted 
+     * 
+     * Purposely not named as a getter, to make it harder for POJOFormBase to access it
+     * 
+     * @return
+     */
+    public Map<String, String> retrieveInquiryDecryptedPrimaryKeys() {
+        return this.inquiryDecryptedPrimaryKeys;
     }
 
     /**

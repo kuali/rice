@@ -37,4 +37,16 @@ public abstract class KualiDBPlatformBase extends SimpleJdbcDaoSupport implement
     public String getDropTableSql(String tableName) {
 	return new StringBuffer("drop table ").append(tableName).toString();
     }
+
+    
+    /**
+     * Returns an expression equivalent to oracle's NVL statement using the CASE and IS NULL expressions, which should
+     * be supported by many database systems
+     * 
+     * @see org.kuali.core.dbplatform.KualiDBPlatform#getIsNullFunction(java.lang.String, java.lang.String)
+     */
+    public String getIsNullFunction(String exprToTest, String exprToReplaceIfTestExprNull) {
+	return new StringBuilder(" case when ").append(exprToTest).append(" is null then ").append(exprToReplaceIfTestExprNull)
+		.append(" else ").append(exprToTest).append(" end ").toString();
+    }
 }

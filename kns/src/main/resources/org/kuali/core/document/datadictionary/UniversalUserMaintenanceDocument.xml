@@ -36,8 +36,7 @@
         <documentTypeName>UniversalUserMaintenanceDocument</documentTypeName>
         <documentTypeCode>UNVL</documentTypeCode>
 
-        <label>User Maintenance Document</label>
-        <shortLabel>UserMaintDoc</shortLabel>
+        <label>User</label>
 
         <summary>User maintenance document</summary>
         <description>Document used to create or update User objects</description>

@@ -49,6 +49,7 @@ import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.UrlFactory;
 import org.kuali.core.web.comparator.CellComparatorHelper;
 import org.kuali.core.web.format.BooleanFormatter;
+import org.kuali.core.web.format.CollectionFormatter;
 import org.kuali.core.web.format.DateFormatter;
 import org.kuali.core.web.format.Formatter;
 import org.kuali.core.web.struts.form.LookupForm;
@@ -363,7 +364,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      */
     public List<Column> getColumns() {
         List<Column> columns = new ArrayList<Column>();
-
         for (String attributeName : getBusinessObjectDictionaryService().getLookupResultFieldNames(getBusinessObjectClass())) {
             Column column = new Column();
             column.setPropertyName(attributeName);
@@ -372,7 +372,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 columnTitle = dataDictionaryService.getCollectionLabel(getBusinessObjectClass(), attributeName);
             }
             column.setColumnTitle(columnTitle);
-            column.setMaxLength(getBusinessObjectDictionaryService().getLookupResultFieldMaxLength(getBusinessObjectClass(), attributeName));
+            column.setMaxLength(getColumnMaxLength(attributeName));
             
             Class formatterClass = dataDictionaryService.getAttributeFormatter(getBusinessObjectClass(), attributeName);
             if (formatterClass != null) {
@@ -394,6 +394,18 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         return columns;
     }
     
+    protected int getColumnMaxLength(String attributeName) {
+	Integer fieldDefinedMaxLength = getBusinessObjectDictionaryService().getLookupResultFieldMaxLength(getBusinessObjectClass(), attributeName);
+	if (fieldDefinedMaxLength == null) {
+            String valueStr = KNSServiceLocator.getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, RiceConstants.RESULTS_DEFAULT_MAX_COLUMN_LENGTH);
+            if (valueStr == null) {
+        	LOG.error("Lookup field max length parameter not found and field not set with max length value.");
+            }
+            return Integer.parseInt(valueStr);
+	}
+        return fieldDefinedMaxLength.intValue();
+    }
+
     /**
      * @return Returns the backLocation.
      */
@@ -710,6 +722,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                         formatter = new DateFormatter();
                     }
 
+                    // for collection, use the list formatter if a formatter hasn't been defined yet
+                    if (prop instanceof Collection && formatter == null) {
+                	formatter = new CollectionFormatter();
+                    }
+                    
                     if (formatter != null) {
                         propValue = (String) formatter.format(prop);
                     }

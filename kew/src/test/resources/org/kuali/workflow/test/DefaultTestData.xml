@@ -296,6 +296,21 @@
 			<description>Test Rule Attribute</description>
 			<type>RuleAttribute</type>
 		</ruleAttribute>
+				<ruleAttribute>
+			<name>TestRuleAttribute2</name>
+			<className>edu.iu.uis.eden.routetemplate.TestRuleAttribute</className>
+			<label>Test Rule Attribute 2</label>
+			<description>Test Rule Attribute 2</description>
+			<type>RuleAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>TestRuleAttribute3</name>
+			<className>edu.iu.uis.eden.routetemplate.TestRuleAttribute</className>
+			<label>Test Rule Attribute 3</label>
+			<description>Test Rule Attribute 3</description>
+			<type>RuleAttribute</type>
+		</ruleAttribute>
+		
 	</ruleAttributes>
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate>

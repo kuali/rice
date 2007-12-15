@@ -34,8 +34,7 @@
         <documentTypeName>KualiDocumentTypeMaintenanceDocument</documentTypeName>
         <documentTypeCode>DTYP</documentTypeCode>
 
-        <label>Document Type Maintenance Document</label>
-        <shortLabel>DocumentTypeMaintenanceDocument</shortLabel>
+        <label>Document Type</label>
 
         <summary>
             <![CDATA[&nbsp;]]>

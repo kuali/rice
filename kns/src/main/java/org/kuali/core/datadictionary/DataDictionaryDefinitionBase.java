@@ -38,7 +38,11 @@ abstract public class DataDictionaryDefinitionBase implements DataDictionaryDefi
             String parseFileName = DataDictionaryBuilder.getCurrentFileName();
             int parseLineNumber = DataDictionaryBuilder.getCurrentLineNumber();
 
-            parseLocation = parseFileName + ":" + Integer.toString(parseLineNumber);
+            if ( parseFileName != null ) {
+        	parseLocation = parseFileName + ":" + Integer.toString(parseLineNumber);
+            } else {
+        	parseLocation = "";
+            }
         }
         else {
             parseLocation = "";

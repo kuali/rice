@@ -90,8 +90,11 @@ public class KualiXmlAttributeHelper {
      */
 
     public Element processConfigXML(Element root, String[] xpathExpressionElements) {
+
         NodeList fields = root.getElementsByTagName("fieldDef");
         Element theTag = null;
+        String docContent = "";
+
 
         /**
          * This section will check to see if document content has been defined in the configXML for the document type, by running an
@@ -112,6 +115,7 @@ public class KualiXmlAttributeHelper {
             xmlDoc = root.getOwnerDocument();
         }
         for (int i = 0; i < fields.getLength(); i++) { // loop over each fieldDef
+            String name = null;
             if (!xmlDocumentContentExists(root)) {
                 theTag = (Element) fields.item(i);
 
@@ -152,7 +156,7 @@ public class KualiXmlAttributeHelper {
             NodeList displayTagElements = theTag.getElementsByTagName("display");
             if (displayTagElements.getLength() == 1) {
                 Element displayTag = (Element) displayTagElements.item(0);
-                List<Element> valuesElementsToAdd = new ArrayList<Element>();
+                List valuesElementsToAdd = new ArrayList();
                 for (int w = 0; w < displayTag.getChildNodes().getLength(); w++) {
                     Node displayTagChildNode = (Node) displayTag.getChildNodes().item(w);
                     if ((displayTagChildNode != null) && ("values".equals(displayTagChildNode.getNodeName()))) {
@@ -194,7 +198,7 @@ public class KualiXmlAttributeHelper {
                                 }
                             }
                             else {
-                                valuesElementsToAdd.add((Element)displayTagChildNode.cloneNode(true));
+                                valuesElementsToAdd.add(displayTagChildNode.cloneNode(true));
                             }
                             displayTag.removeChild(displayTagChildNode);
                         }
@@ -209,7 +213,7 @@ public class KualiXmlAttributeHelper {
                 NodeList fieldEvaluationElements = theTag.getElementsByTagName("fieldEvaluation");
                 if (fieldEvaluationElements.getLength() == 1) {
                     Element fieldEvaluationTag = (Element) fieldEvaluationElements.item(0);
-                    List<Element> tagsToAdd = new ArrayList<Element>();
+                    List tagsToAdd = new ArrayList();
                     for (int w = 0; w < fieldEvaluationTag.getChildNodes().getLength(); w++) {
                         Node fieldEvaluationChildNode = (Node) fieldEvaluationTag.getChildNodes().item(w);
                         Element newTagToAdd = null;

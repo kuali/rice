@@ -42,9 +42,21 @@ public interface DictionaryValidationService {
      * 
      * @param document - document to validate
      * @param depth - Specify how deep the recrusion should go (0 based). If a negative number is supplied, it's infinite.
+     * 
+     * @deprecated Use {@link #validateDocumentAndUpdatableReferencesRecursively(Document, int, boolean)}
      */
+    @Deprecated
     public void validateDocumentRecursively(Document document, int depth);
 
+    /**
+     * Validates the contents of a document and recursively validates any of its updatable references
+     * 
+     * @param document the document
+     * @param maxDepth the maximum numbers of levels to recurse
+     * @param validateRequired whether to validate whether a field is required and is currently blank
+     */
+    public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, boolean validateRequired);
+    
     /**
      * Validates the specified attribute of the given document against the data dictionary.
      * 

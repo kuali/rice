@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -40,6 +41,7 @@ import org.kuali.core.service.DictionaryValidationService;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.service.PersistenceService;
+import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
@@ -60,6 +62,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     private PersistenceService persistenceService;
     private KualiConfigurationService configService;
 
+    private PersistenceStructureService persistenceStructureService;
+    
     /**
      * @see org.kuali.core.service.DictionaryValidationService#validateDocument(org.kuali.core.document.Document)
      */
@@ -104,6 +108,70 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         validateBusinessObjectsFromDescriptors(document, PropertyUtils.getPropertyDescriptors(document.getClass()), depth);
     }
 
+    public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, boolean validateRequired) {
+        String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
+        // validate primitive values of the document
+        validatePrimitivesFromDescriptors(documentEntryName, document, PropertyUtils.getPropertyDescriptors(document.getClass()), "", validateRequired);
+        
+        if (maxDepth > 0) {
+            validateUpdatabableReferencesRecursively(document, maxDepth - 1, validateRequired);
+        }
+    }
+    
+    private void validateUpdatabableReferencesRecursively(PersistableBusinessObject businessObject, int maxDepth, boolean validateRequired) {
+	if (ObjectUtils.isNull(businessObject)) {
+	    return;
+	}
+	Map<String, Class> references = persistenceStructureService.listReferenceObjectFields(businessObject);
+	for (String referenceName : references.keySet()) {
+	    if (persistenceStructureService.isReferenceUpdatable(businessObject.getClass(), referenceName)) {
+		Object referenceObj = ObjectUtils.getPropertyValue(businessObject, referenceName);
+		
+		if (ObjectUtils.isNull(referenceObj) || !(referenceObj instanceof PersistableBusinessObject)) {
+		    continue;
+		}
+		
+		PersistableBusinessObject referenceBusinessObject = (PersistableBusinessObject) referenceObj;
+                GlobalVariables.getErrorMap().addToErrorPath(referenceName);
+		validateBusinessObject(referenceBusinessObject, validateRequired);
+		if (maxDepth > 0) {
+		    validateUpdatabableReferencesRecursively(referenceBusinessObject, maxDepth - 1, validateRequired);
+		}
+                GlobalVariables.getErrorMap().removeFromErrorPath(referenceName);
+                
+	    }
+	}
+	Map<String, Class> collections = persistenceStructureService.listCollectionObjectTypes(businessObject);
+	for (String collectionName : collections.keySet()) {
+	    if (persistenceStructureService.isCollectionUpdatable(businessObject.getClass(), collectionName)) {
+		Object listObj = ObjectUtils.getPropertyValue(businessObject, collectionName);
+		
+		if (ObjectUtils.isNull(listObj)) {
+		    continue;
+		}
+		
+		if (!(listObj instanceof List)) {
+		    LOG.error("The reference named " + collectionName + " of BO class " + businessObject.getClass().getName() + " should be of type java.util.List to be validated properly.");
+		    continue;
+		}
+		
+		List list = (List) listObj;
+		for (int i = 0; i < list.size(); i++) {
+		    if (ObjectUtils.isNotNull(list.get(i)) && list.get(i) instanceof PersistableBusinessObject) {
+			String errorPathAddition = collectionName + "[" + Integer.toString(i) + "]";
+			PersistableBusinessObject element = (PersistableBusinessObject) list.get(i);
+			
+			GlobalVariables.getErrorMap().addToErrorPath(errorPathAddition);
+			validateBusinessObject(element, validateRequired);
+			if (maxDepth > 0) {
+			    validateUpdatabableReferencesRecursively(element, maxDepth - 1, validateRequired);
+			}
+			GlobalVariables.getErrorMap().removeFromErrorPath(errorPathAddition);
+		    }
+		}
+	    }
+	}
+    }
 
     /**
      * @see org.kuali.core.service.DictionaryValidationService#validateBusinessObject(org.kuali.core.bo.BusinessObject)
@@ -587,10 +655,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             throw new RuntimeException(e);
         }
 
-        Parameter rule = configService.getParameter(apcRule.getParameterNamespace(), apcRule.getParameterDetailType(), apcRule.getParameterName());
-
         String attrValueStr = attrValue.toString();
-        if (configService.failsRule(rule,attrValueStr)) {
+        if (!configService.evaluateConstrainedValue(apcRule.getParameterNamespace(), apcRule.getParameterDetailType(), apcRule.getParameterName(),attrValueStr)) {
             success &= false;
             GlobalVariables.getErrorMap().putError(apcRule.getAttributeName(), apcRule.getErrorMessage());
         }
@@ -667,6 +733,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      */
     public void setConfigService(KualiConfigurationService configService) {
         this.configService = configService;
+    }
+
+
+    public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
+        this.persistenceStructureService = persistenceStructureService;
     }
 
 

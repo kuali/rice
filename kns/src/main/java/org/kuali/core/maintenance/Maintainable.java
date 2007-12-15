@@ -229,9 +229,6 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      */
     public void setShowInactiveRecords(String collectionName, boolean showInactive);
     
-    public void overrideDataDictionarySectionConfiguration(DataDictionaryDefinitionBase definition);
-    public void overrideDataDictionaryFieldConfiguration(DataDictionaryDefinitionBase definition);
-    
     public void addMultipleValueLookupResults(MaintenanceDocument document, String collectionName, Collection<PersistableBusinessObject> rawValues);
 
     /**

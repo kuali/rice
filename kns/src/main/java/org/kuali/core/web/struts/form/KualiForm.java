@@ -30,6 +30,7 @@ import org.kuali.core.util.WebUtils;
 import org.kuali.core.web.struts.pojo.PojoFormBase;
 import org.kuali.core.web.ui.ExtraButton;
 import org.kuali.core.web.ui.KeyLabelPair;
+import org.kuali.rice.KNSServiceLocator;
 
 /**
  * This class common properites for all action forms.
@@ -51,6 +52,7 @@ public class KualiForm extends PojoFormBase {
 
     private KeyLabelPair additionalDocInfo1;
     private KeyLabelPair additionalDocInfo2;
+    private boolean fieldLevelHelpEnabled;
 
     /**
      * no args constructor which must init our tab states list
@@ -70,6 +72,23 @@ public class KualiForm extends PojoFormBase {
             // call utility method to parse the methodToCall from the request.
             setMethodToCall(WebUtils.parseMethodToCall(request));
         }
+        populateFieldLevelHelpEnabled(request);
+        
+        if (actionFormUtilMap instanceof ActionFormUtilMap) {
+            ((ActionFormUtilMap) actionFormUtilMap).setCacheValueFinderResults(true);
+        }
+        }
+        
+    
+    /**
+     * Populates whether the each field will have field-level help associated with it.  Depending on how the jsp/tags are implemented, the value
+     * populated by this method may be overruled by other settings
+     * 
+     * @param request
+     */
+    protected void populateFieldLevelHelpEnabled(HttpServletRequest request) {
+	setFieldLevelHelpEnabled(KNSServiceLocator.getKualiConfigurationService().getIndicatorParameter(RiceConstants.KNS_NAMESPACE,
+        	RiceConstants.DetailTypes.ALL_DETAIL_TYPE, RiceConstants.SystemGroupParameterNames.ENABLE_FIELD_LEVEL_HELP_IND));
     }
 
     public Map getDisplayedErrors() {
@@ -277,5 +296,18 @@ public class KualiForm extends PojoFormBase {
 
     public void setExtraButton( int index, ExtraButton extraButton ) {
         extraButtons.set( index, extraButton );
+    }
+
+    /**
+     * Returns whether field level help is enabled for this form.
+     * 
+     * @return
+     */
+    public boolean isFieldLevelHelpEnabled() {
+        return this.fieldLevelHelpEnabled;
+    }
+
+    public void setFieldLevelHelpEnabled(boolean fieldLevelHelpEnabled) {
+        this.fieldLevelHelpEnabled = fieldLevelHelpEnabled;
     }
 }

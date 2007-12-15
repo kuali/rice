@@ -1069,44 +1069,51 @@ public class KualiDocumentActionBase extends KualiAction {
     }
     
     /**
-     * Sends an FYI with the note text to the specified recipient on the note line.
+     * Override this to customize which routing action to take when sending a note.  This method reads the system parameter
+     * KR-NS/Document/SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS to determine which action to take
      * 
-     * @param mapping
-     * @param form
      * @param request
-     * @param response
-     * @return
-     * @throws Exception
+     * @param note
+     * @return a value from {@link EdenConstants}
      */
-    public ActionForward sendNoteFYI(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected String determineNoteWorkflowNotificationAction(HttpServletRequest request, KualiDocumentFormBase kualiDocumentFormBase, Note note) {
+        KualiConfigurationService kcs = KNSServiceLocator.getKualiConfigurationService();
+        String notificationAction = kcs.getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, RiceConstants.SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM);
+        return notificationAction;
+    }
+    
+    public ActionForward sendNoteWorkflowNotification(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         Document document = kualiDocumentFormBase.getDocument();
 
         // derive the note property from the newNote on the form
         PersistableBusinessObject noteParent = this.getNoteParent(document, kualiDocumentFormBase.getNewNote());
-        Note note = noteParent.getBoNote(getLineToDelete(request));
+        Note note = noteParent.getBoNote(getSelectedLine(request));
 
         // verify recipient was specified
-        if (StringUtils.isBlank(note.getFyiNoteRecipient().getId())) {
-            GlobalVariables.getErrorMap().putError(RicePropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_FYI_RECIPIENT);
+        if (StringUtils.isBlank(note.getAdHocRouteRecipient().getId())) {
+            GlobalVariables.getErrorMap().putError(RicePropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_NOTE_NOTIFICATION_RECIPIENT);
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
         }
         // check recipient is valid
         else {
-            boolean rulePassed = KNSServiceLocator.getKualiRuleService().applyRules(new AddAdHocRoutePersonEvent(RicePropertyConstants.NEW_DOCUMENT_NOTE, document, (AdHocRoutePerson) note.getFyiNoteRecipient()));
+            note.getAdHocRouteRecipient().setActionRequested(determineNoteWorkflowNotificationAction(request, kualiDocumentFormBase, note));
+            
+            boolean rulePassed = KNSServiceLocator.getKualiRuleService().applyRules(new AddAdHocRoutePersonEvent(RicePropertyConstants.NEW_DOCUMENT_NOTE, document, (AdHocRoutePerson) note.getAdHocRouteRecipient()));
             if (!rulePassed) {
                 return mapping.findForward(RiceConstants.MAPPING_BASIC);
             }
         }
 
-        // if document is saved, send fyi
+        // if document is saved, send notification
         if (!document.getDocumentHeader().getWorkflowDocument().stateIsInitiated()) {
-            KNSServiceLocator.getNoteService().sendNoteFYI(document, note, GlobalVariables.getUserSession().getUniversalUser());
+            KNSServiceLocator.getNoteService().sendNoteRouteNotification(document, note, GlobalVariables.getUserSession().getUniversalUser());
 
             // add success message
-            GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SEND_FYI_SUCCESSFUL);
+            GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SEND_NOTE_NOTIFICATION_SUCCESSFUL);
         }
         else {
-            GlobalVariables.getErrorMap().putError(RicePropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_FYI_DOCSTATUS);
+            GlobalVariables.getErrorMap().putError(RicePropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_NOTE_NOTIFICATION_DOCSTATUS);
         }
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);

@@ -213,6 +213,39 @@ public class FieldBridge {
     }
 
     /**
+     * Determines whether field level help is enabled for the field corresponding to the businessObjectClass and attribute name
+     * 
+     * If this value is true, then the field level help will be enabled.
+     * If false, then whether a field is enabled is determined by the value returned by {@link #isMaintenanceFieldLevelHelpDisabled(Maintainable, MaintainableFieldDefinition)}
+     * and the system-wide parameter setting.  Note that if a field is read-only, that may cause field-level help to not be rendered.
+     * 
+     * @param businessObjectClass the looked up class
+     * @param attributeName the attribute for the field
+     * @return true if field level help is enabled, false if the value of this method should NOT be used to determine whether this method's return value
+     * affects the enablement of field level help
+     */
+    protected static boolean isMaintenanceFieldLevelHelpEnabled(Maintainable m, MaintainableFieldDefinition fieldDefinition) {
+        return false;
+    }
+    
+    /**
+     * Determines whether field level help is disabled for the field corresponding to the businessObjectClass and attribute name
+     * 
+     * If this value is true and {@link #isMaintenanceFieldLevelHelpEnabled(Maintainable, MaintainableFieldDefinition)} returns false,
+     * then the field level help will not be rendered.  If both this and {@link #isMaintenanceFieldLevelHelpEnabled(Maintainable, MaintainableFieldDefinition)} return false,
+     * then the system-wide setting will determine whether field level help is enabled.  Note that if a field is read-only, that may cause
+     * field-level help to not be rendered.
+     * 
+     * @param businessObjectClass the looked up class
+     * @param attributeName the attribute for the field
+     * @return true if field level help is disabled, false if the value of this method should NOT be used to determine whether this method's return value
+     * affects the enablement of field level help
+     */
+    protected static boolean isMaintenanceFieldLevelHelpDisabled(Maintainable m, MaintainableFieldDefinition fieldDefinition) {
+        return false;
+    }
+    
+    /**
      * This method creates a Field for display on a Maintenance Document.
      * 
      * @param id The DD definition for the Field (can be a Collection).
@@ -230,10 +263,6 @@ public class FieldBridge {
      * @throws IllegalAccessException
      */
     public static final Field toField(MaintainableItemDefinition id, MaintainableSectionDefinition sd, BusinessObject o, Maintainable m, Section s, boolean autoFillDefaultValues, boolean autoFillBlankRequiredValues, List<String> displayedFieldNames) throws InstantiationException, IllegalAccessException {
-        if(null != m) {
-            m.overrideDataDictionarySectionConfiguration(sd);
-        }
-        
         Field field = new Field();
         
         // if FieldDefiniton, simply add a Field UI object
@@ -278,6 +307,8 @@ public class FieldBridge {
                 }
             }
 
+            field.setFieldLevelHelpEnabled(isMaintenanceFieldLevelHelpEnabled(m, maintainableFieldDefinition));
+            field.setFieldLevelHelpDisabled(isMaintenanceFieldLevelHelpDisabled(m, maintainableFieldDefinition));
         }
         
         return field;

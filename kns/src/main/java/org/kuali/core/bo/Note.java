@@ -42,7 +42,7 @@ public class Note extends PersistableBusinessObjectBase {
     private NoteType noteType;
     private UniversalUser authorUniversal;
     private Attachment attachment;
-    private AdHocRouteRecipient fyiNoteRecipient;
+    private AdHocRouteRecipient adHocRouteRecipient;
 
     /**
      * Default constructor.
@@ -57,7 +57,7 @@ public class Note extends PersistableBusinessObjectBase {
         this.setNoteTypeCode("DH");
 
         this.authorUniversal = new UniversalUser();
-        this.setFyiNoteRecipient(new AdHocRoutePerson());
+        this.setAdHocRouteRecipient(new AdHocRoutePerson());
     }
 
     /**
@@ -322,15 +322,15 @@ public class Note extends PersistableBusinessObjectBase {
     /**
      * @return the adHocRouteRecipient
      */
-    public AdHocRouteRecipient getFyiNoteRecipient() {
-        return fyiNoteRecipient;
+    public AdHocRouteRecipient getAdHocRouteRecipient() {
+        return adHocRouteRecipient;
     }
 
     /**
      * @param adHocRouteRecipient the adHocRouteRecipient to set
      */
-    public void setFyiNoteRecipient(AdHocRouteRecipient adHocRouteRecipient) {
-        this.fyiNoteRecipient = adHocRouteRecipient;
+    public void setAdHocRouteRecipient(AdHocRouteRecipient adHocRouteRecipient) {
+        this.adHocRouteRecipient = adHocRouteRecipient;
     }
 
 }

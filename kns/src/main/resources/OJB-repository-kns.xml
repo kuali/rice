@@ -243,17 +243,6 @@
 		<field-descriptor name="transactionSemaphoreDescription" column="TRN_SMPHR_DESC" jdbc-type="VARCHAR" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.core.bo.BatchReport" table="FS_BATCH_RPT_T">
-		<field-descriptor name="scriptName" column="FS_SCRIPT_NM" jdbc-type="VARCHAR" primarykey="true" index="true" />
-		<field-descriptor name="storedProcedureName" column="FS_STORED_PROC_NM" jdbc-type="VARCHAR" primarykey="true" index="true" />
-		<field-descriptor name="reportCode" column="FS_RPT_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
-		<field-descriptor name="reportLineNumber" column="FS_RPT_LN_NBR" jdbc-type="INTEGER" primarykey="true" index="true" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="reportCreateDate" column="FS_RPT_CRT_DT" jdbc-type="DATE" />
-		<field-descriptor name="reportText" column="FS_RPT_TXT" jdbc-type="VARCHAR" />
-	</class-descriptor>
-
 	<class-descriptor class="org.kuali.core.bo.ParameterNamespace" table="SH_PARM_NMSPC_T">
 		<field-descriptor name="code" column="SH_PARM_NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="SH_PARM_NMSPC_NM" jdbc-type="VARCHAR" />

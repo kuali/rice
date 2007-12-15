@@ -41,4 +41,16 @@ public interface KualiDBPlatform {
     public String getDropTableSql(String tableName);
 
     public void setDataSource(DataSource dataSource);
+    
+    /**
+     * Returns a SQL expression that acts like nvl(exprToTest, exprToReplaceIfTestExprNull) on oracle.  That is,
+     * an expression that will return exprToTest does not evalute to null, and will return exprToReplaceIfTestExprNull
+     * if exprToTest does evaluate to null.  NOTE: this method does not provide any protection against SQL injection
+     * attacks, nor does it validate any of the parameters.
+     * 
+     * @param exprToTest a SQL expression that will either evalutate to null or non-null
+     * @param exprToReplaceIfTestExprNull the value to return if 
+     * @return a SQL expression that acts like nvl on oracle or ifnull() on MySQL
+     */
+    public String getIsNullFunction(String exprToTest, String exprToReplaceIfTestExprNull);
 }

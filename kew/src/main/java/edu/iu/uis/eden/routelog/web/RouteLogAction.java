@@ -51,6 +51,8 @@ import edu.iu.uis.eden.web.session.UserSession;
  */
 public class RouteLogAction extends WorkflowAction {
 
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RouteLogAction.class);
+    
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         RouteLogForm rlForm = (RouteLogForm) form;
@@ -80,7 +82,13 @@ public class RouteLogAction extends WorkflowAction {
         rlForm.setLookFuture(routeHeader.getDocumentType().getLookIntoFuturePolicy().getPolicyValue().booleanValue());
 
         if (rlForm.isShowFuture()) {
-            populateRouteLogFutureRequests(rlForm, routeHeader);
+            try {
+                populateRouteLogFutureRequests(rlForm, routeHeader);
+            } catch (Exception e) {
+                String errorMsg = "Found Error while getting Future Action Requests:  " + e.getMessage();
+                LOG.info(errorMsg,e);
+                rlForm.setShowFutureError(errorMsg);
+            }
         }
 
         if (routeHeader.isLocked()) {

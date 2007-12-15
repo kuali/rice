@@ -479,10 +479,12 @@ public class DataDictionaryBuilder {
 	 *             if parsing is not in progress
 	 */
 	public static int getCurrentLineNumber() {
-		Locator locator = getCurrentDigester().getDocumentLocator();
-		int lineNumber = locator.getLineNumber();
-
-		return lineNumber;
+	    Locator locator = getCurrentDigester().getDocumentLocator();
+	    if ( locator != null ) {
+		return locator.getLineNumber();
+	    } else {
+		return 0;
+	    }
 	}
 
 	private static Digester currentDigester;

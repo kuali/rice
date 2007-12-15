@@ -37,6 +37,11 @@ public abstract class AbstractStaticConfigurationServiceImpl {
         this.propertyHolder = propertiesFactory.getProperties(null);
         this.propertyHolder.getHeldProperties().putAll(Core.getCurrentContextConfig().getProperties());
     }
+    
+    public boolean isProductionEnvironment() {
+	return getPropertyString(RiceConstants.PROD_ENVIRONMENT_CODE_KEY).equals(
+		getPropertyString(RiceConstants.ENVIRONMENT_KEY));
+    }
 
     /**
      * @see org.kuali.core.service.KualiConfigurationService#getPropertyString(java.lang.String)

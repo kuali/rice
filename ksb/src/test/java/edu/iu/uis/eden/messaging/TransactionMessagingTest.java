@@ -53,9 +53,8 @@ public class TransactionMessagingTest extends KSBTestCase {
 	    public Object doInTransaction(TransactionStatus status) {
 
 		QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
-		SimpleCallback callback = new SimpleCallback();
 		KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper()
-			.getServiceAsynchronously(serviceName, callback);
+			.getServiceAsynchronously(serviceName);
 		testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 
 		// this is a sanity check that we haven't sent the message before the trans is committed. dont remove this
@@ -77,9 +76,8 @@ public class TransactionMessagingTest extends KSBTestCase {
 	    public Object doInTransaction(TransactionStatus status) {
 
 		QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
-		SimpleCallback callback = new SimpleCallback();
 		KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper()
-			.getServiceAsynchronously(serviceName, callback);
+			.getServiceAsynchronously(serviceName);
 		testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 
 		status.setRollbackOnly();

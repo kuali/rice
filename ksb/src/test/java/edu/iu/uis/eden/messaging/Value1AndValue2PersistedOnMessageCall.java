@@ -23,8 +23,6 @@ import org.kuali.bus.test.KSBTestCase;
 import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
 
-import edu.iu.uis.eden.messaging.callbacks.SimpleCallback;
-
 /**
  * verify that value1 and value2 are preserved when passed into message helper and making an async call.  
  * 
@@ -38,10 +36,9 @@ public class Value1AndValue2PersistedOnMessageCall extends KSBTestCase {
 	Core.getCurrentContextConfig().overrideProperty(RiceConstants.MESSAGING_OFF, "true");
 	
 	QName serviceName = QName.valueOf("{testAppsSharedTopic}sharedTopic");
-	SimpleCallback callback = new SimpleCallback();
 	String value1 = "value1";
 	String value2 = "value2";
-	KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, callback, null, value1, value2);
+	KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, null, null, value1, value2);
 	testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 	
 	PersistedMessage message = KSBServiceLocator.getRouteQueueService().getNextDocuments(null).get(0);

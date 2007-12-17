@@ -57,8 +57,10 @@ public class DistributedTopicTest extends KSBTestCase {
 		
 		SimpleCallback simpleCallback = new SimpleCallback();
 		KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, simpleCallback);
-		testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
-		simpleCallback.waitForAsyncCall();
+		synchronized (simpleCallback) {
+		    testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
+		    simpleCallback.waitForAsyncCall();
+		}
 		//because topic invocation doesn't happen in the message service invoker like it should this wait is really on half the answer.  We need to wait long and poll 
 		//to determine if the client1 has been called.
 		

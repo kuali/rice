@@ -66,8 +66,10 @@ public class DistributedQueueTest extends KSBTestCase {
 	QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
 	SimpleCallback callback = new SimpleCallback();
 	KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, callback);
-	testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
-	callback.waitForAsyncCall();
+	synchronized (callback) {
+	    testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
+	    callback.waitForAsyncCall();
+	}
 	verifyServiceCalls(serviceName);
     }
 

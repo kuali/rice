@@ -45,8 +45,10 @@ public class SimpleServiceCallTest extends KSBTestCase {
 		SimpleCallback callback = new SimpleCallback();
 	KEWJavaService testJavaAsyncService = (KEWJavaService) KSBServiceLocator.getMessageHelper()
 		.getServiceAsynchronously(serviceName, callback);
-		testJavaAsyncService.invoke(new MessagingTestObject("message content"));
-		callback.waitForAsyncCall();
+	    synchronized (callback) {
+	        testJavaAsyncService.invoke(new MessagingTestObject("message content"));
+	        callback.waitForAsyncCall();
+	    }
 		verifyServiceCalls(serviceName);
 	}
 	
@@ -58,8 +60,10 @@ public class SimpleServiceCallTest extends KSBTestCase {
 		SimpleCallback callback = new SimpleCallback();
 	KEWXMLService testXmlAsyncService = (KEWXMLService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(
 		serviceName, callback);
-		testXmlAsyncService.invoke("message content");
-		callback.waitForAsyncCall();
+	    synchronized (callback) {	
+	        testXmlAsyncService.invoke("message content");
+	        callback.waitForAsyncCall();
+	    }
 		verifyServiceCalls(serviceName);
 	}
 	

@@ -62,8 +62,10 @@ public class SOAPMessagingTest extends KSBTestCase {
 
 	SimpleCallback callback = new SimpleCallback();
 	SOAPService testJavaAsyncService = (SOAPService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
-	testJavaAsyncService.doTheThing("The param");
-	callback.waitForAsyncCall(3000);
+	synchronized (callback) {
+	    testJavaAsyncService.doTheThing("The param");
+	    callback.waitForAsyncCall(3000);
+	}
 	verifyServiceCalls(serviceName);
 		assertTrue("Test harness topic never called", ((Boolean) ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
 		assertTrue("Cliet1 app topic never called", ((Boolean) ServiceCallInformationHolder.stuff.get("Client1SOAPServiceCalled")).booleanValue());

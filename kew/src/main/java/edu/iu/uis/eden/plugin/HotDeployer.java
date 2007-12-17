@@ -68,7 +68,12 @@ public class HotDeployer implements Runnable {
 					LOG.info("...plugin '" + pluginContext.getPlugin().getName() + "' loaded.");
 					registry.addPluginEnvironment(pluginContext);
 				} catch (Exception e) {
-					LOG.warn("Failed to load plugin '" + pluginContext.getPlugin().getName() + "'");
+				    // see: KULRICE-1184
+				    String pluginName= "<<unknown>>";
+				    if (pluginContext.getPlugin() != null) {
+				        pluginName = String.valueOf(pluginContext.getPlugin().getName());
+				    }
+					LOG.warn("Failed to load plugin '" + pluginName + "'");
 				}
 			}
 		} catch (Exception e) {

@@ -119,8 +119,6 @@ INSERT INTO FP_DOC_TYPE_T VALUES ('PDTP', '1A6FEB2501C7607EE043814FD112607E', 1,
 /
 INSERT INTO FP_DOC_TYPE_T VALUES ('PNMS', '1A6FEB2501C7607EE043814FD113607E', 1, 'MR', 'Parameter Namespace', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-insert into FP_DOC_TYPE_T values ('TRVA', '1A5FEB250342607EE043814FD889607E', 1, 'TR',  'TRAV MAINT', 'N', 'Y', 'N', 0, 'N', 'N')
-/
 insert into TRV_ACCT_EXT values ('a1', 'IAT') 
 /
 insert into TRV_ACCT_EXT values ('a2', 'EAT') 

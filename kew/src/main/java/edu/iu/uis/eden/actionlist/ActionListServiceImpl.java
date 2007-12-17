@@ -100,9 +100,11 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     public void deleteActionItems(ActionRequestValue actionRequest) {
-	for (Iterator iter = actionRequest.getActionItems().iterator(); iter.hasNext();) {
-	    this.deleteActionItem((ActionItem) iter.next());
-	}
+        LOG.debug("deleting " + actionRequest.getActionItems().size() + " action items for action request: " + actionRequest);
+        for (ActionItem actionItem: actionRequest.getActionItems()) {
+            LOG.debug("deleting action item: " + actionItem);
+    	    this.deleteActionItem(actionItem);
+    	}
     }
 
     public void deleteByRouteHeaderId(Long routeHeaderId) {
@@ -167,43 +169,40 @@ public class ActionListServiceImpl implements ActionListService {
      * 
      * @return the List of generated ActionItems
      */
-    public List generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext)
+    public List<ActionItem> generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext)
 	    throws EdenUserNotFoundException {
-	LOG.debug("generating the action items for request " + actionRequest.getActionRequestId());
-	List actionItems = new ArrayList();
-	if (!actionRequest.isPrimaryDelegator()) {
-	    if (actionRequest.isWorkgroupRequest()) {
-		List users = getWorkgroupService().getWorkgroup(new WorkflowGroupId(actionRequest.getWorkgroupId()))
-			.getUsers();
-
-		actionItems.addAll(getActionItemsFromUserList(actionRequest, users));
-	    } else if (actionRequest.isUserRequest()) {
-		ActionItem actionItem = new ActionItem();
-		loadActionItemFromActionRequest(actionRequest, actionItem);
-		actionItems.add(actionItem);
-	    }
-	}
-	if (!activationContext.isSimulation()) {
-	    for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
-		ActionItem actionItem = (ActionItem) iterator.next();
-		saveActionItem(actionItem);
-	    }
-	}
-	actionRequest.setActionItems(actionItems);
-	return actionItems;
+        LOG.debug("generating the action items for request " + actionRequest.getActionRequestId());
+        List<ActionItem> actionItems = new ArrayList<ActionItem>();
+        if (!actionRequest.isPrimaryDelegator()) {
+            if (actionRequest.isWorkgroupRequest()) {
+                List<WorkflowUser> users = getWorkgroupService().getWorkgroup(new WorkflowGroupId(actionRequest.getWorkgroupId())).getUsers();
+                actionItems.addAll(getActionItemsFromUserList(actionRequest, users));
+            } else if (actionRequest.isUserRequest()) {
+                ActionItem actionItem = new ActionItem();
+                loadActionItemFromActionRequest(actionRequest, actionItem);
+                actionItems.add(actionItem);
+            }
+        }
+        if (!activationContext.isSimulation()) {
+            for (ActionItem actionItem: actionItems) {
+                LOG.debug("Saving action item: " + actionItems);
+                saveActionItem(actionItem);
+            }
+        }
+        actionRequest.setActionItems(actionItems);
+        return actionItems;
     }
 
-    private List getActionItemsFromUserList(ActionRequestValue actionRequest, List users) {
-	List actionItems = new ArrayList();
-	for (Iterator iterator = users.iterator(); iterator.hasNext();) {
-	    WorkflowUser user = (WorkflowUser) iterator.next();
-	    ActionItem actionItem = new ActionItem();
-	    loadActionItemFromActionRequest(actionRequest, actionItem);
-	    actionItem.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
-	    actionItem.setRoleName(actionRequest.getQualifiedRoleName());
-	    actionItems.add(actionItem);
-	}
-	return actionItems;
+    private List<ActionItem> getActionItemsFromUserList(ActionRequestValue actionRequest, List<WorkflowUser> users) {
+    	List<ActionItem> actionItems = new ArrayList<ActionItem>();
+    	for (WorkflowUser user: users) {
+    	    ActionItem actionItem = new ActionItem();
+    	    loadActionItemFromActionRequest(actionRequest, actionItem);
+    	    actionItem.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
+    	    actionItem.setRoleName(actionRequest.getQualifiedRoleName());
+    	    actionItems.add(actionItem);
+    	}
+    	return actionItems;
     }
 
     /**

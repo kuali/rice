@@ -29,6 +29,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowPersistable;
+import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.engine.CompatUtils;
 import edu.iu.uis.eden.engine.node.RouteNode;
@@ -94,7 +95,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     private List childrenRequests = new ArrayList();
     private ActionTakenValue actionTaken;
     private DocumentRouteHeaderValue routeHeader;
-    private List actionItems = new ArrayList();
+    private List<ActionItem> actionItems = new ArrayList<ActionItem>();
     private Boolean currentIndicator = new Boolean(true);
     private String createDateString;
 
@@ -558,11 +559,11 @@ public class ActionRequestValue implements WorkflowPersistable {
         return type1Index.compareTo(type2Index);
     }
 
-    public List getActionItems() {
+    public List<ActionItem> getActionItems() {
         return actionItems;
     }
 
-    public void setActionItems(List actionItems) {
+    public void setActionItems(List<ActionItem> actionItems) {
         this.actionItems = actionItems;
     }
 

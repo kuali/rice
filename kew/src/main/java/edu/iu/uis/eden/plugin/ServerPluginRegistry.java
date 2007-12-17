@@ -154,13 +154,18 @@ public class ServerPluginRegistry extends BasePluginRegistry {
         				parentConfig,
         				isInstitutionalPlugin);
         		PluginEnvironment environment = new PluginEnvironment(loader, this);
-        		environment.load();
+        		try {
+        		    environment.load();
+        		} finally {
+        		    // regardless of whether the plugin loads or not, let's add it to the environment
+        		    addPluginEnvironment(environment);
+        		}
         		// TODO consider moving this inside either the loader or the environment?  Because this will need to be able
         		// to be reset if the institutional plugin is "hot deployed"
         		if (isInstitutionalPlugin) {
         			setInstitutionalPlugin(environment.getPlugin());
         		}
-        		addPluginEnvironment(environment);
+        		
         	} catch (Exception e) {
         		LOG.error("Failed to read workflow plugin '"+pluginName+"'", e);
         		if (isInstitutionalPlugin) {
@@ -177,7 +182,7 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 	}
 
 	@Override
-	public PluginEnvironment removePluginEnvironment(QName pluginName) {
+	public PluginEnvironment removePluginEnvironment(String pluginName) {
 		PluginEnvironment environment = super.removePluginEnvironment(pluginName);
 		reloader.removeReloadable(environment);
 		return environment;

@@ -23,6 +23,8 @@ package edu.iu.uis.eden.plugin;
  */
 public interface PluginLoader extends Modifiable {
 
+    public String getPluginName();
+    
 	/**
 	 * Loads the plugin, this method should NOT invoke any of the Lifecycle methods of the plugin
 	 * before returning it to the calling code.

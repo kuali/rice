@@ -98,7 +98,7 @@ public class HotDeployTest extends KEWTestCase {
 		Plugin plugin = (Plugin)registry.getResourceLoaders().get(0);
 		assertEquals("Plugin has wrong name.", new QName(Core.getCurrentContextConfig().getMessageEntity(), "ziptest"), plugin.getName());
 		assertTrue("Plugin should be started.", plugin.isStarted());
-		assertEquals("Plugin in resource loader and environment should be the same.", plugin, registry.getPluginEnvironment(plugin.getName()).getPlugin());
+		assertEquals("Plugin in resource loader and environment should be the same.", plugin, registry.getPluginEnvironment(plugin.getName().getLocalPart()).getPlugin());
 		
 		// The reloader should have a reference to the environment
 		assertEquals("Reloader should have a reference to environment.", 1, reloader.getReloadables().size());

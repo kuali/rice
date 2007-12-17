@@ -35,9 +35,9 @@ public interface PluginRegistry extends ResourceLoader {
 	
 	public void addPluginEnvironment(PluginEnvironment pluginEnvironment);
 	
-	public PluginEnvironment removePluginEnvironment(QName pluginName);
+	public PluginEnvironment removePluginEnvironment(String pluginName);
 	
-	public PluginEnvironment getPluginEnvironment(QName pluginName);
+	public PluginEnvironment getPluginEnvironment(String pluginName);
 	
 	//public List<Plugin> getPlugins();
 	

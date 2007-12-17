@@ -17,11 +17,8 @@
 package org.kuali.workflow.config;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.sql.DataSource;
 import javax.xml.namespace.QName;
@@ -35,22 +32,11 @@ import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.config.logging.Log4jLifeCycle;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.Lifecycle;
-import org.kuali.rice.resourceloader.BaseResourceLoader;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.resourceloader.ResourceLoader;
-import org.kuali.rice.resourceloader.ServiceLocator;
-import org.kuali.rice.resourceloader.SimpleServiceLocator;
 import org.kuali.workflow.ojb.OjbConfigurer;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.clientapp.ServiceHolder;
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.JavaServiceDefinition;
-import edu.iu.uis.eden.messaging.ServiceDefinition;
-import edu.iu.uis.eden.plugin.PluginRegistry;
-import edu.iu.uis.eden.util.ClassLoaderUtils;
-import edu.iu.uis.eden.util.Utilities;
 
 /**
  * Configures the KEW Rice module.  KEW module initiation proceeds as follows:
@@ -77,7 +63,6 @@ public class KEWConfigurer extends ModuleConfigurer {
 
 	private String clientProtocol;
 
-	private PluginRegistry pluginRegistry;
 	private DataSource dataSource;
 	private String dataSourceJndiName;
 
@@ -224,14 +209,6 @@ public class KEWConfigurer extends ModuleConfigurer {
 
 	public void setClientProtocol(String clientProtocol) {
 		this.clientProtocol = clientProtocol;
-	}
-
-	public PluginRegistry getPluginRegistry() {
-		return pluginRegistry;
-	}
-
-	public void setPluginRegistry(PluginRegistry pluginRegistry) {
-		this.pluginRegistry = pluginRegistry;
 	}
 
 	public boolean isRunEmbeddedServer() {

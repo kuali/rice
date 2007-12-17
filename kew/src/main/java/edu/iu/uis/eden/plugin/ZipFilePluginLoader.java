@@ -45,6 +45,7 @@ public class ZipFilePluginLoader extends BasePluginLoader {
 	private final File pluginZipFile;
     private final File extractionDirectory;
     private long zipFileLastModified = -1;
+    private boolean loadFailed = false;
 
     private static String validatePluginZipFile(File pluginZipFile) {
         PluginUtils.validatePluginZipFile(pluginZipFile);
@@ -58,7 +59,7 @@ public class ZipFilePluginLoader extends BasePluginLoader {
     	this.pluginZipFile = pluginZipFile;
     	this.extractionDirectory = determineExtractionDirectory(getSimplePluginName(), pluginZipFile);
     }
-
+    
 	public boolean isModified() {
 		long currentZipFileLastModified = pluginZipFile.lastModified();
 		if (zipFileLastModified == -1) {
@@ -92,9 +93,16 @@ public class ZipFilePluginLoader extends BasePluginLoader {
 
     @Override
 	public Plugin load() throws Exception {
-		extractPluginFiles();
-		updateLastModified();
-		return super.load();
+        try {
+            updateLastModified();
+            extractPluginFiles();
+            Plugin plugin = super.load();
+            loadFailed = false;
+            return plugin;
+        } catch (Exception e) {
+            loadFailed = true;
+            throw e;
+        }
 	}
 
     protected File determineExtractionDirectory(String pluginName, File pluginZipFile) {
@@ -142,6 +150,13 @@ public class ZipFilePluginLoader extends BasePluginLoader {
     			}
     		}
     	}
+    }
+    
+    /**
+     * @return the loadFailed
+     */
+    public boolean isLoadFailed() {
+        return this.loadFailed;
     }
 
     /**

@@ -72,6 +72,10 @@ public abstract class BasePluginLoader implements PluginLoader {
     protected String getLogPrefix() {
         return logPrefix;
     }
+    
+    public String getPluginName() {
+        return simplePluginName;
+    }
 
     public void setPluginManifestPath(String pluginManifestPath) {
         this.pluginManifestPath = pluginManifestPath;

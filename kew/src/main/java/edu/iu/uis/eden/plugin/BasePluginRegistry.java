@@ -49,9 +49,9 @@ public abstract class BasePluginRegistry extends ResourceLoaderContainer impleme
 		super(name);
 	}
 	    
-    public PluginEnvironment getPluginEnvironment(QName pluginName) {
+    public PluginEnvironment getPluginEnvironment(String pluginName) {
     	for (PluginEnvironment environment : pluginEnvironments) {
-    		if (environment.getPlugin().getName().equals(pluginName)) {
+    		if (environment.getPluginName().equals(pluginName)) {
     			return environment;
     		}
     	}
@@ -60,18 +60,20 @@ public abstract class BasePluginRegistry extends ResourceLoaderContainer impleme
 	
 	public void addPluginEnvironment(PluginEnvironment pluginEnvironment) {
 		// chances are that this plugin has already been added to the resource loader
-		if (!containsResourceLoader(pluginEnvironment.getPlugin())) {
+		if (pluginEnvironment.getPlugin() != null && !containsResourceLoader(pluginEnvironment.getPlugin())) {
 			addResourceLoader(pluginEnvironment.getPlugin());
 		}
 		pluginEnvironments.add(pluginEnvironment);
 	}
 	
-	public PluginEnvironment removePluginEnvironment(QName pluginName) {
-		super.removeResourceLoader(pluginName);
-		PluginEnvironment environment = getPluginEnvironment(pluginName);
-		if (environment == null) {
-			return null;
-		}
+	public PluginEnvironment removePluginEnvironment(String pluginName) {
+	    PluginEnvironment environment = getPluginEnvironment(pluginName);
+        if (environment == null) {
+            return null;
+        }
+        if (environment.getPlugin() != null) {
+            super.removeResourceLoader(environment.getPlugin().getName());
+        }
 		if (!pluginEnvironments.remove(environment)) {
 			return null;
 		}

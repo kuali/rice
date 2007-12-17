@@ -60,8 +60,8 @@ public class PluginEnvironment implements Reloadable {
 	public boolean isLoaded() {
 		return loaded;
 	}
-
-	/**
+	
+    /**
 	 * Returns a boolean indicating whether or not this PluginEnvironment is truly reloadable.
 	 * 
 	 * This will return false if the Plugin represents a plugin which can not be reloaded
@@ -69,7 +69,7 @@ public class PluginEnvironment implements Reloadable {
 	 */
 	public boolean isReloadable() {
 		// TODO for now the institutional plugin is not reloadable
-		return !PluginUtils.isInstitutionalPlugin(plugin);
+	    return plugin == null || !PluginUtils.isInstitutionalPlugin(plugin);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class PluginEnvironment implements Reloadable {
 	 * to the PluginRegistry's resoure loaders.
 	 */
 	public synchronized void load() throws Exception {
-		plugin = loader.load();
+	    plugin = loader.load();
 		plugin.setSupressStartupFailure(supressStartupFailure);
 		// it's important that the plugin is added to the resource loading system prior to startup because
 		// startup may need to grab services
@@ -108,11 +108,20 @@ public class PluginEnvironment implements Reloadable {
 	 * @throws Exception
 	 */
 	public synchronized void unload() throws Exception {
-		plugin.stop();
-		// it's important that the plugin be removed from the resource loading system after shutdown in
-		// case the plugin needs to access the resource loader during shutdown
-		registry.removeResourceLoader(plugin.getName());
+	    if (plugin != null) {
+	        plugin.stop();
+	        // it's important that the plugin be removed from the resource loading system after shutdown in
+	        // case the plugin needs to access the resource loader during shutdown
+	        registry.removeResourceLoader(plugin.getName());
+	    }
 		loaded = false;
+	}
+	
+	public String getPluginName() {
+	    if (getPlugin() != null) {
+	        return getPlugin().getName().getLocalPart();
+	    }
+	    return loader.getPluginName();
 	}
 	
 	/**

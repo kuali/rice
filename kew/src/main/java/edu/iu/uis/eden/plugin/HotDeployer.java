@@ -52,12 +52,12 @@ public class HotDeployer implements Runnable {
 			LOG.debug("Checking for added and removed plugins...");
 			Set<PluginEnvironment> removedPlugins = getRemovedPlugins();
 			for (PluginEnvironment pluginContext : removedPlugins) {
-				LOG.info("Detected a removed plugin '" + pluginContext.getPlugin().getName() + "', shutting down plugin.");
+				LOG.info("Detected a removed plugin '" + pluginContext.getPluginName() + "', shutting down plugin.");
 				try {
 					pluginContext.unload();
-					registry.removePluginEnvironment(pluginContext.getPlugin().getName());
+					registry.removePluginEnvironment(pluginContext.getPluginName());
 				} catch (Exception e) {
-					LOG.error("Failed to unload plugin '" + pluginContext.getPlugin().getName() + "'", e);
+					LOG.error("Failed to unload plugin '" + pluginContext.getPluginName() + "'", e);
 				}
 			}
 			Set<PluginEnvironment> addedPlugins = getAddedPlugins();
@@ -65,35 +65,23 @@ public class HotDeployer implements Runnable {
 				try {
 					LOG.info("Detected a new plugin.  Loading plugin...");
 					pluginContext.load();
-					LOG.info("...plugin '" + pluginContext.getPlugin().getName() + "' loaded.");
-					registry.addPluginEnvironment(pluginContext);
+					LOG.info("...plugin '" + pluginContext.getPluginName() + "' loaded.");					
 				} catch (Exception e) {
 				    // see: KULRICE-1184
 				    String pluginName= "<<unknown>>";
 				    if (pluginContext.getPlugin() != null) {
-				        pluginName = String.valueOf(pluginContext.getPlugin().getName());
+				        pluginName = String.valueOf(pluginContext.getPluginName());
 				    }
-					LOG.warn("Failed to load plugin '" + pluginName + "'");
+					LOG.error("Failed to load plugin '" + pluginName + "'", e);
+				} finally {
+				    // whether or not there is a load error, we want to add the environment to the registry, this prevents the registry
+				    // continuously trying to hot deploy a bad plugin
+				    registry.addPluginEnvironment(pluginContext);
 				}
 			}
 		} catch (Exception e) {
 			LOG.warn("Failed to check for hot deploy.", e);
 		}
-//
-//
-//		for (Iterator iterator = addedPluginDirs.iterator(); iterator.hasNext();) {
-//			File pluginDir = (File) iterator.next();
-//            LOG.info("Detected a new plugin.  Waiting for plugin in '" + pluginDir + "' to be ready...");
-//			if (PluginUtils.waitUntilPluginIsReady(pluginDir)) {
-//                LOG.info("Adding new plugin in '" + pluginDir + "'");
-//                Plugin plugin = new Plugin(pluginDir, sharedPluginDirectory);
-//                plugin.setPluginRegistry(registry);
-//                plugin.setParentClassLoader(registry.getInstitutionPlugin().getClassLoader());
-//                registry.addPlugin(plugin);
-//			} else {
-//				LOG.warn("It appears plugin in '" + pluginDir + "' is being modified.  Waiting until next poll interval.");
-//			}
-//		}
 	}
 
 	protected Set<PluginEnvironment> getRemovedPlugins() {
@@ -128,11 +116,11 @@ public class HotDeployer implements Runnable {
 					if (PluginUtils.isInstitutionalPlugin(pluginName)) {
 						continue;
 					}
-					// check to see if this plugin has already been loaded
+					// check to see if this plugin environment has already been loaded
 					List<PluginEnvironment> currentEnvironments = registry.getPluginEnvironments();
 					boolean pluginExists = false;
 					for (PluginEnvironment environment : currentEnvironments) {
-						if (environment.getPlugin().getName().getLocalPart().equals(pluginName)) {
+						if (environment.getPluginName().equals(pluginName)) {
 							pluginExists = true;
 							break;
 						}

@@ -228,10 +228,6 @@ public final class KEWServiceLocator {
 
 	public static final String ENCRYPTION_SERVICE = "enEncryptionService";
 
-	public static final String OPTIONAL_EMBEDDED_USER_SERVICE = "enOptionalEmbeddedClientUserService";
-
-	public static final String OPTIONAL_EMBEDDED_WORKGROUP_SERVICE = "enOptionalEmbeddedClientWorkgroupService";
-
 	public static final String REMOVE_REPLACE_DOCUMENT_SERVICE = "enRemoveReplaceDocumentService";
 
 	public static final String EXTRACT_SERVICE = "enExtractService";

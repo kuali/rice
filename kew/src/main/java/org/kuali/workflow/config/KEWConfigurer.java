@@ -66,10 +66,6 @@ public class KEWConfigurer extends ModuleConfigurer {
 	private DataSource dataSource;
 	private String dataSourceJndiName;
 
-	private boolean useDefaultUserService = false;
-	private boolean useDefaultWorkgroupService = false;
-	private boolean runEmbeddedServer = false;
-
 	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
@@ -87,17 +83,6 @@ public class KEWConfigurer extends ModuleConfigurer {
 
 	protected boolean isStandaloneServer() {
 		return new Boolean(Core.getCurrentContextConfig().getProperty("kew.standalone.server")).booleanValue();
-	}
-
-	@Override
-	public void start() throws Exception {
-		super.start();
-		registerOptionalDefaultServices(Core.getCurrentContextConfig());
-	}
-
-	@Override
-	public void stop() throws Exception {
-		super.stop();
 	}
 
 	/**
@@ -177,62 +162,12 @@ public class KEWConfigurer extends ModuleConfigurer {
 		}
 	}
 
-	protected void registerOptionalDefaultServices(Config config) throws Exception {
-		LOG.debug("Checking for optional default workgroup and user service to load from the embedded plugin");
-		if (isUseDefaultUserService()) {
-			registerEmbeddedDefaultUserService();
-		}
-		if (isUseDefaultWorkgroupService()) {
-			registerEmbeddedDefaultWorkgroupService();
-		}
-	}
-
-	protected void registerEmbeddedDefaultUserService() throws Exception {
-		JavaServiceDefinition serviceDef = new JavaServiceDefinition();
-		serviceDef.setServiceName(new QName(KEWServiceLocator.USER_SERVICE));
-		serviceDef.setService(KEWServiceLocator.getBean(KEWServiceLocator.OPTIONAL_EMBEDDED_USER_SERVICE));
-		serviceDef.validate();
-		KSBServiceLocator.getServiceDeployer().registerService(serviceDef, false);
-	}
-
-	protected void registerEmbeddedDefaultWorkgroupService() throws Exception {
-		JavaServiceDefinition serviceDef = new JavaServiceDefinition();
-		serviceDef.setServiceName(new QName(KEWServiceLocator.WORKGROUP_SRV));
-		serviceDef.setService(KEWServiceLocator.getBean(KEWServiceLocator.OPTIONAL_EMBEDDED_WORKGROUP_SERVICE));
-		serviceDef.validate();
-		KSBServiceLocator.getServiceDeployer().registerService(serviceDef, false);
-	}
-
 	public String getClientProtocol() {
 		return clientProtocol;
 	}
 
 	public void setClientProtocol(String clientProtocol) {
 		this.clientProtocol = clientProtocol;
-	}
-
-	public boolean isRunEmbeddedServer() {
-		return runEmbeddedServer;
-	}
-
-	public void setRunEmbeddedServer(boolean runEmbeddedServer) {
-		this.runEmbeddedServer = runEmbeddedServer;
-	}
-
-	public boolean isUseDefaultUserService() {
-		return useDefaultUserService;
-	}
-
-	public void setUseDefaultUserService(boolean useDefaultUserService) {
-		this.useDefaultUserService = useDefaultUserService;
-	}
-
-	public boolean isUseDefaultWorkgroupService() {
-		return useDefaultWorkgroupService;
-	}
-
-	public void setUseDefaultWorkgroupService(boolean useDefaultWorkgroupService) {
-		this.useDefaultWorkgroupService = useDefaultWorkgroupService;
 	}
 
 	public DataSource getDataSource() {

@@ -16,9 +16,8 @@
 package org.kuali.notification.service.impl;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
+import org.apache.ojb.broker.query.Criteria;
 import org.kuali.notification.bo.NotificationContentType;
 import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.service.NotificationContentTypeService;
@@ -35,30 +34,47 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
      * @param businessObjectDao
      */
     public NotificationContentTypeServiceImpl(BusinessObjectDao businessObjectDao) {
-	this.businessObjectDao = businessObjectDao;
+        this.businessObjectDao = businessObjectDao;
     }
 
     /**
      * @see org.kuali.notification.service.NotificationContentTypeService#getNotificationContentType(java.lang.String)
      */
     public NotificationContentType getNotificationContentType(String name) {
-	Map primaryKeys = new HashMap();
-	primaryKeys.put("name", name);
-	return (NotificationContentType) businessObjectDao.findByPrimaryKey(NotificationContentType.class, primaryKeys);
+        Criteria c = new Criteria();
+        c.addEqualTo("name", name);
+        c.addEqualTo("current", true);
+        Collection<NotificationContentType> coll = businessObjectDao.findMatching(NotificationContentType.class, c);
+        if (coll.size() == 0) {
+            return null;
+        } else {
+            return coll.iterator().next();
+        }
     }
 
     /**
      * @see org.kuali.notification.service.NotificationContentTypeService#saveNotificationContentType(org.kuali.notification.bo.NotificationContentType)
      */
     public void saveNotificationContentType(NotificationContentType contentType) {
-	businessObjectDao.save(contentType);
+        NotificationContentType old = getNotificationContentType(contentType.getName());
+        int oldVersion = -1;
+        if (old != null) {
+            old.setCurrent(false);
+            oldVersion = old.getVersion();
+            businessObjectDao.save(old);
+        }
+        contentType.setVersion(oldVersion + 1);
+        contentType.setCurrent(true);
+        businessObjectDao.save(contentType);
     }
 
     /**
      * @see org.kuali.notification.service.NotificationContentTypeService#getAllContentType()
      */
-    public Collection getAllContentType() {
-	return businessObjectDao.findAll(NotificationContentType.class);
+    public Collection<NotificationContentType> getAllCurrentContentTypes() {
+        Criteria c = new Criteria();
+        c.addEqualTo("current", true);
+        return businessObjectDao.findMatching(NotificationContentType.class, c);
     }
-    
+
 }

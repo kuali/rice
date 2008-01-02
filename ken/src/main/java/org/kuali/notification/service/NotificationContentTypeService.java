@@ -32,14 +32,16 @@ public interface NotificationContentTypeService {
     public NotificationContentType getNotificationContentType(String name);
 
     /**
-     * This method saves a NotificationContentType object instance to the DB.
+     * This method saves a NotificationContentType object instance to the DB, creating a new, current,
+     * version if one already exists.  Note that this means that this API cannot be used to modify
+     * the data of an existing content type record.
      * @param contentType The NotificationContentType instance to save.
      */
     public void saveNotificationContentType(NotificationContentType contentType);
 
     /**
-     * This method returns all NotificationContentTypes in the system.
+     * This method returns all current NotificationContentTypes in the system.
      * @return Collection
      */
-    public Collection getAllContentType();
+    public Collection<NotificationContentType> getAllCurrentContentTypes();
 }

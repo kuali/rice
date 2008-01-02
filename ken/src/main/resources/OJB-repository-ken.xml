@@ -89,6 +89,8 @@
   <class-descriptor class="org.kuali.notification.bo.NotificationContentType" table="NOTIFICATION_CONTENT_TYPES">
     <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="NOTIFICATION_CONTENT_TYPES_SEQ" />
     <field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" indexed="true" nullable="false" />
+    <field-descriptor name="version" column="VERSION" jdbc-type="INTEGER" nullable="false" />
+    <field-descriptor name="current" column="CUR_IND" jdbc-type="CHAR" nullable="false" conversion="org.kuali.rice.util.OjbCharBooleanFieldTFConversion"/>
     <field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" nullable="false" />
     <field-descriptor name="namespace" column="NAMESPACE" jdbc-type="VARCHAR" nullable="false" />
     <field-descriptor name="xsd" column="XSD" jdbc-type="VARCHAR" nullable="false" />

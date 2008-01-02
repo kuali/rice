@@ -23,6 +23,8 @@ package org.kuali.notification.bo;
 public class NotificationContentType {
     private Long id;
     private String name;
+    private boolean current = true;
+    private Integer version = Integer.valueOf(0);
     private String description;
     private String namespace;
     private String xsd;
@@ -39,7 +41,7 @@ public class NotificationContentType {
      * @return Returns the description.
      */
     public String getDescription() {
-	return description;
+        return description;
     }
 
     /**
@@ -47,7 +49,7 @@ public class NotificationContentType {
      * @param description The description to set.
      */
     public void setDescription(String description) {
-	this.description = description;
+        this.description = description;
     }
 
     /**
@@ -55,7 +57,7 @@ public class NotificationContentType {
      * @return Returns the id.
      */
     public Long getId() {
-	return id;
+        return id;
     }
 
     /**
@@ -63,7 +65,7 @@ public class NotificationContentType {
      * @param id The id to set.
      */
     public void setId(Long id) {
-	this.id = id;
+        this.id = id;
     }
 
     /**
@@ -71,7 +73,35 @@ public class NotificationContentType {
      * @return Returns the name.
      */
     public String getName() {
-	return name;
+        return name;
+    }
+
+    /**
+     * @return whether this is the current version
+     */
+    public boolean isCurrent() {
+        return this.current;
+    }
+
+    /**
+     * @param current whether this is the current version
+     */
+    public void setCurrent(boolean current) {
+        this.current = current;
+    }
+
+    /**
+     * @return the version
+     */
+    public Integer getVersion() {
+        return this.version;
+    }
+
+    /**
+     * @param version the version to set
+     */
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     /**
@@ -79,7 +109,7 @@ public class NotificationContentType {
      * @param name The name to set.
      */
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
     }
 
     /**
@@ -87,7 +117,7 @@ public class NotificationContentType {
      * @return Returns the namespace.
      */
     public String getNamespace() {
-	return namespace;
+        return namespace;
     }
 
     /**
@@ -95,7 +125,7 @@ public class NotificationContentType {
      * @param namespace The namespace to set.
      */
     public void setNamespace(String namespace) {
-	this.namespace = namespace;
+        this.namespace = namespace;
     }
 
     /**
@@ -135,9 +165,9 @@ public class NotificationContentType {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-	return "[NotificationContentType: id=" + id +
-	                               ", name=" + name +
-	                               ", namespace=" + namespace +
-	                               ", description=" + description + "]";
+        return "[NotificationContentType: id=" + id +
+        ", name=" + name +
+        ", namespace=" + namespace +
+        ", description=" + description + "]";
     }
 }

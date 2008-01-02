@@ -95,7 +95,7 @@ public class ContentTypeController extends MultiActionController {
 
       view = "ContentTypeManager";
       
-      Collection<NotificationContentType> contentTypes = this.notificationContentTypeService.getAllContentType();
+      Collection<NotificationContentType> contentTypes = this.notificationContentTypeService.getAllCurrentContentTypes();
       Map<String, Object> model = new HashMap<String, Object>();
       model.put("contentTypes", contentTypes);
       return new ModelAndView(view, model);
@@ -164,7 +164,7 @@ public class ContentTypeController extends MultiActionController {
        
        this.notificationContentTypeService.saveNotificationContentType(notificationContentType);
        
-       Collection<NotificationContentType> contentTypes = this.notificationContentTypeService.getAllContentType();
+       Collection<NotificationContentType> contentTypes = this.notificationContentTypeService.getAllCurrentContentTypes();
        Map<String, Object> model = new HashMap<String, Object>();
        model.put("contentTypes", contentTypes);            
        return new ModelAndView(view, model);     
@@ -206,7 +206,7 @@ public class ContentTypeController extends MultiActionController {
        
        
        // get updated content type collection
-       Collection<NotificationContentType> contentTypes = this.notificationContentTypeService.getAllContentType();
+       Collection<NotificationContentType> contentTypes = this.notificationContentTypeService.getAllCurrentContentTypes();
        Map<String, Object> model = new HashMap<String, Object>();
        model.put("contentTypes", contentTypes);
        return new ModelAndView(view, model);     

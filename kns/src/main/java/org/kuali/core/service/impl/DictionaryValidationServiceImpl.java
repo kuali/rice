@@ -321,13 +321,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             if (propertyDescriptor.getPropertyType() != null && PersistableBusinessObject.class.isAssignableFrom(propertyDescriptor.getPropertyType()) && ObjectUtils.getPropertyValue(object, propertyDescriptor.getName()) != null) {
                 PersistableBusinessObject bo = (PersistableBusinessObject) ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
                 GlobalVariables.getErrorMap().addToErrorPath(propertyDescriptor.getName());
-                if (!object.equals(bo)) {
                 if (depth == 0) {
                     validateBusinessObject(bo);
                 }
                 else {
                     validateBusinessObjectsRecursively(bo, depth - 1);
-                }
                 }
                 GlobalVariables.getErrorMap().removeFromErrorPath(propertyDescriptor.getName());
             }
@@ -341,14 +339,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 for (int j = 0; j < propertyList.size(); j++) {
                     if (propertyList.get(j) != null && propertyList.get(j) instanceof PersistableBusinessObject) {
                         GlobalVariables.getErrorMap().addToErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
-                        PersistableBusinessObject bo = (PersistableBusinessObject) propertyList.get(j);
-                        if (!object.equals(bo)) {
                         if (depth == 0) {
-                            validateBusinessObject(bo);
+                            validateBusinessObject((PersistableBusinessObject) propertyList.get(j));
                         }
                         else {
-                            validateBusinessObjectsRecursively(bo, depth - 1);
-                        }
+                            validateBusinessObjectsRecursively((PersistableBusinessObject) propertyList.get(j), depth - 1);
                         }
                         GlobalVariables.getErrorMap().removeFromErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
                     }

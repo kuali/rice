@@ -262,6 +262,14 @@ public abstract class BaseConfig implements Config {
 		return new Boolean(getProperty(RUNNING_SERVER_IN_EMBEDDED));
 	}
 
+    public Boolean getEmailReminderLifecycleEnabled() {
+        return new Boolean(getProperty(ENABLE_EMAIL_REMINDER_LIFECYCLE));
+    }
+
+    public Boolean getXmlPipelineLifeCycleEnabled() {
+        return new Boolean(getProperty(ENABLE_XML_PIPELINE_LIFECYCLE));
+    }
+    
 	public Boolean getDevMode() {
 		return new Boolean(getProperty(DEV_MODE));
 	}

@@ -16,10 +16,8 @@
 package edu.iu.uis.eden.docsearch;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,21 +27,17 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
 
-import sun.print.resources.serviceui;
-
 import edu.emory.mathcs.backport.java.util.Arrays;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
-import edu.iu.uis.eden.doctype.SecuritySession;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;
-import edu.iu.uis.eden.web.session.Authentication;
 import edu.iu.uis.eden.web.session.BasicAuthentication;
 import edu.iu.uis.eden.web.session.UserSession;
 import edu.iu.uis.eden.workgroup.GroupNameId;

@@ -26,8 +26,6 @@ import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * This class is used to perform the webAuthentication Service when using the Kuali Cas Filter.
- *
- *
  */
 public class WebAuthenticationServiceCas implements WebAuthenticationService {
 
@@ -44,8 +42,11 @@ public class WebAuthenticationServiceCas implements WebAuthenticationService {
         return new AuthenticationUserId(remoteUser);
     }
 
+    /**
+     * @see org.kuali.core.service.WebAuthenticationService#getNetworkId(javax.servlet.http.HttpServletRequest)
+     */
     public String getNetworkId(HttpServletRequest request) {
-	return KualiCasFilter.getRemoteUser(request);
+        return KualiCasFilter.getRemoteUser(request);
     }
 
     /**
@@ -57,7 +58,7 @@ public class WebAuthenticationServiceCas implements WebAuthenticationService {
     }
 
     public UserSession establishInitialUserSession(UserSession userSession, HttpServletRequest request) {
-	return userSession;
+        return userSession;
     }
 
     public boolean isValidatePassword() {

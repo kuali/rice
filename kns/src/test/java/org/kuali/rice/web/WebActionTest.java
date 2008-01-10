@@ -15,14 +15,8 @@
  */
 package org.kuali.rice.web;
 
-import java.net.URL;
-
 import org.junit.Test;
-import org.kuali.rice.testharness.HtmlUnitUtil;
 
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 /**
@@ -46,27 +40,42 @@ public class WebActionTest extends WebTestBase {
      * @throws Exception
      */
     @Test public void testCloseDocumentWithoutSave() throws Exception {
-        final WebClient webClient = new WebClient();
-        final URL url = new URL(HtmlUnitUtil.BASE_URL);
-        final HtmlPage page = (HtmlPage)webClient.getPage(url);
-        assertEquals("Rice Sample Client", page.getTitleText() );
+        final HtmlPage page = getPortalPage();
 
-        final HtmlAnchor createTravelRequest = (HtmlAnchor) page.getAnchorByName("createTravelRequest");
-        final HtmlPage page2 = login(webClient, url, "Rice Sample Client", createTravelRequest.getHrefAttribute());
+        HtmlPage page2 = clickOn(page, "createTravelRequest");
 
         assertEquals("Kuali :: Travel Doc 2", page2.getTitleText());
 
-        final HtmlForm kualiForm = (HtmlForm) page2.getForms().get(0);
-
-        HtmlPage questionPage = clickButton(page2, kualiForm, "methodToCall.close", IMAGE_INPUT);
+        HtmlPage questionPage = clickOn(page2, "methodToCall.close");
 
         assertEquals("Kuali :: Question Dialog Page", questionPage.getTitleText());
 
-        final HtmlForm questionForm = (HtmlForm) questionPage.getForms().get(0);
-
-        HtmlPage finalPagePage = clickButton(questionPage, questionForm, "methodToCall.processAnswer.button1", IMAGE_INPUT);
+        HtmlPage finalPagePage = clickOn(questionPage, "methodToCall.processAnswer.button1");
 
         assertEquals("Rice Sample Client", finalPagePage.getTitleText());
+    }
+
+    /**
+     * This method tests to make sure the close button returns to where the
+     * user is expecting if they choose not to save the document.
+     *
+     * @throws Exception
+     */
+    @Test public void testCancelDocument() throws Exception {
+        final HtmlPage page = getPortalPage();
+
+        HtmlPage page2 = clickOn(page, "createTravelRequest");
+
+        assertEquals("Kuali :: Travel Doc 2", page2.getTitleText());
+
+        HtmlPage questionPage = clickOn(page2, "methodToCall.cancel");
+
+        assertEquals("Kuali :: Question Dialog Page", questionPage.getTitleText());
+
+        HtmlPage finalPage = clickOn(questionPage, "methodToCall.processAnswer.button1");
+
+        assertEquals("Kuali :: Travel Doc 2", finalPage.getTitleText());
+        assertFalse(finalPage.asText().contains("500"));
     }
 
 }

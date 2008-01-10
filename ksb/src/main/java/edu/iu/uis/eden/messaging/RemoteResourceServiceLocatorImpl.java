@@ -22,12 +22,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.definition.ObjectDefinition;
 import org.kuali.rice.exceptions.RiceRuntimeException;
@@ -227,7 +229,21 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		if (clientMap.get(serviceInfo.getQname()) == null) {
 			clientMap.put(serviceInfo.getQname(), new ArrayList<RemotedServiceHolder>());
 		}
+		installAlternateEndpoint(serviceInfo);
 		clientMap.get(serviceInfo.getQname()).add(new RemotedServiceHolder(serviceInfo));
+	}
+	
+	protected void installAlternateEndpoint(ServiceInfo serviceInfo) {
+	    List<AlternateEndpoint> alternateEndpoints = (List<AlternateEndpoint>)Core.getCurrentContextConfig().getObject(RiceConstants.KSB_ALTERNATE_ENDPOINTS);
+	    if (alternateEndpoints != null) {
+	        for (AlternateEndpoint alternateEndpoint : alternateEndpoints) {
+	            if (Pattern.matches(alternateEndpoint.getEndpointUrlPattern(), serviceInfo.getEndpointUrl())) {
+	                LOG.info("Found an alternate url for endpoint: " + serviceInfo.getEndpointUrl() + " -> instead using: " + alternateEndpoint.getActualEndpoint());
+	                serviceInfo.setEndpointAlternateUrl(alternateEndpoint.getActualEndpoint());
+	                break;
+	            }
+	        }
+	    }
 	}
 
 

@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -48,7 +48,7 @@ public interface BusinessObjectDictionaryService {
      */
     public Boolean isMaintainable(Class businessObjectClass);
 
-    
+
     /**
      * the list defined as lookup fields for the business object.
      */
@@ -99,7 +99,7 @@ public interface BusinessObjectDictionaryService {
      * This method returns the maximum display length of the value of the given field in the lookup results.  While the actual value may
      * be longer than the specified length, this value specifies the maximum length substring that should be displayed.
      * It is up to the UI layer to intepret the results of the field
-     * 
+     *
      * @param businessObjectClass
      * @param resultFieldName
      * @return the maximum length of the lookup results field that should be displayed.  Returns null
@@ -156,6 +156,11 @@ public interface BusinessObjectDictionaryService {
 
 
     /**
+     * returns String indicating the result set limit for the lookup
+     */
+    public String getLookupResultSetLimit(Class businessObjectClass);
+
+    /**
      * indicates whether a field is required for a lookup
      */
     public Boolean getLookupAttributeRequired(Class businessObjectClass, String attributeName);
@@ -166,13 +171,13 @@ public interface BusinessObjectDictionaryService {
      */
     public List getInquiryFieldNames(Class businessObjectClass, String sectionTitle);
 
-    
+
     /**
      * the list defined as inquiry sections for the business object.
      */
     public List getInquirySections(Class businessObjectClass);
 
-    
+
     /**
      * the text to be displayed for the title of business object inquiry.
      */
@@ -183,7 +188,7 @@ public interface BusinessObjectDictionaryService {
      * the class to be used for building inquiry pages.
      */
     public Class getInquirableClass(Class businessObjectClass);
-    
+
     /**
      * the text to be displayed for the title of business object maintenance document.
      */
@@ -205,7 +210,7 @@ public interface BusinessObjectDictionaryService {
     /**
      * This method takes any business object and recursively walks through it checking to see if any attributes need to be forced to
      * uppercase based on settings in the data dictionary
-     * 
+     *
      * @param bo
      */
     public void performForceUppercase(BusinessObject bo);

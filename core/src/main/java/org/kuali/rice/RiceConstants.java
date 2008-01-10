@@ -58,6 +58,7 @@ public class RiceConstants extends JSTLConstants {
     public static final String KSB_MESSAGE_DATASOURCE_JNDI = "ksbMessage.datasource.jndi.location";
     public static final String KSB_REGISTRY_DATASOURCE_JNDI = "ksbRegistry.datasource.jndi.location";
     public static final String USE_QUARTZ_DATABASE = "useQuartzDatabase";
+    public static final String KSB_ALTERNATE_ENDPOINTS = "ksb.alternateEndpoints";
 
     // custom http header keys
     public static final String DIGITAL_SIGNATURE_HEADER = "KEW_DIGITAL_SIGNATURE";

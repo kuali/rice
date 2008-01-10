@@ -20,6 +20,7 @@ import java.io.Serializable;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
@@ -39,6 +40,7 @@ public class ServiceInfo implements Serializable {
 	private Long messageEntryId;
 	private QName qname;
 	private String endpointUrl;
+	private String endpointAlternateUrl;
 	private String serializedMessageEntity;
 	private String serviceName;
 	private Boolean alive = true; 
@@ -94,7 +96,29 @@ public class ServiceInfo implements Serializable {
 	public void setEndpointUrl(String ipNumber) {
 		this.endpointUrl = ipNumber;
 	}
-	public Integer getLockVerNbr() {
+	
+	/**
+     * @return the endpointAlternateUrl
+     */
+    public String getEndpointAlternateUrl() {
+        return this.endpointAlternateUrl;
+    }
+    
+    public String getActualEndpointUrl() {
+        if (!StringUtils.isBlank(getEndpointAlternateUrl())) {
+            return getEndpointAlternateUrl();
+        }
+        return getEndpointUrl();
+    }
+
+    /**
+     * @param endpointAlternateUrl the endpointAlternateUrl to set
+     */
+    public void setEndpointAlternateUrl(String endpointAlternateUrl) {
+        this.endpointAlternateUrl = endpointAlternateUrl;
+    }
+
+    public Integer getLockVerNbr() {
 		return this.lockVerNbr;
 	}
 	public void setLockVerNbr(Integer lockVerNbr) {

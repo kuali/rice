@@ -45,7 +45,7 @@ public class SOAPConnector extends AbstractServiceConnector {
 		ObjectServiceFactory serviceFactory = new ObjectServiceFactory(new AegisBindingProvider());
 		XFireProxyFactory proxyFactory = new XFireProxyFactory();
 		Service serviceModel = serviceFactory.create(Class.forName(((SOAPServiceDefinition) getServiceInfo().getServiceDefinition()).getServiceInterface()));
-		Object service = proxyFactory.create(serviceModel, getServiceInfo().getEndpointUrl());
+		Object service = proxyFactory.create(serviceModel, getServiceInfo().getActualEndpointUrl());
 		configureClient(Client.getInstance(service));
 		return getServiceProxyWithFailureMode(service, this.getServiceInfo());
 	}

@@ -92,17 +92,20 @@ INSERT INTO KIM_PERSONS_T (ID, USERNAME, PASSWORD) VALUES (1, 'admin', 'admin')
 INSERT INTO NOTIFICATION_PRIORITIES
 (ID, NAME, DESCRIPTION, PRIORITY_ORDER)
 VALUES
-(1, 'Normal', 'Normal priority', 2)/
+(1, 'Normal', 'Normal priority', 2)
+/
 
 INSERT INTO NOTIFICATION_PRIORITIES
 (ID, NAME, DESCRIPTION, PRIORITY_ORDER)
 VALUES
-(2, 'Low', 'A low priority', 3)/
+(2, 'Low', 'A low priority', 3)
+/
 
 INSERT INTO NOTIFICATION_PRIORITIES
 (ID, NAME, DESCRIPTION, PRIORITY_ORDER)
 VALUES
-(3, 'High', 'A high priority', 1)/
+(3, 'High', 'A high priority', 1)
+/
 
 -- NOTIFICATION_CONTENT_TYPES --
 INSERT INTO NOTIFICATION_CONTENT_TYPES
@@ -147,7 +150,8 @@ element which is a String...about as simple as one can get -->
           <xsl:value-of select="." disable-output-escaping="yes"/>
       </strong>
    </xsl:template>
-</xsl:stylesheet>')/
+</xsl:stylesheet>')
+/
 
 INSERT INTO NOTIFICATION_CONTENT_TYPES
 (ID, NAME, DESCRIPTION, NAMESPACE, XSD, XSL)
@@ -235,9 +239,11 @@ to be accepted into the system. -->
 </xsl:stylesheet>')
 /
 -- KNS INSERTs
-insert into SH_PARM_TYP_T values ('CONFG', 3, 0,'Config',1)
+insert into SH_PARM_TYP_T values ('CONFG', 121223422, 0,'Config',1)
 /
-insert into SH_PARM_NMSPC_T values ('KR-NS', 3, 0, 'Kuali Rice', 1)
+insert into SH_PARM_TYP_T values ('AUTH', 121223423, 0,'Authorization',1)
+/
+insert into SH_PARM_NMSPC_T values ('KR-NS', 121223424, 0, 'Kuali Rice', 1)
 /
 INSERT INTO sh_parm_t 
 (SH_PARM_NMSPC_CD, SH_PARM_DTL_TYP_CD, SH_PARM_NM, SH_PARM_TYP_CD, SH_PARM_TXT, SH_PARM_DESC, SH_PARM_CONS_CD, WRKGRP_NM) 

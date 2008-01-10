@@ -1,12 +1,12 @@
 /*
  * Copyright 2006-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,8 +33,8 @@ import edu.iu.uis.eden.user.WorkflowUserId;
 
 /**
  * This class is the OJB implementation of the UniversalUserDao interface.
- * 
- * 
+ *
+ *
  */
 public class UniversalUserDaoOjb extends PlatformAwareDaoBaseOjb implements UniversalUserDao {
     public UniversalUser getUser(org.kuali.core.bo.user.UserId userId) throws UserNotFoundException {
@@ -55,7 +55,7 @@ public class UniversalUserDaoOjb extends PlatformAwareDaoBaseOjb implements Univ
         }
         return (UniversalUser) getPersistenceBrokerTemplate().getObjectByQuery(QueryFactory.newQuery(UniversalUser.class, criteria));
     }
-    
+
     public WorkflowUser getWorkflowUser(edu.iu.uis.eden.user.UserId userId) throws EdenUserNotFoundException {
         if ((userId == null) || userId.isEmpty()) {
             throw new EdenUserNotFoundException("Attempting to lookup user with null or empty id");
@@ -112,9 +112,9 @@ public class UniversalUserDaoOjb extends PlatformAwareDaoBaseOjb implements Univ
                 criteria.addLike("emailAddress", user.getEmailAddress().trim() + "%");
             }
         }
-        LookupUtils.applySearchResultsLimit(criteria, getDbPlatform());
+        LookupUtils.applySearchResultsLimit(org.kuali.core.workflow.bo.WorkflowUser.class, criteria, getDbPlatform());
         return new ArrayList(getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(org.kuali.core.workflow.bo.WorkflowUser.class, criteria)));
     }
-    
- 
+
+
 }

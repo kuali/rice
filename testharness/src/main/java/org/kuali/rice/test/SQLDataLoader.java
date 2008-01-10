@@ -37,84 +37,84 @@ public class SQLDataLoader {
     private String statement;
 
     public SQLDataLoader(String statement) {
-	this.fileLoc = null;
-	this.seperatorChar = null;
-	this.statement = statement;
+        this.fileLoc = null;
+        this.seperatorChar = null;
+        this.statement = statement;
     }
-    
+
     public SQLDataLoader(String fileLoc, String seperatorChar) {
-	this.fileLoc = fileLoc;
-	this.seperatorChar = seperatorChar;
-	this.statement = null;
+        this.fileLoc = fileLoc;
+        this.seperatorChar = seperatorChar;
+        this.statement = null;
     }
-    
+
     public void runSql() throws Exception {
-	String[] sqlStatements = null;
-	if (statement == null) {
-	    String sqlStatementsContent = getContentsAsString(fileLoc);
-	    sqlStatements = sqlStatementsContent.split(getSeperatorChar());
-	} else {
-	    sqlStatements = new String[]{statement};
-	}
-	final String[] finalSqlStatements = sqlStatements;
-	new TransactionTemplate(TestHarnessServiceLocator.getJtaTransactionManager()).execute(new TransactionCallback() {
-        public Object doInTransaction(TransactionStatus status) {
-        return new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute(new ConnectionCallback() {
-            public Object doInConnection(Connection connection) throws SQLException {
-            Statement statement = connection.createStatement();
-            LOG.info("################################");
-            LOG.info("#");
-            LOG.info("#");
-            for (String sqlStatement : finalSqlStatements) {
-                if (StringUtils.isNotBlank(sqlStatement)) {
-                LOG.info("# Executing sql statement ->" + sqlStatement + "<-");
-                statement.execute(sqlStatement);    
-                }            
-            }
-            LOG.info("#");
-            LOG.info("#");
-            LOG.info("################################");
-            statement.close();
-            return null;
+        String[] sqlStatements = null;
+        if (statement == null) {
+            String sqlStatementsContent = getContentsAsString(fileLoc);
+            sqlStatements = sqlStatementsContent.split(getSeperatorChar());
+        } else {
+            sqlStatements = new String[]{statement};
+        }
+        final String[] finalSqlStatements = sqlStatements;
+        new TransactionTemplate(TestHarnessServiceLocator.getJtaTransactionManager()).execute(new TransactionCallback() {
+            public Object doInTransaction(TransactionStatus status) {
+                return new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute(new ConnectionCallback() {
+                    public Object doInConnection(Connection connection) throws SQLException {
+                        Statement statement = connection.createStatement();
+                        LOG.info("################################");
+                        LOG.info("#");
+                        LOG.info("#");
+                        for (String sqlStatement : finalSqlStatements) {
+                            if (StringUtils.isNotBlank(sqlStatement)) {
+                                LOG.info("# Executing sql statement ->" + sqlStatement + "<-");
+                                statement.execute(sqlStatement);
+                            }
+                        }
+                        LOG.info("#");
+                        LOG.info("#");
+                        LOG.info("################################");
+                        statement.close();
+                        return null;
+                    }
+                });
             }
         });
-        }
-    });	
     }
 
     private String getContentsAsString(String fileLoc) throws Exception {
-	DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
-	String data = "";
-	BufferedReader reader = null;
-	try {
-	    reader = new BufferedReader(new InputStreamReader(resourceLoader.getResource(fileLoc).getInputStream()));
-	    String line = "";
-	    while ((line = reader.readLine()) != null) {
-		// discard comments...commented single line statements
-		// will result in errors when executed because there are no
-		// results
-		if (!line.trim().startsWith(SQL_LINE_COMMENT_PREFIX)) {
-		    data += line + " ";
-		}
-	    }
-	} finally {
-	    if (reader != null) {
-		try {
-		    reader.close();
-		} catch (Exception e) {
-		    LOG.error(e);
-		}
-	    }
+        DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+        String data = "";
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(resourceLoader.getResource(fileLoc).getInputStream()));
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                // discard comments...commented single line statements
+                // will result in errors when executed because there are no
+                // results
+                if (!line.trim().startsWith(SQL_LINE_COMMENT_PREFIX)) {
+                    data += line + " ";
+                }
+            }
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (Exception e) {
+                    LOG.error(e);
+                }
+            }
 
-	}
-	return data;
+        }
+        return data;
     }
 
     public String getSeperatorChar() {
-	if (this.seperatorChar == null) {
-	    return ";";
-	}
-	return seperatorChar;
+        if (this.seperatorChar == null) {
+            return ";";
+        }
+        return seperatorChar;
     }
 
 }

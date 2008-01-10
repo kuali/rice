@@ -410,13 +410,7 @@
 				<br/>
 			</xsl:if>
 		</xsl:if>
-		<xsl:if test="$globalReadOnly = 'true'  or $readOnly = 'true'">
-			<xsl:call-template name="hidden_input">			
-				<xsl:with-param name="fieldName" select="$fieldName"/>
-				<xsl:with-param name="value" select="$value"/>
-			</xsl:call-template>
-		</xsl:if>
-				<xsl:if test="$renderCmd='all' or $renderCmd='input'">
+		<xsl:if test="$renderCmd='all' or $renderCmd='input'">
 			<xsl:for-each select="current()/display/values">
 				<xsl:variable name="title">
 					<xsl:choose>
@@ -431,23 +425,28 @@
 				<xsl:variable name="optionName">
 					<xsl:value-of select="../../@name"/>
 				</xsl:variable>
+				<xsl:variable name="checked">
+					<xsl:choose>
+						<xsl:when test="$hasUserValue"><xsl:value-of select="//edlContent/data/version[@current='true']/field[@name=current()/../../@name and value=current()] = ."/></xsl:when>
+						<!-- use the default if no user values are specified -->
+						<xsl:when test=". = ../../value">true</xsl:when>
+						<xsl:otherwise>false</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:if test="($globalReadOnly = 'true'  or $readOnly = 'true') and $checked = 'true' ">
+					<xsl:call-template name="hidden_input">			
+						<xsl:with-param name="fieldName" select="$fieldName"/>
+						<xsl:with-param name="value" select="."/>
+					</xsl:call-template>
+				</xsl:if>
+				
   				<input type="{../type}" name="{$optionName}" value="{.}">
 					<xsl:if test="$globalReadOnly = 'true'  or $readOnly = 'true'">
 						<xsl:attribute name="disabled">disabled</xsl:attribute>
 					</xsl:if>
-					<xsl:choose>
-						<xsl:when test="$hasUserValue">
-							<xsl:if test="//edlContent/data/version[@current='true']/field[@name=current()/../../@name and value=current()]">
-								<xsl:attribute name="checked">checked</xsl:attribute>
-							</xsl:if>
-						</xsl:when>
-						<xsl:otherwise>
-							<!-- use the default if no user values are specified -->
-							<xsl:if test=". = ../../value">
-								<xsl:attribute name="checked">checked</xsl:attribute>
-							</xsl:if>
-						</xsl:otherwise>
-					</xsl:choose>
+					<xsl:if test="$checked = 'true'}">
+						<xsl:attribute name="checked">checked</xsl:attribute>
+					</xsl:if>
 				</input>
 				<xsl:value-of select="$title"/>
 				<xsl:if test="$align ='horizontal'">

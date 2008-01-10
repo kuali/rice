@@ -27,7 +27,6 @@ import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-
 public class KNSTestCase extends RiceTestCase {
 
 	private String contextName = "/SampleRiceClient";

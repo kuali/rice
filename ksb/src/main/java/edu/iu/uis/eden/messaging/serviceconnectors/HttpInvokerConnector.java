@@ -57,9 +57,9 @@ public class HttpInvokerConnector extends AbstractServiceConnector {
 	}
 	
 	public Object getService() throws Exception {
-	    LOG.debug("Getting connector for endpoint " + this.getServiceInfo().getEndpointUrl());
+	    LOG.debug("Getting connector for endpoint " + this.getServiceInfo().getActualEndpointUrl());
 		KEWHttpInvokerProxyFactoryBean client = new KEWHttpInvokerProxyFactoryBean();
-		client.setServiceUrl(this.getServiceInfo().getEndpointUrl());
+		client.setServiceUrl(this.getServiceInfo().getActualEndpointUrl());
 		client.setServiceInfo(this.getServiceInfo());
 		
 		KEWHttpInvokerRequestExecutor executor;

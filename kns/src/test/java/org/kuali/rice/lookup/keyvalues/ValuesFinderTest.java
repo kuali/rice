@@ -64,14 +64,9 @@ public class ValuesFinderTest extends WebTestBase {
      * @throws Exception
      */
     @Test public void testTravelAccountSelect() throws Exception {
+        final HtmlPage page = getPortalPage();
 
-	final WebClient webClient = new WebClient();
-        final URL url = new URL(HtmlUnitUtil.BASE_URL);
-        final HtmlPage page = (HtmlPage)webClient.getPage(url);
-        assertEquals("Rice Sample Client", page.getTitleText() );
-
-        final HtmlAnchor proposalTypeLink = (HtmlAnchor) page.getAnchorByName("travelAccountLookup");
-        final HtmlPage page2 = login(webClient, url, "Rice Sample Client", proposalTypeLink.getHrefAttribute());
+        HtmlPage page2 = clickOn(page, "travelAccountLookup");
 
         assertEquals("Kuali :: Lookup", page2.getTitleText());
 
@@ -93,13 +88,9 @@ public class ValuesFinderTest extends WebTestBase {
      * @throws Exception
      */
     @Test public void testTravelRequestTypesSelect() throws Exception {
-	final WebClient webClient = new WebClient();
-        final URL url = new URL(HtmlUnitUtil.BASE_URL);
-        final HtmlPage page = (HtmlPage)webClient.getPage(url);
-        assertEquals("Rice Sample Client", page.getTitleText() );
+        final HtmlPage page = getPortalPage();
 
-        final HtmlAnchor proposalTypeLink = (HtmlAnchor) page.getAnchorByName("createTravelRequest");
-        final HtmlPage page2 = login(webClient, url, "Rice Sample Client", proposalTypeLink.getHrefAttribute());
+        HtmlPage page2 = clickOn(page, "createTravelRequest");
 
         assertEquals("Kuali :: Travel Doc 2", page2.getTitleText());
 

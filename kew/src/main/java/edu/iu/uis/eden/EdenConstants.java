@@ -833,6 +833,7 @@ public class EdenConstants extends JSTLConstants {
     public static final String DONT_RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE = "NO";
     public static final String RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE = "YES";
     public static final String CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE = "CLEAR";
+    public static final String USE_REMOTE_IDENTITY_SERVICES = "Identity.useRemoteServices";
 }
 
 /*

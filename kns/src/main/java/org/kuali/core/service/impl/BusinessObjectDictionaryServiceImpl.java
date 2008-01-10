@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,13 +47,13 @@ import org.kuali.core.util.ObjectUtils;
  */
 public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictionaryService {
     private static Logger LOG = Logger.getLogger(BusinessObjectDictionaryServiceImpl.class);
-    
+
     private DataDictionaryService dataDictionaryService;
     private PersistenceStructureService persistenceStructureService;
-    
+
     /**
      * Uses the DataDictionaryService.
-     * 
+     *
      * @see org.kuali.core.service.BusinessObjectDictionaryService#getBusinessObjectEntries()
      */
     public List getBusinessObjectClassnames() {
@@ -227,7 +227,7 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
 
         return results;
     }
-    
+
 
     /**
      * @see org.kuali.core.service.BusinessObjectDictionaryService#getLookupResultFieldMaxLength(java.lang.Class, java.lang.String)
@@ -236,6 +236,14 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
         LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
         FieldDefinition field = lookupDefinition.getResultField(resultFieldName);
         return field.getMaxLength();
+    }
+
+    /**
+     * @see org.kuali.core.service.BusinessObjectDictionaryService#getLookupResultSetLimit(java.lang.Class)
+     */
+    public String getLookupResultSetLimit(Class businessObjectClass) {
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        return lookupDefinition.getResultSetLimit();
     }
 
     /**
@@ -251,19 +259,19 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
 
         return isRequired;
     }
-   
+
 
     /**
      * @see org.kuali.core.service.BusinessObjectDictionaryService#getInquiryFieldNames(java.lang.Class, java.lang.String)
      */
     public List getInquiryFieldNames(Class businessObjectClass, String sectionTitle) {
         List results = null;
-        
+
         InquirySectionDefinition inquirySection = getInquiryDefinition(businessObjectClass).getInquirySection(sectionTitle);
         if (inquirySection != null) {
             results = inquirySection.getInquiryFieldNames();
         }
-        
+
         return results;
     }
 
@@ -272,9 +280,9 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
      */
     public List getInquirySections(Class businessObjectClass) {
         List results = null;
-        
+
         results = getInquiryDefinition(businessObjectClass).getInquirySections();
-       
+
         return results;
     }
 
@@ -321,7 +329,7 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
     }
 
     /**
-     * 
+     *
      * @see org.kuali.core.service.BusinessObjectDictionaryService#getLookupableID(java.lang.Class)
      */
     public String getLookupableID(Class businessObjectClass) {
@@ -339,9 +347,9 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
     /**
      * Recurses down the updatable references and collections of a BO, uppercasing those attributes which are marked as needing to be
      * uppercased in the data dictionary.  Updatability of a reference or collection is defined by the PersistenceStructureService
-     * 
+     *
      * @param bo the BO to uppercase
-     * 
+     *
      * @see PersistenceStructureService#isCollectionUpdatable(Class, String)
      * @see PersistenceStructureService#isReferenceUpdatable(Class, String)
      * @see DataDictionaryService#getAttributeForceUppercase(Class, String)
@@ -413,7 +421,7 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
 
     /**
      * Sets the instance of the data dictionary service.
-     * 
+     *
      * @param dataDictionaryService
      */
     public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
@@ -422,7 +430,7 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
 
     /**
      * This method retrieves the instance of the data dictionary service.
-     * 
+     *
      * @return An instance of the DataDictionaryService.
      */
     public DataDictionaryService getDataDictionaryService() {

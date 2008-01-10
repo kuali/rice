@@ -142,7 +142,7 @@ public interface Config {
 	public static final String ENABLE_EMAIL_REMINDER_LIFECYCLE = "email.reminder.lifecycle.enabled";
 	public static final String ENABLE_XML_PIPELINE_LIFECYCLE = "xml.pipeline.lifecycle.enabled";
 	
-	public static final String OUT_BOX_MODE = "actionlist.outbox.off";
+	public static final String OUT_BOX_MODE = "actionlist.outbox";
 	public static final String OUT_BOX_DEFAULT_PREFERENCE_ON = "actionlist.outbox.default.preference.on";
 
 	public void parseConfig() throws IOException;

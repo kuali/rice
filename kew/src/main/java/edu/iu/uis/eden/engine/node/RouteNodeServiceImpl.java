@@ -189,17 +189,19 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         return nodeNames;
     }
     
-    public Set findFutureNodeNames(Long documentId) {
+    public List<String> findFutureNodeNames(Long documentId) {
         List currentNodeInstances = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(documentId);
         List nodes = new ArrayList();
         for (Iterator iterator = currentNodeInstances.iterator(); iterator.hasNext();) {
             RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
             nodes.addAll(nodeInstance.getRouteNode().getNextNodes());
         }
-        Set nodeNames = new HashSet();
+        List<String> nodeNames = new ArrayList<String>();
         while (!nodes.isEmpty()) {
             RouteNode node = (RouteNode)nodes.remove(0);
-            nodeNames.add(node.getRouteNodeName());
+            if (!nodeNames.contains(node.getRouteNodeName())) {
+        	nodeNames.add(node.getRouteNodeName());
+            }
             nodes.addAll(node.getNextNodes());
         }
         return nodeNames;

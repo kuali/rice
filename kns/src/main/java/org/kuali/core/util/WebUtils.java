@@ -78,6 +78,9 @@ public class WebUtils {
                 if (parameterName.startsWith(RiceConstants.DISPATCH_REQUEST_PARAMETER) && parameterName.endsWith(".x")) {
                     methodToCall = StringUtils.substringBetween(parameterName, RiceConstants.DISPATCH_REQUEST_PARAMETER + ".", ".");
                     request.setAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE, parameterName);
+                    // Fix for KRACOEUS-267, KULRICE-1412, KULRICE-1425, and KFSMI-110
+                    // Add this to return the method to call once it is matched
+                    break; 
                 } else { 
                     // KULRICE-1218: Check if the parameter's values match (not just the name)
                     for (String value : request.getParameterValues(parameterName)) {

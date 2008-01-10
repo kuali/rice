@@ -49,6 +49,7 @@ public class TempEmbeddedLifeCycle extends BaseCompositeLifecycle {
         }
     	lifecycles.add(new SpringLifeCycle(springLocation));
     	lifecycles.add(new WebApplicationGlobalResourceLifecycle());
+    	lifecycles.add(new ExportOverridableServicesLifecycle());
     	if (Core.getCurrentContextConfig().getXmlPipelineLifeCycleEnabled()) {
             lifecycles.add(new XmlPipelineLifeCycle());
     	}

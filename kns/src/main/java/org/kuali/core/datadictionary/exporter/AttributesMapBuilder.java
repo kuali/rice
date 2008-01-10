@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.core.datadictionary.AttributeDefinition;
 import org.kuali.core.datadictionary.DataDictionaryEntryBase;
 import org.kuali.core.datadictionary.control.ControlDefinition;
@@ -26,8 +27,8 @@ import org.kuali.core.datadictionary.control.CurrencyControlDefinition;
 
 /**
  * AttributesMapBuilder
- * 
- * 
+ *
+ *
  */
 public class AttributesMapBuilder {
 
@@ -74,7 +75,7 @@ public class AttributesMapBuilder {
         }
 
         attributeMap.set("required", attribute.isRequired().toString());
-        if (attribute.getSummary() != null) { 
+        if (attribute.getSummary() != null) {
             attributeMap.set("summary", attribute.getSummary());
         }
         if (attribute.getDescription() != null) {
@@ -88,12 +89,12 @@ public class AttributesMapBuilder {
         if (attribute.hasValidationPattern()) {
             attributeMap.set(attribute.getValidationPattern().buildExportMap("validationPattern"));
         }
-        
+
         if (attribute.hasDisplayMask()) {
             attributeMap.set("displayWorkgroup", attribute.getDisplayWorkgroup());
             attributeMap.set("displayMaskClass",attribute.getDisplayMask().getClass().toString());
         }
-        
+
         attributeMap.set(buildControlMap(attribute));
         attributeMap.set("fullClassName", fullClassName);
 
@@ -117,10 +118,34 @@ public class AttributesMapBuilder {
         else if (control.isRadio()) {
             controlMap.set("radio", "true");
             controlMap.set("valuesFinder", control.getValuesFinderClass().getName());
+            if (control.getBusinessObjectClass() != null) {
+                controlMap.set("businessObject", control.getBusinessObjectClass().getName());
+            }
+            if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
+                controlMap.set("keyAttribute", control.getKeyAttribute());
+            }
+            if (StringUtils.isNotEmpty(control.getLabelAttribute())) {
+                controlMap.set("labelAttribute", control.getLabelAttribute());
+            }
+            if (control.getIncludeKeyInLabel() != null) {
+                controlMap.set("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
+            }
         }
         else if (control.isSelect()) {
             controlMap.set("select", "true");
             controlMap.set("valuesFinder", control.getValuesFinderClass().getName());
+            if (control.getBusinessObjectClass() != null) {
+                controlMap.set("businessObject", control.getBusinessObjectClass().getName());
+            }
+            if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
+                controlMap.set("keyAttribute", control.getKeyAttribute());
+            }
+            if (StringUtils.isNotEmpty(control.getLabelAttribute())) {
+                controlMap.set("labelAttribute", control.getLabelAttribute());
+            }
+            if (control.getIncludeKeyInLabel() != null) {
+                controlMap.set("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
+            }
         }
         else if (control.isText()) {
             controlMap.set("text", "true");
@@ -142,7 +167,7 @@ public class AttributesMapBuilder {
         else if (control.isLookupReadonly()) {
             controlMap.set("lookupReadonly", "true");
         }
-        
+
         return controlMap;
     }
 }

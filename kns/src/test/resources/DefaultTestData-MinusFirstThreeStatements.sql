@@ -1,10 +1,3 @@
-
---insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (1, 'fred')
---;
---insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (2, 'fran')
---;
---insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (3, 'frank')
---;
 insert into TRV_ACCT_TYPE values ('CAT', 'Clearing Account Type')
 ;
 insert into TRV_ACCT_TYPE values ('EAT', 'Expense Account Type')
@@ -28,14 +21,6 @@ insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a1')
 insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a2')
 ;
 insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a3')
-;
-insert into en_wrkgrp_t values (1,1,'WorkflowAdmin',1,'W','Workflow Administrator Workgroup',1,-1,0)
-;
-insert into EN_WRKGRP_MBR_T (WRKGRP_MBR_PRSN_EN_ID, WRKGRP_ID, WRKGRP_MBR_TYP, WRKGRP_VER_NBR, DB_LOCK_VER_NBR)
-values ('quickstart',1,'U',1,0)
-;
-insert into EN_WRKGRP_MBR_T (WRKGRP_MBR_PRSN_EN_ID, WRKGRP_ID, WRKGRP_MBR_TYP, WRKGRP_VER_NBR, DB_LOCK_VER_NBR)
-values ('user4',1,'U',1,0)
 ;
 INSERT INTO FP_DOC_GROUP_T VALUES ('TR', '054EDFB3B260C8D2E043814FD881C8D2', 1,	'Travel Documents', null)
 ;

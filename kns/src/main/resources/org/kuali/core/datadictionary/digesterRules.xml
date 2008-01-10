@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <!--
  Copyright 2005-2007 The Kuali Foundation.
- 
+
  Licensed under the Educational Community License, Version 1.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.opensource.org/licenses/ecl1.php
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<!DOCTYPE digester-rules 
-    PUBLIC "-//Jakarta Apache //DTD digester-rules XML V1.0//EN" 
+<!DOCTYPE digester-rules
+    PUBLIC "-//Jakarta Apache //DTD digester-rules XML V1.0//EN"
     "http://jakarta.apache.org/commons/digester/dtds/digester-rules.dtd">
 
 <digester-rules>
@@ -46,7 +46,7 @@
                     <pattern value="inquiryFields/inquirySubSectionHeader">
                         <object-create-rule classname="org.kuali.core.datadictionary.InquirySubSectionHeaderDefinition" />
                         <set-properties-rule />
-    
+
                         <set-next-rule methodname="addInquiryField" />
                     </pattern>
 
@@ -59,42 +59,42 @@
                         <set-properties-rule />
                         <pattern value="fieldAuthorization">
                           <call-method-rule pattern="displayEditMode" methodname="setDisplayEditMode" paramcount="0" />
-                          
+
                           <pattern value="displayMask">
                               <object-create-rule classname="org.kuali.core.datadictionary.mask.Mask" />
-                              
+
                               <pattern value="maskLiteral">
                                  <object-create-rule classname="org.kuali.core.datadictionary.mask.MaskFormatterLiteral" />
                                  <set-properties-rule />
-                                 
+
                                  <set-next-rule methodname="setMaskFormatter" />
                               </pattern>
-                              
+
                               <pattern value="maskTo">
                                  <object-create-rule classname="org.kuali.core.datadictionary.mask.MaskFormatterSubString" />
                                  <set-properties-rule />
-                                 
+
                                  <set-next-rule methodname="setMaskFormatter" />
                               </pattern>
-                              
+
                               <call-method-rule pattern="maskFormatterClass" methodname="setMaskFormatterClass" paramcount="0" paramtypes="java.lang.Class"/>
-                              
+
                               <set-next-rule methodname="setDisplayMask" />
-                          </pattern> 
-                                 
+                          </pattern>
+
                         </pattern>
-                        
+
                         <pattern value="inquirySubSectionHeader">
                         <object-create-rule classname="org.kuali.core.datadictionary.InquirySubSectionHeaderDefinition" />
                         <set-properties-rule />
-    
+
                         <set-next-rule methodname="addInquiryField" />
                     </pattern>
-                        
+
 
                         <set-next-rule methodname="addInquiryField" />
                       </pattern>
-                      
+
                       <pattern value="inquiryCollection">
                         <object-create-rule classname="org.kuali.core.datadictionary.InquiryCollectionDefinition" />
                         <set-properties-rule />
@@ -104,29 +104,29 @@
                           <set-properties-rule />
                           <pattern value="fieldAuthorization">
                             <call-method-rule pattern="displayEditMode" methodname="setDisplayEditMode" paramcount="0" />
-                            
+
                             <pattern value="displayMask">
                                 <object-create-rule classname="org.kuali.core.datadictionary.mask.Mask" />
-                                
+
                                 <pattern value="maskLiteral">
                                    <object-create-rule classname="org.kuali.core.datadictionary.mask.MaskFormatterLiteral" />
                                    <set-properties-rule />
-                                   
+
                                    <set-next-rule methodname="setMaskFormatter" />
                                 </pattern>
-                                
+
                                 <pattern value="maskTo">
                                    <object-create-rule classname="org.kuali.core.datadictionary.mask.MaskFormatterSubString" />
                                    <set-properties-rule />
-                                   
+
                                    <set-next-rule methodname="setMaskFormatter" />
                                 </pattern>
-                                
+
                                 <call-method-rule pattern="maskFormatterClass" methodname="setMaskFormatterClass" paramcount="0" paramtypes="java.lang.Class"/>
-                                
+
                                 <set-next-rule methodname="setDisplayMask" />
-                            </pattern> 
-                                   
+                            </pattern>
+
                           </pattern>
 
                           <set-next-rule methodname="addInquiryField" />
@@ -135,27 +135,27 @@
                         <pattern value="inquirySubSectionHeader">
                             <object-create-rule classname="org.kuali.core.datadictionary.InquirySubSectionHeaderDefinition" />
                             <set-properties-rule />
-        
+
                             <set-next-rule methodname="addInquiryField" />
                         </pattern>
 
                         <set-next-rule methodname="addInquiryCollection"/>
                       </pattern>
-                    
-                      
+
+
                       <pattern value="inquirySummaryFields/inquirySummaryField">
                         <object-create-rule classname="org.kuali.core.datadictionary.FieldDefinition" />
                         <set-properties-rule />
-                      
+
                         <set-next-rule methodname="addSummaryField" />
                     </pattern>
-                        
+
                       <set-next-rule methodname="addInquiryField" />
                     </pattern>
 
                     <set-next-rule methodname="addInquirySection" />
-                  </pattern>  
-                  
+                  </pattern>
+
                   <set-next-rule methodname="setInquiryDefinition" />
             </pattern>
 
@@ -197,6 +197,8 @@
                     <set-next-rule methodname="addResultField" />
                 </pattern>
 
+                <call-method-rule pattern="resultSetLimit" methodname="setResultSetLimit" paramcount="0" />
+
                 <call-method-rule pattern="extraButton/extraButtonSource" methodname="setExtraButtonSource" paramcount="0" />
                 <call-method-rule pattern="extraButton/extraButtonParams" methodname="setExtraButtonParams" paramcount="0" />
 
@@ -226,32 +228,32 @@
 
                     <call-method-rule pattern="summary" methodname="setSummary" paramcount="0" />
                     <call-method-rule pattern="description" methodname="setDescription" paramcount="0" />
-                    
+
                     <pattern value="attributeAuthorization">
                       <call-method-rule pattern="displayWorkgroup" methodname="setDisplayWorkgroup" paramcount="0" />
-                      
+
                       <pattern value="displayMask">
                           <object-create-rule classname="org.kuali.core.datadictionary.mask.Mask" />
-                          
+
                           <pattern value="maskLiteral">
                              <object-create-rule classname="org.kuali.core.datadictionary.mask.MaskFormatterLiteral" />
                              <set-properties-rule />
-                             
+
                              <set-next-rule methodname="setMaskFormatter" />
                           </pattern>
-                          
+
                           <pattern value="maskTo">
                              <object-create-rule classname="org.kuali.core.datadictionary.mask.MaskFormatterSubString" />
                              <set-properties-rule />
-                             
+
                              <set-next-rule methodname="setMaskFormatter" />
                           </pattern>
-                          
+
                           <call-method-rule pattern="maskFormatterClass" methodname="setMaskFormatterClass" paramcount="0" paramtypes="java.lang.Class"/>
-                          
+
                           <set-next-rule methodname="setDisplayMask" />
-                      </pattern> 
-                             
+                      </pattern>
+
                     </pattern>
 
                     <call-method-rule pattern="formatterClass" methodname="setFormatterClass" paramcount="0" paramtypes="java.lang.Class" />
@@ -282,29 +284,29 @@
 
                     <pattern value="attributeAuthorization">
                       <call-method-rule pattern="displayWorkgroup" methodname="setDisplayWorkgroup" paramcount="0" />
-                      
+
                       <pattern value="displayMask">
                           <object-create-rule classname="org.kuali.core.datadictionary.mask.Mask" />
-                          
+
                           <pattern value="maskLiteral">
                              <object-create-rule classname="org.kuali.core.datadictionary.mask.MaskFormatterLiteral" />
                              <set-properties-rule />
-                             
+
                              <set-next-rule methodname="setMaskFormatter" />
                           </pattern>
-                          
+
                           <pattern value="maskTo">
                              <object-create-rule classname="org.kuali.core.datadictionary.mask.MaskFormatterSubString" />
                              <set-properties-rule />
-                             
+
                              <set-next-rule methodname="setMaskFormatter" />
                           </pattern>
-                          
+
                           <call-method-rule pattern="maskFormatterClass" methodname="setMaskFormatterClass" paramcount="0" paramtypes="java.lang.Class"/>
-                          
+
                           <set-next-rule methodname="setDisplayMask" />
-                      </pattern> 
-                             
+                      </pattern>
+
                     </pattern>
 
                     <call-method-rule pattern="formatterClass" methodname="setFormatterClass" paramcount="0" paramtypes="java.lang.Class" />
@@ -340,13 +342,13 @@
                     <pattern value="primitiveAttribute">
                         <object-create-rule classname="org.kuali.core.datadictionary.PrimitiveAttributeDefinition" />
                         <set-properties-rule />
-                        
+
                         <set-next-rule methodname="addPrimitiveAttributeDefinition" />
                     </pattern>
                     <pattern value="supportAttribute">
                         <object-create-rule classname="org.kuali.core.datadictionary.SupportAttributeDefinition" />
                         <set-properties-rule />
-                        
+
                         <set-next-rule methodname="addSupportAttributeDefinition" />
                     </pattern>
 
@@ -356,7 +358,7 @@
 
             <call-method-rule pattern="objectLabel" methodname="setObjectLabel" paramcount="0" />
             <call-method-rule pattern="objectDescription" methodname="setObjectDescription" paramcount="0" />
-            
+
             <pattern value="objectHelp">
                 <object-create-rule classname="org.kuali.core.datadictionary.HelpDefinition" />
                 <set-properties-rule />
@@ -380,7 +382,7 @@
 
             <call-method-rule pattern="businessRulesClass" methodname="setBusinessRulesClass" paramcount="0" paramtypes="java.lang.Class" />
             <call-method-rule pattern="preRulesCheckClass" methodname="setPreRulesCheckClass" paramcount="0" paramtypes="java.lang.Class" />
-            
+
             <call-method-rule pattern="allowsNewOrCopy" methodname="setAllowsNewOrCopy" paramcount="0" paramtypes="java.lang.Boolean"/>
 
             <call-method-rule pattern="documentAuthorizerClass" methodname="setDocumentAuthorizerClass" paramcount="0" paramtypes="java.lang.Class" />
@@ -395,7 +397,7 @@
 
             <call-method-rule pattern="summary" methodname="setSummary" paramcount="0" />
             <call-method-rule pattern="description" methodname="setDescription" paramcount="0" />
-            
+
             <call-method-rule pattern="displayTopicFieldInNotes" methodname="setDisplayTopicFieldInNotes" paramcount="0" paramtypes="java.lang.Boolean" />
 
             <pattern value="help">
@@ -416,7 +418,7 @@
 
                 	<call-method-rule pattern="navigateTo" methodname="setHeaderTabNavigateTo" paramcount="0" />
                 	<call-method-rule pattern="displayName" methodname="setHeaderTabDisplayName" paramcount="0" />
-                	
+
                 	<pattern value="pageHelp">
                 		<object-create-rule classname="org.kuali.core.datadictionary.HelpDefinition" />
                 		<set-properties-rule />
@@ -463,37 +465,37 @@
 
                     <call-method-rule pattern="defaultValue" methodname="setDefaultValue" paramcount="0" />
                     <call-method-rule pattern="defaultValueFinderClass" methodname="setDefaultValueFinderClass" paramcount="0" paramtypes="java.lang.Class" />
-                  
+
                     <pattern value="fieldAuthorization">
                       <call-method-rule pattern="displayEditMode" methodname="setDisplayEditMode" paramcount="0" />
-                      
+
                       <pattern value="displayMask">
                           <object-create-rule classname="org.kuali.core.datadictionary.mask.Mask" />
-                          
+
                           <pattern value="maskLiteral">
                              <object-create-rule classname="org.kuali.core.datadictionary.mask.MaskFormatterLiteral" />
                              <set-properties-rule />
-                             
+
                              <set-next-rule methodname="setMaskFormatter" />
                           </pattern>
-                          
+
                           <pattern value="maskTo">
                              <object-create-rule classname="org.kuali.core.datadictionary.mask.MaskFormatterSubString" />
                              <set-properties-rule />
-                             
+
                              <set-next-rule methodname="setMaskFormatter" />
                           </pattern>
-                          
+
                           <call-method-rule pattern="maskFormatterClass" methodname="setMaskFormatterClass" paramcount="0" paramtypes="java.lang.Class"/>
-                          
+
                           <set-next-rule methodname="setDisplayMask" />
-                      </pattern> 
-                             
+                      </pattern>
+
                     </pattern>
-                    
-                    <call-method-rule pattern="overrideLookupClass" methodname="setOverrideLookupClass" paramcount="0" paramtypes="java.lang.Class" />              
-                    <call-method-rule pattern="overrideFieldConversions" methodname="setOverrideFieldConversions" paramcount="0"/>              
-                    
+
+                    <call-method-rule pattern="overrideLookupClass" methodname="setOverrideLookupClass" paramcount="0" paramtypes="java.lang.Class" />
+                    <call-method-rule pattern="overrideFieldConversions" methodname="setOverrideFieldConversions" paramcount="0"/>
+
                     <set-next-rule methodname="addMaintainableItem" />
                 </pattern>
 
@@ -502,7 +504,7 @@
                     <set-properties-rule />
 
                     <call-method-rule pattern="name" methodname="setName" paramcount="0" />
-                    
+
                     <set-next-rule methodname="addMaintainableItem" />
                 </pattern>
 
@@ -519,40 +521,40 @@
 
                       <pattern value="fieldAuthorization">
                       <call-method-rule pattern="displayEditMode" methodname="setDisplayEditMode" paramcount="0" />
-                      
+
                       <pattern value="displayMask">
                           <object-create-rule classname="org.kuali.core.datadictionary.mask.Mask" />
-                          
+
                           <pattern value="maskLiteral">
                              <object-create-rule classname="org.kuali.core.datadictionary.mask.MaskFormatterLiteral" />
                              <set-properties-rule />
-                             
+
                              <set-next-rule methodname="setMaskFormatter" />
                           </pattern>
-                          
+
                           <pattern value="maskTo">
                              <object-create-rule classname="org.kuali.core.datadictionary.mask.MaskFormatterSubString" />
                              <set-properties-rule />
-                             
+
                              <set-next-rule methodname="setMaskFormatter" />
                           </pattern>
-                          
+
                           <call-method-rule pattern="maskFormatterClass" methodname="setMaskFormatterClass" paramcount="0" paramtypes="java.lang.Class"/>
-                          
+
                           <set-next-rule methodname="setDisplayMask" />
-                      </pattern> 
-                             
+                      </pattern>
+
                      </pattern>
-                     
-                        <call-method-rule pattern="overrideLookupClass" methodname="setOverrideLookupClass" paramcount="0" paramtypes="java.lang.Class" />              
-                        <call-method-rule pattern="overrideFieldConversions" methodname="setOverrideFieldConversions" paramcount="0"/>              
-            
+
+                        <call-method-rule pattern="overrideLookupClass" methodname="setOverrideLookupClass" paramcount="0" paramtypes="java.lang.Class" />
+                        <call-method-rule pattern="overrideFieldConversions" methodname="setOverrideFieldConversions" paramcount="0"/>
+
                         <set-next-rule methodname="addMaintainableField" />
                     </pattern>
-					
-					
-					
-					<!-- TODO: look into a way to do this recursively --> 
+
+
+
+					<!-- TODO: look into a way to do this recursively -->
                         <pattern value="maintainableCollection">
                         	<object-create-rule classname="org.kuali.core.datadictionary.MaintainableCollectionDefinition" />
                         	<set-properties-rule />
@@ -566,66 +568,66 @@
 
                       <pattern value="fieldAuthorization">
                       <call-method-rule pattern="displayEditMode" methodname="setDisplayEditMode" paramcount="0" />
-                      
+
                       <pattern value="displayMask">
                           <object-create-rule classname="org.kuali.core.datadictionary.mask.Mask" />
-                          
+
                           <pattern value="maskLiteral">
                              <object-create-rule classname="org.kuali.core.datadictionary.mask.MaskFormatterLiteral" />
                              <set-properties-rule />
-                             
+
                              <set-next-rule methodname="setMaskFormatter" />
                           </pattern>
-                          
+
                           <pattern value="maskTo">
                              <object-create-rule classname="org.kuali.core.datadictionary.mask.MaskFormatterSubString" />
                              <set-properties-rule />
-                             
+
                              <set-next-rule methodname="setMaskFormatter" />
                           </pattern>
-                          
+
                           <call-method-rule pattern="maskFormatterClass" methodname="setMaskFormatterClass" paramcount="0" paramtypes="java.lang.Class"/>
-                          
+
                           <set-next-rule methodname="setDisplayMask" />
-                      </pattern> 
-                             
+                      </pattern>
+
                        </pattern>
-                       
-                        <call-method-rule pattern="overrideLookupClass" methodname="setOverrideLookupClass" paramcount="0" paramtypes="java.lang.Class" />              
-                        <call-method-rule pattern="overrideFieldConversions" methodname="setOverrideFieldConversions" paramcount="0"/>              
+
+                        <call-method-rule pattern="overrideLookupClass" methodname="setOverrideLookupClass" paramcount="0" paramtypes="java.lang.Class" />
+                        <call-method-rule pattern="overrideFieldConversions" methodname="setOverrideFieldConversions" paramcount="0"/>
 
                         <set-next-rule methodname="addMaintainableField" />
                     </pattern>
                     <pattern value="summaryFields/summaryField">
                 	<object-create-rule classname="org.kuali.core.datadictionary.MaintainableFieldDefinition" />
                     <set-properties-rule />
-						      
+
                     <set-next-rule methodname="addSummaryField" />
                 </pattern>
-                
+
                 <pattern value="duplicateIdentificationFields/duplicateIdentificationField">
                 	<object-create-rule classname="org.kuali.core.datadictionary.MaintainableFieldDefinition" />
                     <set-properties-rule />
-						      
+
                     <set-next-rule methodname="addDuplicateIdentificationField" />
                 </pattern>
-                
+
                  <set-next-rule methodname="addMaintainableCollection" />
                 </pattern>
 				<pattern value="summaryFields/summaryField">
                 	<object-create-rule classname="org.kuali.core.datadictionary.MaintainableFieldDefinition" />
                     <set-properties-rule />
-						      
+
                     <set-next-rule methodname="addSummaryField" />
                 </pattern>
 				<pattern value="duplicateIdentificationFields/duplicateIdentificationField">
                 	<object-create-rule classname="org.kuali.core.datadictionary.MaintainableFieldDefinition" />
                     <set-properties-rule />
-						      
+
                     <set-next-rule methodname="addDuplicateIdentificationField" />
-                </pattern>					
-					
-					
+                </pattern>
+
+
                     <set-next-rule methodname="addMaintainableItem" />
                 </pattern>
 
@@ -656,7 +658,7 @@
             <call-method-rule pattern="description" methodname="setDescription" paramcount="0" />
 
             <call-method-rule pattern="allowsCopy" methodname="setAllowsCopy" paramcount="0" paramtypes="java.lang.Boolean" />
-            
+
             <pattern value="headerNavigation">
             	<pattern value="headerNavigationTab">
             		<object-create-rule classname="org.kuali.core.datadictionary.HeaderNavigation" />
@@ -664,7 +666,7 @@
 
                 	<call-method-rule pattern="navigateTo" methodname="setHeaderTabNavigateTo" paramcount="0" />
                 	<call-method-rule pattern="displayName" methodname="setHeaderTabDisplayName" paramcount="0" />
-                	
+
                 	<pattern value="pageHelp">
                 		<object-create-rule classname="org.kuali.core.datadictionary.HelpDefinition" />
                 		<set-properties-rule />
@@ -679,12 +681,12 @@
                 	<set-next-rule methodname="addHeaderNavigation" />
                 </pattern>
             </pattern>
-            
+
             <call-method-rule pattern="allowsErrorCorrection" methodname="setAllowsErrorCorrection" paramcount="0" paramtypes="java.lang.Boolean" />
-            
+
             <call-method-rule pattern="allowsNoteDelete" methodname="setAllowsNoteDelete" paramcount="0" paramtypes="java.lang.Boolean" />
             <call-method-rule pattern="attachmentTypesValuesFinderClass" methodname="setAttachmentTypesValuesFinderClass" paramcount="0" paramtypes="java.lang.Class" />
-            
+
             <call-method-rule pattern="displayTopicFieldInNotes" methodname="setDisplayTopicFieldInNotes" paramcount="0" paramtypes="java.lang.Boolean" />
 
             <pattern value="help">

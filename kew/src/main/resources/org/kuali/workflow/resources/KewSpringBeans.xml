@@ -680,7 +680,13 @@
 		</property>
 	</bean>
 
-	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
+<!-- Because these services are commonly overridden by the Institutional Plugin if we just inject
+     enUserService or enWorkgroupService here we won't get the overridden version of the service.
+     There's really a larger issue here that needs to be addressed regarding the resource loading
+     and the plugin framework in this case.  In the meantime, these exporters have been moved to the
+   	 ExportOverridableServicesLifecycle
+   	 
+	<bean class="edu.iu.uis.eden.messaging.PropertyConditionalKSBExporter">
 		<property name="serviceDefinition">
         <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
           <property name="service">
@@ -691,9 +697,10 @@
           <property name="localServiceName" value="enUserService" />
         </bean>
 		</property>
+		<property name="propertyName" value="Identity.useRemoteServices"/>
 	</bean>
 
-	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
+	<bean class="edu.iu.uis.eden.messaging.PropertyConditionalKSBExporter">
 		<property name="serviceDefinition">
         <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
           <property name="service">
@@ -704,7 +711,9 @@
           <property name="localServiceName" value="enWorkgroupService" />
         </bean>
           </property>
+          <property name="propertyName" value="Identity.useRemoteServices"/>
         </bean>
+-->
 
 	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
 		<property name="serviceDefinition">

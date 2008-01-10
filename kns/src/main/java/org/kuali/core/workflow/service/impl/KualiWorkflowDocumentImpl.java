@@ -490,7 +490,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument {
             throw new IllegalArgumentException("invalid (null) user");
         }
 
-        return StringUtils.equalsIgnoreCase(getInitiatorUuId(), user.getPersonUniversalIdentifier());
+        return StringUtils.equalsIgnoreCase(getInitiatorNetworkId(), user.getPersonUserIdentifier());
     }
 
     /**
@@ -502,7 +502,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument {
             throw new IllegalArgumentException("invalid (null) user");
         }
 
-        return StringUtils.equalsIgnoreCase(getRoutedByUserUuId(), user.getPersonUniversalIdentifier());
+        return StringUtils.equalsIgnoreCase(getRoutedByUserNetworkId(), user.getPersonUserIdentifier());
     }
 
     public String[] getNodeNames() throws WorkflowException {

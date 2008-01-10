@@ -75,7 +75,13 @@ public interface RouteNodeService {
     public List findRouteNodeInstances(Long documentId);
     public List findProcessNodeInstances(RouteNodeInstance process);
     public Set findPreviousNodeNames(Long documentId);
-    public Set findFutureNodeNames(Long documentId);
+    
+    /**
+     * Returns a List of the distinct node names through which this document might pass in it's future 
+     * routing.  In certain cases this will be an approximation based on what the system knows at the
+     * time of execution. 
+     */
+    public List<String> findFutureNodeNames(Long documentId);
     
     /**
      * Flatten all the document types route nodes into a single List.  This includes all processes 

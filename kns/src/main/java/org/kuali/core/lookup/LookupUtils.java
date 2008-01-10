@@ -1,12 +1,12 @@
 /*
  * Copyright 2006-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,8 +49,8 @@ import org.kuali.rice.KNSServiceLocator;
 
 /**
  * This is a static utility class for Lookup related utilities and helper methods.
- * 
- * 
+ *
+ *
  */
 public class LookupUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupUtils.class);
@@ -85,15 +85,15 @@ public class LookupUtils {
     }
 
     /**
-     * 
+     *
      * This method uses the DataDictionary to determine whether to force uppercase the value, and if it should, then it does the
      * uppercase, and returns the upper-cased value.
-     * 
+     *
      * @param boClass Parent BO class that the fieldName is a member of.
      * @param fieldName Name of the field to be forced to uppercase.
      * @param fieldValue Value of the field that may be uppercased.
      * @return The correctly uppercased fieldValue if it should be uppercased, otherwise fieldValue is returned unchanged.
-     * 
+     *
      */
     public static String forceUppercase(Class boClass, String fieldName, String fieldValue) {
 
@@ -132,14 +132,14 @@ public class LookupUtils {
     }
 
     /**
-     * 
+     *
      * This method uses the DataDictionary to determine whether to force uppercase the values, and if it should, then it does the
      * uppercase, and returns the upper-cased Map of fieldname/fieldValue pairs.
-     * 
+     *
      * @param boClass Parent BO class that the fieldName is a member of.
      * @param fieldValues A Map<String,String> where the key is the fieldName and the value is the fieldValue.
      * @return The same Map is returned, with the appropriate values uppercased (if any).
-     * 
+     *
      */
     public static Map<String, String> forceUppercase(Class boClass, Map<String, String> fieldValues) {
         if (boClass == null) {
@@ -158,11 +158,27 @@ public class LookupUtils {
         return fieldValues;
     }
 
-    public static void applySearchResultsLimit(Criteria criteria, KualiDBPlatform platform) {
-        Integer limit = getApplicationSearchResultsLimit();
+    public static void applySearchResultsLimit(Class businessObjectClass, Criteria criteria, KualiDBPlatform platform) {
+        Integer limit = getSearchResultsLimit(businessObjectClass);
         if (limit != null) {
             platform.applyLimit(limit, criteria);
         }
+    }
+
+    /**
+     * This method parses and returns the lookup result set limit, checking first for the limit
+     * for the BO being looked up, and then the global application limit if there isn't a limit
+     * specific to this BO.
+     *
+     * @param businessObjectClass
+     * @return result set limit (or null if there isn't one)
+     */
+    public static Integer getSearchResultsLimit(Class businessObjectClass) {
+        Integer limit = getBusinessObjectSearchResultsLimit(businessObjectClass);
+        if (limit == null) {
+            limit = getApplicationSearchResultsLimit();
+        }
+        return limit;
     }
 
     public static Integer getApplicationSearchResultsLimit() {
@@ -172,10 +188,24 @@ public class LookupUtils {
         }
         return null;
     }
-    
+
+    /**
+     * This method parses and returns the lookup result set limit for the passed in BO (if one exists)
+     *
+     * @param businessObjectClass
+     * @return result set limit for this BO (or null if the BO doesn't have a limit)
+     */
+    private static Integer getBusinessObjectSearchResultsLimit(Class businessObjectClass) {
+        String limitString = businessObjectDictionaryService.getLookupResultSetLimit(businessObjectClass);
+        if (limitString != null) {
+            return Integer.valueOf(limitString);
+        }
+        return null;
+    }
+
     /**
      * This method the maximum rows per page in a multiple value lookup
-     * 
+     *
      * @see org.kuali.RiceConstants.SystemGroupParameterNames#MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE
      * @return
      */
@@ -186,10 +216,10 @@ public class LookupUtils {
         }
         return null;
     }
-    
+
     /**
      * This makes a , delimited String list of fields separated by a , into a List of target --> lookup readOnlyFieldsList.
-     * 
+     *
      * @param readOnlyFields
      * @return the List representation of the readOnlyFields  String provided.
      */
@@ -207,12 +237,12 @@ public class LookupUtils {
                 readOnlyFieldsList.add(readOnlyFieldsString);
             }
         }
-      return readOnlyFieldsList;  
+      return readOnlyFieldsList;
     }
 
     /**
      * This translates a , delimited list of pairs separated by a : into a Map of target --> lookup field conversions.
-     * 
+     *
      * @param conversionFields
      * @return the Map representation of the fieldConversions String provided.
      */
@@ -233,16 +263,16 @@ public class LookupUtils {
         return fieldConversionsMap;
     }
 
-    public static Field setFieldQuickfinder(BusinessObject businessObject, 
+    public static Field setFieldQuickfinder(BusinessObject businessObject,
             String attributeName, Field field, List displayedFieldNames) {
         return setFieldQuickfinder( businessObject, (String)null, false, 0, attributeName, field, displayedFieldNames );
     }
-    
-    public static Field setFieldQuickfinder(BusinessObject businessObject, 
+
+    public static Field setFieldQuickfinder(BusinessObject businessObject,
             String attributeName, Field field, List displayedFieldNames, SelectiveReferenceRefresher srr) {
         return setFieldQuickfinder( businessObject, (String)null, false, 0, attributeName, field, displayedFieldNames, srr );
     }
-    
+
     /**
      * Sets a fields quickfinder class and field conversions for an attribute.
      */
@@ -264,7 +294,7 @@ public class LookupUtils {
         }
         return field;
     }
-    
+
     /**
      * Sets a fields quickfinder class and field conversions for an attribute.
      */
@@ -273,12 +303,12 @@ public class LookupUtils {
         if (businessObject == null) {
             return field;
         }
-        
+
         Boolean noLookupField = businessObjectDictionaryService.noLookupFieldLookup(businessObject.getClass(), attributeName);
         if (noLookupField != null && noLookupField.booleanValue()) {
             return field;
         }
-        
+
         BusinessObjectRelationship relationship = null;
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "setFieldQuickfinder("+businessObject.getClass().getName()+","+attributeName+","+field+","+displayedFieldNames+")" );
@@ -295,7 +325,7 @@ public class LookupUtils {
                 collectionPrefix = collectionName + "[" + index + "].";
             }
         }
-       
+
         if (relationship == null) {
             Class c = ObjectUtils.getPropertyType(businessObject, attributeName, persistenceStructureService);
 
@@ -303,7 +333,7 @@ public class LookupUtils {
                 if (attributeName.contains(".")) {
                     attributeName = StringUtils.substringBeforeLast( attributeName, "." );
                 }
-                
+
                 RelationshipDefinition ddReference = businessObjectMetaDataService.getBusinessObjectRelationshipDefinition(businessObject, attributeName);
                 relationship = businessObjectMetaDataService.getBusinessObjectRelationship(ddReference, businessObject, businessObject.getClass(), attributeName, "", false);
                 if(relationship!=null) {
@@ -312,14 +342,14 @@ public class LookupUtils {
                     field.setLookupParameters(generateLookupParameters( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null));
                 }
             }
-            
+
             return field;
         }
         if (ObjectUtils.isNestedAttribute(attributeName)) {
             //first determine the prefix and the attribute we are referring to
             String nestedAttributePrefix = StringUtils.substringBeforeLast(attributeName, ".");
             PersistableBusinessObject childBO = (PersistableBusinessObject)getNestedBusinessObject(businessObject, attributeName);
-            
+
             field.setQuickFinderClassNameImpl(relationship.getRelatedClass().getName());
             field.setFieldConversions( generateFieldConversions( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, nestedAttributePrefix ) );
             field.setLookupParameters( generateLookupParameters( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, nestedAttributePrefix ) );
@@ -335,20 +365,20 @@ public class LookupUtils {
     public static Map getPrimitiveReference(BusinessObject businessObject, String attributeName) {
         Map chosenReferenceByKeySize = new HashMap();
         Map chosenReferenceByFieldName = new HashMap();
-    
+
         Map referenceClasses = null;
-        
+
         try {
             referenceClasses = persistenceStructureService.getReferencesForForeignKey(businessObject.getClass(), attributeName);
         } catch ( ClassNotPersistableException ex ) {
             // do nothing, there is no quickfinder
         }
-    
+
         // if field is not fk to any reference class, return field object w no quickfinder
         if (referenceClasses == null || referenceClasses.isEmpty()) {
             return chosenReferenceByKeySize;
         }
-    
+
         /*
          * if field is fk to more than one reference, take the class with the least # of pk fields, this should give the correct
          * grain for the attribute
@@ -358,36 +388,36 @@ public class LookupUtils {
             String attr = (String) iter.next();
             Class clazz = (Class) referenceClasses.get(attr);
             List pkNames = persistenceStructureService.listPrimaryKeyFieldNames(clazz);
-    
+
             // Compare based on key size.
             if (pkNames.size() < minKeys) {
                 minKeys = pkNames.size();
                 chosenReferenceByKeySize.clear();
                 chosenReferenceByKeySize.put(attr, clazz);
             }
-    
+
             // Compare based on field name.
             if (attributeName.startsWith(attr)) {
                 chosenReferenceByFieldName.clear();
                 chosenReferenceByFieldName.put(attr, clazz);
             }
         }
-    
+
         // If a compatible key was found based on field names, prefer it, otherwise use choice by key size.
         return chosenReferenceByFieldName.isEmpty() ? chosenReferenceByKeySize : chosenReferenceByFieldName;
     }
 
     /**
-     * 
+     *
      * This method walks through the nested attribute and finds the last business object in the chain and returns it (excluding the
      * last parameter which is the actual attribute)
-     * 
+     *
      * @param attributeName
      * @return
      */
     public static BusinessObject getNestedBusinessObject(BusinessObject bo, String attributeName) {
         String[] nestedAttributes = StringUtils.split(attributeName, ".");
-    
+
         BusinessObject childBO = null;
         String attributeRefName = "";
         Class clazz = null;
@@ -398,10 +428,10 @@ public class LookupUtils {
                 // so if the original attributeName string we're using is "a.b.c.d.e", then first iteration would use
                 // "a", 2nd "a.b", 3rd "a.b.c", etc.
                 if (i != 0) {
-                    attributeStringSoFar = attributeStringSoFar + ".";  
+                    attributeStringSoFar = attributeStringSoFar + ".";
                 }
                 attributeStringSoFar = attributeStringSoFar + nestedAttributes[i];
-                
+
                 clazz = ObjectUtils.getPropertyType( bo, attributeStringSoFar, persistenceStructureService );
 
                 if (clazz != null && BusinessObject.class.isAssignableFrom(clazz)) {
@@ -417,32 +447,32 @@ public class LookupUtils {
         return childBO;
     }
 
-    public static Class getNestedReferenceClass(BusinessObject businessObject, String attributeName) {    
+    public static Class getNestedReferenceClass(BusinessObject businessObject, String attributeName) {
         BusinessObject bo = getNestedBusinessObject(businessObject, attributeName);
         return null == bo ? null : bo.getClass();
     }
 
     private static String generateFieldConversions(BusinessObject businessObject, String collectionName, BusinessObjectRelationship relationship, String propertyPrefix, List displayedFieldNames, String nestedObjectPrefix) {
         String fieldConversions = "";
-    
+
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "generateFieldConversions(" + businessObject.getClass().getName() + "," + collectionName + ",\n" + relationship + "\n," + propertyPrefix + "," + displayedFieldNames + "," + nestedObjectPrefix + ")" );
         }
-        
+
         // get the references for the given property
         for ( Map.Entry<String,String> entry : relationship.getParentToChildReferences().entrySet() ) {
             String fromField = entry.getValue();
             String toField = entry.getKey();
-    
+
             // find the displayed to field mapping
             if (!displayedFieldNames.contains(toField)) {
                 toField = translateToDisplayedField(businessObject.getClass(), toField, displayedFieldNames);
             }
-    
+
             if (StringUtils.isNotBlank(fieldConversions)) {
                 fieldConversions += ",";
             }
-    
+
             if ( StringUtils.isNotEmpty( propertyPrefix ) ) {
                 toField = propertyPrefix + "." + toField;
             }
@@ -450,74 +480,74 @@ public class LookupUtils {
             if ( StringUtils.isNotEmpty( collectionName ) ) {
                 toField = collectionName + toField;
             }
-    
+
             fieldConversions += fromField + ":" + toField;
         }
-    
+
         return fieldConversions;
     }
 
     private static String generateLookupParameters(BusinessObject businessObject, String collectionName, BusinessObjectRelationship relationship, String propertyPrefix, List displayedFieldNames, String nestedObjectPrefix) {
-        
+
         String lookupParameters = "";
-    
+
         List displayedQFFieldNames = businessObjectDictionaryService.getLookupFieldNames(relationship.getRelatedClass());
         for ( Map.Entry<String,String> entry : relationship.getParentToChildReferences().entrySet() ) {
             String fromField = entry.getKey();
             String toField = entry.getValue();
-    
+
             if ( relationship.getUserVisibleIdentifierKey() == null || relationship.getUserVisibleIdentifierKey().equals( fromField ) ) {
 	            // find the displayed from field mapping
 	            if (!displayedFieldNames.contains(fromField)) {
 	                fromField = translateToDisplayedField(businessObject.getClass(), fromField, displayedFieldNames);
 	            }
-	    
+
 	            // translate to field
 	            if (displayedQFFieldNames != null && !displayedQFFieldNames.contains(toField)) {
 	                toField = translateToDisplayedField(relationship.getRelatedClass(), toField, displayedQFFieldNames);
 	            }
-	    
+
 	            if (StringUtils.isNotBlank(lookupParameters)) {
 	                lookupParameters += ",";
 	            }
-	    
+
 	            if (propertyPrefix != null && !propertyPrefix.equals("")) {
 	                fromField = propertyPrefix + "." + fromField;
 	            }
-	            
+
 	            if ( StringUtils.isNotEmpty( collectionName ) ) {
 	                fromField = collectionName + fromField;
 	            }
-	            
+
 	            lookupParameters += fromField + ":" + toField;
             }
         }
-    
+
         return lookupParameters;
     }
-    
+
 
     private static String translateToDisplayedField(Class businessObjectClass, String fieldName, List displayedFieldNames) {
         if ( PersistableBusinessObject.class.isAssignableFrom( businessObjectClass ) ) {
             Map nestedFkMap = persistenceStructureService.getNestedForeignKeyMap(businessObjectClass);
-        
+
             // translate to primitive fk if nested
             /*
              * if (ObjectUtils.isNestedAttribute(fieldName) && nestedFkMap.containsKey(fieldName)) { fieldName = (String)
              * nestedFkMap.get(fieldName); }
              */
-        
+
             if (!displayedFieldNames.contains(fieldName)) {
                 for (Iterator iterator = displayedFieldNames.iterator(); iterator.hasNext();) {
                     String dispField = (String) iterator.next();
-        
+
                     if (nestedFkMap.containsKey(dispField) && nestedFkMap.get(dispField).equals(fieldName)) {
                         fieldName = dispField;
                     }
                 }
             }
         }
-    
+
         return fieldName;
     }
 
@@ -532,7 +562,7 @@ public class LookupUtils {
         }
         return buf.toString();
     }
-    
+
     public static String convertSetOfObjectIdsToString(Set<String> objectIds) {
         if (objectIds.isEmpty()) {
             return "";
@@ -546,13 +576,13 @@ public class LookupUtils {
         }
         // added one extra separator, remove it
         buf.delete(buf.length() - RiceConstants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR.length(), buf.length());
-        
+
         return buf.toString();
     }
-    
+
     public static Set<String> convertStringOfObjectIdsToSet(String objectIdsString) {
         Set<String> set = new HashSet<String>();
-        
+
         if (StringUtils.isNotBlank(objectIdsString)) {
             String[] objectIds = StringUtils.splitByWholeSeparator(objectIdsString, RiceConstants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR);
             for (String objectId : objectIds) {
@@ -561,13 +591,13 @@ public class LookupUtils {
         }
         return set;
     }
-    
+
     /**
      * Given a list of results from a lookup, determines the best comparator to use on the String values of each of these columns
-     * 
+     *
      * This method exists because each cell (represented by the Column object) lists the comparator that should be used within it based on the property value class,
      * so we gotta go thru the whole list and determine the best comparator to use
-     * 
+     *
      * @param resultsTable
      * @param column
      * @return
@@ -583,12 +613,12 @@ public class LookupUtils {
         }
         return comp;
     }
-    
+
     /**
      * Given 3 sets of object IDs: the set of selected object IDs before rendering the current page,
      * the set of object IDs rendered on the page, and the set of object IDs selected on the page, computes
      * the total set of selected object IDs.
-     * 
+     *
      * Instead of storing it in a set, returns it in a map with the selected object ID as both the key and value
      * @param previouslySelectedObjectIds
      * @param displayedObjectIds
@@ -601,7 +631,7 @@ public class LookupUtils {
         // (P - D) union C, where - is the set difference operator
         // P is the list of object IDs previously passed in, D is the set of displayed object IDs, and C is the set of checked obj IDs
         // since HTML does not pass a value for non-selected dcheckboxes
-        
+
         // first build a map w/ all the previouslySelectedObjectIds as keys
         for (String previouslySelectedObjectId : previouslySelectedObjectIds) {
             tempMap.put(previouslySelectedObjectId, previouslySelectedObjectId);
@@ -616,11 +646,11 @@ public class LookupUtils {
         }
         return tempMap;
     }
-    
+
     /**
      * Removes fields idenfied in the data dictionary as hidden from the lookup field values.
      * (This will remove Universal User ID and Person name from search requests when a user ID is entered.)
-     * 
+     *
      * @param fieldValues
      */
     public static void removeHiddenCriteriaFields( Class businessObjectClass, Map fieldValues ) {

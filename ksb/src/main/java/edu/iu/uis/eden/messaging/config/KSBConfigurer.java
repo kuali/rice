@@ -40,6 +40,7 @@ import org.quartz.Scheduler;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import edu.iu.uis.eden.cache.RiceCacheAdministrator;
+import edu.iu.uis.eden.messaging.AlternateEndpoint;
 import edu.iu.uis.eden.messaging.ServiceDefinition;
 import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 
@@ -58,6 +59,8 @@ public class KSBConfigurer extends ModuleConfigurer {
 	private List<ServiceHolder> overrideServices;
 
 	private List<ServiceDefinition> services = new ArrayList<ServiceDefinition>();
+	
+	private List<AlternateEndpoint> alternateEndpoints = new ArrayList<AlternateEndpoint>();
 
 	private String serviceServletUrl;
 
@@ -100,6 +103,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 		if (getServiceServletUrl() != null) {
 			currentConfig.overrideProperty("http.service.url", getServiceServletUrl());
 		}
+		configureAlternateEndpoints(currentConfig);
 		return currentConfig;
 	}
 
@@ -226,6 +230,10 @@ public class KSBConfigurer extends ModuleConfigurer {
 			return;
 		}
 		config.getObjects().put(RiceConstants.SPRING_TRANSACTION_MANAGER, getPlatformTransactionManager());
+	}
+	
+	protected void configureAlternateEndpoints(Config config) {
+	    config.getObjects().put(RiceConstants.KSB_ALTERNATE_ENDPOINTS, getAlternateEndpoints());
 	}
 
 	public void stop() throws Exception {
@@ -375,4 +383,13 @@ public class KSBConfigurer extends ModuleConfigurer {
 	public void setAuthorizationService(AuthorizationService authorizationService) {
 	    this.authorizationService = authorizationService;
 }
+
+    public List<AlternateEndpoint> getAlternateEndpoints() {
+        return this.alternateEndpoints;
+    }
+
+    public void setAlternateEndpoints(List<AlternateEndpoint> alternateEndpoints) {
+        this.alternateEndpoints = alternateEndpoints;
+    }	
+	
 }

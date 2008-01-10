@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,10 +33,10 @@ import org.kuali.rice.KNSServiceLocator;
 
 /**
  * Contains lookup-related information relating to the parent BusinessObject.
- * 
+ *
  * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
- * 
- * 
+ *
+ *
  */
 public class LookupDefinition extends DataDictionaryDefinitionBase {
     // logger
@@ -50,6 +50,8 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
 
     private Map lookupFields;
     private Map<String, FieldDefinition> resultFields;
+
+    private String resultSetLimit;
 
     private String extraButtonSource;
     private String extraButtonParams;
@@ -88,7 +90,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
 
     /**
      * Sets title to the given value.
-     * 
+     *
      * @param title
      * @throws IllegalArgumentException if the given title is blank
      */
@@ -117,7 +119,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
 
     /**
      * Sets menubar to the given value.
-     * 
+     *
      * @param menubar
      * @throws IllegalArgumentException if the given menubar is blank
      */
@@ -147,7 +149,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
 
     /**
      * Sets instructions to the given value.
-     * 
+     *
      * @param title
      * @throws IllegalArgumentException if the given instructions are blank
      */
@@ -176,7 +178,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
 
     /**
      * Sets defaultSort to the given value.
-     * 
+     *
      * @param defaultSort
      * @throws IllegalArgumentException if the given defaultSort is blank
      */
@@ -281,8 +283,41 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
+     * @param resultSetLimit the resultSetLimit to set
+     */
+    public void setResultSetLimit(String resultSetLimit) {
+        if (StringUtils.isBlank(resultSetLimit)) {
+            throw new IllegalArgumentException("invalid (blank) resultSetLimit");
+        } else {
+            try {
+                Integer.decode(resultSetLimit);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("invalid (not a number) resultSetLimit: (" + resultSetLimit + ")");
+            }
+        }
+        LOG.debug("calling setResultSetLimit '" + resultSetLimit + "'");
+
+        this.resultSetLimit = resultSetLimit;
+    }
+
+    /**
+     * @return true if this instance has instructions
+     */
+    public boolean hasResultSetLimit() {
+        return (resultSetLimit != null);
+    }
+
+
+    /**
+     * @return the resultSetLimit
+     */
+    public String getResultSetLimit() {
+        return resultSetLimit;
+    }
+
+    /**
      * Directly validate simple fields, call completeValidation on Definition fields.
-     * 
+     *
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
@@ -322,7 +357,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
 
     /**
      * Sets extraButtonParams to the given value.
-     * 
+     *
      * @param extraButtonParams
      * @throws IllegalArgumentException if the given source is blank
      */
@@ -350,7 +385,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
 
     /**
      * Sets extraButtonParams to the given value.
-     * 
+     *
      * @param extraButtonParams
      */
     public void setExtraButtonParams(String extraButtonParams) {

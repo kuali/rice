@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -51,7 +51,7 @@ import org.springmodules.orm.ojb.OjbOperationException;
  */
 public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupDaoOjb.class);
-    private DateTimeService dateTimeService;    
+    private DateTimeService dateTimeService;
     private PersistenceStructureService persistenceStructureService;
     public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
         this.persistenceStructureService = persistenceStructureService;
@@ -89,7 +89,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         }
         return executeSearch(businessObjectClass, criteria, unbounded);
     }
-    
+
     public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
         return findCollectionBySearchHelper( businessObjectClass, formProps, unbounded, usePrimaryKeyValuesOnly, null );
     }
@@ -107,7 +107,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             return executeSearch(businessObjectClass, crit, unbounded);
         }
     }
-    
+
     /**
      * Builds up criteria object based on the object and map.
      */
@@ -142,7 +142,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         }
         return criteria;
     }
-    
+
     public Criteria getCollectionCriteriaFromMapUsingPrimaryKeysOnly(Class businessObjectClass, Map formProps) {
         PersistableBusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
         Criteria criteria = new Criteria();
@@ -151,7 +151,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         while (pkIter.hasNext()) {
             String pkFieldName = (String) pkIter.next();
             String pkValue = (String) formProps.get(pkFieldName);
-            
+
             if (StringUtils.isBlank(pkValue)) {
                 throw new RuntimeException("Missing pk value for field " + pkFieldName + " when a search based on PK values only is performed.");
             }
@@ -162,7 +162,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         }
         return criteria;
     }
-    
+
     private PersistableBusinessObject checkBusinessObjectClass(Class businessObjectClass) {
         if (businessObjectClass == null) {
             throw new IllegalArgumentException("BusinessObject class passed to LookupDaoOjb findCollectionBySearchHelper... method was null");
@@ -179,15 +179,15 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         }
         return businessObject;
     }
-    
+
     private Collection executeSearch(Class businessObjectClass, Criteria criteria, boolean unbounded) {
         Collection searchResults = new ArrayList();
         Long matchingResultsCount = null;
          try {
-            Integer searchResultsLimit = LookupUtils.getApplicationSearchResultsLimit();
+            Integer searchResultsLimit = LookupUtils.getSearchResultsLimit(businessObjectClass);
             if (!unbounded && (searchResultsLimit != null)) {
                 matchingResultsCount = new Long(getPersistenceBrokerTemplate().getCount(QueryFactory.newQuery(businessObjectClass, criteria)));
-                LookupUtils.applySearchResultsLimit(criteria, getDbPlatform());
+                LookupUtils.applySearchResultsLimit(businessObjectClass, criteria, getDbPlatform());
                     }
             if ((matchingResultsCount == null) || (matchingResultsCount.intValue() <= searchResultsLimit.intValue())) {
                 matchingResultsCount = new Long(0);
@@ -204,90 +204,90 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         catch (DataIntegrityViolationException e) {
             throw new RuntimeException("LookupDaoOjb encountered exception during executeSearch", e);
         }
-        return new CollectionIncomplete(searchResults, matchingResultsCount);   
+        return new CollectionIncomplete(searchResults, matchingResultsCount);
     }
 
     /**
      * Return whether or not an attribute is writeable. This method is aware that that Collections
      * may be involved and handles them consistently with the way in which OJB handles specifying
      * the attributes of elements of a Collection.
-     * 
+     *
      * @param o
      * @param p
      * @return
      * @throws IllegalArgumentException
      */
     private boolean isWriteable(Object o, String p) throws IllegalArgumentException {
-        
+
         if(null == o || null == p) {
-            
+
             throw new IllegalArgumentException("Cannot check writeable status with null arguments.");
-            
+
         }
-        
+
         boolean b = false;
-        
+
         // Try the easy way.
         if(!(PropertyUtils.isWriteable(o, p))) {
-            
+
             // If that fails lets try to be a bit smarter, understanding that Collections may be involved.
             if(-1 != p.indexOf('.')) {
-                
+
                 String[] parts = p.split("\\.");
-                
+
                 // Get the type of the attribute.
                 Class c = ObjectUtils.getPropertyType(o, parts[0], persistenceStructureService);
-                
+
                 Object i = null;
-                
+
                 // If the next level is a Collection, look into the collection, to find out what type its elements are.
                 if(Collection.class.isAssignableFrom(c)) {
-                    
+
                     Map<String, Class> m = persistenceStructureService.listCollectionObjectTypes(o.getClass());
                     c = m.get(parts[0]);
-                    
+
                 }
-                
+
                 // Look into the attribute class to see if it is writeable.
                 try {
-                    
+
                     i = c.newInstance();
-                    
+
                     StringBuffer sb = new StringBuffer();
                     for(int x = 1; x < parts.length; x++) {
                         sb.append(1 == x ? "" : ".").append(parts[x]);
                     }
                     b = isWriteable(i, sb.toString());
-                    
+
                 } catch(InstantiationException ie) {
                     LOG.info(ie);
                 } catch(IllegalAccessException iae) {
                     LOG.info(iae);
                 }
-                
+
             }
-            
+
         } else {
-            
+
             b = true;
-            
+
         }
-        
+
         return b;
-        
+
     }
-    
+
     public boolean createCriteria(Object example, String searchValue, String propertyName, Criteria criteria) {
     	return createCriteria( example, searchValue, propertyName, false, criteria );
     }
-        
+
     public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, Criteria criteria) {
-        
+
         // if searchValue is empty and the key is not a valid property ignore
         if (StringUtils.isBlank(searchValue) || !isWriteable(example, propertyName)) {
-            
+
             return false;
-            
+
         }
 
         // get property type which is used to determine type of criteria
@@ -376,7 +376,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      * Adds to the criteria object based on the property type and any query characters given.
      */
     private void addCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
-        
+
         if (StringUtils.contains(propertyValue, RiceConstants.OR_LOGICAL_OPERATOR)) {
             addOrCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
             return;
@@ -395,8 +395,8 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         	}
             if (StringUtils.contains(propertyValue, RiceConstants.NOT_LOGICAL_OPERATOR)) {
                 addNotCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
-            } else if (StringUtils.contains(propertyValue, "..") || StringUtils.contains(propertyValue, ">") 
-                    || StringUtils.contains(propertyValue, "<")  || StringUtils.contains(propertyValue, ">=") 
+            } else if (StringUtils.contains(propertyValue, "..") || StringUtils.contains(propertyValue, ">")
+                    || StringUtils.contains(propertyValue, "<")  || StringUtils.contains(propertyValue, ">=")
                     || StringUtils.contains(propertyValue, "<=")){
                 addStringRangeCriteria(propertyName, propertyValue, criteria);
             }
@@ -458,7 +458,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      */
     private void addLogicalOperatorCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria, String splitValue) {
         String[] splitPropVal = StringUtils.split(propertyValue, splitValue);
-      
+
         Criteria subCriteria = new Criteria();
         for (int i = 0; i < splitPropVal.length; i++) {
         	Criteria predicate = new Criteria();
@@ -471,10 +471,10 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             	subCriteria.addAndCriteria(predicate);
             }
         }
-       
+
         criteria.addAndCriteria(subCriteria);
     }
-    
+
     private java.sql.Date parseDate(String dateString) {
 		dateString = dateString.trim();
 		try {
@@ -483,7 +483,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
 			return null;
 		}
 	}
-    
+
     /**
 	 * Adds to the criteria object based on query characters given
 	 */
@@ -512,7 +512,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
 
     private BigDecimal cleanNumeric( String value ) {
         String cleanedValue = value.replaceAll( "[^-0-9.]", "" );
-        // ensure only one "minus" at the beginning, if any 
+        // ensure only one "minus" at the beginning, if any
         if ( cleanedValue.lastIndexOf( '-' ) > 0 ) {
             if ( cleanedValue.charAt( 0 ) == '-' ) {
                 cleanedValue = "-" + cleanedValue.replaceAll( "-", "" );
@@ -532,7 +532,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             return null;
         }
     }
-    
+
     /**
      * Adds to the criteria object based on query characters given
      */
@@ -567,38 +567,38 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         if (StringUtils.contains(propertyValue, "..")) {
             String[] rangeValues = StringUtils.split(propertyValue, "..");
             criteria.addBetween(propertyName, rangeValues[0], rangeValues[1]);
-            
+
             //To fix a bug related on number of digits issues for searching String field with range operator
             Criteria orCriteria = new Criteria();
             orCriteria.addGreaterThan(propertyName, rangeValues[0].length());
             criteria.addOrCriteria(orCriteria);
             criteria.addLessOrEqualThan(propertyName, rangeValues[1].length());
-            
+
         }
         else if (propertyValue.startsWith(">")) {
             criteria.addGreaterThan(propertyName, ObjectUtils.clean(propertyValue));
-            
+
             //To fix a bug related on number of digits issues for searching String field with range operator
             Criteria orCriteria = new Criteria();
             orCriteria.addGreaterThan(propertyName, ObjectUtils.clean(propertyValue).length());
             criteria.addOrCriteria(orCriteria);
-            
+
         }
         else if (propertyValue.startsWith("<")) {
             criteria.addLessThan(propertyName, ObjectUtils.clean(propertyValue));
-            
+
             //To fix a bug related on number of digits issues for searching String field with range operator
             criteria.addLessOrEqualThan(propertyName, ObjectUtils.clean(propertyValue).length());
         }
         else if (propertyValue.startsWith(">=")) {
             criteria.addGreaterOrEqualThan(propertyName, ObjectUtils.clean(propertyValue));
-            
+
             //To fix a bug related on number of digits issues for searching String field with range operator
             criteria.addGreaterOrEqualThan(propertyName, ObjectUtils.clean(propertyValue).length());
         }
         else if (propertyValue.startsWith("<=")) {
             criteria.addLessOrEqualThan(propertyName, ObjectUtils.clean(propertyValue));
-            
+
             //To fix a bug related on number of digits issues for searching String field with range operator
             criteria.addLessOrEqualThan(propertyName, ObjectUtils.clean(propertyValue).length());
         }

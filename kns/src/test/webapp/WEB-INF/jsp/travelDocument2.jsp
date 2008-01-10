@@ -21,7 +21,7 @@
 	showDocumentInfo="true"
 	htmlFormAction="travelDocument2"
 	documentTypeName="TravelRequest"
-	renderMultipart="false"
+	renderMultipart="true"
 	showTabButtons="true"
 	auditCount="0">
 
@@ -54,6 +54,10 @@
 				 		<td><kul:htmlControlAttribute property="document.requestType" attributeEntry="${travelAttributes.requestType}" readOnly="false" /></td>
 				 		</tr>
 						<tr>
+				 		<tr>
+				 		<kul:htmlAttributeHeaderCell labelFor="document.accountType" attributeEntry="${travelAttributes.accountType}" align="left" />
+				 		<td><kul:htmlControlAttribute property="document.accountType" attributeEntry="${travelAttributes.accountType}" readOnly="false" /></td>
+				 		</tr>
 						<th align="left">
 				 		&nbsp;&nbsp;* Travel Account
 				 		</th>
@@ -83,8 +87,8 @@
 	</kul:tab>
 	<%-- temporarily commented out notes section and made non-multipart form
 	     for KULRICE-1344
-	<kul:notes />
 	 --%>
+	<kul:notes />
 	<kul:adHocRecipients />
 	<kul:routeLog />
 	<kul:panelFooter />

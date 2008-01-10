@@ -42,7 +42,7 @@ public class SuperUserForm extends WorkflowRoutingForm {
     private Long routeHeaderId;
     private String docHandlerUrl;
     private Integer routeLevel;
-    private Set futureNodeNames = new HashSet();
+    private List<String> futureNodeNames = new ArrayList<String>();
     private String destNodeName;
     private String returnDestNodeName;
     private String action;
@@ -168,7 +168,7 @@ public class SuperUserForm extends WorkflowRoutingForm {
     }
     
     public void reset(ActionMapping mapping, HttpServletRequest request){
-        this.futureNodeNames = new HashSet();
+        this.futureNodeNames = new ArrayList<String>();
     }
 
     public String getActionTakenRecipientCode() {
@@ -213,10 +213,10 @@ public class SuperUserForm extends WorkflowRoutingForm {
     public void setDestNodeName(String previousNodeName) {
         this.destNodeName = previousNodeName;
     }
-    public Set getFutureNodeNames() {
+    public List<String> getFutureNodeNames() {
         return futureNodeNames;
     }
-    public void setFutureNodeNames(Set futureNodeNames) {
+    public void setFutureNodeNames(List<String> futureNodeNames) {
         this.futureNodeNames = futureNodeNames;
     }
     public String getReturnDestNodeName() {

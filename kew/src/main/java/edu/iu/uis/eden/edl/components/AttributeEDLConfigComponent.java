@@ -19,6 +19,7 @@ package edu.iu.uis.eden.edl.components;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Element;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
@@ -42,52 +43,53 @@ public class AttributeEDLConfigComponent extends SimpleWorkflowEDLConfigComponen
 
 	public List getMatchingParams(Element originalConfigElement, RequestParser requestParser, EDLContext edlContext) {
 		List matchingParams = super.getMatchingParams(originalConfigElement, requestParser, edlContext);
-		String attributeName = originalConfigElement.getAttribute("attributeName");
-		String attributePropertyName = originalConfigElement.getAttribute("name");
+		String action = requestParser.getParameterValue(WorkflowDocumentActions.USER_ACTION_REQUEST_KEY);
+		// we don't want to clear the attribute content if they are just opening up the document to view it!
+		if (!StringUtils.isEmpty(action)) {
+		    String attributeName = originalConfigElement.getAttribute("attributeName");
+		    String attributePropertyName = originalConfigElement.getAttribute("name");
 
-		WorkflowDocument document = (WorkflowDocument)requestParser.getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);
+		    WorkflowDocument document = (WorkflowDocument)requestParser.getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);
+		    // clear attribute content so that duplicate attribute values are not added during submission of a new EDL form values version
+		    document.clearAttributeContent();
 
-//				 clear attribute content so that duplicate attribute values are not added during submission of a new EDL form values version
-		        document.clearAttributeContent();
-
-				WorkflowAttributeDefinitionVO attributeDef = getWorkflowAttributeDefinitionVO(attributeName, document);
-				for (Iterator iter = matchingParams.iterator(); iter.hasNext();) {
-					MatchingParam param = (MatchingParam) iter.next();
-					PropertyDefinitionVO property = attributeDef.getProperty(attributePropertyName);
-					//if the prop doesn't exist create it and add it to the definition otherwise update the property value
-					if (property == null) {
-						property = new PropertyDefinitionVO(attributePropertyName, param.getParamValue());
-						attributeDef.addProperty(property);
-					} else {
-						property.setValue(param.getParamValue());
-					}
-				}
-
-		try {
-			// validate if they are taking an action on the document (i.e. it's annotatable)
-			String action = requestParser.getParameterValue(WorkflowDocumentActions.USER_ACTION_REQUEST_KEY);
-			if (EDLXmlUtils.isValidatableAction(action)) {
-				WorkflowAttributeValidationErrorVO[] errors = document.validateAttributeDefinition(attributeDef);
-				if (errors.length > 0) {
-					getEdlContext().setInError(true);
-				}
-				for (int index = 0; index < errors.length; index++) {
-					WorkflowAttributeValidationErrorVO error = errors[index];
-					MatchingParam param = getMatchingParam(matchingParams, error.getKey());
-					// if it doesn't match a param, then this is a global error
-					if (param == null) {
-						List globalErrors = (List)getEdlContext().getRequestParser().getAttribute(RequestParser.GLOBAL_ERRORS_KEY);
-						globalErrors.add(error.getMessage());
-					} else {
-						param.setError(Boolean.TRUE);
-						param.setErrorMessage(error.getMessage());
-					}
-				}
+		    WorkflowAttributeDefinitionVO attributeDef = getWorkflowAttributeDefinitionVO(attributeName, document);
+		    for (Iterator iter = matchingParams.iterator(); iter.hasNext();) {
+			MatchingParam param = (MatchingParam) iter.next();
+			PropertyDefinitionVO property = attributeDef.getProperty(attributePropertyName);
+			//if the prop doesn't exist create it and add it to the definition otherwise update the property value
+			if (property == null) {
+			    property = new PropertyDefinitionVO(attributePropertyName, param.getParamValue());
+			    attributeDef.addProperty(property);
+			} else {
+			    property.setValue(param.getParamValue());
 			}
-		} catch (WorkflowException e) {
-			throw new WorkflowRuntimeException("Encountered an error when validating form.", e);
-		}
+		    }
 
+		    try {
+			// validate if they are taking an action on the document (i.e. it's annotatable)
+			if (EDLXmlUtils.isValidatableAction(action)) {
+			    WorkflowAttributeValidationErrorVO[] errors = document.validateAttributeDefinition(attributeDef);
+			    if (errors.length > 0) {
+				getEdlContext().setInError(true);
+			    }
+			    for (int index = 0; index < errors.length; index++) {
+				WorkflowAttributeValidationErrorVO error = errors[index];
+				MatchingParam param = getMatchingParam(matchingParams, error.getKey());
+				// if it doesn't match a param, then this is a global error
+				if (param == null) {
+				    List globalErrors = (List)getEdlContext().getRequestParser().getAttribute(RequestParser.GLOBAL_ERRORS_KEY);
+				    globalErrors.add(error.getMessage());
+				} else {
+				    param.setError(Boolean.TRUE);
+				    param.setErrorMessage(error.getMessage());
+				}
+			    }
+			}
+		    } catch (WorkflowException e) {
+			throw new WorkflowRuntimeException("Encountered an error when validating form.", e);
+		    }
+		}
 		return matchingParams;
 	}
 

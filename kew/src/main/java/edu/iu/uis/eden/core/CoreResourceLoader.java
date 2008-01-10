@@ -18,11 +18,14 @@ package edu.iu.uis.eden.core;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.definition.ObjectDefinition;
 import org.kuali.rice.resourceloader.BaseWrappingResourceLoader;
 import org.kuali.rice.resourceloader.ServiceLocator;
 
+import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.plugin.Plugin;
 import edu.iu.uis.eden.plugin.PluginRegistry;
 
@@ -53,6 +56,9 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 	 * core (if it exists).
 	 */
 	public Object getService(QName serviceName) {
+	    	if (isRemoteService(serviceName)) {
+	    	    return null;
+	    	}
 		if (getRegistry() != null) {
 			Plugin institutionalPlugin = getRegistry().getInstitutionalPlugin();
 			if (institutionalPlugin != null) {
@@ -90,6 +96,25 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 			return false;
 		}
 		return super.shouldWrapService(serviceName, service);
+	}
+	
+	/**
+	 * Returns true if the given service name is one which should be loaded from the service bus.  This is used
+	 * primarily for embedded clients that want to reference the workgroup and user services on a standalone
+	 * server.
+	 */
+	protected boolean isRemoteService(QName serviceName) {
+	    return useRemoteIdentityServices() &&
+	    	(serviceName.getLocalPart().equals(KEWServiceLocator.USER_SERVICE) ||
+		    serviceName.getLocalPart().equals(KEWServiceLocator.WORKGROUP_SRV));
+	}
+	
+	protected boolean useRemoteIdentityServices() {
+	    String useRemoteIdentityServicesValue = Core.getCurrentContextConfig().getProperty(EdenConstants.USE_REMOTE_IDENTITY_SERVICES);
+	    if (!StringUtils.isBlank(useRemoteIdentityServicesValue)) {
+	        return new Boolean(useRemoteIdentityServicesValue.trim());
+	    }
+	    return false;
 	}
 
 	public PluginRegistry getRegistry() {

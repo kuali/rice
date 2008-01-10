@@ -306,6 +306,14 @@
 	</users>
 	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
 		<workgroup>
+			<id>1</id>
+			<workgroupName>WorkflowAdmin</workgroupName>
+			<description>WorkflowAdmin</description>
+			<members>
+				<authenticationId>quickstart</authenticationId>
+			</members>
+		</workgroup>
+		<workgroup>
 			<id>2</id>
 			<workgroupName>KUALI_PED</workgroupName>
 			<description>KUALI_PED</description>

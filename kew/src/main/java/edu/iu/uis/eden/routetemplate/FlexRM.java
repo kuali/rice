@@ -101,7 +101,10 @@ public class FlexRM {
     // loads a RuleSelector implementation
     protected RuleSelector loadRuleSelector(RouteNode routeNodeDef, RouteNodeInstance nodeInstance) throws WorkflowException {
         // first see if there ruleselector is configured on a nodeinstance basis
-        NodeState ns = nodeInstance.getNodeState(EdenConstants.RULE_SELECTOR_NODE_STATE_KEY);
+        NodeState ns = null;
+        if (nodeInstance != null) {
+            ns = nodeInstance.getNodeState(EdenConstants.RULE_SELECTOR_NODE_STATE_KEY);
+        }
         String ruleSelectorName = null;
         if (ns != null) {
             ruleSelectorName = ns.getValue();

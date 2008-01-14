@@ -42,7 +42,7 @@ public class SignatureSigningResponseWrapper extends HttpServletResponseWrapper 
 		super(response);
 		try {		
 			Signature signature = KSBServiceLocator.getDigitalSignatureService().getSignatureForSigning();
-			String alias = KSBServiceLocator.getDigitalSignatureService().getKeyStoreAlias();	
+			String alias = KSBServiceLocator.getJavaSecurityManagementService().getModuleKeyStoreAlias();	
 			this.signer = new ResponseHeaderDigitalSigner(signature, alias, response);
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to initialize digital signature verification.", e);

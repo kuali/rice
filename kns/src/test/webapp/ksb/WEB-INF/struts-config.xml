@@ -7,6 +7,7 @@
 		<form-bean name="ServiceRegistryForm" type="edu.iu.uis.eden.messaging.web.ServiceRegistryForm" />
 		<form-bean name="ThreadPoolForm" type="edu.iu.uis.eden.messaging.web.ThreadPoolForm" />
 		<form-bean name="QuartzForm" type="edu.iu.uis.eden.messaging.web.QuartzQueueForm" />
+		<form-bean name="JavaSecurityManagementForm" type="edu.iu.uis.eden.security.admin.web.JavaSecurityManagementForm" />
 	</form-beans>
 
 	<global-forwards type="org.apache.struts.action.ActionForward">
@@ -21,6 +22,12 @@
 			<forward name="basic" path="/WEB-INF/jsp/messagequeue/MessageEntry.jsp" />
 			<forward name="restart" path="/MessageQueue.do?methodToCall=start" redirect="true" />
 			<forward name="payload" path="/WEB-INF/jsp/messagequeue/Message.jsp" />
+		</action>
+
+		<action path="/JavaSecurityManagement" name="JavaSecurityManagementForm" scope="request" input="/WEB-INF/jsp/javasecurity/JavaSecurityManagement.jsp" validate="false"
+			type="edu.iu.uis.eden.security.admin.web.JavaSecurityManagementAction" parameter="methodToCall">
+			<forward name="report" path="/WEB-INF/jsp/javasecurity/JavaSecurityManagement.jsp" />
+			<forward name="restart" path="/JavaSecurityManagement.do?methodToCall=start" redirect="true" />
 		</action>
 
 		<action path="/ServiceRegistry" name="ServiceRegistryForm" scope="request" input="/WEB-INF/jsp/registry/ServiceRegistry.jsp" validate="false"

@@ -119,7 +119,7 @@ public class KEWHttpInvokerRequestExecutor extends CommonsHttpInvokerRequestExec
 	 */
 	protected void signRequest(PostMethod postMethod, ByteArrayOutputStream baos) throws Exception {
 		Signature signature = KSBServiceLocator.getDigitalSignatureService().getSignatureForSigning();
-		HttpClientHeaderDigitalSigner signer = new HttpClientHeaderDigitalSigner(signature, postMethod, KSBServiceLocator.getDigitalSignatureService().getKeyStoreAlias());
+		HttpClientHeaderDigitalSigner signer = new HttpClientHeaderDigitalSigner(signature, postMethod, KSBServiceLocator.getJavaSecurityManagementService().getModuleKeyStoreAlias());
 		signer.getSignature().update(baos.toByteArray());
 		signer.sign();
 	}

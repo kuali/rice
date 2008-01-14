@@ -120,6 +120,11 @@
 	</servlet>
 
 	<servlet>
+		<servlet-name>exportsecurity</servlet-name>
+		<servlet-class>edu.iu.uis.eden.security.admin.ExportServlet</servlet-class>
+	</servlet>
+
+	<servlet>
 		<servlet-name>attachment</servlet-name>
 		<servlet-class>edu.iu.uis.eden.notes.AttachmentServlet</servlet-class>
 	</servlet>
@@ -147,6 +152,11 @@
 	<servlet-mapping>
 		<servlet-name>export</servlet-name>
 		<url-pattern>/export/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>exportsecurity</servlet-name>
+		<url-pattern>/exportsecurity/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

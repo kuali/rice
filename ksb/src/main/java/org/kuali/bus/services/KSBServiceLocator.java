@@ -34,6 +34,7 @@ import edu.iu.uis.eden.messaging.exceptionhandling.ExceptionRoutingService;
 import edu.iu.uis.eden.messaging.threadpool.KSBScheduledPool;
 import edu.iu.uis.eden.messaging.threadpool.KSBThreadPool;
 import edu.iu.uis.eden.security.DigitalSignatureService;
+import edu.iu.uis.eden.security.admin.JavaSecurityManagementService;
 
 public class KSBServiceLocator {
 
@@ -44,6 +45,7 @@ public class KSBServiceLocator {
     public static final String REPEAT_TOPIC_INVOKING_QUEUE = "enRepeatTopicInvokerQueue";
     public static final String ENCRYPTION_SERVICE = "enEncryptionService";
     public static final String DIGITAL_SIGNATURE_SERVICE = "digitalSignatureService";
+    public static final String JAVA_SECURITY_MANAGEMENT_SERVICE = "ksbJavaSecurityManagementService";
     public static final String CACHE_ADMINISTRATOR_FACTORY = "enKEWCacheAdministratorFactoryService";
     public static final String JTA_TRANSACTION_MANAGER = "jtaTransactionManager";
     public static final String SCHEDULED_THREAD_POOL_SERVICE = "enScheduledThreadPool";
@@ -82,7 +84,11 @@ public class KSBServiceLocator {
     }
 
     public static DigitalSignatureService getDigitalSignatureService() {
-	return (DigitalSignatureService) getService(DIGITAL_SIGNATURE_SERVICE);
+        return (DigitalSignatureService) getService(DIGITAL_SIGNATURE_SERVICE);
+    }
+
+    public static JavaSecurityManagementService getJavaSecurityManagementService() {
+        return (JavaSecurityManagementService) getService(JAVA_SECURITY_MANAGEMENT_SERVICE);
     }
 
     public static KSBThreadPool getThreadPool() {

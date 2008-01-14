@@ -136,6 +136,7 @@
 	<bean id="exceptionMessagingService" class="edu.iu.uis.eden.messaging.exceptionhandling.DefaultExceptionServiceImpl" lazy-init="true" />
 	<bean id="enEncryptionService" class="edu.iu.uis.eden.security.DESEncryptionService" lazy-init="true" />
 	<bean id="digitalSignatureService" class="edu.iu.uis.eden.security.DigitalSignatureServiceImpl" lazy-init="true" />
+	<bean id="ksbJavaSecurityManagementService" class="edu.iu.uis.eden.security.admin.JavaSecurityManagementServiceImpl" lazy-init="true" />
 
 	<bean id="enRepeatTopicInvokerQueue" class="edu.iu.uis.eden.messaging.RepeatTopicInvokerQueueImpl" singleton="true" lazy-init="true" />
 	<!-- this bean will be used by the enRepeatTopicInvokerQueue to register itself with the bus programmatically -->

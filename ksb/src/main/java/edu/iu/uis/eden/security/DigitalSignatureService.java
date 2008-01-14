@@ -31,12 +31,4 @@ public interface DigitalSignatureService {
 	
 	public Signature getSignatureForVerification(String verificationAlias) throws IOException, GeneralSecurityException;
 	
-	public String getKeyStoreAlias();
-	
-	public void setKeyStoreAlias(String keyStoreAlias);
-
-	public void setKeyStoreLocation(String keyStoreLocation);
-
-	public void setKeyStorePassword(String keyStorePassword);
-	
 }

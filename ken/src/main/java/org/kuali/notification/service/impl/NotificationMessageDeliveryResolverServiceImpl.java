@@ -80,7 +80,12 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
      */
     @Override
     protected Collection<Notification> takeAvailableWorkItems() {
-        return notificationService.takeNotificationsForResolution();
+        Collection<Notification> nots = notificationService.takeNotificationsForResolution();
+        LOG.debug("Took " + nots.size() + " notifications");
+        for (Notification not: nots) {
+            LOG.debug("Took notification: " + not.getId() + " " + not.getTitle());
+        }
+        return nots;
     }
 
 
@@ -212,6 +217,7 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
      */
     @Override
     protected void unlockWorkItem(Notification notification) {
+        LOG.debug("Unlocking notification: " + notification.getId() + " " + notification.getTitle());
         notificationService.unlockNotification(notification);
     }
 

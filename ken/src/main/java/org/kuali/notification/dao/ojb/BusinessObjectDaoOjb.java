@@ -229,6 +229,9 @@ public class BusinessObjectDaoOjb extends PersistenceBrokerDaoSupport implements
      */
     public Collection findMatching(Class clazz, Criteria criteria, boolean selectForUpdate) {
         Query query;
+        if (selectForUpdate && !useSelectForUpdate) {
+            LOG.warn("Pessimistic locking was requested but select for update is disabled");
+        }
         if (selectForUpdate && useSelectForUpdate) {
             SuffixableQueryByCriteria q = new SuffixableQueryByCriteria(clazz, criteria);
             // XXX: hax

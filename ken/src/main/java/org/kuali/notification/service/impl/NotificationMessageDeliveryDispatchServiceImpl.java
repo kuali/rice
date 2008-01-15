@@ -64,13 +64,18 @@ public class NotificationMessageDeliveryDispatchServiceImpl extends ConcurrentJo
     }
 
     /**
-     * This method is responsible for atomically finding all untaking messagedeliveries, marking them as taken
+     * This method is responsible for atomically finding all untaken messagedeliveries, marking them as taken
      * and returning them to the caller for processing.
      * @return a list of available message deliveries that have been marked as taken by the caller
      */
     @Override
     protected Collection<NotificationMessageDelivery> takeAvailableWorkItems() {
-        return messageDeliveryService.takeMessageDeliveriesForDispatch();
+        Collection<NotificationMessageDelivery> nmds = messageDeliveryService.takeMessageDeliveriesForDispatch();
+        LOG.debug("Took " + nmds.size() + " message deliveries");
+        for (NotificationMessageDelivery nmd: nmds) {
+            LOG.debug("Took message delivery: " + nmd.getId() + " for notification " + nmd.getNotification().getId() + " " + nmd.getNotification().getTitle());
+        }
+        return nmds;
     }
 
     /**
@@ -132,7 +137,7 @@ public class NotificationMessageDeliveryDispatchServiceImpl extends ConcurrentJo
 
 	if (messageDeliveries.size() > 1) {
 	    // this is a bulk deliverer, so we need to batch the NotificationMessageDeliveries
-	    if (messageDeliverer instanceof BulkNotificationMessageDeliverer) {
+	    if (!(messageDeliverer instanceof BulkNotificationMessageDeliverer)) {
 	        throw new RuntimeException("Discrepency in dispatch service: deliverer for list of message deliveries is not a BulkNotificationMessageDeliverer");
 	    }
 	    return bulkDeliver((BulkNotificationMessageDeliverer) messageDeliverer, messageDeliveries);
@@ -213,6 +218,7 @@ public class NotificationMessageDeliveryDispatchServiceImpl extends ConcurrentJo
      * @see org.kuali.notification.service.impl.ConcurrentJob#unlockWorkItem(java.lang.Object)
      */
     protected void unlockWorkItem(NotificationMessageDelivery delivery) {
+        LOG.debug("Unlocked message delivery: " + delivery.getId() + " for notification " + delivery.getNotification().getId() + " " + delivery.getNotification().getTitle());
         messageDeliveryService.unlockMessageDelivery(delivery);
     }
 

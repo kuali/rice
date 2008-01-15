@@ -190,6 +190,13 @@ public class NotificationServiceImpl implements NotificationService {
     public void dismissNotificationMessageDelivery(Long id, String user, String cause) {
         // TODO: implement pessimistic locking on the message delivery
         NotificationMessageDelivery nmd = notificationMessageDeliveryService.getNotificationMessageDelivery(id);
+        dismissNotificationMessageDelivery(nmd, user, cause);
+    }
+
+    /**
+     * @see org.kuali.notification.service.NotificationService#dismissNotificationMessageDelivery(org.kuali.notification.bo.NotificationMessageDelivery, java.lang.String, java.lang.String)
+     */   
+    public void dismissNotificationMessageDelivery(NotificationMessageDelivery nmd, String user, String cause) {
         // get the notification that generated this particular message delivery
         Notification notification = nmd.getNotification();
         // get all of the other deliveries of this notification for the user

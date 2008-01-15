@@ -126,7 +126,9 @@ public abstract class KNSTestBase extends KNSTestCase implements KNSTestConstant
 		final boolean needsSpring = getClass().isAnnotationPresent(KNSWithTestSpringContext.class);
 		resetLogLevels();
 		if (needsSpring) {
-			transactionalLifecycle.stop();
+		    if (transactionalLifecycle != null) {
+		        transactionalLifecycle.stop();
+		    }
 		}
 		GlobalVariables.setErrorMap(new ErrorMap());
 		super.tearDown();

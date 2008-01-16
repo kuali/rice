@@ -214,7 +214,12 @@ public class RuleXmlParser implements XmlConstants {
                 if (ruleTemplate == null) {
                     throw new InvalidXmlException("Could not locate rule template '" + ruleTemplateName + "'");
                 }
+            } else {
+                if (ruleExtensionsElement != null) {
+                    throw new InvalidXmlException("Templateless rules may not have rule extensions");
+                }
             }
+
             if (exprElement != null) {
                 String exprType = exprElement.getAttributeValue("type");
                 if (StringUtils.isEmpty(exprType)) {

@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
 import org.kuali.workflow.test.KEWTestCase;
@@ -34,6 +35,7 @@ import edu.iu.uis.eden.test.TestUtilities;
 import edu.iu.uis.eden.xml.RuleXmlParser;
 
 public class RuleXmlParserTest extends KEWTestCase {
+    private static final Logger LOG = Logger.getLogger(RuleXmlParserTest.class);
 
     protected void loadTestData() throws Exception {
         loadXmlFile("RouteTemplateConfig.xml");
@@ -295,6 +297,61 @@ public class RuleXmlParserTest extends KEWTestCase {
         } else {
             assertEquals("TestWorkgroup", resp.getWorkgroup().getGroupNameId().getNameId());
         }
+    }
+    
+    @Test public void removeTemplateFromNamedRule() throws IOException, InvalidXmlException, EdenUserNotFoundException {
+        RuleService ruleService = KEWServiceLocator.getRuleService();
+        int originalRuleCount = ruleService.fetchAllCurrentRulesForTemplateDocCombination("TestRuleTemplate", "TestDocumentType").size();
 
+        testNamedRule();
+        
+        LOG.debug("Rules for doctype/template combo:");
+        int ruleCount = 0;
+        List<RuleBaseValues> list = ruleService.fetchAllCurrentRulesForTemplateDocCombination("TestRuleTemplate", "TestDocumentType");
+        if (list != null) {
+            ruleCount = list.size();
+            for (RuleBaseValues rbv: list) {
+                LOG.info(rbv);
+            }
+        }        
+        
+        loadXmlFile("NamedRuleWithoutTemplate.xml");
+        
+        LOG.debug("Rules for doctype/template combo after import of named rule:");
+        int ruleCountAfter = 0;
+        list = ruleService.fetchAllCurrentRulesForTemplateDocCombination("TestRuleTemplate", "TestDocumentType");
+        if (list != null) {
+            ruleCountAfter = list.size();
+            for (RuleBaseValues rbv: list) {
+                LOG.info(rbv);
+            }
+        }
+
+        RuleBaseValues rule = ruleService.getRuleByName("ANamedRule");
+
+        assertNotNull(rule);
+        LOG.info("Rule id of latest version: " + rule.getRuleBaseValuesId());
+        assertEquals("ANamedRule", rule.getName());
+        assertEquals("A named rule with previously defined template removed", rule.getDescription());
+
+        assertEquals("The rules for template/doctype combo should have been decreased by one after reimport of named rule without template", ruleCount - 1, ruleCountAfter);
+        assertEquals("Rule count should be original template/doctype combo rule count after removing template from named rule", originalRuleCount, ruleCountAfter);
+        
+        assertNull(rule.getRuleTemplate());
+        
+        // templateless rules cannot have extensions, so these should be removed
+        List extensions = rule.getRuleExtensions();
+        assertEquals(0, extensions.size());
+ 
+        List responsibilities = rule.getResponsibilities();
+        assertEquals(1, responsibilities.size());
+        RuleResponsibility responsibility = (RuleResponsibility) responsibilities.get(0);
+        assertEquals("user2", responsibility.getWorkflowUser().getAuthenticationUserId().getId());
+        assertEquals("F", responsibility.getActionRequestedCd());
+    }
+    
+    @Test public void testInvalidTemplatelessNamedRule() throws EdenUserNotFoundException {
+        testNamedRule();
+        loadXmlFile("InvalidTemplatelessNamedRule.xml");
     }
 }

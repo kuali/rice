@@ -44,5 +44,18 @@
 			</responsibilities>
 		</rule>
 
+        <rule>
+            <name>ANamedRuleToImport</name>
+            <documentType>TestDocumentType</documentType>
+            <description>ANamedRuleToImport</description>
+            <ignorePrevious>false</ignorePrevious>
+            <responsibilities>
+                <responsibility>
+                    <user>dewey</user>
+                    <actionRequested>A</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
 	</rules>
 </data>

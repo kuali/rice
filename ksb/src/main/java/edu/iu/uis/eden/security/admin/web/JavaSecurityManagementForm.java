@@ -15,6 +15,8 @@
  */
 package edu.iu.uis.eden.security.admin.web;
 
+import java.security.KeyStoreException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
@@ -57,8 +59,12 @@ public class JavaSecurityManagementForm extends ActionForm {
             }
         }
         if (errors.isEmpty()) {
-            if (KSBServiceLocator.getJavaSecurityManagementService().isAliasInKeystore(getAlias())) {
-                errors.add("property", new ActionMessage("Alias '" + getAlias() + "' already exists in keystore.",false));
+            try {
+                if (KSBServiceLocator.getJavaSecurityManagementService().isAliasInKeystore(getAlias())) {
+                    errors.add("property", new ActionMessage("Alias '" + getAlias() + "' already exists in keystore.",false));
+                }
+            } catch (KeyStoreException e) {
+                errors.add("property", new ActionMessage("Could not check keystore file for alias '" + getAlias(),false));
             }
         }
         return errors;

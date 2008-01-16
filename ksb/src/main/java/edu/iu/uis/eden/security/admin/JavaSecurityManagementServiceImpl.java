@@ -131,12 +131,12 @@ public class JavaSecurityManagementServiceImpl implements JavaSecurityManagement
         getModuleKeyStore().setEntry(alias, new KeyStore.TrustedCertificateEntry(clientCertificate), null);
     }
     
-    public boolean isAliasInKeystore(String alias) {
-        try {
-            return getModuleKeyStore().containsAlias(alias);
-        } catch (KeyStoreException e) {
-            throw new RuntimeException(e);
-        }
+    public boolean isAliasInKeystore(String alias) throws KeyStoreException {
+        return getModuleKeyStore().containsAlias(alias);
+    }
+    
+    public String getCertificateAlias(Certificate certificate) throws KeyStoreException {
+        return getModuleKeyStore().getCertificateAlias(certificate);
     }
     
     public KeyStore generateClientKeystore(String alias, String clientPassphrase) throws GeneralSecurityException {

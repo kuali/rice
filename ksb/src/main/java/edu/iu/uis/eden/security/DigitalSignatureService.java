@@ -19,6 +19,7 @@ package edu.iu.uis.eden.security;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.Signature;
+import java.security.cert.Certificate;
 
 /**
  * A service for aquiring Signatures for signing and verification of messages.
@@ -31,4 +32,5 @@ public interface DigitalSignatureService {
 	
 	public Signature getSignatureForVerification(String verificationAlias) throws IOException, GeneralSecurityException;
 	
+    public Signature getSignatureForVerification(Certificate certificate) throws IOException, GeneralSecurityException;
 }

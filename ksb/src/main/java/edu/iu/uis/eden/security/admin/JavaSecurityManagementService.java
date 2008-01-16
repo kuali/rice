@@ -46,6 +46,8 @@ public interface JavaSecurityManagementService {
     
     public PrivateKey getModulePrivateKey();
     
-    public boolean isAliasInKeystore(String alias);
+    public boolean isAliasInKeystore(String alias) throws KeyStoreException;
+    
+    public String getCertificateAlias(Certificate certificate) throws KeyStoreException;
     
 }

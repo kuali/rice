@@ -30,6 +30,7 @@ import org.kuali.bus.services.KSBServiceLocator;
 public class DigitalSignatureServiceImpl implements DigitalSignatureService {
 
 	public Signature getSignatureForSigning() throws IOException, GeneralSecurityException {
+	    // whoo hoo!
 		Signature signature = getSignature();
 		signature.initSign(KSBServiceLocator.getJavaSecurityManagementService().getModulePrivateKey());
 		return signature;

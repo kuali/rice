@@ -333,38 +333,48 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue superUserActionRequestApproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, Long actionRequestId, String annotation)
+	public DocumentRouteHeaderValue superUserActionRequestApproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, Long actionRequestId, String annotation, boolean runPostProcessor)
 			throws InvalidActionTakenException, EdenUserNotFoundException {
 		init(routeHeader);
-		SuperUserActionRequestApproveEvent suActionRequestApprove = new SuperUserActionRequestApproveEvent(routeHeader, user, actionRequestId, annotation);
+		SuperUserActionRequestApproveEvent suActionRequestApprove = new SuperUserActionRequestApproveEvent(routeHeader, user, actionRequestId, annotation, runPostProcessor);
 		suActionRequestApprove.recordAction();
 		// suActionRequestApprove.queueDocument();
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue superUserApprove(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException,
+    /**
+     * TODO As with superUserReturnDocumentToPreviousNode, we allow for the passing in of a document ID here to allow for
+     * the document load inside the current running transaction.  Otherwise we get an optimistic lock exception
+     * when attempting to save the branch after the transition to the 'A' status.
+     */
+    public DocumentRouteHeaderValue superUserActionRequestApproveAction(WorkflowUser user, Long documentId, Long actionRequestId, String annotation, boolean runPostProcessor)
+        throws InvalidActionTakenException, EdenUserNotFoundException {
+        return superUserActionRequestApproveAction(user, KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId), actionRequestId, annotation, runPostProcessor);
+    }
+
+	public DocumentRouteHeaderValue superUserApprove(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException,
 			EdenUserNotFoundException {
 		init(routeHeader);
-		new SuperUserApproveEvent(routeHeader, user, annotation).recordAction();
+		new SuperUserApproveEvent(routeHeader, user, annotation, runPostProcessor).recordAction();
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue superUserCancelAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException,
+	public DocumentRouteHeaderValue superUserCancelAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException,
 			EdenUserNotFoundException {
 		init(routeHeader);
-		new SuperUserCancelEvent(routeHeader, user, annotation).recordAction();
+		new SuperUserCancelEvent(routeHeader, user, annotation, runPostProcessor).recordAction();
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue superUserDisapproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException, EdenUserNotFoundException {
+	public DocumentRouteHeaderValue superUserDisapproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, EdenUserNotFoundException {
 		init(routeHeader);
-		new SuperUserDisapproveEvent(routeHeader, user, annotation).recordAction();
+		new SuperUserDisapproveEvent(routeHeader, user, annotation, runPostProcessor).recordAction();
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue superUserNodeApproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation) throws InvalidActionTakenException, EdenUserNotFoundException {
+	public DocumentRouteHeaderValue superUserNodeApproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, EdenUserNotFoundException {
 		init(routeHeader);
-		new SuperUserNodeApproveEvent(routeHeader, user, annotation, nodeName).recordAction();
+		new SuperUserNodeApproveEvent(routeHeader, user, annotation, runPostProcessor, nodeName).recordAction();
 		return finish(routeHeader);
 	}
 
@@ -373,9 +383,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	 * the document load inside the current running transaction.  Otherwise we get an optimistic lock exception
 	 * when attempting to save the branch after the transition to the 'A' status.
 	 */
-	public DocumentRouteHeaderValue superUserNodeApproveAction(WorkflowUser user, Long documentId, String nodeName, String annotation) throws InvalidActionTakenException,
+	public DocumentRouteHeaderValue superUserNodeApproveAction(WorkflowUser user, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException,
 		EdenUserNotFoundException {
-		return superUserNodeApproveAction(user, KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId), nodeName, annotation);
+		return superUserNodeApproveAction(user, KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId), nodeName, annotation, runPostProcessor);
 	}
 
 	/**
@@ -384,15 +394,15 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	 * return to previous node.  This allows us to load the DocumentRouteHeaderValue inside of the transaction interceptor
 	 * so that we can stay within the same PersistenceBroker cache.
 	 */
-	public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(WorkflowUser user, Long documentId, String nodeName, String annotation)
+	public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(WorkflowUser user, Long documentId, String nodeName, String annotation, boolean runPostProcessor)
 		throws InvalidActionTakenException, EdenUserNotFoundException {
-		return superUserReturnDocumentToPreviousNode(user, KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId), nodeName, annotation);
+		return superUserReturnDocumentToPreviousNode(user, KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId), nodeName, annotation, runPostProcessor);
 	}
 
-	public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation)
+	public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation, boolean runPostProcessor)
 			throws InvalidActionTakenException, EdenUserNotFoundException {
 		init(routeHeader);
-		SuperUserReturnToPreviousNodeAction action = new SuperUserReturnToPreviousNodeAction(routeHeader, user, annotation, nodeName);
+		SuperUserReturnToPreviousNodeAction action = new SuperUserReturnToPreviousNodeAction(routeHeader, user, annotation, runPostProcessor, nodeName);
 		action.recordAction();
 		// action.queueDocument();
 

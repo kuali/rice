@@ -38,8 +38,8 @@ public class SuperUserReturnToPreviousNodeAction extends SuperUserActionTakenEve
         this.superUserAction = EdenConstants.SUPER_USER_RETURN_TO_PREVIOUS_ROUTE_LEVEL;
     }
     
-    public SuperUserReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String nodeName) {
-        super(routeHeader, user, annotation);
+    public SuperUserReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor, String nodeName) {
+        super(routeHeader, user, annotation, runPostProcessor);
         setActionTakenCode(EdenConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD);
         this.superUserAction = EdenConstants.SUPER_USER_RETURN_TO_PREVIOUS_ROUTE_LEVEL;
         this.nodeName = nodeName;
@@ -51,6 +51,7 @@ public class SuperUserReturnToPreviousNodeAction extends SuperUserActionTakenEve
             getRouteHeader().markDocumentEnroute();
         }
         ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(getRouteHeader(), getUser(), annotation, nodeName, true);
+        returnAction.setRunPostProcessorLogic(isRunPostProcessorLogic());
         returnAction.setActionTakenCode(this.getActionTakenCode());
         returnAction.setSuperUserUsage(true);
         returnAction.recordAction();

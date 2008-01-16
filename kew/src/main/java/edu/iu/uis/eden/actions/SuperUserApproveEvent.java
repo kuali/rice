@@ -56,8 +56,8 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
         this.superUserAction = EdenConstants.SUPER_USER_APPROVE;
     }
 
-    public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
-        super(routeHeader, user, annotation);
+    public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor) {
+        super(routeHeader, user, annotation, runPostProcessor);
         setActionTakenCode(EdenConstants.ACTION_TAKEN_SU_APPROVED_CD);
         this.superUserAction = EdenConstants.SUPER_USER_APPROVE;
     }
@@ -106,7 +106,7 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 		RequestsNode.setSupressPolicyErrors(RouteContext.getCurrentRouteContext());
 		try {
 			completeAnyOutstandingCompleteApproveRequets(docType.getSuperUserApproveNotificationPolicy().getPolicyValue().booleanValue());
-			new BlanketApproveEngine(config).process(getRouteHeader().getRouteHeaderId(), null);
+			new BlanketApproveEngine(config, isRunPostProcessorLogic()).process(getRouteHeader().getRouteHeaderId(), null);
 		} catch (Exception e) {
 			LOG.error("Failed to orchestrate the document to SuperUserApproved.", e);
 			throw new InvalidActionTakenException("Failed to orchestrate the document to SuperUserApproved.", e);

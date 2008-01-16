@@ -29,7 +29,6 @@ import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
-import edu.iu.uis.eden.applicationconstants.ApplicationConstant;
 import edu.iu.uis.eden.engine.node.Branch;
 import edu.iu.uis.eden.engine.node.BranchState;
 import edu.iu.uis.eden.engine.node.Process;
@@ -42,6 +41,7 @@ import edu.iu.uis.eden.engine.transition.TransitionEngineFactory;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.RouteManagerException;
 import edu.iu.uis.eden.exception.WorkflowException;
+import edu.iu.uis.eden.postprocessor.DefaultPostProcessor;
 import edu.iu.uis.eden.postprocessor.PostProcessor;
 import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -61,6 +61,21 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
 
 	protected RouteHelper helper = new RouteHelper();
+	private boolean runPostProcessorLogic = true;
+	
+    public StandardWorkflowEngine() {}
+    
+	public StandardWorkflowEngine(boolean runPostProcessorLogic) {
+	    setRunPostProcessorLogic(runPostProcessorLogic);
+	}
+	
+	public void setRunPostProcessorLogic(boolean runPostProcessorLogic) {
+	    this.runPostProcessorLogic = runPostProcessorLogic;
+	}
+	
+	public boolean isRunPostProcessorLogic() {
+	    return this.runPostProcessorLogic;
+	}
 
 	public void process(Long documentId, Long nodeInstanceId) throws Exception {
 		if (documentId == null) {
@@ -430,12 +445,17 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		PerformanceLogger performanceLogger = new PerformanceLogger(routeHeaderId);
 		ProcessDocReport processReport = null;
 		PostProcessor postProc = null;
-		try {
-			postProc = document.getDocumentType().getPostProcessor();// SpringServiceLocator.getExtensionService().getPostProcessor(document.getDocumentType().getPostProcessorName());
-		} catch (Exception e) {
-			LOG.error("Error retrieving PostProcessor for document " + document.getRouteHeaderId(), e);
-			throw new RouteManagerException("Error retrieving PostProcessor for document " + document.getRouteHeaderId(), e);
-		}
+        try {
+            // use the document's post processor unless specified by the runPostProcessorLogic not to
+            if (!isRunPostProcessorLogic()) {
+                postProc = new DefaultPostProcessor();
+            } else {
+                postProc = document.getDocumentType().getPostProcessor();
+            }
+        } catch (Exception e) {
+            LOG.error("Error retrieving PostProcessor for document " + document.getRouteHeaderId(), e);
+            throw new RouteManagerException("Error retrieving PostProcessor for document " + document.getRouteHeaderId(), e);
+        }
 		try {
 			processReport = postProc.doRouteStatusChange(event);
 		} catch (Exception e) {
@@ -496,7 +516,14 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		getRouteHeaderService().saveRouteHeader(document);
 		ProcessDocReport report = null;
 		try {
-			report = document.getDocumentType().getPostProcessor().doRouteLevelChange(event);
+	        PostProcessor postProcessor = null;
+	        // use the document's post processor unless specified by the runPostProcessorLogic not to
+	        if (!isRunPostProcessorLogic()) {
+	            postProcessor = new DefaultPostProcessor();
+	        } else {
+	            postProcessor = document.getDocumentType().getPostProcessor();
+	        }
+			report = postProcessor.doRouteLevelChange(event);
 		} catch (Exception e) {
 			LOG.warn("Problems contacting PostProcessor", e);
 			throw new RouteManagerException("Problems contacting PostProcessor:  " + e.getMessage());

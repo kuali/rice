@@ -17,12 +17,14 @@
 package edu.iu.uis.eden.superuser.web;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.struts.action.ActionMapping;
 
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
@@ -54,6 +56,8 @@ public class SuperUserForm extends WorkflowRoutingForm {
     private boolean authorized;
     private boolean blanketApprove;
     private String methodToCall = "";
+    private boolean runPostProcessorLogic = true;
+    private String[] actionRequestRunPostProcessorCheck;
     
     private String lookupableImplServiceName;
     private String lookupType;
@@ -225,20 +229,38 @@ public class SuperUserForm extends WorkflowRoutingForm {
     public void setReturnDestNodeName(String returnDestNodeName) {
         this.returnDestNodeName = returnDestNodeName;
     }
-    
     public String getLookupableImplServiceName() {
         return lookupableImplServiceName;
     }
     public void setLookupableImplServiceName(String lookupableImplServiceName) {
         this.lookupableImplServiceName = lookupableImplServiceName;
     }
-
     public String getLookupType() {
         return lookupType;
     }
     public void setLookupType(String lookupType) {
         this.lookupType = lookupType;
     }
-    
+    public boolean isRunPostProcessorLogic() {
+        return this.runPostProcessorLogic;
+    }
+    public void setRunPostProcessorLogic(boolean runPostProcessorLogic) {
+        this.runPostProcessorLogic = runPostProcessorLogic;
+    }
+    public String[] getActionRequestRunPostProcessorCheck() {
+        return this.actionRequestRunPostProcessorCheck;
+    }
+    public void setActionRequestRunPostProcessorCheck(String[] actionRequestRunPostProcessorCheck) {
+        this.actionRequestRunPostProcessorCheck = actionRequestRunPostProcessorCheck;
+    }
+    public Boolean getActionRequestPostProcessorCheck(String actionRequestId) {
+        return ArrayUtils.contains(getActionRequestRunPostProcessorCheck(), actionRequestId);
+    }
+    public List<String> getActionRequestPostProcessorCheck() {
+        if (getActionRequestRunPostProcessorCheck() == null) {
+            return null;
+        }
+        return Arrays.asList(getActionRequestRunPostProcessorCheck());
+    }
 
 }

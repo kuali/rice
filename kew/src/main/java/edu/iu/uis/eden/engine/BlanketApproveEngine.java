@@ -54,6 +54,11 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
 //    private ActionRequestNotificationGenerator notifier = new ActionRequestNotificationGenerator();
     private OrchestrationConfig config;
 
+    public BlanketApproveEngine(OrchestrationConfig config, boolean runPostProcessorLogic) {
+        super(runPostProcessorLogic);
+        this.config = config;
+    }
+
     public BlanketApproveEngine(OrchestrationConfig config) {
         this.config = config;
     }

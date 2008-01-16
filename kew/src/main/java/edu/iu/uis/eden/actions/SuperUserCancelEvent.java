@@ -34,8 +34,8 @@ public class SuperUserCancelEvent extends SuperUserActionTakenEvent {
         this.superUserAction = EdenConstants.SUPER_USER_CANCEL;
     }
 
-    public SuperUserCancelEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
-        super(routeHeader, user, annotation);
+    public SuperUserCancelEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor) {
+        super(routeHeader, user, annotation, runPostProcessor);
         setActionTakenCode(EdenConstants.ACTION_TAKEN_SU_CANCELED_CD);
         this.superUserAction = EdenConstants.SUPER_USER_CANCEL;
     }

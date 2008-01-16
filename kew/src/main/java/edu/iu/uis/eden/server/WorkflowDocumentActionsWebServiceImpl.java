@@ -272,7 +272,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         incomingParamCheck(userId, "userId");
         LOG.debug("SU Approve [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserApprove(user, routeHeader, annotation);
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserApprove(user, routeHeader, annotation, true);
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
     
@@ -281,7 +281,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
 	incomingParamCheck(userId, "userId");
 	LOG.debug("SU Cancel [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
 	WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-	routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserActionRequestApproveAction(user, routeHeader, actionRequestId, annotation);
+	routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserActionRequestApproveAction(user, routeHeader, actionRequestId, annotation, true);
 	return BeanConverter.convertRouteHeader(routeHeader, user);
     }
 
@@ -290,7 +290,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         incomingParamCheck(userId, "userId");
         LOG.debug("SU Disapprove [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserDisapproveAction(user, routeHeader, annotation);
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserDisapproveAction(user, routeHeader, annotation, true);
         return BeanConverter.convertRouteHeader(routeHeader, user);    	
     }
     
@@ -299,7 +299,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         incomingParamCheck(userId, "userId");
         LOG.debug("SU Cancel [userId=" + userId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserCancelAction(user, routeHeader, annotation);
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().superUserCancelAction(user, routeHeader, annotation, true);
         return BeanConverter.convertRouteHeader(routeHeader, user);
     }
 

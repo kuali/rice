@@ -49,8 +49,8 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
         this.superUserAction = EdenConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
     }
 
-    public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, Long actionRequestId, String annotation) {
-        super(routeHeader, user, annotation);
+    public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, Long actionRequestId, String annotation, boolean runPostProcessor) {
+        super(routeHeader, user, annotation, runPostProcessor);
         this.superUserAction = EdenConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
         this.actionRequestId = actionRequestId;
     }

@@ -51,8 +51,8 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
         this.superUserAction = EdenConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
     }
 
-    public SuperUserNodeApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String nodeName) {
-        super(routeHeader, user, annotation);
+    public SuperUserNodeApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor, String nodeName) {
+        super(routeHeader, user, annotation, runPostProcessor);
         setActionTakenCode(EdenConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD);
         this.superUserAction = EdenConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
         this.nodeName = nodeName;
@@ -99,7 +99,7 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
             config.setDestinationNodeNames(Utilities.asSet(nodeName));
             config.setSendNotifications(docType.getSuperUserApproveNotificationPolicy().getPolicyValue().booleanValue());
             try {
-                new BlanketApproveEngine(config).process(getRouteHeader().getRouteHeaderId(), null);
+                new BlanketApproveEngine(config, isRunPostProcessorLogic()).process(getRouteHeader().getRouteHeaderId(), null);
             } catch (Exception e) {
             	if (e instanceof RuntimeException) {
         		throw (RuntimeException)e;

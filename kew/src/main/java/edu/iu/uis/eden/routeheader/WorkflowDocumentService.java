@@ -57,10 +57,11 @@ public interface WorkflowDocumentService {
     public void deleteDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader) throws WorkflowException;
     public void logDocumentAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws EdenUserNotFoundException, InvalidActionTakenException;
 
-    public DocumentRouteHeaderValue superUserActionRequestApproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, Long actionRequestId, String annotation) throws InvalidActionTakenException, EdenUserNotFoundException;
-    public DocumentRouteHeaderValue superUserApprove(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException, EdenUserNotFoundException;
-    public DocumentRouteHeaderValue superUserCancelAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException, EdenUserNotFoundException;
-    public DocumentRouteHeaderValue superUserDisapproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException, EdenUserNotFoundException;
+    public DocumentRouteHeaderValue superUserActionRequestApproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, Long actionRequestId, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, EdenUserNotFoundException;
+    public DocumentRouteHeaderValue superUserActionRequestApproveAction(WorkflowUser user, Long documentId, Long actionRequestId, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, EdenUserNotFoundException;
+    public DocumentRouteHeaderValue superUserApprove(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, EdenUserNotFoundException;
+    public DocumentRouteHeaderValue superUserCancelAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, EdenUserNotFoundException;
+    public DocumentRouteHeaderValue superUserDisapproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, EdenUserNotFoundException;
 
     // Introduced in 2.1 //
 
@@ -77,7 +78,7 @@ public interface WorkflowDocumentService {
     /**
      * @since 2.1
      */
-    public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation) throws InvalidActionTakenException, EdenUserNotFoundException;
+    public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, EdenUserNotFoundException;
 
     /**
      * @since 2.1
@@ -92,7 +93,7 @@ public interface WorkflowDocumentService {
     /**
      * @since 2.1
      */
-    public DocumentRouteHeaderValue superUserNodeApproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation) throws InvalidActionTakenException, EdenUserNotFoundException;
+    public DocumentRouteHeaderValue superUserNodeApproveAction(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, EdenUserNotFoundException;
 
     /**
      * @since 2.1
@@ -112,12 +113,12 @@ public interface WorkflowDocumentService {
     /**
      * @since 2.2
      */
-    public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(WorkflowUser user, Long documentId, String nodeName, String annotation) throws InvalidActionTakenException, EdenUserNotFoundException;
+    public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(WorkflowUser user, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, EdenUserNotFoundException;
 
     /**
      * @since 2.2.7
      */
-    public DocumentRouteHeaderValue superUserNodeApproveAction(WorkflowUser user, Long documentId, String nodeName, String annotation) throws InvalidActionTakenException, EdenUserNotFoundException;
+    public DocumentRouteHeaderValue superUserNodeApproveAction(WorkflowUser user, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException, EdenUserNotFoundException;
 
     // Introduced in 2.2.2
 

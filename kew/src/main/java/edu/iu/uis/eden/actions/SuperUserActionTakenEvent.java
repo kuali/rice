@@ -49,8 +49,8 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
         super(routeHeader, user);
     }
 
-    public SuperUserActionTakenEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
-        super(routeHeader, user, annotation);
+    public SuperUserActionTakenEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor) {
+        super(routeHeader, user, annotation, runPostProcessor);
     }
 
     /* (non-Javadoc)
@@ -128,4 +128,5 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
     public void setActionRequest(ActionRequestValue actionRequest) {
         this.actionRequest = actionRequest;
     }
+
 }

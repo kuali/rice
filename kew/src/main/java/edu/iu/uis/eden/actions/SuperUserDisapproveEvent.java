@@ -34,8 +34,8 @@ public class SuperUserDisapproveEvent extends SuperUserActionTakenEvent {
         this.superUserAction = EdenConstants.SUPER_USER_DISAPPROVE;
     }
 
-    public SuperUserDisapproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
-        super(routeHeader, user, annotation);
+    public SuperUserDisapproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor) {
+        super(routeHeader, user, annotation, runPostProcessor);
         setActionTakenCode(EdenConstants.ACTION_TAKEN_SU_DISAPPROVED_CD);
         this.superUserAction = EdenConstants.SUPER_USER_DISAPPROVE;
     }

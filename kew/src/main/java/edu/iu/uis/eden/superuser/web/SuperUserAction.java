@@ -22,6 +22,7 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -64,7 +65,7 @@ public class SuperUserAction extends WorkflowAction {
         LOG.info("entering routeLevelApprove()...");
         SuperUserForm superUserForm = (SuperUserForm) form;
         //SpringServiceLocator.getWorkflowDocumentService().superUserRouteLevelApproveAction(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeader(), superUserForm.getRouteLevel(), superUserForm.getAnnotation());
-        KEWServiceLocator.getWorkflowDocumentService().superUserNodeApproveAction(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeader().getRouteHeaderId(), superUserForm.getDestNodeName(), superUserForm.getAnnotation());
+        KEWServiceLocator.getWorkflowDocumentService().superUserNodeApproveAction(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeader().getRouteHeaderId(), superUserForm.getDestNodeName(), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.routeLevelApproved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting routeLevelApprove()...");
         superUserForm.getActionRequests().clear();
@@ -75,7 +76,7 @@ public class SuperUserAction extends WorkflowAction {
     public ActionForward approve(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering approve() ...");
         SuperUserForm superUserForm = (SuperUserForm) form;
-        KEWServiceLocator.getWorkflowDocumentService().superUserApprove(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeader(), superUserForm.getAnnotation());
+        KEWServiceLocator.getWorkflowDocumentService().superUserApprove(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeader(), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.approved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting approve() ...");
         superUserForm.getActionRequests().clear();
@@ -86,7 +87,7 @@ public class SuperUserAction extends WorkflowAction {
     public ActionForward disapprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering disapprove() ...");
         SuperUserForm superUserForm = (SuperUserForm) form;
-        KEWServiceLocator.getWorkflowDocumentService().superUserDisapproveAction(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeader(), superUserForm.getAnnotation());
+        KEWServiceLocator.getWorkflowDocumentService().superUserDisapproveAction(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeader(), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.disapproved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting disapprove() ...");
         superUserForm.getActionRequests().clear();
@@ -97,7 +98,7 @@ public class SuperUserAction extends WorkflowAction {
     public ActionForward cancel(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering cancel() ...");
         SuperUserForm superUserForm = (SuperUserForm) form;
-        KEWServiceLocator.getWorkflowDocumentService().superUserCancelAction(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeader(), superUserForm.getAnnotation());
+        KEWServiceLocator.getWorkflowDocumentService().superUserCancelAction(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeader(), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.superuser.canceled", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting cancel() ...");
         superUserForm.getActionRequests().clear();
@@ -108,9 +109,26 @@ public class SuperUserAction extends WorkflowAction {
     public ActionForward returnToPreviousNode(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering returnToPreviousNode() ...");
         SuperUserForm superUserForm = (SuperUserForm) form;
-        KEWServiceLocator.getWorkflowDocumentService().superUserReturnDocumentToPreviousNode(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeaderId(), superUserForm.getReturnDestNodeName(), superUserForm.getAnnotation());
+        KEWServiceLocator.getWorkflowDocumentService().superUserReturnDocumentToPreviousNode(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeaderId(), superUserForm.getReturnDestNodeName(), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentActionMessage("general.routing.returnedToPreviousNode", request, "document", superUserForm.getReturnDestNodeName().toString());
         LOG.info("exiting returnToPreviousRouteLevel() ...");
+        superUserForm.getActionRequests().clear();
+        establishRequiredState(request, form);
+        return mapping.findForward("basic");
+    }
+
+    public ActionForward test(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        LOG.info("entering test() ...");
+        SuperUserForm superUserForm = (SuperUserForm) form;
+        LOG.info("Value of runPostProcessorLogic: " + superUserForm.isRunPostProcessorLogic());
+        if (superUserForm.getActionRequestRunPostProcessorCheck() != null) {
+            for (int i = 0; i < superUserForm.getActionRequestRunPostProcessorCheck().length; i++) {
+                String actionRequestId = superUserForm.getActionRequestRunPostProcessorCheck()[i];
+                LOG.info("Action Request with id " + actionRequestId + " is checked for post process actions");
+            }
+        } else {
+            LOG.info("Action request checkbox array is null");
+        }
         superUserForm.getActionRequests().clear();
         establishRequiredState(request, form);
         return mapping.findForward("basic");
@@ -120,7 +138,8 @@ public class SuperUserAction extends WorkflowAction {
         LOG.info("entering actionRequestApprove() ...");
         SuperUserForm superUserForm = (SuperUserForm) form;
         LOG.debug("Routing super user action request approve action");
-        KEWServiceLocator.getWorkflowDocumentService().superUserActionRequestApproveAction(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeader(), new Long(superUserForm.getActionTakenActionRequestId()), superUserForm.getAnnotation());
+        boolean runPostProcessorLogic = ArrayUtils.contains(superUserForm.getActionRequestRunPostProcessorCheck(), superUserForm.getActionTakenActionRequestId());
+        KEWServiceLocator.getWorkflowDocumentService().superUserActionRequestApproveAction(getUserSession(request).getWorkflowUser(), superUserForm.getRouteHeader().getRouteHeaderId(), new Long(superUserForm.getActionTakenActionRequestId()), superUserForm.getAnnotation(), runPostProcessorLogic);
         String messageString;
         String actionReqest = (String) request.getParameter("buttonClick");
         if (actionReqest.equalsIgnoreCase("acknowlege")){

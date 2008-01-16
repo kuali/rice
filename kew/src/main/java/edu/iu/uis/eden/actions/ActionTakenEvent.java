@@ -31,7 +31,6 @@ import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.KEWXMLService;
-import edu.iu.uis.eden.messaging.MessageQueueService;
 import edu.iu.uis.eden.messaging.MessageServiceNames;
 import edu.iu.uis.eden.postprocessor.PostProcessor;
 import edu.iu.uis.eden.postprocessor.ProcessDocReport;
@@ -68,6 +67,8 @@ public abstract class ActionTakenEvent {
 	protected Boolean currentInd = new Boolean(true);
 
 	private WorkflowUser user;
+	
+    private boolean runPostProcessorLogic = true;
 
 	public ActionTakenEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
 		this.routeHeader = routeHeader;
@@ -75,11 +76,14 @@ public abstract class ActionTakenEvent {
 		this.routeHeaderId = routeHeader.getRouteHeaderId();
 	}
 
-	public ActionTakenEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
-		this.routeHeader = routeHeader;
-		this.user = user;
-		this.annotation = annotation;
-		this.routeHeaderId = routeHeader.getRouteHeaderId();
+    public ActionTakenEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
+        this(routeHeader, user);
+        this.annotation = annotation;
+    }
+
+	public ActionTakenEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessorLogic) {
+	    this(routeHeader, user, annotation);
+		this.runPostProcessorLogic = runPostProcessorLogic;
 	}
 
 	public ActionRequestService getActionRequestService() {
@@ -165,6 +169,9 @@ public abstract class ActionTakenEvent {
 	}
 
 	protected void notifyActionTaken(ActionTakenValue actionTaken) {
+	    if (!isRunPostProcessorLogic()) {
+	        return;
+	    }
 		if (actionTaken == null) {
 			return;
 		}
@@ -183,6 +190,9 @@ public abstract class ActionTakenEvent {
 	}
 
 	protected void notifyStatusChange(String newStatusCode, String oldStatusCode) throws InvalidActionTakenException {
+        if (!isRunPostProcessorLogic()) {
+            return;
+        }
 		DocumentRouteStatusChange statusChangeEvent = new DocumentRouteStatusChange(routeHeader.getRouteHeaderId(), routeHeader.getAppDocId(), oldStatusCode, newStatusCode);
 		try {
 			LOG.debug("Notifying post processor of status change " + oldStatusCode + "->" + newStatusCode);
@@ -289,4 +299,12 @@ public abstract class ActionTakenEvent {
 	public void setCurrentInd(Boolean currentInd) {
 		this.currentInd = currentInd;
 	}
+
+	public boolean isRunPostProcessorLogic() {
+        return this.runPostProcessorLogic;
+    }
+
+    public void setRunPostProcessorLogic(boolean runPostProcessorLogic) {
+        this.runPostProcessorLogic = runPostProcessorLogic;
+    }
 }

@@ -68,7 +68,11 @@ public class JavaSecurityManagementForm extends ActionForm {
         return this.alias;
     }
     public void setAlias(String alias) {
-        this.alias = alias;
+        if (alias == null) {
+            this.alias = null;
+        } else {
+            this.alias = alias.trim();
+        }
     }
     public String getPassword() {
         return this.password;

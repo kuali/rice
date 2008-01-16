@@ -38,8 +38,10 @@
       <br>
   	  <jsp:include page="../Messages.jsp"/>
       <br>
-
-  	  <table border="0" cellpadding="0" cellspacing="0" class="bord-r-t">
+      <br>
+      <strong>Create new Client Keystore file:</strong>
+      <br><br>
+	  <table border="0" cellpadding="2" cellspacing="0" class="bord-r-t">
 		<tr>
 		  <td class="thnormal" align="right" valign="middle" nowrap="nowrap">
 		    Desired Alias (must be unique from list below):
@@ -67,9 +69,8 @@
         <tr>
           <td height="28" colspan="2" valign="top" class="thnormal">
             <div align="center">
-              <html-el:submit property="methodToCall.generateClientKeyStore" value="Create Keystore" alt="Create Keystore" title="Clear Form Title"/>&nbsp;&nbsp;&nbsp;&nbsp;
-              <html-el:image property="methodToCall.generateClientKeyStore" src="images/buttonsmall_search.gif" align="absmiddle" />&nbsp;&nbsp;&nbsp;&nbsp;
-              <html-el:image property="methodToCall.clear" src="images/buttonsmall_clear.gif" align="absmiddle" />
+              <html-el:image property="methodToCall.generateClientKeyStore" src="images/buttonsmall_create.gif" align="absmiddle" />&nbsp;&nbsp;&nbsp;&nbsp;
+              <html-el:image property="methodToCall.clear" src="images/buttonsmall_clearfields.gif" align="absmiddle" />
             </div>
           </td>
         </tr>
@@ -83,7 +84,7 @@
   <tr>
     <td width="20" height="20">&nbsp;</td>
     <td height="30">
-       <strong>Keystore Entries:</strong>
+       <strong>Existing Keystore Entries:</strong>
   	   <c:if test="${empty keyStoreEntryList}">
          &nbsp;&nbsp;None.
   	   </c:if>

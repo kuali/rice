@@ -95,7 +95,7 @@ public class JavaSecurityManagementAction extends KSBAction {
 
     public ActionForward generateClientKeyStore(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         JavaSecurityManagementForm managementForm = (JavaSecurityManagementForm)form;
-        ActionMessages errors = managementForm.validate(mapping, request);
+        ActionMessages errors = managementForm.validateGenerateClientKeystore(mapping, request);
         if (errors == null || errors.isEmpty()) {
             KeyStore clientKeyStore = KSBServiceLocator.getJavaSecurityManagementService().generateClientKeystore(managementForm.getAlias(), managementForm.getPassword());
             byte[] data = {};

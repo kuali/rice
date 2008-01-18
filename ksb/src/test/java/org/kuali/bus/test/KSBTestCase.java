@@ -42,6 +42,8 @@ import edu.iu.uis.eden.server.TestClient1;
 import edu.iu.uis.eden.server.TestClient2;
 
 public class KSBTestCase extends RiceTestCase {
+    
+    protected static final String MOCK_JAVA_SECURITY_MANAGEMENT_SERVICE_BEAN_ID = "testJavaSecurityManagementService";
 
     private TestClient1 testClient1;
     private TestClient2 testClient2;

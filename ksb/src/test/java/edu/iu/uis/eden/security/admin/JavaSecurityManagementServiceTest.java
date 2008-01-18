@@ -17,11 +17,12 @@ package edu.iu.uis.eden.security.admin;
 
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
-import java.security.cert.Certificate;
+
+import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.bus.test.KSBTestCase;
+import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 /**
  * This is a description of what this class does - delyea don't forget to fill this in. 
@@ -35,7 +36,8 @@ public class JavaSecurityManagementServiceTest extends KSBTestCase {
     private static final String TEST_CLIENT_PASSWORD = "test_password";
 
     private MockJavaSecurityManagementService getMockJavaSecurityManagementService() {
-        return (MockJavaSecurityManagementService)KSBServiceLocator.getJavaSecurityManagementService();
+        QName serviceName = new QName("KEW", MOCK_JAVA_SECURITY_MANAGEMENT_SERVICE_BEAN_ID);
+        return (MockJavaSecurityManagementService)GlobalResourceLoader.getService(serviceName);
     }
 
     @Test

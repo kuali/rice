@@ -58,10 +58,6 @@
 								<property name="localServiceName" value="exceptionMessagingService" />
 								<property name="service" ref="testExceptionHandlerService" />
 							</bean>
-							<bean class="edu.iu.uis.eden.messaging.config.ServiceHolder">
-								<property name="localServiceName" value="ksbJavaSecurityManagementService" />
-								<property name="service" ref="testJavaSecurityManagementService" />
-							</bean>
 						</list>
 					</property>
 					<property name="cache">
@@ -100,6 +96,13 @@
 									<ref bean="testExplodingServiceWithDefaults" />
 								</property>
 								<property name="localServiceName" value="testExplodingServiceWithDefaults" />
+							</bean>
+							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+								<property name="service">
+									<ref bean="testJavaSecurityManagementService" />
+								</property>
+								<property name="localServiceName" value="testJavaSecurityManagementService" />
+								<property name="serviceNameSpaceURI" value="KEW" />
 							</bean>
 							<bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
 								<property name="service">

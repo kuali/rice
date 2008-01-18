@@ -190,6 +190,7 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 		List columnList = new ArrayList();
 		columnList.add(new Column("Rule Id", Column.COLUMN_IS_SORTABLE_VALUE, "ruleBaseValuesId"));
 		columnList.add(new Column("Document Type Name", Column.COLUMN_IS_SORTABLE_VALUE, "docTypeName"));
+		columnList.add(new Column("Rule Name", Column.COLUMN_IS_SORTABLE_VALUE, "name"));
 		columnList.add(new Column("Rule Template Name", Column.COLUMN_IS_SORTABLE_VALUE, "ruleTemplateName"));
 		columnList.add(new Column("Description", Column.COLUMN_IS_SORTABLE_VALUE, "description"));
 		columnList.add(new Column("Active", Column.COLUMN_IS_SORTABLE_VALUE, "activeIndDisplay"));
@@ -529,7 +530,9 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 			Boolean isDelegationWizardry = new Boolean(delegationWizard);
 			String destinationUrl = "<a href=\"Rule.do?methodToCall=report&currentRuleId=" + record.getRuleBaseValuesId() + "\">report</a> |";
 			if (!isDelegationWizardry.booleanValue()) {
-				destinationUrl += " <a href=\"Rule.do?methodToCall=edit&currentRuleId=" + record.getRuleBaseValuesId() + "\" >edit</a>";
+			    if (record.getRuleTemplate() != null) { /* HACK: TODO: disable editing of templateless rules until we have updated/overhauled the UI */
+			        destinationUrl += " <a href=\"Rule.do?methodToCall=edit&currentRuleId=" + record.getRuleBaseValuesId() + "\" >edit</a>";
+			    }
 			} else {
 				destinationUrl += " <a href=\"DelegateRule.do?methodToCall=start" + "&parentRule.getDocTypeName=" + record.getDocTypeName();
 				if (record.getRuleTemplate().getDelegationTemplateId() != null) {

@@ -17,9 +17,11 @@
 package edu.iu.uis.eden.security;
 
 import java.security.Signature;
+import java.security.cert.Certificate;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.RiceConstants;
 
 /**
@@ -30,16 +32,33 @@ import org.kuali.rice.RiceConstants;
 public class ResponseHeaderDigitalSigner extends AbstractDigitalSigner {
 
 	private String alias;
+	private Certificate certificate;
 	private HttpServletResponse response;
 	
-	public ResponseHeaderDigitalSigner(Signature signature, String alias, HttpServletResponse response) {
-		super(signature);
-		this.alias = alias;
-		this.response = response;
-	}
-	
+    public ResponseHeaderDigitalSigner(Signature signature, String alias, HttpServletResponse response) {
+        super(signature);
+        this.alias = alias;
+        this.response = response;
+    }
+    
+    public ResponseHeaderDigitalSigner(Signature signature, String alias, Certificate certificate, HttpServletResponse response) {
+        this(signature, alias, response);
+        this.certificate = certificate;
+    }
+    
+    public ResponseHeaderDigitalSigner(Signature signature, Certificate certificate, HttpServletResponse response) {
+        super(signature);
+        this.certificate = certificate;
+        this.response = response;
+    }
+    
 	public void sign() throws Exception {
-	    this.response.setHeader(RiceConstants.KEYSTORE_ALIAS_HEADER, this.alias);
+	    if (StringUtils.isNotBlank(this.alias) ) {
+	        this.response.setHeader(RiceConstants.KEYSTORE_ALIAS_HEADER, this.alias);
+	    }
+	    if (this.certificate != null) {
+	        this.response.setHeader(RiceConstants.KEYSTORE_CERTIFICATE_HEADER, getEncodedCertificate(this.certificate));
+	    }
 	    this.response.setHeader(RiceConstants.DIGITAL_SIGNATURE_HEADER, getEncodedSignature());
 	}
 

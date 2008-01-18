@@ -42,7 +42,7 @@ public interface JavaSecurityManagementService {
     
     public String getModuleSignatureAlgorithm();
     
-    public Certificate getModuleCertificate(String alias) throws KeyStoreException;
+    public Certificate getCertificate(String alias) throws KeyStoreException;
     
     public PrivateKey getModulePrivateKey();
     

@@ -17,6 +17,7 @@
 package edu.iu.uis.eden.security;
 
 import java.security.Signature;
+import java.security.cert.Certificate;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -42,8 +43,12 @@ public abstract class AbstractDigitalSigner implements DigitalSigner {
 		return getSignature().sign();
 	}
 	
-	protected String getEncodedSignature() throws Exception {
-		return new String(Base64.encodeBase64(getSignatureBytes()), "UTF-8");
-	}
+    protected String getEncodedSignature() throws Exception {
+        return new String(Base64.encodeBase64(getSignatureBytes()), "UTF-8");
+    }
+
+    protected String getEncodedCertificate(Certificate certificate) throws Exception {
+        return new String(Base64.encodeBase64(certificate.getEncoded()), "UTF-8");
+    }
 
 }

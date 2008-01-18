@@ -29,6 +29,11 @@ import org.kuali.rice.core.Core;
 public class DigitalSignatureTest extends KSBTestCase {
 
 
+	/**
+	 * This method tests the existing rice keystore file
+	 * 
+	 * @throws Exception
+	 */
 	@Test public void testSigning() throws Exception {
 		
 		Config config = Core.getCurrentContextConfig();

@@ -15,10 +15,8 @@
  */
 package edu.iu.uis.eden.security.admin;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
@@ -27,11 +25,8 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SecureRandom;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.Certificate;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -53,10 +48,9 @@ import org.springframework.beans.factory.InitializingBean;
  */
 public class JavaSecurityManagementServiceImpl implements JavaSecurityManagementService, InitializingBean {
 
-    private final String CLIENT_KEY_GENERATOR_ALGORITHM = "RSA";
-    private final String CLIENT_SECURE_RANDOM_ALGORITHM = "SHA1PRNG";
-    private final String CLIENT_CERTIFICATE_INSTANCE_TYPE = "X.509";
-    private final int CLIENT_KEY_PAIR_KEY_SIZE = 512;
+    protected final String CLIENT_KEY_GENERATOR_ALGORITHM = "RSA";
+    protected final String CLIENT_SECURE_RANDOM_ALGORITHM = "SHA1PRNG";
+    protected final int CLIENT_KEY_PAIR_KEY_SIZE = 512;
     private final int CLIENT_CERT_EXPIRATION_DAYS = 9999;
 
     private static final String MODULE_SHA_RSA_ALGORITHM = "SHA1withRSA";
@@ -143,66 +137,79 @@ public class JavaSecurityManagementServiceImpl implements JavaSecurityManagement
         if (isAliasInKeystore(alias)) {
             throw new KeyStoreException("Alias '" + alias + "' already exists in module keystore");
         }
-        ByteArrayInputStream inputStream = null;
-        FileOutputStream outputStream = null;
-        Certificate[] clientCertificateChain = {};
-        PrivateKey clientPrivateKey = null;
+//        Certificate[] clientCertificateChain = {};
+//        PrivateKey clientPrivateKey = null;
         KeyStore ks = null;
         try {
             // generate a key pair for the client
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance(CLIENT_KEY_GENERATOR_ALGORITHM);
-            SecureRandom random = SecureRandom.getInstance(CLIENT_SECURE_RANDOM_ALGORITHM);
+//            SecureRandom random = SecureRandom.getInstance(CLIENT_SECURE_RANDOM_ALGORITHM);
             keyGen.initialize(CLIENT_KEY_PAIR_KEY_SIZE);
 //            keyGen.initialize(new RSAKeyGenParameterSpec(512,RSAKeyGenParameterSpec.F0));
             KeyPair pair = keyGen.generateKeyPair();
-            PublicKey clientPublicKey = pair.getPublic();
-            clientPrivateKey = pair.getPrivate();
-            
-            // generate the Certificate
-            X509V3CertificateGenerator certificateGenerator = new X509V3CertificateGenerator();
-//            X509Name nameInfo = new X509Name(false,"CN=" + alias);
-            certificateGenerator.setSignatureAlgorithm("MD5WithRSA");
-            certificateGenerator.setSerialNumber(new java.math.BigInteger("1"));
-            X509Principal nameInfo = new X509Principal("CN=" + alias);
-            certificateGenerator.setIssuerDN(nameInfo);
-            certificateGenerator.setSubjectDN(nameInfo);                       // note: same as issuer
-            certificateGenerator.setNotBefore(new Date());
-            Calendar c = Calendar.getInstance();
-            c.add(Calendar.DATE, CLIENT_CERT_EXPIRATION_DAYS);
-            certificateGenerator.setNotAfter(c.getTime());
-            certificateGenerator.setPublicKey(clientPublicKey);
-            X509Certificate cert = certificateGenerator.generateX509Certificate(clientPrivateKey);
-            clientCertificateChain = new Certificate[]{cert};
 
-            // generate client keyStore file
-            ks = KeyStore.getInstance(KeyStore.getDefaultType());
-            ks.load(null, clientPassphrase.toCharArray());
-            // set client private key on keyStore file
-            ks.setEntry(alias, new KeyStore.PrivateKeyEntry(clientPrivateKey, clientCertificateChain), new KeyStore.PasswordProtection(clientPassphrase.toCharArray()));
+//            PublicKey clientPublicKey = pair.getPublic();
+//            clientPrivateKey = pair.getPrivate();
+//            // generate the Certificate
+//            X509V3CertificateGenerator certificateGenerator = new X509V3CertificateGenerator();
+////            X509Name nameInfo = new X509Name(false,"CN=" + alias);
+//            certificateGenerator.setSignatureAlgorithm("MD5WithRSA");
+//            certificateGenerator.setSerialNumber(new java.math.BigInteger("1"));
+//            X509Principal nameInfo = new X509Principal("CN=" + alias);
+//            certificateGenerator.setIssuerDN(nameInfo);
+//            certificateGenerator.setSubjectDN(nameInfo);                       // note: same as issuer
+//            certificateGenerator.setNotBefore(new Date());
+//            Calendar c = Calendar.getInstance();
+//            c.add(Calendar.DATE, CLIENT_CERT_EXPIRATION_DAYS);
+//            certificateGenerator.setNotAfter(c.getTime());
+//            certificateGenerator.setPublicKey(clientPublicKey);
+//            X509Certificate cert = certificateGenerator.generateX509Certificate(clientPrivateKey);
+//            clientCertificateChain = new Certificate[]{cert};
+//
+//            // generate client keyStore file
+//            ks = KeyStore.getInstance(getModuleKeyStoreType());
+//            ks.load(null, clientPassphrase.toCharArray());
+//            // set client private key on keyStore file
+//            ks.setEntry(alias, new KeyStore.PrivateKeyEntry(clientPrivateKey, clientCertificateChain), new KeyStore.PasswordProtection(clientPassphrase.toCharArray()));
+            Certificate cert = generateCertificate(pair, alias);
+            ks = generateKeyStore(cert, pair.getPrivate(), alias, clientPassphrase);
+            
             // set the module certificate on the client keyStore file
-            ks.setEntry(getModuleKeyStoreAlias(), new KeyStore.TrustedCertificateEntry(getModuleCertificate(getModuleKeyStoreAlias())),  null);
+            ks.setEntry(getModuleKeyStoreAlias(), new KeyStore.TrustedCertificateEntry(getCertificate(getModuleKeyStoreAlias())),  null);
 
             // add the client certificate to the module keyStore
             addClientCertificateToModuleKeyStore(alias, cert);
             
             return ks;
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-            } catch (IOException e) {
-                // log unable to close message
-            }
+            throw new RuntimeException("Could not create new KeyStore",e);
         }
     }
     
+    protected Certificate generateCertificate(KeyPair keyPair, String alias) throws GeneralSecurityException {
+      X509V3CertificateGenerator certificateGenerator = new X509V3CertificateGenerator();
+//      X509Name nameInfo = new X509Name(false,"CN=" + alias);
+      certificateGenerator.setSignatureAlgorithm("MD5WithRSA");
+      certificateGenerator.setSerialNumber(new java.math.BigInteger("1"));
+      X509Principal nameInfo = new X509Principal("CN=" + alias);
+      certificateGenerator.setIssuerDN(nameInfo);
+      certificateGenerator.setSubjectDN(nameInfo);  // note: same as issuer for self signed
+      certificateGenerator.setNotBefore(new Date());
+      Calendar c = Calendar.getInstance();
+      c.add(Calendar.DATE, CLIENT_CERT_EXPIRATION_DAYS);
+      certificateGenerator.setNotAfter(c.getTime());
+      certificateGenerator.setPublicKey(keyPair.getPublic());
+      return certificateGenerator.generateX509Certificate(keyPair.getPrivate());
+    }
+    
+    protected KeyStore generateKeyStore(Certificate cert, PrivateKey privateKey, String alias, String keyStorePassword) throws GeneralSecurityException, IOException {
+        KeyStore ks = KeyStore.getInstance(getModuleKeyStoreType());
+        ks.load(null, keyStorePassword.toCharArray());
+        // set client private key on keyStore file
+        ks.setEntry(alias, new KeyStore.PrivateKeyEntry(privateKey, new Certificate[]{cert}), new KeyStore.PasswordProtection(keyStorePassword.toCharArray()));
+        return ks;
+    }
+
     public List<KeyStoreEntryDataContainer> getListOfModuleKeyStoreEntries() {
         List<KeyStoreEntryDataContainer> keyStoreEntries = new ArrayList<KeyStoreEntryDataContainer>();
         try {
@@ -237,7 +244,10 @@ public class JavaSecurityManagementServiceImpl implements JavaSecurityManagement
         return getModuleAlgorithm();
     }
 
-    public Certificate getModuleCertificate(String alias) throws KeyStoreException {
+    /**
+     * @see java.security.KeyStore#getCertificate(java.lang.String)
+     */
+    public Certificate getCertificate(String alias) throws KeyStoreException {
         return getModuleKeyStore().getCertificate(alias);
     }
     
@@ -280,5 +290,5 @@ public class JavaSecurityManagementServiceImpl implements JavaSecurityManagement
     public PrivateKey getModulePrivateKey() {
         return this.modulePrivateKey;
     }
-
+    
 }

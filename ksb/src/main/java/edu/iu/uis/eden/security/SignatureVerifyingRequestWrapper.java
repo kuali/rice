@@ -16,8 +16,10 @@
  */
 package edu.iu.uis.eden.security;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.Signature;
+import java.security.cert.CertificateFactory;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -47,12 +49,16 @@ public class SignatureVerifyingRequestWrapper extends HttpServletRequestWrapper 
 			throw new RuntimeException("A digital signature was required on the request but none was found.");
 		}
 		String verificationAlias = request.getHeader(RiceConstants.KEYSTORE_ALIAS_HEADER);
-		if (StringUtils.isEmpty(verificationAlias)) {
-			throw new RuntimeException("A verification alias was required on the request but none was found.");
+		String encodedCertificate = request.getHeader(RiceConstants.KEYSTORE_CERTIFICATE_HEADER);
+		if ( (StringUtils.isEmpty(verificationAlias)) && (StringUtils.isEmpty(encodedCertificate)) ) {
+            throw new RuntimeException("A verification alias or certificate was required on the request but neither was found.");
 		}
 		try {
-			this.digitalSignature = Base64.decodeBase64(encodedSignature.getBytes("UTF-8"));
-			this.signature = KSBServiceLocator.getDigitalSignatureService().getSignatureForVerification(verificationAlias);
+            this.digitalSignature = Base64.decodeBase64(encodedSignature.getBytes("UTF-8"));
+            byte[] certificate = Base64.decodeBase64(encodedCertificate.getBytes("UTF-8"));
+            // TODO delyea: IS TYPE OF CERT FACTORY BELOW CORRECT?
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+			this.signature = KSBServiceLocator.getDigitalSignatureService().getSignatureForVerification(cf.generateCertificate(new ByteArrayInputStream(certificate)));
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to initialize digital signature verification.", e);
 		}

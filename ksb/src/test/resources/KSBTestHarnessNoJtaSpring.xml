@@ -56,6 +56,10 @@
 								<property name="localServiceName" value="exceptionMessagingService" />
 								<property name="service" ref="testExceptionHandlerService" />
 							</bean>
+							<bean class="edu.iu.uis.eden.messaging.config.ServiceHolder">
+								<property name="localServiceName" value="ksbJavaSecurityManagementService" />
+								<property name="service" ref="testJavaSecurityManagementService" />
+							</bean>
 						</list>
 					</property>
 					<property name="platformTransactionManager" ref="transactionManager" />
@@ -180,5 +184,6 @@
 	</bean>
 
 	<bean id="testExceptionHandlerService" class="edu.iu.uis.eden.messaging.exceptionhandling.TestExceptionHandlerServiceImpl" />
+	<bean id="testJavaSecurityManagementService" class="edu.iu.uis.eden.security.admin.MockJavaSecurityManagementServiceImpl" />
 
 </beans>

@@ -18,13 +18,11 @@ package edu.iu.uis.eden.security;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyException;
-import java.security.KeyStoreException;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.bus.services.KSBServiceLocator;
 
 public class DigitalSignatureServiceImpl implements DigitalSignatureService {
@@ -36,35 +34,23 @@ public class DigitalSignatureServiceImpl implements DigitalSignatureService {
 	}
 
     public Signature getSignatureForVerification(String verificationAlias) throws IOException, GeneralSecurityException {
-        Certificate cert = KSBServiceLocator.getJavaSecurityManagementService().getModuleCertificate(verificationAlias);
-        String keyStoreLocation = KSBServiceLocator.getJavaSecurityManagementService().getModuleKeyStoreLocation();
-        if (cert == null) {
-            throw new CertificateException("Could not find certificate for the given alias: " + verificationAlias + " in keystore " + keyStoreLocation);
-        }
-        PublicKey publicKey = cert.getPublicKey();
-        if (publicKey == null) {
-            throw new KeyException("Could not find the public key from valid certificate with given alias: " + verificationAlias + " in keystore " + keyStoreLocation);
-        }
-        Signature signature = getSignature();
-        signature.initVerify(publicKey);
-        return signature;
+        Certificate cert = KSBServiceLocator.getJavaSecurityManagementService().getCertificate(verificationAlias);
+        return getSignatureForVerification(cert);
     }
 
     public Signature getSignatureForVerification(Certificate certificate) throws IOException, GeneralSecurityException {
-        String keyStoreLocation = KSBServiceLocator.getJavaSecurityManagementService().getModuleKeyStoreLocation();
-        String certAlias = KSBServiceLocator.getJavaSecurityManagementService().getCertificateAlias(certificate);
-        if (StringUtils.isNotEmpty(certAlias)) {
-            throw new KeyStoreException("Given certificate could not be found in system keystore");
+        if (certificate == null) {
+            throw new CertificateException("Could not find certificate");
         }
         PublicKey publicKey = certificate.getPublicKey();
         if (publicKey == null) {
-            throw new KeyException("Could not find the public key from valid certificate (certificate alias = " + certAlias + ") in keystore " + keyStoreLocation);
+            throw new KeyException("Could not find the public key from valid certificate");
         }
         Signature signature = getSignature();
         signature.initVerify(publicKey);
         return signature;
     }
-
+    
 	protected Signature getSignature() throws GeneralSecurityException {
 		return Signature.getInstance(KSBServiceLocator.getJavaSecurityManagementService().getModuleSignatureAlgorithm());
 	}

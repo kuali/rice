@@ -15,11 +15,13 @@
  */
 package edu.iu.uis.eden.messaging;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.Signature;
+import java.security.cert.CertificateFactory;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.Header;
@@ -83,22 +85,38 @@ public class KEWHttpInvokerRequestExecutor extends CommonsHttpInvokerRequestExec
 			// extract and validate the headers
 			Header digitalSignatureHeader = postMethod.getResponseHeader(RiceConstants.DIGITAL_SIGNATURE_HEADER);
 			Header keyStoreAliasHeader = postMethod.getResponseHeader(RiceConstants.KEYSTORE_ALIAS_HEADER);
+			Header certificateHeader = postMethod.getResponseHeader(RiceConstants.KEYSTORE_CERTIFICATE_HEADER);
 			if (digitalSignatureHeader == null || StringUtils.isEmpty(digitalSignatureHeader.getValue())) {
 				throw new RuntimeException("A digital signature header was required on the response but none was found.");
 			}
-			if (keyStoreAliasHeader == null || StringUtils.isEmpty(keyStoreAliasHeader.getValue())) {
-				throw new RuntimeException("A key store alias header was required on the response but none was found.");
+			boolean foundValidKeystoreAlias = (keyStoreAliasHeader == null || StringUtils.isEmpty(keyStoreAliasHeader.getValue()));
+			boolean foundValidCertificate = (certificateHeader == null || StringUtils.isEmpty(keyStoreAliasHeader.getValue()));
+			if (!foundValidCertificate && !foundValidKeystoreAlias) {
+                throw new RuntimeException("Either a key store alias header or a certificate header was required on the response but neither were found.");
 			}
 			// decode the digital signature from the header into binary
 			byte[] digitalSignature = Base64.decodeBase64(digitalSignatureHeader.getValue().getBytes("UTF-8"));
-			String keystoreAlias = keyStoreAliasHeader.getValue();
+			String errorQualifier = "General Security Error";
 			try {
-				// get the Signature for verification based on the alias that was sent to us
-				Signature signature = KSBServiceLocator.getDigitalSignatureService().getSignatureForVerification(keystoreAlias);
+			    Signature signature = null;
+			    if (foundValidCertificate) {
+                    errorQualifier = "Error with given certificate";
+	                // get the Signature for verification based on the alias that was sent to us
+			        byte[] encodedCertificate = Base64.decodeBase64(certificateHeader.getValue().getBytes("UTF-8"));
+		            // TODO delyea: IS TYPE OF CERT FACTORY BELOW CORRECT?
+		            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+	                signature = KSBServiceLocator.getDigitalSignatureService().getSignatureForVerification(cf.generateCertificate(new ByteArrayInputStream(encodedCertificate)));
+			    } else if (foundValidKeystoreAlias) {
+	                // get the Signature for verification based on the alias that was sent to us
+			        String keystoreAlias = keyStoreAliasHeader.getValue();
+			        errorQualifier = "Error with given alias " + keystoreAlias;
+	                signature = KSBServiceLocator.getDigitalSignatureService().getSignatureForVerification(keystoreAlias);
+			    }
+			    
 				// wrap the InputStream in an input stream that will verify the signature
 				return new SignatureVerifyingInputStream(digitalSignature, signature, super.getResponseBody(config, postMethod));
 			} catch (GeneralSecurityException e) {
-				throw new RuntimeException(e);
+				throw new RuntimeException("Problem verifying signature: " + errorQualifier,e);
 			}
 		}
 		return super.getResponseBody(config, postMethod);

@@ -50,11 +50,9 @@ public class KSBTestCase extends RiceTestCase {
     @Override
     public void setUp() throws Exception {
         // because we're stopping and starting so many times we need to clear
-        // the core before
-        // another set of RLs get put in the core. This is because we are
-        // sometimes using
-        // the GRL to fetch a specific servers spring file out for testing
-        // purposes.
+        // the core before another set of RLs get put in the core. This is 
+        // because we are sometimes using the GRL to fetch a specific servers
+        // spring file out for testing purposes.
         Core.destroy();
         super.setUp();
         if (startClient1() || startClient2()) {

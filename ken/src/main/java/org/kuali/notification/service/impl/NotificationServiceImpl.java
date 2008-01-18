@@ -112,6 +112,7 @@ public class NotificationServiceImpl implements NotificationService {
         // make sure that the producer is able to send notifications on behalf of the channel
 	boolean producerAuthorizedForChannel = notificationAuthorizationService.isProducerAuthorizedToSendNotificationForChannel(notification.getProducer(), notification.getChannel());
 	if(!producerAuthorizedForChannel) {
+	    LOG.error("Producer " + notification.getProducer() + " is not authorized to send messages to channel " + notification.getChannel());
 	    response.setStatus(NotificationConstants.RESPONSE_STATUSES.FAILURE);
 	    response.setMessage(NotificationConstants.RESPONSE_MESSAGES.PRODUCER_NOT_AUTHORIZED_FOR_CHANNEL);
 	    return response;

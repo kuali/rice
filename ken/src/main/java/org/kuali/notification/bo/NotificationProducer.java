@@ -18,6 +18,8 @@ package org.kuali.notification.bo;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * This class represents an instance of who can actually submit notification messages to the system 
  * for processing.
@@ -117,5 +119,13 @@ public class NotificationProducer {
      */
     public void setChannels(List<NotificationChannel> channels) {
         this.channels = channels;
+    }
+    
+    public String toString() {
+        return new ToStringBuilder(this).append("id", id)
+                                        .append("name", name)
+                                        .append("description", description)
+                                        .append("contactInfo", contactInfo)
+                                        .toString();
     }
 }

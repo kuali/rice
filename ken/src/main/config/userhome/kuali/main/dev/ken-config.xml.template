@@ -92,7 +92,7 @@
     <param name="notification.quartz.autostartup">true</param>
     <param name="notification.concurrent.jobs">true</param>
 
-    <param name="notification.basewebappurl">http://localhost:8080/kr-dev/ken</param>
+    <param name="notification.basewebappurl">http://localhost:8080/${app.context.name}/ken</param>
     
     <param name="notification.ojb.platform">Oracle</param>
     

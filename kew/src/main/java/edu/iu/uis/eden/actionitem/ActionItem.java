@@ -70,7 +70,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     
     private transient DocumentRouteHeaderValue routeHeader;
     
-    public Workgroup getWorkgroup() throws EdenUserNotFoundException {
+    public Workgroup getWorkgroup() {
         return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId)); 
     }
     

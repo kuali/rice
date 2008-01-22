@@ -22,11 +22,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.iu.uis.eden.export.ExportFormat;
-
 /**
- * A servet which generates and returns a file conforming to the specified {@link ExportFormat} 
- * with the exported data in it.
+ * A servlet which returns a client {@link java.security.KeyStore} object to the user as a file.  It takes in
+ * the KeyStore file as a session attribute byte array.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

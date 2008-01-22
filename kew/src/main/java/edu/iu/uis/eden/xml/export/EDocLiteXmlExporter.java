@@ -31,6 +31,7 @@ import edu.iu.uis.eden.edl.EDocLiteStyle;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.util.XmlHelper;
 import edu.iu.uis.eden.xml.XmlConstants;
+import edu.iu.uis.eden.xml.XmlRenderer;
 
 /**
  * Exports EDocLite definitions to XML.
@@ -43,7 +44,7 @@ public class EDocLiteXmlExporter implements XmlExporter, XmlConstants {
 
 	private static final Logger LOG = Logger.getLogger(EDocLiteXmlExporter.class);
 
-	private ExportRenderer renderer = new ExportRenderer(EDL_NAMESPACE);
+	private XmlRenderer renderer = new XmlRenderer(EDL_NAMESPACE);
 
 	public Element export(ExportDataSet dataSet) {
 		if (!dataSet.getEdocLites().isEmpty()) {

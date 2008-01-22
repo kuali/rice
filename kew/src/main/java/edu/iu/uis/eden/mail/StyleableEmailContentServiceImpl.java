@@ -19,7 +19,7 @@
 package edu.iu.uis.eden.mail;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -40,20 +40,27 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
 import org.springframework.core.io.DefaultResourceLoader;
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.edl.StyleService;
+import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.feedback.web.FeedbackForm;
 import edu.iu.uis.eden.plugin.attributes.CustomEmailAttribute;
+import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.WorkflowUser;
+import edu.iu.uis.eden.user.WorkflowUserId;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.util.XmlHelper;
+import edu.iu.uis.eden.workgroup.WorkflowGroupId;
+import edu.iu.uis.eden.xml.XmlRenderer;
 
 /**
  * EmailContentService that serves EmailContent customizable via XSLT style sheets
@@ -102,49 +109,105 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
 
         node.appendChild(element);
     }
+    
+    protected static void addTextElement(Document doc, Element baseElement, String elementName, Object elementData) {
+        Element element = doc.createElement(elementName);
+        element.appendChild(doc.createTextNode(elementData.toString()));
+        baseElement.appendChild(element);
+    }
 
-    protected static void addActionItem(Document doc, ActionItem actionItem, WorkflowUser user, Node node) throws Exception {
+    protected static void addCDataElement(Document doc, Element baseElement, String elementName, Object elementData) {
+        Element element = doc.createElement(elementName);
+        element.appendChild(doc.createCDATASection(elementData.toString()));
+        baseElement.appendChild(element);
+    }
+
+    protected static void addTimestampElement(Document doc, Element baseElement, String elementName, Timestamp elementData) {
+        addTextElement(doc, baseElement, elementName, EdenConstants.getDefaultDateFormat().format(elementData));
+    }
+    
+    protected static void addDelegatorElement(Document doc, Element baseElement, ActionItem actionItem) {
+        Element delegatorElement = doc.createElement("delegator");
+        if ( (actionItem.getDelegatorWorkflowId() != null) && (actionItem.getDelegatorWorkflowId() != null) ) {
+            // add empty delegator element
+            baseElement.appendChild(delegatorElement);
+            return;
+        }
+        String delegatorType = "";
+        String delegatorId = "";
+        String delegatorDisplayValue = "";
+        if (actionItem.getDelegatorWorkflowId() != null) {
+            delegatorType = "user";
+            delegatorId = actionItem.getDelegatorWorkflowId();
+            try {
+                delegatorDisplayValue = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(actionItem.getDelegatorWorkflowId())).getTransposedName();
+            } catch (EdenUserNotFoundException e) {
+                LOG.error("Cannot find user for id " + actionItem.getWorkflowId(),e);
+                delegatorDisplayValue = "USER NOT FOUND";
+            };
+        } else if (actionItem.getDelegatorWorkflowId() != null) {
+            delegatorType = "workgroup";
+            delegatorId = actionItem.getDelegatorWorkgroupId().toString();
+            delegatorDisplayValue = KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(actionItem.getDelegatorWorkgroupId())).getGroupNameId().getNameId();
+        }
+        delegatorElement.setAttribute("type", delegatorType);
+        // add the id element
+        Element idElement = doc.createElement("id");
+        idElement.appendChild(doc.createTextNode(delegatorId));
+        delegatorElement.appendChild(idElement);
+        // add the display value element
+        Element displayValElement = doc.createElement("displayValue");
+        displayValElement.appendChild(doc.createTextNode(delegatorDisplayValue));
+        delegatorElement.appendChild(displayValElement);
+        baseElement.appendChild(delegatorElement);
+    }
+
+    protected static void addWorkgroupRequestElement(Document doc, Element baseElement, ActionItem actionItem) {
+        Element workgroupElement = doc.createElement("workgroupRequest");
+        if (actionItem.isWorkgroupItem()) {
+            // add the id element
+            Element idElement = doc.createElement("id");
+            idElement.appendChild(doc.createTextNode(actionItem.getWorkgroupId().toString()));
+            workgroupElement.appendChild(idElement);
+            // add the display value element
+            Element displayValElement = doc.createElement("displayValue");
+            displayValElement.appendChild(doc.createTextNode(actionItem.getWorkgroup().getGroupNameId().getNameId()));
+            workgroupElement.appendChild(displayValElement);
+        }
+        baseElement.appendChild(workgroupElement);
+    }
+
+    /**
+     * This method is used to add the given {@link ActionItem} to the given {@link org.w3c.dom.Document} in a summarized
+     * form for use in weekly or daily type reminder e-mails.
+     * 
+     * @param doc - Document to have the ActionItem added to
+     * @param actionItem - the action item being added
+     * @param user - the current user 
+     * @param node - the node object to add the actionItem XML to (defaults to the doc variable if null is passed in)
+     * @throws Exception
+     */
+    protected static void addSummarizedActionItem(Document doc, ActionItem actionItem, WorkflowUser user, Node node) throws Exception {
         if (node == null) {
             node = doc;
         }
 
-        Element root = doc.createElement("actionItem");
+        // TODO delyea: change stylesheet to user proper names below and inside addWorkgroupRequestElement and addDelegatorElement
+        Element root = doc.createElement("summarizedActionItem");
 
-        // append the custom body and subject if they exist
-        try {
-            CustomEmailAttribute customEmailAttribute = getCustomEmailAttribute(user, actionItem);
-            if (customEmailAttribute != null) {
-                String customBody = customEmailAttribute.getCustomEmailBody();
-                if (!Utilities.isEmpty(customBody)) {
-                    Element element = doc.createElement("customBody");
-                    element.appendChild(doc.createTextNode(customBody));
-                    root.appendChild(element);
-                }
-                String customEmailSubject = customEmailAttribute.getCustomEmailSubject();
-                if (!Utilities.isEmpty(customEmailSubject)) {
-                    Element element = doc.createElement("customSubject");
-                    element.appendChild(doc.createTextNode(customEmailSubject));
-                    root.appendChild(element);
-                }
-            }
-        } catch (Exception e) {
-            LOG.error("Error when checking for custom email body and subject.", e);
-        }
-
-        // keep adding stuff until we have all the xml we need to formulate the message :/
-
-        addObjectXML(doc, actionItem, root, "actionItem");
-
-        addObjectXML(doc, actionItem.getUser(), root, "actionItemUser");
-
-        addObjectXML(doc, actionItem.getUser().getAuthenticationUserId(), root, "actionItemAuthenticationUserId");
-
-        addObjectXML(doc, actionItem.getRouteHeader(), root, "doc");
-
-        addObjectXML(doc, actionItem.getRouteHeader().getInitiatorUser(), root, "docInitiator");
-
-        DocumentType docType = actionItem.getRouteHeader().getDocumentType();
-        addObjectXML(doc, docType, root, "documentType");
+        // add in all items from action list as preliminary default dataset
+        addTextElement(doc, root, "routeHeaderId", actionItem.getRouteHeaderId());
+        addTextElement(doc, root, "docName", actionItem.getDocName());
+        addCDataElement(doc, root, "docLabel", actionItem.getDocLabel());
+        addCDataElement(doc, root, "docTitle", actionItem.getDocTitle());
+        addTextElement(doc, root, "docRouteStatus", actionItem.getRouteHeader().getDocRouteStatus());
+        addCDataElement(doc, root, "routeStatusLabel", actionItem.getRouteHeader().getRouteStatusLabel());
+        addTextElement(doc, root, "actionRequestCd", actionItem.getActionRequestCd());
+        addTextElement(doc, root, "actionRequestLabel", actionItem.getActionRequestLabel());
+        addDelegatorElement(doc, root, actionItem);
+        addTimestampElement(doc, root, "createDate", actionItem.getRouteHeader().getCreateDate());
+        addWorkgroupRequestElement(doc, root, actionItem);
+        addTimestampElement(doc, root, "dateAssigned", actionItem.getDateAssigned());
 
         node.appendChild(root);
     }
@@ -162,8 +225,15 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             throw new WorkflowRuntimeException(message, te);
         }        
     }
-
-    protected EmailContent generateEmailContent(String styleName, Document doc) {
+    
+    /**
+     * This method retrieves the style from the system using the given name. If none is found the default style xsl file
+     * defined by {@link #DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC} is used.
+     * 
+     * @param styleName
+     * @return a valid {@link javax.xml.transform.Templates} using either the given styleName or the default xsl style file
+     */
+    protected Templates getStyle(String styleName) {
         Templates style = null;
         try {
             style = styleService.getStyleAsTranslet(styleName);
@@ -176,7 +246,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         if (style == null) {
             LOG.warn("Could not find specified style, " + styleName + ", using default");
             try {
-        	
+            
                 style = TransformerFactory.newInstance().newTemplates(new StreamSource(new DefaultResourceLoader().getResource("classpath:edu/iu/uis/eden/mail/" + DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC).getInputStream()));
             } catch (Exception tce) {
                 String message = "Error obtaining default style from resource: " + DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC; 
@@ -184,6 +254,11 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
                 throw new WorkflowRuntimeException("Error obtaining style '" + styleName + "'", tce);
             }
         }
+        return style;
+    }
+
+    protected EmailContent generateEmailContent(String styleName, Document doc) {
+        Templates style = getStyle(styleName);
 
         DOMResult result = new DOMResult();
 
@@ -222,7 +297,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             addObjectXML(doc, user, element, "user");
             for (ActionItem actionItem: actionItems) {
                 try {
-                    addActionItem(doc, actionItem, user, element);
+                    addSummarizedActionItem(doc, actionItem, user, element);
                 } catch (Exception e) {
                     String message = "Error generating XML for action item: " + actionItem;
                     LOG.error(message, e);
@@ -246,19 +321,86 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         e.setAttribute("preferencesUrl", getPreferencesUrl());
     }
 
+    /**
+     * This method generates an {@link EmailContent} object using the given parameters.  Part of this operation includes 
+     * serializing the given {@link ActionItem} to XML. The following objects and methods are included in the serialization:
+     * 
+     * <ul>
+     * <li>{@link WorkflowUser}</li>
+     * <li>{@link WorkflowUser#getAuthenticationUserId()}</li>
+     * <li>{@link DocumentRouteHeaderValue}</li>
+     * <li>{@link DocumentRouteHeaderValue#getInitiatorUser()}</li>
+     * <li>{@link DocumentRouteHeaderValue#getDocumentType()}</li>
+     * <li>{@link WorkflowUser}</li>
+     * </ul>
+     * 
+     * @param user - the current user
+     * @param actionItem - the action item being added
+     * @param documentType - the document type that the custom email style sheet will come from
+     * @param node - the node object to add the actionItem XML to (defaults to the doc variable if null is passed in)
+     * @throws Exception
+     */
     public EmailContent generateImmediateReminder(WorkflowUser user, ActionItem actionItem, DocumentType documentType) {
-        Collection<ActionItem> actionItems = new ArrayList<ActionItem>(1);
-        actionItems.add(actionItem);
-        
         // change style name based on documentType when configurable email style on document is implemented...
         String styleSheet = documentType.getCustomEmailStylesheet();
-        LOG.error(documentType.getName() + " style: " + styleSheet);
+        LOG.debug(documentType.getName() + " style: " + styleSheet);
         if (styleSheet == null) {
             styleSheet = globalEmailStyleSheet;
         }
 
-        LOG.error("generateImmediateReminder: style: "+ styleSheet);
-        return generateReminderForActionItems(user, actionItems, "immediateReminder", styleSheet);
+        LOG.debug("generateImmediateReminder: style: "+ styleSheet);
+//        return generateReminderForActionItems(user, actionItems, "immediateReminder", styleSheet);
+        DocumentBuilder db = getDocumentBuilder(false);
+        Document doc = db.newDocument();
+        Element element = doc.createElement("immediateReminder");
+        setStandardAttributes(element);
+        doc.appendChild(element);
+
+        try {
+            addObjectXML(doc, user, element, "user");
+//            addActionItem(doc, actionItem, user, node);
+            Node node = (Node) element;
+            if (node == null) {
+                node = doc;
+            }
+
+            Element root = doc.createElement("actionItem");
+            // append the custom body and subject if they exist
+            try {
+                CustomEmailAttribute customEmailAttribute = getCustomEmailAttribute(user, actionItem);
+                if (customEmailAttribute != null) {
+                    String customBody = customEmailAttribute.getCustomEmailBody();
+                    if (!Utilities.isEmpty(customBody)) {
+                        Element bodyElement = doc.createElement("customBody");
+                        bodyElement.appendChild(doc.createTextNode(customBody));
+                        root.appendChild(bodyElement);
+                    }
+                    String customEmailSubject = customEmailAttribute.getCustomEmailSubject();
+                    if (!Utilities.isEmpty(customEmailSubject)) {
+                        Element subjectElement = doc.createElement("customSubject");
+                        subjectElement.appendChild(doc.createTextNode(customEmailSubject));
+                        root.appendChild(subjectElement);
+                    }
+                }
+            } catch (Exception e) {
+                LOG.error("Error when checking for custom email body and subject.", e);
+            }
+
+            // keep adding stuff until we have all the xml we need to formulate the message :/
+            addObjectXML(doc, actionItem, root, "actionItem");
+            addObjectXML(doc, actionItem.getUser(), root, "actionItemUser");
+            addObjectXML(doc, actionItem.getUser().getAuthenticationUserId(), root, "actionItemAuthenticationUserId");
+            addObjectXML(doc, actionItem.getRouteHeader(), root, "doc");
+            addObjectXML(doc, actionItem.getRouteHeader().getInitiatorUser(), root, "docInitiator");
+            addObjectXML(doc, actionItem.getRouteHeader().getDocumentType(), root, "documentType");
+
+            node.appendChild(root);
+        } catch (Exception e) {
+            String message = "Error generating immediate reminder XML for action item: " + actionItem;
+            LOG.error(message, e);
+            throw new WorkflowRuntimeException(e);
+        }
+        return generateEmailContent(styleSheet, doc);
     }
 
     public EmailContent generateWeeklyReminder(WorkflowUser user, Collection<ActionItem> actionItems) {

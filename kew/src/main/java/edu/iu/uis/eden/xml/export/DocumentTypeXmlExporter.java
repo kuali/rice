@@ -45,6 +45,7 @@ import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.util.XmlHelper;
 import edu.iu.uis.eden.workgroup.Workgroup;
 import edu.iu.uis.eden.xml.XmlConstants;
+import edu.iu.uis.eden.xml.XmlRenderer;
 
 /**
  * Exports {@link DocumentType}s to XML.
@@ -57,7 +58,7 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
 
-    private ExportRenderer renderer = new ExportRenderer(DOCUMENT_TYPE_NAMESPACE);
+    private XmlRenderer renderer = new XmlRenderer(DOCUMENT_TYPE_NAMESPACE);
 
     public Element export(ExportDataSet dataSet) {
         if (!dataSet.getDocumentTypes().isEmpty()) {

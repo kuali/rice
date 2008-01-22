@@ -30,6 +30,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.attribute.ExtensionAttribute;
 import org.kuali.workflow.attribute.ExtensionData;
@@ -53,6 +54,7 @@ import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
+import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 import edu.iu.uis.eden.routeheader.Routable;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.Recipient;
@@ -508,11 +510,12 @@ public class WorkgroupAction extends WorkflowAction {
         WorkgroupForm workgroupForm = (WorkgroupForm) form;
 
         String lookupService = request.getParameter("lookupableImplServiceName");
-        String conversionFields = request.getParameter("conversionFields");
+        String conversionParameter = request.getParameter("conversionFields");
+        StringBuffer conversionFields = new StringBuffer((conversionParameter != null) ? conversionParameter : "");
         if (lookupService.equals("memberLookup")) {
         	if (workgroupForm.getMemberType().equals(EdenConstants.ACTION_REQUEST_WORKGROUP_RECIPIENT_CD)) {
         		lookupService = "WorkGroupLookupableImplService";
-        		conversionFields = "workgroupName:workgroupMember,workgroupId:null";
+        		conversionFields = new StringBuffer("workgroupName:workgroupMember,workgroupId:null");
         	} else if (workgroupForm.getMemberType().equals(EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
         		lookupService = "UserLookupableImplService";
         	}
@@ -521,20 +524,18 @@ public class WorkgroupAction extends WorkflowAction {
         StringBuffer lookupUrl = new StringBuffer(basePath);
         lookupUrl.append("/Lookup.do?methodToCall=start&docFormKey=").append(getUserSession(request).addObject(form)).append("&lookupableImplServiceName=");
         lookupUrl.append(lookupService);
+
+        String lookupType = workgroupForm.getLookupType();
+        workgroupForm.setLookupType(null);
+        if (lookupType != null && !lookupType.equals("")) {
+            WorkflowLookupable workflowLookupable = (WorkflowLookupable) GlobalResourceLoader.getService(lookupService);// SpringServiceLocator.getExtensionService().getLookupable(request.getParameter("lookupableImplServiceName"));
+            for (Iterator iterator = workflowLookupable.getDefaultReturnType().iterator(); iterator.hasNext();) {
+                String returnType = (String) iterator.next();
+                conversionFields.append(returnType).append(":").append(lookupType);
+            }
+        }
+
         lookupUrl.append("&conversionFields=").append(conversionFields);
-
-//        String lookupType = workgroupForm.getLookupType();
-//        workgroupForm.setLookupType(null);
-//
-//        if (lookupType != null && !lookupType.equals("")) {
-//            lookupUrl.append("&conversionFields=");
-//            WorkflowLookupable workflowLookupable = (WorkflowLookupable) GlobalResourceLoader.getService(request.getParameter("lookupableImplServiceName"));// SpringServiceLocator.getExtensionService().getLookupable(request.getParameter("lookupableImplServiceName"));
-//            for (Iterator iterator = workflowLookupable.getDefaultReturnType().iterator(); iterator.hasNext();) {
-//                String returnType = (String) iterator.next();
-//                lookupUrl.append(returnType).append(":").append(lookupType);
-//            }
-//        }
-
         lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getPath()).append(".do");
         return new ActionForward(lookupUrl.toString(), true);
     }

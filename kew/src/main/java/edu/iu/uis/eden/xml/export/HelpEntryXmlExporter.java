@@ -23,6 +23,7 @@ import org.jdom.Element;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.help.HelpEntry;
 import edu.iu.uis.eden.xml.XmlConstants;
+import edu.iu.uis.eden.xml.XmlRenderer;
 
 /**
  * Exports {@link HelpEntry}s to XML.
@@ -35,7 +36,7 @@ public class HelpEntryXmlExporter implements XmlExporter, XmlConstants {
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
     
-    private ExportRenderer renderer = new ExportRenderer(HELP_NAMESPACE);
+    private XmlRenderer renderer = new XmlRenderer(HELP_NAMESPACE);
     
     public Element export(ExportDataSet dataSet) {
         if (!dataSet.getHelp().isEmpty()) {

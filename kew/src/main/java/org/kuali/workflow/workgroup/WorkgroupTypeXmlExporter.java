@@ -23,7 +23,7 @@ import org.jdom.Element;
 
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.xml.XmlConstants;
-import edu.iu.uis.eden.xml.export.ExportRenderer;
+import edu.iu.uis.eden.xml.XmlRenderer;
 import edu.iu.uis.eden.xml.export.XmlExporter;
 
 /**
@@ -37,7 +37,7 @@ public class WorkgroupTypeXmlExporter implements XmlExporter, XmlConstants {
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
 
-    private ExportRenderer renderer = new ExportRenderer(WORKGROUP_TYPE_NAMESPACE);
+    private XmlRenderer renderer = new XmlRenderer(WORKGROUP_TYPE_NAMESPACE);
 
     public Element export(ExportDataSet dataSet) {
         if (!dataSet.getWorkgroupTypes().isEmpty()) {

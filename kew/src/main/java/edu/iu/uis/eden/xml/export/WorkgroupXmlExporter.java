@@ -31,6 +31,7 @@ import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.workgroup.Workgroup;
 import edu.iu.uis.eden.xml.WorkgroupXmlConstants;
 import edu.iu.uis.eden.xml.XmlConstants;
+import edu.iu.uis.eden.xml.XmlRenderer;
 
 /**
  * Exports {@link Workgroup}s to XML.
@@ -43,7 +44,7 @@ public class WorkgroupXmlExporter implements XmlExporter, XmlConstants, Workgrou
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
 
-    private ExportRenderer renderer = new ExportRenderer(WORKGROUP_NAMESPACE);
+    private XmlRenderer renderer = new XmlRenderer(WORKGROUP_NAMESPACE);
 
     public Element export(ExportDataSet dataSet) {
         if (!dataSet.getWorkgroups().isEmpty()) {

@@ -27,6 +27,7 @@ import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.util.XmlHelper;
 import edu.iu.uis.eden.xml.XmlConstants;
+import edu.iu.uis.eden.xml.XmlRenderer;
 
 /**
  * Exports Style definitions to XML.
@@ -40,7 +41,7 @@ import edu.iu.uis.eden.xml.XmlConstants;
 public class StyleXmlExporter implements XmlExporter, XmlConstants {
 	private static final Logger LOG = Logger.getLogger(StyleXmlExporter.class);
 
-	private ExportRenderer renderer = new ExportRenderer(STYLE_NAMESPACE);
+	private XmlRenderer renderer = new XmlRenderer(STYLE_NAMESPACE);
 	
 	public Element export(ExportDataSet dataSet) {
 		if (!dataSet.getStyles().isEmpty()) {

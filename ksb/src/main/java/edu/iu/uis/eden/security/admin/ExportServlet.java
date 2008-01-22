@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
  * the KeyStore file as a session attribute byte array.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
  */
 public class ExportServlet extends HttpServlet {
 

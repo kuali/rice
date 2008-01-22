@@ -29,6 +29,7 @@ import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.util.XmlHelper;
 import edu.iu.uis.eden.xml.XmlConstants;
+import edu.iu.uis.eden.xml.XmlRenderer;
 
 /**
  * Exports {@link RuleAttribute}s to XML.
@@ -41,7 +42,7 @@ public class RuleAttributeXmlExporter implements XmlExporter, XmlConstants {
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
     
-    private ExportRenderer renderer = new ExportRenderer(RULE_ATTRIBUTE_NAMESPACE);
+    private XmlRenderer renderer = new XmlRenderer(RULE_ATTRIBUTE_NAMESPACE);
     
     public Element export(ExportDataSet dataSet) {
         if (!dataSet.getRuleAttributes().isEmpty()) {

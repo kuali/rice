@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.iu.uis.eden.xml.export;
+package edu.iu.uis.eden.xml;
 
 import java.util.Date;
 
@@ -25,15 +25,17 @@ import org.jdom.Namespace;
 import edu.iu.uis.eden.EdenConstants;
 
 /**
- * A helper class which helps with building the XML for export.
+ * A helper class which helps with building the XML for objects.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class ExportRenderer {
+public class XmlRenderer {
 
     private Namespace namespace;
     
-    public ExportRenderer(Namespace namespace) {
+    public XmlRenderer() {}
+    
+    public XmlRenderer(Namespace namespace) {
         this.namespace = namespace;
     }
     

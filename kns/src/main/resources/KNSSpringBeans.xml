@@ -141,6 +141,8 @@
 				<value>classpath:org/kuali/core/document/datadictionary/EmployeeTypeMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/core/document/datadictionary/UniversalUserMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/core/document/datadictionary/RiceUserMaintenanceDocument.xml</value>
+				
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/Principal.xml</value>
 			</list>
 		</property>
 	</bean>

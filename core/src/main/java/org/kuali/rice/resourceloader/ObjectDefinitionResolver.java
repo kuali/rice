@@ -98,7 +98,7 @@ public class ObjectDefinitionResolver {
 		throw new ResourceLoaderException("Could not materialize object from definition, using classname: " + className, e);
 	}
 
-	protected static Class<?>[] buildConstructorParamTypes(List constructorParameters) {
+	protected static Class<?>[] buildConstructorParamTypes(List<DataDefinition> constructorParameters) {
 		Class<?>[] params = new Class[constructorParameters.size()];
 		int index = 0;
 		for (Iterator iterator = constructorParameters.iterator(); iterator.hasNext();) {
@@ -108,7 +108,7 @@ public class ObjectDefinitionResolver {
 		return params;
 	}
 
-	protected static Object[] buildConstructorParams(List constructorParameters) {
+	protected static Object[] buildConstructorParams(List<DataDefinition> constructorParameters) {
 		Object[] params = new Object[constructorParameters.size()];
 		int index = 0;
 		for (Iterator iterator = constructorParameters.iterator(); iterator.hasNext();) {
@@ -118,7 +118,7 @@ public class ObjectDefinitionResolver {
 		return params;
 	}
 
-	protected static void invokeProperties(Object object, Collection properties) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+	protected static void invokeProperties(Object object, Collection<PropertyDefinition> properties) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
 		for (Iterator iterator = properties.iterator(); iterator.hasNext();) {
 			PropertyDefinition propertyDef = (PropertyDefinition) iterator.next();
 			invokeProperty(object, propertyDef);

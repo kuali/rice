@@ -19,6 +19,8 @@ package edu.iu.uis.eden.actions;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.definition.DataDefinition;
+
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -60,7 +62,7 @@ public interface ActionRegistry {
 	 * @throws ResourceUnavailableException if the action class cannot be constructed
 	 * @throws IllegalArgumentException if the given actionCode has not been registered
 	 */
-	public ActionTakenEvent createAction(String actionCode, List parameters) throws ResourceUnavailableException;
+	public ActionTakenEvent createAction(String actionCode, List<DataDefinition> parameters) throws ResourceUnavailableException;
 	
     /**
      * Returns a List of valid action codes for the given user on the document.

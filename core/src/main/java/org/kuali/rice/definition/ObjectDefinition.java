@@ -36,8 +36,8 @@ public class ObjectDefinition implements Serializable {
 	private String className;
 	private String messageEntity;
 	private boolean atRemotingLayer;
-	private final List constructorParameters = new ArrayList();
-	private final Map properties = new HashMap();
+	private final List<DataDefinition> constructorParameters = new ArrayList<DataDefinition>();
+	private final Map<String, PropertyDefinition> properties = new HashMap<String, PropertyDefinition>();
 
 	public ObjectDefinition(Class objectClass) {
 		this(objectClass.getName());
@@ -67,12 +67,12 @@ public class ObjectDefinition implements Serializable {
 	    this.constructorParameters.remove(parameter);
 	}
 
-	public void setConstructorParameters(List parameters) {
+	public void setConstructorParameters(List<DataDefinition> parameters) {
 	    this.constructorParameters.clear();
 	    this.constructorParameters.addAll(parameters);
 	}
 
-	public List getConstructorParameters() {
+	public List<DataDefinition> getConstructorParameters() {
 		return this.constructorParameters;
 	}
 
@@ -90,17 +90,17 @@ public class ObjectDefinition implements Serializable {
 		return (PropertyDefinition) this.properties.get(name);
 	}
 
-	public Collection getProperties() {
+	public Collection<PropertyDefinition> getProperties() {
 		return this.properties.values();
 	}
 
-	public void setProperties(Collection properties) {
+	public void setProperties(Collection<PropertyDefinition> properties) {
 		this.properties.clear();
 		if (properties == null) {
 			return;
 		}
-		for (Iterator iterator = properties.iterator(); iterator.hasNext();) {
-			addProperty((PropertyDefinition) iterator.next());
+		for (PropertyDefinition prop: properties) {
+			addProperty(prop);
 		}
 	}
 

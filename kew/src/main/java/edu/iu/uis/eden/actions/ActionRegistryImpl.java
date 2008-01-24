@@ -96,7 +96,7 @@ public class ActionRegistryImpl implements ActionRegistry {
 	/* (non-Javadoc)
 	 * @see edu.iu.uis.eden.actions.ActionRegistry#createAction(java.lang.String, java.util.List)
 	 */
-	public ActionTakenEvent createAction(String actionCode, List parameters) throws ResourceUnavailableException {
+	public ActionTakenEvent createAction(String actionCode, List<DataDefinition> parameters) throws ResourceUnavailableException {
 		String actionClassName = (String)actionMap.get(actionCode);
 		if (actionClassName == null) {
 			throw new IllegalArgumentException("No action has been registered for the given action code of '" + actionCode + "'.");
@@ -131,7 +131,7 @@ public class ActionRegistryImpl implements ActionRegistry {
         ValidActions validActions = new ValidActions();
         for (Iterator iter = actionMap.keySet().iterator(); iter.hasNext();) {
             String actionTakenCode = (String) iter.next();
-            List<Object> parameters = new ArrayList<Object>();
+            List<DataDefinition> parameters = new ArrayList<DataDefinition>();
             parameters.add(new DataDefinition(document));
             parameters.add(new DataDefinition(user));
             ActionTakenEvent actionEvent = createAction(actionTakenCode, parameters);

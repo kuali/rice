@@ -133,6 +133,56 @@ public class AdHocRouteTest extends KEWTestCase {
     	assertTrue("The document should be final", doc.stateIsFinal());
     }
 
+	@Test
+    public void testRepeatedAdHocRouting() throws Exception {
+        final String ADHOC_NODE = "AdHoc";
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), ADHOC_DOC);
+        docId = doc.getRouteHeaderId();
+        doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, ADHOC_NODE, "annotation1", new NetworkIdVO("user2"), "", false);
+        doc.routeDocument("");
+        doc = getDocument("rkirkend");
+        assertFalse("rkirkend should NOT have an approval request on the document", doc.isApprovalRequested());
+        // user1 shouldn't have an approve request YET - to prove that we have not yet advanced past this initial AdHoc node
+        doc = getDocument("user1");
+        assertFalse("user1 should NOT have an approval request on the document", doc.isApprovalRequested());
+
+        doc = getDocument("user2");
+        assertTrue("user2 should have an approval request on document", doc.isApprovalRequested());
+        doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, ADHOC_NODE, "annotation1", new NetworkIdVO("user3"), "", false);
+        doc.approve("");
+        doc = getDocument("user2");
+        assertFalse("user2 should NOT have an approval request on the document", doc.isApprovalRequested());
+
+        doc = getDocument("user3");
+        assertTrue("user3 should have an approval request on document", doc.isApprovalRequested());
+        doc.appSpecificRouteDocumentToUser(EdenConstants.ACTION_REQUEST_APPROVE_REQ, ADHOC_NODE, "annotation1", new NetworkIdVO("rkirkend"), "", true);
+        doc.approve("");
+        doc = getDocument("user3");
+        assertFalse("user3 should NOT have an approval request on the document", doc.isApprovalRequested());
+
+        doc = getDocument("rkirkend");
+        assertTrue("rkirkend should have an approval request on document", doc.isApprovalRequested());
+        doc.approve("");
+        doc = getDocument("rkirkend");
+        assertFalse("rkirkend should NOT have an approval request on the document", doc.isApprovalRequested());
+
+        // the last node that is defined on the doc goes to user1
+        doc = getDocument("user1");
+        assertTrue("user1 should have an approval request on document", doc.isApprovalRequested());
+        doc.approve("");
+        doc = getDocument("user1");
+        assertFalse("user1 should NOT have an approval request on the document", doc.isApprovalRequested());
+
+        // just to be extra sure...let's double check those other ad-hoc-ees
+        doc = getDocument("rkirkend");
+        assertFalse("rkirkend should NOT have an approval request on the document", doc.isApprovalRequested());
+        doc = getDocument("user2");
+        assertFalse("user2 should NOT have an approval request on the document", doc.isApprovalRequested());
+        doc = getDocument("user3");
+        assertFalse("user3 should NOT have an approval request on the document", doc.isApprovalRequested());
+        
+        assertTrue("The document should be final", doc.stateIsFinal());
+    }
 
     @Test public void testAdHocWhenDocumentIsInitiated() throws Exception {
     	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "TakeWorkgroupAuthorityDoc");

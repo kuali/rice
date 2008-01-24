@@ -68,12 +68,12 @@
 
 			</attribute>
 
-            <attribute name="name" forceUppercase="true">
+            <attribute name="name" forceUppercase="false">
                 <label>Principal Name</label>
                 <shortLabel>Name</shortLabel>
 
-                <maxLength>100</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
+                <maxLength>500</maxLength>
+                <validationPattern><anyCharacter /></validationPattern>
 
                 <control>
                     <text size="100" />

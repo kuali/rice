@@ -61,6 +61,8 @@
 					<property name="dataDictionaryPackages">
 						<list>
 							<value>edu/sampleu/travel/datadictionary</value>
+							<value>org/kuali/rice/kim/bo/datadictionary</value>
+							<value>org/kuali/rice/kim/document/datadictionary</value>
 						</list>
 					</property>
 					<property name="databaseRepositoryFilePaths">

@@ -76,7 +76,7 @@
                 <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
 
                 <control>
-                    <text size="500" />
+                    <text size="100" />
                 </control>
 
 			</attribute>

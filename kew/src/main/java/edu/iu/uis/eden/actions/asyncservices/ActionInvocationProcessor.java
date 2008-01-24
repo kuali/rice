@@ -39,7 +39,7 @@ public class ActionInvocationProcessor implements ActionInvocationService { // i
 	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 
-	List<Object> parameters = new ArrayList<Object>();
+	List<DataDefinition> parameters = new ArrayList<DataDefinition>();
 	parameters.add(new DataDefinition(document));
 	parameters.add(new DataDefinition(user));
 	parameters.add(new DataDefinition(""));

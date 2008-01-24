@@ -27,13 +27,13 @@
         <authorizations>
             <authorization action="initiate">
                 <workgroups>
-                    <workgroup>KUALI_ROLE_MAINTENANCE</workgroup>
+                    <workgroup>WorkflowAdmin</workgroup>
                 </workgroups>
             </authorization>
         </authorizations>
 
         <documentTypeName>KualiPrincipalMaintenanceDocument</documentTypeName>
-        <documentTypeCode>KPMP</documentTypeCode>
+        <documentTypeCode>KPMD</documentTypeCode>
         <label>Principal</label>
         <summary>Principal Maintenance Document</summary>
         <description>Maintenance document which allows you to create new Principal, or modify existing Principal.</description>
@@ -42,7 +42,9 @@
         <lockingKeys>
             <field attributeName="id" />
         </lockingKeys>
-
+        
+		<allowsNewOrCopy>true</allowsNewOrCopy>
+		
         <maintainableSections>
             <maintainableSection title="Edit Principal">
                 <maintainableItems>

@@ -28,7 +28,7 @@ public class Person extends PersistableBusinessObjectBase {
 	private String password;
 	
 	public Long getId() {
-		return id;
+		return id; 
 	}
 
 	public void setId(Long id) {

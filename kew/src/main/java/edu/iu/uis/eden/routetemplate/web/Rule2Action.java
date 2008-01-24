@@ -355,6 +355,12 @@ public class Rule2Action extends WorkflowAction {
                 saveErrors(request, errors);
                 return mapping.findForward("basic");
             }
+            if (rule.getRuleTemplate() == null) {
+                errors.add("hasErrors", new ActionMessage("Templateless rules cannot be edited at this time", false));
+                saveErrors(request, errors);
+                return mapping.findForward("basic");
+            }
+
             if (rule.getDelegateRule().booleanValue()) {
                 //ruleForm.setMethodToCall("edit");
                 //return mapping.findForward("delegateEdit");

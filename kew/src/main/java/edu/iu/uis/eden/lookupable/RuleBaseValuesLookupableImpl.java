@@ -528,13 +528,13 @@ public class RuleBaseValuesLookupableImpl implements WorkflowLookupable, Exporta
 			record.setReturnUrl(returnUrl.toString());
 
 			Boolean isDelegationWizardry = new Boolean(delegationWizard);
-			String destinationUrl = "<a href=\"Rule.do?methodToCall=report&currentRuleId=" + record.getRuleBaseValuesId() + "\">report</a> |";
+			String destinationUrl = "<a href=\"Rule.do?methodToCall=report&currentRuleId=" + record.getRuleBaseValuesId() + "\">report</a>";
 			if (!isDelegationWizardry.booleanValue()) {
 			    if (record.getRuleTemplate() != null) { /* HACK: TODO: disable editing of templateless rules until we have updated/overhauled the UI */
-			        destinationUrl += " <a href=\"Rule.do?methodToCall=edit&currentRuleId=" + record.getRuleBaseValuesId() + "\" >edit</a>";
+			        destinationUrl += "| <a href=\"Rule.do?methodToCall=edit&currentRuleId=" + record.getRuleBaseValuesId() + "\" >edit</a>";
 			    }
 			} else {
-				destinationUrl += " <a href=\"DelegateRule.do?methodToCall=start" + "&parentRule.getDocTypeName=" + record.getDocTypeName();
+				destinationUrl += "| <a href=\"DelegateRule.do?methodToCall=start" + "&parentRule.getDocTypeName=" + record.getDocTypeName();
 				if (record.getRuleTemplate().getDelegationTemplateId() != null) {
 					destinationUrl += "&ruleCreationValues.ruleTemplateId=" + record.getRuleTemplate().getDelegationTemplateId();
 				}

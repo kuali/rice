@@ -24,8 +24,10 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
 	private Long namespaceId;
 	private Long attributeTypeId;
 	private String attributeName;
-	private String value;
-	
+	private String description;
+	private String required;
+	private String active;
+
 	public String getAttributeName() {
 		return attributeName;
 	}
@@ -50,21 +52,15 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
 		this.id = id;
 	}
 
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
 	protected LinkedHashMap toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
         propMap.put("id", getId());
         propMap.put("namespaceId", getNamespaceId());
         propMap.put("attributeTypeId", getAttributeTypeId());
         propMap.put("attributeName", getAttributeName());
-        propMap.put("value", getValue());
+        propMap.put("value", getDescription());
+        propMap.put("required", getRequired());
+        propMap.put("active", getActive());
         return propMap;
 	}
 
@@ -79,5 +75,29 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
 	public void setNamespaceId(Long namespaceId) {
 	    this.namespaceId = namespaceId;
 	}
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getRequired() {
+        return this.required;
+    }
+
+    public void setRequired(String required) {
+        this.required = required;
+    }
+
+    public String getActive() {
+        return this.active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
 
 }

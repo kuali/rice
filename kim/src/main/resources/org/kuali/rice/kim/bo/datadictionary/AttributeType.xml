@@ -37,7 +37,7 @@
 
             <defaultSort sortAscending="true">
                 <sortAttributes>
-                    <sortAttribute attributeName="name" />
+                    <sortAttribute attributeName="attributeTypeName" />
                 </sortAttributes>
             </defaultSort>
 
@@ -48,9 +48,9 @@
             </lookupFields>
 
             <resultFields>
-                <field attributeName="id" />
-                <field attributeName="attributeTypeName" />
-               <field attributeName="description" />
+            	<field attributeName="id" />
+            	<field attributeName="attributeTypeName" />
+            	<field attributeName="description" />
             </resultFields>
         </lookup>
 
@@ -75,11 +75,11 @@
                 <label>Attribute Type Name</label>
                 <shortLabel>Type Name</shortLabel>
 
-                <maxLength>100</maxLength>
+                <maxLength>500</maxLength>
                 <validationPattern><anyCharacter allowWhitespace="false" /></validationPattern>
 
                 <control>
-                    <text size="500" />
+                    <text size="100" />
                 </control>
 
 			</attribute>
@@ -88,15 +88,16 @@
                 <label>Description</label>
                 <shortLabel>Description</shortLabel>
 
-                <maxLength>100</maxLength>
+                <maxLength>4000</maxLength>
                 <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
 
                 <control>
-                    <text size="4000" />
+                    <text size="100" />
                 </control>
 
             </attribute>
-            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
+             <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
+            <attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
 
         </attributes>
         <objectLabel>Attribute Type</objectLabel>

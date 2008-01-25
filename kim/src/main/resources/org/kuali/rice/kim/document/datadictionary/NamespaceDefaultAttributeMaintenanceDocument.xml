@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2006 The Kuali Foundation.
+
+ Licensed under the Educational Community License, Version 1.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.opensource.org/licenses/ecl1.php
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!DOCTYPE dictionaryEntry PUBLIC
+    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
+    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
+<dictionaryEntry>
+    <maintenanceDocument>
+        <businessObjectClass>org.kuali.rice.kim.bo.NamespaceDefaultAttribute</businessObjectClass>
+        <maintainableClass>org.kuali.core.maintenance.KualiMaintainableImpl</maintainableClass>
+
+        <documentAuthorizerClass>org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase</documentAuthorizerClass>
+        <authorizations>
+            <authorization action="initiate">
+                <workgroups>
+                    <workgroup>kualiUniversalGroup</workgroup>
+                </workgroups>
+            </authorization>
+        </authorizations>
+
+        <documentTypeName>KualiNamespaceDefaultAttributeMaintenanceDocument</documentTypeName>
+        <documentTypeCode>KPMD</documentTypeCode>
+
+        <label>Namespace Default Attribute Maintenance Document</label>
+        <shortLabel>Namespace Default Attribute Maintenence</shortLabel>
+
+        <summary>Namespace Default Attribute Maintenance Document</summary>
+        <description>This document is used to create or update Namespace Default Attributes.</description>
+
+        <lockingKeys>
+            <field attributeName="id"/>
+        </lockingKeys>
+
+        <allowsNewOrCopy>true</allowsNewOrCopy>
+
+        <maintainableSections>
+            <maintainableSection title="Edit NamespaceDefaultAttribute Information">
+                <maintainableItems>
+                <maintainableField name="id" readOnly="true" required="false" />
+                <maintainableField name="namespaceId" required="true" />
+                <maintainableField name="attributeTypeId" required="true" />
+                <maintainableField name="attributeName" required="true" />
+                <maintainableField name="description" required="false" />
+                <maintainableField name="required" required="false" />
+                <maintainableField name="active" required="false" />
+                </maintainableItems>
+            </maintainableSection>
+        </maintainableSections>
+    </maintenanceDocument>
+</dictionaryEntry>

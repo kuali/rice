@@ -25,7 +25,6 @@
         </start>
       </routeNodes>
     </documentType>
-  </documentTypes>
   <documentType>
       <name>KualiGroupMaintenanceDocument</name>
       <description>Create or Update a Group</description>

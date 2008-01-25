@@ -48,6 +48,7 @@
             <maintainableSection title="Edit Group Attribute">
                 <maintainableItems>
                     <maintainableField name="id" required="true" readOnly="true" />
+                    <maintainableField name="groupId" required="true" readOnly="true" />
                     <maintainableField name="attributeTypeId" required="true" />
                     <maintainableField name="attributeName" required="true" />
                     <maintainableField name="value" required="true" />

@@ -23,12 +23,43 @@ public class GroupAttribute extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = -2255690191635455239L;
 	private Long id;
+	private Long groupId;
 	private Long attributeTypeId;
 	private String attributeName;
 	private String value;
 
+	private AttributeType attributeType;
+	private Group group;
 	
-	public String getAttributeName() {
+	/**
+     * @return the group
+     */
+    public Group getGroup() {
+        return this.group;
+    }
+
+    /**
+     * @param group the group to set
+     */
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    /**
+     * @return the groupId
+     */
+    public Long getGroupId() {
+        return this.groupId;
+    }
+
+    /**
+     * @param groupId the groupId to set
+     */
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getAttributeName() {
 		return attributeName;
 	}
 
@@ -72,5 +103,19 @@ public class GroupAttribute extends PersistableBusinessObjectBase {
 	public void refresh() {
 		// not going to add unless needed
 	}
+
+    /**
+     * @return the attributeType
+     */
+    public AttributeType getAttributeType() {
+        return this.attributeType;
+    }
+
+    /**
+     * @param attributeType the attributeType to set
+     */
+    public void setAttributeType(AttributeType attributeType) {
+        this.attributeType = attributeType;
+    }
 
 }

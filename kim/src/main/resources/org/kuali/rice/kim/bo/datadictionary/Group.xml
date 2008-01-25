@@ -43,6 +43,13 @@
         					<field attributeName="id" />
         					<field attributeName="name" />
         				</inquiryCollection>
+        				<inquiryCollection name="groupAttributes"
+        					businessObjectClass="org.kuali.rice.kim.bo.GroupAttribute">
+        					<field attributeName="id" />
+							<field attributeName="attributeTypeId" />
+							<field attributeName="attributeName" />
+							<field attributeName="value" />
+        				</inquiryCollection>
         			</inquiryFields>
         		</inquirySection>
         	</inquirySections>
@@ -141,6 +148,14 @@
         		<summary>Group Roles</summary>
         		<description>
         			Roles of this group
+        		</description>
+        	</collection>
+        	<collection name="groupAttributes">
+        		<label>Group Attributes</label>
+        		<shortLabel>Attributes</shortLabel>
+        		<summary>Group Attributes</summary>
+        		<description>
+        			Attributes of this group
         		</description>
         	</collection>
         </collections>

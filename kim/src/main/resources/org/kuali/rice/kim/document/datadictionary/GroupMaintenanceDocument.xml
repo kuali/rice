@@ -94,7 +94,19 @@
 						<maintainableField name="name" required="true" readOnly="true" />
 					</maintainableCollection>
 				</maintainableItems>
-			</maintainableSection>	
+			</maintainableSection>
+			
+			<maintainableSection title="Group Attributes">
+				<maintainableItems>
+					<maintainableCollection name="groupAttributes"
+						businessObjectClass="org.kuali.rice.kim.bo.GroupAttribute">
+						<maintainableField name="id" readOnly="true" required="true" />
+						<maintainableField name="attributeTypeId" required="true" />
+						<maintainableField name="attributeName" required="true" />
+						<maintainableField name="value" required="true" />
+					</maintainableCollection>
+				</maintainableItems>
+			</maintainableSection>
 		</maintainableSections>
 	</maintenanceDocument>
 </dictionaryEntry>

@@ -37,8 +37,7 @@
         <label>Role</label>
         <summary>Role Maintenance Document</summary>
         <description>Maintenance document which allows you to create new Role, or modify existing Roles.</description>
-        <help parameterNamespace="KR-NS" parameterDetailType="CampusType" parameterName="CAMPUS_TYPE_CODE" />
-
+       
         <lockingKeys>
             <field attributeName="id" />
         </lockingKeys>

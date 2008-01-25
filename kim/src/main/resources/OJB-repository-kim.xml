@@ -60,6 +60,9 @@
 			<fk-pointing-to-this-class column="GROUP_ID"/>
      		<fk-pointing-to-element-class column="ROLE_ID"/>
 		</collection-descriptor>
+		<collection-descriptor name="groupAttributes" element-class-ref="org.kuali.rice.kim.bo.GroupAttribute" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
+			<inverse-foreignkey field-ref="groupId" />
+		</collection-descriptor>
 	</class-descriptor>
 	
 	<class-descriptor class="org.kuali.rice.kim.bo.Role" table="KIM_ROLES_T">
@@ -68,6 +71,22 @@
 		<field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+	</class-descriptor>
+	
+	<class-descriptor class="org.kuali.rice.kim.bo.GroupAttribute" table="KIM_GROUP_ATTRIBUTES_T">
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_GROUP_ATTRIBUTES_ID" index="true" />
+		<field-descriptor name="groupId" column="GROUP_ID" jdbc-type="BIGINT" />
+		<field-descriptor name="attributeTypeId" column="ATTRIBUTE_TYPE_ID" jdbc-type="BIGINT" />
+		<field-descriptor name="attributeName" column="ATTRIBUTE_NAME" jdbc-type="VARCHAR" />
+		<field-descriptor name="value" column="ATTRIBUTE_VALUES" jdbc-type="VARCHAR" />
+		
+		<!-- common fields -->
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		
+		<reference-descriptor name="attributeType" class-ref="org.kuali.rice.kim.bo.AttributeType" auto-retrieve="true" auto-update="none" auto-delete="none">
+			<foreignkey field-ref="attributeTypeId" />
+		</reference-descriptor>		
 	</class-descriptor>
 
 </descriptor-repository>

@@ -48,9 +48,9 @@
             </lookupFields>
 
             <resultFields>
-            	<field attributeName="id" />
-            	<field attributeName="attributeTypeName" />
-            	<field attributeName="description" />
+                <field attributeName="id" />
+                <field attributeName="attributeTypeName" />
+               <field attributeName="description" />
             </resultFields>
         </lookup>
 
@@ -75,11 +75,11 @@
                 <label>Attribute Type Name</label>
                 <shortLabel>Type Name</shortLabel>
 
-                <maxLength>500</maxLength>
+                <maxLength>100</maxLength>
                 <validationPattern><anyCharacter allowWhitespace="false" /></validationPattern>
 
                 <control>
-                    <text size="100" />
+                    <text size="500" />
                 </control>
 
 			</attribute>
@@ -88,16 +88,15 @@
                 <label>Description</label>
                 <shortLabel>Description</shortLabel>
 
-                <maxLength>4000</maxLength>
+                <maxLength>100</maxLength>
                 <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
 
                 <control>
-                    <text size="100" />
+                    <text size="4000" />
                 </control>
 
             </attribute>
-             <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
-            <attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
+            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
 
         </attributes>
         <objectLabel>Attribute Type</objectLabel>

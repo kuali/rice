@@ -68,30 +68,30 @@
 			<maintainableSection title="Parent Groups">
 				<maintainableItems>
 					<maintainableCollection name="parentGroups"
-						businessObjectClass="org.kuali.rice.kim.bo.Group">
+						businessObjectClass="org.kuali.rice.kim.bo.Group" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="parentGroups" includeAddLine="true" summaryTitle="Parent Groups">
 						<maintainableField name="id" required="true"
-							readOnly="true" />
-						<maintainableField name="name" required="true" readOnly="true" />
+							readOnlyAfterAdd="true" template="id" />
+						<maintainableField name="name" required="false" readOnly="true" template="name"/>
 					</maintainableCollection>
 				</maintainableItems>
 			</maintainableSection>
 			<maintainableSection title="Member Groups">
 				<maintainableItems>
-					<maintainableCollection name="memberGroups"
-						businessObjectClass="org.kuali.rice.kim.bo.Group">
+					<maintainableCollection name="memberGroups" 
+						businessObjectClass="org.kuali.rice.kim.bo.Group" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="memberGroups" includeAddLine="true" summaryTitle="Member Groups">
 						<maintainableField name="id" required="true"
-							readOnly="true" />
-						<maintainableField name="name" required="true" readOnly="true" />
+							readOnly="true" readOnlyAfterAdd="true" template="id" />
+						<maintainableField name="name" required="false" readOnly="true" template="name" />
 					</maintainableCollection>
 				</maintainableItems>
 			</maintainableSection>
 			<maintainableSection title="Group Roles">
 				<maintainableItems>
 					<maintainableCollection name="groupRoles"
-						businessObjectClass="org.kuali.rice.kim.bo.Role">
+						businessObjectClass="org.kuali.rice.kim.bo.Role"  includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="groupRoles" includeAddLine="true" summaryTitle="Roles">
 						<maintainableField name="id" required="true"
-							readOnly="true" />
-						<maintainableField name="name" required="true" readOnly="true" />
+							readOnly="true" readOnlyAfterAdd="true" template="id" />
+						<maintainableField name="name" required="true" readOnly="true" template="name" />
 					</maintainableCollection>
 				</maintainableItems>
 			</maintainableSection>

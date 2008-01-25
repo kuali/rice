@@ -28,21 +28,37 @@
         			<inquiryFields>
         				<field attributeName="id" />
         				<field attributeName="name" />
+        			</inquiryFields>		
+        		</inquirySection>
+        		<inquirySection title="Parent Group">
+        			<inquiryFields>
         				<inquiryCollection name="parentGroups"
         					businessObjectClass="org.kuali.rice.kim.bo.Group">
         					<field attributeName="id" />
         					<field attributeName="name" />
         				</inquiryCollection>
+        			</inquiryFields>
+        		</inquirySection>
+        		<inquirySection title="Sub Groups">
+        			<inquiryFields>
         				<inquiryCollection name="memberGroups"
         					businessObjectClass="org.kuali.rice.kim.bo.Group">
         					<field attributeName="id" />
         					<field attributeName="name" />
         				</inquiryCollection>
+        			</inquiryFields>
+        		</inquirySection>
+        		<inquirySection title="Group Roles">
+        			<inquiryFields>
         				<inquiryCollection name="groupRoles"
         					businessObjectClass="org.kuali.rice.kim.bo.Role">
         					<field attributeName="id" />
         					<field attributeName="name" />
         				</inquiryCollection>
+        			</inquiryFields>
+        		</inquirySection>
+        		<inquirySection title="Group Attributes">
+        			<inquiryFields>
         				<inquiryCollection name="groupAttributes"
         					businessObjectClass="org.kuali.rice.kim.bo.GroupAttribute">
         					<field attributeName="id" />
@@ -67,13 +83,15 @@
             </defaultSort>
 
             <lookupFields>
-                <lookupField attributeName="id" required="false" forceLookup="true" />
+                <lookupField attributeName="id" required="false" forceLookup="true" noLookup="false" />
                 <lookupField attributeName="name" required="false" forceLookup="true" />
+                <lookupField attributeName="description" required="false" forceLookup="true" />
             </lookupFields>
 
             <resultFields>
                 <field attributeName="id" />
                 <field attributeName="name" />
+                <field attributeName="description" />
             </resultFields>
         </lookup>
 
@@ -81,17 +99,19 @@
 
         <attributes>
 
-            <attribute name="id" forceUppercase="true">
+            <attribute name="id" forceUppercase="false">
                 <label>ID</label>
                 <shortLabel>id</shortLabel>
 
                 <maxLength>8</maxLength>
                 <validationPattern><anyCharacter /></validationPattern>
-
+				
+				<required>true</required>
+				
                 <control>
                     <text size="8" />
                 </control>
-
+                
 			</attribute>
 
             <attribute name="name" forceUppercase="false">

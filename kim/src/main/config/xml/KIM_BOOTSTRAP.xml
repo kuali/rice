@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
   <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
-<!--    <documentType>
+    <documentType>
       <name>KualiPrincipalMaintenanceDocument</name>
       <description>Create or Update a Principal</description>
       <label>Kuali Principal Maintenance Document</label>
@@ -25,7 +25,7 @@
         </start>
       </routeNodes>
     </documentType>
-  </documentTypes> -->
+  </documentTypes>
   <documentType>
       <name>KualiGroupMaintenanceDocument</name>
       <description>Create or Update a Group</description>

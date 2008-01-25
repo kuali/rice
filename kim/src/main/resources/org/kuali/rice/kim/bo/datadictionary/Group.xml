@@ -91,8 +91,8 @@
 			</attribute>
 
             <attribute name="description" forceUppercase="false">
-                <label>Group Name</label>
-                <shortLabel>Name</shortLabel>
+                <label>Group Description</label>
+                <shortLabel>Description</shortLabel>
 
                 <maxLength>4000</maxLength>
                 <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>

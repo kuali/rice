@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +23,8 @@ import org.kuali.rice.kim.bo.GroupQualifiedRole;
 import org.kuali.rice.kim.bo.Permission;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.PersonQualifiedRole;
+import org.kuali.rice.kim.bo.Principal;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.service.RoleService;
 
 /**
@@ -33,25 +34,34 @@ import org.kuali.rice.kim.service.RoleService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoleServiceImpl implements RoleService {
-
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.RoleService#getGroupNames(java.lang.String)
+     * @see org.kuali.rice.kim.service.RoleService#getAllRoleNames()
      */
-    public List<String> getGroupNames(String roleName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<String>();
+    public List<String> getAllRoleNames() {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.RoleService#getGroupQualifiedRoles(java.lang.String)
+     * @see org.kuali.rice.kim.service.RoleService#getAllRoles()
      */
-    public List<GroupQualifiedRole> getGroupQualifiedRoles(String roleName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<GroupQualifiedRole>();
+    public List<Role> getAllRoles() {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.RoleService#getGroupNamesWithRole(java.lang.String)
+     */
+    public List<String> getGroupNamesWithRole(String roleName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
@@ -60,48 +70,58 @@ public class RoleServiceImpl implements RoleService {
      * @see org.kuali.rice.kim.service.RoleService#getGroupQualifiedRoles(java.lang.String, java.util.Map)
      */
     public List<GroupQualifiedRole> getGroupQualifiedRoles(String roleName, Map<String, String> qualifiedRoleAttributes) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<GroupQualifiedRole>();
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.RoleService#getGroups(java.lang.String)
+     * @see org.kuali.rice.kim.service.RoleService#getGroupQualifiedRoles(java.lang.String)
      */
-    public List<Group> getGroups(String roleName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<Group>();
+    public List<GroupQualifiedRole> getGroupQualifiedRoles(String roleName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.RoleService#getPermissionNames(java.lang.String)
+     * @see org.kuali.rice.kim.service.RoleService#getGroupsWithRole(java.lang.String)
      */
-    public List<String> getPermissionNames(String roleName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<String>();
+    public List<Group> getGroupsWithRole(String roleName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.RoleService#getPermissions(java.lang.String)
+     * @see org.kuali.rice.kim.service.RoleService#getPermissionNamesForRole(java.lang.String)
      */
-    public List<Permission> getPermissions(String roleName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<Permission>();
+    public List<String> getPermissionNamesForRole(String roleName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.RoleService#getPersonQualifiedRoles(java.lang.String)
+     * @see org.kuali.rice.kim.service.RoleService#getPermissionsForRole(java.lang.String)
      */
-    public List<PersonQualifiedRole> getPersonQualifiedRoles(String roleName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<PersonQualifiedRole>();
+    public List<Permission> getPermissionsForRole(String roleName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.RoleService#getPersonIdsWithRole(java.lang.String)
+     */
+    public List<Long> getPersonIdsWithRole(String roleName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
@@ -110,27 +130,47 @@ public class RoleServiceImpl implements RoleService {
      * @see org.kuali.rice.kim.service.RoleService#getPersonQualifiedRoles(java.lang.String, java.util.Map)
      */
     public List<PersonQualifiedRole> getPersonQualifiedRoles(String roleName, Map<String, String> qualifiedRoleAttributes) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<PersonQualifiedRole>();
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.RoleService#getPersonUserNames(java.lang.String)
+     * @see org.kuali.rice.kim.service.RoleService#getPersonQualifiedRoles(java.lang.String)
      */
-    public List<String> getPersonUsernames(String roleName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<String>();
+    public List<PersonQualifiedRole> getPersonQualifiedRoles(String roleName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.RoleService#getPersons(java.lang.String)
+     * @see org.kuali.rice.kim.service.RoleService#getPersonsWithRole(java.lang.String)
      */
-    public List<Person> getPersons(String roleName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<Person>();
+    public List<Person> getPersonsWithRole(String roleName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.RoleService#getPrincipalNamesWithRole(java.lang.String)
+     */
+    public List<Long> getPrincipalNamesWithRole(String roleName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.RoleService#getPrincipalsWithRole(java.lang.String)
+     */
+    public List<Principal> getPrincipalsWithRole(String roleName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 }

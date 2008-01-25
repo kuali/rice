@@ -15,19 +15,6 @@
  */
 package org.kuali.rice.kim.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Test;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.GroupQualifiedRole;
-import org.kuali.rice.kim.bo.Permission;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.PersonQualifiedRole;
-import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
@@ -41,42 +28,7 @@ public class RoleServiceTest extends KIMTestCase {
     private RoleService roleService;
 
     public void setUp() throws Exception {
-	super.setUp();
-	roleService = (RoleService)GlobalResourceLoader.getService("roleService");
-    }
-    @Test public void testGroupTestHarness() throws Exception {
-	assertNotNull(roleService);
-    }
-    @Test public void testGetGroupNames() throws Exception {
-	assertEquals(0, roleService.getGroupNames("test").size());
-    }
-    @Test public void testGetGroupQualifiedRoles1() throws Exception {
-	assertEquals(0, roleService.getGroupQualifiedRoles("test").size());
-    }
-    @Test public void testGetGroupQualifiedRoles2() throws Exception {
-	assertEquals(0, roleService.getGroupQualifiedRoles("test",
-		new HashMap<String, String>()).size());
-    }
-    @Test public void testGetGroups() throws Exception {
-	assertEquals(0, roleService.getGroups("test").size());
-    }
-    @Test public void testGetPermissionNames() throws Exception {
-	assertEquals(0, roleService.getPermissionNames("test").size());
-    }
-    @Test public void testGetPermissions() throws Exception {
-	assertEquals(0, roleService.getPermissions("test").size());
-    }
-    @Test public void testGetPersonQualifiedRoles1() throws Exception {
-	assertEquals(0, roleService.getPermissions("test").size());
-    }
-    @Test public void testGetPersonQualifiedRoles2() throws Exception {
-	assertEquals(0, roleService.getPersonQualifiedRoles("test",
-		new HashMap<String, String>()).size());
-    }
-    @Test public void testGetPersonUsernames() throws Exception {
-	assertEquals(0, roleService.getPersonUsernames("test").size());
-    }
-    @Test public void testGetPersons() throws Exception {
-	assertEquals(0, roleService.getPersons("test").size());
+        super.setUp();
+        roleService = (RoleService) GlobalResourceLoader.getService("roleService");
     }
 }

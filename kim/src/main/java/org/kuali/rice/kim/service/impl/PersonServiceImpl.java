@@ -33,92 +33,70 @@ public class PersonServiceImpl implements PersonService {
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.PersonService#getAttributeValue(java.lang.String, java.lang.String)
+     * @see org.kuali.rice.kim.service.PersonService#getAllPersonIds()
      */
-    public String getAttributeValue(String personUserName, String attributeName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return "";
+    public List<Long> getAllPersonIds() {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.PersonService#getPersonUserNames(java.util.Map)
+     * @see org.kuali.rice.kim.service.PersonService#getAllPersons()
      */
-    public List<String> getPersonUserNames(Map<String, String> personAttributes) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<String>();
+    public List<Person> getAllPersons() {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.PersonService#getPersons(java.util.Map)
+     * @see org.kuali.rice.kim.service.PersonService#getAttributeValue(java.lang.Long, java.lang.String, java.lang.String)
      */
-    public List<Person> getPersons(Map<String, String> personAttributes) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<Person>();
+    public String getAttributeValue(Long personId, String attributeName, String namespaceName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.PersonService#hasAttributes(java.lang.String, java.util.Map)
+     * @see org.kuali.rice.kim.service.PersonService#getPersonIdsWithAttributes(java.util.Map, java.lang.String)
      */
-    public boolean hasAttributes(String personUserName, Map<String, String> personAttributes) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return false;
+    public List<Long> getPersonIdsWithAttributes(Map<String, String> personAttributes, String namespaceName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.PersonService#hasPermission(java.lang.String, java.lang.String)
+     * @see org.kuali.rice.kim.service.PersonService#getPersonsWithAttributes(java.util.Map, java.lang.String)
      */
-    public boolean hasPermission(String personUserName, String permissionName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return false;
+    public List<Person> getPersonsWithAttributes(Map<String, String> personAttributes, String namespaceName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.PersonService#hasQualifiedPermission(java.lang.String, java.lang.String, java.util.Map)
+     * @see org.kuali.rice.kim.service.PersonService#hasAttributes(java.lang.Long, java.util.Map, java.lang.String)
      */
-    public boolean hasQualifiedPermission(String personUserName, String permissionName,
-	    Map<String, String> qualifiedRoleAttributes) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return false;
+    public boolean hasAttributes(Long personId, Map<String, String> personAttributes, String namespaceName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return false;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.PersonService#hasQualifiedRole(java.lang.String, java.lang.String, java.util.Map)
+     * @see org.kuali.rice.kim.service.PersonService#isMemberOfGroup(java.lang.Long, java.lang.String)
      */
-    public boolean hasQualifiedRole(String personUserName, String roleName, Map<String, String> personAttributes) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return false;
+    public boolean isMemberOfGroup(Long personId, String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return false;
     }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.kim.service.PersonService#hasRole(java.lang.String, java.lang.String)
-     */
-    public boolean hasRole(String personUserName, String roleName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return false;
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.kim.service.PersonService#isMemberOfGroup(java.lang.String, java.lang.String)
-     */
-    public boolean isMemberOfGroup(String personUserName, String groupName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return false;
-    }
-
 }

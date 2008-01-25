@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.kuali.rice.kim.bo.Namespace;
 import org.kuali.rice.kim.bo.Permission;
 import org.kuali.rice.kim.service.NamespaceService;
 
@@ -33,11 +34,31 @@ public class NamespaceServiceImpl implements NamespaceService {
     /**
      * This overridden method ...
      * 
+     * @see org.kuali.rice.kim.service.NamespaceService#getAllNamespaceNames()
+     */
+    public List<String> getAllNamespaceNames() {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.NamespaceService#getAllNamespaces()
+     */
+    public List<Namespace> getAllNamespaces() {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+
+    /**
+     * This overridden method ...
+     * 
      * @see org.kuali.rice.kim.service.NamespaceService#getPermissionNames(java.lang.String)
      */
     public List<String> getPermissionNames(String namespaceName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<String>();
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
@@ -46,8 +67,8 @@ public class NamespaceServiceImpl implements NamespaceService {
      * @see org.kuali.rice.kim.service.NamespaceService#getPermissions(java.lang.String)
      */
     public List<Permission> getPermissions(String namespaceName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<Permission>();
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
-
+    
 }

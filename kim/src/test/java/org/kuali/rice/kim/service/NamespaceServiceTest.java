@@ -15,17 +15,6 @@
  */
 package org.kuali.rice.kim.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Test;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.Permission;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.service.NamespaceService;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
@@ -39,16 +28,7 @@ public class NamespaceServiceTest extends KIMTestCase {
     private NamespaceService namespaceService;
 
     public void setUp() throws Exception {
-	super.setUp();
-	namespaceService = (NamespaceService)GlobalResourceLoader.getService("namespaceService");
-    }
-    @Test public void testGroupTestHarness() throws Exception {
-	assertNotNull(namespaceService);
-    }
-    @Test public void testGetPermissionNames() throws Exception {
-	assertEquals(0, namespaceService.getPermissionNames("test").size());
-    }
-    @Test public void testGetPermissions() throws Exception {
-	assertEquals(0, namespaceService.getPermissions("test").size());
+        super.setUp();
+        namespaceService = (NamespaceService)GlobalResourceLoader.getService("namespaceService");
     }
 }

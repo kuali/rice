@@ -15,17 +15,6 @@
  */
 package org.kuali.rice.kim.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Test;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.Permission;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.service.QualifiedRoleService;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
@@ -39,33 +28,7 @@ public class QualifiedRoleServiceTest extends KIMTestCase {
     private QualifiedRoleService qualifiedRoleService;
 
     public void setUp() throws Exception {
-	super.setUp();
-	qualifiedRoleService = (QualifiedRoleService)GlobalResourceLoader.getService("qualifiedRoleService");
-    }
-    @Test public void testGroupTestHarness() throws Exception {
-	assertNotNull(qualifiedRoleService);
-    }
-    @Test public void testGetGroupNames() throws Exception {
-	assertEquals(0, qualifiedRoleService.getGroupNames("test", 
-		new HashMap<String, String>()).size());
-    }
-    @Test public void testGetGroups() throws Exception {
-	assertEquals(0, qualifiedRoleService.getGroups("test", 
-		new HashMap<String, String>()).size());
-    }
-    @Test public void testGetPersonUsernames() throws Exception {
-	assertEquals(0, qualifiedRoleService.getPersonUsernames("test", 
-		new HashMap<String, String>()).size());
-    }
-    @Test public void testGetPersons() throws Exception {
-	assertEquals(0, qualifiedRoleService.getPersons("test", 
-		new HashMap<String, String>()).size());
-    }
-    @Test public void testGetRoleNames() throws Exception {
-	assertEquals(0, qualifiedRoleService.getRoleNames(new HashMap<String, String>()).size());
-    }
-    @Test public void testGetRoles() throws Exception {
-	assertEquals(0, qualifiedRoleService.getRoles(new HashMap<String, String>()).size());
+        super.setUp();
+        qualifiedRoleService = (QualifiedRoleService)GlobalResourceLoader.getService("qualifiedRoleService");
     }
 }
-

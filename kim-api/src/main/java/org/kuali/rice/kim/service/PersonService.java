@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.Role;
 
 /**
  * Service API for accessing KIM Person services.  This contract should be used by all 
@@ -30,101 +29,79 @@ import org.kuali.rice.kim.bo.Role;
  */
 public interface PersonService {
     /**
-     * KIM Person service API method that determines if a given user is authorized for a given
-     * permission.
+     * KIM service API method that returns a complete collection of Person objects for the application.
      * 
-     * @param   personUserName       user name identifying a unique KIM Person
-     * @param   permissionName       name identifying a unique permission
-     * @return                       boolean indicating if Person is authorized
+     * @return         List of Person objects for the application
      * 
      */
-    public boolean hasPermission(String personUserName, String permissionName);
+    public List<Person> getAllPersons();
+    
+    /**
+     * KIM service API method that returns a complete collection of Person ids for the 
+     * application.
+     * 
+     * @return         List of Person ids for the application
+     * 
+     */
+    public List<Long> getAllPersonIds();
+    
     /**
      * KIM Person service API method that determines if a given user is member of a given
      * group.
      * 
-     * @param   personUserName       User name identifying a unique KIM Person
+     * @param   personId             personId uniquely identifying a KIM Person
      * @param   groupName            name identifying a unique Group
      * @return                       boolean indicating if Person is member of Group
      * 
      */
-    public boolean isMemberOfGroup(String personUserName, String groupName);
+    public boolean isMemberOfGroup(Long personId, String groupName);
+    
     /**
      * KIM Person service API method that determines if a given user possesses all given Person
      * attributes.
      * 
-     * @param   personUserName       user name identifying a unique KIM Person
+     * @param   personId             principal associated with a unique KIM Person
      * @param   personAttributes     Map<String, String> of role attribute name/value pairs
      *                               to match a Person
+     * @param   namespaceName        the associated namespace to scope the attributes to
      * @return                       boolean indicating if Person possesses all given attributes
      * 
      */
-    public boolean hasAttributes(String personUserName, Map<String, String> personAttributes);
+    public boolean hasAttributes(Long personId, Map<String, String> personAttributes, String namespaceName);
+    
     /**
-     * KIM Person service API method that determines if a given user has been assigned to a given
-     * role.
+     * KIM Person service API method that retrieves the value for a given person attribute.
      * 
-     * @param   personUserName       user name identifying a unique KIM Person
-     * @param   roleName             name identifying a unique Role
-     * @return                       boolean indicating if Person has been assigned to Role
-     * 
-     */
-    public boolean hasRole(String personUserName, String roleName);
-    /**
-     * KIM Person service API method that determines if a given user possesses all given Role
-     * attributes.
-     * 
-     * @param   personUserName       user name identifying a unique KIM Person
-     * @param   roleName             name identifying a unique Role
-     * @param   personAttributes     Map<String, String> of role attribute name/value pairs
-     *                               to qualify a Person
-     * @return                       boolean indicating if Person possesses all given Role attributes
-     * 
-     */
-    public boolean hasQualifiedRole(String personUserName, String roleName, 
-	    Map<String, String> personAttributes);
-    /**
-     * KIM Person service API method that determines if a given user possesses all given Role
-     * attributes.
-     * 
-     * @param   personUserName       User name identifying a unique KIM Person
-     * @param   attributeName        Name of attribute 
+     * @param   personId             Person id uniquely identifying a KIM Person
+     * @param   attributeName        Name of attribute
+     * @param   namespaceName        The associated namespace to scope the attribute to 
      * @return                       String value associated with attribute
      * 
      */
-    public String getAttributeValue(String personUserName, String attributeName);
+    public String getAttributeValue(Long personId, String attributeName, String namespaceName);
+    
     /**
      * KIM Person service API method that returns all Person objects matching all given Person
      * attributes.
      * 
      * @param   personAttributes     Map<String, String> of role attribute name/value pairs
      *                               to qualify a Person
+     * @param   namespaceName        The associated namespace to scope the attributes to
      * @return                       boolean indicating if Person possesses all given Role attributes
      * 
      */
-    public List<Person> getPersons(Map<String, String> personAttributes);
+    public List<Person> getPersonsWithAttributes(Map<String, String> personAttributes, String namespaceName);
+    
     /**
      * KIM Person service API method that returns associated List of usernames for all Person objects
      * matching all given Person attributes.
      * 
      * @param   personAttributes     Map<String, String> of role attribute name/value pairs
      *                               to qualify a Person
+     * @param   namespaceName        The associated namespace to scope the attribute to
      * @return                       boolean indicating if Person possesses all given Role attributes
      * 
      */
-    public List<String> getPersonUserNames(Map<String, String> personAttributes);
-    /**
-     * KIM Person service API method that determines if a Person possesses a given permission and
-     * set of role attributes.
-     * 
-     * @param   personUserName           User name identifying a unique KIM Person
-     * @param   permissionName           name identifying a unique permission
-     * @param   qualifiedRoleAttributes  Map<String, String> of role attribute name/value pairs
-     *                                   to qualify a Person
-     * @return                           boolean indicating if Person possesses the permission and 
-     *                                   all given Role attributes
-     * 
-     */
-    public boolean hasQualifiedPermission(String personUserName, String permissionName, 
-	    Map<String, String> qualifiedRoleAttributes);
+    public List<Long> getPersonIdsWithAttributes(Map<String, String> personAttributes, String namespaceName);
+    
 }

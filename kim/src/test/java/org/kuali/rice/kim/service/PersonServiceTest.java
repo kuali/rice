@@ -15,16 +15,9 @@
  */
 package org.kuali.rice.kim.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Test;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
+
 /**
  * Basic test to verify we can access the PersonService through the GRL.
  * 
@@ -39,50 +32,4 @@ public class PersonServiceTest extends KIMTestCase {
 	    personService = (PersonService)GlobalResourceLoader.getService("personService");
 	}
 
-/**
- * This method ...
- * 
- * @throws Exception
- */
-	@Test public void testPersonTestHarness() throws Exception {
-	    assertNotNull(personService);
-	}
-	@Test public void testGetAttributeValue() throws Exception {
-	    assertEquals(0, personService.getAttributeValue("test", "test").length());
-
-	} 
-	@Test public void testGetPersonUserNames() throws Exception {	
-	    assertEquals(0, personService.getPersonUserNames(new HashMap<String, String>()).size());
-
-	} 
-	@Test public void testGetPersons() throws Exception {	
-	    assertEquals(0, personService.getPersonUserNames(new HashMap<String, String>()).size());
-
-	} 
-	@Test public void testHasAttributes() throws Exception {	
-	    assertEquals(false, personService.hasAttributes("test", new HashMap<String, String>()));
-
-	} 
-	@Test public void testHasPermission() throws Exception {	
-	    assertEquals(false, personService.hasPermission("test", "test"));
-
-	} 
-	@Test public void testHasQualifiedPermission() throws Exception {	
-	    assertEquals(false, personService.hasQualifiedPermission("test", "test",
-		    new HashMap<String, String>()));
-
-	} 
-	@Test public void testHasQualifiedRole() throws Exception {	
-	    assertEquals(false, personService.hasQualifiedRole("test", "test", 
-		    new HashMap<String, String>()));
-
-	} 
-	@Test public void testHasRole() throws Exception {	
-	    assertEquals(false, personService.hasRole("test", "test")); 
-
-	} 
-	@Test public void testIsMemberOfGroup() throws Exception {	
-	    assertEquals(false, personService.isMemberOfGroup("test", "test")); 
-
-	} 
 }

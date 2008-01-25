@@ -19,87 +19,96 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.Permission;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.PersonQualifiedRole;
+import org.kuali.rice.kim.bo.Principal;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.workflow.role.QualifiedRole;
 
 /**
- * Service API for accessing KIM QualifiedRole services.  This contract should be used by all 
- * Kuali software which needs to leverage identity management features that require fine-grained
- * QualifiedRole attributes. 
+ * Service API for accessing KIM QualifiedRole services. This contract should be used by all Kuali software which needs to
+ * leverage identity management features that require fine-grained QualifiedRole attributes.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-    public interface QualifiedRoleService {
+public interface QualifiedRoleService {
     /**
-     * KIM QualifiedRole service API method that returns the complete List of Person objects
-     * that possess a given Role and matching role attributes
+     * KIM QualifiedRole service API method that returns the complete List of Principal objects that possess a given Role and
+     * matching role attributes
      * 
-     * @param   roleName                 name identifying Role
-     * @param   qualifiedRoleAttributes  Map<String, String> of role attribute name/value pairs
-     *                                   to qualify a Person
-     * @return                           List of Person objects that satisfy both Role and
-     *                                   qualifying role attributes
+     * @param roleName name identifying Role
+     * @param qualifiedRoleAttributes Map<String, String> of role attribute name/value pairs to qualify a Principal
+     * @return List of Principal objects that satisfy both Role and qualifying role attributes
+     */
+    public List<Principal> getPrincipals(String roleName, Map<String, String> qualifiedRoleAttributes);
+
+    /**
+     * KIM QualifiedRole service API method that returns associated List of principal names for all Principal objects that possess a
+     * given Role and matching role attributes
      * 
+     * @param roleName name identifying Role
+     * @param qualifiedRoleAttributes Map<String, String> of role attribute name/value pairs to qualify a Principal
+     * @return associated List principal names for Principal objects that satisfy both Role and qualifying role attributes
+     */
+    public List<String> getPrincipalNames(String roleName, Map<String, String> qualifiedRoleAttributes);
+    
+    /**
+     * KIM QualifiedRole service API method that returns the complete List of Person objects that possess a given Role and
+     * matching role attributes
+     * 
+     * @param roleName name identifying Role
+     * @param qualifiedRoleAttributes Map<String, String> of role attribute name/value pairs to qualify a Person
+     * @return List of Person objects that satisfy both Role and qualifying role attributes
      */
     public List<Person> getPersons(String roleName, Map<String, String> qualifiedRoleAttributes);
+
     /**
-     * KIM QualifiedRole service API method that returns associated List of user names for
-     * all Person objects that possess a given Role and matching role attributes
+     * KIM QualifiedRole service API method that returns associated List of person ids for all Person objects that possess a
+     * given Role and matching role attributes
      * 
-     * @param   roleName                 name identifying Role
-     * @param   qualifiedRoleAttributes  Map<String, String> of role attribute name/value pairs
-     *                                   to qualify a Person
-     * @return                           associated List user names for Person objects that satisfy 
-     *                                   both Role and qualifying role attributes
-     * 
+     * @param roleName name identifying Role
+     * @param qualifiedRoleAttributes Map<String, String> of role attribute name/value pairs to qualify a Person
+     * @return associated List person Ids for Person objects that satisfy both Role and qualifying role attributes
      */
-    public List<String> getPersonUsernames(String roleName, Map<String, String> qualifiedRoleAttributes);
+    public List<Long> getPersonIds(String roleName, Map<String, String> qualifiedRoleAttributes);
+
     /**
-     * KIM QualifiedRole service API method that returns the complete List of Group objects
-     * matching a given role and qualified role attributes.
+     * KIM QualifiedRole service API method that returns the complete List of Group objects matching a given role and
+     * qualified role attributes.
      * 
-     * @param   roleName                 name identifying Role
-     * @param   qualifiedRoleAttributes  Map<String, String> of role attribute name/value pairs
-     *                                   to qualify a group
-     * @return                           List of all Group objects matching the role and 
-     *                                   role attributes
-     * 
+     * @param roleName
+     *            name identifying Role
+     * @param qualifiedRoleAttributes
+     *            Map<String, String> of role attribute name/value pairs to qualify a group
+     * @return List of all Group objects matching the role and role attributes
      */
     public List<Group> getGroups(String roleName, Map<String, String> qualifiedRoleAttributes);
+
     /**
-     * KIM QualifiedRole service API method that returns associated List of group names
-     * for all Group objects matching a given role and qualified role attributes.
+     * KIM QualifiedRole service API method that returns associated List of group names for all Group objects matching a
+     * given role and qualified role attributes.
      * 
-     * @param   roleName                 name identifying Role
-     * @param   qualifiedRoleAttributes  Map<String, String> of role attribute name/value pairs
-     *                                   to qualify a group
-     * @return                           associated List of names for all Groups matching 
-     *                                   the role and role attributes
-     * 
+     * @param roleName
+     *            name identifying Role
+     * @param qualifiedRoleAttributes
+     *            Map<String, String> of role attribute name/value pairs to qualify a group
+     * @return associated List of names for all Groups matching the role and role attributes
      */
     public List<String> getGroupNames(String roleName, Map<String, String> qualifiedRoleAttributes);
+
     /**
-     * KIM QualifiedRole service API method that returns unique List of all Role objects
-     * matching qualified role attributes.
+     * KIM QualifiedRole service API method that returns unique List of all Role objects matching qualified role attributes.
      * 
-     * @param   qualifiedRoleAttributes  Map<String, String> of role attribute name/value pairs
-     *                                   to qualify a group
-     * @return                           unique set of all Role objects matching the role attributes
-     * 
+     * @param qualifiedRoleAttributes
+     *            Map<String, String> of role attribute name/value pairs to qualify a group
+     * @return unique set of all Role objects matching the role attributes
      */
     public List<Role> getRoles(Map<String, String> qualifiedRoleAttributes);
+
     /**
-     * KIM QualifiedRole service API method that returns unique List of all Role names
-     * matching qualified role attributes.
+     * KIM QualifiedRole service API method that returns unique List of all Role names matching qualified role attributes.
      * 
-     * @param   qualifiedRoleAttributes  Map<String, String> of role attribute name/value pairs
-     *                                   to qualify a group
-     * @return                           unique set of all Role names matching the role attributes
-     * 
+     * @param qualifiedRoleAttributes
+     *            Map<String, String> of role attribute name/value pairs to qualify a group
+     * @return unique set of all Role names matching the role attributes
      */
     public List<String> getRoleNames(Map<String, String> qualifiedRoleAttributes);
-
 }

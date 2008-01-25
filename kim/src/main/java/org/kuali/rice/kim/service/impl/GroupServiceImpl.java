@@ -15,13 +15,12 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.Permission;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.Principal;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.service.GroupService;
 
@@ -36,101 +35,121 @@ public class GroupServiceImpl implements GroupService {
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.GroupService#getGroupNames(java.lang.String)
+     * @see org.kuali.rice.kim.service.GroupService#getAllGroupNames()
      */
-    public List<String> getGroupNames(String groupName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<String>();
+    public List<String> getAllGroupNames() {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.GroupService#getGroupNames(java.util.Map)
+     * @see org.kuali.rice.kim.service.GroupService#getAllGroups()
      */
-    public List<String> getGroupNames(Map<String, String> groupAttributes) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<String>();
+    public List<Group> getAllGroups() {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.GroupService#getGroups(java.lang.String)
+     * @see org.kuali.rice.kim.service.GroupService#getGroupMemberNames(java.lang.String)
      */
-    public List<Group> getGroups(String groupName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<Group>();
+    public List<String> getGroupMemberNames(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.GroupService#getGroups(java.util.Map)
+     * @see org.kuali.rice.kim.service.GroupService#getGroupMembers(java.lang.String)
      */
-    public List<Group> getGroups(Map<String, String> groupAttributes) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<Group>();
+    public List<Group> getGroupMembers(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.GroupService#getPermissionNames(java.lang.String)
+     * @see org.kuali.rice.kim.service.GroupService#getGroupNamesWithAttributes(java.util.Map)
      */
-    public List<String> getPermissionNames(String groupName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<String>();
+    public List<String> getGroupNamesWithAttributes(Map<String, String> groupAttributes) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.GroupService#getPermissions(java.lang.String)
+     * @see org.kuali.rice.kim.service.GroupService#getGroupsWithAttributes(java.util.Map)
      */
-    public List<Permission> getPermissions(String groupName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<Permission>();
+    public List<Group> getGroupsWithAttributes(Map<String, String> groupAttributes) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.GroupService#getPersonUserNames(java.lang.String)
+     * @see org.kuali.rice.kim.service.GroupService#getPersonMemberIds(java.lang.String)
      */
-    public List<String> getPersonUsernames(String groupName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<String>();
+    public List<Long> getPersonMemberIds(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.GroupService#getPersons(java.lang.String)
+     * @see org.kuali.rice.kim.service.GroupService#getPersonMembers(java.lang.String)
      */
-    public List<Person> getPersons(String groupName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<Person>();
+    public List<Person> getPersonMembers(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.GroupService#getRoleNames(java.lang.String)
+     * @see org.kuali.rice.kim.service.GroupService#getPrincipalMemberNames(java.lang.String)
      */
-    public List<String> getRoleNames(String groupName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<String>();
+    public List<String> getPrincipalMemberNames(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.GroupService#getRoles(java.lang.String)
+     * @see org.kuali.rice.kim.service.GroupService#getPrincipalMembers(java.lang.String)
      */
-    public List<Role> getRoles(String groupName) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return new ArrayList<Role>();
+    public List<Principal> getPrincipalMembers(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.GroupService#getRoleNamesForGroup(java.lang.String)
+     */
+    public List<String> getRoleNamesForGroup(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.GroupService#getRolesForGroup(java.lang.String)
+     */
+    public List<Role> getRolesForGroup(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
     }
 
     /**
@@ -139,19 +158,7 @@ public class GroupServiceImpl implements GroupService {
      * @see org.kuali.rice.kim.service.GroupService#hasAttributes(java.lang.String, java.util.Map)
      */
     public boolean hasAttributes(String groupName, Map<String, String> groupAttributes) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return false;
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return false;
     }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.kim.service.GroupService#hasQualifiedPermission(java.lang.String, java.lang.String, java.util.Map)
-     */
-    public boolean hasQualifiedPermission(String groupName, String permissionName,
-	    Map<String, String> qualifiedRoleAttributes) {
-	// TODO pberres - THIS METHOD NEEDS JAVADOCS
-	return false;
-    }
-
 }

@@ -19,10 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.Permission;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.Principal;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.workflow.role.QualifiedRole;
 
 /**
  * Service API for accessing KIM Group services.  This contract should be used by all 
@@ -33,6 +32,42 @@ import org.kuali.workflow.role.QualifiedRole;
  */
 public interface GroupService {
     /**
+     * KIM service API method that returns a list of all Groups in the system
+     *  
+     * @return         List of all Groups in the system
+     * 
+     */
+    public List<Group> getAllGroups();
+    
+    /**
+     * KIM service API method that returns a collection of Groups in the system
+     *   
+     * @return         List of all Group names in the system
+     * 
+     */
+    public List<String> getAllGroupNames();
+    
+    /**
+     * KIM Group service API method that returns all Principal objects within either a given Group, 
+     * or within any nested groups within that Group.
+     * 
+     * @param   groupName            name identifying Group
+     * @return                       unique (i.e. not replicated) List of Person objects
+     * 
+     */
+    public List<Principal> getPrincipalMembers(String groupName);
+    
+    /**
+     * KIM Group service API method that returns all Principal names within either a given Group, 
+     * or within any nested groups within that Group.
+     * 
+     * @param   groupName            name identifying Group
+     * @return                       unique (i.e. not replicated) List of Person objects
+     * 
+     */
+    public List<String> getPrincipalMemberNames(String groupName);
+    
+    /**
      * KIM Group service API method that returns all Person objects within either a given Group, 
      * or within any nested groups within that Group.
      * 
@@ -40,52 +75,38 @@ public interface GroupService {
      * @return                       unique (i.e. not replicated) List of Person objects
      * 
      */
-    public List<Person> getPersons(String groupName);
+    public List<Person> getPersonMembers(String groupName);
+    
     /**
-     * KIM Group service API method that returns all Person user names within either a given Group, 
+     * KIM Group service API method that returns all Person id within either a given Group, 
      * or within any nested groups within that Group.
      * 
      * @param   groupName            name identifying Group
      * @return                       unique (i.e. not replicated) List of Person user names
      * 
      */
-    public List<String> getPersonUsernames(String groupName);
+    public List<Long> getPersonMemberIds(String groupName);
+    
     /**
      * KIM Group service API method that returns all Group objects that are considered members 
-     * of a given group.
+     * of a given group or within any nested Groups of those Groups - this is recursive.
      * 
      * @param   groupName            name identifying Group
      * @return                       List of Group objects considered members of the group
      * 
      */
-    public List<Group> getGroups(String groupName);
+    public List<Group> getGroupMembers(String groupName);
+    
     /**
      * KIM Group service API method that returns all Group names that are considered members 
-     * of a given group.
+     * of a given group or within any nested Groups of those Groups - this is recursive.
      * 
      * @param   groupName            name identifying Group
      * @return                       List of Group names considered members of the group
      * 
      */
-    public List<String> getGroupNames(String groupName);
-    /**
-     * KIM Group service API method that returns all Permission objects associated 
-     * with a given Group.
-     * 
-     * @param   groupName            name identifying Group
-     * @return                       List of Permission objects associated with the group
-     * 
-     */
-    public List<Permission> getPermissions(String groupName);
-    /**
-     * KIM Group service API method that returns all Permission names associated 
-     * with a given Group.
-     * 
-     * @param   groupName            name identifying Group
-     * @return                       List of Permission names associated with the group
-     * 
-     */
-    public List<String> getPermissionNames(String groupName);
+    public List<String> getGroupMemberNames(String groupName);
+    
     /**
      * KIM Group service API method that returns all Role objects associated 
      * with a given Group.
@@ -94,7 +115,8 @@ public interface GroupService {
      * @return                       List of Role objects associated with the group
      * 
      */
-    public List<Role> getRoles(String groupName);
+    public List<Role> getRolesForGroup(String groupName);
+    
     /**
      * KIM Group service API method that returns all Role names associated 
      * with a given Group.
@@ -103,51 +125,36 @@ public interface GroupService {
      * @return                       List of Role names associated with the group
      * 
      */
-    public List<String> getRoleNames(String groupName);
+    public List<String> getRoleNamesForGroup(String groupName);
+    
     /**
      * KIM Group service API method that determines if a given group possesses all
      * group attributes 
      * 
      * @param   groupName            name identifying Group
      * @param   groupAttributes      Map<String, String> of group attribute name/value pairs
-     *                               
      * @return                       true if the Group possesses all group attributes 
      * 
      */
     public boolean hasAttributes(String groupName, Map<String, String> groupAttributes);
+    
     /**
      * KIM Group service API method that returns all Group objects that possess
      * a given set of group attributes 
      * 
      * @param   groupAttributes      Map<String, String> of group attribute name/value pairs
-     *                               
      * @return                       all Group objects that possess set of group attributes 
      * 
      */
-    public List<Group> getGroups(Map<String, String> groupAttributes);
+    public List<Group> getGroupsWithAttributes(Map<String, String> groupAttributes);
+    
     /**
      * KIM Group service API method that returns associated List of names for all Group objects 
      * that possess a given set of group attributes 
      * 
      * @param   groupAttributes      Map<String, String> of group attribute name/value pairs
-     *                               
      * @return                       names of all Group objects that possess set of group attributes 
      * 
      */
-    public List<String> getGroupNames(Map<String, String> groupAttributes);
-    /**
-     * KIM Group service API method that determines if a given group possesses a given permission and
-     * all qualifying attributes 
-     * 
-     * @param   groupName                name identifying Group
-     * @param   permissionName           name identifying Permission
-     * @param   qualifiedRoleAttributes  Map<String, String> of role attribute name/value pairs
-     *                               
-     * @return                           true if the Group possesses the permission and all group 
-     *                                   attributes 
-     * 
-     */
-    public boolean hasQualifiedPermission(String groupName, String permissionName, 
-	    Map<String, String> qualifiedRoleAttributes);
-
+    public List<String> getGroupNamesWithAttributes(Map<String, String> groupAttributes);
 }

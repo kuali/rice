@@ -17,6 +17,7 @@ package org.kuali.rice.kim.service;
 
 import java.util.List;
 
+import org.kuali.rice.kim.bo.Namespace;
 import org.kuali.rice.kim.bo.Permission;
 
 /**
@@ -28,6 +29,22 @@ import org.kuali.rice.kim.bo.Permission;
  */
 public interface NamespaceService {
     /**
+     * KIM service API method that returns the complete collection of Namespace objects
+     * 
+     * @return         List of Namespace objects
+     * 
+     */
+    public List<Namespace> getAllNamespaces();
+
+    /**
+     * KIM service API method that returns associated List of names for all Namespace objects
+     * 
+     * @return         List of Namespace names
+     * 
+     */
+    public List<String> getAllNamespaceNames();
+    
+    /**
      * KIM Namespace service API method that returns all Permission objects associated 
      * with a given namespace.
      * 
@@ -36,6 +53,7 @@ public interface NamespaceService {
      * 
      */
     public List<Permission> getPermissions(String namespaceName);
+    
     /**
      * KIM Namespace service API method that returns all Permission names associated 
      * with a given namespace.
@@ -45,5 +63,4 @@ public interface NamespaceService {
      * 
      */
     public List<String> getPermissionNames(String namespaceName);
-
 }

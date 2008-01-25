@@ -61,7 +61,6 @@
 		</property>
 		<property name="beanNames">
 			<list>				
-				<idref local="kimService" />
 				<idref local="personService" />
 				<idref local="groupService" />
 				<idref local="namespaceService" />
@@ -71,7 +70,6 @@
 		</property>
 	</bean>
 	
-	<bean id="kimService" class="org.kuali.rice.kim.service.impl.KIMServiceImpl" />
 	<bean id="personService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl" />
 	<bean id="groupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl" />
 	<bean id="namespaceService" class="org.kuali.rice.kim.service.impl.NamespaceServiceImpl" />

@@ -20,8 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
+import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.BlanketApproveEngine;
 import edu.iu.uis.eden.engine.OrchestrationConfig;
@@ -46,14 +48,12 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
     private String nodeName;
 
     public SuperUserNodeApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(routeHeader, user);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD);
+        super(EdenConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, routeHeader, user);
         this.superUserAction = EdenConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
     }
 
     public SuperUserNodeApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor, String nodeName) {
-        super(routeHeader, user, annotation, runPostProcessor);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD);
+        super(EdenConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, routeHeader, user, annotation, runPostProcessor);
         this.superUserAction = EdenConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
         this.nodeName = nodeName;
     }
@@ -81,9 +81,9 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
 //            throw new WorkflowServiceErrorException("Super User Authorization Error", errors);
 //        }
 
-        saveActionTaken();
+        ActionTakenValue actionTaken = saveActionTaken();
 
-        notifyActionTaken(this.actionTaken);
+        notifyActionTaken(actionTaken);
 
             if (getRouteHeader().isInException()) {
                 LOG.debug("Moving document back to Enroute from Exception");
@@ -91,7 +91,7 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
                 getRouteHeader().markDocumentEnroute();
                 String newStatus = getRouteHeader().getDocRouteStatus();
                 notifyStatusChange(newStatus, oldStatus);
-                getRouteHeaderService().saveRouteHeader(getRouteHeader());
+                KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
             }
 
             OrchestrationConfig config = new OrchestrationConfig();

@@ -22,6 +22,7 @@ import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
@@ -44,13 +45,11 @@ public class SaveActionEvent extends ActionTakenEvent {
     private static final String RESPONSIBILITY_DESCRIPTION = "Initiator needs to complete document.";
 
     public SaveActionEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-	super(routeHeader, user);
-	setActionTakenCode(EdenConstants.ACTION_TAKEN_SAVED_CD);
+	super(EdenConstants.ACTION_TAKEN_SAVED_CD, routeHeader, user);
     }
 
     public SaveActionEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
-	super(routeHeader, user, annotation);
-	setActionTakenCode(EdenConstants.ACTION_TAKEN_SAVED_CD);
+	super(EdenConstants.ACTION_TAKEN_SAVED_CD, routeHeader, user, annotation);
     }
 
     /* (non-Javadoc)
@@ -101,25 +100,21 @@ public class SaveActionEvent extends ActionTakenEvent {
 	    throw new InvalidActionTakenException(errorMessage);
 	}
 
-	if (annotation == null) {
-	    annotation = "";
-	}
-
 	updateSearchableAttributesIfPossible();
 
 	//    if (getRouteHeader().isValidActionToTake(getActionTakenCode())) {
 	if (getRouteHeader().isStateInitiated()) {
 	    LOG.debug("Record the save action");
-	    saveActionTaken();
+	    ActionTakenValue actionTaken = saveActionTaken();
 	    getRouteHeader().getActionRequests().add(generateSaveRequest());
-	    notifyActionTaken(this.actionTaken);
+	    notifyActionTaken(actionTaken);
 	    LOG.debug("Marking document saved");
 	    try {
 		String oldStatus = getRouteHeader().getDocRouteStatus();
 		getRouteHeader().markDocumentSaved();
 		String newStatus = getRouteHeader().getDocRouteStatus();
 		notifyStatusChange(newStatus, oldStatus);
-		getRouteHeaderService().saveRouteHeader(routeHeader);
+		KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
 	    } catch (WorkflowException ex) {
 		LOG.warn(ex, ex);
 		throw new InvalidActionTakenException(ex.getMessage());
@@ -133,8 +128,8 @@ public class SaveActionEvent extends ActionTakenEvent {
 
     protected ActionRequestValue generateSaveRequest() throws EdenUserNotFoundException {
 	RouteNodeInstance intialNode = (RouteNodeInstance) KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(
-		routeHeaderId).get(0);
-	ActionRequestFactory arFactory = new ActionRequestFactory(routeHeader, intialNode);
+		getRouteHeaderId()).get(0);
+	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), intialNode);
 	ActionRequestValue saveRequest = arFactory.createActionRequest(EdenConstants.ACTION_REQUEST_COMPLETE_REQ,
 		new Integer(0), getUser(), RESPONSIBILITY_DESCRIPTION, EdenConstants.SAVED_REQUEST_RESPONSIBILITY_ID,
 		Boolean.TRUE, annotation);

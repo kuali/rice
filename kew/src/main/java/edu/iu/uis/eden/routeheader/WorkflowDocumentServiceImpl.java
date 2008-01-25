@@ -102,40 +102,35 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	public DocumentRouteHeaderValue acknowledgeDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException,
 			EdenUserNotFoundException {
 		AcknowledgeAction action = new AcknowledgeAction(routeHeader, user, annotation);
-		action.recordAction();
-		action.queueDocument();
+		action.performAction();
 		return finish(routeHeader);
 	}
 
 	public DocumentRouteHeaderValue releaseWorkgroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, Workgroup workgroup, String annotation) throws InvalidActionTakenException,
 			EdenUserNotFoundException {
 		ReleaseWorkgroupAuthority action = new ReleaseWorkgroupAuthority(routeHeader, user, annotation, workgroup);
-		action.recordAction();
-		action.queueDocument();
+		action.performAction();
 		return finish(routeHeader);
 	}
 
 	public DocumentRouteHeaderValue takeWorkgroupAuthority(WorkflowUser user, DocumentRouteHeaderValue routeHeader, Workgroup workgroup, String annotation) throws InvalidActionTakenException,
 			EdenUserNotFoundException {
 		TakeWorkgroupAuthority action = new TakeWorkgroupAuthority(routeHeader, user, annotation, workgroup);
-		action.recordAction();
-		action.queueDocument();
+		action.performAction();
 		return finish(routeHeader);
 	}
 
 	public DocumentRouteHeaderValue approveDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException,
 			EdenUserNotFoundException {
 		ApproveAction action = new ApproveAction(routeHeader, user, annotation);
-		action.recordAction();
-		action.queueDocument();
+		action.performAction();
 		return finish(routeHeader);
 	}
 
 	public DocumentRouteHeaderValue appSpecificRouteDocument(WorkflowUser user, DocumentRouteHeaderValue document, String actionRequested, String nodeName, String annotation, Recipient recipient,
 			String responsibilityDesc, Boolean ignorePrevious) throws WorkflowException {
 		AdHocAction action = new AdHocAction(document, user, annotation, actionRequested, nodeName, recipient, responsibilityDesc, ignorePrevious);
-		action.recordAction();
-		action.queueDocument();
+		action.performAction();
 		return finish(document);
 	}
 
@@ -149,27 +144,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 			nodeNames = Utilities.asSet(node.getRouteNodeName());
 		}
 		ActionTakenEvent action = new BlanketApproveAction(routeHeader, user, annotation, nodeNames);
-		action.recordAction();
-		try {
-
-			BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(routeHeader);
-			blanketApprove.doBlanketApproveWork(routeHeader.getRouteHeaderId(), user, action.getActionTakenId(), nodeNames);
-//			KEWAsyncronousJavaService blanketApproveProcessor = (KEWAsyncronousJavaService)SpringServiceLocator.getMessageHelper().getServiceAsynchronously(
-//					MessageServiceNames.BLANKET_APPROVE_PROCESSING_SERVICE, routeHeader);
-//
-//			blanketApproveProcessor.invoke(BlanketApproveProcessor.getPayLoad(user, action.getActionTaken(), nodeNames, routeHeader));
-
-
-
-//			SpringServiceLocator.getMessageHelper().sendMessage(MessageServiceNames.BLANKET_APPROVE_PROCESSING_SERVICE,
-//					BlanketApproveProcessor.getPayLoad(user, action.getActionTaken(), nodeNames, routeHeader), routeHeader);
-		} catch (Exception e) {
-			LOG.error(e);
-			throw new WorkflowRuntimeException(e);
-		}
-
-//		SpringServiceLocator.getRouteQueueService().requeueDocument(routeHeader.getRouteHeaderId(), EdenConstants.ROUTE_QUEUE_BLANKET_APPROVE_PRIORITY, new Long(0),
-//				BlanketApproveProcessor.class.getName(), BlanketApproveProcessor.getBlanketApproveProcessorValue(user, action.getActionTaken(), nodeNames));
+		action.performAction();
 		return finish(routeHeader);
 	}
 
@@ -177,24 +152,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		BlanketApproveAction action = new BlanketApproveAction(routeHeader, user, annotation, nodeNames);
 		action.recordAction();
 
-		try {
-
-			BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(routeHeader);
-			blanketApprove.doBlanketApproveWork(routeHeader.getRouteHeaderId(), user, action.getActionTakenId(), nodeNames);
-//
-
-//			KEWAsyncronousJavaService blanketApproveProcessor = (KEWAsyncronousJavaService)SpringServiceLocator.getMessageHelper().getServiceAsynchronously(
-//					MessageServiceNames.BLANKET_APPROVE_PROCESSING_SERVICE, routeHeader);
-//			blanketApproveProcessor.invoke(BlanketApproveProcessor.getPayLoad(user, action.getActionTaken(), nodeNames, routeHeader));
-
-//			SpringServiceLocator.getMessageHelper().sendMessage(MessageServiceNames.BLANKET_APPROVE_PROCESSING_SERVICE,
-//					BlanketApproveProcessor.getPayLoad(user, action.getActionTaken(), nodeNames, routeHeader), routeHeader);
-		} catch (Exception e) {
-			LOG.error(e);
-			throw new WorkflowRuntimeException(e);
-		}
-//		SpringServiceLocator.getRouteQueueService().requeueDocument(routeHeader.getRouteHeaderId(), EdenConstants.ROUTE_QUEUE_BLANKET_APPROVE_PRIORITY, new Long(0),
-//				BlanketApproveProcessor.class.getName(), BlanketApproveProcessor.getBlanketApproveProcessorValue(user, action.getActionTaken(), nodeNames));
 		return finish(routeHeader);
 	}
 
@@ -216,8 +173,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	public DocumentRouteHeaderValue completeDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException,
 			EdenUserNotFoundException {
 		CompleteAction action = new CompleteAction(routeHeader, user, annotation);
-		action.recordAction();
-		action.queueDocument();
+		action.performAction();
 		return finish(routeHeader);
 	}
 
@@ -274,25 +230,22 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 			throw new InvalidActionTakenException("Could not locate node for route level " + destRouteLevel);
 		}
 		ReturnToPreviousNodeAction action = new ReturnToPreviousNodeAction(routeHeader, user, annotation, node.getRouteNodeName(), true);
-		action.recordAction();
-		action.queueDocument();
+		action.performAction();
 		return finish(routeHeader);
 	}
 
 	public DocumentRouteHeaderValue returnDocumentToPreviousNode(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String destinationNodeName, String annotation)
 			throws InvalidActionTakenException, EdenUserNotFoundException {
 		ReturnToPreviousNodeAction action = new ReturnToPreviousNodeAction(routeHeader, user, annotation, destinationNodeName, true);
-		action.recordAction();
-		action.queueDocument();
+		action.performAction();
 		return finish(routeHeader);
 	}
 
 	public DocumentRouteHeaderValue routeDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws WorkflowException,
 			InvalidActionTakenException, EdenUserNotFoundException {
 		RouteDocumentAction actionEvent = new RouteDocumentAction(routeHeader, user, annotation);
-		actionEvent.recordAction();
+		actionEvent.performAction();
         LOG.info("routeDocument: " + routeHeader);
-		actionEvent.queueDocument();
 		return finish(routeHeader);
 	}
 
@@ -308,8 +261,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	public DocumentRouteHeaderValue saveDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException,
 			EdenUserNotFoundException {
 		SaveActionEvent action = new SaveActionEvent(routeHeader, user, annotation);
-		action.recordAction();
-		action.queueDocument();
+		action.performAction();
 		return finish(routeHeader);
 	}
 
@@ -328,8 +280,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
 	public DocumentRouteHeaderValue moveDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeader, MovePoint movePoint, String annotation) throws InvalidActionTakenException, EdenUserNotFoundException {
 		MoveDocumentAction action = new MoveDocumentAction(routeHeader, user, annotation, movePoint);
-		action.recordAction();
-		action.queueDocument();
+		action.performAction();
 		return finish(routeHeader);
 	}
 
@@ -426,8 +377,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
 	public DocumentRouteHeaderValue revokeAdHocRequests(WorkflowUser user, DocumentRouteHeaderValue document, AdHocRevoke revoke, String annotation) throws InvalidActionTakenException, EdenUserNotFoundException {
 		RevokeAdHocAction action = new RevokeAdHocAction(document, user, revoke, annotation);
-		action.recordAction();
-		action.queueDocument();
+		action.performAction();
 		return finish(document);
 	}
 

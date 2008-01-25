@@ -38,15 +38,12 @@ public class MoveDocumentProcessor implements MoveDocumentService {
 	public void moveDocument(WorkflowUser user, DocumentRouteHeaderValue document, ActionTakenValue actionTaken, Set nodeNames) {
 		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(document.getRouteHeaderId(), true);
 		MoveDocumentAction moveAction = new MoveDocumentAction(document, user, "", null);
-        moveAction.setActionTaken(actionTaken);
-        moveAction.setActionTakenCode(EdenConstants.ACTION_TAKEN_MOVE_CD);
         LOG.debug("Doing move document work " + document.getRouteHeaderId());
         try {
-			moveAction.doMoveDocumentWork(nodeNames);
+			moveAction.performDeferredMoveDocumentWork(actionTaken, nodeNames);
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException(e);
 		}
-        moveAction.queueDocument();
         LOG.debug("Work done and document requeued, document " + document.getRouteHeaderId());
 	}
 }

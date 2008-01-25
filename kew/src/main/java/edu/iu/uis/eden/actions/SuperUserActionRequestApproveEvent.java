@@ -27,6 +27,7 @@ import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
@@ -41,16 +42,28 @@ import edu.iu.uis.eden.util.Utilities;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEvent {
+    /**
+     * This is the only action which is polymorphic...the action taken code is dynamically determined
+     * based on action requested.  All other actions' action taken code is immutable, so the field could otherwise
+     * be set to final and initialized in the constructor...however it would not be advisable to perform in the
+     * constructor the work required by this class to determine the action taken.  So for now the class initializes
+     * the action taken to null (this would be the behavior anyway if the constructor did not enforce an action taken code
+     * to be supplied).  An alternative would be to do away with the stored superclass field and simply delegate to a subclass
+     * getActionTakenCode implementation when necessary.  It is also not clear that this would be a good choice as it may be
+     * called multiple times in arbitrary contexts.
+     */
+    private static final String UNDEFINED_ACTION_TAKEN_CODE = null;
+
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SuperUserActionRequestApproveEvent.class);
     private Long actionRequestId;
 
     public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(routeHeader, user);
+        super(UNDEFINED_ACTION_TAKEN_CODE, routeHeader, user);
         this.superUserAction = EdenConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
     }
 
     public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, Long actionRequestId, String annotation, boolean runPostProcessor) {
-        super(routeHeader, user, annotation, runPostProcessor);
+        super(UNDEFINED_ACTION_TAKEN_CODE, routeHeader, user, annotation, runPostProcessor);
         this.superUserAction = EdenConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
         this.actionRequestId = actionRequestId;
     }
@@ -102,12 +115,8 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
 
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
 
-        if (annotation == null) {
-            annotation = "";
-        }
-
         LOG.debug("Super User Delegation Action on action request: " + annotation);
-        this.saveActionTaken(getActionRequest().getWorkflowUser());
+        ActionTakenValue actionTaken = this.saveActionTaken(getActionRequest().getWorkflowUser());
 
         LOG.debug("Deactivate this action request");
 
@@ -117,7 +126,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
         	KEWServiceLocator.getActionRequestService().activateRequest(
         	new ActionRequestFactory(this.getRouteHeader()).createNotificationRequest(EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, request.getWorkflowUser(), this.getActionTakenCode(), this.getUser(), null));
         }
-        notifyActionTaken(this.actionTaken);
+        notifyActionTaken(actionTaken);
 
         if (!(EdenConstants.ACTION_TAKEN_SU_ACTION_REQUEST_FYI_CD.equals(this.getActionTakenCode()) && EdenConstants.ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED_CD.equals(this.getActionTakenCode()))) {
             if (getRouteHeader().isInException()) {
@@ -128,7 +137,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
 
                 String newStatus = getRouteHeader().getDocRouteStatus();
                 this.notifyStatusChange(newStatus, oldStatus);
-                getRouteHeaderService().saveRouteHeader(getRouteHeader());
+                KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
             }
             else if (getRouteHeader().isStateSaved()) {
         	if (EdenConstants.SAVED_REQUEST_RESPONSIBILITY_ID.equals(request.getResponsibilityId())) {
@@ -138,7 +147,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
                     this.getRouteHeader().markDocumentEnroute();
                     String newStatus = getRouteHeader().getDocRouteStatus();
                     this.notifyStatusChange(newStatus, oldStatus);
-                    getRouteHeaderService().saveRouteHeader(getRouteHeader());
+                    KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
         	}
             }
         }
@@ -147,7 +156,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
     public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         checkLocking();
         this.processActionRequests();
-        this.queueDocument();
+        this.queueDocumentProcessing();
     }
 
     protected void markDocument() throws WorkflowException {

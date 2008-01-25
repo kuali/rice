@@ -23,6 +23,7 @@ import org.apache.log4j.MDC;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
@@ -53,8 +54,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
      *            User taking the action.
      */
     public AcknowledgeAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(rh, user);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD);
+        super(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, rh, user);
     }
 
     /**
@@ -68,8 +68,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
      *            User comment on the action taken
      */
     public AcknowledgeAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(rh, user, annotation);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD);
+        super(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, rh, user, annotation);
     }
 
     @Override
@@ -85,7 +84,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
         return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
     }
 
-    private String validateActionRules(List actionRequests) throws EdenUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
         String superError = super.validateActionTakenRules();
         if (!Utilities.isEmpty(superError)) {
             return superError;
@@ -144,9 +143,6 @@ public class AcknowledgeAction extends ActionTakenEvent {
         checkLocking();
         updateSearchableAttributesIfPossible();
 
-        if (annotation == null) {
-            annotation = "";
-        }
         LOG.debug("Acknowledging document : " + annotation);
 
         LOG.debug("Checking to see if the action is legal");
@@ -168,9 +164,9 @@ public class AcknowledgeAction extends ActionTakenEvent {
 
         LOG.debug("Record the acknowledge action");
         Recipient delegator = findDelegatorForActionRequests(actionRequests);
-        saveActionTaken(delegator);
+        ActionTakenValue actionTaken = saveActionTaken(delegator);
         LOG.debug("Deactivate all pending action requests");
         getActionRequestService().deactivateRequests(actionTaken, actionRequests);
-        notifyActionTaken(this.actionTaken);
+        notifyActionTaken(actionTaken);
     }
 }

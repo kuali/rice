@@ -22,7 +22,9 @@ import java.util.List;
 import org.apache.log4j.MDC;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.WorkflowException;
@@ -40,13 +42,11 @@ public class RouteDocumentAction extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RouteDocumentAction.class);
 
     public RouteDocumentAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(rh, user);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_COMPLETED_CD);
+        super(EdenConstants.ACTION_TAKEN_COMPLETED_CD, rh, user);
     }
 
     public RouteDocumentAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(rh, user, annotation);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_COMPLETED_CD);
+        super(EdenConstants.ACTION_TAKEN_COMPLETED_CD, rh, user, annotation);
     }
 
     /* (non-Javadoc)
@@ -93,10 +93,6 @@ public class RouteDocumentAction extends ActionTakenEvent {
 //            super.recordAction();
 //        }
 
-        if (annotation == null) {
-            annotation = "";
-        }
-
         LOG.debug("Routing document : " + annotation);
 
         LOG.debug("Checking to see if the action is legal");
@@ -109,7 +105,7 @@ public class RouteDocumentAction extends ActionTakenEvent {
         // we want to check that the "RouteDocument" command is valid here, not the "Complete" command (which is in our Action's action taken code)
 //        if (getRouteHeader().isValidActionToTake(EdenConstants.ACTION_TAKEN_ROUTED_CD)) {
             LOG.debug("Record the routing action");
-            saveActionTaken();
+            ActionTakenValue actionTaken = saveActionTaken();
 
             //TODO this will get all pending AR's even if they haven't been in an action list... This seems bad
             List actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
@@ -127,7 +123,7 @@ public class RouteDocumentAction extends ActionTakenEvent {
                 }
             }
 
-            notifyActionTaken(this.actionTaken);
+            notifyActionTaken(actionTaken);
 
             try {
                 String oldStatus = getRouteHeader().getDocRouteStatus();
@@ -136,7 +132,7 @@ public class RouteDocumentAction extends ActionTakenEvent {
 
                 String newStatus = getRouteHeader().getDocRouteStatus();
                 notifyStatusChange(newStatus, oldStatus);
-                getRouteHeaderService().saveRouteHeader(getRouteHeader());
+                KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
             } catch (WorkflowException ex) {
                 LOG.warn(ex, ex);
 	            throw new InvalidActionTakenException(ex.getMessage());

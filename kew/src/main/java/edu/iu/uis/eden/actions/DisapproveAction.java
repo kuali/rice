@@ -54,8 +54,7 @@ public class DisapproveAction extends ActionTakenEvent {
      * @param user User taking the action.
      */
     public DisapproveAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(rh, user);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_DENIED_CD);
+        super(EdenConstants.ACTION_TAKEN_DENIED_CD, rh, user);
     }
 
     /**
@@ -64,8 +63,7 @@ public class DisapproveAction extends ActionTakenEvent {
      * @param annotation User comment on the action taken
      */
     public DisapproveAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(rh, user, annotation);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_DENIED_CD);
+        super(EdenConstants.ACTION_TAKEN_DENIED_CD, rh, user, annotation);
     }
 
     /* (non-Javadoc)
@@ -76,7 +74,7 @@ public class DisapproveAction extends ActionTakenEvent {
         return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
-    private String validateActionRules(List actionRequests) throws EdenUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
         String superError = super.validateActionTakenRules();
         if (!Utilities.isEmpty(superError)) {
             return superError;
@@ -151,7 +149,7 @@ public class DisapproveAction extends ActionTakenEvent {
 
         LOG.debug("Record the disapproval action");
         Recipient delegator = findDelegatorForActionRequests(actionRequests);
-        saveActionTaken(delegator);
+        ActionTakenValue actionTaken = saveActionTaken(delegator);
 
 //        actionRequests = getActionRequestService().findByStatusAndDocId(EdenConstants.ACTION_REQUEST_DONE_STATE, getRouteHeaderId());
 //        List actionRequestsToNotify = new ArrayList();
@@ -166,7 +164,7 @@ public class DisapproveAction extends ActionTakenEvent {
         LOG.debug("Deactivate all pending action requests");
         actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
         getActionRequestService().deactivateRequests(actionTaken, actionRequests);
-        notifyActionTaken(this.actionTaken);
+        notifyActionTaken(actionTaken);
 
         LOG.debug("Sending Acknowledgements to all previous approvers/completers");
    	 	// Generate the notification requests in the first node we find that the current user has an approve request
@@ -181,7 +179,7 @@ public class DisapproveAction extends ActionTakenEvent {
             String oldStatus = getRouteHeader().getDocRouteStatus();
             routeHeader.markDocumentDisapproved();
             String newStatus = getRouteHeader().getDocRouteStatus();
-            getRouteHeaderService().saveRouteHeader(routeHeader);
+            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
             notifyStatusChange(newStatus, oldStatus);
         } catch (WorkflowException ex) {
             LOG.warn(ex, ex);
@@ -191,7 +189,7 @@ public class DisapproveAction extends ActionTakenEvent {
 
     //generate notifications to all people that have approved the document including the initiator
     private void generateNotifications(RouteNodeInstance notificationNodeInstance) throws EdenUserNotFoundException {
-        Workgroup systemUserWorkgroup = getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(EdenConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME)));
+        Workgroup systemUserWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(Utilities.getApplicationConstant(EdenConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME)));
         Set<WorkflowUser> systemUserWorkflowIds = new HashSet<WorkflowUser>();
         if (systemUserWorkgroup != null) {
             systemUserWorkflowIds = new HashSet<WorkflowUser>(systemUserWorkgroup.getUsers());

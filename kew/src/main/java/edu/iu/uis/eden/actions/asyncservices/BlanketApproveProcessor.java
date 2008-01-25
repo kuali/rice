@@ -39,14 +39,12 @@ public class BlanketApproveProcessor implements BlanketApproveProcessorService {
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		ActionTakenValue actionTaken = KEWServiceLocator.getActionTakenService().findByActionTakenId(actionTakenId);
 		BlanketApproveAction blanketApprove = new BlanketApproveAction(document, user, "", nodeNames);
-		blanketApprove.setActionTaken(actionTaken);
 		LOG.debug("Doing blanket approve work document " + document.getRouteHeaderId());
 		try {
-			blanketApprove.doBlanketApproveWork();
+			blanketApprove.performDeferredBlanketApproveWork(actionTaken);
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException(e);
 		}
-		blanketApprove.queueDocument();
 		LOG.debug("Work done and document requeued, document " + document.getRouteHeaderId());
 	}
 }

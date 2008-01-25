@@ -37,6 +37,10 @@ import edu.iu.uis.eden.util.Utilities;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AdHocAction extends ActionTakenEvent {
+    /**
+     * AdHoc actions don't actually result in an action being taken...it's a special case that generates other action requests
+     */
+    private static final String NO_ACTION_TAKEN_CODE = null;
 
 	private String actionRequested;
 	private String nodeName;
@@ -46,11 +50,11 @@ public class AdHocAction extends ActionTakenEvent {
 	private String annotation;
 	
     public AdHocAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(routeHeader, user);
+        super(NO_ACTION_TAKEN_CODE, routeHeader, user);
     }
 
 	public AdHocAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String actionRequested, String nodeName, Recipient recipient, String responsibilityDesc, Boolean ignorePrevActions) {
-		super(routeHeader, user, annotation);
+		super(NO_ACTION_TAKEN_CODE, routeHeader, user, annotation);
 		this.actionRequested = actionRequested;
 		this.nodeName = nodeName;
 		this.responsibilityDesc = responsibilityDesc;

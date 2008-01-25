@@ -21,12 +21,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.namespace.QName;
-
 import org.apache.log4j.MDC;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.actions.asyncservices.BlanketApproveProcessorService;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.BlanketApproveEngine;
@@ -36,7 +36,6 @@ import edu.iu.uis.eden.engine.node.RouteNodeService;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
-import edu.iu.uis.eden.messaging.KEWXMLService;
 import edu.iu.uis.eden.messaging.MessageServiceNames;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.Recipient;
@@ -54,8 +53,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
     private Set nodeNames;
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(rh, user);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD);
+        super(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, user);
     }
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation, Integer routeLevel) {
@@ -67,8 +65,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
     }
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation, Set nodeNames) {
-        super(rh, user, annotation);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD);
+        super(EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, user, annotation);
         this.nodeNames = (nodeNames == null ? new HashSet() : nodeNames);
     }
 
@@ -98,7 +95,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
         return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
-    private String validateActionRules(List actionRequests) throws EdenUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
         String superError = super.validateActionTakenRules();
         if (!Utilities.isEmpty(superError)) {
             return superError;
@@ -140,7 +137,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
         checkLocking();
         updateSearchableAttributesIfPossible();
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List<ActionRequestValue> actionRequests = getActionRequestService().findAllValidRequests(getUser(), getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ);
         String errorMessage = validateActionRules(actionRequests);
         if (!Utilities.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
@@ -176,21 +173,44 @@ public class BlanketApproveAction extends ActionTakenEvent {
 
             LOG.debug("Record the blanket approval action");
             Recipient delegator = findDelegatorForActionRequests(actionRequests);
-            saveActionTaken(delegator);
+            ActionTakenValue actionTaken = saveActionTaken(delegator);
 
             LOG.debug("Deactivate pending action requests for user");
             getActionRequestService().deactivateRequests(actionTaken, actionRequests);
-            notifyActionTaken(this.actionTaken);
+            notifyActionTaken(actionTaken);
 
-            getRouteHeaderService().saveRouteHeader(getRouteHeader());
+            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
 
 //        } else {
 //            LOG.warn("Document not in state to be approved.");
 //            throw new InvalidActionTakenException("Document is not in a state to be approved");
 //        }
+            
+          queueDeferredWork(actionTaken);
     }
 
-    public void doBlanketApproveWork() throws Exception {
+    protected void queueDeferredWork(ActionTakenValue actionTaken) {
+        try {
+
+            BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(routeHeader);
+            blanketApprove.doBlanketApproveWork(routeHeader.getRouteHeaderId(), getUser(), actionTaken.getActionTakenId(), nodeNames);
+//
+
+//          KEWAsyncronousJavaService blanketApproveProcessor = (KEWAsyncronousJavaService)SpringServiceLocator.getMessageHelper().getServiceAsynchronously(
+//                  MessageServiceNames.BLANKET_APPROVE_PROCESSING_SERVICE, routeHeader);
+//          blanketApproveProcessor.invoke(BlanketApproveProcessor.getPayLoad(user, action.getActionTaken(), nodeNames, routeHeader));
+
+//          SpringServiceLocator.getMessageHelper().sendMessage(MessageServiceNames.BLANKET_APPROVE_PROCESSING_SERVICE,
+//                  BlanketApproveProcessor.getPayLoad(user, action.getActionTaken(), nodeNames, routeHeader), routeHeader);
+        } catch (Exception e) {
+            LOG.error(e);
+            throw new WorkflowRuntimeException(e);
+        }
+//      SpringServiceLocator.getRouteQueueService().requeueDocument(routeHeader.getRouteHeaderId(), EdenConstants.ROUTE_QUEUE_BLANKET_APPROVE_PRIORITY, new Long(0),
+//              BlanketApproveProcessor.class.getName(), BlanketApproveProcessor.getBlanketApproveProcessorValue(user, action.getActionTaken(), nodeNames));
+    }
+    
+    public void performDeferredBlanketApproveWork(ActionTakenValue actionTaken) throws Exception {
 
         if (getRouteHeader().isInException()) {
             LOG.debug("Moving document back to Enroute from Exception");
@@ -202,6 +222,8 @@ public class BlanketApproveAction extends ActionTakenEvent {
             notifyStatusChange(newStatus, oldStatus);
         }
         new BlanketApproveEngine(nodeNames, actionTaken).process(getRouteHeader().getRouteHeaderId(), null);
+        
+        queueDocumentProcessing();
    }
 
     protected void markDocumentEnroute(DocumentRouteHeaderValue routeHeader) throws InvalidActionTakenException {
@@ -210,22 +232,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
 
         String newStatus = getRouteHeader().getDocRouteStatus();
         notifyStatusChange(newStatus, oldStatus);
-        getRouteHeaderService().saveRouteHeader(getRouteHeader());
-    }
-
-    public void queueDocument() {
-    	QName documentServiceName = new QName(getRouteHeader().getDocumentType().getMessageEntity(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
-    	KEWXMLService documentRoutingService = (KEWXMLService)MessageServiceNames.getServiceAsynchronously(documentServiceName, getRouteHeader());
-    	try {
-			documentRoutingService.invoke(String.valueOf(getRouteHeaderId()));
-		} catch (Exception e) {
-			throw new WorkflowRuntimeException(e);
-		}
-
-    }
-
-    public void setActionTaken(ActionTakenValue actionTaken) {
-    	this.actionTaken = actionTaken;
+        KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
     }
 
     private RouteNodeService getRouteNodeService() {

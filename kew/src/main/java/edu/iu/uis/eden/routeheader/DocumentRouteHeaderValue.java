@@ -24,6 +24,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -868,6 +870,26 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
 
 	public void setDocumentContent(DocumentRouteHeaderValueContent documentContent) {
 		this.documentContent = documentContent;
+	}
+	
+	public String toString() {
+	    return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+	        .append("routeHeaderId", routeHeaderId)
+            .append("documentTypeId", documentTypeId)
+            .append("docVersion", docVersion)
+            .append("docTitle", docTitle)
+            .append("createDate", createDate)
+            .append("initiatorWorkflowId", initiatorWorkflowId)
+            .append("routedByUserWorkflowId", routedByUserWorkflowId)
+            .append("docRouteStatus", docRouteStatus)
+            .append("routeStatusDate", routeStatusDate)
+            .append("statusModDate", statusModDate)
+            .append("docRouteLevel", docRouteLevel)
+            .append("routeLevelDate", routeLevelDate)
+            .append("approvedDate", approvedDate)
+            .append("finalizedDate", finalizedDate)
+            .append("appDocId", appDocId)
+            .toString();
 	}
 
 }

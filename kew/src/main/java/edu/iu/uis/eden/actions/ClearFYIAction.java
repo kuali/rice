@@ -23,6 +23,7 @@ import org.apache.log4j.MDC;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
@@ -51,8 +52,7 @@ public class ClearFYIAction extends ActionTakenEvent {
      *            User taking the action.
      */
     public ClearFYIAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(rh, user);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_FYI_CD);
+        super(EdenConstants.ACTION_TAKEN_FYI_CD, rh, user);
     }
 
     /**
@@ -64,8 +64,7 @@ public class ClearFYIAction extends ActionTakenEvent {
      *            User comment on the action taken
      */
     public ClearFYIAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(rh, user, annotation);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_FYI_CD);
+        super(EdenConstants.ACTION_TAKEN_FYI_CD, rh, user, annotation);
     }
 
     @Override
@@ -81,7 +80,7 @@ public class ClearFYIAction extends ActionTakenEvent {
         return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_FYI_REQ));
     }
 
-    private String validateActionRules(List actionRequests) throws EdenUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
         String superError = super.validateActionTakenRules();
         if (!Utilities.isEmpty(superError)) {
             return superError;
@@ -149,10 +148,10 @@ public class ClearFYIAction extends ActionTakenEvent {
 //            throw new InvalidActionTakenException("No request for the user is compatible with the ClearFYI Action");
 //        }
 
-        saveActionTaken(findDelegatorForActionRequests(actionRequests));
+        ActionTakenValue actionTaken = saveActionTaken(findDelegatorForActionRequests(actionRequests));
 
         LOG.debug("Deactivate all pending action requests");
         getActionRequestService().deactivateRequests(actionTaken, actionRequests);
-        notifyActionTaken(this.actionTaken);
+        notifyActionTaken(actionTaken);
     }
 }

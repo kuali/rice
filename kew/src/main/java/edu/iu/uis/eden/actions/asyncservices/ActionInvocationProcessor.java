@@ -47,14 +47,13 @@ public class ActionInvocationProcessor implements ActionInvocationService { // i
 	try {
 	    action = KEWServiceLocator.getActionRegistry().createAction(invocation.getActionCode(), parameters);
 	    if (!document.isValidActionToTake(invocation.getActionCode())) {
-		LOG.warn("Action " + action.getActionTakenCode() + " is not a valid action to take against document " + document.getRouteHeaderId() + " by user " + user);
+		LOG.warn("Action " + invocation.getActionCode() + " is not a valid action to take against document " + document.getRouteHeaderId() + " by user " + user);
 		return;
 	    } else if (!KEWServiceLocator.getActionRegistry().getValidActions(user, document).getActionTakenCodes().contains(action.getActionTakenCode())) {
 		LOG.warn("Action " + action.getActionTakenCode() + " is not valid for document " + document.getRouteHeaderId() + " by user " + user);
 		return;
 	    }
-	    action.recordAction();
-	    action.queueDocument();
+	    action.performAction();
 	} catch (Exception e) {
 	    throw new WorkflowRuntimeException(e);
 	}

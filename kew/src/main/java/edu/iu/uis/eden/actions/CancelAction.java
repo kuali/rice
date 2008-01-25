@@ -22,7 +22,9 @@ import java.util.List;
 import org.apache.log4j.MDC;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.WorkflowException;
@@ -40,13 +42,11 @@ public class CancelAction extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(CancelAction.class);
 
     public CancelAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(rh, user);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_CANCELED_CD);
+        super(EdenConstants.ACTION_TAKEN_CANCELED_CD, rh, user);
     }
 
     public CancelAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(rh, user, annotation);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_CANCELED_CD);
+        super(EdenConstants.ACTION_TAKEN_CANCELED_CD, rh, user, annotation);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class CancelAction extends ActionTakenEvent {
         return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
-    private String validateActionRules(List actionRequests) throws EdenUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
         String superError = super.validateActionTakenRules();
         if (!Utilities.isEmpty(superError)) {
             return superError;
@@ -81,7 +81,7 @@ public class CancelAction extends ActionTakenEvent {
      * @see edu.iu.uis.eden.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public boolean isActionCompatibleRequest(List requests) throws EdenUserNotFoundException {
+    public boolean isActionCompatibleRequest(List<ActionRequestValue> requests) throws EdenUserNotFoundException {
 
         // can always cancel saved or initiated document
         if (routeHeader.isStateInitiated() || routeHeader.isStateSaved()) {
@@ -129,13 +129,13 @@ public class CancelAction extends ActionTakenEvent {
 //        }
 
         LOG.debug("Record the cancel action");
-        saveActionTaken(findDelegatorForActionRequests(actionRequests));
+        ActionTakenValue actionTaken = saveActionTaken(findDelegatorForActionRequests(actionRequests));
 
         LOG.debug("Deactivate all pending action requests");
         actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
 
         getActionRequestService().deactivateRequests(actionTaken, actionRequests);
-        notifyActionTaken(this.actionTaken);
+        notifyActionTaken(actionTaken);
 
         LOG.debug("Canceling document");
 
@@ -143,13 +143,13 @@ public class CancelAction extends ActionTakenEvent {
             String oldStatus = getRouteHeader().getDocRouteStatus();
             getRouteHeader().markDocumentCanceled();
             String newStatus = getRouteHeader().getDocRouteStatus();
-            getRouteHeaderService().saveRouteHeader(getRouteHeader());
+            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
             notifyStatusChange(newStatus, oldStatus);
         } catch (WorkflowException ex) {
             LOG.warn(ex, ex);
             throw new InvalidActionTakenException(ex.getMessage());
         }
 
-        getRouteHeaderService().saveRouteHeader(getRouteHeader());
+        KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
     }
 }

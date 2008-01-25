@@ -26,6 +26,7 @@ import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actionlist.ActionListService;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -50,8 +51,7 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
      * @param user
      */
     public TakeWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(routeHeader, user);
-        super.setActionTakenCode(EdenConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD);
+        super(EdenConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, routeHeader, user);
     }
 
     /**
@@ -61,9 +61,8 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
      * @param workgroup
      */
     public TakeWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, Workgroup workgroup) {
-        super(routeHeader, user, annotation);
+        super(EdenConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, routeHeader, user, annotation);
         this.workgroup = workgroup;
-        super.setActionTakenCode(EdenConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD);
     }
     
     /* (non-Javadoc)
@@ -109,8 +108,8 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
             }
         }
         
-        saveActionTaken(findDelegatorForActionRequests(workgroupRequests));
-        notifyActionTaken(this.actionTaken);
+        ActionTakenValue actionTaken = saveActionTaken(findDelegatorForActionRequests(workgroupRequests));
+        notifyActionTaken(actionTaken);
         
         ActionListService actionListService = KEWServiceLocator.getActionListService();
         Collection actionItems = actionListService.findByRouteHeaderId(getRouteHeaderId());

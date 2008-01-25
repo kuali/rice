@@ -22,7 +22,9 @@ import java.util.List;
 import org.apache.log4j.MDC;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
@@ -50,8 +52,7 @@ public class CompleteAction extends ActionTakenEvent {
      *            User taking the action.
      */
     public CompleteAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(rh, user);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_COMPLETED_CD);
+        super(EdenConstants.ACTION_TAKEN_COMPLETED_CD, rh, user);
     }
 
     /**
@@ -63,8 +64,7 @@ public class CompleteAction extends ActionTakenEvent {
      *            User comment on the action taken
      */
     public CompleteAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(rh, user, annotation);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_COMPLETED_CD);
+        super(EdenConstants.ACTION_TAKEN_COMPLETED_CD, rh, user, annotation);
     }
 
     /* (non-Javadoc)
@@ -75,7 +75,7 @@ public class CompleteAction extends ActionTakenEvent {
         return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
-    private String validateActionRules(List actionRequests) throws EdenUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
         String superError = super.validateActionTakenRules();
         if (!Utilities.isEmpty(superError)) {
             return superError;
@@ -154,7 +154,7 @@ public class CompleteAction extends ActionTakenEvent {
 //        //getActionRequestService().findAllPendingByUserAndDoc(getDelegator(), getRouteHeaderId());
 
         LOG.debug("Record the complete action");
-        saveActionTaken(findDelegatorForActionRequests(actionRequests));
+        ActionTakenValue actionTaken = saveActionTaken(findDelegatorForActionRequests(actionRequests));
 
 //        if (!isActionCompatibleRequest(actionRequests, getActionTakenCode())) {
 //            throw new InvalidActionTakenException("No request for the user is compatible " + "with the DISAPPROVE or DENY action");
@@ -162,7 +162,7 @@ public class CompleteAction extends ActionTakenEvent {
 
         LOG.debug("Deactivate all pending action requests");
         getActionRequestService().deactivateRequests(actionTaken, actionRequests);
-        notifyActionTaken(this.actionTaken);
+        notifyActionTaken(actionTaken);
 
         boolean isException = getRouteHeader().isInException();
         boolean isSaved = getRouteHeader().isStateSaved();
@@ -172,7 +172,7 @@ public class CompleteAction extends ActionTakenEvent {
             getRouteHeader().markDocumentEnroute();
             String newStatus = getRouteHeader().getDocRouteStatus();
             notifyStatusChange(newStatus, oldStatus);
-            this.getRouteHeaderService().saveRouteHeader(getRouteHeader());
+            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
         }
     }
 

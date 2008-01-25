@@ -19,6 +19,7 @@ package edu.iu.uis.eden.actions;
 import org.apache.log4j.MDC;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -39,8 +40,7 @@ public class LogDocumentActionAction extends ActionTakenEvent {
      * @param user User taking the action.
      */
     public LogDocumentActionAction(DocumentRouteHeaderValue rh, WorkflowUser user) {
-        super(rh, user);
-        setupAction();
+        super(EdenConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, user);
     }
 
     /**
@@ -49,13 +49,7 @@ public class LogDocumentActionAction extends ActionTakenEvent {
      * @param annotation User comment on the action taken
      */
     public LogDocumentActionAction(DocumentRouteHeaderValue rh, WorkflowUser user, String annotation) {
-        super(rh, user, annotation);
-        setupAction();
-    }
-    
-    private void setupAction() {
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD);
-        setCurrentInd(Boolean.FALSE);
+        super(EdenConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, user, annotation);
     }
 
     /* (non-Javadoc)
@@ -82,8 +76,8 @@ public class LogDocumentActionAction extends ActionTakenEvent {
         }
 
         LOG.debug("Logging document action");
-        saveActionTaken();
-        notifyActionTaken(this.actionTaken);
+        ActionTakenValue actionTaken = saveActionTaken(Boolean.FALSE);
+        notifyActionTaken(actionTaken);
        
     }
 }

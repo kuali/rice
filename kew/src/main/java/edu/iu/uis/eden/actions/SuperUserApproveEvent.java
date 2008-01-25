@@ -28,6 +28,7 @@ import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.BlanketApproveEngine;
 import edu.iu.uis.eden.engine.OrchestrationConfig;
@@ -51,21 +52,19 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 	private static final Logger LOG = Logger.getLogger(SuperUserApproveEvent.class);
 
     public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(routeHeader, user);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_SU_APPROVED_CD);
+        super(EdenConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, user);
         this.superUserAction = EdenConstants.SUPER_USER_APPROVE;
     }
 
     public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor) {
-        super(routeHeader, user, annotation, runPostProcessor);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_SU_APPROVED_CD);
+        super(EdenConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, user, annotation, runPostProcessor);
         this.superUserAction = EdenConstants.SUPER_USER_APPROVE;
     }
 
 	public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
 		// TODO: this is used because calling this code from SuperUserAction without
         // it causes an optimistic lock
-		this.routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(getRouteHeaderId(), true);
+		setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(getRouteHeaderId(), true));
 
 		checkLocking();
 
@@ -86,9 +85,9 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 //			throw new WorkflowServiceErrorException("Super User Authorization Error", errors);
 //		}
 
-		saveActionTaken();
+        ActionTakenValue actionTaken = saveActionTaken();
 
-	        notifyActionTaken(this.actionTaken);
+	        notifyActionTaken(actionTaken);
 
 		if (getRouteHeader().isInException() || getRouteHeader().isStateInitiated()) {
 			LOG.debug("Moving document back to Enroute");
@@ -96,7 +95,7 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 			getRouteHeader().markDocumentEnroute();
 			String newStatus = getRouteHeader().getDocRouteStatus();
 			notifyStatusChange(newStatus, oldStatus);
-			getRouteHeaderService().saveRouteHeader(getRouteHeader());
+			KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
 		}
 
 		OrchestrationConfig config = new OrchestrationConfig();
@@ -105,7 +104,7 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 		config.setSendNotifications(docType.getSuperUserApproveNotificationPolicy().getPolicyValue().booleanValue());
 		RequestsNode.setSupressPolicyErrors(RouteContext.getCurrentRouteContext());
 		try {
-			completeAnyOutstandingCompleteApproveRequets(docType.getSuperUserApproveNotificationPolicy().getPolicyValue().booleanValue());
+			completeAnyOutstandingCompleteApproveRequests(actionTaken, docType.getSuperUserApproveNotificationPolicy().getPolicyValue().booleanValue());
 			new BlanketApproveEngine(config, isRunPostProcessorLogic()).process(getRouteHeader().getRouteHeaderId(), null);
 		} catch (Exception e) {
 			LOG.error("Failed to orchestrate the document to SuperUserApproved.", e);
@@ -115,11 +114,11 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void completeAnyOutstandingCompleteApproveRequets(boolean sendNotifications) throws Exception {
-		List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(EdenConstants.ACTION_REQUEST_APPROVE_REQ, routeHeaderId);
-		actionRequests.addAll(KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(EdenConstants.ACTION_REQUEST_COMPLETE_REQ, routeHeaderId));
+	protected void completeAnyOutstandingCompleteApproveRequests(ActionTakenValue actionTaken, boolean sendNotifications) throws Exception {
+		List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(EdenConstants.ACTION_REQUEST_APPROVE_REQ, getRouteHeaderId());
+		actionRequests.addAll(KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(EdenConstants.ACTION_REQUEST_COMPLETE_REQ, getRouteHeaderId()));
 		for (ActionRequestValue actionRequest : actionRequests) {
-			KEWServiceLocator.getActionRequestService().deactivateRequest(this.getActionTaken(), actionRequest);
+			KEWServiceLocator.getActionRequestService().deactivateRequest(actionTaken, actionRequest);
 		}
 		if (sendNotifications) {
 			new ActionRequestFactory(this.getRouteHeader()).generateNotifications(actionRequests, this.getUser(), this.findDelegatorForActionRequests(actionRequests), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, EdenConstants.ACTION_TAKEN_SU_APPROVED_CD);

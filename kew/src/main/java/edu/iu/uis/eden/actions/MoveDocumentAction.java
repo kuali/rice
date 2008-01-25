@@ -26,6 +26,7 @@ import org.apache.log4j.MDC;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actions.asyncservices.MoveDocumentService;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.engine.BlanketApproveEngine;
@@ -55,13 +56,11 @@ public class MoveDocumentAction extends ActionTakenEvent {
     private MovePoint movePoint;
 
     public MoveDocumentAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(routeHeader, user);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_MOVE_CD);
+        super(EdenConstants.ACTION_TAKEN_MOVE_CD, routeHeader, user);
     }
 
     public MoveDocumentAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, MovePoint movePoint) {
-        super(routeHeader, user, annotation);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_MOVE_CD);
+        super(EdenConstants.ACTION_TAKEN_MOVE_CD, routeHeader, user, annotation);
         this.movePoint = movePoint;
     }
 
@@ -74,7 +73,7 @@ public class MoveDocumentAction extends ActionTakenEvent {
                 EdenConstants.ACTION_REQUEST_COMPLETE_REQ), KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId()));
     }
 
-    private String validateActionRules(List actionRequests, Collection activeNodes) throws EdenUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests, Collection activeNodes) throws EdenUserNotFoundException {
         String superError = super.validateActionTakenRules();
         if (!Utilities.isEmpty(superError)) {
             return superError;
@@ -95,7 +94,7 @@ public class MoveDocumentAction extends ActionTakenEvent {
     /* (non-Javadoc)
      * @see edu.iu.uis.eden.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
-    public boolean isActionCompatibleRequest(List requests) throws EdenUserNotFoundException {
+    public boolean isActionCompatibleRequest(List<ActionRequestValue> requests) throws EdenUserNotFoundException {
         //Move is always correct because the client application has authorized it
         return true;
     }
@@ -124,9 +123,9 @@ public class MoveDocumentAction extends ActionTakenEvent {
 //            }
             LOG.debug("Record the move action");
             Recipient delegator = findDelegatorForActionRequests(actionRequests);
-            saveActionTaken(delegator);
+            ActionTakenValue actionTaken = saveActionTaken(delegator);
             getActionRequestService().deactivateRequests(actionTaken, actionRequests);
-            notifyActionTaken(this.actionTaken);
+            notifyActionTaken(actionTaken);
 
             // TODO this whole bit is a bit hacky at the moment
             if (movePoint.getStepsToMove() > 0) {
@@ -134,7 +133,7 @@ public class MoveDocumentAction extends ActionTakenEvent {
                 targetNodeNames.add(determineFutureNodeName(startNodeInstance, movePoint));
 
                 MoveDocumentService moveDocumentProcessor = MessageServiceNames.getMoveDocumentProcessorService(getRouteHeader());
-                moveDocumentProcessor.moveDocument(getUser(), getRouteHeader(), getActionTaken(), targetNodeNames);
+                moveDocumentProcessor.moveDocument(getUser(), getRouteHeader(), actionTaken, targetNodeNames);
 
 //                SpringServiceLocator.getRouteQueueService().requeueDocument(routeHeader.getRouteHeaderId(),
 //                		EdenConstants.ROUTE_QUEUE_BLANKET_APPROVE_PRIORITY, new Long(0), MoveDocumentProcessor.class.getName(),
@@ -144,15 +143,18 @@ public class MoveDocumentAction extends ActionTakenEvent {
                 //blanketAction.recordAction();
             } else {
                 String targetNodeName = determineReturnNodeName(startNodeInstance, movePoint);
-                ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(getRouteHeader(), getUser(), annotation, targetNodeName, false);
-                returnAction.actionTaken = actionTaken;
-                returnAction.setActionTakenCode(EdenConstants.ACTION_TAKEN_MOVE_CD);
+                ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(EdenConstants.ACTION_TAKEN_MOVE_CD, getRouteHeader(), getUser(), annotation, targetNodeName, false);
+                
+                // this is immediately overwritten in recordAction() anyway
+                //returnAction.actionTaken = actionTaken;
+                
+                
                 returnAction.recordAction();
             }
 //        }
     }
 
-    public void doMoveDocumentWork(Set nodeNames) throws Exception {
+    public void performDeferredMoveDocumentWork(ActionTakenValue actionTaken, Set nodeNames) throws Exception {
 
         if (getRouteHeader().isInException()) {
             LOG.debug("Moving document back to Enroute from Exception");
@@ -168,10 +170,8 @@ public class MoveDocumentAction extends ActionTakenEvent {
         config.setDestinationNodeNames(nodeNames);
         config.setSendNotifications(false);
         new BlanketApproveEngine(config).process(getRouteHeader().getRouteHeaderId(), null);
-    }
-
-    public void setActionTaken(ActionTakenValue actionTaken) {
-    	this.actionTaken = actionTaken;
+        
+        queueDocumentProcessing();
     }
 
     private RouteNodeInstance determineStartNode(Collection activeNodes, MovePoint movePoint) throws InvalidActionTakenException {

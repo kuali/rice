@@ -24,6 +24,7 @@ import org.apache.log4j.MDC;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -43,21 +44,19 @@ public class RevokeAdHocAction extends ActionTakenEvent {
     private AdHocRevoke revoke;
 
     public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(routeHeader, user);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
+        super(EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, user);
     }
 
     public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, AdHocRevoke revoke, String annotation) {
-        super(routeHeader, user, annotation);
+        super(EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, user, annotation);
         this.revoke = revoke;
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
     }
 
     /* (non-Javadoc)
      * @see edu.iu.uis.eden.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public String validateActionRules() throws EdenUserNotFoundException {
+    protected String validateActionRules() throws EdenUserNotFoundException {
         String superError = super.validateActionTakenRules();
         if (!Utilities.isEmpty(superError)) {
             return superError;
@@ -109,11 +108,11 @@ public class RevokeAdHocAction extends ActionTakenEvent {
 
         Recipient delegator = findDelegatorForActionRequests(actionRequests);
         LOG.debug("Record the revoke action");
-        saveActionTaken(delegator);
+        ActionTakenValue actionTaken = saveActionTaken(delegator);
 
         LOG.debug("Revoke all matching action requests, number of matching requests: " + requestsToRevoke.size());
         getActionRequestService().deactivateRequests(actionTaken, requestsToRevoke);
-        notifyActionTaken(this.actionTaken);
+        notifyActionTaken(actionTaken);
 
     }
 

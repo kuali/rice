@@ -26,6 +26,7 @@ import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.actionrequests.ActionRequestService;
+import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.Recipient;
@@ -62,8 +63,8 @@ public class ActionTakenValue implements WorkflowPersistable {
     private String delegatorWorkflowId;
     private Long delegatorWorkgroupId;
     private DocumentRouteHeaderValue routeHeader;
-    private Collection actionRequests;
-    private Boolean currentIndicator = new Boolean(true);
+    private Collection<ActionRequestValue> actionRequests;
+    private Boolean currentIndicator = Boolean.TRUE;
     private String actionDateString;
 
     public WorkflowUser getWorkflowUser() throws EdenUserNotFoundException {
@@ -123,14 +124,14 @@ public class ActionTakenValue implements WorkflowPersistable {
         return CodeTranslator.getActionTakenLabel(actionTaken);
     }
 
-    public Collection getActionRequests() {
+    public Collection<ActionRequestValue> getActionRequests() {
         if (actionRequests == null) {
-            setActionRequests(new ArrayList());
+            setActionRequests(new ArrayList<ActionRequestValue>());
         }
         return actionRequests;
     }
 
-    public void setActionRequests(Collection actionRequests) {
+    public void setActionRequests(Collection<ActionRequestValue> actionRequests) {
         this.actionRequests = actionRequests;
     }
 

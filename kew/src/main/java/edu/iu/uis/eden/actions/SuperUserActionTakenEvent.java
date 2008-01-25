@@ -23,6 +23,7 @@ import java.util.List;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
 import edu.iu.uis.eden.WorkflowServiceErrorImpl;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
@@ -45,12 +46,12 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
     private ActionRequestValue actionRequest;
     public static String AUTHORIZATION = "general.routing.superuser.notAuthorized";
 
-    public SuperUserActionTakenEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(routeHeader, user);
+    public SuperUserActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
+        super(actionTakenCode, routeHeader, user);
     }
 
-    public SuperUserActionTakenEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor) {
-        super(routeHeader, user, annotation, runPostProcessor);
+    public SuperUserActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessor) {
+        super(actionTakenCode, routeHeader, user, annotation, runPostProcessor);
     }
 
     /* (non-Javadoc)
@@ -101,7 +102,6 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
             throw new RuntimeException(ex.getMessage());
         }
 
-        queueDocument();
     }
 
     protected abstract void markDocument() throws WorkflowException;
@@ -109,7 +109,7 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
     protected void processActionRequests() throws InvalidActionTakenException, EdenUserNotFoundException {
         LOG.debug("Processing pending action requests");
 
-        saveActionTaken();
+        ActionTakenValue actionTaken = saveActionTaken();
 
         List actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
 
@@ -118,7 +118,7 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
             getActionRequestService().deactivateRequest(actionTaken, actionRequest);
         }
 
-        notifyActionTaken(this.actionTaken);
+        notifyActionTaken(actionTaken);
     }
 
     public ActionRequestValue getActionRequest() {

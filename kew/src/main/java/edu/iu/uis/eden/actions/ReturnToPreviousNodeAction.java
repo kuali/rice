@@ -64,13 +64,35 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     private boolean sendNotifications = true;
 
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(routeHeader, user);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD);
+        super(EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, user);
     }
 
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String nodeName, boolean sendNotifications) {
-        super(routeHeader, user, annotation);
-        setActionTakenCode(EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD);
+        super(EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, user, annotation);
+        this.nodeName = nodeName;
+        this.sendNotifications = sendNotifications;
+    }
+    
+    public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
+        super(EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, user, annotation, runPostProcessorLogic);
+        this.nodeName = nodeName;
+        this.sendNotifications = sendNotifications;
+    }
+
+    /**
+     * Constructor used to override the action taken code...e.g. when being performed as part of a Move action
+     */
+    protected ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String nodeName, boolean sendNotifications) {
+        super(overrideActionTakenCode, routeHeader, user, annotation);
+        this.nodeName = nodeName;
+        this.sendNotifications = sendNotifications;
+    }
+    
+    /**
+     * Constructor used to override the action taken code...e.g. when being performed as part of a Move action
+     */
+    public ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
+        super(overrideActionTakenCode, routeHeader, user, annotation, runPostProcessorLogic);
         this.nodeName = nodeName;
         this.sendNotifications = sendNotifications;
     }
@@ -123,7 +145,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         return validateActionRules(getActionRequestService().findAllValidRequests(getUser(), routeHeader.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
-    private String validateActionRules(List actionRequests) throws EdenUserNotFoundException {
+    private String validateActionRules(List<ActionRequestValue> actionRequests) throws EdenUserNotFoundException {
         String superError = super.validateActionTakenRules();
         if (!Utilities.isEmpty(superError)) {
             return superError;
@@ -142,7 +164,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
      * @see edu.iu.uis.eden.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    public boolean isActionCompatibleRequest(List requests) throws EdenUserNotFoundException {
+    public boolean isActionCompatibleRequest(List<ActionRequestValue> requests) throws EdenUserNotFoundException {
         String actionTakenCode = getActionPerformedCode();
 
         // Move is always correct because the client application has authorized it
@@ -213,9 +235,8 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             validateReturnPoint(nodeName, activeNodeInstances, result);
 
             LOG.debug("Record the returnToPreviousNode action");
-            super.currentInd = Boolean.FALSE;
             Recipient delegator = findDelegatorForActionRequests(actionRequests);
-            saveActionTaken(delegator);
+            ActionTakenValue actionTaken = saveActionTaken(Boolean.FALSE, delegator);
 
             //getActionRequestService().deactivateRequests(actionTaken, actionRequests);
             //notifyActionTaken(this.actionTaken);
@@ -241,7 +262,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             revokeRequests(doneRequests);
             LOG.debug("Change pending requests to FYI and activate for docId " + getRouteHeader().getRouteHeaderId());
             revokePendingRequests(pendingRequests, actionTaken, delegator);
-            notifyActionTaken(this.actionTaken);
+            notifyActionTaken(actionTaken);
             executeNodeChange(activeNodeInstances, result);
 //        } else {
 //            String docStatus = getRouteHeader().getDocRouteStatus();
@@ -331,7 +352,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             newRouteLevel = new Integer(oldRouteLevel.intValue() - returnPathLength);
             LOG.debug("Changing route header "+ getRouteHeader().getRouteHeaderId()+" route level for backward compatibility to "+newRouteLevel);
             getRouteHeader().setDocRouteLevel(newRouteLevel);
-            getRouteHeaderService().saveRouteHeader(routeHeader);
+            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
         }
         List startingNodes = determineStartingNodes(result.getPath(), activeNodes);
         RouteNodeInstance newNodeInstance = materializeReturnPoint(startingNodes, result);
@@ -346,14 +367,14 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         try {
             LOG.debug("Notifying post processor of route node change '"+oldNodeInstance.getName()+"'->'"+newNodeInstance.getName());
             PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
-            getRouteHeaderService().saveRouteHeader(getRouteHeader());
+            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
             DocumentRouteLevelChange routeNodeChange = new DocumentRouteLevelChange(routeHeader.getRouteHeaderId(),
                     routeHeader.getAppDocId(),
                     oldRouteLevel, newRouteLevel,
                     oldNodeInstance.getName(), newNodeInstance.getName(),
                     oldNodeInstance.getRouteNodeInstanceId(), newNodeInstance.getRouteNodeInstanceId());
             ProcessDocReport report = postProcessor.doRouteLevelChange(routeNodeChange);
-            setRouteHeader(getRouteHeaderService().getRouteHeader(getRouteHeaderId()));
+            setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(getRouteHeaderId()));
             if (!report.isSuccess()) {
                 LOG.warn(report.getMessage(), report.getProcessException());
                 throw new InvalidActionTakenException(report.getMessage());

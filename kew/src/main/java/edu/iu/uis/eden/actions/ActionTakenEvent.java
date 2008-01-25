@@ -20,13 +20,14 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.apache.log4j.Logger;
+
 import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestService;
-import edu.iu.uis.eden.actiontaken.ActionTakenService;
+import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.docsearch.SearchableAttributeProcessingService;
-import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
@@ -35,12 +36,10 @@ import edu.iu.uis.eden.messaging.MessageServiceNames;
 import edu.iu.uis.eden.postprocessor.PostProcessor;
 import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
-import edu.iu.uis.eden.routeheader.RouteHeaderService;
 import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.workgroup.Workgroup;
-import edu.iu.uis.eden.workgroup.WorkgroupService;
 
 /**
  * Super class containing mostly often used methods by all actions. Holds common
@@ -52,37 +51,34 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  */
 public abstract class ActionTakenEvent {
 
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionTakenEvent.class);
+	private static final Logger LOG = Logger.getLogger(ActionTakenEvent.class);
 
+	/**
+	 * Used when saving an ActionTakenValue, and for validation in validateActionRules
+	 */
 	private String actionTakenCode;
 
-	protected String annotation;
-
-	protected ActionTakenValue actionTaken;
+	protected final String annotation;
 
 	protected DocumentRouteHeaderValue routeHeader;
 
-	protected Long routeHeaderId;
-
-	protected Boolean currentInd = new Boolean(true);
-
-	private WorkflowUser user;
+	private final WorkflowUser user;
 	
-    private boolean runPostProcessorLogic = true;
+    private final boolean runPostProcessorLogic;
 
-	public ActionTakenEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-		this.routeHeader = routeHeader;
-		this.user = user;
-		this.routeHeaderId = routeHeader.getRouteHeaderId();
+	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
+		this(actionTakenCode, routeHeader, user, null, true);
 	}
 
-    public ActionTakenEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
-        this(routeHeader, user);
-        this.annotation = annotation;
+    public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation) {
+        this(actionTakenCode, routeHeader, user, annotation, true);
     }
 
-	public ActionTakenEvent(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessorLogic) {
-	    this(routeHeader, user, annotation);
+	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, boolean runPostProcessorLogic) {
+	    this.actionTakenCode = actionTakenCode;
+	    this.routeHeader = routeHeader;
+        this.user = user;
+        this.annotation = annotation == null ? "" : annotation;
 		this.runPostProcessorLogic = runPostProcessorLogic;
 	}
 
@@ -108,7 +104,7 @@ public abstract class ActionTakenEvent {
 	 * Method may be overriden is action performed will be different than action
 	 * taken
 	 */
-	public String getActionPerformedCode() {
+	protected String getActionPerformedCode() {
 		return getActionTakenCode();
 	}
 
@@ -116,7 +112,7 @@ public abstract class ActionTakenEvent {
 	 * Validates whether or not this action is valid for the given WorkflowUser
 	 * and DocumentRouteHeaderValue.
 	 */
-	public boolean isActionValid() throws EdenUserNotFoundException {
+	protected boolean isActionValid() throws EdenUserNotFoundException {
 		return Utilities.isEmpty(validateActionRules());
 	}
 
@@ -126,7 +122,7 @@ public abstract class ActionTakenEvent {
 	 * @return error message string of specific error message
 	 * @throws EdenUserNotFoundException
 	 */
-	public abstract String validateActionRules() throws EdenUserNotFoundException;
+	protected abstract String validateActionRules() throws EdenUserNotFoundException;
 
 	/**
 	 * Method to indicate that this action may require initiator execution only
@@ -138,7 +134,7 @@ public abstract class ActionTakenEvent {
 		return true;
 	}
 
-	protected boolean isActionCompatibleRequest(List requests) throws EdenUserNotFoundException {
+	protected boolean isActionCompatibleRequest(List<ActionRequestValue> requests) throws EdenUserNotFoundException {
 		LOG.debug("isActionCompatibleRequest() Default method = returning true");
 		return true;
 	}
@@ -150,21 +146,29 @@ public abstract class ActionTakenEvent {
 		return "";
 	}
 
-	public abstract void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException;
+	public void performAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+	    recordAction();
+	    queueDocumentProcessing();
+	}
 
+	protected abstract void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException;
 
-	public void checkLocking() throws InvalidActionTakenException {
+	public void performDeferredAction() {
+
+	}
+
+	protected void checkLocking() throws InvalidActionTakenException {
 		if (routeHeader.isLocked()) {
 			throw new InvalidActionTakenException("The document " + routeHeader.getRouteHeaderId() + " is locked.  Action cannot be taken.");
 		}
 	}
 
-	public void updateSearchableAttributesIfPossible() {
+	protected void updateSearchableAttributesIfPossible() {
 		// queue the document up so that it can be indexed for searching if it
 		// has searchable attributes
 		if (routeHeader.getDocumentType().hasSearchableAttributes()) {
 			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
-			searchableAttService.indexDocument(routeHeaderId);
+			searchableAttService.indexDocument(getRouteHeaderId());
 		}
 	}
 
@@ -207,7 +211,10 @@ public abstract class ActionTakenEvent {
 		}
 	}
 
-	public void queueDocument() {
+	/**
+	 * Asynchronously queues the documented to be processed by the workflow engine.
+	 */
+	protected void queueDocumentProcessing() {
 		QName documentServiceName = new QName(getRouteHeader().getDocumentType().getMessageEntity(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
 		KEWXMLService documentRoutingService = (KEWXMLService) MessageServiceNames.getServiceAsynchronously(documentServiceName, getRouteHeader());
 		try {
@@ -218,15 +225,23 @@ public abstract class ActionTakenEvent {
 	}
 
 	protected ActionTakenValue saveActionTaken() {
-		return saveActionTaken(null);
+	    return saveActionTaken(Boolean.TRUE);
+	}
+
+	protected ActionTakenValue saveActionTaken(Boolean currentInd) {
+		return saveActionTaken(currentInd, null);
 	}
 
 	protected ActionTakenValue saveActionTaken(Recipient delegator) {
+	    return saveActionTaken(Boolean.TRUE, delegator);
+	}
+
+	protected ActionTakenValue saveActionTaken(Boolean currentInd, Recipient delegator) {
 		ActionTakenValue val = new ActionTakenValue();
-		val.setActionTaken(actionTakenCode);
+		val.setActionTaken(getActionTakenCode());
 		val.setAnnotation(annotation);
 		val.setDocVersion(routeHeader.getDocVersion());
-		val.setRouteHeaderId(routeHeaderId);
+		val.setRouteHeaderId(routeHeader.getRouteHeaderId());
 		val.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
 		if (delegator instanceof WorkflowUser) {
 			val.setDelegatorWorkflowId(((WorkflowUser) delegator).getWorkflowUserId().getWorkflowId());
@@ -235,8 +250,7 @@ public abstract class ActionTakenEvent {
 		}
 		val.setRouteHeader(routeHeader);
 		val.setCurrentIndicator(currentInd);
-		getActionTakenService().saveActionTaken(val);
-		this.actionTaken = val;
+		KEWServiceLocator.getActionTakenService().saveActionTaken(val);
 		// notifyActionTaken(this.actionTaken);
 		return val;
 	}
@@ -248,63 +262,23 @@ public abstract class ActionTakenEvent {
 		return getActionRequestService().findDelegator(actionRequests);
 	}
 
-	public void setUser(WorkflowUser user) {
-		this.user = user;
-	}
-
 	public String getActionTakenCode() {
 		return actionTakenCode;
 	}
 
-	public void setActionTakenCode(String string) {
+	protected void setActionTakenCode(String string) {
 		actionTakenCode = string;
 	}
 
-	public Long getRouteHeaderId() {
+	protected Long getRouteHeaderId() {
 		return this.routeHeader.getRouteHeaderId();
 	}
 
-	public Long getActionTakenId() {
-		return actionTaken.getActionTakenId();
-	}
+	/*protected void delete() {
+	    KEWServiceLocator.getActionTakenService().delete(actionTaken);
+	}*/
 
-	public ActionTakenValue getActionTaken() {
-		return actionTaken;
-	}
-
-	public void delete() {
-		getActionTakenService().delete(actionTaken);
-	}
-
-	public ActionTakenService getActionTakenService() {
-		return (ActionTakenService) KEWServiceLocator.getService(KEWServiceLocator.ACTION_TAKEN_SRV);
-	}
-
-	public DocumentTypeService getDocumentTypeService() {
-		return (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
-	}
-
-	public RouteHeaderService getRouteHeaderService() {
-		return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
-	}
-
-    public WorkgroupService getWorkgroupService() {
-        return (WorkgroupService) KEWServiceLocator.getService(KEWServiceLocator.WORKGROUP_SRV);
-    }
-
-	public Boolean getCurrentInd() {
-		return currentInd;
-	}
-
-	public void setCurrentInd(Boolean currentInd) {
-		this.currentInd = currentInd;
-	}
-
-	public boolean isRunPostProcessorLogic() {
+	protected boolean isRunPostProcessorLogic() {
         return this.runPostProcessorLogic;
-    }
-
-    public void setRunPostProcessorLogic(boolean runPostProcessorLogic) {
-        this.runPostProcessorLogic = runPostProcessorLogic;
     }
 }

@@ -44,8 +44,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
      * @param user
      */
     public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, WorkflowUser user) {
-        super(routeHeader, user);
-        super.setActionTakenCode(EdenConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD);
+        super(EdenConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, user);
     }
     
     /**
@@ -55,9 +54,8 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
      * @param workgroup
      */
     public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, Workgroup workgroup) {
-        super(routeHeader, user, annotation);
+        super(EdenConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, user, annotation);
         this.workgroup = workgroup;
-        super.setActionTakenCode(EdenConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD);
     }
     
     /* (non-Javadoc)
@@ -77,6 +75,8 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
         if (!Utilities.isEmpty(error)) {
             throw new InvalidActionTakenException(error);
         }
+        
+        queueDocumentProcessing();
     }
     
     private String performReleaseWorkgroupAuthority(boolean forValidationOnly) throws EdenUserNotFoundException {

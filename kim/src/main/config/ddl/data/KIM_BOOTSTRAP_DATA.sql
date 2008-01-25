@@ -4,3 +4,5 @@ INSERT INTO KIM_PERSONS_T (ID, USERNAME, PASSWORD) VALUES (1, 'admin', 'admin')
 /
 INSERT INTO FP_DOC_TYPE_T values ('KPMD', SYS_GUID(), 1, 'KR', 'PRINCIPAL', 'N', 'Y', 'N', 0, 'N', 'N')
 /
+INSERT INTO FP_DOC_TYPE_T values ('KGMD', SYS_GUID(), 1, 'KR', 'PRINCIPAL', 'N', 'Y', 'N', 0, 'N', 'N')
+/

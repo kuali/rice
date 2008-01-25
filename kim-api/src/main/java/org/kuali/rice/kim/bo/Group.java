@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kim.bo;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 
@@ -27,8 +27,25 @@ public class Group extends PersistableBusinessObjectBase {
 	private Long id;
 	private String name;
 	private String description;
-	
-	public String getDescription() {
+	private ArrayList<Group> memberGroups;
+	public Group() {
+	    memberGroups = new ArrayList<Group>();
+	}
+	/**
+     * @return the memberGroups
+     */
+    public ArrayList<Group> getMemberGroups() {
+        return this.memberGroups;
+    }
+
+    /**
+     * @param memberGroups the memberGroups to set
+     */
+    public void setMemberGroups(ArrayList<Group> memberGroups) {
+        this.memberGroups = memberGroups;
+    }
+
+    public String getDescription() {
 		return description;
 	}
 

@@ -42,7 +42,7 @@
             <field attributeName="id" />
         </lockingKeys>
         
-		<allowsNewOrCopy>true</allowsNewOrCopy>
+		<allowsNewOrCopy>false</allowsNewOrCopy>
 		
         <maintainableSections>
             <maintainableSection title="Edit Group Attribute">

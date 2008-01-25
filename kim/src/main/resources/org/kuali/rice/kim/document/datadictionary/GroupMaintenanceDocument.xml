@@ -63,6 +63,7 @@
 					<maintainableField name="id" required="true"
 						readOnly="true" />
 					<maintainableField name="name" required="true" />
+					<maintainableField name="description" required="true" />
 					<maintainableField name="versionNumber" />
 				</maintainableItems>
 			</maintainableSection>

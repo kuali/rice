@@ -52,5 +52,13 @@
 		</collection-descriptor>
 		
 	</class-descriptor>
+	
+	<class-descriptor class="org.kuali.rice.kim.bo.Role" table="KIM_ROLES_T">
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_ROLES_ID" index="true" />
+		<field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
+		<field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+	</class-descriptor>
 
 </descriptor-repository>

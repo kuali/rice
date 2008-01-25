@@ -37,7 +37,6 @@
         <label>Principal</label>
         <summary>Principal Maintenance Document</summary>
         <description>Maintenance document which allows you to create new Principal, or modify existing Principal.</description>
-        <help parameterNamespace="KR-NS" parameterDetailType="CampusType" parameterName="CAMPUS_TYPE_CODE" />
 
         <lockingKeys>
             <field attributeName="id" />

@@ -48,8 +48,6 @@
 			Maintenance document which allows you to create new Group,
 			or modify existing Group.
 		</description>
-		<help parameterNamespace="KR-NS"
-			parameterDetailType="CampusType" parameterName="CAMPUS_TYPE_CODE" />
 
 		<lockingKeys>
 			<field attributeName="id" />

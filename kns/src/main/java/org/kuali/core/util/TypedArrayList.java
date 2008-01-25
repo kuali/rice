@@ -45,7 +45,19 @@ public class TypedArrayList extends ArrayList {
         catch (IllegalAccessException e) {
             throw new RuntimeException("unable to get instance of class" + listObjectType.getName());
         }
-
+        this.listObjectType = listObjectType;
+        
+    }
+    /**
+     * 
+     * KULRICE-1525 - DELETE THIS METHOD AND CHANGE ABOVE TO USE REFLECTION (this is only a temporary stopgap)
+     * 
+     * @param listObjectType
+     * @param businessObjectType
+     */
+    public TypedArrayList(Class listObjectType, Class businessObjectType) {
+        super();
+            
         this.listObjectType = listObjectType;
     }
 

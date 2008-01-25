@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.core.util.TypedArrayList;
 
 public class Group extends PersistableBusinessObjectBase {
 
@@ -29,7 +30,7 @@ public class Group extends PersistableBusinessObjectBase {
 	private String description;
 	private ArrayList<Group> memberGroups;
 	public Group() {
-	    memberGroups = new ArrayList<Group>();
+	    memberGroups = new TypedArrayList(Group.class,Group.class);
 	}
 	/**
      * @return the memberGroups

@@ -75,11 +75,11 @@
                 <label>Attribute Type Name</label>
                 <shortLabel>Type Name</shortLabel>
 
-                <maxLength>100</maxLength>
+                <maxLength>500</maxLength>
                 <validationPattern><anyCharacter allowWhitespace="false" /></validationPattern>
 
                 <control>
-                    <text size="500" />
+                    <text size="100" />
                 </control>
 
 			</attribute>
@@ -88,11 +88,11 @@
                 <label>Description</label>
                 <shortLabel>Description</shortLabel>
 
-                <maxLength>100</maxLength>
+                <maxLength>4000</maxLength>
                 <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
 
                 <control>
-                    <text size="4000" />
+                    <text size="100" />
                 </control>
 
             </attribute>

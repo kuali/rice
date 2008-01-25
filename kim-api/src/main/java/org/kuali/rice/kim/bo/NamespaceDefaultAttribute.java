@@ -25,8 +25,8 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
 	private Long attributeTypeId;
 	private String attributeName;
 	private String description;
-	private String required;
-	private String active;
+	private boolean required;
+	private boolean active;
 
 	public String getAttributeName() {
 		return attributeName;
@@ -84,19 +84,19 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
         this.description = description;
     }
 
-    public String getRequired() {
+    public boolean getRequired() {
         return this.required;
     }
 
-    public void setRequired(String required) {
+    public void setRequired(boolean required) {
         this.required = required;
     }
 
-    public String getActive() {
+    public boolean getActive() {
         return this.active;
     }
 
-    public void setActive(String active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 

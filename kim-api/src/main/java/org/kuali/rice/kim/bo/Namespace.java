@@ -15,17 +15,20 @@
  */
 package org.kuali.rice.kim.bo;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.core.util.TypedArrayList;
 
 public class Namespace extends PersistableBusinessObjectBase {
     	private static final long serialVersionUID = 9118112248900436184L;
 	private Long id;
 	private String name;
 	private String description;
-	
+
+    private ArrayList<NamespaceDefaultAttribute> namespaceAttributes = new TypedArrayList(NamespaceDefaultAttribute.class);
+
 	public Long getId() {
 	    return this.id;
 	}
@@ -61,4 +64,12 @@ public class Namespace extends PersistableBusinessObjectBase {
 	public void refresh() {
 		// not doing this unless we need it
 	}
+
+    public ArrayList<NamespaceDefaultAttribute> getNamespaceAttributes() {
+        return this.namespaceAttributes;
+    }
+
+    public void setNamespaceAttributes(ArrayList<NamespaceDefaultAttribute> namespaceAttributes) {
+        this.namespaceAttributes = namespaceAttributes;
+    }
 }

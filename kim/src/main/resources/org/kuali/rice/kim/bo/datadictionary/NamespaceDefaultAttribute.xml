@@ -83,18 +83,6 @@
 
 			</attribute>
 
-            <attribute name="namespaceId" forceUppercase="true">
-                <label>Namespace Default Attribute ID</label>
-
-                <maxLength>8</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-
-                <control>
-                    <text size="8" />
-                </control>
-
-			</attribute>
-
            <attribute name="attributeName" forceUppercase="false">
                 <label>Attribute Name</label>
                 <shortLabel>Name</shortLabel>
@@ -122,7 +110,7 @@
            <attribute name="required" forceUppercase="true">
                 <label>Required</label>
 
-                <maxLength>1</maxLength>
+                <maxLength>3</maxLength>
                <control>
                 <select valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"/>
                </control>
@@ -132,16 +120,31 @@
                 <label>Active</label>
                 <shortLabel>Active</shortLabel>
 
-                <maxLength>1</maxLength>
+                <maxLength>3</maxLength>
                <control>
                 <select valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"/>
                </control>
 
             </attribute>
 
+           <attributeReference name="namespaceId"
+            sourceClassName="org.kuali.rice.kim.bo.Namespace"
+            sourceAttributeName="id">
+            <label>Namespace ID</label>
+            <required>true</required>
+            <control>
+                <select
+                    valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+                    businessObjectClass="org.kuali.rice.kim.bo.Namespace"
+                    keyAttribute="id" labelAttribute="name"
+                    includeKeyInLabel="true" />
+            </control>
+           </attributeReference>
+
            <attributeReference name="attributeTypeId"
            	sourceClassName="org.kuali.rice.kim.bo.AttributeType"
            	sourceAttributeName="id">
+           	<label>Attribute Type ID</label>
            	<required>true</required>
            	<control>
            		<select

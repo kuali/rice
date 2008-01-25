@@ -46,11 +46,20 @@
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<collection-descriptor name="memberGroups" element-class-ref="org.kuali.rice.kim.bo.Group" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="link" auto-delete="link" 
-		indirection-table="KIM_GROUPS_GROUPS_T">
+			indirection-table="KIM_GROUPS_GROUPS_T">
 			<fk-pointing-to-this-class column="PARENT_GROUP_ID"/>
      		<fk-pointing-to-element-class column="MEMBER_GROUP_ID"/>
 		</collection-descriptor>
-		
+		<collection-descriptor name="parentGroups" element-class-ref="org.kuali.rice.kim.bo.Group" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="link" auto-delete="link" 
+			indirection-table="KIM_GROUPS_GROUPS_T">
+			<fk-pointing-to-this-class column="MEMBER_GROUP_ID"/>
+     		<fk-pointing-to-element-class column="PARENT_GROUP_ID"/>
+		</collection-descriptor>
+		<collection-descriptor name="groupRoles" element-class-ref="org.kuali.rice.kim.bo.Role" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="link" auto-delete="link" 
+			indirection-table="KIM_ROLES_GROUPS_T">
+			<fk-pointing-to-this-class column="GROUP_ID"/>
+     		<fk-pointing-to-element-class column="ROLE_ID"/>
+		</collection-descriptor>
 	</class-descriptor>
 	
 	<class-descriptor class="org.kuali.rice.kim.bo.Role" table="KIM_ROLES_T">

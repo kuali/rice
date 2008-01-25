@@ -28,8 +28,18 @@
         			<inquiryFields>
         				<field attributeName="id" />
         				<field attributeName="name" />
+        				<inquiryCollection name="parentGroups"
+        					businessObjectClass="org.kuali.rice.kim.bo.Group">
+        					<field attributeName="id" />
+        					<field attributeName="name" />
+        				</inquiryCollection>
         				<inquiryCollection name="memberGroups"
         					businessObjectClass="org.kuali.rice.kim.bo.Group">
+        					<field attributeName="id" />
+        					<field attributeName="name" />
+        				</inquiryCollection>
+        				<inquiryCollection name="groupRoles"
+        					businessObjectClass="org.kuali.rice.kim.bo.Role">
         					<field attributeName="id" />
         					<field attributeName="name" />
         				</inquiryCollection>
@@ -115,6 +125,22 @@
         		<summary>Member Groups</summary>
         		<description>
         			Sub Groups of this group
+        		</description>
+        	</collection>
+        	<collection name="parentGroups">
+        		<label>Parent Groups</label>
+        		<shortLabel>ParentGroups</shortLabel>
+        		<summary>Parent Groups</summary>
+        		<description>
+        			Parents of this group
+        		</description>
+        	</collection>
+        	<collection name="groupRoles">
+        		<label>Group Roles</label>
+        		<shortLabel>Roles</shortLabel>
+        		<summary>Group Roles</summary>
+        		<description>
+        			Roles of this group
         		</description>
         	</collection>
         </collections>

@@ -65,6 +65,16 @@
 					<maintainableField name="versionNumber" />
 				</maintainableItems>
 			</maintainableSection>
+			<maintainableSection title="Parent Groups">
+				<maintainableItems>
+					<maintainableCollection name="parentGroups"
+						businessObjectClass="org.kuali.rice.kim.bo.Group">
+						<maintainableField name="id" required="true"
+							readOnly="true" />
+						<maintainableField name="name" required="true" readOnly="true" />
+					</maintainableCollection>
+				</maintainableItems>
+			</maintainableSection>
 			<maintainableSection title="Member Groups">
 				<maintainableItems>
 					<maintainableCollection name="memberGroups"
@@ -75,6 +85,16 @@
 					</maintainableCollection>
 				</maintainableItems>
 			</maintainableSection>
+			<maintainableSection title="Group Roles">
+				<maintainableItems>
+					<maintainableCollection name="groupRoles"
+						businessObjectClass="org.kuali.rice.kim.bo.Role">
+						<maintainableField name="id" required="true"
+							readOnly="true" />
+						<maintainableField name="name" required="true" readOnly="true" />
+					</maintainableCollection>
+				</maintainableItems>
+			</maintainableSection>	
 		</maintainableSections>
 	</maintenanceDocument>
 </dictionaryEntry>

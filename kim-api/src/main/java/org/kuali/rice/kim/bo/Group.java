@@ -29,9 +29,14 @@ public class Group extends PersistableBusinessObjectBase {
 	private String name;
 	private String description;
 	private ArrayList<Group> memberGroups;
+	private ArrayList<Group> parentGroups;
+	private ArrayList<Role> groupRoles;
 	public Group() {
 	    memberGroups = new TypedArrayList(Group.class,Group.class);
+	    parentGroups = new TypedArrayList(Group.class,Group.class);
+	    groupRoles = new TypedArrayList(Role.class);
 	}
+	
 	/**
      * @return the memberGroups
      */
@@ -81,4 +86,30 @@ public class Group extends PersistableBusinessObjectBase {
 	public void refresh() {
 		// not implemented unless needed
 	}
+    /**
+     * @return the groupRoles
+     */
+    public ArrayList<Role> getGroupRoles() {
+        return this.groupRoles;
+    }
+    /**
+     * @param groupRoles the groupRoles to set
+     */
+    public void setGroupRoles(ArrayList<Role> groupRoles) {
+        this.groupRoles = groupRoles;
+    }
+
+    /**
+     * @return the parentGroups
+     */
+    public ArrayList<Group> getParentGroups() {
+        return this.parentGroups;
+    }
+
+    /**
+     * @param parentGroups the parentGroups to set
+     */
+    public void setParentGroups(ArrayList<Group> parentGroups) {
+        this.parentGroups = parentGroups;
+    }
 }

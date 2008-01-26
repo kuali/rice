@@ -418,10 +418,18 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 //                maintCollection.add(templatedBo);
 //            }
             document.getNewMaintainableObject().addMultipleValueLookupResults(document, collectionName, rawValues);
+          
+            boolean isEdit = RiceConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceForm.getMaintenanceAction());
+            boolean isCopy = RiceConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceForm.getMaintenanceAction());
+            
+            if (isEdit || isCopy) {
+                document.getOldMaintainableObject().addBlanksForMultipleValueLookupResults(document, collectionName, rawValues);
+                document.getOldMaintainableObject().refresh(maintenanceForm.getRefreshCaller(), requestParams, document);
+            }
         }
 
         document.getNewMaintainableObject().refresh(maintenanceForm.getRefreshCaller(), requestParams, document);
-
+        
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 

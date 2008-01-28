@@ -1,4 +1,19 @@
--- KNS INSERTs
+-- KNS Core Data --
+-- Core Doc Group Codes --
+INSERT INTO FP_DOC_GROUP_T VALUES ('KR', '054EDFB3B260C8D2E043816FD881C8D2', 1, 'Kuali Rice', null)
+/
+INSERT INTO FP_DOC_GROUP_T VALUES ('MO', '054EDFB3B260C8D2E043816FD881C8EE', 1,	'Obsolete Maintenance Table', null)
+/
+INSERT INTO FP_DOC_GROUP_T VALUES ('MR', '054EDFB3B260C8D2E043816FD881C8EA', 1,	'Reference Table Maintenance', null)
+/
+INSERT INTO FP_DOC_TYPE_T VALUES ('PTYP', '1A6FEB2501C7607EE043814FD111607E', 1, 'MO', 'Parameter Type', 'N', 'Y', 'N', 0, 'N', 'N')
+/
+INSERT INTO FP_DOC_TYPE_T VALUES ('PDTP', '1A6FEB2501C7607EE043814FD112607E', 1, 'MR', 'Parameter Detailed Type', 'N', 'Y', 'N', 0, 'N', 'N')
+/
+INSERT INTO FP_DOC_TYPE_T VALUES ('PNMS', '1A6FEB2501C7607EE043814FD113607E', 1, 'MR', 'Parameter Namespace', 'N', 'Y', 'N', 0, 'N', 'N')
+/
+
+-- Core Params and Param Types --
 insert into SH_PARM_TYP_T values ('CONFG', 121223422, 0,'Config',1)
 /
 insert into SH_PARM_TYP_T values ('AUTH', 121223423, 0,'Authorization',1)
@@ -29,11 +44,6 @@ insert into SH_NTE_TYP_T values ('BO', '2D3C44FE49415102E043814FD8815102',  1,  
 /
 insert into SH_NTE_TYP_T values ('DH', '2D3C44FE49425102E043814FD8815102',  1,  'DOCUMENT HEADER', 'Y')
 /
-INSERT INTO NOTIFICATION_PRODUCERS
-(ID, NAME, DESCRIPTION, CONTACT_INFO)
-VALUES
-(1, 'Notification System', 'This producer represents messages sent from the general message sending forms.', 'kuali-ken-testing@cornell.edu')
-/
 INSERT INTO sh_parm_t
 ("SH_PARM_NMSPC_CD","SH_PARM_DTL_TYP_CD","SH_PARM_NM","SH_PARM_TYP_CD","SH_PARM_TXT","SH_PARM_DESC","SH_PARM_CONS_CD","WRKGRP_NM")
 VALUES
@@ -49,33 +59,6 @@ INSERT INTO SH_PARM_T
 VALUES
 ('KR-NS', 'Document', 'SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS', sys_guid(), 0, 'CONFG', 'K', 'Some documents provide the functionality to send notes to another user using a workflow FYI or acknowledge functionality. This parameter specifies the default action that will be used when sending notes. This parameter should be one of the following 2 values: "K" for acknowledge or "F" for fyi. Depending on the notes and workflow service implementation, other values may be possible (see edu.iu.uis.eden.EdenConstants javadocs for details).', 'A', 'KUALI_FMSOPS')
 /
-
-
--- Am I correct in identifying these as KNS-related bootstrap?
-
-
---INSERT INTO FS_PARM_SEC_T values ('SYSTEM', '1', 1, 'WorkflowAdmin', 'Desc')
---/
---INSERT INTO FS_PARM_SEC_T values ('CoreMaintenanceEDoc', '2', 1, 'WorkflowAdmin', 'Desc')
---/
---INSERT INTO FS_PARM_T VALUES('SYSTEM','HELP_URL','07D71A3FF0D604D8E043814FD88104D8','1','http://www.fms.indiana.edu/fis/home.asp','','N', 'MC')
---/
---INSERT INTO FS_PARM_T VALUES('SYSTEM','lookup.results.limit','1AFCED30C07B2070E043814FD8812070','0','200','Limit of results returned in a lookup query','N', 'MC')
---/
---INSERT INTO FS_PARM_T VALUES('SYSTEM','demonstrationEncryptionCheck_FLAG','1C3D291AAD51A08CE043814FD881A08C','1','Y','Flag for enabling/disabling the demonstration encryption check.','N', 'MC')
---/
---INSERT INTO FS_PARM_T VALUES('SYSTEM','loadDataFileStep_USER','1F75EFB795DFB050E043814FD881B050','1','KULUSER','determines who the loadDataFileStep of pcdo_batch.sh will run as','N', 'MC')
---/
---insert into FS_PARM_T values ('CoreMaintenanceEDoc','Kuali.Document.RoutingReport.Workgroup','263A097060A3F152E043814FD881F152','1','WorkflowAdmin','Workgroup which can perform the route report on documents.','N', 'MC')
---/
---insert into FS_PARM_T values ('CoreMaintenanceEDoc','CASPasswordEnabled','26C8E6D6E77F40B4E043814FD88140B4','1','N','Whether the built in CAS implementation should ask for a password. The password will be verified against the Universal User Table.','N', 'MC')
---/
---insert into FS_PARM_T values ('CoreMaintenanceEDoc','UniversalUser.EditWorkgroup','2409BD6AB4CA800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can edit the universal user table.','N', 'MC')
---/
---insert into FS_PARM_T values ('CoreMaintenanceEDoc','Workflow.Exception.Workgroup','2409BD6AB4CB800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can perform functions on documents in exception routing status.','N', 'MC')
---/
---insert into FS_PARM_T values ('CoreMaintenanceEDoc','Kuali.Supervisor.Workgroup','2409BD6AB4CC800EE043814FD881800E','1','WorkflowAdmin','Workgroup which can perform almost any function within Kuali.','N', 'MC')
---/
 
 insert into FP_DOC_STATUS_T values ('A',    '2E0671732A684002E043814FD8814002', 1,  'Approved')
 /
@@ -104,7 +87,4 @@ insert into FP_DOC_STATUS_T values ('S',    '2E0671732A734002E043814FD8814002', 
 insert into FP_DOC_STATUS_T values ('V',    '2E0671732A744002E043814FD8814002', 1,  'Validation')
 /
 insert into FP_DOC_STATUS_T values ('Q',    '2E0671732A754002E043814FD8814002', 1,  'Doc Specif')
-/
-
-INSERT INTO FP_DOC_GROUP_T VALUES ('KR', '054EDFB3B260C8D2E043816FD881C8D2', 1, 'Kuali Rice', null)
 /

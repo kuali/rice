@@ -1,6 +1,13 @@
--- KEN core data --
+-- KEN Core Data --
 
--- NOTIFICATION_PRIORITIES --
+-- KEN Core Producers --
+INSERT INTO NOTIFICATION_PRODUCERS
+(ID, NAME, DESCRIPTION, CONTACT_INFO)
+VALUES
+(1, 'Notification System', 'This producer represents messages sent from the general message sending forms.', 'kuali-ken-testing@cornell.edu')
+/
+
+-- KEN Core Priorities --
 INSERT INTO NOTIFICATION_PRIORITIES
 (ID, NAME, DESCRIPTION, PRIORITY_ORDER)
 VALUES
@@ -19,7 +26,7 @@ VALUES
 (3, 'High', 'A high priority', 1)
 /
 
--- NOTIFICATION_CONTENT_TYPES --
+-- KEN Core Priorities --
 INSERT INTO NOTIFICATION_CONTENT_TYPES
 (ID, NAME, DESCRIPTION, NAMESPACE, XSD, XSL)
 VALUES

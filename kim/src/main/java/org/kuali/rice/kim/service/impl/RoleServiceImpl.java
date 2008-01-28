@@ -53,6 +53,26 @@ public class RoleServiceImpl implements RoleService {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.RoleService#getRole(java.lang.Long)
+     */
+    public Role getRole(Long roleId) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.RoleService#getRole(java.lang.String)
+     */
+    public Role getRole(String roleName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
 
     /**
      * This overridden method ...

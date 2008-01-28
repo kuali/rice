@@ -51,6 +51,22 @@ public interface RoleService {
     public List<String> getAllRoleNames();
     
     /**
+     * KIM service API method that returns a Role object.
+     * @param roleName
+     * @return A Role object
+     * 
+     */
+    public Role getRole(String roleName);
+    
+    /**
+     * KIM service API method that returns a Role object.
+     * @param roleId
+     * @return A Role object
+     * 
+     */
+    public Role getRole(Long roleId);
+    
+    /**
      * KIM Role service API method that returns all Principal objects within an application
      * that belong to a given Role.
      * 

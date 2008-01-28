@@ -92,7 +92,7 @@ def extract(xml, file, dataType) {
     if (!f.isFile()) return
     m = f.getText() =~ REGEXES[dataType]
     if (m.matches()) {
-      xml << '\r\n<-- ' + dataType + ' elements from ' + path + ' -->\r\n\r\n'
+      xml << '\r\n<!-- ' + dataType + ' elements from ' + path + ' -->\r\n\r\n'
       for (i in 1..m.groupCount()) {
             xml << m.group(i)
             xml << '\r\n\r\n'

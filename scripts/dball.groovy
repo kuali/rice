@@ -1,7 +1,6 @@
 // generates master drop and create sql
 
 PROJECT_DIR = '/java/projects/rice'
-//PROJECT_DIR = '/Users/natjohns/eclipse-3.3-workspace/rice'
 
 if (args.length > 2) { 
 	println 'usage: groovy dball.groovy [-pdir PROJECT_DIR]'
@@ -21,11 +20,8 @@ IGNORES = ['FS_UNIVERSAL_USR_T']
 MODULES = ['kns', 'kew', 'ksb', 'kim', 'ken', 'kom']
 MASTER_DESTROY_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_db_destroy.sql' 
 MASTER_CREATE_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_db_bootstrap.sql'
-MASTER_DATA_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_data.sql'
 
 SAMPLEAPP_DESTROY_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_sample_app_drops.sql'
-
-RICE_DATA_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_data.sql' 
 SAMPLEAPP_DATA_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_sample_app.sql'
 
 // prompt and read user input
@@ -36,69 +32,64 @@ if (!"yes".equals(answer.trim().toLowerCase())) {
     System.exit(2)
 }
 
+// HANDLE DESTROY SQL
 println "Creating master drop SQL: " + MASTER_DESTROY_SQL
 
 // The file that contains drop statements
-db = new File(MASTER_DESTROY_SQL)
-if (db.exists()) {
-    db.delete()
+destroySql = new File(MASTER_DESTROY_SQL)
+if (destroySql.exists()) {
+    destroySql.delete()
 }       
 
 // concatenate all sequence and table drops
 MODULES.each() {
     moduleName ->
     println "Concatenating drop SQL for module " + moduleName 
-    createdrops(db, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/sequences');
-    createdrops(db, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/tables');
+    createdrops(destroySql, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/sequences');
+    createdrops(destroySql, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/tables');
 }
 
 println "Concatenating sample app drop SQL"
-merge(db, SAMPLEAPP_DESTROY_SQL)
+merge(destroySql, SAMPLEAPP_DESTROY_SQL)
 
 println "Done."
 
 
-println "Creating master drop SQL: " + MASTER_CREATE_SQL
+// HANDLE BOOTSTRAP SQL
+println "Creating master bootstrap SQL: " + MASTER_CREATE_SQL
 
 // The file that contains bootstrap statements
-db = new File(MASTER_CREATE_SQL)
-if (db.exists()) {
-    db.delete()
+bootstrapSql = new File(MASTER_CREATE_SQL)
+if (bootstrapSql.exists()) {
+    bootstrapSql.delete()
 }       
 
+println "Concatenating bootstrap tables, sequences, indexes, and constraints."
 MODULES.each() {
     moduleName ->
     println "Concatenating create SQL for module " + moduleName
-    mergeandstrip(db, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/sequences')
-    mergeandstrip(db, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/tables')
-    mergeandstrip(db, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/indexes')
-    mergeandstrip(db, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/constraints')
+    mergeandstrip(bootstrapSql, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/sequences')
+    mergeandstrip(bootstrapSql, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/tables')
+    mergeandstrip(bootstrapSql, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/indexes')
+    mergeandstrip(bootstrapSql, PROJECT_DIR + '/' + moduleName + '/src/main/config/ddl/constraints')
 }
 
-println "Concatenating Rice data SQL"
-
-dataSql = new File(MASTER_DATA_SQL)
-if (dataSql.exists()) {
-    dataSql.delete()
-}
+println "Concatenating bootstrap data."
 
 MODULES.each() {
     moduleName ->
     println "Concatenating bootstrap data for module " + moduleName
-    merge(dataSql, PROJECT_DIR + '/' + moduleName + '/src/main/config/sql/' + moduleName.toUpperCase() + 'Bootstrap.sql')
+    merge(bootstrapSql, PROJECT_DIR + '/' + moduleName + '/src/main/config/sql/' + moduleName.toUpperCase() + 'Bootstrap.sql')
 }
 
-merge(db, MASTER_DATA_SQL)
-
-println "Concatenating Sample app data SQL"
-merge(db, SAMPLEAPP_DATA_SQL)
+println "Concatenating Sample Application bootstrap data."
+merge(bootstrapSql, SAMPLEAPP_DATA_SQL)
 
 println "Done."
 
 System.exit(0)
 
-
-// functions
+// FUNCTIONS
 
 def merge(db, file) {
 	f = new File(file)

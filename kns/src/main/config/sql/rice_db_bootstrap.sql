@@ -2608,7 +2608,6 @@ REFERENCES KOM_ORGANIZATIONS_T
 ID
 ) ENABLE
 /
--- Concatenating rice_data.sql
 -- Concatenating KNSBootstrap.sql
 -- KNS Core Data --
 -- Core Doc Group Codes --
@@ -2915,7 +2914,6 @@ to be accepted into the system. -->
     </xsl:template> 
 </xsl:stylesheet>')
 /
-
 
 -- Concatenating rice_sample_app.sql
 create table trv_doc_2 (

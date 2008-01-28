@@ -249,7 +249,7 @@
 
     <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
         <!-- Core admin workgroup -->
-        <workgroup>
+        <workgroup allowOverwrite="true">
             <workgroupName>WorkflowAdmin</workgroupName>
             <description>WorkflowAdmin</description>
             <activeInd>true</activeInd>

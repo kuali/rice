@@ -19,11 +19,25 @@ for (arg in args) {
 MODULES = ['kns', 'kew', 'ksb', 'kim', 'ken', 'kom']
 DATA_TYPES = ['ApplicationConstants', 'users', 'workgroups', 'workgroupTypes', 'ruleAttributes',
               'ruleTemplates', 'documentTypes', 'rules', 'helpEntries', 'styles', 'edoclite' ]
+DATA_TYPE_ELEMENT = [
+    'ApplicationConstants' : '<ApplicationConstants xmlns="ns:workflow/ApplicationConstants" xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">',
+    'users' : '<users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">',
+    'workgroups' : '<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">',
+    'workgroupTypes' : '<workgroupTypes xmlns="ns:workflow/WorkgroupType" xsi:schemaLocation="ns:workflow/WorkgroupType resource:WorkgroupType">',
+    'ruleAttributes' : '<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">',
+    'ruleTemplates' : '<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">',
+    'documentTypes' : '<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">',
+    'rules' : '<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">',
+    'helpEntries' : '<helpEntries xmlns="ns:workflow/Help" xsi:schemaLocation="ns:workflow/Help resource:Help">',
+    'styles' :  '<styles xmlns="ns:workflow/Style" xsi:schemaLocation="ns:workflow/Style resource:Style">',
+    'edoclite' : '<edoclite xmlns="ns:workflow/EDocLite" xsi:schemaLocation="ns:workflow/EDocLite resource:EDocLite">' ]
+
+
 // a map of the regular expressions so we don't have to recompile them each time
 REGEXES = [:]
 DATA_TYPES.each() {
   dataType ->
-    REGEXES[dataType] = "(?s).*(<" + dataType + ".*</" + dataType + ">).*"
+    REGEXES[dataType] = "(?s).*<" + dataType + ".*?>(.*)</" + dataType + ">.*"
 }
 
 RICE_BOOTSTRAP_XML = PROJECT_DIR + '/kns/src/main/config/xml/RiceBootstrapData.xml' 
@@ -72,12 +86,16 @@ def concat(target, pathClosure) {
     // element order matters so it has to be our outer loop which unfortunately means we are going to be reading in these files many times
     DATA_TYPES.each() {
         dataType ->
+            xml << '\r\n'
+            xml << DATA_TYPE_ELEMENT[dataType]
+            xml << '\r\n'
             MODULES.each() {
                 moduleName ->
                 path = pathClosure(moduleName)
                 println "Concatenating " + dataType + " for module " + moduleName.toUpperCase() + ": " + path
                 extract(xml, path, dataType)
             }
+            xml << '</' + dataType + '>\r\n'
     }
 
     // close tag

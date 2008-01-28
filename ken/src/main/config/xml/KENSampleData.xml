@@ -85,6 +85,16 @@
         
         <!-- WORKFLOW USERS (STANDARD WORKFLOW QUICKSTART USERS) -->
         <user>
+            <workflowId>quickstart</workflowId>
+            <emplId>quickstart</emplId>
+            <authenticationId>quickstart</authenticationId>
+            <uuId>quickstart</uuId>
+            <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
+            <displayName>Quick Start</displayName>
+            <givenName>Quick</givenName>
+            <lastName>Start</lastName>
+        </user>
+        <user>
             <workflowId>user1</workflowId>
             <emplId>user1</emplId>
             <authenticationId>user1</authenticationId>

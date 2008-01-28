@@ -115,7 +115,7 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
 
         // some test data has to be loaded via SQL because we do not have XML loaders for it yet
         lifecycles.add(new SQLDataLoaderLifecycle("file:./ken/src/main/config/sql/bootstrap.sql", ";" ));
-        lifecycles.add(new SQLDataLoaderLifecycle("classpath:testdata/load_test_tables.sql", ";"));
+        lifecycles.add(new SQLDataLoaderLifecycle("classpath:org/kuali/ken/test/DefaultTestData.sql", ";"));
 
         return lifecycles;
     }

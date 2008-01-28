@@ -17,7 +17,7 @@
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>Config.Application.AdminUserList</ConstantName>
-            <ConstantValue>rkirkend jhopf temay ewestfal natjohns xqi bmcgough bghutchi admin</ConstantValue>
+            <ConstantValue>admin</ConstantValue>
         </ApplicationConstant>
         <ApplicationConstant>
             <ConstantName>DocumentSearch.IsRouteLogPopup</ConstantName>
@@ -232,7 +232,36 @@
         </ApplicationConstant>
     </ApplicationConstants>
 
+    <!-- bootstrap users and groups; only admin is required -->
+    <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
+        <!-- Core admin user -->
+        <user>
+            <workflowId>admin</workflowId>
+            <emplId>admin</emplId>
+            <authenticationId>admin</authenticationId>
+            <uuId>admin</uuId>
+            <emailAddress>admin@localhost</emailAddress>
+            <displayName>Administrator</displayName>
+            <givenName>admin</givenName>
+            <lastName>admin</lastName>
+        </user>
+    </users>
+
+    <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
+        <!-- Core admin workgroup -->
+        <workgroup>
+            <workgroupName>WorkflowAdmin</workgroupName>
+            <description>WorkflowAdmin</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>admin</workflowId>
+            </members>
+        </workgroup>
+    </workgroups>
+
     <!-- Rule attributes for core doctypes -->
+    <!-- TODO: determine why this attribute is in bootstrap and if it doesn't need to be remove it! -->
     <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
         <ruleAttribute>
             <name>RuleRoutingAttribute</name>
@@ -275,9 +304,9 @@
             <label>Workflow Maintenance Document</label>
             <postProcessorName>none</postProcessorName>
             <docHandler>docHandler is now mandatory...</docHandler>
-            <superUserWorkgroupName>${workflow.admin.workgroup}</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>${workflow.admin.workgroup}</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>${workflow.admin.workgroup}</defaultExceptionWorkgroupName>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
             <active>true</active>
             <policies>
                 <policy>
@@ -319,10 +348,10 @@
             <description>Workflow Maintenance Document Type Document</description>
             <label>Workflow Maintenance Document Type Document</label>
             <postProcessorName>edu.iu.uis.eden.doctype.DocumentTypePostProcessor</postProcessorName>
-            <superUserWorkgroupName>${workflow.admin.workgroup}</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>${workflow.admin.workgroup}</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>${workflow.admin.workgroup}</defaultExceptionWorkgroupName>
-            <docHandler>${base.url}/DocumentType.do?methodToCall=docHandler</docHandler>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <docHandler>${workflow.url}/DocumentType.do?methodToCall=docHandler</docHandler>
             <active>true</active>
             <policies />
             <routePaths>
@@ -342,10 +371,10 @@
             <description>Rule Maintenance Document Type Document</description>
             <label>Rule Maintenance Document Type Document</label>
             <postProcessorName>edu.iu.uis.eden.routetemplate.RulePostProcessor</postProcessorName>
-            <superUserWorkgroupName>${workflow.admin.workgroup}</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>${workflow.admin.workgroup}</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>${workflow.admin.workgroup}</defaultExceptionWorkgroupName>
-            <docHandler>${base.url}/Rule.do?methodToCall=docHandler</docHandler>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <docHandler>${workflow.url}/Rule.do?methodToCall=docHandler</docHandler>
             <active>true</active>
             <policies />
             <routePaths>
@@ -365,10 +394,10 @@
             <description>Document to generate a new workgroup</description>
             <label>Add/modify EDEN workgroup</label>
             <postProcessorName>edu.iu.uis.eden.workgroup.WorkgroupPostProcessor</postProcessorName>
-            <superUserWorkgroupName>${workflow.admin.workgroup}</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>${workflow.admin.workgroup}</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>${workflow.admin.workgroup}</defaultExceptionWorkgroupName>
-            <docHandler>${base.url}/Workgroup.do?methodToCall=docHandler</docHandler>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <docHandler>${workflow.url}/Workgroup.do?methodToCall=docHandler</docHandler>
             <active>true</active>
             <routingVersion>1</routingVersion>
             <routePaths>
@@ -397,9 +426,9 @@
             <description>A document to remove or replace users within rules and workgroups.</description>
             <label>Remove/Replace User</label>
             <postProcessorName>edu.iu.uis.eden.removereplace.RemoveReplacePostProcessor</postProcessorName>
-            <superUserWorkgroupName>${workflow.admin.workgroup}</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>${workflow.admin.workgroup}</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>${workflow.admin.workgroup}</defaultExceptionWorkgroupName>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
             <docHandler>${base.url}/RemoveReplace.do?methodToCall=docHandler</docHandler>
             <active>true</active>
             <routingVersion>1</routingVersion>
@@ -434,7 +463,7 @@
             -->
             <responsibilities>
                 <responsibility>
-                    <user>${workflow.admin.user}</user>
+                    <user>admin</user>
                     <actionRequested>A</actionRequested>
                     <priority>1</priority>
                 </responsibility>
@@ -447,7 +476,7 @@
             <ignorePrevious>false</ignorePrevious>
             <responsibilities>
                 <responsibility>
-                    <workgroup>${workflow.admin.workgroup}</workgroup>
+                    <workgroup>WorkflowAdmin</workgroup>
                     <actionRequested>A</actionRequested>
                     <priority>1</priority>
                 </responsibility>

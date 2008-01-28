@@ -39,34 +39,34 @@ import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
 public abstract class NotificationTestCaseBase extends ModuleTestCase {
     private static final String KEN_MODULE_NAME = "ken";
     private static final String TX_MGR_BEAN_NAME = "transactionManager";
-    
+
     protected final Logger LOG = Logger.getLogger(getClass());
-    
+
     protected static SpringNotificationServiceLocator services;
     protected static PlatformTransactionManager transactionManager;
 
     public NotificationTestCaseBase() {
-	super(KEN_MODULE_NAME);
+        super(KEN_MODULE_NAME);
     }
 
     @Override
     protected List<Lifecycle> getSuiteLifecycles() {
-	List<Lifecycle> lifecycles = super.getSuiteLifecycles();
-	lifecycles.add(new BaseLifecycle() {
-	    @Override
-	    public void start() throws Exception {
-		// can't find a generic way to get the module's resource loader and context (would have to rely on standardized conventions)
-		// in the super class ModuleTestCase, so just special case it here for KEN for now
-		ConfigurableApplicationContext moduleContext = KENResourceLoaderFactory.getSpringResourceLoader().getContext();
-		// This method sets up the Spring services so that they can be accessed by the tests.
-	        services = new SpringNotificationServiceLocator(moduleContext);
-	        // grab the module's transaction manager
-	        transactionManager = (PlatformTransactionManager) moduleContext.getBean(TX_MGR_BEAN_NAME, PlatformTransactionManager.class);
-		super.start();
-	    }
-	    
-	});
-	return lifecycles;
+        List<Lifecycle> lifecycles = super.getSuiteLifecycles();
+        lifecycles.add(new BaseLifecycle() {
+            @Override
+            public void start() throws Exception {
+                // can't find a generic way to get the module's resource loader and context (would have to rely on standardized conventions)
+                // in the super class ModuleTestCase, so just special case it here for KEN for now
+                ConfigurableApplicationContext moduleContext = KENResourceLoaderFactory.getSpringResourceLoader().getContext();
+                // This method sets up the Spring services so that they can be accessed by the tests.
+                services = new SpringNotificationServiceLocator(moduleContext);
+                // grab the module's transaction manager
+                transactionManager = (PlatformTransactionManager) moduleContext.getBean(TX_MGR_BEAN_NAME, PlatformTransactionManager.class);
+                super.start();
+            }
+
+        });
+        return lifecycles;
     }
 
     /**
@@ -82,41 +82,42 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
 
     @Override
     protected List<Lifecycle> getPerTestLifecycles() {
-	List<Lifecycle> lifecycles = super.getPerTestLifecycles();
-	
-	// clear out the KEW cache
-	lifecycles.add(new BaseLifecycle() {
-	    @Override
-	    public void start() throws Exception {
-	        super.start();
+        List<Lifecycle> lifecycles = super.getPerTestLifecycles();
 
-	        //LOG.info("Status of Ken scheduler on start: " + services.getScheduler().isStarted());
+        // clear out the KEW cache
+        lifecycles.add(new BaseLifecycle() {
+            @Override
+            public void start() throws Exception {
+                super.start();
+
+                //LOG.info("Status of Ken scheduler on start: " + services.getScheduler().isStarted());
                 // stop quartz if a test failed to do so
                 //disableQuartzJobs();
-	    }
-	    public void stop() throws Exception {
-		KEWServiceLocator.getCacheAdministrator().flushAll();
-		
-		LOG.info("Status of Ken scheduler on stop: " + services.getScheduler().isStarted());
-		// stop quartz if a test failed to do so
-		//disableQuartzJobs();
+            }
+            public void stop() throws Exception {
+                KEWServiceLocator.getCacheAdministrator().flushAll();
 
-		super.stop();
-	    }
-	});
-	
-	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:testdata/BootstrapApplicationConstantsContent.xml"));
-	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:data/NotificationData.xml"));
-	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:testdata/BootstrapRuleTemplateContent.xml"));
-	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:testdata/BootstrapDocumentTypesContent.xml"));
-	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:testdata/BootstrapRuleContent.xml"));
-	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:testdata/widgets.xml"));
-	lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:data/SendNotificationMessageRoutingConfiguration.xml"));
-	
-	lifecycles.add(new SQLDataLoaderLifecycle("classpath:testdata/common.sql", ";" ));
-	lifecycles.add(new SQLDataLoaderLifecycle("classpath:testdata/load_test_tables.sql", ";"));
-	
-	return lifecycles;
+                LOG.info("Status of Ken scheduler on stop: " + services.getScheduler().isStarted());
+                // stop quartz if a test failed to do so
+                //disableQuartzJobs();
+
+                super.stop();
+            }
+        });
+
+        System.out.println(System.getProperty("user.dir"));
+        // load the KEW bootstrap
+        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:./kew/src/main/config/bootstrap/BootstrapData.xml"));
+        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:./kew/src/main/config/bootstrap/widgets.xml"));
+
+        // load the KEN bootstrap
+        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:./ken/src/main/config/xml/KENBootstrap.xml"));
+
+        // some test data has to be loaded via SQL because we do not have XML loaders for it yet
+        lifecycles.add(new SQLDataLoaderLifecycle("file:./ken/src/main/config/sql/bootstrap.sql", ";" ));
+        lifecycles.add(new SQLDataLoaderLifecycle("classpath:testdata/load_test_tables.sql", ";"));
+
+        return lifecycles;
     }
 
     /**
@@ -124,7 +125,7 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
      * @throws SchedulerException
      */
     protected static void disableQuartzJobs() throws SchedulerException {
-	// do this so that our quartz jobs don't go off - we don't care about
+        // do this so that our quartz jobs don't go off - we don't care about
         // these in our unit tests
         Scheduler scheduler = services.getScheduler();
         scheduler.standby();
@@ -147,7 +148,7 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
      */
     @Override
     protected List<String> getConfigLocations() {
-	return Arrays.asList(new String[] { "classpath:META-INF/" + getModuleName() + "-test-config.xml" });
+        return Arrays.asList(new String[] { "classpath:META-INF/" + getModuleName() + "-test-config.xml" });
     }
 
     /**
@@ -155,7 +156,7 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
      */
     @Override
     protected String getDerbySQLFileLocation() {
-	//return "classpath:db/derby/" + getModuleName() + "-derby.sql";
-	return null;
+        //return "classpath:db/derby/" + getModuleName() + "-derby.sql";
+        return null;
     }
 }

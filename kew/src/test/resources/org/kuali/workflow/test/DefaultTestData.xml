@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Default test data for KEW unit tests -->
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
-	<users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
+	<!-- Unit test ApplicationConstants: reset the admin user list to include some test users -->
+
+    <ApplicationConstants xmlns="ns:workflow/ApplicationConstants" xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">
+        <ApplicationConstant>
+            <ConstantName>Config.Application.AdminUserList</ConstantName>
+            <ConstantValue>rkirkend jhopf temay ewestfal natjohns xqi bmcgough bghutchi admin</ConstantValue>
+        </ApplicationConstant>
+    </ApplicationConstants>
+
+    <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
 	    <!-- real users -->
 		<!--<user>
 			<workflowId>000000000000</workflowId>

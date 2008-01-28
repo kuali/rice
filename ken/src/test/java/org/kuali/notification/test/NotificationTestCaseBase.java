@@ -105,16 +105,17 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
             }
         });
 
-        System.out.println(System.getProperty("user.dir"));
         // load the KEW bootstrap
         lifecycles.add(new KEWXmlDataLoaderLifecycle("file:./kew/src/main/config/bootstrap/BootstrapData.xml"));
         lifecycles.add(new KEWXmlDataLoaderLifecycle("file:./kew/src/main/config/bootstrap/widgets.xml"));
 
         // load the KEN bootstrap
-        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:./ken/src/main/config/xml/KENBootstrap.xml"));
-
         // some test data has to be loaded via SQL because we do not have XML loaders for it yet
+        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:./ken/src/main/config/xml/KENBootstrap.xml"));
         lifecycles.add(new SQLDataLoaderLifecycle("file:./ken/src/main/config/sql/bootstrap.sql", ";" ));
+
+        // load the KEN test data
+        lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:org/kuali/ken/test/DefaultTestData.xml"));
         lifecycles.add(new SQLDataLoaderLifecycle("classpath:org/kuali/ken/test/DefaultTestData.sql", ";"));
 
         return lifecycles;

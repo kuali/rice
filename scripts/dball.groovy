@@ -21,6 +21,7 @@ IGNORES = ['FS_UNIVERSAL_USR_T']
 MODULES = ['kns', 'kew', 'ksb', 'kim', 'ken', 'kom']
 MASTER_DESTROY_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_db_destroy.sql' 
 MASTER_CREATE_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_db_bootstrap.sql'
+MASTER_DATA_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_data.sql'
 
 SAMPLEAPP_DESTROY_SQL = PROJECT_DIR + '/kns/src/main/config/sql/rice_sample_app_drops.sql'
 
@@ -75,7 +76,20 @@ MODULES.each() {
 }
 
 println "Concatenating Rice data SQL"
-merge(db, RICE_DATA_SQL)
+
+dataSql = new File(MASTER_DATA_SQL)
+if (dataSql.exists()) {
+    dataSql.delete()
+}
+
+MODULES.each() {
+    moduleName ->
+    println "Concatenating bootstrap data for module " + moduleName
+    merge(dataSql, PROJECT_DIR + '/' + moduleName + '/src/main/config/sql/' + moduleName.toUpperCase() + 'Bootstrap.sql')
+}
+
+merge(db, MASTER_DATA_SQL)
+
 println "Concatenating Sample app data SQL"
 merge(db, SAMPLEAPP_DATA_SQL)
 
@@ -88,7 +102,13 @@ System.exit(0)
 
 def merge(db, file) {
 	f = new File(file)
+	if (!f.isFile()) {
+	   println file + " does not exist, skipping"
+	   return
+	}
+	db << "-- Concatenating " + f.getName() + "\r\n"
 	db << f.getText()
+	db << '\r\n'
 }
 
 def mergeandstrip(db, dir) {

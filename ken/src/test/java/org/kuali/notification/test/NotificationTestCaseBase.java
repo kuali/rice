@@ -112,7 +112,7 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
         // load the KEN bootstrap
         // some test data has to be loaded via SQL because we do not have XML loaders for it yet
         lifecycles.add(new KEWXmlDataLoaderLifecycle("file:./ken/src/main/config/xml/KENBootstrap.xml"));
-        lifecycles.add(new SQLDataLoaderLifecycle("file:./ken/src/main/config/sql/bootstrap.sql", ";" ));
+        lifecycles.add(new SQLDataLoaderLifecycle("file:./ken/src/main/config/sql/KENBootstrap.sql", "/" ));
 
         // load the KEN test data
         lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:org/kuali/ken/test/DefaultTestData.xml"));

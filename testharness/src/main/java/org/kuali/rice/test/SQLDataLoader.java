@@ -52,7 +52,11 @@ public class SQLDataLoader {
         String[] sqlStatements = null;
         if (statement == null) {
             String sqlStatementsContent = getContentsAsString(fileLoc);
-            sqlStatements = sqlStatementsContent.split(getSeperatorChar());
+            System.out.println(sqlStatementsContent);
+            // separator char must be the last non-whitespace char on the line
+            // to avoid splitting in the middle of data that might contain the separator char
+            sqlStatements = sqlStatementsContent.split("(?m)" + getSeperatorChar() + "\\s*$");
+            System.out.println(sqlStatements[0]);
         } else {
             sqlStatements = new String[]{statement};
         }
@@ -94,7 +98,7 @@ public class SQLDataLoader {
                 // will result in errors when executed because there are no
                 // results
                 if (!line.trim().startsWith(SQL_LINE_COMMENT_PREFIX)) {
-                    data += line + " ";
+                    data += line + "\r\n ";
                 }
             }
         } finally {

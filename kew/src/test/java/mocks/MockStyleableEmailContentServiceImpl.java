@@ -16,12 +16,17 @@
 package mocks;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Date;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.actionitem.ActionItem;
+import edu.iu.uis.eden.doctype.DocumentType;
+import edu.iu.uis.eden.feedback.web.FeedbackForm;
+import edu.iu.uis.eden.mail.EmailContent;
 import edu.iu.uis.eden.mail.StyleableEmailContentServiceImpl;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
+import edu.iu.uis.eden.user.WorkflowUser;
 
 /**
  * This is a class used to substitute for a StyleableEmailContentServiceImpl class 
@@ -29,8 +34,34 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentServiceImpl {
+public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentServiceImpl implements MockStyleableEmailContentService {
+    
+    private boolean wasAccessed = false;
 
+    @Override
+    public EmailContent generateImmediateReminder(WorkflowUser user, ActionItem actionItem, DocumentType documentType) {
+        wasAccessed = true;
+        return super.generateImmediateReminder(user, actionItem, documentType);
+    }
+    
+    @Override
+    public EmailContent generateDailyReminder(WorkflowUser user, Collection<ActionItem> actionItems) {
+        wasAccessed = true;
+        return super.generateDailyReminder(user, actionItems);
+    }
+    
+    @Override
+    public EmailContent generateWeeklyReminder(WorkflowUser user, Collection<ActionItem> actionItems) {
+        wasAccessed = true;
+        return super.generateWeeklyReminder(user, actionItems);
+    }
+    
+    @Override
+    public EmailContent generateFeedback(FeedbackForm form) {
+        wasAccessed = true;
+        return super.generateFeedback(form);
+    }
+    
     /**
      * This overridden method is used in case the action item has an null route header attached
      * 
@@ -45,6 +76,20 @@ public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentS
         routeHeader.setDocRouteStatus(EdenConstants.ROUTE_HEADER_ENROUTE_CD);
         routeHeader.setCreateDate(new Timestamp(new Date().getTime()));
         return routeHeader;
+    }
+
+    /**
+     * This method returns whether this service is being used 
+     */
+    public boolean wasServiceAccessed() {
+        return this.wasAccessed;
+    }
+
+    /**
+     * This method returns whether this service is being used 
+     */
+    public void resetServiceAccessed() {
+        this.wasAccessed = false;
     }
 
 }

@@ -37,6 +37,10 @@ public class MockDefaultEmailServiceImpl extends DefaultEmailService {
      */
     @Override
     public void sendEmail(EmailFrom from, EmailTo to, EmailSubject subject, EmailBody body, boolean htmlMessage) {
-        // do nothing
+        String toValue = (to == null) ? "" : to.getToAddress();
+        String fromValue = (from == null) ? "" : from.getFromAddress();
+        String subjectValue = (subject == null) ? "" : subject.getSubject();
+        String bodyValue = (body == null) ? "" : body.getBody();
+        LOG.debug("WILL NOT send e-mail message with to '" + toValue + "'... from '" + fromValue + "'... subject '" + subjectValue + "'... and body '" + bodyValue);
     }
 }

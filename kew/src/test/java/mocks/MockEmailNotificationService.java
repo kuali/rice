@@ -30,7 +30,9 @@ public interface MockEmailNotificationService extends ActionListEmailService {
 	public void sendImmediateReminder(WorkflowUser user, ActionItem actionItem);
     public void sendDailyReminder();
     public void sendWeeklyReminder();
+
     public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd) throws EdenUserNotFoundException;
     public Integer getTotalPeriodicRemindersSent(String emailReminderConstant);
     public Integer getTotalPeriodicRemindersSent();
+    public boolean wasStyleServiceAccessed();
 }

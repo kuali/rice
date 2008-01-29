@@ -35,7 +35,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 public class MockEmailNotificationServiceImpl extends CustomizableActionListEmailServiceImpl implements MockEmailNotificationService {
     private static final Logger LOG = Logger.getLogger(MockEmailNotificationServiceImpl.class);
 
-    private static Map immediateReminders = new HashMap();
+    private static Map<String,List> immediateReminders = new HashMap<String,List>();
     private static Map<String,Integer> aggregateReminderCount = new HashMap<String,Integer>();
     public static boolean SEND_DAILY_REMINDER_CALLED = false;
     public static boolean SEND_WEEKLY_REMINDER_CALLED = false;
@@ -68,12 +68,14 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
 
     @Override
 	public void sendDailyReminder() {
+        resetStyleService();
 	    super.sendDailyReminder();
 		SEND_DAILY_REMINDER_CALLED = true;
     }
 
     @Override
     public void sendWeeklyReminder() {
+        resetStyleService();
         super.sendWeeklyReminder();
     	SEND_WEEKLY_REMINDER_CALLED = true;
     }
@@ -89,16 +91,30 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
     }
     
     public Integer getTotalPeriodicRemindersSent(String emailReminderConstant) {
-        return aggregateReminderCount.get(emailReminderConstant);
+        Integer returnVal = aggregateReminderCount.get(emailReminderConstant);
+        if (returnVal == null) {
+            returnVal = Integer.valueOf(0);
+        }
+        return returnVal;
     }
 
     public Integer getTotalPeriodicRemindersSent() {
         int total = 0;
         for (Map.Entry<String, Integer> mapEntry : aggregateReminderCount.entrySet()) {
-            total += mapEntry.getValue();
+            Integer value = mapEntry.getValue();
+            total += (value == null) ? 0 : value.intValue();
         }
         return Integer.valueOf(total);
     }
+    
+    public boolean wasStyleServiceAccessed() {
+        return getEmailContentGenerator().wasServiceAccessed();
+    }
+    
+    private void resetStyleService() {
+        getEmailContentGenerator().resetServiceAccessed();
+    }
+    
     /**
      * This method is used to get the 
      * 
@@ -118,5 +134,10 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
             }
         }
         return emailsSent;
+    }
+    
+    @Override
+    protected MockStyleableEmailContentService getEmailContentGenerator() {
+        return (MockStyleableEmailContentService) super.getEmailContentGenerator();
     }
 }

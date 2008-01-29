@@ -43,6 +43,10 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
     public void setEmailContentGenerator(EmailContentService contentService) {
         this.contentService = contentService;
     }
+    
+    protected EmailContentService getEmailContentGenerator() {
+        return contentService;
+    }
 
     public void sendImmediateReminder(WorkflowUser user, ActionItem actionItem) {
         if (!sendActionListEmailNotification()) {
@@ -52,7 +56,7 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
         // since this is a message for a single document, we can customize the from
         // line based on DocumentType
         DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId());
-        EmailContent content = contentService.generateImmediateReminder(user, actionItem, document.getDocumentType());
+        EmailContent content = getEmailContentGenerator().generateImmediateReminder(user, actionItem, document.getDocumentType());
         sendEmail(user, new EmailSubject(content.getSubject()),
                         new EmailBody(content.getBody()), document.getDocumentType());
     }
@@ -67,9 +71,9 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
         }
         EmailContent content;
         if (EdenConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
-            content = contentService.generateDailyReminder(user, actionItems);
+            content = getEmailContentGenerator().generateDailyReminder(user, actionItems);
         } else if (EdenConstants.EMAIL_RMNDR_WEEK_VAL.equals(emailSetting)) {
-            content = contentService.generateWeeklyReminder(user, actionItems);
+            content = getEmailContentGenerator().generateWeeklyReminder(user, actionItems);
         } else {
             // else...refactor this...
             throw new RuntimeException("invalid email setting. this code needs refactoring");

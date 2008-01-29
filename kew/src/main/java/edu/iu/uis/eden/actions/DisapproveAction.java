@@ -123,7 +123,7 @@ public class DisapproveAction extends ActionTakenEvent {
      * @throws InvalidActionTakenException
      * @throws EdenUserNotFoundException
      */
-    public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+    public void performAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
         checkLocking();
         updateSearchableAttributesIfPossible();

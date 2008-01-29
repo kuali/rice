@@ -107,7 +107,7 @@ public class CancelAction extends ActionTakenEvent {
         return actionCompatible;
     }
 
-    public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+    public void performAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
         checkLocking();
         updateSearchableAttributesIfPossible();

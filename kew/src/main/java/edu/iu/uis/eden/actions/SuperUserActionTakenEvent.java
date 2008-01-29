@@ -66,7 +66,7 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
         return "";
     }
 
-    public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+    public void performAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         checkLocking();
 
         String errorMessage = validateActionRules();

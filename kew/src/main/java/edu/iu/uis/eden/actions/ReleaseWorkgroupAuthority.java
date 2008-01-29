@@ -75,8 +75,6 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
         if (!Utilities.isEmpty(error)) {
             throw new InvalidActionTakenException(error);
         }
-        
-        queueDocumentProcessing();
     }
     
     private String performReleaseWorkgroupAuthority(boolean forValidationOnly) throws EdenUserNotFoundException {

@@ -153,7 +153,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
         }
     }
 
-    public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+    public void performAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         checkLocking();
         this.processActionRequests();
         this.queueDocumentProcessing();

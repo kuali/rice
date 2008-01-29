@@ -58,7 +58,7 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
         this.nodeName = nodeName;
     }
 
-    public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+    public void performAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         checkLocking();
 
         if (Utilities.isEmpty(nodeName)) {

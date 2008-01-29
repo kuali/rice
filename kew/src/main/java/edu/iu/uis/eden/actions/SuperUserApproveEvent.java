@@ -61,7 +61,7 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
         this.superUserAction = EdenConstants.SUPER_USER_APPROVE;
     }
 
-	public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+	public void performAction() throws InvalidActionTakenException, EdenUserNotFoundException {
 		// TODO: this is used because calling this code from SuperUserAction without
         // it causes an optimistic lock
 		setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(getRouteHeaderId(), true));

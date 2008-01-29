@@ -97,6 +97,7 @@ public class KEWXmlDataLoaderLifecycle implements Lifecycle {
 			throw new RuntimeException("Didn't find the xml file " + tempFileName);
 		}
 		File temp = File.createTempFile(tempFileName, ".xml");
+		temp.deleteOnExit();
 		FileOutputStream fos = new FileOutputStream(temp);
 		int data = -1;
 		while ((data = xmlFile.read()) != -1) {

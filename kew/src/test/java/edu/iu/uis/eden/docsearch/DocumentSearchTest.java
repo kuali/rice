@@ -80,7 +80,7 @@ public class DocumentSearchTest extends KEWTestCase {
      * Test for https://test.kuali.org/jira/browse/KULWF-703
      */
     @Test public void testSearchEDENSERVICE_DOCS() throws Exception {
-        loadXmlStream(new FileInputStream(getBaseDir()+"/src/main/config/bootstrap/BootstrapData.xml"));
+        loadXmlStream(new FileInputStream(getBaseDir()+"/src/main/config/xml/KEWBootstrap.xml"));
 //        loadXmlStream(new FileInputStream("conf/bootstrap/BootstrapRuleTemplateContent.xml"));
 //        loadXmlStream(new FileInputStream("conf/bootstrap/BootstrapDocumentTypesContent.xml"));
 //        loadXmlStream(new FileInputStream("conf/bootstrap/BootstrapRuleContent.xml"));

@@ -106,7 +106,7 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
         });
 
         // load the KEW bootstrap
-        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:./kew/src/main/config/bootstrap/BootstrapData.xml"));
+        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:./kew/src/main/config/xml/KEWBootstrap.xml"));
         lifecycles.add(new KEWXmlDataLoaderLifecycle("file:./kew/src/main/config/bootstrap/widgets.xml"));
 
         // load the KEN bootstrap

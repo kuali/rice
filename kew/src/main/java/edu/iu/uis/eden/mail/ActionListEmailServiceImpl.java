@@ -101,11 +101,11 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		return fromAddress;
 	}
 
-	private String getHelpLink() {
+	protected String getHelpLink() {
 		return getHelpLink(null);
 	}
 
-	private String getHelpLink(DocumentType documentType) {
+	protected String getHelpLink(DocumentType documentType) {
 		return "For additional help, email " + "<mailto:"
 				+ getDocumentTypeEmailAddress(documentType) + ">";
 	}
@@ -126,16 +126,16 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		return new EmailSubject(subject + " " + customSubject);
 	}
 
-	private EmailFrom getEmailFrom(DocumentType documentType) {
+	protected EmailFrom getEmailFrom(DocumentType documentType) {
 		return new EmailFrom(getDocumentTypeEmailAddress(documentType));
 	}
 
-	private void sendEmail(WorkflowUser user, EmailSubject subject,
+	protected void sendEmail(WorkflowUser user, EmailSubject subject,
 			EmailBody body) {
 		sendEmail(user, subject, body, null);
 	}
 
-	private void sendEmail(WorkflowUser user, EmailSubject subject,
+	protected void sendEmail(WorkflowUser user, EmailSubject subject,
 			EmailBody body, DocumentType documentType) {
 		try {
 			if (isProduction()) {
@@ -208,7 +208,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	}
 
-	private boolean isProduction() {
+	protected boolean isProduction() {
 		return EdenConstants.PROD_DEPLOYMENT_CODE.equals(getDeploymentEnvironment());
 	}
 
@@ -221,7 +221,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 					Collection actionItems = getActionListService()
 							.getActionList(user, null);
 					if (actionItems != null && actionItems.size() > 0) {
-						sendReminder(user, actionItems,
+					    sendPeriodicReminder(user, actionItems,
 								EdenConstants.EMAIL_RMNDR_DAY_VAL);
 					}
 				} catch (Exception e) {
@@ -243,7 +243,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 					Collection actionItems = getActionListService()
 							.getActionList(user, null);
 					if (actionItems != null && actionItems.size() > 0) {
-						sendReminder(user, actionItems,
+					    sendPeriodicReminder(user, actionItems,
 								EdenConstants.EMAIL_RMNDR_WEEK_VAL);
 					}
 				} catch (Exception e) {
@@ -256,8 +256,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		LOG.debug("Weekly action list emails sent successful");
 	}
 
-	private void sendReminder(WorkflowUser user, Collection actionItems,
-			String emailSetting) {
+	protected void sendPeriodicReminder(WorkflowUser user, Collection actionItems, String emailSetting) {
 		String emailBody = null;
 		actionItems = filterActionItemsToNotify(user, actionItems);
 		// if there are no action items after being filtered, there's no
@@ -279,7 +278,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	 * not to recieve secondary or primary delegation emails then they
 	 * will not be included.
 	 */
-	private Collection filterActionItemsToNotify(WorkflowUser user, Collection actionItems) {
+	protected Collection filterActionItemsToNotify(WorkflowUser user, Collection actionItems) {
 		List filteredItems = new ArrayList();
 		Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(user);
 		for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
@@ -302,7 +301,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		return filteredItems;
 	}
 
-	private List getUsersWithEmailSetting(String setting) {
+	protected List getUsersWithEmailSetting(String setting) {
 		List users = new ArrayList();
 		Collection userOptions = getUserOptionsService().findByOptionValue(
 				EdenConstants.EMAIL_RMNDR_KEY, setting);
@@ -516,7 +515,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		return docTypes;
 	}
 
-	private boolean sendActionListEmailNotification() {
+	protected boolean sendActionListEmailNotification() {
         LOG.debug("actionlistsendconstant: " + Utilities.getApplicationConstant(EdenConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_KEY));
 		return EdenConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE
 				.equals(Utilities
@@ -582,7 +581,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 				.getUserOptionsService();
 	}
 
-	private ActionListService getActionListService() {
+	protected ActionListService getActionListService() {
 		return (ActionListService) KEWServiceLocator.getActionListService();
 	}
 
@@ -594,14 +593,14 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		this.deploymentEnvironment = deploymentEnvironment;
 	}
 
-	private String getActionListUrl() {
+	protected String getActionListUrl() {
 		return Core.getCurrentContextConfig().getBaseUrl()
 				+ Utilities
 						.getApplicationConstant(EdenConstants.APPLICATION_CONTEXT_KEY)
 				+ "/" + "ActionList.do";
 	}
 
-	private String getPreferencesUrl() {
+	protected String getPreferencesUrl() {
 		return Core.getCurrentContextConfig().getBaseUrl()
 				+ Utilities
 						.getApplicationConstant(EdenConstants.APPLICATION_CONTEXT_KEY)

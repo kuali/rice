@@ -940,10 +940,25 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
             assertEquals("Value of attribute is wrong",value,searchAttValue.getSearchableAttributeDisplayValue());
         }
 
-    	attributeName = "XMLSearchableAttributeStdLong";
+        // test general operation
+        attributeName = "XMLSearchableAttributeStdLong";
         keyName = "testLongKey";
         value = "123458";
-    	documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
+        documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
+        attribute = getAttribute(attributeName);
+        values = attribute.getSearchStorageValues(documentcontent);
+        assertEquals("Number of search attribute values is wrong",1,values.size());
+        for (Iterator iter = values.iterator(); iter.hasNext();) {
+            SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
+            assertEquals("Key of attribute is wrong",keyName,searchAttValue.getSearchableAttributeKey());
+            assertEquals("Value of attribute is wrong",value,searchAttValue.getSearchableAttributeDisplayValue());
+        }
+
+        // test operation with leading and trailing spaces in xml doc content
+        attributeName = "XMLSearchableAttributeStdLong";
+        keyName = "testLongKey";
+        value = "123458";
+        documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + " " + value + " " + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
         attribute = getAttribute(attributeName);
         values = attribute.getSearchStorageValues(documentcontent);
         assertEquals("Number of search attribute values is wrong",1,values.size());

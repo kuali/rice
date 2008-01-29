@@ -20,11 +20,11 @@
 
   <bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init" destroy-method="close">
 	<property name="forceShutdown" value="true"/>
-	<property name="transactionTimeout" value="3600"/>
+	<property name="transactionTimeout" value="${transaction.timeout}"/>
   </bean>
   
   <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
-    <property name="transactionTimeout" value="3600"/>
+    <property name="transactionTimeout" value="${transaction.timeout}"/>
   </bean>
 
   <bean id="dataSource" class="com.atomikos.jdbc.nonxa.NonXADataSourceBean">

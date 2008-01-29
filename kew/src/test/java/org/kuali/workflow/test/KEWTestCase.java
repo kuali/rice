@@ -152,6 +152,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 				startLifecycles(this.suiteLifeCycles);
 				SUITE_LIFE_CYCLES_RAN = true;
 			}
+			startSuiteDataLoaderLifecycles();
 			this.perTestLifeCycles = getPerTestLifecycles();
 			startLifecycles(this.perTestLifeCycles);
 			report("Time to start all Lifecycles: " + (System.currentTimeMillis() - initTime));
@@ -168,6 +169,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 		List<Lifecycle> lifecycles = new ArrayList<Lifecycle>();
 		lifecycles.add(new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
 		lifecycles.add(new ClearCacheLifecycle());
+		lifecycles.add(getPerTestDataLoaderLifecycle());
 		return lifecycles;
 	}
 

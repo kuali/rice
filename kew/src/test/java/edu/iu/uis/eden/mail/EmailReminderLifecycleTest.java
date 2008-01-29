@@ -33,12 +33,21 @@ import edu.iu.uis.eden.user.WorkflowUser;
 
 public class EmailReminderLifecycleTest extends KEWTestCase {
 
+    private static final String DEFAULT_EMAIL_CRON_WEEKLY = "0 0 2 ? * 2";
+    private static final String DEFAULT_EMAIL_CRON_DAILY = "0 0 1 * * ?";
+
 	private EmailReminderLifecycle emailReminderLifecycle;
 
+	/**
+	 * This method used to reset email sending to false for both daily and weekly reminders 
+	 * 
+	 * @see org.kuali.rice.test.RiceTestCase#tearDown()
+	 */
 	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-
+	public void tearDown() throws Exception {
+        Core.getCurrentContextConfig().overrideProperty(EdenConstants.DAILY_EMAIL_ACTIVE, "false");
+        Core.getCurrentContextConfig().overrideProperty(EdenConstants.WEEKLY_EMAIL_ACTIVE, "false");
+	    super.tearDown();
 	}
 
 	@Test public void testDailyEmails() throws Exception {
@@ -47,8 +56,6 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		// turn daily on and weekly off
 		Core.getCurrentContextConfig().overrideProperty(EdenConstants.DAILY_EMAIL_ACTIVE, "true");
 		Core.getCurrentContextConfig().overrideProperty(EdenConstants.WEEKLY_EMAIL_ACTIVE, "false");
-
-
 
 		// setup ewestfal to recieve daily emails
 		WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
@@ -63,7 +70,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
 		assertTrue(document.isApprovalRequested());
 
-		int emailsSent = getMockEmailService().emailsSent("ewestfal", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ);
+		int emailsSent = getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ);
 		assertEquals("ewestfal should have no emails.", 0, emailsSent);
 		MockEmailNotificationServiceImpl.SEND_DAILY_REMINDER_CALLED = false;
 		MockEmailNotificationServiceImpl.SEND_WEEKLY_REMINDER_CALLED = false;
@@ -81,10 +88,12 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 
 		emailReminderLifecycle.stop();
 
+		// setting cron to empty so job will cease
+		Core.getCurrentContextConfig().overrideProperty(EdenConstants.DAILY_EMAIL_CRON_EXPRESSION, DEFAULT_EMAIL_CRON_DAILY);
+
 		// try restarting to verify rescheduling of tasks
 		emailReminderLifecycle.start();
 		emailReminderLifecycle.stop();
-
 	}
 
 	@Test public void testWeeklyEmails() throws Exception {
@@ -107,7 +116,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
 		assertTrue(document.isApprovalRequested());
 
-		int emailsSent = getMockEmailService().emailsSent("ewestfal", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ);
+		int emailsSent = getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ);
 		assertEquals("ewestfal should have no emails.", 0, emailsSent);
 		MockEmailNotificationServiceImpl.SEND_DAILY_REMINDER_CALLED = false;
 		MockEmailNotificationServiceImpl.SEND_WEEKLY_REMINDER_CALLED = false;
@@ -125,10 +134,13 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 
 		emailReminderLifecycle.stop();
 
+        // setting cron to empty so job will cease
+        Core.getCurrentContextConfig().overrideProperty(EdenConstants.WEEKLY_EMAIL_CRON_EXPRESSION, DEFAULT_EMAIL_CRON_WEEKLY);
+
 		// try restarting to verify rescheduling of tasks
 		emailReminderLifecycle.start();
+        emailReminderLifecycle.stop();
 	}
-
 
 //	/**
 //	 * Verify that no more messages are put in the queue if there are already weekly and daily reminders in the

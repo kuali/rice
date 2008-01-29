@@ -40,7 +40,6 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
 import org.springframework.core.io.DefaultResourceLoader;
-import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -60,7 +59,6 @@ import edu.iu.uis.eden.user.WorkflowUserId;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.util.XmlHelper;
 import edu.iu.uis.eden.workgroup.WorkflowGroupId;
-import edu.iu.uis.eden.xml.XmlRenderer;
 
 /**
  * EmailContentService that serves EmailContent customizable via XSLT style sheets
@@ -101,7 +99,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     protected static void addObjectXML(Document doc, Object o, Node node, String name) throws Exception {
         Element element = XmlHelper.propertiesToXml(doc, o, name);
 
-        LOG.info(XmlHelper.jotNode(element));
+        LOG.debug(XmlHelper.jotNode(element));
 
         if (node == null) {
             node = doc;
@@ -118,7 +116,11 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
 
     protected static void addCDataElement(Document doc, Element baseElement, String elementName, Object elementData) {
         Element element = doc.createElement(elementName);
-        element.appendChild(doc.createCDATASection(elementData.toString()));
+        String dataValue = "";
+        if (elementData != null) {
+            dataValue = elementData.toString();
+        }
+        element.appendChild(doc.createCDATASection(dataValue));
         baseElement.appendChild(element);
     }
 
@@ -187,7 +189,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
      * @param node - the node object to add the actionItem XML to (defaults to the doc variable if null is passed in)
      * @throws Exception
      */
-    protected static void addSummarizedActionItem(Document doc, ActionItem actionItem, WorkflowUser user, Node node) throws Exception {
+    protected void addSummarizedActionItem(Document doc, ActionItem actionItem, WorkflowUser user, Node node) throws Exception {
         if (node == null) {
             node = doc;
         }
@@ -200,16 +202,21 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         addTextElement(doc, root, "docName", actionItem.getDocName());
         addCDataElement(doc, root, "docLabel", actionItem.getDocLabel());
         addCDataElement(doc, root, "docTitle", actionItem.getDocTitle());
-        addTextElement(doc, root, "docRouteStatus", actionItem.getRouteHeader().getDocRouteStatus());
-        addCDataElement(doc, root, "routeStatusLabel", actionItem.getRouteHeader().getRouteStatusLabel());
+        DocumentRouteHeaderValue routeHeader = getRouteHeader(actionItem);
+        addTextElement(doc, root, "docRouteStatus", routeHeader.getDocRouteStatus());
+        addCDataElement(doc, root, "routeStatusLabel", routeHeader.getRouteStatusLabel());
         addTextElement(doc, root, "actionRequestCd", actionItem.getActionRequestCd());
         addTextElement(doc, root, "actionRequestLabel", actionItem.getActionRequestLabel());
         addDelegatorElement(doc, root, actionItem);
-        addTimestampElement(doc, root, "createDate", actionItem.getRouteHeader().getCreateDate());
+        addTimestampElement(doc, root, "createDate", routeHeader.getCreateDate());
         addWorkgroupRequestElement(doc, root, actionItem);
         addTimestampElement(doc, root, "dateAssigned", actionItem.getDateAssigned());
 
         node.appendChild(root);
+    }
+
+    public DocumentRouteHeaderValue getRouteHeader(ActionItem actionItem) {
+        return actionItem.getRouteHeader();
     }
 
     protected static String transform(Templates style, Document doc) {

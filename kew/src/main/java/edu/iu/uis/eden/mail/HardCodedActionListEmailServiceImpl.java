@@ -1,17 +1,12 @@
 package edu.iu.uis.eden.mail;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-
-import org.kuali.rice.core.Core;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
-import edu.iu.uis.eden.actionlist.ActionListService;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.clientapp.IDocHandler;
 import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
@@ -22,9 +17,6 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.server.BeanConverter;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
-import edu.iu.uis.eden.user.WorkflowUserId;
-import edu.iu.uis.eden.useroptions.UserOptions;
-import edu.iu.uis.eden.useroptions.UserOptionsService;
 import edu.iu.uis.eden.util.Utilities;
 
 /**
@@ -62,53 +54,12 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		return fromAddress;
 	}
 
-	private String getHelpLink() {
-		return getHelpLink(null);
-	}
-
-	private String getHelpLink(DocumentType documentType) {
-		return "For additional help, email " + "<mailto:"
-				+ getDocumentTypeEmailAddress(documentType) + ">";
-	}
-
 	public EmailSubject getEmailSubject() {
 		return new EmailSubject(ACTION_LIST_REMINDER);
 	}
 
 	public EmailSubject getEmailSubject(String customSubject) {
 		return new EmailSubject(ACTION_LIST_REMINDER + " " + customSubject);
-	}
-
-	private EmailFrom getEmailFrom(DocumentType documentType) {
-		return new EmailFrom(getDocumentTypeEmailAddress(documentType));
-	}
-
-	private void sendEmail(WorkflowUser user, EmailSubject subject,
-			EmailBody body) {
-		sendEmail(user, subject, body, null);
-	}
-
-	private void sendEmail(WorkflowUser user, EmailSubject subject,
-			EmailBody body, DocumentType documentType) {
-		try {
-			if (isProduction()) {
-				KEWServiceLocator.getEmailService().sendEmail(
-						getEmailFrom(documentType),
-						new EmailTo(user.getEmailAddress()), subject, body,
-						false);
-			} else {
-				KEWServiceLocator
-						.getEmailService()
-						.sendEmail(
-								getEmailFrom(documentType),
-								new EmailTo(
-										Utilities
-												.getApplicationConstant(EdenConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
-								subject, body, false);
-			}
-		} catch (Exception e) {
-			LOG.error("Error sending email.", e);
-		}
 	}
 
 	public void sendImmediateReminder(WorkflowUser user, ActionItem actionItem) {
@@ -156,11 +107,6 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 							.getDocumentType());
 		}
 
-	}
-
-	private boolean isProduction() {
-		return getDeploymentEnvironment().equals(
-				EdenConstants.PROD_DEPLOYMENT_CODE);
 	}
 
 	public void sendDailyReminder() {
@@ -216,23 +162,6 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 			emailBody = buildWeeklyReminderBody(user, actionItems);
 		}
 		sendEmail(user, getEmailSubject(), new EmailBody(emailBody));
-	}
-
-	private List getUsersWithEmailSetting(String setting) {
-		List users = new ArrayList();
-		Collection userOptions = getUserOptionsService().findByOptionValue(
-				EdenConstants.EMAIL_RMNDR_KEY, setting);
-		for (Iterator iter = userOptions.iterator(); iter.hasNext();) {
-			String workflowId = ((UserOptions) iter.next()).getWorkflowId();
-			try {
-				users.add(getUserService().getWorkflowUser(
-						new WorkflowUserId(workflowId)));
-			} catch (Exception e) {
-				LOG.error("error retrieving workflow user with ID: "
-						+ workflowId);
-			}
-		}
-		return users;
 	}
 
 	public String buildImmediateReminderBody(WorkflowUser user,
@@ -373,23 +302,8 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		return docTypes;
 	}
 
-	private boolean sendActionListEmailNotification() {
-		return EdenConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE
-				.equals(Utilities
-						.getApplicationConstant(EdenConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_KEY));
-	}
-
 	public UserService getUserService() {
 		return (UserService) KEWServiceLocator.getUserService();
-	}
-
-	private UserOptionsService getUserOptionsService() {
-		return (UserOptionsService) KEWServiceLocator
-				.getUserOptionsService();
-	}
-
-	private ActionListService getActionListService() {
-		return (ActionListService) KEWServiceLocator.getActionListService();
 	}
 
 	public String getDeploymentEnvironment() {
@@ -400,17 +314,4 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		this.deploymentEnvironment = deploymentEnvironment;
 	}
 
-	private String getActionListUrl() {
-		return Core.getCurrentContextConfig().getBaseUrl()
-				+ Utilities
-						.getApplicationConstant(EdenConstants.APPLICATION_CONTEXT_KEY)
-				+ "/" + "ActionList.do";
-	}
-
-	private String getPreferencesUrl() {
-		return Core.getCurrentContextConfig().getBaseUrl()
-				+ Utilities
-						.getApplicationConstant(EdenConstants.APPLICATION_CONTEXT_KEY)
-				+ "/" + "Preferences.do";
-	}
 }

@@ -80,22 +80,7 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
                 SUITE_LIFE_CYCLES_RAN = true;
             }
 
-            // This block is walking up the class hierarchy looking for PerSuiteUnitTestData annotations. If it finds one, it
-            // will run it once, then add it to a set so that it does not get run again. This is needed so that multiple tests
-            // can extend from the same suite and so that there can be multiple suites throughout the test source branch.
-            if (getClass().isAnnotationPresent(PerSuiteUnitTestData.class)) {
-                perSuiteDataLoaderLifecycleNamesRun.add(getClass().getName());
-                Class clazz = getClass().getSuperclass();
-                while (!clazz.getName().equals(Object.class.getName())) {
-                    for (Annotation annotation : clazz.getDeclaredAnnotations()) {
-                        if (annotation.annotationType().getName().equals(PerSuiteUnitTestData.class.getName()) && !perSuiteDataLoaderLifecycleNamesRun.contains(clazz.getName())) {
-                            new PerSuiteDataLoaderLifecycle(getClass()).start();
-                        }
-                    }
-                    perSuiteDataLoaderLifecycleNamesRun.add(clazz.getName());
-                    clazz = clazz.getSuperclass();
-                }
-            }
+            startSuiteDataLoaderLifecycles();
 
             startLifecycles(this.perTestLifeCycles);
 
@@ -104,6 +89,29 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
             e.printStackTrace();
             this.stopLifecycles(this.perTestLifeCycles);
             throw new RuntimeException(e);
+        }
+    }
+    
+    /**
+     * This block is walking up the class hierarchy looking for PerSuiteUnitTestData annotations. If it finds one,
+     * it will run it once, then add it to a set so that it does not get run again. This is needed so that multiple 
+     * tests can extend from the same suite and so that there can be multiple suites throughout the test source branch.
+     * 
+     * @throws Exception if a PerSuiteDataLoaderLifecycle is unable to be started
+     */
+    protected void startSuiteDataLoaderLifecycles() throws Exception {
+        if (getClass().isAnnotationPresent(PerSuiteUnitTestData.class)) {
+            perSuiteDataLoaderLifecycleNamesRun.add(getClass().getName());
+            Class clazz = getClass().getSuperclass();
+            while (!clazz.getName().equals(Object.class.getName())) {
+                for (Annotation annotation : clazz.getDeclaredAnnotations()) {
+                    if (annotation.annotationType().getName().equals(PerSuiteUnitTestData.class.getName()) && !perSuiteDataLoaderLifecycleNamesRun.contains(clazz.getName())) {
+                        new PerSuiteDataLoaderLifecycle(getClass()).start();
+                    }
+                }
+                perSuiteDataLoaderLifecycleNamesRun.add(clazz.getName());
+                clazz = clazz.getSuperclass();
+            }
         }
     }
 

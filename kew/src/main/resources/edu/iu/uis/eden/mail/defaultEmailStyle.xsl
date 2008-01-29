@@ -13,7 +13,7 @@
 
     <!-- "Muenchian" method of grouping: http://www.jenitennison.com/xslt/grouping/muenchian.html -->
     <!-- this is a map of document type names to nodesets -->
-    <xsl:key name="doctypes-by-name" match="actionItem/documentType" use="name"/>
+    <xsl:key name="doctypes-by-name" match="summarizedActionItem" use="docName"/>
 
     <xsl:template match="immediateReminder">
         <xsl:variable name="docHandlerUrl" select="actionItem/documentType/docHandlerUrl"/>
@@ -60,14 +60,14 @@ Action Item sent to <xsl:value-of select="actionItem/actionItemAuthenticationUse
     <xsl:template match="dailyReminder">
         <email>
             <subject>OneStart Action List Reminder</subject>
-            <body>Your OneStart Action List has <xsl:value-of select="count(actionItem)"/> eDocs(electronic documents) that need your attention: 
+            <body>Your OneStart Action List has <xsl:value-of select="count(summarizedActionItem)"/> eDocs(electronic documents) that need your attention: 
 <!-- "Muenchian" method of grouping: http://www.jenitennison.com/xslt/grouping/muenchian.html
      this clever little expression ensures that we only match the FIRST node
      for which there is a name-to-nodeset mapping.  More specifically, we want
      to ensure that we only match ONCE, but the FIRST node is the best node
      to match ONCE (or at least it's as good as any other; depends on whether
      we want to preserve relative ordering, etc.) -->
-<xsl:for-each select="actionItem/documentType[count(. | key('doctypes-by-name', name)[1]) = 1]">
+<xsl:for-each select="summarizedActionItem[count(. | key('doctypes-by-name', docName)[1]) = 1]">
     <!-- the xsl:sort modifies the for-each selection order (I think) -->
     <!-- <xsl:sort select="name" /> -->
     <!-- sort by count -->
@@ -75,8 +75,8 @@ Action Item sent to <xsl:value-of select="actionItem/actionItemAuthenticationUse
          switching this to desceding here because 1) it seems more useful for a user and
          2) I want the unit test to pass, and given that it only uses two doc types, reversing
          the order will make it match the literal output of the Java version ;) -->
-    <xsl:sort data-type="number" select="count(key('doctypes-by-name', name))" order="descending"/>
-<xsl:text>&tab;</xsl:text><xsl:value-of select="count(key('doctypes-by-name', name))"/><xsl:text>&tab;</xsl:text><xsl:value-of select="name"/><xsl:text>&n;</xsl:text>
+    <xsl:sort data-type="number" select="count(key('doctypes-by-name', docName))" order="descending"/>
+<xsl:text>&tab;</xsl:text><xsl:value-of select="count(key('doctypes-by-name', docName))"/><xsl:text>&tab;</xsl:text><xsl:value-of select="docName"/><xsl:text>&n;</xsl:text>
 </xsl:for-each>
 
 To respond to each of these eDocs: 
@@ -99,14 +99,14 @@ For additional help, email <![CDATA[<mailto:]]><xsl:value-of select="@applicatio
     <xsl:template match="weeklyReminder">
         <email>
             <subject>OneStart Action List Reminder</subject>
-            <body>Your OneStart Action List has <xsl:value-of select="count(actionItem)"/> eDocs(electronic documents) that need your attention: 
+            <body>Your OneStart Action List has <xsl:value-of select="count(summarizedActionItem)"/> eDocs(electronic documents) that need your attention: 
 <!-- "Muenchian" method of grouping: http://www.jenitennison.com/xslt/grouping/muenchian.html
      this clever little expression ensures that we only match the FIRST node
      for which there is a name-to-nodeset mapping.  More specifically, we want
      to ensure that we only match ONCE, but the FIRST node is the best node
      to match ONCE (or at least it's as good as any other; depends on whether
      we want to preserve relative ordering, etc.) -->
-<xsl:for-each select="actionItem/documentType[count(. | key('doctypes-by-name', name)[1]) = 1]">
+<xsl:for-each select="summarizedActionItem[count(. | key('doctypes-by-name', docName)[1]) = 1]">
     <!-- the xsl:sort modifies the for-each selection order (I think) -->
     <!-- <xsl:sort select="name" /> -->
     <!-- sort by count -->
@@ -114,8 +114,8 @@ For additional help, email <![CDATA[<mailto:]]><xsl:value-of select="@applicatio
          switching this to desceding here because 1) it seems more useful for a user and
          2) I want the unit test to pass, and given that it only uses two doc types, reversing
          the order will make it match the literal output of the Java version ;) -->
-    <xsl:sort data-type="number" select="count(key('doctypes-by-name', name))" order="descending"/>
-<xsl:text>&tab;</xsl:text><xsl:value-of select="count(key('doctypes-by-name', name))"/><xsl:text>&tab;</xsl:text><xsl:value-of select="name"/><xsl:text>&n;</xsl:text>
+    <xsl:sort data-type="number" select="count(key('doctypes-by-name', docName))" order="descending"/>
+<xsl:text>&tab;</xsl:text><xsl:value-of select="count(key('doctypes-by-name', docName))"/><xsl:text>&tab;</xsl:text><xsl:value-of select="docName"/><xsl:text>&n;</xsl:text>
 </xsl:for-each>
 
 To respond to each of these eDocs: 

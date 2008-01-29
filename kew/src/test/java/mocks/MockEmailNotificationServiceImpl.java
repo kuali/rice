@@ -17,29 +17,38 @@
 package mocks;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
-import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.mail.ActionListEmailServiceImpl;
-import edu.iu.uis.eden.mail.EmailBody;
-import edu.iu.uis.eden.mail.EmailSubject;
-import edu.iu.uis.eden.mail.EmailTo;
+import edu.iu.uis.eden.mail.CustomizableActionListEmailServiceImpl;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 
-public class MockEmailNotificationServiceImpl extends ActionListEmailServiceImpl implements MockEmailNotificationService {
+public class MockEmailNotificationServiceImpl extends CustomizableActionListEmailServiceImpl implements MockEmailNotificationService {
+    private static final Logger LOG = Logger.getLogger(MockEmailNotificationServiceImpl.class);
 
     private static Map immediateReminders = new HashMap();
+    private static Map<String,Integer> aggregateReminderCount = new HashMap<String,Integer>();
     public static boolean SEND_DAILY_REMINDER_CALLED = false;
     public static boolean SEND_WEEKLY_REMINDER_CALLED = false;
 
+    /**
+     * This overridden method will perform the standard operations from edu.iu.uis.eden.mail.ActionListEmailServiceImpl but will also keep track of action
+     * items processed
+     * 
+     * @see edu.iu.uis.eden.mail.ActionListEmailServiceImpl#sendImmediateReminder(edu.iu.uis.eden.user.WorkflowUser, edu.iu.uis.eden.actionitem.ActionItem)
+     */
+    @Override
     public void sendImmediateReminder(WorkflowUser user, ActionItem actionItem) {
+        super.sendImmediateReminder(user, actionItem);
         List actionItemsSentUser = (List)immediateReminders.get(user.getWorkflowId());
         if (actionItemsSentUser == null) {
             actionItemsSentUser = new ArrayList();
@@ -48,30 +57,54 @@ public class MockEmailNotificationServiceImpl extends ActionListEmailServiceImpl
         actionItemsSentUser.add(actionItem);
     }
 
+    /**
+     * This overridden method returns a value of true always
+     */
+    @Override
+    protected boolean sendActionListEmailNotification() {
+        
+        return true;
+    }
 
-
-    public String getApplicationEmailAddress() {
-		throw new UnsupportedOperationException("Not currently supported in test mode.");
-	}
-
-
-
-	public String getDocumentTypeEmailAddress(DocumentType documentType) {
-		throw new UnsupportedOperationException("Not currently supported in test mode.");
-	}
-
+    @Override
 	public void sendDailyReminder() {
+	    super.sendDailyReminder();
 		SEND_DAILY_REMINDER_CALLED = true;
     }
 
+    @Override
     public void sendWeeklyReminder() {
+        super.sendWeeklyReminder();
     	SEND_WEEKLY_REMINDER_CALLED = true;
     }
 
-    public void sendEmail(EmailTo to, EmailSubject subject, EmailBody body) {
+    @Override
+    protected void sendPeriodicReminder(WorkflowUser user, Collection actionItems, String emailSetting) {
+        super.sendPeriodicReminder(user, actionItems, emailSetting);
+        if (!aggregateReminderCount.containsKey(emailSetting)) {
+            aggregateReminderCount.put(emailSetting, actionItems.size());
+        } else {
+            aggregateReminderCount.put(emailSetting, aggregateReminderCount.get(emailSetting) + actionItems.size());
+        }
+    }
+    
+    public Integer getTotalPeriodicRemindersSent(String emailReminderConstant) {
+        return aggregateReminderCount.get(emailReminderConstant);
     }
 
-    public int emailsSent(String networkId, Long documentId, String actionRequestCd) throws EdenUserNotFoundException {
+    public Integer getTotalPeriodicRemindersSent() {
+        int total = 0;
+        for (Map.Entry<String, Integer> mapEntry : aggregateReminderCount.entrySet()) {
+            total += mapEntry.getValue();
+        }
+        return Integer.valueOf(total);
+    }
+    /**
+     * This method is used to get the 
+     * 
+     * @see mocks.MockEmailNotificationService#immediateReminderEmailsSent(java.lang.String, java.lang.Long, java.lang.String)
+     */
+    public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd) throws EdenUserNotFoundException {
         WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId(networkId));
         List actionItemsSentUser = (List)immediateReminders.get(user.getWorkflowId());
         if (actionItemsSentUser == null) {
@@ -86,5 +119,4 @@ public class MockEmailNotificationServiceImpl extends ActionListEmailServiceImpl
         }
         return emailsSent;
     }
-
 }

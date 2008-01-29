@@ -390,6 +390,13 @@
 			<!-- This is set to KEWNEW for the RouteQueueTest.testGetNextDocumentsWithMessageEntity() -->
 			<messageEntity>KEWNEW</messageEntity>
 		</documentType>
+		<documentType>
+			<name>TestDocumentType3</name>
+			<parent>TestDocumentType</parent>
+			<!-- <description>TestDocumentType</description> -->
+			<label>TestDocumentType</label>
+			<docHandler>_blank</docHandler>
+		</documentType>
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>

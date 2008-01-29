@@ -90,40 +90,40 @@ public class DisapproveActionTest extends KEWTestCase {
         assertFalse("ack should be requested as part of disapprove notification", document.isAcknowledgeRequested());
 
         //check that all the emailing went right.
-        assertEquals("jhopf should have been sent an approve email", 1, getMockEmailService().emailsSent("jhopf", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
-        assertEquals("jhopf should have been sent an ack email", 1, getMockEmailService().emailsSent("jhopf", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("jhopf should have been sent an approve email", 1, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("jhopf should have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
 
-        assertEquals("ewestfal should have been sent an approve email", 1, getMockEmailService().emailsSent("ewestfal", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
-        assertEquals("ewestfal should have been sent an ack email", 1, getMockEmailService().emailsSent("ewestfal", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("ewestfal should have been sent an approve email", 1, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("ewestfal should have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
 
         //rkirkend is a primary delegate and therefore should not receive email notification
-        assertEquals("rkirkend should not have been sent an approve email", 0, getMockEmailService().emailsSent("rkirkend", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
-        assertEquals("rkirkend should have been sent an ack email", 1, getMockEmailService().emailsSent("rkirkend", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("rkirkend should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("rkirkend should have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
 
         //temay is rkirkend primary delegate she should have received notification
-        assertEquals("temay should have been sent an approve email", 1, getMockEmailService().emailsSent("temay", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("temay should have been sent an approve email", 1, getMockEmailService().immediateReminderEmailsSent("temay", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
 
         //there should be no ack emails for temay
-        assertEquals("temay should have been sent an ack email", 0, getMockEmailService().emailsSent("temay", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("temay should have been sent an ack email", 0, getMockEmailService().immediateReminderEmailsSent("temay", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
 
         // pmckown is a secondary delegate here so he should NOT have received a notification
-        assertEquals("pmckown should not have been sent an approve email", 0, getMockEmailService().emailsSent("pmckown", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
-        assertEquals("pmckown should not have been sent an ack email", 0, getMockEmailService().emailsSent("pmckown", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("pmckown should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("pmckown should not have been sent an ack email", 0, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
 
         //this is a secondary delegator and should receive notifications
-        assertEquals("jitrue should have been sent an approve email", 1, getMockEmailService().emailsSent("jitrue", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("jitrue should have been sent an approve email", 1, getMockEmailService().immediateReminderEmailsSent("jitrue", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
         //no ack emails to jitrue
-        assertEquals("jitrue should have been sent an ack email", 0, getMockEmailService().emailsSent("jitrue", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("jitrue should have been sent an ack email", 0, getMockEmailService().immediateReminderEmailsSent("jitrue", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
 
         //the 2nd delegates should NOT receive notifications by default
-        assertEquals("natjohns should not have been sent an approve email", 0, getMockEmailService().emailsSent("natjohns", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("natjohns should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("natjohns", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
         //2ndary delegate
-        assertEquals("natjohns should not have been sent an ack email", 1, getMockEmailService().emailsSent("natjohns", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
-        assertEquals("shenl should not have been sent an approve email", 0, getMockEmailService().emailsSent("shenl", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
-        assertEquals("shenl should not have been sent an ack email", 0, getMockEmailService().emailsSent("shenl", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("natjohns should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("natjohns", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("shenl should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("shenl", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("shenl should not have been sent an ack email", 0, getMockEmailService().immediateReminderEmailsSent("shenl", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
 
-        assertEquals("bmcgough should have been sent an approve email", 1, getMockEmailService().emailsSent("bmcgough", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
-        assertEquals("bmcgough should not have been sent an ack email", 0, getMockEmailService().emailsSent("bmcgough", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("bmcgough should have been sent an approve email", 1, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("bmcgough should not have been sent an ack email", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
     }
 
     /**
@@ -131,7 +131,7 @@ public class DisapproveActionTest extends KEWTestCase {
      *
      * This test will fail until EN-637 is resolved.
      */
-    @Ignore
+    @Ignore("This test will fail until EN-637 is resolved")
     @Test public void testInitiatorRoleDisapprove() throws WorkflowException {
         // test initiator disapproval of their own doc via InitiatorRoleAttribute
         WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("arh14"), "InitiatorRoleApprovalTest");
@@ -147,7 +147,7 @@ public class DisapproveActionTest extends KEWTestCase {
     /**
      * This test will fail until EN-637 is resolved.
      */
-    @Ignore
+    @Ignore("This test will fail until EN-637 is resolved")
     @Test public void testInitiatorDisapprove() throws WorkflowException {
         // test initiator disapproval, via normal request with ignoreprevious=true
         WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);

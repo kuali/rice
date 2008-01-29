@@ -60,7 +60,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         }
         LOG.info("running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
         Collection collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItemActionListExtension.class, crit));
-        LOG.info("finished running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+        LOG.info("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
         return createActionList(collection);
     }
 

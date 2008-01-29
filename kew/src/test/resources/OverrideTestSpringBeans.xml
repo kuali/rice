@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
-
+<!-- 
   <bean id="enActionListEmailService" class="mocks.MockEmailNotificationServiceImpl" />
+-->
   <bean id="enExceptionRoutingService" class="edu.iu.uis.eden.routemanager.TestExceptionRoutingServiceImpl"/>
+  <bean id="enEmailService" class="mocks.MockDefaultEmailServiceImpl" />
+  <bean id="enActionListEmailService" class="mocks.MockEmailNotificationServiceImpl">
+    <property name="deploymentEnvironment">
+      <value>${environment}</value>
+    </property>
+    <property name="emailContentGenerator">
+      <bean class="mocks.MockStyleableEmailContentServiceImpl">
+        <property name="styleService" ref="enStyleService"/>
+      </bean>
+    </property>
+  </bean>
+
   <!--
     a "fake" service, used by ServiceInvocationRuleTest; in an ideal demonstration this would live in
     application space/context/resource loader, but for now it's still in the KEW module context  

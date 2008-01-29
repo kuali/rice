@@ -133,34 +133,34 @@ public class BlanketApproveTest extends KEWTestCase {
         document = new WorkflowDocument(new NetworkIdVO("bmcgough"), document.getRouteHeaderId());
         assertTrue(document.stateIsProcessed());
         assertTrue(document.isAcknowledgeRequested());
-        assertEquals("bmcgough should not have been sent an approve email", 0, getMockEmailService().emailsSent("bmcgough", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
-        assertEquals("bmcgough should not have been sent an ack email", 1, getMockEmailService().emailsSent("bmcgough", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("bmcgough should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("bmcgough should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
 
         document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
         assertTrue(document.stateIsProcessed());
         assertTrue(document.isAcknowledgeRequested());
-        assertEquals("rkirkend should not have been sent an approve email", 0, getMockEmailService().emailsSent("rkirkend", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));        
-        assertEquals("rkirkend should not have been sent an ack email", 1, getMockEmailService().emailsSent("rkirkend", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("rkirkend should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));        
+        assertEquals("rkirkend should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
         document = new WorkflowDocument(new NetworkIdVO("pmckown"), document.getRouteHeaderId());
         assertTrue(document.stateIsProcessed());
         assertTrue(document.isAcknowledgeRequested());
-        assertEquals("pmckown should not have been sent an approve email", 0, getMockEmailService().emailsSent("pmckown", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
-        assertEquals("pmckown should not have been sent an ack email", 1, getMockEmailService().emailsSent("pmckown", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("pmckown should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("pmckown should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
         document = new WorkflowDocument(new NetworkIdVO("temay"), document.getRouteHeaderId());
         assertTrue(document.stateIsProcessed());
         assertTrue(document.isAcknowledgeRequested());
-        assertEquals("rkirkend should have been sent an temay", 1, getMockEmailService().emailsSent("temay", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));        
+        assertEquals("rkirkend should have been sent an temay", 1, getMockEmailService().immediateReminderEmailsSent("temay", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));        
         document.acknowledge("");
         
         document = new WorkflowDocument(new NetworkIdVO("jhopf"), document.getRouteHeaderId());
         assertTrue(document.stateIsProcessed());
         assertTrue(document.isAcknowledgeRequested());
-        assertEquals("rkirkend should have been sent an jhopf", 1, getMockEmailService().emailsSent("jhopf", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("rkirkend should have been sent an jhopf", 1, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getRouteHeaderId(), EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
         document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());

@@ -20,8 +20,10 @@ import org.w3c.dom.Element;
 import edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute;
 
 /**
- * This class extends the workflow xml rule attribute implementation to use the information in the data dictionary to generate
- * labels.
+ * This class extends the workflow xml rule attribute implementation to use the information in the data dictionary to generate labels.
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
  */
 public class KualiXmlRuleAttributeImpl extends StandardGenericXMLRuleAttribute implements KualiXmlAttribute {
 	private static final long serialVersionUID = -3453451186396963835L;

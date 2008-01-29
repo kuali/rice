@@ -19,6 +19,12 @@ import org.w3c.dom.Element;
 
 import edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute;
 
+/**
+ * This class is used to define Kuali searchable attributes
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
+ */
 public class KualiXmlSearchableAttributeImpl extends StandardGenericXMLSearchableAttribute implements KualiXmlAttribute {
     private static final long serialVersionUID = -5759823164605651979L;
 
@@ -29,6 +35,12 @@ public class KualiXmlSearchableAttributeImpl extends StandardGenericXMLSearchabl
         super();
     }
 
+    /**
+     * This method overrides the super class and modifies the XML that it operates on to put the name and the title in the place
+     * where the super class expects to see them, even though they may no longer exist in the original XML.
+     * 
+     * @see edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
+     */
     public Element getConfigXML() {
         Element root = getAttributeConfigXML();
         KualiXmlAttributeHelper attributeHelper = new KualiXmlAttributeHelper();

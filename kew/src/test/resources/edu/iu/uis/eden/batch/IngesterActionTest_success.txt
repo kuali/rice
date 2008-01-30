@@ -1,4 +1,4 @@
-${basedir}/src/main/config/bootstrap/BootstrapData.xml=true
+${basedir}/src/main/config/xml/KEWBootstrap.xml=true
 ${basedir}/src/test/resources/edu/iu/uis/eden/batch/data/ApplicationConstantsContent.xml=true
 ${basedir}/src/test/resources/edu/iu/uis/eden/batch/data/UserContent.xml=true
 ${basedir}/src/test/resources/edu/iu/uis/eden/batch/data/WorkgroupContent.xml=true

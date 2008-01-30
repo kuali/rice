@@ -149,6 +149,7 @@
           <finalApproval>false</finalApproval>
         </start>
       </routeNodes>
+    </documentType>
 
     <documentType>
       <name>KualiNamespaceMaintenanceDocument</name>
@@ -174,8 +175,6 @@
         </start>
       </routeNodes>
     </documentType>
-
-    <documentType>
-    </documentType>
+    
   </documentTypes>
 </data>

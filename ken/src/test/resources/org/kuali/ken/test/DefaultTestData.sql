@@ -1,5 +1,8 @@
 alter session set NLS_TIMESTAMP_FORMAT='YYYY-MM-DD HH24:MI:SS.FF1';
 
+-- bootstrap defines the notification system user, with id 1...we need to clear this out
+DELETE FROM NOTIFICATION_PRODUCERS ;
+
 -- NOTIFICATION_PRODUCERS --
 INSERT INTO NOTIFICATION_PRODUCERS 
 (ID, NAME, DESCRIPTION, CONTACT_INFO) 

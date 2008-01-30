@@ -29,6 +29,10 @@
         				<field attributeName="id" />
         				<field attributeName="name" />
         				<field attributeName="description" />
+        			</inquiryFields>
+        		</inquirySection>
+        		<inquirySection title="Attributes">
+        			<inquiryFields>
         				<inquiryCollection name="NamespaceAttributes"
         					businessObjectClass="org.kuali.rice.kim.bo.NamespaceDefaultAttribute">
         					<field attributeName="id" />

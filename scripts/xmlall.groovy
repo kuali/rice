@@ -41,7 +41,8 @@ DATA_TYPES.each() {
 }
 
 RICE_BOOTSTRAP_XML = PROJECT_DIR + '/kns/src/main/config/xml/RiceBootstrapData.xml' 
-RICE_SAMPLEAPP_XML = PROJECT_DIR + '/kns/src/main/config/xml/RiceSampleData.xml'
+RICE_SAMPLEAPP_XML = PROJECT_DIR + '/kns/src/main/config/xml/RiceSampleAppData.xml'
+RICE_SAMPLEAPP_MASTER_XML = PROJECT_DIR + '/kns/src/main/config/xml/RiceSampleAppWorkflowBootstrap.xml'
 
 // prompt and read user input
 println warningtext()
@@ -55,30 +56,36 @@ println ""
 println "Creating rice bootstrap xml: " + RICE_BOOTSTRAP_XML
 println ""
 
-concat(RICE_BOOTSTRAP_XML, {
+bootstrap = getEmptyFile(RICE_BOOTSTRAP_XML)
+concat(bootstrap, {
     moduleName ->
         PROJECT_DIR + '/' + moduleName + '/src/main/config/xml/' + moduleName.toUpperCase() + 'Bootstrap.xml'
-})
+}, null)
 
 println ""
-println "Creating rice sample app  xml: " + RICE_SAMPLEAPP_XML
+println "Creating rice sample app  xml: " + RICE_SAMPLEAPP_MASTER_XML
 println ""
 
-concat(RICE_SAMPLEAPP_XML, {
+sampleapp = getEmptyFile(RICE_SAMPLEAPP_MASTER_XML)
+
+concat(sampleapp, {
     moduleName ->
         PROJECT_DIR + '/' + moduleName + '/src/main/config/xml/' + moduleName.toUpperCase() + 'SampleData.xml'
-})
+}, [RICE_BOOTSTRAP_XML, RICE_SAMPLEAPP_XML])
 
 println "Done."
 
 System.exit(0)
 
-def concat(target, pathClosure) {
-    xml = new File(target)
-    if (xml.exists()) {
-        xml.delete()
+def getEmptyFile(path) {
+    file = new File(path)
+    if (file.exists()) {
+        file.delete()
     }
+    return file
+}
 
+def concat(xml, pathClosure, extra) {
     // open tag
     xml << '<?xml version="1.0" encoding="UTF-8"?><data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">'
 
@@ -87,15 +94,19 @@ def concat(target, pathClosure) {
     DATA_TYPES.each() {
         dataType ->
             xml << '\r\n'
-            xml << DATA_TYPE_ELEMENT[dataType]
+            xml << '    ' + DATA_TYPE_ELEMENT[dataType]
             xml << '\r\n'
             MODULES.each() {
                 moduleName ->
                 path = pathClosure(moduleName)
-                println "Concatenating " + dataType + " for module " + moduleName.toUpperCase() + ": " + path
                 extract(xml, path, dataType)
             }
-            xml << '</' + dataType + '>\r\n'
+            if (extra != null) {
+                for (path in extra) { 
+                    extract(xml, path, dataType)
+                }
+            }
+            xml << '    </' + dataType + '>\r\n'
     }
 
     // close tag
@@ -108,9 +119,10 @@ def concat(target, pathClosure) {
 def extract(xml, file, dataType) {
     f = new File(file)
     if (!f.isFile()) return
+    println "Concatenating " + dataType + " from " + path
     m = f.getText() =~ REGEXES[dataType]
     if (m.matches()) {
-      xml << '\r\n<!-- ' + dataType + ' elements from ' + path + ' -->\r\n\r\n'
+      xml << '\r\n        <!-- ' + dataType + ' elements from ' + file + ' -->\r\n'
       for (i in 1..m.groupCount()) {
             xml << m.group(i)
             xml << '\r\n\r\n'

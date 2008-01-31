@@ -1,3 +1,31 @@
+-- Thu Jan 31 12:03:53 EST 2008
+-- This file has been auto-generated from dball.groovy
+-- It contains the master rice destroy sql from rice_db_destroy.sql
+-- As well as the sample app drop script rice_sample_app_drops.sql
+--
+
+
+-- Concatenating rice_sample_app_drops.sql
+drop table trv_doc_2
+/
+drop table trv_acct
+/
+drop table trv_doc_acct
+/
+drop table trv_acct_fo
+/
+drop table trav_doc_2_accounts
+/
+drop table TRV_ACCT_TYPE
+/
+drop table TRV_ACCT_EXT 
+/
+drop sequence SEQ_TRAVEL_DOC_ID
+/
+drop sequence SEQ_TRAVEL_FO_ID
+/
+
+-- Concatenating rice_db_destroy.sql
 DROP SEQUENCE LOOKUP_RESULT_SEQUENCE_NBR_SEQ 
 /
 DROP SEQUENCE NTE_ID_SEQ 
@@ -392,3 +420,4 @@ DROP TABLE KOM_ORGANIZATION_CATEGORIES_T CASCADE CONSTRAINTS
 /
 DROP TABLE KOM_ORGANIZATION_CONTEXTS_T CASCADE CONSTRAINTS
 /
+

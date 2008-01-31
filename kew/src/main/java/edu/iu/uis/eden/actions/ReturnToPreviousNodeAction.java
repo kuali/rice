@@ -83,7 +83,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
      * Constructor used to override the action taken code...e.g. when being performed as part of a Move action
      */
     protected ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String nodeName, boolean sendNotifications) {
-        super(overrideActionTakenCode == null ? EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD : overrideActionTakenCode, routeHeader, user, annotation);
+        super(overrideActionTakenCode, routeHeader, user, annotation);
         this.nodeName = nodeName;
         this.sendNotifications = sendNotifications;
     }
@@ -92,7 +92,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
      * Constructor used to override the action taken code...e.g. when being performed as part of a Move action
      */
     public ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, WorkflowUser user, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
-        super(overrideActionTakenCode == null ? EdenConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD : overrideActionTakenCode, routeHeader, user, annotation, runPostProcessorLogic);
+        super(overrideActionTakenCode, routeHeader, user, annotation, runPostProcessorLogic);
         this.nodeName = nodeName;
         this.sendNotifications = sendNotifications;
     }

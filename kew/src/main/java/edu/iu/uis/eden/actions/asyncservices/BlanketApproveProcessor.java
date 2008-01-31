@@ -18,8 +18,6 @@ package edu.iu.uis.eden.actions.asyncservices;
 
 import java.util.Set;
 
-import org.kuali.workflow.actions.asyncservices.DeferredActionServiceImpl;
-
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actions.BlanketApproveAction;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
@@ -37,6 +35,16 @@ public class BlanketApproveProcessor implements BlanketApproveProcessorService {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveProcessor.class);
 
 	public void doBlanketApproveWork(Long documentId, WorkflowUser user, Long actionTakenId, Set<String> nodeNames) {
-		new DeferredActionServiceImpl().performDeferredWork("blanketapprove", documentId, user, actionTakenId, nodeNames);
+		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+		ActionTakenValue actionTaken = KEWServiceLocator.getActionTakenService().findByActionTakenId(actionTakenId);
+		BlanketApproveAction blanketApprove = new BlanketApproveAction(document, user, "", nodeNames);
+		LOG.debug("Doing blanket approve work document " + document.getRouteHeaderId());
+		try {
+			blanketApprove.performDeferredBlanketApproveWork(actionTaken);
+		} catch (Exception e) {
+			throw new WorkflowRuntimeException(e);
+		}
+		LOG.debug("Work done and document requeued, document " + document.getRouteHeaderId());
 	}
 }

@@ -151,7 +151,11 @@ public abstract class ActionTakenEvent {
 	    queueDocumentProcessing();
 	}
 
-	protected void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {}
+	protected abstract void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException;
+
+	public void performDeferredAction() {
+
+	}
 
 	protected void checkLocking() throws InvalidActionTakenException {
 		if (routeHeader.isLocked()) {

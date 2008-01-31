@@ -132,7 +132,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
         return "";
     }
 
-    public void performAction() throws InvalidActionTakenException, EdenUserNotFoundException {
+    public void recordAction() throws InvalidActionTakenException, EdenUserNotFoundException {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
         checkLocking();
         updateSearchableAttributesIfPossible();

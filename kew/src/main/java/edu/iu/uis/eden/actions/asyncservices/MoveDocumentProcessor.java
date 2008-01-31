@@ -18,9 +18,11 @@ package edu.iu.uis.eden.actions.asyncservices;
 
 import java.util.Set;
 
-import org.kuali.workflow.actions.asyncservices.DeferredActionServiceImpl;
-
+import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.actions.MoveDocumentAction;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
+import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.WorkflowUser;
 
@@ -33,7 +35,15 @@ public class MoveDocumentProcessor implements MoveDocumentService {
     
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MoveDocumentProcessor.class);
 
-	public void moveDocument(WorkflowUser user, DocumentRouteHeaderValue routeHeaderId, ActionTakenValue actionTaken, Set nodeNames) {
-	    new DeferredActionServiceImpl().performDeferredWork("movedocument", routeHeaderId.getRouteHeaderId(), user, actionTaken, nodeNames);
+	public void moveDocument(WorkflowUser user, DocumentRouteHeaderValue document, ActionTakenValue actionTaken, Set nodeNames) {
+		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(document.getRouteHeaderId(), true);
+		MoveDocumentAction moveAction = new MoveDocumentAction(document, user, "", null);
+        LOG.debug("Doing move document work " + document.getRouteHeaderId());
+        try {
+			moveAction.performDeferredMoveDocumentWork(actionTaken, nodeNames);
+		} catch (Exception e) {
+			throw new WorkflowRuntimeException(e);
+		}
+        LOG.debug("Work done and document requeued, document " + document.getRouteHeaderId());
 	}
 }

@@ -149,7 +149,5 @@ public class CancelAction extends ActionTakenEvent {
             LOG.warn(ex, ex);
             throw new InvalidActionTakenException(ex.getMessage());
         }
-
-        KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
     }
 }

@@ -16,9 +16,10 @@
 	<param name="use.sqlDataLoaderLifecycle">true</param>
 	<param name="test.mode">true</param>
     <param name="ken.test.mode">true</param>
+	<param name="attachments.pending.directory">${java.io.tmpdir}</param>
+	<param name="attachments.directory">${java.io.tmpdir}</param>
 
 	<!-- Misc params -->
-	<param name="production.environment.code">PRD</param>
 	<param name="institution">iu</param>
 	<param name="version">03/19/2007 01:59 PM</param>
 	<param name="security.directory">/usr/local/rice/</param>
@@ -73,11 +74,15 @@
 	<param name="mail.relay.server">mail.relay.server</param>
 	<param name="mailing.list.batch">mailing.list.batch</param>
 	<param name="encryption.key">7IC64w6ksLU</param>
+<!--
+	<param name="rice.user">true</param>
+-->	
+	<param name="kns.test.port">9916</param>
+	<!-- ?? - two keystore properties below are duplicates from above -->
 	<param name="keystore.alias">kul</param>
 	<param name="keystore.password">kulpass</param>
 
 	<param name="kfsLocator.useAppContext">true</param>
-	<param name="production.environment.code">prd</param>
 
 	<!-- Ken stuffs... -->
     <!-- stock notification system configuration properties -->

@@ -15,9 +15,13 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.core.service.BusinessObjectService;
+import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Principal;
@@ -25,26 +29,34 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.service.GroupService;
 
 /**
- * This is the default KIM GroupService implementation that is provided by Rice.  This will mature over time as the KIM 
+ * This is the default KIM GroupService implementation that is provided by Rice.  This will mature over time as the KIM
  * component is developed.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class GroupServiceImpl implements GroupService {
 
     /**
-     * This overridden method ...
-     * 
+     * KIM service API method that returns a list of all Groups in the system
+     *
+     * @return         List of all Groups in the system
+     *
+     *
      * @see org.kuali.rice.kim.service.GroupService#getAllGroupNames()
      */
     public List<String> getAllGroupNames() {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
+        final Collection<Group> groups = KNSServiceLocator.getBusinessObjectService().findAll(Group.class);
+        final ArrayList<String> names = new ArrayList<String>(groups.size());
+        for (Group g : groups) {
+            names.add(g.getName());
+        }
+        return names;
     }
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.service.GroupService#getAllGroups()
      */
     public List<Group> getAllGroups() {
@@ -54,7 +66,7 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.service.GroupService#getGroupMemberNames(java.lang.String)
      */
     public List<String> getGroupMemberNames(String groupName) {
@@ -64,7 +76,7 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.service.GroupService#getGroupMembers(java.lang.String)
      */
     public List<Group> getGroupMembers(String groupName) {
@@ -74,7 +86,7 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.service.GroupService#getGroupNamesWithAttributes(java.util.Map)
      */
     public List<String> getGroupNamesWithAttributes(Map<String, String> groupAttributes) {
@@ -84,7 +96,7 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.service.GroupService#getGroupsWithAttributes(java.util.Map)
      */
     public List<Group> getGroupsWithAttributes(Map<String, String> groupAttributes) {
@@ -94,7 +106,7 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.service.GroupService#getPersonMemberIds(java.lang.String)
      */
     public List<Long> getPersonMemberIds(String groupName) {
@@ -104,7 +116,7 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.service.GroupService#getPersonMembers(java.lang.String)
      */
     public List<Person> getPersonMembers(String groupName) {
@@ -114,7 +126,7 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.service.GroupService#getPrincipalMemberNames(java.lang.String)
      */
     public List<String> getPrincipalMemberNames(String groupName) {
@@ -124,7 +136,7 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.service.GroupService#getPrincipalMembers(java.lang.String)
      */
     public List<Principal> getPrincipalMembers(String groupName) {
@@ -134,7 +146,7 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.service.GroupService#getRoleNamesForGroup(java.lang.String)
      */
     public List<String> getRoleNamesForGroup(String groupName) {
@@ -144,7 +156,7 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.service.GroupService#getRolesForGroup(java.lang.String)
      */
     public List<Role> getRolesForGroup(String groupName) {
@@ -154,7 +166,7 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.service.GroupService#hasAttributes(java.lang.String, java.util.Map)
      */
     public boolean hasAttributes(String groupName, Map<String, String> groupAttributes) {

@@ -15,13 +15,40 @@
  */
 package org.kuali.rice.kim.service;
 
-import org.kuali.rice.kim.test.KIMTestCase;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
+import org.junit.Test;
+import org.kuali.rice.TestBase;
+import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 /**
- * Basic test to verify we can access the GroupService through the GRL. 
- * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * Basic test to verify we can access the GroupService through the GRL.
  *
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class GroupServiceTest extends KIMTestCase {
+public class GroupServiceTest extends TestBase {
+    private static final String TEST_GROUP = "KIM Test Group";
+
+    @Test
+    public void testGetAllGroupNames_SyncJava() throws Exception {
+        QName serviceName = new QName("KIM", "groupService");
+        GroupService groupSoapService = (GroupService) GlobalResourceLoader.getService(serviceName);
+
+        List<String> groupNames = groupSoapService.getAllGroupNames();
+        assertTrue(groupNames.size() == 1);
+        assertTrue(groupNames.get(0).equals(TEST_GROUP));
+    }
+
+
+    @Test
+    public void testGetAllGroupN_SyncSOAP() throws Exception {
+        QName serviceName = new QName("KIM", "groupSoapService");
+        GroupService groupSoapService = (GroupService) GlobalResourceLoader.getService(serviceName);
+        List<String> groupNames = groupSoapService.getAllGroupNames();
+        assertTrue(groupNames.size() == 1);
+        assertTrue(groupNames.get(0).equals(TEST_GROUP));
+   }
+
 }

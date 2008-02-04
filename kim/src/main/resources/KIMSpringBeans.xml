@@ -23,7 +23,7 @@
 			<ref local="jtaTransactionManager" />
 		</property>
 	</bean>
-	
+
 	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" lazy-init="true">
 		<property name="transactionManager">
 			<ref bean="transactionManager" />
@@ -60,7 +60,7 @@
 			</list>
 		</property>
 		<property name="beanNames">
-			<list>				
+			<list>
 				<idref local="personService" />
 				<idref local="groupService" />
 				<idref local="namespaceService" />
@@ -69,10 +69,35 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="personService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl" />
 	<bean id="groupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl" />
 	<bean id="namespaceService" class="org.kuali.rice.kim.service.impl.NamespaceServiceImpl" />
 	<bean id="qualifiedRoleService" class="org.kuali.rice.kim.service.impl.QualifiedRoleServiceImpl" />
 	<bean id="roleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl" />
+
+
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+          <property name="service" ref="groupService" />
+          <property name="serviceNameSpaceURI" value="KIM"/>
+          <property name="localServiceName" value="groupSoapService" />
+          <property name="priority" value="3" />
+          <property name="retryAttempts" value="0" />
+          <property name="busSecurity" value="false"/>
+        </bean>
+      </property>
+    </bean>
+
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+          <property name="service" ref="groupService" />
+          <property name="serviceNameSpaceURI" value="KIM"/>
+          <property name="localServiceName" value="groupService" />
+          <property name="retryAttempts" value="0" />
+        </bean>
+      </property>
+    </bean>
 </beans>

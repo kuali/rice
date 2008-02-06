@@ -15,12 +15,17 @@ package org.kuali.rice.kim.test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
-import javax.xml.namespace.QName;
-
+import org.kuali.rice.config.Config;
+import org.kuali.rice.core.Core;
+import org.kuali.rice.lifecycle.BaseLifecycle;
 import org.kuali.rice.lifecycle.Lifecycle;
-import org.kuali.rice.resourceloader.SpringResourceLoader;
+import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.resourceloader.ResourceLoader;
 import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.web.jetty.JettyServer;
+import org.mortbay.jetty.webapp.WebAppClassLoader;
 
 /**
  * This is test base that should be used for all KIM unit tests. All non-web unit tests for KIM should extend this base
@@ -30,8 +35,8 @@ import org.kuali.rice.test.RiceTestCase;
  */
 public abstract class KIMTestCase extends RiceTestCase {
 
-	private static final String KIM_TEST_CONTEXT_LOC = "classpath:KimTestHarnessSpring.xml";
-	private SpringResourceLoader springContextResourceLoader;
+	//private static final String KIM_TEST_CONTEXT_LOC = "classpath:KimTestHarnessSpring.xml";
+	//private SpringResourceLoader springContextResourceLoader;
 
 	/**
      * This overridden method just returns an empty array.
@@ -51,10 +56,33 @@ public abstract class KIMTestCase extends RiceTestCase {
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
 		List<Lifecycle> lifeCycles = super.getSuiteLifecycles();
-		this.springContextResourceLoader = new SpringResourceLoader(new QName("kimtestharness"), KIM_TEST_CONTEXT_LOC);
-		lifeCycles.add(this.springContextResourceLoader);
+		JettyServer server = new JettyServer(9972, "/kim-test", "/../kim/src/test/webapp");
+        lifeCycles.add(server);
+        lifeCycles.add(new InitializeGRL());
+        
+		//this.springContextResourceLoader = new SpringResourceLoader(new QName("kimtestharness"), KIM_TEST_CONTEXT_LOC);
+		//lifeCycles.add(this.springContextResourceLoader);
 		return lifeCycles;
 	}
+	
+	private class InitializeGRL extends BaseLifecycle {
+        @Override
+        public void start() throws Exception {
+            Map<ClassLoader, Config> configs = Core.getCONFIGS();
+            for (Map.Entry<ClassLoader, Config> configEntry : configs.entrySet()) {
+                if (configEntry.getKey() instanceof WebAppClassLoader) {
+                    ResourceLoader rl = GlobalResourceLoader.getResourceLoader(configEntry.getKey());
+                    if (rl == null) {
+                        fail("didn't find resource loader for workflow test harness web app");
+                    }
+                    GlobalResourceLoader.addResourceLoader(rl);
+                    configs.put(Thread.currentThread().getContextClassLoader(), configEntry.getValue());
+                }
+            }
+            super.start();
+        }
+
+    }
 
 	/**
      * @see org.kuali.rice.test.RiceTestCase#getTablesNotToClear()
@@ -95,17 +123,17 @@ public abstract class KIMTestCase extends RiceTestCase {
 		return "kim";
 	}
 
-	/**
-     * @return SpringResourceLoader
-     */
-	public SpringResourceLoader getSpringContextResourceLoader() {
-		return this.springContextResourceLoader;
-	}
-
-	/**
-     * @param springContextResourceLoader
-     */
-	public void setSpringContextResourceLoader(SpringResourceLoader springContextResourceLoader) {
-		this.springContextResourceLoader = springContextResourceLoader;
-	}
+//	/**
+//     * @return SpringResourceLoader
+//     */
+//	public SpringResourceLoader getSpringContextResourceLoader() {
+//		return this.springContextResourceLoader;
+//	}
+//
+//	/**
+//     * @param springContextResourceLoader
+//     */
+//	public void setSpringContextResourceLoader(SpringResourceLoader springContextResourceLoader) {
+//		this.springContextResourceLoader = springContextResourceLoader;
+//	}
 }

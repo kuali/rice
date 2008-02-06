@@ -48,6 +48,9 @@
 		<property name="rootConfig" ref="config" />
 		<property name="modules">
 			<list>
+				<bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
+					<property name="serviceServletUrl" value="${serviceServletUrl}" />
+				</bean>			
 				<bean class="org.kuali.rice.kns.config.KNSConfigurer">
 					<property name="dataDictionaryPackages">
 						<list>

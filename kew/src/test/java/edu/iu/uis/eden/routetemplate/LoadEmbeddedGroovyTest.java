@@ -53,4 +53,16 @@ public class LoadEmbeddedGroovyTest {
         BSFEngine engine = manager.loadScriptingEngine("groovy");
         manager.eval("groovy", "LoadEmbeddedGroovyTest", 0, 0, "println 'hello embedded groovy world'");
     }
+    
+    @Test public void testBSFGroovy2() throws BSFException {
+        BSFManager.registerScriptingEngine(
+                "groovy", 
+                "org.codehaus.groovy.bsf.GroovyEngine", 
+                new String[] { "groovy", "gy" }
+        );
+        GroovyEngine ge = new GroovyEngine();
+        BSFManager manager = new BSFManager();
+        BSFEngine engine = manager.loadScriptingEngine("groovy");
+        manager.eval("groovy", "LoadEmbeddedGroovyTest", 0, 0, "var = 0\r\ndef foo() {\r\n var++\r\n }\r\n foo()");
+    }
 }

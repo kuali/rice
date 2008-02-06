@@ -18,9 +18,11 @@ package edu.iu.uis.eden.routetemplate;
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
 
+import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowException;
+import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
  * A rule expression implementation that uses Bean Scripting Framework.
@@ -40,17 +42,12 @@ public class BSFRuleExpression implements RuleExpression {
     public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws EdenUserNotFoundException, WorkflowException {
         RuleBaseValues ruleDefinition = rule.getDefinition();
         String type = ruleDefinition.getRuleExpressionDef().getType();
-        String lang = "groovy";
-        int colon = type.indexOf(':');
-        if (colon > -1) {
-            lang = type.substring(colon + 1);
-        }
+        String lang = parseLang(type, "groovy");
         String expression = ruleDefinition.getRuleExpressionDef().getExpression();
         RuleExpressionResult result;
         BSFManager manager = new BSFManager();
         try {
-            manager.declareBean("rule", rule, RuleBaseValues.class);
-            manager.declareBean("routeContext", context, RouteContext.class);
+            declareBeans(manager, rule, context);
             result = (RuleExpressionResult) manager.eval(lang, ruleDefinition.toString(), 0, 0, expression);
         } catch (BSFException e) {
             throw new WorkflowException("Error evaluating " + type + " expression: '" + expression + "'", e);
@@ -59,6 +56,53 @@ public class BSFRuleExpression implements RuleExpression {
             return new RuleExpressionResult(rule, false);
         } else {
             return result;
+        }
+    }
+
+    /**
+     * Parses the language component from the type string
+     * @param type the type string
+     * @param deflt the default language if none is present in the type string
+     * @return the language component or null
+     */
+    protected String parseLang(String type, String deflt) {
+        int colon = type.indexOf(':');
+        if (colon > -1) {
+            return type.substring(colon + 1);
+        } else {
+            return deflt;
+        }
+    }
+
+    /**
+     * Populates the BSFManager with beans that are accessible to BSF scripts.  May be overridden by
+     * subclasses.  The standard implementation exposes the rule and routeContext
+     * @param manager the BSFManager
+     * @param rule the current Rule object
+     * @param context the current RouteContext
+     */
+    protected void declareBeans(BSFManager manager, Rule rule, RouteContext context) throws BSFException {
+        manager.declareBean("rule", rule, RuleBaseValues.class);
+        manager.declareBean("routeContext", context, RouteContext.class);
+        manager.declareBean("workflow", new WorkflowRuleAPI(context), WorkflowRuleAPI.class);
+    }
+
+    /**
+     * A helper bean that is declared for use by BSF scripts.
+     * This functionality should really be part of a single internal API that can be exposed
+     * to various pieces of code that are plugged into KEW.  For comparison EDocLite also
+     * has its own such API that it exposes. 
+     */
+    protected static final class WorkflowRuleAPI {
+        private final RouteContext context;
+        WorkflowRuleAPI(RouteContext context) {
+            this.context = context;
+        }
+        public RuleExpressionResult invokeRule(String name) throws EdenUserNotFoundException, WorkflowException {
+            RuleBaseValues rbv = KEWServiceLocator.getRuleService().getRuleByName(name);
+            if (rbv == null) throw new WorkflowRuntimeException("Could not find rule named \"" + name + "\"");
+            Rule r = new RuleImpl(rbv);
+            return r.evaluate(r, context);
         }
     }
 }

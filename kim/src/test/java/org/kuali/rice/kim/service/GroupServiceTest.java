@@ -22,12 +22,24 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.rice.TestBase;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.test.data.PerTestUnitTestData;
+import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.rice.test.data.UnitTestSql;
 
 /**
  * Basic test to verify we can access the GroupService through the GRL.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+
+@PerTestUnitTestData(
+        @UnitTestData(
+            sqlStatements = {
+                @UnitTestSql("DELETE FROM KIM_GROUPS_T WHERE ID=1"),
+                @UnitTestSql("INSERT INTO KIM_GROUPS_T (ID, NAME, DESCRIPTION) VALUES(1, 'KIM Test Group', 'Test case')")
+            }
+        )
+)
 public class GroupServiceTest extends TestBase {
     private static final String TEST_GROUP = "KIM Test Group";
 

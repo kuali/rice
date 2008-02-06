@@ -36,21 +36,33 @@ import edu.iu.uis.eden.workgroup.WorkflowGroupId;
 import edu.iu.uis.eden.workgroup.Workgroup;
 
 /**
- * This is the model for action items. These are displayed as the action list as well. Mapped to ActionItemService.
+ * This is the model for action items. These are displayed as the action list as well.  Mapped to ActionItemService.
+ * NOTE: This object contains denormalized fields that have been copied from related ActionRequestValue and DocumentRouteHeaderValue
+ * objects for performance reasons.  These should be preserved and their related objects should not be added to the OJB
+ * mapping as we do not want them loaded for each ActionItem object.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
 public class ActionItem implements WorkflowPersistable, RowStyleable {
 
-	private static final long serialVersionUID = -1079562205125660151L;
+    private static final long serialVersionUID = -1079562205125660151L;
 
-	private Long actionItemId;
+    /**
+     * Primary key
+     */
+    private Long actionItemId;
+    /**
+     * Workflow user id of the target user (if any)
+     */
     private String workflowId;
     private Timestamp dateAssigned;
     private String actionRequestCd;
     private Long actionRequestId;
     private Long routeHeaderId;
+    /**
+     * Workflow group id of the target group (if any)
+     */
     private Long workgroupId;
     private String docTitle;
     private String docLabel;

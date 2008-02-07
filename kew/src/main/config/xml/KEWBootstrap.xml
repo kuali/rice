@@ -429,7 +429,7 @@
             <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
             <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
             <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-            <docHandler>${base.url}/RemoveReplace.do?methodToCall=docHandler</docHandler>
+            <docHandler>${workflow.url}/RemoveReplace.do?methodToCall=docHandler</docHandler>
             <active>true</active>
             <routingVersion>1</routingVersion>
             <routePaths>

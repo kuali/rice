@@ -175,9 +175,6 @@
               KRABizRule5: true;
             -->
             <expression type="KRAMeta:groovy">
-                import java.util.*
-                import edu.iu.uis.eden.routetemplate.*
-
                 success = false
                 if (metarule.evalRule("KRABizRule1", true)) {
                     if (!metarule.evalRule("KRABizRule2", false)) {

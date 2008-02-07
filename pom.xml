@@ -33,6 +33,20 @@
 			</activation>
 			<build>
 				<testResources>
+                    <!-- NOTE: Because Maven test runs can be spawned in a new JVM, the system properties
+                         on the initial Maven command line are not necessarily propagated to the spawned
+                         test run.  This means we cannot automatically use System property definitions
+                         to override configuration parameters.  To work around this, we have configured
+                         the test resources to be pre-filtered by maven prior to running, which results
+                         in config parameter tokens being replaced by System property definitions (because
+                         the ${token} syntax happens to be the same.
+
+                         So.  If you need to introduce a new configuration property that needs to be overridable
+                         by Bamboo/CI, make sure to set the property in one of the below config files, so that
+                         it can be pre-emptively replaced by Maven prior to kicking off the test run.
+                         
+                         E.g. <param name="my.new.param">${my.new.param}</param>
+                    -->
 					<testResource>
 						<filtering>true</filtering>
 						<directory>${basedir}/src/test/resources</directory>

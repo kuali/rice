@@ -70,98 +70,101 @@ public class ActionListServiceImpl implements ActionListService {
     private ActionItemDAO actionItemDAO;
 
     public Collection findUserDelegators(WorkflowUser workflowUser, String delegationType) throws EdenUserNotFoundException {
-	return findDelegators(workflowUser, delegationType);
+        return findDelegators(workflowUser, delegationType);
     }
 
     public Collection getActionList(WorkflowUser workflowUser, ActionListFilter filter) {
-	return getActionListDAO().getActionList(workflowUser, filter);
+        return getActionListDAO().getActionList(workflowUser, filter);
     }
 
     public void setActionListDAO(ActionListDAO actionListDAO) {
-	this.actionListDAO = actionListDAO;
+        this.actionListDAO = actionListDAO;
     }
 
     public ActionListDAO getActionListDAO() {
-	return actionListDAO;
+        return actionListDAO;
     }
 
     public boolean refreshActionList(WorkflowUser user) {
-	return KEWServiceLocator.getUserOptionsService().refreshActionList(user);
+        return KEWServiceLocator.getUserOptionsService().refreshActionList(user);
     }
 
     public void deleteActionItem(ActionItem actionItem) {
-	try {
-	    KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getUser());
-	} catch (EdenUserNotFoundException e) {
-	    LOG.error("error saving refreshUserOption", e);
-	}
-	getActionItemDAO().deleteActionItem(actionItem);
-	this.saveOutboxItem(actionItem);
+        try {
+            KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getUser());
+        } catch (EdenUserNotFoundException e) {
+            LOG.error("error saving refreshUserOption", e);
+        }
+        getActionItemDAO().deleteActionItem(actionItem);
+        this.saveOutboxItem(actionItem);
     }
 
     public void deleteActionItems(ActionRequestValue actionRequest) {
         LOG.debug("deleting " + actionRequest.getActionItems().size() + " action items for action request: " + actionRequest);
         for (ActionItem actionItem: actionRequest.getActionItems()) {
             LOG.debug("deleting action item: " + actionItem);
-    	    this.deleteActionItem(actionItem);
-    	}
+            this.deleteActionItem(actionItem);
+        }
     }
 
     public void deleteByRouteHeaderId(Long routeHeaderId) {
-	Collection actionItems = findByRouteHeaderId(routeHeaderId);
-	for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
-	    ActionItem actionItem = (ActionItem) iter.next();
-	    try {
-		KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getUser());
-	    } catch (EdenUserNotFoundException e) {
-		LOG.error("error saving refreshUserOption", e);
-	    }
-	}
-	getActionItemDAO().deleteByRouteHeaderId(routeHeaderId);
+        Collection actionItems = findByRouteHeaderId(routeHeaderId);
+        for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
+            ActionItem actionItem = (ActionItem) iter.next();
+            try {
+                KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getUser());
+            } catch (EdenUserNotFoundException e) {
+                LOG.error("error saving refreshUserOption", e);
+            }
+        }
+        getActionItemDAO().deleteByRouteHeaderId(routeHeaderId);
     }
 
     public Collection findByRouteHeaderId(Long routeHeaderId) {
-	return getActionItemDAO().findByRouteHeaderId(routeHeaderId);
+        return getActionItemDAO().findByRouteHeaderId(routeHeaderId);
     }
 
     public Collection findByActionRequestId(Long actionRequestId) {
-	return getActionItemDAO().findByActionRequestId(actionRequestId);
+        return getActionItemDAO().findByActionRequestId(actionRequestId);
     }
 
     public Collection findByWorkflowUser(WorkflowUser workflowUser) {
-	return getActionItemDAO().findByWorkflowUser(workflowUser);
+        return getActionItemDAO().findByWorkflowUser(workflowUser);
     }
 
     public Collection findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId) {
-	return getActionItemDAO().findByWorkflowUserRouteHeaderId(workflowUserId, routeHeaderId);
+        return getActionItemDAO().findByWorkflowUserRouteHeaderId(workflowUserId, routeHeaderId);
     }
 
-    private void loadActionItemFromActionRequest(ActionRequestValue actionRequest, ActionItem actionItem) {
+    private ActionItem createActionItemFromActionRequest(ActionRequestValue actionRequest) {
+        ActionItem actionItem = new ActionItem();
 
-	DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(
-		actionRequest.getRouteHeaderId());
-	DocumentType docType = routeHeader.getDocumentType();
+        DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(
+                actionRequest.getRouteHeaderId());
+        DocumentType docType = routeHeader.getDocumentType();
 
-	actionItem.setActionRequestCd(actionRequest.getActionRequested());
-	actionItem.setActionRequestId(actionRequest.getActionRequestId());
-	actionItem.setDocName(docType.getName());
-	actionItem.setRoleName(actionRequest.getQualifiedRoleName());
-	actionItem.setWorkflowId(actionRequest.getWorkflowId());
-	actionItem.setRouteHeaderId(actionRequest.getRouteHeaderId());
-	actionItem.setRouteHeader(routeHeader);
-	actionItem.setDateAssigned(new Timestamp(new Date().getTime()));
-	actionItem.setDocHandlerURL(docType.getDocHandlerUrl());
-	actionItem.setDocLabel(docType.getLabel());
-	actionItem.setDocTitle(routeHeader.getDocTitle());
-	actionItem.setWorkgroupId(actionRequest.getWorkgroupId());
-	actionItem.setResponsibilityId(actionRequest.getResponsibilityId());
-	actionItem.setDelegationType(actionRequest.getDelegationType());
+        actionItem.setActionRequestCd(actionRequest.getActionRequested());
+        actionItem.setActionRequestId(actionRequest.getActionRequestId());
+        actionItem.setDocName(docType.getName());
+        actionItem.setRoleName(actionRequest.getQualifiedRoleName());
+        actionItem.setWorkflowId(actionRequest.getWorkflowId());
+        actionItem.setRouteHeaderId(actionRequest.getRouteHeaderId());
+        actionItem.setRouteHeader(routeHeader);
+        actionItem.setDateAssigned(new Timestamp(new Date().getTime()));
+        actionItem.setDocHandlerURL(docType.getDocHandlerUrl());
+        actionItem.setDocLabel(docType.getLabel());
+        actionItem.setDocTitle(routeHeader.getDocTitle());
+        actionItem.setWorkgroupId(actionRequest.getWorkgroupId());
+        actionItem.setResponsibilityId(actionRequest.getResponsibilityId());
+        actionItem.setDelegationType(actionRequest.getDelegationType());
 
-	ActionRequestValue delegatorActionRequest = getActionRequestService().findDelegatorRequest(actionRequest);
-	if (delegatorActionRequest != null) {
-	    actionItem.setDelegatorWorkflowId(delegatorActionRequest.getWorkflowId());
-	    actionItem.setDelegatorWorkgroupId(delegatorActionRequest.getWorkgroupId());
-	}
+        ActionRequestValue delegatorActionRequest = getActionRequestService().findDelegatorRequest(actionRequest);
+        if (delegatorActionRequest != null) {
+            actionItem.setDelegatorWorkflowId(delegatorActionRequest.getWorkflowId());
+            actionItem.setDelegatorWorkgroupId(delegatorActionRequest.getWorkgroupId());
+        }
+
+        return actionItem;
     }
 
     /**
@@ -170,16 +173,15 @@ public class ActionListServiceImpl implements ActionListService {
      * @return the List of generated ActionItems
      */
     public List<ActionItem> generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext)
-	    throws EdenUserNotFoundException {
+    throws EdenUserNotFoundException {
         LOG.debug("generating the action items for request " + actionRequest.getActionRequestId());
         List<ActionItem> actionItems = new ArrayList<ActionItem>();
         if (!actionRequest.isPrimaryDelegator()) {
             if (actionRequest.isWorkgroupRequest()) {
                 List<WorkflowUser> users = getWorkgroupService().getWorkgroup(new WorkflowGroupId(actionRequest.getWorkgroupId())).getUsers();
-                actionItems.addAll(getActionItemsFromUserList(actionRequest, users));
+                actionItems.addAll(createActionItemsForUsers(actionRequest, users));
             } else if (actionRequest.isUserRequest()) {
-                ActionItem actionItem = new ActionItem();
-                loadActionItemFromActionRequest(actionRequest, actionItem);
+                ActionItem actionItem = createActionItemFromActionRequest(actionRequest);
                 actionItems.add(actionItem);
             }
         }
@@ -193,16 +195,15 @@ public class ActionListServiceImpl implements ActionListService {
         return actionItems;
     }
 
-    private List<ActionItem> getActionItemsFromUserList(ActionRequestValue actionRequest, List<WorkflowUser> users) {
-    	List<ActionItem> actionItems = new ArrayList<ActionItem>();
-    	for (WorkflowUser user: users) {
-    	    ActionItem actionItem = new ActionItem();
-    	    loadActionItemFromActionRequest(actionRequest, actionItem);
-    	    actionItem.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
-    	    actionItem.setRoleName(actionRequest.getQualifiedRoleName());
-    	    actionItems.add(actionItem);
-    	}
-    	return actionItems;
+    private List<ActionItem> createActionItemsForUsers(ActionRequestValue actionRequest, List<WorkflowUser> users) {
+        List<ActionItem> actionItems = new ArrayList<ActionItem>();
+        for (WorkflowUser user: users) {
+            ActionItem actionItem = createActionItemFromActionRequest(actionRequest);
+            actionItem.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
+            actionItem.setRoleName(actionRequest.getQualifiedRoleName());
+            actionItems.add(actionItem);
+        }
+        return actionItems;
     }
 
     /**
@@ -210,261 +211,260 @@ public class ActionListServiceImpl implements ActionListService {
      * schedules the action item updates to happen asynchronously.
      */
     public void updateActionItemsForWorkgroupChange(Workgroup oldWorkgroup, Workgroup newWorkgroup)
-	    throws EdenUserNotFoundException {
-	List oldMembers = oldWorkgroup.getUsers();
-	List newMembers = newWorkgroup.getUsers();
-	MembersDiff membersDiff = getMembersDiff(oldMembers, newMembers);
-	for (Iterator iterator = membersDiff.getRemovedMembers().iterator(); iterator.hasNext();) {
-	    WorkflowUser removedMember = (WorkflowUser) iterator.next();
-	    KEWXMLService workgroupMembershipChangeProcessor = (KEWXMLService) KSBServiceLocator.getMessageHelper()
-		    .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
-	    try {
-		workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor
-			.getMemberRemovedMessageContents(removedMember, newWorkgroup));
-	    } catch (Exception e) {
-		throw new WorkflowRuntimeException(e);
-	    }
-	}
-	for (Iterator iterator = membersDiff.getAddedMembers().iterator(); iterator.hasNext();) {
-	    WorkflowUser addedMember = (WorkflowUser) iterator.next();
-	    KEWXMLService workgroupMembershipChangeProcessor = (KEWXMLService) KSBServiceLocator.getMessageHelper()
-		    .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
-	    try {
-		workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor.getMemberAddedMessageContents(
-			addedMember, oldWorkgroup));
-	    } catch (Exception e) {
-		throw new WorkflowRuntimeException(e);
-	    }
+    throws EdenUserNotFoundException {
+        List oldMembers = oldWorkgroup.getUsers();
+        List newMembers = newWorkgroup.getUsers();
+        MembersDiff membersDiff = getMembersDiff(oldMembers, newMembers);
+        for (Iterator iterator = membersDiff.getRemovedMembers().iterator(); iterator.hasNext();) {
+            WorkflowUser removedMember = (WorkflowUser) iterator.next();
+            KEWXMLService workgroupMembershipChangeProcessor = (KEWXMLService) KSBServiceLocator.getMessageHelper()
+            .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
+            try {
+                workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor
+                        .getMemberRemovedMessageContents(removedMember, newWorkgroup));
+            } catch (Exception e) {
+                throw new WorkflowRuntimeException(e);
+            }
+        }
+        for (Iterator iterator = membersDiff.getAddedMembers().iterator(); iterator.hasNext();) {
+            WorkflowUser addedMember = (WorkflowUser) iterator.next();
+            KEWXMLService workgroupMembershipChangeProcessor = (KEWXMLService) KSBServiceLocator.getMessageHelper()
+            .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
+            try {
+                workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor.getMemberAddedMessageContents(
+                        addedMember, oldWorkgroup));
+            } catch (Exception e) {
+                throw new WorkflowRuntimeException(e);
+            }
 
-	}
+        }
     }
 
     /**
      * Update the user's Action List to reflect their addition to the given Workgroup.
      */
     public void updateActionListForUserAddedToWorkgroup(WorkflowUser user, Workgroup workgroup)
-	    throws EdenUserNotFoundException {
-	// first verify that the user is still a member of the workgroup
-	if (workgroup.hasMember(user)) {
-	    List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
-	    List<Workgroup> allWorkgroupsToCheck = KEWServiceLocator.getWorkgroupService().getWorkgroupsGroups(workgroup);
-	    allWorkgroupsToCheck.add(0, workgroup);
-	    for (Workgroup workgroupToCheck : allWorkgroupsToCheck) {
-		actionRequests.addAll(getActionRequestService().findActivatedByWorkgroup(workgroupToCheck));
-	    }
-	    for (Iterator requestIt = actionRequests.iterator(); requestIt.hasNext();) {
-		ActionRequestValue request = (ActionRequestValue) requestIt.next();
-		ActionItem item = new ActionItem();
-		loadActionItemFromActionRequest(request, item);
-		item.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
-		saveActionItem(item);
-	    }
-	}
+    throws EdenUserNotFoundException {
+        // first verify that the user is still a member of the workgroup
+        if (workgroup.hasMember(user)) {
+            List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
+            List<Workgroup> allWorkgroupsToCheck = KEWServiceLocator.getWorkgroupService().getWorkgroupsGroups(workgroup);
+            allWorkgroupsToCheck.add(0, workgroup);
+            for (Workgroup workgroupToCheck : allWorkgroupsToCheck) {
+                actionRequests.addAll(getActionRequestService().findActivatedByWorkgroup(workgroupToCheck));
+            }
+            for (Iterator requestIt = actionRequests.iterator(); requestIt.hasNext();) {
+                ActionRequestValue request = (ActionRequestValue) requestIt.next();
+                ActionItem item = createActionItemFromActionRequest(request);
+                item.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
+                saveActionItem(item);
+            }
+        }
     }
 
     /**
      * Update the user's Action List to reflect their removal from the given Workgroup.
      */
     public void updateActionListForUserRemovedFromWorkgroup(WorkflowUser user, Workgroup workgroup)
-	    throws EdenUserNotFoundException {
-	// first verify that the user is no longer a member of the workgroup
-	if (!workgroup.hasMember(user)) {
-	    List<Workgroup> allWorkgroupsToCheck = KEWServiceLocator.getWorkgroupService().getWorkgroupsGroups(workgroup);
-	    allWorkgroupsToCheck.add(0, workgroup);
-	    Collection actionItems = findByWorkflowUser(user);
-	    for (Iterator itemIt = actionItems.iterator(); itemIt.hasNext();) {
-		ActionItem item = (ActionItem) itemIt.next();
-		if (item.isWorkgroupItem()) {
-		    for (Workgroup workgroupToCheck : allWorkgroupsToCheck) {
-			if (item.getWorkgroupId().equals(workgroupToCheck.getWorkflowGroupId().getGroupId())) {
-			    deleteActionItem(item);
-			}
-		    }
-		}
-	    }
-	}
+    throws EdenUserNotFoundException {
+        // first verify that the user is no longer a member of the workgroup
+        if (!workgroup.hasMember(user)) {
+            List<Workgroup> allWorkgroupsToCheck = KEWServiceLocator.getWorkgroupService().getWorkgroupsGroups(workgroup);
+            allWorkgroupsToCheck.add(0, workgroup);
+            Collection actionItems = findByWorkflowUser(user);
+            for (Iterator itemIt = actionItems.iterator(); itemIt.hasNext();) {
+                ActionItem item = (ActionItem) itemIt.next();
+                if (item.isWorkgroupItem()) {
+                    for (Workgroup workgroupToCheck : allWorkgroupsToCheck) {
+                        if (item.getWorkgroupId().equals(workgroupToCheck.getWorkflowGroupId().getGroupId())) {
+                            deleteActionItem(item);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) throws EdenUserNotFoundException {
-	Collection items = getActionItemDAO().findByRouteHeaderId(routeHeaderId);
-	for (Iterator iterator = items.iterator(); iterator.hasNext();) {
-	    ActionItem item = (ActionItem) iterator.next();
-	    item.setDocTitle(newTitle);
-	    saveActionItem(item);
-	}
+        Collection items = getActionItemDAO().findByRouteHeaderId(routeHeaderId);
+        for (Iterator iterator = items.iterator(); iterator.hasNext();) {
+            ActionItem item = (ActionItem) iterator.next();
+            item.setDocTitle(newTitle);
+            saveActionItem(item);
+        }
     }
 
     private MembersDiff getMembersDiff(Collection oldMembers, Collection newMembers) {
-	Map currentMembersMap = createUsersMap(oldMembers);
-	Map newMembersMap = createUsersMap(newMembers);
-	Map allMembers = mergeMaps(currentMembersMap, newMembersMap);
-	Collection addedKeys = CollectionUtils.subtract(newMembersMap.keySet(), currentMembersMap.keySet());
-	Collection removedKeys = CollectionUtils.subtract(currentMembersMap.keySet(), newMembersMap.keySet());
-	Set addedMembers = getUsersSet(addedKeys, allMembers);
-	Set removedMembers = getUsersSet(removedKeys, allMembers);
-	return new MembersDiff(addedMembers, removedMembers);
+        Map currentMembersMap = createUsersMap(oldMembers);
+        Map newMembersMap = createUsersMap(newMembers);
+        Map allMembers = mergeMaps(currentMembersMap, newMembersMap);
+        Collection addedKeys = CollectionUtils.subtract(newMembersMap.keySet(), currentMembersMap.keySet());
+        Collection removedKeys = CollectionUtils.subtract(currentMembersMap.keySet(), newMembersMap.keySet());
+        Set addedMembers = getUsersSet(addedKeys, allMembers);
+        Set removedMembers = getUsersSet(removedKeys, allMembers);
+        return new MembersDiff(addedMembers, removedMembers);
     }
 
     private Map mergeMaps(Map map1, Map map2) {
-	Map newMap = new HashMap();
-	newMap.putAll(map1);
-	newMap.putAll(map2);
-	return newMap;
+        Map newMap = new HashMap();
+        newMap.putAll(map1);
+        newMap.putAll(map2);
+        return newMap;
     }
 
     private Set getUsersSet(Collection userKeys, Map memberMap) {
-	Set resultSet = new HashSet();
-	for (Iterator iterator = userKeys.iterator(); iterator.hasNext();) {
-	    String workflowId = (String) iterator.next();
-	    WorkflowUser user = (WorkflowUser) memberMap.get(workflowId);
-	    resultSet.add(user);
-	}
-	return resultSet;
+        Set resultSet = new HashSet();
+        for (Iterator iterator = userKeys.iterator(); iterator.hasNext();) {
+            String workflowId = (String) iterator.next();
+            WorkflowUser user = (WorkflowUser) memberMap.get(workflowId);
+            resultSet.add(user);
+        }
+        return resultSet;
     }
 
     private Map createUsersMap(Collection members) {
-	Map map = new HashMap();
-	for (Iterator iterator = members.iterator(); iterator.hasNext();) {
-	    WorkflowUser user = (WorkflowUser) iterator.next();
-	    map.put(user.getWorkflowUserId().getWorkflowId(), user);
-	}
-	return map;
+        Map map = new HashMap();
+        for (Iterator iterator = members.iterator(); iterator.hasNext();) {
+            WorkflowUser user = (WorkflowUser) iterator.next();
+            map.put(user.getWorkflowUserId().getWorkflowId(), user);
+        }
+        return map;
     }
 
     public Collection findDelegators(WorkflowUser user, String delegationType) throws EdenUserNotFoundException {
-	return getActionItemDAO().findDelegators(user, delegationType);
+        return getActionItemDAO().findDelegators(user, delegationType);
     }
 
     public void saveActionItem(ActionItem actionItem) throws EdenUserNotFoundException {
-	KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getUser());
-	getActionItemDAO().saveActionItem(actionItem);
+        KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getUser());
+        getActionItemDAO().saveActionItem(actionItem);
     }
 
     public ActionItemDAO getActionItemDAO() {
-	return actionItemDAO;
+        return actionItemDAO;
     }
 
     public ActionRequestService getActionRequestService() {
-	return (ActionRequestService) KEWServiceLocator.getActionRequestService();
+        return (ActionRequestService) KEWServiceLocator.getActionRequestService();
     }
 
     public WorkgroupService getWorkgroupService() {
-	return (WorkgroupService) KEWServiceLocator.getWorkgroupService();
+        return (WorkgroupService) KEWServiceLocator.getWorkgroupService();
     }
 
     public void setActionItemDAO(ActionItemDAO actionItemDAO) {
-	this.actionItemDAO = actionItemDAO;
+        this.actionItemDAO = actionItemDAO;
     }
 
     public UserService getUserService() {
-	return (UserService) KEWServiceLocator.getUserService();
+        return (UserService) KEWServiceLocator.getUserService();
     }
 
     private class MembersDiff {
-	private final Set addedMembers;
+        private final Set addedMembers;
 
-	private final Set removedMembers;
+        private final Set removedMembers;
 
-	public MembersDiff(Set addedMembers, Set removedMembers) {
-	    this.addedMembers = addedMembers;
-	    this.removedMembers = removedMembers;
-	}
+        public MembersDiff(Set addedMembers, Set removedMembers) {
+            this.addedMembers = addedMembers;
+            this.removedMembers = removedMembers;
+        }
 
-	public Set getAddedMembers() {
-	    return addedMembers;
-	}
+        public Set getAddedMembers() {
+            return addedMembers;
+        }
 
-	public Set getRemovedMembers() {
-	    return removedMembers;
-	}
+        public Set getRemovedMembers() {
+            return removedMembers;
+        }
     }
 
     public void validateActionItem(ActionItem actionItem) {
-	List errors = new ArrayList();
-	String workflowId = actionItem.getWorkflowId();
-	if (workflowId == null || workflowId.trim().equals("")) {
-	    errors.add(new WorkflowServiceErrorImpl("ActionItem person null.", "actionitem.personid.empty", actionItem
-		    .getActionItemId().toString()));
-	} else {
-	    try {
-		getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
-	    } catch (EdenUserNotFoundException e) {
-		errors.add(new WorkflowServiceErrorImpl("ActionItem person invalid.", "actionitem.personid.invalid",
-			actionItem.getActionItemId().toString()));
-	    }
-	}
+        List errors = new ArrayList();
+        String workflowId = actionItem.getWorkflowId();
+        if (workflowId == null || workflowId.trim().equals("")) {
+            errors.add(new WorkflowServiceErrorImpl("ActionItem person null.", "actionitem.personid.empty", actionItem
+                    .getActionItemId().toString()));
+        } else {
+            try {
+                getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
+            } catch (EdenUserNotFoundException e) {
+                errors.add(new WorkflowServiceErrorImpl("ActionItem person invalid.", "actionitem.personid.invalid",
+                        actionItem.getActionItemId().toString()));
+            }
+        }
 
-	if (actionItem.getDateAssigned() == null) {
-	    errors.add(new WorkflowServiceErrorImpl("ActionItem date assigned empty.", "actionitem.dateassigned.empty",
-		    actionItem.getActionItemId().toString()));
-	}
+        if (actionItem.getDateAssigned() == null) {
+            errors.add(new WorkflowServiceErrorImpl("ActionItem date assigned empty.", "actionitem.dateassigned.empty",
+                    actionItem.getActionItemId().toString()));
+        }
 
-	String actionRequestCd = actionItem.getActionRequestCd();
-	if (actionRequestCd == null || actionRequestCd.trim().equals("")) {
-	    errors.add(new WorkflowServiceErrorImpl("ActionItem action request cd empty.",
-		    "actionitem.actionrequestcd.empty", actionItem.getActionItemId().toString()));
-	} else if (!EdenConstants.ACTION_REQUEST_CD.containsKey(actionRequestCd)) {
-	    errors.add(new WorkflowServiceErrorImpl("ActionItem action request cd invalid.",
-		    "actionitem.actionrequestcd.invalid", actionItem.getActionItemId().toString()));
-	}
+        String actionRequestCd = actionItem.getActionRequestCd();
+        if (actionRequestCd == null || actionRequestCd.trim().equals("")) {
+            errors.add(new WorkflowServiceErrorImpl("ActionItem action request cd empty.",
+                    "actionitem.actionrequestcd.empty", actionItem.getActionItemId().toString()));
+        } else if (!EdenConstants.ACTION_REQUEST_CD.containsKey(actionRequestCd)) {
+            errors.add(new WorkflowServiceErrorImpl("ActionItem action request cd invalid.",
+                    "actionitem.actionrequestcd.invalid", actionItem.getActionItemId().toString()));
+        }
 
-	if (actionItem.getActionRequestId() == null) {
-	    errors.add(new WorkflowServiceErrorImpl("ActionItem action request id empty.",
-		    "actionitem.actionrequestid.empty", actionItem.getActionItemId().toString()));
-	}
+        if (actionItem.getActionRequestId() == null) {
+            errors.add(new WorkflowServiceErrorImpl("ActionItem action request id empty.",
+                    "actionitem.actionrequestid.empty", actionItem.getActionItemId().toString()));
+        }
 
-	if (actionItem.getRouteHeaderId() == null) {
-	    errors.add(new WorkflowServiceErrorImpl("ActionItem Document id empty.", "actionitem.routeheaderid.empty",
-		    actionItem.getActionItemId().toString()));
-	} else if (KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()) == null) {
-	    errors.add(new WorkflowServiceErrorImpl("ActionItem Document id invalid.", "actionitem.routeheaderid.invalid",
-		    actionItem.getActionItemId().toString()));
-	}
+        if (actionItem.getRouteHeaderId() == null) {
+            errors.add(new WorkflowServiceErrorImpl("ActionItem Document id empty.", "actionitem.routeheaderid.empty",
+                    actionItem.getActionItemId().toString()));
+        } else if (KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()) == null) {
+            errors.add(new WorkflowServiceErrorImpl("ActionItem Document id invalid.", "actionitem.routeheaderid.invalid",
+                    actionItem.getActionItemId().toString()));
+        }
 
-	String docTypeName = actionItem.getDocName();
-	DocumentType docType = null;
-	if (docTypeName == null || docTypeName.trim().equals("")) {
-	    errors.add(new WorkflowServiceErrorImpl("ActionItem doctypename empty.", "actionitem.doctypename.empty",
-		    actionItem.getActionItemId().toString()));
-	} else {
-	    docType = KEWServiceLocator.getDocumentTypeService().findByName(actionItem.getDocName());
-	    if (docType == null) {
-		errors.add(new WorkflowServiceErrorImpl("ActionItem doctypename invalid.", "actionitem.doctypename.invalid",
-			actionItem.getActionItemId().toString()));
-	    }
-	}
+        String docTypeName = actionItem.getDocName();
+        DocumentType docType = null;
+        if (docTypeName == null || docTypeName.trim().equals("")) {
+            errors.add(new WorkflowServiceErrorImpl("ActionItem doctypename empty.", "actionitem.doctypename.empty",
+                    actionItem.getActionItemId().toString()));
+        } else {
+            docType = KEWServiceLocator.getDocumentTypeService().findByName(actionItem.getDocName());
+            if (docType == null) {
+                errors.add(new WorkflowServiceErrorImpl("ActionItem doctypename invalid.", "actionitem.doctypename.invalid",
+                        actionItem.getActionItemId().toString()));
+            }
+        }
 
-	if (actionItem.getDocLabel() == null || actionItem.getDocLabel().trim().equals("")) {
-	    errors.add(new WorkflowServiceErrorImpl("ActionItem doctypelabel empty.", "actionitem.doctypelabel.empty",
-		    actionItem.getActionItemId().toString()));
-	} else if (docType != null && !docType.getLabel().equals(actionItem.getDocLabel())) {
-	    errors.add(new WorkflowServiceErrorImpl("ActionItem doctypelabel no match.", "actionitem.doctypelabel.nomatch",
-		    actionItem.getActionItemId().toString()));
-	}
+        if (actionItem.getDocLabel() == null || actionItem.getDocLabel().trim().equals("")) {
+            errors.add(new WorkflowServiceErrorImpl("ActionItem doctypelabel empty.", "actionitem.doctypelabel.empty",
+                    actionItem.getActionItemId().toString()));
+        } else if (docType != null && !docType.getLabel().equals(actionItem.getDocLabel())) {
+            errors.add(new WorkflowServiceErrorImpl("ActionItem doctypelabel no match.", "actionitem.doctypelabel.nomatch",
+                    actionItem.getActionItemId().toString()));
+        }
 
-	if (actionItem.getDocHandlerURL() == null || actionItem.getDocHandlerURL().trim().equals("")) {
-	    errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url empty.", "actionitem.dochdrurl.empty",
-		    actionItem.getActionItemId().toString()));
-	} else if (docType != null && !docType.getDocHandlerUrl().equals(actionItem.getDocHandlerURL())) {
-	    errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url no match.", "actionitem.dochdrurl.nomatch",
-		    actionItem.getActionItemId().toString()));
-	}
+        if (actionItem.getDocHandlerURL() == null || actionItem.getDocHandlerURL().trim().equals("")) {
+            errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url empty.", "actionitem.dochdrurl.empty",
+                    actionItem.getActionItemId().toString()));
+        } else if (docType != null && !docType.getDocHandlerUrl().equals(actionItem.getDocHandlerURL())) {
+            errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url no match.", "actionitem.dochdrurl.nomatch",
+                    actionItem.getActionItemId().toString()));
+        }
 
-	if (!errors.isEmpty()) {
-	    throw new WorkflowServiceErrorException("ActionItem Validation Error", errors);
-	}
+        if (!errors.isEmpty()) {
+            throw new WorkflowServiceErrorException("ActionItem Validation Error", errors);
+        }
     }
 
     public ActionItem findByActionItemId(Long actionItemId) {
-	return getActionItemDAO().findByActionItemId(actionItemId);
+        return getActionItemDAO().findByActionItemId(actionItemId);
     }
 
     public int getCount(WorkflowUser user) {
-	return getActionListDAO().getCount(user.getWorkflowId());
-	}
+        return getActionListDAO().getCount(user.getWorkflowId());
+    }
 
-	public void saveRefreshUserOption(WorkflowUser user) {
-	    KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(user);
+    public void saveRefreshUserOption(WorkflowUser user) {
+        KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(user);
     }
 
     /**
@@ -474,7 +474,7 @@ public class ActionListServiceImpl implements ActionListService {
      *      edu.iu.uis.eden.actionlist.ActionListFilter)
      */
     public Collection getOutbox(WorkflowUser workflowUser, ActionListFilter filter) {
-	return this.getActionListDAO().getOutbox(workflowUser, filter);
+        return this.getActionListDAO().getOutbox(workflowUser, filter);
     }
 
     /**
@@ -484,7 +484,7 @@ public class ActionListServiceImpl implements ActionListService {
      *      java.util.List)
      */
     public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems) {
-	this.getActionListDAO().removeOutboxItems(workflowUser, outboxItems);
+        this.getActionListDAO().removeOutboxItems(workflowUser, outboxItems);
     }
 
     /**
@@ -494,22 +494,22 @@ public class ActionListServiceImpl implements ActionListService {
      * @see edu.iu.uis.eden.actionlist.ActionListService#saveOutboxItem(edu.iu.uis.eden.actionitem.OutboxItemActionListExtension)
      */
     public void saveOutboxItem(ActionItem actionItem) {
-	try {
-	    if (KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getUser()).isUsingOutbox()
-		    && Core.getCurrentContextConfig().getOutBoxOn()
-		    && getActionListDAO().getOutboxByDocumentId(actionItem.getRouteHeaderId()) == null
-		    && !actionItem.getRouteHeader().getDocRouteStatus().equals(EdenConstants.ROUTE_HEADER_SAVED_CD)) {
-		// only create an outbox item if this user has taken action on the document
-		ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(
-			actionItem.getActionRequestId());
-		ActionTakenValue actionTaken = actionRequest.getActionTaken();
-		// if an action was taken...
-		if (actionTaken != null && actionTaken.getWorkflowUser().getWorkflowId().equals(actionItem.getWorkflowId())) {
-		    this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));
-		}
-	    }
-	} catch (EdenUserNotFoundException eunfe) {
-	    throw new WorkflowRuntimeException(eunfe);
-	}
+        try {
+            if (KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getUser()).isUsingOutbox()
+                    && Core.getCurrentContextConfig().getOutBoxOn()
+                    && getActionListDAO().getOutboxByDocumentId(actionItem.getRouteHeaderId()) == null
+                    && !actionItem.getRouteHeader().getDocRouteStatus().equals(EdenConstants.ROUTE_HEADER_SAVED_CD)) {
+                // only create an outbox item if this user has taken action on the document
+                ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(
+                        actionItem.getActionRequestId());
+                ActionTakenValue actionTaken = actionRequest.getActionTaken();
+                // if an action was taken...
+                if (actionTaken != null && actionTaken.getWorkflowUser().getWorkflowId().equals(actionItem.getWorkflowId())) {
+                    this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));
+                }
+            }
+        } catch (EdenUserNotFoundException eunfe) {
+            throw new WorkflowRuntimeException(eunfe);
+        }
     }
 }

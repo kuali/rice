@@ -98,6 +98,13 @@ public class BSFRuleExpression implements RuleExpression {
         WorkflowRuleAPI(RouteContext context) {
             this.context = context;
         }
+        /**
+         * Evaluates a named rule
+         * @param name the rule name
+         * @return the RuleExpressionResult
+         * @throws EdenUserNotFoundException if an error occurred during rule evaluation
+         * @throws WorkflowException if the rule by the specified name could not be found, or if an error occurred during rule evaluation
+         */
         public RuleExpressionResult invokeRule(String name) throws EdenUserNotFoundException, WorkflowException {
             RuleBaseValues rbv = KEWServiceLocator.getRuleService().getRuleByName(name);
             if (rbv == null) throw new WorkflowRuntimeException("Could not find rule named \"" + name + "\"");

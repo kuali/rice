@@ -104,15 +104,25 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 	 * server.
 	 */
 	protected boolean isRemoteService(QName serviceName) {
-	    return useRemoteIdentityServices() &&
+	    return (useRemoteIdentityServices() &&
 	    	(serviceName.getLocalPart().equals(KEWServiceLocator.USER_SERVICE) ||
-		    serviceName.getLocalPart().equals(KEWServiceLocator.WORKGROUP_SRV));
+		    serviceName.getLocalPart().equals(KEWServiceLocator.WORKGROUP_SRV))) ||
+		    (useRemoteEmailServices() &&
+			    serviceName.getLocalPart().equals(KEWServiceLocator.IMMEDIATE_EMAIL_REMINDER_SERVICE));
 	}
 	
 	protected boolean useRemoteIdentityServices() {
 	    String useRemoteIdentityServicesValue = Core.getCurrentContextConfig().getProperty(EdenConstants.USE_REMOTE_IDENTITY_SERVICES);
 	    if (!StringUtils.isBlank(useRemoteIdentityServicesValue)) {
 	        return new Boolean(useRemoteIdentityServicesValue.trim());
+	    }
+	    return false;
+	}
+	
+	protected boolean useRemoteEmailServices() {
+	    String useRemoteEmailServicesValue = Core.getCurrentContextConfig().getProperty(EdenConstants.USE_REMOTE_EMAIL_SERVICES);
+	    if (!StringUtils.isBlank(useRemoteEmailServicesValue)) {
+	        return new Boolean(useRemoteEmailServicesValue.trim());
 	    }
 	    return false;
 	}

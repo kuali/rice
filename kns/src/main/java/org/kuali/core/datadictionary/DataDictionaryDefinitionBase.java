@@ -16,8 +16,6 @@
 
 package org.kuali.core.datadictionary;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -26,10 +24,11 @@ import org.apache.commons.logging.LogFactory;
  * 
  */
 abstract public class DataDictionaryDefinitionBase implements DataDictionaryDefinition {
-    private static Log LOG = LogFactory.getLog(DataDictionaryDefinitionBase.class);
+    //private static Log LOG = LogFactory.getLog(DataDictionaryDefinitionBase.class);
 
     private final String parseLocation;
-
+    private String id;
+    
     // this boolean is for the dd generator, since it does not parse dd files
     public static boolean isParsingFile = true;
 
@@ -39,9 +38,9 @@ abstract public class DataDictionaryDefinitionBase implements DataDictionaryDefi
             int parseLineNumber = DataDictionaryBuilder.getCurrentLineNumber();
 
             if ( parseFileName != null ) {
-        	parseLocation = parseFileName + ":" + Integer.toString(parseLineNumber);
+                parseLocation = parseFileName + ":" + Integer.toString(parseLineNumber);
             } else {
-        	parseLocation = "";
+                parseLocation = "";
             }
         }
         else {
@@ -54,5 +53,13 @@ abstract public class DataDictionaryDefinitionBase implements DataDictionaryDefi
      */
     protected String getParseLocation() {
         return parseLocation;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

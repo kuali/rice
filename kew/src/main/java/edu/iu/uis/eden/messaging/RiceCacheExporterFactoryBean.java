@@ -30,14 +30,13 @@ import edu.iu.uis.eden.cache.RiceCacheAdministratorImpl;
  */
 public class RiceCacheExporterFactoryBean implements FactoryBean, InitializingBean {
 	
-	private String messageEntity;
+	private String serviceName;
 	private RiceCacheAdministratorImpl cache;
-
 
 	public Object getObject() throws Exception {
 		if (cache == null) {
 			cache = new RiceCacheAdministratorImpl();
-			cache.setMessageEntity(this.getMessageEntity());
+			cache.setServiceName(this.getServiceName());
 			cache.setForceRegistryRefresh(true);
 			cache.start();
 		}
@@ -45,22 +44,20 @@ public class RiceCacheExporterFactoryBean implements FactoryBean, InitializingBe
 		return cache;
 	}
 
-
 	public Class getObjectType() {
 		return RiceCacheAdministrator.class;
 	}
-
 
 	public boolean isSingleton() {
 		return true;
 	}
 
-	public String getMessageEntity() {
-		return messageEntity;
+	public String getServiceName() {
+	    return this.serviceName;
 	}
 
-	public void setMessageEntity(String messageEntity) {
-		this.messageEntity = messageEntity;
+	public void setServiceName(String serviceName) {
+	    this.serviceName = serviceName;
 	}
 
 	public void afterPropertiesSet() throws Exception {

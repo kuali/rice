@@ -58,6 +58,17 @@ public interface DictionaryValidationService {
     public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, boolean validateRequired);
     
     /**
+     * Validates the contents of a document and recursively validates any of its updatable references
+     * 
+     * @param document the document
+     * @param maxDepth the maximum numbers of levels to recurse
+     * @param validateRequired whether to validate whether a field is required and is currently blank
+     * @param chompLastLetterSFromCollectionName if true, the error path for any collections encountered will have the last "s" removed from the collection name if it ends
+     * with the letter "s".  If false, this method acts like {@link #validateDocumentAndUpdatableReferencesRecursively(Document, int, boolean)}
+     */
+    public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, boolean validateRequired, boolean chompLastLetterSFromCollectionName);
+
+    /**
      * Validates the specified attribute of the given document against the data dictionary.
      * 
      * @param document

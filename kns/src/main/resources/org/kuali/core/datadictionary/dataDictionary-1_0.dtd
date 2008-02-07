@@ -160,6 +160,7 @@
             <!ATTLIST inquirySection
                 title CDATA #REQUIRED
                 numberOfColumns CDATA '1'
+                id CDATA #IMPLIED
             >
 
             <!-- ............  inquiryFields element  ............
@@ -215,6 +216,7 @@
                    businessObjectClass CDATA #REQUIRED
                    numberOfColumns CDATA '1'
                    summaryTitle CDATA #IMPLIED
+                   id CDATA #IMPLIED
                >
 
                 <!-- ............  field element  ............
@@ -1273,6 +1275,7 @@
             <!ELEMENT collection (label, shortLabel?, elementLabel?, summary?, description?)>
             <!ATTLIST collection
                 name CDATA #REQUIRED
+                id CDATA #IMPLIED
             >
             <!-- ............  elementLabel element  ............
 
@@ -1679,7 +1682,7 @@
             * attachmentTypeValuesFinderClass (String)
             * attributes (Map)
     -->
-    <!ELEMENT maintenanceDocument (businessObjectClass, maintainableClass, %DOCUMENT_ATTRIBUTES;, lockingKeys, allowsNewOrCopy?, defaultExistenceChecks?, applyApcRules?, maintainableSections, allowsNoteDelete?, displayTopicFieldInNotes?, attachmentTypesValuesFinderClass?) >
+    <!ELEMENT maintenanceDocument (businessObjectClass, maintainableClass, %DOCUMENT_ATTRIBUTES;, additionalSectionsFile*, lockingKeys, allowsNewOrCopy?, defaultExistenceChecks?, applyApcRules?, maintainableSections, allowsNoteDelete?, displayTopicFieldInNotes?, attachmentTypesValuesFinderClass?) >
         <!-- ............  businessObjectClass element  ............
             This attribute is used in many contexts, for example, in maintenance docs, it's used to specify the classname
             of the BO being maintained.
@@ -1694,6 +1697,15 @@
             The normal one is KualiMaintainableImpl.java.
         -->
         <!ELEMENT maintainableClass (#PCDATA) >
+
+        <!-- ............  additionalSectionsFile element  ............
+
+            The additionalSectionsFile element specifies the name of the location
+            of an additional JSP file to include in the maintenance document
+            after the generation sections but before the notes.
+            The location semantics are those of jsp:include.
+        -->
+        <!ELEMENT additionalSectionsFile (#PCDATA) >
 
         <!-- ............  lockingKeys element  ............
 
@@ -1856,6 +1868,8 @@
             <!ELEMENT maintainableSection (maintainableItems+)>
             <!ATTLIST maintainableSection
                 title CDATA #REQUIRED
+                hidden (true|false) "false"
+                id CDATA #IMPLIED
             >
 
                 <!-- ............  maintainableItems element  ............
@@ -1906,6 +1920,7 @@
                     <!ELEMENT subSectionHeader (defaultValue?)>
                     <!ATTLIST subSectionHeader
                         name CDATA #REQUIRED
+		                id CDATA #IMPLIED
                     >
                     <!-- ............  maintainableField element  ............
 
@@ -2052,6 +2067,7 @@
                         includeMultipleLookupLine (true|false) 'true'
                         summaryTitle CDATA #IMPLIED
 						attributeToHighlightOnDuplicateKey CDATA #IMPLIED
+		                id CDATA #IMPLIED
                     >
                     <!-- ............  summaryFields element  ............
 

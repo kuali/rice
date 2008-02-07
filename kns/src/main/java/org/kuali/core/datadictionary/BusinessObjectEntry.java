@@ -105,8 +105,9 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
         if (inquiryDefinition == null) {
             throw new IllegalArgumentException("invalid (null) inquiryDefinition");
         }
-        LOG.debug("calling setInquiryDefinition '" + inquiryDefinition.getTitle() + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setInquiryDefinition '" + inquiryDefinition.getTitle() + "'");
+        }
         this.inquiryDefinition = inquiryDefinition;
     }
 
@@ -133,8 +134,9 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
         if (lookupDefinition == null) {
             throw new IllegalArgumentException("invalid (null) lookupDefinition");
         }
-        LOG.debug("calling setLookupDefinition '" + lookupDefinition.getTitle() + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setLookupDefinition '" + lookupDefinition.getTitle() + "'");
+        }
         this.lookupDefinition = lookupDefinition;
     }
 
@@ -217,8 +219,9 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
         if (StringUtils.isBlank(objectDescription)) {
             throw new IllegalArgumentException("invalid (blank) objectDescription");
         }
-        LOG.debug("calling setObjectDescription '" + objectDescription + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setObjectDescription '" + objectDescription + "'");
+        }
         this.objectDescription = objectDescription;
     }
 

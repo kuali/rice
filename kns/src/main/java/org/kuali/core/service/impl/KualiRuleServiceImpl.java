@@ -46,7 +46,6 @@ import org.springframework.transaction.annotation.Transactional;
  * one method right now - applyRules() which takes in a Document and a DocumentEvent and does the proper business rule checks based
  * on the context of the event and the document type.
  */
-@Transactional
 public class KualiRuleServiceImpl implements KualiRuleService {
     private static final Logger LOG = Logger.getLogger(KualiRuleServiceImpl.class);
 

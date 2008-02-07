@@ -22,7 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.RicePropertyConstants;
 import org.kuali.core.document.Document;
-import org.kuali.core.util.ObjectUtils;
 
 /**
  * Abstract superclass for document-related events.
@@ -62,26 +61,9 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
     public KualiDocumentEventBase(String description, String errorPathPrefix, Document document) {
         this.description = description;
         this.errorPathPrefix = errorPathPrefix;
-
-        setDocument(document);
+        this.document = document;
 
         LOG.debug(description);
-    }
-
-    private final void setDocument(Document document) {
-        try {
-            // by doing a deep copy, we are ensuring that the business rule class can't update
-            // the original object by reference
-            this.document = (Document) ObjectUtils.deepCopy(document);
-            // have to manually set the FlexDoc b/c it is transient and the deepCopy won't actually copy that object over
-            // for a serialization based copy
-            this.document.getDocumentHeader().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
-	} catch (Exception e) {
-            LOG.warn( "Unable to perform deep copy on document", e);
-            // just set to the passed in document
-            this.document = document;
-            // throw new RuntimeException("Failed to invoke deep copy of document.", e);
-        }
     }
 
 

@@ -57,11 +57,11 @@ public class KualiDecimal extends Number implements Comparable {
 	}
 
 	public KualiDecimal(int value) {
-		this(value + "");
+	    this.value = new BigDecimal(value).setScale(SCALE, ROUND_BEHAVIOR);
 	}
 
 	public KualiDecimal(double value) {
-		this(value + "");
+	    this.value = new BigDecimal(value).setScale(SCALE, ROUND_BEHAVIOR);
 	}
 
 	public KualiDecimal(BigDecimal value) {

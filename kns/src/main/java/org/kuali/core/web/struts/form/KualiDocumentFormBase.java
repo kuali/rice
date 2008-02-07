@@ -75,7 +75,7 @@ public abstract class KualiDocumentFormBase extends KualiForm {
     //TODO: is this still needed? I think it's obsolete now
     private List boNotes;
     
-    protected FormFile attachmentFile;
+    protected FormFile attachmentFile = new BlankFormFile();
 
     protected Map editingMode;
     protected boolean suppressAllButtons;

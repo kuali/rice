@@ -26,6 +26,7 @@ import org.kuali.rice.lifecycle.Lifecycle;
 public interface RiceCacheAdministrator extends Lifecycle {
 	
 	public static final String FORCE_REGISTRY_REFRESH_KEY = "_FORCE_REGISTRY_REFRESH";
+	public static final String SERVICE_NAME_KEY = "_SERVICE_NAME";
 
 	public Object getFromCache(String key);
 

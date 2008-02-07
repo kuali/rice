@@ -24,6 +24,6 @@ import edu.iu.uis.eden.messaging.PersistedMessage;
  */
 public interface WorkflowDocumentExceptionRoutingService {
 	
-	public void placeInExceptionRouting(Throwable throwable, PersistedMessage persistedMessage, Long routeHeaderId);
+	public void placeInExceptionRouting(Throwable throwable, PersistedMessage persistedMessage, Long routeHeaderId) throws Exception;
 
 }

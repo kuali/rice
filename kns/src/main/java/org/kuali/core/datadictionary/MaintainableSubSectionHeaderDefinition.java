@@ -16,8 +16,6 @@
 
 package org.kuali.core.datadictionary;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Contains section-related information relating to the parent MaintainableDocument.
@@ -28,7 +26,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class MaintainableSubSectionHeaderDefinition extends MaintainableItemDefinition implements SubSectionHeaderDefinitionI{
     // logger
-    private static Log LOG = LogFactory.getLog(MaintainableSubSectionHeaderDefinition.class);
+    //private static Log LOG = LogFactory.getLog(MaintainableSubSectionHeaderDefinition.class);
 
     public MaintainableSubSectionHeaderDefinition() {
     }

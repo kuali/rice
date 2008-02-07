@@ -59,8 +59,9 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry {
         if (attributeDefinition == null) {
             throw new IllegalArgumentException("invalid (null) attributeDefinition");
         }
-        LOG.debug("calling addAttributeDefinition '" + attributeDefinition.getName() + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling addAttributeDefinition '" + attributeDefinition.getName() + "'");
+        }
         String attributeName = attributeDefinition.getName();
         if (StringUtils.isBlank(attributeName)) {
             throw new ValidationException("invalid (blank) attributeName");
@@ -93,8 +94,9 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry {
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
         }
-        LOG.debug("calling getAttributeDefinition '" + attributeName + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling getAttributeDefinition '" + attributeName + "'");
+        }
         return (AttributeDefinition) attributes.get(attributeName);
     }
 
@@ -117,8 +119,9 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry {
         if (collectionDefinition == null) {
             throw new IllegalArgumentException("invalid (null) collectionDefinition");
         }
-        LOG.debug("calling addCollectionDefinition '" + collectionDefinition.getName() + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling addCollectionDefinition '" + collectionDefinition.getName() + "'");
+        }
         String collectionName = collectionDefinition.getName();
         if (StringUtils.isBlank(collectionName)) {
             throw new ValidationException("invalid (blank) collectionName");
@@ -143,8 +146,9 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry {
         if (StringUtils.isBlank(collectionName)) {
             throw new IllegalArgumentException("invalid (blank) collectionName");
         }
-        LOG.debug("calling getCollectionDefinition '" + collectionName + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling getCollectionDefinition '" + collectionName + "'");
+        }
         return (CollectionDefinition) collections.get(collectionName);
     }
 
@@ -185,8 +189,9 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry {
         if (relationshipDefinition == null) {
             throw new IllegalArgumentException("invalid (null) relationshipDefinition");
         }
-        LOG.debug("calling addRelationshipDefinition '" + relationshipDefinition.getObjectAttributeName() + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling addRelationshipDefinition '" + relationshipDefinition.getObjectAttributeName() + "'");
+        }
         String relationshipName = relationshipDefinition.getObjectAttributeName();
         if (StringUtils.isBlank(relationshipName)) {
             throw new ValidationException("invalid (blank) relationshipName");
@@ -204,8 +209,9 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry {
         if (StringUtils.isBlank(relationshipName)) {
             throw new IllegalArgumentException("invalid (blank) relationshipName");
         }
-        LOG.debug("calling getRelationshipDefinition '" + relationshipName + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling getRelationshipDefinition '" + relationshipName + "'");
+        }
         return (RelationshipDefinition) relationships.get(relationshipName);
     }
 

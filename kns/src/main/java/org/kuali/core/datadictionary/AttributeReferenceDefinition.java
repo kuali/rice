@@ -350,16 +350,19 @@ public class AttributeReferenceDefinition extends AttributeDefinition {
      * @throws CompletionException if unable to find class and attribute matching sourceClassName and sourceAttributeName
      */
     public void assignDelegate(DataDictionaryEntryBase parentObjectEntry, DataDictionary dataDictionary) {
-        String parentClassName = StringUtils.substringAfter(parentObjectEntry.getEntryClass().getName(), parentObjectEntry.getEntryClass().getPackage().getName() + ".");
-        String msgPrefix = "error validating " + parentClassName + "." + this.getName() + ": ";
-        String msgSuffix = " (" + getParseLocation() + ")";
 
         BusinessObjectEntry delegateEntry = dataDictionary.getBusinessObjectEntry(getSourceClassName());
         if (delegateEntry == null) {
+            String parentClassName = StringUtils.substringAfter(parentObjectEntry.getEntryClass().getName(), parentObjectEntry.getEntryClass().getPackage().getName() + ".");
+            String msgPrefix = "error validating " + parentClassName + "." + this.getName() + ": ";
+            String msgSuffix = " (" + getParseLocation() + ")";
             throw new CompletionException(msgPrefix + "no BusinessObjectEntry exists for sourceClassName '" + getSourceClassName() + "'" + msgSuffix);
         }
         AttributeDefinition delegateDefinition = delegateEntry.getAttributeDefinition(getSourceAttributeName());
         if (delegateDefinition == null) {
+            String parentClassName = StringUtils.substringAfter(parentObjectEntry.getEntryClass().getName(), parentObjectEntry.getEntryClass().getPackage().getName() + ".");
+            String msgPrefix = "error validating " + parentClassName + "." + this.getName() + ": ";
+            String msgSuffix = " (" + getParseLocation() + ")";
             throw new CompletionException(msgPrefix + "no AttributeDefnintion exists for sourceAttributeName '" + getSourceClassName() + "." + getSourceAttributeName() + "'" + msgSuffix);
             // This error could be caused by AttributeReferenceDummy.xml.
         }

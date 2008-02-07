@@ -51,8 +51,9 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("invalid (blank) name");
         }
-        LOG.debug("calling setName '" + name + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setName '" + name + "'");
+        }
         this.name = name;
     }
 
@@ -64,8 +65,9 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(label)) {
             throw new IllegalArgumentException("invalid (blank) label");
         }
-        LOG.debug("calling setLabel '" + label + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setLabel '" + label + "'");
+        }
         this.label = label;
     }
 
@@ -80,8 +82,9 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(shortLabel)) {
             throw new IllegalArgumentException("invalid (blank) shortLabel");
         }
-        LOG.debug("calling setShortLabel '" + shortLabel + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setShortLabel '" + shortLabel + "'");
+        }
         this.shortLabel = shortLabel;
     }
 
@@ -109,8 +112,9 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(summary)) {
             throw new IllegalArgumentException("invalid (blank) summary");
         }
-        LOG.debug("calling setSummary '" + summary + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setSummary '" + summary + "'");
+        }
         this.summary = summary;
     }
 
@@ -122,8 +126,9 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(description)) {
             throw new IllegalArgumentException("invalid (blank) description");
         }
-        LOG.debug("calling setDescription '" + description + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setDescription '" + description + "'");
+        }
         this.description = description;
     }
 

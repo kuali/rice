@@ -18,7 +18,7 @@ package edu.iu.uis.eden.cache;
 
 import java.util.Properties;
 
-import org.kuali.rice.config.Config;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
 
 import com.opensymphony.oscache.base.AbstractCacheAdministrator;
@@ -32,11 +32,13 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
  */
 public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 
+    private static final String DEFAULT_SERVICE_NAME = "OSCacheNotificationService";
+    
 	private static final String CACHE_PREFIX = "cache.";
 	private GeneralCacheAdministrator cacheAdministrator;
 	private boolean started;
-	private String messageEntity;
 	private boolean forceRegistryRefresh;
+	private String serviceName;
 
 	public boolean isStarted() {
 		return this.started;
@@ -109,9 +111,11 @@ public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 		if (!properties.containsKey(AbstractCacheAdministrator.CACHE_BLOCKING_KEY)) {
 			properties.put(AbstractCacheAdministrator.CACHE_BLOCKING_KEY, "false");
 		}
-		// we put the message entity in as a property because it's required in order for the KEWDistributedCacheListener to be initialized
-		properties.put(Config.MESSAGE_ENTITY, getMessageEntity());
 		properties.put(RiceCacheAdministrator.FORCE_REGISTRY_REFRESH_KEY, new Boolean(this.forceRegistryRefresh));
+		if (StringUtils.isBlank(this.serviceName)) {
+		    this.serviceName = DEFAULT_SERVICE_NAME;
+		}
+		properties.put(RiceCacheAdministrator.SERVICE_NAME_KEY, this.serviceName);
 		return properties;
 	}
 
@@ -128,18 +132,16 @@ public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 		return this.cacheAdministrator;
 	}
 
-	public String getMessageEntity() {
-		if (this.messageEntity == null) {
-			return Core.getCurrentContextConfig().getMessageEntity();
-		}
-		return this.messageEntity;
-	}
-
-	public void setMessageEntity(String notificationTopicName) {
-		this.messageEntity = notificationTopicName;
-	}
-
 	public void setForceRegistryRefresh(boolean forceRegistryRefresh) {
 		this.forceRegistryRefresh = forceRegistryRefresh;
 	}
+
+	public String getServiceName() {
+	    return this.serviceName;
+	}
+
+	public void setServiceName(String serviceName) {
+	    this.serviceName = serviceName;
+	}
+	
 }

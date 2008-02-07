@@ -36,37 +36,37 @@ ant = new AntBuilder()
 
 ant.delete(dir:PROJECT_PATH) 
 ant.copy(todir:PROJECT_PATH + '/src/main/java/edu') { 
-    fileset(dir:RICE_DIR + '/kns/src/test/java/edu', includes:'**/*', excludes:'CVS*,.cvs*') 
+    fileset(dir:RICE_DIR + '/kns/src/test/java/edu', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
 }
 ant.copy(todir:PROJECT_PATH + '/src/test/java/org/kuali/rice') { 
-    fileset(dir:RICE_DIR + '/kns/src/test/java/org/kuali/rice', includes:'**/*', excludes:'CVS*,.cvs*,**/KualiMaintainableTest*') 
+    fileset(dir:RICE_DIR + '/kns/src/test/java/org/kuali/rice', includes:'**/*', excludes:'.svn,CVS*,.cvs*,**/KualiMaintainableTest*') 
 }
 ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
-    fileset(dir:RICE_DIR + '/kns/src/test/resources', includes:'**/*', excludes:'CVS*,.cvs*,db/, **/sample-app-test-config.xml') 
+    fileset(dir:RICE_DIR + '/kns/src/test/resources', includes:'**/*', excludes:'.svn,CVS*,.cvs*,db/, **/sample-app-test-config.xml') 
 }
 ant.copy(todir:PROJECT_PATH + '/src/test/resources') { 
     fileset(dir:RICE_DIR + '/kns/src/test/resources', includes:'**/sample-app-test-config.xml') 
 }
 ant.copy(todir:PROJECT_PATH + '/src/main/config/ddl') { 
-    fileset(dir:RICE_DIR + '/kns/src/main/config/ddl', includes:'**/*', excludes:'CVS*,.cvs*') 
+    fileset(dir:RICE_DIR + '/kns/src/main/config/ddl', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
 }
 ant.copy(todir:PROJECT_PATH + '/src/main/config/sql') { 
-    fileset(dir:RICE_DIR + '/kns/src/main/config/sql', includes:'**/*', excludes:'CVS*,.cvs*') 
+    fileset(dir:RICE_DIR + '/kns/src/main/config/sql', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
 }
 ant.copy(todir:PROJECT_PATH + '/src/main/config/sql') { 
-    fileset(dir:RICE_DIR + '/kew/src/main/config/sql', includes:'**/*', excludes:'CVS*,.cvs*') 
+    fileset(dir:RICE_DIR + '/kew/src/main/config/sql', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
 }
 ant.copy(todir:PROJECT_PATH + '/src/main/config/xml') { 
-    fileset(dir:RICE_DIR + '/kns/src/main/config/xml', includes:'**/*', excludes:'CVS*,.cvs*') 
+    fileset(dir:RICE_DIR + '/kns/src/main/config/xml', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
 }
 ant.copy(todir:PROJECT_PATH + '/src/main/webapp') { 
-    fileset(dir:RICE_DIR + '/kns/src/test/webapp', includes:'**/*', excludes:'CVS*,.cvs*') 
+    fileset(dir:RICE_DIR + '/kns/src/test/webapp', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
 }
 ant.copy(todir:"${System.getProperty('user.home')}/kuali/main/dev") { 
-    fileset(dir:RICE_DIR + '/security', includes:'ricekeystore', excludes:'CVS*,.cvs*') 
+    fileset(dir:RICE_DIR + '/security', includes:'ricekeystore', excludes:'.svn,CVS*,.cvs*') 
 }
 ant.copy(todir:"${System.getProperty('user.home')}/kuali/test/dev") { 
-    fileset(dir:RICE_DIR + '/security', includes:'ricekeystore', excludes:'CVS*,.cvs*') 
+    fileset(dir:RICE_DIR + '/security', includes:'ricekeystore', excludes:'.svn,CVS*,.cvs*') 
 }
 ant.delete(dir:PROJECT_PATH + '/src/main/resources/org')
 

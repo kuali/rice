@@ -273,6 +273,7 @@ public class FieldBridge {
             setupField(field, maintainableFieldDefinition);
             
             MaintenanceUtils.setFieldQuickfinder(o, field.getPropertyName(), maintainableFieldDefinition, field, displayedFieldNames, m);
+            MaintenanceUtils.setFieldDirectInquiry(o, field.getPropertyName(), maintainableFieldDefinition, field, displayedFieldNames);
 
             // set default value
             //TODO St. Ailish says review this. A question was raised on 11-16-2006 Tuscon meeting as to why this is done here and not in the formatter.
@@ -370,7 +371,8 @@ public class FieldBridge {
                 //  set the QuickFinderClass 
                 BusinessObject collectionBoInstance = (BusinessObject) collectionDefinition.getBusinessObjectClass().newInstance(); 
                 LookupUtils.setFieldQuickfinder(collectionBoInstance, parents+collectionDefinition.getName(), true, 0, fieldDefinition.getName(), collField, displayedFieldNames, m); 
-  
+                LookupUtils.setFieldDirectInquiry(collField);
+
                 collFields.add(collField); 
             }
             

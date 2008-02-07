@@ -46,6 +46,8 @@ public class RiceConstants extends JstlConstants {
     
     public static final String MAX_UPLOAD_SIZE_PARM_NM = "MAX_FILE_SIZE_DEFAULT_UPLOAD";
     
+    public static final String UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY = "org.kuali.core.util.WebUtils.uploadedFiles";
+    
     public static final String SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM = "SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS";
     public static final String ATTACHMENT_MAX_FILE_SIZE_PARM_NM = "MAX_FILE_SIZE_ATTACHMENT";
     
@@ -280,7 +282,6 @@ public class RiceConstants extends JstlConstants {
     public static final String TO = "To";
     public static final String USER_SESSION_KEY = "UserSession";
     public static final String VERSION_NUMBER = "versionNumber";
-    public static final KualiDecimal ZERO = new KualiDecimal("0.00");
 
     public static final String SEARCH_LIST_KEY_PREFIX = "searchResults";
     public static final String SEARCH_LIST_REQUEST_KEY = "searchResultKey";
@@ -417,6 +418,8 @@ public class RiceConstants extends JstlConstants {
          * persist on the file system before being deleted.
          */
         public static final String PURGE_PENDING_ATTACHMENTS_STEP_MAX_AGE = "purgePendingAttachmentsStepMaxAge";
+        
+        public static final String ENABLE_DIRECT_INQUIRIES_IND = "ENABLE_DIRECT_INQUIRIES_IND";
     }
 
     public static class GeneralLedgerApplicationParameterKeys {

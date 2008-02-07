@@ -243,7 +243,11 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
      */
     public String getLookupResultSetLimit(Class businessObjectClass) {
         LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-        return lookupDefinition.getResultSetLimit();
+        if ( lookupDefinition != null ) {
+            return lookupDefinition.getResultSetLimit();
+        } else {
+            return null;
+        }
     }
 
     /**

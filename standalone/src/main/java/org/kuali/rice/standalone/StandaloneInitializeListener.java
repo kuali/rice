@@ -32,6 +32,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -40,9 +41,8 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.MessageFetcher;
 
 /**
- * A ServletContextListener responsible for intializing the Standalone Kuali
- * Rice application.
- *
+ * A ServletContextListener responsible for intializing the Standalone Kuali Rice application.
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class StandaloneInitializeListener implements ServletContextListener {
@@ -51,145 +51,158 @@ public class StandaloneInitializeListener implements ServletContextListener {
     private static final Logger LOG = Logger.getLogger(StandaloneInitializeListener.class);
 
     private static final String DEFAULT_SPRING_BEANS = "org/kuali/rice/standalone/config/StandaloneSpringBeans.xml";
-    private static final String RICE_BASE = "rice.base";
-    private static final String CATALINA_BASE = "catalina.base";
+    public static final String RICE_BASE = "rice.base";
+    public static final String CATALINA_BASE = "catalina.base";
+    public static final String RICE_STANDALONE_EXECUTE_MESSAGE_FETCHER = "rice.standalone.execute.messageFetcher";
     private static final String DEFAULT_LOG4J_CONFIG = "org/kuali/rice/standalone/logging/default-log4j.properties";
 
     private ConfigurableApplicationContext context = null;
 
     /**
-     * ServletContextListener interface implementation that schedules the start
-     * of the lifecycle
+     * ServletContextListener interface implementation that schedules the start of the lifecycle
      */
     public void contextInitialized(ServletContextEvent sce) {
-	long startInit = System.currentTimeMillis();
-	try {
-	    Properties p = new Properties();
-	    p.load(getClass().getClassLoader().getResourceAsStream(DEFAULT_LOG4J_CONFIG));
-	    PropertyConfigurator.configure(p);
-	} catch (Exception e) {
-	    throw new WorkflowRuntimeException(e);
-	}
+        long startInit = System.currentTimeMillis();
+        try {
+            Properties p = new Properties();
+            p.load(getClass().getClassLoader().getResourceAsStream(DEFAULT_LOG4J_CONFIG));
+            PropertyConfigurator.configure(p);
+        } catch (Exception e) {
+            throw new WorkflowRuntimeException(e);
+        }
 
-	LOG.info("Initializing Kuali Rice Standalone...");
+        LOG.info("Initializing Kuali Rice Standalone...");
 
-	sce.getServletContext().setAttribute("Constants", new EdenConstants());
+        sce.getServletContext().setAttribute("Constants", new EdenConstants());
 
-	List<String> configLocations = new ArrayList<String>();
-	String additionalConfigLocations = System.getProperty(EdenConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM);
-	if (!StringUtils.isBlank(additionalConfigLocations)) {
-	    String[] additionalConfigLocationArray = additionalConfigLocations.split(",");
-	    for (String additionalConfigLocation : additionalConfigLocationArray) {
-		configLocations.add(additionalConfigLocation);
-	    }
-	}
+        List<String> configLocations = new ArrayList<String>();
+        String additionalConfigLocations = System.getProperty(EdenConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM);
+        if (!StringUtils.isBlank(additionalConfigLocations)) {
+            String[] additionalConfigLocationArray = additionalConfigLocations.split(",");
+            for (String additionalConfigLocation : additionalConfigLocationArray) {
+                configLocations.add(additionalConfigLocation);
+            }
+        }
 
-	String bootstrapSpringBeans = DEFAULT_SPRING_BEANS;
-	if (!StringUtils.isBlank(System.getProperty(EdenConstants.BOOTSTRAP_SPRING_FILE))) {
-	    bootstrapSpringBeans = System.getProperty(EdenConstants.BOOTSTRAP_SPRING_FILE);
-	} else if (!StringUtils.isBlank(sce.getServletContext().getInitParameter(EdenConstants.BOOTSTRAP_SPRING_FILE))) {
-	    bootstrapSpringBeans = sce.getServletContext().getInitParameter(EdenConstants.BOOTSTRAP_SPRING_FILE);
-	    LOG.info("Found bootstrap Spring Beans file defined in servlet context: " + bootstrapSpringBeans);
-	}
-	try {
-	    String basePath = findBasePath(sce.getServletContext());
-	    Properties baseProps = new Properties();
-	    baseProps.putAll(getContextParameters(sce.getServletContext()));
-	    baseProps.putAll(System.getProperties());
-	    baseProps.setProperty(RICE_BASE, basePath);
-	    // HACK: need to determine best way to do this...
-	    // if the additional config locations property is empty then we need
-	    // to explicitly set it so that if we use it in a root config
-	    // a value (an empty value) can be found, and the config parser
-	    // won't blow up because "additional.config.locations" property
-	    // cannot be resolved
-	    // An alternative to doing this at the application/module level would
-	    // be to push this functionality down into the Rice ConfigFactoryBean
-	    // e.g., by writing a simple ResourceFactoryBean that would conditionally
-	    // expose the resource, and then plugging the Resource into the ConfigFactoryBean
-	    // However, currently, the ConfigFactoryBean operates on String locations, not
-	    // Resources.  Spring can coerce string <value>s into Resources, but not vice-versa
-	    if (StringUtils.isEmpty(additionalConfigLocations)) {
-		baseProps.setProperty(EdenConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM, "");
-	    }
-	    SimpleConfig config = new SimpleConfig(baseProps);
-	    config.parseConfig();
-	    Core.init(config);
+        String bootstrapSpringBeans = DEFAULT_SPRING_BEANS;
+        if (!StringUtils.isBlank(System.getProperty(EdenConstants.BOOTSTRAP_SPRING_FILE))) {
+            bootstrapSpringBeans = System.getProperty(EdenConstants.BOOTSTRAP_SPRING_FILE);
+        } else if (!StringUtils.isBlank(sce.getServletContext().getInitParameter(EdenConstants.BOOTSTRAP_SPRING_FILE))) {
+            bootstrapSpringBeans = sce.getServletContext().getInitParameter(EdenConstants.BOOTSTRAP_SPRING_FILE);
+            LOG.info("Found bootstrap Spring Beans file defined in servlet context: " + bootstrapSpringBeans);
+        }
+        try {
+            String basePath = findBasePath(sce.getServletContext());
+            Properties baseProps = new Properties();
+            baseProps.putAll(getContextParameters(sce.getServletContext()));
+            baseProps.putAll(System.getProperties());
+            baseProps.setProperty(RICE_BASE, basePath);
+            // HACK: need to determine best way to do this...
+            // if the additional config locations property is empty then we need
+            // to explicitly set it so that if we use it in a root config
+            // a value (an empty value) can be found, and the config parser
+            // won't blow up because "additional.config.locations" property
+            // cannot be resolved
+            // An alternative to doing this at the application/module level would
+            // be to push this functionality down into the Rice ConfigFactoryBean
+            // e.g., by writing a simple ResourceFactoryBean that would conditionally
+            // expose the resource, and then plugging the Resource into the ConfigFactoryBean
+            // However, currently, the ConfigFactoryBean operates on String locations, not
+            // Resources. Spring can coerce string <value>s into Resources, but not vice-versa
+            if (StringUtils.isEmpty(additionalConfigLocations)) {
+                baseProps.setProperty(EdenConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM, "");
+            }
+            SimpleConfig config = new SimpleConfig(baseProps);
+            config.parseConfig();
+            Core.init(config);
 
-	    context = new ClassPathXmlApplicationContext(bootstrapSpringBeans);
-	    context.start();
+            context = new ClassPathXmlApplicationContext(bootstrapSpringBeans);
+            context.start();
 
-	    // execute the MessageFetcher to grab any messages that were being processed
-	    // when the system shut down originally
-	    MessageFetcher messageFetcher = new MessageFetcher((Integer) null);
-	    KSBServiceLocator.getThreadPool().execute(messageFetcher);
-	} catch (Exception e) {
-	    LOG.fatal("Kuali Rice Standalone startup failed!", e);
-	    throw new RuntimeException("Startup failed.  Exiting.", e);
-	}
-	long endInit = System.currentTimeMillis();
-	LOG.info("...Kuali Rice Standalone successfully initialized, startup took " + (endInit - startInit) + " ms.");
+            if (shouldExecuteMessageFetcher()) {
+                // execute the MessageFetcher to grab any messages that were being processed
+                // when the system shut down originally
+                MessageFetcher messageFetcher = new MessageFetcher((Integer) null);
+                KSBServiceLocator.getThreadPool().execute(messageFetcher);
+            }
+        } catch (Exception e) {
+            LOG.fatal("Kuali Rice Standalone startup failed!", e);
+            throw new RuntimeException("Startup failed.  Exiting.", e);
+        }
+        long endInit = System.currentTimeMillis();
+        LOG.info("...Kuali Rice Standalone successfully initialized, startup took " + (endInit - startInit) + " ms.");
     }
 
     /**
-     * Transalates context parameters from the web.xml into entries in a Properties file.
+     * Translates context parameters from the web.xml into entries in a Properties file.
      */
     protected Properties getContextParameters(ServletContext context) {
-	Properties properties = new Properties();
-	Enumeration paramNames = context.getInitParameterNames();
-	while (paramNames.hasMoreElements()) {
-	    String paramName = (String)paramNames.nextElement();
-	    properties.put(paramName, context.getInitParameter(paramName));
-	}
-	return properties;
+        Properties properties = new Properties();
+        Enumeration paramNames = context.getInitParameterNames();
+        while (paramNames.hasMoreElements()) {
+            String paramName = (String) paramNames.nextElement();
+            properties.put(paramName, context.getInitParameter(paramName));
+        }
+        return properties;
     }
 
     protected String findBasePath(ServletContext servletContext) {
-	String realPath = servletContext.getRealPath("/");
-	// if cannot obtain real path (because, e.g., deployed as WAR
-	// try a reasonable guess
-	if (realPath == null) {
-	    if (System.getProperty(CATALINA_BASE) != null) {
-		realPath = System.getProperty(CATALINA_BASE);
-	    } else {
-		realPath = ".";
-	    }
-	}
-	String basePath = new File(realPath).getAbsolutePath();
-	// append a trailing path separator to make relatives paths work in conjunction
-	// with empty ("current working directory") basePath
-	if (basePath.length() > 0 && !basePath.endsWith(File.separator)) {
-	    basePath += File.separator;
-	}
-	return basePath;
+        String realPath = servletContext.getRealPath("/");
+        // if cannot obtain real path (because, e.g., deployed as WAR
+        // try a reasonable guess
+        if (realPath == null) {
+            if (System.getProperty(CATALINA_BASE) != null) {
+                realPath = System.getProperty(CATALINA_BASE);
+            } else {
+                realPath = ".";
+            }
+        }
+        String basePath = new File(realPath).getAbsolutePath();
+        // append a trailing path separator to make relatives paths work in conjunction
+        // with empty ("current working directory") basePath
+        if (basePath.length() > 0 && !basePath.endsWith(File.separator)) {
+            basePath += File.separator;
+        }
+        return basePath;
     }
 
     /**
-     * Configures the default config location by first checking the init params
-     * for default locations and then falling back to the standard default
-     * config location.
+     * Configures the default config location by first checking the init params for default locations and then falling back
+     * to the standard default config location.
      */
     protected void addDefaultConfigLocation(ServletContext context, List<String> configLocations) {
-	String defaultConfigLocation = context.getInitParameter(EdenConstants.DEFAULT_CONFIG_LOCATION_PARAM);
-	if (!StringUtils.isEmpty(defaultConfigLocation)) {
-	    String[] locations = defaultConfigLocation.split(",");
-	    for (String location : locations) {
-		configLocations.add(location);
-	    }
-	} else {
-	    configLocations.add(EdenConstants.DEFAULT_SERVER_CONFIG_LOCATION);
-	}
+        String defaultConfigLocation = context.getInitParameter(EdenConstants.DEFAULT_CONFIG_LOCATION_PARAM);
+        if (!StringUtils.isEmpty(defaultConfigLocation)) {
+            String[] locations = defaultConfigLocation.split(",");
+            for (String location : locations) {
+                configLocations.add(location);
+            }
+        } else {
+            configLocations.add(EdenConstants.DEFAULT_SERVER_CONFIG_LOCATION);
+        }
     }
 
     public void contextDestroyed(ServletContextEvent sce) {
-	LOG.info("Shutting down Kuali Rice Standalone.");
-	try {
-	    if (context != null) {
-		context.close();
-	    }
-	} catch (Exception e) {
-	    throw new RuntimeException("Failed to shutdown Kuali Rice Standalone.", e);
-	}
+        LOG.info("Shutting down Kuali Rice Standalone.");
+        try {
+            if (context != null) {
+                context.close();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to shutdown Kuali Rice Standalone.", e);
+        }
+    }
+
+    /**
+     * Determines whether or not the Message Fetcher should be executed.
+     */
+    protected boolean shouldExecuteMessageFetcher() {
+        String executeMessageFetcher = Core.getCurrentContextConfig().getProperty(RICE_STANDALONE_EXECUTE_MESSAGE_FETCHER);
+        return StringUtils.isBlank(executeMessageFetcher) ? true : new Boolean(executeMessageFetcher);
+    }
+
+    protected ConfigurableApplicationContext getContext() {
+        return context;
     }
 
 }

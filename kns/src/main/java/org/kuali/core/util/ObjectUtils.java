@@ -18,7 +18,6 @@ package org.kuali.core.util;
 import java.beans.PropertyDescriptor;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -39,7 +38,7 @@ import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.PersistableBusinessObjectExtension;
 import org.kuali.core.service.PersistenceStructureService;
-import org.kuali.core.util.cache.CacheException;
+import org.kuali.core.util.cache.CopiedObject;
 import org.kuali.core.web.format.FormatException;
 import org.kuali.core.web.format.Formatter;
 import org.kuali.core.web.struts.pojo.PojoPropertyUtilsBean;
@@ -78,47 +77,10 @@ public class ObjectUtils {
      * @return CopiedObject containing a deep copy of the given Serializable and its size in bytes
      */
     public static CopiedObject deepCopyForCaching(Serializable src) {
-        Timer t0 = new Timer("deepCopy");
         CopiedObject co = new CopiedObject();
 
-        int copySize = 0;
-        if (src != null) {
-            ObjectOutputStream oos = null;
-            ObjectInputStream ois = null;
-            try {
-                ByteArrayOutputStream serializer = new ByteArrayOutputStream();
-                oos = new ObjectOutputStream(serializer);
-                oos.writeObject(src);
-
-                co.setSize(serializer.size());
-
-                ByteArrayInputStream deserializer = new ByteArrayInputStream(serializer.toByteArray());
-                ois = new ObjectInputStream(deserializer);
-                Serializable copy = (Serializable) ois.readObject();
-
-                co.setContent(copy);
-            }
-            catch (IOException e) {
-                throw new CacheException("unable to complete deepCopy from src '" + src.toString() + "'", e);
-            }
-            catch (ClassNotFoundException e) {
-                throw new CacheException("unable to complete deepCopy from src '" + src.toString() + "'", e);
-            }
-            finally {
-                try {
-                    if (oos != null) {
-                        oos.close();
-                    }
-                    if (ois != null) {
-                        ois.close();
-                    }
-                }
-                catch (IOException e) {
-                    // ignoring this IOException, since the streams are going to be abandoned now anyway
-                }
-            }
-        }
-        t0.log();
+        co.setContent( src );
+        
         return co;
     }
 

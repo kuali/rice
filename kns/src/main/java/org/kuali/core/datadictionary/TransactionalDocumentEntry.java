@@ -34,7 +34,9 @@ public class TransactionalDocumentEntry extends DocumentEntry {
     }
 
     public void setAllowsErrorCorrection(boolean allowsErrorCorrection) {
-        LOG.debug("calling setAllowsErrorCorrection '" + allowsErrorCorrection + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setAllowsErrorCorrection '" + allowsErrorCorrection + "'");
+        }
 
         this.allowsErrorCorrection = allowsErrorCorrection;
     }

@@ -122,6 +122,8 @@ public class NoteServiceImpl implements NoteService {
     }
 
     public Note createNote(Note note, PersistableBusinessObject bo) throws Exception {
+        // TODO: Why is a deep copy being done?  Nowhere that this is called uses the given note argument
+        // again after calling this method.
         Note tmpNote = (Note) ObjectUtils.deepCopy(note);
         UniversalUser kualiUser = GlobalVariables.getUserSession().getUniversalUser();
         tmpNote.setRemoteObjectIdentifier(bo.getObjectId());

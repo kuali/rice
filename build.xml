@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Kuali Rice" default="dist-all" xmlns:artifact="urn:maven-artifact-ant">
+
+	<target name="init">
+		<property file="${user.home}/kuali-build.properties" />
+		<property name="rice.environment" value="dev"/>
+		<property name="rice.app.code" value="kr"/>
+		<path id="maven-ant-tasks.classpath" path="scripts/maven-ant-tasks/maven-ant-tasks-2.0.8.jar" />
+		<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="urn:maven-artifact-ant" classpathref="maven-ant-tasks.classpath" />
+		<artifact:pom id="maven.project" file="pom.xml" />
+		<echo>The Kuali Rice version is ${maven.project.version}</echo>
+		<echo>${maven.project.dependencies}</echo>
+		<property name="dist.build.dir" value="target/ant-build"/>
+		<property name="dist.standalone.dir" value="${dist.build.dir}/dist-standalone"/>
+		<property name="dist.standalone.lib.dir" value="${dist.standalone.dir}/WEB-INF/lib"/>
+		<property name="webapp.src.dir" value="kns/src/test/webapp"/>
+		<property name="standalone.config.src.dir" value="standalone/src/main/config"/>
+		<property name="dist.binary.dir" value="${dist.build.dir}/dist-binary/rice-${maven.project.version}-bin"/>
+		<property name="dist.binary.lib.dir" value="${dist.binary.dir}/lib"/>
+		<property name="dist.binary.webcontent.dir" value="${dist.binary.dir}/webcontent"/>
+		<property name="dist.binary.config.dir" value="${dist.binary.dir}/config"/>
+		<property name="dist.src.dir" value="${dist.build.dir}/dist-src/rice-${maven.project.version}-src"/>
+		<mkdir dir="${dist.build.dir}"/>
+	</target>
+	
+	<target name="clean" description="Cleans the temporary build files." depends="init">
+		<delete dir="${dist.build.dir}"/>
+		<delete dir="target" includes="rice-${maven.project.version}-*"/>
+	</target>
+	
+	<target name="clean-maven" depends="init">
+		<maven goals="clean"/>
+	</target>
+
+	<target name="install-rice-jars" depends="init">
+		<maven goals="install" options="-Dmaven.test.skip=true" />
+	</target>
+
+	<target name="prepare-lib" depends="install-rice-jars">
+		<artifact:install file="pom.xml">
+			<pom refid="maven.project" />
+		</artifact:install>
+		<artifact:dependencies filesetId="standalone.lib.fileset" versionsId="dependency.versions" useScope="runtime">
+			<dependency groupId="org.kuali.rice" artifactId="rice-standalone" version="${maven.project.version}">
+				<exclusion groupId="org.kuali.rice" artifactId="rice-testharness" />
+				<exclusion groupId="junit" artifactId="junit" />
+				<exclusion groupId="htmlunit" artifactId="htmlunit" />
+				<exclusion groupId="xapool" artifactId="xapool" />
+				<exclusion groupId="jotm" artifactId="jotm" />
+				<exclusion groupId="com.oracle" artifactId="ojdbc14" />
+				<exclusion groupId="org.mortbay.jetty" artifactId="jetty" />
+				<exclusion groupId="javax.servlet" artifactId="servlet-api" />
+				<exclusion groupId="tomcat" artifactId="jasper-compiler" />
+				<exclusion groupId="tomcat" artifactId="jasper-runtime" />
+				<exclusion groupId="tomcat" artifactId="jasper-compiler-jdt" />
+			</dependency>
+		</artifact:dependencies>
+	</target>
+	
+	<target name="dist-standalone" depends="prepare-lib" description="Builds and packages the Rice Standalone distribution">
+		<copy todir="${dist.standalone.lib.dir}" flatten="true">
+			<fileset refid="standalone.lib.fileset" />
+		</copy>
+		<copy todir="${dist.standalone.dir}">
+            <!-- Don't include the pieces from the sample app -->
+			<fileset dir="${webapp.src.dir}" excludes="*,WEB-INF/*"/>
+			<fileset dir="${standalone.config.src.dir}"/>
+		</copy>
+		<!-- change the environment code appropriately -->
+		<replaceregexp match="\b(dev|snd|unt|reg|stg|trn|prd)\b" replace="${rice.environment}" byline="true" flags="g">
+			<fileset dir="${dist.standalone.dir}">
+				<include name="**/web.xml" />
+			</fileset>
+		</replaceregexp>
+		<jar destfile="target/rice-${maven.project.version}-standalone.war">
+			<fileset dir="${dist.standalone.dir}"/>
+		</jar>
+	</target>
+	
+	<target name="dist-binary" depends="install-rice-jars" description="Creates Kuali Rice binary packages.">
+		<artifact:install file="pom.xml">
+			<pom refid="maven.project" />
+		</artifact:install>
+		<artifact:dependencies filesetId="binary.lib.fileset" versionsId="dependency.versions" useScope="runtime">
+			<dependency groupId="org.kuali.rice" artifactId="rice-standalone" version="${maven.project.version}">
+				<exclusion groupId="org.kuali.rice" artifactId="rice-testharness" />
+				<exclusion groupId="junit" artifactId="junit" />
+				<exclusion groupId="htmlunit" artifactId="htmlunit" />
+				<exclusion groupId="xapool" artifactId="xapool" />
+				<exclusion groupId="jotm" artifactId="jotm" />
+				<exclusion groupId="com.oracle" artifactId="ojdbc14" />
+			</dependency>
+		</artifact:dependencies>
+		<copy todir="${dist.binary.lib.dir}" flatten="true">
+			<fileset refid="binary.lib.fileset" />
+		</copy>
+		<copy todir="${dist.binary.dir}">
+			<fileset dir=".">
+				<include name="licenses/**"/>
+				<include name="scripts/**"/>
+				<include name="security/**"/>
+				<include name="*.txt"/>
+			</fileset>
+		</copy>
+		<copy todir="${dist.binary.webcontent.dir}">
+			<fileset dir="kns/src/test/webapp">
+				<exclude name="*"/>
+				<exclude name="WEB-INF/*"/>
+			</fileset>
+		</copy>
+		<copy todir="${dist.binary.config.dir}">
+			<fileset dir=".">
+				<include name="**/src/main/config/**"/>
+			</fileset>
+		</copy>
+		<zip destfile="target/rice-${maven.project.version}-bin.zip">
+			<fileset dir="${dist.binary.dir}"/>
+		</zip>
+		<tar destfile="target/rice-${maven.project.version}-bin.tar.gz" compression="gzip" longfile="gnu">
+			<fileset dir="${dist.binary.dir}"/>
+		</tar>
+		<tar destfile="target/rice-${maven.project.version}-bin.tar.bz2" compression="bzip2" longfile="gnu">
+			<fileset dir="${dist.binary.dir}"/>
+		</tar>
+	</target>
+	
+	<target name="dist-src" depends="init" description="Creates Kuali Rice binary packages.">
+		<copy todir="${dist.src.dir}">
+			<fileset dir=".">
+				<exclude name="**/target/**"/>
+				<exclude name="atomikos-tmp/**"/>
+				<exclude name="jetty-tmp/**"/>
+			</fileset>
+		</copy>
+		<zip destfile="target/rice-${maven.project.version}-src.zip">
+				<fileset dir="${dist.src.dir}"/>
+			</zip>
+			<tar destfile="target/rice-${maven.project.version}-src.tar.gz" compression="gzip" longfile="gnu">
+				<fileset dir="${dist.src.dir}"/>
+			</tar>
+			<tar destfile="target/rice-${maven.project.version}-src.tar.bz2" compression="bzip2" longfile="gnu">
+				<fileset dir="${dist.src.dir}"/>
+			</tar>
+		</target>
+
+	<target name="dist-all" depends="clean, clean-maven, dist-standalone, dist-binary, dist-src" description="Creates standalone, binary and source distributions"/>
+	
+	<!-- Used for deployments on the server -->
+	<target name="dist" depends="dist-standalone">
+		<copy file="target/rice-${maven.project.version}-standalone.war" tofile="${rice.app.code}-${rice.environment}.war"/>
+	</target>
+	
+	<target name="prepare-new-version" depends="init" description="Prompts for a new version to change the POM and groovy scripts to">
+		<input message="Detected current version in POM file of '${maven.project.version}'.  Please enter new version: "
+			defaultvalue="${maven.project.version}"
+			addproperty="project.new.version"/>
+		<echo>Re-versioning POM files and groovy scripts to version '${project.new.version}'</echo>
+		<replaceregexp match="\b${maven.project.version}\b" replace="${project.new.version}" byline="true" flags="g">
+			<fileset dir="." includes="**/pom.xml, **/*.groovy"/>
+		</replaceregexp>
+	</target>
+	
+	<macrodef name="maven">
+		<attribute name="goals" />
+		<attribute name="options" default="" />
+		<sequential>
+			<java classname="org.codehaus.classworlds.Launcher" dir="." fork="true" failonerror="true">
+				<arg line="@{options} @{goals}" />
+				<sysproperty key="classworlds.conf" value="${maven.home.directory}/bin/m2.conf" />
+				<sysproperty key="maven.home" value="${maven.home.directory}" />
+				<sysproperty key="maven.test.skip" value="true" />
+				<classpath>
+					<fileset dir="${maven.home.directory}/boot">
+						<include name="classworlds-*.jar" />
+					</fileset>
+				</classpath>
+			</java>
+		</sequential>
+	</macrodef>
+
+</project>

@@ -15,12 +15,14 @@ package edu.iu.uis.eden.messaging;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.springframework.transaction.TransactionStatus;
@@ -81,7 +83,11 @@ public class MessageServiceInvoker implements Runnable {
 	}
     }
 
-    public void placeInExceptionRouting(Throwable t, AsynchronousCall call, Object service) {
+    /**
+     * Executed when an exception is encountered during message invocation.  Attempts to call the ExceptionHandler for the
+     * message, if that fails it will attempt to set the status of the message in the queue to "EXCEPTION".
+     */
+    protected void placeInExceptionRouting(Throwable t, AsynchronousCall call, Object service) {
 	LOG.error("Error processing message: " + this.message, t);
 	final Throwable throwable;
 	if (t instanceof MessageProcessingException) {
@@ -89,7 +95,18 @@ public class MessageServiceInvoker implements Runnable {
 	} else {
 	    throwable = t;
 	}
-	KSBServiceLocator.getExceptionRoutingService().placeInExceptionRouting(throwable, this.message, service);
+	try {
+	    KSBServiceLocator.getExceptionRoutingService().placeInExceptionRouting(throwable, this.message, service);
+    	} catch (Throwable t2) {
+    	    LOG.error("An error was encountered when invoking exception handler for message. Attempting to change message status to EXCEPTION.", t2);
+    	    message.setQueueStatus(RiceConstants.ROUTE_QUEUE_EXCEPTION);
+    	    message.setQueueDate(new Timestamp(System.currentTimeMillis()));
+    	    try {
+    		KSBServiceLocator.getRouteQueueService().save(message);
+    	    } catch (Throwable t3) {
+    		LOG.fatal("Failed to flip status of message to EXCEPTION!!!", t3);
+    	    }
+    	}
     }
 
     /**
@@ -97,7 +114,7 @@ public class MessageServiceInvoker implements Runnable {
          * the AsynchronousCall.
          * 
          */
-    public Object invokeService(AsynchronousCall methodCall) throws Exception {
+    protected Object invokeService(AsynchronousCall methodCall) throws Exception {
 	this.methodCall = methodCall;
 	ServiceInfo serviceInfo = methodCall.getServiceInfo();
 	if (LOG.isDebugEnabled()) {
@@ -127,7 +144,7 @@ public class MessageServiceInvoker implements Runnable {
 	return method.invoke(service, methodCall.getArguments());
     }
 
-    public Object getService(ServiceInfo serviceInfo) {
+    protected Object getService(ServiceInfo serviceInfo) {
 	Object service;
 	if (serviceInfo.getServiceDefinition().getQueue()) {
 	    service = getQueueService(serviceInfo);
@@ -146,7 +163,7 @@ public class MessageServiceInvoker implements Runnable {
          * @param serviceInfo
          * @return
          */
-    public Object getTopicService(ServiceInfo serviceInfo) {
+    protected Object getTopicService(ServiceInfo serviceInfo) {
 	// get the service locally if we have it so we don't go through any remoting
 	RemotedServiceRegistry remoteRegistry = KSBServiceLocator.getServiceDeployer();
 	Object service = remoteRegistry.getService(serviceInfo.getQname(), serviceInfo.getEndpointUrl());
@@ -163,7 +180,7 @@ public class MessageServiceInvoker implements Runnable {
          * @param serviceInfo
          * @return
          */
-    public Object getQueueService(ServiceInfo serviceInfo) {
+    protected Object getQueueService(ServiceInfo serviceInfo) {
 	RemotedServiceRegistry remoteRegistry = KSBServiceLocator.getServiceDeployer();
 	Object service = remoteRegistry.getLocalService(serviceInfo.getQname());
 	if (service != null) {
@@ -179,12 +196,12 @@ public class MessageServiceInvoker implements Runnable {
          * 
          * @param callback
          */
-    public void notifyOnCallback(AsynchronousCall methodCall, Object callResult) {
+    protected void notifyOnCallback(AsynchronousCall methodCall, Object callResult) {
 	AsynchronousCallback callback = methodCall.getCallback();
 	notifyOnCallback(methodCall, callback, callResult);
     }
 
-    public void notifyGlobalCallbacks(AsynchronousCall methodCall, Object callResult) {
+    protected void notifyGlobalCallbacks(AsynchronousCall methodCall, Object callResult) {
 	if (LOG.isDebugEnabled()) {
 	    LOG.debug("Notifying global callbacks");
 	}
@@ -193,7 +210,7 @@ public class MessageServiceInvoker implements Runnable {
 	}
     }
 
-    public void notifyOnCallback(AsynchronousCall methodCall, AsynchronousCallback callback, Object callResult) {
+    protected void notifyOnCallback(AsynchronousCall methodCall, AsynchronousCallback callback, Object callResult) {
 	if (callback != null) {
 	    try {
 		synchronized (callback) {

@@ -56,8 +56,9 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
         }
-        LOG.debug("calling setAttributeName '" + attributeName + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setAttributeName '" + attributeName + "'");
+        }
         this.attributeName = attributeName;
     }
 
@@ -75,8 +76,9 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
      * @throws IllegalArgumentException if the given activeIndicatorAttributeName is blank
      */
     public void setActiveIndicatorAttributeName(String activeIndicatorAttributeName) {
-        LOG.debug("calling setActiveIndicatorAttributeName '" + activeIndicatorAttributeName + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setActiveIndicatorAttributeName '" + activeIndicatorAttributeName + "'");
+        }
         this.activeIndicatorAttributeName = activeIndicatorAttributeName;
     }
 
@@ -95,7 +97,9 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
      * @param activeIndicatorReversed The activeIndicatorReversed to set.
      */
     public void setActiveIndicatorReversed(boolean activeIndicatorReversed) {
-        LOG.debug("calling setActiveIndicatorReversed '" + activeIndicatorReversed + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setActiveIndicatorReversed '" + activeIndicatorReversed + "'");
+        }
         this.activeIndicatorReversed = activeIndicatorReversed;
     }
 
@@ -117,7 +121,9 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(attributeToHighlightOnFail)) {
             throw new IllegalArgumentException("invalid (blank) attributeToHighlightOnFail");
         }
-        LOG.debug("calling setAttributeToHighlightOnFail '" + attributeToHighlightOnFail + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setAttributeToHighlightOnFail '" + attributeToHighlightOnFail + "'");
+        }
         this.attributeToHighlightOnFail = attributeToHighlightOnFail;
     }
 
@@ -136,7 +142,9 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
      * @param displayFieldName The displayFieldName to set.
      */
     public void setDisplayFieldName(String displayFieldName) {
-        LOG.debug("calling setDisplayFieldName '" + displayFieldName + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setDisplayFieldName '" + displayFieldName + "'");
+        }
         this.displayFieldName = displayFieldName;
     }
 
@@ -172,7 +180,9 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     }
 
     public void setCollection(String collection) {
-        LOG.debug("calling setCollection '" + collection + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setCollection '" + collection + "'");
+        }
         this.collection = collection;
     }
 

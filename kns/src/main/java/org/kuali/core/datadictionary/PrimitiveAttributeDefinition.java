@@ -96,11 +96,9 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
-        String sourceClassName = rootBusinessObjectClass.getName();
         if (!validationCompletionUtils.isPropertyOf(rootBusinessObjectClass, sourceName)) {
             throw new AttributeValidationException("unable to find attribute '" + sourceName + "' in relationship class '" + rootBusinessObjectClass + "' (" + getParseLocation() + ")");
         }
-        String targetClassName = otherBusinessObjectClass.getName();
         if (!validationCompletionUtils.isPropertyOf(otherBusinessObjectClass, targetName)) {
             throw new AttributeValidationException("unable to find attribute '" + targetName + "' in related class '" + otherBusinessObjectClass.getName() + "' (" + getParseLocation() + ")");
         }
@@ -108,6 +106,8 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
         Class sourceClass = validationCompletionUtils.getAttributeClass(rootBusinessObjectClass, sourceName);
         Class targetClass = validationCompletionUtils.getAttributeClass(otherBusinessObjectClass, targetName);
         if ((null == sourceClass && null != targetClass) || (null != sourceClass && null == targetClass) || !StringUtils.equals(sourceClass.getName(), targetClass.getName())) {
+            String sourceClassName = rootBusinessObjectClass.getName();
+            String targetClassName = otherBusinessObjectClass.getName();
             String sourcePath = sourceClassName + "." + sourceName;
             String targetPath = targetClassName + "." + targetName;
 

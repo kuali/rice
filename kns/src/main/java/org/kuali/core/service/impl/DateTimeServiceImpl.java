@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
  * This class is the service implementation for a DateTime structure. This is
  * the default, Kuali delivered implementation.
  */
-@Transactional
+//@Transactional
 public class DateTimeServiceImpl implements DateTimeService {
 	private String[] sqlDateFormats;
 

@@ -121,6 +121,15 @@ public class KNSServiceLocator<T extends Object> {
 	return singletonTypes;
     }
 
+    public static boolean isSingleton( String beanName ) {
+    	try {
+    	    return KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().isSingleton(beanName);
+    	} catch ( NoSuchBeanDefinitionException ex ) {
+    	    // service is not in Spring so we can't assume
+    	    return false;
+    	}
+    }
+            
     public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName) {
 	List<NamedOrderedListBean> namedOrderedListBeans = new ArrayList<NamedOrderedListBean>();
 	for (Object namedOrderedListBean : KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(

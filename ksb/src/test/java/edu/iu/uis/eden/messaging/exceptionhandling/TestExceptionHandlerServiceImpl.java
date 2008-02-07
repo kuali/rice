@@ -21,6 +21,9 @@ import edu.iu.uis.eden.messaging.PersistedMessage;
 
 public class TestExceptionHandlerServiceImpl extends DefaultExceptionServiceImpl {
 
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+	    .getLogger(TestExceptionHandlerServiceImpl.class);
+    
 	public void placeInExceptionRouting(Throwable throwable, PersistedMessage message, Object service) {
 		ExceptionThreader exceptionThreader = new ExceptionThreader(throwable, message, service, this);
 		exceptionThreader.start();
@@ -42,16 +45,20 @@ public class TestExceptionHandlerServiceImpl extends DefaultExceptionServiceImpl
 		}
 
 		public void run() {
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		    this.testExceptionService.callRealPlaceInExceptionRouting(this.throwable, this.message, this.service);
+		    try {
+			Thread.sleep(3000);
+		    } catch (InterruptedException e) {
+			e.printStackTrace();
+		    }
+		    try {
+			this.testExceptionService.callRealPlaceInExceptionRouting(this.throwable, this.message, this.service);
+		    } catch (Throwable t) {
+			LOG.fatal("Error executing callRealPlaceInExceptionRouting.", t);
+		    }
 		}
 	}
 	
-	public void callRealPlaceInExceptionRouting(Throwable throwable, PersistedMessage message, Object service) {
+	public void callRealPlaceInExceptionRouting(Throwable throwable, PersistedMessage message, Object service) throws Exception {
 		super.placeInExceptionRouting(throwable, message, service);
 	}
 	

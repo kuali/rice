@@ -19,6 +19,7 @@ import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,12 +33,13 @@ import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.mask.Mask;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.inquiry.Inquirable;
-import org.kuali.core.inquiry.KualiInquirableImpl;
+import org.kuali.core.service.AuthorizationService;
 import org.kuali.core.service.BusinessObjectDictionaryService;
 import org.kuali.core.service.BusinessObjectMetaDataService;
 import org.kuali.core.service.BusinessObjectService;
 import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.service.EncryptionService;
+import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.service.LookupService;
 import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.service.PersistenceStructureService;
@@ -47,6 +49,7 @@ import org.kuali.core.util.FieldUtils;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.UrlFactory;
+import org.kuali.core.util.cache.CopiedObject;
 import org.kuali.core.web.comparator.CellComparatorHelper;
 import org.kuali.core.web.format.BooleanFormatter;
 import org.kuali.core.web.format.CollectionFormatter;
@@ -261,6 +264,58 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         this.encryptionService = encryptionService;
     }
 
+    private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+    
+    public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+	if ( maintenanceDocumentDictionaryService == null ) {
+	    maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+	}
+	return maintenanceDocumentDictionaryService;
+    }
+    
+    private Inquirable kualiInquirable;
+    
+    public Inquirable getKualiInquirable() {
+	if ( kualiInquirable == null ) {
+	    kualiInquirable = KNSServiceLocator.getKualiInquirable(); 
+	}
+	return kualiInquirable;
+    }       
+    
+    public void setMaintenanceDocumentDictionaryService(MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService) {
+        this.maintenanceDocumentDictionaryService = maintenanceDocumentDictionaryService;
+    }
+
+    public void setKualiInquirable(Inquirable kualiInquirable) {
+        this.kualiInquirable = kualiInquirable;
+    }
+    
+    private KualiConfigurationService kualiConfigurationService;
+        
+    public KualiConfigurationService getKualiConfigurationService() {
+	if ( kualiConfigurationService == null ) {
+	    kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+	}
+        return kualiConfigurationService;
+    }
+
+    public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
+        this.kualiConfigurationService = kualiConfigurationService;
+    }
+
+    AuthorizationService authorizationService;
+    
+    public AuthorizationService getAuthorizationService() {
+	if ( authorizationService == null ) {
+	    authorizationService = KNSServiceLocator.getAuthorizationService();
+	}
+        return this.authorizationService;
+    }
+
+    public void setAuthorizationService(AuthorizationService authorizationService) {
+        this.authorizationService = authorizationService;
+    }
+
     /**
      * Determines if underlying lookup bo has associated maintenance document that allows new or copy maintenance actions.
      * 
@@ -271,7 +326,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         
         String maintDocTypeName = getMaintenanceDocumentTypeName();
         if (StringUtils.isNotBlank(maintDocTypeName)) {
-            allowsNewOrCopy = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getAllowsNewOrCopy(maintDocTypeName);
+            allowsNewOrCopy = getMaintenanceDocumentDictionaryService().getAllowsNewOrCopy(maintDocTypeName);
         }
     
         return allowsNewOrCopy;
@@ -304,7 +359,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @return String representing the maintenance document type name
      */
     protected String getMaintenanceDocumentTypeName() {
-        MaintenanceDocumentDictionaryService dd = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+        MaintenanceDocumentDictionaryService dd = getMaintenanceDocumentDictionaryService();
         String maintDocTypeName = dd.getDocumentTypeName(getBusinessObjectClass());
         return maintDocTypeName;
     }
@@ -328,6 +383,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         this.readOnlyFieldsList = readOnlyFieldsList;
     }
     
+    private HashMap<String,Boolean> noLookupResultFieldInquiryCache = new HashMap<String, Boolean>();
+    private HashMap<Class,Class> inquirableClassCache = new HashMap<Class, Class>();
+    private HashMap<String,Boolean> forceLookupResultFieldInquiryCache = new HashMap<String, Boolean>();
     /**
      * Returns the inquiry url for a field if one exist.
      * 
@@ -338,19 +396,41 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     public String getInquiryUrl(BusinessObject bo, String propertyName) {
         String inquiryUrl = "";
 
-        if (getBusinessObjectDictionaryService().noLookupResultFieldInquiry(bo.getClass(), propertyName) != null && !(getBusinessObjectDictionaryService().noLookupResultFieldInquiry(bo.getClass(), propertyName)).booleanValue()) {
-            Class<Inquirable> inquirableClass = businessObjectDictionaryService.getInquirableClass(bo.getClass());
+        String cacheKey = bo.getClass().getName()+"."+propertyName;
+        Boolean noLookupResultFieldInquiry = noLookupResultFieldInquiryCache.get( cacheKey );
+        if ( noLookupResultFieldInquiry == null ) {
+            noLookupResultFieldInquiry = businessObjectDictionaryService.noLookupResultFieldInquiry(bo.getClass(), propertyName);
+            if ( noLookupResultFieldInquiry == null ) {
+        	noLookupResultFieldInquiry = Boolean.TRUE;
+            }
+            noLookupResultFieldInquiryCache.put(cacheKey, noLookupResultFieldInquiry);
+        }
+        if ( !noLookupResultFieldInquiry ) {
+            
+            Class<Inquirable> inquirableClass = inquirableClassCache.get( bo.getClass() );
+            if ( !inquirableClassCache.containsKey( bo.getClass() ) ) {
+        	inquirableClass = businessObjectDictionaryService.getInquirableClass(bo.getClass());
+        	inquirableClassCache.put(bo.getClass(), inquirableClass);
+            }
             Inquirable inq = null;
             try {
                 if ( inquirableClass != null ) {
                     inq = inquirableClass.newInstance();
                 } else {
-                    inq = KNSServiceLocator.getKualiInquirable();                
+                    inq = getKualiInquirable();                
                     if ( LOG.isDebugEnabled() ) {
                         LOG.debug( "Default Inquirable Class: " + inq.getClass() );
-        }
+                    }
                 }
-                inquiryUrl = inq.getInquiryUrl(bo, propertyName, (getBusinessObjectDictionaryService().forceLookupResultFieldInquiry(bo.getClass(), propertyName)).booleanValue());
+                Boolean forceLookupResultFieldInquiry = forceLookupResultFieldInquiryCache.get( cacheKey );
+                if ( forceLookupResultFieldInquiry == null ) {
+                    forceLookupResultFieldInquiry = businessObjectDictionaryService.forceLookupResultFieldInquiry(bo.getClass(), propertyName);
+                    if ( forceLookupResultFieldInquiry == null ) {
+                	forceLookupResultFieldInquiry = Boolean.FALSE;
+                    }
+                    forceLookupResultFieldInquiryCache.put(cacheKey, forceLookupResultFieldInquiry);
+                }
+                inquiryUrl = inq.getInquiryUrl(bo, propertyName, forceLookupResultFieldInquiry);
             } catch ( Exception ex ) {
                 LOG.error("unable to create inquirable to get inquiry URL", ex );
             }
@@ -359,45 +439,51 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         return inquiryUrl;
     }
     
+    private CopiedObject<ArrayList<Column>> resultColumns = null;
+    
     /**
      * Constructs the list of columns for the search results. All properties for the column objects come from the DataDictionary.
      */
     public List<Column> getColumns() {
-        List<Column> columns = new ArrayList<Column>();
-        for (String attributeName : getBusinessObjectDictionaryService().getLookupResultFieldNames(getBusinessObjectClass())) {
-            Column column = new Column();
-            column.setPropertyName(attributeName);
-            String columnTitle = dataDictionaryService.getAttributeLabel(getBusinessObjectClass(), attributeName);
-            if (StringUtils.isBlank(columnTitle)) {
-                columnTitle = dataDictionaryService.getCollectionLabel(getBusinessObjectClass(), attributeName);
+        if ( resultColumns == null ) {
+            ArrayList<Column> columns = new ArrayList<Column>();
+            for (String attributeName : getBusinessObjectDictionaryService().getLookupResultFieldNames(getBusinessObjectClass())) {
+                Column column = new Column();
+                column.setPropertyName(attributeName);
+                String columnTitle = dataDictionaryService.getAttributeLabel(getBusinessObjectClass(), attributeName);
+                if (StringUtils.isBlank(columnTitle)) {
+                    columnTitle = dataDictionaryService.getCollectionLabel(getBusinessObjectClass(), attributeName);
+                }
+                column.setColumnTitle(columnTitle);
+                column.setMaxLength(getColumnMaxLength(attributeName));
+                
+                Class formatterClass = dataDictionaryService.getAttributeFormatter(getBusinessObjectClass(), attributeName);
+                if (formatterClass != null) {
+                    try {
+                        column.setFormatter((Formatter) formatterClass.newInstance());
+                    }
+                    catch (InstantiationException e) {
+                        LOG.error("Unable to get new instance of formatter class: " + formatterClass.getName());
+                        throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass.getName());
+                    }
+                    catch (IllegalAccessException e) {
+                        LOG.error("Unable to get new instance of formatter class: " + formatterClass.getName());
+                        throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass.getName());
+                    }
+                }
+    
+                columns.add(column);
             }
-            column.setColumnTitle(columnTitle);
-            column.setMaxLength(getColumnMaxLength(attributeName));
-            
-            Class formatterClass = dataDictionaryService.getAttributeFormatter(getBusinessObjectClass(), attributeName);
-            if (formatterClass != null) {
-                try {
-                    column.setFormatter((Formatter) formatterClass.newInstance());
-                }
-                catch (InstantiationException e) {
-                    LOG.error("Unable to get new instance of formatter class: " + formatterClass.getName());
-                    throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass.getName());
-                }
-                catch (IllegalAccessException e) {
-                    LOG.error("Unable to get new instance of formatter class: " + formatterClass.getName());
-                    throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass.getName());
-                }
-            }
-
-            columns.add(column);
-        }
-        return columns;
+            resultColumns = ObjectUtils.deepCopyForCaching(columns);
+            return columns;
+	    }
+        return resultColumns.getContent();
     }
     
     protected int getColumnMaxLength(String attributeName) {
 	Integer fieldDefinedMaxLength = getBusinessObjectDictionaryService().getLookupResultFieldMaxLength(getBusinessObjectClass(), attributeName);
 	if (fieldDefinedMaxLength == null) {
-            String valueStr = KNSServiceLocator.getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, RiceConstants.RESULTS_DEFAULT_MAX_COLUMN_LENGTH);
+            String valueStr = getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, RiceConstants.RESULTS_DEFAULT_MAX_COLUMN_LENGTH);
             if (valueStr == null) {
         	LOG.error("Lookup field max length parameter not found and field not set with max length value.");
             }
@@ -682,7 +768,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         else {
             displayList = getSearchResultsUnbounded(lookupForm.getFieldsForLookup());
         }
-
+        
+        HashMap<String,Class> propertyTypes = new HashMap<String, Class>(); 
+        
         // iterate through result list and wrap rows with return url and action urls
         for (Iterator iter = displayList.iterator(); iter.hasNext();) {
             BusinessObject element = (BusinessObject) iter.next();
@@ -691,7 +779,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             String actionUrls = getActionUrls(element);
 
             List<Column> columns = getColumns();
-            List<Column> rowColumns = new ArrayList<Column>();
             for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
                 
                 Column col = (Column) iterator.next();
@@ -702,12 +789,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 Object prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
                 
                 // set comparator and formatter based on property type
-                Class propClass = null;
-                try {
-                	propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
-                }
-                catch (Exception e) {
-                    throw new RuntimeException("Cannot access PropertyType for property " + "'" + col.getPropertyName() + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);
+                Class propClass = propertyTypes.get(col.getPropertyName());
+                if ( propClass == null ) {
+                    try {
+                    	propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
+                    	propertyTypes.put( col.getPropertyName(), propClass );
+                    } catch (Exception e) {
+                        throw new RuntimeException("Cannot access PropertyType for property " + "'" + col.getPropertyName() + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);
+                    }
                 }
 
                 // formatters
@@ -740,7 +829,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
                 
                 // check security on field and do masking if necessary
-                boolean viewAuthorized = KNSServiceLocator.getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getUniversalUser(), element.getClass().getName(), col.getPropertyName());
+                boolean viewAuthorized = getAuthorizationService().isAuthorizedToViewAttribute(GlobalVariables.getUserSession().getUniversalUser(), element.getClass().getName(), col.getPropertyName());
                 if (!viewAuthorized) {
                     Mask displayMask = getDataDictionaryService().getAttributeDisplayMask(element.getClass().getName(), col.getPropertyName());
                     propValue = displayMask.maskValue(propValue);
@@ -751,11 +840,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 if (StringUtils.isNotBlank(propValue)) {
                     col.setPropertyURL(getInquiryUrl(element, col.getPropertyName()));
                 }
-
-                rowColumns.add(col);
             }
 
-            ResultRow row = new ResultRow(rowColumns, returnUrl, actionUrls);
+            ResultRow row = new ResultRow(columns, returnUrl, actionUrls);
             if ( element instanceof PersistableBusinessObject ) {
                 row.setObjectId(((PersistableBusinessObject)element).getObjectId());
             }

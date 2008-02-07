@@ -24,21 +24,21 @@ import java.util.List;
 public class Section implements java.io.Serializable {
     private static final long serialVersionUID = 390440643941774650L;
     String sectionTitle;
+    String sectionId;
     String errorKey = "";
     int numberOfColumns;
-    boolean isCollapsible;
+    boolean isCollapsible = true;
     String extraButtonSource;
+    boolean hidden = false;
     
     Class sectionClass;
     List<Row> rows;
-    List<String> containedCollectionNames;
+    List<String> containedCollectionNames = new ArrayList();
 
     /**
      * Default constructor, initializes
      */
     public Section() {
-        isCollapsible = true;
-        containedCollectionNames = new ArrayList();
     }
 
     /**
@@ -48,8 +48,6 @@ public class Section implements java.io.Serializable {
      */
     public Section(List rows) {
         this.rows = rows;
-        isCollapsible = true;
-        containedCollectionNames = new ArrayList();
     }
 
 
@@ -213,5 +211,21 @@ public class Section implements java.io.Serializable {
         else {
             return 0;
         }
+    }
+
+    public String getSectionId() {
+        return this.sectionId;
+    }
+
+    public void setSectionId(String sectionId) {
+        this.sectionId = sectionId;
+    }
+
+    public boolean isHidden() {
+        return this.hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 }

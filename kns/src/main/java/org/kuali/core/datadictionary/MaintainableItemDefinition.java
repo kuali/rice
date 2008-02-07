@@ -52,8 +52,9 @@ public abstract class MaintainableItemDefinition extends DataDictionaryDefinitio
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("invalid (blank) name");
         }
-        LOG.debug("calling setName '" + name + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setName '" + name + "'");
+        }
         this.name = name;
     }
 

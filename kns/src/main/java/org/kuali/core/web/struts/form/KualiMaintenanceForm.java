@@ -36,6 +36,7 @@ import org.kuali.core.document.authorization.MaintenanceDocumentAuthorizations;
 import org.kuali.core.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.service.DocumentAuthorizationService;
+import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.util.FieldUtils;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.KNSServiceLocator;
@@ -220,7 +221,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         MaintenanceDocumentAuthorizer maintenanceDocumentAuthorizer = (MaintenanceDocumentAuthorizer) documentAuthorizer;
 
         // set the overall document editing mode
-        setEditingMode(documentAuthorizer.getEditMode(maintenanceDocument, kualiUser));
+        setEditingMode(documentAuthorizer.getEditMode(maintenanceDocument, kualiUser ));
 
         // WHY IS THIS READONLY STUFF HERE YOU ASK, GIVEN THE EDITMODE
         //
@@ -386,6 +387,19 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 
     public void setLookedUpCollectionName(String lookedUpCollectionName) {
         this.lookedUpCollectionName = lookedUpCollectionName;
+    }
+
+    public String getAdditionalSectionsFile() {
+        if ( businessObjectClassName != null ) {
+            try {
+                MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+                String docTypeName = maintenanceDocumentDictionaryService.getDocumentTypeName(Class.forName(businessObjectClassName));
+                return maintenanceDocumentDictionaryService.getMaintenanceDocumentEntry(businessObjectClassName).getAdditionalSectionsFile();
+            } catch ( ClassNotFoundException ex ) {
+                LOG.error( "Unable to resolve business object class", ex);
+            }
+        }
+        return null;
     }
 
 

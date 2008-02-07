@@ -24,6 +24,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.After;
@@ -35,6 +36,9 @@ import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.lifecycles.PerSuiteDataLoaderLifecycle;
+import org.springframework.core.io.FileSystemResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 /**
  * Useful superclass for all Rice test cases. Handles setup of test utilities and a test environment. Configures the
@@ -49,7 +53,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
 
     private static final Logger LOG = Logger.getLogger(RiceTestCase.class);
 
-    private static final String DEFAULT_LOG4J_CONFIG = "rice-testharness-default-log4j.properties";
+    private static final String ALT_LOG4J_CONFIG_LOCATION_PROP = "alt.log4j.config.location";
+    private static final String DEFAULT_LOG4J_CONFIG = "classpath:rice-testharness-default-log4j.properties";
     protected static boolean SUITE_LIFE_CYCLES_RAN = false;
 
     protected List<Lifecycle> perTestLifeCycles = new LinkedList<Lifecycle>();
@@ -161,9 +166,22 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
         System.out.println("##############################################################\n\n\n");
     }
 
-    protected void configureLogging() throws IOException {
+	protected void configureLogging() throws IOException {
+        ResourceLoader resourceLoader = new FileSystemResourceLoader();
+        String altLog4jConfigLocation = System.getProperty(ALT_LOG4J_CONFIG_LOCATION_PROP);
+        Resource log4jConfigResource = null;
+        if (!StringUtils.isEmpty(altLog4jConfigLocation)) { 
+            log4jConfigResource = resourceLoader.getResource(altLog4jConfigLocation);
+        }
+        if (log4jConfigResource == null || !log4jConfigResource.exists()) {
+            System.out.println("Alternate Log4j config resource does not exist! " + altLog4jConfigLocation);
+            System.out.println("Using default log4j configuration: " + DEFAULT_LOG4J_CONFIG);
+            log4jConfigResource = resourceLoader.getResource(DEFAULT_LOG4J_CONFIG);
+        } else {
+            System.out.println("Using alternate log4j configuration at: " + altLog4jConfigLocation);
+        }
         Properties p = new Properties();
-        p.load(getClass().getClassLoader().getResourceAsStream(DEFAULT_LOG4J_CONFIG));
+        p.load(log4jConfigResource.getInputStream());
         PropertyConfigurator.configure(p);
     }
 

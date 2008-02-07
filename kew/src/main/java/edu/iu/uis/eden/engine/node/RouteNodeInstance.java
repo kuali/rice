@@ -197,7 +197,7 @@ public class RouteNodeInstance implements Serializable {
      * methods used to display route node instances' data on documentoperation.jsp
      */
     
-    public NodeState getState(int index){
+    public NodeState getNodeStateByIndex(int index){
     	while (state.size() <= index) {
             state.add(new NodeState());
         }

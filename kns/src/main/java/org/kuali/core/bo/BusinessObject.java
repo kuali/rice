@@ -27,5 +27,7 @@ public interface BusinessObject extends Serializable{
      * 
      */
     public abstract void refresh();
+
     
+    public void prepareForWorkflow();
 }

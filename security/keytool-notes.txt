@@ -1,7 +1,7 @@
 # Initial creation
-keytool -genkey -alias rice -keyalg RSA -keystore ricekeystore -dname "cn=rice" -keypass r1c3pw -storepass r1c3pw
-keytool -selfcert -alias rice -keystore ricekeystore -keypass r1c3pw -storepass r1c3pw -validity 4000
-keytool -export -alias rice -file rice.cer -keystore ricekeystore -storepass r1c3pw
+keytool -genkey -alias rice -keyalg RSA -keystore rice.keystore -dname "cn=rice" -keypass r1c3pw -storepass r1c3pw
+keytool -selfcert -alias rice -keystore rice.keystore -keypass r1c3pw -storepass r1c3pw -validity 4000
+keytool -export -alias rice -file rice.cer -keystore rice.keystore -storepass r1c3pw
 
 # Importing a key into the keystore
-keytool -import -alias some_alias -file some_file.cer -keystore ricekeystore -storepass r1c3pw
+keytool -import -alias some_alias -file some_file.cer -keystore rice.keystore -storepass r1c3pw

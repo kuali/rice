@@ -59,7 +59,9 @@ public class SortDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
         }
-        LOG.debug("calling setAttributeName '" + attributeName + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setAttributeName '" + attributeName + "'");
+        }
         if (attributes.size() != 0) {
             throw new IllegalStateException("unable to set sort attributeName when sortAttributes have already been added");
         }
@@ -102,7 +104,9 @@ public class SortDefinition extends DataDictionaryDefinitionBase {
      * @param sortAscending
      */
     public void setSortAscending(boolean sortAscending) {
-        LOG.debug("calling setSortAscending '" + sortAscending + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setSortAscending '" + sortAscending + "'");
+        }
 
         this.sortAscending = sortAscending;
     }

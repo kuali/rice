@@ -559,7 +559,9 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
         }
 
         // perform validation against rules engine
-        LOG.info("invoking rules engine on document " + getDocumentNumber());
+        if ( LOG.isInfoEnabled() ) {
+            LOG.info("invoking rules engine on document " + getDocumentNumber());
+        }
         boolean isValid = true;
         isValid = KNSServiceLocator.getKualiRuleService().applyRules(event);
 
@@ -601,7 +603,9 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
             return;
         }
 
-        LOG.info("Locking document found:  docId = " + blockingDocId + ".");
+        if ( LOG.isInfoEnabled() ) {
+            LOG.info("Locking document found:  docId = " + blockingDocId + ".");
+        }
 
         // load the blocking locked document
         org.kuali.core.document.Document lockedDocument;
@@ -623,10 +627,12 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
         parameters.put(RiceConstants.PARAMETER_DOC_ID, blockingDocId);
         parameters.put(RiceConstants.PARAMETER_COMMAND, RiceConstants.METHOD_DISPLAY_DOC_SEARCH_VIEW);
         String blockingUrl = UrlFactory.parameterizeUrl(RiceConstants.MAINTENANCE_ACTION, parameters);
-        LOG.debug("blockingUrl = '" + blockingUrl + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("blockingUrl = '" + blockingUrl + "'");
+            LOG.debug("Maintenance record: " + lockedDocument.getDocumentHeader().getDocumentNumber() + "is locked.");
+        }
 
         // post an error about the locked document
-        LOG.debug("Maintenance record: " + lockedDocument.getDocumentHeader().getDocumentNumber() + "is locked.");
         String[] errorParameters = { blockingUrl, blockingDocId };
         GlobalVariables.getErrorMap().putError(RiceConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_MAINTENANCE_LOCKED, errorParameters);
 

@@ -1,0 +1,40 @@
+<config>
+
+	<!-- Please fill in a value for this parameter! -->
+	<param name="application.url">http://yourserver:yourport/webapp-context-root</param>
+
+	<param name="serviceServletUrl">${application.url}/remoting/</param>
+	<param name="notification.basewebappurl">${application.url}/ken</param>
+	<param name="workflow.url">${application.url}/en</param>
+
+	<param name="plugin.dir">/usr/local/rice/plugins</param>
+
+	<!-- set some datasource defaults -->
+	<param name="datasource.ojb.platform">Oracle9i</param>
+	<param name="datasource.platform">edu.iu.uis.eden.database.platform.OraclePlatform</param>
+	<param name="datasource.url">jdbc:oracle:thin:@localhost:1521:XE</param>
+	<param name="datasource.username">*** username ***</param>
+	<param name="datasource.password">*** password ***</param>
+	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
+	<param name="datasource.pool.minSize">2</param>
+	<param name="datasource.pool.maxSize">10</param>
+	<param name="datasource.pool.maxWait">10000</param>
+	<param name="datasource.pool.validationQuery">select 1 from dual</param>
+	<param name="notification.ojb.platform">Oracle</param>
+
+	<param name="attachment.dir.location">/usr/local/rice/kew_attachments</param>
+
+	<!-- log4j settings -->
+	<param name="log4j.settings.path">/usr/local/rice/log4j.properties</param>
+	<param name="log4j.settings.reloadInterval">5</param>
+
+	<!-- Keystore Configuration -->
+	<param name="keystore.file">/usr/local/rice/rice.keystore</param>
+	<param name="keystore.alias">*** key alias ***</param>
+	<param name="keystore.password">*** password ***</param>
+
+	<!-- Dummy Login Filter - use if you don't want to go through CAS -->
+	<param name="filter.login.class">edu.iu.uis.eden.web.DummyLoginFilter</param>
+	<param name="filtermapping.login.1">/*</param>
+
+</config>

@@ -69,7 +69,7 @@ public class NumericValueComparator implements Serializable, Comparator {
             k1 = new KualiDecimal(numericCompare1);
         }
         catch (Throwable t) {
-            k1 = new KualiDecimal(0);
+            k1 = KualiDecimal.ZERO;
         }
 
         KualiDecimal k2 = null;
@@ -77,7 +77,7 @@ public class NumericValueComparator implements Serializable, Comparator {
             k2 = new KualiDecimal(numericCompare2);
         }
         catch (Throwable t) {
-            k2 = new KualiDecimal(0);
+            k2 = KualiDecimal.ZERO;
         }
 
         double d1 = k1.doubleValue();

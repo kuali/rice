@@ -76,8 +76,9 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("invalid (blank) name");
         }
-        LOG.debug("calling setName '" + name + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setName '" + name + "'");
+        }
         this.name = name;
     }
 
@@ -95,8 +96,9 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
      * @param isRequired
      */
     public void setRequired(boolean required) {
-        LOG.debug("calling setRequired '" + required + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setRequired '" + required + "'");
+        }
         this.required = required;
     }
 

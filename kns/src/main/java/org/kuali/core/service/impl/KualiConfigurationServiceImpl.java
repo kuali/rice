@@ -27,7 +27,7 @@ import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.rice.KNSServiceLocator;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
+//@Transactional
 public class KualiConfigurationServiceImpl extends AbstractStaticConfigurationServiceImpl implements
 	KualiConfigurationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiConfigurationServiceImpl.class);

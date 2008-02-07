@@ -23,7 +23,6 @@ import org.kuali.core.dao.KualiModuleUserPropertyDao;
 import org.kuali.core.service.KualiModuleUserPropertyService;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 public class KualiModuleUserPropertyServiceImpl implements KualiModuleUserPropertyService {
 
     private KualiModuleUserPropertyDao moduleUserPropertyDao;

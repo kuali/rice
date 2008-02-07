@@ -18,6 +18,7 @@ package org.kuali.core.util;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.HashMap;
 
 /**
  * This class provides utilities for checking the types of objects.
@@ -32,13 +33,25 @@ public class TypeUtils {
     private static final Class[] TEMPORAL_CLASSES = { java.util.Date.class, java.sql.Date.class, java.sql.Timestamp.class };
     private static final Class[] STRING_CLASSES = { String.class };
 
+    private static final HashMap<Class,Boolean> isBooleanCache = new HashMap<Class, Boolean>();  
+    private static final HashMap<Class,Boolean> isIntegralCache = new HashMap<Class, Boolean>();  
+    private static final HashMap<Class,Boolean> isDecimalCache = new HashMap<Class, Boolean>();  
+    private static final HashMap<Class,Boolean> isTemporalCache = new HashMap<Class, Boolean>();  
+    private static final HashMap<Class,Boolean> isStringCache = new HashMap<Class, Boolean>();  
+    private static final HashMap<Class,Boolean> isSimpleCache = new HashMap<Class, Boolean>();  
+    
     /**
      * @param clazz
      * @return true if the given Class is an boolean type
      * @throws IllegalArgumentException if the given Class is null
      */
     public static boolean isBooleanClass(Class clazz) {
-        return isa(BOOLEAN_CLASSES, clazz);
+	Boolean result = isBooleanCache.get(clazz); 
+	if ( result == null ) {
+	    result = isa(BOOLEAN_CLASSES, clazz);
+	    isBooleanCache.put( clazz, result );
+	}
+        return result;
     }
 
     /**
@@ -47,7 +60,12 @@ public class TypeUtils {
      * @throws IllegalArgumentException if the given Class is null
      */
     public static boolean isIntegralClass(Class clazz) {
-        return isa(INTEGRAL_CLASSES, clazz);
+	Boolean result = isIntegralCache.get(clazz); 
+	if ( result == null ) {
+	    result = isa(INTEGRAL_CLASSES, clazz);
+	    isIntegralCache.put( clazz, result );
+	}
+        return result;
     }
 
     /**
@@ -56,7 +74,12 @@ public class TypeUtils {
      * @throws IllegalArgumentException if the given Class is null
      */
     public static boolean isDecimalClass(Class clazz) {
-        return isa(DECIMAL_CLASSES, clazz);
+	Boolean result = isDecimalCache.get(clazz); 
+	if ( result == null ) {
+	    result = isa(DECIMAL_CLASSES, clazz);
+	    isDecimalCache.put( clazz, result );
+	}
+        return result;
     }
 
     /**
@@ -65,7 +88,12 @@ public class TypeUtils {
      * @throws IllegalArgumentException if the given Class is null
      */
     public static boolean isTemporalClass(Class clazz) {
-        return isa(TEMPORAL_CLASSES, clazz);
+	Boolean result = isTemporalCache.get(clazz); 
+	if ( result == null ) {
+	    result = isa(TEMPORAL_CLASSES, clazz);
+	    isTemporalCache.put( clazz, result );
+	}
+        return result;
     }
 
     /**
@@ -74,7 +102,12 @@ public class TypeUtils {
      * @throws IllegalArgumentException if the given Class is null
      */
     public static boolean isStringClass(Class clazz) {
-        return isa(STRING_CLASSES, clazz);
+	Boolean result = isStringCache.get(clazz); 
+	if ( result == null ) {
+	    result = isa(STRING_CLASSES, clazz);
+	    isStringCache.put( clazz, result );
+	}
+        return result;
     }
 
     /**
@@ -83,7 +116,12 @@ public class TypeUtils {
      * @throws IllegalArgumentException if the given Class is null
      */
     public static boolean isSimpleType(Class clazz) {
-        return isa(STRING_CLASSES, clazz) || isa(DECIMAL_CLASSES, clazz) || isa(INTEGRAL_CLASSES, clazz) || isa(BOOLEAN_CLASSES, clazz) || isa(TEMPORAL_CLASSES, clazz);
+	Boolean result = isSimpleCache.get(clazz); 
+	if ( result == null ) {
+	    result = isa(STRING_CLASSES, clazz) || isa(DECIMAL_CLASSES, clazz) || isa(INTEGRAL_CLASSES, clazz) || isa(BOOLEAN_CLASSES, clazz) || isa(TEMPORAL_CLASSES, clazz);
+	    isSimpleCache.put( clazz, result );
+	}
+        return result;
     }
 
     /**

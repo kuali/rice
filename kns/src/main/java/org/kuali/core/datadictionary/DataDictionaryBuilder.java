@@ -165,10 +165,12 @@ public class DataDictionaryBuilder {
 				if (sourceMustExist) {
 					throw new DataDictionaryException("DD Resource " + sourceName + " not found");
 				}
-				LOG.debug("Could not find " + sourceName);
+				LOG.warn("Could not find " + sourceName);
 			}
 		} else {
+		    if ( LOG.isDebugEnabled() ) {
 			LOG.debug("adding sourceName " + sourceName + " ");
+		    }
 			if (sourceMustExist) {
 				Resource resource = getFileResource(sourceName);
 				if (! resource.exists()) {
@@ -193,7 +195,9 @@ public class DataDictionaryBuilder {
 				String indexName = file.getName().substring(file.getName().lastIndexOf("/") + 1, file.getName().indexOf(".xml"));
 				fileLocationMap.put( indexName, "file:" + file.getAbsolutePath());
 			} else {
+			    if ( LOG.isDebugEnabled() ) {
 				LOG.debug("Skipping non xml file " + file.getAbsolutePath() + " in DD load");
+			    }
 			}
 		}
 	}
@@ -273,7 +277,9 @@ public class DataDictionaryBuilder {
 	 *             true
 	 */
 	protected void addEntriesWrapper(String sourceName, boolean sourceMustExist, boolean allowOverrides) {
-		LOG.info("adding dataDictionary entries from source '" + sourceName + "'");
+	    	if ( LOG.isInfoEnabled() ) {
+	    	    LOG.info("adding dataDictionary entries from source '" + sourceName + "'");
+	    	}
 		try {
 			addEntries(sourceName, allowOverrides);
 		} catch (SourceException e) {
@@ -281,7 +287,9 @@ public class DataDictionaryBuilder {
 				throw e;
 			}
 		}
-		LOG.debug("added dataDictionary entries from source '" + sourceName + "'");
+	    	if ( LOG.isInfoEnabled() ) {
+	    	    LOG.debug("added dataDictionary entries from source '" + sourceName + "'");
+	    	}
 	}
 
 	private ThreadLocal<Rules> digesterRules = new ThreadLocal<Rules>();

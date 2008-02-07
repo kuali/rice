@@ -42,10 +42,6 @@ Copyright 2005-2007  The Kuali Foundation.  All rights reserved.  Kuali is licen
 
 <p>This product includes software developed by the JA-SIG Collaborative (<span class="nobr"><a href="http://www.ja-sig.org/">http://www.ja-sig.org/</a></span>).</p>
 
-<p>This product includes software developed by Gargoyle Software Inc. (<span class="nobr"><a href="http://www.GargoyleSoftware.com/">http://www.GargoyleSoftware.com/</a></span>).</p>
-
-<p>This product includes software developed by Andy Clark. (<span class="nobr"><a href="http://people.apache.org/~andyc/neko/doc/html/">http://people.apache.org/~andyc/neko/doc/html/</a></span>)</p>
-
 <p>This product includes software licensed under GNU Lesser General Public License (<span class="nobr"><a href="http://www.opensource.org/licenses/lgpl-license.php">http://www.opensource.org/licenses/lgpl-license.php</a></span>).</p>
 
 <p>This product includes software licensed under Common Development and Distribution License (<span class="nobr"><a href="http://www.opensource.org/licenses/cddl1.php">http://www.opensource.org/licenses/cddl1.php</a></span>).</p>

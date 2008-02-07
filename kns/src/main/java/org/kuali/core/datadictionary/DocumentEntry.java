@@ -167,8 +167,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         if (StringUtils.isBlank(documentTypeName)) {
             throw new IllegalArgumentException("invalid (blank) documentTypeName");
         }
-        LOG.debug("calling setDocumentTypeName '" + documentTypeName + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setDocumentTypeName '" + documentTypeName + "'");
+        }
         this.documentTypeName = documentTypeName;
     }
 
@@ -180,8 +181,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         if (StringUtils.isBlank(documentTypeCode)) {
             throw new IllegalArgumentException("invalid (blank) documentTypeCode");
         }
-        LOG.debug("calling setDocumentTypeCode '" + documentTypeCode + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setDocumentTypeCode '" + documentTypeCode + "'");
+        }
         this.documentTypeCode = documentTypeCode;
     }
 
@@ -197,8 +199,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         if (StringUtils.isBlank(label)) {
             throw new IllegalArgumentException("invalid (blank) label");
         }
-        LOG.debug("calling setLabel '" + label + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setLabel '" + label + "'");
+        }
         this.label = label;
     }
 
@@ -213,8 +216,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         if (StringUtils.isBlank(shortLabel)) {
             throw new IllegalArgumentException("invalid (blank) shortLabel");
         }
-        LOG.debug("calling setShortLabel '" + shortLabel + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setShortLabel '" + shortLabel + "'");
+        }
         this.shortLabel = shortLabel;
     }
 
@@ -226,8 +230,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         if (StringUtils.isBlank(summary)) {
             throw new IllegalArgumentException("invalid (blank) summary");
         }
-        LOG.debug("calling setSummary '" + summary + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setSummary '" + summary + "'");
+        }
         this.summary = summary;
     }
 
@@ -239,8 +244,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         if (StringUtils.isBlank(description)) {
             throw new IllegalArgumentException("invalid (blank) description");
         }
-        LOG.debug("calling setDescription '" + description + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setDescription '" + description + "'");
+        }
         this.description = description;
     }
 
@@ -359,8 +365,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
      * @param allowsNoteDelete
      */
     public void setAllowsNoteDelete(boolean allowsNoteDelete) {
-        LOG.debug("calling setAllowsNoteDelete '" + allowsNoteDelete + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setAllowsNoteDelete '" + allowsNoteDelete + "'");
+        }
         this.allowsNoteDelete = allowsNoteDelete;
     }
 
@@ -388,8 +395,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
      * @param displayTopicFieldInNotes
      */
     public void setDisplayTopicFieldInNotes(boolean displayTopicFieldInNotes) {
-        LOG.debug("calling setDisplayTopicFieldInNotes '" + displayTopicFieldInNotes + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setDisplayTopicFieldInNotes '" + displayTopicFieldInNotes + "'");
+        }
         this.displayTopicFieldInNotes = displayTopicFieldInNotes;
     }
 
@@ -401,8 +409,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
             throw new IllegalArgumentException("invalid (null) attachmentTypesValuesFinderClass");
         }
 
-        LOG.debug("calling setAttachmentTypesValuesFinderClass '" + attachmentTypesValuesFinderClass.getName() + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setAttachmentTypesValuesFinderClass '" + attachmentTypesValuesFinderClass.getName() + "'");
+        }
         this.attachmentTypesValuesFinderClass = attachmentTypesValuesFinderClass;
     }
 

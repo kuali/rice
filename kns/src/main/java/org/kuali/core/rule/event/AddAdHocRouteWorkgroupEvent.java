@@ -39,7 +39,7 @@ public final class AddAdHocRouteWorkgroupEvent extends KualiDocumentEventBase {
      */
     public AddAdHocRouteWorkgroupEvent(String errorPathPrefix, Document document, AdHocRouteWorkgroup adHocRouteWorkgroup) {
         super("creating add ad hoc route workgroup event for document " + getDocumentId(document), errorPathPrefix, document);
-        this.adHocRouteWorkgroup = (AdHocRouteWorkgroup) ObjectUtils.deepCopy(adHocRouteWorkgroup);
+        this.adHocRouteWorkgroup = adHocRouteWorkgroup;
     }
 
     /**

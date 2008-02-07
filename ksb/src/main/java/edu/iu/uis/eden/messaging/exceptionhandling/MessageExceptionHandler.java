@@ -26,7 +26,7 @@ import edu.iu.uis.eden.messaging.PersistedMessage;
  */
 public interface MessageExceptionHandler {
 
-	public void handleException(Throwable throwable, PersistedMessage message, Object service);
+	public void handleException(Throwable throwable, PersistedMessage message, Object service) throws Exception;
 	
     /**
      * Determines whether the message would go into Exception if submitted.

@@ -41,7 +41,7 @@ import org.kuali.core.exceptions.ReferenceAttributeDoesntExistException;
 import org.kuali.core.exceptions.ReferenceAttributeNotAnOjbReferenceException;
 import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.ForeignKeyFieldsPopulationState;
-import org.kuali.core.util.spring.Cached;
+import org.kuali.core.util.spring.CacheNoCopy;
 
 public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase implements PersistenceStructureService {
 
@@ -62,7 +62,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
     /**
      * @see org.kuali.core.service.PersistenceService#isPersistable(java.lang.Class)
      */
-    @Cached
+    @CacheNoCopy
     public boolean isPersistable(Class clazz) {
         boolean isPersistable = false;
 
@@ -82,7 +82,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
     /**
      * @see org.kuali.core.service.PersistenceService#getPrimaryKeyFieldAnonymousMarking(java.lang.Class)
      */
-    @Cached
+    @CacheNoCopy
     public Map getPrimaryKeyFieldAnonymousMarking(Class clazz) {
         ClassDescriptor classDescriptor = getClassDescriptor(clazz);
 
@@ -99,7 +99,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
     /**
      * @see org.kuali.core.service.PersistenceService#getPrimaryKeys(java.lang.Class)
      */
-    @Cached
+    @CacheNoCopy
     public List getPrimaryKeys(Class clazz) {
         ClassDescriptor classDescriptor = getClassDescriptor(clazz);
 
@@ -116,7 +116,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
     /**
      * @see org.kuali.core.service.PersistenceMetadataExplorerService#listFieldNames(java.lang.Class)
      */
-    @Cached
+    @CacheNoCopy
     public List listFieldNames(Class clazz) {
         ClassDescriptor classDescriptor = getClassDescriptor(clazz);
 
@@ -173,7 +173,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
     /**
      * @see org.kuali.core.service.PersistenceMetadataExplorerService#listPersistableSubclasses(java.lang.Class)
      */
-    @Cached
+    @CacheNoCopy
     public List listPersistableSubclasses(Class superclazz) {
         if (superclazz == null) {
             throw new IllegalArgumentException("invalid (null) uberclass");
@@ -196,7 +196,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
     /**
      * @see org.kuali.core.service.PersistenceService#getRelationshipMetadata(java.lang.Class, java.lang.String)
      */
-    @Cached
+    @CacheNoCopy
     public Map<String,BusinessObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName, String attributePrefix ) {
         if (persistableClass == null) {
             throw new IllegalArgumentException("invalid (null) persistableClass");
@@ -229,7 +229,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
         return relationships;
     }
 
-    @Cached
+    @CacheNoCopy
     public Map<String,BusinessObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName ) {
         return getRelationshipMetadata( persistableClass, attributeName, null );
     }
@@ -237,7 +237,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
     /**
      * @see org.kuali.core.service.PersistenceService#getForeignKeyFieldName(java.lang.Object, java.lang.String, java.lang.String)
      */
-    @Cached
+    @CacheNoCopy
     public String getForeignKeyFieldName(Class persistableObjectClass, String attributeName, String pkName) {
         String fkName = null;
 
@@ -264,7 +264,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
     /**
      * @see org.kuali.core.service.PersistenceService#getReferencesForForeignKey(java.lang.Class, java.lang.String)
      */
-    @Cached
+    @CacheNoCopy
     public Map getReferencesForForeignKey(Class persistableObjectClass, String attributeName) {
         Map referenceClasses = new HashMap();
 
@@ -301,7 +301,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
      *      is a crummy way to do it, but OJB doesnt provide explicit matches of foreign-keys to primary keys, and always assumes
      *      that foreign-keys map to primary keys on the other object, and never to a set of candidate keys, or any other column.
      */
-    @Cached
+    @CacheNoCopy
     public Map getForeignKeysForReference(Class clazz, String attributeName) {
 
         // yelp if nulls were passed in
@@ -386,7 +386,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
         return fkMap;
     }
 
-    @Cached
+    @CacheNoCopy
     public Map<String, String> getInverseForeignKeysForCollection(Class boClass, String collectionName) {
         // yelp if nulls were passed in
         if (boClass == null) {
@@ -459,7 +459,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
     /**
      * @see org.kuali.core.service.PersistenceService#getNestedForeignKeyMap(java.lang.Class)
      */
-    @Cached
+    @CacheNoCopy
     public Map getNestedForeignKeyMap(Class persistableObjectClass) {
         Map fkMap = new HashMap();
 
@@ -614,7 +614,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
     /**
      * @see org.kuali.core.service.PersistenceStructureService#listReferenceObjectFieldNames(java.lang.Class)
      */
-    @Cached
+    @CacheNoCopy
     public Map<String, Class> listReferenceObjectFields(Class boClass) {
 
         // validate parameter
@@ -635,7 +635,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
         return references;
     }
 
-    @Cached
+    @CacheNoCopy
     public Map<String, Class> listCollectionObjectTypes(Class boClass) {
 
         if (boClass == null) {
@@ -690,14 +690,14 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
     }
 
 
-    @Cached
+    @CacheNoCopy
     public boolean isReferenceUpdatable(Class boClass, String referenceName) {
         ClassDescriptor classDescriptor = getClassDescriptor(boClass);
         ObjectReferenceDescriptor refDesc = classDescriptor.getObjectReferenceDescriptorByName(referenceName);
         return refDesc.getCascadingStore() != ObjectReferenceDescriptor.CASCADE_NONE;
     }
     
-    @Cached
+    @CacheNoCopy
     public boolean isCollectionUpdatable(Class boClass, String collectionName) {
         ClassDescriptor cd = getClassDescriptor(boClass);
         CollectionDescriptor collDesc = cd.getCollectionDescriptorByName(collectionName);
@@ -705,14 +705,14 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
     }
 
 
-    @Cached
+    @CacheNoCopy
     public boolean hasCollection(Class boClass, String collectionName) {
         ClassDescriptor cd = getClassDescriptor(boClass);
         return cd.getCollectionDescriptorByName(collectionName) != null;
     }
 
 
-    @Cached
+    @CacheNoCopy
     public boolean hasReference(Class boClass, String referenceName) {
         ClassDescriptor cd = getClassDescriptor(boClass);
         return cd.getObjectReferenceDescriptorByName(referenceName) != null;

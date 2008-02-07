@@ -27,8 +27,6 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.core.util.CopiedObject;
-import org.kuali.core.util.ObjectUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
@@ -63,7 +61,7 @@ public class MethodCacheInterceptor implements MethodInterceptor, InitializingBe
         this.cache = cache;
     }
 
-	// begin Kuali Foundation modification
+    // begin Kuali Foundation modification
     /**
      * Entries older than this will have their contents replaced by the return value from a call to the appropriate method
      * 
@@ -107,7 +105,7 @@ public class MethodCacheInterceptor implements MethodInterceptor, InitializingBe
      * end Kuali Foundation modification
      */
     public Object invoke(MethodInvocation invocation) throws Throwable {
-    	// begin Kuali Foundation modification
+        // begin Kuali Foundation modification
         boolean cancelUpdate = true;
 
         Object methodResult = null;
@@ -126,7 +124,7 @@ public class MethodCacheInterceptor implements MethodInterceptor, InitializingBe
             // really expensive hack to try to keep from returning direct references to modifiable cached values
             // because if you return a direct reference to a cached value to someone, and it is of a mutable type, any changes they
             // make to what seems like "their copy" will also be reflected in the cached value, which is a Really Bad Thing
-            methodResult = ObjectUtils.deepCopy(cachedEntry.getContent());
+            methodResult = cachedEntry.getContent(); // getContent returns a copy
             cancelUpdate = false;
         }
         catch (NeedsRefreshException e) {
@@ -155,26 +153,27 @@ public class MethodCacheInterceptor implements MethodInterceptor, InitializingBe
             // through a shared reference
             if ((methodResult == null) || (Serializable.class.isAssignableFrom(methodResult.getClass()))) {
                 try {
-                    CopiedObject cacheCopy = ObjectUtils.deepCopyForCaching((Serializable) methodResult);
-
                     CopiedObject oldContent = (CopiedObject) e.getCacheContent();
-                    if (oldContent != null) {
-                        cacheCopy.setOldSize(oldContent.getSize());
+
+                    CopiedObject newContent = oldContent;
+                    if ( newContent == null ) {
+                    newContent = new CopiedObject();
                     }
+                    newContent.setContent((Serializable)methodResult);
 
                     // if no size limit, or under size limit, add to cache
-                    if ((maxEntrySizeInBytes <= 0) || (cacheCopy.getSize() <= maxEntrySizeInBytes)) {
+                    if ((maxEntrySizeInBytes <= 0) || (newContent.getSize() <= maxEntrySizeInBytes)) {
                         if (LOG.isTraceEnabled()) {
                             LOG.trace("caching results for invocation '" + cacheKey + "'");
                         }
-                        cache.putInCache(cacheKey, cacheCopy);
+                        cache.putInCache(cacheKey, newContent);
 
                         // adding, not updating
                         cancelUpdate = false;
                     }
                     else {
                         if (LOG.isTraceEnabled()) {
-                            LOG.trace("rejecting oversized methodResult (" + cacheCopy.getSize() + " bytes) for invocation '" + cacheKey + "'");
+                            LOG.trace("rejecting oversized methodResult (" + newContent.getSize() + " bytes) for invocation '" + cacheKey + "'");
                         }
 
                         // size limit exceeded: remove existing (expired) cache entry, if any
@@ -212,7 +211,7 @@ public class MethodCacheInterceptor implements MethodInterceptor, InitializingBe
         // end Kuali Foundation modification
     }
 
-	// begin Kuali Foundation modification
+    // begin Kuali Foundation modification
     /**
      * @param invocation MethodInvocation being handled
      * @return cache key: className.methodName(paramClass=argValue[,paramClass=argValue...])

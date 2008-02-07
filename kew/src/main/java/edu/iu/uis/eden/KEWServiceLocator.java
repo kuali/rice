@@ -208,6 +208,8 @@ public final class KEWServiceLocator {
 
 	public static final String ACTION_LIST_EMAIL_SERVICE = "enActionListEmailService";
 
+	public static final String IMMEDIATE_EMAIL_REMINDER_SERVICE = "enImmediateEmailReminderService";
+	
 	public static final String EMAIL_SERVICE = "enEmailService";
 
     public static final String EMAIL_CONTENT_SERVICE = "enEmailContentService";

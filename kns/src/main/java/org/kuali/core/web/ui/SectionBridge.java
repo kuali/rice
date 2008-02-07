@@ -121,6 +121,7 @@ public class SectionBridge {
 
         section.setSectionTitle(sd.getTitle());
         section.setSectionClass(o.getClass());
+        section.setHidden( sd.isHidden() );
 
         // iterate through section maint items and contruct Field UI objects
         Collection maintItems = sd.getMaintainableItems();
@@ -324,6 +325,7 @@ public class SectionBridge {
                             // subCollectionDefinition.getName() + "[" + j + "]");
 
                             LookupUtils.setFieldQuickfinder(lineBusinessObject, collectionDefinition.getName(), false, i, name, collField, displayedFieldNames, m);
+                            LookupUtils.setFieldDirectInquiry(collField);
 
                             Object propertyValue = ObjectUtils.getPropertyValue(lineBusinessObject, fieldDefinition.getName());
                             // set field value from business object
@@ -477,6 +479,7 @@ public class SectionBridge {
 
                                         // commenting out codes for sub-collections show/hide for now
                                         LookupUtils.setFieldQuickfinder(lineSubBusinessObject, collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionDefinition.getName() + "[" + j + "].", false, i, name, subCollField, displayedFieldNames);
+                                        LookupUtils.setFieldDirectInquiry(subCollField);
 
                                         Object propertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject, fieldDefinition.getName());
                                         // set field value from business object

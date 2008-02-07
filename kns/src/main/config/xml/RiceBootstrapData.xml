@@ -662,7 +662,7 @@
             <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
             <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
             <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-            <docHandler>${base.url}/RemoveReplace.do?methodToCall=docHandler</docHandler>
+            <docHandler>${workflow.url}/RemoveReplace.do?methodToCall=docHandler</docHandler>
             <active>true</active>
             <routingVersion>1</routingVersion>
             <routePaths>
@@ -691,7 +691,7 @@
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-      <docHandler>http://localhost:8080/kr-dev/kr/maintenance.do?methodToCall=docHandler</docHandler>
+      <docHandler>${kr.url}/kr/maintenance.do?methodToCall=docHandler</docHandler>
       <active>true</active>
       <routingVersion>1</routingVersion>
       <routePaths>
@@ -716,7 +716,7 @@
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-      <docHandler>http://localhost:8080/kr-dev/kr/maintenance.do?methodToCall=docHandler</docHandler>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
       <active>true</active>
       <routingVersion>1</routingVersion>
       <routePaths>
@@ -741,7 +741,7 @@
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-      <docHandler>http://localhost:8080/kr-dev/kr/maintenance.do?methodToCall=docHandler</docHandler>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
       <active>true</active>
       <routingVersion>1</routingVersion>
       <routePaths>
@@ -766,7 +766,7 @@
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-      <docHandler>http://localhost:8080/kr-dev/kr/maintenance.do?methodToCall=docHandler</docHandler>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
       <active>true</active>
       <routingVersion>1</routingVersion>
       <routePaths>
@@ -791,7 +791,7 @@
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-      <docHandler>http://localhost:8080/kr-dev/kr/maintenance.do?methodToCall=docHandler</docHandler>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
       <active>true</active>
       <routingVersion>1</routingVersion>
       <routePaths>
@@ -816,7 +816,7 @@
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-      <docHandler>http://localhost:8080/kr-dev/kr/maintenance.do?methodToCall=docHandler</docHandler>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
       <active>true</active>
       <routingVersion>1</routingVersion>
       <routePaths>
@@ -841,7 +841,7 @@
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
       <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-      <docHandler>http://localhost:8080/kr-dev/kr/maintenance.do?methodToCall=docHandler</docHandler>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
       <active>true</active>
       <routingVersion>1</routingVersion>
       <routePaths>

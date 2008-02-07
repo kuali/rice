@@ -23,6 +23,9 @@ import edu.iu.uis.eden.test.TestUtilities;
 
 public class TestExceptionRoutingServiceImpl extends ExceptionRoutingServiceImpl {
 
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+	    .getLogger(TestExceptionRoutingServiceImpl.class);
+    
 	@Override
 	public void placeInExceptionRouting(Throwable throwable, PersistedMessage persistedMessage, Long routeHeaderId) {
 		ExceptionThreader exceptionThreader = new ExceptionThreader(throwable, persistedMessage, routeHeaderId, this);
@@ -45,11 +48,15 @@ public class TestExceptionRoutingServiceImpl extends ExceptionRoutingServiceImpl
 		}
 
 		public void run() {
+		    try {
 			testExceptionService.callRealPlaceInExceptionRouting(throwable, message, routeHeaderId);
+		    } catch (Exception e) {
+			LOG.error(e, e);
+		    }
 		}
 	}
 	
-	public void callRealPlaceInExceptionRouting(Throwable throwable, PersistedMessage message, Long routeHeaderId) {
+	public void callRealPlaceInExceptionRouting(Throwable throwable, PersistedMessage message, Long routeHeaderId) throws Exception {
 		super.placeInExceptionRouting(throwable, message, routeHeaderId);
 	}	
 }

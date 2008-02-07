@@ -21,8 +21,14 @@ import java.util.Map;
 import org.junit.Test;
 import org.kuali.RiceConstants;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.TestBase;
+import org.kuali.rice.test.data.PerTestUnitTestData;
+import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.rice.test.data.UnitTestFile;
+import org.kuali.rice.test.data.UnitTestSql;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
+import org.kuali.test.KNSTestConstants.TestConstants;
 
 import edu.sampleu.travel.bo.TravelAccount;
 
@@ -31,8 +37,7 @@ import edu.sampleu.travel.bo.TravelAccount;
  * 
  * 
  */
-@KNSWithTestSpringContext
-public class KualiLookupableTest extends KNSTestBase {
+public class KualiLookupableTest extends TestBase {
     private KualiLookupableImpl lookupableImpl;
 
     @Override
@@ -75,7 +80,7 @@ public class KualiLookupableTest extends KNSTestBase {
         returnUrl = lookupableImpl.getReturnUrl(account, fieldConversions, "kualiLookupable");
 
         // check keys have been mapped properly
-        checkURLContains("Lookup return url does not map key", "myAccount%5B0%5D.chartCode=a1", returnUrl);
+        checkURLContains("Lookup return url does not map key", "myAccount[0].chartCode=a1", returnUrl);
     }
 
 

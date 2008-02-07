@@ -31,6 +31,8 @@
 <%@ attribute name="highlightTab" required="false" %>
 <%@ attribute name="extraButtonSource" required="false" %>
 <%@ attribute name="useCurrentTabIndexAsKey" required="false" %>
+<%@ attribute name="hidden" required="false" %>
+<%@ attribute name="useRiceAuditMode" required="false" %>
 
 <c:set var="currentTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
 <c:set var="topLevelTabIndex" value="${KualiForm.currentTabIndex}" scope="request"/>
@@ -63,6 +65,10 @@
   <c:set var="isOpen" value="${hasErrors ? true : isOpen}"/>
 </c:if>
 
+<c:if test="${hidden}">
+	<c:set var="isOpen" value="false"/>
+</c:if>
+
 <html:hidden property="tabStates(${tabKey})" value="${(isOpen ? 'OPEN' : 'CLOSE')}" />
 <!-- TAB -->
 
@@ -81,7 +87,7 @@
   <c:set var="midTabClass" value="tabtable1-mid" />
 </c:if>
 
-        <table width="100%" class="tab" cellpadding="0" cellspacing="0" summary="" border="1">
+        <table width="100%" class="tab" cellpadding="0" cellspacing="0" summary="" border="1" <c:if test="${hidden}">style="display:none;"</c:if>>
           <tr>
             <td class="tabtable1-left">
               <img src="${leftTabImage}" alt="" width="12" height="29" align="absmiddle" />
@@ -132,7 +138,7 @@
         </c:if>
         
         <!-- comment for reference by KRA devs during KNS extraction -->
-        <c:if test="${! (empty tabAuditKey)}">
+        <c:if test="${! (empty tabAuditKey) && (useRiceAuditMode == 'true')}">
         	<div class="tab-container-error"><div class="left-errmsg-tab">
 				<c:forEach items="${fn:split(auditCluster,',')}" var="cluster">
         	   		<kul:auditErrors cluster="${cluster}" keyMatch="${tabAuditKey}" isLink="false" includesTitle="true"/>

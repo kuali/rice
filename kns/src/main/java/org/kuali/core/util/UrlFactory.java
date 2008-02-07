@@ -15,12 +15,12 @@
  */
 package org.kuali.core.util;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.Iterator;
 import java.util.Properties;
 
+import org.apache.commons.codec.EncoderException;
+import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * This class Provides utility methods for re/building URLs.
@@ -29,6 +29,7 @@ import org.apache.commons.lang.StringUtils;
  */
 
 public class UrlFactory {
+    private static Logger LOG = Logger.getLogger(UrlFactory.class);
     /**
      * Creates a new URL by taking the given URL and appending the parameter names and values from the given Properties instance to
      * it. Note: parameter names must be non-blank; parameter values must be non-null.
@@ -41,6 +42,8 @@ public class UrlFactory {
      * @throws RuntimeException if there is a problem encoding a parameter name or value into UTF-8
      * @return a newly-constructed URL string which has the given parameters and their values appended to it
      */
+    private static URLCodec urlCodec = new URLCodec("UTF-8");
+    
     public static String parameterizeUrl(String baseUrl, Properties params) {
         baseUrl = StringUtils.trim(baseUrl);
         if (StringUtils.isEmpty(baseUrl)) {
@@ -53,53 +56,39 @@ public class UrlFactory {
 
         StringBuffer ret = new StringBuffer(baseUrl);
 
-        if (params.size() > 0) {
-            Iterator i = params.keySet().iterator();
-            String paramName = (String) i.next();
-            ret.append(pathEntry("?", paramName, params.getProperty(paramName)));
-
-            while (i.hasNext()) {
-                paramName = (String) i.next();
-                ret.append(pathEntry("&", paramName, params.getProperty(paramName)));
+        String delimiter = "?";
+        for ( Object key : params.keySet() ) {
+            String paramName = StringUtils.trim( (String)key );
+            String paramValue = params.getProperty(paramName);
+            if (StringUtils.isEmpty(paramName)) {
+                throw new IllegalArgumentException("invalid (blank) paramName");
             }
+            if (paramValue == null) {
+                throw new IllegalArgumentException("invalid (null) paramValue");
+            }
+            ret.append( delimiter );
+            try {
+                ret.append( paramName );
+                ret.append( "=" );
+                ret.append( urlCodec.encode(paramValue) );
+            } catch ( EncoderException ex ) {
+                LOG.error("Unable to encode parameter name or value: " + paramName + "=" + paramValue, ex);
+                throw new RuntimeException( "Unable to encode parameter name or value: " + paramName + "=" + paramValue, ex );
+            }
+            delimiter = "&";
         }
 
         return ret.toString();
     }
 
-    private static String pathEntry(String separator, String paramName, String paramValue) {
-        paramName = StringUtils.trim(paramName);
-        if (StringUtils.isEmpty(paramName)) {
-            throw new IllegalArgumentException("invalid (blank) paramName");
-        }
-        if (paramValue == null) {
-            throw new IllegalArgumentException("invalid (null) paramValue");
-        }
-
-
-        StringBuffer entry = new StringBuffer(separator);
-
-        entry.append(encode(paramName));
-        entry.append("=");
-        entry.append(encode(paramValue));
-
-        return entry.toString();
-    }
-
-    public static String encode(String raw) {
-        String enc = null;
+    public static String encode( String value ) {
         try {
-            enc = URLEncoder.encode(raw, "UTF-8");
+            return urlCodec.encode(value);
+        } catch ( EncoderException ex ) {
+            throw new RuntimeException( "Unable to encode value: " + value, ex );
         }
-        catch (UnsupportedEncodingException e) {
-            // this should never happen
-            throw new RuntimeException(e);
-        }
-
-        return enc;
     }
-
-
+    
     /**
      * Constructs a document action URL from the given documentTypeName, with the given Properties as URL parameters.
      * 

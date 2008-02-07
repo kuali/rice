@@ -62,7 +62,9 @@ public class InquiryDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(title)) {
             throw new IllegalArgumentException("invalid (blank) title");
         }
-        LOG.debug("calling setTitle '" + title + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setTitle '" + title + "'");
+        }
 
         this.title = title;
     }
@@ -76,8 +78,9 @@ public class InquiryDefinition extends DataDictionaryDefinitionBase {
         if (inquirySection == null) {
             throw new IllegalArgumentException("invalid (null) inquirySection");
         }
-        LOG.debug("calling addInquirySection for section '" + inquirySection.getTitle() + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling addInquirySection for section '" + inquirySection.getTitle() + "'");
+        }
         String sectionTitle = inquirySection.getTitle();
         if (this.inquirySections.containsKey(sectionTitle)) {
             throw new DuplicateEntryException("duplicate inquirySection entry for attribute '" + sectionTitle + "'");

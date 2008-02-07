@@ -49,7 +49,9 @@ public class AttachmentServiceImpl implements AttachmentService {
      *      java.io.InputStream, Document)
      */
     public Attachment createAttachment(PersistableBusinessObject parent, String uploadedFileName, String mimeType, int fileSize, InputStream fileContents, String attachmentTypeCode) throws IOException {
-        LOG.debug("starting to create attachment for document: " + parent.getObjectId());
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("starting to create attachment for document: " + parent.getObjectId());
+        }
         if (parent == null) {
             throw new IllegalArgumentException("invalid (null or uninitialized) document");
         }

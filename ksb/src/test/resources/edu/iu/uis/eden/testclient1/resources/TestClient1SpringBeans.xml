@@ -54,7 +54,6 @@
 	<bean id="soapService" class="edu.iu.uis.eden.testclient1.Client1SOAPService" />
 
 	<bean id="cache" class="edu.iu.uis.eden.cache.RiceCacheAdministratorImpl">
-		<property name="messageEntity" value="KEW" />
 		<property name="forceRegistryRefresh" value="false"></property>
 	</bean>
 	

@@ -22,7 +22,6 @@ import java.util.Map;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.PersistableBusinessObject;
-import org.kuali.core.datadictionary.DataDictionaryDefinitionBase;
 import org.kuali.core.document.MaintenanceDocument;
 import org.kuali.core.document.MaintenanceLock;
 import org.kuali.core.lookup.SelectiveReferenceRefresher;
@@ -158,14 +157,20 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * This method is a hook to do any necessary post-copy processing.
      * 
      */
-    public void processAfterCopy();
+    public void processAfterCopy( Map parameters );
     
     /**
      * This method is a hook to do any necessary post-edit processing, which is to say that it is called when a document is about to be edited;
      * this is therefore a hook to write any code to modify the business object before it is displayed to the end user to edit.
      */
-    public void processAfterEdit();
+    public void processAfterEdit( Map parameters );
 
+    /**
+     * 
+     * This method is a hook to do any necessary post-copy processing.
+     * 
+     */
+    public void processAfterNew( Map parameters );
 
     /**
      * 
@@ -205,7 +210,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * For example, create a division Vendor based on an existing parent Vendor.
      * (Please see VendorMaintainableImpl.java)
      */
-    public void setupNewFromExisting();
+    public void setupNewFromExisting( Map parameters );
     
     /**
      * Indicates whether inactive records for the given collection should be display.

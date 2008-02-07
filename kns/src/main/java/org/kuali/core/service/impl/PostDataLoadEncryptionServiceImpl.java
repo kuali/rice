@@ -27,7 +27,6 @@ import org.kuali.core.service.PostDataLoadEncryptionService;
 import org.kuali.core.util.OjbKualiEncryptDecryptFieldConversion;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBase implements PostDataLoadEncryptionService {
     private BusinessObjectService businessObjectService;
     private EncryptionService encryptionService;

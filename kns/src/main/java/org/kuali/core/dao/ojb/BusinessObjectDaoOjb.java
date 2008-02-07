@@ -30,7 +30,7 @@ import org.kuali.core.dao.BusinessObjectDao;
 import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.OjbCollectionAware;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.core.util.OjbCollectionHelper;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -41,6 +41,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectDaoOjb.class);
 
     private PersistenceStructureService persistenceStructureService;
+    private OjbCollectionHelper ojbCollectionHelper;
     /**
      * @see org.kuali.core.dao.BusinessObjectDao#findByPrimaryKey(java.lang.Class, java.util.Map)
      */
@@ -172,16 +173,19 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
      * @see org.kuali.core.dao.BusinessObjectDao#save(org.kuali.core.bo.PersistableBusinessObject)
      */
     public void save(PersistableBusinessObject bo) throws DataAccessException {
-        // refresh bo to get db copy of collections
-        PersistableBusinessObject savedBo = (PersistableBusinessObject) ObjectUtils.deepCopy(bo);
-        
-        Set<String> boCollections = getPersistenceStructureService().listCollectionObjectTypes(savedBo.getClass()).keySet();
-        for (String boCollection : boCollections) {
-            if (getPersistenceStructureService().isCollectionUpdatable(savedBo.getClass(), boCollection)) {
-                savedBo.refreshReferenceObject(boCollection);
+        // if collections exist on the BO, create a copy and use to process the collections to ensure
+        // that removed elements are deleted from the database
+        Set<String> boCollections = getPersistenceStructureService().listCollectionObjectTypes(bo.getClass()).keySet();
+        if ( !boCollections.isEmpty() ) {
+            // refresh bo to get db copy of collections
+            PersistableBusinessObject savedBo = (PersistableBusinessObject) ObjectUtils.deepCopy(bo);
+            for (String boCollection : boCollections) {
+                if (getPersistenceStructureService().isCollectionUpdatable(savedBo.getClass(), boCollection)) {
+                    savedBo.refreshReferenceObject(boCollection);
+                }
             }
+            getOjbCollectionHelper().processCollections(this, bo, savedBo);
         }
-        KNSServiceLocator.getOjbCollectionHelper().processCollections(this, bo, savedBo);
         
         getPersistenceBrokerTemplate().store(bo);
     }
@@ -313,6 +317,14 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
      */
     public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
         this.persistenceStructureService = persistenceStructureService;
+    }
+
+    public OjbCollectionHelper getOjbCollectionHelper() {
+        return this.ojbCollectionHelper;
+    }
+
+    public void setOjbCollectionHelper(OjbCollectionHelper ojbCollectionHelper) {
+        this.ojbCollectionHelper = ojbCollectionHelper;
     }
     
     

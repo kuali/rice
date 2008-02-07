@@ -20,6 +20,7 @@ import java.io.Serializable;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.exceptions.RiceRuntimeException;
@@ -45,10 +46,8 @@ public class RiceDistributedCacheListener extends AbstractBroadcastingListener i
 
 	private static final Logger LOG = Logger.getLogger(RiceDistributedCacheListener.class);
 
-	private static final String SERVICE_NAME = "OSCacheNotificationService";
-
-	private String messageEntity;
-
+	private String serviceName;
+	
 	@Override
 	public void initialize(Cache cache, Config config) throws InitializationException {
 
@@ -56,17 +55,18 @@ public class RiceDistributedCacheListener extends AbstractBroadcastingListener i
 		super.initialize(cache, config);
 		// the following property was put on the OSCache properties used for
 		// cache configuration
-		String messageEntity = config.getProperty(org.kuali.rice.config.Config.MESSAGE_ENTITY);
+		this.serviceName = config.getProperty(RiceCacheAdministrator.SERVICE_NAME_KEY);
 		boolean forceRegistryRefresh = new Boolean((Boolean)config.getProperties().get(RiceCacheAdministrator.FORCE_REGISTRY_REFRESH_KEY));
-		if (messageEntity == null) {
-			throw new RiceRuntimeException("Cannot create KEWDistributedCacheListener with null messageEntity");
+		if (StringUtils.isBlank(this.serviceName)) {
+			throw new RiceRuntimeException("Cannot create DistributedCacheListener with empty serviceName");
 		}
-		this.messageEntity = messageEntity;
+		LOG.info("Publishing Cache Service on bus under service name " + this.serviceName);
 		JavaServiceDefinition serviceDef = new JavaServiceDefinition();
 		serviceDef.setPriority(3);
 		serviceDef.setRetryAttempts(3);
 		serviceDef.setService(this);
-		serviceDef.setServiceName(getServiceName());
+		serviceDef.setLocalServiceName(this.serviceName);
+		serviceDef.setServiceNameSpaceURI("");
 		serviceDef.setQueue(false);
 		try {
 			serviceDef.validate();
@@ -82,7 +82,7 @@ public class RiceDistributedCacheListener extends AbstractBroadcastingListener i
 			LOG.debug("Sending cache notification " + notification);
 		}
 		try {
-			KEWJavaService oscacheNotificationService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(getServiceName());
+			KEWJavaService oscacheNotificationService = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(this.serviceName));
 			oscacheNotificationService.invoke(notification);
 		} catch (Exception e) {
 			throw new RiceRuntimeException(e);
@@ -97,7 +97,4 @@ public class RiceDistributedCacheListener extends AbstractBroadcastingListener i
 		super.handleClusterNotification((ClusterNotification) payLoad);
 	}
 
-	private QName getServiceName() {
-		return new QName(this.messageEntity, SERVICE_NAME);
-	}
 }

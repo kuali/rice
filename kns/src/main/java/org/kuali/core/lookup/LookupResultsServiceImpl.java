@@ -36,9 +36,7 @@ import org.kuali.core.service.BusinessObjectService;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.web.ui.ResultRow;
 import org.kuali.rice.KNSServiceLocator;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 public class LookupResultsServiceImpl implements LookupResultsService {
     private BusinessObjectService businessObjectService;
     private PersistedLookupMetadataDao persistedLookupMetadataDao;

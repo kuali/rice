@@ -26,7 +26,7 @@ import org.kuali.core.util.TypeUtils;
  * Transient Business Object Base Business Object
  */
 public abstract class BusinessObjectBase implements BusinessObject {
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectBase.class);
+    //private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectBase.class);
 
     /**
      * Default constructor. Required to do some of the voodoo involved in letting the DataDictionary validate attributeNames for a
@@ -106,5 +106,9 @@ public abstract class BusinessObjectBase implements BusinessObject {
         else {
             return "Proxy: " + this.getClass().getName();
         }
+    }
+    
+    public void prepareForWorkflow() {
+	// do nothing
     }
 }

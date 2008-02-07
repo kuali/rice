@@ -22,7 +22,7 @@
 <%@ attribute name="anchor" required="false"
               description="The anchor (i.e. tab index) of the tab in which these icons will be displayed (primarily for lookups to return to the original section)" %>
               
-<c:if test="${isReadOnly ne true && field.fieldType ne field.KUALIUSER && field.fieldType ne field.HIDDEN}">
+<c:if test="${field.fieldDirectInquiryEnabled && isReadOnly ne true && field.fieldType ne field.KUALIUSER && field.fieldType ne field.HIDDEN}">
 	
     <c:if test="${!(empty field.quickFinderClassNameImpl)}">
         

@@ -36,6 +36,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.struts.Globals;
+import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
 import org.apache.struts.config.ModuleConfig;
@@ -45,7 +46,9 @@ import org.apache.struts.util.ModuleUtils;
 import org.kuali.RiceConstants;
 import org.kuali.core.exceptions.FileUploadLimitExceededException;
 import org.kuali.core.exceptions.ValidationException;
+import org.kuali.core.web.struts.action.KualiMultipartRequestHandler;
 import org.kuali.core.web.struts.form.KualiForm;
+import org.kuali.core.web.struts.pojo.PojoFormBase;
 
 /**
  * General helper methods for handling requests.
@@ -267,18 +270,16 @@ public class WebUtils {
         
         return key;
     }
-    
-    // start multipart - refactored to be shared by pojoformbase & kualirequestprocessor
-    
-    public static Map getMultipartParameters(HttpServletRequest request, ActionServletWrapper servletWrapper) {
+
+    public static Map getMultipartParameters(HttpServletRequest request, ActionServletWrapper servletWrapper, ActionForm form) {
         Map params = new HashMap();
-        
+
         // Get the ActionServletWrapper from the form bean
         //ActionServletWrapper servletWrapper = getServletWrapper();
         boolean isMultipart = false;
         try {
             // Obtain a MultipartRequestHandler
-            MultipartRequestHandler multipartHandler = getMultipartHandler(request);
+            MultipartRequestHandler multipartHandler = getMultipartHandler(request, form);
 
             if (multipartHandler != null) {
                 isMultipart = true;
@@ -298,7 +299,7 @@ public class WebUtils {
                 }
                 // get file elements for kualirequestprocessor
                 if (servletWrapper == null) {
-                    request.setAttribute("fileElements",getFileParametersForMultipartRequest(request, multipartHandler));
+                    request.setAttribute(RiceConstants.UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY,getFileParametersForMultipartRequest(request, multipartHandler));
                 }
                 // retrieve form values and put into properties
                 Map multipartParameters = getAllParametersForMultipartRequest(request, multipartHandler);
@@ -327,63 +328,17 @@ public class WebUtils {
         }
         return params;
     }
-    
-    private static MultipartRequestHandler getMultipartHandler(HttpServletRequest request) throws ServletException {
-        Timer t0 = new Timer("PojoFormBase.getMultipartHandler");
 
-        MultipartRequestHandler multipartHandler = null;
-        String multipartClass = (String) request.getAttribute(Globals.MULTIPART_KEY);
-        request.removeAttribute(Globals.MULTIPART_KEY);
+    private static MultipartRequestHandler getMultipartHandler(HttpServletRequest request, ActionForm form) throws ServletException {
+        Timer t0 = new Timer("WebUtils.getMultipartHandler");
 
-        // Try to initialize the mapping specific request handler
-        if (multipartClass != null) {
-            try {
-                multipartHandler = (MultipartRequestHandler) Thread.currentThread().getContextClassLoader().loadClass(multipartClass).newInstance();
-            }
-            catch (ClassNotFoundException cnfe) {
-                LOG.error("MultipartRequestHandler class \"" + multipartClass + "\" in mapping class not found, " + "defaulting to global multipart class");
-            }
-            catch (InstantiationException ie) {
-                LOG.error("InstantiationException when instantiating " + "MultipartRequestHandler \"" + multipartClass + "\", " + "defaulting to global multipart class, exception: " + ie.getMessage());
-            }
-            catch (IllegalAccessException iae) {
-                LOG.error("IllegalAccessException when instantiating " + "MultipartRequestHandler \"" + multipartClass + "\", " + "defaulting to global multipart class, exception: " + iae.getMessage());
-            }
-
-            if (multipartHandler != null) {
-                t0.log();
-                return multipartHandler;
-            }
+        KualiMultipartRequestHandler multipartHandler = new KualiMultipartRequestHandler();
+        if (form instanceof PojoFormBase) {
+            multipartHandler.setMaxUploadSizeToMaxOfList( ((PojoFormBase) form).getMaxUploadSizes() );
         }
-
-        ModuleConfig moduleConfig = ModuleUtils.getInstance().getModuleConfig(request);
-
-        multipartClass = moduleConfig.getControllerConfig().getMultipartClass();
-
-        // Try to initialize the global request handler
-        if (multipartClass != null) {
-            try {
-                multipartHandler = (MultipartRequestHandler) Thread.currentThread().getContextClassLoader().loadClass(multipartClass).newInstance();
-
-            }
-            catch (ClassNotFoundException cnfe) {
-                throw new ServletException("Cannot find multipart class \"" + multipartClass + "\"" + ", exception: " + cnfe.getMessage());
-
-            }
-            catch (InstantiationException ie) {
-                throw new ServletException("InstantiationException when instantiating " + "multipart class \"" + multipartClass + "\", exception: " + ie.getMessage());
-
-            }
-            catch (IllegalAccessException iae) {
-                throw new ServletException("IllegalAccessException when instantiating " + "multipart class \"" + multipartClass + "\", exception: " + iae.getMessage());
-            }
-
-            if (multipartHandler != null) {
-                t0.log();
-                return multipartHandler;
-            }
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug( "Max File Upload Size: " + multipartHandler.getSizeMaxString() );
         }
-
         t0.log();
         return multipartHandler;
     }

@@ -634,6 +634,7 @@
           <property name="localServiceName" value="WorkflowDocumentActionsService" />
           <property name="priority" value="3" />
           <property name="retryAttempts" value="0" />
+          <property name="busSecurity" value="${secure.workflowdocument.javaservice.endpoint}"/>
         </bean>
 		</property>
 	</bean>
@@ -647,6 +648,7 @@
           <property name="localServiceName" value="WorkflowUtilityService" />
           <property name="priority" value="3" />
           <property name="retryAttempts" value="0" />
+          <property name="busSecurity" value="${secure.workflowutility.javaservice.endpoint}"/>
         </bean>
           </property>
     </bean>
@@ -814,8 +816,8 @@
         </bean>
 		</property>
 	</bean>
-
-	<bean class="edu.iu.uis.eden.messaging.KSBExporter">
+	
+	<bean class="edu.iu.uis.eden.messaging.PropertyConditionalKSBExporter">
 		<property name="serviceDefinition">
         <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
           <property name="service">
@@ -828,6 +830,7 @@
           <property name="messageExceptionHandler" value="edu.iu.uis.eden.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
         </bean>
 		</property>
+		<property name="propertyName" value="Email.useRemoteServices"/>
 	</bean>
 
 	<bean class="edu.iu.uis.eden.messaging.KSBExporter">

@@ -98,8 +98,9 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(title)) {
             throw new IllegalArgumentException("invalid (blank) title");
         }
-        LOG.debug("calling setTitle '" + title + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setTitle '" + title + "'");
+        }
         this.title = title;
     }
 
@@ -127,8 +128,9 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(menubar)) {
             throw new IllegalArgumentException("invalid (blank) menubar");
         }
-        LOG.debug("calling setMenubar '" + menubar + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setMenubar '" + menubar + "'");
+        }
         this.menubar = menubar.replace("${kr.externalizable.images.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceConstants.EXTERNALIZABLE_IMAGES_URL_KEY)).replace("${externalizable.images.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceConstants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
     }
 
@@ -157,8 +159,9 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(instructions)) {
             throw new IllegalArgumentException("invalid (blank) instructions");
         }
-        LOG.debug("calling setInstructions '" + instructions + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setInstructions '" + instructions + "'");
+        }
         this.instructions = instructions;
     }
 
@@ -186,8 +189,9 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
         if (defaultSort == null) {
             throw new IllegalArgumentException("invalid (null) defaultSort");
         }
-        LOG.debug("calling setDefaultSort '" + defaultSort.toString() + "', " + (defaultSort.getSortAscending() ? "ascending" : "descending"));
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setDefaultSort '" + defaultSort.toString() + "', " + (defaultSort.getSortAscending() ? "ascending" : "descending"));
+        }
         this.defaultSort = defaultSort;
     }
 
@@ -199,8 +203,9 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
         if (lookupField == null) {
             throw new IllegalArgumentException("invalid (null) lookupField");
         }
-        LOG.debug("calling addLookupField for field '" + lookupField.getAttributeName() + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling addLookupField for field '" + lookupField.getAttributeName() + "'");
+        }
         String keyName = lookupField.getAttributeName();
         if (this.lookupFields.containsKey(keyName)) {
             throw new DuplicateEntryException("duplicate lookupField entry for attribute '" + keyName + "'");
@@ -244,7 +249,9 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
         if (resultField == null) {
             throw new IllegalArgumentException("invalid (null) resultField");
         }
-        LOG.debug("calling addResultField for field '" + resultField.getAttributeName() + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling addResultField for field '" + resultField.getAttributeName() + "'");
+        }
 
         String keyName = resultField.getAttributeName();
         if (this.resultFields.containsKey(keyName)) {
@@ -295,8 +302,9 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
                 throw new IllegalArgumentException("invalid (not a number) resultSetLimit: (" + resultSetLimit + ")");
             }
         }
-        LOG.debug("calling setResultSetLimit '" + resultSetLimit + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setResultSetLimit '" + resultSetLimit + "'");
+        }
         this.resultSetLimit = resultSetLimit;
     }
 
@@ -365,7 +373,9 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(extraButtonSource)) {
             throw new IllegalArgumentException("invalid (blank) button source");
         }
-        LOG.debug("calling setInstructions '" + extraButtonSource + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setInstructions '" + extraButtonSource + "'");
+        }
         this.extraButtonSource = extraButtonSource;
     }
 
@@ -389,7 +399,9 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
      * @param extraButtonParams
      */
     public void setExtraButtonParams(String extraButtonParams) {
-        LOG.debug("calling setInstructions '" + extraButtonParams + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setInstructions '" + extraButtonParams + "'");
+        }
         this.extraButtonParams = extraButtonParams;
     }
 

@@ -42,11 +42,11 @@ public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
-        String sourceClassName = rootBusinessObjectClass.getName();
+        //String sourceClassName = rootBusinessObjectClass.getName();
         if (!validationCompletionUtils.isPropertyOf(rootBusinessObjectClass, getSourceName())) {
             throw new AttributeValidationException("unable to find attribute '" + getSourceName() + "' in relationship class '" + rootBusinessObjectClass + "' (" + getParseLocation() + ")");
         }
-        String targetClassName = otherBusinessObjectClass.getName();
+        //String targetClassName = otherBusinessObjectClass.getName();
         if (!validationCompletionUtils.isPropertyOf(otherBusinessObjectClass, getTargetName())) {
             throw new AttributeValidationException("unable to find attribute '" + getTargetName() + "' in related class '" + otherBusinessObjectClass.getName() + "' (" + getParseLocation() + ")");
         }

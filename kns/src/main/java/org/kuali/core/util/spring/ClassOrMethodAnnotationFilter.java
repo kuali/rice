@@ -37,9 +37,9 @@ public class ClassOrMethodAnnotationFilter implements ClassFilter {
             for (Method method : clazz.getMethods()) {
                 if (method.isAnnotationPresent(annotationType)) {
                     isAnnotationPresent = true;
-                    if (Transactional.class.equals(this.annotationType)) {
-                        throw new RuntimeException("The @Transactional annotation should be specified at the class level and overriden at the method level, if need be.");
-                    }
+//                    if (Transactional.class.equals(this.annotationType)) {
+//                        throw new RuntimeException("The @Transactional annotation should be specified at the class level and overriden at the method level, if need be.");
+//                    }
                     break;
                 }
             }

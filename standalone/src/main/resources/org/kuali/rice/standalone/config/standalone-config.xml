@@ -14,7 +14,7 @@
 
     <param name="message.entity">RICE</param>
     <param name="http.port">8080</param>
-    <param name="serviceServletUrl">http://${host.ip}:${http.port}/kr-${environment}/remoting/</param>
+    
     <param name="bam.enabled">false</param>
     <param name="threadPool.on">true</param>
     <param name="dev.mode">false</param>
@@ -65,8 +65,6 @@
 
     <param name="notification.quartz.autostartup">true</param>
     <param name="notification.concurrent.jobs">true</param>
-
-    <param name="notification.basewebappurl">http://localhost:8080/kr-dev/ken</param>
 
     <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
 

@@ -66,8 +66,9 @@ public class InquirySectionDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(title)) {
             throw new IllegalArgumentException("invalid (blank) title");
         }
-        LOG.debug("calling setTitle '" + title + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setTitle '" + title + "'");
+        }
         this.title = title;
     }
 

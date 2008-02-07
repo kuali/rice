@@ -56,7 +56,9 @@ public class SortAttributeDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
         }
-        LOG.debug("calling setAttributeName '" + attributeName + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setAttributeName '" + attributeName + "'");
+        }
 
         this.attributeName = attributeName;
     }

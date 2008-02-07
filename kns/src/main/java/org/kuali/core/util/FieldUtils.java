@@ -658,6 +658,31 @@ public class FieldUtils {
                 field.setFieldConversions(newFieldConversions);
             }
 
+            // if inquiryParameters specified, prefix with new constant
+            if (StringUtils.isNotBlank(field.getInquiryParameters())) {
+                String inquiryParameters = field.getInquiryParameters();
+                StringBuilder newInquiryParameters = new StringBuilder();
+                String[] parameters = StringUtils.split(inquiryParameters, RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
+
+                for (int l = 0; l < parameters.length; l++) {
+                    String parameter = parameters[l];
+                    String[] parameterPair = StringUtils.split(parameter, RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+                    String conversionFrom = parameterPair[0];
+                    String conversionTo = parameterPair[1];
+
+                    // append the conversionFrom string, prefixed by document.newMaintainable
+                    newInquiryParameters.append(RiceConstants.MAINTENANCE_NEW_MAINTAINABLE).append(conversionFrom);
+                    
+                    newInquiryParameters.append(RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR).append(conversionTo);
+                    
+                    if (l < parameters.length - 1) {
+                        newInquiryParameters.append(RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
+                    }
+                }
+
+                field.setInquiryParameters(newInquiryParameters.toString());
+            }
+            
             if (Field.KUALIUSER.equals(field.getFieldType())) {
                 // prefix the personNameAttributeName
             	int suffixIndex = field.getPropertyName().indexOf( field.getUserIdAttributeName() );
@@ -967,6 +992,7 @@ public class FieldUtils {
             // TODO: This makes no sense, why do we pass it in and then return the same thing
             // back to us?
             field = LookupUtils.setFieldQuickfinder((BusinessObject) businessObjectClass.newInstance(), attributeName, field, lookupFieldAttributeList);
+            LookupUtils.setFieldDirectInquiry(field);
 
             // overwrite maxLength to allow for wildcards and ranges in the select
             field.setMaxLength(100);

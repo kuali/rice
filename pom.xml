@@ -72,6 +72,12 @@
 							<forkMode>once</forkMode>
 							<reportFormat>plain</reportFormat>
 							<argLine>-Xmx1024m -XX:MaxPermSize=512m</argLine>
+							<systemProperties>
+								<property>
+									<name>alt.log4j.config.location</name>
+									<value>${alt.log4j.config.location}</value>
+								</property>
+							</systemProperties>
 						</configuration>
 					</plugin>
                     <!--
@@ -106,7 +112,6 @@
 						<artifactId>maven-deploy-plugin</artifactId>
 						<version>2.3</version>
 					</plugin>
-					<!--
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
@@ -116,23 +121,6 @@
 							<finalName>rice-source</finalName>
 							<attach>false</attach>
 						</configuration>
-					</plugin>
-					-->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.2</version>
-					</plugin>
-                    <plugin>
-                      <artifactId>maven-assembly-plugin</artifactId>
-                      <version>2.2-beta-2.nrm.1</version>
-                      <configuration>
-                        <descriptors>
-                          <descriptor>core/src/main/assembly/project.xml</descriptor>
-                          <descriptor>core/src/main/assembly/binary.xml</descriptor>
-                          <descriptor>standalone/src/main/assembly/standalone.xml</descriptor>
-                        </descriptors>
-                      </configuration>
 					</plugin>
 				</plugins>
 			</build>
@@ -172,20 +160,8 @@
 			<name>Kuali Repository</name>
 			<url>https://test.kuali.org/maven</url>
 		</repository>
-		<repository>
-			<id>connector</id>
-			<name>Connector</name>
-			<url>http://julien.dubois.free.fr/maven2/</url>
-		</repository>
 	</repositories>
-	
-	<!-- Using the following plugin repository gives us a copy of the Maven assembly plugin which actually works -->
-	<pluginRepositories>
-		<pluginRepository>
-			<id>googlecode</id>
-			<url>http://mavenversionedsnapshots.googlecode.com/svn/trunk/</url>
-		</pluginRepository>
-	</pluginRepositories>
+
 	<dependencies>
 
 		<dependency>
@@ -349,7 +325,7 @@
 		<dependency>
 			<groupId>ojb</groupId>
 			<artifactId>db-ojb</artifactId>
-			<version>1.0.4-patch</version>
+			<version>1.0.4-patch2</version>
 		</dependency>
 
 		<dependency>
@@ -397,7 +373,7 @@
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc14</artifactId>
-			<version>10.1.0.3.0</version>
+			<version>[10.1.0.2.0,)</version>
 		</dependency>
 
 		<dependency>
@@ -470,25 +446,19 @@
 			<version>1.1.1</version>
 			<scope>compile</scope>
 		</dependency>
-    <!--
+		
 		<dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-deploy-plugin</artifactId>
-			<version>2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-javadoc-plugin</artifactId>
-			<version>2.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-source-plugin</artifactId>
-			<version>2.0.2</version>
-		</dependency>
-        
-
-    -->
+      		<groupId>bsf</groupId>
+      		<artifactId>bsf</artifactId>
+      		<version>2.4.0</version>
+    	</dependency>
+    	
+    	<dependency>
+    		<groupId>bcel</groupId>
+    		<artifactId>bcel</artifactId>
+    		<version>5.1</version>
+    	</dependency>
+    	
 	</dependencies>
 	<reporting>
 		<plugins>
@@ -508,6 +478,16 @@
                 <artifactId>maven-clover-plugin</artifactId>
             </plugin>
             -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<aggregate>true</aggregate>
+					<maxmemory>512m</maxmemory>
+				</configuration>
+			</plugin>
+            
 		</plugins>
 	</reporting>
 	<distributionManagement>
@@ -515,6 +495,11 @@
 			<id>ssh-repository</id>
 			<url>scpexe://wsa123.uits.indiana.edu/usr/local/apache/htdocs/maven</url>
 		</repository>
+		<site>
+			<id>rice-site</id>
+			<name>Rice Web Site</name>
+			<url>scpexe://wsa123.uits.indiana.edu/usr/local/apache/htdocs/rice/docs/0.9.2-SNAPSHOT/site</url>
+		</site>
 	</distributionManagement>
 </project>
 

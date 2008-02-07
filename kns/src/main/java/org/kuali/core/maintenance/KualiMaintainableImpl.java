@@ -35,7 +35,6 @@ import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.BusinessObjectRelationship;
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.PersistableBusinessObject;
-import org.kuali.core.datadictionary.DataDictionaryDefinitionBase;
 import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.core.datadictionary.MaintainableFieldDefinition;
 import org.kuali.core.datadictionary.MaintainableItemDefinition;
@@ -43,10 +42,14 @@ import org.kuali.core.datadictionary.MaintainableSectionDefinition;
 import org.kuali.core.document.MaintenanceDocument;
 import org.kuali.core.document.MaintenanceLock;
 import org.kuali.core.lookup.LookupUtils;
+import org.kuali.core.service.BusinessObjectDictionaryService;
 import org.kuali.core.service.BusinessObjectMetaDataService;
+import org.kuali.core.service.BusinessObjectService;
 import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.service.EncryptionService;
+import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.service.PersistenceStructureService;
+import org.kuali.core.service.UniversalUserService;
 import org.kuali.core.util.FieldUtils;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.InactiveRecordsHidingUtils;
@@ -76,6 +79,16 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     
     private String docTypeName;
 
+    private PersistenceStructureService persistenceStructureService;
+    
+    private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+    private static DataDictionaryService dataDictionaryService;
+    private static BusinessObjectService businessObjectService;
+    private static BusinessObjectDictionaryService businessObjectDictionaryService;
+    private static EncryptionService encryptionService;
+    private static UniversalUserService universalUserService;
+    private static BusinessObjectMetaDataService businessObjectMetaDataService;
+    
     /**
      * Default empty constructor
      */
@@ -92,7 +105,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         this.businessObject = businessObject;
     }
 
-    public void setupNewFromExisting() {
+    public void setupNewFromExisting( Map parameters ) {
         
     }
     
@@ -121,7 +134,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         lockRepresentation.append(RiceConstants.Maintenance.AFTER_CLASS_DELIM);
 
         PersistableBusinessObject bo = getBusinessObject();
-        List keyFieldNames = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getLockingKeys(getDocumentTypeName());
+        List keyFieldNames = getMaintenanceDocumentDictionaryService().getLockingKeys(getDocumentTypeName());
 
         for (Iterator i = keyFieldNames.iterator(); i.hasNext();) {
             String fieldName = (String) i.next();
@@ -131,10 +144,10 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
             }
             
             // check if field is a secure
-            String displayWorkgroup = KNSServiceLocator.getDataDictionaryService().getAttributeDisplayWorkgroup(getBoClass(), fieldName);
+            String displayWorkgroup = getDataDictionaryService().getAttributeDisplayWorkgroup(getBoClass(), fieldName);
             if (StringUtils.isNotBlank(displayWorkgroup)) {
                 try {
-                    fieldValue = KNSServiceLocator.getEncryptionService().encrypt(fieldValue);
+                    fieldValue = getEncryptionService().encrypt(fieldValue);
                 }
                 catch (GeneralSecurityException e) {
                     LOG.error("Unable to encrypt secure field for locking representation " + e.getMessage());
@@ -163,10 +176,10 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     public Map populateBusinessObject(Map fieldValues) {
         fieldValues = decryptEncryptedData(fieldValues);
         Map newFieldValues = null;
-        newFieldValues = KNSServiceLocator.getUniversalUserService().resolveUserIdentifiersToUniversalIdentifiers(getBusinessObject(), fieldValues);
+        newFieldValues = getUniversalUserService().resolveUserIdentifiersToUniversalIdentifiers(getBusinessObject(), fieldValues);
    
         Map cachedValues = FieldUtils.populateBusinessObjectFromMap(getBusinessObject(), newFieldValues);
-        KNSServiceLocator.getBusinessObjectDictionaryService().performForceUppercase(getBusinessObject());
+        getBusinessObjectDictionaryService().performForceUppercase(getBusinessObject());
         return cachedValues;
     }
 
@@ -188,7 +201,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 
                     // take of the postfix
                     encryptedValue = StringUtils.stripEnd(encryptedValue, EncryptionService.ENCRYPTION_POST_PREFIX);
-                    String decryptedValue = KNSServiceLocator.getEncryptionService().decrypt(encryptedValue);
+                    String decryptedValue = getEncryptionService().decrypt(encryptedValue);
 
                     fieldValues.put(fieldName, decryptedValue);
                 }
@@ -225,7 +238,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         
         List<Section> sections = new ArrayList<Section>();
 
-        List<MaintainableSectionDefinition> sectionDefinitions = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
+        List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
 
         try {
             // iterate through section definitions and create Section UI object
@@ -266,21 +279,21 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * @see org.kuali.core.maintenance.Maintainable#saveBusinessObject()
      */
     public void saveBusinessObject() {
-        KNSServiceLocator.getBusinessObjectService().linkAndSave(businessObject);
+        getBusinessObjectService().linkAndSave(businessObject);
     }
     
     /**
      * Retrieves title for maintenance document from data dictionary
      */
     public String getMaintainableTitle() {        
-        return KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceLabel(getDocumentTypeName());
+        return getMaintenanceDocumentDictionaryService().getMaintenanceLabel(getDocumentTypeName());
     }
 
     /**
      * Retrieves the status of the boNotesEnabled
      */
     public boolean isBoNotesEnabled() {
-    	return KNSServiceLocator.getBusinessObjectDictionaryService().areNotesSupported(this.boClass);
+    	return getBusinessObjectDictionaryService().areNotesSupported(this.boClass);
     }
     
     /**
@@ -294,7 +307,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 
     
     protected void refreshReferences(String referencesToRefresh) {
-        PersistenceStructureService persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
+        PersistenceStructureService persistenceStructureService = getPersistenceStructureService();
         if (StringUtils.isNotBlank(referencesToRefresh)) {
             String[] references = StringUtils.split(referencesToRefresh, RiceConstants.REFERENCES_TO_REFRESH_SEPARATOR);
             for (String reference : references) {
@@ -316,7 +329,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                                 addlineBO.refreshReferenceObject(propertyToRefresh);
                             }
                             else {
-                                if (KNSServiceLocator.getDataDictionaryService().hasRelationship(addlineBOClass.getName(), propertyToRefresh)) {
+                                if (getDataDictionaryService().hasRelationship(addlineBOClass.getName(), propertyToRefresh)) {
                                     // a DD mapping, try to go straight to the object and refresh it there
                                     Object possibleBO = ObjectUtils.getPropertyValue(addlineBO, propertyToRefresh);
                                     if (possibleBO != null && possibleBO instanceof PersistableBusinessObject) {
@@ -348,7 +361,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                                 // a DD mapping, try to go straight to the object and refresh it there
                                 Object possibleBO = ObjectUtils.getPropertyValue(nestedObject, propertyToRefresh);
                                 if (possibleBO != null && possibleBO instanceof PersistableBusinessObject) {
-                                    if (KNSServiceLocator.getDataDictionaryService().hasRelationship(possibleBO.getClass().getName(), propertyToRefresh)) {
+                                    if (getDataDictionaryService().hasRelationship(possibleBO.getClass().getName(), propertyToRefresh)) {
                                         ((PersistableBusinessObject) possibleBO).refresh();
                                     }
                                 }
@@ -367,7 +380,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                             getBusinessObject().refreshReferenceObject(reference);
                         }
                         else {
-							if (KNSServiceLocator.getDataDictionaryService().hasRelationship(getBusinessObject().getClass().getName(), reference)) {
+							if (getDataDictionaryService().hasRelationship(getBusinessObject().getClass().getName(), reference)) {
                                 // a DD mapping, try to go straight to the object and refresh it there
                                 Object possibleRelationship = ObjectUtils.getPropertyValue(getBusinessObject(), reference);
                                 if (possibleRelationship != null) {
@@ -402,9 +415,9 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         
         List<String> existingIdentifierList = getMultiValueIdentifierList(maintCollection, duplicateIdentifierFieldsFromDataDictionary);
         
-        Class collectionClass = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getCollectionBusinessObjectClass(docTypeName, collectionName);
+        Class collectionClass = getMaintenanceDocumentDictionaryService().getCollectionBusinessObjectClass(docTypeName, collectionName);
 
-        List<MaintainableSectionDefinition> sections = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
+        List<MaintainableSectionDefinition> sections = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
         Map<String, String> template = MaintenanceUtils.generateMultipleValueLookupBOTemplate(sections, collectionName);
         try {
             for (PersistableBusinessObject nextBo : rawValues) {
@@ -471,7 +484,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      */
     public List<String> getDuplicateIdentifierFieldsFromDataDictionary(String docTypeName, String collectionName) {
     	List<String> duplicateIdentifierFieldNames = new ArrayList<String>();
-    	MaintainableCollectionDefinition collDef = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintainableCollection(docTypeName, collectionName);
+    	MaintainableCollectionDefinition collDef = getMaintenanceDocumentDictionaryService().getMaintainableCollection(docTypeName, collectionName);
     	Collection<MaintainableFieldDefinition> fieldDef = collDef.getDuplicateIdentificationFields();
     	for (MaintainableFieldDefinition eachFieldDef : fieldDef) {
     		duplicateIdentifierFieldNames.add(eachFieldDef.getName());
@@ -516,6 +529,9 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * @see org.kuali.core.maintenance.Maintainable#prepareForSave()
      */
     public void prepareForSave() {
+	if ( businessObject != null ) {
+	    businessObject.prepareForWorkflow();
+	}
     }
 
     /**
@@ -530,7 +546,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * 
 	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterCopy()
 	 */
-	public void processAfterCopy() {
+	public void processAfterCopy( Map parameters ) {
         try {
             ObjectUtils.setObjectPropertyDeep(businessObject, RicePropertyConstants.NEW_COLLECTION_RECORD, boolean.class, true, 2);
         }
@@ -543,14 +559,20 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     /**
      * @see org.kuali.core.maintenance.Maintainable#processAfterEdit()
      */
-    public void processAfterEdit() {
+    public void processAfterEdit( Map parameters ) {
+    }
+
+    /**
+     * @see org.kuali.core.maintenance.Maintainable#processAfterNew()
+     */
+    public void processAfterNew( Map parameters ) {
     }
     
     /**
      * Retrieves the document type name from the data dictionary based on business object class
      */
     private String getDocumentTypeName() {
-        return KNSServiceLocator.getMaintenanceDocumentDictionaryService().getDocumentTypeName(boClass);
+        return getMaintenanceDocumentDictionaryService().getDocumentTypeName(boClass);
     }
 
     /**
@@ -644,15 +666,15 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * @see org.kuali.core.maintenance.Maintainable#getShowInactiveRecords(java.lang.String)
      */
     public boolean getShowInactiveRecords(String collectionName) {
-	return InactiveRecordsHidingUtils.getShowInactiveRecords(inactiveRecordDisplay, collectionName);
-        }
+        return InactiveRecordsHidingUtils.getShowInactiveRecords(inactiveRecordDisplay, collectionName);
+    }
         
     /**
      * @see org.kuali.core.maintenance.Maintainable#setShowInactiveRecords(java.lang.String, boolean)
      */
     public void setShowInactiveRecords(String collectionName, boolean showInactive) {
-	InactiveRecordsHidingUtils.setShowInactiveRecords(inactiveRecordDisplay, collectionName, showInactive);
-        }
+        InactiveRecordsHidingUtils.setShowInactiveRecords(inactiveRecordDisplay, collectionName, showInactive);
+    }
         
     /**
      * @return the inactiveRecordDisplay
@@ -713,7 +735,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
             // if not there, instantiate a new one
         PersistableBusinessObject addLine;
         try {
-            addLine = (PersistableBusinessObject)KNSServiceLocator.getMaintenanceDocumentDictionaryService().getCollectionBusinessObjectClass( docTypeName, collectionName ).newInstance();
+            addLine = (PersistableBusinessObject)getMaintenanceDocumentDictionaryService().getCollectionBusinessObjectClass( docTypeName, collectionName ).newInstance();
         } catch ( Exception ex ) {
             LOG.error( "unable to instantiate new collection line", ex );
             throw new RuntimeException( "unable to instantiate new collection line", ex );
@@ -728,7 +750,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 
             String fieldName = propertyDescriptor.getName();
             Class propertyType = propertyDescriptor.getPropertyType();
-            String value = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getCollectionFieldDefaultValue(docTypeName, collectionName, fieldName);
+            String value = getMaintenanceDocumentDictionaryService().getCollectionFieldDefaultValue(docTypeName, collectionName, fieldName);
             if (value != null) {
                 try {                   
                     ObjectUtils.setObjectProperty( addLine, fieldName, propertyType, value);
@@ -758,7 +780,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         
         // loop over all collections with an enabled add line
         List<MaintainableCollectionDefinition> collections = 
-            KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintainableCollections( docTypeName );
+                getMaintenanceDocumentDictionaryService().getMaintainableCollections( docTypeName );
                 
         for ( MaintainableCollectionDefinition coll : collections ) {
             // get the collection name
@@ -854,7 +876,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     }
 
     public Collection<String> getAffectedReferencesFromLookup(BusinessObject baseBO, String attributeName, String collectionPrefix) {
-        PersistenceStructureService pss = KNSServiceLocator.getPersistenceStructureService();
+        PersistenceStructureService pss = getPersistenceStructureService();
         String nestedBOPrefix = "";
         if (ObjectUtils.isNestedAttribute(attributeName)) {
             // if we're performing a lookup on a nested attribute, we need to use the nested BO all the way down the chain
@@ -870,12 +892,10 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 baseBO = (PersistableBusinessObject) reference.newInstance();
             }
             catch (InstantiationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                LOG.error(e);
             }
             catch (IllegalAccessException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                LOG.error(e);
             }
             attributeName = ObjectUtils.getNestedAttributePrimitive(attributeName);
         }
@@ -889,7 +909,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
             LOG.error("LookupUtils.getPrimitiveReference return results should only have at most one element");
         }
         
-        BusinessObjectMetaDataService businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
+        BusinessObjectMetaDataService businessObjectMetaDataService = getBusinessObjectMetaDataService();
         BusinessObjectRelationship relationship = businessObjectMetaDataService.getBusinessObjectRelationship(baseBO, attributeName);
         if (relationship == null) {
             return new ArrayList<String>();
@@ -906,12 +926,12 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     }
     
     protected boolean isRelationshipRefreshable(Class boClass, String relationshipName) {
-        if (KNSServiceLocator.getPersistenceStructureService().isPersistable(boClass)) {
-            if (KNSServiceLocator.getPersistenceStructureService().hasCollection(boClass, relationshipName)) {
-                return !KNSServiceLocator.getPersistenceStructureService().isCollectionUpdatable(boClass, relationshipName);
+        if (getPersistenceStructureService().isPersistable(boClass)) {
+            if (getPersistenceStructureService().hasCollection(boClass, relationshipName)) {
+                return !getPersistenceStructureService().isCollectionUpdatable(boClass, relationshipName);
             }
-            else if (KNSServiceLocator.getPersistenceStructureService().hasReference(boClass, relationshipName)) {
-                return !KNSServiceLocator.getPersistenceStructureService().isReferenceUpdatable(boClass, relationshipName);
+            else if (getPersistenceStructureService().hasReference(boClass, relationshipName)) {
+                return !getPersistenceStructureService().isReferenceUpdatable(boClass, relationshipName);
             }
             // else, assume that the relationship is defined in the DD
         }
@@ -922,8 +942,8 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     protected Collection<String> generateAllAffectedReferences(Class boClass, 
             Map<String, String> fkToPkMappings, String nestedBOPrefix, String collectionPrefix) {
         Set<String> allAffectedReferences = new HashSet<String>();
-        DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
-        PersistenceStructureService pss = KNSServiceLocator.getPersistenceStructureService();
+        DataDictionaryService dataDictionaryService = getDataDictionaryService();
+        PersistenceStructureService pss = getPersistenceStructureService();
         
         collectionPrefix = StringUtils.isBlank(collectionPrefix) ? "" : collectionPrefix;
         
@@ -990,17 +1010,17 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     
     protected Collection<String> getAllRefreshableReferences(Class boClass) {
         HashSet<String> references = new HashSet<String>();
-        for (String referenceName : KNSServiceLocator.getPersistenceStructureService().listReferenceObjectFields(boClass).keySet()) {
+        for (String referenceName : getPersistenceStructureService().listReferenceObjectFields(boClass).keySet()) {
             if (isRelationshipRefreshable(boClass, referenceName)) {
                 references.add(referenceName);
             }
         }
-        for (String collectionName : KNSServiceLocator.getPersistenceStructureService().listCollectionObjectTypes(boClass).keySet()) {
+        for (String collectionName : getPersistenceStructureService().listCollectionObjectTypes(boClass).keySet()) {
             if (isRelationshipRefreshable(boClass, collectionName)) {
                 references.add(collectionName);
             }
         }
-        for (String relationshipName : KNSServiceLocator.getDataDictionaryService().getRelationshipNames(boClass.getName())) {
+        for (String relationshipName : getDataDictionaryService().getRelationshipNames(boClass.getName())) {
             if (isRelationshipRefreshable(boClass, relationshipName)) {
                 references.add(relationshipName);
             }
@@ -1010,4 +1030,62 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 
 	public void handleRouteStatusChange(DocumentHeader documentHeader) {
 	}
+
+	public PersistenceStructureService getPersistenceStructureService() {
+	    if ( persistenceStructureService == null ) {
+	        persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
+	    }
+	    return persistenceStructureService;
+	}
+
+    public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+        if ( maintenanceDocumentDictionaryService == null ) {
+            maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+        }
+        return maintenanceDocumentDictionaryService;
+    }
+
+    public static DataDictionaryService getDataDictionaryService() {
+        if ( dataDictionaryService == null ) {
+            dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+        }
+        return dataDictionaryService;
+    }
+
+    public static BusinessObjectService getBusinessObjectService() {
+        if ( businessObjectService == null ) {
+            businessObjectService = KNSServiceLocator.getBusinessObjectService();
+        }
+        return businessObjectService;
+    }
+
+    public static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
+        if ( businessObjectDictionaryService == null ) {
+            businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
+        }
+        return businessObjectDictionaryService;
+    }
+
+    public static EncryptionService getEncryptionService() {
+        if ( encryptionService == null ) {
+            encryptionService = KNSServiceLocator.getEncryptionService();
+        }
+        return encryptionService;
+    }
+
+    public static UniversalUserService getUniversalUserService() {
+        if ( universalUserService == null ) {
+            universalUserService = KNSServiceLocator.getUniversalUserService();
+        }
+        return universalUserService;
+    }
+
+    public static BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
+        if ( businessObjectMetaDataService == null ) {
+            businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
+        }
+        return businessObjectMetaDataService;
+    }
+
+	
 }

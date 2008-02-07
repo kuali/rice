@@ -30,7 +30,6 @@ import org.kuali.core.service.KualiGroupService;
 import org.kuali.core.util.Timer;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.core.workflow.service.WorkflowGroupService;
-import org.springframework.transaction.annotation.Transactional;
 
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.clientapp.vo.UserVO;
@@ -42,13 +41,12 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * This class is the service implementation for the KualiGroupService structure. This is the default implementation, that is
  * delivered with Kuali which utilizes the workgroup concept in OneStart Workflow.
  */
-@Transactional
 public class KualiGroupServiceImpl implements KualiGroupService {
 
     private WorkflowGroupService workflowGroupService;
     private KualiWorkflowInfo kualiWorkflowInfo;
 
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiGroupServiceImpl.class);
+    //private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiGroupServiceImpl.class);
 
     /**
      * @see org.kuali.core.service.KualiGroupService#getByGroupName(java.lang.String)

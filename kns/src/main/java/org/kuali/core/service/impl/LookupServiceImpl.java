@@ -36,7 +36,6 @@ import org.springframework.transaction.annotation.Transactional;
  * This class is the service implementation for the Lookup structure. It Provides a generic search mechanism against Business
  * Objects. This is the default implementation, that is delivered with Kuali.
  */
-@Transactional
 public class LookupServiceImpl implements LookupService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupServiceImpl.class);
     private static final Collection EMPTY_COLLECTION = new ArrayList(0);

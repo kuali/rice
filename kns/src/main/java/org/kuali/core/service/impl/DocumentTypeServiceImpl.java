@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  * This class is the service implementation for the DocumentType structure. This is the default implementation, delivered with Kuali
  * which makes use of the DataDictionary related services.
  */
-@Transactional
+//@Transactional
 public class DocumentTypeServiceImpl implements DocumentTypeService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentTypeServiceImpl.class);
 

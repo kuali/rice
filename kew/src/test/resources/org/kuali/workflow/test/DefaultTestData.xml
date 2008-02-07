@@ -230,12 +230,12 @@
         <user>
             <workflowId>1006</workflowId>
             <emplId>1006</emplId>
-            <authenticationId>admin</authenticationId>
+            <authenticationId>administrator</authenticationId>
             <uuId>1006</uuId>
             <emailAddress>admin@localhost</emailAddress>
             <displayName>Administrator</displayName>
-            <givenName>admin</givenName>
-            <lastName>admin</lastName>
+            <givenName>administrator</givenName>
+            <lastName>administrator</lastName>
         </user>
 	</users>
 	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">

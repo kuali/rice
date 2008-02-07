@@ -32,7 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Most frequently, isAuthorized(group,action,targetType) will be called from isAuthorized(user,action,target) from inside the loop,
  * so it'd be a good idea to optimize getting an answer for a given group...
  */
-@Transactional
 public class DocumentAuthorizationServiceImpl implements DocumentAuthorizationService {
     private static Log LOG = LogFactory.getLog(DocumentAuthorizationServiceImpl.class);
     private AuthorizationService authorizationService;

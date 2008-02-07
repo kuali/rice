@@ -19,7 +19,6 @@ package org.kuali.core.datadictionary;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.RiceConstants;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
 import org.kuali.core.datadictionary.exception.ClassValidationException;
 import org.kuali.core.datadictionary.mask.Mask;
@@ -82,8 +81,9 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
         }
-        LOG.debug("calling setAttributeName '" + attributeName + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setAttributeName '" + attributeName + "'");
+        }
         this.attributeName = attributeName;
     }
 
@@ -102,8 +102,9 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
      * @param required
      */
     public void setRequired(boolean required) {
-        LOG.debug("calling setRequired '" + required + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setRequired '" + required + "'");
+        }
         this.required = required;
     }
 

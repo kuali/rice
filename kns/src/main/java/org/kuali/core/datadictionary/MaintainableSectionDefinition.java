@@ -43,6 +43,8 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
     private String title;
 
     private Map<String, MaintainableItemDefinition> maintainableItems;
+    
+    private boolean hidden;
 
     public MaintainableSectionDefinition() {
         LOG.debug("creating new LookupDefinition");
@@ -58,6 +60,22 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
         return title;
     }
 
+    
+    
+    /**
+     * Default the ID to the title for now.
+     * 
+     * @see org.kuali.core.datadictionary.DataDictionaryDefinitionBase#getId()
+     */
+    @Override
+    public String getId() {
+        if ( super.getId() == null ) {
+            return title;
+        }
+        return super.getId();
+    }
+
+
     /**
      * Sets title to the given value.
      * 
@@ -68,7 +86,9 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
         if (StringUtils.isBlank(title)) {
             throw new IllegalArgumentException("invalid (blank) title");
         }
-        LOG.debug("calling setTitle '" + title + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setTitle '" + title + "'");
+        }
 
         this.title = title;
     }
@@ -81,8 +101,10 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
         if (maintainableItem == null) {
             throw new IllegalArgumentException("invalid (null) maintainableItem");
         }
-        LOG.debug("calling addMaintainableItem for item '" + maintainableItem.getName() + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling addMaintainableItem for item '" + maintainableItem.getName() + "'");
+        }
+        
         String itemName = maintainableItem.getName();
         if (this.maintainableItems.containsKey(itemName)) {
             throw new DuplicateEntryException("duplicate itemName entry for item '" + itemName + "'");
@@ -127,5 +149,15 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
 
     public String toString() {
         return "MaintainableSectionDefinition '" + getTitle() + "'";
+    }
+
+
+    public boolean isHidden() {
+        return this.hidden;
+    }
+
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 }

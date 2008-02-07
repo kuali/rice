@@ -127,6 +127,7 @@ public class Field implements java.io.Serializable {
     private int numberOfColumnsForCollection;
     public String cellAlign;
     private String inquiryParameters;
+    private boolean fieldDirectInquiryEnabled;
 
     public boolean fieldLevelHelpEnabled;
     
@@ -1252,28 +1253,6 @@ public class Field implements java.io.Serializable {
     }
 
     public String getInquiryParameters() {
-	// not sure it is ok to implement here.  SHould be in lookuputil
-	// is this 100% ok for all cases of lookup ?
-        if (StringUtils.isBlank(this.inquiryParameters) && StringUtils.isNotBlank(getFieldConversions())) {
-            String fieldConversions = getFieldConversions();
-            String newInquiryParameters = RiceConstants.EMPTY_STRING;
-            String[] conversions = StringUtils.split(fieldConversions, RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
-
-            for (int l = 0; l < conversions.length; l++) {
-                String conversion = conversions[l];
-                String[] conversionPair = StringUtils.split(conversion, RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
-                String conversionFrom = conversionPair[0];
-                String conversionTo = conversionPair[1];
-                newInquiryParameters += (conversionTo + RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR + conversionFrom);
-
-                if (l < conversions.length - 1) {
-                    newInquiryParameters += RiceConstants.FIELD_CONVERSIONS_SEPERATOR;
-                }
-            }
-
-            setInquiryParameters(newInquiryParameters);
-        }
-
         return this.inquiryParameters;
     }
 
@@ -1311,6 +1290,14 @@ public class Field implements java.io.Serializable {
 
     public void setFieldLevelHelpDisabled(boolean fieldLevelHelpDisabled) {
         this.fieldLevelHelpDisabled = fieldLevelHelpDisabled;
+    }
+
+    public boolean isFieldDirectInquiryEnabled() {
+        return this.fieldDirectInquiryEnabled;
+    }
+
+    public void setFieldDirectInquiryEnabled(boolean fieldDirectInquiryEnabled) {
+        this.fieldDirectInquiryEnabled = fieldDirectInquiryEnabled;
     }
     
     

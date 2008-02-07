@@ -22,14 +22,13 @@ import org.kuali.RicePropertyConstants;
 import org.kuali.core.dao.BusinessObjectDao;
 import org.kuali.core.service.KeyValuesService;
 import org.kuali.core.service.PersistenceStructureService;
-import org.kuali.core.util.spring.Cached;
+import org.kuali.core.util.spring.CacheNoCopy;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class provides collection retrievals to populate key value pairs of business objects.
  */
-@Transactional
-@Cached
+@CacheNoCopy
 public class KeyValuesServiceImpl implements KeyValuesService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KeyValuesServiceImpl.class);
 

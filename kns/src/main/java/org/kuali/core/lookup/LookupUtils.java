@@ -40,6 +40,7 @@ import org.kuali.core.exceptions.UnknownBusinessClassAttributeException;
 import org.kuali.core.service.BusinessObjectDictionaryService;
 import org.kuali.core.service.BusinessObjectMetaDataService;
 import org.kuali.core.service.DataDictionaryService;
+import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.web.comparator.NullValueComparator;
@@ -59,6 +60,7 @@ public class LookupUtils {
     private static PersistenceStructureService persistenceStructureService;
     private static BusinessObjectDictionaryService businessObjectDictionaryService;
     private static BusinessObjectMetaDataService businessObjectMetaDataService;
+    private static KualiConfigurationService kualiConfigurationService;
 
     public LookupUtils() {
         // default constructor for Spring to call to start up initialization process
@@ -74,6 +76,10 @@ public class LookupUtils {
 
     public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
         LookupUtils.persistenceStructureService = persistenceStructureService;
+    }
+
+    public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
+        LookupUtils.kualiConfigurationService = kualiConfigurationService;
     }
 
     /**
@@ -158,6 +164,24 @@ public class LookupUtils {
         return fieldValues;
     }
 
+
+    /**
+     * @deprecated use {@link #applySearchResultsLimit(Class, Criteria, KualiDBPlatform)} instead
+     */
+    public static void applySearchResultsLimit(Criteria criteria, KualiDBPlatform platform) {
+        Integer limit = getApplicationSearchResultsLimit();
+        if (limit != null) {
+            platform.applyLimit(limit, criteria);
+        }
+    }
+
+    /**
+     * This method applies the search results limit to the search criteria for this BO
+     *
+     * @param businessObjectClass BO class to search on / get limit for
+     * @param criteria search criteria
+     * @param platform database platform
+     */
     public static void applySearchResultsLimit(Class businessObjectClass, Criteria criteria, KualiDBPlatform platform) {
         Integer limit = getSearchResultsLimit(businessObjectClass);
         if (limit != null) {
@@ -170,17 +194,25 @@ public class LookupUtils {
      * for the BO being looked up, and then the global application limit if there isn't a limit
      * specific to this BO.
      *
-     * @param businessObjectClass
+     * @param businessObjectClass BO class to search on / get limit for.  If the passed in type is not of type 
+     * {@link BusinessObject}, then the application-wide default limit is used.
      * @return result set limit (or null if there isn't one)
      */
     public static Integer getSearchResultsLimit(Class businessObjectClass) {
-        Integer limit = getBusinessObjectSearchResultsLimit(businessObjectClass);
+        Integer limit = null;
+        if (BusinessObject.class.isAssignableFrom(businessObjectClass)) {
+            limit = getBusinessObjectSearchResultsLimit(businessObjectClass);
+        }
         if (limit == null) {
             limit = getApplicationSearchResultsLimit();
         }
         return limit;
     }
 
+    /**
+     * @deprecated use {@link #getSearchResultsLimit(Class)} instead; at some point this should
+     * be made private and become an internal method.
+     */
     public static Integer getApplicationSearchResultsLimit() {
         String limitString = KNSServiceLocator.getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, RiceConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
         if (limitString != null) {
@@ -362,6 +394,48 @@ public class LookupUtils {
         return field;
     }
 
+    /**
+     * Sets whether a field should have direct inquiries enabled.  The direct inquiry is the functionality on a page such that if the primary key for
+     * a quickfinder is filled in and the direct inquiry button is pressed, then a new window will popup showing an inquiry page without going through
+     * the lookup first. 
+     * 
+     * For this method to work properly, it must be called after setFieldQuickfinder
+     * 
+     * @param field
+     */
+    public static void setFieldDirectInquiry(Field field) {
+        if (StringUtils.isNotBlank(field.getFieldConversions())) {
+            boolean directInquiriesEnabled = kualiConfigurationService.getIndicatorParameter(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.ALL_DETAIL_TYPE, RiceConstants.SystemGroupParameterNames.ENABLE_DIRECT_INQUIRIES_IND);
+            if (directInquiriesEnabled) {
+                if (StringUtils.isNotBlank(field.getFieldConversions())) {
+                    String fieldConversions = field.getFieldConversions();
+                    String newInquiryParameters = RiceConstants.EMPTY_STRING;
+                    String[] conversions = StringUtils.split(fieldConversions, RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
+
+                    for (int l = 0; l < conversions.length; l++) {
+                        String conversion = conversions[l];
+                        String[] conversionPair = StringUtils.split(conversion, RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+                        String conversionFrom = conversionPair[0];
+                        String conversionTo = conversionPair[1];
+                        newInquiryParameters += (conversionTo + RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR + conversionFrom);
+
+                        if (l < conversions.length - 1) {
+                            newInquiryParameters += RiceConstants.FIELD_CONVERSIONS_SEPERATOR;
+                        }
+                    }
+
+                    field.setInquiryParameters(newInquiryParameters);
+                }
+            }
+            field.setFieldDirectInquiryEnabled(directInquiriesEnabled);
+        }
+        else {
+            field.setFieldDirectInquiryEnabled(false);
+        }
+    }
+    
+    private static Map<Class,Map<String,Map>> referencesForForeignKey = new HashMap<Class, Map<String,Map>>();
+    
     public static Map getPrimitiveReference(BusinessObject businessObject, String attributeName) {
         Map chosenReferenceByKeySize = new HashMap();
         Map chosenReferenceByFieldName = new HashMap();
@@ -369,9 +443,22 @@ public class LookupUtils {
         Map referenceClasses = null;
 
         try {
-            referenceClasses = persistenceStructureService.getReferencesForForeignKey(businessObject.getClass(), attributeName);
+            // add special caching of these relationships since the Spring caching is so expensive
+            Map<String,Map> propMap = referencesForForeignKey.get(businessObject.getClass());
+            if ( propMap == null ) {
+                propMap = new HashMap<String, Map>();
+                referencesForForeignKey.put(businessObject.getClass(), propMap);
+            }
+            if ( propMap.containsKey(attributeName) ) {
+                referenceClasses = propMap.get( attributeName );
+            } else {
+                referenceClasses = persistenceStructureService.getReferencesForForeignKey(businessObject.getClass(), attributeName);
+                propMap.put(attributeName, referenceClasses);
+            }
         } catch ( ClassNotPersistableException ex ) {
             // do nothing, there is no quickfinder
+            Map<String,Map> propMap = referencesForForeignKey.get(businessObject.getClass());
+            propMap.put(attributeName, null);
         }
 
         // if field is not fk to any reference class, return field object w no quickfinder

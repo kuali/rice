@@ -73,16 +73,6 @@ public class TestUtilities {
     private static final String TEST_TABLE_NAME = "EN_UNITTEST_T";
     private static Thread exceptionThreader;
 
-    private static List<String> BUS_TABLES = new ArrayList<String>();
-    static {
-    	BUS_TABLES.add("EN_SERVICE_DEF_T");
-    	BUS_TABLES.add("EN_SERVICE_DEF_DUEX_T");
-    	BUS_TABLES.add("EN_SERVICE_DEF_INTER_T");
-    	BUS_TABLES.add("EN_MESSAGE_QUE_T");
-    	BUS_TABLES.add("EN_BAM_T");
-    	BUS_TABLES.add("EN_BAM_PARAM_T");
-    }
-
     private TestUtilities() {
         // prevent construction
     }
@@ -408,14 +398,6 @@ public class TestUtilities {
         }
         return properties;
     }
-
-//	public static void clearDatabase() throws Exception {
-//		new ClearDatabaseLifecycle().start();
-//	}
-//
-//	public static void clearNonBusDatabase() throws Exception {
-//		new ClearDatabaseLifecycle(BUS_TABLES).start();
-//	}
 
 	public static File createTempDir() throws Exception {
 		File tmpFile = File.createTempFile("wfUnitTest", "");

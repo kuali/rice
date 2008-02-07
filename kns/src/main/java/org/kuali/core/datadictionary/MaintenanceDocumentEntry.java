@@ -47,6 +47,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     private Map apcRules;
     
     private boolean allowsNewOrCopy;
+    private String additionalSectionsFile;
 
     public MaintenanceDocumentEntry() {
         super();
@@ -65,7 +66,9 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         if (businessObjectClass == null) {
             throw new IllegalArgumentException("invalid (null) businessObjectClass");
         }
-        LOG.debug("calling setBusinessObjectClass '" + businessObjectClass.getName() + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setBusinessObjectClass '" + businessObjectClass.getName() + "'");
+        }
 
         this.businessObjectClass = businessObjectClass;
     }
@@ -79,10 +82,11 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         if (maintainableClass == null) {
             throw new IllegalArgumentException("invalid (null) maintainableClass");
         }
-        LOG.debug("calling setMaintainableClass '" + maintainableClass.getName() + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setMaintainableClass '" + maintainableClass.getName() + "'");
+        }
         this.maintainableClass = maintainableClass;
-    }
+    }   
 
     public Class getMaintainableClass() {
         return maintainableClass;
@@ -125,8 +129,10 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         if (lockingKey == null) {
             throw new IllegalArgumentException("invalid (null) lockingKey");
         }
-        LOG.debug("calling addLockingKey for field '" + lockingKey.getAttributeName() + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling addLockingKey for field '" + lockingKey.getAttributeName() + "'");
+        }
+        
         String keyName = lockingKey.getAttributeName();
         if (this.lockingKeys.containsKey(keyName)) {
             throw new DuplicateEntryException("duplicate returnKey entry for attribute '" + keyName + "'");
@@ -169,7 +175,9 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         if (reference == null) {
             throw new IllegalArgumentException("invalid (null) reference");
         }
-        LOG.debug("calling addDefaultExistenceCheck for field '" + reference.getAttributeName() + "'");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling addDefaultExistenceCheck for field '" + reference.getAttributeName() + "'");
+        }
 
         String keyName = reference.isCollectionReference()? (reference.getCollection()+"."+reference.getAttributeName()):reference.getAttributeName();
         if (this.defaultExistenceChecks.containsKey(keyName)) {
@@ -216,8 +224,9 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         if (apcRule == null) {
             throw new IllegalArgumentException("invalid (null) apcRule");
         }
-        LOG.debug("calling addApcRule for field '" + apcRule.getAttributeName() + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling addApcRule for field '" + apcRule.getAttributeName() + "'");
+        }
         String keyName = apcRule.getAttributeName();
         if (this.apcRules.containsKey(keyName)) {
             throw new DuplicateEntryException("duplicate apcRule entry for attribute '" + keyName + "'");
@@ -328,6 +337,16 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
      */
     public String toString() {
         return "MaintenanceDocumentEntry for documentType " + getDocumentTypeName();
+    }
+
+
+    public String getAdditionalSectionsFile() {
+        return this.additionalSectionsFile;
+    }
+
+
+    public void setAdditionalSectionsFile(String additionalSectionsFile) {
+        this.additionalSectionsFile = additionalSectionsFile;
     }
 
 }

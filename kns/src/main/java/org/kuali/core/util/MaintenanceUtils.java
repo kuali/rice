@@ -137,6 +137,11 @@ public class MaintenanceUtils {
         return LookupUtils.setFieldQuickfinder(businessObject, attributeName, field, displayedFieldNames, srr);
     }
 
+    
+    public static final void setFieldDirectInquiry(BusinessObject businessObject, String attributeName, MaintainableFieldDefinition maintainableFieldDefinition, Field field, List displayedFieldNames) {
+        LookupUtils.setFieldDirectInquiry(field);
+    }
+    
     /**
      * Given a section, returns a comma delimited string of all fields, representing the error keys that exist for a section
      * 

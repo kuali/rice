@@ -35,7 +35,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.RiceConstants;
-import org.kuali.RiceKeyConstants;
 import org.kuali.RicePropertyConstants;
 import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.authorization.FieldAuthorization;
@@ -43,7 +42,6 @@ import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.datadictionary.DocumentEntry;
 import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
-import org.kuali.core.document.Document;
 import org.kuali.core.document.MaintenanceDocument;
 import org.kuali.core.document.authorization.MaintenanceDocumentAuthorizations;
 import org.kuali.core.document.authorization.MaintenanceDocumentAuthorizer;
@@ -162,7 +160,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
             // check doc type allows new or copy if that action was requested
             if (RiceConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction) || RiceConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
-                boolean allowsNewOrCopy = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getAllowsNewOrCopy(documentTypeName);
+                boolean allowsNewOrCopy = maintenanceDocumentDictionaryService.getAllowsNewOrCopy(documentTypeName);
                 if (!allowsNewOrCopy) {
                     LOG.error("Document type " + documentTypeName + " does not allow new or copy actions.");
                     throw new MaintenanceNewCopyAuthorizationException(documentTypeName);
@@ -202,7 +200,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
                     Maintainable maintainable = document.getNewMaintainableObject();
 
-                    maintainable.processAfterCopy();
+                    maintainable.processAfterCopy( request.getParameterMap() );
 
                     // mark so that this clearing doesnt happen again
                     document.setFieldsClearedOnCopy(true);
@@ -212,7 +210,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 }
             }
             else if (RiceConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction)) {
-                document.getNewMaintainableObject().processAfterEdit();
+                document.getNewMaintainableObject().processAfterEdit( request.getParameterMap() );
             }
         }
         // if new with existing we need to populate we need to populate with passed in parameters
@@ -242,12 +240,13 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 }
             }
             newBO.refresh();
-            document.getNewMaintainableObject().setupNewFromExisting();
+            document.getNewMaintainableObject().setupNewFromExisting( request.getParameterMap() );
         }
 
         // for new maintainble need to pick up default values
         if (RiceConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) {
             document.getNewMaintainableObject().setGenerateDefaultValues(true);
+            document.getNewMaintainableObject().processAfterNew( request.getParameterMap() );
         }
 
         // set maintenance action state
@@ -265,7 +264,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
         // Retrieve notes topic display flag from data dictionary and add to document
 //      
-        DocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+        DocumentEntry entry = maintenanceDocumentDictionaryService.getMaintenanceDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
         document.setDisplayTopicFieldInNotes(entry.getDisplayTopicFieldInNotes());
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -777,35 +776,6 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
     }
 
 
-    /**
-     * Sets error message for lock and forwards to document which has the record locked.
-     * 
-     * @param mapping
-     * @param form
-     * @param request
-     * @param response
-     * @param lockedDocument
-     * @return
-     * @throws Exception
-     * @deprecated
-     */
-    private ActionForward handleLockedDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response, Document lockedDocument) throws Exception {
-
-        // post an error about the locked document
-        LOG.debug("Maintenance record: " + lockedDocument.getDocumentHeader().getDocumentNumber() + "is locked.");
-        GlobalVariables.getErrorMap().put(RiceConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_MAINTENANCE_LOCKED1);
-        // TODO: post message about no other validations have been run, and it hasnt been saved
-
-        // load the blocking document
-        KualiMaintenanceForm kualiMaintenanceForm = (KualiMaintenanceForm) form;
-        kualiMaintenanceForm.setDocId(lockedDocument.getDocumentNumber());
-        kualiMaintenanceForm.setDocument(lockedDocument);
-
-        // document is read only
-        kualiMaintenanceForm.setReadOnly(true);
-        kualiMaintenanceForm.setDocTypeName(lockedDocument.getDocumentHeader().getWorkflowDocument().getDocumentType());
-        return mapping.findForward(RiceConstants.MAPPING_BASIC);
-    }
 
     /**
      * This method clears the value of the primary key fields on a Business Object.
@@ -836,8 +806,6 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      * @param document - document to be adjusted
      */
     private void clearUnauthorizedNewFields(MaintenanceDocument document) {
-        MaintenanceDocumentDictionaryService maintDocDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
-
         // get a reference to the current user
         UniversalUser user = GlobalVariables.getUserSession().getUniversalUser();
 
@@ -864,7 +832,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
                 // get the default value for this field, if any
                 Object newValue = null;
-                newValue = maintDocDictionaryService.getFieldDefaultValue(newBo.getClass(), fieldName);
+                newValue = maintenanceDocumentDictionaryService.getFieldDefaultValue(newBo.getClass(), fieldName);
 
                 try {
                     ObjectUtils.setObjectProperty(newBo, fieldName, newValue);
@@ -888,23 +856,5 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         PersistableBusinessObject bo = maintainable.getBusinessObject();
 
         KNSServiceLocator.getBusinessObjectService().linkUserFields(bo);
-    }
-
-    /**
-     * This method updates the version number on the new maintainable object in a maintenance document to the successor of the
-     * current saved version of that is in the database.
-     * 
-     * @param doc the MaintenanceDocument that holds the new BO whose version number needs updating
-     */
-    private void updateBOVersionNumber(MaintenanceDocument doc) {
-        PersistableBusinessObject newBO = doc.getNewMaintainableObject().getBusinessObject();
-        // 1. get the PK for this business object
-        Map pkValues = KNSServiceLocator.getPersistenceService().getPrimaryKeyFieldValues(newBO);
-        // 2. get the current object with that PK
-        PersistableBusinessObject currBO = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(newBO.getClass(), pkValues);
-        // 3. set the bo's version number to 1 + curr bo's ver #
-        if (currBO != null) {
-            newBO.setVersionNumber(new Long(currBO.getVersionNumber().longValue() + 1L));
-        }
     }
 }

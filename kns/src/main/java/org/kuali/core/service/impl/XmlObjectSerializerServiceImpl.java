@@ -58,7 +58,6 @@ import com.thoughtworks.xstream.mapper.Mapper;
  * 
  * 
  */
-@Transactional
 public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerService {
 	private static final Log LOG = LogFactory.getLog(XmlObjectSerializerServiceImpl.class);
 	

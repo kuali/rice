@@ -58,6 +58,7 @@ public abstract class BaseOjbConfigurer extends BaseLifecycle {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BaseOjbConfigurer.class);
 
+	public static final String RICE_OJB_PROPERTIES_PARAM = "rice.custom.ojb.properties";
 	public static final String OJB_PROPERTIES_PROP = "OJB.properties";
 	private static final String DEFAULT_OJB_PROPERTIES = "org/kuali/rice/ojb/RiceOJB.properties";
 
@@ -88,7 +89,14 @@ public abstract class BaseOjbConfigurer extends BaseLifecycle {
 
 
 	protected String getOjbPropertiesLocation() {
-		return DEFAULT_OJB_PROPERTIES;
+	    String ojbPropertiesLocation = Core.getCurrentContextConfig().getProperty(RICE_OJB_PROPERTIES_PARAM);
+	    if (!StringUtils.isBlank(ojbPropertiesLocation)) {
+		LOG.info("Using custom OJB.properites from: " + ojbPropertiesLocation);
+	    } else {
+		ojbPropertiesLocation = DEFAULT_OJB_PROPERTIES;
+		LOG.info("Using default OJB.properties from: " + ojbPropertiesLocation);
+	    }
+	    return ojbPropertiesLocation;
 	}
 
 	protected void establishConnectionMetaData(MetadataManager mm) throws Exception {

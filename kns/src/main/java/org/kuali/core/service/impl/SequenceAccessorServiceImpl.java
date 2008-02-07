@@ -17,7 +17,6 @@ import org.kuali.core.dao.SequenceAccessorDao;
 import org.kuali.core.service.SequenceAccessorService;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 public class SequenceAccessorServiceImpl implements SequenceAccessorService {
     private SequenceAccessorDao sequenceAccessorDao;
 

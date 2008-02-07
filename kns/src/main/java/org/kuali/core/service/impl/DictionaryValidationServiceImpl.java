@@ -52,7 +52,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Validates Documents, Business Objects, and Attributes against the data dictionary. Including min, max lengths, and validating
  * expressions. This is the default, Kuali delivered implementation.
  */
-@Transactional
+//@Transactional
 public class DictionaryValidationServiceImpl implements DictionaryValidationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DictionaryValidationServiceImpl.class);
 
@@ -114,11 +114,21 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         validatePrimitivesFromDescriptors(documentEntryName, document, PropertyUtils.getPropertyDescriptors(document.getClass()), "", validateRequired);
         
         if (maxDepth > 0) {
-            validateUpdatabableReferencesRecursively(document, maxDepth - 1, validateRequired);
+            validateUpdatabableReferencesRecursively(document, maxDepth - 1, validateRequired, false);
         }
     }
     
-    private void validateUpdatabableReferencesRecursively(PersistableBusinessObject businessObject, int maxDepth, boolean validateRequired) {
+    public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
+        String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
+        // validate primitive values of the document
+        validatePrimitivesFromDescriptors(documentEntryName, document, PropertyUtils.getPropertyDescriptors(document.getClass()), "", validateRequired);
+        
+        if (maxDepth > 0) {
+            validateUpdatabableReferencesRecursively(document, maxDepth - 1, validateRequired, chompLastLetterSFromCollectionName);
+        }
+    }
+    
+    private void validateUpdatabableReferencesRecursively(PersistableBusinessObject businessObject, int maxDepth, boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
 	if (ObjectUtils.isNull(businessObject)) {
 	    return;
 	}
@@ -135,7 +145,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 GlobalVariables.getErrorMap().addToErrorPath(referenceName);
 		validateBusinessObject(referenceBusinessObject, validateRequired);
 		if (maxDepth > 0) {
-		    validateUpdatabableReferencesRecursively(referenceBusinessObject, maxDepth - 1, validateRequired);
+		    validateUpdatabableReferencesRecursively(referenceBusinessObject, maxDepth - 1, validateRequired, chompLastLetterSFromCollectionName);
 		}
                 GlobalVariables.getErrorMap().removeFromErrorPath(referenceName);
                 
@@ -158,13 +168,19 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 		List list = (List) listObj;
 		for (int i = 0; i < list.size(); i++) {
 		    if (ObjectUtils.isNotNull(list.get(i)) && list.get(i) instanceof PersistableBusinessObject) {
-			String errorPathAddition = collectionName + "[" + Integer.toString(i) + "]";
+			String errorPathAddition;
+			if (chompLastLetterSFromCollectionName) {
+			    errorPathAddition = StringUtils.chomp(collectionName, "s") + "[" + Integer.toString(i) + "]";
+			}
+			else {
+			    errorPathAddition = collectionName + "[" + Integer.toString(i) + "]";
+			}
 			PersistableBusinessObject element = (PersistableBusinessObject) list.get(i);
 			
 			GlobalVariables.getErrorMap().addToErrorPath(errorPathAddition);
 			validateBusinessObject(element, validateRequired);
 			if (maxDepth > 0) {
-			    validateUpdatabableReferencesRecursively(element, maxDepth - 1, validateRequired);
+			    validateUpdatabableReferencesRecursively(element, maxDepth - 1, validateRequired, chompLastLetterSFromCollectionName);
 			}
 			GlobalVariables.getErrorMap().removeFromErrorPath(errorPathAddition);
 		    }

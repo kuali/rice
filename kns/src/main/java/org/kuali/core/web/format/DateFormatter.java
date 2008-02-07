@@ -24,6 +24,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 
 import org.kuali.RiceKeyConstants;
+import org.kuali.core.service.DateTimeService;
 import org.kuali.rice.KNSServiceLocator;
 
 /**
@@ -35,6 +36,9 @@ public class DateFormatter extends Formatter {
     // begin Kuali Foundation modification
     // serialVersionUID changed from 1L
     private static final long serialVersionUID = 7612442662886603084L;
+    
+    
+    private static DateTimeService dateTimeService;
     // end Kuali Foundation modification
 
 	// begin Kuali Foundation modification
@@ -73,7 +77,7 @@ public class DateFormatter extends Formatter {
     protected Object convertToObject(String target) {
     	// begin Kuali Foundation modification
         try {
-            Date result = KNSServiceLocator.getDateTimeService().convertToSqlDate(target);
+            Date result = getDateTimeService().convertToSqlDate(target);
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(result);
             if (calendar.get(Calendar.YEAR) < 1000 && verbatimYear(target).length() < 4) {
@@ -96,7 +100,15 @@ public class DateFormatter extends Formatter {
         if (value == null)
             return null;
         // begin Kuali Foundation modification
-        return KNSServiceLocator.getDateTimeService().toDateString((java.util.Date)value);
+        return getDateTimeService().toDateString((java.util.Date)value);
         // end Kuali Foundation modification
+    }
+
+
+    public static DateTimeService getDateTimeService() {
+        if ( dateTimeService == null ) {
+            dateTimeService = KNSServiceLocator.getDateTimeService();
+        }
+        return dateTimeService;
     }
 }

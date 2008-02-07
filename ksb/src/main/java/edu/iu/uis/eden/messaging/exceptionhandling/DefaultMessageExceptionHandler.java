@@ -20,16 +20,9 @@ import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SimpleTrigger;
-import org.quartz.Trigger;
 
 import edu.iu.uis.eden.messaging.PersistedMessage;
 import edu.iu.uis.eden.messaging.ServiceInfo;
-import edu.iu.uis.eden.messaging.quartz.MessageServiceExecutorJob;
-import edu.iu.uis.eden.messaging.quartz.MessageServiceExecutorJobListener;
 
 /**
  * Default implementation of the {@link MessageExceptionHandler} which handles exceptions thrown from message processing.
@@ -44,16 +37,11 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
 
     private static final int DEFAULT_MAX_RETRIES = 7;
 
-    public void handleException(Throwable throwable, PersistedMessage message, Object service) {
-	LOG.error("Exception caught processing message " + message.getRouteQueueId(), throwable);
-	try {
-	    if (isInException(message)) {
-		placeInException(throwable, message);
-	    } else {
-		requeue(throwable, message);
-	    }
-	} catch (Throwable t) {
-	    LOG.error("Caught Exception trying to put message in exception routing!!!  Returning without notifying callbacks.", t);
+    public void handleException(Throwable throwable, PersistedMessage message, Object service) throws Exception {
+	if (isInException(message)) {
+	    placeInException(throwable, message);
+	} else {
+	    requeue(throwable, message);
 	}
     }
 
@@ -102,25 +90,14 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
 	scheduleExecution(throwable, message);
     }
 
-    protected void placeInException(Throwable throwable, PersistedMessage message) {
+    protected void placeInException(Throwable throwable, PersistedMessage message) throws Exception {
 	message.setQueueStatus(RiceConstants.ROUTE_QUEUE_EXCEPTION);
 	message.setQueueDate(new Timestamp(System.currentTimeMillis()));
-	KSBServiceLocator.getExceptionRoutingService().placeInExceptionRouting(throwable, message);
+	KSBServiceLocator.getRouteQueueService().save(message);
     }
 
     protected void scheduleExecution(Throwable throwable, PersistedMessage message) throws Exception {
-	KSBServiceLocator.getRouteQueueService().delete(message);
-	Scheduler scheduler = KSBServiceLocator.getScheduler();
-	JobDataMap jobData = new JobDataMap();
-	jobData.put(MessageServiceExecutorJob.MESSAGE_KEY, message);
-	JobDetail jobDetail = new JobDetail("Exception_Message_Job " + Math.random(), "Exception Messaging",
-		MessageServiceExecutorJob.class);
-	jobDetail.setJobDataMap(jobData);
-	jobDetail.addJobListener(MessageServiceExecutorJobListener.NAME);
-	Trigger trigger = new SimpleTrigger("Exception_Message_Trigger " + Math.random(), "Exception Messaging", message
-		.getQueueDate());
-	trigger.setJobDataMap(jobData);// 1.6 bug required or derby will choke
-	scheduler.scheduleJob(jobDetail, trigger);
+	KSBServiceLocator.getExceptionRoutingService().scheduleExecution(throwable, message, null);
     }
 
     public Integer getMaxRetryAttempts() {

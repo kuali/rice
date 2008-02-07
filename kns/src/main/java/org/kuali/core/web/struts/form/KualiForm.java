@@ -77,7 +77,7 @@ public class KualiForm extends PojoFormBase {
         if (actionFormUtilMap instanceof ActionFormUtilMap) {
             ((ActionFormUtilMap) actionFormUtilMap).setCacheValueFinderResults(true);
         }
-        }
+    }
         
     
     /**

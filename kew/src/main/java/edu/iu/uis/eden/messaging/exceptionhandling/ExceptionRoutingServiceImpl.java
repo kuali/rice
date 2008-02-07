@@ -45,7 +45,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ExceptionRoutingServiceImpl.class);
 
-    public void placeInExceptionRouting(Throwable throwable, PersistedMessage persistedMessage, Long routeHeaderId) {
+    public void placeInExceptionRouting(Throwable throwable, PersistedMessage persistedMessage, Long routeHeaderId) throws Exception {
         RouteNodeInstance nodeInstance = null;
         KEWServiceLocator.getRouteHeaderService().lockRouteHeader(routeHeaderId, true);
         DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
@@ -55,13 +55,15 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             nodeInstance = rmException.getRouteContext().getNodeInstance();
         } else {
             List activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeaderId);
-            if (activeNodeInstances.isEmpty()) {
-                // get the initial node instance
-                nodeInstance = (RouteNodeInstance) document.getInitialRouteNodeInstances().get(0);
-            } else {
+            if (!activeNodeInstances.isEmpty()) {
                 // take the first active nodeInstance found.
                 nodeInstance = (RouteNodeInstance) activeNodeInstances.get(0);
             }
+        }
+        
+        if (nodeInstance == null) {
+            // get the initial node instance
+            nodeInstance = (RouteNodeInstance) document.getInitialRouteNodeInstances().get(0);
         }
 
         MDC.put("docID", routeHeaderId);
@@ -97,8 +99,6 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             KEWServiceLocator.getRouteHeaderService().saveRouteHeader(rh);
             KEWServiceLocator.getActionRequestService().activateRequest(exceptionRequest);
             KSBServiceLocator.getRouteQueueService().delete(persistedMessage);
-        } catch (Exception e) {
-            throw new WorkflowRuntimeException("Caught exception generating exception request", e);
         } finally {
             performanceLogger.log("Time to generate exception request.");
             MDC.remove("docID");

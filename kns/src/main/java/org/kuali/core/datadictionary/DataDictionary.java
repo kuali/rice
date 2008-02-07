@@ -99,7 +99,9 @@ public class DataDictionary implements Serializable {
 		if (documentEntry == null) {
 			throw new IllegalArgumentException("invalid (null) documentEntry");
 		}
-		LOG.debug("calling addDocumentEntry '" + documentEntry.getDocumentTypeName() + "'");
+		if ( LOG.isDebugEnabled() ) {
+		    LOG.debug("calling addDocumentEntry '" + documentEntry.getDocumentTypeName() + "'");
+		}
 
 		String entryName = documentEntry.getDocumentTypeName();
 		if (!allowOverrides) {
@@ -157,7 +159,9 @@ public class DataDictionary implements Serializable {
 		if (businessObjectEntry == null) {
 			throw new IllegalArgumentException("invalid (null) businessObjectEntry");
 		}
-		LOG.debug("calling addBusinessObjectEntry '" + businessObjectEntry.getBusinessObjectClass().getName() + "'");
+		if ( LOG.isDebugEnabled() ) {
+		    LOG.debug("calling addBusinessObjectEntry '" + businessObjectEntry.getBusinessObjectClass().getName() + "'");
+		}
 
 		String entryName = businessObjectEntry.getBusinessObjectClass().getName();
 		if (!allowOverrides) {
@@ -244,7 +248,9 @@ public class DataDictionary implements Serializable {
 		if (StringUtils.isBlank(className)) {
 			throw new IllegalArgumentException("invalid (blank) className");
 		}
-		LOG.debug("calling getBusinessObjectEntry '" + className + "'");
+		if ( LOG.isDebugEnabled() ) {
+		    LOG.debug("calling getBusinessObjectEntry '" + className + "'");
+		}
 		int index = className.indexOf("$$");
 		if (index >= 0) {
 			className = className.substring(0, index);
@@ -253,7 +259,9 @@ public class DataDictionary implements Serializable {
 
 		BusinessObjectEntry boe = businessObjectEntries.get(className);
 		if ( boe == null && parseOnFail ) {
-			LOG.debug("Unable to find BusinessObjectEntry '" + className + "' -- calling parseBO()");
+		    	if ( LOG.isDebugEnabled() ) {
+		    	    LOG.debug("Unable to find BusinessObjectEntry '" + className + "' -- calling parseBO()");
+		    	}
 			this.dataDictionaryBuilder.parseBO(className, isAllowOverrides());
 		}
 		return businessObjectEntries.get(className);
@@ -285,7 +293,9 @@ public class DataDictionary implements Serializable {
 		if (StringUtils.isBlank(className)) {
 			throw new IllegalArgumentException("invalid (blank) className");
 		}
-		LOG.debug("calling getDictionaryObjectEntry '" + className + "'");
+		if ( LOG.isDebugEnabled() ) {
+		    LOG.debug("calling getDictionaryObjectEntry '" + className + "'");
+		}
 		int index = className.indexOf("$$");
 		if (index >= 0) {
 			className = className.substring(0, index);
@@ -323,7 +333,9 @@ public class DataDictionary implements Serializable {
 		if (StringUtils.isBlank(documentTypeDDKey)) {
 			throw new IllegalArgumentException("invalid (blank) documentTypeName");
 		}
-		LOG.debug("calling getDocumentEntry by documentTypeName '" + documentTypeDDKey + "'");
+		if ( LOG.isDebugEnabled() ) {
+		    LOG.debug("calling getDocumentEntry by documentTypeName '" + documentTypeDDKey + "'");
+		}
 
 		DocumentEntry de = documentEntries.get(documentTypeDDKey);		
         if (de == null) {
@@ -360,7 +372,9 @@ public class DataDictionary implements Serializable {
 		if (businessObjectClass == null) {
 			throw new IllegalArgumentException("invalid (null) businessObjectClass");
 		}
-		LOG.debug("calling getDocumentEntry by businessObjectClass '" + businessObjectClass + "'");
+		if ( LOG.isDebugEnabled() ) {
+		    LOG.debug("calling getDocumentEntry by businessObjectClass '" + businessObjectClass + "'");
+		}
 
 		MaintenanceDocumentEntry mde = (MaintenanceDocumentEntry) documentEntriesByBusinessObjectClass.get(businessObjectClass);
 		if (mde == null) {
@@ -380,9 +394,11 @@ public class DataDictionary implements Serializable {
 	}
 
 	public void setAllowOverrides(boolean allowOverrides) {
+	    if ( LOG.isDebugEnabled() ) {
 		LOG.debug("calling setAllowOverrides " + allowOverrides);
+	    }
 
-		this.allowOverrides = allowOverrides;
+	    this.allowOverrides = allowOverrides;
 	}
 
 	public boolean isAllowOverrides() {

@@ -38,7 +38,7 @@ public final class AddNoteEvent extends KualiDocumentEventBase {
      */
     public AddNoteEvent(String errorPathPrefix, Document document, Note note) {
         super("creating add note event for document " + getDocumentId(document), errorPathPrefix, document);
-        this.note = (Note) ObjectUtils.deepCopy(note);
+        this.note = note;
     }
 
     /**

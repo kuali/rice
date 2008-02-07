@@ -39,7 +39,7 @@ public final class AddAdHocRoutePersonEvent extends KualiDocumentEventBase {
      */
     public AddAdHocRoutePersonEvent(String errorPathPrefix, Document document, AdHocRoutePerson adHocRoutePerson) {
         super("creating add ad hoc route person event for document " + getDocumentId(document), errorPathPrefix, document);
-        this.adHocRoutePerson = (AdHocRoutePerson) ObjectUtils.deepCopy(adHocRoutePerson);
+        this.adHocRoutePerson = adHocRoutePerson;
     }
 
     /**

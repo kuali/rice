@@ -106,8 +106,9 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("invalid (blank) name");
         }
-        LOG.debug("calling setName '" + name + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setName '" + name + "'");
+        }
         this.name = name;
     }
 
@@ -119,8 +120,9 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(label)) {
             throw new IllegalArgumentException("invalid (blank) label");
         }
-        LOG.debug("calling setLabel '" + label + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setLabel '" + label + "'");
+        }
         this.label = label;
     }
 
@@ -142,8 +144,9 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(shortLabel)) {
             throw new IllegalArgumentException("invalid (blank) shortLabel");
         }
-        LOG.debug("calling setShortLabel '" + shortLabel + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setShortLabel '" + shortLabel + "'");
+        }
         this.shortLabel = shortLabel;
     }
 
@@ -152,8 +155,9 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
     }
 
     public void setMaxLength(Integer maxLength) {
-        LOG.debug("calling setMaxLength " + maxLength + "");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setMaxLength " + maxLength + "");
+        }
         this.maxLength = maxLength;
     }
 
@@ -213,8 +217,9 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
         if (control == null) {
             throw new IllegalArgumentException("invalid (null) control");
         }
-        LOG.debug("calling setControl '" + control + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setControl '" + control + "'");
+        }
         this.control = control;
     }
 
@@ -266,8 +271,9 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(summary)) {
             throw new IllegalArgumentException("invalid (blank) summary");
         }
-        LOG.debug("calling setSummary '" + summary + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setSummary '" + summary + "'");
+        }
         this.summary = summary;
     }
 
@@ -279,8 +285,9 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(description)) {
             throw new IllegalArgumentException("invalid (blank) description");
         }
-        LOG.debug("calling setDescription '" + description + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setDescription '" + description + "'");
+        }
         this.description = description;
     }
 
@@ -300,8 +307,9 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
         if (formatterClass == null) {
             throw new IllegalArgumentException("invalid (null) formatterClass");
         }
-        LOG.debug("calling setFormatterClass '" + formatterClass.getName() + "'");
-
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling setFormatterClass '" + formatterClass.getName() + "'");
+        }
         this.formatterClass = formatterClass;
     }
 

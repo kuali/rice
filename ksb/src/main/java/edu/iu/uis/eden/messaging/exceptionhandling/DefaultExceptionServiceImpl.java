@@ -15,12 +15,20 @@
  */
 package edu.iu.uis.eden.messaging.exceptionhandling;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SimpleTrigger;
+import org.quartz.Trigger;
 
 import edu.iu.uis.eden.messaging.AsynchronousCall;
 import edu.iu.uis.eden.messaging.PersistedMessage;
 import edu.iu.uis.eden.messaging.RemoteResourceServiceLocator;
+import edu.iu.uis.eden.messaging.quartz.MessageServiceExecutorJob;
+import edu.iu.uis.eden.messaging.quartz.MessageServiceExecutorJobListener;
 import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 
 /**
@@ -35,11 +43,7 @@ public class DefaultExceptionServiceImpl implements ExceptionRoutingService {
 	
 	private static final Logger LOG = Logger.getLogger(DefaultExceptionServiceImpl.class);
 
-	public void placeInExceptionRouting(Throwable throwable, PersistedMessage message) {
-		KSBServiceLocator.getRouteQueueService().save(message);
-	}
-
-	public void placeInExceptionRouting(Throwable throwable, PersistedMessage message, Object service) {
+	public void placeInExceptionRouting(Throwable throwable, PersistedMessage message, Object service) throws Exception {
 		LOG.error("Exception caught processing message " + message.getRouteQueueId() + " " + message.getServiceName() + ": " + throwable);
 		
 		RemoteResourceServiceLocator remoteResourceServiceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
@@ -53,4 +57,23 @@ public class DefaultExceptionServiceImpl implements ExceptionRoutingService {
 		MessageExceptionHandler exceptionHandler = remoteResourceServiceLocator.getMessageExceptionHandler(methodCall.getServiceInfo().getQname());
 		exceptionHandler.handleException(throwable, message, service);
 	}
+
+	public void scheduleExecution(Throwable throwable, PersistedMessage message, String description) throws Exception {
+		KSBServiceLocator.getRouteQueueService().delete(message);
+		Scheduler scheduler = KSBServiceLocator.getScheduler();
+		JobDataMap jobData = new JobDataMap();
+		jobData.put(MessageServiceExecutorJob.MESSAGE_KEY, message);
+		JobDetail jobDetail = new JobDetail("Exception_Message_Job " + Math.random(), "Exception Messaging",
+			MessageServiceExecutorJob.class);
+		jobDetail.setJobDataMap(jobData);
+		if (!StringUtils.isBlank(description)) {
+		    jobDetail.setDescription(description);
+		}
+		jobDetail.addJobListener(MessageServiceExecutorJobListener.NAME);
+		Trigger trigger = new SimpleTrigger("Exception_Message_Trigger " + Math.random(), "Exception Messaging", message
+			.getQueueDate());
+		trigger.setJobDataMap(jobData);// 1.6 bug required or derby will choke
+		scheduler.scheduleJob(jobDetail, trigger);    
+	}
+		
 }

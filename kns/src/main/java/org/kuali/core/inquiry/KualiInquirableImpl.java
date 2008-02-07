@@ -54,8 +54,13 @@ import org.kuali.rice.KNSServiceLocator;
 public class KualiInquirableImpl implements Inquirable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiInquirableImpl.class);
 
-    private BusinessObjectDictionaryService dataDictionary;
     private LookupService lookupService;
+    private BusinessObjectDictionaryService businessObjectDictionaryService;
+    private PersistenceStructureService persistenceStructureService;
+    private DataDictionaryService dataDictionaryService;
+    private EncryptionService encryptionService;
+    private UniversalUserService universalUserService;
+
     private Class businessObjectClass;
 
     private Map<String, Boolean> inactiveRecordDisplay;
@@ -66,8 +71,6 @@ public class KualiInquirableImpl implements Inquirable {
      * Default constructor, initializes services from spring
      */
     public KualiInquirableImpl() {
-        lookupService = KNSServiceLocator.getLookupService();
-        dataDictionary = KNSServiceLocator.getBusinessObjectDictionaryService();
         inactiveRecordDisplay = new HashMap<String, Boolean>();
     }
 
@@ -87,7 +90,7 @@ public class KualiInquirableImpl implements Inquirable {
             searchResults = (CollectionIncomplete) getUniversalUserService().findUniversalUsers(fieldValues);
         }
         else {
-            searchResults = (CollectionIncomplete) lookupService.findCollectionBySearch(getBusinessObjectClass(), fieldValues);
+            searchResults = (CollectionIncomplete) getLookupService().findCollectionBySearch(getBusinessObjectClass(), fieldValues);
         }
 
         BusinessObject foundObject = null;
@@ -109,7 +112,7 @@ public class KualiInquirableImpl implements Inquirable {
             throw new RuntimeException("Business object class not set in inquirable.");
         }
 
-        Collection inquirySections = dataDictionary.getInquirySections(getBusinessObjectClass());
+        Collection inquirySections = getBusinessObjectDictionaryService().getInquirySections(getBusinessObjectClass());
         for (Iterator iter = inquirySections.iterator(); iter.hasNext();) {
             
             InquirySectionDefinition inquirySection = (InquirySectionDefinition) iter.next();
@@ -120,7 +123,7 @@ public class KualiInquirableImpl implements Inquirable {
 
         return sections;
     }
-
+    
     /**
      * Helper method to build an inquiry url for a result field.
      * 
@@ -132,15 +135,10 @@ public class KualiInquirableImpl implements Inquirable {
         Properties parameters = new Properties();
         parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, "start");
 
-        BusinessObjectDictionaryService businessDictionary = KNSServiceLocator.getBusinessObjectDictionaryService();
-        PersistenceStructureService persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
-        DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
-        EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
-
         Class inquiryBusinessObjectClass = null;
         String attributeRefName = "";
         boolean isPkReference = false;
-        if (attributeName.equals(businessDictionary.getTitleAttribute(businessObject.getClass()))) {
+        if (attributeName.equals(getBusinessObjectDictionaryService().getTitleAttribute(businessObject.getClass()))) {
             inquiryBusinessObjectClass = businessObject.getClass();
             isPkReference = true;
         }
@@ -157,7 +155,7 @@ public class KualiInquirableImpl implements Inquirable {
             }
         }
 
-        if (inquiryBusinessObjectClass == null || businessDictionary.isInquirable(inquiryBusinessObjectClass) == null || !businessDictionary.isInquirable(inquiryBusinessObjectClass).booleanValue()) {
+        if (inquiryBusinessObjectClass == null || getBusinessObjectDictionaryService().isInquirable(inquiryBusinessObjectClass) == null || !getBusinessObjectDictionaryService().isInquirable(inquiryBusinessObjectClass).booleanValue()) {
             return RiceConstants.EMPTY_STRING;
         }
 
@@ -173,8 +171,8 @@ public class KualiInquirableImpl implements Inquirable {
         parameters.put(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, inquiryBusinessObjectClass.getName());
 
         List keys = new ArrayList();
-        if (persistenceStructureService.isPersistable(inquiryBusinessObjectClass)) {
-            keys = persistenceStructureService.listPrimaryKeyFieldNames(inquiryBusinessObjectClass);
+        if (getPersistenceStructureService().isPersistable(inquiryBusinessObjectClass)) {
+            keys = getPersistenceStructureService().listPrimaryKeyFieldNames(inquiryBusinessObjectClass);
         }
 
         // build key value url parameters used to retrieve the business object
@@ -192,7 +190,7 @@ public class KualiInquirableImpl implements Inquirable {
                     keyConversion = keyName;
                 }
                 else {
-                    keyConversion = persistenceStructureService.getForeignKeyFieldName(businessObject.getClass(), attributeRefName, keyName);
+                    keyConversion = getPersistenceStructureService().getForeignKeyFieldName(businessObject.getClass(), attributeRefName, keyName);
                 }
             }
             Object keyValue = null;
@@ -212,10 +210,10 @@ public class KualiInquirableImpl implements Inquirable {
             }
 
             // Encrypt value if it is a secure field
-            String displayWorkgroup = dataDictionaryService.getAttributeDisplayWorkgroup(businessObject.getClass(), keyName);
+            String displayWorkgroup = getDataDictionaryService().getAttributeDisplayWorkgroup(businessObject.getClass(), keyName);
             if (StringUtils.isNotBlank(displayWorkgroup)) {
                 try {
-                    keyValue = encryptionService.encrypt(keyValue);
+                    keyValue = getEncryptionService().encrypt(keyValue);
                 }
                 catch (GeneralSecurityException e) {
                     LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
@@ -250,14 +248,14 @@ public class KualiInquirableImpl implements Inquirable {
      */
     public String getHtmlMenuBar() {
         // TODO: replace with inquiry menu bar
-        return dataDictionary.getLookupMenuBar(getBusinessObjectClass());
+        return getBusinessObjectDictionaryService().getLookupMenuBar(getBusinessObjectClass());
     }
 
     /**
      * @see org.kuali.core.inquiry.Inquirable#getTitle()
      */
     public String getTitle() {
-        return dataDictionary.getInquiryTitle(getBusinessObjectClass());
+        return getBusinessObjectDictionaryService().getInquiryTitle(getBusinessObjectClass());
     }
 
     /**
@@ -280,7 +278,10 @@ public class KualiInquirableImpl implements Inquirable {
      * @return Returns the kualiUserService.
      */
     public UniversalUserService getUniversalUserService() {
-        return KNSServiceLocator.getUniversalUserService();
+	if ( universalUserService == null ) {
+	    universalUserService = KNSServiceLocator.getUniversalUserService();
+	}
+        return universalUserService;
     }
 
     /**
@@ -302,4 +303,65 @@ public class KualiInquirableImpl implements Inquirable {
     public void setShowInactiveRecords(String collectionName, boolean showInactive) {
 	InactiveRecordsHidingUtils.setShowInactiveRecords(inactiveRecordDisplay, collectionName, showInactive);
     }
+
+    public LookupService getLookupService() {
+	if ( lookupService == null ) {
+	    lookupService = KNSServiceLocator.getLookupService();
+	}
+        return lookupService;
+    }
+
+    public void setLookupService(LookupService lookupService) {
+        this.lookupService = lookupService;
+    }
+
+    public BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
+	if ( businessObjectDictionaryService == null ) {
+	    businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
+	}
+        return businessObjectDictionaryService;
+    }
+
+    public void setBusinessObjectDictionaryService(BusinessObjectDictionaryService businessObjectDictionaryService) {
+        this.businessObjectDictionaryService = businessObjectDictionaryService;
+    }
+
+    public PersistenceStructureService getPersistenceStructureService() {
+	if ( persistenceStructureService == null ) {
+	    persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
+	}
+        return this.persistenceStructureService;
+    }
+
+    public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
+        this.persistenceStructureService = persistenceStructureService;
+    }
+
+    public DataDictionaryService getDataDictionaryService() {
+	if ( dataDictionaryService == null ) {
+	    dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+	}
+        return this.dataDictionaryService;
+    }
+
+    public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
+        this.dataDictionaryService = dataDictionaryService;
+    }
+
+    public EncryptionService getEncryptionService() {
+	if ( encryptionService == null ) {
+	    encryptionService = KNSServiceLocator.getEncryptionService();
+	}
+        return this.encryptionService;
+    }
+
+    public void setEncryptionService(EncryptionService encryptionService) {
+        this.encryptionService = encryptionService;
+    }
+
+    public void setUniversalUserService(UniversalUserService universalUserService) {
+        this.universalUserService = universalUserService;
+    }
+    
+    
 }

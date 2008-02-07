@@ -243,8 +243,9 @@ public class UniversalUserMaintainable extends KualiMaintainableImpl {
     /**
      * @see org.kuali.core.maintenance.Maintainable#processAfterCopy()
      */
-    public void processAfterCopy() {
+    public void processAfterCopy( Map parameters ) {
         UniversalUser user = (UniversalUser) businessObject;
         user.setPersonUserIdentifier("");
+        super.processAfterCopy(parameters);
     }
 }

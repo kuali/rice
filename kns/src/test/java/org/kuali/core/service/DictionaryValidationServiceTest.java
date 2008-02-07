@@ -17,6 +17,7 @@ package org.kuali.core.service;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.core.UserSession;
 import org.kuali.core.util.ErrorMap;
@@ -56,6 +57,7 @@ public class DictionaryValidationServiceTest extends TestBase {
      *
      * @throws Exception
      */
+    @Ignore
     @Test public void testRecursiveValidation() throws Exception {
         TravelDocument2 travelDocument = (TravelDocument2) KNSServiceLocator.getDocumentService().getNewDocument("TravelRequest");
         // set all required fields except 1
@@ -77,6 +79,7 @@ public class DictionaryValidationServiceTest extends TestBase {
      *
      * @throws Exception
      */
+    @Ignore
     @Test public void testRecursiveValidationMultiple() throws Exception {
         TravelDocument2 travelDocument = (TravelDocument2) KNSServiceLocator.getDocumentService().getNewDocument("TravelRequest");
         // set all required fields except 1

@@ -51,6 +51,7 @@ import org.kuali.core.service.KualiModuleService;
 import org.kuali.core.service.KualiModuleUserPropertyService;
 import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.service.UniversalUserService;
+import org.kuali.core.util.spring.Cached;
 import org.kuali.rice.KNSServiceLocator;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -110,6 +111,7 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
     /**
      * @see org.kuali.core.service.UniversalUserService#getUniversalUser(org.kuali.core.bo.user.UserId)
      */
+    @Cached
     public UniversalUser getUniversalUser(UserId userId) throws UserNotFoundException {
         UniversalUser user = universalUserDao.getUser(userId);
         if (user == null) {
@@ -118,20 +120,23 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
         return user;
     }
 
+    @Cached
     public UniversalUser getUniversalUserByAuthenticationUserId(String authenticationUserId ) throws UserNotFoundException {
         return getUniversalUser(new AuthenticationUserId(authenticationUserId));
     }
     
+    @Cached
     public UniversalUser getUniversalUser(String personUniversalIdentifier) throws UserNotFoundException {
         return getUniversalUser(new UuId(personUniversalIdentifier));
     }
-
+    
     public UniversalUser updateUniversalUserIfNecessary(String sourcePersonUniversalIdentifier, UniversalUser currentSourceUniversalUser) {
         if (currentSourceUniversalUser == null 
                 || (sourcePersonUniversalIdentifier != null && !sourcePersonUniversalIdentifier.equals(currentSourceUniversalUser.getPersonUniversalIdentifier()))
                 || currentSourceUniversalUser.getVersionNumber() == null ) {
             try {
-                return getUniversalUser(new UuId(sourcePersonUniversalIdentifier));
+        	// pull from service so caching used
+                return KNSServiceLocator.getUniversalUserService().getUniversalUser( sourcePersonUniversalIdentifier );
             }
             catch (UserNotFoundException unfe) {
             	if ( currentSourceUniversalUser == null ) {

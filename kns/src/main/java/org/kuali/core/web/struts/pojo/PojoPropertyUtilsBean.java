@@ -23,7 +23,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +44,7 @@ import org.kuali.core.web.format.Formatter;
 // Kuali Foundation modification: class originally SLPropertyUtilsBean
 public class PojoPropertyUtilsBean extends PropertyUtilsBean {
 
-    public static final Logger logger = Logger.getLogger(PojoPropertyUtilsBean.class.getName());
+    public static final Logger LOG = Logger.getLogger(PojoPropertyUtilsBean.class.getName());
 
 	// begin Kuali Foundation modification
     public PojoPropertyUtilsBean() {
@@ -65,14 +64,15 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
             return unconvertedValues.get(key);
 
         Object val = getNestedProperty(bean, key);
-        Class type = String.class;
-        try {
-            type = getPropertyType(bean, key);
-        } catch ( Exception ex ) {
-            type = String.class;
-            logger.warn( "Unable to get property type for Class: " + bean.getClass().getName() + "/Property: " + key );
+        Class type = (val!=null)?val.getClass():null;
+        if ( type == null ) {
+            try {
+                type = getPropertyType(bean, key);
+            } catch ( Exception ex ) {
+                type = String.class;
+                LOG.warn( "Unable to get property type for Class: " + bean.getClass().getName() + "/Property: " + key );
+            }
         }
-
         return (Formatter.isSupportedType(type) ? form.formatValue(val, key, type) : val);
         // end Kuali Foundation modification
     }
@@ -80,48 +80,66 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
 	// begin Kuali Foundation modification
     private Map cache = new HashMap();
 
-    public Object fastGetNestedProperty(Object o, String s) throws IntrospectionException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-        logger.debug("entering fastGetNestedProperty");
+    private static Map<String,Method> readMethodCache = new HashMap<String, Method>();
+    private IntrospectionException introspectionException = new IntrospectionException( "" );
+    
+    public Object fastGetNestedProperty(Object obj, String propertyName) throws IntrospectionException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+        //logger.debug("entering fastGetNestedProperty");
 
-        List methods = (List) cache.get(s + o.getClass().getName());
-        Object[] args = null;
+        List<Method> methods = (List<Method>) cache.get(propertyName + obj.getClass().getName());
         if (methods == null) {
             methods = new ArrayList();
-            Object o2 = o;
-            Class c = o2.getClass();
+            Object currentObj = obj;
+            Class currentObjClass = currentObj.getClass();
 
-            String[] names = s.split("\\.");
-            for (int i = 0; i < names.length; i++) {
-                String name = names[i];
-                PropertyDescriptor p;
-                try {
-                    p = new PropertyDescriptor(name, c);
-                    logger.debug("created PropertyDescriptor");
-                }
-                catch (IntrospectionException e) {
-                    String getterName = "get" + name.substring(0, 1).toUpperCase() + name.substring(1);
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("using getter named: " + getterName);
+            for (String currentPropertyName : propertyName.split("\\.") ) {
+                String cacheKey = currentObjClass.getName() + currentPropertyName;
+                Method readMethod = readMethodCache.get( cacheKey );
+                if ( readMethod == null ) {
+                    // if the read method was resolved to an error, repeat the exception
+                    // rather than performing the reflection calls below
+                    if ( readMethodCache.containsKey(cacheKey) ) {
+                        throw introspectionException;
                     }
-                    p = new PropertyDescriptor(name, c, getterName, null);
+                    try {
+                        try {
+                            readMethod = currentObjClass.getMethod("get" + currentPropertyName.substring(0, 1).toUpperCase() + currentPropertyName.substring(1), (Class[])null);
+                        } catch (NoSuchMethodException e) {
+                            readMethod = currentObjClass.getMethod("is" + currentPropertyName.substring(0, 1).toUpperCase() + currentPropertyName.substring(1), (Class[])null);
+                        }
+                    } catch ( NoSuchMethodException ex ) {
+                        // cache failures to prevent re-checking of the parameter
+                        readMethodCache.put( cacheKey, null );
+                        throw introspectionException;
+//                        throw new IntrospectionException( currentPropertyName );
+//                        try {
+//                        System.out.println( "using PropertyDescriptor" ); 
+//                        PropertyDescriptor pd = new PropertyDescriptor( currentPropertyName, currentObjClass, "get" + currentPropertyName.substring(0, 1).toUpperCase() + currentPropertyName.substring(1), null );
+//                        readMethod = pd.getReadMethod();
+//                        } catch ( Exception ex2 ) {
+//                            LOG.error( ex2.getMessage() );
+//                        }
+//                        System.out.println( "used PropertyDescriptor to get readMethod for " + currentObjClass.getName() + "." + currentPropertyName + " : " + readMethod );
+                        //LOG.error( "Unable to determine readMethod for " + currentObjClass.getName() + "." + currentPropertyName, ex);
+                        //return null;
+                    }
+                    readMethodCache.put(cacheKey, readMethod );
                 }
-                Method m = p.getReadMethod();
-                methods.add(m);
-                o2 = m.invoke(o2, args);
-                c = o2.getClass();
+                methods.add(readMethod);
+                currentObj = readMethod.invoke(currentObj, (Object[])null);
+                currentObjClass = currentObj.getClass();
             }
-            cache.put(s + o.getClass().getName(), methods);
+            cache.put(propertyName + obj.getClass().getName(), methods);
 
         }
 
-        Iterator iter = methods.iterator();
-        while (iter.hasNext()) {
-            o = ((Method) iter.next()).invoke(o, args);
+        for ( Method method : methods ) {
+            obj = method.invoke(obj, (Object[])null);
         }
 
-        logger.debug("exiting fastGetNestedProperty");
+        //logger.debug("exiting fastGetNestedProperty");
 
-        return o;
+        return obj;
     }
 	// end Kuali Foundation modification
 

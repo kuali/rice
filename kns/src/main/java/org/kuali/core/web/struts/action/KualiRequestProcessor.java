@@ -259,58 +259,75 @@ public class KualiRequestProcessor extends RequestProcessor {
          */
     @Override
     protected ActionForm processActionForm(HttpServletRequest request, HttpServletResponse response, ActionMapping mapping) {
-	Timer t0 = new Timer("KualiRequestProcessor.processActionForm");
+        Timer t0 = new Timer("KualiRequestProcessor.processActionForm");
 
-	UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
+        UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
 
-	String docFormKey = request.getParameter(RiceConstants.DOC_FORM_KEY);
-	String methodToCall = request.getParameter(RiceConstants.DISPATCH_REQUEST_PARAMETER);
-	String refreshCaller = request.getParameter(RiceConstants.REFRESH_CALLER);
-	String searchListRequestKey = request.getParameter(RiceConstants.SEARCH_LIST_REQUEST_KEY);
-	String documentWebScope = request.getParameter(RiceConstants.DOCUMENT_WEB_SCOPE);
-
-	if (StringUtils.isNotBlank(docFormKey)
-		&& (mapping.getPath().startsWith(RiceConstants.REFRESH_MAPPING_PREFIX)
-			|| RiceConstants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall)
-			|| RiceConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller) || RiceConstants.SESSION_SCOPE
-			.equalsIgnoreCase(documentWebScope))) {
-
-	    // check for search result storage and clear
-	    GlobalVariables.getUserSession().removeObjectsByPrefix(RiceConstants.SEARCH_LIST_KEY_PREFIX);
-
-	    if (userSession.retrieveObject(docFormKey) != null) {
-		ActionForm form = (ActionForm) userSession.retrieveObject(docFormKey);
-		request.setAttribute(mapping.getAttribute(), form);
-		if (!RiceConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
-		    userSession.removeObject(docFormKey);
-		}
-		t0.log();
-		return form;
-	    }
-	}
-
-	// for sessiondocument with multipart request
-	String contentType = request.getContentType();
-    String method = request.getMethod(); 
-
-    if (("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data")) ) {            
-    	Map params = WebUtils.getMultipartParameters(request, null);
-        docFormKey = request.getParameter(RiceConstants.DOC_FORM_KEY);
-        documentWebScope = request.getParameter(RiceConstants.DOCUMENT_WEB_SCOPE);
+        String docFormKey = request.getParameter(RiceConstants.DOC_FORM_KEY);
+        String methodToCall = request.getParameter(RiceConstants.DISPATCH_REQUEST_PARAMETER);
+        String refreshCaller = request.getParameter(RiceConstants.REFRESH_CALLER);
+        String searchListRequestKey = request.getParameter(RiceConstants.SEARCH_LIST_REQUEST_KEY);
+        String documentWebScope = request.getParameter(RiceConstants.DOCUMENT_WEB_SCOPE);
 
         if (StringUtils.isNotBlank(docFormKey)
-            &&  RiceConstants.SESSION_SCOPE
-                .equalsIgnoreCase(documentWebScope)) {
+            && (mapping.getPath().startsWith(RiceConstants.REFRESH_MAPPING_PREFIX)
+                || RiceConstants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall)
+                || RiceConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller) || RiceConstants.SESSION_SCOPE
+                .equalsIgnoreCase(documentWebScope))) {
+
+            // check for search result storage and clear
+            GlobalVariables.getUserSession().removeObjectsByPrefix(RiceConstants.SEARCH_LIST_KEY_PREFIX);
+
             if (userSession.retrieveObject(docFormKey) != null) {
             ActionForm form = (ActionForm) userSession.retrieveObject(docFormKey);
             request.setAttribute(mapping.getAttribute(), form);
+            if (!RiceConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
+                userSession.removeObject(docFormKey);
+            }
+            t0.log();
+            
+            // we should check whether this is a multipart request because we could have had a combination of query parameters and a multipart request
+            String contentType = request.getContentType();
+            String method = request.getMethod();
+            if (("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data")) ) {
+                // this method parses the multipart request and adds new non-file parameters into the request
+                WebUtils.getMultipartParameters(request, null, form);
+            }
+            
             return form;
             }
         }
-    }
-    
-	t0.log();
-	return super.processActionForm(request, response, mapping);
+
+        // Rice has the ability to limit file upload sizes on a per-form basis, so the max upload sizes may be accessed by calling methods on PojoFormBase.
+        // This requires that we are able know the file upload size limit (i.e. retrieve a form instance) before we parse a mulitpart request.
+        ActionForm form = super.processActionForm(request, response, mapping);
+        
+        // for sessiondocument with multipart request
+        String contentType = request.getContentType();
+        String method = request.getMethod(); 
+
+        // if we have a multipart request, parse it and return the stored form from session if the doc form key is not blank.  If it is blank, then we just return the form
+        // generated from the superclass processActionForm method.  Either way, we need to parse the mulitpart request now so that we may determine what the value of the doc form key is.
+        // This is generally against the contract of processActionForm, because processPopulate should be responsible for parsing the mulitpart request, but we need to parse it now
+        // to determine the doc form key value.
+        if (("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data")) ) {            
+            Map params = WebUtils.getMultipartParameters(request, null, form);
+            docFormKey = request.getParameter(RiceConstants.DOC_FORM_KEY);
+            documentWebScope = request.getParameter(RiceConstants.DOCUMENT_WEB_SCOPE);
+
+            if (StringUtils.isNotBlank(docFormKey)
+                &&  RiceConstants.SESSION_SCOPE
+                    .equalsIgnoreCase(documentWebScope)) {
+                if (userSession.retrieveObject(docFormKey) != null) {
+                form = (ActionForm) userSession.retrieveObject(docFormKey);
+                request.setAttribute(mapping.getAttribute(), form);
+                return form;
+                }
+            }
+        }
+        
+        t0.log();
+        return form;
     }
 
     /**

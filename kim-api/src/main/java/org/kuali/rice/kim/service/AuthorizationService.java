@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public interface AuthorizationService {
     /**
-     * Determines if a principal is authorized for a given permission.
+     * Determines if a Principal is authorized for a given permission.
      * 
      * @param   principalName        name identifying a principal
      * @param   permissionName       name identifying a unique permission
@@ -37,7 +37,7 @@ public interface AuthorizationService {
     public boolean isPrincipalAuthorized(String principalName, String permissionName, String namespaceName);
     
     /**
-     * Determines if a principal is authorized for a given permission.
+     * Determines if a Person is authorized for a given permission.
      * 
      * @param   personId             person id identifying a unique KIM Person
      * @param   permissionName       name identifying a unique permission
@@ -48,7 +48,7 @@ public interface AuthorizationService {
     public boolean isPersonAuthorized(Long personId, String permissionName, String namespaceName);
     
     /**
-     * Determines if a Person possesses a given permission and set of role attributes.
+     * Determines if a Principal possesses a given permission and set of role attributes.
      * 
      * @param   principalName            name identifying a principal
      * @param   permissionName           name identifying a unique permission
@@ -78,7 +78,7 @@ public interface AuthorizationService {
         Map<String, String> qualifiedRoleAttributes, String namespaceName);
     
     /**
-     * Determines if a given principal has been assigned to a given role.
+     * Determines if a given Principal has been assigned to a given role.
      * 
      * @param   principalName        name identifying a principal
      * @param   roleName             name identifying a unique Role
@@ -88,7 +88,7 @@ public interface AuthorizationService {
     public boolean principalHasRole(String principalName, String roleName);
     
     /**
-     * Determines if a given person has been assigned to a given role.
+     * Determines if a given Person has been assigned to a given role.
      * 
      * @param   personId             person id uniquely identifying a person
      * @param   roleName             name identifying a unique Role
@@ -98,17 +98,17 @@ public interface AuthorizationService {
     public boolean personHasRole(Long personId, String roleName);
     
     /**
-     * Determines if a given group has been assigned to a given role.
+     * Determines if a given Group has been assigned to a given role.
      * 
      * @param   groupName            group name uniquely identifying a group
      * @param   roleName             name identifying a unique Role
      * @return                       boolean indicating if Group has been assigned to Role
      * 
      */
-    public boolean groupHasRole(Long personId, String roleName);
+    public boolean groupHasRole(String groupName, String roleName);
     
     /**
-     * Determines if a given principal possesses all given Role attributes.
+     * Determines if a given Principal possesses all given Role attributes.
      * 
      * @param   principalName               name identifying a principal
      * @param   roleName                    name identifying a unique Role
@@ -121,7 +121,7 @@ public interface AuthorizationService {
         Map<String, String> qualifiedRoleAttributes);
     
     /**
-     * Determines if a given principal possesses all given Role attributes.
+     * Determines if a given Person possesses all given Role attributes.
      * 
      * @param   personId                    person id uniquely identifying a person
      * @param   roleName                    name identifying a unique Role
@@ -134,7 +134,7 @@ public interface AuthorizationService {
         Map<String, String> qualifiedRoleAttributes);
     
     /**
-     * Determines if a given principal possesses all given Role attributes.
+     * Determines if a given Group possesses all given Role attributes.
      * 
      * @param   groupName                   group name uniquely identifying a group
      * @param   roleName                    name identifying a unique Role

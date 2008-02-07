@@ -53,7 +53,7 @@ public class Namespace extends PersistableBusinessObjectBase {
 	    this.description = description;
 	}
 
-	protected LinkedHashMap toStringMapper() {
+	protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
         propMap.put("id", getId());
         propMap.put("name", getName());

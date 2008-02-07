@@ -22,7 +22,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupQualifiedRole;
 import org.kuali.rice.kim.bo.Permission;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.PersonQualifiedRole;
+import org.kuali.rice.kim.bo.PrincipalQualifiedRole;
 import org.kuali.rice.kim.bo.Principal;
 import org.kuali.rice.kim.bo.Role;
 
@@ -85,7 +85,7 @@ public interface RoleService {
      *                               assigned to the Role
      * 
      */
-    public List<Long> getPrincipalNamesWithRole(String roleName);
+    public List<String> getPrincipalNamesWithRole(String roleName);
     
     /**
      * KIM Role service API method that returns all Person objects within an application
@@ -149,27 +149,27 @@ public interface RoleService {
     public List<String> getPermissionNamesForRole(String roleName);
     
     /**
-     * KIM Role service API method that returns all PersonQualifiedRole objects within an application
+     * KIM Role service API method that returns all PrincipalQualifiedRole objects within an application
      * that associate with a given Role.
      * 
      * @param   roleName             name of KIM Role
-     * @return                       List of all PersonQualifiedRole objects associated with the Role
+     * @return                       List of all PrincipalQualifiedRole objects associated with the Role
      * 
      */
-    public List<PersonQualifiedRole> getPersonQualifiedRoles(String roleName);
+    public List<PrincipalQualifiedRole> getPrincipalQualifiedRoles(String roleName);
 
     /**
-     * KIM Role service API method that returns all PersonQualifiedRole objects within an application
+     * KIM Role service API method that returns all PrincipalQualifiedRole objects within an application
      * that match a given Role and also match List of qualified role attributes.
      * 
      * @param   roleName                 String that identifies a unique KIM Role
      * @param   qualifiedRoleAttributes  Map<String, String> of role attribute name/value pairs
      *                                   to qualify a person
-     * @return                           List of all PersonQualifiedRole objects that match 
+     * @return                           List of all PrincipalQualifiedRole objects that match 
      *                                   the role and qualified role attributes
      * 
      */
-     public List<PersonQualifiedRole> getPersonQualifiedRoles(String roleName, 
+     public List<PrincipalQualifiedRole> getPrincipalQualifiedRoles(String roleName, 
 	     Map<String, String> qualifiedRoleAttributes);
     /**
      * KIM Role service API method that returns all GroupQualifiedRole objects within an application

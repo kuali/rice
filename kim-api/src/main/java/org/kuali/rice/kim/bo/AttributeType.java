@@ -87,7 +87,7 @@ public class AttributeType extends PersistableBusinessObjectBase {
 	/**
 	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
 	 */
-    	protected LinkedHashMap toStringMapper() {
+    	protected LinkedHashMap<String, Object> toStringMapper() {
             LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
             propMap.put("id", getId());
             propMap.put("attributeTypeName", getAttributeTypeName());

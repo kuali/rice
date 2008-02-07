@@ -58,9 +58,10 @@ public class Principal extends PersistableBusinessObjectBase implements java.sec
      * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
      */
     @Override
-    protected LinkedHashMap toStringMapper() {
-        // TODO Chris - THIS METHOD NEEDS JAVADOCS
-        return null;
+    protected LinkedHashMap<String, Object> toStringMapper() {
+        LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
+        propMap.put("id", getId().toString());
+        return propMap;
     }
 
     /**

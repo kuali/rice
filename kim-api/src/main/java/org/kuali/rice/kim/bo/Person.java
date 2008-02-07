@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 
@@ -51,7 +50,7 @@ public class Person extends PersistableBusinessObjectBase {
 		this.username = username;
 	}
 
-	protected LinkedHashMap toStringMapper() {
+	protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
         propMap.put("id", getId());
         propMap.put("username", getUsername());

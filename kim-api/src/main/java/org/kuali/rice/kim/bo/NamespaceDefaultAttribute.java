@@ -52,7 +52,12 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
 		this.id = id;
 	}
 
-	protected LinkedHashMap toStringMapper() {
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
+	 */
+	protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
         propMap.put("id", getId());
         propMap.put("namespaceId", getNamespaceId());

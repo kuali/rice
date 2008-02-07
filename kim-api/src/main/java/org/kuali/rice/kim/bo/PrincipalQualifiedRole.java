@@ -19,63 +19,59 @@ import java.util.List;
 
 /**
  * Primarily a helper business object that provides a list of qualified role attributes for 
- * a specific group and role.
+ * a specific principal and role.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class GroupQualifiedRole extends QualifiedRole {
-	private static final long serialVersionUID = 6701917498866245651L;
-	
-	private Long groupId;
-	
-	private Group group;
-	
-	private List<GroupQualifiedRoleAttribute> qualifiedRoleAttributes;
-	
+public class PrincipalQualifiedRole extends QualifiedRole {
+   	private static final long serialVersionUID = -3834313283054550673L;
+   	
+   	private Long principalId;
+   	
+   	private Principal principal;
+   	
+   	private List<PrincipalQualifiedRoleAttribute> qualifiedRoleAttributes;
+   	
 	/**
-     * @return the groupId
+     * @return the principalId
      */
-    public Long getGroupId() {
-        return this.groupId;
+    public Long getPrincipalId() {
+        return this.principalId;
     }
 
     /**
-     * @param groupId the groupId to set
+     * @param principalId the principalId to set
      */
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setPrincipalId(Long principalId) {
+        this.principalId = principalId;
     }
 
     /**
-     * This method ...
-     * 
-     * @return Group
+     * @return the principal
      */
-    public Group getGroup() {
-	    return this.group;
-	}
+    public Principal getPrincipal() {
+        return this.principal;
+    }
 
     /**
-     * This method ...
-     * 
-     * @param group
+     * @param principal the principal to set
      */
-	public void setGroup(Group group) {
-	    this.group = group;
-	}
-	
+    public void setPrincipal(Principal principal) {
+        this.principal = principal;
+    }
+
     /**
      * @return the qualifiedRoleAttributes
      */
-    public List<GroupQualifiedRoleAttribute> getQualifiedRoleAttributes() {
+    public List<PrincipalQualifiedRoleAttribute> getQualifiedRoleAttributes() {
         return this.qualifiedRoleAttributes;
     }
 
     /**
-     * @param qualifiedRoleAttributes the qualifiedRoleAttributes to set
+     * @param qualifiedRoleAttributes the principalQualifiedRoleAttributes to set
      */
-    public void setqualifiedRoleAttributes(List<GroupQualifiedRoleAttribute> qualifiedRoleAttributes) {
+    public void setQualifiedRoleAttributes(List<PrincipalQualifiedRoleAttribute> qualifiedRoleAttributes) {
         this.qualifiedRoleAttributes = qualifiedRoleAttributes;
     }
 }

@@ -68,7 +68,7 @@ public class PersonAttribute extends PersistableBusinessObjectBase {
 		this.value = value;
 	}
 
-	protected LinkedHashMap toStringMapper() {
+	protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
         propMap.put("id", getId());
         propMap.put("attributeTypeId", getAttributeTypeId());

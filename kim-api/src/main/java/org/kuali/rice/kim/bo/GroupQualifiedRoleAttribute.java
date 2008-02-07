@@ -15,25 +15,21 @@
  */
 package org.kuali.rice.kim.bo;
 
-import java.util.List;
+import java.util.LinkedHashMap;
 
 /**
- * Primarily a helper business object that provides a list of qualified role attributes for 
- * a specific group and role.
+ * Business object that represents a single qualified role attribute record associated with a group.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
  */
-public class GroupQualifiedRole extends QualifiedRole {
-	private static final long serialVersionUID = 6701917498866245651L;
-	
-	private Long groupId;
-	
-	private Group group;
-	
-	private List<GroupQualifiedRoleAttribute> qualifiedRoleAttributes;
-	
-	/**
+public class GroupQualifiedRoleAttribute extends QualifiedRoleAttribute {
+    private static final long serialVersionUID = 6701917498866245651L;
+
+    private Long groupId;
+
+    private Group group;
+
+    /**
      * @return the groupId
      */
     public Long getGroupId() {
@@ -41,41 +37,41 @@ public class GroupQualifiedRole extends QualifiedRole {
     }
 
     /**
-     * @param groupId the groupId to set
+     * @param groupId
+     *            the groupId to set
      */
     public void setGroupId(Long groupId) {
         this.groupId = groupId;
     }
 
     /**
+     * 
      * This method ...
      * 
      * @return Group
      */
     public Group getGroup() {
-	    return this.group;
-	}
+        return this.group;
+    }
 
     /**
+     * 
      * This method ...
      * 
      * @param group
      */
-	public void setGroup(Group group) {
-	    this.group = group;
-	}
-	
-    /**
-     * @return the qualifiedRoleAttributes
-     */
-    public List<GroupQualifiedRoleAttribute> getQualifiedRoleAttributes() {
-        return this.qualifiedRoleAttributes;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     /**
-     * @param qualifiedRoleAttributes the qualifiedRoleAttributes to set
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.bo.QualifiedRole#toStringMapper()
      */
-    public void setqualifiedRoleAttributes(List<GroupQualifiedRoleAttribute> qualifiedRoleAttributes) {
-        this.qualifiedRoleAttributes = qualifiedRoleAttributes;
+    protected LinkedHashMap<String, Object> toStringMapper() {
+        LinkedHashMap<String, Object> propMap = super.toStringMapper();
+        propMap.put("group", getGroup().toStringMapper());
+        return propMap;
     }
 }

@@ -22,7 +22,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupQualifiedRole;
 import org.kuali.rice.kim.bo.Permission;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.PersonQualifiedRole;
+import org.kuali.rice.kim.bo.PrincipalQualifiedRole;
 import org.kuali.rice.kim.bo.Principal;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.service.RoleService;
@@ -147,26 +147,6 @@ public class RoleServiceImpl implements RoleService {
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.RoleService#getPersonQualifiedRoles(java.lang.String, java.util.Map)
-     */
-    public List<PersonQualifiedRole> getPersonQualifiedRoles(String roleName, Map<String, String> qualifiedRoleAttributes) {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.kim.service.RoleService#getPersonQualifiedRoles(java.lang.String)
-     */
-    public List<PersonQualifiedRole> getPersonQualifiedRoles(String roleName) {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
-    }
-
-    /**
-     * This overridden method ...
-     * 
      * @see org.kuali.rice.kim.service.RoleService#getPersonsWithRole(java.lang.String)
      */
     public List<Person> getPersonsWithRole(String roleName) {
@@ -179,7 +159,7 @@ public class RoleServiceImpl implements RoleService {
      * 
      * @see org.kuali.rice.kim.service.RoleService#getPrincipalNamesWithRole(java.lang.String)
      */
-    public List<Long> getPrincipalNamesWithRole(String roleName) {
+    public List<String> getPrincipalNamesWithRole(String roleName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -190,6 +170,26 @@ public class RoleServiceImpl implements RoleService {
      * @see org.kuali.rice.kim.service.RoleService#getPrincipalsWithRole(java.lang.String)
      */
     public List<Principal> getPrincipalsWithRole(String roleName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.RoleService#getPrincipalQualifiedRoles(java.lang.String)
+     */
+    public List<PrincipalQualifiedRole> getPrincipalQualifiedRoles(String roleName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.RoleService#getPrincipalQualifiedRoles(java.lang.String, java.util.Map)
+     */
+    public List<PrincipalQualifiedRole> getPrincipalQualifiedRoles(String roleName, Map<String, String> qualifiedRoleAttributes) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }

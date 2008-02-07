@@ -62,7 +62,7 @@ public class KEWHtmlUnitTestCase extends KEWTestCase {
         // On the first access, we should end up on the backdoor and login as quickstart
         HtmlForm loginForm = (HtmlForm) loginPage.getForms().get(0);
         HtmlTextInput textInput = (HtmlTextInput)loginForm.getInputByName("__login_user");
-        assertEquals(loginUserNetworkId, textInput.getDefaultValue());
+        textInput.setValueAttribute(loginUserNetworkId);
         return (HtmlPage)loginForm.submit();
     }
 

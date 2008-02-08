@@ -46,6 +46,7 @@ public class CustomizableActionListEmailServiceTest extends KEWTestCase {
 
     @UnitTestData(sqlFiles = {@UnitTestFile(filename = "classpath:testEmailLifecycle.sql", delimiter = ";")})
     @Test public void testEmailCreationPerformance() throws Exception {
+        getMockEmailService().resetReminderCounts();
         assertEquals("total number of reminders sent should be 0", Integer.valueOf(0), getMockEmailService().getTotalPeriodicRemindersSent());
         assertEquals("total number of daily reminders sent should be 0", Integer.valueOf(0), getMockEmailService().getTotalPeriodicRemindersSent(EdenConstants.EMAIL_RMNDR_DAY_VAL));
         assertEquals("total number of weekly reminders sent should be 0", Integer.valueOf(0), getMockEmailService().getTotalPeriodicRemindersSent(EdenConstants.EMAIL_RMNDR_WEEK_VAL));

@@ -16,7 +16,11 @@
 package org.kuali.core.util;
 
 import java.beans.Beans;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+
+import org.apache.commons.lang.ArrayUtils;
 
 /**
  * This class is used to maintain an ArrayList for a specified object type.
@@ -34,31 +38,28 @@ public class TypedArrayList extends ArrayList {
         if (listObjectType == null) {
             throw new RuntimeException("class type for list is required.");
         }
-
-        // attempt to get an instance of the class to check it has a visible default constructor
-        try {
-            Object listObj = listObjectType.newInstance();
+        
+        //the following code checks to see if the class has a visible default constructor
+        
+        boolean foundDefaultConstructor = false;
+        
+        Constructor[] constructors = listObjectType.getConstructors();
+        for (Constructor constructor : constructors) {
+            Class[] parameterType = constructor.getParameterTypes();
+            
+            //check for a constructor that takes no arguments and is public
+            if(ArrayUtils.isEmpty(parameterType) &&
+               Modifier.isPublic(constructor.getModifiers())) {
+                foundDefaultConstructor = true;
+                break;
+            }
         }
-        catch (InstantiationException e) {
-            throw new RuntimeException("unable to get instance of class" + listObjectType.getName());
-        }
-        catch (IllegalAccessException e) {
-            throw new RuntimeException("unable to get instance of class" + listObjectType.getName());
+        
+        if(!foundDefaultConstructor) {
+            throw new RuntimeException("unable to get default constructor for " + listObjectType.getName());
         }
         this.listObjectType = listObjectType;
         
-    }
-    /**
-     * 
-     * KULRICE-1525 - DELETE THIS METHOD AND CHANGE ABOVE TO USE REFLECTION (this is only a temporary stopgap)
-     * 
-     * @param listObjectType
-     * @param businessObjectType
-     */
-    public TypedArrayList(Class listObjectType, Class businessObjectType) {
-        super();
-            
-        this.listObjectType = listObjectType;
     }
 
     /**

@@ -34,8 +34,8 @@ public class Group extends PersistableBusinessObjectBase {
     private ArrayList<GroupAttribute> groupAttributes;
     
 	public Group() {
-	    memberGroups = new TypedArrayList(Group.class,Group.class);
-	    parentGroups = new TypedArrayList(Group.class,Group.class);
+	    memberGroups = new TypedArrayList(Group.class);
+	    parentGroups = new TypedArrayList(Group.class);
         groupRoles = new TypedArrayList(Role.class);
         groupAttributes = new TypedArrayList(GroupAttribute.class);
 	}

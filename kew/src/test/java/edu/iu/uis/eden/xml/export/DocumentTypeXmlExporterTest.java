@@ -33,6 +33,7 @@ import edu.iu.uis.eden.engine.node.Process;
 import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.export.ExportDataSet;
 import edu.iu.uis.eden.export.ExportFormat;
+import edu.iu.uis.eden.workgroup.Workgroup;
 
 public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
 
@@ -75,14 +76,30 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
         assertEquals(oldDocType.getLabel(), newDocType.getLabel());
         assertEquals(oldDocType.getPostProcessorName(), newDocType.getPostProcessorName());
         assertEquals(oldDocType.getRoutingVersion(), newDocType.getRoutingVersion());
-        assertEquals(oldDocType.getBlanketApproveWorkgroup().getWorkflowGroupId(), newDocType.getBlanketApproveWorkgroup().getWorkflowGroupId());
+        assertWorkgroupsEqual(oldDocType.getBlanketApproveWorkgroup(), newDocType.getBlanketApproveWorkgroup());
         assertEquals(oldDocType.getBlanketApprovePolicy(),newDocType.getBlanketApprovePolicy());
         assertEquals(oldDocType.getCurrentInd(), newDocType.getCurrentInd());
-        assertEquals(oldDocType.getSuperUserWorkgroup().getWorkflowGroupId(), newDocType.getSuperUserWorkgroup().getWorkflowGroupId());
-        assertEquals(oldDocType.getSuperUserWorkgroupNoInheritence().getWorkflowGroupId(), newDocType.getSuperUserWorkgroupNoInheritence().getWorkflowGroupId());
+        
+        assertWorkgroupsEqual(oldDocType.getSuperUserWorkgroup(), newDocType.getSuperUserWorkgroup());
+        assertWorkgroupsEqual(oldDocType.getSuperUserWorkgroupNoInheritence(), newDocType.getSuperUserWorkgroupNoInheritence());
         assertEquals(oldDocType.getNotificationFromAddress(), newDocType.getNotificationFromAddress());
         assertRoutePath(oldDocType, newDocType);
         assertPolicies(oldDocType, newDocType);
+    }
+
+    /**
+     * Asserts that two workgroup objects are either both null, or both have the same id
+     * @param a a workgroup
+     * @param b another workgroup
+     */
+    private void assertWorkgroupsEqual(Workgroup a, Workgroup b) {
+        if (a == null) {
+            assertNull(b);
+        } else {
+            assertNotNull(b);
+            assertEquals(a.getWorkflowGroupId(), b.getWorkflowGroupId());
+        }
+        
     }
 
     private void assertRoutePath(DocumentType oldDocType, DocumentType newDocType) {

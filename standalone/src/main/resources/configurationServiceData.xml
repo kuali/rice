@@ -17,6 +17,6 @@
 <!-- configuration file for KualiConfigurationService -->
 
 <configuration>
-    <properties fileName="KR-ApplicationResources.properties" />
+    <properties fileName="WEB-INF/KR-ApplicationResources.properties" />
 </configuration>
 

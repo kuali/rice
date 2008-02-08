@@ -78,8 +78,10 @@ public class KualiModule implements InitializingBean {
 			ddl.setDataDictionaryPackages(getDataDictionaryPackages());
 			ddl.afterPropertiesSet();
 		}
-		for (String repositoryLocation : getDatabaseRepositoryFilePaths()) {
-			KNSServiceLocator.getPersistenceService().loadRepositoryDescriptor(repositoryLocation);
+		if (getDatabaseRepositoryFilePaths() != null) {
+		    for (String repositoryLocation : getDatabaseRepositoryFilePaths()) {
+		        KNSServiceLocator.getPersistenceService().loadRepositoryDescriptor(repositoryLocation);
+		    }
 		}
 	}
 

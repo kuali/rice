@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
 <struts-config>
+	<data-sources />
+
+	<form-beans>
+    	<!-- Begin required KNS forms -->
+        <form-bean name="KualiForm" type="org.kuali.core.web.struts.form.KualiForm" />
+    	<!-- End required KNS forms -->
+    </form-beans>
 
 	<global-exceptions>
        	<!-- Begin required KNS exceptions -->
@@ -22,7 +29,6 @@
        	<!-- End required KNS forwards -->
     </global-forwards>
 
-
     <action-mappings>
        	<!-- Begin required KNS mappings -->       
         <action path="/portal" name="KualiForm" type="org.kuali.core.web.struts.action.KualiSimpleAction">
@@ -40,11 +46,7 @@
        	<!-- End required KNS mappings -->
     </action-mappings>
 
-	<form-beans>
-    	<!-- Begin required KNS forms -->
-        <form-bean name="KualiForm" type="org.kuali.core.web.struts.form.KualiForm" />
-    	<!-- End required KNS forms -->
-    </form-beans>
+	
 
 	<controller processorClass="org.kuali.core.web.struts.action.KualiRequestProcessor" />
     <message-resources factory="org.kuali.core.web.struts.action.KualiPropertyMessageResourcesFactory" parameter="SampleApplicationResources" />

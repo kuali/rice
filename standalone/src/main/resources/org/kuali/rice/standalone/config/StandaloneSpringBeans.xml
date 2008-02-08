@@ -62,8 +62,20 @@
 				<bean class="org.kuali.rice.kns.config.KNSConfigurer">
 					<property name="dataDictionaryPackages">
 						<list>
-							<value>org/kuali/rice/kim/bo/datadictionary</value>
-							<value>org/kuali/rice/kim/document/datadictionary</value>
+							<value>classpath:org/kuali/rice/kim/bo/datadictionary/AttributeType.xml</value>
+							<value>classpath:org/kuali/rice/kim/bo/datadictionary/Group.xml</value>
+							<value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupAttribute.xml</value>
+							<value>classpath:org/kuali/rice/kim/bo/datadictionary/Namespace.xml</value>
+							<value>classpath:org/kuali/rice/kim/bo/datadictionary/NamespaceDefaultAttribute.xml</value>
+							<value>classpath:org/kuali/rice/kim/bo/datadictionary/Principal.xml</value>
+							<value>classpath:org/kuali/rice/kim/bo/datadictionary/Role.xml</value>
+							<value>classpath:org/kuali/rice/kim/document/datadictionary/AttributeTypeMaintenanceDocument.xml</value>
+							<value>classpath:org/kuali/rice/kim/document/datadictionary/GroupAttributeMaintenanceDocument.xml</value>
+							<value>classpath:org/kuali/rice/kim/document/datadictionary/GroupMaintenanceDocument.xml</value>
+							<value>classpath:org/kuali/rice/kim/document/datadictionary/NamespaceDefaultAttributeMaintenanceDocument.xml</value>
+							<value>classpath:org/kuali/rice/kim/document/datadictionary/NamespaceMaintenanceDocument.xml</value>
+							<value>classpath:org/kuali/rice/kim/document/datadictionary/PrincipalMaintenanceDocument.xml</value>
+							<value>classpath:org/kuali/rice/kim/document/datadictionary/RoleMaintenanceDocument.xml</value>
 						</list>
 					</property>
 					<property name="databaseRepositoryFilePaths">

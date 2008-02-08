@@ -41,6 +41,13 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
     public static boolean SEND_WEEKLY_REMINDER_CALLED = false;
 
     /**
+     * Resets the reminder counts
+     */
+    public void resetReminderCounts() {
+        aggregateReminderCount.clear();
+    }
+
+    /**
      * This overridden method will perform the standard operations from edu.iu.uis.eden.mail.ActionListEmailServiceImpl but will also keep track of action
      * items processed
      * 

@@ -34,5 +34,10 @@ public interface MockEmailNotificationService extends ActionListEmailService {
     public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd) throws EdenUserNotFoundException;
     public Integer getTotalPeriodicRemindersSent(String emailReminderConstant);
     public Integer getTotalPeriodicRemindersSent();
+    /**
+     * Resets the reminder counts
+     */
+    public void resetReminderCounts();
+
     public boolean wasStyleServiceAccessed();
 }

@@ -70,6 +70,10 @@
 			<param-name>config/en</param-name>
 			<param-value>/en/WEB-INF/struts-config.xml</param-value>
 		</init-param>
+		<init-param>
+			<param-name>config/kr</param-name>
+			<param-value>/kr/WEB-INF/struts-config.xml</param-value>
+		</init-param>
         <init-param>
           <param-name>config/ksb</param-name>
           <param-value>/ksb/WEB-INF/struts-config.xml</param-value>

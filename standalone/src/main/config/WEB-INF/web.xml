@@ -59,6 +59,10 @@
       <listener-class>org.kuali.rice.standalone.StandaloneInitializeListener</listener-class>
     </listener>
 
+	<listener>
+		<listener-class>org.kuali.core.web.listener.JstlConstantsInitListener</listener-class>
+	</listener>
+	
 	<servlet>
 		<servlet-name>action</servlet-name>
 		<servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
@@ -113,6 +117,20 @@
     </servlet>
 
 	<servlet>
+		<servlet-name>dwr-invoker</servlet-name>
+		<servlet-class>org.kuali.core.web.servlet.KualiDWRServlet</servlet-class>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>springpath</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
 		<servlet-name>remoting</servlet-name>
 		<servlet-class>edu.iu.uis.eden.messaging.servlet.KSBDispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
@@ -152,6 +170,11 @@
         <servlet-name>notification</servlet-name>
         <url-pattern>*.form</url-pattern>
     </servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>dwr-invoker</servlet-name>
+		<url-pattern>/dwr/*</url-pattern>
+	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>export</servlet-name>

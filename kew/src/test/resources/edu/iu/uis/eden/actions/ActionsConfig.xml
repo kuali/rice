@@ -969,7 +969,7 @@
 		<rule>
 			<documentType>SuperUserActionInvalidPostProcessor</documentType>
 			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
-			<description>WorkflowDocument2Template and SuperUserActionInvalidPostProcessor Rule 1</description>
+			<description>WorkflowDocument2Template and SuperUserActionInvalidPostProcessor Rule 2</description>
 			<ignorePrevious>true</ignorePrevious>
 			<responsibilities>
 				<responsibility>

@@ -59,6 +59,20 @@
 				<bean class="org.kuali.workflow.config.KEWConfigurer">
 					<property name="clientProtocol" value="local" />
 				</bean>
+				<bean class="org.kuali.rice.kns.config.KNSConfigurer">
+					<property name="dataDictionaryPackages">
+						<list>
+							<value>org/kuali/rice/kim/bo/datadictionary</value>
+							<value>org/kuali/rice/kim/document/datadictionary</value>
+						</list>
+					</property>
+					<property name="databaseRepositoryFilePaths">
+						<list>
+							<value>repository.xml</value>
+						</list>
+					</property>
+				</bean>
+				<bean class="org.kuali.rice.kim.config.KIMConfigurer" />
                 <bean class="org.kuali.notification.config.KENConfigurer" />
 			</list>
 		</property>

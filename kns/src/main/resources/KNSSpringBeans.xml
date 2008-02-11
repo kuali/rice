@@ -592,6 +592,9 @@
 		<property name="businessObjectMetaDataService">
 			<ref bean="businessObjectMetaDataService" />
 		</property>
+		<property name="kualiConfigurationService">
+			<ref bean="kualiConfigurationService"/>
+		</property>
 	</bean>
 
 	<bean id="kualiInquirable" class="org.kuali.core.inquiry.KualiInquirableImpl" singleton="false" />

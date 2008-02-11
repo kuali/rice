@@ -144,7 +144,19 @@ public class KualiInquirableImpl implements Inquirable {
         }
         else {
             if (ObjectUtils.isNestedAttribute(attributeName)) {
-                inquiryBusinessObjectClass = LookupUtils.getNestedReferenceClass(businessObject, attributeName);
+                String nestedReferenceName = ObjectUtils.getNestedAttributePrefix(attributeName);
+                Object nestedReferenceObject = ObjectUtils.getPropertyValue(businessObject, nestedReferenceName);
+                
+                if (ObjectUtils.isNotNull(nestedReferenceObject) && nestedReferenceObject instanceof BusinessObject) {
+                    BusinessObject nestedBusinessObject = (BusinessObject) nestedReferenceObject;
+                    String nestedAttributePrimitive = ObjectUtils.getNestedAttributePrimitive(attributeName);
+                    
+                    Map primitiveReference = LookupUtils.getPrimitiveReference(nestedBusinessObject, nestedAttributePrimitive);
+                    if (primitiveReference != null && !primitiveReference.isEmpty()) {
+                        attributeRefName = (String) primitiveReference.keySet().iterator().next();
+                        inquiryBusinessObjectClass = (Class) primitiveReference.get(attributeRefName);
+                    }
+                }
             }
             else {
                 Map primitiveReference = LookupUtils.getPrimitiveReference(businessObject, attributeName);

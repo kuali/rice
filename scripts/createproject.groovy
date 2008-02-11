@@ -546,7 +546,7 @@ def pomtext() {
 				<dependency>
 					<groupId>org.kuali.rice</groupId>
 					<artifactId>rice-kns</artifactId>
-					<version>0.9.2-SNAPSHOT</version>
+					<version>0.9.3-SNAPSHOT</version>
 					<exclusions>
 						<exclusion>
 							<groupId>junit</groupId>
@@ -613,7 +613,7 @@ def pomtext() {
 				<dependency>
 					<groupId>org.kuali.rice</groupId>
 					<artifactId>rice-kns</artifactId>
-					<version>0.9.2-SNAPSHOT</version>
+					<version>0.9.3-SNAPSHOT</version>
 				</dependency>
 			</dependencies>
 		</profile>

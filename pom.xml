@@ -512,7 +512,7 @@
 		<site>
 			<id>rice-site</id>
 			<name>Rice Web Site</name>
-			<url>scpexe://wsa123.uits.indiana.edu/usr/local/apache/htdocs/rice/docs/0.9.2-SNAPSHOT/site</url>
+			<url>scpexe://wsa123.uits.indiana.edu/usr/local/apache/htdocs/rice/docs/0.9.3-SNAPSHOT/site</url>
 		</site>
 	</distributionManagement>
 </project>

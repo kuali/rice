@@ -60,6 +60,7 @@ public class UserPreferenceServiceImplTest extends NotificationTestCaseBase {
 	newSub.setChannel(channel);
 	impl.subscribeToChannel(newSub);
 	UserChannelSubscription sub = impl.getSubscription(VALID_CHANNEL_ID, VALID_USER_ID);
+	assertNotNull(sub);
 	assertEquals(VALID_USER_ID, sub.getUserId());
 	assertEquals(VALID_CHANNEL_ID_LONG, sub.getChannel().getId());
 	

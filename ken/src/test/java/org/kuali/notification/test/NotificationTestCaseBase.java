@@ -42,13 +42,14 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
 
     protected final Logger LOG = Logger.getLogger(getClass());
 
-    protected static SpringNotificationServiceLocator services;
-    protected static PlatformTransactionManager transactionManager;
+    protected SpringNotificationServiceLocator services;
+    protected PlatformTransactionManager transactionManager;
 
     public NotificationTestCaseBase() {
         super(KEN_MODULE_NAME);
     }
 
+    /*
     @Override
     protected List<Lifecycle> getSuiteLifecycles() {
         List<Lifecycle> lifecycles = super.getSuiteLifecycles();
@@ -67,22 +68,37 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
 
         });
         return lifecycles;
-    }
+    }*/
 
     /**
      * Avoid clearing the Quartz tables because it's deadlockey
      * @see org.kuali.rice.test.RiceTestCase#getTablesNotToClear()
      */
-    @Override
+    /*@Override
     protected List<String> getTablesNotToClear() {
         List<String> l =  super.getTablesNotToClear();
         l.add("KR_.*");
         return l;
-    }
+    }*/
 
     @Override
     protected List<Lifecycle> getPerTestLifecycles() {
         List<Lifecycle> lifecycles = super.getPerTestLifecycles();
+
+        lifecycles.add(new BaseLifecycle() {
+            @Override
+            public void start() throws Exception {
+                // can't find a generic way to get the module's resource loader and context (would have to rely on standardized conventions)
+                // in the super class ModuleTestCase, so just special case it here for KEN for now
+                ConfigurableApplicationContext moduleContext = KENResourceLoaderFactory.getSpringResourceLoader().getContext();
+                // This method sets up the Spring services so that they can be accessed by the tests.
+                services = new SpringNotificationServiceLocator(moduleContext);
+                // grab the module's transaction manager
+                transactionManager = (PlatformTransactionManager) moduleContext.getBean(TX_MGR_BEAN_NAME, PlatformTransactionManager.class);
+                super.start();
+            }
+
+        });
 
         // clear out the KEW cache
         lifecycles.add(new BaseLifecycle() {
@@ -125,7 +141,7 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
      * This method makes sure to disable the Quartz scheduler
      * @throws SchedulerException
      */
-    protected static void disableQuartzJobs() throws SchedulerException {
+    protected void disableQuartzJobs() throws SchedulerException {
         // do this so that our quartz jobs don't go off - we don't care about
         // these in our unit tests
         Scheduler scheduler = services.getScheduler();
@@ -137,7 +153,7 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
      * This method enables the Quartz scheduler
      * @throws SchedulerException
      */
-    protected static void enableQuartzJobs() throws SchedulerException {
+    protected void enableQuartzJobs() throws SchedulerException {
         // do this so that our quartz jobs don't go off - we don't care about
         // these in our unit tests
         Scheduler scheduler = services.getScheduler();

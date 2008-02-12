@@ -159,6 +159,8 @@
 		<module>shared</module>
 		<module>testharness</module>
 		<module>ksb</module>
+        <module>kcb-api</module>
+        <module>kcb</module>
 		<module>kns</module>
         <module>kim-api</module>
 		<module>kim</module>

@@ -135,20 +135,20 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	Map<String, Class> references = persistenceStructureService.listReferenceObjectFields(businessObject);
 	for (String referenceName : references.keySet()) {
 	    if (persistenceStructureService.isReferenceUpdatable(businessObject.getClass(), referenceName)) {
-		Object referenceObj = ObjectUtils.getPropertyValue(businessObject, referenceName);
-		
-		if (ObjectUtils.isNull(referenceObj) || !(referenceObj instanceof PersistableBusinessObject)) {
-		    continue;
-		}
-		
-		PersistableBusinessObject referenceBusinessObject = (PersistableBusinessObject) referenceObj;
-                GlobalVariables.getErrorMap().addToErrorPath(referenceName);
-		validateBusinessObject(referenceBusinessObject, validateRequired);
-		if (maxDepth > 0) {
-		    validateUpdatabableReferencesRecursively(referenceBusinessObject, maxDepth - 1, validateRequired, chompLastLetterSFromCollectionName);
-		}
-                GlobalVariables.getErrorMap().removeFromErrorPath(referenceName);
-                
+	        Object referenceObj = ObjectUtils.getPropertyValue(businessObject, referenceName);
+
+	        if (ObjectUtils.isNull(referenceObj) || !(referenceObj instanceof PersistableBusinessObject)) {
+	            continue;
+	        }
+
+	        PersistableBusinessObject referenceBusinessObject = (PersistableBusinessObject) referenceObj;
+	        GlobalVariables.getErrorMap().addToErrorPath(referenceName);
+	        validateBusinessObject(referenceBusinessObject, validateRequired);
+	        if (maxDepth > 0) {
+	            validateUpdatabableReferencesRecursively(referenceBusinessObject, maxDepth - 1, validateRequired, chompLastLetterSFromCollectionName);
+	        }
+	        GlobalVariables.getErrorMap().removeFromErrorPath(referenceName);
+
 	    }
 	}
 	Map<String, Class> collections = persistenceStructureService.listCollectionObjectTypes(businessObject);
@@ -336,14 +336,14 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             // validate the properties that are descended from BusinessObject
             if (propertyDescriptor.getPropertyType() != null && PersistableBusinessObject.class.isAssignableFrom(propertyDescriptor.getPropertyType()) && ObjectUtils.getPropertyValue(object, propertyDescriptor.getName()) != null) {
                 PersistableBusinessObject bo = (PersistableBusinessObject) ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
-                GlobalVariables.getErrorMap().addToErrorPath(propertyDescriptor.getName());
                 if (depth == 0) {
+                    GlobalVariables.getErrorMap().addToErrorPath(propertyDescriptor.getName());
                     validateBusinessObject(bo);
+                    GlobalVariables.getErrorMap().removeFromErrorPath(propertyDescriptor.getName());
                 }
                 else {
                     validateBusinessObjectsRecursively(bo, depth - 1);
                 }
-                GlobalVariables.getErrorMap().removeFromErrorPath(propertyDescriptor.getName());
             }
 
             /*
@@ -354,14 +354,14 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 List propertyList = (List) ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
                 for (int j = 0; j < propertyList.size(); j++) {
                     if (propertyList.get(j) != null && propertyList.get(j) instanceof PersistableBusinessObject) {
-                        GlobalVariables.getErrorMap().addToErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
                         if (depth == 0) {
+                            GlobalVariables.getErrorMap().addToErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
                             validateBusinessObject((PersistableBusinessObject) propertyList.get(j));
+                            GlobalVariables.getErrorMap().removeFromErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
                         }
                         else {
                             validateBusinessObjectsRecursively((PersistableBusinessObject) propertyList.get(j), depth - 1);
                         }
-                        GlobalVariables.getErrorMap().removeFromErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
                     }
                 }
 

@@ -21,7 +21,7 @@
 
 <c:set var="result">
     <c:choose>
-      <c:when test="${field.fieldType==field.DROPDOWN or field.fieldType==field.DROPDOWN_APC or field.fieldType==field.DROPDOWN_REFRESH or field.fieldType==field.DROPDOWN_SCRIPT}">
+      <c:when test="${field.fieldType==field.DROPDOWN or field.fieldType==field.DROPDOWN_APC or field.fieldType==field.DROPDOWN_REFRESH or field.fieldType==field.DROPDOWN_SCRIPT or field.fieldType==field.RADIO}">
         <c:set var="value_found" value="false" />
         <c:forEach items="${field.fieldValidValues}" var="select">
           <c:if test="${field.propertyValue==select.key}">

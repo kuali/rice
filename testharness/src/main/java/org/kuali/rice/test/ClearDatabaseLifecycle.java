@@ -41,143 +41,151 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * Lifecycle class to clean up the database for use in testing.
- *
+ * This lifecycle will not be run (even if it is listed in the lifecycles list)
+ * if the 'use.use.clearDatabaseLifecycle' configuration property is defined, and is
+ * not 'true'.  If the property is omitted the lifecycle runs as normal.
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  *
  */
 public class ClearDatabaseLifecycle extends BaseLifecycle {
 
-	protected static final Logger LOG = Logger.getLogger(ClearDatabaseLifecycle.class);
+    protected static final Logger LOG = Logger.getLogger(ClearDatabaseLifecycle.class);
 
-	private List<String> tablesToClear = new ArrayList<String>();
-	private List<String> tablesNotToClear = new ArrayList<String>();
+    private List<String> tablesToClear = new ArrayList<String>();
+    private List<String> tablesNotToClear = new ArrayList<String>();
 
-	public ClearDatabaseLifecycle() {
-	    addStandardTables();
-	}
+    public ClearDatabaseLifecycle() {
+        addStandardTables();
+    }
 
-	public ClearDatabaseLifecycle(List<String> tablesToClear, List<String> tablesNotToClear) {
-		this.tablesToClear = tablesToClear;
-		this.tablesNotToClear = tablesNotToClear;
-		addStandardTables();
-	}
+    public ClearDatabaseLifecycle(List<String> tablesToClear, List<String> tablesNotToClear) {
+        this.tablesToClear = tablesToClear;
+        this.tablesNotToClear = tablesNotToClear;
+        addStandardTables();
+    }
 
-	protected void addStandardTables() {
-	    tablesNotToClear.add("BIN.*");
-	}
+    protected void addStandardTables() {
+        tablesNotToClear.add("BIN.*");
+    }
 
-	public static final String TEST_TABLE_NAME = "EN_UNITTEST_T";
+    public static final String TEST_TABLE_NAME = "EN_UNITTEST_T";
 
-	public void start() throws Exception {
-		if (new Boolean(Core.getCurrentContextConfig().getProperty("use.clearDatabaseLifecycle"))) {
-			final DataSource dataSource = TestHarnessServiceLocator.getDataSource();
-			clearTables(TestHarnessServiceLocator.getJtaTransactionManager(), dataSource);
-			super.start();
-		}
-	}
+    public void start() throws Exception {
+        String useClearDatabaseLifecycle = Core.getCurrentContextConfig().getProperty("use.clearDatabaseLifecycle");
 
-	protected Boolean isTestTableInSchema(final DataSource dataSource) {
-		Assert.assertNotNull("DataSource could not be located.", dataSource);
-		try {
-		Connection connection = dataSource.getConnection();
-		connection.close();
-		} catch (Exception e) {
-		    throw new RuntimeException(e);
-		}
-		return (Boolean) new JdbcTemplate(dataSource).execute(new ConnectionCallback() {
-			public Object doInConnection(final Connection connection) throws SQLException {
-				final ResultSet resultSet = connection.getMetaData().getTables(null, connection.getMetaData().getUserName().toUpperCase(), TEST_TABLE_NAME, null);
-				return new Boolean(resultSet.next());
-			}
-		});
-	}
+        if (useClearDatabaseLifecycle != null && !Boolean.valueOf(useClearDatabaseLifecycle)) {
+            LOG.debug("Skipping ClearDatabaseLifecycle due to property: use.clearDatabaseLifecycle=" + useClearDatabaseLifecycle);
+            return;
+        }
 
-	protected void verifyTestEnvironment(final DataSource dataSource) {
-		Assert.assertTrue("No table named '" + TEST_TABLE_NAME + "' was found in the configured database.  " + "You are attempting to run tests against a non-test database!!!", isTestTableInSchema(dataSource));
-	}
+        final DataSource dataSource = TestHarnessServiceLocator.getDataSource();
+        clearTables(TestHarnessServiceLocator.getJtaTransactionManager(), dataSource);
+        super.start();
+    }
 
-	protected void clearTables(final PlatformTransactionManager transactionManager, final DataSource dataSource) {
-	    Assert.assertNotNull("DataSource could not be located.", dataSource);
-		try {
-		new TransactionTemplate(transactionManager).execute(new TransactionCallback() {
-			public Object doInTransaction(final TransactionStatus status) {
-				verifyTestEnvironment(dataSource);
-				return new JdbcTemplate(dataSource).execute(new StatementCallback() {
-					public Object doInStatement(Statement statement) throws SQLException {
-					    String schemaName = statement.getConnection().getMetaData().getUserName().toUpperCase();
-					    LOG.info("Clearing tables for schema " + schemaName);
-					    if (StringUtils.isBlank(schemaName)) {
-					        Assert.fail("Empty schema name given");
-					    }
-						final List<String> reEnableConstraints = new ArrayList<String>();
-						final ResultSet resultSet = statement.getConnection().getMetaData().getTables(null, schemaName, null, new String[] { "TABLE" });
-						while (resultSet.next()) {
-							String tableName = resultSet.getString("TABLE_NAME");
-							if (shouldTableBeCleared(tableName)) {
-							    if (!isUsingDerby(statement.getConnection().getMetaData())) {
-									ResultSet keyResultSet = statement.getConnection().getMetaData().getExportedKeys(null, schemaName, tableName);
-									while (keyResultSet.next()) {
-										final String fkName = keyResultSet.getString("FK_NAME");
-										final String fkTableName = keyResultSet.getString("FKTABLE_NAME");
-										final String disableConstraint = "ALTER TABLE " + fkTableName + " DISABLE CONSTRAINT " + fkName;
-										LOG.info("Disabling constraints using statement ->" + disableConstraint + "<-");
-										statement.addBatch(disableConstraint);
-										reEnableConstraints.add("ALTER TABLE " + fkTableName + " ENABLE CONSTRAINT " + fkName);
-									}
-									keyResultSet.close();
-							    }
-							    String deleteStatement = "DELETE FROM " + tableName;
-							    LOG.info("Clearing contents using statement ->" + deleteStatement + "<-");
-							    statement.addBatch(deleteStatement);
-							}
-						}
-						for (final String constraint : reEnableConstraints) {
-						    LOG.info("Enabling constraints using statement ->" + constraint + "<-");
-						    statement.addBatch(constraint);
-						}
-						statement.executeBatch();
-						resultSet.close();
-						LOG.info("Tables successfully cleared for schema " + schemaName);
-						return null;
-					}
-				});
-			}
-		});
-		} catch (Exception e) {
-			LOG.error(e);
-			throw new RuntimeException(e);
-		}
-	}
+    protected Boolean isTestTableInSchema(final DataSource dataSource) {
+        Assert.assertNotNull("DataSource could not be located.", dataSource);
+        try {
+            Connection connection = dataSource.getConnection();
+            connection.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return (Boolean) new JdbcTemplate(dataSource).execute(new ConnectionCallback() {
+            public Object doInConnection(final Connection connection) throws SQLException {
+                final ResultSet resultSet = connection.getMetaData().getTables(null, connection.getMetaData().getUserName().toUpperCase(), TEST_TABLE_NAME, null);
+                return new Boolean(resultSet.next());
+            }
+        });
+    }
 
-	private boolean shouldTableBeCleared(String tableName) {
-	    if (getTablesToClear() != null && !getTablesToClear().isEmpty()) {
-		for (String tableToClear : getTablesToClear()) {
-		    if (tableName.matches(tableToClear)) {
-			return true;
-		    }
-		}
-		return false;
-	    }
-	    if (getTablesNotToClear() != null && !getTablesNotToClear().isEmpty()) {
-		for (String tableNotToClear : getTablesNotToClear()) {
-		    if (tableName.matches(tableNotToClear)) {
-			return false;
-		    }
-		}
-	    }
-	    return true;
-	}
+    protected void verifyTestEnvironment(final DataSource dataSource) {
+        Assert.assertTrue("No table named '" + TEST_TABLE_NAME + "' was found in the configured database.  " + "You are attempting to run tests against a non-test database!!!", isTestTableInSchema(dataSource));
+    }
 
-	private boolean isUsingDerby(DatabaseMetaData metaData) throws SQLException {
-		return metaData.getDriverName().toLowerCase().indexOf("derby") > -1;
-	}
+    protected void clearTables(final PlatformTransactionManager transactionManager, final DataSource dataSource) {
+        Assert.assertNotNull("DataSource could not be located.", dataSource);
+        try {
+            new TransactionTemplate(transactionManager).execute(new TransactionCallback() {
+                public Object doInTransaction(final TransactionStatus status) {
+                    verifyTestEnvironment(dataSource);
+                    return new JdbcTemplate(dataSource).execute(new StatementCallback() {
+                        public Object doInStatement(Statement statement) throws SQLException {
+                            String schemaName = statement.getConnection().getMetaData().getUserName().toUpperCase();
+                            LOG.info("Clearing tables for schema " + schemaName);
+                            if (StringUtils.isBlank(schemaName)) {
+                                Assert.fail("Empty schema name given");
+                            }
+                            final List<String> reEnableConstraints = new ArrayList<String>();
+                            final ResultSet resultSet = statement.getConnection().getMetaData().getTables(null, schemaName, null, new String[] { "TABLE" });
+                            while (resultSet.next()) {
+                                String tableName = resultSet.getString("TABLE_NAME");
+                                if (shouldTableBeCleared(tableName)) {
+                                    if (!isUsingDerby(statement.getConnection().getMetaData())) {
+                                        ResultSet keyResultSet = statement.getConnection().getMetaData().getExportedKeys(null, schemaName, tableName);
+                                        while (keyResultSet.next()) {
+                                            final String fkName = keyResultSet.getString("FK_NAME");
+                                            final String fkTableName = keyResultSet.getString("FKTABLE_NAME");
+                                            final String disableConstraint = "ALTER TABLE " + fkTableName + " DISABLE CONSTRAINT " + fkName;
+                                            LOG.info("Disabling constraints using statement ->" + disableConstraint + "<-");
+                                            statement.addBatch(disableConstraint);
+                                            reEnableConstraints.add("ALTER TABLE " + fkTableName + " ENABLE CONSTRAINT " + fkName);
+                                        }
+                                        keyResultSet.close();
+                                    }
+                                    String deleteStatement = "DELETE FROM " + tableName;
+                                    LOG.info("Clearing contents using statement ->" + deleteStatement + "<-");
+                                    statement.addBatch(deleteStatement);
+                                }
+                            }
+                            for (final String constraint : reEnableConstraints) {
+                                LOG.info("Enabling constraints using statement ->" + constraint + "<-");
+                                statement.addBatch(constraint);
+                            }
+                            statement.executeBatch();
+                            resultSet.close();
+                            LOG.info("Tables successfully cleared for schema " + schemaName);
+                            return null;
+                        }
+                    });
+                }
+            });
+        } catch (Exception e) {
+            LOG.error(e);
+            throw new RuntimeException(e);
+        }
+    }
 
-	public List<String> getTablesToClear() {
-		return this.tablesToClear;
-	}
+    private boolean shouldTableBeCleared(String tableName) {
+        if (getTablesToClear() != null && !getTablesToClear().isEmpty()) {
+            for (String tableToClear : getTablesToClear()) {
+                if (tableName.matches(tableToClear)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if (getTablesNotToClear() != null && !getTablesNotToClear().isEmpty()) {
+            for (String tableNotToClear : getTablesNotToClear()) {
+                if (tableName.matches(tableNotToClear)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
-	public List<String> getTablesNotToClear() {
-		return this.tablesNotToClear;
-	}
+    private boolean isUsingDerby(DatabaseMetaData metaData) throws SQLException {
+        return metaData.getDriverName().toLowerCase().indexOf("derby") > -1;
+    }
+
+    public List<String> getTablesToClear() {
+        return this.tablesToClear;
+    }
+
+    public List<String> getTablesNotToClear() {
+        return this.tablesNotToClear;
+    }
 }

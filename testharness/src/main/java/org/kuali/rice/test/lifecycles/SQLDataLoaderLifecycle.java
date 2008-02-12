@@ -15,47 +15,51 @@
  */
 package org.kuali.rice.test.lifecycles;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.lifecycle.BaseLifecycle;
 import org.kuali.rice.test.SQLDataLoader;
 
 /**
  * A lifecycle for loading SQL datasets.
+ * This lifecycle will not be run (even if it is listed in the lifecycles list)
+ * if the 'use.sqlDataLoaderLifecycle' configuration property is defined, and is
+ * not 'true'.  If the property is omitted the lifecycle runs as normal.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class SQLDataLoaderLifecycle implements Lifecycle {
-	private boolean started;
+public class SQLDataLoaderLifecycle extends BaseLifecycle {
+    private static final Logger LOG = Logger.getLogger(SQLDataLoaderLifecycle.class);
 
-	private SQLDataLoader sqlDataLoader;
+    private SQLDataLoader sqlDataLoader;
 
-	private String filename;
+    private String filename;
 
-	private String delimiter;
+    private String delimiter;
 
-	public SQLDataLoaderLifecycle() {
-		this("classpath:DefaultTestData.sql", ";");
-	}
+    public SQLDataLoaderLifecycle() {
+        this("classpath:DefaultTestData.sql", ";");
+    }
 
-	public SQLDataLoaderLifecycle(String filename, String delimiter) {
-		this.filename = filename;
-		this.delimiter = delimiter;
-	}
+    public SQLDataLoaderLifecycle(String filename, String delimiter) {
+        this.filename = filename;
+        this.delimiter = delimiter;
+    }
 
-	public boolean isStarted() {
-		return started;
-	}
+    public void start() throws Exception {
+        String useSqlDataLoaderLifecycle = Core.getCurrentContextConfig().getProperty("use.sqlDataLoaderLifecycle"); 
+        if (useSqlDataLoaderLifecycle != null && !Boolean.valueOf(useSqlDataLoaderLifecycle)) {
+            LOG.debug("Skipping SQLDataLoaderLifecycle due to property: use.sqlDataLoaderLifecycle=" + useSqlDataLoaderLifecycle);
+            return;
+        }
 
-	public void start() throws Exception {
-		if (new Boolean(Core.getCurrentContextConfig().getProperty("use.sqlDataLoaderLifecycle"))) {
-			sqlDataLoader = new SQLDataLoader(filename, delimiter);
-			sqlDataLoader.runSql();
-			started = true;
-		}
-	}
+        sqlDataLoader = new SQLDataLoader(filename, delimiter);
+        sqlDataLoader.runSql();
+        super.start();
+    }
 
-	public void stop() throws Exception {
-		// TODO: may way to do something with the dataLoader
-		started = false;
-	}
+    public void stop() throws Exception {
+        // TODO: may way to do something with the dataLoader
+        super.stop();
+    }
 }

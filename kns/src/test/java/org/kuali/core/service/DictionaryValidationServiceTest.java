@@ -57,7 +57,6 @@ public class DictionaryValidationServiceTest extends TestBase {
      *
      * @throws Exception
      */
-    @Ignore
     @Test public void testRecursiveValidation() throws Exception {
         TravelDocument2 travelDocument = (TravelDocument2) KNSServiceLocator.getDocumentService().getNewDocument("TravelRequest");
         // set all required fields except 1
@@ -71,7 +70,7 @@ public class DictionaryValidationServiceTest extends TestBase {
         ErrorMap errorMap = GlobalVariables.getErrorMap();
         int recursiveZeroErrorMapSize = errorMap.size();
 
-        assertEquals("We should only get one error here", 1, recursiveZeroErrorMapSize);
+        assertEquals("We should only get four errors here", 4, recursiveZeroErrorMapSize);
     }
 
     /**
@@ -79,7 +78,6 @@ public class DictionaryValidationServiceTest extends TestBase {
      *
      * @throws Exception
      */
-    @Ignore
     @Test public void testRecursiveValidationMultiple() throws Exception {
         TravelDocument2 travelDocument = (TravelDocument2) KNSServiceLocator.getDocumentService().getNewDocument("TravelRequest");
         // set all required fields except 1

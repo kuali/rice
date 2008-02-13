@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ojb.broker.query.Criteria;
-import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.dao.BusinessObjectDao;
@@ -80,7 +79,7 @@ public class MessageDeliveryServiceImpl implements MessageDeliveryService {
     public MessageDelivery getMessageDeliveryByDelivererSystemId(Long id) {
         Criteria criteria = new Criteria();
         criteria.addEqualTo(MessageDelivery.SYSTEMID_FIELD, id);
-        Collection<MessageDelivery> results = dao.findMatching(NotificationMessageDelivery.class, criteria);
+        Collection<MessageDelivery> results = dao.findMatching(MessageDelivery.class, criteria);
         if (results == null || results.size() == 0) return null;
         if (results.size() > 1) {
             throw new RuntimeException("More than one message delivery found with the following delivery system id: " + id);

@@ -36,7 +36,7 @@
         <documentTypeCode>KPMD</documentTypeCode>
         <label>Organization Category</label>
         <summary>Organization Category Maintenance Document</summary>
-        <description>Maintenance document which allows you to create new Organization Category, or modify existing Organization Category.</description>
+        <description>Maintenance document which allows you to create a new Organization Category, or modify existing Organization Category.</description>
 
         <lockingKeys>
             <field attributeName="id" />

@@ -25,7 +25,10 @@
                 <bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
                     <property name="serviceServletUrl" value="${serviceServletUrl}" />
                 </bean>
-                <bean class="org.kuali.rice.kcb.config.KCBConfigurer"/>
+                <bean class="org.kuali.rice.kcb.config.KCBConfigurer">
+                    <!-- Let the KCB module know it's running in unit tests -->
+                    <property name="testMode" value="true"/>
+                </bean>
             </list>
         </property>
         <!-- override web authentication service -->

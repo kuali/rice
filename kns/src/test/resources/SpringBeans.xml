@@ -22,7 +22,7 @@
 	<property name="forceShutdown" value="true"/>
 	<property name="transactionTimeout" value="${transaction.timeout}"/>
   </bean>
-  
+
   <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
     <property name="transactionTimeout" value="${transaction.timeout}"/>
   </bean>
@@ -57,6 +57,7 @@
 					<property name="clientProtocol" value="local" />
 				</bean>
 				<bean class="org.kuali.rice.kim.config.KIMConfigurer" />
+                <bean class="org.kuali.rice.kom.config.KOMConfigurer" />
 				<bean class="org.kuali.rice.kns.config.KNSConfigurer">
 					<property name="dataDictionaryPackages">
 						<list>
@@ -75,6 +76,8 @@
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/NamespaceMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/PrincipalMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/RoleMaintenanceDocument.xml</value>
+                            <value>org/kuali/rice/kom/bo/datadictionary</value>
+                            <value>org/kuali/rice/kom/document/datadictionary</value>
 						</list>
 					</property>
 					<property name="databaseRepositoryFilePaths">

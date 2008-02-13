@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer"/>
+  
+    <bean id="userTransaction" class="org.kuali.rice.jta.UserTransactionFactoryBean" lazy-init="true" />
+    <bean id="jtaTransactionManager" class="org.kuali.rice.jta.TransactionManagerFactoryBean" lazy-init="true" />
+
+    <bean id="ojbConfigurer" class="org.kuali.rice.ojb.JtaOjbConfigurer">
+        <property name="transactionManager" ref="jtaTransactionManager" />
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
+        <property name="userTransaction">
+            <ref local="userTransaction" />
+        </property>
+        <property name="transactionManager">
+            <ref local="jtaTransactionManager" />
+        </property>
+    </bean>
+
+    <bean id="kcbDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean">
+        <property name="transactionManager">
+            <ref local="jtaTransactionManager" />
+        </property>
+        <property name="preferredDataSourceParams">
+            <list>
+                <value>org.kuali.rice.kcb.datasource</value>
+            </list>
+        </property>
+        <property name="preferredDataSourceJndiParams">
+            <list>
+                <value>org.kuali.rice.kcb.datasource.jndi.location</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <!-- Eagerly-init KCB initializer; sets OJB platform dynamically for now -->
+    <bean id="initializer" class="org.kuali.rice.kcb.KCBInitializer" lazy-init="false" depends-on="ojbConfigurer"/>
+
+    <!-- Applies a transaction template to the actual transaction manager bean -->
+    <!-- This is needed to recognize services as transactions -->
+    <bean id="transactionTemplate"
+        class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager">
+            <ref bean="transactionManager" />
+        </property>
+    </bean>
+
+    <!-- PROPAGATION REQUIRED TX DECLARATIONS -->
+    <!-- Sets up pattern matching for transaction recognition -->
+    <!-- This is needed to recognize services as transactions -->
+    <bean id="matchAllWithPropReq"
+        class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource">
+        <property name="transactionAttribute">
+            <value>PROPAGATION_REQUIRED</value>
+        </property>
+    </bean>
+
+    <!-- Applys the pattern matching to the transaction manager bean -->
+    <!-- This is needed to recognize servi ces as transactions -->
+    <bean id="matchAllTxInterceptor"
+        class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager">
+            <ref bean="transactionManager" />
+        </property>
+        <property name="transactionAttributeSource">
+            <ref bean="matchAllWithPropReq" />
+        </property>
+    </bean>
+
+    <!-- All of the beans listed in the beanNames/list section are considered transactional -->
+    <bean id="autoProxyCreator"
+        class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="interceptorNames">
+            <list>
+                <idref local="matchAllTxInterceptor" />
+            </list>
+        </property>
+        <property name="beanNames">
+            <list>
+                <value>messageService</value>
+                <value>messageDeliveryService</value>
+            </list>
+        </property>
+    </bean>
+    <!--  END PROPAGATION REQUIRED TX DECLARATIONS -->
+
+    <!-- SERVICES -->
+
+    <bean id="messageService" class="org.kuali.rice.kcb.service.impl.MessageServiceImpl">
+        <property name="businessObjectDao"><ref local="businessObjectDao"/></property>
+    </bean>
+
+    <bean id="messageDeliveryService" class="org.kuali.rice.kcb.service.impl.MessageDeliveryServiceImpl">
+        <property name="businessObjectDao"><ref local="businessObjectDao"/></property>
+    </bean>
+
+<!-- 
+    <bean id="sendNotificationKewXmlService" class="org.kuali.notification.service.impl.SendNotificationServiceKewXmlImpl">
+      <constructor-arg><ref local="notificationService"/></constructor-arg>
+    </bean>
+    
+    <bean id="notificationMessageDeliveryService" class="org.kuali.notification.service.impl.NotificationMessageDeliveryServiceImpl">
+      <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
+    </bean>
+    
+    <bean id="notificationMessageDelivererRegistryService" class="org.kuali.notification.service.impl.NotificationMessageDelivererRegistryServiceImpl" />
+
+    <bean id="notificationEmailService" class="org.kuali.notification.service.impl.NotificationEmailServiceImpl" >
+       <property name="weburl"><value>${notification.basewebappurl}</value></property>
+       <property name="smtpHost"><value>${emailDeliverer.smtp.host}</value></property>
+    </bean>
+     -->
+
+    <!-- END SERVICES -->
+
+    <!-- DAOS -->
+
+    <bean id="businessObjectDao" class="org.kuali.rice.kcb.dao.ojb.BusinessObjectDaoOjb">
+        <property name="jcdAlias">
+            <value>kcbDataSource</value>
+        </property>
+    </bean>
+
+    <!-- END DAOS -->
+
+    <!-- export our KCB service -->
+    <!--
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+        <property name="serviceDefinition">
+            <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+                <property name="service">
+                    <ref bean="sendNotificationKewXmlService" />
+                </property>
+                <property name="localServiceName" value="sendNotificationKewXmlService" />
+                <property name="priority" value="10" />
+                <property name="retryAttempts" value="1" />
+            </bean>
+        </property>
+          -->
+        <!-- THIS IS NEEDED FOR THE KEWINTEGRATIONTEST TO OBSERVE THE SERVICE ON THE BUS... -->
+        <!-- 
+        <property name="forceRefresh" value="true"/>
+    </bean>
+    
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+        <property name="serviceDefinition">
+            <bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+                <property name="service">
+                    <ref bean="sendNotificationKewXmlService" />
+                </property>
+                <property name="localServiceName" value="sendNotificationKewXmlSOAPService" />
+                <property name="priority" value="10" />
+                <property name="retryAttempts" value="1" />
+            </bean>
+        </property>
+         -->
+        <!-- THIS IS NEEDED FOR THE KEWINTEGRATIONTEST TO OBSERVE THE SERVICE ON THE BUS... -->
+        <!-- 
+        <property name="forceRefresh" value="true"/>
+    </bean>
+ -->
+</beans>

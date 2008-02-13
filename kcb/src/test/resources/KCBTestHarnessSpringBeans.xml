@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- this is a bootstrap Spring file that the unit tests use  -->
+<beans>
+
+    <!-- import the standard test harness spring beans to avoid duplication -->
+    <import resource="TestHarnessSpringBeans.xml"/>
+
+    <bean id="config" class="org.kuali.rice.config.spring.ConfigFactoryBean">
+        <property name="configLocations">
+            <list>
+                <value>classpath:META-INF/kcb-test-config.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
+        <property name="messageEntity" value="KCB" />
+        <property name="dataSource" ref="dataSource" />
+        <property name="transactionManager" ref="atomikosTransactionManager" />
+        <property name="userTransaction" ref="atomikosUserTransaction" />
+        <property name="rootConfig" ref="config" />
+        <property name="modules">
+            <list>
+                <bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
+                    <property name="serviceServletUrl" value="${serviceServletUrl}" />
+                </bean>
+                <bean class="org.kuali.rice.kcb.config.KCBConfigurer"/>
+            </list>
+        </property>
+        <!-- override web authentication service -->
+        <!-- 
+        <property name="overrideServices">
+            <list>
+                <bean class="edu.iu.uis.eden.clientapp.ServiceHolder">
+                    <property name="serviceNameSpaceURI" value=""></property>
+                    <property name="localServiceName" value="enWebAuthenticationService"></property>
+                    <property name="service">
+                        <ref bean="webAuthenticationService" />
+                    </property>
+                </bean>
+            </list>
+        </property>
+        -->
+    </bean>
+</beans>

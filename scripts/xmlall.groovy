@@ -16,7 +16,7 @@ for (arg in args) {
 }   
 
 // set up variables based on PROJECT_DIR
-MODULES = ['kns', 'kew', 'ksb', 'kim', 'ken', 'kom']
+MODULES = ['kns', 'kew', 'ksb', 'kim', 'ken', 'kom', 'kcb']
 DATA_TYPES = ['ApplicationConstants', 'users', 'workgroups', 'workgroupTypes', 'ruleAttributes',
               'ruleTemplates', 'documentTypes', 'rules', 'helpEntries', 'styles', 'edoclite' ]
 DATA_TYPE_ELEMENT = [

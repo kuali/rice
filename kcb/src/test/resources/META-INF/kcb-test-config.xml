@@ -1,0 +1,8 @@
+<!-- loaded by the KCB base unit test...just delegates to the "common-config-test-locations" xml (and alt.build location for CI) -->
+<config>
+    <param name="environment">${environment}</param>
+    <param name="module.name">kcb</param>
+	<param name="transaction.timeout">3600</param>
+    <param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
+    <param name="config.location">${alt.config.location}</param>
+</config>

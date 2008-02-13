@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<descriptor-repository version="1.0" isolation-level="repeatable-read">
+    <!-- Connection descriptor -->
+    <jdbc-connection-descriptor
+        jcd-alias="kcbDataSource"
+        default-connection="false"
+        jdbc-level="3.0"
+        eager-release="false"
+        batch-mode="false"
+        useAutoCommit="0"
+        ignoreAutoCommitExceptions="false">
+
+        <sequence-manager className="org.kuali.rice.ojb.ConfigurableSequenceManager">
+            <attribute attribute-name="property.prefix" attribute-value="datasource.ojb.sequenceManager" />
+        </sequence-manager>
+        <object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
+    </jdbc-connection-descriptor>
+
+    <!-- Messages -->
+    <class-descriptor class="org.kuali.rice.kcb.bo.Message" table="KCB_MESSAGES">
+        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KCB_MESSAGES_SEQ" />
+        <field-descriptor name="deliveryType" column="DELIVERY_TYPE" jdbc-type="VARCHAR" indexed="true" nullable="false" />
+        <field-descriptor name="creationDateTime" column="CREATED_DATETIME" jdbc-type="TIMESTAMP" nullable="false" />
+        <field-descriptor name="title" column="TITLE" jdbc-type="VARCHAR" nullable="true" />
+        <field-descriptor name="content" column="CONTENT" jdbc-type="CLOB" nullable="false" />
+        <field-descriptor name="contentType" column="CONTENT_TYPE" jdbc-type="VARCHAR" nullable="false" />
+        <field-descriptor name="recipient" column="USER_RECIPIENT_ID" jdbc-type="VARCHAR" indexed="true" nullable="false" />
+        <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
+    </class-descriptor>
+
+    <!-- MessageDelivery_s -->
+    <class-descriptor class="org.kuali.rice.kcb.bo.MessageDelivery" table="KCB_MSG_DELIVS">
+        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KCB_MSG_DELIVS_SEQ" />
+        <field-descriptor name="deliveryStatus" column="DELIVERY_STATUS" jdbc-type="VARCHAR" indexed="false" nullable="false" />
+        <field-descriptor name="delivererTypeName" column="DELIVERER_TYPE_NAME" jdbc-type="VARCHAR" indexed="true" nullable="false" />
+        <field-descriptor name="delivererSystemId" column="DELIVERER_SYSTEM_ID" jdbc-type="VARCHAR" indexed="false" nullable="true" />
+        <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
+
+        <!-- Anonymous keys - our foreign keys -->
+        <field-descriptor name="messageId" column="MESSAGE_ID" jdbc-type="BIGINT" access="anonymous" indexed="true" nullable="false" />
+
+        <!-- Object references -->
+        <reference-descriptor name="message" class-ref="org.kuali.rice.kcb.bo.Message" auto-retrieve="true" auto-update="false" auto-delete="false">
+            <foreignkey field-ref="messageId" />
+        </reference-descriptor>
+    </class-descriptor>
+
+</descriptor-repository>

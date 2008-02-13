@@ -15,6 +15,7 @@ package org.kuali.rice.test;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -283,9 +284,18 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
 
     public SpringResourceLoader getTestHarnessSpringResourceLoader() {
         if (testHarnessSpringResourceLoader == null) {
-            testHarnessSpringResourceLoader = new SpringResourceLoader(new QName("TestHarnessSpringContext"), "classpath:TestHarnessSpringBeans.xml");
+            testHarnessSpringResourceLoader = new SpringResourceLoader(new QName("TestHarnessSpringContext"), getTestHarnessSpringBeansLocation());
         }
         return testHarnessSpringResourceLoader;
+    }
+
+    /**
+     * Returns the location of the test harness spring beans context file.
+     * Subclasses may override to specify a different location.
+     * @return the location of the test harness spring beans context file.
+     */
+    protected String getTestHarnessSpringBeansLocation() {
+        return "classpath:TestHarnessSpringBeans.xml";
     }
 
     protected Config getTestHarnessConfig() throws Exception {
@@ -295,9 +305,13 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     }
 
     /**
+     * Subclasses may override this method to customize the location(s) of the Rice configuration.
+     * By default it is: classpath:META-INF/" + getModuleName().toLowerCase() + "-test-config.xml"
      * @return List of config locations to add to this tests config location.
      */
-    protected abstract List<String> getConfigLocations();
+    protected List<String> getConfigLocations() {
+        return Arrays.asList(new String[] { "classpath:META-INF/" + getModuleName().toLowerCase() + "-test-config.xml" });
+    }
 
     /**
      * same as the module directory in the project.
@@ -312,6 +326,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      * 
      * @return location of sql file containing ddl for a derby db to be ran before start up.
      */
-    protected abstract String getDerbySQLFileLocation();
+    protected String getDerbySQLFileLocation() {
+        return null;
+    }
 
 }

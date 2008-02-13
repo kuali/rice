@@ -18,8 +18,8 @@ package org.kuali.rice.kcb.test;
 import java.util.List;
 
 import org.kuali.rice.lifecycle.Lifecycle;
-import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.test.TransactionalLifecycle;
 
 /**
  * Base KCBTestCase 
@@ -49,8 +49,8 @@ public abstract class KCBTestCase extends RiceTestCase {
     @Override
     protected List<Lifecycle> getPerTestLifecycles() {
         List<Lifecycle> lifecycles = super.getPerTestLifecycles();
-        lifecycles.add(0, new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
-        //lifecycles.add(0, new TransactionalLifecycle());
+        //lifecycles.add(0, new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
+        lifecycles.add(0, new TransactionalLifecycle());
         return lifecycles;
     }
 }

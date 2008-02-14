@@ -200,6 +200,17 @@
 		</ApplicationConstant>
 	</ApplicationConstants>
 	<users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
+        <!-- Core admin user -->
+        <user>
+            <workflowId>admin</workflowId>
+            <emplId>admin</emplId>
+            <authenticationId>admin</authenticationId>
+            <uuId>admin</uuId>
+            <emailAddress>admin@localhost</emailAddress>
+            <displayName>Administrator</displayName>
+            <givenName>admin</givenName>
+            <lastName>admin</lastName>
+        </user>
 		<user>
 			<workflowId>quickstart</workflowId>
 			<emplId>quickstart</emplId>
@@ -311,6 +322,7 @@
 			<description>WorkflowAdmin</description>
 			<members>
 				<authenticationId>quickstart</authenticationId>
+                <authenticationId>admin</authenticationId>
 			</members>
 		</workgroup>
 		<workgroup>

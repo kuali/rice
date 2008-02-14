@@ -518,12 +518,10 @@ public class DocSearchCriteriaVO implements Serializable {
 	}
 
 	public List<Row> getProcessedSearchableAttributeRows() {
-		// TODO delyea - use procssor here for hidden fields?
 		return searchableAttributeRows;
 	}
 
 	public void addSearchableAttributeRow(Row row) {
-		// TODO delyea - use processor here for hidden fields?
 		searchableAttributeRows.add(row);
 	}
 

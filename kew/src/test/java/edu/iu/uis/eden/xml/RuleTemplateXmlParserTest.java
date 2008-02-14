@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.core.service.impl.DocumentServiceImpl;
 import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -36,6 +37,7 @@ import edu.iu.uis.eden.routetemplate.RuleTemplateOption;
  *
  */
 public class RuleTemplateXmlParserTest extends KEWTestCase {
+    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleTemplateXmlParserTest.class);
 
     private static final String RULE_ATTRIBUTE_ONE = "TemplateTestRuleAttribute1";
     private static final String RULE_ATTRIBUTE_TWO = "TemplateTestRuleAttribute2";
@@ -98,32 +100,55 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
     private void testListOfTemplateAttributes(List ruleTemplateAttributes, String[] activeRuleTemplateAttributeNames, String[] requiredRuleTemplateAttributeNames) {
         for (Iterator iterator = ruleTemplateAttributes.iterator(); iterator.hasNext();) {
             RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iterator.next();
-            String ruleTemplateName = templateAttribute.getRuleAttribute().getName();
-            if (requiredRuleTemplateAttributeNames != null) {
-                runTestsOnTemplateAttributeField(ruleTemplateName, templateAttribute.isRequired(), requiredRuleTemplateAttributeNames, "required");
+            String ruleAttributeName = templateAttribute.getRuleAttribute().getName();
+            
+            LOG.info("Attribute name '" + ruleAttributeName +"' active indicator is " + templateAttribute.isActive());
+            if (activeRuleTemplateAttributeNames == null) {
+                assertEquals("Active indicator should be false for all attributes but is not for attribute '" + ruleAttributeName + "'",Boolean.FALSE, templateAttribute.getActive());
+            } else {
+                runTestsOnTemplateAttributeField(ruleAttributeName, templateAttribute.isActive(), activeRuleTemplateAttributeNames, "active");
             }
-            if (activeRuleTemplateAttributeNames != null) {
-                runTestsOnTemplateAttributeField(ruleTemplateName, templateAttribute.isActive(), activeRuleTemplateAttributeNames, "active");
+
+            LOG.info("Attribute name '" + ruleAttributeName +"' required indicator is " + templateAttribute.isRequired());
+            if (requiredRuleTemplateAttributeNames == null) {
+                assertEquals("Required indicator should be false for all attributes but is not for attribute '" + ruleAttributeName + "'",Boolean.FALSE, templateAttribute.getRequired());
+            } else {
+                runTestsOnTemplateAttributeField(ruleAttributeName, templateAttribute.isRequired(), requiredRuleTemplateAttributeNames, "required");
             }
         }
     }
-
-    private void runTestsOnTemplateAttributeField(String ruleTemplateName, boolean valueToCheck, String[] attributeNamesShouldBeTrue, String errorMessageIdentifier) {
-        boolean foundAttribute = false;
-        boolean attributeIsRequired = false;
-        for (String attributeNameThatShouldPass : attributeNamesShouldBeTrue) {
-            if (ruleTemplateName.equals(attributeNameThatShouldPass)) {
-                foundAttribute = true;
-                if (!valueToCheck) {
-                    fail("Attribute with name '" + ruleTemplateName + "' should have been " + errorMessageIdentifier + " but is not");
+    
+    private void testAllAttributesActive(List activeRuleTemplateAttributes, String[] activeRuleTemplateAttributeNames) {
+        for (Iterator iterator = activeRuleTemplateAttributes.iterator(); iterator.hasNext();) {
+            RuleTemplateAttribute activeTemplateAttribute = (RuleTemplateAttribute) iterator.next();
+            String ruleAttributeName = activeTemplateAttribute.getRuleAttribute().getName();
+            assertEquals("Template Attribute with name '" + ruleAttributeName + "' has invalid active value", Boolean.TRUE, activeTemplateAttribute.getActive());
+            boolean foundAttribute = false;
+            for (int i = 0; i < activeRuleTemplateAttributeNames.length; i++) {
+                String shouldBeActiveAttributeName = activeRuleTemplateAttributeNames[i];
+                if (shouldBeActiveAttributeName.equals(ruleAttributeName)) {
+                    foundAttribute = true;
+                    break;
                 }
-                else {
-                    attributeIsRequired = true;
+            }
+            if (!foundAttribute) {
+                fail("Template Attribute with name '" + ruleAttributeName + "' should have been in active template name list but was not found");
+            }
+        }
+    }
+    
+    private void runTestsOnTemplateAttributeField(String ruleAttributeName, boolean valueToConfirm, String[] attributeNamesShouldBeTrue, String errorMessageIdentifier) {
+        boolean foundAttribute = false;
+        for (String attributeNameThatShouldPass : attributeNamesShouldBeTrue) {
+            if (ruleAttributeName.equals(attributeNameThatShouldPass)) {
+                foundAttribute = true;
+                if (!valueToConfirm) {
+                    fail("Attribute with name '" + ruleAttributeName + "' should have been " + errorMessageIdentifier + " but is not");
                 }
             }
         }
-        if ( (!foundAttribute) && (valueToCheck) ) {
-            fail("Attribute with name '" + ruleTemplateName + "' should not be " + errorMessageIdentifier + " but is");
+        if ( (!foundAttribute) && (valueToConfirm) ) {
+            fail("Attribute with name '" + ruleAttributeName + "' should not be " + errorMessageIdentifier + " but is");
         }
     }
 
@@ -136,6 +161,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_MIN_XML.fileNameParameter, null);
         RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_MIN_XML.ruleTemplateName);
         testListOfTemplateAttributes(template.getRuleTemplateAttributes(), TemplateParserGeneralFixture.VALID_TEMPLATE_MIN_XML.activeAttributeNames, TemplateParserGeneralFixture.VALID_TEMPLATE_MIN_XML.requiredAttributeNames);
+        testAllAttributesActive(template.getActiveRuleTemplateAttributes(), TemplateParserGeneralFixture.VALID_TEMPLATE_MIN_XML.activeAttributeNames);
 
         assertNoDefaultsSpecified(template);
     }
@@ -149,7 +175,8 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         
         RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_OVERWRITE.ruleTemplateName);
         testListOfTemplateAttributes(template.getRuleTemplateAttributes(), TemplateParserGeneralFixture.VALID_TEMPLATE_OVERWRITE.activeAttributeNames, TemplateParserGeneralFixture.VALID_TEMPLATE_OVERWRITE.requiredAttributeNames);
-
+        testAllAttributesActive(template.getActiveRuleTemplateAttributes(), TemplateParserGeneralFixture.VALID_TEMPLATE_OVERWRITE.activeAttributeNames);
+        
         assertNoDefaultsSpecified(template);
     }
     
@@ -162,6 +189,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         
         RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_FULL_OVERWRITE.ruleTemplateName);
         testListOfTemplateAttributes(template.getRuleTemplateAttributes(), TemplateParserGeneralFixture.VALID_TEMPLATE_FULL_OVERWRITE.activeAttributeNames, TemplateParserGeneralFixture.VALID_TEMPLATE_FULL_OVERWRITE.requiredAttributeNames);
+        testAllAttributesActive(template.getActiveRuleTemplateAttributes(), TemplateParserGeneralFixture.VALID_TEMPLATE_FULL_OVERWRITE.activeAttributeNames);
 
         assertNoDefaultsSpecified(template);
     }
@@ -458,9 +486,11 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
             String fileNameParameter = TemplateParserAttributeActivationFixture.RULE_TEMPLATE_XML_FILENAME_PARM + (currentEnum.ordinal() + 1);
             testTemplate(fileNameParameter, null);
             template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserAttributeActivationFixture.RULE_TEMPLATE_NAME);
+            assertEquals("Total Number of Active Attributes from Rule Template is wrong",currentEnum.activeAttributeNames.length,template.getActiveRuleTemplateAttributes().size());
             totalAttributes = currentEnum.activeAttributeNames.length + currentEnum.inactiveAttributeNames.length; 
             assertEquals("Total Number of Attributes from Rule Template is wrong",totalAttributes,template.getRuleTemplateAttributes().size());
             testListOfTemplateAttributes(template.getRuleTemplateAttributes(), currentEnum.activeAttributeNames, null);
+            testAllAttributesActive(template.getActiveRuleTemplateAttributes(), currentEnum.activeAttributeNames);
         }
     }
 

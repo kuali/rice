@@ -25,6 +25,12 @@ public class TestBase extends KNSTestCase {
 
     @Before
     public void setUp() throws Exception {
+        /*
+         * This overridden method is used to set up default values already contained in KNSTestCase but
+         * createproject.groovy script requires them here for replacement
+         */
+        setRelativeWebappRoot("/src/test/webapp");
+        setTestConfigFilename("classpath:META-INF/sample-app-test-config.xml");
         super.setUp();
         transactionalLifecycle = new TransactionalLifecycle();
         transactionalLifecycle.start();
@@ -39,6 +45,14 @@ public class TestBase extends KNSTestCase {
         } finally {
             super.tearDown();
         }
+    }
+
+    @Override
+    protected String getModuleName() {
+        /*
+         * This method is duplicate from KNSTestCase but exists for createproject.groovy script
+         */
+        return "kns";
     }
 
 }

@@ -11,17 +11,21 @@
 				<attribute>
 					<name>TemplateTestRuleAttribute1</name>
 					<active>false</active>
+					<required>false</required>
 				</attribute>
 				<attribute>
 					<name>TemplateTestRuleAttribute5</name>
+					<required>false</required>
 				</attribute>
 				<attribute>
 					<name>TemplateTestRuleAttribute2</name>
 					<active>true</active>
+					<required>false</required>
 				</attribute>
 				<attribute>
 					<name>TemplateTestRuleAttribute4</name>
 					<active>false</active>
+					<required>false</required>
 				</attribute>
 			</attributes>
 		</ruleTemplate>

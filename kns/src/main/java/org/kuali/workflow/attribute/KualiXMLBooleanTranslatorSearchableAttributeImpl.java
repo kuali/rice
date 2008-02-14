@@ -18,7 +18,8 @@ package org.kuali.workflow.attribute;
 import org.w3c.dom.Element;
 
 /**
- * This class...
+ * TODO delyea - documentation
+ * 
  */
 public class KualiXMLBooleanTranslatorSearchableAttributeImpl extends KualiXmlSearchableAttributeImpl {
 

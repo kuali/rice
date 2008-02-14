@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -171,17 +170,14 @@ public class RuleTemplate implements WorkflowPersistable {
     }
 
     public List<RuleTemplateAttribute> getActiveRuleTemplateAttributes() {
-        // TODO delyea - fix this once active is persisting
-        return getRuleTemplateAttributes();
-//        List activeAttributes = new ArrayList();
-//        for (Iterator iterator = getRuleTemplateAttributes().iterator(); iterator
-//                .hasNext();) {
-//            RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iterator.next();
-//            if (templateAttribute.isActive()) {
-//                activeAttributes.add(templateAttribute);
-//            }
-//        }
-//        return activeAttributes;
+        List activeAttributes = new ArrayList();
+        for (Iterator iterator = getRuleTemplateAttributes().iterator(); iterator.hasNext();) {
+            RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iterator.next();
+            if (templateAttribute.isActive()) {
+                activeAttributes.add(templateAttribute);
+            }
+        }
+        return activeAttributes;
     }
 
     /**

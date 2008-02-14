@@ -103,7 +103,6 @@ public class KEWHttpInvokerRequestExecutor extends CommonsHttpInvokerRequestExec
                     errorQualifier = "Error with given certificate";
 	                // get the Signature for verification based on the alias that was sent to us
 			        byte[] encodedCertificate = Base64.decodeBase64(certificateHeader.getValue().getBytes("UTF-8"));
-		            // TODO delyea: IS TYPE OF CERT FACTORY BELOW CORRECT?
 		            CertificateFactory cf = CertificateFactory.getInstance("X.509");
 	                signature = KSBServiceLocator.getDigitalSignatureService().getSignatureForVerification(cf.generateCertificate(new ByteArrayInputStream(encodedCertificate)));
 			    } else if (foundValidKeystoreAlias) {

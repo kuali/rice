@@ -11,10 +11,12 @@
 				<attribute>
 					<name>TemplateTestRuleAttribute1</name>
 					<active>true</active>
+					<required>false</required>
 				</attribute>
 				<attribute>
 					<name>TemplateTestRuleAttribute2</name>
 					<active>false</active>
+					<required>false</required>
 				</attribute>
 			</attributes>
 		</ruleTemplate>

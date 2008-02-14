@@ -11,6 +11,7 @@
 				<attribute>
 					<name>TemplateTestRuleAttribute2</name>
 					<active>false</active>
+					<required>false</required>
 				</attribute>
 			</attributes>
 		</ruleTemplate>

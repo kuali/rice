@@ -40,6 +40,7 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
     private static final boolean ALLOWS_RANGE_SEARCH = false;
     private static final boolean ALLOWS_CASE_INSENSITIVE_SEARCH = true;
     private static final String ATTRIBUTE_XML_REPRESENTATION = SearchableAttribute.DATA_TYPE_STRING;
+    private static final int STRING_MAX_LENGTH = 2000; // should match table creation
 
     private Long searchableAttributeValueId;
     private String searchableAttributeKey;
@@ -121,12 +122,15 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
 	}
 
 	/**
-	 * @return true
+	 * @return true if the {@code valueEntered} parameter is not null and is equal to or 
+	 * less than the specified max length defined by {@link #STRING_MAX_LENGTH}
 	 *
 	 * @see edu.iu.uis.eden.docsearch.SearchableAttributeValue#isPassesDefaultValidation()
 	 */
 	public boolean isPassesDefaultValidation(String valueEntered) {
-        // TODO delyea - length check needed?
+	    if (valueEntered != null && (valueEntered.length() > STRING_MAX_LENGTH)) {
+	        return false;
+	    }
 		return true;
 	}
 

@@ -30,6 +30,14 @@ import org.kuali.rice.test.data.UnitTestSql;
 import edu.sampleu.travel.bo.FiscalOfficer;
 import edu.sampleu.travel.bo.TravelAccount;
 
+/**
+ * This class tests KULRICE-984: Lookups - Relative Limit Gap
+ * making sure that lookup resultSetLimits set in the DD for
+ * a BO will override the system wide default.
+ *
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
+ */
 @PerTestUnitTestData(
         @UnitTestData(
                 order = {UnitTestData.Type.SQL_STATEMENTS, UnitTestData.Type.SQL_FILES},
@@ -43,14 +51,6 @@ import edu.sampleu.travel.bo.TravelAccount;
                 }
         )
 )
-/**
- * This class tests KULRICE-984: Lookups - Relative Limit Gap
- * making sure that lookup resultSetLimits set in the DD for
- * a BO will override the system wide default.
- *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
- */
 public class LookupServiceTest extends TestBase {
 
     public LookupServiceTest() {}

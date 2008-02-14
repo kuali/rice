@@ -194,7 +194,6 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             node = doc;
         }
 
-        // TODO delyea: change stylesheet to user proper names below and inside addWorkgroupRequestElement and addDelegatorElement
         Element root = doc.createElement("summarizedActionItem");
 
         // add in all items from action list as preliminary default dataset

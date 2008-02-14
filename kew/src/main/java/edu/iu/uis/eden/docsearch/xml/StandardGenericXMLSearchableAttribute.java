@@ -237,9 +237,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 		    LOG.error("setupSearchableAttributeValue() " + errorMsg);
 		    throw new RuntimeException(errorMsg);
 		}
-        // TODO delyea - should we be saving null values??
         value = (value != null) ? value.trim() : null;
-        // TODO delyea - should we use differing validation for UI vs Data Saving here?
         if ( (StringUtils.isNotBlank(value)) && (!attValue.isPassesDefaultValidation(value)) ) {
             String errorMsg = "SearchableAttributeValue with the data type '" + dataType + "', key '" + key + "', and value '" + value + "' does not pass default validation and cannot be saved to the database";
             LOG.error("setupSearchableAttributeValue() " + errorMsg);

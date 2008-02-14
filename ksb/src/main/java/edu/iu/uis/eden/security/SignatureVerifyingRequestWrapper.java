@@ -56,7 +56,6 @@ public class SignatureVerifyingRequestWrapper extends HttpServletRequestWrapper 
 		try {
             this.digitalSignature = Base64.decodeBase64(encodedSignature.getBytes("UTF-8"));
             byte[] certificate = Base64.decodeBase64(encodedCertificate.getBytes("UTF-8"));
-            // TODO delyea: IS TYPE OF CERT FACTORY BELOW CORRECT?
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
 			this.signature = KSBServiceLocator.getDigitalSignatureService().getSignatureForVerification(cf.generateCertificate(new ByteArrayInputStream(certificate)));
 		} catch (Exception e) {

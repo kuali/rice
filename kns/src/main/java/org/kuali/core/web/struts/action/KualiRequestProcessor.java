@@ -112,7 +112,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 
 	    if (!userSession.getUniversalUser().isActiveForAnyModule()) {
 		throw new RuntimeException(
-			"You cannot log in, because you are not an active Kuali user.\nPlease ask someone to activate your account, if you need to use Kuali Financial Systems.\nThe user id provided was: "
+			"You cannot log in, because you are not an active Kuali user.\nPlease ask someone to activate your account, if you need to use Kuali Systems.\nThe user id provided was: "
 				+ userSession.getUniversalUser().getPersonUserIdentifier() + ".\n");
 	    }
 	    request.getSession().setAttribute(org.kuali.RiceConstants.USER_SESSION_KEY, userSession);

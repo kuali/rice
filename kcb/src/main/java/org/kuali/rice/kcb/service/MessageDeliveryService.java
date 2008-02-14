@@ -57,10 +57,9 @@ public interface MessageDeliveryService {
 
     /**
      * This method will return all MessageDelivery objects in the system 
-     * actual record.
-     * @return List<MessageDelivery> list of MessageDelivery objects in the system
+     * @return Collection<MessageDelivery> list of MessageDelivery objects in the system
      */
-    public Collection<MessageDelivery> getMessageDeliveries();
+    public Collection<MessageDelivery> getAllMessageDeliveries();
     
     /**
      * This method will return all MessageDelievery objects generated for the given Message

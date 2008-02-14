@@ -65,14 +65,10 @@ public class MessageServiceTest extends BusinessObjectTestCase {
 
         messageService.saveMessage(m);
         assertNotNull(m.getId());
-        System.out.println(m.getId());
 
         Collection<Message> ms = messageService.getAllMessages();
         assertNotNull(ms);
         assertEquals(2, ms.size());
-        for (Message a: ms) {
-            System.out.println(a);
-        }
         
         Message m2 = messageService.getMessage(m.getId());
         assertNotNull(m2);
@@ -97,10 +93,20 @@ public class MessageServiceTest extends BusinessObjectTestCase {
         assertNull(messageService.getMessage(message.getId()));
     }
 
+    /* since OJB treats creates and updates the same, this test doesn't really test anything under OJB */
     @Test
     @Override
     public void testDuplicateCreate() {
-        messageService.saveMessage(message);
+        Message m = new Message();
+        m.setId(message.getId());
+        m.setContent(message.getContent());
+        m.setContentType(message.getContentType());
+        m.setCreationDateTime(message.getCreationDateTime());
+        m.setDeliveryType(message.getDeliveryType());
+        m.setRecipient(message.getRecipient());
+        m.setTitle(message.getTitle());
+        m.setLockVerNbr(message.getLockVerNbr());
+        messageService.saveMessage(m);
     }
 
     @Test

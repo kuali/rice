@@ -60,7 +60,7 @@ public class MessageDeliveryServiceImpl implements MessageDeliveryService {
     /**
      * @see org.kuali.rice.kcb.service.MessageDeliveryService#getMessageDeliveries()
      */
-    public Collection<MessageDelivery> getMessageDeliveries() {
+    public Collection<MessageDelivery> getAllMessageDeliveries() {
         return dao.findAll(MessageDelivery.class);
     }
 

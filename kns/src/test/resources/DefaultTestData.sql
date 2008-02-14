@@ -1,10 +1,3 @@
-insert into en_usr_t values ('admin','admin','admin','admin','admin@localhost','admin','admin','admin',to_date('01/01/2000', 'dd/mm/yyyy'),to_date('01/01/2100', 'dd/mm/yyyy'),0,0)
-;
-insert into en_wrkgrp_t values (1,1,'WorkflowAdmin',1,'W','Workflow Administrator Workgroup',1,null,0)
-;
-insert into EN_WRKGRP_MBR_T values ('admin', 1, 'U', 1, 0)
-;
-
 insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (1, 'fred')
 ;
 insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (2, 'fran')

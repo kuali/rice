@@ -22,6 +22,8 @@
         <field-descriptor name="deliveryType" column="DELIVERY_TYPE" jdbc-type="VARCHAR" indexed="true" nullable="false" />
         <field-descriptor name="creationDateTime" column="CREATED_DATETIME" jdbc-type="TIMESTAMP" nullable="false" />
         <field-descriptor name="title" column="TITLE" jdbc-type="VARCHAR" nullable="true" />
+        <field-descriptor name="channel" column="CHANNEL" jdbc-type="VARCHAR" nullable="true" />
+        <field-descriptor name="producer" column="PRODUCER" jdbc-type="VARCHAR" nullable="true" />
         <field-descriptor name="content" column="CONTENT" jdbc-type="CLOB" nullable="false" />
         <field-descriptor name="contentType" column="CONTENT_TYPE" jdbc-type="VARCHAR" nullable="false" />
         <field-descriptor name="recipient" column="USER_RECIPIENT_ID" jdbc-type="VARCHAR" indexed="true" nullable="false" />

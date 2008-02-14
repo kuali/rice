@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kcb;
-
-import org.kuali.rice.kcb.service.EmailService;
-import org.kuali.rice.kcb.service.MessageDeliveryService;
-import org.kuali.rice.kcb.service.MessageService;
+package org.kuali.rice.kcb.test;
 
 /**
- * Service locator interface for the KCB module.
+ * Constants reflecting test data that is used in tests.
+ * If tests or test data is updated, this file need to be updated
+ * to be kept in sync.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface KCBServiceLocator {
-    public MessageDeliveryService getMessageDeliveryService();
-    public MessageService getMessageService();
-    public EmailService getEmailService();
+public interface TestConstants {
+
 }

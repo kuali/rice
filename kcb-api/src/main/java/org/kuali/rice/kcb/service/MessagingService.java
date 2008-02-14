@@ -15,13 +15,26 @@
  */
 package org.kuali.rice.kcb.service;
 
+import org.kuali.rice.kcb.vo.MessageVO;
+
 /**
- * The KCB MessagingService provides an API to deliver concreteessages
+ * The KCB MessagingService provides an API to deliver messages
  * to arbitrary multiple endpoints. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface MessagingService {
-    public void deliver();
-    public void remove();
+    /**
+     * Delivers a message
+     * 
+     * @param message message to deliver
+     * @return identifier for the message
+     */
+    public long deliver(MessageVO message);
+    /**
+     * Removes a specific message and all deliveries
+     * 
+     * @param messageId id of the message to remove
+     */
+    public void remove(long messageId);
 }

@@ -17,6 +17,7 @@ package org.kuali.rice.kcb.test;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.TransactionalLifecycle;
@@ -28,6 +29,8 @@ import org.kuali.rice.test.TransactionalLifecycle;
  *
  */
 public abstract class KCBTestCase extends RiceTestCase {
+    protected final Logger LOG = Logger.getLogger(getClass());
+
     /**
      * @see org.kuali.rice.test.RiceTestCase#getModuleName()
      */

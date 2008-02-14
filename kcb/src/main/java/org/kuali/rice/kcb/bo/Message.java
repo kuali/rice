@@ -16,7 +16,6 @@
 package org.kuali.rice.kcb.bo;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -34,6 +33,8 @@ public class Message {
 
     private Long id;
     private String deliveryType;
+    private String channel;
+    private String producer;
     private Timestamp creationDateTime = new Timestamp(System.currentTimeMillis());
     private String title;
     private String content;
@@ -174,6 +175,38 @@ public class Message {
     }
 
     /**
+     * Gets the channel
+     * @return the channel
+     */
+    public String getChannel() {
+        return this.channel;
+    }
+
+    /**
+     * Sets the channel
+     * @param channel the channel
+     */
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    /**
+     * Gets the producer
+     * @return the producer
+     */
+    public String getProducer() {
+        return this.producer;
+    }
+
+    /**
+     * Sets the producer
+     * @param producer the producer
+     */
+    public void setProducer(String producer) {
+        this.producer = producer;
+    }
+
+    /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
@@ -183,6 +216,8 @@ public class Message {
                        .append("deliveryType", deliveryType)
                        .append("recipient", recipient)
                        .append("title", title)
+                       .append("channel", channel)
+                       .append("producer", producer)
                        .append("content", StringUtils.abbreviate(content, 100))
                        .append("contentType", contentType)
                        .append("lockVerNbr", lockVerNbr)

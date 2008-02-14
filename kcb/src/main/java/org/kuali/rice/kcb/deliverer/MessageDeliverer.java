@@ -18,6 +18,11 @@ package org.kuali.rice.kcb.deliverer;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import org.kuali.rice.kcb.bo.MessageDelivery;
+import org.kuali.rice.kcb.exception.ErrorList;
+import org.kuali.rice.kcb.exception.MessageDeliveryException;
+import org.kuali.rice.kcb.exception.MessageDismissalException;
+
 
 /**
  * This class represents the different types of Notification Delivery Types that the system can handle.  
@@ -42,7 +47,7 @@ public interface MessageDeliverer {
      * the method if any occurred.
      * @throws ErrorList
      */
-    public void validatePreferenceValues(HashMap prefs) /*throws ErrorList*/;
+    public void validatePreferenceValues(HashMap prefs) throws ErrorList;
     
     /**
      * This method returns the human readable name of the plugin.  This name is the 
@@ -69,16 +74,16 @@ public interface MessageDeliverer {
     /**
      * This method is responsible for delivering the passed in messageDelivery record.
      * @param messageDelivery The messageDelivery to process
-     * @throws NotificationMessageDeliveryException
+     * @throws MessageDeliveryException
      */
-    public void deliverMessage(Object messageDelivery) /*throws NotificationMessageDeliveryException*/;
+    public void deliverMessage(MessageDelivery messageDelivery) throws MessageDeliveryException;
     
     /**
      * This method handles auto removing a message delivery from a person's list of notifications.
      * @param messageDelivery The messageDelivery to auto remove
      * @throws NotificationAutoRemoveException
      */
-    public void autoRemoveMessageDelivery(Object messageDelivery) /*throws NotificationAutoRemoveException*/;
+    //public void autoRemoveMessageDelivery(MessageDelivery messageDelivery) /*throws NotificationAutoRemoveException*/;
     
     /**
      * This method dismisses/removes the NotificationMessageDelivery so that it is no longer being presented to the user
@@ -89,5 +94,5 @@ public interface MessageDeliverer {
      *        which the message was delivered (user recipient in the NotificationMessageDelivery object)
      * @param cause the reason the message was dismissed
      */
-    public void dismissMessageDelivery(Object messageDelivery, String user, String cause) /*throws NotificationMessageDismissalException*/;
+    public void dismissMessageDelivery(MessageDelivery messageDelivery, String user, String cause) throws MessageDismissalException;
 }

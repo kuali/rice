@@ -19,10 +19,8 @@
   </bean>
 
   <!-- override the notificationEmailService with a Mock implementation -->
-  <!--   
-  <bean id="notificationEmailService" class="org.kuali.notification.test.util.MockNotificationEmailServiceImpl" >
-    <property name="weburl"><value>${notification.basewebappurl}</value></property>
-    <property name="smtpHost"><value>${emailDeliverer.smtp.host}</value></property>
+  <bean id="emailService" class="org.kuali.rice.kcb.test.util.MockEmailServiceImpl" >
+    <property name="weburl"><value>${kcb.url}</value></property>
+    <property name="smtpHost"><value>${kcb.smtp.host}</value></property>
   </bean>
-   -->
 </beans>

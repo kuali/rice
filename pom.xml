@@ -131,6 +131,15 @@
 						<artifactId>maven-source-plugin</artifactId>
 						<version>2.0.2</version>
 					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.2</version>
+						<configuration>
+							<aggregate>true</aggregate>
+							<maxmemory>512m</maxmemory>
+						</configuration>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -489,16 +498,6 @@
                 <artifactId>maven-clover-plugin</artifactId>
             </plugin>
             -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<aggregate>true</aggregate>
-					<maxmemory>512m</maxmemory>
-				</configuration>
-			</plugin>
-            
 		</plugins>
 	</reporting>
 	<distributionManagement>

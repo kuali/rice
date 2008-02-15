@@ -46,5 +46,14 @@
             <foreignkey field-ref="messageId" />
         </reference-descriptor>
     </class-descriptor>
+    
+    <!-- RecipientPreference_s -->
+    <class-descriptor class="org.kuali.rice.kcb.bo.RecipientPreference" table="KCB_RECIP_PREFS">
+        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KCB_RECIP_PREFS_SEQ" />
+        <field-descriptor name="recipientId" column="RECIPIENT_ID" jdbc-type="VARCHAR" indexed="false" nullable="false" />
+        <field-descriptor name="property" column="PROPERTY" jdbc-type="VARCHAR" indexed="true" nullable="false" />
+        <field-descriptor name="value" column="VALUE" jdbc-type="VARCHAR" indexed="false" nullable="true" />
+        <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
+    </class-descriptor>
 
 </descriptor-repository>

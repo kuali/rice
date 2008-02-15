@@ -80,8 +80,7 @@
         </property>
         <property name="beanNames">
             <list>
-                <value>messageService</value>
-                <value>messageDeliveryService</value>
+                <value>*Service</value>
             </list>
         </property>
     </bean>
@@ -93,6 +92,7 @@
         <property name="messageService"><ref local="messageService"/></property>
         <property name="messageDeliveryService"><ref local="messageDeliveryService"/></property>
         <property name="messageDelivererRegistryService"><ref local="messageDelivererRegistryService"/></property>
+        <property name="recipientPreferenceService"><ref local="recipientPreferenceService"/></property>
     </bean>
 
     <bean id="messageService" class="org.kuali.rice.kcb.service.impl.MessageServiceImpl">
@@ -105,6 +105,13 @@
 
     <bean id="messageDelivererRegistryService" class="org.kuali.rice.kcb.service.impl.MessageDelivererRegistryServiceImpl"/>
 
+    <bean id="recipientPreferenceService" class="org.kuali.rice.kcb.service.impl.RecipientPreferenceServiceImpl">
+        <property name="businessObjectDao"><ref local="businessObjectDao"/></property>
+    </bean>
+
+    <bean id="emailService" class="org.kuali.rice.kcb.service.impl.EmailServiceImpl">
+        <property name="weburl" value="fakeweburl-in-KCBSpringBeans.xml"/>
+    </bean>
 <!-- 
     <bean id="sendNotificationKewXmlService" class="org.kuali.notification.service.impl.SendNotificationServiceKewXmlImpl">
       <constructor-arg><ref local="notificationService"/></constructor-arg>

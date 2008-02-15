@@ -18,6 +18,7 @@ package org.kuali.rice.kcb.service.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -60,11 +61,23 @@ public class MessageDelivererRegistryServiceImpl implements MessageDelivererRegi
     }
 
     /**
+     * @see org.kuali.rice.kcb.service.MessageDelivererRegistryService#getAllDelivererTypes()
+     */
+    public Collection<String> getAllDelivererTypes() {
+        Collection<MessageDeliverer> deliverers = getAllDeliverers();
+        Set<String> types = new HashSet<String>(deliverers.size());
+        for (MessageDeliverer deliverer: deliverers) {
+            types.add(deliverer.getName());
+        }
+        return types;
+    }
+
+    /**
      * Implements by constructing instances of each registered class and adding to an ArrayList that
      * gets passed back to the calling method.
      * @see MessageDelivererRegistryService#getAllDelivererTypes()
      */
-    public Collection<MessageDeliverer> getAllDelivererTypes() {
+    public Collection<MessageDeliverer> getAllDeliverers() {
         ArrayList<MessageDeliverer>  delivererTypes = new ArrayList<MessageDeliverer>();
 
         Set<Entry<String, Class<? extends MessageDeliverer>>> registeredTypes = messageDelivererTypes.entrySet();

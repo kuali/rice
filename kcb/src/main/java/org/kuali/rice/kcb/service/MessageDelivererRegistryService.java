@@ -27,10 +27,15 @@ import org.kuali.rice.kcb.deliverer.MessageDeliverer;
 public interface MessageDelivererRegistryService {
     /**
      * This service method is responsible for retrieving all MessageDeliverer Types.  
-     * This service is to be run periodically in a separate thread, as a daemon process.
-     * @return ArrayList of Deliverer Classes
+     * @return Collection of Deliverer Classes
      */
-    public Collection<MessageDeliverer> getAllDelivererTypes();
+    public Collection<MessageDeliverer> getAllDeliverers();
+
+    /**
+     * This service method is responsible for retrieving all MessageDeliverer Types names.  
+     * @return Collection of Deliverer Classes
+     */
+    public Collection<String> getAllDelivererTypes();
 
     /**
      * This method returns the associated deliverer class instance for the given MessageDelivery instance.

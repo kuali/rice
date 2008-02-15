@@ -28,6 +28,7 @@ import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
 import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.kcb.service.MessagingService;
+import org.kuali.rice.kcb.service.RecipientPreferenceService;
 import org.kuali.rice.kcb.vo.MessageVO;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -40,6 +41,7 @@ public class MessagingServiceImpl implements MessagingService {
     private MessageService messageService;
     private MessageDeliveryService messageDeliveryService;
     private MessageDelivererRegistryService delivererRegistry;
+    private RecipientPreferenceService recipientPrefs;
     
     /**
      * Sets the MessageService
@@ -66,6 +68,14 @@ public class MessagingServiceImpl implements MessagingService {
     @Required
     public void setMessageDelivererRegistryService(MessageDelivererRegistryService registry) {
         this.delivererRegistry = registry;
+    }
+
+    /**
+     * Sets the RecipientPreferencesService
+     * @param prefs the RecipientPreferenceService
+     */
+    public void setRecipientPreferenceService(RecipientPreferenceService prefs) {
+        this.recipientPrefs = prefs;
     }
 
     /**
@@ -132,25 +142,14 @@ public class MessagingServiceImpl implements MessagingService {
     private Set<String> getDelivererTypesForUserAndChannel(String userRecipientId, String channel) {
         Set<String> deliveryTypes = new HashSet<String>(1);
         
-        // TODO: implement once preferences are in place
-
         // manually add the default one since they don't have an option on this one
         //deliveryTypes.add(NotificationConstants.MESSAGE_DELIVERY_TYPES.DEFAULT_MESSAGE_DELIVERY_TYPE);
         
         //now look for what they've configured for themselves
-        //Iterator<UserDelivererConfig> userDelivererConfigs = userPreferenceService.getMessageDelivererConfigurationsForUserAndChannel(userRecipientId, channel).iterator();
+        Collection<String> delivererTypes= recipientPrefs.getDeliverersForRecipientAndChannel(userRecipientId, channel);
         
         // and add each config's name to the list that gets passed out, by which messages will be sent to
-        /*while(userDelivererConfigs.hasNext()) {
-            UserDelivererConfig config = userDelivererConfigs.next();
-            
-            deliveryTypes.add(config.getDelivererName());
-        }*/
-
-        // just add all of them for now
-        for (MessageDeliverer d: delivererRegistry.getAllDelivererTypes()) {
-            deliveryTypes.add(d.getName());
-        }
+        deliveryTypes.addAll(delivererTypes);
 
         return deliveryTypes;
     }

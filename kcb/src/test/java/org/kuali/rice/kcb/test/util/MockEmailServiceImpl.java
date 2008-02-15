@@ -22,16 +22,27 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kcb.service.impl.EmailServiceImpl;
+import org.kuali.rice.kcb.services.MockEmailService;
 
 /**
  * Mock EmailService implementation that does not actually send any mail
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class MockEmailServiceImpl extends EmailServiceImpl {
+public class MockEmailServiceImpl extends EmailServiceImpl implements MockEmailService {
     private static final Logger LOG = Logger.getLogger(MockEmailServiceImpl.class);
 
     public final Map<String, List<Map<String, String>>> MAILBOXES = new HashMap<String, List<Map<String, String>>>();
 
+    /**
+     * @see org.kuali.rice.kcb.services.MockEmailService#getMailBoxes()
+     */
+    public Map<String, List<Map<String, String>>> getMailBoxes() {
+        return MAILBOXES;
+    }
+
+    /**
+     * @see org.kuali.rice.kcb.service.impl.EmailServiceImpl#sendEmail(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
     @Override
     protected void sendEmail(String message, String subject, String from, String sendTo, String format) {
         LOG.info("Storing mail for user: " + sendTo + ": " + subject);

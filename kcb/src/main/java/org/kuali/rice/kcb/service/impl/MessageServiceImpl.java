@@ -31,18 +31,7 @@ import org.springframework.beans.factory.annotation.Required;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class MessageServiceImpl implements MessageService {
-    private BusinessObjectDao dao;
-
-    /**
-     * Sets our BusinessObjectDao
-     * @param bos the BusinessObjectDao
-     */
-    @Required
-    public void setBusinessObjectDao(BusinessObjectDao dao) {
-        this.dao = dao;
-    }
-
+public class MessageServiceImpl extends BusinessObjectServiceImpl implements MessageService {
     /**
      * @see org.kuali.rice.kcb.service.MessageService#deleteMessage(org.kuali.rice.kcb.bo.Message)
      */

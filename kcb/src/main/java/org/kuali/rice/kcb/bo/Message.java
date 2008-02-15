@@ -25,6 +25,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * recipient and may result in several {@link MessageDelivery}s.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+// this class could possibly just extend the MessageVO
 public class Message {
     /**
      * Field names

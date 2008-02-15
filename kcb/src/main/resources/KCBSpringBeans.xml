@@ -89,6 +89,12 @@
 
     <!-- SERVICES -->
 
+    <bean id="messagingService" class="org.kuali.rice.kcb.service.impl.MessagingServiceImpl">
+        <property name="messageService"><ref local="messageService"/></property>
+        <property name="messageDeliveryService"><ref local="messageDeliveryService"/></property>
+        <property name="messageDelivererRegistryService"><ref local="messageDelivererRegistryService"/></property>
+    </bean>
+
     <bean id="messageService" class="org.kuali.rice.kcb.service.impl.MessageServiceImpl">
         <property name="businessObjectDao"><ref local="businessObjectDao"/></property>
     </bean>
@@ -96,6 +102,8 @@
     <bean id="messageDeliveryService" class="org.kuali.rice.kcb.service.impl.MessageDeliveryServiceImpl">
         <property name="businessObjectDao"><ref local="businessObjectDao"/></property>
     </bean>
+
+    <bean id="messageDelivererRegistryService" class="org.kuali.rice.kcb.service.impl.MessageDelivererRegistryServiceImpl"/>
 
 <!-- 
     <bean id="sendNotificationKewXmlService" class="org.kuali.notification.service.impl.SendNotificationServiceKewXmlImpl">

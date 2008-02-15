@@ -30,11 +30,11 @@ public interface MessagingService {
      * @param message message to deliver
      * @return identifier for the message
      */
-    public long deliver(MessageVO message);
+    public long deliver(MessageVO message) throws /*MessageDelivery*/Exception;
     /**
      * Removes a specific message and all deliveries
      * 
      * @param messageId id of the message to remove
      */
-    public void remove(long messageId);
+    public void remove(long messageId) throws /*MessageDismissal*/Exception;
 }

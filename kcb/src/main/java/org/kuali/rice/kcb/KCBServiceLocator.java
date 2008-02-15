@@ -16,8 +16,10 @@
 package org.kuali.rice.kcb;
 
 import org.kuali.rice.kcb.service.EmailService;
+import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
 import org.kuali.rice.kcb.service.MessageService;
+import org.kuali.rice.kcb.service.MessagingService;
 
 /**
  * Service locator interface for the KCB module.
@@ -26,5 +28,7 @@ import org.kuali.rice.kcb.service.MessageService;
 public interface KCBServiceLocator {
     public MessageDeliveryService getMessageDeliveryService();
     public MessageService getMessageService();
+    public MessagingService getMessagingService();
+    public MessageDelivererRegistryService getMessageDelivererRegistryService();
     public EmailService getEmailService();
 }

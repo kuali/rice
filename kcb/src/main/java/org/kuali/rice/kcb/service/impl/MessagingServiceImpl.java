@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kcb.service;
+package org.kuali.rice.kcb.service.impl;
 
 import org.kuali.rice.kcb.bo.Message;
+import org.kuali.rice.kcb.service.MessageDeliveryService;
+import org.kuali.rice.kcb.service.MessageService;
+import org.kuali.rice.kcb.service.MessagingService;
 import org.kuali.rice.kcb.vo.MessageVO;
 import org.springframework.beans.factory.annotation.Required;
 

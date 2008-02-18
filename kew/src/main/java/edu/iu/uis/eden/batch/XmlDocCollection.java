@@ -31,6 +31,6 @@ import java.util.List;
  */
 public interface XmlDocCollection {
     File getFile();
-    List getXmlDocs();
+    List<? extends XmlDoc> getXmlDocs();
     void close() throws IOException;
 }

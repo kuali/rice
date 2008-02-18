@@ -29,6 +29,7 @@ import org.springframework.test.AssertThrows;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
+import edu.iu.uis.eden.batch.KEWXmlDataLoader;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.test.TestUtilities;
@@ -52,7 +53,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         //ultimately it is the content of RulesToImport that determines whether or not we're 
         //going to hit the rules xml parser
         InputStream xmlFile = TestUtilities.loadResource(this.getClass(), "RulesToImport.xml");
-        collections.add(getFileXmlDocCollection(xmlFile, "WorkflowUnitTestTemp"));
+        collections.add(KEWXmlDataLoader.getFileXmlDocCollection(xmlFile, "WorkflowUnitTestTemp"));
         KEWServiceLocator.getXmlIngesterService().ingest(collections, null);
         
         Thread.sleep(5000);//give cache time to reload;

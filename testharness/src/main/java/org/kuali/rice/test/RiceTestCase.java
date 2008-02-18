@@ -74,30 +74,43 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
             beforeRun();
             configureLogging();
 
-            LOG.info("test, test, test");
-
             final long initTime = System.currentTimeMillis();
 
-            this.perTestLifeCycles = getPerTestLifecycles();
-            this.suiteLifeCycles = getSuiteLifecycles();
-
-            if (!SUITE_LIFE_CYCLES_RAN) {
-                startLifecycles(this.suiteLifeCycles);
-                SUITE_LIFE_CYCLES_RAN = true;
-            }
-
-            startSuiteDataLoaderLifecycles();
-
-            startLifecycles(this.perTestLifeCycles);
+            setUpInternal();
 
             report("Time to start all Lifecycles: " + (System.currentTimeMillis() - initTime));
         } catch (Throwable e) {
             e.printStackTrace();
-            this.stopLifecycles(this.perTestLifeCycles);
+            tearDown();
             throw new RuntimeException(e);
         }
     }
-    
+
+    /**
+     * Internal setUp() implementation which is invoked by the main setUp() and wrapped
+     * with exception handling.  Subclasses should override this method if they want to
+     * add set up steps that should occur in the standard set up process, wrapped by
+     * exception handling.
+     */
+    protected void setUpInternal() throws Exception {
+
+        assertNotNull(getModuleName());
+        setModuleName(getModuleName());
+        setBaseDirSystemProperty(getModuleName());
+
+        this.perTestLifeCycles = getPerTestLifecycles();
+        this.suiteLifeCycles = getSuiteLifecycles();
+
+        if (!SUITE_LIFE_CYCLES_RAN) {
+            startLifecycles(this.suiteLifeCycles);
+            SUITE_LIFE_CYCLES_RAN = true;
+        }
+
+        startSuiteDataLoaderLifecycles();
+
+        startLifecycles(this.perTestLifeCycles);
+    }
+
     /**
      * This block is walking up the class hierarchy looking for PerSuiteUnitTestData annotations. If it finds one,
      * it will run it once, then add it to a set so that it does not get run again. This is needed so that multiple 
@@ -208,9 +221,10 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     }
 
     /**
-     * @return Lifecycles run once during the suite
+     * Returns initial lifecycles up to but excluding the ClearDatabaseLifecycle
+     * @return the initial lifecycles up to but excluding the ClearDatabaseLifecycle
      */
-    protected List<Lifecycle> getSuiteLifecycles() {
+    protected List<Lifecycle> getInitialLifecycles() {
         List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
         lifecycles.add(new Lifecycle() {
             boolean started = false;
@@ -220,8 +234,6 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
             }
 
             public void start() throws Exception {
-                setModuleName(getModuleName());
-                setBaseDirSystemProperty(getModuleName());
                 Config config = getTestHarnessConfig();
                 Core.init(config);
                 this.started = true;
@@ -249,6 +261,15 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
             }
         });
         lifecycles.add(new DerbyDBCreationLifecycle(getDerbySQLFileLocation()));
+
+        return lifecycles;
+    }
+
+    /**
+     * @return Lifecycles run once during the suite
+     */
+    protected List<Lifecycle> getSuiteLifecycles() {
+        List<Lifecycle> lifecycles = getInitialLifecycles();
         lifecycles.add(new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
         // lifecycles.add(new PerSuiteDataLoaderLifecycle(getClass()));
         return lifecycles;

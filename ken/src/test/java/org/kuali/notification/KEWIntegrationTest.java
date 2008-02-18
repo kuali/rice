@@ -36,17 +36,17 @@ public class KEWIntegrationTest extends NotificationTestCaseBase {
      */
     @Test
     public void testKEWServicesAreAccessible() throws Exception {
-	UserService userService = KEWServiceLocator.getUserService();
-	assertNotNull(userService);
-	LOG.info("Default KEW UserService: " + userService);
+        UserService userService = KEWServiceLocator.getUserService();
+        assertNotNull(userService);
+        LOG.info("Default KEW UserService: " + userService);
 
         WorkgroupService workgroupService = KEWServiceLocator.getWorkgroupService();
         assertNotNull(workgroupService);
         LOG.info("Default KEW WorkgroupService: " + workgroupService);
-        
+
         KEWXMLService notification = (KEWXMLService) GlobalResourceLoader.getService(new QName("KEN", "sendNotificationKewXmlService"));
         assertNotNull(notification);
-//        XmlIngesterService is = SpringServiceLocator..getXmlIngesterService();
+        // XmlIngesterService is = SpringServiceLocator..getXmlIngesterService();
         // check that the quickstart user is present 
         //assertNotNull(userService.getWorkflowUser(new WorkflowUserId("quickstart")));
     }

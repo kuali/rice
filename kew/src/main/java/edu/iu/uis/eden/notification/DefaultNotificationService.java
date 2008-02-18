@@ -63,12 +63,20 @@ public class DefaultNotificationService implements NotificationService {
 			ActionItem actionItem = (ActionItem) iterator.next();
 			if (!sentNotifications.contains(actionItem.getWorkflowId()) && shouldNotify(actionItem)) {
 				sentNotifications.add(actionItem.getWorkflowId());
-				ActionListImmediateEmailReminderService immediateEmailService = MessageServiceNames.getImmediateEmailService();
-				immediateEmailService.sendReminder(actionItem, RouteContext.getCurrentRouteContext().isDoNotSendApproveNotificationEmails());
+				sendNotification(actionItem);
 			}
 		}
 	}
-	
+
+	/**
+	 * Sends a notification
+	 * @param actionItem the action item
+	 */
+	protected void sendNotification(ActionItem actionItem) {
+        ActionListImmediateEmailReminderService immediateEmailService = MessageServiceNames.getImmediateEmailService();
+        immediateEmailService.sendReminder(actionItem, RouteContext.getCurrentRouteContext().isDoNotSendApproveNotificationEmails());
+	}
+
 	protected boolean shouldNotify(ActionItem actionItem) {
 		try {
 			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(actionItem.getWorkflowId()));

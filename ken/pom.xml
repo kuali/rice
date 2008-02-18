@@ -16,6 +16,7 @@
             <groupId>org.kuali.rice</groupId>
             <artifactId>rice-testharness</artifactId>
             <version>0.9.3-SNAPSHOT</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.kuali.rice</groupId>

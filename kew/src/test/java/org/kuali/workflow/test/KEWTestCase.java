@@ -13,19 +13,11 @@
  */
 package org.kuali.workflow.test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.BaseLifecycle;
@@ -33,9 +25,7 @@ import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.resourceloader.ResourceLoader;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
-import org.kuali.rice.test.DerbyDBCreationLifecycle;
 import org.kuali.rice.test.RiceTestCase;
-import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.kuali.rice.web.jetty.JettyServer;
 import org.mortbay.jetty.webapp.WebAppClassLoader;
 import org.springframework.transaction.TransactionStatus;
@@ -44,10 +34,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.batch.FileXmlDocCollection;
-import edu.iu.uis.eden.batch.StreamXmlDocCollection;
-import edu.iu.uis.eden.batch.XmlDoc;
-import edu.iu.uis.eden.batch.XmlDocCollection;
+import edu.iu.uis.eden.batch.KEWXmlDataLoader;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.test.SQLDataLoader;
 import edu.iu.uis.eden.test.TestUtilities;
@@ -61,16 +48,6 @@ import edu.iu.uis.eden.test.TestUtilities;
 public abstract class KEWTestCase extends RiceTestCase {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KEWTestCase.class);
-
-	@Override
-	protected List<String> getConfigLocations() {
-		return Arrays.asList(new String[]{"classpath:META-INF/kew-test-config.xml"});
-	}
-
-	@Override
-	protected String getDerbySQLFileLocation() {
-		return null;
-	}
 
 	@Override
 	protected String getModuleName() {
@@ -139,31 +116,22 @@ public abstract class KEWTestCase extends RiceTestCase {
 		}
 	}
 
-	@Before
+	/**
+	 * Override the RiceTestCase setUpInternal in order to set a system property beforehand,
+	 * and load test data afterwards
+	 * @see org.kuali.rice.test.RiceTestCase#setUpInternal()
+	 */
 	@Override
-	public void setUp() throws Exception {
-		try {
-			System.setProperty(EdenConstants.BOOTSTRAP_SPRING_FILE, "org/kuali/workflow/resources/TestKewSpringBeans.xml");
-			beforeRun();
-			configureLogging();
-			final long initTime = System.currentTimeMillis();
-			if (!SUITE_LIFE_CYCLES_RAN) {
-				this.suiteLifeCycles = getSuiteLifecycles();
-				startLifecycles(this.suiteLifeCycles);
-				SUITE_LIFE_CYCLES_RAN = true;
-			}
-			startSuiteDataLoaderLifecycles();
-			this.perTestLifeCycles = getPerTestLifecycles();
-			startLifecycles(this.perTestLifeCycles);
-			report("Time to start all Lifecycles: " + (System.currentTimeMillis() - initTime));
-			loadTestDataInternal();
-		} catch (Throwable e) {
-			LOG.error("An error was thrown from test setup, calling tearDown()", e);
-			tearDown();
-			throw new RuntimeException(e);
-		}
+	public void setUpInternal() throws Exception {
+	    System.setProperty(EdenConstants.BOOTSTRAP_SPRING_FILE, "org/kuali/workflow/resources/TestKewSpringBeans.xml");
+	    super.setUpInternal();
+	    loadTestDataInternal();
 	}
 
+	/**
+	 * Override the standard per-test lifecycles to prepend ClearDatabaseLifecycle and ClearCacheLifecycle
+	 * @see org.kuali.rice.test.RiceTestCase#getPerTestLifecycles()
+	 */
 	@Override
 	protected List<Lifecycle> getPerTestLifecycles() {
 		List<Lifecycle> lifecycles = new ArrayList<Lifecycle>();
@@ -173,46 +141,14 @@ public abstract class KEWTestCase extends RiceTestCase {
 		return lifecycles;
 	}
 
+	/**
+	 * Override the suite lifecycles to avoid the ClearDatabaseLifecycle (which we do on a per-test basis, as above)
+	 * and to add on a JettyServer lifecycle
+	 * @see org.kuali.rice.test.RiceTestCase#getSuiteLifecycles()
+	 */
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
-		LinkedList<Lifecycle> lifeCycles = new LinkedList<Lifecycle>();
-		lifeCycles.add(new Lifecycle() {
-			boolean started = false;
-
-			public boolean isStarted() {
-				return this.started;
-			}
-
-			public void start() throws Exception {
-				setModuleName(getModuleName());
-				setBaseDirSystemProperty(getModuleName());
-				Config config = getTestHarnessConfig();
-				Core.init(config);
-				this.started = true;
-			}
-
-			public void stop() throws Exception {
-				this.started = false;
-			}
-		});
-		lifeCycles.add(getTestHarnessSpringResourceLoader());
-		lifeCycles.add(new Lifecycle() {
-			boolean started = false;
-
-			public boolean isStarted() {
-				return this.started;
-			}
-
-			public void start() throws Exception {
-				TestHarnessServiceLocator.setContext(getTestHarnessSpringResourceLoader().getContext());
-				this.started = true;
-			}
-
-			public void stop() throws Exception {
-				this.started = false;
-			}
-		});
-		lifeCycles.add(new DerbyDBCreationLifecycle(getDerbySQLFileLocation()));
+	    List<Lifecycle> lifeCycles = super.getInitialLifecycles();
 		// we want to only clear out the quartz tables one time, therefore we want to pass this lifecycle the
 		// opposite of what is passed to the clear database lifecycle that runs on every test execution
 		JettyServer server = new JettyServer(9952, "/en-test", "/../kns/src/test/webapp/en");
@@ -221,6 +157,9 @@ public abstract class KEWTestCase extends RiceTestCase {
 		return lifeCycles;
 	}
 
+	/**
+	 * Adds any ResourceLoaders that have been registered for WebAppClassLoaders to the GlobalResourceLoader 
+	 */
 	private class InitializeGRL extends BaseLifecycle {
 		@Override
 		public void start() throws Exception {
@@ -240,8 +179,10 @@ public abstract class KEWTestCase extends RiceTestCase {
 
 	}
 
+	/**
+	 * Flushes the KEW cache(s)
+	 */
 	public class ClearCacheLifecycle extends BaseLifecycle {
-
 		@Override
 		public void stop() throws Exception {
 			KEWServiceLocator.getCacheAdministrator().flushAll();
@@ -269,59 +210,39 @@ public abstract class KEWTestCase extends RiceTestCase {
 		// problematic because of cache notification
 		// issues in certain low level constants.
 		new SQLDataLoader("DefaultTestData.sql", KEWTestCase.class).runSql();
-		this.loadXmlFile(KEWTestCase.class, "DefaultTestData.xml");
+		
+		KEWXmlDataLoader.loadXmlClassLoaderResource(KEWTestCase.class, "DefaultTestData.xml");
 	}
 
 	protected void loadXmlFile(String fileName) {
-		if (fileName.indexOf('/') < 0) {
-			this.loadXmlFile(getClass(), fileName);
-		} else {
-			loadXmlStream(getClass().getClassLoader().getResourceAsStream(fileName));
-		}
+	    try {
+	        KEWXmlDataLoader.loadXmlClassLoaderResource(getClass(), fileName);
+	    } catch (Exception e) {
+	        throw new WorkflowRuntimeException(e);
+	    }
 	}
 
 	protected void loadXmlFile(Class clazz, String fileName) {
-		InputStream xmlFile = TestUtilities.loadResource(clazz, fileName);
-		if (xmlFile == null) {
-			throw new WorkflowRuntimeException("Didn't find file " + fileName);
-		}
-		loadXmlStream(xmlFile);
+	    try {
+	        KEWXmlDataLoader.loadXmlClassLoaderResource(clazz, fileName);
+	    } catch (Exception e) {
+	        throw new WorkflowRuntimeException(e);
+	    }
 	}
 
-	protected void loadXmlFileFromFileSystem(String fileName) throws IOException {
-		loadXmlStream(new FileInputStream(fileName));
+	protected void loadXmlFileFromFileSystem(String fileName) {
+	    try {
+	        KEWXmlDataLoader.loadXmlFile(fileName);
+	    } catch (Exception e) {
+	        throw new WorkflowRuntimeException(e);
+	    }
 	}
 
 	protected void loadXmlStream(InputStream xmlStream) {
-		try {
-			List<XmlDocCollection> xmlFiles = new ArrayList<XmlDocCollection>();
-			XmlDocCollection docCollection = getFileXmlDocCollection(xmlStream, "WorkflowUnitTestTemp");
-			//XmlDocCollection docCollection = new StreamXmlDocCollection(xmlStream);
-			xmlFiles.add(docCollection);
-			KEWServiceLocator.getXmlIngesterService().ingest(xmlFiles);
-			for (Iterator iterator = docCollection.getXmlDocs().iterator(); iterator.hasNext();) {
-				XmlDoc doc = (XmlDoc) iterator.next();
-				if (!doc.isProcessed()) {
-					fail("Failed to ingest xml doc: " + doc.getName());
-				}
-			}
-		} catch (Exception e) {
-			throw new RuntimeException("Caught exception parsing xml file", e);
-		}
-
-	}
-
-	protected FileXmlDocCollection getFileXmlDocCollection(InputStream xmlFile, String tempFileName) throws IOException {
-		if (xmlFile == null) {
-			throw new RuntimeException("Didn't find the xml file " + tempFileName);
-		}
-		File temp = File.createTempFile(tempFileName, ".xml");
-		FileOutputStream fos = new FileOutputStream(temp);
-		int data = -1;
-		while ((data = xmlFile.read()) != -1) {
-			fos.write(data);
-		}
-		fos.close();
-		return new FileXmlDocCollection(temp);
+	    try {
+	        KEWXmlDataLoader.loadXmlStream(xmlStream);
+	    } catch (Exception e) {
+	        throw new WorkflowRuntimeException(e);
+	    }
 	}
 }

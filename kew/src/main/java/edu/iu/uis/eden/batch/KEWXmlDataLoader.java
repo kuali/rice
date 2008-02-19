@@ -21,7 +21,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -31,7 +30,6 @@ import org.springframework.core.io.Resource;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
-import edu.iu.uis.eden.test.TestUtilities;
 
 /**
  * This is a description of what this class does - arh14 don't forget to fill this in. 
@@ -89,7 +87,7 @@ public class KEWXmlDataLoader {
      * @throws Exception
      */
     public static void loadXmlPackageResource(Class clazz, String path) throws Exception {
-        InputStream xmlFile = TestUtilities.loadResource(clazz, path);
+        InputStream xmlFile = clazz.getResourceAsStream(path);
         if (xmlFile == null) {
             throw new WorkflowRuntimeException("Didn't find resource " + path);
         }

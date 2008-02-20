@@ -27,6 +27,7 @@ import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
 import org.kuali.rice.kcb.deliverer.impl.AOLInstantMessageDeliverer;
 import org.kuali.rice.kcb.deliverer.impl.EmailMessageDeliverer;
+import org.kuali.rice.kcb.deliverer.impl.MockMessageDeliverer;
 import org.kuali.rice.kcb.deliverer.impl.SMSMessageDeliverer;
 import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
 
@@ -52,12 +53,14 @@ public class MessageDelivererRegistryServiceImpl implements MessageDelivererRegi
         EmailMessageDeliverer email = new EmailMessageDeliverer();
         SMSMessageDeliverer sms = new SMSMessageDeliverer();
         AOLInstantMessageDeliverer aim = new AOLInstantMessageDeliverer();
+        MockMessageDeliverer mock = new MockMessageDeliverer();
 
-        messageDelivererTypes = new HashMap<String, Class<? extends MessageDeliverer>>(2);
+        messageDelivererTypes = new HashMap<String, Class<? extends MessageDeliverer>>(4);
         //messageDelivererTypes.put(kewActionList.getName(), kewActionList.getClass());
         messageDelivererTypes.put(email.getName(), email.getClass());
-        //messageDelivererTypes.put(sms.getName(), sms.getClass());
-        //messageDelivererTypes.put(aim.getName(), aim.getClass());
+        messageDelivererTypes.put(sms.getName(), sms.getClass());
+        messageDelivererTypes.put(aim.getName(), aim.getClass());
+        messageDelivererTypes.put(mock.getName(), mock.getClass());
     }
 
     /**

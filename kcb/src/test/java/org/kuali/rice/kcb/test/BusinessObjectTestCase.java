@@ -22,41 +22,41 @@ public abstract class BusinessObjectTestCase extends KCBTestCase {
 	/**
 	 * This method should be overridden to test creation
 	 */
-    public abstract void testCreate();
+    public abstract void testCreate() throws Exception;
     /**
      * This method should be overridden to test invalid creation
      */
-    public void testInvalidCreate() {}
+    public void testInvalidCreate() throws Exception {}
     /**
      * This method should be overridden to test duplicate creation
      */
-    public void testDuplicateCreate() {}
+    public void testDuplicateCreate() throws Exception {}
     /**
      * This method should be overridden to test retrieval by id
      */
-    public abstract void testReadById();
+    public void testReadById() throws Exception {};
     /**
      * This method should be overridden to test retrieval
      */
-    public void testReadByQuery() {}
+    public void testReadByQuery() throws Exception {}
     /**
      * This method should be overridden to test an invalid retrieval
      */
-    public void testInvalidRead() {}
+    public void testInvalidRead() throws Exception {}
     /**
      * This method should be overridden to test updating
      */
-    public abstract void testUpdate();
+    public abstract void testUpdate() throws Exception;
     /**
      * This method should be overridden to test an invalid update
      */
-    public void testInvalidUpdate() {}
+    public void testInvalidUpdate() throws Exception {}
     /**
      * This method should be overridden to test delete
      */
-    public abstract void testDelete();
+    public abstract void testDelete() throws Exception;
     /**
      * This method should be overridden to test an invalid delete
      */
-    public void testInvalidDelete() {}
+    public void testInvalidDelete() throws Exception {}
 }

@@ -20,10 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.kuali.rice.kcb.bo.Message;
-import org.kuali.rice.kcb.bo.MessageDelivery;
-import org.kuali.rice.kcb.dao.BusinessObjectDao;
 import org.kuali.rice.kcb.service.MessageService;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * MessageService implementation 

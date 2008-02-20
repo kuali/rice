@@ -1,0 +1,90 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.kcb.deliverer.impl;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.kuali.rice.kcb.bo.MessageDelivery;
+import org.kuali.rice.kcb.deliverer.MessageDeliverer;
+import org.kuali.rice.kcb.exception.ErrorList;
+import org.kuali.rice.kcb.exception.MessageDeliveryException;
+import org.kuali.rice.kcb.exception.MessageDismissalException;
+
+/**
+ * A mock message deliverer that does nothing 
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
+ */
+public class MockMessageDeliverer implements MessageDeliverer {
+    /**
+     * Map of deliveries
+     */
+    private final Map<Long, MessageDelivery> deliveries = new HashMap<Long, MessageDelivery>();
+
+    /**
+     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#deliverMessage(org.kuali.rice.kcb.bo.MessageDelivery)
+     */
+    public void deliverMessage(MessageDelivery messageDelivery) throws MessageDeliveryException {
+        deliveries.put(messageDelivery.getId(), messageDelivery);
+    }
+
+    /**
+     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#dismissMessageDelivery(org.kuali.rice.kcb.bo.MessageDelivery, java.lang.String, java.lang.String)
+     */
+    public void dismissMessageDelivery(MessageDelivery messageDelivery, String user, String cause) throws MessageDismissalException {
+        deliveries.remove(messageDelivery.getId());
+
+    }
+
+    /**
+     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#getDescription()
+     */
+    public String getDescription() {
+        return getName();
+    }
+
+    /**
+     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#getName()
+     */
+    public String getName() {
+        return "MockDeliverer";
+    }
+
+    /**
+     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#getPreferenceKeys()
+     */
+    public LinkedHashMap<String, String> getPreferenceKeys() {
+        // none for now
+        return new LinkedHashMap<String, String>();
+    }
+
+    /**
+     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#getTitle()
+     */
+    public String getTitle() {
+        return getName();
+    }
+
+    /**
+     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#validatePreferenceValues(java.util.HashMap)
+     */
+    public void validatePreferenceValues(HashMap prefs) throws ErrorList {
+        // no validation for now
+    }
+}

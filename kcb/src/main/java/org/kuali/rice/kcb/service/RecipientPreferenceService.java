@@ -18,6 +18,7 @@ package org.kuali.rice.kcb.service;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
 import org.kuali.rice.kcb.bo.RecipientPreference;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
 import org.kuali.rice.kcb.exception.ErrorList;
@@ -53,6 +54,28 @@ public interface RecipientPreferenceService {
      * @param pref the preference
      */
     public void saveRecipientPreference(RecipientPreference pref);
+    
+    /**
+     * This method will delete a specific user recipient preference from the system.
+     * @param pref the preference
+     */
+    public void deleteRecipientPreference(RecipientPreference pref);
+
+    // deliverer configuration
+    
+    /**
+     * This method will remove all user deliverer configuration preference in the system.
+     * @param recipientId the recipient id
+     */
+    public void removeRecipientDelivererConfigs(String recipientId);
+    
+    /**
+     * This method will save a user deliverer configuration preference in the system.
+     * @param recipientId the recipient id
+     * @param delivererName the deliverer name
+     * @param channels the channels for which to enable the deliverer
+     */
+    public void saveRecipientDelivererConfig(String recipientId, String delivererName, String[] channels);
 
     /**
      * This method will retrieve all of the message deliverer configurations for a given user, associated with a 
@@ -60,11 +83,11 @@ public interface RecipientPreferenceService {
      * @param recipientId
      * @param channel
      */
-    public Collection<String> getDeliverersForRecipientAndChannel(String recipientId, String channel);
+    public Collection<RecipientDelivererConfig> getDeliverersForRecipientAndChannel(String recipientId, String channel);
     
     /**
      * This method will retrieve all of the message deliverer configurations for a given user 
      * @param recipientId
      */
-    public Collection<String> getDeliverersForRecipient(String recipientId);
+    public Collection<RecipientDelivererConfig> getDeliverersForRecipient(String recipientId);
 }

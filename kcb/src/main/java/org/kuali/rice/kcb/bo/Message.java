@@ -48,6 +48,28 @@ public class Message {
     private Integer lockVerNbr;
 
     /**
+     * Normal no-arg constructor
+     */
+    public Message() {}
+
+    /**
+     * Shallow-copy constructor
+     * @param m Message object to (shallow) copy
+     */
+    public Message(Message m) {
+        this.id = m.id;
+        this.channel = m.channel;
+        this.content = m.content;
+        this.contentType = m.contentType;
+        this.creationDateTime = m.creationDateTime;
+        this.deliveryType = m.deliveryType;
+        this.lockVerNbr = m.lockVerNbr;
+        this.producer = m.producer;
+        this.recipient = m.recipient;
+        this.title = m.title;
+    }
+    
+    /**
      * Gets the id attribute. 
      * @return Returns the id.
      */
@@ -210,6 +232,7 @@ public class Message {
     /**
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this)
                        .append("id", id)

@@ -22,6 +22,7 @@ import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.kcb.test.BusinessObjectTestCase;
+import org.kuali.rice.kcb.test.TestData;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
@@ -35,22 +36,15 @@ import org.springframework.test.AssertThrows;
  */
 public class MessageServiceTest extends BusinessObjectTestCase {
     private MessageService messageService;
-    private Message message;
+    private Message MESSAGE;
     
     @Override
     public void setUp() throws Exception {
         super.setUp();
     
         messageService = GlobalKCBServiceLocator.getInstance().getMessageService();
-
-        message = new Message();
-        message.setContent("test content 1");
-        message.setContentType("test content type 1");
-        message.setDeliveryType("test delivery type 1");
-        message.setRecipient("test recipient 1");
-        message.setTitle("test title 1");
-
-        messageService.saveMessage(message);
+        MESSAGE = TestData.getMessage1();
+        messageService.saveMessage(MESSAGE);
     }
 
     @Test
@@ -58,6 +52,7 @@ public class MessageServiceTest extends BusinessObjectTestCase {
     public void testCreate() {
         Message m = new Message();
         m.setContent("test content 2");
+        m.setChannel("channel2");
         m.setContentType("test content type 2");
         m.setDeliveryType("test delivery type 2");
         m.setRecipient("test recipient 2");
@@ -72,40 +67,28 @@ public class MessageServiceTest extends BusinessObjectTestCase {
         
         Message m2 = messageService.getMessage(m.getId());
         assertNotNull(m2);
-        assertNotNull(m2.getId());
-        assertNotNull(m2.getCreationDateTime());
-        assertEquals(m.getContent(), m2.getContent());
-        assertEquals(m.getContentType(), m2.getContentType());
-        assertEquals(m.getDeliveryType(), m2.getDeliveryType());
-        assertEquals(m.getRecipient(), m2.getRecipient());
-        assertEquals(m.getTitle(), m2.getTitle());
+        
+        assertEquals(m, m2);
     }
 
     @Test
     @Override
     public void testDelete() {
-        messageService.deleteMessage(message);
+        messageService.deleteMessage(MESSAGE);
         
         Collection<Message> ms = messageService.getAllMessages();
         assertNotNull(ms);
         assertEquals(0, ms.size());
         
-        assertNull(messageService.getMessage(message.getId()));
+        assertNull(messageService.getMessage(MESSAGE.getId()));
     }
 
-    /* since OJB treats creates and updates the same, this test doesn't really test anything under OJB */
+    /* since OJB treats creates and updates the same, and we have no constraints,
+       this test doesn't really test anything under OJB */
     @Test
     @Override
     public void testDuplicateCreate() {
-        Message m = new Message();
-        m.setId(message.getId());
-        m.setContent(message.getContent());
-        m.setContentType(message.getContentType());
-        m.setCreationDateTime(message.getCreationDateTime());
-        m.setDeliveryType(message.getDeliveryType());
-        m.setRecipient(message.getRecipient());
-        m.setTitle(message.getTitle());
-        m.setLockVerNbr(message.getLockVerNbr());
+        Message m = new Message(MESSAGE);
         messageService.saveMessage(m);
     }
 
@@ -114,7 +97,6 @@ public class MessageServiceTest extends BusinessObjectTestCase {
     public void testInvalidCreate() {
         final Message m = new Message();
         new AssertThrows(DataIntegrityViolationException.class) {
-            @Override
             public void test() throws Exception {
                 messageService.saveMessage(m);
             }
@@ -139,17 +121,16 @@ public class MessageServiceTest extends BusinessObjectTestCase {
     @Test
     @Override
     public void testInvalidRead() {
-        super.testInvalidRead();Message m = messageService.getMessage(Long.valueOf(-1));
+        Message m = messageService.getMessage(Long.valueOf(-1));
         assertNull(m);
     }
 
     @Test
     @Override
     public void testInvalidUpdate() {
-        final Message m = messageService.getMessage(message.getId());
-        m.setContentType(null);
+        final Message m = messageService.getMessage(MESSAGE.getId());
+        m.setChannel(null);
         new AssertThrows(DataAccessException.class) {
-            @Override
             public void test() throws Exception {
                 messageService.saveMessage(m);
             }
@@ -161,21 +142,15 @@ public class MessageServiceTest extends BusinessObjectTestCase {
     @Test
     @Override
     public void testReadById() {
-        Message m = messageService.getMessage(message.getId());
+        Message m = messageService.getMessage(MESSAGE.getId());
 
-        assertEquals(message.getId(), m.getId());
-        assertEquals(message.getCreationDateTime(), m.getCreationDateTime());
-        assertEquals(message.getContent(), m.getContent());
-        assertEquals(message.getContentType(), m.getContentType());
-        assertEquals(message.getDeliveryType(), m.getDeliveryType());
-        assertEquals(message.getRecipient(), m.getRecipient());
-        assertEquals(message.getTitle(), m.getTitle());
+        assertEquals(MESSAGE, m);
     }
 
     @Test
     @Override
     public void testUpdate() {
-        Message m = messageService.getMessage(message.getId());
+        Message m = messageService.getMessage(MESSAGE.getId());
         m.setTitle("A better title");
         m.setContent("different content");
         messageService.saveMessage(m);
@@ -183,12 +158,21 @@ public class MessageServiceTest extends BusinessObjectTestCase {
         Message m2 = messageService.getMessage(m.getId());
         assertNotNull(m2);
         
-        assertEquals(m.getId(), m2.getId());
-        assertEquals(m.getCreationDateTime(), m2.getCreationDateTime());
-        assertEquals(m.getContent(), m2.getContent());
-        assertEquals(m.getContentType(), m2.getContentType());
-        assertEquals(m.getDeliveryType(), m2.getDeliveryType());
-        assertEquals(m.getRecipient(), m2.getRecipient());
-        assertEquals(m.getTitle(), m2.getTitle());
+        assertEquals(m, m2);
+    }
+    
+    /**
+     * Asserts that an actual Message is equal to an expected Message
+     * @param expected the expected Message
+     * @param actual the actual Message
+     */
+    private void assertEquals(Message expected, Message actual) {
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getCreationDateTime(), actual.getCreationDateTime());
+        assertEquals(expected.getContent(), actual.getContent());
+        assertEquals(expected.getContentType(), actual.getContentType());
+        assertEquals(expected.getDeliveryType(), actual.getDeliveryType());
+        assertEquals(expected.getRecipient(), actual.getRecipient());
+        assertEquals(expected.getTitle(), actual.getTitle());
     }
 }

@@ -23,7 +23,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * they have an instance of this entity.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class MessageDelivery  {
+public class MessageDelivery {
     /**
      * Field names
      */
@@ -51,7 +51,20 @@ public class MessageDelivery  {
      */
     public MessageDelivery() {
     }
-    
+
+    /**
+     * Shallow-copy constructor
+     * @param md MessageDelivery to (shallow) copy
+     */
+    public MessageDelivery(MessageDelivery md) {
+        this.id = md.id;
+        this.delivererTypeName = md.delivererTypeName;
+        this.deliveryStatus = md.deliveryStatus;
+        this.delivererSystemId = md.delivererSystemId;
+        this.message = md.message;
+        this.lockVerNbr = md.lockVerNbr;
+    }
+
     /**
      * Gets the id attribute. 
      * @return Returns the id.

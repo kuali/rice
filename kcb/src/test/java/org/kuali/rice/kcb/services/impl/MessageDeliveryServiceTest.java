@@ -24,6 +24,7 @@ import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
 import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.kcb.test.BusinessObjectTestCase;
+import org.kuali.rice.kcb.test.TestData;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
@@ -38,8 +39,8 @@ import org.springframework.test.AssertThrows;
 public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
     private MessageService messageService;
     private MessageDeliveryService messageDeliveryService;
-    private Message message;
-    private MessageDelivery messageDelivery;
+    private Message MESSAGE;
+    private MessageDelivery MESSAGE_DELIV;
     
     @Override
     public void setUp() throws Exception {
@@ -48,21 +49,13 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
         messageService = GlobalKCBServiceLocator.getInstance().getMessageService();
         messageDeliveryService = GlobalKCBServiceLocator.getInstance().getMessageDeliveryService();
 
-        message = new Message();
-        message.setContent("test content 1");
-        message.setContentType("test content type 1");
-        message.setDeliveryType("test delivery type 1");
-        message.setRecipient("test recipient 1");
-        message.setTitle("test title 1");
-
-        messageService.saveMessage(message);
+        MESSAGE = TestData.getMessage1();
+        messageService.saveMessage(MESSAGE);
         
-        messageDelivery = new MessageDelivery();
-        messageDelivery.setDelivererTypeName("email");
-        messageDelivery.setDeliveryStatus("abcd");
-        messageDelivery.setMessage(message);
+        MESSAGE_DELIV = TestData.getMessageDelivery1();
+        MESSAGE_DELIV.setMessage(MESSAGE);
         
-        messageDeliveryService.saveMessageDelivery(messageDelivery);
+        messageDeliveryService.saveMessageDelivery(MESSAGE_DELIV);
     }
 
     @Test
@@ -71,7 +64,7 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
         MessageDelivery md = new MessageDelivery();
         md.setDelivererTypeName("pigeon");
         md.setDeliveryStatus("in flight");
-        md.setMessage(message);
+        md.setMessage(MESSAGE);
         
         messageDeliveryService.saveMessageDelivery(md);
 
@@ -82,39 +75,39 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
         
         MessageDelivery md2 = messageDeliveryService.getMessageDelivery(md.getId());
         assertNotNull(md2);
-        assertNotNull(md2.getId());
-        assertNotNull(md2.getMessage());
-        assertEquals(md.getDelivererSystemId(), md2.getDelivererSystemId());
-        assertEquals(md.getDelivererTypeName(), md2.getDelivererTypeName());
-        assertEquals(md.getDeliveryStatus(), md2.getDeliveryStatus());
-        assertEquals(md.getMessage().getId(), md2.getMessage().getId());
         
+        assertEquals(md, md2);
     }
 
     @Test
     @Override
     public void testDelete() {
-        messageDeliveryService.deleteMessageDelivery(messageDelivery);
+        messageDeliveryService.deleteMessageDelivery(MESSAGE_DELIV);
 
         Collection<MessageDelivery> ms = messageDeliveryService.getAllMessageDeliveries();
         assertNotNull(ms);
         assertEquals(0, ms.size());
         
-        assertNull(messageDeliveryService.getMessageDelivery(messageDelivery.getId()));
+        assertNull(messageDeliveryService.getMessageDelivery(MESSAGE_DELIV.getId()));
     }
 
-    /* since OJB treats creates and updates the same, this test doesn't really test anything under OJB */ 
     @Test
     @Override
     public void testDuplicateCreate() {
-        MessageDelivery md = new MessageDelivery();
-        md.setId(messageDelivery.getId());
-        md.setDelivererSystemId(messageDelivery.getDelivererSystemId());
-        md.setDelivererTypeName(messageDelivery.getDelivererTypeName());
-        md.setDeliveryStatus(messageDelivery.getDeliveryStatus());
-        md.setLockVerNbr(messageDelivery.getLockVerNbr());
-        md.setMessage(message);
-        messageDeliveryService.saveMessageDelivery(md);
+        // violates messageid-deliverer constraint
+        final MessageDelivery md = new MessageDelivery();
+        md.setId(TestData.FAKE_ID);
+        md.setDelivererSystemId(MESSAGE_DELIV.getDelivererSystemId());
+        md.setDelivererTypeName(MESSAGE_DELIV.getDelivererTypeName());
+        md.setDeliveryStatus(MESSAGE_DELIV.getDeliveryStatus());
+        md.setLockVerNbr(MESSAGE_DELIV.getLockVerNbr());
+        md.setMessage(MESSAGE);
+
+        new AssertThrows(DataIntegrityViolationException.class) {
+            public void test() throws Exception {
+                messageDeliveryService.saveMessageDelivery(md);                
+            }
+        }.runTest();
     }
 
     @Test
@@ -122,7 +115,6 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
     public void testInvalidCreate() {
         final MessageDelivery m = new MessageDelivery();
         new AssertThrows(DataIntegrityViolationException.class) {
-            @Override
             public void test() throws Exception {
                 messageDeliveryService.saveMessageDelivery(m);
             }
@@ -154,7 +146,7 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
     @Test
     @Override
     public void testInvalidUpdate() {
-        final MessageDelivery m = messageDeliveryService.getMessageDelivery(messageDelivery.getId());
+        final MessageDelivery m = messageDeliveryService.getMessageDelivery(MESSAGE_DELIV.getId());
         m.setDeliveryStatus(null);
         new AssertThrows(DataAccessException.class) {
             @Override
@@ -168,19 +160,15 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
     @Test
     @Override
     public void testReadById() {
-        MessageDelivery m = messageDeliveryService.getMessageDelivery(messageDelivery.getId());
+        MessageDelivery m = messageDeliveryService.getMessageDelivery(MESSAGE_DELIV.getId());
 
-        assertEquals(messageDelivery.getId(), m.getId());
-        assertEquals(messageDelivery.getDelivererSystemId(), m.getDelivererSystemId());
-        assertEquals(messageDelivery.getDelivererTypeName(), m.getDelivererTypeName());
-        assertEquals(messageDelivery.getDeliveryStatus(), m.getDeliveryStatus());
-        assertEquals(messageDelivery.getMessage().getId(), m.getMessage().getId());
+        assertEquals(MESSAGE_DELIV, m);
     }
 
     @Test
     @Override
     public void testUpdate() {
-        MessageDelivery m = messageDeliveryService.getMessageDelivery(messageDelivery.getId());
+        MessageDelivery m = messageDeliveryService.getMessageDelivery(MESSAGE_DELIV.getId());
         m.setDelivererTypeName("eagle");
         m.setDeliveryStatus("soaring");
         m.setDelivererSystemId("1234");
@@ -189,10 +177,14 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
         MessageDelivery m2 = messageDeliveryService.getMessageDelivery(m.getId());
         assertNotNull(m2);
         
-        assertEquals(m.getId(), m2.getId());
-        assertEquals(m.getDelivererSystemId(), m2.getDelivererSystemId());
-        assertEquals(m.getDelivererTypeName(), m2.getDelivererTypeName());
-        assertEquals(m.getDeliveryStatus(), m2.getDeliveryStatus());
-        assertEquals(m.getMessage().getId(), m2.getMessage().getId());
+        assertEquals(m, m2);
+    }
+    
+    private void assertEquals(MessageDelivery expected, MessageDelivery actual) {
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getDelivererSystemId(), actual.getDelivererSystemId());
+        assertEquals(expected.getDelivererTypeName(), actual.getDelivererTypeName());
+        assertEquals(expected.getDeliveryStatus(), actual.getDeliveryStatus());
+        assertEquals(expected.getMessage().getId(), actual.getMessage().getId());
     }
 }

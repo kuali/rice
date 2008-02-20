@@ -53,6 +53,7 @@ public abstract class KCBTestCase extends RiceTestCase {
     protected List<Lifecycle> getPerTestLifecycles() {
         List<Lifecycle> lifecycles = super.getPerTestLifecycles();
         //lifecycles.add(0, new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
+        //lifecycles.add(0, new SQLDataLoaderLifecycle("classpath:KCBDefaultTestData.sql", "/"));
         lifecycles.add(0, new TransactionalLifecycle());
         return lifecycles;
     }

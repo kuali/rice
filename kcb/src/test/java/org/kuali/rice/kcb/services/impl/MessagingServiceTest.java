@@ -40,14 +40,18 @@ public class MessagingServiceTest extends KCBTestCase {
     
         messagingService = GlobalKCBServiceLocator.getInstance().getMessagingService();
         messageDeliveryService = GlobalKCBServiceLocator.getInstance().getMessageDeliveryService();
+        
+        GlobalKCBServiceLocator.getInstance().getRecipientPreferenceService().saveRecipientDelivererConfig("user1", "mock", new String[] { "channel1" });
+        GlobalKCBServiceLocator.getInstance().getRecipientPreferenceService().saveRecipientDelivererConfig("user1", "sms", new String[] { "channel1" });
     }
 
     protected long deliver() throws Exception {
         MessageVO message = new MessageVO();
         message.setContent("test content 1");
+        message.setChannel("channel1");
         message.setContentType("test content type 1");
         message.setDeliveryType("test delivery type 1");
-        message.setRecipient("test recipient 1");
+        message.setRecipient("user1");
         message.setTitle("test title 1");
 
         long id = messagingService.deliver(message);
@@ -56,7 +60,7 @@ public class MessagingServiceTest extends KCBTestCase {
         assertNotNull(deliveries);
         // HACK: for now our impl just creates deliveries for all deliverer types because we don't have preferences yet
         // so there should be exactly as many deliveries as deliverer types
-        assertEquals(GlobalKCBServiceLocator.getInstance().getMessageDelivererRegistryService().getAllDelivererTypes().size(),
+        assertEquals(GlobalKCBServiceLocator.getInstance().getRecipientPreferenceService().getDeliverersForRecipientAndChannel("user1", "channel1").size(),
                      deliveries.size());
         
         return id;

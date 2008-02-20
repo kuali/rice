@@ -21,6 +21,7 @@ import java.util.Set;
 
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
+import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
 import org.kuali.rice.kcb.exception.MessageDeliveryException;
 import org.kuali.rice.kcb.exception.MessageDismissalException;
@@ -85,6 +86,7 @@ public class MessagingServiceImpl implements MessagingService {
         Message m = new Message();
         m.setTitle(message.getTitle());
         m.setDeliveryType(message.getDeliveryType());
+        m.setChannel(message.getChannel());
         m.setRecipient(message.getRecipient());
         m.setContentType(message.getContentType());
         m.setContent(message.getContent());
@@ -106,7 +108,7 @@ public class MessagingServiceImpl implements MessagingService {
             
             messageDeliveryService.saveMessageDelivery(delivery);
         }
-       
+
         return m.getId();
     }
 
@@ -146,10 +148,11 @@ public class MessagingServiceImpl implements MessagingService {
         //deliveryTypes.add(NotificationConstants.MESSAGE_DELIVERY_TYPES.DEFAULT_MESSAGE_DELIVERY_TYPE);
         
         //now look for what they've configured for themselves
-        Collection<String> delivererTypes= recipientPrefs.getDeliverersForRecipientAndChannel(userRecipientId, channel);
+        Collection<RecipientDelivererConfig> deliverers = recipientPrefs.getDeliverersForRecipientAndChannel(userRecipientId, channel);
         
-        // and add each config's name to the list that gets passed out, by which messages will be sent to
-        deliveryTypes.addAll(delivererTypes);
+        for (RecipientDelivererConfig cfg: deliverers) {
+            deliveryTypes.add(cfg.getDelivererName());
+        }
 
         return deliveryTypes;
     }

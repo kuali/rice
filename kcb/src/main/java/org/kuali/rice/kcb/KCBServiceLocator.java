@@ -20,6 +20,7 @@ import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
 import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.kcb.service.MessagingService;
+import org.kuali.rice.kcb.service.RecipientPreferenceService;
 
 /**
  * Service locator interface for the KCB module.
@@ -31,4 +32,5 @@ public interface KCBServiceLocator {
     public MessagingService getMessagingService();
     public MessageDelivererRegistryService getMessageDelivererRegistryService();
     public EmailService getEmailService();
+    public RecipientPreferenceService getRecipientPreferenceService();
 }

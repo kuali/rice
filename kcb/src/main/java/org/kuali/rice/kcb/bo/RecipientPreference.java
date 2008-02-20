@@ -23,7 +23,13 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * used by the tickler plugins which will need a generic and dynamic structure for user specific settings.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RecipientPreference {
+public class RecipientPreference /*implements Cloneable*/ {
+    /**
+     * Field names for queries
+     */
+    public static final String RECIPIENT_FIELD = "recipientId";
+    public static final String PROPERTY_FIELD = "property";
+
     private Long id;
     private String recipientId;
     private String property;
@@ -113,16 +119,26 @@ public class RecipientPreference {
     public void setLockVerNbr(Integer lockVerNbr) {
         this.lockVerNbr = lockVerNbr;
     }
-    
+
+    /**
+     * @see java.lang.Object#clone()
+     */
+//    @Override
+//    public Object clone() throws CloneNotSupportedException {
+//        return super.clone();
+//    }
+
     /**
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id)
-                                        .append("recipientId", recipientId)
-                                        .append("property", property)
-                                        .append("value", value)
-                                        .append("lockVerNbr", lockVerNbr)
-                                        .toString();
+        return new ToStringBuilder(this)
+                       .append("id", id)
+                       .append("recipientId", recipientId)
+                       .append("property", property)
+                       .append("value", value)
+                       .append("lockVerNbr", lockVerNbr)
+                       .toString();
     }
 }

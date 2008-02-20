@@ -20,6 +20,10 @@
 		<property name="dist.binary.webcontent.dir" value="${dist.binary.dir}/webcontent"/>
 		<property name="dist.binary.config.dir" value="${dist.binary.dir}/config"/>
 		<property name="dist.src.dir" value="${dist.build.dir}/dist-src/rice-${maven.project.version}-src"/>
+		
+		<property environment="env"/>
+	    <!-- if the M2_HOME is already defined in the environment, use it -->
+		<property name="maven.home.directory" value="${env.M2_HOME}"/>
 		<mkdir dir="${dist.build.dir}"/>
 	</target>
 	
@@ -31,6 +35,31 @@
 	<target name="clean-maven" depends="init">
 		<maven goals="clean"/>
 	</target>
+	
+	<target name="update-eclipse-classpath" depends="init">
+	    <maven goals="eclipse:eclipse" options="-DdownloadSources=true"/>
+		<antcall target="merge-module-classpaths"/>
+    </target>
+	
+	
+	<target name="merge-module-classpaths" depends="init">
+		<dirname property="project.dir" file="${ant.file}"/>
+		<java classname="org.codehaus.groovy.tools.GroovyStarter">
+            <arg value="--main"/>
+			<arg value="groovy.ui.GroovyMain"/>
+            <arg value="${project.dir}/scripts/merge_module_classpaths.groovy"/>
+			<arg value="${project.dir}"/>
+			<classpath>
+                <fileset dir="${project.dir}/scripts/">
+                    <include name="groovy-*/lib/*.jar" />
+                </fileset>
+            </classpath>
+        </java>
+	</target>
+
+	<target name="update-maven-repository" depends="init">
+        <maven goals="dependency:resolve"/>
+    </target>
 
 	<target name="install-rice-jars" depends="init">
 		<maven goals="install" options="-Dmaven.test.skip=true" />

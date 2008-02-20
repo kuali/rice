@@ -45,7 +45,7 @@
         <allowsNewOrCopy>true</allowsNewOrCopy>
 
         <maintainableSections>
-            <maintainableSection title="Edit Organization">
+            <maintainableSection title="Edit Organization Context">
                 <maintainableItems>
                     <maintainableField name="id" required="true" readOnly="true" />
                      <maintainableField name="name" required="true" />
@@ -53,6 +53,18 @@
                      <maintainableField name="versionNumber" />
                 </maintainableItems>
             </maintainableSection>
+             <maintainableSection title="Organizations">
+                <maintainableItems>
+                    <maintainableCollection name="organizations"
+                        businessObjectClass="org.kuali.rice.kom.bo.Organization"  includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kom.bo.Organization" sourceAttributeName="organizations" includeAddLine="true" summaryTitle="Organizations">
+                        <maintainableField name="id" required="true"
+                            readOnly="true" readOnlyAfterAdd="true" template="id" />
+                      <maintainableField name="shortName" readOnly="true" />
+                      <maintainableField name="name" readOnly="true"/>
+                     <maintainableField name="versionNumber" />
+                    </maintainableCollection>
+                </maintainableItems>
+              </maintainableSection>
         </maintainableSections>
     </maintenanceDocument>
 </dictionaryEntry>

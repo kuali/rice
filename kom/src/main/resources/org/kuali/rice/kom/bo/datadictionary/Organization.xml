@@ -21,16 +21,43 @@
     <businessObject businessObjectClass="org.kuali.rice.kom.bo.Organization">
 
         <inquiry>
-            <title>Organization Inquiry</title>
+        	<title>Organization Inquiry</title>
 
-            <inquirySections><inquirySection title="Header Text"><inquiryFields>
-                <field attributeName="id" />
-                <field attributeName="shortName" />
-                <field attributeName="name" />
-                <field attributeName="parentOrganizationId" />
-                <field attributeName="categoryId" />
-                <field attributeName="active" />
-            </inquiryFields></inquirySection></inquirySections>
+        	<inquirySections>
+        		<inquirySection title="Header Text">
+        			<inquiryFields>
+        				<field attributeName="id" />
+        				<field attributeName="shortName" />
+        				<field attributeName="name" />
+        				<field attributeName="organizationCategory.name" />
+                        <field attributeName="parentOrganizationId" />
+        				<field attributeName="active" />
+        			</inquiryFields>
+        		</inquirySection>
+
+        		<inquirySection title="Organization Contexts">
+        			<inquiryFields>
+        				<inquiryCollection name="organizationContexts"
+        					businessObjectClass="org.kuali.rice.kom.bo.OrganizationContext">
+        					<field attributeName="id" />
+        					<field attributeName="name" />
+                            <field attributeName="description" />
+        				</inquiryCollection>
+        			</inquiryFields>
+        		</inquirySection>
+
+                <inquirySection title="Organization Parents">
+                    <inquiryFields>
+                        <inquiryCollection name="organizationParents"
+                            businessObjectClass="org.kuali.rice.kom.bo.Organization">
+                            <field attributeName="id" />
+                            <field attributeName="name" />
+                            <field attributeName="description" />
+                        </inquiryCollection>
+                    </inquiryFields>
+                </inquirySection>
+        	</inquirySections>
+
         </inquiry>
 
         <lookup>
@@ -45,21 +72,22 @@
             </defaultSort>
 
             <lookupFields>
-                <lookupField attributeName="id" required="false" />
-                <lookupField attributeName="shortName" required="false" />
+                <lookupField attributeName="id" required="false"  />
                 <lookupField attributeName="name" required="false" />
-                <lookupField attributeName="parentOrganizationId" required="false" />
+                <lookupField attributeName="shortName" required="false" />
                 <lookupField attributeName="categoryId" required="false" />
+                <lookupField attributeName="parentOrganizationId" required="false" />
                 <lookupField attributeName="active" required="false" />
             </lookupFields>
 
             <resultFields>
                 <field attributeName="id" />
-                <field attributeName="shortName" />
                 <field attributeName="name" />
-                <field attributeName="parentOrganizationId" />
-                <field attributeName="categoryId" />
+                <field attributeName="shortName" />
+                <field attributeName="organizationCategory.name" />
                 <field attributeName="active" />
+                <field attributeName="organizationContexts" />
+                <field attributeName="parent.name" />
             </resultFields>
         </lookup>
 
@@ -81,7 +109,7 @@
 			</attribute>
 
             <attribute name="shortName" forceUppercase="false">
-                <label>Organization Short Name</label>
+                <label>Short Name</label>
                 <shortLabel>Short Name</shortLabel>
 
                 <maxLength>255</maxLength>
@@ -104,46 +132,98 @@
                 </control>
 
             </attribute>
-            <attribute name="parentOrganizationId" forceUppercase="false">
-                <label>Parent Organization</label>
+
+           <attribute name="organizationCategory.name" forceUppercase="false">
+                <label>Category</label>
+                <shortLabel>Name</shortLabel>
+
+                <maxLength>255</maxLength>
+                <validationPattern><anyCharacter /></validationPattern>
+
+                <control>
+                    <text size="100" />
+                </control>
+
+            </attribute>
+
+           <attribute name="parent.name" forceUppercase="false">
+                <label>Parent</label>
                 <shortLabel>Parent</shortLabel>
 
-                <maxLength>8</maxLength>
+                <maxLength>255</maxLength>
                 <validationPattern><anyCharacter /></validationPattern>
 
                 <control>
-                    <text size="8" />
+                    <text size="100" />
                 </control>
 
             </attribute>
-            <attribute name="categoryId" forceUppercase="false">
-                <label>Organization Category</label>
-                <shortLabel>Category</shortLabel>
 
-                <maxLength>8</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-
-                <control>
-                    <text size="8" />
-                </control>
-
-            </attribute>
-            <attribute name="active" forceUppercase="false">
-                <label>Organization Active</label>
+            <attribute name="active" forceUppercase="true">
+                <label>Active</label>
                 <shortLabel>Active</shortLabel>
 
-                <maxLength>1</maxLength>
+                <maxLength>3</maxLength>
                 <validationPattern><anyCharacter /></validationPattern>
 
                 <control>
-                    <text size="1" />
+                   <select valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"/>
                 </control>
 
+
             </attribute>
+
+            <attributeReference name="parentOrganizationId"
+                sourceAttributeName="id"
+                sourceClassName="org.kuali.rice.kom.bo.Organization">
+                <label>Parent Organization</label>
+                <shortLabel>Parent</shortLabel>
+                <required>false</required>
+                <control>
+                    <select
+                        valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+                        businessObjectClass="org.kuali.rice.kom.bo.Organization"
+                         labelAttribute="name"
+                        includeKeyInLabel="false" />
+                </control>
+
+            </attributeReference>
+
+           <attributeReference name="categoryId"
+            sourceClassName="org.kuali.rice.kom.bo.OrganizationCategory"
+            sourceAttributeName="id">
+            <label>Category</label>
+            <required>true</required>
+            <control>
+                <select
+                    valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+                    businessObjectClass="org.kuali.rice.kom.bo.OrganizationCategory"
+                    keyAttribute="id" labelAttribute="name"
+                    includeKeyInLabel="false" />
+            </control>
+           </attributeReference>
 
             <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
 			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
         </attributes>
+
+       <collections>
+        	<collection name="organizationContexts">
+        		<label>Contexts</label>
+        		<shortLabel>OrganizationContexts</shortLabel>
+                <elementLabel>Context</elementLabel>
+        		<summary>Organization Contexts</summary>
+        		<description>Contexts of this Organization</description>
+        	</collection>
+            <collection name="organizationParents">
+                <label>Parent</label>
+                <shortLabel>OrganizationParent</shortLabel>
+                <elementLabel>Context</elementLabel>
+                <summary>Organization Parent</summary>
+                <description>Parent of this Organization</description>
+            </collection>
+        </collections>
+
         <objectLabel>Organization</objectLabel>
     </businessObject>
 </dictionaryEntry>

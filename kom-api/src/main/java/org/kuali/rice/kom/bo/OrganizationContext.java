@@ -15,13 +15,14 @@
  */
 package org.kuali.rice.kom.bo;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 
 /**
- * This is a description of what this class does - pberres don't forget to fill this in. 
- * 
+ * This is a description of what this class does - pberres don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -31,6 +32,8 @@ public class OrganizationContext extends PersistableBusinessObjectBase {
     private Long id;
     private String name;
     private String description;
+
+    private ArrayList<Organization> organizations = new ArrayList<Organization>(0);
 
     public Long getId() {
         return this.id;
@@ -58,7 +61,7 @@ public class OrganizationContext extends PersistableBusinessObjectBase {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
      */
     @Override
@@ -68,6 +71,14 @@ public class OrganizationContext extends PersistableBusinessObjectBase {
         propMap.put("name", getName());
         propMap.put("description", getDescription());
         return propMap;
+    }
+
+    public ArrayList<Organization> getOrganizations() {
+        return this.organizations;
+    }
+
+    public void setOrganizations(ArrayList<Organization> organizations) {
+        this.organizations = organizations;
     }
 
 }

@@ -15,14 +15,15 @@
  */
 package org.kuali.rice.kom.bo;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.util.OjbCharBooleanConversion;
 
 /**
- * This is a description of what this class does - pberres don't forget to fill this in. 
- * 
+ * This is a description of what this class does - pberres don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -32,9 +33,22 @@ public class Organization extends PersistableBusinessObjectBase {
     private Long id;
     private String shortName;
     private String name;
-    private Long parentOrganizationId;
     private Long categoryId;
+    private Long parentOrganizationId;
     private String active;
+
+    private ArrayList<OrganizationContext> organizationContexts = new ArrayList<OrganizationContext>(0);
+    private ArrayList<Organization> organizationParents = new ArrayList<Organization>(0);
+    private OrganizationCategory organizationCategory;
+    private Organization parent;
+
+    public OrganizationCategory getOrganizationCategory() {
+        return this.organizationCategory;
+    }
+
+    public void setOrganizationCategory(OrganizationCategory organizationCategory) {
+        this.organizationCategory = organizationCategory;
+    }
 
     public Long getId() {
         return this.id;
@@ -60,14 +74,6 @@ public class Organization extends PersistableBusinessObjectBase {
         this.name = name;
     }
 
-    public Long getParentOrganizationId() {
-        return this.parentOrganizationId;
-    }
-
-    public void setParentOrganizationId(Long parentOrganizationId) {
-        this.parentOrganizationId = parentOrganizationId;
-    }
-
     public Long getCategoryId() {
         return this.categoryId;
     }
@@ -86,7 +92,7 @@ public class Organization extends PersistableBusinessObjectBase {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
      */
     @Override
@@ -95,10 +101,41 @@ public class Organization extends PersistableBusinessObjectBase {
         propMap.put("id", getId());
         propMap.put("shortName", getShortName());
         propMap.put("name", getName());
-        propMap.put("parentOrganizationId", getParentOrganizationId());
         propMap.put("categoryId", getCategoryId());
         propMap.put("active", getActive());
         return propMap;
+    }
+
+    public ArrayList<OrganizationContext> getOrganizationContexts() {
+        return organizationContexts;
+    }
+
+    public void setOrganizationContexts(ArrayList<OrganizationContext> organizationContexts) {
+        this.organizationContexts = organizationContexts;
+    }
+
+    public Long getParentOrganizationId() {
+        return this.parentOrganizationId;
+    }
+
+    public void setParentOrganizationId(Long parentOrganizationId) {
+        this.parentOrganizationId = parentOrganizationId;
+    }
+
+    public Organization getParent() {
+        return this.parent;
+    }
+
+    public void setParent(Organization parent) {
+        this.parent = parent;
+    }
+
+    public ArrayList<Organization> getOrganizationParents() {
+        return this.organizationParents;
+    }
+
+    public void setOrganizationParents(ArrayList<Organization> organizationParents) {
+        this.organizationParents = organizationParents;
     }
 
 }

@@ -21,13 +21,27 @@
     <businessObject businessObjectClass="org.kuali.rice.kom.bo.OrganizationContext">
 
         <inquiry>
-            <title>Organization Inquiry</title>
+        	<title>Organization Context Inquiry</title>
 
-            <inquirySections><inquirySection title="Header Text"><inquiryFields>
-                <field attributeName="id" />
-                <field attributeName="name" />
-                <field attributeName="description" />
-            </inquiryFields></inquirySection></inquirySections>
+        	<inquirySections>
+        		<inquirySection title="Header Text">
+        			<inquiryFields>
+        				<field attributeName="id" />
+        				<field attributeName="name" />
+        				<field attributeName="description" />
+        			</inquiryFields>
+        		</inquirySection>
+        		<inquirySection title="Organizations">
+        			<inquiryFields>
+        				<inquiryCollection name="organizations"
+        					businessObjectClass="org.kuali.rice.kom.bo.Organization">
+        					<field attributeName="id" />
+        					<field attributeName="shortName" />
+                            <field attributeName="name" />
+        				</inquiryCollection>
+        			</inquiryFields>
+        		</inquirySection>
+        	</inquirySections>
         </inquiry>
 
         <lookup>
@@ -51,7 +65,8 @@
                 <field attributeName="id" />
                 <field attributeName="name" />
                 <field attributeName="description" />
-            </resultFields>
+                <field attributeName="organizations" />
+           </resultFields>
         </lookup>
 
         <titleAttribute>id</titleAttribute>
@@ -99,6 +114,14 @@
             <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
 			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
         </attributes>
-        <objectLabel>Organization</objectLabel>
+       <collections>
+            <collection name="organizations">
+                <label>Organizations</label>
+                <shortLabel>Organizations</shortLabel>
+                <summary>Organizations</summary>
+                <description>Organization of this Contexts</description>
+            </collection>
+        </collections>
+       <objectLabel>Organization Context</objectLabel>
     </businessObject>
 </dictionaryEntry>

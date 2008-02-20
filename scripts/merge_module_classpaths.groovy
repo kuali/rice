@@ -56,12 +56,19 @@ def processClasspathFile(cpFile) {
                 return
             } else {
             
-                // , /including="/, /excluding="/
-            
                 [ /path="/, /output="/ ].each() {
                     m = trimmed =~ it
                     if (m) {
                         trimmed = m.replaceFirst(it + module + "/")
+                    }
+                }
+                
+                // omit the includes and excludes that get propagated from the parent POM
+                // they are only there to support CI
+                [ /including=".*"/, /excluding=".*"/ ].each() {
+                    m = trimmed =~ it
+                    if (m) {
+                        trimmed = m.replaceFirst("")
                     }
                 }
             }

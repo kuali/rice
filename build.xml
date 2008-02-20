@@ -57,7 +57,7 @@
         </java>
 	</target>
 
-	<target name="update-maven-repository" depends="init">
+	<target name="retrieve-maven-dependencies" depends="init">
         <maven goals="dependency:resolve"/>
     </target>
 

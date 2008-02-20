@@ -61,6 +61,8 @@ public abstract class DocumentEntryMapper {
 
         entryMap.set("allowsNoteDelete", Boolean.toString(entry.getAllowsNoteDelete()));
 
+        entryMap.set("allowsNoteAttachments", Boolean.toString(entry.getAllowsNoteAttachments()));
+
         if (entry.getAttachmentTypeValuesFinderClass() != null) {
             entryMap.set("attachmentTypesValuesFinderClass", entry.getAttachmentTypeValuesFinderClass().getName());
         }

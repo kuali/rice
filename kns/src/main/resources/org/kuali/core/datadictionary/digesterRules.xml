@@ -623,6 +623,7 @@
                 <set-next-rule methodname="addMaintainableSection" />
             </pattern>
 
+            <call-method-rule pattern="allowsNoteAttachments" methodname="setAllowsNoteAttachments" paramcount="0" paramtypes="java.lang.Boolean" />
             <set-next-rule methodname="addDocumentEntry" />
         </pattern>
 
@@ -670,6 +671,7 @@
             <call-method-rule pattern="allowsErrorCorrection" methodname="setAllowsErrorCorrection" paramcount="0" paramtypes="java.lang.Boolean" />
 
             <call-method-rule pattern="allowsNoteDelete" methodname="setAllowsNoteDelete" paramcount="0" paramtypes="java.lang.Boolean" />
+            <call-method-rule pattern="allowsNoteAttachments" methodname="setAllowsNoteAttachments" paramcount="0" paramtypes="java.lang.Boolean" />
             <call-method-rule pattern="attachmentTypesValuesFinderClass" methodname="setAttachmentTypesValuesFinderClass" paramcount="0" paramtypes="java.lang.Class" />
 
             <call-method-rule pattern="displayTopicFieldInNotes" methodname="setDisplayTopicFieldInNotes" paramcount="0" paramtypes="java.lang.Boolean" />

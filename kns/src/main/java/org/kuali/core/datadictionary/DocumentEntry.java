@@ -59,6 +59,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     private HelpDefinition helpDefinition;
 
     private boolean allowsNoteDelete;
+    private boolean allowsNoteAttachments=true;
     private Class attachmentTypesValuesFinderClass;
     private boolean displayTopicFieldInNotes;
     
@@ -455,6 +456,20 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 
     public void setWebScriptFiles(List<String> webScriptFiles) {
         this.webScriptFiles = webScriptFiles;
+    }
+
+    /**
+     * @return the allowsNoteAttachments
+     */
+    public boolean getAllowsNoteAttachments() {
+        return this.allowsNoteAttachments;
+    }
+
+    /**
+     * @param allowsNoteAttachments the allowsNoteAttachments to set
+     */
+    public void setAllowsNoteAttachments(boolean allowsNoteAttachments) {
+        this.allowsNoteAttachments = allowsNoteAttachments;
     }
 
 }

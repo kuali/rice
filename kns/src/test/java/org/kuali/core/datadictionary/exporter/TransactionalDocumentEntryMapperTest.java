@@ -149,6 +149,14 @@ public class TransactionalDocumentEntryMapperTest extends KNSTestBase {
         assertEquals("false", property);
     }
 
+    @Test public final void testExportSimpleProperties_allowsNoteAttachments() {
+        Map entryMap = mapTravelDocument2();
+
+        String path = "allowsNoteAttachments";
+        String property = (String) ExporterTestUtils.traverseMap(entryMap, path);
+        assertEquals("true", property);
+    }
+
     @Test public final void testExportSimpleProperties_documentAuthorizerClass() {
         Map entryMap = mapTravelDocument2();
 

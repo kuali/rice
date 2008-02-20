@@ -1524,6 +1524,14 @@
         -->
         <!ELEMENT allowsNoteDelete (#PCDATA) >
 
+        <!-- ............  allowsNoteAttachments element  ............
+
+            The allowsNoteAttachements element contains a true or false value.
+            If true, then a document screen includes notes with attachments. Otherwise,
+            only notes is displayed.
+        -->
+        <!ELEMENT allowsNoteAttachments (#PCDATA) >
+
         <!-- ............  displayTopicFieldInNotes element  ............
 
             This field contains a value of true or false.
@@ -1647,7 +1655,7 @@
 
         See TransactionalDocumentEntryMapper.java
     -->
-    <!ELEMENT transactionalDocument (documentClass, %COPYABLE_DOCUMENT_ATTRIBUTES;, allowsErrorCorrection, allowsNoteDelete?, displayTopicFieldInNotes?, attachmentTypesValuesFinderClass?) >
+    <!ELEMENT transactionalDocument (documentClass, %COPYABLE_DOCUMENT_ATTRIBUTES;, allowsErrorCorrection, allowsNoteDelete?, allowsNoteAttachments?, displayTopicFieldInNotes?, attachmentTypesValuesFinderClass?) >
         <!-- ............  documentClass element  ............
 
             The documentClass element is the name of the java class
@@ -1682,7 +1690,7 @@
             * attachmentTypeValuesFinderClass (String)
             * attributes (Map)
     -->
-    <!ELEMENT maintenanceDocument (businessObjectClass, maintainableClass, %DOCUMENT_ATTRIBUTES;, additionalSectionsFile*, lockingKeys, allowsNewOrCopy?, defaultExistenceChecks?, applyApcRules?, maintainableSections, allowsNoteDelete?, displayTopicFieldInNotes?, attachmentTypesValuesFinderClass?) >
+    <!ELEMENT maintenanceDocument (businessObjectClass, maintainableClass, %DOCUMENT_ATTRIBUTES;, additionalSectionsFile*, lockingKeys, allowsNewOrCopy?, defaultExistenceChecks?, applyApcRules?, maintainableSections, allowsNoteDelete?, allowsNoteAttachments?, displayTopicFieldInNotes?, attachmentTypesValuesFinderClass?) >
         <!-- ............  businessObjectClass element  ............
             This attribute is used in many contexts, for example, in maintenance docs, it's used to specify the classname
             of the BO being maintained.

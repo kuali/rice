@@ -22,7 +22,7 @@ import javax.servlet.ServletContextListener;
 
 import org.springframework.util.Log4jConfigurer;
 
-public class TravelServiceLocatoryListener implements ServletContextListener {
+public class TravelAppInitializeListener implements ServletContextListener {
 
 	public void contextDestroyed(ServletContextEvent sce) {
 

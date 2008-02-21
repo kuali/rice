@@ -31,11 +31,9 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KCBNotificationService extends DefaultNotificationService {
-
     @Override
     protected void sendNotification(ActionItem actionItem) {
         super.sendNotification(actionItem);
-        System.err.println("IN KCB NOTIFICATION SERVICE");
         // send it off to KCB
         MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(Core.getCurrentContextConfig().getMessageEntity(), "KCB-MessagingService"));
         MessageVO mvo = new MessageVO();

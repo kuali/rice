@@ -1,4 +1,4 @@
--- Fri Feb 15 14:52:22 EST 2008
+-- Thu Feb 21 11:16:18 EST 2008
 -- This file has been auto-generated from dball.groovy
 -- It contains the master rice destroy sql from rice_db_destroy.sql
 -- As well as the sample app drop script rice_sample_app_drops.sql
@@ -414,11 +414,15 @@ DROP SEQUENCE KCB_MESSAGES_SEQ
 /
 DROP SEQUENCE KCB_MSG_DELIVS_SEQ 
 /
+DROP SEQUENCE KCB_RECIP_DELIVS_SEQ 
+/
 DROP SEQUENCE KCB_RECIP_PREFS_SEQ 
 /
 DROP TABLE KCB_MESSAGES CASCADE CONSTRAINTS
 /
 DROP TABLE KCB_MSG_DELIVS CASCADE CONSTRAINTS
+/
+DROP TABLE KCB_RECIP_DELIVS CASCADE CONSTRAINTS
 /
 DROP TABLE KCB_RECIP_PREFS CASCADE CONSTRAINTS
 /

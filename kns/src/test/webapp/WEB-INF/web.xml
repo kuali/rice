@@ -60,7 +60,7 @@
     </filter-mapping>
 
 	<listener>
-		<listener-class>edu.sampleu.travel.infrastructure.TravelServiceLocatoryListener</listener-class>
+		<listener-class>edu.sampleu.travel.infrastructure.TravelAppInitializeListener</listener-class>
 	</listener>
 
 	<listener>

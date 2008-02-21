@@ -22,8 +22,8 @@ import org.junit.Test;
 import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
-import org.kuali.rice.kcb.services.MockEmailService;
 import org.kuali.rice.kcb.test.KCBTestCase;
+import org.kuali.rice.kcb.test.service.MockEmailService;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestSql;
 

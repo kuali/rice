@@ -9,7 +9,7 @@
   <import resource="KCBSpringBeans.xml"/>
 
   <!-- override the notificationEmailService with a Mock implementation -->
-  <bean id="emailService" class="org.kuali.rice.kcb.test.util.MockEmailServiceImpl" >
+  <bean id="emailService" class="org.kuali.rice.kcb.test.service.impl.MockEmailServiceImpl" >
     <property name="weburl"><value>${kcb.url}</value></property>
     <property name="smtpHost"><value>${kcb.smtp.host}</value></property>
   </bean>

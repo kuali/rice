@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kcb.test.util;
+package org.kuali.rice.kcb.test.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kcb.service.impl.EmailServiceImpl;
-import org.kuali.rice.kcb.services.MockEmailService;
+import org.kuali.rice.kcb.test.service.MockEmailService;
 
 /**
  * Mock EmailService implementation that does not actually send any mail
@@ -34,7 +34,7 @@ public class MockEmailServiceImpl extends EmailServiceImpl implements MockEmailS
     public final Map<String, List<Map<String, String>>> MAILBOXES = new HashMap<String, List<Map<String, String>>>();
 
     /**
-     * @see org.kuali.rice.kcb.services.MockEmailService#getMailBoxes()
+     * @see org.kuali.rice.kcb.test.service.MockEmailService#getMailBoxes()
      */
     public Map<String, List<Map<String, String>>> getMailBoxes() {
         return MAILBOXES;

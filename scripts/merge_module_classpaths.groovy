@@ -7,19 +7,37 @@ if (args.length < 1) {
     PROJECT_DIR = args[0]
 }
 
+delete = true
+if (args.length > 1) {
+    delete = !"nodelete".equals(args[1])
+}
+
 EOL = '\r\n'
 CLASSPATH_FILENAME = PROJECT_DIR + "/.classpath"
 
 ENTRIES = [] as Set
 
-println "Writing to " + CLASSPATH_FILENAME
+println "Target .classpath file: " + CLASSPATH_FILENAME
 
 new File(PROJECT_DIR).eachDir() {
-    it.eachFileMatch(~/.classpath/) {
-        println "Processing " + it
+    classpathFile = new File(it, ".classpath")
+    if (classpathFile.isFile()) {
+        println "Processing " + classpathFile
 
-        processClasspathFile(it)            
+        processClasspathFile(classpathFile)
+
+        if (delete) {
+            // clean up the carnage eclipse:eclipse left
+            cleanUp(classpathFile)
+        }
     }
+}
+
+if (ENTRIES.size() == 0) {
+    println "ERROR: no classpath entries where generated.  Aborting " + CLASSPATH_FILENAME + " file regeneration."
+    return
+} else {
+    println ENTRIES.size() + " unique classpath entries found.  Regenerating " + CLASSPATH_FILENAME + " file."
 }
 
 getEmptyFile(CLASSPATH_FILENAME).withWriterAppend("UTF-8") { output ->
@@ -75,6 +93,31 @@ def processClasspathFile(cpFile) {
         }
         
         ENTRIES.add(trimmed)
+    }
+}
+
+def cleanUp(classpathFile) {
+    module = classpathFile.parentFile.name
+    
+    // delete the .classpath file
+    classpathFile.delete()
+
+    // delete the .project file
+    projectFile = new File(module, ".project")
+    if (projectFile.isFile()) {
+        projectFile.delete();
+    }
+
+    // delete the module prefs and .settings dir if empty
+    moduleSettingsDir = new File(module, ".settings")
+    modulePrefsFile = new File(moduleSettingsDir, "org.eclipse.jdt.core.prefs")
+    if (modulePrefsFile.isFile()) {
+        modulePrefsFile.delete()
+    }
+    
+    // if settings dir is now empty, delete it
+    if (moduleSettingsDir.list().size() == 0) {
+        moduleSettingsDir.delete()
     }
 }
 

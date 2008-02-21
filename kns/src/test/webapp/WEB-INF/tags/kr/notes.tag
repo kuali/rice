@@ -61,8 +61,8 @@
     <c:set var="notesAttributes" value="${DataDictionary.Note.attributes}" />
     <div class="tab-container" align=center id="G4">
     <p align=left><jsp:doBody/>
-	<div class="${tabTitle}">
-	<h2>Notes and Attachments</h2>
+	<div class="h2-container">
+	<h2>${tabTitle}</h2>
 	</div>
         <table cellpadding="0" cellspacing="0" class="datatable" summary="view/add notes">
             <tbody>

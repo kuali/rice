@@ -129,7 +129,20 @@ public class WorkflowDocumentTest extends KEWTestCase {
     	verifyIsRouteCapable(true, new WorkflowIdVO("2"), doc.getRouteHeaderId());
     	verifyIsRouteCapable(true, new UuIdVO("2"), doc.getRouteHeaderId());
     	verifyIsRouteCapable(true, new EmplIdVO("2"), doc.getRouteHeaderId());
-}
+
+        doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), "NonInitiatorCanRouteDocument");
+
+        verifyIsRouteCapable(true, new NetworkIdVO("ewestfal"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new WorkflowIdVO("1"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new UuIdVO("1"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new EmplIdVO("1"), doc.getRouteHeaderId());
+
+        verifyIsRouteCapable(true, new NetworkIdVO("rkirkend"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new WorkflowIdVO("2"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new UuIdVO("2"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new EmplIdVO("2"), doc.getRouteHeaderId());
+    }
+
     private void verifyIsRouteCapable(boolean routeCapable, UserIdVO userId, Long docId) throws Exception {
     	WorkflowDocument doc = new WorkflowDocument(userId, docId);
     	assertEquals(routeCapable, doc.isRouteCapable());

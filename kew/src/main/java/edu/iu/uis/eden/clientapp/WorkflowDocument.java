@@ -919,19 +919,8 @@ public class WorkflowDocument implements java.io.Serializable {
 	 * @return if user passed into WorkflowDocument at instantiation can route
 	 *         the document.
 	 */
-    // TODO delyea - Should this be removed due to policies and valid actions adjustments?
     public boolean isRouteCapable() {
-        UserIdVO userId = getUserId();
-        if (userId instanceof NetworkIdVO) {
-            return ((NetworkIdVO) userId).getNetworkId().equals(getRouteHeader().getInitiator().getNetworkId()) && stateIsInitiated();
-        } else if (userId instanceof UuIdVO) {
-            return ((UuIdVO) userId).getUuId().equals(getRouteHeader().getInitiator().getUuId()) && stateIsInitiated();
-        } else if (userId instanceof EmplIdVO) {
-            return ((EmplIdVO) userId).getEmplId().equals(getRouteHeader().getInitiator().getEmplId()) && stateIsInitiated();
-        } else if (userId instanceof WorkflowIdVO) {
-            return ((WorkflowIdVO) userId).getWorkflowId().equals(getRouteHeader().getInitiator().getWorkflowId()) && stateIsInitiated();
-        }
-        throw new UnsupportedOperationException("UserId type not yet supported on this method.");
+        return isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_ROUTED_CD);
     }
 
     /**

@@ -13,31 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kcb.test;
-
-import org.kuali.rice.kcb.util.KCBConstants;
+package org.kuali.rice.kcb.util;
 
 /**
- * Constants reflecting test data that is used in tests.
- * If tests or test data is updated, this file need to be updated
- * to be kept in sync.
- *
+ * This class houses various constants for KCB
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface TestConstants {
+public class KCBConstants {
     /**
-     * Email deliverer property
+     * Different message delivers for KCB
+     * DEFAULT_MESSAGE_DELIVERY_TYPE - the default message delivery type
+     * @author Kuali Rice Team (kuali-rice@googlegroups.com)
      */
-    public static final String EMAIL_DELIVERER_PROPERTY_VALUE = "kuali-kcb-testing@localhost.edu";
-    /**
-     * A valid deliverer name
-     */
-    public static final String VALID_DELIVERER_NAME = KCBConstants.MESSAGE_DELIVERY_TYPES.EMAIL_MESSAGE_DELIVERY_TYPE;
-    /**
-     * An invalid deliverer name 
-     */
-    public static final String NON_EXISTENT_DELIVERER_NAME = "BOGUS_DELIVERER";
-    
-
-
+    public static final class MESSAGE_DELIVERY_TYPES {
+        public static final String EMAIL_MESSAGE_DELIVERY_TYPE = "Email"; 
+    }
 }

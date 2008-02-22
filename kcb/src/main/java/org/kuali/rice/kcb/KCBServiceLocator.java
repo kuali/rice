@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kcb;
 
+import org.kuali.rice.kcb.dao.BusinessObjectDao;
 import org.kuali.rice.kcb.service.EmailService;
 import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
@@ -27,6 +28,7 @@ import org.kuali.rice.kcb.service.RecipientPreferenceService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface KCBServiceLocator {
+    public BusinessObjectDao getBusinessObjectDao();
     public MessageDeliveryService getMessageDeliveryService();
     public MessageService getMessageService();
     public MessagingService getMessagingService();

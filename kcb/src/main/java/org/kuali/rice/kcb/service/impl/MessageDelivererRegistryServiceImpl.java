@@ -51,16 +51,16 @@ public class MessageDelivererRegistryServiceImpl implements MessageDelivererRegi
     public MessageDelivererRegistryServiceImpl() {
         //KEWActionListMessageDeliverer kewActionList = new KEWActionListMessageDeliverer();
         EmailMessageDeliverer email = new EmailMessageDeliverer();
-        SMSMessageDeliverer sms = new SMSMessageDeliverer();
-        AOLInstantMessageDeliverer aim = new AOLInstantMessageDeliverer();
-        MockMessageDeliverer mock = new MockMessageDeliverer();
+        //SMSMessageDeliverer sms = new SMSMessageDeliverer();
+        //AOLInstantMessageDeliverer aim = new AOLInstantMessageDeliverer();
+        //MockMessageDeliverer mock = new MockMessageDeliverer();
 
         messageDelivererTypes = new HashMap<String, Class<? extends MessageDeliverer>>(4);
         //messageDelivererTypes.put(kewActionList.getName(), kewActionList.getClass());
         messageDelivererTypes.put(email.getName(), email.getClass());
-        messageDelivererTypes.put(sms.getName(), sms.getClass());
-        messageDelivererTypes.put(aim.getName(), aim.getClass());
-        messageDelivererTypes.put(mock.getName(), mock.getClass());
+        //messageDelivererTypes.put(sms.getName(), sms.getClass());
+        //messageDelivererTypes.put(aim.getName(), aim.getClass());
+        //messageDelivererTypes.put(mock.getName(), mock.getClass());
     }
 
     /**

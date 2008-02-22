@@ -75,7 +75,7 @@ public class BaseModuleConfigurer extends ModuleConfigurer {
      */
     @Override
     public Config loadConfig(Config parentConfig) throws Exception {
-        LOG.info("Starting configuration of KCB for message entity " + parentConfig.getMessageEntity());
+        LOG.info("Starting configuration of " + getModuleName() + " for message entity " + parentConfig.getMessageEntity());
         return Core.getCurrentContextConfig();
     }
 
@@ -85,6 +85,7 @@ public class BaseModuleConfigurer extends ModuleConfigurer {
      */
     @Override
     protected List<Lifecycle> loadLifecycles() throws Exception {
+        LOG.info("Loading " + getModuleName() + " module lifecycles");
         List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
 
         lifecycles.add(new BaseOjbConfigurer(getModuleName()));

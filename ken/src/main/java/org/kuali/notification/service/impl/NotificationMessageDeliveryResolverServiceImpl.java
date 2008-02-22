@@ -31,6 +31,8 @@ import org.kuali.notification.bo.NotificationRecipientList;
 import org.kuali.notification.bo.UserChannelSubscription;
 import org.kuali.notification.bo.UserDelivererConfig;
 import org.kuali.notification.dao.BusinessObjectDao;
+import org.kuali.notification.deliverer.impl.KEWActionListMessageDeliverer;
+import org.kuali.notification.exception.NotificationMessageDeliveryException;
 import org.kuali.notification.service.NotificationMessageDeliveryResolverService;
 import org.kuali.notification.service.NotificationRecipientService;
 import org.kuali.notification.service.NotificationService;
@@ -196,10 +198,22 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
     
                     //now save that delivery end point; this record will be later processed by the dispatch service which will actually deliver it
                     businessObjectDao.save(defaultMessageDelivery);
-    
-                    successes.add("Successfully generated message delivery " + defaultMessageDelivery + " for notification " + notification);
+                    
+                    if (NotificationConstants.MESSAGE_DELIVERY_TYPES.KEW_ACTION_LIST_MESSAGE_DELIVERY_TYPE.equals(type)) {
+                        // if it's the action list deliverer just go ahead and invoke it for now since we are removing dispatch from KEN
+                        try {
+                            new KEWActionListMessageDeliverer().deliverMessage(defaultMessageDelivery);
+                        } catch (NotificationMessageDeliveryException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    
+                    businessObjectDao.save(defaultMessageDelivery);
+
+                    
+                    successes.add(defaultMessageDelivery);
                 }
-    
+
                 // also, update the status of the notification so that it's message deliveries are not resolved again
                 notification.setProcessingFlag(NotificationConstants.PROCESSING_FLAGS.RESOLVED);
                 // unlock the record now

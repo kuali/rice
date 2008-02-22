@@ -31,5 +31,6 @@ public class KCBConfigurer extends SpringModuleConfigurer {
      */
     public KCBConfigurer() {
         super(MODULE_NAME);
+        LOG.info("KCBConfigurer constructed");
     }
 }

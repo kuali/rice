@@ -29,6 +29,7 @@ import org.kuali.rice.kcb.exception.ErrorList;
 import org.kuali.rice.kcb.exception.MessageDeliveryException;
 import org.kuali.rice.kcb.exception.MessageDismissalException;
 import org.kuali.rice.kcb.service.EmailService;
+import org.kuali.rice.kcb.service.RecipientPreferenceService;
 
 /**
  * This class is responsible for describing the email delivery mechanism for
@@ -39,7 +40,7 @@ public class EmailMessageDeliverer implements MessageDeliverer {
     private static Logger LOG = Logger.getLogger(EmailMessageDeliverer.class);
 
     private EmailService emailService;
-    //private UserPreferenceService userPreferenceService;
+    private RecipientPreferenceService recipientPreferenceService;
 
     public static final String NAME = "Email";
     public static final String EMAIL_ADDR_PREF_KEY = "email_address";
@@ -50,7 +51,7 @@ public class EmailMessageDeliverer implements MessageDeliverer {
      */
     public EmailMessageDeliverer() {
         this.emailService = GlobalKCBServiceLocator.getInstance().getEmailService();
-        //this.userPreferenceService = GlobalNotificationServiceLocator.getInstance().getUserPreferenceService();
+        this.recipientPreferenceService = GlobalKCBServiceLocator.getInstance().getRecipientPreferenceService();
     }
 
     /**
@@ -63,8 +64,8 @@ public class EmailMessageDeliverer implements MessageDeliverer {
             String recipientEmailAddressPrefKey = getName()+"."+EMAIL_ADDR_PREF_KEY;
             String recipientEmailFormatPrefKey = getName()+"."+EMAIL_DELIV_FRMT_PREF_KEY;
 
-            String recipientEmailAddress = null; //userPreferenceService.getUserRecipientPreferences(messageDelivery.getUserRecipientId(), recipientEmailAddressPrefKey).getValue();
-            String recipientEmailFormat = null; //userPreferenceService.getUserRecipientPreferences(messageDelivery.getUserRecipientId(), recipientEmailFormatPrefKey).getValue();
+            String recipientEmailAddress = recipientPreferenceService.getRecipientPreference(messageDelivery.getMessage().getRecipient(), recipientEmailAddressPrefKey).getValue();
+            String recipientEmailFormat = recipientPreferenceService.getRecipientPreference(messageDelivery.getMessage().getRecipient(), recipientEmailFormatPrefKey).getValue();
 
             Long emailMessageId = emailService.sendEmail(messageDelivery, recipientEmailAddress, recipientEmailFormat);
 
@@ -133,7 +134,7 @@ public class EmailMessageDeliverer implements MessageDeliverer {
     /**
      * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#validatePreferenceValues(java.util.HashMap)
      */
-    public void validatePreferenceValues(HashMap prefs) throws ErrorList {
+    public void validatePreferenceValues(HashMap<String, String> prefs) throws ErrorList {
         boolean error = false;
         ErrorList errorList = new ErrorList();
         String[] validformats = {"text","html"};

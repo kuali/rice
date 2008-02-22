@@ -47,7 +47,7 @@ public interface MessageDeliverer {
      * the method if any occurred.
      * @throws ErrorList
      */
-    public void validatePreferenceValues(HashMap prefs) throws ErrorList;
+    public void validatePreferenceValues(HashMap<String, String> prefs) throws ErrorList;
     
     /**
      * This method returns the human readable name of the plugin.  This name is the 

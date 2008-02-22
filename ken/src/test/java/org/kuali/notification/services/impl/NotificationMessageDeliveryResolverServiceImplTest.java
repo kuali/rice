@@ -32,6 +32,9 @@ import org.kuali.notification.service.UserPreferenceService;
 import org.kuali.notification.service.impl.NotificationMessageDeliveryResolverServiceImpl;
 import org.kuali.notification.test.NotificationTestCaseBase;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.kcb.GlobalKCBServiceLocator;
+import org.kuali.rice.kcb.bo.Message;
+import org.kuali.rice.kcb.service.MessageService;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
@@ -41,7 +44,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.Executors;
  * Tests NotificationMessageDeliveryResolverServiceImpl
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Ignore // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
+// deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 public class NotificationMessageDeliveryResolverServiceImplTest extends NotificationTestCaseBase {
     // NOTE: this value is HIGHLY dependent on the test data, make sure that it reflects the results
     // expected from the test data
@@ -102,6 +105,7 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
     public void testResolveNotificationMessageDeliveries() {
         NotificationMessageDeliveryResolverService nSvc = getResolverService();
 
+        long start = System.currentTimeMillis();
         ProcessingResult result = nSvc.resolveNotificationMessageDeliveries();
 
         for (Object message: result.getSuccesses()) {
@@ -109,6 +113,18 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
         }
 
         assertEquals(EXPECTED_SUCCESSES, result.getSuccesses().size());
+        int kewMessages = 0;
+        Collection<NotificationMessageDelivery> ds = services.getNotificationMessageDeliveryService().getNotificationMessageDeliveries();
+        for (NotificationMessageDelivery d: (Collection<NotificationMessageDelivery>) result.getSuccesses()) {
+            if (NotificationConstants.MESSAGE_DELIVERY_TYPES.KEW_ACTION_LIST_MESSAGE_DELIVERY_TYPE.equals(d.getMessageDeliveryTypeName()))
+                kewMessages++;
+        }
+
+        MessageService ms = (MessageService) GlobalKCBServiceLocator.getInstance().getMessageService();
+        for (Message m: ms.getAllMessages()) {
+            System.err.println(m);
+        }
+        assertEquals(kewMessages, ms.getAllMessages().size());
         
         assertProcessResults();
     }

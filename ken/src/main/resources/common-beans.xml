@@ -301,27 +301,23 @@
     <bean id="resolveNotificationMessageDeliveriesJobTrigger"
         class="org.springframework.scheduling.quartz.SimpleTriggerBean">
         <property name="jobDetail" ref="resolveNotificationMessageDeliveriesJob" />
-        <!-- Start delay = 30 seconds -->
         <property name="startDelay" value="${notification.resolveMessageDeliveriesJob.startDelayMS}" />
-        <!-- Repeat every 30 seconds -->
         <property name="repeatInterval" value="${notification.resolveMessageDeliveriesJob.intervalMS}" />
     </bean>
     <!-- Set up the trigger for the Notification Message Delivery (a.k.a. the periodic interval that this will run at) -->
+    <!--
     <bean id="processUndeliveredNotificationMessageDeliveriesJobTrigger"
         class="org.springframework.scheduling.quartz.SimpleTriggerBean">
         <property name="jobDetail" ref="processUndeliveredNotificationMessageDeliveriesJob" />
-        <!-- Start delay = 30 seconds -->
         <property name="startDelay" value="${notification.processUndeliveredJob.startDelayMS}" />
-        <!-- Repeat every 30 seconds -->
         <property name="repeatInterval" value="${notification.processUndeliveredJob.intervalMS}" />
     </bean>
+     -->
     <!-- Set up the trigger for the Notification Message Delivery Auto-Remove Job (a.k.a. the periodic interval that this will run at) -->
     <bean id="processAutoRemovalOfDeliveredNotificationMessageDeliveriesJobTrigger"
         class="org.springframework.scheduling.quartz.SimpleTriggerBean">
         <property name="jobDetail" ref="processAutoRemovalOfDeliveredNotificationMessageDeliveriesJob" />
-        <!-- Start delay = 60 seconds -->
         <property name="startDelay" value="${notification.processAutoRemovalJob.startDelayMS}" />
-        <!-- Repeat every 30 seconds -->
         <property name="repeatInterval" value="${notification.processAutoRemovalJob.intervalMS}" />
     </bean>
 
@@ -330,7 +326,9 @@
         <property name="triggers">
             <list>
                 <ref bean="resolveNotificationMessageDeliveriesJobTrigger" />
+<!--
                 <ref bean="processUndeliveredNotificationMessageDeliveriesJobTrigger" />
+-->
                 <ref bean="processAutoRemovalOfDeliveredNotificationMessageDeliveriesJobTrigger" />
             </list>
         </property>

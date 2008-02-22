@@ -37,7 +37,7 @@ public class ProcessingResult {
      * Returns the list of failures
      * @return the list of failures
      */
-    public List<Object> getFailures() {
+    public List<?> getFailures() {
         return failures;
     }
 
@@ -45,7 +45,7 @@ public class ProcessingResult {
      * Returns the list of successes
      * @return the list of successes
      */
-    public List<Object >getSuccesses() {
+    public List<?> getSuccesses() {
         return successes;
     }
 

@@ -59,9 +59,19 @@
         <servlet-name>edoclite</servlet-name>
     </filter-mapping>
 
-	<listener>
-		<listener-class>edu.sampleu.travel.infrastructure.TravelAppInitializeListener</listener-class>
-	</listener>
+	<!-- This is the root Spring context XML file for the Sample App -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:SampleAppBeans.xml</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
 	<listener>
 		<listener-class>org.kuali.core.web.listener.JstlConstantsInitListener</listener-class>

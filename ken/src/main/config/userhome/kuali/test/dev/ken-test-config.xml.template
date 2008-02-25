@@ -6,6 +6,7 @@
 	<param name="externalizable.images.url">/${app.context.name}/kr/static/images/</param>
 	<param name="kr.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
 	<param name="travel.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
+	
 	<param name="kr.url">/${app.context.name}/kr</param>
 	<param name="use.clearDatabaseLifecycle">true</param>
 	<param name="use.kewXmlmlDataLoaderLifecycle">true</param>
@@ -106,4 +107,10 @@
     
     <!-- Turn off KEW use of quartz db to avoid db clear issues -->
     <param name="useQuartzDatabase">false</param>
+
+    <!-- for KCB -->
+
+    <param name="kcb.url">this is a fake kcb.url from kcb-test-config.xml</param>
+    <param name="kcb.smtp.host">this is a fake kcb.smtp.host from kcb-test-config.xml</param>
+
 </config>

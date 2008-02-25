@@ -28,7 +28,7 @@ public interface NotificationChannelService {
      * This method returns all of the registered notification channels in the system.
      * @return Collection
      */
-    public Collection getAllNotificationChannels();
+    public Collection<NotificationChannel> getAllNotificationChannels();
     
     /**
      * This method retrieves a specific NotificationChannel instance by id.  If none is found, it returns null.
@@ -41,5 +41,5 @@ public interface NotificationChannelService {
      * This method retrieves all channels in the system that can be subscribed to.
      * @return Collection
      */
-    public Collection getSubscribableChannels();
+    public Collection<NotificationChannel> getSubscribableChannels();
 }

@@ -11,6 +11,7 @@
     <classpathentry kind="src" path="kcb/src/main/resources" />
     <classpathentry kind="src" path="kcb/src/test/java" output="kcb/target/test-classes"/>
     <classpathentry kind="src" path="kcb/src/test/resources" output="kcb/target/test-classes" />
+    <classpathentry kind="src" path="ken-api/src/main/java"/>
     <classpathentry kind="src" path="ken/src/main/java"/>
     <classpathentry kind="src" path="ken/src/main/resources" />
     <classpathentry kind="src" path="ken/src/test/java" output="ken/target/test-classes"/>
@@ -93,7 +94,7 @@
     <classpathentry kind="var" path="M2_REPO/incubator-activemq/activemq-core/4.0/activemq-core-4.0.jar" sourcepath="M2_REPO/incubator-activemq/activemq-core/4.0/activemq-core-4.0-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1/activation-1.1.jar" sourcepath="M2_REPO/javax/activation/activation/1.1/activation-1.1-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4/mail-1.4.jar" sourcepath="M2_REPO/javax/mail/mail/1.4/mail-1.4-sources.jar"/>
-    <classpathentry kind="var" path="M2_REPO/javax/resource/connector-api/1.5/connector-api-1.5.jar" sourcepath="M2_REPO/javax/resource/connector-api/1.5/connector-api-1.5-sources.jar"/>
+    <classpathentry kind="var" path="M2_REPO/javax/resource/connector-api/1.5/connector-api-1.5.jar"/>
     <classpathentry kind="var" path="M2_REPO/javax/resource/connector/1.0/connector-1.0.jar" sourcepath="M2_REPO/javax/resource/connector/1.0/connector-1.0-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/javax/servlet/jsp-api/2.0/jsp-api-2.0.jar" sourcepath="M2_REPO/javax/servlet/jsp-api/2.0/jsp-api-2.0-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/javax/servlet/jstl/1.1.2/jstl-1.1.2.jar" sourcepath="M2_REPO/javax/servlet/jstl/1.1.2/jstl-1.1.2-sources.jar"/>

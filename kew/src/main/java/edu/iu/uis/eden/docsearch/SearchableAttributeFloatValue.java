@@ -98,7 +98,7 @@ public class SearchableAttributeFloatValue implements WorkflowPersistable, Searc
      */
     public String getSearchableAttributeDisplayValue(Map<String,String> displayParameters) {
 	    NumberFormat format = DecimalFormat.getInstance();
-	    String pattern = ((DecimalFormat)format).toPattern();
+	    ((DecimalFormat)format).toPattern();
 	    ((DecimalFormat)format).applyPattern(getFormatPatternToUse(displayParameters.get(DISPLAY_FORMAT_PATTERN_MAP_KEY)));
 	    return format.format(getSearchableAttributeValue().doubleValue());
 	}

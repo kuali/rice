@@ -593,11 +593,55 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         docSearchVO.setInitiatorEmailAddress(user.getEmailAddress());
 
         if (usingAtLeastOneSearchAttribute) {
-            populateRowSearchableAttributes(docSearchVO,searchAttributeStatement,rs);
+            populateRowSearchableAttributes(docSearchVO,searchAttributeStatement);
         }
         return docSearchVO;
     }
 
+    /**
+     * This method performs searches against the search attribute value tables (see classes implementing
+     * {@link SearchableAttributeValue}) to get data to fill in search attribute values on the given docSearchVO parameter
+     * 
+     * @param docSearchVO - document search result object getting search attributes added to it
+     * @param searchAttributeStatement - statement being used to call the database for queries
+     * @throws SQLException
+     */
+    public void populateRowSearchableAttributes(DocSearchVO docSearchVO, Statement searchAttributeStatement) throws SQLException {
+        searchAttributeStatement.setFetchSize(50);
+        Long documentId = docSearchVO.getRouteHeaderId();
+        List<SearchableAttributeValue> attributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
+        PerformanceLogger perfLog = new PerformanceLogger(documentId);
+        for (Iterator iter = attributeValues.iterator(); iter.hasNext();) {
+            SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
+            String attributeSql = "select DOC_HDR_EXT_VAL_KEY, DOC_HDR_EXT_VAL from " + searchAttValue.getAttributeTableName() + " where DOC_HDR_ID = " + documentId;
+            ResultSet attributeResultSet = null;
+            try {
+                attributeResultSet = searchAttributeStatement.executeQuery(attributeSql);
+                while (attributeResultSet.next()) {
+                    searchAttValue.setSearchableAttributeKey(attributeResultSet.getString("DOC_HDR_EXT_VAL_KEY"));
+                    searchAttValue.setupAttributeValue(attributeResultSet, "DOC_HDR_EXT_VAL");
+                    if ( (!Utilities.isEmpty(searchAttValue.getSearchableAttributeKey())) && (searchAttValue.getSearchableAttributeValue() != null) ) {
+                        docSearchVO.addSearchableAttribute(new KeyValueSort(searchAttValue.getSearchableAttributeKey(),searchAttValue.getSearchableAttributeDisplayValue(),searchAttValue.getSearchableAttributeValue(),searchAttValue));
+                    }
+                }
+            } finally {
+                if (attributeResultSet != null) {
+                    try {
+                        attributeResultSet.close();
+                    } catch (Exception e) {
+                        LOG.warn("Could not close searchable attribute result set for class " + searchAttValue.getClass().getName(),e);
+                    }
+                }
+            }
+        }
+        perfLog.log("Time to execute doc search search attribute queries.", true);
+    }
+    
+    /**
+     * @deprecated As of version 0.9.3 this method is no longer used. Method
+     *             {@link #populateRowSearchableAttributes(DocSearchVO, Statement)} is being used instead.
+     */
+    @Deprecated
     public void populateRowSearchableAttributes(DocSearchVO docSearchVO, Statement searchAttributeStatement, ResultSet rs) throws SQLException {
         List searchAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
         for (Iterator iter = searchAttributeValues.iterator(); iter.hasNext();) {
@@ -692,17 +736,24 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         fromSQL.append(fromSQLForDocHeaderTable);
         String finalizedSql = sqlPrefix + " " + selectSQL.toString() + " " + fromSQL.toString() + " " + whereSQL.toString() + " " + sqlSuffix;
-        usingAtLeastOneSearchAttribute = false;
-        if (possibleSearchableAttributesExist) {
-            usingAtLeastOneSearchAttribute = true;
-            finalizedSql = generateFinalSQL(new QueryComponent(selectSQL.toString(),fromSQL.toString(),whereSQL.toString()), docHeaderTableAlias, sqlPrefix, sqlSuffix);
-        }
+        usingAtLeastOneSearchAttribute = possibleSearchableAttributesExist;
+//        usingAtLeastOneSearchAttribute = false;
+//        if (possibleSearchableAttributesExist) {
+//            usingAtLeastOneSearchAttribute = true;
+//            finalizedSql = generateFinalSQL(new QueryComponent(selectSQL.toString(),fromSQL.toString(),whereSQL.toString()), docHeaderTableAlias, sqlPrefix, sqlSuffix);
+//        }
         LOG.debug("*********** SQL ***************");
         LOG.debug(finalizedSql);
         LOG.debug("*******************************");
         return finalizedSql;
     }
 
+    /**
+     * @deprecated As of version 0.9.3 this method is no longer used. This method had been used to create multiple SQL queries if using searchable attributes
+     *             and use the sql UNION function to join the queries. The replacement method
+     *             {@link #generateFinalSQL(QueryComponent, String, String)} is now used instead.
+     */
+    @Deprecated
     protected String generateFinalSQL(QueryComponent searchSQL,String docHeaderTableAlias, String standardSqlPrefix, String standardSqlSuffix) {
     	StringBuffer finalSql = new StringBuffer();
     	List searchableAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
@@ -725,7 +776,14 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	finalSql.append(" ) " + standardSqlSuffix);
     	return finalSql.toString();
     }
-
+    
+    /**
+     * @deprecated As of version 0.9.3 this method is no longer used. This method had been used to generate SQL to return searchable attributes using left
+     *             outer joins. The new mechanism to get search attributes from the database is to call each search attribute
+     *             table individually in the {@link #populateRowSearchableAttributes(DocSearchVO, Statement, ResultSet)}
+     *             method.
+     */
+    @Deprecated
     protected QueryComponent generateSqlForSearchableAttributeValue(SearchableAttributeValue attributeValue, List tableAliasComponentNames, String docHeaderTableAlias) {
     	StringBuffer selectSql = new StringBuffer();
     	StringBuffer fromSql = new StringBuffer();

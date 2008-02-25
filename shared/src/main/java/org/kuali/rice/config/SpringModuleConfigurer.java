@@ -97,7 +97,7 @@ public class SpringModuleConfigurer extends BaseModuleConfigurer {
     @Override
     protected ResourceLoader createResourceLoader() {
         String context;
-        if (testMode) {
+        if (isTestMode()) {
             context = springResourceTest;
         } else {
             context = springResource;

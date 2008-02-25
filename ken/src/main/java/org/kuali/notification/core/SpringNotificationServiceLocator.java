@@ -18,6 +18,7 @@ package org.kuali.notification.core;
 import java.util.Properties;
 
 import org.kuali.notification.dao.BusinessObjectDao;
+import org.kuali.notification.service.KENAPIService;
 import org.kuali.notification.service.NotificationAuthorizationService;
 import org.kuali.notification.service.NotificationChannelService;
 import org.kuali.notification.service.NotificationContentTypeService;
@@ -41,6 +42,7 @@ import org.springframework.beans.factory.BeanFactory;
  */
 public class SpringNotificationServiceLocator implements NotificationServiceLocator {
     // Spring bean names
+    private static final String KENAPI_SERVICE = "kenApiService";
     private static final String NOTIFICATION_SERVICE = "notificationService";
     private static final String NOTIFICATION_CONTENT_TYPE_SERVICE = "notificationContentTypeService";
     private static final String MESSAGE_CONTENT_SERVICE = "messageContentService";
@@ -68,6 +70,11 @@ public class SpringNotificationServiceLocator implements NotificationServiceLoca
     public SpringNotificationServiceLocator(BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }
+    
+    public KENAPIService getKENAPIService() {
+        return (KENAPIService) beanFactory.getBean(KENAPI_SERVICE);
+    }
+
 
     /**
      * @see org.kuali.notification.core.NotificationServiceLocator#getNotificationService()

@@ -95,6 +95,7 @@
 		<property name="beanNames">
 			<list>
               <value>messageContentService</value>
+              <value>kenApiService</value>
               <value>notificationService</value>
               <value>notificationContentTypeService</value>
               <value>notificationAuthorizationService</value>
@@ -114,6 +115,10 @@
     <bean id="messageContentService" class="org.kuali.notification.service.impl.NotificationMessageContentServiceImpl">
       <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
       <constructor-arg><ref local="notificationContentTypeService"/></constructor-arg>
+    </bean>
+
+    <bean id="kenApiService" class="org.kuali.notification.service.impl.KENAPIServiceImpl">
+      <property name="notificationChannelService" ref="notificationChannelService"/>
     </bean>
 
     <bean id="notificationService" class="org.kuali.notification.service.impl.NotificationServiceImpl">
@@ -268,6 +273,21 @@
             </bean>
         </property>
         <!-- THIS IS NEEDED FOR THE KEWINTEGRATIONTEST TO OBSERVE THE SERVICE ON THE BUS... -->
+        <property name="forceRefresh" value="true"/>
+    </bean>
+    
+    <!-- Export the KEN api service -->
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+        <property name="serviceDefinition">
+            <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+                <property name="service">
+                    <ref bean="kenApiService" />
+                </property>
+                <property name="localServiceName" value="KEN-KENAPIService" />
+                <property name="priority" value="10" />
+                <property name="retryAttempts" value="1" />
+            </bean>
+        </property>
         <property name="forceRefresh" value="true"/>
     </bean>
     

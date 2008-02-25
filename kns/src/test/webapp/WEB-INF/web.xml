@@ -3,6 +3,11 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<display-name>Rice Sample Application</display-name>
 
+    <filter>
+        <filter-name>HideWebInfFilter</filter-name>
+        <filter-class>org.kuali.core.web.filter.HideWebInfFilter</filter-class>
+    </filter>
+
 	<filter>
 		<filter-name>LoginFilter</filter-name>
 		<filter-class>edu.iu.uis.eden.web.DummyLoginFilter</filter-class>
@@ -19,6 +24,11 @@
     </filter>
 
 	<filter-mapping>
+        <filter-name>HideWebInfFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
 		<filter-name>LoginFilter</filter-name>
 		<servlet-name>action</servlet-name>
 	</filter-mapping>
@@ -43,6 +53,20 @@
     <filter-mapping>
         <filter-name>UserAccessFilter</filter-name>
         <servlet-name>notification</servlet-name>
+    </filter-mapping>
+    
+    <!-- for KCB Spring Web MVC pages -->
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <servlet-name>kcb</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>UserLoginFilter</filter-name>
+        <servlet-name>kcb</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>UserAccessFilter</filter-name>
+        <servlet-name>kcb</servlet-name>
     </filter-mapping>
 
     <!-- for EDocLite -->
@@ -145,6 +169,24 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
+    <!-- KCB servlets -->
+    <servlet>
+        <servlet-name>kcb</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+          <param-name>contextConfigLocation</param-name>
+          <param-value>kcb/WEB-INF/kcb-servlet.xml</param-value>
+        </init-param>
+        <init-param>
+          <description>this init parameter is KCB's module prefix within the containing webapp, it is propagated as a
+                       property in the XmlApplicationContext
+          </description>
+          <param-name>prefix</param-name>
+          <param-value>/kcb</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
 	<servlet>
 		<servlet-name>remoting</servlet-name>
 		<servlet-class>edu.iu.uis.eden.messaging.servlet.KSBDispatcherServlet</servlet-class>
@@ -184,6 +226,11 @@
     <servlet-mapping>
         <servlet-name>notification</servlet-name>
         <url-pattern>*.form</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>kcb</servlet-name>
+        <url-pattern>*.kcb</url-pattern>
     </servlet-mapping>
 
 	<servlet-mapping>

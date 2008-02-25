@@ -98,6 +98,13 @@
                     </tr>
                     <tr>
                         <td width="100%"><img src="images/transparent_002.gif" height="1"
+                           width="4"><a href="KCBDelivererPreferences.form">Delivery Types</a></td>
+
+                        <td><img src="images/transparent_002.gif" height="1"
+                           width="1"></td>
+                    </tr>
+                    <tr>
+                        <td width="100%"><img src="images/transparent_002.gif" height="1"
                            width="4"><a href="DisplayActionListPreferences.form" >Action List Preferences</a></td>
 
                         <td><img src="images/transparent_002.gif" height="1"

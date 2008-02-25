@@ -105,12 +105,18 @@
             <prop key="${prefix}/SubmitEventNotificationMessage.form">sendEventNotificationMessageController</prop>
             
             <prop key="${prefix}/AdministerNotificationRequest.form">administerNotificationRequestController</prop>
+            
+            <prop key="${prefix}/KCBDelivererPreferences.form">kcbDelivererPrefs</prop>
          </props>
       </property>
    </bean>
 
    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-     <property name="defaultErrorView"><value>error</value></property>
+       <property name="defaultErrorView"><value>error</value></property>
+   </bean>
+
+   <bean name="kcbDelivererPrefs" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+       <property name="viewName" value="KCBDelivererPreferences"/>
    </bean>
 
    <!-- Multiaction Controllers  -->

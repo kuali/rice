@@ -18,6 +18,7 @@ package org.kuali.notification.core;
 import java.util.Properties;
 
 import org.kuali.notification.dao.BusinessObjectDao;
+import org.kuali.notification.service.KENAPIService;
 import org.kuali.notification.service.NotificationAuthorizationService;
 import org.kuali.notification.service.NotificationChannelService;
 import org.kuali.notification.service.NotificationContentTypeService;
@@ -39,6 +40,12 @@ import org.quartz.Scheduler;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface NotificationServiceLocator {
+    /**
+     * This method returns an instance of the Spring configured impl for the KENAPIService.
+     * @return KENAPIService
+     */
+    public KENAPIService getKENAPIService();
+
     /**
      * This method returns an instance of the Spring configured impl for the NotificationService.
      * @return NotificationService

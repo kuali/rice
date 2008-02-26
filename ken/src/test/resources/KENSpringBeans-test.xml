@@ -6,7 +6,7 @@
      overrides notification email service
      does not include security beans not required for unit tests -->
 <beans>
-  <import resource="common-beans.xml"/>
+  <import resource="KENSpringBeans.xml"/>
 
   <!-- override business object dao -->
   <bean id="businessObjectDao" class="org.kuali.notification.dao.ojb.BusinessObjectDaoOjb">

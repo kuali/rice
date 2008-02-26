@@ -37,7 +37,8 @@ public interface AuthorizationService {
     public boolean isPrincipalAuthorized(String principalName, String permissionName, String namespaceName);
     
     /**
-     * Determines if a Person is authorized for a given permission.
+     * Determines if a Person is authorized for a given permission.  This service assumes that the id
+     * being passed in is an entity id for an entity with an Entity Type of a Person.
      * 
      * @param   personId             person id identifying a unique KIM Person
      * @param   permissionName       name identifying a unique permission
@@ -46,6 +47,17 @@ public interface AuthorizationService {
      * 
      */
     public boolean isPersonAuthorized(Long personId, String permissionName, String namespaceName);
+    
+    /**
+     * Determines if an Entity is authorized for a given permission.
+     * 
+     * @param   entityId             entity id identifying a unique KIM Entity
+     * @param   permissionName       name identifying a unique permission
+     * @param   namespaceName        The associated namespace to scope to
+     * @return                       boolean indicating if Person is authorized
+     * 
+     */
+    public boolean isEntityAuthorized(Long entityId, String permissionName, String namespaceName);
     
     /**
      * Determines if a Principal possesses a given permission and set of role attributes.
@@ -63,7 +75,8 @@ public interface AuthorizationService {
         Map<String, String> qualifiedRoleAttributes, String namespaceName);
     
     /**
-     * Determines if a Person possesses a given qualified permission.
+     * Determines if a Person possesses a given qualified permission. This service assumes that the id
+     * being passed in is an entity id for an entity with an Entity Type of a Person.
      * 
      * @param   personId                 person id identifying a unique Person
      * @param   permissionName           name identifying a unique permission
@@ -78,6 +91,21 @@ public interface AuthorizationService {
         Map<String, String> qualifiedRoleAttributes, String namespaceName);
     
     /**
+     * Determines if an Entity possesses a given qualified permission.  
+     * 
+     * @param   entityId                 entity id identifying a unique Entity
+     * @param   permissionName           name identifying a unique permission
+     * @param   qualifiedRoleAttributes  Map<String, String> of role attribute name/value pairs
+     *                                   to qualify a Person
+     * @param   namespaceName            The associated namespace to scope to
+     * @return                           boolean indicating if Person possesses the permission and 
+     *                                   all given Role attributes
+     * 
+     */
+    public boolean isEntityAuthorizedForQualifiedPermission(Long entityId, String permissionName, 
+        Map<String, String> qualifiedRoleAttributes, String namespaceName);
+    
+    /**
      * Determines if a given Principal has been assigned to a given role.
      * 
      * @param   principalName        name identifying a principal
@@ -88,7 +116,8 @@ public interface AuthorizationService {
     public boolean principalHasRole(String principalName, String roleName);
     
     /**
-     * Determines if a given Person has been assigned to a given role.
+     * Determines if a given Person has been assigned to a given role. This service assumes that the id
+     * being passed in is an entity id for an entity with an Entity Type of a Person.
      * 
      * @param   personId             person id uniquely identifying a person
      * @param   roleName             name identifying a unique Role
@@ -96,6 +125,16 @@ public interface AuthorizationService {
      * 
      */
     public boolean personHasRole(Long personId, String roleName);
+    
+    /**
+     * Determines if a given Entity has been assigned to a given role.
+     * 
+     * @param   entityId             entity id uniquely identifying an Entity
+     * @param   roleName             name identifying a unique Role
+     * @return                       boolean indicating if Person has been assigned to Role
+     * 
+     */
+    public boolean entityHasRole(Long entityId, String roleName);
     
     /**
      * Determines if a given Group has been assigned to a given role.
@@ -121,7 +160,8 @@ public interface AuthorizationService {
         Map<String, String> qualifiedRoleAttributes);
     
     /**
-     * Determines if a given Person possesses all given Role attributes.
+     * Determines if a given Person possesses all given Role attributes.  This service assumes that the id
+     * being passed in is an entity id for an entity with an Entity Type of a Person.
      * 
      * @param   personId                    person id uniquely identifying a person
      * @param   roleName                    name identifying a unique Role
@@ -131,6 +171,19 @@ public interface AuthorizationService {
      * 
      */
     public boolean personHasQualifiedRole(Long personId, String roleName, 
+        Map<String, String> qualifiedRoleAttributes);
+    
+    /**
+     * Determines if a given Entity possesses all given Role attributes.
+     * 
+     * @param   entityId                    entity id uniquely identifying a entity
+     * @param   roleName                    name identifying a unique Role
+     * @param   qualifiedRoleAttributes     Map<String, String> of role attribute name/value pairs
+     *                                      to qualify a Role
+     * @return                              boolean indicating if Entity possesses all given Role attributes
+     * 
+     */
+    public boolean entityHasQualifiedRole(Long entityId, String roleName, 
         Map<String, String> qualifiedRoleAttributes);
     
     /**

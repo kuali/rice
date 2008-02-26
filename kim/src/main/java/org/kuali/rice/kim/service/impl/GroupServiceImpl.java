@@ -20,12 +20,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.core.service.BusinessObjectService;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.Principal;
-import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.dto.EntityDTO;
+import org.kuali.rice.kim.dto.GroupDTO;
+import org.kuali.rice.kim.dto.PersonDTO;
+import org.kuali.rice.kim.dto.PrincipalDTO;
+import org.kuali.rice.kim.dto.RoleDTO;
 import org.kuali.rice.kim.service.GroupService;
 
 /**
@@ -59,7 +60,7 @@ public class GroupServiceImpl implements GroupService {
      *
      * @see org.kuali.rice.kim.service.GroupService#getAllGroups()
      */
-    public List<Group> getAllGroups() {
+    public List<GroupDTO> getAllGroups() {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -79,7 +80,7 @@ public class GroupServiceImpl implements GroupService {
      *
      * @see org.kuali.rice.kim.service.GroupService#getGroupMembers(java.lang.String)
      */
-    public List<Group> getGroupMembers(String groupName) {
+    public List<GroupDTO> getGroupMembers(String groupName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -99,7 +100,7 @@ public class GroupServiceImpl implements GroupService {
      *
      * @see org.kuali.rice.kim.service.GroupService#getGroupsWithAttributes(java.util.Map)
      */
-    public List<Group> getGroupsWithAttributes(Map<String, String> groupAttributes) {
+    public List<GroupDTO> getGroupsWithAttributes(Map<String, String> groupAttributes) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -119,7 +120,7 @@ public class GroupServiceImpl implements GroupService {
      *
      * @see org.kuali.rice.kim.service.GroupService#getPersonMembers(java.lang.String)
      */
-    public List<Person> getPersonMembers(String groupName) {
+    public List<PersonDTO> getPersonMembers(String groupName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -139,7 +140,7 @@ public class GroupServiceImpl implements GroupService {
      *
      * @see org.kuali.rice.kim.service.GroupService#getPrincipalMembers(java.lang.String)
      */
-    public List<Principal> getPrincipalMembers(String groupName) {
+    public List<PrincipalDTO> getPrincipalMembers(String groupName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -159,7 +160,7 @@ public class GroupServiceImpl implements GroupService {
      *
      * @see org.kuali.rice.kim.service.GroupService#getRolesForGroup(java.lang.String)
      */
-    public List<Role> getRolesForGroup(String groupName) {
+    public List<RoleDTO> getRolesForGroup(String groupName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -173,4 +174,26 @@ public class GroupServiceImpl implements GroupService {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return false;
     }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.GroupService#getEntityMemberIds(java.lang.String)
+     */
+    public List<Long> getEntityMemberIds(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.GroupService#getEntityMembers(java.lang.String)
+     */
+    public List<EntityDTO> getEntityMembers(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+    
+    
 }

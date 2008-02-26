@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service;
 
+import org.junit.Test;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
@@ -30,5 +31,10 @@ public class QualifiedRoleServiceTest extends KIMTestCase {
     public void setUp() throws Exception {
         super.setUp();
         qualifiedRoleService = (QualifiedRoleService)GlobalResourceLoader.getService("qualifiedRoleService");
+    }
+    
+    @Test
+    public void fakeTest() {
+        assertTrue(true);
     }
 }

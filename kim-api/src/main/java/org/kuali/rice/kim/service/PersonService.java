@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.kim.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.dto.PersonAttributeDTO;
+import org.kuali.rice.kim.dto.PersonDTO;
 
 /**
  * Service API for accessing KIM Person services.  This contract should be used by all 
@@ -34,7 +36,7 @@ public interface PersonService {
      * @return         List of Person objects for the application
      * 
      */
-    public List<Person> getAllPersons();
+    public List<PersonDTO> getAllPersons();
     
     /**
      * KIM service API method that returns a complete collection of Person ids for the 
@@ -57,10 +59,31 @@ public interface PersonService {
     public boolean isMemberOfGroup(Long personId, String groupName);
     
     /**
+     * KIM Person service API method that retrieves all Person Attribute DTOs for a given 
+     * person, and for a given Namespace.
+     * 
+     * @param personId               personId uniquely identifying a KIM Person
+     * @param namespaceName          the associated namespace to scope the attributes to
+     * @return                       A HashMap - the key being the name of the attribute, the 
+     *                               value being the actual PersonAttributeDTO object
+     */
+    public HashMap<String, PersonAttributeDTO> getPersonAttributesForNamespace(Long personId, String namespaceName);
+    
+    /**
+     * KIM Person service API method that retrieves all Person Attribute DTOs for a given 
+     * person, grouping them by Namespace.
+     * 
+     * @param personId               personId uniquely identifying a KIM Person
+     * @return                       A HashMap - the key being the name of the Namespace, the 
+     *                               value being a List of the actual PersonAttributeDTO objects
+     */
+    public HashMap<String, List<PersonAttributeDTO>> getPersonAttributesByNamespace(Long personId);
+    
+    /**
      * KIM Person service API method that determines if a given user possesses all given Person
      * attributes.
      * 
-     * @param   personId             principal associated with a unique KIM Person
+     * @param   personId             personId uniquely identifying a KIM Person
      * @param   personAttributes     Map<String, String> of role attribute name/value pairs
      *                               to match a Person
      * @param   namespaceName        the associated namespace to scope the attributes to
@@ -90,7 +113,7 @@ public interface PersonService {
      * @return                       boolean indicating if Person possesses all given Role attributes
      * 
      */
-    public List<Person> getPersonsWithAttributes(Map<String, String> personAttributes, String namespaceName);
+    public List<PersonDTO> getPersonsWithAttributes(Map<String, String> personAttributes, String namespaceName);
     
     /**
      * KIM Person service API method that returns associated List of usernames for all Person objects

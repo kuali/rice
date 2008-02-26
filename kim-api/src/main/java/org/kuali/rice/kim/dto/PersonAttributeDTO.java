@@ -13,28 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service;
+package org.kuali.rice.kim.dto;
 
-import org.junit.Test;
-import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 /**
- * Basic test to verify we can access the QualifiedRoleService through the GRL. 
+ * This is the Data Transfer Object (DTO) that is used for our service layer.
+ * 
+ * A PersonAttributeDTO represents a single meta-data attribute associated with a Person in the system. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RoleServiceTest extends KIMTestCase {
-    private RoleService roleService;
-
-    public void setUp() throws Exception {
-        super.setUp();
-        roleService = (RoleService) GlobalResourceLoader.getService("roleService");
-    }
+public class PersonAttributeDTO extends EntityAttributeDTO {
     
-    @Test
-    public void fakeTest() {
-        assertTrue(true);
-    }
 }

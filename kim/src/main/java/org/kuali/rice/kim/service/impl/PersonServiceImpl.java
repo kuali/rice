@@ -15,11 +15,12 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.dto.PersonAttributeDTO;
+import org.kuali.rice.kim.dto.PersonDTO;
 import org.kuali.rice.kim.service.PersonService;
 
 /**
@@ -45,7 +46,7 @@ public class PersonServiceImpl implements PersonService {
      * 
      * @see org.kuali.rice.kim.service.PersonService#getAllPersons()
      */
-    public List<Person> getAllPersons() {
+    public List<PersonDTO> getAllPersons() {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -75,7 +76,7 @@ public class PersonServiceImpl implements PersonService {
      * 
      * @see org.kuali.rice.kim.service.PersonService#getPersonsWithAttributes(java.util.Map, java.lang.String)
      */
-    public List<Person> getPersonsWithAttributes(Map<String, String> personAttributes, String namespaceName) {
+    public List<PersonDTO> getPersonsWithAttributes(Map<String, String> personAttributes, String namespaceName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -99,4 +100,26 @@ public class PersonServiceImpl implements PersonService {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return false;
     }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.PersonService#getPersonAttributesByNamespace(java.lang.Long)
+     */
+    public HashMap<String, List<PersonAttributeDTO>> getPersonAttributesByNamespace(Long personId) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.PersonService#getPersonAttributesForNamespace(java.lang.Long, java.lang.String)
+     */
+    public HashMap<String, PersonAttributeDTO> getPersonAttributesForNamespace(Long personId, String namespaceName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+    
+    
 }

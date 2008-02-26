@@ -13,22 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo;
+package org.kuali.rice.kim.dto;
 
-import java.util.LinkedHashMap;
-
-import org.kuali.core.bo.PersistableBusinessObjectBase;
-
-public class RoleAttribute extends PersistableBusinessObjectBase {
-
-	private static final long serialVersionUID = -411609041830442521L;
+/**
+ * This is a Data Transfer Object (DTO) that is used by the service layer.
+ * 
+ * An instance of this class represents a single meta-data attribute associated with a Group in the system. 
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ */
+public class GroupAttributeDTO {
 	private Long id;
+	private Long groupId;
 	private Long attributeTypeId;
 	private String attributeName;
 	private String value;
-
 	
-	public String getAttributeName() {
+    /**
+     * @return the groupId
+     */
+    public Long getGroupId() {
+        return this.groupId;
+    }
+
+    /**
+     * @param groupId the groupId to set
+     */
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getAttributeName() {
 		return attributeName;
 	}
 
@@ -59,18 +74,4 @@ public class RoleAttribute extends PersistableBusinessObjectBase {
 	public void setValue(String value) {
 		this.value = value;
 	}
-
-	protected LinkedHashMap<String, Object> toStringMapper() {
-        LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-        propMap.put("id", getId());
-        propMap.put("attributeTypeId", getAttributeTypeId());
-        propMap.put("attributeName", getAttributeName());
-        propMap.put("value", getValue());
-        return propMap;
-	}
-
-	public void refresh() {
-		// not going to add unless needed
-	}
-
 }

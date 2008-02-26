@@ -12,14 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo;
+package org.kuali.rice.kim.dto;
 
-import java.util.LinkedHashMap;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
-
-public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
-    	private static final long serialVersionUID = -8332284694172302250L;
+/**
+ * This is the Data Transfer Object (DTO) that is used for our service layer.
+ * 
+ * A NamespaceDefaultAttributeDTO houses data for a single attribute in the system that shows up on 
+ * the Entity maintenance screen when that Entity is given permissions to use functionality 
+ * within a certain Namespace in the system. 
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ */
+public class NamespaceDefaultAttributeDTO {
 	private Long id;
 	private Long namespaceId;
 	private Long attributeTypeId;
@@ -50,27 +55,6 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
-	 */
-	protected LinkedHashMap<String, Object> toStringMapper() {
-        LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-        propMap.put("id", getId());
-        propMap.put("namespaceId", getNamespaceId());
-        propMap.put("attributeTypeId", getAttributeTypeId());
-        propMap.put("attributeName", getAttributeName());
-        propMap.put("value", getDescription());
-        propMap.put("required", getRequired());
-        propMap.put("active", getActive());
-        return propMap;
-	}
-
-	public void refresh() {
-		// not going to add unless needed
 	}
 
 	public Long getNamespaceId() {
@@ -104,5 +88,4 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
     public void setActive(boolean active) {
         this.active = active;
     }
-
 }

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service;
 
+import org.junit.Test;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
@@ -31,5 +32,9 @@ public class PersonServiceTest extends KIMTestCase {
 	    super.setUp();
 	    personService = (PersonService)GlobalResourceLoader.getService("personService");
 	}
-
+	
+	@Test
+	public void fakeTest() {
+	    assertTrue(true);
+	}
 }

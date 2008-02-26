@@ -13,28 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service;
-
-import org.junit.Test;
-import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
+package org.kuali.rice.kim.dto;
 
 /**
- * Basic test to verify we can access the QualifiedRoleService through the GRL. 
+ * This is the Data Transfer Object (DTO) that is used for our service layer.
+ * 
+ * This class represents a Role instance in the system. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
  */
-public class RoleServiceTest extends KIMTestCase {
-    private RoleService roleService;
+public class RoleDTO {
+	private Long id;
+	private String name;
+	private String description;
+	
+	public String getDescription() {
+		return description;
+	}
 
-    public void setUp() throws Exception {
-        super.setUp();
-        roleService = (RoleService) GlobalResourceLoader.getService("roleService");
-    }
-    
-    @Test
-    public void fakeTest() {
-        assertTrue(true);
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

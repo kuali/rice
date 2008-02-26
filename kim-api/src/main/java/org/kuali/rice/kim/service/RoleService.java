@@ -18,13 +18,14 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.GroupQualifiedRole;
-import org.kuali.rice.kim.bo.Permission;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.PrincipalQualifiedRole;
-import org.kuali.rice.kim.bo.Principal;
-import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.dto.EntityDTO;
+import org.kuali.rice.kim.dto.GroupDTO;
+import org.kuali.rice.kim.dto.GroupQualifiedRoleDTO;
+import org.kuali.rice.kim.dto.PermissionDTO;
+import org.kuali.rice.kim.dto.PersonDTO;
+import org.kuali.rice.kim.dto.PrincipalDTO;
+import org.kuali.rice.kim.dto.PrincipalQualifiedRoleDTO;
+import org.kuali.rice.kim.dto.RoleDTO;
 
 /**
  * Service API for accessing KIM Role services.  This contract should be used by all 
@@ -37,10 +38,10 @@ public interface RoleService {
     /**
      * KIM service API method that returns a complete collection of Role objects for the application.
      * 
-     * @return         List of Role objects for the application
+     * @return         List of RoleDTO objects for the application
      * 
      */
-    public List<Role> getAllRoles();
+    public List<RoleDTO> getAllRoles();
     
     /**
      * KIM service API method that returns a complete collection of Role names for the application.
@@ -51,30 +52,30 @@ public interface RoleService {
     public List<String> getAllRoleNames();
     
     /**
-     * KIM service API method that returns a Role object.
+     * KIM service API method that returns a RoleDTO object.
      * @param roleName
-     * @return A Role object
+     * @return A RoleDTO object
      * 
      */
-    public Role getRole(String roleName);
+    public RoleDTO getRole(String roleName);
     
     /**
-     * KIM service API method that returns a Role object.
+     * KIM service API method that returns a RoleDTO object.
      * @param roleId
-     * @return A Role object
+     * @return A RoleDTO object
      * 
      */
-    public Role getRole(Long roleId);
+    public RoleDTO getRole(Long roleId);
     
     /**
-     * KIM Role service API method that returns all Principal objects within an application
+     * KIM Role service API method that returns all PrincipalDTO objects within an application
      * that belong to a given Role.
      * 
      * @param   roleName             String that identifies a unique KIM Role
-     * @return                       List of all Principal objects that are assigned to the Role
+     * @return                       List of all PrincipalDTO objects that are assigned to the Role
      * 
      */
-    public List<Principal> getPrincipalsWithRole(String roleName);
+    public List<PrincipalDTO> getPrincipalsWithRole(String roleName);
     
     /**
      * KIM Role service API method that returns principal names for all Principal objects 
@@ -88,14 +89,14 @@ public interface RoleService {
     public List<String> getPrincipalNamesWithRole(String roleName);
     
     /**
-     * KIM Role service API method that returns all Person objects within an application
+     * KIM Role service API method that returns all PersonDTO objects within an application
      * that belong to a given Role.
      * 
      * @param   roleName             String that identifies a unique KIM Role
-     * @return                       List of all Person objects that are assigned to the Role
+     * @return                       List of all PersonDTO objects that are assigned to the Role
      * 
      */
-    public List<Person> getPersonsWithRole(String roleName);
+    public List<PersonDTO> getPersonsWithRole(String roleName);
     
     /**
      * KIM Role service API method that returns person ids for all Person objects 
@@ -109,14 +110,35 @@ public interface RoleService {
     public List<Long> getPersonIdsWithRole(String roleName);
     
     /**
-     * KIM Role service API method that returns all Group objects within an application
+     * KIM Role service API method that returns all EntityDTO objects within an application
+     * that belong to a given Role.
+     * 
+     * @param   roleName             String that identifies a unique KIM Role
+     * @return                       List of all EntityDTO objects that are assigned to the Role
+     * 
+     */
+    public List<EntityDTO> getEntitysWithRole(String roleName);
+    
+    /**
+     * KIM Role service API method that returns entity ids for all Entity objects 
+     * within an application that belong to a given Role.
+     * 
+     * @param   roleName             name of KIM Role
+     * @return                       List of entity ids associated with Entity objects 
+     *                               assigned to the Role
+     * 
+     */
+    public List<Long> getEntityIdsWithRole(String roleName);
+    
+    /**
+     * KIM Role service API method that returns all GroupDTO objects within an application
      * that have been assigned a given Role.
      * 
      * @param   roleName             name of KIM Role
-     * @return                       List of all Group objects assigned to the Role
+     * @return                       List of all GroupDTO objects assigned to the Role
      * 
      */
-    public List<Group> getGroupsWithRole(String roleName);
+    public List<GroupDTO> getGroupsWithRole(String roleName);
     
     /**
      * KIM Role service API method that returns group names identifying all Group objects within an 
@@ -129,14 +151,14 @@ public interface RoleService {
     public List<String> getGroupNamesWithRole(String roleName);
     
     /**
-     * KIM Role service API method that returns all Permission objects within an application
+     * KIM Role service API method that returns all PermissionDTO objects within an application
      * that satisfy a given Role.
      * 
      * @param   roleName             name of KIM Role
-     * @return                       List of all Permission objects that satisfy the Role
+     * @return                       List of all PermissionDTO objects that satisfy the Role
      * 
      */
-    public List<Permission> getPermissionsForRole(String roleName);
+    public List<PermissionDTO> getPermissionsForRole(String roleName);
     
     /**
      * KIM Role service API method that returns permissions names identifying all Permission objects within 
@@ -149,48 +171,48 @@ public interface RoleService {
     public List<String> getPermissionNamesForRole(String roleName);
     
     /**
-     * KIM Role service API method that returns all PrincipalQualifiedRole objects within an application
+     * KIM Role service API method that returns all PrincipalQualifiedRoleDTO objects within an application
      * that associate with a given Role.
      * 
      * @param   roleName             name of KIM Role
-     * @return                       List of all PrincipalQualifiedRole objects associated with the Role
+     * @return                       List of all PrincipalQualifiedRoleDTO objects associated with the Role
      * 
      */
-    public List<PrincipalQualifiedRole> getPrincipalQualifiedRoles(String roleName);
+    public List<PrincipalQualifiedRoleDTO> getPrincipalQualifiedRoles(String roleName);
 
     /**
-     * KIM Role service API method that returns all PrincipalQualifiedRole objects within an application
+     * KIM Role service API method that returns all PrincipalQualifiedRoleDTO objects within an application
      * that match a given Role and also match List of qualified role attributes.
      * 
      * @param   roleName                 String that identifies a unique KIM Role
      * @param   qualifiedRoleAttributes  Map<String, String> of role attribute name/value pairs
      *                                   to qualify a person
-     * @return                           List of all PrincipalQualifiedRole objects that match 
+     * @return                           List of all PrincipalQualifiedRoleDTO objects that match 
      *                                   the role and qualified role attributes
      * 
      */
-     public List<PrincipalQualifiedRole> getPrincipalQualifiedRoles(String roleName, 
+     public List<PrincipalQualifiedRoleDTO> getPrincipalQualifiedRoles(String roleName, 
 	     Map<String, String> qualifiedRoleAttributes);
     /**
-     * KIM Role service API method that returns all GroupQualifiedRole objects within an application
+     * KIM Role service API method that returns all GroupQualifiedRoleDTO objects within an application
      * that associate with a given Role.
      * 
      * @param   roleName             String that identifies a unique KIM Role
-     * @return                       List of all GroupQualifiedRole objects associated with the Role 
+     * @return                       List of all GroupQualifiedRoleDTO objects associated with the Role 
      */
-    public List<GroupQualifiedRole> getGroupQualifiedRoles(String roleName);
+    public List<GroupQualifiedRoleDTO> getGroupQualifiedRoles(String roleName);
     /**
-     * KIM Role service API method that returns all GroupQualifiedRole objects within an application
+     * KIM Role service API method that returns all GroupQualifiedRoleDTO objects within an application
      * that match a given Role and also match List of qualified role attributes.
      * 
      * @param   roleName                 String that identifies a unique KIM Role
      * @param   qualifiedRoleAttributes  Map<String, String> of role attribute name/value pairs
      *                                   to qualify a group
-     * @return                           List of all GroupQualifiedRole objects that match 
+     * @return                           List of all GroupQualifiedRoleDTO objects that match 
      *                                   the role and qualified role attributes
      * 
      */
-    public List<GroupQualifiedRole> getGroupQualifiedRoles(String roleName, 
+    public List<GroupQualifiedRoleDTO> getGroupQualifiedRoles(String roleName, 
 	    Map<String, String> qualifiedRoleAttributes);
 
 }

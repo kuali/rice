@@ -65,7 +65,7 @@ public interface PrincipalService {
      * @param personId
      * @return List<Principal>
      */
-    public List<Principal> getPrincipals(Long personId);
+    public List<Principal> getPrincipalsForPerson(Long personId);
     
     /**
      * This method returns all of the principal names associated with a given person.
@@ -73,5 +73,21 @@ public interface PrincipalService {
      * @param personId
      * @return List<String>
      */
-    public List<String> getPrincipalNames(Long personId);
+    public List<String> getPrincipalNamesForPerson(Long personId);
+    
+    /**
+     * This method returns all of the fully populated Principal objects associated with a given entity.
+     * 
+     * @param entityId
+     * @return List<Principal>
+     */
+    public List<Principal> getPrincipalsForEntity(Long entityId);
+    
+    /**
+     * This method returns all of the principal names associated with a given entity.
+     * 
+     * @param entityId
+     * @return List<String>
+     */
+    public List<String> getPrincipalNamesForEntity(Long entityId);
 }

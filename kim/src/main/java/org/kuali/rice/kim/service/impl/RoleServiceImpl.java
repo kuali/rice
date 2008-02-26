@@ -18,13 +18,14 @@ package org.kuali.rice.kim.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.GroupQualifiedRole;
-import org.kuali.rice.kim.bo.Permission;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.PrincipalQualifiedRole;
-import org.kuali.rice.kim.bo.Principal;
-import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.dto.EntityDTO;
+import org.kuali.rice.kim.dto.GroupDTO;
+import org.kuali.rice.kim.dto.GroupQualifiedRoleDTO;
+import org.kuali.rice.kim.dto.PermissionDTO;
+import org.kuali.rice.kim.dto.PersonDTO;
+import org.kuali.rice.kim.dto.PrincipalDTO;
+import org.kuali.rice.kim.dto.PrincipalQualifiedRoleDTO;
+import org.kuali.rice.kim.dto.RoleDTO;
 import org.kuali.rice.kim.service.RoleService;
 
 /**
@@ -49,7 +50,7 @@ public class RoleServiceImpl implements RoleService {
      * 
      * @see org.kuali.rice.kim.service.RoleService#getAllRoles()
      */
-    public List<Role> getAllRoles() {
+    public List<RoleDTO> getAllRoles() {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -59,7 +60,7 @@ public class RoleServiceImpl implements RoleService {
      * 
      * @see org.kuali.rice.kim.service.RoleService#getRole(java.lang.Long)
      */
-    public Role getRole(Long roleId) {
+    public RoleDTO getRole(Long roleId) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -69,7 +70,7 @@ public class RoleServiceImpl implements RoleService {
      * 
      * @see org.kuali.rice.kim.service.RoleService#getRole(java.lang.String)
      */
-    public Role getRole(String roleName) {
+    public RoleDTO getRole(String roleName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -89,7 +90,7 @@ public class RoleServiceImpl implements RoleService {
      * 
      * @see org.kuali.rice.kim.service.RoleService#getGroupQualifiedRoles(java.lang.String, java.util.Map)
      */
-    public List<GroupQualifiedRole> getGroupQualifiedRoles(String roleName, Map<String, String> qualifiedRoleAttributes) {
+    public List<GroupQualifiedRoleDTO> getGroupQualifiedRoles(String roleName, Map<String, String> qualifiedRoleAttributes) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -99,7 +100,7 @@ public class RoleServiceImpl implements RoleService {
      * 
      * @see org.kuali.rice.kim.service.RoleService#getGroupQualifiedRoles(java.lang.String)
      */
-    public List<GroupQualifiedRole> getGroupQualifiedRoles(String roleName) {
+    public List<GroupQualifiedRoleDTO> getGroupQualifiedRoles(String roleName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -109,7 +110,7 @@ public class RoleServiceImpl implements RoleService {
      * 
      * @see org.kuali.rice.kim.service.RoleService#getGroupsWithRole(java.lang.String)
      */
-    public List<Group> getGroupsWithRole(String roleName) {
+    public List<GroupDTO> getGroupsWithRole(String roleName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -129,7 +130,7 @@ public class RoleServiceImpl implements RoleService {
      * 
      * @see org.kuali.rice.kim.service.RoleService#getPermissionsForRole(java.lang.String)
      */
-    public List<Permission> getPermissionsForRole(String roleName) {
+    public List<PermissionDTO> getPermissionsForRole(String roleName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -149,7 +150,7 @@ public class RoleServiceImpl implements RoleService {
      * 
      * @see org.kuali.rice.kim.service.RoleService#getPersonsWithRole(java.lang.String)
      */
-    public List<Person> getPersonsWithRole(String roleName) {
+    public List<PersonDTO> getPersonsWithRole(String roleName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -169,7 +170,7 @@ public class RoleServiceImpl implements RoleService {
      * 
      * @see org.kuali.rice.kim.service.RoleService#getPrincipalsWithRole(java.lang.String)
      */
-    public List<Principal> getPrincipalsWithRole(String roleName) {
+    public List<PrincipalDTO> getPrincipalsWithRole(String roleName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -179,7 +180,7 @@ public class RoleServiceImpl implements RoleService {
      * 
      * @see org.kuali.rice.kim.service.RoleService#getPrincipalQualifiedRoles(java.lang.String)
      */
-    public List<PrincipalQualifiedRole> getPrincipalQualifiedRoles(String roleName) {
+    public List<PrincipalQualifiedRoleDTO> getPrincipalQualifiedRoles(String roleName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -189,8 +190,30 @@ public class RoleServiceImpl implements RoleService {
      * 
      * @see org.kuali.rice.kim.service.RoleService#getPrincipalQualifiedRoles(java.lang.String, java.util.Map)
      */
-    public List<PrincipalQualifiedRole> getPrincipalQualifiedRoles(String roleName, Map<String, String> qualifiedRoleAttributes) {
+    public List<PrincipalQualifiedRoleDTO> getPrincipalQualifiedRoles(String roleName, Map<String, String> qualifiedRoleAttributes) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.RoleService#getEntityIdsWithRole(java.lang.String)
+     */
+    public List<Long> getEntityIdsWithRole(String roleName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.RoleService#getEntitysWithRole(java.lang.String)
+     */
+    public List<EntityDTO> getEntitysWithRole(String roleName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+    
+    
 }

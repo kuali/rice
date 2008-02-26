@@ -18,10 +18,11 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.Principal;
-import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.dto.EntityDTO;
+import org.kuali.rice.kim.dto.GroupDTO;
+import org.kuali.rice.kim.dto.PersonDTO;
+import org.kuali.rice.kim.dto.PrincipalDTO;
+import org.kuali.rice.kim.dto.RoleDTO;
 
 /**
  * Service API for accessing KIM QualifiedRole services. This contract should be used by all Kuali software which needs to
@@ -36,9 +37,9 @@ public interface QualifiedRoleService {
      * 
      * @param roleName name identifying Role
      * @param qualifiedRoleAttributes Map<String, String> of role attribute name/value pairs to qualify a Principal
-     * @return List of Principal objects that satisfy both Role and qualifying role attributes
+     * @return List of PrincipalDTO objects that satisfy both Role and qualifying role attributes
      */
-    public List<Principal> getPrincipals(String roleName, Map<String, String> qualifiedRoleAttributes);
+    public List<PrincipalDTO> getPrincipals(String roleName, Map<String, String> qualifiedRoleAttributes);
 
     /**
      * KIM QualifiedRole service API method that returns associated List of principal names for all Principal objects that possess a
@@ -56,9 +57,9 @@ public interface QualifiedRoleService {
      * 
      * @param roleName name identifying Role
      * @param qualifiedRoleAttributes Map<String, String> of role attribute name/value pairs to qualify a Person
-     * @return List of Person objects that satisfy both Role and qualifying role attributes
+     * @return List of PersonDTO objects that satisfy both Role and qualifying role attributes
      */
-    public List<Person> getPersons(String roleName, Map<String, String> qualifiedRoleAttributes);
+    public List<PersonDTO> getPersons(String roleName, Map<String, String> qualifiedRoleAttributes);
 
     /**
      * KIM QualifiedRole service API method that returns associated List of person ids for all Person objects that possess a
@@ -69,6 +70,26 @@ public interface QualifiedRoleService {
      * @return associated List person Ids for Person objects that satisfy both Role and qualifying role attributes
      */
     public List<Long> getPersonIds(String roleName, Map<String, String> qualifiedRoleAttributes);
+    
+    /**
+     * KIM QualifiedRole service API method that returns the complete List of Entity objects that possess a given Role and
+     * matching role attributes
+     * 
+     * @param roleName name identifying Role
+     * @param qualifiedRoleAttributes Map<String, String> of role attribute name/value pairs to qualify a Entity
+     * @return List of EntityDTO objects that satisfy both Role and qualifying role attributes
+     */
+    public List<EntityDTO> getEntitys(String roleName, Map<String, String> qualifiedRoleAttributes);
+
+    /**
+     * KIM QualifiedRole service API method that returns associated List of entity ids for all Entity objects that possess a
+     * given Role and matching role attributes
+     * 
+     * @param roleName name identifying Role
+     * @param qualifiedRoleAttributes Map<String, String> of role attribute name/value pairs to qualify a Entity
+     * @return associated List entity Ids for Entity objects that satisfy both Role and qualifying role attributes
+     */
+    public List<Long> getEntityIds(String roleName, Map<String, String> qualifiedRoleAttributes);
 
     /**
      * KIM QualifiedRole service API method that returns the complete List of Group objects matching a given role and
@@ -78,9 +99,9 @@ public interface QualifiedRoleService {
      *            name identifying Role
      * @param qualifiedRoleAttributes
      *            Map<String, String> of role attribute name/value pairs to qualify a group
-     * @return List of all Group objects matching the role and role attributes
+     * @return List of all GroupDTO objects matching the role and role attributes
      */
-    public List<Group> getGroups(String roleName, Map<String, String> qualifiedRoleAttributes);
+    public List<GroupDTO> getGroups(String roleName, Map<String, String> qualifiedRoleAttributes);
 
     /**
      * KIM QualifiedRole service API method that returns associated List of group names for all Group objects matching a
@@ -99,9 +120,9 @@ public interface QualifiedRoleService {
      * 
      * @param qualifiedRoleAttributes
      *            Map<String, String> of role attribute name/value pairs to qualify a group
-     * @return unique set of all Role objects matching the role attributes
+     * @return unique set of all RoleDTO objects matching the role attributes
      */
-    public List<Role> getRoles(Map<String, String> qualifiedRoleAttributes);
+    public List<RoleDTO> getRoles(Map<String, String> qualifiedRoleAttributes);
 
     /**
      * KIM QualifiedRole service API method that returns unique List of all Role names matching qualified role attributes.

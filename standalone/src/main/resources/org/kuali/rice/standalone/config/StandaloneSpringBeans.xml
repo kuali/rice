@@ -86,6 +86,7 @@
 					</property>
 				</bean>
 				<bean class="org.kuali.rice.kim.config.KIMConfigurer" />
+				<bean class="org.kuali.rice.kom.config.KOMConfigurer" />
                 <bean class="org.kuali.notification.config.KENConfigurer" />
 			</list>
 		</property>

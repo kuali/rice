@@ -56,7 +56,7 @@
                       </bean>
                     </property>
 				</bean>
-                <bean class="edu.kuali.rice.kcb.config.KCBConfigurer"/>
+                <bean class="org.kuali.rice.kcb.config.KCBConfigurer"/>
 				<bean class="org.kuali.workflow.config.KEWConfigurer">
 					<property name="clientProtocol" value="local" />
 				</bean>

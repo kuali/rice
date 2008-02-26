@@ -4,8 +4,6 @@
     <param name="module.name">kcb</param>
 
     <param name="serviceServletUrl">fake service servlet url</param>
-    <param name="kcb.url">this is a fake kcb.url from kcb-test-config.xml</param>
-    <param name="kcb.smtp.host">this is a fake kcb.smtp.host from kcb-test-config.xml</param>
 
 	<param name="transaction.timeout">3600</param>
     <param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>

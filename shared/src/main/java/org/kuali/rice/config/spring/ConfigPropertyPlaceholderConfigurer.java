@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.config.spring;
 
+import java.io.IOException;
+import java.util.Properties;
+
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ConfigLogger;
 import org.kuali.rice.core.Core;
@@ -30,16 +33,19 @@ public class ConfigPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
         protected final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(getClass());
 
     public ConfigPropertyPlaceholderConfigurer() {
-        setProperties();
+        setSystemPropertiesMode(PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE);
     }
 
-    private void setProperties() {
-        setSystemPropertiesMode(PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE);
+    @Override
+    protected void loadProperties(Properties props) throws IOException {
+        // perform standard property resource file loading
+        super.loadProperties(props);
+        // load the Rice properties
         Config config = Core.getCurrentContextConfig();
         if (config != null) {
-                log.debug("Replacing parameters in Spring using config:\r\n" + config);
+            log.debug("Replacing parameters in Spring using config:\r\n" + config);
             ConfigLogger.logConfig(config);
-            setProperties(config.getProperties());
+            props.putAll(config.getProperties());
         }
     }
-} 
+}

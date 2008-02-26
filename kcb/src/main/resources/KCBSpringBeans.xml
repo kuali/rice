@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
-    <bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer"/>
-  
+    <bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer">
+        <property name="properties">
+            <props>
+                <prop key="kcb.url">KCBSpringBeans.xml default kcb.url</prop>
+                <prop key="kcb.smtp.host">KCBSpringBeans.xml default kcb.smtp.host</prop>
+            </props>
+        </property>
+    </bean>
+
     <bean id="userTransaction" class="org.kuali.rice.jta.UserTransactionFactoryBean" lazy-init="true" />
     <bean id="jtaTransactionManager" class="org.kuali.rice.jta.TransactionManagerFactoryBean" lazy-init="true" />
 
@@ -110,7 +117,7 @@
     </bean>
 
     <bean id="emailService" class="org.kuali.rice.kcb.service.impl.EmailServiceImpl">
-        <property name="weburl" value="fakeweburl-in-KCBSpringBeans.xml"/>
+        <property name="weburl" value="${kcb.url}"/>
     </bean>
 <!-- 
     <bean id="sendNotificationKewXmlService" class="org.kuali.notification.service.impl.SendNotificationServiceKewXmlImpl">

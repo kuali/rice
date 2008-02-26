@@ -33,7 +33,7 @@
         </authorizations>
 
         <documentTypeName>KualiOrganizationContextMaintenanceDocument</documentTypeName>
-        <documentTypeCode>KPMD</documentTypeCode>
+        <documentTypeCode>KOCT</documentTypeCode>
         <label>Organization Context</label>
         <summary>Organization Context Maintenance Document</summary>
         <description>Maintenance document which allows you to create new Organization Context, or modify existing Organization Context.</description>

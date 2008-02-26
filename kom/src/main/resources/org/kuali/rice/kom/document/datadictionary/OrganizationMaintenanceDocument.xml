@@ -33,7 +33,7 @@
         </authorizations>
 
         <documentTypeName>KualiOrganizationMaintenanceDocument</documentTypeName>
-        <documentTypeCode>KPMD</documentTypeCode>
+        <documentTypeCode>KORG</documentTypeCode>
         <label>Organization</label>
         <summary>Organization Maintenance Document</summary>
         <description>Maintenance document which allows you to create new Organization, or modify existing Organization.</description>

@@ -73,7 +73,6 @@
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/AttributeTypeMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/GroupAttributeMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/GroupMaintenanceDocument.xml</value>
-							<value>classpath:org/kuali/rice/kim/document/datadictionary/NamespaceDefaultAttributeMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/NamespaceMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/PrincipalMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/RoleMaintenanceDocument.xml</value>

@@ -33,7 +33,7 @@
         </authorizations>
 
         <documentTypeName>KualiOrganizationCategoryMaintenanceDocument</documentTypeName>
-        <documentTypeCode>KPMD</documentTypeCode>
+        <documentTypeCode>KOCD</documentTypeCode>
         <label>Organization Category</label>
         <summary>Organization Category Maintenance Document</summary>
         <description>Maintenance document which allows you to create a new Organization Category, or modify existing Organization Category.</description>

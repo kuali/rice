@@ -26,13 +26,13 @@
         <authorizations>
             <authorization action="initiate">
                 <workgroups>
-                    <workgroup>WorkflowAdmin</workgroup>
+                    <workgroup>kualiUniversalGroup</workgroup>
                 </workgroups>
             </authorization>
         </authorizations>
 
         <documentTypeName>KualiAttributeTypeMaintenanceDocument</documentTypeName>
-        <documentTypeCode>KPMD</documentTypeCode>
+        <documentTypeCode>KATD</documentTypeCode>
         <label>Attribute Type Document</label>
         <shortLabel>Attribute Type Maintenence</shortLabel>
 

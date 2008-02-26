@@ -32,7 +32,7 @@
         </authorizations>
 
         <documentTypeName>KualiNamespaceMaintenanceDocument</documentTypeName>
-        <documentTypeCode>KPMD</documentTypeCode>
+        <documentTypeCode>KNSD</documentTypeCode>
         <label>Namespace Document</label>
         <shortLabel>Namespace Maintenence</shortLabel>
 

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.dto;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -25,7 +26,9 @@ import java.util.HashMap;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class PersonDTO extends AbstractEntityBaseDTO {
+public class PersonDTO extends AbstractEntityBaseDTO implements Serializable {
+    private static final long serialVersionUID = -3699755934072849359L;
+    
     private HashMap<String,PersonAttributeDTO> personAttributesDtos;
     
     /**

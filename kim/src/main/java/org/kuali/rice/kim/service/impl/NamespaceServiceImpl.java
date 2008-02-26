@@ -15,12 +15,10 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import org.kuali.rice.kim.bo.Namespace;
-import org.kuali.rice.kim.bo.Permission;
+import org.kuali.rice.kim.dto.NamespaceDTO;
+import org.kuali.rice.kim.dto.PermissionDTO;
 import org.kuali.rice.kim.service.NamespaceService;
 
 /**
@@ -46,7 +44,7 @@ public class NamespaceServiceImpl implements NamespaceService {
      * 
      * @see org.kuali.rice.kim.service.NamespaceService#getAllNamespaces()
      */
-    public List<Namespace> getAllNamespaces() {
+    public List<NamespaceDTO> getAllNamespaces() {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
@@ -66,7 +64,7 @@ public class NamespaceServiceImpl implements NamespaceService {
      * 
      * @see org.kuali.rice.kim.service.NamespaceService#getPermissions(java.lang.String)
      */
-    public List<Permission> getPermissions(String namespaceName) {
+    public List<PermissionDTO> getPermissions(String namespaceName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }

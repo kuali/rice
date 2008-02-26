@@ -15,12 +15,14 @@
  */
 package org.kuali.rice.kim.dto;
 
+import java.io.Serializable;
+
 /**
  * This base abstract class contains the common elements between an Entity and Person DTO.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public abstract class AbstractEntityBaseDTO {
+public abstract class AbstractEntityBaseDTO implements Serializable {
     private Long id;
     private Long entityTypeId;
     private EntityTypeDTO entityTypeDto;

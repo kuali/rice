@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.dto;
 
+import java.io.Serializable;
+
 /**
  * This is the Data Transfer Object (DTO) that is used for our service layer.
  * 
@@ -23,8 +25,10 @@ package org.kuali.rice.kim.dto;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class EntityAttributeDTO {
-	private Long id;
+public class EntityAttributeDTO implements Serializable {
+	private static final long serialVersionUID = -445101091769342601L;
+	
+    private Long id;
 	private Long attributeTypeId;
 	private Long namespaceId;
 	private String attributeName;

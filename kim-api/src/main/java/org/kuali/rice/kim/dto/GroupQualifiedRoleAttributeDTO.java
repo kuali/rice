@@ -23,6 +23,9 @@ package org.kuali.rice.kim.dto;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class GroupQualifiedRoleAttributeDTO extends QualifiedRoleAttributeDTO {
+    private static final long serialVersionUID = -4240285371664750182L;
+    
+
     private Long groupId;
 
     private GroupDTO groupDto;

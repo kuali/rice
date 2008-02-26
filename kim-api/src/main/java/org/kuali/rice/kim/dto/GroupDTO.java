@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.dto;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -24,8 +25,10 @@ import java.util.HashMap;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class GroupDTO {
-	private Long id;
+public class GroupDTO implements Serializable {
+	private static final long serialVersionUID = -3582175447178397223L;
+	
+    private Long id;
 	private String name;
 	private String description;
 	private HashMap<String,GroupDTO> memberGroupDtos;

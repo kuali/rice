@@ -104,13 +104,13 @@ public interface PersonService {
     public String getAttributeValue(Long personId, String attributeName, String namespaceName);
     
     /**
-     * KIM Person service API method that returns all Person objects matching all given Person
+     * KIM Person service API method that returns all PersonDTO objects matching all given Person
      * attributes.
      * 
      * @param   personAttributes     Map<String, String> of role attribute name/value pairs
      *                               to qualify a Person
      * @param   namespaceName        The associated namespace to scope the attributes to
-     * @return                       boolean indicating if Person possesses all given Role attributes
+     * @return                       List of PersonDTO objects possessing all given person attributes
      * 
      */
     public List<PersonDTO> getPersonsWithAttributes(Map<String, String> personAttributes, String namespaceName);
@@ -126,5 +126,4 @@ public interface PersonService {
      * 
      */
     public List<Long> getPersonIdsWithAttributes(Map<String, String> personAttributes, String namespaceName);
-    
 }

@@ -26,6 +26,8 @@ import java.util.HashMap;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EntityDTO extends AbstractEntityBaseDTO {
+    private static final long serialVersionUID = -3136254886317498473L;
+    
     private HashMap<String,EntityAttributeDTO> entityAttributesDtos;
     
     /**

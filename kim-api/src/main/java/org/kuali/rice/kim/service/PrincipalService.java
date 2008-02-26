@@ -17,7 +17,7 @@ package org.kuali.rice.kim.service;
 
 import java.util.List;
 
-import org.kuali.rice.kim.bo.Principal;
+import org.kuali.rice.kim.dto.PrincipalDTO;
 
 /**
  * Service API for accessing KIM Principal services.
@@ -26,12 +26,12 @@ import org.kuali.rice.kim.bo.Principal;
  */
 public interface PrincipalService {
     /**
-     * KIM service API method that returns a complete collection of Principal objects for the application.
+     * KIM service API method that returns a complete collection of PrincipalDTO objects for the application.
      * 
-     * @return         List of Principal objects for the application
+     * @return         List of PrincipalDTO objects for the application
      * 
      */
-    public List<Principal> getAllPrincipals();
+    public List<PrincipalDTO> getAllPrincipals();
     
     /**
      * KIM service API method that returns a complete collection of Principal names for the 
@@ -52,20 +52,20 @@ public interface PrincipalService {
     public boolean isMemberOfGroup(String principalName, String groupName);
 
     /**
-     * This method returns a fully populate Principal object given the passed in principalName.
+     * This method returns a fully populated PrincipalDTO object given the passed in principalName.
      * 
      * @param principalName
-     * @return Principal
+     * @return PrincipalDTO
      */
-    public Principal getPrincipal(String principalName);
+    public PrincipalDTO getPrincipal(String principalName);
     
     /**
-     * This method returns all of the fully populated Principal objects associated with a given person.
+     * This method returns all of the fully populated PrincipalDTO objects associated with a given person.
      * 
      * @param personId
-     * @return List<Principal>
+     * @return List<PrincipalDTO>
      */
-    public List<Principal> getPrincipalsForPerson(Long personId);
+    public List<PrincipalDTO> getPrincipalsForPerson(Long personId);
     
     /**
      * This method returns all of the principal names associated with a given person.
@@ -76,12 +76,12 @@ public interface PrincipalService {
     public List<String> getPrincipalNamesForPerson(Long personId);
     
     /**
-     * This method returns all of the fully populated Principal objects associated with a given entity.
+     * This method returns all of the fully populated PrincipalDTO objects associated with a given entity.
      * 
      * @param entityId
-     * @return List<Principal>
+     * @return List<PrincipalDTO>
      */
-    public List<Principal> getPrincipalsForEntity(Long entityId);
+    public List<PrincipalDTO> getPrincipalsForEntity(Long entityId);
     
     /**
      * This method returns all of the principal names associated with a given entity.

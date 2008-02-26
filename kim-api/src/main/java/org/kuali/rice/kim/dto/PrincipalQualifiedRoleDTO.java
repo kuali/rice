@@ -26,7 +26,9 @@ import java.util.HashMap;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PrincipalQualifiedRoleDTO extends QualifiedRoleDTO {
-   	private Long principalId;
+   	private static final long serialVersionUID = -9021020702767932760L;
+
+    private Long principalId;
    	
    	private PrincipalDTO principalDto;
    	

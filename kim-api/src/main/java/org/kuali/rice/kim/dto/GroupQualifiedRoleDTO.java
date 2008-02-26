@@ -26,7 +26,9 @@ import java.util.HashMap;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class GroupQualifiedRoleDTO extends QualifiedRoleDTO {
-	private Long groupId;
+	private static final long serialVersionUID = -5188574297122448851L;
+	
+    private Long groupId;
 	
 	private GroupDTO groupDto;
 	

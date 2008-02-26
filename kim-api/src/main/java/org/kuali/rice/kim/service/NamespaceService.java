@@ -17,8 +17,8 @@ package org.kuali.rice.kim.service;
 
 import java.util.List;
 
-import org.kuali.rice.kim.bo.Namespace;
-import org.kuali.rice.kim.bo.Permission;
+import org.kuali.rice.kim.dto.NamespaceDTO;
+import org.kuali.rice.kim.dto.PermissionDTO;
 
 /**
  * Service API for accessing KIM Namespace services.  This contract should be used by all 
@@ -29,12 +29,12 @@ import org.kuali.rice.kim.bo.Permission;
  */
 public interface NamespaceService {
     /**
-     * KIM service API method that returns the complete collection of Namespace objects
+     * KIM service API method that returns the complete collection of NamespaceDTO objects
      * 
-     * @return         List of Namespace objects
+     * @return         List of NamespaceDTO objects
      * 
      */
-    public List<Namespace> getAllNamespaces();
+    public List<NamespaceDTO> getAllNamespaces();
 
     /**
      * KIM service API method that returns associated List of names for all Namespace objects
@@ -45,14 +45,14 @@ public interface NamespaceService {
     public List<String> getAllNamespaceNames();
     
     /**
-     * KIM Namespace service API method that returns all Permission objects associated 
+     * KIM Namespace service API method that returns all PermissionDTO objects associated 
      * with a given namespace.
      * 
      * @param   namespaceName        name identifying Namespace
-     * @return                       List of Permission objects associated with the namespace
+     * @return                       List of PermissionDTO objects associated with the namespace
      * 
      */
-    public List<Permission> getPermissions(String namespaceName);
+    public List<PermissionDTO> getPermissions(String namespaceName);
     
     /**
      * KIM Namespace service API method that returns all Permission names associated 

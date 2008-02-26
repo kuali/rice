@@ -25,5 +25,6 @@ package org.kuali.rice.kim.dto;
  *
  */
 public class PersonAttributeDTO extends EntityAttributeDTO {
+    private static final long serialVersionUID = 1254646901969814810L;
     
 }

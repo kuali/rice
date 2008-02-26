@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.dto;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -25,8 +26,10 @@ import java.util.HashMap;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class NamespaceDTO {
-	private Long id;
+public class NamespaceDTO implements Serializable {
+	private static final long serialVersionUID = 2733821068998561691L;
+	
+    private Long id;
 	private String name;
 	private String description;
 

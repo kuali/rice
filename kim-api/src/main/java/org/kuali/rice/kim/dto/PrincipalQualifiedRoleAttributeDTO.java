@@ -23,6 +23,8 @@ package org.kuali.rice.kim.dto;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PrincipalQualifiedRoleAttributeDTO extends QualifiedRoleAttributeDTO {
+    private static final long serialVersionUID = -6021820414400432666L;
+
     private Long principalId;
 
     private PrincipalDTO principalDto;

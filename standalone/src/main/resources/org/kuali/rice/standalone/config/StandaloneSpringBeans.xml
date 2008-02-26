@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+\<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
@@ -73,10 +73,15 @@
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/AttributeTypeMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/GroupAttributeMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/GroupMaintenanceDocument.xml</value>
-							<value>classpath:org/kuali/rice/kim/document/datadictionary/NamespaceDefaultAttributeMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/NamespaceMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/PrincipalMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/RoleMaintenanceDocument.xml</value>
+                            <value>classpath:org/kuali/rice/kom/bo/datadictionary/Organization.xml</value>
+                            <value>classpath:org/kuali/rice/kom/bo/datadictionary/OrganizationCategory.xml</value>
+                            <value>classpath:org/kuali/rice/kom/bo/datadictionary/OrganizationContext.xml</value>
+                            <value>classpath:org/kuali/rice/kom/document/datadictionary/OrganizationMaintenanceDocument.xml</value>
+                            <value>classpath:org/kuali/rice/kom/document/datadictionary/OrganizationContextMaintenanceDocument.xml</value>
+                            <value>classpath:org/kuali/rice/kom/document/datadictionary/OrganizationCategoryMaintenanceDocument.xml</value>
 						</list>
 					</property>
 				</bean>

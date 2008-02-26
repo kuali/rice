@@ -53,4 +53,19 @@ public class RiceUtilities {
 		}
 	}
 
+	 /**
+     * This method searches for an exception of the specified type in the stack trace of the given
+     * exception.
+     * @param topLevelException the exception whose stack to traverse
+     * @param exceptionClass the exception class to look for
+     * @return the first instance of an exception of the specified class if found, or null otherwise
+     */
+    public static <T extends Throwable> T findExceptionInStack(Throwable topLevelException, Class<T> exceptionClass) {
+        Throwable t = topLevelException;
+        while (t != null) {
+            if (exceptionClass.isAssignableFrom(t.getClass())) return (T) t;
+            t = t.getCause();
+        }
+        return null;
+    }
 }

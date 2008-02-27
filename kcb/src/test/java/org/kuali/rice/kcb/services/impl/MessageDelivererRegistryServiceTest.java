@@ -20,14 +20,14 @@ import java.util.Collection;
 import org.junit.Test;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
-import org.kuali.rice.kcb.test.KCBTestCase;
+import org.kuali.rice.kcb.test.RollbackKCBTestCase;
 import org.kuali.rice.kcb.test.TestConstants;
 
 /**
  * This class tests the registry service.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class MessageDelivererRegistryServiceTest extends KCBTestCase {
+public class MessageDelivererRegistryServiceTest extends RollbackKCBTestCase {
     /**
      * This method tests the hard coded registry list.
      */
@@ -35,7 +35,7 @@ public class MessageDelivererRegistryServiceTest extends KCBTestCase {
     public void testGetAllDeliverTypes() {
         Collection<MessageDeliverer> deliverers = services.getMessageDelivererRegistryService().getAllDeliverers();
 
-        assertEquals(1, deliverers.size());
+        assertEquals(4, deliverers.size());
 
         for(MessageDeliverer deliverer: deliverers) {
             assertTrue(deliverer.getName() != null);

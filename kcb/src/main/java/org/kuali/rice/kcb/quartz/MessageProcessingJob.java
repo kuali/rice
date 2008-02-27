@@ -1,0 +1,308 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.kcb.quartz;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.kuali.rice.kcb.GlobalKCBServiceLocator;
+import org.kuali.rice.kcb.bo.Message;
+import org.kuali.rice.kcb.bo.MessageDelivery;
+import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
+import org.kuali.rice.kcb.dao.BusinessObjectDao;
+import org.kuali.rice.kcb.deliverer.BulkMessageDeliverer;
+import org.kuali.rice.kcb.deliverer.MessageDeliverer;
+import org.kuali.rice.kcb.exception.MessageDeliveryProcessingException;
+import org.kuali.rice.kcb.quartz.ProcessingResult.Failure;
+import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
+import org.kuali.rice.kcb.service.MessageDeliveryService;
+import org.kuali.rice.kcb.service.MessageService;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.StatefulJob;
+import org.springframework.beans.factory.annotation.Required;
+
+/**
+ * Job that delivers messages to endpoints.  This job is not really stateful,
+ * but should not be executed concurrently.
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ */
+public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> implements StatefulJob {
+    public static final String NAME = "MessageProcessingJobDetail";
+    public static final String GROUP = "KCB-Delivery";
+
+    public static enum Mode {
+        DELIVER, REMOVE
+    }
+
+    private static final Logger LOG = Logger.getLogger(MessageProcessingJob.class);
+    
+    private BusinessObjectDao dao;
+    private MessageDelivererRegistryService registry;
+    private MessageDeliveryService messageDeliveryService;
+    private Mode mode = Mode.DELIVER;
+    private String user;
+    private String cause;
+    private long messageId;
+
+    public MessageProcessingJob(long messageId, Mode mode, String user, String cause) {
+        this();
+        this.messageId = messageId;
+        this.mode = mode;
+        this.user = user;
+        this.cause = cause;
+    }
+
+    public MessageProcessingJob() {
+        dao = GlobalKCBServiceLocator.getInstance().getBusinessObjectDao();
+        registry = GlobalKCBServiceLocator.getInstance().getMessageDelivererRegistryService();
+        messageDeliveryService = GlobalKCBServiceLocator.getInstance().getMessageDeliveryService();
+        txManager = GlobalKCBServiceLocator.getInstance().getTransactionManager();
+    }
+
+    /**
+     * Sets the {@link BusinessObjectDao}
+     * @param dao the {@link BusinessObjectDao}
+     */
+    @Required
+    public void setBusinessObjectDao(BusinessObjectDao dao) {
+        this.dao = dao;
+    }
+
+    /**
+     * Sets the {@link MessageDelivererRegistryService}
+     * @param registry the {@link MessageDelivererRegistryService}
+     */
+    @Required
+    public void setMessageDelivererRegistry(MessageDelivererRegistryService registry) {
+        this.registry = registry;
+    }
+    
+    /**
+     * Sets the {@link MessageDeliveryService}
+     * @param messageDeliveryService the {@link MessageDeliveryService}
+     */
+    @Required
+    public void setMessageDeliveryService(MessageDeliveryService messageDeliveryService) {
+        this.messageDeliveryService = messageDeliveryService;
+    }
+
+    @Override
+    protected Collection<MessageDelivery> takeAvailableWorkItems() {
+        MessageDeliveryStatus[] statuses;
+        if (mode == Mode.DELIVER) {
+            statuses = new MessageDeliveryStatus[] { MessageDeliveryStatus.UNDELIVERED };
+        } else {
+            statuses = new MessageDeliveryStatus[] { MessageDeliveryStatus.DELIVERED, MessageDeliveryStatus.UNDELIVERED };
+        }
+        Collection<MessageDelivery> ds = messageDeliveryService.lockAndTakeMessageDeliveries(statuses);
+        LOG.info("Took " + ds.size() + " deliveries");
+        for (MessageDelivery md: ds) {
+            LOG.info(md);
+        }
+        return ds;
+    }
+
+    @Override
+    protected void unlockWorkItem(MessageDelivery item) {
+        item.setLockedDate(null);
+        dao.save(item);
+    }
+
+    /**
+     * Group work items by deliverer and notification, so that deliveries to bulk deliverers are grouped
+     * by notification
+     * @see org.kuali.notification.service.impl.ConcurrentJob#groupWorkItems(java.util.Collection)
+     */
+    @Override
+    protected Collection<Collection<MessageDelivery>> groupWorkItems(Collection<MessageDelivery> workItems, ProcessingResult<MessageDelivery> result) {
+        Collection<Collection<MessageDelivery>> groupedWorkItems = new ArrayList<Collection<MessageDelivery>>(workItems.size());
+
+        Map<String, Collection<MessageDelivery>> bulkWorkUnits = new HashMap<String, Collection<MessageDelivery>>();
+        for (MessageDelivery messageDelivery: workItems) {
+            
+            MessageDeliverer deliverer = registry.getDeliverer(messageDelivery);
+            if (deliverer == null) {
+                LOG.error("Error obtaining message deliverer for message delivery: " + messageDelivery);
+                result.addFailure(new Failure<MessageDelivery>(messageDelivery, "Error obtaining message deliverer for message delivery"));
+                unlockWorkItemAtomically(messageDelivery);
+                continue;
+            }
+
+            if (deliverer instanceof BulkMessageDeliverer) {
+                // group by bulk-deliverer+message combo
+                String key = messageDelivery.getDelivererTypeName() + ":" + messageDelivery.getMessage().getId();
+                Collection<MessageDelivery> workUnit = bulkWorkUnits.get(key);
+                if (workUnit == null) {
+                    workUnit = new LinkedList<MessageDelivery>();
+                    bulkWorkUnits.put(key, workUnit);
+                }
+                workUnit.add(messageDelivery);
+            } else {
+                ArrayList<MessageDelivery> l = new ArrayList<MessageDelivery>(1);
+                l.add(messageDelivery);
+                groupedWorkItems.add(l);
+            }
+        }
+
+        return groupedWorkItems;
+    }
+    
+    
+    @Override
+    protected Collection<?> processWorkItems(Collection<MessageDelivery> messageDeliveries) {
+        MessageDelivery firstMessageDelivery = messageDeliveries.iterator().next();
+        // get our hands on the appropriate NotificationMessageDeliverer instance
+        MessageDeliverer messageDeliverer = registry.getDeliverer(firstMessageDelivery);
+        if (messageDeliverer == null) {
+            throw new RuntimeException("Message deliverer could not be obtained");
+        }
+    
+        if (messageDeliveries.size() > 1) {
+            // this is a bulk deliverer, so we need to batch the MessageDeliveries
+            if (!(messageDeliverer instanceof BulkMessageDeliverer)) {
+                throw new RuntimeException("Discrepency in dispatch service: deliverer for list of message deliveries is not a BulkNotificationMessageDeliverer");
+            }
+            return bulkProcess((BulkMessageDeliverer) messageDeliverer, messageDeliveries, mode);
+        } else {
+            return process(messageDeliverer, firstMessageDelivery, mode);
+        }
+    }
+
+    /**
+     * Implements delivery of a single NotificationMessageDelivery
+     * @param deliverer the deliverer
+     * @param messageDelivery the delivery
+     * @return collection of strings indicating successful deliveries
+     */
+    protected Collection<String> process(MessageDeliverer messageDeliverer, MessageDelivery messageDelivery, Mode mode) {
+        // we have our message deliverer, so tell it to deliver the message
+        try {
+            if (mode == Mode.DELIVER) {
+                messageDeliverer.deliver(messageDelivery);
+                // by definition we have succeeded at this point if no exception was thrown by the messageDeliverer
+                // so update the status of the delivery message instance to DELIVERED (and unmark as taken)
+                // and persist
+                updateStatusAndUnlock(messageDelivery, mode == Mode.DELIVER ? MessageDeliveryStatus.DELIVERED : MessageDeliveryStatus.REMOVED);
+            } else {
+                messageDeliverer.dismiss(messageDelivery, user, cause);
+                messageDeliveryService.deleteMessageDelivery(messageDelivery);
+            }
+        } catch (MessageDeliveryProcessingException nmde) {
+            LOG.error("Error processing message delivery " + messageDelivery, nmde);
+            throw new RuntimeException(nmde);
+        }
+
+        LOG.debug("Message delivery '" + messageDelivery.getId() + "' for message '" + messageDelivery.getMessage().getId() + "' was successfully processed.");
+        //PerformanceLog.logDuration("Time to dispatch notification delivery for notification " + messageDelivery.getMessage().getId(), System.currentTimeMillis() - messageDelivery.getNotification().getSendDateTime().getTime());
+
+        List<String> success = new ArrayList<String>(1);
+        success.add("Successfully processed " +  messageDelivery);
+        return success;
+    }
+
+    /**
+     * Implements bulk delivery of a collection of {@link NotificationMessageDelivery}s
+     * @param deliverer the deliverer
+     * @param messageDeliveries the deliveries
+     * @return collection of strings indicating successful deliveries
+     */
+    protected Collection<String> bulkProcess(BulkMessageDeliverer messageDeliverer, Collection<MessageDelivery> messageDeliveries,  Mode mode) {
+        // we have our message deliverer, so tell it to deliver the message
+        try {
+            if (mode == Mode.DELIVER) {
+                messageDeliverer.bulkDeliver(messageDeliveries);
+            } else {
+                messageDeliverer.bulkDismiss(messageDeliveries);
+            }
+        } catch (MessageDeliveryProcessingException nmde) {
+            LOG.error("Error bulk-delivering messages " + messageDeliveries, nmde);
+            throw new RuntimeException(nmde);
+        }
+
+        // by definition we have succeeded at this point if no exception was thrown by the messageDeliverer
+        // so update the status of the delivery message instance to DELIVERED (and unmark as taken)
+        // and persist
+        List<String> successes = new ArrayList<String>(messageDeliveries.size());
+        for (MessageDelivery nmd: messageDeliveries) {
+            successes.add("Successfully delivered " + nmd);
+            LOG.debug("Message delivery '" + nmd.getId() + "' for notification '" + nmd.getMessage().getId() + "' was successfully delivered.");
+            //PerformanceLog.logDuration("Time to dispatch notification delivery for notification " + nmd.getMessage().getId(), System.currentTimeMillis() - nmd.getNotification().getSendDateTime().getTime());
+            updateStatusAndUnlock(nmd, mode == Mode.DELIVER ? MessageDeliveryStatus.DELIVERED : MessageDeliveryStatus.REMOVED);
+            messageDeliveryService.deleteMessageDelivery(nmd);
+        }
+        
+        return successes;
+    }
+
+    @Override
+    protected void finishProcessing() {
+        LOG.info("Finishing processing message " + messageId);
+        //if (Mode.REMOVE == mode) {
+            MessageService ms = GlobalKCBServiceLocator.getInstance().getMessageService();
+            Message m = ms.getMessage(messageId);
+            
+            if (m == null) {
+                // this can happen in unit tests, or if for some other reason the message goes away before this listener
+                // is called
+                LOG.warn("Called for invalid message: " + messageId);
+                return;
+            }
+            MessageDeliveryService mds = GlobalKCBServiceLocator.getInstance().getMessageDeliveryService(); 
+            Collection<MessageDelivery> c = mds.getMessageDeliveries(m);
+            if (c.size() == 0) {
+                LOG.info("Deleting message " + m);
+                ms.deleteMessage(m);
+            } else {
+                LOG.info("Message " + m.getId() + " has " + c.size() + " deliveries");
+                for (MessageDelivery md: c) {
+                    LOG.info(md);
+                }
+            }
+    }
+
+    /**
+     * Marks a MessageDelivery as having been delivered, and unlocks it
+     * @param messageDelivery the messageDelivery instance to mark
+     */
+    protected void updateStatusAndUnlock(MessageDelivery messageDelivery, MessageDeliveryStatus status) {
+        messageDelivery.setDeliveryStatus(status);
+        // mark as unlocked
+        messageDelivery.setLockedDate(null);
+        dao.save(messageDelivery);
+    }
+
+    @Override
+    public ProcessingResult<MessageDelivery> run() {
+        LOG.info("MessageProcessingJob running in Thread " + Thread.currentThread() + ": " + mode + " " + user + " " + cause);
+        return super.run();
+    }
+
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        String mode = context.getMergedJobDataMap().getString("mode");
+        this.mode = Mode.valueOf(mode);
+        this.user = context.getMergedJobDataMap().getString("user");
+        this.cause = context.getMergedJobDataMap().getString("cause");
+        this.messageId = context.getMergedJobDataMap().getLong("messageId");
+        super.run();
+    }
+}

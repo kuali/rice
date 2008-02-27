@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
-import org.kuali.rice.kcb.test.KCBTestCase;
+import org.kuali.rice.kcb.test.RollbackKCBTestCase;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
 
@@ -30,7 +30,7 @@ import org.springframework.test.AssertThrows;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RecipientDelivererConfigTest extends KCBTestCase {
+public class RecipientDelivererConfigTest extends RollbackKCBTestCase {
     //private RecipientDelivererConfig CFG;
     private RecipientPreferenceService prefsvc;
 

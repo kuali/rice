@@ -51,16 +51,16 @@ public class MessageDelivererRegistryServiceImpl implements MessageDelivererRegi
     public MessageDelivererRegistryServiceImpl() {
         //KEWActionListMessageDeliverer kewActionList = new KEWActionListMessageDeliverer();
         EmailMessageDeliverer email = new EmailMessageDeliverer();
-        //SMSMessageDeliverer sms = new SMSMessageDeliverer();
-        //AOLInstantMessageDeliverer aim = new AOLInstantMessageDeliverer();
-        //MockMessageDeliverer mock = new MockMessageDeliverer();
+        SMSMessageDeliverer sms = new SMSMessageDeliverer();
+        AOLInstantMessageDeliverer aim = new AOLInstantMessageDeliverer();
+        MockMessageDeliverer mock = new MockMessageDeliverer();
 
         messageDelivererTypes = new HashMap<String, Class<? extends MessageDeliverer>>(4);
         //messageDelivererTypes.put(kewActionList.getName(), kewActionList.getClass());
-        messageDelivererTypes.put(email.getName(), email.getClass());
-        //messageDelivererTypes.put(sms.getName(), sms.getClass());
-        //messageDelivererTypes.put(aim.getName(), aim.getClass());
-        //messageDelivererTypes.put(mock.getName(), mock.getClass());
+        messageDelivererTypes.put(email.getName().toLowerCase(), email.getClass());
+        messageDelivererTypes.put(sms.getName().toLowerCase(), sms.getClass());
+        messageDelivererTypes.put(aim.getName().toLowerCase(), aim.getClass());
+        messageDelivererTypes.put(mock.getName().toLowerCase(), mock.getClass());
     }
 
     /**
@@ -70,7 +70,7 @@ public class MessageDelivererRegistryServiceImpl implements MessageDelivererRegi
         Collection<MessageDeliverer> deliverers = getAllDeliverers();
         Set<String> types = new HashSet<String>(deliverers.size());
         for (MessageDeliverer deliverer: deliverers) {
-            types.add(deliverer.getName());
+            types.add(deliverer.getName().toLowerCase());
         }
         return types;
     }
@@ -119,7 +119,7 @@ public class MessageDelivererRegistryServiceImpl implements MessageDelivererRegi
      * @see MessageDelivererRegistryService#getDelivererByName(String)
      */
     public MessageDeliverer getDelivererByName(String messageDelivererName) {
-        Class<? extends MessageDeliverer> clazz = messageDelivererTypes.get(messageDelivererName);
+        Class<? extends MessageDeliverer> clazz = messageDelivererTypes.get(messageDelivererName.toLowerCase());
 
         if(clazz == null) {
             LOG.error("The message deliverer type ('" + messageDelivererName + "') " +

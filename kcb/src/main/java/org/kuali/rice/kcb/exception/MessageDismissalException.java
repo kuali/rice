@@ -20,7 +20,7 @@ package org.kuali.rice.kcb.exception;
  * by a deliverer
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class MessageDismissalException extends KCBCheckedException {
+public class MessageDismissalException extends MessageDeliveryProcessingException {
     /**
      * Constructs a NotificationMessageDismissalException instance.
      */

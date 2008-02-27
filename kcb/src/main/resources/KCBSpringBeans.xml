@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
-    <bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer">
+    <bean name="properties" class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer">
         <property name="properties">
             <props>
                 <prop key="kcb.url">KCBSpringBeans.xml default kcb.url</prop>
-                <prop key="kcb.smtp.host">KCBSpringBeans.xml default kcb.smtp.host</prop>
+                <prop key="kcb.smtp.host">localhost</prop>
+                <prop key="kcb.messaging.synchronous">false</prop>
+                <prop key="kcb.messageprocessing.startDelayMS">50000</prop>
+                <prop key="kcb.messageprocessing.repeatIntervalMS">30000</prop>
+                <prop key="kcb.quartz.group">KCB-Delivery</prop>
+                <prop key="kcb.quartz.job.name">MessageProcessingJobDetail</prop>
             </props>
         </property>
     </bean>
@@ -44,7 +49,10 @@
 
 
     <!-- Eagerly-init KCB initializer; sets OJB platform dynamically for now -->
-    <bean id="initializer" class="org.kuali.rice.kcb.KCBInitializer" lazy-init="false" depends-on="ojbConfigurer"/>
+    <bean id="initializer" class="org.kuali.rice.kcb.KCBInitializer" lazy-init="false" depends-on="ojbConfigurer">
+        <property name="messageProcessingTrigger" ref="periodicMessageProcessingTrigger"/>
+        <property name="messageProcessingJobDetail" ref="messageProcessingJobDetail"/>
+    </bean>
 
     <!-- Applies a transaction template to the actual transaction manager bean -->
     <!-- This is needed to recognize services as transactions -->
@@ -100,6 +108,7 @@
         <property name="messageDeliveryService"><ref local="messageDeliveryService"/></property>
         <property name="messageDelivererRegistryService"><ref local="messageDelivererRegistryService"/></property>
         <property name="recipientPreferenceService"><ref local="recipientPreferenceService"/></property>
+        <property name="synchronous"><value>${kcb.messaging.synchronous}</value></property>
     </bean>
 
     <bean id="messageService" class="org.kuali.rice.kcb.service.impl.MessageServiceImpl">
@@ -118,6 +127,7 @@
 
     <bean id="emailService" class="org.kuali.rice.kcb.service.impl.EmailServiceImpl">
         <property name="weburl" value="${kcb.url}"/>
+        <property name="smtpHost" value="${kcb.smtp.host}"/>
     </bean>
 <!-- 
     <bean id="sendNotificationKewXmlService" class="org.kuali.notification.service.impl.SendNotificationServiceKewXmlImpl">
@@ -147,6 +157,58 @@
     </bean>
 
     <!-- END DAOS -->
+
+    <!-- Quartz jobs -->
+
+    <bean id="messageProcessingJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="group" value="${kcb.quartz.group}"/>
+        <property name="name" value="${kcb.quartz.job.name}"/>
+        <property name="description">
+            <value>
+                Job that handles asynchronous delivery and dismissal of MessageDeliveries
+            </value>
+        </property>
+        <property name="jobClass" value="org.kuali.rice.kcb.quartz.MessageProcessingJob" />
+        <property name="durability" value="true"/>
+        <!-- this should result in the job being run after startup if there were any pending triggers -->
+        <property name="requestsRecovery" value="true"/>
+        <!--
+        <property name="jobListenerNames">
+            <list><value>MessageDeletionListener</value></list>
+        </property>
+        -->
+    </bean>
+
+    <bean id="periodicMessageProcessingTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="name" value="PeriodicMessageProcessingTrigger"/>
+        <property name="group" value="${kcb.quartz.group}"/>
+        <property name="jobName" value="${kcb.quartz.job.name}"/>
+        <property name="jobGroup" value="${kcb.quartz.group}"/>
+        <property name="description">
+            <value>
+                Trigger that periodically runs the KCB message processing job
+            </value>
+        </property>
+        <property name="startDelay"><value>${kcb.messageprocessing.startDelayMS}</value></property>
+        <property name="repeatInterval"><value>${kcb.messageprocessing.repeatIntervalMS}</value></property>
+    </bean>
+<!--     
+    <bean id="deliveryJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="group" value="KCB-Delivery"/>
+        <property name="targetObject" ref="deliveryJob" />
+        <property name="targetMethod" value="run" />
+        <property name="concurrent" value="false" />
+        <property name="durability" value="true"/>
+        <property name="stateful" value="true"/> --> <!-- not really but we only need one running at a time -->
+        <!-- this should result in the job being run after startup if there were any pending triggers -->
+        <!-- 
+        <property name="requestsRecovery" value="true"/>
+    </bean>
+     -->
+    <!--
+    <bean id="deliveryJob" class="org.kuali.rice.kcb.quartz.DeliveryJob">
+    </bean>
+     -->
 
     <!-- export our KCB service -->
 

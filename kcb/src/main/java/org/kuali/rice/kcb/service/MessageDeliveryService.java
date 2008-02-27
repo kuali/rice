@@ -19,6 +19,7 @@ import java.util.Collection;
 
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
+import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
 
 /**
  * The MessageDeliveryService class is responsible various functions regarding the 
@@ -67,4 +68,6 @@ public interface MessageDeliveryService {
      * @return collection of NotificationMessageDelivery objects generated for the given Notification for the given user
      */
     public Collection<MessageDelivery> getMessageDeliveries(Message message);
+    
+    public Collection<MessageDelivery> lockAndTakeMessageDeliveries(MessageDeliveryStatus[] status);
 }

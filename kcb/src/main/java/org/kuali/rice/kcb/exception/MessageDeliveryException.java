@@ -20,7 +20,7 @@ package org.kuali.rice.kcb.exception;
  * to their target audiences.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class MessageDeliveryException extends KCBCheckedException {
+public class MessageDeliveryException extends MessageDeliveryProcessingException {
     /**
      * Constructs a MessageDeliveryException instance.
      */

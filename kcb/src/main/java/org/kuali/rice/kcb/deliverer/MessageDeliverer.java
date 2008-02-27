@@ -76,7 +76,7 @@ public interface MessageDeliverer {
      * @param messageDelivery The messageDelivery to process
      * @throws MessageDeliveryException
      */
-    public void deliverMessage(MessageDelivery messageDelivery) throws MessageDeliveryException;
+    public void deliver(MessageDelivery messageDelivery) throws MessageDeliveryException;
     
     /**
      * This method handles auto removing a message delivery from a person's list of notifications.
@@ -94,5 +94,5 @@ public interface MessageDeliverer {
      *        which the message was delivered (user recipient in the NotificationMessageDelivery object)
      * @param cause the reason the message was dismissed
      */
-    public void dismissMessageDelivery(MessageDelivery messageDelivery, String user, String cause) throws MessageDismissalException;
+    public void dismiss(MessageDelivery messageDelivery, String user, String cause) throws MessageDismissalException;
 }

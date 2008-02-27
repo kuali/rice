@@ -38,16 +38,16 @@ public class MockMessageDeliverer implements MessageDeliverer {
     private final Map<Long, MessageDelivery> deliveries = new HashMap<Long, MessageDelivery>();
 
     /**
-     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#deliverMessage(org.kuali.rice.kcb.bo.MessageDelivery)
+     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#deliver(org.kuali.rice.kcb.bo.MessageDelivery)
      */
-    public void deliverMessage(MessageDelivery messageDelivery) throws MessageDeliveryException {
+    public void deliver(MessageDelivery messageDelivery) throws MessageDeliveryException {
         deliveries.put(messageDelivery.getId(), messageDelivery);
     }
 
     /**
-     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#dismissMessageDelivery(org.kuali.rice.kcb.bo.MessageDelivery, java.lang.String, java.lang.String)
+     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#dismiss(org.kuali.rice.kcb.bo.MessageDelivery, java.lang.String, java.lang.String)
      */
-    public void dismissMessageDelivery(MessageDelivery messageDelivery, String user, String cause) throws MessageDismissalException {
+    public void dismiss(MessageDelivery messageDelivery, String user, String cause) throws MessageDismissalException {
         deliveries.remove(messageDelivery.getId());
 
     }
@@ -63,7 +63,7 @@ public class MockMessageDeliverer implements MessageDeliverer {
      * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#getName()
      */
     public String getName() {
-        return "MockDeliverer";
+        return "Mock";
     }
 
     /**

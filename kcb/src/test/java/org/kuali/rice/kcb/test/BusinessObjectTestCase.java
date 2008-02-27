@@ -18,7 +18,7 @@ package org.kuali.rice.kcb.test;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public abstract class BusinessObjectTestCase extends KCBTestCase {
+public abstract class BusinessObjectTestCase extends RollbackKCBTestCase {
 	/**
 	 * This method should be overridden to test creation
 	 */

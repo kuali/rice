@@ -36,6 +36,7 @@
         <field-descriptor name="deliveryStatus" column="DELIVERY_STATUS" jdbc-type="VARCHAR"  nullable="false" />
         <field-descriptor name="delivererTypeName" column="DELIVERER_TYPE_NAME" jdbc-type="VARCHAR"  nullable="false" />
         <field-descriptor name="delivererSystemId" column="DELIVERER_SYSTEM_ID" jdbc-type="VARCHAR"  nullable="true" />
+        <field-descriptor name="lockedDate" column="LOCKED_DATE" jdbc-type="TIMESTAMP" nullable="true" />
         <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
 
         <!-- Anonymous keys - our foreign keys -->

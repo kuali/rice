@@ -33,6 +33,7 @@ import org.junit.Before;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.lifecycle.BaseLifecycle;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
@@ -226,38 +227,18 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      */
     protected List<Lifecycle> getInitialLifecycles() {
         List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-        lifecycles.add(new Lifecycle() {
-            boolean started = false;
-
-            public boolean isStarted() {
-                return this.started;
-            }
-
+        lifecycles.add(new BaseLifecycle() {
             public void start() throws Exception {
                 Config config = getTestHarnessConfig();
                 Core.init(config);
-                this.started = true;
-            }
-
-            public void stop() throws Exception {
-                this.started = false;
+                super.start();
             }
         });
         lifecycles.add(getTestHarnessSpringResourceLoader());
-        lifecycles.add(new Lifecycle() {
-            boolean started = false;
-
-            public boolean isStarted() {
-                return this.started;
-            }
-
+        lifecycles.add(new BaseLifecycle() {
             public void start() throws Exception {
                 TestHarnessServiceLocator.setContext(getTestHarnessSpringResourceLoader().getContext());
-                this.started = true;
-            }
-
-            public void stop() throws Exception {
-                this.started = false;
+                super.start();
             }
         });
         lifecycles.add(new DerbyDBCreationLifecycle(getDerbySQLFileLocation()));
@@ -266,12 +247,28 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     }
 
     /**
-     * @return Lifecycles run once during the suite
+     * @return the default lifecycles this class defines
      */
-    protected List<Lifecycle> getSuiteLifecycles() {
+    protected List<Lifecycle> getDefaultSuiteLifecycles() {
         List<Lifecycle> lifecycles = getInitialLifecycles();
         lifecycles.add(new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
         // lifecycles.add(new PerSuiteDataLoaderLifecycle(getClass()));
+        return lifecycles;
+    }
+    
+    /**
+     * @return Lifecycles run once during the suite
+     */
+    protected List<Lifecycle> getSuiteLifecycles() {
+        return getDefaultSuiteLifecycles();
+    }
+
+    /**
+     * @return the default lifecycles this class defines
+     */
+    protected List<Lifecycle> getDefaultPerTestLifecycles() {
+        List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
+        lifecycles.add(getPerTestDataLoaderLifecycle());
         return lifecycles;
     }
 
@@ -279,9 +276,7 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      * @return Lifecycles run every test run
      */
     protected List<Lifecycle> getPerTestLifecycles() {
-        List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-        lifecycles.add(getPerTestDataLoaderLifecycle());
-        return lifecycles;
+        return getDefaultPerTestLifecycles();
     }
 
     protected List<String> getTablesToClear() {

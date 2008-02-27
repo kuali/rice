@@ -160,20 +160,4 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
         scheduler.start();
     }
 
-    /**
-     * @see org.kuali.rice.test.RiceTestCase#getConfigLocations()
-     */
-    @Override
-    protected List<String> getConfigLocations() {
-        return Arrays.asList(new String[] { "classpath:META-INF/" + getModuleName() + "-test-config.xml" });
-    }
-
-    /**
-     * @see org.kuali.rice.test.RiceTestCase#getDerbySQLFileLocation()
-     */
-    @Override
-    protected String getDerbySQLFileLocation() {
-        //return "classpath:db/derby/" + getModuleName() + "-derby.sql";
-        return null;
-    }
 }

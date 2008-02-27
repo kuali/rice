@@ -43,15 +43,15 @@ public class AOLInstantMessageDeliverer implements MessageDeliverer {
     }
 
     /**
-     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#deliverMessage(org.kuali.rice.kcb.bo.MessageDelivery)
+     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#deliver(org.kuali.rice.kcb.bo.MessageDelivery)
      */
-    public void deliverMessage(MessageDelivery messageDelivery) throws MessageDeliveryException {
+    public void deliver(MessageDelivery messageDelivery) throws MessageDeliveryException {
     }
 
     /**
-     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#dismissMessageDelivery(org.kuali.rice.kcb.bo.MessageDelivery, java.lang.String, java.lang.String)
+     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#dismiss(org.kuali.rice.kcb.bo.MessageDelivery, java.lang.String, java.lang.String)
      */
-    public void dismissMessageDelivery(MessageDelivery messageDelivery, String user, String cause) throws MessageDismissalException {
+    public void dismiss(MessageDelivery messageDelivery, String user, String cause) throws MessageDismissalException {
     }
 
     /**

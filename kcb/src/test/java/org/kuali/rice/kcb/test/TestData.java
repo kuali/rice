@@ -17,6 +17,7 @@ package org.kuali.rice.kcb.test;
 
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
+import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
 
 /**
  * Contains test data objects 
@@ -43,7 +44,6 @@ public class TestData {
     public static MessageDelivery getMessageDelivery1() {
         MessageDelivery md = new MessageDelivery();
         md.setDelivererTypeName("mock");
-        md.setDeliveryStatus("-");
         
         return md;
     }

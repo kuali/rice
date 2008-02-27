@@ -15,14 +15,10 @@
  */
 package org.kuali.rice.kcb.test;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.KCBServiceLocator;
-import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.test.RiceTestCase;
-import org.kuali.rice.test.TransactionalLifecycle;
 
 /**
  * Base KCBTestCase 
@@ -31,13 +27,15 @@ import org.kuali.rice.test.TransactionalLifecycle;
  *
  */
 public abstract class KCBTestCase extends RiceTestCase {
-    protected final Logger LOG = Logger.getLogger(getClass());
     protected KCBServiceLocator services;
+
+    protected static boolean dirty = false;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         services = GlobalKCBServiceLocator.getInstance();
+        dirty = true;
     }
 
     /**
@@ -56,14 +54,5 @@ public abstract class KCBTestCase extends RiceTestCase {
     @Override
     protected String getTestHarnessSpringBeansLocation() {
         return "classpath:KCBTestHarnessSpringBeans.xml";
-    }
-   
-    @Override
-    protected List<Lifecycle> getPerTestLifecycles() {
-        List<Lifecycle> lifecycles = super.getPerTestLifecycles();
-        //lifecycles.add(0, new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
-        //lifecycles.add(0, new SQLDataLoaderLifecycle("classpath:KCBDefaultTestData.sql", "/"));
-        lifecycles.add(0, new TransactionalLifecycle());
-        return lifecycles;
     }
 }

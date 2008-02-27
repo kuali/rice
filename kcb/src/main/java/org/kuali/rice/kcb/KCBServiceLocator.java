@@ -22,6 +22,8 @@ import org.kuali.rice.kcb.service.MessageDeliveryService;
 import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.kcb.service.MessagingService;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
+import org.quartz.JobDetail;
+import org.springframework.transaction.PlatformTransactionManager;
 
 /**
  * Service locator interface for the KCB module.
@@ -29,6 +31,8 @@ import org.kuali.rice.kcb.service.RecipientPreferenceService;
  */
 public interface KCBServiceLocator {
     public BusinessObjectDao getBusinessObjectDao();
+    public JobDetail getMessageProcessingJobDetail();
+    public PlatformTransactionManager getTransactionManager();
     public MessageDeliveryService getMessageDeliveryService();
     public MessageService getMessageService();
     public MessagingService getMessagingService();

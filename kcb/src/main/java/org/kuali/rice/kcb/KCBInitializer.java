@@ -15,11 +15,18 @@
  */
 package org.kuali.rice.kcb;
 
+import junit.framework.Assert;
+
+import org.kuali.bus.services.KSBServiceLocator;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.Trigger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * Initializing bean that initializes KCB (specifically the GlobalKCBServiceLocator)
@@ -29,6 +36,8 @@ import org.springframework.beans.factory.InitializingBean;
  */
 public class KCBInitializer implements BeanFactoryAware, InitializingBean, DisposableBean {
     private BeanFactory beanFactory;
+    private Trigger messageProcessingTrigger;
+    private JobDetail messageProcessingJobDetail;
 
     /**
      * @see org.springframework.beans.factory.BeanFactoryAware#setBeanFactory(org.springframework.beans.factory.BeanFactory)
@@ -38,12 +47,37 @@ public class KCBInitializer implements BeanFactoryAware, InitializingBean, Dispo
     }
 
     /**
+     * Sets the Trigger for the message processing job
+     * @param messageProcessingTrigger the Trigger for the message processing job
+     */
+    @Required
+    public void setMessageProcessingTrigger(Trigger messageProcessingTrigger) {
+        this.messageProcessingTrigger = messageProcessingTrigger;
+    }
+    
+    /**
+     * Sets the JobDetail for the message processing job
+     * @param messageProcessingJobDetail the JobDetail for the message processing job
+     */
+    @Required
+    public void setMessageProcessingJobDetail(JobDetail messageProcessingJobDetail) {
+        this.messageProcessingJobDetail = messageProcessingJobDetail;
+    }
+
+    /**
      * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
      */
     public void afterPropertiesSet() throws Exception {
         GlobalKCBServiceLocator.init(beanFactory);
         // kill the reference, our job is done
         beanFactory = null;
+
+        Scheduler scheduler = KSBServiceLocator.getScheduler();
+        if (scheduler.getJobDetail(messageProcessingJobDetail.getName(), messageProcessingJobDetail.getGroup()) == null) {
+            scheduler.addJob(messageProcessingJobDetail, true);
+        }
+
+        scheduler.scheduleJob(messageProcessingTrigger);
     }
 
     public void destroy() throws Exception {

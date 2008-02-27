@@ -22,7 +22,7 @@ import org.junit.Test;
 import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
-import org.kuali.rice.kcb.test.KCBTestCase;
+import org.kuali.rice.kcb.test.RollbackKCBTestCase;
 import org.kuali.rice.kcb.test.service.MockEmailService;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestSql;
@@ -31,15 +31,15 @@ import org.kuali.rice.test.data.UnitTestSql;
  * This class tests the implementation of the email service.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class EmailServiceTest extends KCBTestCase {
+public class EmailServiceTest extends RollbackKCBTestCase {
     public static final String VALID_EMAIL = "abcd@efghi.jkl";
     public static final String VALID_FORMAT_VALUE = "text";
 
     @UnitTestData(sqlStatements = {
         @UnitTestSql("insert into KCB_MESSAGES values (1, 'fyi', systimestamp, 'a title', 'channel1', 'a producer', 'some content', 'a content type', 'user1', 0)"),
-        @UnitTestSql("insert into KCB_MSG_DELIVS values (1, 1, 'email', 'fake system id', 'fakestatus', 0)")
+        @UnitTestSql("insert into KCB_MSG_DELIVS (ID, MESSAGE_ID, DELIVERER_TYPE_NAME, DELIVERER_SYSTEM_ID, DELIVERY_STATUS, LOCKED_DATE, DB_LOCK_VER_NBR) values (1, 1, 'email', 'fake system id', 'fakestatus', NULL, 0)")
     })
-    // TODO: fix once preferences are in place
+
     @Test
     public void testSendNotificationEmail() throws Exception {
         MessageDeliveryService mds = GlobalKCBServiceLocator.getInstance().getMessageDeliveryService();

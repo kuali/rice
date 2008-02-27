@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kcb.bo;
 
+import java.util.Set;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
@@ -23,18 +25,19 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * they have an instance of this entity.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class MessageDelivery {
+public class MessageDelivery extends BaseLockable {
     /**
      * Field names
      */
     public static final String ID_FIELD = "id";
     public static final String SYSTEMID_FIELD = "delivererSystemId";
     public static final String MESSAGEID_FIELD = "message";
+    public static final String DELIVERY_STATUS = "deliveryStatus";
     
     private Long id;
     private String delivererTypeName;
     private String delivererSystemId;  // can hold an identifier from the endpoint deliverer mechanism system (i.e. workflow id, SMS id, etc)
-    private String deliveryStatus;
+    private String deliveryStatus = MessageDeliveryStatus.UNDELIVERED.name();
 
     /**
      * This delivery's message
@@ -107,10 +110,22 @@ public class MessageDelivery {
     }
 
     /**
+     * Convenience method that sets the delivery status in a typesafe manner.
+     * This method is preferred to {@link #setDeliveryStatus(String)}
+     * @param deliveryStatus the MessageDeliveryStatus enum constant
+     */
+    public void setDeliveryStatus(MessageDeliveryStatus deliveryStatus) {
+        this.deliveryStatus = deliveryStatus.name();
+    }
+
+    /**
      * Sets the deliveryStatus attribute value.
      * @param deliveryStatus The deliveryStatus to set.
      */
     public void setDeliveryStatus(String deliveryStatus) {
+        // Enums will throw an IllegalArgumentException from valueOf if there
+        // is no matching enum
+        MessageDeliveryStatus.valueOf(deliveryStatus);
         this.deliveryStatus = deliveryStatus;
     }
 

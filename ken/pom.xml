@@ -33,6 +33,16 @@
             <artifactId>rice-kcb-api</artifactId>
             <version>0.9.3-SNAPSHOT</version>
         </dependency>
+        <!-- This includes the tests classes and resources that KCB exports
+             see: http://maven.apache.org/guides/mini/guide-attached-tests.html
+        -->
+        <dependency>
+            <groupId>org.kuali.rice</groupId>
+            <artifactId>rice-kcb</artifactId>
+            <version>0.9.3-SNAPSHOT</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.kuali.rice</groupId>
             <artifactId>rice-kcb</artifactId>

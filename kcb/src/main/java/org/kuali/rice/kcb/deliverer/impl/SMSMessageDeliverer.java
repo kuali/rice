@@ -43,9 +43,9 @@ public class SMSMessageDeliverer implements MessageDeliverer {
     }
 
     /**
-     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#deliverMessage(org.kuali.rice.kcb.bo.MessageDelivery)
+     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#deliver(org.kuali.rice.kcb.bo.MessageDelivery)
      */
-    public void deliverMessage(MessageDelivery messageDelivery) throws MessageDeliveryException {
+    public void deliver(MessageDelivery messageDelivery) throws MessageDeliveryException {
     }
 
     /**
@@ -56,9 +56,9 @@ public class SMSMessageDeliverer implements MessageDeliverer {
     }*/
 
     /**
-     * @see MessageDeliverer#dismissMessageDelivery(MessageDelivery, String, String)
+     * @see MessageDeliverer#dismiss(MessageDelivery, String, String)
      */
-    public void dismissMessageDelivery(MessageDelivery messageDelivery, String user, String cause) throws MessageDismissalException {
+    public void dismiss(MessageDelivery messageDelivery, String user, String cause) throws MessageDismissalException {
         // we can't remove an sms message once it has been sent
     }
 

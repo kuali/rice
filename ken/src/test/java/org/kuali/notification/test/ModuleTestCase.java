@@ -15,7 +15,6 @@
  */
 package org.kuali.notification.test;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -47,12 +46,19 @@ public abstract class ModuleTestCase extends RiceTestCase {
     }
 
     /**
+     * Overridden to avoid running ClearDatabaseLifecycle in both suite and per-test
+     */
+    protected List<Lifecycle> getSuiteLifecycles() {
+        return getInitialLifecycles();
+    }
+    
+    /**
      * Simply prepends a ClearDatabaseLifecycle for all unit tests
      * @see org.kuali.rice.test.RiceTestCase#getPerTestLifecycles()
      */
     @Override
     protected List<Lifecycle> getPerTestLifecycles() {
-        LinkedList<Lifecycle> lifeCycles = new LinkedList<Lifecycle>();
+        List<Lifecycle> lifeCycles = getDefaultPerTestLifecycles();
         lifeCycles.add(0, new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
         return lifeCycles;
     }

@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
+import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
 import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.kcb.test.BusinessObjectTestCase;
@@ -63,7 +64,6 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
     public void testCreate() {
         MessageDelivery md = new MessageDelivery();
         md.setDelivererTypeName("pigeon");
-        md.setDeliveryStatus("in flight");
         md.setMessage(MESSAGE);
         
         messageDeliveryService.saveMessageDelivery(md);
@@ -147,7 +147,7 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
     @Override
     public void testInvalidUpdate() {
         final MessageDelivery m = messageDeliveryService.getMessageDelivery(MESSAGE_DELIV.getId());
-        m.setDeliveryStatus(null);
+        m.setDelivererTypeName(null);
         new AssertThrows(DataAccessException.class) {
             @Override
             public void test() throws Exception {
@@ -170,7 +170,7 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
     public void testUpdate() {
         MessageDelivery m = messageDeliveryService.getMessageDelivery(MESSAGE_DELIV.getId());
         m.setDelivererTypeName("eagle");
-        m.setDeliveryStatus("soaring");
+        m.setDeliveryStatus(MessageDeliveryStatus.UNDELIVERED);
         m.setDelivererSystemId("1234");
         messageDeliveryService.saveMessageDelivery(m);
         

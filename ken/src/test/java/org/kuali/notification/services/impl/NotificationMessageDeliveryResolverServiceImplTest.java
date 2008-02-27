@@ -35,6 +35,9 @@ import org.kuali.notification.util.NotificationConstants;
 import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.service.MessageService;
+import org.kuali.rice.test.data.PerTestUnitTestData;
+import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.rice.test.data.UnitTestSql;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
@@ -45,6 +48,17 @@ import edu.emory.mathcs.backport.java.util.concurrent.Executors;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
+// Make sure KCB has some deliverers configured for the test users, so message deliveries get created and the messages aren't removed
+@PerTestUnitTestData(
+        @UnitTestData(sqlStatements = {
+            @UnitTestSql("insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (1, 'TestUser6', 'KEW', 'mock', 0)"),
+            @UnitTestSql("insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (2, 'TestUser1', 'KEW', 'mock', 0)"),
+            @UnitTestSql("insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (3, 'TestUser2', 'KEW', 'mock', 0)"),
+            @UnitTestSql("insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (4, 'quickstart', 'KEW', 'mock', 0)"),
+            @UnitTestSql("insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (5, 'TestUser5', 'KEW', 'mock', 0)"),
+            @UnitTestSql("insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (6, 'TestUser4', 'KEW', 'mock', 0)")
+        })
+)
 public class NotificationMessageDeliveryResolverServiceImplTest extends NotificationTestCaseBase {
     // NOTE: this value is HIGHLY dependent on the test data, make sure that it reflects the results
     // expected from the test data

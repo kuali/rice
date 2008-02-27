@@ -58,7 +58,7 @@ public class EmailMessageDeliverer implements MessageDeliverer {
      * This implementation uses the email service to deliver a notification.
      * @see org.kuali.notification.deliverer.NotificationMessageDeliverer#deliverMessage(org.kuali.notification.bo.NotificationMessageDelivery)
      */
-    public void deliverMessage(MessageDelivery messageDelivery) throws MessageDeliveryException {
+    public void deliver(MessageDelivery messageDelivery) throws MessageDeliveryException {
         try {
             // figure out the proper recipient email address
             String recipientEmailAddressPrefKey = getName()+"."+EMAIL_ADDR_PREF_KEY;
@@ -90,9 +90,9 @@ public class EmailMessageDeliverer implements MessageDeliverer {
     }
 
     /**
-     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#dismissMessageDelivery(org.kuali.rice.kcb.bo.MessageDelivery, java.lang.String, java.lang.String)
+     * @see org.kuali.rice.kcb.deliverer.MessageDeliverer#dismiss(org.kuali.rice.kcb.bo.MessageDelivery, java.lang.String, java.lang.String)
      */
-    public void dismissMessageDelivery(MessageDelivery messageDelivery, String user, String cause) throws MessageDismissalException {
+    public void dismiss(MessageDelivery messageDelivery, String user, String cause) throws MessageDismissalException {
         // we can't remove an email message once it has been sent
     }
 

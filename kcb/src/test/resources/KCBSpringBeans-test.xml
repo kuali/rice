@@ -13,9 +13,6 @@
     <property name="jcdAlias">
       <value>kcbDataSource</value>
     </property>
-    <property name="useSelectForUpdate">
-      <value>false</value>
-    </property>
   </bean>
 
   <!-- override the notificationEmailService with a Mock implementation -->

@@ -40,10 +40,10 @@ public class PersonDTO extends AbstractEntityBaseDTO implements Serializable {
     }
 
     /**
-     * @param personAttributesDtos - the key to the HashMap is the name of the attribute, the value 
+     * @param personAttributeDtos - the key to the HashMap is the name of the attribute, the value 
      *                           is the actual DTO object
      */
-    public void setPersonAttributesDtos(HashMap<String, PersonAttributeDTO> personAttributes) {
-        this.personAttributesDtos = personAttributes;
+    public void setPersonAttributesDtos(HashMap<String, PersonAttributeDTO> personAttributeDtos) {
+        this.personAttributesDtos = personAttributeDtos;
     }
 }

@@ -58,8 +58,8 @@ public class PrincipalQualifiedRoleDTO extends QualifiedRoleDTO {
     /**
      * @param principalDto the principalDto to set
      */
-    public void setPrincipalDto(PrincipalDTO principal) {
-        this.principalDto = principal;
+    public void setPrincipalDto(PrincipalDTO principalDto) {
+        this.principalDto = principalDto;
     }
 
     /**

@@ -61,7 +61,7 @@ public class GroupQualifiedRoleAttributeDTO extends QualifiedRoleAttributeDTO {
      * 
      * @param groupDto
      */
-    public void setGroupDTO(GroupDTO group) {
-        this.groupDto = group;
+    public void setGroupDTO(GroupDTO groupDto) {
+        this.groupDto = groupDto;
     }
 }

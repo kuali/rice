@@ -48,8 +48,8 @@ public class GroupDTO implements Serializable {
      * @param memberGroupDtos the memberGroupDtos to set - the key to the HashMap is the name of the group, the value 
      *                            is the actual DTO object
      */
-    public void setMemberGroupDtos(HashMap<String,GroupDTO> memberGroups) {
-        this.memberGroupDtos = memberGroups;
+    public void setMemberGroupDtos(HashMap<String,GroupDTO> memberGroupDtos) {
+        this.memberGroupDtos = memberGroupDtos;
     }
 
     public String getDescription() {
@@ -87,8 +87,8 @@ public class GroupDTO implements Serializable {
      * @param groupRoleDtos the groupRoleDtos to set - the key to the HashMap is the name of the role, the value 
      *                            is the actual DTO object
      */
-    public void setGroupRoleDtos(HashMap<String,RoleDTO> groupRoles) {
-        this.groupRoleDtos = groupRoles;
+    public void setGroupRoleDtos(HashMap<String,RoleDTO> groupRoleDtos) {
+        this.groupRoleDtos = groupRoleDtos;
     }
 
     /**
@@ -103,8 +103,8 @@ public class GroupDTO implements Serializable {
      * @param parentGroupDtos the parentGroupDtos to set - the key to the HashMap is the name of the group, the value 
      *                            is the actual DTO object
      */
-    public void setParentGroupDtos(HashMap<String,GroupDTO> parentGroups) {
-        this.parentGroupDtos = parentGroups;
+    public void setParentGroupDtos(HashMap<String,GroupDTO> parentGroupDtos) {
+        this.parentGroupDtos = parentGroupDtos;
     }
 
     /**
@@ -119,7 +119,7 @@ public class GroupDTO implements Serializable {
      * @param groupAttributeDtos the groupAttributeDtos to set - the key to the HashMap is the name of the group, the value 
      *                            is the actual DTO object
      */
-    public void setGroupAttributeDtos(HashMap<String,GroupAttributeDTO> groupAttributes) {
-        this.groupAttributeDtos = groupAttributes;
+    public void setGroupAttributeDtos(HashMap<String,GroupAttributeDTO> groupAttributeDtos) {
+        this.groupAttributeDtos = groupAttributeDtos;
     }
 }

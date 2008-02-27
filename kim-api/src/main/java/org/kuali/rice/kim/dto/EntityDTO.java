@@ -28,21 +28,21 @@ import java.util.HashMap;
 public class EntityDTO extends AbstractEntityBaseDTO {
     private static final long serialVersionUID = -3136254886317498473L;
     
-    private HashMap<String,EntityAttributeDTO> entityAttributesDtos;
+    private HashMap<String,EntityAttributeDTO> entityAttributeDtos;
     
     /**
-     * @return entityAttributesDtos - the key to the HashMap is the name of the attribute, the value 
+     * @return entityAttributeDtos - the key to the HashMap is the name of the attribute, the value 
      *                            is the actual DTO object 
      */
-    public HashMap<String, EntityAttributeDTO> getEntityAttributesDtos() {
-        return this.entityAttributesDtos;
+    public HashMap<String, EntityAttributeDTO> getEntityAttributeDtos() {
+        return this.entityAttributeDtos;
     }
 
     /**
-     * @param entityAttributesDtos - the key to the HashMap is the name of the attribute, the value 
+     * @param entityAttributeDtos - the key to the HashMap is the name of the attribute, the value 
      *                           is the actual DTO object
      */
-    public void setEntityAttributesDtos(HashMap<String, EntityAttributeDTO> entityAttributes) {
-        this.entityAttributesDtos = entityAttributes;
+    public void setEntityAttributesDtos(HashMap<String, EntityAttributeDTO> entityAttributeDtos) {
+        this.entityAttributeDtos = entityAttributeDtos;
     }
 }

@@ -58,7 +58,7 @@ public abstract class QualifiedRoleDTO implements Serializable {
      * 
      * @param roleDto
      */
-	public void setRoleDto(RoleDTO role) {
-	    this.roleDto = role;
+	public void setRoleDto(RoleDTO roleDto) {
+	    this.roleDto = roleDto;
 	}
 }

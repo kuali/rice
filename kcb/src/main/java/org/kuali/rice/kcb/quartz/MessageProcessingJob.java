@@ -62,9 +62,9 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
     private Mode mode = Mode.DELIVER;
     private String user;
     private String cause;
-    private long messageId;
+    private Long messageId;
 
-    public MessageProcessingJob(long messageId, Mode mode, String user, String cause) {
+    public MessageProcessingJob(Long messageId, Mode mode, String user, String cause) {
         this();
         this.messageId = messageId;
         this.mode = mode;
@@ -299,10 +299,16 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
         String mode = context.getMergedJobDataMap().getString("mode");
-        this.mode = Mode.valueOf(mode);
+        if (mode != null) {
+            this.mode = Mode.valueOf(mode);
+        } else {
+            this.mode = Mode.DELIVER;
+        }
         this.user = context.getMergedJobDataMap().getString("user");
         this.cause = context.getMergedJobDataMap().getString("cause");
-        this.messageId = context.getMergedJobDataMap().getLong("messageId");
+        if (context.getMergedJobDataMap().containsKey("messageId")) {
+            this.messageId = context.getMergedJobDataMap().getLong("messageId");
+        }
         super.run();
     }
 }

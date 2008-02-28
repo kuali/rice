@@ -15,28 +15,17 @@
  */
 package org.kuali.rice.kcb.service;
 
-import org.kuali.rice.kcb.vo.MessageVO;
+import java.util.Collection;
 
 /**
- * The KCB MessagingService provides an API to deliver messages
- * to arbitrary multiple endpoints. 
+ * Public API to MessageDelivererRegistryService
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface MessagingService {
+public interface MessageDelivererRegistryAPI {
     /**
-     * Delivers a message
-     * 
-     * @param message message to deliver
-     * @return identifier for the message
+     * This service method is responsible for retrieving all MessageDeliverer Types names.  
+     * @return Collection of deliverer type names
      */
-    public long deliver(MessageVO message) throws /*MessageDelivery*/Exception;
-    /**
-     * Removes a specific message and all deliveries
-     * 
-     * @param messageId id of the message to remove
-     * @param user the user under which the action was taken
-     * @param cause the cause or action taken to remove the message 
-     */
-    public void remove(long messageId, String user, String cause) throws /*MessageDismissal*/Exception;
+    public Collection<String> getAllDelivererTypes();
 }

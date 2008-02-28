@@ -26,6 +26,7 @@
         <field-descriptor name="producer" column="PRODUCER" jdbc-type="VARCHAR" nullable="true" />
         <field-descriptor name="content" column="CONTENT" jdbc-type="CLOB" nullable="false" />
         <field-descriptor name="contentType" column="CONTENT_TYPE" jdbc-type="VARCHAR" nullable="true" />
+        <field-descriptor name="url" column="URL" jdbc-type="VARCHAR" nullable="true" />
         <field-descriptor name="recipient" column="USER_RECIPIENT_ID" jdbc-type="VARCHAR"  nullable="false" />
         <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
     </class-descriptor>

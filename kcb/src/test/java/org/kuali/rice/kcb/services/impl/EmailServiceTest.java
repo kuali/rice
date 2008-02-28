@@ -36,7 +36,7 @@ public class EmailServiceTest extends RollbackKCBTestCase {
     public static final String VALID_FORMAT_VALUE = "text";
 
     @UnitTestData(sqlStatements = {
-        @UnitTestSql("insert into KCB_MESSAGES values (1, 'fyi', systimestamp, 'a title', 'channel1', 'a producer', 'some content', 'a content type', 'user1', 0)"),
+        @UnitTestSql("insert into KCB_MESSAGES (ID, DELIVERY_TYPE, CREATED_DATETIME, TITLE, CHANNEl, PRODUCER, CONTENT, CONTENT_TYPE, URL, USER_RECIPIENT_ID, DB_LOCK_VER_NBR) values (1, 'fyi', systimestamp, 'a title', 'channel1', 'a producer', 'some content', 'a content type', 'url', 'user1', 0)"),
         @UnitTestSql("insert into KCB_MSG_DELIVS (ID, MESSAGE_ID, DELIVERER_TYPE_NAME, DELIVERER_SYSTEM_ID, DELIVERY_STATUS, LOCKED_DATE, DB_LOCK_VER_NBR) values (1, 1, 'email', 'fake system id', 'fakestatus', NULL, 0)")
     })
 

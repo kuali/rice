@@ -93,7 +93,7 @@ public class MessagingServiceTest extends ClearDatabaseKCBTestCase {
 
         registerJobListener();
 
-        services.getMessagingService().remove(id);
+        services.getMessagingService().remove(id, "a user", "a cause");
         
         waitForNextJobCompletion();
 

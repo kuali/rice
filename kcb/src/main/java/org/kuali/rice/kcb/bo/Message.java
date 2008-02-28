@@ -40,6 +40,7 @@ public class Message {
     private String title;
     private String content;
     private String contentType;
+    private String url;
     private String recipient;
 
     /**
@@ -166,6 +167,20 @@ public class Message {
     }
 
     /**
+     * @return the url
+     */
+    public String getUrl() {
+        return this.url;
+    }
+
+    /**
+     * @param url the url
+     */
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    /**
      * Gets the deliveryType attribute. 
      * @return Returns the deliveryType.
      */
@@ -247,5 +262,4 @@ public class Message {
                        .append("lockVerNbr", lockVerNbr)
                        .toString();
     }
-
 }

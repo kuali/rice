@@ -115,6 +115,7 @@ public class MessagingServiceImpl implements MessagingService {
         m.setChannel(message.getChannel());
         m.setRecipient(message.getRecipient());
         m.setContentType(message.getContentType());
+        m.setUrl(message.getUrl());
         m.setContent(message.getContent());
 
         LOG.error("saving message: " +m);
@@ -145,15 +146,15 @@ public class MessagingServiceImpl implements MessagingService {
     }
 
     /**
-     * @see org.kuali.rice.kcb.service.MessagingService#remove(int)
+     * @see org.kuali.rice.kcb.service.MessagingService#remove(long, java.lang.String, java.lang.String)
      */
-    public void remove(long messageId) throws MessageDismissalException {
+    public void remove(long messageId, String user, String cause) throws MessageDismissalException {
         Message m = messageService.getMessage(Long.valueOf(messageId));
         if (m == null) {
             throw new MessageDismissalException("No such message: " + messageId);
         }
 
-        queueJob(MessageProcessingJob.Mode.REMOVE, messageId, null, null);
+        queueJob(MessageProcessingJob.Mode.REMOVE, messageId, user, cause);
         
         /*Collection<MessageDelivery> deliveries = messageDeliveryService.getMessageDeliveries(m);
         for (MessageDelivery delivery: deliveries) {

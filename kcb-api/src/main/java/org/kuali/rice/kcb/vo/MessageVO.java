@@ -29,6 +29,7 @@ public class MessageVO {
     private String content;
     private String contentType;
     private String recipient;
+    private String url;
 
     public String getDeliveryType() {
         return this.deliveryType;
@@ -71,5 +72,11 @@ public class MessageVO {
     }
     public void setProducer(String producer) {
         this.producer = producer;
+    }
+    public String getUrl() {
+        return this.url;
+    }
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

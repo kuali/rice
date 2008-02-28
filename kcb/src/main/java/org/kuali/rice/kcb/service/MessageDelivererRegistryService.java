@@ -24,16 +24,16 @@ import org.kuali.rice.kcb.deliverer.MessageDeliverer;
  * This class is responsible for providing services for Message Deliverers (delivery types)
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public interface MessageDelivererRegistryService {
+public interface MessageDelivererRegistryService extends MessageDelivererRegistryAPI {
     /**
      * This service method is responsible for retrieving all MessageDeliverer Types.  
-     * @return Collection of Deliverer Classes
+     * @return Collection of MessageDeliverer objects
      */
     public Collection<MessageDeliverer> getAllDeliverers();
 
     /**
      * This service method is responsible for retrieving all MessageDeliverer Types names.  
-     * @return Collection of Deliverer Classes
+     * @return Collection of deliverer type names
      */
     public Collection<String> getAllDelivererTypes();
 

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.test.data;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.test.SQLDataLoader;
 
 /**
@@ -24,6 +25,12 @@ import org.kuali.rice.test.SQLDataLoader;
  *
  */
 public class UnitTestDataUtils {
+
+    public static void executeDataLoader(UnitTestData[] data) throws Exception {
+        for (UnitTestData d: data) {
+            executeDataLoader(d);
+        }
+    }
 
     public static void executeDataLoader(UnitTestData data) throws Exception {
         SQLDataLoader sqlDataLoader;
@@ -43,6 +50,16 @@ public class UnitTestDataUtils {
                     break;
                 default: break;
             }
+        }
+        
+        if (!StringUtils.isEmpty(data.filename())) {
+            if (!StringUtils.isEmpty(data.value()))
+                throw new RuntimeException("UnitTestDataArtifact may not specify both SQL file and content");
+            sqlDataLoader = new SQLDataLoader(data.filename(), data.delimiter());
+            sqlDataLoader.runSql();
+        } else if (!StringUtils.isEmpty(data.value())) {
+            sqlDataLoader = new SQLDataLoader(data.value());
+            sqlDataLoader.runSql();
         }
     }
 }

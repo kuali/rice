@@ -29,9 +29,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface UnitTestData {
-    
+   
     public enum Type { SQL_STATEMENTS, SQL_FILES }
-    
+
+    // add direct support for both styles 
+    String value() default "";
+    String filename() default "";
+    String delimiter() default ";";
+
     UnitTestSql[] sqlStatements() default {};
     UnitTestFile[] sqlFiles() default {};
     Type[] order() default { Type.SQL_STATEMENTS, Type.SQL_FILES };

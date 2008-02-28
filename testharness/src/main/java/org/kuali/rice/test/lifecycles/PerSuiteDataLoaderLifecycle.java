@@ -40,7 +40,7 @@ public class PerSuiteDataLoaderLifecycle implements Lifecycle {
 
 	public void start() throws Exception {
 		if (annotatedClass.isAnnotationPresent(PerSuiteUnitTestData.class)) {
-			UnitTestData data = annotatedClass.getAnnotation(PerSuiteUnitTestData.class).value();
+			UnitTestData[] data = annotatedClass.getAnnotation(PerSuiteUnitTestData.class).value();
             UnitTestDataUtils.executeDataLoader(data);
 		}
 		started = true;

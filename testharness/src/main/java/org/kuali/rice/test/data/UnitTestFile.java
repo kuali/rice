@@ -31,5 +31,5 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface UnitTestFile {
     String filename();
-    String delimiter();
+    String delimiter() default ";";
 }

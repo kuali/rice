@@ -29,5 +29,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface PerSuiteUnitTestData {
-    UnitTestData value();    
+    UnitTestData[] value();    
 }

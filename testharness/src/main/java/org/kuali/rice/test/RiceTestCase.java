@@ -57,6 +57,7 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
 
     private static final String ALT_LOG4J_CONFIG_LOCATION_PROP = "alt.log4j.config.location";
     private static final String DEFAULT_LOG4J_CONFIG = "classpath:rice-testharness-default-log4j.properties";
+    protected static final String DEFAULT_TEST_HARNESS_SPRING_BEANS = "classpath:TestHarnessSpringBeans.xml";
     protected static boolean SUITE_LIFE_CYCLES_RAN = false;
 
     protected List<Lifecycle> perTestLifeCycles = new LinkedList<Lifecycle>();
@@ -68,6 +69,14 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     private List<String> reports = new ArrayList<String>();
 
     private SpringResourceLoader testHarnessSpringResourceLoader;
+
+    /**
+     * Whether the test environment is in a "dirty" state.  Each time the unit test starts up
+     * dirty is set to true.  If a subclass installs the {@link TransactionalLifecycle} then
+     * it should clear the dirty flag.  This flag can be used to perform cleanup in case a previous
+     * test left the test environment in a "dirty" state.
+     */
+    protected static boolean dirty = false;
 
     @Before
     public void setUp() throws Exception {
@@ -94,7 +103,6 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      * exception handling.
      */
     protected void setUpInternal() throws Exception {
-
         assertNotNull(getModuleName());
         setModuleName(getModuleName());
         setBaseDirSystemProperty(getModuleName());
@@ -110,6 +118,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
         startSuiteDataLoaderLifecycles();
 
         startLifecycles(this.perTestLifeCycles);
+        
+        dirty = true;
     }
 
     /**
@@ -311,7 +321,7 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      * @return the location of the test harness spring beans context file.
      */
     protected String getTestHarnessSpringBeansLocation() {
-        return "classpath:TestHarnessSpringBeans.xml";
+        return DEFAULT_TEST_HARNESS_SPRING_BEANS;
     }
 
     protected Config getTestHarnessConfig() throws Exception {

@@ -38,6 +38,8 @@ import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.lifecycles.PerSuiteDataLoaderLifecycle;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -310,7 +312,20 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
 
     public SpringResourceLoader getTestHarnessSpringResourceLoader() {
         if (testHarnessSpringResourceLoader == null) {
-            testHarnessSpringResourceLoader = new SpringResourceLoader(new QName("TestHarnessSpringContext"), getTestHarnessSpringBeansLocation());
+            String[] locations;
+            String moduleTestHarnessSpringBeansPath = getModuleName().toUpperCase() + "TestHarnessSpringBeans.xml";
+            LOG.info("Looking for: " + moduleTestHarnessSpringBeansPath);
+            Resource resource = new ClassPathResource(moduleTestHarnessSpringBeansPath);
+            if (resource.exists()) {
+                LOG.info("FOUND " + resource);
+                locations = new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS, "classpath:" + moduleTestHarnessSpringBeansPath };  
+            } else {
+                LOG.info("NOT FOUND " + resource);
+                locations = new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS };
+            }
+            
+            
+            testHarnessSpringResourceLoader = new SpringResourceLoader(new QName("TestHarnessSpringContext"), locations);
         }
         return testHarnessSpringResourceLoader;
     }
@@ -320,8 +335,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      * Subclasses may override to specify a different location.
      * @return the location of the test harness spring beans context file.
      */
-    protected String getTestHarnessSpringBeansLocation() {
-        return DEFAULT_TEST_HARNESS_SPRING_BEANS;
+    protected String[] getTestHarnessSpringBeansLocation() {
+        return new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS };
     }
 
     protected Config getTestHarnessConfig() throws Exception {

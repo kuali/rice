@@ -66,24 +66,9 @@ public class BaselineTestCase extends BaseModuleTestCase {
     private Mode mode = Mode.NONE;
 
     // propagate constructors
-    public BaselineTestCase(String moduleName, boolean overrideTestHarness) {
-        super(moduleName, overrideTestHarness);
-        readModeAnnotation();
-    }
-
-    // propagate constructors
     public BaselineTestCase(String moduleName) {
         super(moduleName);
         readModeAnnotation();
-    }
-    
-    /**
-     * Adds the ability to specify Mode
-     */
-    public BaselineTestCase(String moduleName, boolean overrideTestHarness, Mode mode) {
-        super(moduleName, overrideTestHarness);
-        if (mode == null) throw new IllegalArgumentException("Mode cannot be null");
-        this.mode = mode;
     }
 
     /**

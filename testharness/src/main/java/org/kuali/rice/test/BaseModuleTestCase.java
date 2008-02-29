@@ -15,30 +15,26 @@
  */
 package org.kuali.rice.test;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.log4j.Logger;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
 /**
  * Base module test case that allows overriding of the test harness spring beans
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BaseModuleTestCase extends RiceTestCase {
+    protected final Logger LOG = Logger.getLogger(getClass());
+
     protected final String moduleName;
-    protected final boolean overrideTestHarness;
 
     /**
      * @param moduleName module name
      */
     public BaseModuleTestCase(String moduleName) {
-        this(moduleName, false);
-    }
-
-    /**
-     * @param moduleName module name
-     * @param overrideTestHarness whether to override the test harness spring beans location
-     *                            with a module-specific (MODULE>TestHarnessSpringBeans.xml)
-     */
-    public BaseModuleTestCase(String moduleName, boolean overrideTestHarness) {
         this.moduleName = moduleName;
-        this.overrideTestHarness = overrideTestHarness;
     }
 
     /**
@@ -54,11 +50,15 @@ public class BaseModuleTestCase extends RiceTestCase {
      * @see org.kuali.rice.test.RiceTestCase#getTestHarnessSpringBeansLocation()
      */
     @Override
-    protected String getTestHarnessSpringBeansLocation() {
-        if (overrideTestHarness) {
-            return "classpath:" + moduleName.toUpperCase() + "TestHarnessSpringBeans.xml";    
-        } else {
-            return DEFAULT_TEST_HARNESS_SPRING_BEANS;
+    protected String[] getTestHarnessSpringBeansLocation() {
+        String[] locations = super.getTestHarnessSpringBeansLocation();
+
+        String moduleTestHarnessSpringBeansPath = getModuleName().toUpperCase() + "TestHarnessSpringBeans.xml";
+        Resource resource = new ClassPathResource(moduleTestHarnessSpringBeansPath);
+        if (resource.exists()) {
+            locations = (String[]) ArrayUtils.add(locations, "classpath:" + moduleTestHarnessSpringBeansPath);
         }
+        
+        return locations;
     }
 }

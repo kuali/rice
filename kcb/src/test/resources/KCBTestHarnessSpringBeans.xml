@@ -2,10 +2,6 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <!-- this is a bootstrap Spring file that the unit tests use  -->
 <beans>
-
-    <!-- import the standard test harness spring beans to avoid duplication -->
-    <import resource="TestHarnessSpringBeans.xml"/>
-
     <bean id="config" class="org.kuali.rice.config.spring.ConfigFactoryBean">
         <property name="configLocations">
             <list>
@@ -26,7 +22,6 @@
                     <property name="serviceServletUrl" value="${serviceServletUrl}" />
                 </bean>
                 <bean class="org.kuali.rice.kcb.config.KCBConfigurer">
-                    <!-- Let the KCB module know it's running in unit tests -->
                     <property name="testMode" value="true"/>
                 </bean>
                 <bean class="org.kuali.notification.config.KENConfigurer">
@@ -34,19 +29,5 @@
                 </bean>
             </list>
         </property>
-        <!-- override web authentication service -->
-        <!-- 
-        <property name="overrideServices">
-            <list>
-                <bean class="edu.iu.uis.eden.clientapp.ServiceHolder">
-                    <property name="serviceNameSpaceURI" value=""></property>
-                    <property name="localServiceName" value="enWebAuthenticationService"></property>
-                    <property name="service">
-                        <ref bean="webAuthenticationService" />
-                    </property>
-                </bean>
-            </list>
-        </property>
-        -->
     </bean>
 </beans>

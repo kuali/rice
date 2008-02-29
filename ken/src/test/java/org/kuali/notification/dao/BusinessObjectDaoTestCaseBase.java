@@ -29,7 +29,7 @@ public abstract class BusinessObjectDaoTestCaseBase extends NotificationTestCase
     protected BusinessObjectDao businessObjectDao;
 
     /**
-     * @see org.kuali.notification.test.ModuleTestCase#setUp()
+     * @see org.kuali.rice.test.BaselineTestCase#setUp()
      */
     @Override
     public void setUp() throws Exception {

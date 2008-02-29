@@ -18,12 +18,8 @@ package org.kuali.notification.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
-import org.apache.log4j.Logger;
 import org.kuali.notification.core.SpringNotificationServiceLocator;
 import org.kuali.rice.config.SpringModuleConfigurer;
-import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.BaseLifecycle;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
@@ -49,13 +45,11 @@ public abstract class NotificationTestCaseBase extends BaselineTestCase {
     private static final String KEN_MODULE_NAME = "ken";
     private static final String TX_MGR_BEAN_NAME = "transactionManager";
 
-    protected final Logger LOG = Logger.getLogger(getClass());
-
     protected SpringNotificationServiceLocator services;
     protected PlatformTransactionManager transactionManager;
 
     public NotificationTestCaseBase() {
-        super(KEN_MODULE_NAME, true);
+        super(KEN_MODULE_NAME);
     }
 
     /*

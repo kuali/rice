@@ -28,7 +28,7 @@ public abstract class KCBTestCase extends BaselineTestCase {
     protected KCBServiceLocator services;
 
     public KCBTestCase() {
-        super("kcb", true);
+        super("kcb");
     }
 
     @Override

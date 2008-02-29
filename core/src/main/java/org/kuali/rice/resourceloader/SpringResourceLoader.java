@@ -18,6 +18,7 @@ package org.kuali.rice.resourceloader;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -35,11 +36,15 @@ public class SpringResourceLoader extends BaseResourceLoader {
 
 	private ConfigurableApplicationContext context;
 
-	private String fileLoc;
+	private final String[] fileLocs;
 
 	public SpringResourceLoader(QName name, String fileLoc) {
+	    this(name, new String[] { fileLoc });
+	}
+
+	public SpringResourceLoader(QName name, String[] fileLocs) {
 		super(name);
-		this.fileLoc = fileLoc;
+		this.fileLocs = fileLocs;
 	}
 
 	public Object getService(QName serviceName) {
@@ -55,14 +60,14 @@ public class SpringResourceLoader extends BaseResourceLoader {
 
 	@Override
 	public void start() throws Exception {
-		LOG.info("Creating Spring context " + this.fileLoc);
-		this.context = new ClassPathXmlApplicationContext(this.fileLoc);
+		LOG.info("Creating Spring context " + StringUtils.join(this.fileLocs, ","));
+		this.context = new ClassPathXmlApplicationContext(this.fileLocs);
 		super.start();
 	}
 
 	@Override
 	public void stop() throws Exception {
-		LOG.info("Stoping Spring context " + this.fileLoc);
+		LOG.info("Stoping Spring context " + StringUtils.join(this.fileLocs, ","));
 		this.context.close();
 		super.stop();
 	}

@@ -38,6 +38,13 @@ public interface NotificationChannelService {
     public NotificationChannel getNotificationChannel(String id);
     
     /**
+     * This method retrieves a specific NotificationChannel instance by name.  If none is found, it returns null.
+     * @param id
+     * @return NotificationChannel
+     */
+    public NotificationChannel getNotificationChannelByName(String name);
+    
+    /**
      * This method retrieves all channels in the system that can be subscribed to.
      * @return Collection
      */

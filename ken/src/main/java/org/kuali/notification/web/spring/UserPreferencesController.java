@@ -32,7 +32,6 @@ import org.kuali.notification.bo.UserDelivererConfig;
 import org.kuali.notification.deliverer.NotificationMessageDeliverer;
 import org.kuali.notification.exception.ErrorList;
 import org.kuali.notification.service.NotificationChannelService;
-import org.kuali.notification.service.NotificationMessageDelivererRegistryService;
 import org.kuali.notification.service.UserPreferenceService;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
@@ -50,7 +49,7 @@ public class UserPreferencesController extends MultiActionController {
    
    protected NotificationChannelService notificationChannelService;
    protected UserPreferenceService userPreferenceService;
-   protected NotificationMessageDelivererRegistryService notificationMessageDelivererRegistryService;
+   protected Object notificationMessageDelivererRegistryService;
 
    
    /**
@@ -73,7 +72,7 @@ public class UserPreferencesController extends MultiActionController {
     * Set the NotificationMessageDelivererRegistryService
     * @param notificationMessageDelivererRegistryService
     */   
-   public void setNotificationMessageDelivererRegistryService(NotificationMessageDelivererRegistryService notificationMessageDelivererRegistryService) {
+   public void setNotificationMessageDelivererRegistryService(Object notificationMessageDelivererRegistryService) {
       this.notificationMessageDelivererRegistryService = notificationMessageDelivererRegistryService;
    }
    
@@ -140,7 +139,7 @@ public class UserPreferencesController extends MultiActionController {
        LOG.debug("remoteUser: "+userid); 
               
        // Get DeliveryType classes
-       Collection<NotificationMessageDeliverer> deliveryTypes = this.notificationMessageDelivererRegistryService.getAllDelivererTypes();
+       Collection<NotificationMessageDeliverer> deliveryTypes = null; //this.notificationMessageDelivererRegistryService.getAllDelivererTypes();
        
        
        // get current subscription channel ids
@@ -201,7 +200,7 @@ public class UserPreferencesController extends MultiActionController {
        // to obtain preferenceKeys.  Check to see if a matching request
        // parameter was provided, then save a record for the userID, channelID, and 
        // preference setting
-       Collection<NotificationMessageDeliverer> deliveryTypes = this.notificationMessageDelivererRegistryService.getAllDelivererTypes();
+       Collection<NotificationMessageDeliverer> deliveryTypes = null; //this.notificationMessageDelivererRegistryService.getAllDelivererTypes();
        
        // first remove all configured user delivers for this user
        

@@ -71,7 +71,9 @@
                     </property>
                 </bean>
                 -->
-                <bean class="org.kuali.notification.config.KENConfigurer" />
+                <bean class="org.kuali.notification.config.KENConfigurer">
+                    <property name="testMode" value="true"/>
+                </bean>
             </list>
         </property>
         <!-- override web authentication service -->

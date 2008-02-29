@@ -20,13 +20,9 @@ import java.util.HashMap;
 
 import org.junit.Test;
 import org.kuali.notification.bo.NotificationChannel;
-import org.kuali.notification.bo.RecipientPreference;
 import org.kuali.notification.bo.UserChannelSubscription;
 import org.kuali.notification.bo.UserDelivererConfig;
-import org.kuali.notification.deliverer.NotificationMessageDeliverer;
 import org.kuali.notification.deliverer.impl.EmailMessageDeliverer;
-import org.kuali.notification.exception.ErrorList;
-import org.kuali.notification.service.NotificationMessageDelivererRegistryService;
 import org.kuali.notification.service.UserPreferenceService;
 import org.kuali.notification.test.NotificationTestCaseBase;
 import org.kuali.notification.test.TestConstants;
@@ -101,49 +97,49 @@ public class UserPreferenceServiceImplTest extends NotificationTestCaseBase {
 	
     }
 
-    @Test
-    public void testSaveUserRecipientPreferences() {
-	UserPreferenceService impl = services.getUserPreferenceService();
-	NotificationMessageDelivererRegistryService delivererService = services.getNotificationMessageDelivererRegistryService();
-	NotificationMessageDeliverer deliverer = delivererService.getDelivererByName(VALID_DELIVERER_NAME);
-	if (deliverer == null) {
-	    throw new RuntimeException("Message deliverer could not be obtained");
-	}
-		
-	HashMap<String, String> userprefs = new HashMap<String, String>();
-	userprefs.put(VALID_PROPERTY, VALID_VALUE);
-	userprefs.put("Email.email_delivery_format", "text");
-	try {
-	  impl.saveUserRecipientPreferences(VALID_USER_ID, userprefs, deliverer);
-	} catch (ErrorList list) {
-	    throw new RuntimeException(list);
-	}
-	RecipientPreference recipientPreference = new RecipientPreference();
-	recipientPreference.setRecipientId(VALID_USER_ID);
-	Collection<RecipientPreference> prefs = services.getBusinesObjectDao().findMatchingByExample(recipientPreference);
-	assertEquals(2, prefs.size()); 
-    }
+//    @Test
+//    public void testSaveUserRecipientPreferences() {
+//	UserPreferenceService impl = services.getUserPreferenceService();
+//	NotificationMessageDelivererRegistryService delivererService = services.getNotificationMessageDelivererRegistryService();
+//	NotificationMessageDeliverer deliverer = delivererService.getDelivererByName(VALID_DELIVERER_NAME);
+//	if (deliverer == null) {
+//	    throw new RuntimeException("Message deliverer could not be obtained");
+//	}
+//		
+//	HashMap<String, String> userprefs = new HashMap<String, String>();
+//	userprefs.put(VALID_PROPERTY, VALID_VALUE);
+//	userprefs.put("Email.email_delivery_format", "text");
+//	try {
+//	  impl.saveUserRecipientPreferences(VALID_USER_ID, userprefs, deliverer);
+//	} catch (ErrorList list) {
+//	    throw new RuntimeException(list);
+//	}
+//	RecipientPreference recipientPreference = new RecipientPreference();
+//	recipientPreference.setRecipientId(VALID_USER_ID);
+//	Collection<RecipientPreference> prefs = services.getBusinesObjectDao().findMatchingByExample(recipientPreference);
+//	assertEquals(2, prefs.size()); 
+//    }
 
-    @Test
-    public void testGetUserRecipientPreferences() {
-	UserPreferenceService impl = services.getUserPreferenceService();
-	NotificationMessageDelivererRegistryService delivererService = services.getNotificationMessageDelivererRegistryService();
-	NotificationMessageDeliverer deliverer = delivererService.getDelivererByName(VALID_DELIVERER_NAME);
-	if (deliverer == null) {
-	    throw new RuntimeException("Message deliverer could not be obtained");
-	}
-	HashMap<String, String> userprefs = new HashMap<String, String>();
-	userprefs.put(VALID_PROPERTY, VALID_VALUE);
-	userprefs.put("Email.email_delivery_format", "text");
-	try {
-	   impl.saveUserRecipientPreferences(VALID_USER_ID, userprefs, deliverer);
-	} catch (ErrorList list) {
-	   throw new RuntimeException(list);
-	}
-	
-	RecipientPreference recipientPreference = impl.getUserRecipientPreferences(VALID_USER_ID, VALID_PROPERTY);
-	assertEquals(VALID_VALUE, recipientPreference.getValue()); 
-    }
+//    @Test
+//    public void testGetUserRecipientPreferences() {
+//	UserPreferenceService impl = services.getUserPreferenceService();
+//	NotificationMessageDelivererRegistryService delivererService = services.getNotificationMessageDelivererRegistryService();
+//	NotificationMessageDeliverer deliverer = delivererService.getDelivererByName(VALID_DELIVERER_NAME);
+//	if (deliverer == null) {
+//	    throw new RuntimeException("Message deliverer could not be obtained");
+//	}
+//	HashMap<String, String> userprefs = new HashMap<String, String>();
+//	userprefs.put(VALID_PROPERTY, VALID_VALUE);
+//	userprefs.put("Email.email_delivery_format", "text");
+//	try {
+//	   impl.saveUserRecipientPreferences(VALID_USER_ID, userprefs, deliverer);
+//	} catch (ErrorList list) {
+//	   throw new RuntimeException(list);
+//	}
+//	
+//	RecipientPreference recipientPreference = impl.getUserRecipientPreferences(VALID_USER_ID, VALID_PROPERTY);
+//	assertEquals(VALID_VALUE, recipientPreference.getValue()); 
+//    }
 
     @Test
     public void testSaveUserDelivererConfigs() {

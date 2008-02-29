@@ -16,12 +16,15 @@
 package org.kuali.notification.dao;
 
 import org.kuali.notification.test.NotificationTestCaseBase;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * Convenience test case implementation that just stores the BusinessObjectDao bean
  * in a protected member field for ease of use
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@BaselineMode(Mode.ROLLBACK)
 public abstract class BusinessObjectDaoTestCaseBase extends NotificationTestCaseBase {
     protected BusinessObjectDao businessObjectDao;
 

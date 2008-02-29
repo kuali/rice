@@ -22,10 +22,9 @@ import java.util.List;
 
 import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.notification.dao.BusinessObjectDao;
-import org.kuali.notification.deliverer.BulkNotificationMessageDeliverer;
 import org.kuali.notification.deliverer.NotificationMessageDeliverer;
+import org.kuali.notification.deliverer.impl.KEWActionListMessageDeliverer;
 import org.kuali.notification.exception.NotificationAutoRemoveException;
-import org.kuali.notification.service.NotificationMessageDelivererRegistryService;
 import org.kuali.notification.service.NotificationMessageDeliveryAutoRemovalService;
 import org.kuali.notification.service.NotificationMessageDeliveryService;
 import org.kuali.notification.service.ProcessingResult;
@@ -40,7 +39,6 @@ import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
  */
 public class NotificationMessageDeliveryAutoRemovalServiceImpl extends ConcurrentJob<NotificationMessageDelivery> implements NotificationMessageDeliveryAutoRemovalService {
     private BusinessObjectDao businessObjectDao;
-    private NotificationMessageDelivererRegistryService messageDeliveryRegistryService;
     private NotificationMessageDeliveryService messageDeliveryService;
 
     /**
@@ -51,11 +49,10 @@ public class NotificationMessageDeliveryAutoRemovalServiceImpl extends Concurren
      * @param messageDeliveryRegistryService
      */
     public NotificationMessageDeliveryAutoRemovalServiceImpl(BusinessObjectDao businessObjectDao, PlatformTransactionManager txManager, 
-	    ExecutorService executor, NotificationMessageDeliveryService messageDeliveryService, NotificationMessageDelivererRegistryService messageDeliveryRegistryService) {
+	    ExecutorService executor, NotificationMessageDeliveryService messageDeliveryService) {
         super(txManager, executor);
         this.messageDeliveryService = messageDeliveryService;
         this.businessObjectDao = businessObjectDao;
-        this.messageDeliveryRegistryService = messageDeliveryRegistryService;
     }
 
     /**
@@ -71,23 +68,14 @@ public class NotificationMessageDeliveryAutoRemovalServiceImpl extends Concurren
      */
     @Override
     protected Collection<String> processWorkItems(Collection<NotificationMessageDelivery> messageDeliveries) {
-        NotificationMessageDeliverer messageDeliverer = null;
         NotificationMessageDelivery firstMessageDelivery = messageDeliveries.iterator().next();
 
-	// get our hands on the appropriate NotificationMessageDeliverer instance
-	messageDeliverer = messageDeliveryRegistryService.getDeliverer(firstMessageDelivery);
-	if (messageDeliverer == null) {
-	    throw new RuntimeException("Message deliverer could not be obtained");
-	}
-        if (messageDeliveries.size() > 1) {
-            // this is a bulk deliverer, so we need to batch the NotificationMessageDeliveries
-            if (messageDeliverer instanceof BulkNotificationMessageDeliverer) {
-                throw new RuntimeException("Discrepency in autoremove service: deliverer for list of message deliveries is not a BulkNotificationMessageDeliverer");
-            }
-            return bulkAutoRemove((BulkNotificationMessageDeliverer) messageDeliverer, messageDeliveries);
-        } else {
-            return autoRemove(messageDeliverer, firstMessageDelivery);
+        KEWActionListMessageDeliverer deliverer = new KEWActionListMessageDeliverer();
+        Collection<String> successes = new ArrayList<String>();
+        for (NotificationMessageDelivery delivery: messageDeliveries) {
+            successes.addAll(autoRemove(deliverer, delivery));
         }
+        return successes;
     }
 
     /**
@@ -112,34 +100,6 @@ public class NotificationMessageDeliveryAutoRemovalServiceImpl extends Concurren
         // unlock item
         // now update the status of the delivery message instance to AUTO_REMOVED and persist
         markAutoRemoved(messageDelivery);
-
-        return successes;
-    }
-
-    /**
-     * Bulk-auto-removes a collection of message deliveries
-     * @param messageDeliverer the message deliverer
-     * @param messageDeliveries the message deliveries to bulk auto-remove
-     * @return collection of strings indicating successful auto-removals
-     */
-    protected Collection<String> bulkAutoRemove(BulkNotificationMessageDeliverer messageDeliverer, Collection<NotificationMessageDelivery> messageDeliveries) {
-     // we have our message deliverer, so tell it to deliver the message
-        try {
-            messageDeliverer.autoRemoveMessageDelivery(messageDeliveries);
-        } catch (NotificationAutoRemoveException nmare) {
-            LOG.error("Error bulk-auto-removing messages " + messageDeliveries, nmare);
-            throw new RuntimeException(nmare);
-        }
-
-        // by definition we have succeeded at this point if no exception was thrown by the messageDeliverer
-        // so update the status of the delivery message instance to DELIVERED (and unmark as taken)
-        // and persist
-        List<String> successes = new ArrayList<String>(messageDeliveries.size());
-        for (NotificationMessageDelivery nmd: messageDeliveries) {
-            LOG.debug("Auto-removal of message delivery '" + nmd.getId() + "' for notification '" + nmd.getNotification().getId() + "' was successful.");
-            successes.add("Auto-removal of message delivery '" + nmd.getId() + "' for notification '" + nmd.getNotification().getId() + "' was successful.");
-            markAutoRemoved(nmd);
-        }
 
         return successes;
     }

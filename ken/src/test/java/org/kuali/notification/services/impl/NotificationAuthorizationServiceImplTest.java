@@ -23,11 +23,14 @@ import org.kuali.notification.bo.NotificationProducer;
 import org.kuali.notification.test.NotificationTestCaseBase;
 import org.kuali.notification.test.TestConstants;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * This class tests the authz aspects of KEN
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@BaselineMode(Mode.ROLLBACK)
 public class NotificationAuthorizationServiceImplTest extends NotificationTestCaseBase {
     
     public NotificationAuthorizationServiceImplTest() {

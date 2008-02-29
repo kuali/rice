@@ -26,12 +26,11 @@ import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.notification.bo.NotificationRecipient;
 import org.kuali.notification.bo.NotificationResponse;
 import org.kuali.notification.dao.BusinessObjectDao;
-import org.kuali.notification.deliverer.NotificationMessageDeliverer;
+import org.kuali.notification.deliverer.impl.KEWActionListMessageDeliverer;
 import org.kuali.notification.exception.InvalidXMLException;
 import org.kuali.notification.exception.NotificationMessageDismissalException;
 import org.kuali.notification.service.NotificationAuthorizationService;
 import org.kuali.notification.service.NotificationMessageContentService;
-import org.kuali.notification.service.NotificationMessageDelivererRegistryService;
 import org.kuali.notification.service.NotificationMessageDeliveryService;
 import org.kuali.notification.service.NotificationRecipientService;
 import org.kuali.notification.service.NotificationService;
@@ -52,7 +51,6 @@ public class NotificationServiceImpl implements NotificationService {
     private NotificationRecipientService notificationRecipientService;
     private NotificationWorkflowDocumentService notificationWorkflowDocumentService;
     private NotificationMessageDeliveryService notificationMessageDeliveryService;
-    private NotificationMessageDelivererRegistryService messageDelivererRegistryService; 
     
     /**
      * Constructs a NotificationServiceImpl class instance.
@@ -66,15 +64,13 @@ public class NotificationServiceImpl implements NotificationService {
     public NotificationServiceImpl(BusinessObjectDao businessObjectDao, NotificationMessageContentService messageContentService, 
 	    NotificationAuthorizationService notificationAuthorizationService, NotificationRecipientService notificationRecipientService, 
 	    NotificationWorkflowDocumentService notificationWorkflowDocumentService, 
-	    NotificationMessageDeliveryService notificationMessageDeliveryService,
-	    NotificationMessageDelivererRegistryService messageDelivererRegistryService) {
+	    NotificationMessageDeliveryService notificationMessageDeliveryService) {
         this.businessObjectDao = businessObjectDao;
         this.messageContentService = messageContentService;
         this.notificationAuthorizationService = notificationAuthorizationService;
         this.notificationRecipientService = notificationRecipientService;
         this.notificationWorkflowDocumentService = notificationWorkflowDocumentService;
         this.notificationMessageDeliveryService = notificationMessageDeliveryService;
-        this.messageDelivererRegistryService = messageDelivererRegistryService;
     }
 
     /**
@@ -200,6 +196,7 @@ public class NotificationServiceImpl implements NotificationService {
     public void dismissNotificationMessageDelivery(NotificationMessageDelivery nmd, String user, String cause) {
         // get the notification that generated this particular message delivery
         Notification notification = nmd.getNotification();
+
         // get all of the other deliveries of this notification for the user
         Collection<NotificationMessageDelivery> userDeliveries = notificationMessageDeliveryService.getNotificationMessageDeliveries(notification, nmd.getUserRecipientId());
 
@@ -212,6 +209,7 @@ public class NotificationServiceImpl implements NotificationService {
             targetStatus = NotificationConstants.MESSAGE_DELIVERY_STATUS.REMOVED;
         }
 
+        KEWActionListMessageDeliverer deliverer = new KEWActionListMessageDeliverer();
         // TODO: implement pessimistic locking on all these message deliveries
         // now, do dispatch in reverse...dismiss each message delivery via the appropriate deliverer
         for (NotificationMessageDelivery messageDelivery: userDeliveries) {
@@ -223,20 +221,14 @@ public class NotificationServiceImpl implements NotificationService {
                 LOG.info("Skipping dismissal of already removed message delivery #" + messageDelivery.getId());
             } else {
                 LOG.debug("Dismissing message delivery #" + messageDelivery.getId() + " " + messageDelivery.getLockVerNbr());
-
-                // get our hands on the appropriate NotificationMessageDeliverer instance
-                NotificationMessageDeliverer messageDeliverer = messageDelivererRegistryService.getDeliverer(messageDelivery);
-                if (messageDeliverer == null) {
-                    throw new RuntimeException("Message deliverer could not be obtained");
-                }
-
+                
                 // we have our message deliverer, so tell it to dismiss the message
-                try {
-                    messageDeliverer.dismissMessageDelivery(messageDelivery, user, cause);
-                } catch (NotificationMessageDismissalException nmde) {
-                    LOG.error("Error dismissing message " + messageDelivery, nmde);
-                    throw new RuntimeException(nmde);
-                }
+                //try {
+                    deliverer.dismissMessageDelivery(messageDelivery, user, cause);
+                //} catch (NotificationMessageDismissalException nmde) {
+                    //LOG.error("Error dismissing message " + messageDelivery, nmde);
+                    //throw new RuntimeException(nmde);
+                //}
             }
 
             // by definition we have succeeded at this point if no exception was thrown by the messageDeliverer

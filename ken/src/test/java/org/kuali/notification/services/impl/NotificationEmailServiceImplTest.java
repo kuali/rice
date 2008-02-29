@@ -22,11 +22,14 @@ import org.kuali.notification.service.NotificationEmailService;
 import org.kuali.notification.service.NotificationMessageDeliveryService;
 import org.kuali.notification.test.NotificationTestCaseBase;
 import org.kuali.notification.test.TestConstants;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * This class tests the implementation of the email service.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@BaselineMode(Mode.ROLLBACK)
 public class NotificationEmailServiceImplTest extends NotificationTestCaseBase {
     public static final String VALID_EMAIL = "";
     public static final String VALID_FORMAT_VALUE = "text";

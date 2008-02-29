@@ -28,4 +28,18 @@ public interface KENAPIService {
      * @return names of all channels defined in KEN
      */
     Collection<String> getAllChannelNames();
+    
+    /**
+     * Returns the names of all deliverers the recipient has configured for a given channel
+     * @return the names of all deliverers the recipient has configured for a given channel
+     */
+    Collection<String> getDeliverersForRecipientAndChannel(String recipient, String channel);
+
+    /**
+     * Returns the specified recipient preference for the user
+     * @param recipient the recipient
+     * @param prefKey the preference key
+     * @return the specified recipient preference for the user
+     */
+    String getRecipientPreference(String recipient, String prefKey);
 }

@@ -30,11 +30,14 @@ import org.kuali.notification.test.NotificationTestCaseBase;
 import org.kuali.notification.test.TestConstants;
 import org.kuali.notification.util.NotificationConstants;
 import org.kuali.notification.util.Util;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * Tests NotificationMessageContentService
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@BaselineMode(Mode.ROLLBACK)
 public class NotificationMessageContentServiceImplTest extends NotificationTestCaseBase {
     private static final String SAMPLE_EVENT_MESSAGE = "sample_message_event_type.xml";
     private static final String SAMPLE_SIMPLE_MESSAGE = "sample_message_simple_type.xml";

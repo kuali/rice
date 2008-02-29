@@ -15,14 +15,22 @@
  */
 package org.kuali.notification.test;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
-import org.kuali.notification.config.KENResourceLoaderFactory;
 import org.kuali.notification.core.SpringNotificationServiceLocator;
+import org.kuali.rice.config.SpringModuleConfigurer;
+import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.BaseLifecycle;
 import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.resourceloader.SpringResourceLoader;
+import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -36,7 +44,8 @@ import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
  * Base test case for KEN that extends RiceTestCase
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public abstract class NotificationTestCaseBase extends ModuleTestCase {
+@BaselineMode(Mode.CLEAR_DB)
+public abstract class NotificationTestCaseBase extends BaselineTestCase {
     private static final String KEN_MODULE_NAME = "ken";
     private static final String TX_MGR_BEAN_NAME = "transactionManager";
 
@@ -46,7 +55,7 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
     protected PlatformTransactionManager transactionManager;
 
     public NotificationTestCaseBase() {
-        super(KEN_MODULE_NAME);
+        super(KEN_MODULE_NAME, true);
     }
 
     /*
@@ -81,16 +90,14 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
         return l;
     }*/
 
-    @Override
-    protected List<Lifecycle> getPerTestLifecycles() {
-        List<Lifecycle> lifecycles = super.getPerTestLifecycles();
-
+    protected List<Lifecycle> getNotificationPerTestLifecycles() {
+        List<Lifecycle> lifecycles = new ArrayList<Lifecycle>();
         lifecycles.add(new BaseLifecycle() {
             @Override
             public void start() throws Exception {
-                // can't find a generic way to get the module's resource loader and context (would have to rely on standardized conventions)
-                // in the super class ModuleTestCase, so just special case it here for KEN for now
-                ConfigurableApplicationContext moduleContext = KENResourceLoaderFactory.getSpringResourceLoader().getContext();
+                // grab KEN's resource loader to pull out the context
+                SpringResourceLoader kenResourceLoader = (SpringResourceLoader) GlobalResourceLoader.getResourceLoader(SpringModuleConfigurer.getDefaultResourceLoaderQName(KEN_MODULE_NAME)); 
+                ConfigurableApplicationContext moduleContext = kenResourceLoader.getContext();
                 // This method sets up the Spring services so that they can be accessed by the tests.
                 services = new SpringNotificationServiceLocator(moduleContext);
                 // grab the module's transaction manager
@@ -133,7 +140,14 @@ public abstract class NotificationTestCaseBase extends ModuleTestCase {
         // some test data has to be loaded via SQL because we do not have XML loaders for it yet
         lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:org/kuali/ken/test/DefaultTestData.xml"));
         lifecycles.add(new SQLDataLoaderLifecycle("classpath:org/kuali/ken/test/DefaultTestData.sql", ";"));
+        
+        return lifecycles;
 
+    }
+    @Override
+    protected List<Lifecycle> getPerTestLifecycles() {
+        List<Lifecycle> lifecycles = super.getPerTestLifecycles();
+        lifecycles.addAll(getNotificationPerTestLifecycles());
         return lifecycles;
     }
 

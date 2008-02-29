@@ -18,11 +18,14 @@ package org.kuali.notification.services.impl;
 import org.junit.Test;
 import org.kuali.notification.test.NotificationTestCaseBase;
 import org.kuali.notification.test.TestConstants;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * This class tests the recipient service.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@BaselineMode(Mode.ROLLBACK)
 public class NotificationRecipientServiceKewImplTest extends NotificationTestCaseBase {
     
     public NotificationRecipientServiceKewImplTest() {

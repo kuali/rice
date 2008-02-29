@@ -15,72 +15,14 @@
  */
 package org.kuali.notification.config;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.kuali.rice.config.Config;
-import org.kuali.rice.config.ModuleConfigurer;
-import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.Lifecycle;
+import org.kuali.rice.config.SpringModuleConfigurer;
 
 /**
  * The KEN Configurer
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KENConfigurer extends ModuleConfigurer {
-    private static final Logger LOG = Logger.getLogger(KENConfigurer.class);
-    
-    private static final String KEN_TEST_MODE_PARAM = "ken.test.mode";
-    private static final String STANDARD_KEN_CONTEXT_FILE = "KENSpringBeans.xml";
-    private static final String TEST_KEN_CONTEXT_FILE = "KENSpringBeans-test.xml";
-    
-
-    /**
-     * @see org.kuali.rice.config.ModuleConfigurer#loadConfig(org.kuali.rice.config.Config)
-     */
-    @Override
-    public Config loadConfig(Config parentConfig) throws Exception {
-	LOG.info("Starting configuration of KEN for message entity " + parentConfig.getMessageEntity());
-		
-	Config currentConfig = Core.getCurrentContextConfig();
-		
-	// ANY NEW CONFIG ELEMENTS NEED TO BE ADDED HERE
-
-	return currentConfig;
+public class KENConfigurer extends SpringModuleConfigurer {
+    public KENConfigurer() {
+        super("ken");
     }
-
-    /**
-     * @see org.kuali.rice.lifecycle.BaseCompositeLifecycle#loadLifecycles()
-     */
-    @Override
-    protected List<Lifecycle> loadLifecycles() throws Exception {
-	List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-	
-	lifecycles.add(new ConfigurableOjbConfigurer("ken"));
-	
-	Config currentConfig = Core.getCurrentContextConfig();
-	String context;
-	String s = currentConfig.getProperty(KEN_TEST_MODE_PARAM);
-	if (!Boolean.valueOf(s).booleanValue()) {
-	    context = STANDARD_KEN_CONTEXT_FILE;
-	} else {
-	    context = TEST_KEN_CONTEXT_FILE;
-	}
-	lifecycles.add(KENResourceLoaderFactory.createRootKENResourceLoader(context));
-
-	return lifecycles;
-    }
-
-    // support for injected custom datasource
-    /*
-     protected void configureDataSource(Config config) {
-		if (getDataSource() != null) {
-			config.getObjects().put(KEN_DATASOURCE_OBJ, getDataSource());
-		} else if (!StringUtils.isBlank(getDataSourceJndiName())) {
-			config.getProperties().put(KEN_DATASOURCE_JNDI, getDataSourceJndiName());
-		}
-	}
-	*/
-     
 }

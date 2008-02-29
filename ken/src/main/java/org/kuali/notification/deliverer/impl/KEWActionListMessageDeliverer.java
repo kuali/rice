@@ -29,10 +29,7 @@ import org.kuali.notification.exception.ErrorList;
 import org.kuali.notification.exception.NotificationAutoRemoveException;
 import org.kuali.notification.exception.NotificationMessageDeliveryException;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
-import org.kuali.notification.service.impl.NotificationMessageDeliveryDispatchServiceImpl;
 import org.kuali.notification.util.NotificationConstants;
-
-import com.thoughtworks.xstream.XStream;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.exception.WorkflowException;
@@ -43,7 +40,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KEWActionListMessageDeliverer implements NotificationMessageDeliverer {
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(NotificationMessageDeliveryDispatchServiceImpl.class);
+    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KEWActionListMessageDeliverer.class);
     
     /**
      * Property set in the attribute content that indicates the action received by workflow was initiated by the Notification System itself

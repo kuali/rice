@@ -35,33 +35,45 @@ public class NotificationChannelServiceImpl implements NotificationChannelServic
      * @param businessObjectDao
      */
     public NotificationChannelServiceImpl(BusinessObjectDao businessObjectDao) {
-	this.businessObjectDao = businessObjectDao;
+        this.businessObjectDao = businessObjectDao;
     }
 
     /**
      * @see org.kuali.notification.service.NotificationChannelService#getNotificationChannel(java.lang.String)
      */
     public NotificationChannel getNotificationChannel(String id) {
-	Map<String,  String> primaryKeys = new HashMap<String, String>();
-	primaryKeys.put("id", id);
-	return (NotificationChannel) businessObjectDao.findByPrimaryKey(NotificationChannel.class, primaryKeys);
+        Map<String,  String> primaryKeys = new HashMap<String, String>();
+        primaryKeys.put("id", id);
+        return (NotificationChannel) businessObjectDao.findByPrimaryKey(NotificationChannel.class, primaryKeys);
+    }
+
+    /**
+     * @see org.kuali.notification.service.NotificationChannelService#getNotificationChannelByName(java.lang.String)
+     */
+    public NotificationChannel getNotificationChannelByName(String name) {
+        Map<String,  String> fields = new HashMap<String, String>();
+        fields.put("name", name);
+        Collection<NotificationChannel> found = businessObjectDao.findMatching(NotificationChannel.class, fields);
+        assert(found.size() <= 1);
+        if (found.size() == 0) return null;
+        return found.iterator().next();
     }
 
     /**
      * @see org.kuali.notification.service.NotificationChannelService#getSubscribableChannels()
      */
     public Collection getSubscribableChannels() {
-	Map<String, Boolean> fieldValues = new HashMap<String, Boolean>();
-	String sortField = new String("name");
-	fieldValues.put("subscribable", true);
-	return businessObjectDao.findMatchingOrderBy(NotificationChannel.class, fieldValues, sortField, true);
+        Map<String, Boolean> fieldValues = new HashMap<String, Boolean>();
+        String sortField = new String("name");
+        fieldValues.put("subscribable", true);
+        return businessObjectDao.findMatchingOrderBy(NotificationChannel.class, fieldValues, sortField, true);
     }
 
     /**
      * @see org.kuali.notification.service.NotificationChannelService#getAllNotificationChannels()
      */
     public Collection getAllNotificationChannels() {
-	String sortField = new String("name");
-	return businessObjectDao.findAllOrderBy(NotificationChannel.class, sortField, true);
+        String sortField = new String("name");
+        return businessObjectDao.findAllOrderBy(NotificationChannel.class, sortField, true);
     }
 }

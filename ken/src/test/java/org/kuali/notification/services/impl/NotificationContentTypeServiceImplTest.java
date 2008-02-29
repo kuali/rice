@@ -21,12 +21,15 @@ import org.junit.Test;
 import org.kuali.notification.bo.NotificationContentType;
 import org.kuali.notification.service.NotificationContentTypeService;
 import org.kuali.notification.test.NotificationTestCaseBase;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
 
 /**
  * Tests NotificationContentTypeService implementation 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@BaselineMode(Mode.ROLLBACK)
 public class NotificationContentTypeServiceImplTest extends NotificationTestCaseBase {
     @Test public void testUpdate() {
         NotificationContentType type = new NotificationContentType();

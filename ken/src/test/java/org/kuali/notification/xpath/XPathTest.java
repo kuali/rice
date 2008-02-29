@@ -30,6 +30,8 @@ import org.kuali.notification.test.NotificationTestCaseBase;
 import org.kuali.notification.util.DocumentNamespaceContext;
 import org.kuali.notification.util.SimpleErrorHandler;
 import org.kuali.notification.util.Util;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -53,6 +55,7 @@ import com.sun.org.apache.xerces.internal.jaxp.JAXPConstants;
  * </ul>
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@BaselineMode(Mode.ROLLBACK)
 public class XPathTest extends NotificationTestCaseBase {
     private static final String TEST_XML = "sample_message_event_type.xml";
 

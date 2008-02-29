@@ -21,6 +21,7 @@ import java.util.HashMap;
 import org.kuali.notification.bo.NotificationChannel;
 import org.kuali.notification.bo.RecipientPreference;
 import org.kuali.notification.bo.UserChannelSubscription;
+import org.kuali.notification.bo.UserDelivererConfig;
 import org.kuali.notification.deliverer.NotificationMessageDeliverer;
 import org.kuali.notification.exception.ErrorList;
 
@@ -34,7 +35,7 @@ public interface UserPreferenceService {
      * @param userid
      * @return Collection
      */
-    public Collection getCurrentSubscriptions(String userid);
+    public Collection<UserChannelSubscription> getCurrentSubscriptions(String userid);
     
     /**
      * This method retrieves the UserChannelSubscription instance given the two unique keys that are 
@@ -76,7 +77,7 @@ public interface UserPreferenceService {
      * This method will get all  user recipient preference from the system.
      * @param userid
      */
-    public HashMap getPreferencesForUser(String userid);
+    public HashMap<String, String> getPreferencesForUser(String userid);
     
     /**
      * This method will remove all user deliverer configuration preference in the system.
@@ -98,11 +99,11 @@ public interface UserPreferenceService {
      * @param userId
      * @param channel
      */
-    public Collection getMessageDelivererConfigurationsForUserAndChannel(String userId, NotificationChannel channel);
+    public Collection<UserDelivererConfig> getMessageDelivererConfigurationsForUserAndChannel(String userId, NotificationChannel channel);
     
     /**
      * This method will retrieve all of the message deliverer configurations for a given user 
      * @param userId
      */
-    public Collection getMessageDelivererConfigurationsForUser(String userId);
+    public Collection<UserDelivererConfig> getMessageDelivererConfigurationsForUser(String userId);
 }

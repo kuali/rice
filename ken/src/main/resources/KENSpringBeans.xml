@@ -3,6 +3,8 @@
 
 <!-- KENSpringBeans - standard KEN module spring context  -->
 <beans>
+    <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
+
     <bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer"/>
 
     <bean id="userTransaction" class="org.kuali.rice.jta.UserTransactionFactoryBean" lazy-init="true" />
@@ -107,7 +109,6 @@
               <value>notificationMessageDeliveryService</value>
               <value>userPreferencesService</value>
               <value>businessObjectDao</value>
-              <value>notificationMessageDelivererRegistryService</value>
             </list>
         </property>
     </bean>
@@ -121,6 +122,8 @@
 
     <bean id="kenApiService" class="org.kuali.notification.service.impl.KENAPIServiceImpl">
       <property name="notificationChannelService" ref="notificationChannelService"/>
+      <property name="userPreferenceService" ref="userPreferenceService"/>
+      
     </bean>
 
     <bean id="notificationService" class="org.kuali.notification.service.impl.NotificationServiceImpl">
@@ -130,7 +133,6 @@
       <constructor-arg><ref local="notificationRecipientService"/></constructor-arg>
       <constructor-arg><ref local="notificationWorkflowDocumentService"/></constructor-arg>
       <constructor-arg><ref local="notificationMessageDeliveryService"/></constructor-arg>
-      <constructor-arg><ref local="notificationMessageDelivererRegistryService"/></constructor-arg>
     </bean>
 
     <bean id="notificationContentTypeService" class="org.kuali.notification.service.impl.NotificationContentTypeServiceImpl">
@@ -156,14 +158,6 @@
       <constructor-arg><ref local="messageContentService"/></constructor-arg>
     </bean>
     
-    <bean id="notificationMessageDeliveryDispatchService" class="org.kuali.notification.service.impl.NotificationMessageDeliveryDispatchServiceImpl">
-      <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
-      <constructor-arg><ref bean="transactionManager"/></constructor-arg>
-      <constructor-arg><ref bean="dispatcherExecutor"/></constructor-arg>
-      <constructor-arg><ref local="notificationMessageDeliveryService"/></constructor-arg>
-      <constructor-arg><ref local="notificationMessageDelivererRegistryService"/></constructor-arg>
-    </bean>
-    
     <bean id="notificationMessageDeliveryResolverService" class="org.kuali.notification.service.impl.NotificationMessageDeliveryResolverServiceImpl">
       <constructor-arg><ref local="notificationService"/></constructor-arg>
       <constructor-arg><ref local="notificationRecipientService"/></constructor-arg>
@@ -178,7 +172,6 @@
       <constructor-arg><ref bean="transactionManager"/></constructor-arg>
       <constructor-arg><ref bean="autoRemovalExecutor"/></constructor-arg>
       <constructor-arg><ref local="notificationMessageDeliveryService"/></constructor-arg>
-      <constructor-arg><ref local="notificationMessageDelivererRegistryService"/></constructor-arg>
     </bean>
 
     <bean id="sendNotificationKewXmlService" class="org.kuali.notification.service.impl.SendNotificationServiceKewXmlImpl">
@@ -188,8 +181,6 @@
     <bean id="notificationMessageDeliveryService" class="org.kuali.notification.service.impl.NotificationMessageDeliveryServiceImpl">
       <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
     </bean>
-    
-    <bean id="notificationMessageDelivererRegistryService" class="org.kuali.notification.service.impl.NotificationMessageDelivererRegistryServiceImpl" />
     
     <bean id="notificationEmailService" class="org.kuali.notification.service.impl.NotificationEmailServiceImpl" >
        <property name="weburl"><value>${notification.basewebappurl}</value></property>
@@ -211,18 +202,6 @@
     <!-- END DAOS -->
 
     <bean id="resolverExecutor" class="edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor">
-        <constructor-arg><value>5</value></constructor-arg> <!--  core pool size -->
-        <constructor-arg><value>10</value></constructor-arg> <!-- max pool size -->
-        <constructor-arg><value>30</value></constructor-arg> <!-- idle thread keepalive time -->
-        <constructor-arg>
-            <bean class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
-                <property name="staticField"><value>edu.emory.mathcs.backport.java.util.concurrent.TimeUnit.SECONDS</value></property>
-            </bean>
-        </constructor-arg>
-        <constructor-arg><bean class="edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue"/></constructor-arg>
-    </bean>
-    
-    <bean id="dispatcherExecutor" class="edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor">
         <constructor-arg><value>5</value></constructor-arg> <!--  core pool size -->
         <constructor-arg><value>10</value></constructor-arg> <!-- max pool size -->
         <constructor-arg><value>30</value></constructor-arg> <!-- idle thread keepalive time -->
@@ -303,13 +282,7 @@
         <property name="targetMethod" value="resolveNotificationMessageDeliveries" />
         <property name="concurrent" value="${notification.concurrent.jobs}" />
     </bean>
-    <!-- Notification Message Delivery Job -->
-    <bean id="processUndeliveredNotificationMessageDeliveriesJob"
-        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="notificationMessageDeliveryDispatchService" />
-        <property name="targetMethod" value="processUndeliveredNotificationMessageDeliveries" />
-        <property name="concurrent" value="${notification.concurrent.jobs}" />
-    </bean>
+
     <!-- Message Delivery Auto Remove Job -->
     <bean id="processAutoRemovalOfDeliveredNotificationMessageDeliveriesJob"
         class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">

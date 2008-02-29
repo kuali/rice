@@ -20,6 +20,8 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.notification.test.NotificationTestCaseBase;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.messaging.KEWXMLService;
@@ -30,6 +32,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  * Tests integration with KEW
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@BaselineMode(Mode.ROLLBACK)
 public class KEWIntegrationTest extends NotificationTestCaseBase {
     /**
      * Tests that we can obtain KEW user and workgroup services

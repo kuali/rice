@@ -21,7 +21,9 @@ import org.junit.Test;
 import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
-import org.kuali.rice.kcb.test.RollbackKCBTestCase;
+import org.kuali.rice.kcb.test.KCBTestCase;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
 
@@ -30,8 +32,10 @@ import org.springframework.test.AssertThrows;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RecipientDelivererConfigTest extends RollbackKCBTestCase {
+@BaselineMode(Mode.ROLLBACK)
+public class RecipientDelivererConfigTest extends KCBTestCase {
     //private RecipientDelivererConfig CFG;
+
     private RecipientPreferenceService prefsvc;
 
     @Override
@@ -40,10 +44,10 @@ public class RecipientDelivererConfigTest extends RollbackKCBTestCase {
     
         prefsvc = GlobalKCBServiceLocator.getInstance().getRecipientPreferenceService();
 
-        /*CFG = new RecipientDelivererConfig();
-        CFG.setRecipientId("user1");
-        CFG.setDelivererName("mock");
-        CFG.setChannel("channel1");*/
+//        CFG = new RecipientDelivererConfig();
+//        CFG.setRecipientId("user1");
+//        CFG.setDelivererName("mock");
+//        CFG.setChannel("channel1");
 
         prefsvc.saveRecipientDelivererConfig("user1", "mock", new String[] { "channel1" });
     }

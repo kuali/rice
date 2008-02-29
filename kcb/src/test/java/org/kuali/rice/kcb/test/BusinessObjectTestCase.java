@@ -12,13 +12,17 @@
  */
 package org.kuali.rice.kcb.test;
 
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * This base class for testing CRUD operations on BOs
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public abstract class BusinessObjectTestCase extends RollbackKCBTestCase {
+@BaselineMode(Mode.ROLLBACK)
+public abstract class BusinessObjectTestCase extends KCBTestCase {
+
 	/**
 	 * This method should be overridden to test creation
 	 */

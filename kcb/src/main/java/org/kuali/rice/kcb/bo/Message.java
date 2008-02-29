@@ -31,8 +31,13 @@ public class Message {
      * Field names
      */
     public static final String ID_FIELD = "id";
+    public static final String ORIGINID_FIELD = "originId";
 
     private Long id;
+    /**
+     * The origin id is an id provided by the originating system that creates the message
+     */
+    private String originId;
     private String deliveryType;
     private String channel;
     private String producer;
@@ -84,6 +89,22 @@ public class Message {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * Gets the origin id
+     * @return the origin id
+     */
+    public String getOriginId() {
+        return this.originId;
+    }
+
+    /**
+     * Sets the origin id
+     * @param originId the origin id
+     */
+    public void setOriginId(String originId) {
+        this.originId = originId;
     }
 
     /**
@@ -262,4 +283,5 @@ public class Message {
                        .append("lockVerNbr", lockVerNbr)
                        .toString();
     }
+
 }

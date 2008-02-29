@@ -101,6 +101,7 @@ public class MessagingServiceImpl implements MessagingService {
      * Sets the RecipientPreferencesService
      * @param prefs the RecipientPreferenceService
      */
+    @Required
     public void setRecipientPreferenceService(RecipientPreferenceService prefs) {
         this.recipientPrefs = prefs;
     }
@@ -117,11 +118,12 @@ public class MessagingServiceImpl implements MessagingService {
         m.setContentType(message.getContentType());
         m.setUrl(message.getUrl());
         m.setContent(message.getContent());
+        m.setOriginId(message.getOriginId());
 
         LOG.error("saving message: " +m);
         messageService.saveMessage(m);
 
-        Set<String> delivererTypes = getDelivererTypesForUserAndChannel(m.getRecipient(), m.getChannel());
+        Collection<String> delivererTypes = getDelivererTypesForUserAndChannel(m.getRecipient(), m.getChannel());
         LOG.error("Deliverer types for " + m.getRecipient() + "/" + m.getChannel() + ": " + delivererTypes.size());
         for (String type: delivererTypes) {
             
@@ -154,7 +156,23 @@ public class MessagingServiceImpl implements MessagingService {
             throw new MessageDismissalException("No such message: " + messageId);
         }
 
-        queueJob(MessageProcessingJob.Mode.REMOVE, messageId, user, cause);
+        remove (m, user, cause);
+    }
+
+    /**
+     * @see org.kuali.rice.kcb.service.MessagingService#removeByOriginId(java.lang.String, java.lang.String, java.lang.String)
+     */
+    public void removeByOriginId(String originId, String user, String cause) throws MessageDismissalException {
+        Message m = messageService.getMessageByOriginId(originId);
+        if (m == null) {
+            throw new MessageDismissalException("No such message with origin id: " + originId);
+        }
+        remove(m, user, cause);
+    }
+
+    private void remove(Message message, String user, String cause) {
+
+        queueJob(MessageProcessingJob.Mode.REMOVE, message.getId(), user, cause);
         
         /*Collection<MessageDelivery> deliveries = messageDeliveryService.getMessageDeliveries(m);
         for (MessageDelivery delivery: deliveries) {
@@ -176,7 +194,7 @@ public class MessagingServiceImpl implements MessagingService {
      * @param userRecipientId the user
      * @return a Set of NotificationConstants.MESSAGE_DELIVERY_TYPES
      */
-    private Set<String> getDelivererTypesForUserAndChannel(String userRecipientId, String channel) {
+    private Collection<String> getDelivererTypesForUserAndChannel(String userRecipientId, String channel) {
         Set<String> deliveryTypes = new HashSet<String>(1);
         
         // manually add the default one since they don't have an option on this one
@@ -188,6 +206,7 @@ public class MessagingServiceImpl implements MessagingService {
         for (RecipientDelivererConfig cfg: deliverers) {
             deliveryTypes.add(cfg.getDelivererName());
         }
+        //return GlobalNotificationServiceLocator.getInstance().getKENAPIService().getDeliverersForRecipientAndChannel(userRecipientId, channel);
 
         return deliveryTypes;
     }
@@ -301,5 +320,5 @@ public class MessagingServiceImpl implements MessagingService {
                 throw new RuntimeException(se);
             }
         }
-    }
+    }    
 }

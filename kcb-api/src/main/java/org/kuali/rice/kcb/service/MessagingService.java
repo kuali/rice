@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kcb.service;
 
+import org.kuali.rice.kcb.exception.MessageDeliveryException;
+import org.kuali.rice.kcb.exception.MessageDismissalException;
 import org.kuali.rice.kcb.vo.MessageVO;
 
 /**
@@ -30,7 +32,7 @@ public interface MessagingService {
      * @param message message to deliver
      * @return identifier for the message
      */
-    public long deliver(MessageVO message) throws /*MessageDelivery*/Exception;
+    public long deliver(MessageVO message) throws MessageDeliveryException;
     /**
      * Removes a specific message and all deliveries
      * 
@@ -38,5 +40,14 @@ public interface MessagingService {
      * @param user the user under which the action was taken
      * @param cause the cause or action taken to remove the message 
      */
-    public void remove(long messageId, String user, String cause) throws /*MessageDismissal*/Exception;
+    public void remove(long messageId, String user, String cause) throws MessageDismissalException;
+    
+    /**
+     * Removes a specific message and all deliveries
+     * 
+     * @param originId origin id of the message to remove
+     * @param user the user under which the action was taken
+     * @param cause the cause or action taken to remove the message 
+     */
+    public void removeByOriginId(String originId, String user, String cause) throws MessageDismissalException;
 }

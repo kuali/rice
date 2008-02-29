@@ -59,4 +59,17 @@ public class MessageServiceImpl extends BusinessObjectServiceImpl implements Mes
     public void saveMessage(Message message) {
         dao.save(message);
     }
+
+    /**
+     * @see org.kuali.rice.kcb.service.MessageService#getMessageByOriginId(java.lang.String)
+     */
+    public Message getMessageByOriginId(String originId) {
+        Map<String, Object> fields = new HashMap<String, Object>(1);
+        fields.put(Message.ORIGINID_FIELD, originId);
+        Collection<Message> messages = dao.findMatching(Message.class, fields);
+        if (messages.size() == 0) {
+            return null;
+        }
+        return messages.iterator().next();
+    }
 }

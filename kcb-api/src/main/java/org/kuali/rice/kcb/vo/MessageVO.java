@@ -30,6 +30,7 @@ public class MessageVO {
     private String contentType;
     private String recipient;
     private String url;
+    private String originId;
 
     public String getDeliveryType() {
         return this.deliveryType;
@@ -78,5 +79,11 @@ public class MessageVO {
     }
     public void setUrl(String url) {
         this.url = url;
+    }
+    public String getOriginId() {
+        return this.originId;
+    }
+    public void setOriginId(String originId) {
+        this.originId = originId;
     }
 }

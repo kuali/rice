@@ -19,6 +19,7 @@
     <!-- Messages -->
     <class-descriptor class="org.kuali.rice.kcb.bo.Message" table="KCB_MESSAGES">
         <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KCB_MESSAGES_SEQ" />
+        <field-descriptor name="originId" column="ORIGIN_ID" jdbc-type="VARCHAR"  nullable="false" />
         <field-descriptor name="deliveryType" column="DELIVERY_TYPE" jdbc-type="VARCHAR"  nullable="false" />
         <field-descriptor name="creationDateTime" column="CREATED_DATETIME" jdbc-type="TIMESTAMP" nullable="false" />
         <field-descriptor name="title" column="TITLE" jdbc-type="VARCHAR" nullable="true" />

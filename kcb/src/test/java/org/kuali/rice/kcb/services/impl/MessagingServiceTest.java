@@ -25,8 +25,10 @@ import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
 import org.kuali.rice.kcb.quartz.MessageProcessingJob;
-import org.kuali.rice.kcb.test.ClearDatabaseKCBTestCase;
+import org.kuali.rice.kcb.test.KCBTestCase;
 import org.kuali.rice.kcb.vo.MessageVO;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.SchedulerException;
@@ -38,25 +40,33 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class MessagingServiceTest extends ClearDatabaseKCBTestCase {
+/*
+@PerTestUnitTestData({
+    @UnitTestData(filename = "file:ken/src/main/config/sql/KENBootstrap.sql", delimiter = "/"),
+    @UnitTestData(filename = "classpath:org/kuali/rice/kcb/test/KENTestData.sql")
+}
+)*/
+@BaselineMode(Mode.CLEAR_DB)
+public class MessagingServiceTest extends KCBTestCase {
     private Object lock = new Object();
-  
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
     
-        services.getRecipientPreferenceService().saveRecipientDelivererConfig("user1", "mock", new String[] { "channel1" });
-        services.getRecipientPreferenceService().saveRecipientDelivererConfig("user1", "sms", new String[] { "channel1" });
+        services.getRecipientPreferenceService().saveRecipientDelivererConfig("TestUser5", "mock", new String[] { "Test Channel #1" });
+        services.getRecipientPreferenceService().saveRecipientDelivererConfig("TestUser5", "sms", new String[] { "Test Channel #1" });
     }
 
     protected long deliver() throws Exception {
         MessageVO message = new MessageVO();
         message.setContent("test content 1");
-        message.setChannel("channel1");
+        message.setChannel("Test Channel #1");
         message.setContentType("test content type 1");
         message.setDeliveryType("test delivery type 1");
-        message.setRecipient("user1");
+        message.setRecipient("TestUser5");
         message.setTitle("test title 1");
+        message.setOriginId("origin id");
 
         registerJobListener();
 
@@ -68,7 +78,8 @@ public class MessagingServiceTest extends ClearDatabaseKCBTestCase {
         assertNotNull(deliveries);
         // HACK: for now our impl just creates deliveries for all deliverer types because we don't have preferences yet
         // so there should be exactly as many deliveries as deliverer types
-        int delivCount = services.getRecipientPreferenceService().getDeliverersForRecipientAndChannel("user1", "channel1").size();
+        int delivCount = services.getRecipientPreferenceService().getDeliverersForRecipientAndChannel("TestUser5", "Test Channel #1").size();
+        //int delivCount = kenApi.getDeliverersForRecipientAndChannel("TestUser5", "Test Channel #1").size();
         assertEquals(delivCount, deliveries.size());
         assertTrue(deliveries.size() > 0);
         for (MessageDelivery delivery: deliveries) {
@@ -103,6 +114,24 @@ public class MessagingServiceTest extends ClearDatabaseKCBTestCase {
         assertEquals(0, deliveries.size());
     }
     
+    @Test
+    public void testDismissByOriginId() throws Exception {
+        Assert.assertFalse(TransactionSynchronizationManager.isActualTransactionActive());
+
+        long id = deliver();
+
+        registerJobListener();
+
+        services.getMessagingService().removeByOriginId("origin id", "a user", "a cause");
+        
+        waitForNextJobCompletion();
+
+        Collection<MessageDelivery> deliveries = services.getMessageDeliveryService().getAllMessageDeliveries();
+        assertNotNull(deliveries);
+        // should be all gone
+        assertEquals(0, deliveries.size());
+    }
+    
     protected void registerJobListener() throws SchedulerException {
         KSBServiceLocator.getScheduler().addGlobalJobListener(new JobListenerSupport() {
             @Override
@@ -115,12 +144,10 @@ public class MessagingServiceTest extends ClearDatabaseKCBTestCase {
                         lock.notifyAll();
                     }
                 }
-                
             }
             public String getName() {
                 return System.currentTimeMillis() + RandomStringUtils.randomAlphanumeric(10);
             }
-            
         });
     }
 

@@ -44,6 +44,13 @@ public interface MessageService {
      * @return the message object if found
      */
     public Message getMessage(Long id);
+    
+    /**
+     * Finds a message by origin id
+     * @param id the origin message id
+     * @return the message object if found
+     */
+    public Message getMessageByOriginId(String originId);
 
     /**
      * Returns all messages in the system

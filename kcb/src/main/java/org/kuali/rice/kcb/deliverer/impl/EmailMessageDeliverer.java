@@ -67,6 +67,9 @@ public class EmailMessageDeliverer implements MessageDeliverer {
             String recipientEmailAddress = recipientPreferenceService.getRecipientPreference(messageDelivery.getMessage().getRecipient(), recipientEmailAddressPrefKey).getValue();
             String recipientEmailFormat = recipientPreferenceService.getRecipientPreference(messageDelivery.getMessage().getRecipient(), recipientEmailFormatPrefKey).getValue();
 
+            //String recipientEmailAddress = GlobalNotificationServiceLocator.getInstance().getKENAPIService().getRecipientPreference(messageDelivery.getMessage().getRecipient(), recipientEmailAddressPrefKey);
+            //String recipientEmailFormat = GlobalNotificationServiceLocator.getInstance().getKENAPIService().getRecipientPreference(messageDelivery.getMessage().getRecipient(), recipientEmailFormatPrefKey);
+
             Long emailMessageId = emailService.sendEmail(messageDelivery, recipientEmailAddress, recipientEmailFormat);
 
             String deliverySystemId = null;

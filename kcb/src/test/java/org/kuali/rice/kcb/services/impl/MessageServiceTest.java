@@ -67,8 +67,19 @@ public class MessageServiceTest extends BusinessObjectTestCase {
         
         Message m2 = messageService.getMessage(m.getId());
         assertNotNull(m2);
-        
+
         assertEquals(m, m2);
+        
+        Message m1 = new Message();
+        m1.setContent("a");
+        m1.setChannel("a");
+        m1.setContentType("a");
+        m1.setDeliveryType("a");
+        m1.setRecipient("a");
+        m1.setTitle("a");
+        
+        // should allow more than one record with NULL origin id
+        messageService.saveMessage(m1);
     }
 
     @Test

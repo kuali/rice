@@ -25,15 +25,18 @@ import org.kuali.rice.kcb.deliverer.impl.EmailMessageDeliverer;
 import org.kuali.rice.kcb.exception.ErrorList;
 import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
-import org.kuali.rice.kcb.test.RollbackKCBTestCase;
+import org.kuali.rice.kcb.test.KCBTestCase;
 import org.kuali.rice.kcb.test.TestConstants;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * Tests {@link RecipientPreferenceService}
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RecipientPreferenceServiceTest extends RollbackKCBTestCase {
+@BaselineMode(Mode.ROLLBACK)
+public class RecipientPreferenceServiceTest extends KCBTestCase {
     public static final String VALID_DELIVERER_NAME = EmailMessageDeliverer.NAME;
     public static final String VALID_PROPERTY = EmailMessageDeliverer.NAME + "." + EmailMessageDeliverer.EMAIL_ADDR_PREF_KEY;
     public static final String VALID_VALUE = TestConstants.EMAIL_DELIVERER_PROPERTY_VALUE;

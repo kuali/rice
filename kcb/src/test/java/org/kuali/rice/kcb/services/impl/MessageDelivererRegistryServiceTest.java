@@ -20,14 +20,17 @@ import java.util.Collection;
 import org.junit.Test;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
-import org.kuali.rice.kcb.test.RollbackKCBTestCase;
+import org.kuali.rice.kcb.test.KCBTestCase;
 import org.kuali.rice.kcb.test.TestConstants;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * This class tests the registry service.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class MessageDelivererRegistryServiceTest extends RollbackKCBTestCase {
+@BaselineMode(Mode.ROLLBACK)
+public class MessageDelivererRegistryServiceTest extends KCBTestCase {
     /**
      * This method tests the hard coded registry list.
      */

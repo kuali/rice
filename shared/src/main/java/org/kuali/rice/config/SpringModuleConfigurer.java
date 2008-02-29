@@ -48,8 +48,11 @@ public class SpringModuleConfigurer extends BaseModuleConfigurer {
     private static final String getDefaultSpringBeansTestPath(String moduleName) {
         return moduleName.toUpperCase() + "SpringBeans-test.xml";
     }
-    private static final String getDefaultResourceLoaderName(String moduleName) {
+    public static final String getDefaultResourceLoaderName(String moduleName) {
         return moduleName.toUpperCase() + "_SPRING_RESOURCE_LOADER";        
+    }
+    public static final QName getDefaultResourceLoaderQName(String moduleName) {
+        return new QName(Core.getCurrentContextConfig().getMessageEntity(), getDefaultResourceLoaderName(moduleName));
     }
 
     /**

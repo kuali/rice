@@ -55,7 +55,7 @@ public class DefaultNotificationService implements NotificationService {
 	 * Queues up immediate email processors for ActionItem notification.  Prioritizes the list of
 	 * Action Items passed in and attempts to not send out multiple emails to the same user.
 	 */
-	public void notify(List actionItems) {
+	public void notify(List<ActionItem> actionItems) {
 		// sort the list of action items using the same comparator as the Action List
 		Collections.sort(actionItems, notificationPriorityComparator);
 		Set sentNotifications = new HashSet();
@@ -114,5 +114,8 @@ public class DefaultNotificationService implements NotificationService {
 		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(document.getDocumentTypeId());
 		return documentType.getNotifyOnSavePolicy().getPolicyValue().booleanValue();
 	}
-	
+
+    public void removeNotification(List<ActionItem> actionItems) {
+        // nothing
+    }	
 }

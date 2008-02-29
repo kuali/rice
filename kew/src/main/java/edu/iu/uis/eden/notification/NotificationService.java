@@ -32,6 +32,11 @@ public interface NotificationService {
 	/**
 	 * Send out notifications in regards to the given ActionItems being generated.
 	 */
-	public void notify(List actionItems);
+	public void notify(List<ActionItem> actionItems);
 	
+	/**
+	 * Remove notifications for action items that are being deleted
+	 * @param actionItems actionItems that are being deleted
+	 */
+	public void removeNotification(List<ActionItem> actionItems);
 }

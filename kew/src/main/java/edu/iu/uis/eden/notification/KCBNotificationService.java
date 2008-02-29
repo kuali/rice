@@ -15,13 +15,17 @@
  */
 package edu.iu.uis.eden.notification;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kcb.service.KCBServiceNames;
 import org.kuali.rice.kcb.service.MessagingService;
 import org.kuali.rice.kcb.vo.MessageVO;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
+import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
@@ -34,8 +38,13 @@ public class KCBNotificationService extends DefaultNotificationService {
     @Override
     protected void sendNotification(ActionItem actionItem) {
         super.sendNotification(actionItem);
+
+        // we only send per-user messages to KCB
+        if (!EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(actionItem.getRecipientTypeCode()))
+            return;
+
         // send it off to KCB
-        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(Core.getCurrentContextConfig().getMessageEntity(), "KCB-MessagingService"));
+        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(Core.getCurrentContextConfig().getMessageEntity(), KCBServiceNames.KCB_MESSAGING));
         MessageVO mvo = new MessageVO();
         mvo.setChannel("KEW");
         mvo.setContent("i'm a kew notification");
@@ -43,13 +52,28 @@ public class KCBNotificationService extends DefaultNotificationService {
         mvo.setDeliveryType(actionItem.getActionRequestCd());
         mvo.setProducer("kew@localhost");
         mvo.setTitle("i'm a kew notification");
+        mvo.setUrl(actionItem.getDocHandlerURL() + "?docId=" + actionItem.getRouteHeaderId());
+        mvo.setOriginId(String.valueOf(actionItem.getActionItemId()));
         try {
             // just assume it's a user at this point...
             mvo.setRecipient(actionItem.getUser().getAuthenticationUserId().getId());
             ms.deliver(mvo);
         } catch (Exception e) {
-            throw new WorkflowRuntimeException("could not deliver message to KCB");
+            throw new WorkflowRuntimeException("could not deliver message to KCB", e);
         }
     }
 
+    @Override
+    public void removeNotification(List<ActionItem> actionItems) {
+        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(Core.getCurrentContextConfig().getMessageEntity(), KCBServiceNames.KCB_MESSAGING));
+
+        for (ActionItem actionItem: actionItems) {
+            try {
+                // we don't have the action takens at this point...? :(
+                ms.removeByOriginId(String.valueOf(actionItem.getActionItemId()), null, null);
+            } catch (Exception e) {
+                throw new RuntimeException("could not remove message from KCB", e);
+            }
+        }
+    }
 }

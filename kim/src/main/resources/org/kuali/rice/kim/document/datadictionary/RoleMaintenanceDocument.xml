@@ -32,7 +32,7 @@
             </authorization>
         </authorizations>
 
-        <documentTypeName>KualiRoleMaintenanceDocument</documentTypeName>
+        <documentTypeName>KIMRoleMaintenanceDocument</documentTypeName>
         <documentTypeCode>KRMD</documentTypeCode>
         <label>Role</label>
         <summary>Role Maintenance Document</summary>

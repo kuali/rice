@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
     <ApplicationConstants xmlns="ns:workflow/ApplicationConstants" xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">
 
-        <!-- ApplicationConstants elements from C:\data\development\kuali-projects\rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- ApplicationConstants elements from C:\java\projects\rice/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <ApplicationConstant>
             <ConstantName>Config.Application.MinutesToCacheUsers</ConstantName>
@@ -236,7 +236,7 @@
 
     <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
 
-        <!-- users elements from C:\data\development\kuali-projects\rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- users elements from C:\java\projects\rice/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <!-- Core admin user -->
         <user>
@@ -252,7 +252,7 @@
     
 
 
-        <!-- users elements from C:\data\development\kuali-projects\rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- users elements from C:\java\projects\rice/ken/src/main/config/xml/KENBootstrap.xml -->
 
         <!-- The NotSys user is needed for the message sending forms that come with the system -->
         <user>
@@ -281,7 +281,7 @@
 
     <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
 
-        <!-- workgroups elements from C:\data\development\kuali-projects\rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- workgroups elements from C:\java\projects\rice/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <!-- Core admin workgroup -->
         <workgroup allowOverwrite="true">
@@ -296,7 +296,7 @@
     
 
 
-        <!-- workgroups elements from C:\data\development\kuali-projects\rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- workgroups elements from C:\java\projects\rice/ken/src/main/config/xml/KENBootstrap.xml -->
 
        <workgroup allowOverwrite="true">
             <workgroupName>NotificationAdmin</workgroupName>
@@ -326,7 +326,7 @@
 
     <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 
-        <!-- ruleAttributes elements from C:\data\development\kuali-projects\rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- ruleAttributes elements from C:\java\projects\rice/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <ruleAttribute>
             <name>RuleRoutingAttribute</name>
@@ -338,7 +338,7 @@
     
 
 
-        <!-- ruleAttributes elements from C:\data\development\kuali-projects\rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- ruleAttributes elements from C:\java\projects\rice/ken/src/main/config/xml/KENBootstrap.xml -->
 
       <ruleAttribute>
         <name>NotificationCustomActionListAttribute</name>
@@ -486,7 +486,7 @@
 
     <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 
-        <!-- ruleTemplates elements from C:\data\development\kuali-projects\rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- ruleTemplates elements from C:\java\projects\rice/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <ruleTemplate allowOverwrite="true">
             <name>WorkflowDocumentDelegationTemplate</name>
@@ -508,7 +508,7 @@
     
 
 
-        <!-- ruleTemplates elements from C:\data\development\kuali-projects\rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- ruleTemplates elements from C:\java\projects\rice/ken/src/main/config/xml/KENBootstrap.xml -->
 
         <ruleTemplate allowOverwrite="true">
             <name>ReviewersRouting</name>
@@ -529,7 +529,7 @@
 
     <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 
-        <!-- documentTypes elements from C:\data\development\kuali-projects\rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- documentTypes elements from C:\java\projects\rice/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <documentType>
             <name>EDENSERVICE-DOCS</name>
@@ -681,12 +681,12 @@
     
 
 
-        <!-- documentTypes elements from C:\data\development\kuali-projects\rice-0.9.3/kim/src/main/config/xml/KIMBootstrap.xml -->
+        <!-- documentTypes elements from C:\java\projects\rice/kim/src/main/config/xml/KIMBootstrap.xml -->
 
    <documentType>
-      <name>KualiPrincipalMaintenanceDocument</name>
+      <name>KIMPrincipalMaintenanceDocument</name>
       <description>Create or Update a Principal</description>
-      <label>Kuali Principal Maintenance Document</label>
+      <label>KIM Principal Maintenance Document</label>
       <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
@@ -709,9 +709,9 @@
     </documentType>
 
   	<documentType>
-      <name>KualiGroupMaintenanceDocument</name>
+      <name>KIMGroupMaintenanceDocument</name>
       <description>Create or Update a Group</description>
-      <label>Kuali Group Maintenance Document</label>
+      <label>KIM Group Maintenance Document</label>
       <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
@@ -734,9 +734,9 @@
     </documentType>
 
     <documentType>
-      <name>KualiRoleMaintenanceDocument</name>
+      <name>KIMRoleMaintenanceDocument</name>
       <description>Create or Update a Principal</description>
-      <label>Kuali Role Maintenance Document</label>
+      <label>KIM Role Maintenance Document</label>
       <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
@@ -759,9 +759,9 @@
     </documentType>
 
     <documentType>
-      <name>KualiNamespaceDefaultAttributeMaintenanceDocument</name>
+      <name>KIMNamespaceDefaultAttributeMaintenanceDocument</name>
       <description>Create or Update a Namespace Default Attribute</description>
-      <label>Kuali Namespace Default Attribute Maintenance Document</label>
+      <label>KIM Namespace Default Attribute Maintenance Document</label>
       <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
@@ -784,9 +784,9 @@
     </documentType>
 
     <documentType>
-      <name>KualiAttributeTypeMaintenanceDocument</name>
+      <name>KIMAttributeTypeMaintenanceDocument</name>
       <description>Create or Update a Attribute Type</description>
-      <label>Kuali Attribute Type Maintenance Document</label>
+      <label>KIM Attribute Type Maintenance Document</label>
       <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
@@ -809,9 +809,9 @@
     </documentType>
 
     <documentType>
-      <name>KualiGroupAttributeMaintenanceDocument</name>
+      <name>KIMGroupAttributeMaintenanceDocument</name>
       <description>Create or Update a Principal</description>
-      <label>Kuali Group Attribute Maintenance Document</label>
+      <label>KIM Group Attribute Maintenance Document</label>
       <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
@@ -834,9 +834,9 @@
     </documentType>
 
     <documentType>
-      <name>KualiNamespaceMaintenanceDocument</name>
+      <name>KIMNamespaceMaintenanceDocument</name>
       <description>Create or Update a Namespace</description>
-      <label>Kuali Namespace Maintenance Document</label>
+      <label>KIM Namespace Maintenance Document</label>
       <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
@@ -858,10 +858,36 @@
       </routeNodes>
     </documentType>
     
+    <documentType>
+      <name>KIMEntityTypeMaintenanceDocument</name>
+      <description>Create or Update a EntityType</description>
+      <label>KIM EntityType Maintenance Document</label>
+      <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>1</routingVersion>
+      <routePaths>
+        <routePath>
+          <start name="Adhoc Routing" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="Adhoc Routing">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </start>
+      </routeNodes>
+    </documentType>
+    
+    
   
 
 
-        <!-- documentTypes elements from C:\data\development\kuali-projects\rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- documentTypes elements from C:\java\projects\rice/ken/src/main/config/xml/KENBootstrap.xml -->
 
         <!-- Notification Document Type -->
         <documentType>
@@ -973,7 +999,7 @@
     
 
 
-        <!-- documentTypes elements from C:\data\development\kuali-projects\rice-0.9.3/kom/src/main/config/xml/KOMBootstrap.xml -->
+        <!-- documentTypes elements from C:\java\projects\rice/kom/src/main/config/xml/KOMBootstrap.xml -->
 
    <documentType>
       <name>KualiOrganizationMaintenanceDocument</name>
@@ -1056,7 +1082,7 @@
 
     <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 
-        <!-- rules elements from C:\data\development\kuali-projects\rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- rules elements from C:\java\projects\rice/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <rule>
             <documentType>EDENSERVICE-DOCS</documentType>
@@ -1092,7 +1118,7 @@
     
 
 
-        <!-- rules elements from C:\data\development\kuali-projects\rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- rules elements from C:\java\projects\rice/ken/src/main/config/xml/KENBootstrap.xml -->
 
         <rule>
           <documentType>SendNotificationRequest</documentType>

@@ -32,7 +32,7 @@
             </authorization>
         </authorizations>
 
-        <documentTypeName>KualiPrincipalMaintenanceDocument</documentTypeName>
+        <documentTypeName>KIMPrincipalMaintenanceDocument</documentTypeName>
         <documentTypeCode>KPMD</documentTypeCode>
         <label>Principal</label>
         <summary>Principal Maintenance Document</summary>

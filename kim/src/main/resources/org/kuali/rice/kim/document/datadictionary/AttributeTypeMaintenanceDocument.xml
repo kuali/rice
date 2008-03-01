@@ -31,7 +31,7 @@
             </authorization>
         </authorizations>
 
-        <documentTypeName>KualiAttributeTypeMaintenanceDocument</documentTypeName>
+        <documentTypeName>KIMAttributeTypeMaintenanceDocument</documentTypeName>
         <documentTypeCode>KATD</documentTypeCode>
         <label>Attribute Type Document</label>
         <shortLabel>Attribute Type Maintenence</shortLabel>

@@ -39,7 +39,7 @@
 		</authorizations>
 
 		<documentTypeName>
-			KualiGroupMaintenanceDocument
+			KIMGroupMaintenanceDocument
 		</documentTypeName>
 		<documentTypeCode>KGMD</documentTypeCode>
 		<label>Group</label>

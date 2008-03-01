@@ -31,7 +31,7 @@
             </authorization>
         </authorizations>
 
-        <documentTypeName>KualiNamespaceMaintenanceDocument</documentTypeName>
+        <documentTypeName>KIMNamespaceMaintenanceDocument</documentTypeName>
         <documentTypeCode>KNSD</documentTypeCode>
         <label>Namespace Document</label>
         <shortLabel>Namespace Maintenence</shortLabel>

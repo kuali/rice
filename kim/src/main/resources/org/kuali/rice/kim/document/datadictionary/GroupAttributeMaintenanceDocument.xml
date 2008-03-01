@@ -32,7 +32,7 @@
             </authorization>
         </authorizations>
 
-        <documentTypeName>KualiGroupAttributeMaintenanceDocument</documentTypeName>
+        <documentTypeName>KIMGroupAttributeMaintenanceDocument</documentTypeName>
         <documentTypeCode>KGAM</documentTypeCode>
         <label>Group Attribute</label>
         <summary>Group Attribute Maintenance Document</summary>

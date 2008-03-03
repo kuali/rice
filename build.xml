@@ -21,6 +21,8 @@
 		<property name="dist.binary.config.dir" value="${dist.binary.dir}/config"/>
 		<property name="dist.src.dir" value="${dist.build.dir}/dist-src/rice-${maven.project.version}-src"/>
 		
+		<property name="oracle.driver.version" value="10.2.0.2.0"/>
+
 		<property environment="env"/>
 	    <!-- if the M2_HOME is already defined in the environment, use it -->
 		<property name="maven.home.directory" value="${env.M2_HOME}"/>
@@ -57,6 +59,11 @@
         </java>
 	</target>
 
+	<target name="install-oracle-jar" depends="init">
+		<property name="oracle.driver.jar"  location="/java/drivers/ojdbc14.jar"/>
+		<maven goals="install:install-file" options="-DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=${oracle.driver.version} -Dpackaging=jar -Dfile=${oracle.driver.jar}"/>
+	</target>
+	
 	<target name="retrieve-maven-dependencies" depends="init">
 		<!--
         <maven goals="dependency:resolve" options="-DexcludeGroupIds=org.kuali.rice,"/>

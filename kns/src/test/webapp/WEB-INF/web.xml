@@ -86,7 +86,13 @@
 	<!-- This is the root Spring context XML file for the Sample App -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:SampleAppBeans.xml</param-value>
+        <!-- the asterisk magics us the SampleAppBeans-test.xml context only when within unit tests
+             ... not sure how this is working given both are in the kns test class path and exported
+             by the eclipse project..???
+             Adding an asterisk after the classpath (classpath*:) for the test context results in it
+             being picked up when launch via the Eclipse launch script.
+         -->
+        <param-value>classpath:SampleAppBeans.xml, classpath:SampleAppBeans-test*.xml</param-value>
     </context-param>
 
     <listener>

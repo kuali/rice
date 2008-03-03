@@ -58,8 +58,11 @@
 	</target>
 
 	<target name="retrieve-maven-dependencies" depends="init">
-        <maven goals="dependency:resolve"/>
-    </target>
+		<!--
+        <maven goals="dependency:resolve" options="-DexcludeGroupIds=org.kuali.rice,"/>
+        -->
+		<maven goals="install" options="-DskipTests=true"/>
+	</target>
 
 	<target name="install-rice-jars" depends="init">
 		<maven goals="install" options="-Dmaven.test.skip=true" />

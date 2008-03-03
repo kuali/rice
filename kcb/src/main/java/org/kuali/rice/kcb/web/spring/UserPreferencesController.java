@@ -33,6 +33,7 @@ import org.kuali.rice.core.Core;
 import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
 import org.kuali.rice.kcb.exception.ErrorList;
+import org.kuali.rice.kcb.service.KENIntegrationService;
 import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
@@ -52,6 +53,7 @@ public class UserPreferencesController extends MultiActionController {
     private static final String KEW_CHANNEL = "Workflow"; 
     protected RecipientPreferenceService recipientPreferenceService;
     protected MessageDelivererRegistryService messageDelivererRegistryService;
+    protected KENIntegrationService kenIntegrationService;
 
     /**
      * Set the RecipientPreferenceService
@@ -72,14 +74,22 @@ public class UserPreferencesController extends MultiActionController {
     }
 
     /**
+     * Sets the KENIntegrationService
+     * @param kis the KENIntegrationService
+     */
+    @Required
+    public void setKenIntegrationService(KENIntegrationService kis) {
+        this.kenIntegrationService = kis;
+    }
+
+    /**
      * @return all channels for Rice, including the builtin KEW action list "channel"
      */
     protected Collection<String> getAllChannels() {
         // TODO: does not traverse bus yet
         Collection<String> allChannels = new ArrayList<String>();
         allChannels.add(KEW_CHANNEL);
-        KENAPIService api = (KENAPIService) GlobalResourceLoader.getService(new QName(Core.getCurrentContextConfig().getMessageEntity(), KENServiceConstants.KENAPI_SERVICE));
-        allChannels.addAll(api.getAllChannelNames());
+        allChannels.addAll(kenIntegrationService.getAllChannelNames());
         return allChannels;
     }
 

@@ -148,6 +148,13 @@
     </bean>
      -->
 
+<!--  
+    <bean id="kenIntegrationService" class="org.kuali.rice.kcb.service.impl.KENIntegrationServiceAPIImpl"/>
+-->
+    <bean id="kenIntegrationService" class="org.kuali.rice.kcb.service.impl.KENIntegrationServiceDirectImpl">
+        <property name="dataSource" ref="kcbDataSource"/>
+    </bean>
+
     <!-- END SERVICES -->
 
     <!-- DAOS -->

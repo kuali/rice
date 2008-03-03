@@ -17,6 +17,7 @@ package org.kuali.rice.kcb;
 
 import org.kuali.rice.kcb.dao.BusinessObjectDao;
 import org.kuali.rice.kcb.service.EmailService;
+import org.kuali.rice.kcb.service.KENIntegrationService;
 import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
 import org.kuali.rice.kcb.service.MessageService;
@@ -39,4 +40,5 @@ public interface KCBServiceLocator {
     public MessageDelivererRegistryService getMessageDelivererRegistryService();
     public EmailService getEmailService();
     public RecipientPreferenceService getRecipientPreferenceService();
+    public KENIntegrationService getKenIntegrationService();
 }

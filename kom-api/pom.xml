@@ -9,7 +9,7 @@
         <version>0.9.3-SNAPSHOT</version>
     </parent>
     <artifactId>rice-kom-api</artifactId>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.kuali.rice</groupId>

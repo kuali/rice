@@ -9,12 +9,4 @@
         <version>0.9.3-SNAPSHOT</version>
     </parent>
     <artifactId>rice-kim-api</artifactId>
-	
-	<dependencies>
-		<dependency>
-			<groupId>org.kuali.rice</groupId>
-			<artifactId>rice-kns</artifactId>
-			<version>0.9.3-SNAPSHOT</version>
-		</dependency>
-	</dependencies>
 </project>

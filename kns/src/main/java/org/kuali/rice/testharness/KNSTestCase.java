@@ -32,9 +32,9 @@ public class KNSTestCase extends RiceTestCase {
 
 	private String contextName = "/SampleRiceClient";
 	private String relativeWebappRoot = "/src/test/webapp";
-    private String sqlFilename = "classpath:DefaultTestData.sql";
+    private String sqlFilename = "classpath:KNSDefaultTestData.sql";
     private String sqlDelimiter = ";";
-	private String xmlFilename = "classpath:DefaultTestData.xml";
+	private String xmlFilename = "classpath:KNSDefaultTestData.xml";
 	private String testConfigFilename = "classpath:META-INF/sample-app-test-config.xml";
 
 	@Override

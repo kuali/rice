@@ -30,10 +30,11 @@ import edu.iu.uis.eden.web.KeyValueSort;
  */
 public class DocumentSearchResult {
 
-	public static final String PROPERTY_NAME_ROUTE_HEADER_ID = "routeHeaderId";
-	public static final String PROPERTY_NAME_DOC_TYPE_LABEL = "docTypeLabel";
-	public static final String PROPERTY_NAME_DOCUMENT_TITLE = "documentTitle";
-	public static final String PROPERTY_NAME_ROUTE_STATUS_DESC = "docRouteStatusCodeDesc"; 
+    // following much match documentation for XML result processor attribute
+    public static final String PROPERTY_NAME_ROUTE_HEADER_ID = "routeHeaderId";
+    public static final String PROPERTY_NAME_DOC_TYPE_LABEL = "docTypeLabel";
+    public static final String PROPERTY_NAME_DOCUMENT_TITLE = "documentTitle";
+    public static final String PROPERTY_NAME_ROUTE_STATUS_DESC = "docRouteStatusCodeDesc"; 
 	public static final String PROPERTY_NAME_INITIATOR = "initiator";
 	public static final String PROPERTY_NAME_DATE_CREATED = "dateCreated";
 	public static final String PROPERTY_NAME_ROUTE_LOG = "routeLog";

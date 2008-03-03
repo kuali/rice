@@ -127,11 +127,10 @@ public class DisapproveActionTest extends KEWTestCase {
     }
 
     /**
-     * Tests whether the person who disapproved a doc gets an acknowledgement
+     * Tests whether the initator who disapproved a doc gets an acknowledgement
      *
-     * This test will fail until EN-637 is resolved.
      */
-    @Ignore("This test will fail until EN-637 is resolved")
+    @Ignore("This test will fail until KULRICE-752 is resolved")
     @Test public void testInitiatorRoleDisapprove() throws WorkflowException {
         // test initiator disapproval of their own doc via InitiatorRoleAttribute
         WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("arh14"), "InitiatorRoleApprovalTest");
@@ -141,13 +140,14 @@ public class DisapproveActionTest extends KEWTestCase {
         document.disapprove("disapproving the document");
 
         document = new WorkflowDocument(new NetworkIdVO("arh14"), document.getRouteHeaderId());
-        assertFalse("Initiator was sent redundant Ack request after personal disapproval - This test will fail until EN-637 is resolved", document.isAcknowledgeRequested());
+        assertFalse("Initiator should not have an Ack request from disapproval because they were the disapprover user", document.isAcknowledgeRequested());
     }
 
     /**
-     * This test will fail until EN-637 is resolved.
+     * Tests whether the initator who disapproved a doc gets an acknowledgement
+     * 
      */
-    @Ignore("This test will fail until EN-637 is resolved")
+    @Ignore("This test will fail until KULRICE-752 is resolved")
     @Test public void testInitiatorDisapprove() throws WorkflowException {
         // test initiator disapproval, via normal request with ignoreprevious=true
         WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
@@ -157,7 +157,7 @@ public class DisapproveActionTest extends KEWTestCase {
         document.disapprove("");
 
         document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
-        assertFalse("Initiator was sent redundant Ack request after personal disapproval - This test will fail until EN-637 is resolved", document.isAcknowledgeRequested());
+        assertFalse("Initiator should not have an Ack request from disapproval because they were the disapprover user", document.isAcknowledgeRequested());
     }
 
     @Test public void testDisapproveByArbitraryRecipient() throws WorkflowException {

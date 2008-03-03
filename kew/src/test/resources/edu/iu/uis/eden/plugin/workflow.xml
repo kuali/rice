@@ -1,13 +1,7 @@
 <plugin>
 
-  <extension point="userService" class="edu.iu.uis.eden.user.impl.IUUserServiceExtension"/>
-  <extension point="workgroupService" class="edu.iu.uis.eden.workgroup.IUWorkgroupServiceExtension"/>
-  <extension point="lookupableService" class="edu.iu.uis.eden.lookupable.IULookupableServiceExtension"/>
-  <extension point="webAuthenticationService" class="edu.iu.uis.eden.web.IUWebAuthenticationServiceExtension" />
-  <extension point="notes" class="edu.iu.uis.eden.plugin.extension.ConfigurableNotesExtension">
-  	<parameter name="defaultClass" value="edu.iu.uis.eden.notes.DefaultNoteAttribute"/>
-  </extension>
- 
+  <resourceLoader class="org.kuali.rice.resourceloader.BaseResourceLoader"/>
+
   <listener>
   	<listener-class>edu.iu.uis.eden.plugin.TestPluginListener</listener-class>
   </listener>

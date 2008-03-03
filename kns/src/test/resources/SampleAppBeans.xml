@@ -31,7 +31,7 @@
     <property name="uniqueResourceName" value="knsDataSource"/>
   	<property name="driverClassName" value="${datasource.driver.name}"/>
   	<property name="url" value="${datasource.url}"/>
-  	<property name="poolSize" value="${datasource.pool.maxSize}"/>
+  	<property name="poolSize" value="${datasource.pool.size}"/>
   	<property name="connectionTimeout" value="${datasource.pool.maxWait}"/>
   	<property name="validatingQuery" value="${datasource.pool.validationQuery}"/>
   	<property name="testOnBorrow" value="true"/>

@@ -13,7 +13,6 @@
 package org.kuali.rice.kom.test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -67,14 +66,6 @@ public abstract class KOMTestCase extends RiceTestCase {
 		tables.add("FP.*");
 		tables.add("KR.*");
 		return tables;
-	}
-
-	/**
-     * @see org.kuali.rice.test.RiceTestCase#getConfigLocations()
-     */
-	@Override
-	protected List<String> getConfigLocations() {
-		return Arrays.asList(new String[]{"classpath:META-INF/kom-test-config.xml"});
 	}
 
 	/**

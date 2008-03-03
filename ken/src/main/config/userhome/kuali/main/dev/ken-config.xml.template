@@ -41,8 +41,6 @@
 	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
 	<param name="datasource.pool.validationQuery">select 1 from dual</param>
 	<param name="datasource.pool.maxWait">30000</param>
-	<param name="datasource.pool.minSize">0</param>
-	<param name="datasource.pool.maxSize">50</param>
 	<param name="datasource.password">ask your team</param>
 
 	<param name="keystore.alias">onestartsharedservices-devandtst</param>

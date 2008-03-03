@@ -55,9 +55,13 @@ public class SignatureVerifyingRequestWrapper extends HttpServletRequestWrapper 
 		}
 		try {
             this.digitalSignature = Base64.decodeBase64(encodedSignature.getBytes("UTF-8"));
-            byte[] certificate = Base64.decodeBase64(encodedCertificate.getBytes("UTF-8"));
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-			this.signature = KSBServiceLocator.getDigitalSignatureService().getSignatureForVerification(cf.generateCertificate(new ByteArrayInputStream(certificate)));
+            if (StringUtils.isNotBlank(encodedCertificate)) {
+                byte[] certificate = Base64.decodeBase64(encodedCertificate.getBytes("UTF-8"));
+                CertificateFactory cf = CertificateFactory.getInstance("X.509");
+                this.signature = KSBServiceLocator.getDigitalSignatureService().getSignatureForVerification(cf.generateCertificate(new ByteArrayInputStream(certificate)));
+            } else if (StringUtils.isNotBlank(verificationAlias)) {
+                this.signature = KSBServiceLocator.getDigitalSignatureService().getSignatureForVerification(verificationAlias);
+            }
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to initialize digital signature verification.", e);
 		}

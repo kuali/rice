@@ -222,8 +222,7 @@ def userhomeconfigtext() {
 	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
 	<param name="datasource.pool.validationQuery">select 1 from dual</param>
 	<param name="datasource.pool.maxWait">30000</param>
-	<param name="datasource.pool.minSize">0</param>
-	<param name="datasource.pool.maxSize">50</param>
+	<param name="datasource.pool.size">5</param>
 
 	<param name="keystore.alias">rice</param>
 	<param name="keystore.location">''' + System.getProperty('user.home') + '''/kuali/main/dev/ricekeystore</param>
@@ -333,8 +332,7 @@ def userhometestconfigtext() {
 	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
 	<param name="datasource.pool.validationQuery">select 1 from dual</param>
 	<param name="datasource.pool.maxWait">30000</param>
-	<param name="datasource.pool.minSize">0</param>
-	<param name="datasource.pool.maxSize">50</param>
+	<param name="datasource.pool.size">5</param>
 
 	<param name="keystore.alias">rice</param>
 	<param name="keystore.location">''' + System.getProperty('user.home') + '''/kuali/test/dev/ricekeystore</param>

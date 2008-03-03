@@ -50,18 +50,6 @@ public class SearchableAttributeTest extends KEWTestCase {
         loadXmlFile("SearchAttributeConfig.xml");
     }
 
-//    private StandardGenericXMLSearchableAttribute getAttribute(String name) {
-//        String attName = name;
-//        if (attName == null) {
-//            attName = "XMLSearchableAttribute";
-//        }
-//        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(attName);
-//        
-//        StandardGenericXMLSearchableAttribute attribute = new StandardGenericXMLSearchableAttribute();
-//        attribute.setRuleAttribute(ruleAttribute);
-//        return attribute;
-//    }
-//
     private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
     	String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX);
     	String savedKey = key;
@@ -80,7 +68,7 @@ public class SearchableAttributeTest extends KEWTestCase {
     	}
     	return sacc;
     }
-    
+
     private Field getFieldByFormKey(DocumentType docType, String formKey) {
     	if (docType == null) {
     		return null;
@@ -283,8 +271,6 @@ public class SearchableAttributeTest extends KEWTestCase {
         criteria.setFromDateCreated("01/01/2004");
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("MockSearchableAttributeKey", "Mock Searchable Attribute", null, docType));
         criteria.getSearchableAttributes().set(0, createSearchAttributeCriteriaComponent("MockSearchableAttributeKey", "MockSearchableAttributeValue", null, docType));
-//        criteria.addSearchableAttribute(new KeyLabelPair("MockSearchableAttributeKey", "Mock Searchable Attribute"));
-//        criteria.setSearchableAttribute(0, new KeyLabelPair("MockSearchableAttributeKey", "MockSearchableAttributeValue"));
 
         result = docSearchService.getList(user, criteria);
         assertEquals(1, result.getSearchResults().size());
@@ -295,8 +281,6 @@ public class SearchableAttributeTest extends KEWTestCase {
         criteria.setFromDateCreated("01/01/2004");
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("MockSearchableAttributeKey", "Mock Searchable Attribute", null, docType));
         criteria.getSearchableAttributes().set(0, createSearchAttributeCriteriaComponent("MockSearchableAttributeKey", "", null, docType));
-//        criteria.addSearchableAttribute(new KeyLabelPair("MockSearchableAttributeKey", "Mock Searchable Attribute"));
-//        criteria.setSearchableAttribute(0, new KeyLabelPair("MockSearchableAttributeKey", ""));
         
         result = docSearchService.getList(user, criteria);
         // should return two because an empty value above will return any value of the 'MockSearchableAttributeKey' key including the previous document

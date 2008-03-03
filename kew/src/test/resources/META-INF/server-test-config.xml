@@ -20,7 +20,7 @@
 	<!-- Axis Configuration -->
     <param name="keystore.alias">onestartsharedservices-devandtst</param>
     <param name="keystore.password">s1t0spss!xX-tst</param>
-    <param name="keystore.file">conf/webservice_security/onestartsharedservices-devandtst_keystore</param>
+	<param name="keystore.file">${basedir}/../ksb/src/test/resources/keystore/onestartsharedservices-devandtst_keystore</param>
 
 	<!-- default config files -->
 	<param name="config.location">classpath:META-INF/kew-test-config.xml</param>

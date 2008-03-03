@@ -41,6 +41,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.ojb.broker.PBKey;
+import org.kuali.rice.config.Config;
+import org.kuali.rice.core.Core;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.StatementCallback;
@@ -408,10 +410,18 @@ public class TestUtilities {
 		return tmpDir;
 }
 	public static File getEnPluginsDirectory() {
+	    String directory = Core.getCurrentContextConfig().getProperty(Config.INSTITUTIONAL_PLUGIN_DIR);
+	    if (StringUtils.isNotBlank(directory)) {
+	        return new File(directory);
+	    }
 		return new File("./work/unit-test/en-plugins");
 	}
 
 	public static File getPluginsDirectory() {
+        String directory = Core.getCurrentContextConfig().getProperty(Config.PLUGIN_DIR);
+        if (StringUtils.isNotBlank(directory)) {
+            return new File(directory);
+        }
 		return new File("./work/unit-test/plugins");
 	}
 

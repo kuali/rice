@@ -12,7 +12,7 @@
  */
 package org.kuali.rice.testharness;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.config.spring.ConfigFactoryBean;
@@ -65,7 +65,10 @@ public class KNSTestCase extends RiceTestCase {
 
 	@Override
 	protected List<String> getConfigLocations() {
-		return Arrays.asList(new String[]{getTestConfigFilename()});
+        List<String> configLocations = new ArrayList<String>();
+        configLocations.add(getTestConfigFilename());
+        configLocations.add(getRiceMasterDefaultConfigFile());
+        return configLocations;
 	}
 
 	@Override

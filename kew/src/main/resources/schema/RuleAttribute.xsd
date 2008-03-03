@@ -325,11 +325,6 @@
 	      	<attribute name="overrideSearchableAttributes" type="boolean" default="true" />
       	</complexType>
       </element>
-      <!-- should it be a <choice> between the following three?
-      <element ref="ra:routingConfig" minOccurs="0"/>
-      <element ref="ra:searchingConfig" minOccurs="0"/>
-      <element ref="ra:searchResultConfig" minOccurs="0"/>
-      -->
     </all>
   </complexType>
 

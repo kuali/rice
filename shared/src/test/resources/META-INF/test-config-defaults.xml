@@ -1,0 +1,8 @@
+<!-- config file loaded by the TestHarness root test case.  -->
+<config>
+
+	<param name="datasource.pool.size">5</param>
+	<param name="application.url">http://localhost:9912/${app.context.name}</param>
+	<param name="serviceServletUrl">${application.url}/remoting/</param>
+
+</config>

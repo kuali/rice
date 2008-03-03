@@ -265,16 +265,6 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
 		}
     }
 
-    @Ignore("This test needs to be implemented!")
-    @Test public void testReturnToPreviousParallelErrors() throws Exception {
-        // TODO implement this test!
-    }
-    
-    @Ignore("This test needs to be implemented!")
-    @Test public void testReturnToPreviousSequentialErrors() throws Exception {
-        // TODO implement this test!
-    }
-    
     /**
      * This test was implemented to address issue KULWF-495.
      * 

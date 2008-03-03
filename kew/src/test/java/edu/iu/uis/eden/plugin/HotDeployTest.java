@@ -21,7 +21,6 @@ import java.io.File;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
 import org.kuali.workflow.test.KEWTestCase;
@@ -40,9 +39,9 @@ public class HotDeployTest extends KEWTestCase {
 	
 	@Override
 	public void setUp() throws Exception {
+        super.setUp();
 		TestUtilities.initializePluginDirectories();
 		this.pluginDir = TestUtilities.getPluginsDirectory(); 
-		super.setUp();
 	}
 		
 	@Override
@@ -51,7 +50,6 @@ public class HotDeployTest extends KEWTestCase {
 		TestUtilities.cleanupPluginDirectories();
 	}
 
-	@Ignore
 	@Test public void testHotDeploy() throws Exception {
 		// Grab the ServerPluginRegistry
 		PluginRegistry theRegistry = PluginUtils.getPluginRegistry();
@@ -76,9 +74,10 @@ public class HotDeployTest extends KEWTestCase {
 		assertEquals("There should still be no plugins.", 0, registry.getPluginEnvironments().size());
 		
 		// now let's copy a plugin over and run the hot deployer
-		File pluginZipFile = new File("test/src/edu/iu/uis/eden/plugin/ziptest.zip");
-		assertTrue(pluginZipFile.exists());
-		assertTrue(pluginZipFile.isFile());
+        String pluginZipFileLocation = getBaseDir() + "/src/test/resources/edu/iu/uis/eden/plugin/ziptest.zip";
+		File pluginZipFile = new File(pluginZipFileLocation);
+		assertTrue("Plugin file '" + pluginZipFileLocation + "' should exist", pluginZipFile.exists());
+		assertTrue("Plugin file '" + pluginZipFileLocation + "' should be a file", pluginZipFile.isFile());
 		FileUtils.copyFileToDirectory(pluginZipFile, pluginDir);
 			
 		assertEquals("There should be one plugin added.", 1, hotDeployer.getAddedPlugins().size());
@@ -118,7 +117,6 @@ public class HotDeployTest extends KEWTestCase {
 				
 	}
 	
-	@Ignore
 	@Test public void testReloader() throws Exception {
 		// Grab the ServerPluginRegistry
 		PluginRegistry theRegistry = PluginUtils.getPluginRegistry();
@@ -136,11 +134,12 @@ public class HotDeployTest extends KEWTestCase {
 		assertEquals("There should be no plugins.", 0, registry.getPluginEnvironments().size());
 		assertEquals("Resource loader should have no children.", 0, registry.getResourceLoaders().size());
 				
-		// now let's copy a plugin over and run the hot deployer
-		File pluginZipFile = new File("test/src/edu/iu/uis/eden/plugin/ziptest.zip");
-		assertTrue(pluginZipFile.exists());
-		assertTrue(pluginZipFile.isFile());
-		FileUtils.copyFileToDirectory(pluginZipFile, pluginDir);
+        // now let's copy a plugin over and run the hot deployer
+        String pluginZipFileLocation = getBaseDir() + "/src/test/resources/edu/iu/uis/eden/plugin/ziptest.zip";
+        File pluginZipFile = new File(pluginZipFileLocation);
+        assertTrue("Plugin file '" + pluginZipFileLocation + "' should exist", pluginZipFile.exists());
+        assertTrue("Plugin file '" + pluginZipFileLocation + "' should be a file", pluginZipFile.isFile());
+        FileUtils.copyFileToDirectory(pluginZipFile, pluginDir);
 		
 		// update pluginZipFile to point to the copy
 		pluginZipFile = new File(pluginDir, pluginZipFile.getName());

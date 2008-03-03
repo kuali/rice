@@ -1,0 +1,5 @@
+<config>
+
+	<param name="datasource.pool.size">5</param>
+	
+</config>

@@ -27,17 +27,22 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.kuali.workflow.routemodule.BaseRouteModule;
+import org.kuali.rice.definition.ObjectDefinition;
+import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.engine.RouteContext;
-import edu.iu.uis.eden.routetemplate.FlexRM;
+import edu.iu.uis.eden.engine.node.RouteNodeInstance;
+import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
+import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.routetemplate.RuleBaseValues;
+import edu.iu.uis.eden.routetemplate.RuleExtension;
 import edu.iu.uis.eden.routetemplate.RuleResponsibility;
+import edu.iu.uis.eden.routetemplate.xmlrouting.GenericXMLRuleAttribute;
 import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
-import edu.iu.uis.eden.util.ResponsibleParty;
 import edu.iu.uis.eden.util.XmlHelper;
 import edu.iu.uis.eden.xml.RuleXmlParser;
 import edu.iu.uis.eden.xml.XmlConstants;
@@ -47,40 +52,85 @@ import edu.iu.uis.eden.xml.XmlConstants;
  * in the config block of the node.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class InlineRequestsRouteModule extends BaseRouteModule {
+public class InlineRequestsRouteModule extends FlexRMAdapter {
     private static final Logger LOG = Logger.getLogger(InlineRequestsRouteModule.class);
 
-    /* @see edu.iu.uis.eden.routemodule.RouteModule#findActionRequests(edu.iu.uis.eden.engine.RouteContext)
+    /**
+     * This overridden method is used to decipher the inline xpath and responsibilities of a route node definition and use
+     * them to create action reqeusts
+     * 
+     * @see edu.iu.uis.eden.routemodule.FlexRMAdapter#findActionRequests(edu.iu.uis.eden.engine.RouteContext)
      */
+    @Override
     public List<ActionRequestValue> findActionRequests(RouteContext context) throws Exception {
         // comment this out while implementing the meta-rules stuff
         // re-implement later
-        return null;
-        /*
-        String contentFragment = context.getNodeInstance().getRouteNode().getContentFragment();
+        List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
+        RouteNodeInstance currentNode = context.getNodeInstance();
+        String contentFragment = currentNode.getRouteNode().getContentFragment();
         // parse with JDOM to reuse RuleXmlParser
         Document doc = XmlHelper.trimSAXXml(new ByteArrayInputStream(contentFragment.getBytes()));
         Element root = doc.getRootElement();
-        String xpathExpression = root.getChildText("match");
-        if (StringUtils.isBlank(xpathExpression)) {
+        List<String> ruleAttributeNames = new ArrayList<String>();
+        List<String> ruleAttributeClassNames = new ArrayList<String>();
+        List<String> xpathExpressions = new ArrayList<String>();
+        // get the list of ruleAttributes to use
+        Element ruleAttributes = root.getChild("ruleAttributes");
+        if (ruleAttributes != null) {
+            for (Object o : ruleAttributes.getChildren("name")) {
+                Element e = (Element) o;
+                ruleAttributeNames.add(e.getText());
+            }
+            for (Object o : ruleAttributes.getChildren("className")) {
+                Element e = (Element) o;
+                ruleAttributeClassNames.add(e.getText());
+            }
+        }
+        // get the list of xpath expressions to verify
+        for (Object o: root.getChildren("match")) {
+            Element e = (Element) o;
+            xpathExpressions.add(e.getText());
+        }
+        if ( (ruleAttributeNames.isEmpty()) && (ruleAttributeClassNames.isEmpty()) && (xpathExpressions.isEmpty()) ) {
             throw new RuntimeException("Match xpath expression not specified (should be parse-time exception...)");
         }
 
-        XPath xpath = XPathHelper.newXPath();
-        Boolean match = (Boolean) xpath.evaluate(xpathExpression, context.getDocumentContent().getDocument(), XPathConstants.BOOLEAN);
+        List<WorkflowAttribute> attributes = new ArrayList<WorkflowAttribute>();
+        for (String attributeName : ruleAttributeNames) {
+            attributes.add(getRuleAttributeByName(attributeName));
+        }
+        for (String attributeClassName : ruleAttributeClassNames) {
+            attributes.add(getRuleAttributeByClassName(attributeClassName));
+        }
         
-        List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
+        // at this point if we have no xpath expressions or attributes we cannot match
+        if (attributes.isEmpty() && xpathExpressions.isEmpty()) {
+            return actionRequests;
+        }
+        
+        Boolean match = Boolean.TRUE;
+        if (!xpathExpressions.isEmpty()) {
+            XPath xpath = XPathHelper.newXPath();
+            for (String xpathExpression : xpathExpressions) {
+                match &= (Boolean) xpath.evaluate(xpathExpression, context.getDocumentContent().getDocument(), XPathConstants.BOOLEAN);
+            }
+        }
+        for (WorkflowAttribute workflowAttribute : attributes) {
+            // no rule extensions to pass in below because we have no rule... simple attribute matching only
+            match &= workflowAttribute.isMatch(context.getDocumentContent(), new ArrayList<RuleExtension>());
+        }
+        
         if (match.booleanValue()) {
-            LOG.debug("Expression '" + xpathExpression + "' matched document '" + context.getDocumentContent().getDocContent() + "'");
+//            LOG.debug("Expression '" + xpathExpression + "' matched document '" + context.getDocumentContent().getDocContent() + "'");
         } else {
-            LOG.debug("Expression '" + xpathExpression + "' did NOT match document '" + context.getDocumentContent().getDocContent() + "'");
+            // return an empty list because we didn't find a match using the given xpath
+//            LOG.debug("Expression '" + xpathExpression + "' did NOT match document '" + context.getDocumentContent().getDocContent() + "'");
             return actionRequests;
         }
 
         List<RuleResponsibility> responsibilities = new ArrayList<RuleResponsibility>();
         RuleXmlParser parser = new RuleXmlParser();
-        FlexRM flexRM = new FlexRM();
-        flexRM.setActionRequestFactory(new ActionRequestFactory(context.getDocument(), context.getNodeInstance()));
+        ActionRequestFactory arf = new ActionRequestFactory(context.getDocument(), currentNode);
         // this rule is only used to obtain description, ignoreprevious flag, and the rulebasevalues id, which may be null
         RuleBaseValues fakeRule = new RuleBaseValues();
         fakeRule.setActiveInd(Boolean.TRUE);
@@ -97,16 +147,41 @@ public class InlineRequestsRouteModule extends BaseRouteModule {
             responsibilities.add(responsibility);
         }
         if (responsibilities.size() == 0) {
-            throw new RuntimeException("No responsibilities found on node " + context.getNodeInstance().getName());
+            throw new RuntimeException("No responsibilities found on node " + currentNode.getName());
         }
 
-        flexRM.makeActionRequests(responsibilities, context, fakeRule, context.getDocument(), null, null); 
-        actionRequests.addAll(flexRM.getActionRequestFactory().getRequestGraphs());
-
-        return actionRequests;*/
+        makeActionRequests(arf, responsibilities, context, fakeRule, context.getDocument(), null, null); 
+        actionRequests.addAll(arf.getRequestGraphs());
+        return actionRequests;
     }
     
-    public ResponsibleParty resolveResponsibilityId(Long responsibilityId) {
-        return new FlexRM().resolveResponsibilityId(responsibilityId);
+    @Override
+    public String toString() {
+        return "InlineRequestsRouteModule";
     }
+
+    private WorkflowAttribute getRuleAttributeByName(String ruleAttributeName) {
+        return materializeRuleAttribute(KEWServiceLocator.getRuleAttributeService().findByName(ruleAttributeName));
+    }
+    
+    private WorkflowAttribute getRuleAttributeByClassName(String ruleAttributeClassName) {
+        return materializeRuleAttribute(KEWServiceLocator.getRuleAttributeService().findByClassName(ruleAttributeClassName));
+    }
+    
+    private WorkflowAttribute materializeRuleAttribute(RuleAttribute ruleAttribute) {
+        if (ruleAttribute != null) {
+            if (EdenConstants.RULE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+                ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getMessageEntity());
+                return (WorkflowAttribute) GlobalResourceLoader.getObject(objDef);
+            } else if (EdenConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+                ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getMessageEntity());
+                WorkflowAttribute workflowAttribute = (WorkflowAttribute) GlobalResourceLoader.getObject(objDef);
+                //required to make it work because ruleAttribute XML is required to construct custom columns
+                ((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
+                return workflowAttribute;
+            }
+        }
+        return null;
+    }
+    
 }

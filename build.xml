@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Kuali Rice" default="dist-all" xmlns:artifact="urn:maven-artifact-ant">
+	
+	<target name="echo-properties" depends="init">
+	   <echoproperties/>
+	</target>
 
 	<target name="init">
 		<property file="${user.home}/kuali-build.properties" />

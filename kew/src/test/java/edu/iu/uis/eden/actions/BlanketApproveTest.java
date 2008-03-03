@@ -355,24 +355,6 @@ public class BlanketApproveTest extends KEWTestCase {
         }
     }
     
-    @Ignore("This test needs to be implemented!")
-    @Test public void testBlanketApproveCycle() throws Exception {
-        // TODO it would be cool to get this implemented but right now it looks like we can't quite handle cycles
-        /*CustomCycleSplit.configureCycle("B1", "B2", 5);
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), CycleSetup.DOCUMENT_TYPE_NAME);
-        document.blanketApprove("");
-        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
-        assertTrue("Document should be processed.", document.stateIsProcessed());
-        // should have cycled 5 times
-        assertEquals("Wrong number of cycles.", 5, CustomCycleSplit.getTimesCycled());
-        
-        CustomCycleSplit.configureCycle("B1", "B2", 1000);
-        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), CycleSetup.DOCUMENT_TYPE_NAME);
-        document.blanketApprove("");
-        // an exception should have happened in routing
-        assertTrue("Exception should have happened because of runaway cycle.", TestUtilities.isInExceptionRouting(document.getRouteHeaderId()));*/
-    }
-    
     /**
      * Tests that the notifications are generated properly on a blanket approve.  Works against the "NotificationTest" document type.
      */

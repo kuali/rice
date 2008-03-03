@@ -3,6 +3,8 @@
     <param name="environment">${environment}</param>
     <param name="module.name">kcb</param>
 
+    <param name="config.location">classpath:META-INF/test-config-defaults.xml</param>
+
     <param name="serviceServletUrl">fake service servlet url</param>
     <param name="kcb.messaging.synchronous">false</param>
 	<param name="transaction.timeout">3600</param>

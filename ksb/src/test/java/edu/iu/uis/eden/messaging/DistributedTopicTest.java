@@ -47,7 +47,7 @@ public class DistributedTopicTest extends KSBTestCase {
 		testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 		
 		assertTrue("Test harness topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
-		assertTrue("Cliet1 app topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("Client1Called")).booleanValue());
+		assertTrue("Client1 app topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("Client1Called")).booleanValue());
 	}
 	
 	@Test public void testCallingAsyncTopics() throws Exception {
@@ -74,7 +74,7 @@ public class DistributedTopicTest extends KSBTestCase {
 		}
 	
 		assertTrue("Test harness topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
-		assertTrue("Cliet1 app topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("Client1Called")).booleanValue());
+		assertTrue("Client1 app topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("Client1Called")).booleanValue());
 	
 	}
 	

@@ -64,11 +64,6 @@ public class KSBTestCase extends RiceTestCase {
     }
 
     @Override
-    protected List<String> getConfigLocations() {
-        return Arrays.asList(new String[] { "classpath:META-INF/ksb-test-config.xml" });
-    }
-
-    @Override
     protected String getDerbySQLFileLocation() {
         return "classpath:db/derby/bus.sql";
     }

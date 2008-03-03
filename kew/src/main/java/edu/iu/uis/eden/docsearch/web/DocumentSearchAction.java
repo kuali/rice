@@ -22,9 +22,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -76,6 +78,17 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 public class DocumentSearchAction extends WorkflowAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSearchAction.class);
+    
+    public static final Map<String,String> SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY = new HashMap<String,String>();
+    static {
+        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID,"docSearch.DocumentSearch.results.label.documentId");
+        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL,"docSearch.DocumentSearch.results.label.type");
+        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(DocumentSearchResult.PROPERTY_NAME_DOCUMENT_TITLE,"docSearch.DocumentSearch.results.label.title");
+        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_STATUS_DESC,"docSearch.DocumentSearch.results.label.routeStatus");
+        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(DocumentSearchResult.PROPERTY_NAME_INITIATOR,"docSearch.DocumentSearch.results.label.initiator");
+        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(DocumentSearchResult.PROPERTY_NAME_DATE_CREATED,"docSearch.DocumentSearch.results.label.dateCreated");
+        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_LOG,"docSearch.DocumentSearch.results.label.routeLog");
+    }
 
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
@@ -228,7 +241,7 @@ public class DocumentSearchAction extends WorkflowAction {
         for (Iterator iter = columns.iterator(); iter.hasNext();) {
             Column column = (Column) iter.next();
             if ((column.getColumnTitle() == null) || (column.getColumnTitle().trim().length() == 0)) {
-                String title = mr.getMessage(locale, "docSearch.DocumentSearch.results.label." + column.getKey());
+                String title = mr.getMessage(locale, SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.get(column.getKey()));
                 if (StringUtils.isBlank(title)) {
                     title = "** No Title Available **";
                 }

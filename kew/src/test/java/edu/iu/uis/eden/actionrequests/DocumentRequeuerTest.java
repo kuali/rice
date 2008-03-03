@@ -94,13 +94,6 @@ public class DocumentRequeuerTest extends KEWTestCase {
            }
        }
        assertTrue(document.isApprovalRequested());
-//       WorkflowReports reports = new WorkflowReports();
-//       assertTrue(reports.isLastApproverAtNode(document.getRouteHeaderId(), new NetworkIdVO("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
-   }
-
-   @Ignore("This test needs to be implemented!")
-   @Test public void testDocumentRequeueMultipleNodes() throws Exception {
-       // TODO time permitting we should write a test here which attempts to requeue a document which is sitting at multiple nodes
    }
 
    private class SeqSetup {

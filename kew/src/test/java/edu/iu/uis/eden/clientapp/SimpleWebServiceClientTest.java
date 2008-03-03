@@ -18,7 +18,6 @@ package edu.iu.uis.eden.clientapp;
 
 import javax.xml.namespace.QName;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
@@ -38,7 +37,6 @@ import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Ignore
 public class SimpleWebServiceClientTest extends KEWTestCase {
 
 	@Override
@@ -76,9 +74,12 @@ public class SimpleWebServiceClientTest extends KEWTestCase {
 
 	protected void setUpWebservices() throws Exception {
 		try {
+		    String remoteUrlLocation = Core.getCurrentContextConfig().getProperty("serviceServletUrl");
 			Core.getCurrentContextConfig().overrideProperty(Config.CLIENT_PROTOCOL, EdenConstants.WEBSERVICE_CLIENT_PROTOCOL);
-			Core.getCurrentContextConfig().overrideProperty("workflowutility.javaservice.endpoint", "http://localhost:9952/en-test/remoting/%7BKEW%7DWorkflowUtilityService");
-			Core.getCurrentContextConfig().overrideProperty("workflowdocument.javaservice.endpoint", "http://localhost:9952/en-test/remoting/%7BKEW%7DWorkflowDocumentActionsService");
+            Core.getCurrentContextConfig().overrideProperty("workflowutility.javaservice.endpoint", remoteUrlLocation + "%7BKEW%7DWorkflowUtilityService");
+//            Core.getCurrentContextConfig().overrideProperty("workflowutility.javaservice.endpoint", "http://localhost:9952/en-test/remoting/%7BKEW%7DWorkflowUtilityService");
+            Core.getCurrentContextConfig().overrideProperty("workflowdocument.javaservice.endpoint", remoteUrlLocation + "%7BKEW%7DWorkflowDocumentActionsService");
+//            Core.getCurrentContextConfig().overrideProperty("workflowdocument.javaservice.endpoint", "http://localhost:9952/en-test/remoting/%7BKEW%7DWorkflowDocumentActionsService");
 			Core.getCurrentContextConfig().overrideProperty("secure.workflowdocument.javaservice.endpoint", "true");
 			Core.getCurrentContextConfig().overrideProperty("secure.workflowutility.javaservice.endpoint", "true");
 			KEWConfigurer kewConfigurer  = new KEWConfigurer();

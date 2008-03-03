@@ -102,8 +102,7 @@ public interface Config {
 
 	public static final String DATASOURCE_DRIVER_NAME = "datasource.driver.name";
 	public static final String DATASOURCE_URL = "datasource.url";
-	public static final String DATASOURCE_POOL_MAXSIZE = "datasource.pool.maxSize";
-	public static final String DATASOURCE_POOL_MINSIZE = "datasource.pool.minSize";
+	public static final String DATASOURCE_POOL_SIZE = "datasource.pool.size";
 	public static final String DATASOURCE_POOL_MAXWAIT = "datasource.pool.maxWait";
 	public static final String DATASOURCE_POOL_VALIDATION_QUERY = "datasource.pool.validationQuery";
 	public static final String DATASOURCE_USERNAME = "datasource.username";

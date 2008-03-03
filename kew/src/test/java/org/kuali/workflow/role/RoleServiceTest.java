@@ -30,6 +30,7 @@ import edu.iu.uis.eden.routetemplate.RuleAttribute;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Ignore("Roles will be handled by KIM starting in 0.9.4")
 public class RoleServiceTest extends KEWTestCase {
 
 	private RoleService roleService;
@@ -40,7 +41,6 @@ public class RoleServiceTest extends KEWTestCase {
 		roleService = KEWServiceLocator.getRoleService();
 	}
 
-	@Ignore
 	@Test
 	public void testSaveRole() throws Exception {
 		Role role = new Role();
@@ -86,7 +86,6 @@ public class RoleServiceTest extends KEWTestCase {
 		assertNull(role.getDescription());
 	}
 
-	@Ignore
 	@Test
 	public void testRoleNameUnique() throws Exception {
 		Role role = new Role();
@@ -118,7 +117,6 @@ public class RoleServiceTest extends KEWTestCase {
 		} catch (Exception e) {}
 	}
 
-	@Ignore
 	@Test
 	public void testSaveQualifiedRole() throws Exception {
 		// create and save the Role

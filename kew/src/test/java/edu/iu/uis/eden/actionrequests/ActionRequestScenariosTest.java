@@ -19,7 +19,6 @@ package edu.iu.uis.eden.actionrequests;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
 
@@ -45,7 +44,6 @@ public class ActionRequestScenariosTest extends KEWTestCase {
      * 
      * @throws Exception
      */
-    @Ignore
     @Test public void testInlineRequestsRouteModule() throws Exception {
         /*WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("arh14"), "InlineRequestsDocumentType");
         try {
@@ -97,7 +95,58 @@ public class ActionRequestScenariosTest extends KEWTestCase {
         assertTrue("Document should be FINAL", document.stateIsFinal());
     }
 
-	/**
+    @Test public void testInlineRequestsRouteModule_UsingAttributes() throws Exception {
+        /*WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("arh14"), "InlineRequestsDocumentType_UsingAttributes");
+        try {
+            document.routeDocument("");
+            fail("Bad route succeeded");
+        } catch (WorkflowException we) {
+            // should throw exception as no approvals were generated 
+        }*/
+        
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("arh14"), "InlineRequestsDocumentType_UsingAttributes");
+        document.setApplicationContent("<blah><step>step1</step></blah>");
+        document.routeDocument("");
+        
+        TestUtilities.assertAtNode(document, "step1");
+        List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
+        assertEquals("Should be 1 request.", 1, requests.size());
+        ActionRequestValue user1Request = (ActionRequestValue) requests.get(0);
+        assertEquals("User One", user1Request.getRecipient().getDisplayName());
+
+        // open doc as user1 and route it
+        document = new WorkflowDocument(new NetworkIdVO("user1"), document.getRouteHeaderId());
+        document.setApplicationContent("<blah><step>step2</step></blah>");
+        document.approve("");
+        
+        TestUtilities.assertAtNode(document, "step2");
+        requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
+        assertEquals("Should be 1 request.", 1, requests.size());
+        ActionRequestValue workgroupRequest = (ActionRequestValue) requests.get(0);
+        assertEquals("TestWorkgroup", workgroupRequest.getRecipient().getDisplayName());
+
+        // open doc as user in TestWorkgroup and route it
+        document = new WorkflowDocument(new NetworkIdVO("temay"), document.getRouteHeaderId());
+        document.setApplicationContent("<blah><step>step3</step></blah>");
+        document.approve("");
+
+        TestUtilities.assertAtNode(document, "step3");
+        requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
+        assertEquals("Should be 1 request.", 1, requests.size());
+        ActionRequestValue initiatorRequest = (ActionRequestValue) requests.get(0);
+        assertEquals("INITIATOR", initiatorRequest.getRecipient().getDisplayName());
+        //assertEquals(document.getRouteHeader().getInitiator().getDisplayName(), initiatorRequest.getRecipient().getDisplayName());
+
+        assertFalse("Document should not be FINAL", document.stateIsFinal());
+
+        // open doc as initiator and route it
+        document = new WorkflowDocument(new NetworkIdVO("arh14"), document.getRouteHeaderId());
+        document.approve("");
+
+        assertTrue("Document should be FINAL", document.stateIsFinal());
+    }
+
+    /**
 	 * Test that ignore previous works properly in the face of delegations.
 	 * Tests the resolution of KULWF-642.
 	 * 

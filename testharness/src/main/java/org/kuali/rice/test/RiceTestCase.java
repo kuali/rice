@@ -15,7 +15,6 @@ package org.kuali.rice.test;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -351,7 +350,14 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      * @return List of config locations to add to this tests config location.
      */
     protected List<String> getConfigLocations() {
-        return Arrays.asList(new String[] { "classpath:META-INF/" + getModuleName().toLowerCase() + "-test-config.xml" });
+        List<String> configLocations = new ArrayList<String>();
+        configLocations.add(getRiceMasterDefaultConfigFile());
+        configLocations.add("classpath:META-INF/" + getModuleName().toLowerCase() + "-test-config.xml");
+        return configLocations;
+    }
+    
+    protected String getRiceMasterDefaultConfigFile() {
+        return "classpath:META-INF/test-config-defaults.xml";
     }
 
     /**

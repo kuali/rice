@@ -16,7 +16,5 @@
         </param>
         <param name="datasource.pool.validationQuery">select 1 from dual</param>
         <param name="datasource.pool.maxWait">30000</param>
-        <param name="datasource.pool.minSize">2</param>
-        <param name="datasource.pool.maxSize">5</param>
 
 </config>

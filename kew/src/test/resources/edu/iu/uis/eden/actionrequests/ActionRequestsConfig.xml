@@ -7,6 +7,63 @@
 			<label>Role To Role Delegation Attribute</label>
 			<description>Role To Role Delegation Attribute</description>
 		</ruleAttribute>
+        <ruleAttribute>
+            <name>InlineRequestsStep1Attribute</name>
+            <className>edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+            <label>InlineRequestsStep1Attribute</label>
+            <description>InlineRequestsStep1Attribute</description>
+            <type>RuleXmlAttribute</type>
+            <routingConfig>
+                <fieldDef name="inlineRequestsStep1Attribute" title="Test Title Step 1" workflowType="RULE">
+                    <display>
+                        <type>text</type>
+                    </display>
+                    <validation required="false" />
+                    <fieldEvaluation>
+                        <!-- expectation: this is run and evaluates to true -->
+                        <xpathexpression>//step = 'step1'</xpathexpression>
+                    </fieldEvaluation>
+                </fieldDef>
+            </routingConfig>
+        </ruleAttribute>
+        <ruleAttribute>
+            <name>InlineRequestsStep2Attribute</name>
+            <className>edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+            <label>InlineRequestsStep2Attribute</label>
+            <description>InlineRequestsStep2Attribute</description>
+            <type>RuleXmlAttribute</type>
+            <routingConfig>
+                <fieldDef name="inlineRequestsStep2Attribute" title="Test Title Step 2" workflowType="RULE">
+                    <display>
+                        <type>text</type>
+                    </display>
+                    <validation required="false" />
+                    <fieldEvaluation>
+                        <!-- expectation: this is run and evaluates to true -->
+                        <xpathexpression>//step = 'step2'</xpathexpression>
+                    </fieldEvaluation>
+                </fieldDef>
+            </routingConfig>
+        </ruleAttribute>
+        <ruleAttribute>
+            <name>InlineRequestsStep3Attribute</name>
+            <className>edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute</className>
+            <label>InlineRequestsStep3Attribute</label>
+            <description>InlineRequestsStep3Attribute</description>
+            <type>RuleXmlAttribute</type>
+            <routingConfig>
+                <fieldDef name="inlineRequestsStep3Attribute" title="Test Title Step 3" workflowType="RULE">
+                    <display>
+                        <type>text</type>
+                    </display>
+                    <validation required="false" />
+                    <fieldEvaluation>
+                        <!-- expectation: this is run and evaluates to true -->
+                        <xpathexpression>//step = 'step3'</xpathexpression>
+                    </fieldEvaluation>
+                </fieldDef>
+            </routingConfig>
+        </ruleAttribute>
 	</ruleAttributes>
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate>
@@ -215,7 +272,7 @@
 				</requests>
 			</routeNodes>
 		</documentType>
-<documentType>
+		<documentType>
             <name>InlineRequestsDocumentType</name>
             <description>InlineRequestsDocumentType</description>
             <label>InlineRequestsDocumentType</label>
@@ -268,6 +325,72 @@
                     <activationType>S</activationType>
                     <routeModule>edu.iu.uis.eden.routemodule.InlineRequestsRouteModule</routeModule>
                     <match>//step = 'step3'</match>
+                    <responsibility xmlns="ns:workflow/Rule">
+                        <role>edu.iu.uis.eden.routetemplate.InitiatorRoleAttribute!INITIATOR</role>
+                        <actionRequested>A</actionRequested>
+                    </responsibility>
+                </requests>
+            </routeNodes>
+        </documentType>
+		<documentType>
+            <name>InlineRequestsDocumentType_UsingAttributes</name>
+            <description>InlineRequestsDocumentType_UsingAttributes</description>
+            <label>InlineRequestsDocumentType_UsingAttributes</label>
+            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <docHandler>_blank</docHandler>
+            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <active>true</active>
+            <policies>
+                <policy>
+                    <name>PRE_APPROVE</name>
+                    <value>false</value>
+                </policy>
+                <policy>
+                    <name>DEFAULT_APPROVE</name>
+                    <value>false</value>
+                </policy>
+            </policies>
+            <routePaths>
+                <routePath>
+                    <start name="step1" nextNode="step2" />
+                    <requests name="step2" nextNode="step3" />
+                    <requests name="step3" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <!-- route straight to a user -->
+                <requests name="step1">
+                    <activationType>S</activationType>
+                    <routeModule>edu.iu.uis.eden.routemodule.InlineRequestsRouteModule</routeModule>
+                    <ruleAttributes>
+                        <name>InlineRequestsStep1Attribute</name>
+                    </ruleAttributes>
+                    <responsibility xmlns="ns:workflow/Rule">
+                        <user>user1</user>
+                        <actionRequested>A</actionRequested>
+                    </responsibility>
+                </requests>
+                <!-- route straight to a workgroup -->
+                <requests name="step2">
+                    <activationType>S</activationType>
+                    <ruleAttributes>
+                        <name>InlineRequestsStep2Attribute</name>
+                    </ruleAttributes>
+                    <routeModule>edu.iu.uis.eden.routemodule.InlineRequestsRouteModule</routeModule>
+                    <responsibility xmlns="ns:workflow/Rule">
+                        <workgroup>TestWorkgroup</workgroup>
+                        <actionRequested>A</actionRequested>
+                    </responsibility>
+                </requests>
+                <!-- route straight to a role -->
+                <requests name="step3">
+                    <activationType>S</activationType>
+                    <routeModule>edu.iu.uis.eden.routemodule.InlineRequestsRouteModule</routeModule>
+                    <ruleAttributes>
+                        <name>InlineRequestsStep3Attribute</name>
+                    </ruleAttributes>
                     <responsibility xmlns="ns:workflow/Rule">
                         <role>edu.iu.uis.eden.routetemplate.InitiatorRoleAttribute!INITIATOR</role>
                         <actionRequested>A</actionRequested>

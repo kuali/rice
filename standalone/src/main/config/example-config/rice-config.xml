@@ -16,8 +16,7 @@
 	<param name="datasource.username">*** username ***</param>
 	<param name="datasource.password">*** password ***</param>
 	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
-	<param name="datasource.pool.minSize">2</param>
-	<param name="datasource.pool.maxSize">10</param>
+	<param name="datasource.pool.size">5</param>
 	<param name="datasource.pool.maxWait">10000</param>
 	<param name="datasource.pool.validationQuery">select 1 from dual</param>
 	<param name="notification.ojb.platform">Oracle</param>

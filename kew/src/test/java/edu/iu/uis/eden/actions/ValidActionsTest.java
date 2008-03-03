@@ -39,7 +39,6 @@ public class ValidActionsTest extends KEWTestCase {
         loadXmlFile("ActionsConfig.xml");
     }
 
-    @Ignore
     @Test public void testValidActions() throws Exception {
         WorkflowDocument document = null;
         String networkId = null;
@@ -101,11 +100,12 @@ public class ValidActionsTest extends KEWTestCase {
         // check for routable "O"
         // check for savable "S"
         document.routeDocument("");
+        assertEquals("Document should be ENROUTE", EdenConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
 
         networkId = "user1";
         document = this.checkActions(networkId, routeHeaderId, 
-                new String[]{EdenConstants.ACTION_TAKEN_SAVED_CD}, 
-                new String[]{EdenConstants.ACTION_TAKEN_ROUTED_CD,EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,EdenConstants.ACTION_TAKEN_SU_CANCELED_CD,EdenConstants.ACTION_TAKEN_SU_APPROVED_CD,EdenConstants.ACTION_TAKEN_CANCELED_CD});
+                new String[]{}, 
+                new String[]{EdenConstants.ACTION_TAKEN_SAVED_CD,EdenConstants.ACTION_TAKEN_ROUTED_CD,EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,EdenConstants.ACTION_TAKEN_SU_CANCELED_CD,EdenConstants.ACTION_TAKEN_SU_APPROVED_CD,EdenConstants.ACTION_TAKEN_CANCELED_CD});
         // check for no blanket approve "B"
         // check for no super user actions "c", "a"
         // check for no routable "O"
@@ -113,8 +113,8 @@ public class ValidActionsTest extends KEWTestCase {
 
         networkId = "rkirkend";
         document = this.checkActions(networkId, routeHeaderId, 
-                new String[]{EdenConstants.ACTION_TAKEN_SAVED_CD,EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,EdenConstants.ACTION_TAKEN_SU_CANCELED_CD,EdenConstants.ACTION_TAKEN_SU_APPROVED_CD,EdenConstants.ACTION_TAKEN_APPROVED_CD}, 
-                new String[]{EdenConstants.ACTION_TAKEN_ROUTED_CD});
+                new String[]{EdenConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,EdenConstants.ACTION_TAKEN_SU_CANCELED_CD,EdenConstants.ACTION_TAKEN_SU_APPROVED_CD,EdenConstants.ACTION_TAKEN_APPROVED_CD}, 
+                new String[]{EdenConstants.ACTION_TAKEN_SAVED_CD,EdenConstants.ACTION_TAKEN_ROUTED_CD});
         // check for super user action "c", "a"
         // check for blanket approve "B"
         // check for approve "A"

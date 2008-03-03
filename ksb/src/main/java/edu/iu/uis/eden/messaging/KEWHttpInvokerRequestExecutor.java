@@ -89,8 +89,8 @@ public class KEWHttpInvokerRequestExecutor extends CommonsHttpInvokerRequestExec
 			if (digitalSignatureHeader == null || StringUtils.isEmpty(digitalSignatureHeader.getValue())) {
 				throw new RuntimeException("A digital signature header was required on the response but none was found.");
 			}
-			boolean foundValidKeystoreAlias = (keyStoreAliasHeader == null || StringUtils.isEmpty(keyStoreAliasHeader.getValue()));
-			boolean foundValidCertificate = (certificateHeader == null || StringUtils.isEmpty(keyStoreAliasHeader.getValue()));
+			boolean foundValidKeystoreAlias = (keyStoreAliasHeader != null && StringUtils.isNotBlank(keyStoreAliasHeader.getValue()));
+			boolean foundValidCertificate = (certificateHeader != null && StringUtils.isNotBlank(certificateHeader.getValue()));
 			if (!foundValidCertificate && !foundValidKeystoreAlias) {
                 throw new RuntimeException("Either a key store alias header or a certificate header was required on the response but neither were found.");
 			}

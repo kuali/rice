@@ -81,9 +81,6 @@ public class DocumentSearchTest extends KEWTestCase {
      */
     @Test public void testSearchEDENSERVICE_DOCS() throws Exception {
         loadXmlStream(new FileInputStream(getBaseDir()+"/src/main/config/xml/KEWBootstrap.xml"));
-//        loadXmlStream(new FileInputStream("conf/bootstrap/BootstrapRuleTemplateContent.xml"));
-//        loadXmlStream(new FileInputStream("conf/bootstrap/BootstrapDocumentTypesContent.xml"));
-//        loadXmlStream(new FileInputStream("conf/bootstrap/BootstrapRuleContent.xml"));
 
         Collection c = KEWServiceLocator.getDocumentTypeService().find(new DocumentType(), "EDENSERVICE-DOCS", true);
         assertNotNull(c);

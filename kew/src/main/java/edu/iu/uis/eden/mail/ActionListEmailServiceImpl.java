@@ -154,7 +154,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 								subject, body, false);
 			}
 		} catch (Exception e) {
-			LOG.error("Error sending email.", e);
+			LOG.error("Error sending Action List email.", e);
 		}
 	}
 

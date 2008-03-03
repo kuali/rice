@@ -1366,9 +1366,4 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
         } catch (WorkflowServiceErrorException wsee) {}
     }
 
-    @Ignore("Implement Me")
-    @Test public void testDisplayTypeMultiboxSearch() throws Exception {
-
-    }
-
 }

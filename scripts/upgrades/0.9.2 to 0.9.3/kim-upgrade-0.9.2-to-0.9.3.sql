@@ -355,6 +355,8 @@ INSERT INTO FP_DOC_TYPE_T values ('KRMD', SYS_GUID(), 1, 'KR', 'ROLE', 'N', 'Y',
 /
 INSERT INTO FP_DOC_TYPE_T values ('KGAM', SYS_GUID(), 1, 'KR', 'GROUP ATTRIBUTE', 'N', 'Y', 'N', 0, 'N', 'N')
 /
+INSERT INTO FP_DOC_TYPE_T values ('KETM', SYS_GUID(), 1, 'KR', 'ENTITY TYPE', 'N', 'Y', 'N', 0, 'N', 'N')
+/
 
 COMMIT
 /

@@ -14,3 +14,5 @@ INSERT INTO FP_DOC_TYPE_T values ('KGAM', SYS_GUID(), 1, 'KR', 'GROUP ATTRIBUTE'
 /
 INSERT INTO FP_DOC_TYPE_T values ('KATD', SYS_GUID(), 1, 'KR', 'ATTRIBUTE TYPE', 'N', 'Y', 'N', 0, 'N', 'N')
 /
+INSERT INTO FP_DOC_TYPE_T values ('KETM', SYS_GUID(), 1, 'KR', 'ENTITY TYPE', 'N', 'Y', 'N', 0, 'N', 'N')
+/

@@ -9,6 +9,7 @@ Kuali Identity Management<br/><br>
 <a href="../kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.bo.Namespace&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true">Namespace Lookup</a><br />
 <a href="../kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.bo.NamespaceDefaultAttribute&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true">Namespace Default Attribute Lookup</a><br />
 <a href="../kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.bo.AttributeType&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true">Attribute Type Lookup</a><br />
+<a href="../kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.bo.EntityType&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true">Entity Type Lookup</a><br />
 <br>
 <br>
 <br>

@@ -353,8 +353,6 @@ INSERT INTO FP_DOC_TYPE_T values ('KGMD', SYS_GUID(), 1, 'KR', 'KIM GROUP', 'N',
 /
 INSERT INTO FP_DOC_TYPE_T values ('KRMD', SYS_GUID(), 1, 'KR', 'KIM ROLE', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-INSERT INTO FP_DOC_TYPE_T values ('KGAM', SYS_GUID(), 1, 'KR', 'KIM GROUP ATTRIBUTE', 'N', 'Y', 'N', 0, 'N', 'N')
-/
 INSERT INTO FP_DOC_TYPE_T values ('KETM', SYS_GUID(), 1, 'KR', 'KIM ENTITY TYPE', 'N', 'Y', 'N', 0, 'N', 'N')
 /
 

@@ -24,9 +24,11 @@
                 <bean class="org.kuali.rice.kcb.config.KCBConfigurer">
                     <property name="testMode" value="true"/>
                 </bean>
+                <!--
                 <bean class="org.kuali.notification.config.KENConfigurer">
                     <property name="testMode" value="true"/>
                 </bean>
+                -->
             </list>
         </property>
     </bean>

@@ -116,9 +116,9 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
             statuses = new MessageDeliveryStatus[] { MessageDeliveryStatus.DELIVERED, MessageDeliveryStatus.UNDELIVERED };
         }
         Collection<MessageDelivery> ds = messageDeliveryService.lockAndTakeMessageDeliveries(statuses);
-        LOG.info("Took " + ds.size() + " deliveries");
+        LOG.debug("Took " + ds.size() + " deliveries");
         for (MessageDelivery md: ds) {
-            LOG.info(md);
+            LOG.debug(md);
         }
         return ds;
     }
@@ -257,26 +257,26 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
 
     @Override
     protected void finishProcessing(ProcessingResult<MessageDelivery> result) {
-        LOG.info("Message processing job: " + result.getSuccesses().size() + " processed, " + result.getFailures().size() + " failures");
+        LOG.debug("Message processing job: " + result.getSuccesses().size() + " processed, " + result.getFailures().size() + " failures");
         Set<Long> messageIds = new HashSet<Long>(result.getSuccesses().size());
         for (MessageDelivery md: result.getSuccesses()) {
             messageIds.add(md.getMessage().getId());
         }
         MessageService ms = GlobalKCBServiceLocator.getInstance().getMessageService();
         for (Long id: messageIds) {
-            LOG.info("Finishing processing message " + id);
+            LOG.debug("Finishing processing message " + id);
             //if (Mode.REMOVE == mode) {
             
             Message m = ms.getMessage(id);
             
             Collection<MessageDelivery> c = messageDeliveryService.getMessageDeliveries(m);
             if (c.size() == 0) {
-                LOG.info("Deleting message " + m);
+                LOG.debug("Deleting message " + m);
                 ms.deleteMessage(m);
             } else {
-                LOG.info("Message " + m.getId() + " has " + c.size() + " deliveries");
+                LOG.debug("Message " + m.getId() + " has " + c.size() + " deliveries");
                 for (MessageDelivery md: c) {
-                    LOG.info(md);
+                    LOG.debug(md);
                 }
             }
         }
@@ -295,7 +295,7 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
 
     @Override
     public ProcessingResult<MessageDelivery> run() {
-        LOG.info("MessageProcessingJob running in Thread " + Thread.currentThread() + ": " + mode + " " + user + " " + cause);
+        LOG.debug("MessageProcessingJob running in Thread " + Thread.currentThread() + ": " + mode + " " + user + " " + cause);
         return super.run();
     }
 
@@ -306,7 +306,7 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
         } else {
             this.mode = Mode.DELIVER;
         }
-        LOG.info("==== message processing job: " + this.mode + " ====");
+        LOG.debug("==== message processing job: " + this.mode + " ====");
         this.user = context.getMergedJobDataMap().getString("user");
         this.cause = context.getMergedJobDataMap().getString("cause");
         /*if (context.getMergedJobDataMap().containsKey("messageId")) {

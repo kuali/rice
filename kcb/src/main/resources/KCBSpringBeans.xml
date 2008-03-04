@@ -106,6 +106,8 @@
     <!-- SERVICES -->
 
     <bean id="messagingService" class="org.kuali.rice.kcb.service.impl.MessagingServiceImpl">
+        <property name="jobName"><value>${kcb.quartz.job.name}</value></property>
+        <property name="jobGroup"><value>${kcb.quartz.group}</value></property>
         <property name="messageService"><ref local="messageService"/></property>
         <property name="messageDeliveryService"><ref local="messageDeliveryService"/></property>
         <property name="messageDelivererRegistryService"><ref local="messageDelivererRegistryService"/></property>

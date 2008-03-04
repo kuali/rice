@@ -233,17 +233,8 @@ public class DocumentOperationAction extends WorkflowAction {
 
 			}
 			if (EdenConstants.DELETE.equals(opValue)) {
-				for (Iterator childIter = actionRequest.getChildrenRequests().iterator(); childIter.hasNext();) {
-					getActionRequestService().deleteByActionRequestId(((ActionRequestValue) childIter.next()).getActionRequestId());
-				}
-				getActionListService().deleteActionItems(actionRequest);
-				if (actionRequest.getActionTakenId() != null) {
-					ActionTakenValue actionTaken = getActionTakenService().findByActionTakenId(actionRequest.getActionTakenId());
-					getActionTakenService().delete(actionTaken);
-				}
-
-				getActionRequestService().deleteByActionRequestId(actionRequest.getActionRequestId());
-				change = true;
+			    getActionRequestService().deleteActionRequestGraph(actionRequest);
+			    change = true;
 			}
 		}
 

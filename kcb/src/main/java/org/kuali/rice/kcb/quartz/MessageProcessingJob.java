@@ -18,9 +18,11 @@ package org.kuali.rice.kcb.quartz;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kcb.GlobalKCBServiceLocator;
@@ -59,18 +61,17 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
     private BusinessObjectDao dao;
     private MessageDelivererRegistryService registry;
     private MessageDeliveryService messageDeliveryService;
-    private Mode mode = Mode.DELIVER;
+    private Mode mode = null;
     private String user;
     private String cause;
-    private Long messageId;
 
-    public MessageProcessingJob(Long messageId, Mode mode, String user, String cause) {
+    public MessageProcessingJob(Mode mode, String user, String cause) {
         this();
-        this.messageId = messageId;
         this.mode = mode;
         this.user = user;
         this.cause = cause;
     }
+
 
     public MessageProcessingJob() {
         dao = GlobalKCBServiceLocator.getInstance().getBusinessObjectDao();
@@ -169,9 +170,9 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
     
     
     @Override
-    protected Collection<?> processWorkItems(Collection<MessageDelivery> messageDeliveries) {
+    protected Collection<MessageDelivery> processWorkItems(Collection<MessageDelivery> messageDeliveries) {
         MessageDelivery firstMessageDelivery = messageDeliveries.iterator().next();
-        // get our hands on the appropriate NotificationMessageDeliverer instance
+        // get our hands on the appropriate MessageDeliverer instance
         MessageDeliverer messageDeliverer = registry.getDeliverer(firstMessageDelivery);
         if (messageDeliverer == null) {
             throw new RuntimeException("Message deliverer could not be obtained");
@@ -180,7 +181,7 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
         if (messageDeliveries.size() > 1) {
             // this is a bulk deliverer, so we need to batch the MessageDeliveries
             if (!(messageDeliverer instanceof BulkMessageDeliverer)) {
-                throw new RuntimeException("Discrepency in dispatch service: deliverer for list of message deliveries is not a BulkNotificationMessageDeliverer");
+                throw new RuntimeException("Discrepency in dispatch service: deliverer for list of message deliveries is not a BulkMessageDeliverer");
             }
             return bulkProcess((BulkMessageDeliverer) messageDeliverer, messageDeliveries, mode);
         } else {
@@ -189,12 +190,12 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
     }
 
     /**
-     * Implements delivery of a single NotificationMessageDelivery
+     * Implements delivery of a single MessageDelivery
      * @param deliverer the deliverer
      * @param messageDelivery the delivery
      * @return collection of strings indicating successful deliveries
      */
-    protected Collection<String> process(MessageDeliverer messageDeliverer, MessageDelivery messageDelivery, Mode mode) {
+    protected Collection<MessageDelivery> process(MessageDeliverer messageDeliverer, MessageDelivery messageDelivery, Mode mode) {
         // we have our message deliverer, so tell it to deliver the message
         try {
             if (mode == Mode.DELIVER) {
@@ -215,18 +216,18 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
         LOG.debug("Message delivery '" + messageDelivery.getId() + "' for message '" + messageDelivery.getMessage().getId() + "' was successfully processed.");
         //PerformanceLog.logDuration("Time to dispatch notification delivery for notification " + messageDelivery.getMessage().getId(), System.currentTimeMillis() - messageDelivery.getNotification().getSendDateTime().getTime());
 
-        List<String> success = new ArrayList<String>(1);
-        success.add("Successfully processed " +  messageDelivery);
+        List<MessageDelivery> success = new ArrayList<MessageDelivery>(1);
+        success.add(messageDelivery);
         return success;
     }
 
     /**
-     * Implements bulk delivery of a collection of {@link NotificationMessageDelivery}s
+     * Implements bulk delivery of a collection of {@link MessageDelivery}s
      * @param deliverer the deliverer
      * @param messageDeliveries the deliveries
      * @return collection of strings indicating successful deliveries
      */
-    protected Collection<String> bulkProcess(BulkMessageDeliverer messageDeliverer, Collection<MessageDelivery> messageDeliveries,  Mode mode) {
+    protected Collection<MessageDelivery> bulkProcess(BulkMessageDeliverer messageDeliverer, Collection<MessageDelivery> messageDeliveries,  Mode mode) {
         // we have our message deliverer, so tell it to deliver the message
         try {
             if (mode == Mode.DELIVER) {
@@ -242,9 +243,9 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
         // by definition we have succeeded at this point if no exception was thrown by the messageDeliverer
         // so update the status of the delivery message instance to DELIVERED (and unmark as taken)
         // and persist
-        List<String> successes = new ArrayList<String>(messageDeliveries.size());
+        List<MessageDelivery> successes = new ArrayList<MessageDelivery>(messageDeliveries.size());
         for (MessageDelivery nmd: messageDeliveries) {
-            successes.add("Successfully delivered " + nmd);
+            successes.add(nmd);
             LOG.debug("Message delivery '" + nmd.getId() + "' for notification '" + nmd.getMessage().getId() + "' was successfully delivered.");
             //PerformanceLog.logDuration("Time to dispatch notification delivery for notification " + nmd.getMessage().getId(), System.currentTimeMillis() - nmd.getNotification().getSendDateTime().getTime());
             updateStatusAndUnlock(nmd, mode == Mode.DELIVER ? MessageDeliveryStatus.DELIVERED : MessageDeliveryStatus.REMOVED);
@@ -255,20 +256,20 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
     }
 
     @Override
-    protected void finishProcessing() {
-        LOG.info("Finishing processing message " + messageId);
-        //if (Mode.REMOVE == mode) {
-            MessageService ms = GlobalKCBServiceLocator.getInstance().getMessageService();
-            Message m = ms.getMessage(messageId);
+    protected void finishProcessing(ProcessingResult<MessageDelivery> result) {
+        LOG.info("Message processing job: " + result.getSuccesses().size() + " processed, " + result.getFailures().size() + " failures");
+        Set<Long> messageIds = new HashSet<Long>(result.getSuccesses().size());
+        for (MessageDelivery md: result.getSuccesses()) {
+            messageIds.add(md.getMessage().getId());
+        }
+        MessageService ms = GlobalKCBServiceLocator.getInstance().getMessageService();
+        for (Long id: messageIds) {
+            LOG.info("Finishing processing message " + id);
+            //if (Mode.REMOVE == mode) {
             
-            if (m == null) {
-                // this can happen in unit tests, or if for some other reason the message goes away before this listener
-                // is called
-                LOG.warn("Called for invalid message: " + messageId);
-                return;
-            }
-            MessageDeliveryService mds = GlobalKCBServiceLocator.getInstance().getMessageDeliveryService(); 
-            Collection<MessageDelivery> c = mds.getMessageDeliveries(m);
+            Message m = ms.getMessage(id);
+            
+            Collection<MessageDelivery> c = messageDeliveryService.getMessageDeliveries(m);
             if (c.size() == 0) {
                 LOG.info("Deleting message " + m);
                 ms.deleteMessage(m);
@@ -278,6 +279,7 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
                     LOG.info(md);
                 }
             }
+        }
     }
 
     /**
@@ -304,11 +306,12 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
         } else {
             this.mode = Mode.DELIVER;
         }
+        LOG.info("==== message processing job: " + this.mode + " ====");
         this.user = context.getMergedJobDataMap().getString("user");
         this.cause = context.getMergedJobDataMap().getString("cause");
-        if (context.getMergedJobDataMap().containsKey("messageId")) {
+        /*if (context.getMergedJobDataMap().containsKey("messageId")) {
             this.messageId = context.getMergedJobDataMap().getLong("messageId");
-        }
+        }*/
         super.run();
     }
 }

@@ -27,6 +27,7 @@ import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.actionitem.ActionItem;
+import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 /**
@@ -43,6 +44,7 @@ public class KCBNotificationService extends DefaultNotificationService {
         if (!EdenConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(actionItem.getRecipientTypeCode()))
             return;
 
+        
         // send it off to KCB
         MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(Core.getCurrentContextConfig().getMessageEntity(), KCBServiceNames.KCB_MESSAGING));
         MessageVO mvo = new MessageVO();
@@ -51,12 +53,13 @@ public class KCBNotificationService extends DefaultNotificationService {
         mvo.setContentType("KEW notification");
         mvo.setDeliveryType(actionItem.getActionRequestCd());
         mvo.setProducer("kew@localhost");
-        mvo.setTitle("i'm a kew notification");
+        mvo.setTitle(actionItem.getDocLabel() + " - " + actionItem.getDocName() + " - " + actionItem.getDocTitle());
         mvo.setUrl(actionItem.getDocHandlerURL() + "?docId=" + actionItem.getRouteHeaderId());
         mvo.setOriginId(String.valueOf(actionItem.getActionItemId()));
         try {
             // just assume it's a user at this point...
             mvo.setRecipient(actionItem.getUser().getAuthenticationUserId().getId());
+            LOG.debug("Sending message to KCB: " + mvo);
             ms.deliver(mvo);
         } catch (Exception e) {
             throw new WorkflowRuntimeException("could not deliver message to KCB", e);
@@ -65,9 +68,15 @@ public class KCBNotificationService extends DefaultNotificationService {
 
     @Override
     public void removeNotification(List<ActionItem> actionItems) {
+        
         MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(Core.getCurrentContextConfig().getMessageEntity(), KCBServiceNames.KCB_MESSAGING));
 
         for (ActionItem actionItem: actionItems) {
+            try {
+                LOG.debug("Removing KCB messages for action item: " + actionItem.getActionItemId() + " " + actionItem.getActionRequestCd() + " " + actionItem.getUser());
+            } catch (EdenUserNotFoundException eunfe) {
+                throw new RuntimeException(eunfe);
+            }
             try {
                 // we don't have the action takens at this point...? :(
                 ms.removeByOriginId(String.valueOf(actionItem.getActionItemId()), null, null);

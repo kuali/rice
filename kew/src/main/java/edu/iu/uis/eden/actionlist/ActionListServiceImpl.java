@@ -42,16 +42,15 @@ import edu.iu.uis.eden.actionrequests.ActionRequestService;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.doctype.DocumentType;
-import edu.iu.uis.eden.engine.ActivationContext;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.messaging.KEWXMLService;
 import edu.iu.uis.eden.messaging.MessageServiceNames;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
+import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.user.WorkflowUserId;
-import edu.iu.uis.eden.workgroup.WorkflowGroupId;
 import edu.iu.uis.eden.workgroup.Workgroup;
 import edu.iu.uis.eden.workgroup.WorkgroupMembershipChangeProcessor;
 import edu.iu.uis.eden.workgroup.WorkgroupService;
@@ -69,8 +68,8 @@ public class ActionListServiceImpl implements ActionListService {
 
     private ActionItemDAO actionItemDAO;
 
-    public Collection findUserDelegators(WorkflowUser workflowUser, String delegationType) throws EdenUserNotFoundException {
-        return findDelegators(workflowUser, delegationType);
+    public Collection<Recipient> findUserDelegators(WorkflowUser workflowUser, String delegationType) throws EdenUserNotFoundException {
+        return getActionItemDAO().findDelegators(workflowUser, delegationType);
     }
 
     public Collection getActionList(WorkflowUser workflowUser, ActionListFilter filter) {
@@ -96,15 +95,11 @@ public class ActionListServiceImpl implements ActionListService {
             LOG.error("error saving refreshUserOption", e);
         }
         getActionItemDAO().deleteActionItem(actionItem);
+        // remove notification from KCB
+        List<ActionItem> l = new ArrayList<ActionItem>(1);
+        l.add(actionItem);
+        KEWServiceLocator.getNotificationService().removeNotification(l);
         this.saveOutboxItem(actionItem);
-    }
-
-    public void deleteActionItems(ActionRequestValue actionRequest) {
-        LOG.debug("deleting " + actionRequest.getActionItems().size() + " action items for action request: " + actionRequest);
-        for (ActionItem actionItem: actionRequest.getActionItems()) {
-            LOG.debug("deleting action item: " + actionItem);
-            this.deleteActionItem(actionItem);
-        }
     }
 
     public void deleteByRouteHeaderId(Long routeHeaderId) {
@@ -134,76 +129,6 @@ public class ActionListServiceImpl implements ActionListService {
 
     public Collection findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId) {
         return getActionItemDAO().findByWorkflowUserRouteHeaderId(workflowUserId, routeHeaderId);
-    }
-
-    private ActionItem createActionItemFromActionRequest(ActionRequestValue actionRequest) {
-        ActionItem actionItem = new ActionItem();
-
-        DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(
-                actionRequest.getRouteHeaderId());
-        DocumentType docType = routeHeader.getDocumentType();
-
-        actionItem.setActionRequestCd(actionRequest.getActionRequested());
-        actionItem.setActionRequestId(actionRequest.getActionRequestId());
-        actionItem.setDocName(docType.getName());
-        actionItem.setRoleName(actionRequest.getQualifiedRoleName());
-        actionItem.setWorkflowId(actionRequest.getWorkflowId());
-        actionItem.setRouteHeaderId(actionRequest.getRouteHeaderId());
-        actionItem.setRouteHeader(routeHeader);
-        actionItem.setDateAssigned(new Timestamp(new Date().getTime()));
-        actionItem.setDocHandlerURL(docType.getDocHandlerUrl());
-        actionItem.setDocLabel(docType.getLabel());
-        actionItem.setDocTitle(routeHeader.getDocTitle());
-        actionItem.setWorkgroupId(actionRequest.getWorkgroupId());
-        actionItem.setResponsibilityId(actionRequest.getResponsibilityId());
-        actionItem.setDelegationType(actionRequest.getDelegationType());
-
-        ActionRequestValue delegatorActionRequest = getActionRequestService().findDelegatorRequest(actionRequest);
-        if (delegatorActionRequest != null) {
-            actionItem.setDelegatorWorkflowId(delegatorActionRequest.getWorkflowId());
-            actionItem.setDelegatorWorkgroupId(delegatorActionRequest.getWorkgroupId());
-        }
-
-        return actionItem;
-    }
-
-    /**
-     * Generates ActionItems for the given ActionRequest and returns the List of generated Action Items.
-     * 
-     * @return the List of generated ActionItems
-     */
-    public List<ActionItem> generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext)
-    throws EdenUserNotFoundException {
-        LOG.debug("generating the action items for request " + actionRequest.getActionRequestId());
-        List<ActionItem> actionItems = new ArrayList<ActionItem>();
-        if (!actionRequest.isPrimaryDelegator()) {
-            if (actionRequest.isWorkgroupRequest()) {
-                List<WorkflowUser> users = getWorkgroupService().getWorkgroup(new WorkflowGroupId(actionRequest.getWorkgroupId())).getUsers();
-                actionItems.addAll(createActionItemsForUsers(actionRequest, users));
-            } else if (actionRequest.isUserRequest()) {
-                ActionItem actionItem = createActionItemFromActionRequest(actionRequest);
-                actionItems.add(actionItem);
-            }
-        }
-        if (!activationContext.isSimulation()) {
-            for (ActionItem actionItem: actionItems) {
-                LOG.debug("Saving action item: " + actionItems);
-                saveActionItem(actionItem);
-            }
-        }
-        actionRequest.setActionItems(actionItems);
-        return actionItems;
-    }
-
-    private List<ActionItem> createActionItemsForUsers(ActionRequestValue actionRequest, List<WorkflowUser> users) {
-        List<ActionItem> actionItems = new ArrayList<ActionItem>();
-        for (WorkflowUser user: users) {
-            ActionItem actionItem = createActionItemFromActionRequest(actionRequest);
-            actionItem.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
-            actionItem.setRoleName(actionRequest.getQualifiedRoleName());
-            actionItems.add(actionItem);
-        }
-        return actionItems;
     }
 
     /**
@@ -240,11 +165,11 @@ public class ActionListServiceImpl implements ActionListService {
         }
     }
 
+
     /**
      * Update the user's Action List to reflect their addition to the given Workgroup.
      */
-    public void updateActionListForUserAddedToWorkgroup(WorkflowUser user, Workgroup workgroup)
-    throws EdenUserNotFoundException {
+    public void updateActionListForUserAddedToWorkgroup(WorkflowUser user, Workgroup workgroup) throws EdenUserNotFoundException {
         // first verify that the user is still a member of the workgroup
         if (workgroup.hasMember(user)) {
             List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
@@ -255,13 +180,44 @@ public class ActionListServiceImpl implements ActionListService {
             }
             for (Iterator requestIt = actionRequests.iterator(); requestIt.hasNext();) {
                 ActionRequestValue request = (ActionRequestValue) requestIt.next();
-                ActionItem item = createActionItemFromActionRequest(request);
+                ActionItem item = createActionItemForActionRequest(request);
                 item.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
                 saveActionItem(item);
             }
         }
     }
+    
+    public ActionItem createActionItemForActionRequest(ActionRequestValue actionRequest) {
+        ActionItem actionItem = new ActionItem();
 
+        DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(
+                actionRequest.getRouteHeaderId());
+        DocumentType docType = routeHeader.getDocumentType();
+
+        actionItem.setActionRequestCd(actionRequest.getActionRequested());
+        actionItem.setActionRequestId(actionRequest.getActionRequestId());
+        actionItem.setDocName(docType.getName());
+        actionItem.setRoleName(actionRequest.getQualifiedRoleName());
+        actionItem.setWorkflowId(actionRequest.getWorkflowId());
+        actionItem.setRouteHeaderId(actionRequest.getRouteHeaderId());
+        actionItem.setRouteHeader(routeHeader);
+        actionItem.setDateAssigned(new Timestamp(new Date().getTime()));
+        actionItem.setDocHandlerURL(docType.getDocHandlerUrl());
+        actionItem.setDocLabel(docType.getLabel());
+        actionItem.setDocTitle(routeHeader.getDocTitle());
+        actionItem.setWorkgroupId(actionRequest.getWorkgroupId());
+        actionItem.setResponsibilityId(actionRequest.getResponsibilityId());
+        actionItem.setDelegationType(actionRequest.getDelegationType());
+
+        ActionRequestValue delegatorActionRequest = getActionRequestService().findDelegatorRequest(actionRequest);
+        if (delegatorActionRequest != null) {
+            actionItem.setDelegatorWorkflowId(delegatorActionRequest.getWorkflowId());
+            actionItem.setDelegatorWorkgroupId(delegatorActionRequest.getWorkgroupId());
+        }
+
+        return actionItem;
+    }
+    
     /**
      * Update the user's Action List to reflect their removal from the given Workgroup.
      */
@@ -329,10 +285,6 @@ public class ActionListServiceImpl implements ActionListService {
             map.put(user.getWorkflowUserId().getWorkflowId(), user);
         }
         return map;
-    }
-
-    public Collection findDelegators(WorkflowUser user, String delegationType) throws EdenUserNotFoundException {
-        return getActionItemDAO().findDelegators(user, delegationType);
     }
 
     public void saveActionItem(ActionItem actionItem) throws EdenUserNotFoundException {

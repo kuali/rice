@@ -208,9 +208,11 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
                         }
                     }
                     
+                    // we have no delivery stage any more, anything we send to KCB needs to be considered "delivered" from
+                    // the perspective of KEN
+                    defaultMessageDelivery.setMessageDeliveryStatus(NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED);
                     businessObjectDao.save(defaultMessageDelivery);
 
-                    
                     successes.add(defaultMessageDelivery);
                 }
 

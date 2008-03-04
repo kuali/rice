@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kcb.vo;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 
 /**
  * Message value object for published API  
@@ -85,5 +87,9 @@ public class MessageVO {
     }
     public void setOriginId(String originId) {
         this.originId = originId;
+    }
+    
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

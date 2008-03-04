@@ -51,7 +51,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListDAOOjbImpl.class);
 
-    public Collection getActionList(WorkflowUser workflowUser, ActionListFilter filter) {
+    public Collection<ActionItem> getActionList(WorkflowUser workflowUser, ActionListFilter filter) {
         LOG.info("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
         Criteria crit = new Criteria();
         crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
@@ -59,7 +59,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             setUpActionListCriteria(crit, filter);
         }
         LOG.info("running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-        Collection collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItemActionListExtension.class, crit));
+        Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItemActionListExtension.class, crit));
         LOG.info("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
         return createActionList(collection);
     }
@@ -283,13 +283,11 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
      *
      * @return the Action List as a Collection of ActionItems
      */
-    @SuppressWarnings("unchecked")
-    private Collection createActionList(Collection actionItems) {
-    	Map actionItemMap = new HashMap();
+    private Collection<ActionItem> createActionList(Collection<ActionItem> actionItems) {
+    	Map<Long, ActionItem> actionItemMap = new HashMap<Long, ActionItem>();
     	ActionListPriorityComparator comparator = new ActionListPriorityComparator();
-    	for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
-			ActionItem potentialActionItem = (ActionItem) iterator.next();
-			ActionItem existingActionItem = (ActionItem)actionItemMap.get(potentialActionItem.getRouteHeaderId());
+    	for (ActionItem potentialActionItem: actionItems) {
+			ActionItem existingActionItem = actionItemMap.get(potentialActionItem.getRouteHeaderId());
 			if (existingActionItem == null || comparator.compare(potentialActionItem, existingActionItem) > 0) {
 				actionItemMap.put(potentialActionItem.getRouteHeaderId(), potentialActionItem);
 			}
@@ -298,48 +296,47 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     }
 
     
-    @SuppressWarnings("unchecked")
-    public Collection getOutbox(WorkflowUser workflowUser, ActionListFilter filter) {
-	LOG.info("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+    public Collection<ActionItem> getOutbox(WorkflowUser workflowUser, ActionListFilter filter) {
+        LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
         Criteria crit = new Criteria();
         crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
         if (filter != null) {
             setUpActionListCriteria(crit, filter);
         }
-        LOG.info("running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-        Collection collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
-        LOG.info("finished running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+        LOG.debug("running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+        Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
+        LOG.debug("finished running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
         return createActionList(collection);
     }
 
     /**
-     * This overridden method ...
+     * Deletes all outbox items specified by the list of ids
      * 
      * @see edu.iu.uis.eden.actionlist.dao.ActionListDAO#removeOutboxItems(edu.iu.uis.eden.user.WorkflowUser, java.util.List)
      */
     public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems) {
-	Criteria crit = new Criteria();
-	crit.addIn("actionItemId", outboxItems);
-	getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
+        Criteria crit = new Criteria();
+        crit.addIn("actionItemId", outboxItems);
+        getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
     }
 
     /**
-     * This overridden method ...
+     * Saves an outbox item
      * 
      * @see edu.iu.uis.eden.actionlist.dao.ActionListDAO#saveOutboxItem(edu.iu.uis.eden.actionitem.OutboxItemActionListExtension)
      */
     public void saveOutboxItem(OutboxItemActionListExtension outboxItem) {
-	this.getPersistenceBrokerTemplate().store(outboxItem);
+        this.getPersistenceBrokerTemplate().store(outboxItem);
     }
 
     /**
-     * This overridden method ...
+     * Gets the outbox item associated with the document id
      * 
      * @see edu.iu.uis.eden.actionlist.dao.ActionListDAO#getOutboxByDocumentId(java.lang.Long)
      */
     public OutboxItemActionListExtension getOutboxByDocumentId(Long documentId) {
-	Criteria crit = new Criteria();
-	crit.addEqualTo("routeHeaderId", documentId);
-	return (OutboxItemActionListExtension)getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
+        Criteria crit = new Criteria();
+        crit.addEqualTo("routeHeaderId", documentId);
+        return (OutboxItemActionListExtension)getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
     }
 }

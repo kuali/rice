@@ -3,6 +3,8 @@
 <!--
     - Application context definition for KCB DispatcherServlet.
 -->
+<!-- todo: investigate autowire by type for service beans...: default-autowire-candidates="*Service"
+ -->
 <beans>
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">
@@ -18,6 +20,7 @@
     <!-- import beans from GlobalResourceLoader -->
     <bean id="recipientPreferenceService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean" />
     <bean id="messageDelivererRegistryService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean" />
+    <bean id="kenIntegrationService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean" />
 
     <!-- Implement better strategy later -->
     <!-- 
@@ -86,11 +89,12 @@
                   <prop key="${prefix}/saveprefs.kcb">saveDelivererConfiguration</prop>
                </props>
             </property>
-         </bean>          
+         </bean>
       </property>
 
       <property name="recipientPreferenceService"> <ref bean="recipientPreferenceService"/> </property>
       <property name="messageDelivererRegistryService"> <ref bean="messageDelivererRegistryService"/> </property>
+      <property name="kenIntegrationService"> <ref bean="kenIntegrationService"/> </property>
    </bean> 
 
 </beans>

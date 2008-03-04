@@ -108,7 +108,7 @@ public abstract class ConcurrentJob<T> {
      * @param item the work item
      * @return a collection of success messages
      */
-    protected abstract Collection<?> processWorkItems(Collection<T> items);
+    protected abstract Collection<T> processWorkItems(Collection<T> items);
 
     /**
      * Template method that subclasses should override to unlock a given work item when procesing has failed.
@@ -202,7 +202,7 @@ public abstract class ConcurrentJob<T> {
             }
         }
 
-        finishProcessing();
+        finishProcessing(result);
 
         LOG.debug("[" + new Timestamp(System.currentTimeMillis()).toString() + "] FINISHED RUN - " + result);
 
@@ -212,7 +212,7 @@ public abstract class ConcurrentJob<T> {
     /**
      * Template method called after processing of work items has completed
      */
-    protected void finishProcessing() {}
+    protected void finishProcessing(ProcessingResult<T> result) {}
 
     protected void unlockWorkItemAtomically(final T workItem) {
         try {

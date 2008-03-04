@@ -38,7 +38,6 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ActionRequestService {
-
 	public ActionRequestValue initializeActionRequestGraph(ActionRequestValue actionRequest, DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance);
 	
     public void deactivateRequest(ActionTakenValue actionTaken, ActionRequestValue actionRequest);

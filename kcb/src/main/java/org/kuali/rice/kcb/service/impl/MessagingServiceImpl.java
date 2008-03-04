@@ -23,7 +23,6 @@ import junit.framework.Assert;
 
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
@@ -37,7 +36,6 @@ import org.kuali.rice.kcb.service.MessagingService;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
 import org.kuali.rice.kcb.vo.MessageVO;
 import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleTrigger;
@@ -57,11 +55,30 @@ public class MessagingServiceImpl implements MessagingService {
     private MessageDeliveryService messageDeliveryService;
     private MessageDelivererRegistryService delivererRegistry;
     private RecipientPreferenceService recipientPrefs;
+    private String jobName;
+    private String jobGroup;
+
     /**
      * Whether to perform the processing  synchronously
      */
     private boolean synchronous;
     
+    /**
+     * Sets the name of the target job to run to process messages
+     * @param jobName the name of the target job to run to process messages
+     */
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
+    }
+
+    /**
+     * Sets the group of the target job to run to process messages
+     * @param jobGroup Sets the group of the target job to run to process messages
+     */
+    public void setJobGroup(String jobGroup) {
+        this.jobGroup = jobGroup;
+    }
+
     /**
      * Sets the MessageService
      * @param messageService the MessageService
@@ -162,31 +179,18 @@ public class MessagingServiceImpl implements MessagingService {
     /**
      * @see org.kuali.rice.kcb.service.MessagingService#removeByOriginId(java.lang.String, java.lang.String, java.lang.String)
      */
-    public void removeByOriginId(String originId, String user, String cause) throws MessageDismissalException {
+    public Long removeByOriginId(String originId, String user, String cause) throws MessageDismissalException {
         Message m = messageService.getMessageByOriginId(originId);
         if (m == null) {
-            throw new MessageDismissalException("No such message with origin id: " + originId);
+            return null; 
+            //throw new MessageDismissalException("No such message with origin id: " + originId);
         }
         remove(m, user, cause);
+        return m.getId();
     }
 
     private void remove(Message message, String user, String cause) {
-
         queueJob(MessageProcessingJob.Mode.REMOVE, message.getId(), user, cause);
-        
-        /*Collection<MessageDelivery> deliveries = messageDeliveryService.getMessageDeliveries(m);
-        for (MessageDelivery delivery: deliveries) {
-            delivery.setDeliveryStatus(MessageDeliveryStatus.REMOVED.name());
-
-            MessageDeliverer deliverer = delivererRegistry.getDeliverer(delivery);
-            if (deliverer != null) {
-                deliverer.dismiss(delivery, "nobody", "no reason");
-            }
-
-            messageDeliveryService.deleteMessageDelivery(delivery);
-        }*/
-        
-        //messageService.deleteMessage(m);
     }
 
     /**
@@ -213,10 +217,12 @@ public class MessagingServiceImpl implements MessagingService {
 
     private void queueJob(MessageProcessingJob.Mode mode, long messageId, String user, String cause) {
         // queue up the processing job after the transaction has committed
-        LOG.error("registering synchronization");
+        LOG.info("registering synchronization");
         Assert.assertTrue(TransactionSynchronizationManager.isSynchronizationActive());
         Assert.assertTrue(TransactionSynchronizationManager.isActualTransactionActive());
         TransactionSynchronizationManager.registerSynchronization(new QueueProcessingJobSynchronization(
+            jobName,
+            jobGroup,
             mode,
             messageId,
             user,
@@ -227,19 +233,29 @@ public class MessagingServiceImpl implements MessagingService {
     
     public static class QueueProcessingJobSynchronization extends TransactionSynchronizationAdapter {
         private static final Logger LOG = Logger.getLogger(QueueProcessingJobSynchronization.class);
+        private final String jobName;
+        private final String jobGroup;
         private final MessageProcessingJob.Mode mode;
         private final long messageId;
         private final String user;
         private final String cause;
         private final boolean synchronous;
 
-        private QueueProcessingJobSynchronization(MessageProcessingJob.Mode mode, long messageId, String user, String cause, boolean synchronous) {
+        private QueueProcessingJobSynchronization(String jobName, String jobGroup, MessageProcessingJob.Mode mode, long messageId, String user, String cause, boolean synchronous) {
+            this.jobName = jobName;
+            this.jobGroup = jobGroup;
             this.mode = mode;
             this.messageId = messageId;
             this.user = user;
             this.cause = cause;
             this.synchronous = synchronous;
         }
+
+        /*
+        @Override
+        public void beforeCommit(boolean readOnly) {
+            super.beforeCommit(readOnly);
+        }*/
 
         @Override
         public void afterCommit() {
@@ -254,65 +270,27 @@ public class MessagingServiceImpl implements MessagingService {
             }
         }*/
 
-        public void scheduleJob() {
+        private void scheduleJob() {
             LOG.info("Queueing processing job");
             try {
                 Scheduler scheduler = KSBServiceLocator.getScheduler();
-                JobDetail jobDetail = GlobalKCBServiceLocator.getInstance().getMessageProcessingJobDetail();
-                // make sure the job detail is registered
-                if (scheduler.getJobDetail(jobDetail.getName(), jobDetail.getGroup()) == null) {
-                    scheduler.addJob(jobDetail, true);
-                }
-    
-                /*if (scheduler.getJobListener(MessageDeletionListener.NAME) == null) {
-                    scheduler.addJobListener(new MessageDeletionListener());
-                }*/
-    
-                JobDataMap data = new JobDataMap();
-                data.put("mode", mode.name());
-                data.put("user", user);
-                data.put("cause", cause);
-                data.put("messageId", messageId);
-    
                 if (synchronous) {
                     LOG.info("Invoking job synchronously in Thread " + Thread.currentThread());
-                    new MessageProcessingJob(messageId, mode, user, cause).run();
-                    /*final Object lock = new Object();
-                    scheduler.addGlobalJobListener(new JobListenerSupport() {
-                        @Override
-                        public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
-                            LOG.debug("Job was executed: " + context);
-                            if (MessageProcessingJob.NAME.equals(context.getJobDetail().getName())) {
-                                LOG.debug("Obtaining lock");
-                                synchronized (lock) {
-                                    LOG.debug("Notifying on lock");    
-                                    lock.notifyAll();
-                                }
-                            }
-                            
-                        }
-                        public String getName() {
-                            return System.currentTimeMillis() + RandomStringUtils.randomAlphanumeric(10);
-                        }
-                        
-                    });*/
-                    //scheduler.triggerJob(jobDetail.getName(), jobDetail.getGroup(), data);
-                
-                    /*LOG.debug("Waiting for job to complete...");
-                    synchronized (lock) {
-                        try {
-                            lock.wait();
-                        } catch (InterruptedException ie) {
-                            throw new RuntimeException(ie);
-                        }
-                    }
-                    LOG.debug("Job completed...");*/
+                    MessageProcessingJob job = new MessageProcessingJob(mode, user, cause);
+                    job.run();
                 } else {
-                    String uniqueTriggerName = jobDetail.getName() + "-Trigger-" + System.currentTimeMillis() + Math.random();
-                    SimpleTrigger trigger = new SimpleTrigger(uniqueTriggerName, jobDetail.getGroup() + "-Trigger");
+                    String uniqueTriggerName = jobName + "-Trigger-" + System.currentTimeMillis() + Math.random();
+                    SimpleTrigger trigger = new SimpleTrigger(uniqueTriggerName, jobGroup + "-Trigger");
                     LOG.info("Scheduling trigger: " + trigger);
-                    trigger.setJobName(jobDetail.getName());
-                    trigger.setJobGroup(jobDetail.getGroup());
+
+                    JobDataMap data = new JobDataMap();
+                    data.put("mode", mode.name());
+                    data.put("user", user);
+                    data.put("cause", cause);
+                    data.put("messageId", messageId);
+
+                    trigger.setJobName(jobName);
+                    trigger.setJobGroup(jobGroup);
                     trigger.setJobDataMap(data);
                     scheduler.scheduleJob(trigger);
                 }
@@ -320,5 +298,5 @@ public class MessagingServiceImpl implements MessagingService {
                 throw new RuntimeException(se);
             }
         }
-    }    
+    }
 }

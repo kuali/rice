@@ -23,7 +23,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -39,6 +41,7 @@ import edu.iu.uis.eden.engine.ActivationContext;
 import edu.iu.uis.eden.engine.node.RouteNodeInstance;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.messaging.MessageServiceNames;
+import edu.iu.uis.eden.notification.NotificationService;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routeheader.RouteHeaderService;
 import edu.iu.uis.eden.routemodule.RouteModule;
@@ -59,8 +62,7 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ActionRequestServiceImpl implements ActionRequestService {
-
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionRequestServiceImpl.class);
+    private static final Logger LOG = Logger.getLogger(ActionRequestServiceImpl.class);
 
     private ActionRequestDAO actionRequestDAO;
 
@@ -94,6 +96,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         actionRequest.setNodeInstance(nodeInstance);
         actionRequest.setStatus(EdenConstants.ACTION_REQUEST_INITIALIZED);
     }
+
+    
 
     public void activateRequests(Collection actionRequests) throws EdenUserNotFoundException {
         activateRequests(actionRequests, new ActivationContext(!ActivationContext.CONTEXT_IS_SIMULATION));
@@ -174,8 +178,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         actionRequest.setStatus(EdenConstants.ACTION_REQUEST_ACTIVATED);
         if (!activationContext.isSimulation()) {
             saveActionRequest(actionRequest);
-            activationContext.getGeneratedActionItems().addAll(
-                    getActionListService().generateActionItems(actionRequest, activationContext));
+            activationContext.getGeneratedActionItems().addAll(generateActionItems(actionRequest, activationContext));
         }
         activateRequestsInternal(actionRequest.getChildrenRequests(), activationContext);
         activateRequestInternal(actionRequest.getParentActionRequest(), activationContext);
@@ -184,6 +187,45 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         } else {
             performanceLogger.log("Time to activate action request with id " + actionRequest.getActionRequestId());
         }
+    }
+    
+    /**
+     * Generates ActionItems for the given ActionRequest and returns the List of generated Action Items.
+     * 
+     * @return the List of generated ActionItems
+     */
+    private List<ActionItem> generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext)
+    throws EdenUserNotFoundException {
+        LOG.debug("generating the action items for request " + actionRequest.getActionRequestId());
+        List<ActionItem> actionItems = new ArrayList<ActionItem>();
+        if (!actionRequest.isPrimaryDelegator()) {
+            if (actionRequest.isWorkgroupRequest()) {
+                List<WorkflowUser> users = getWorkgroupService().getWorkgroup(new WorkflowGroupId(actionRequest.getWorkgroupId())).getUsers();
+                actionItems.addAll(createActionItemsForUsers(actionRequest, users));
+            } else if (actionRequest.isUserRequest()) {
+                ActionItem actionItem = getActionListService().createActionItemForActionRequest(actionRequest);
+                actionItems.add(actionItem);
+            }
+        }
+        if (!activationContext.isSimulation()) {
+            for (ActionItem actionItem: actionItems) {
+                LOG.debug("Saving action item: " + actionItems);
+                getActionListService().saveActionItem(actionItem);
+            }
+        }
+        actionRequest.setActionItems(actionItems);
+        return actionItems;
+    }
+
+    private List<ActionItem> createActionItemsForUsers(ActionRequestValue actionRequest, List<WorkflowUser> users) {
+        List<ActionItem> actionItems = new ArrayList<ActionItem>();
+        for (WorkflowUser user: users) {
+            ActionItem actionItem = getActionListService().createActionItemForActionRequest(actionRequest);
+            actionItem.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
+            actionItem.setRoleName(actionRequest.getQualifiedRoleName());
+            actionItems.add(actionItem);
+        }
+        return actionItems;
     }
 
     private void processResponsibilityId(ActionRequestValue actionRequest) {
@@ -306,7 +348,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         }
         if (!activationContext.isSimulation()) {
             getActionRequestDAO().saveActionRequest(actionRequest);
-            getActionListService().deleteActionItems(actionRequest);
+            deleteActionItems(actionRequest);
         }
         deactivateRequests(actionTaken, actionRequest.getChildrenRequests(), actionRequest, activationContext);
         deactivateRequest(actionTaken, actionRequest.getParentActionRequest(), actionRequest, activationContext);
@@ -419,15 +461,30 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      * children. This method should be invoked on a top-level action request.
      */
     public void deleteActionRequestGraph(ActionRequestValue actionRequest) {
-        for (Iterator iterator = actionRequest.getActionItems().iterator(); iterator.hasNext();) {
-            getActionListService().deleteActionItem((ActionItem) iterator.next());
+        deleteActionItems(actionRequest);
+        if (actionRequest.getActionTakenId() != null) {
+            ActionTakenValue actionTaken = getActionTakenService().findByActionTakenId(actionRequest.getActionTakenId());
+            getActionTakenService().delete(actionTaken);
         }
         getActionRequestDAO().delete(actionRequest.getActionRequestId());
-        for (Iterator iterator = actionRequest.getChildrenRequests().iterator(); iterator.hasNext();) {
-            deleteActionRequestGraph((ActionRequestValue) iterator.next());
+        for (ActionRequestValue child: actionRequest.getChildrenRequests()) {
+            deleteActionRequestGraph(child);
+        }
+    }
+    
+    /**
+     * Deletes the action items for the action request
+     * @param actionRequest the action request whose action items to delete
+     */
+    private void deleteActionItems(ActionRequestValue actionRequest) {
+        LOG.debug("deleting " + actionRequest.getActionItems().size() + " action items for action request: " + actionRequest);
+        for (ActionItem actionItem: actionRequest.getActionItems()) {
+            LOG.debug("deleting action item: " + actionItem);
+            getActionListService().deleteActionItem(actionItem);
         }
     }
 
+    
     public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId) {
         return getActionRequestDAO().findByRouteHeaderIdIgnoreCurrentInd(routeHeaderId);
     }

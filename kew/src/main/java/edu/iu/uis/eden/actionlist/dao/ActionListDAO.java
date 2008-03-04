@@ -32,7 +32,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface ActionListDAO {
-    public Collection getActionList(WorkflowUser workflowUser, ActionListFilter filter);
+    public Collection<ActionItem> getActionList(WorkflowUser workflowUser, ActionListFilter filter);
     public int getCount(String workflowId);
     
     /**
@@ -43,7 +43,7 @@ public interface ActionListDAO {
      * @param filter
      * @return
      */
-    public Collection getOutbox(WorkflowUser workflowUser, ActionListFilter filter);
+    public Collection<ActionItem> getOutbox(WorkflowUser workflowUser, ActionListFilter filter);
     public void removeOutboxItems(WorkflowUser workflowUser, List<Long> outboxItems);
     public void saveOutboxItem(OutboxItemActionListExtension outboxItem);
     public OutboxItemActionListExtension getOutboxByDocumentId(Long documentId);

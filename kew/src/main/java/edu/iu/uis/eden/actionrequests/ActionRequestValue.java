@@ -92,7 +92,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     private String approvePolicy;
 
     private ActionRequestValue parentActionRequest;
-    private List childrenRequests = new ArrayList();
+    private List<ActionRequestValue> childrenRequests = new ArrayList<ActionRequestValue>();
     private ActionTakenValue actionTaken;
     private DocumentRouteHeaderValue routeHeader;
     private List<ActionItem> actionItems = new ArrayList<ActionItem>();
@@ -591,11 +591,11 @@ public class ActionRequestValue implements WorkflowPersistable {
         this.parentActionRequest = parentActionRequest;
     }
 
-    public List getChildrenRequests() {
+    public List<ActionRequestValue> getChildrenRequests() {
         return childrenRequests;
     }
 
-    public void setChildrenRequests(List childrenRequests) {
+    public void setChildrenRequests(List<ActionRequestValue> childrenRequests) {
         this.childrenRequests = childrenRequests;
     }
 

@@ -22,8 +22,8 @@ import java.util.List;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actionitem.OutboxItemActionListExtension;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
-import edu.iu.uis.eden.engine.ActivationContext;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
+import edu.iu.uis.eden.user.Recipient;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.workgroup.Workgroup;
 
@@ -34,10 +34,11 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  *
  */
 public interface ActionListService {
+    public ActionItem createActionItemForActionRequest(ActionRequestValue actionRequest);
 
     public Collection getActionList(WorkflowUser workflowUser, ActionListFilter filter);
 
-    public Collection findUserDelegators(WorkflowUser workflowUser, String delegationType) throws EdenUserNotFoundException;
+    public Collection<Recipient> findUserDelegators(WorkflowUser workflowUser, String delegationType) throws EdenUserNotFoundException;
 
     public boolean refreshActionList(WorkflowUser user);
 
@@ -46,10 +47,6 @@ public interface ActionListService {
     public void deleteActionItem(ActionItem actionItem);
 
     public void deleteByRouteHeaderId(Long routeHeaderId);
-
-    public void deleteActionItems(ActionRequestValue actionRequest);
-
-    public List generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext) throws EdenUserNotFoundException;
 
     public Collection findByWorkflowUser(WorkflowUser workflowUser);
 
@@ -82,8 +79,6 @@ public interface ActionListService {
     public void updateActionListForUserRemovedFromWorkgroup(WorkflowUser user, Workgroup workgroup) throws EdenUserNotFoundException;
 
     public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) throws EdenUserNotFoundException;
-
-    public Collection findDelegators(WorkflowUser user, String delegationType) throws EdenUserNotFoundException;
 
     public void validateActionItem(ActionItem actionItem);
 

@@ -43,11 +43,13 @@ public interface MessagingService {
     public void remove(long messageId, String user, String cause) throws MessageDismissalException;
     
     /**
-     * Removes a specific message and all deliveries
+     * Removes a specific message and all deliveries.  Does not throw an exception if no message with the origin
+     * id is found.
      * 
      * @param originId origin id of the message to remove
      * @param user the user under which the action was taken
-     * @param cause the cause or action taken to remove the message 
+     * @param cause the cause or action taken to remove the message
+     * @return Long the message id of the message removed, if any 
      */
-    public void removeByOriginId(String originId, String user, String cause) throws MessageDismissalException;
+    public Long removeByOriginId(String originId, String user, String cause) throws MessageDismissalException;
 }

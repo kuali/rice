@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
     <ApplicationConstants xmlns="ns:workflow/ApplicationConstants" xsi:schemaLocation="ns:workflow/ApplicationConstants resource:ApplicationConstants">
 
-        <!-- ApplicationConstants elements from C:\java\projects\rice/kns/src/main/config/xml/RiceBootstrapData.xml -->
+        <!-- ApplicationConstants elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceBootstrapData.xml -->
 
 
-        <!-- ApplicationConstants elements from C:\java\projects\rice/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- ApplicationConstants elements from /Users/ag266/Documents/workspace/rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <ApplicationConstant>
             <ConstantName>Config.Application.MinutesToCacheUsers</ConstantName>
@@ -238,7 +238,7 @@
     
 
 
-        <!-- ApplicationConstants elements from C:\java\projects\rice/kns/src/main/config/xml/RiceSampleAppData.xml -->
+        <!-- ApplicationConstants elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceSampleAppData.xml -->
 
 
         <ApplicationConstant>
@@ -442,7 +442,7 @@
 
     <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
 
-        <!-- users elements from C:\java\projects\rice/ken/src/main/config/xml/KENSampleData.xml -->
+        <!-- users elements from /Users/ag266/Documents/workspace/rice-0.9.3/ken/src/main/config/xml/KENSampleData.xml -->
 
         <user>
             <workflowId>TestAdmin1</workflowId>
@@ -659,10 +659,10 @@
     
 
 
-        <!-- users elements from C:\java\projects\rice/kns/src/main/config/xml/RiceBootstrapData.xml -->
+        <!-- users elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceBootstrapData.xml -->
 
 
-        <!-- users elements from C:\java\projects\rice/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- users elements from /Users/ag266/Documents/workspace/rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <!-- Core admin user -->
         <user>
@@ -678,7 +678,7 @@
     
 
 
-        <!-- users elements from C:\java\projects\rice/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- users elements from /Users/ag266/Documents/workspace/rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
 
         <!-- The NotSys user is needed for the message sending forms that come with the system -->
         <user>
@@ -706,7 +706,7 @@
     
 
 
-        <!-- users elements from C:\java\projects\rice/kns/src/main/config/xml/RiceSampleAppData.xml -->
+        <!-- users elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceSampleAppData.xml -->
 
         <user>
             <workflowId>user4</workflowId>
@@ -817,7 +817,7 @@
 
     <workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
 
-        <!-- workgroups elements from C:\java\projects\rice/ken/src/main/config/xml/KENSampleData.xml -->
+        <!-- workgroups elements from /Users/ag266/Documents/workspace/rice-0.9.3/ken/src/main/config/xml/KENSampleData.xml -->
 
         <!-- NOTIFICATION SPECIFIC WORKGROUPS -->
         <workgroup allowOverwrite="true">
@@ -907,10 +907,10 @@
     
 
 
-        <!-- workgroups elements from C:\java\projects\rice/kns/src/main/config/xml/RiceBootstrapData.xml -->
+        <!-- workgroups elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceBootstrapData.xml -->
 
 
-        <!-- workgroups elements from C:\java\projects\rice/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- workgroups elements from /Users/ag266/Documents/workspace/rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <!-- Core admin workgroup -->
         <workgroup allowOverwrite="true">
@@ -925,7 +925,7 @@
     
 
 
-        <!-- workgroups elements from C:\java\projects\rice/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- workgroups elements from /Users/ag266/Documents/workspace/rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
 
        <workgroup allowOverwrite="true">
             <workgroupName>NotificationAdmin</workgroupName>
@@ -954,7 +954,7 @@
 
     <workgroupTypes xmlns="ns:workflow/WorkgroupType" xsi:schemaLocation="ns:workflow/WorkgroupType resource:WorkgroupType">
 
-        <!-- workgroupTypes elements from C:\java\projects\rice/kns/src/main/config/xml/RiceBootstrapData.xml -->
+        <!-- workgroupTypes elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceBootstrapData.xml -->
 
     
 
@@ -962,10 +962,10 @@
 
     <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 
-        <!-- ruleAttributes elements from C:\java\projects\rice/kns/src/main/config/xml/RiceBootstrapData.xml -->
+        <!-- ruleAttributes elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceBootstrapData.xml -->
 
 
-        <!-- ruleAttributes elements from C:\java\projects\rice/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- ruleAttributes elements from /Users/ag266/Documents/workspace/rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <ruleAttribute>
             <name>RuleRoutingAttribute</name>
@@ -977,7 +977,7 @@
     
 
 
-        <!-- ruleAttributes elements from C:\java\projects\rice/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- ruleAttributes elements from /Users/ag266/Documents/workspace/rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
 
       <ruleAttribute>
         <name>NotificationCustomActionListAttribute</name>
@@ -1124,7 +1124,7 @@
     
 
 
-        <!-- ruleAttributes elements from C:\java\projects\rice/kns/src/main/config/xml/RiceSampleAppData.xml -->
+        <!-- ruleAttributes elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceSampleAppData.xml -->
 
         <ruleAttribute>
             <name>DestinationAttribute</name>
@@ -1164,10 +1164,10 @@
 
     <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 
-        <!-- ruleTemplates elements from C:\java\projects\rice/kns/src/main/config/xml/RiceBootstrapData.xml -->
+        <!-- ruleTemplates elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceBootstrapData.xml -->
 
 
-        <!-- ruleTemplates elements from C:\java\projects\rice/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- ruleTemplates elements from /Users/ag266/Documents/workspace/rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <ruleTemplate allowOverwrite="true">
             <name>WorkflowDocumentDelegationTemplate</name>
@@ -1189,7 +1189,7 @@
     
 
 
-        <!-- ruleTemplates elements from C:\java\projects\rice/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- ruleTemplates elements from /Users/ag266/Documents/workspace/rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
 
         <ruleTemplate allowOverwrite="true">
             <name>ReviewersRouting</name>
@@ -1209,7 +1209,7 @@
     
 
 
-        <!-- ruleTemplates elements from C:\java\projects\rice/kns/src/main/config/xml/RiceSampleAppData.xml -->
+        <!-- ruleTemplates elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceSampleAppData.xml -->
 
         <ruleTemplate allowOverwrite="true">
             <name>TravelRequest-DestinationRouting</name>
@@ -1253,10 +1253,10 @@
 
     <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 
-        <!-- documentTypes elements from C:\java\projects\rice/kns/src/main/config/xml/RiceBootstrapData.xml -->
+        <!-- documentTypes elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceBootstrapData.xml -->
 
 
-        <!-- documentTypes elements from C:\java\projects\rice/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- documentTypes elements from /Users/ag266/Documents/workspace/rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <documentType>
             <name>EDENSERVICE-DOCS</name>
@@ -1408,7 +1408,7 @@
     
 
 
-        <!-- documentTypes elements from C:\java\projects\rice/kim/src/main/config/xml/KIMBootstrap.xml -->
+        <!-- documentTypes elements from /Users/ag266/Documents/workspace/rice-0.9.3/kim/src/main/config/xml/KIMBootstrap.xml -->
 
    <documentType>
       <name>KIMPrincipalMaintenanceDocument</name>
@@ -1486,59 +1486,9 @@
     </documentType>
 
     <documentType>
-      <name>KIMNamespaceDefaultAttributeMaintenanceDocument</name>
-      <description>Create or Update a Namespace Default Attribute</description>
-      <label>KIM Namespace Default Attribute Maintenance Document</label>
-      <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
-      <active>true</active>
-      <routingVersion>1</routingVersion>
-      <routePaths>
-        <routePath>
-          <start name="Adhoc Routing" />
-        </routePath>
-      </routePaths>
-      <routeNodes>
-        <start name="Adhoc Routing">
-          <activationType>P</activationType>
-          <mandatoryRoute>false</mandatoryRoute>
-          <finalApproval>false</finalApproval>
-        </start>
-      </routeNodes>
-    </documentType>
-
-    <documentType>
       <name>KIMAttributeTypeMaintenanceDocument</name>
       <description>Create or Update a Attribute Type</description>
       <label>KIM Attribute Type Maintenance Document</label>
-      <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
-      <active>true</active>
-      <routingVersion>1</routingVersion>
-      <routePaths>
-        <routePath>
-          <start name="Adhoc Routing" />
-        </routePath>
-      </routePaths>
-      <routeNodes>
-        <start name="Adhoc Routing">
-          <activationType>P</activationType>
-          <mandatoryRoute>false</mandatoryRoute>
-          <finalApproval>false</finalApproval>
-        </start>
-      </routeNodes>
-    </documentType>
-
-    <documentType>
-      <name>KIMGroupAttributeMaintenanceDocument</name>
-      <description>Create or Update a Principal</description>
-      <label>KIM Group Attribute Maintenance Document</label>
       <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
@@ -1610,11 +1560,10 @@
       </routeNodes>
     </documentType>
     
-    
   
 
 
-        <!-- documentTypes elements from C:\java\projects\rice/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- documentTypes elements from /Users/ag266/Documents/workspace/rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
 
         <!-- Notification Document Type -->
         <documentType>
@@ -1726,7 +1675,7 @@
     
 
 
-        <!-- documentTypes elements from C:\java\projects\rice/kom/src/main/config/xml/KOMBootstrap.xml -->
+        <!-- documentTypes elements from /Users/ag266/Documents/workspace/rice-0.9.3/kom/src/main/config/xml/KOMBootstrap.xml -->
 
    <documentType>
       <name>KualiOrganizationMaintenanceDocument</name>
@@ -1808,7 +1757,7 @@
     
 
 
-        <!-- documentTypes elements from C:\java\projects\rice/kns/src/main/config/xml/RiceSampleAppData.xml -->
+        <!-- documentTypes elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceSampleAppData.xml -->
 
         <documentType>
             <name>TravelRequest</name>
@@ -2022,10 +1971,10 @@
 
     <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 
-        <!-- rules elements from C:\java\projects\rice/kns/src/main/config/xml/RiceBootstrapData.xml -->
+        <!-- rules elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceBootstrapData.xml -->
 
 
-        <!-- rules elements from C:\java\projects\rice/kew/src/main/config/xml/KEWBootstrap.xml -->
+        <!-- rules elements from /Users/ag266/Documents/workspace/rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <rule>
             <documentType>EDENSERVICE-DOCS</documentType>
@@ -2061,7 +2010,7 @@
     
 
 
-        <!-- rules elements from C:\java\projects\rice/ken/src/main/config/xml/KENBootstrap.xml -->
+        <!-- rules elements from /Users/ag266/Documents/workspace/rice-0.9.3/ken/src/main/config/xml/KENBootstrap.xml -->
 
         <rule>
           <documentType>SendNotificationRequest</documentType>
@@ -2087,7 +2036,7 @@
     
 
 
-        <!-- rules elements from C:\java\projects\rice/kns/src/main/config/xml/RiceSampleAppData.xml -->
+        <!-- rules elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceSampleAppData.xml -->
 
         <rule>
             <documentType>TravelRequest</documentType>
@@ -2161,7 +2110,7 @@
 
     <helpEntries xmlns="ns:workflow/Help" xsi:schemaLocation="ns:workflow/Help resource:Help">
 
-        <!-- helpEntries elements from C:\java\projects\rice/kns/src/main/config/xml/RiceBootstrapData.xml -->
+        <!-- helpEntries elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceBootstrapData.xml -->
 
     
 
@@ -2169,7 +2118,7 @@
 
     <styles xmlns="ns:workflow/Style" xsi:schemaLocation="ns:workflow/Style resource:Style">
 
-        <!-- styles elements from C:\java\projects\rice/kns/src/main/config/xml/RiceBootstrapData.xml -->
+        <!-- styles elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceBootstrapData.xml -->
 
     
 
@@ -2177,7 +2126,7 @@
 
     <edoclite xmlns="ns:workflow/EDocLite" xsi:schemaLocation="ns:workflow/EDocLite resource:EDocLite">
 
-        <!-- edoclite elements from C:\java\projects\rice/kns/src/main/config/xml/RiceBootstrapData.xml -->
+        <!-- edoclite elements from /Users/ag266/Documents/workspace/rice-0.9.3/kns/src/main/config/xml/RiceBootstrapData.xml -->
 
     
 

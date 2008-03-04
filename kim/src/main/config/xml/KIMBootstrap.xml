@@ -77,59 +77,9 @@
     </documentType>
 
     <documentType>
-      <name>KIMNamespaceDefaultAttributeMaintenanceDocument</name>
-      <description>Create or Update a Namespace Default Attribute</description>
-      <label>KIM Namespace Default Attribute Maintenance Document</label>
-      <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
-      <active>true</active>
-      <routingVersion>1</routingVersion>
-      <routePaths>
-        <routePath>
-          <start name="Adhoc Routing" />
-        </routePath>
-      </routePaths>
-      <routeNodes>
-        <start name="Adhoc Routing">
-          <activationType>P</activationType>
-          <mandatoryRoute>false</mandatoryRoute>
-          <finalApproval>false</finalApproval>
-        </start>
-      </routeNodes>
-    </documentType>
-
-    <documentType>
       <name>KIMAttributeTypeMaintenanceDocument</name>
       <description>Create or Update a Attribute Type</description>
       <label>KIM Attribute Type Maintenance Document</label>
-      <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-      <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-      <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
-      <active>true</active>
-      <routingVersion>1</routingVersion>
-      <routePaths>
-        <routePath>
-          <start name="Adhoc Routing" />
-        </routePath>
-      </routePaths>
-      <routeNodes>
-        <start name="Adhoc Routing">
-          <activationType>P</activationType>
-          <mandatoryRoute>false</mandatoryRoute>
-          <finalApproval>false</finalApproval>
-        </start>
-      </routeNodes>
-    </documentType>
-
-    <documentType>
-      <name>KIMGroupAttributeMaintenanceDocument</name>
-      <description>Create or Update a Principal</description>
-      <label>KIM Group Attribute Maintenance Document</label>
       <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
       <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
@@ -200,7 +150,6 @@
         </start>
       </routeNodes>
     </documentType>
-    
     
   </documentTypes>
 </data>

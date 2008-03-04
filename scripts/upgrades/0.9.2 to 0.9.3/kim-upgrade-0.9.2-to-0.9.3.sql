@@ -347,15 +347,15 @@ ID
 -- KIM BOOTSTRAP DATA --
 INSERT INTO KIM_ENTITY_TYPES_T values (1, 'Person', 'This entity represents a person in the system.', SYS_GUID(), 1)
 /
-INSERT INTO FP_DOC_TYPE_T values ('KPMD', SYS_GUID(), 1, 'KR', 'PRINCIPAL', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T values ('KPMD', SYS_GUID(), 1, 'KR', 'KIM PRINCIPAL', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-INSERT INTO FP_DOC_TYPE_T values ('KGMD', SYS_GUID(), 1, 'KR', 'GROUP', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T values ('KGMD', SYS_GUID(), 1, 'KR', 'KIM GROUP', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-INSERT INTO FP_DOC_TYPE_T values ('KRMD', SYS_GUID(), 1, 'KR', 'ROLE', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T values ('KRMD', SYS_GUID(), 1, 'KR', 'KIM ROLE', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-INSERT INTO FP_DOC_TYPE_T values ('KGAM', SYS_GUID(), 1, 'KR', 'GROUP ATTRIBUTE', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T values ('KGAM', SYS_GUID(), 1, 'KR', 'KIM GROUP ATTRIBUTE', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-INSERT INTO FP_DOC_TYPE_T values ('KETM', SYS_GUID(), 1, 'KR', 'ENTITY TYPE', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T values ('KETM', SYS_GUID(), 1, 'KR', 'KIM ENTITY TYPE', 'N', 'Y', 'N', 0, 'N', 'N')
 /
 
 COMMIT

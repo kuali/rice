@@ -15,13 +15,16 @@
  */
 package org.kuali.rice.test.lifecycles;
 
+import java.net.BindException;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.resourceloader.ResourceLoader;
+import org.kuali.rice.util.RiceUtilities;
 import org.kuali.rice.web.jetty.JettyServer;
 import org.mortbay.jetty.webapp.WebAppClassLoader;
 
@@ -30,6 +33,7 @@ import org.mortbay.jetty.webapp.WebAppClassLoader;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class JettyServerLifecycle implements Lifecycle {
+    private static final Logger LOG = Logger.getLogger(JettyServerLifecycle.class);
 
 	private boolean started;
 	
@@ -56,7 +60,15 @@ public class JettyServerLifecycle implements Lifecycle {
 	}
 
 	public void start() throws Exception {
-		jettyServer.start();
+	    try {
+	        jettyServer.start();
+	    } catch (RuntimeException re) {
+	        // add some handling to make port conflicts more easily identified
+	        if (RiceUtilities.findExceptionInStack(re, BindException.class) != null) {
+	            LOG.error("JettyServerLifecycle encountered BindException on port: " + jettyServer.getPort() + "; check logs for test failures or and the config for duplicate port specifications.");
+	        }
+	        throw re;
+	    }
 		Map<ClassLoader, Config> configs = Core.getCONFIGS();
 		for (Map.Entry<ClassLoader, Config> configEntry : configs.entrySet()) {
 			if (configEntry.getKey() instanceof WebAppClassLoader) {

@@ -69,7 +69,7 @@ public class MessageDeletionListener implements JobListener {
         }
         
         long messageId = context.getMergedJobDataMap().getLong("messageId");
-        LOG.info("Handling message " + messageId);
+        LOG.debug("Handling message " + messageId);
         Mode mode = Mode.valueOf(context.getMergedJobDataMap().getString("mode"));
         //if (Mode.REMOVE == mode) {
             MessageService ms = GlobalKCBServiceLocator.getInstance().getMessageService();
@@ -84,12 +84,12 @@ public class MessageDeletionListener implements JobListener {
             MessageDeliveryService mds = GlobalKCBServiceLocator.getInstance().getMessageDeliveryService(); 
             Collection<MessageDelivery> c = mds.getMessageDeliveries(m);
             if (c.size() == 0) {
-                LOG.info("Deleting message " + m);
+                LOG.debug("Deleting message " + m);
                 ms.deleteMessage(m);
             } else {
-                LOG.info("Message " + m.getId() + " has " + c.size() + " deliveries");
+                LOG.debug("Message " + m.getId() + " has " + c.size() + " deliveries");
                 for (MessageDelivery md: c) {
-                    LOG.info(md);
+                    LOG.debug(md);
                 }
             }
         //}

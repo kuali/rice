@@ -102,7 +102,7 @@ public class MessagingServiceImpl implements MessagingService {
      * @param sync whether to perform the processing synchronously
      */
     public void setSynchronous(boolean sync) {
-        LOG.info("Setting synchronous messaging to: " + sync);
+        LOG.debug("Setting synchronous messaging to: " + sync);
         this.synchronous = sync;
     }
     /**
@@ -137,11 +137,11 @@ public class MessagingServiceImpl implements MessagingService {
         m.setContent(message.getContent());
         m.setOriginId(message.getOriginId());
 
-        LOG.error("saving message: " +m);
+        LOG.debug("saving message: " +m);
         messageService.saveMessage(m);
 
         Collection<String> delivererTypes = getDelivererTypesForUserAndChannel(m.getRecipient(), m.getChannel());
-        LOG.error("Deliverer types for " + m.getRecipient() + "/" + m.getChannel() + ": " + delivererTypes.size());
+        LOG.debug("Deliverer types for " + m.getRecipient() + "/" + m.getChannel() + ": " + delivererTypes.size());
         for (String type: delivererTypes) {
             
             MessageDelivery delivery = new MessageDelivery();
@@ -153,14 +153,14 @@ public class MessagingServiceImpl implements MessagingService {
 //                deliverer.deliverMessage(delivery);
 //            }
         
-            LOG.error("saving messagedelivery: " +delivery);
+            LOG.debug("saving messagedelivery: " +delivery);
             messageDeliveryService.saveMessageDelivery(delivery);
         }
 
-        LOG.error("queuing job");
+        LOG.debug("queuing job");
         queueJob(MessageProcessingJob.Mode.DELIVER, m.getId(), null, null);
 
-        LOG.error("returning");
+        LOG.debug("returning");
         return m.getId();
     }
 
@@ -217,7 +217,7 @@ public class MessagingServiceImpl implements MessagingService {
 
     private void queueJob(MessageProcessingJob.Mode mode, long messageId, String user, String cause) {
         // queue up the processing job after the transaction has committed
-        LOG.info("registering synchronization");
+        LOG.debug("registering synchronization");
         Assert.assertTrue(TransactionSynchronizationManager.isSynchronizationActive());
         Assert.assertTrue(TransactionSynchronizationManager.isActualTransactionActive());
         TransactionSynchronizationManager.registerSynchronization(new QueueProcessingJobSynchronization(
@@ -271,17 +271,17 @@ public class MessagingServiceImpl implements MessagingService {
         }*/
 
         private void scheduleJob() {
-            LOG.info("Queueing processing job");
+            LOG.debug("Queueing processing job");
             try {
                 Scheduler scheduler = KSBServiceLocator.getScheduler();
                 if (synchronous) {
-                    LOG.info("Invoking job synchronously in Thread " + Thread.currentThread());
+                    LOG.debug("Invoking job synchronously in Thread " + Thread.currentThread());
                     MessageProcessingJob job = new MessageProcessingJob(mode, user, cause);
                     job.run();
                 } else {
                     String uniqueTriggerName = jobName + "-Trigger-" + System.currentTimeMillis() + Math.random();
                     SimpleTrigger trigger = new SimpleTrigger(uniqueTriggerName, jobGroup + "-Trigger");
-                    LOG.info("Scheduling trigger: " + trigger);
+                    LOG.debug("Scheduling trigger: " + trigger);
 
                     JobDataMap data = new JobDataMap();
                     data.put("mode", mode.name());

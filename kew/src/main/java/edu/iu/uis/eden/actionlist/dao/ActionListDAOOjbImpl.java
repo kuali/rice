@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -52,20 +51,20 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListDAOOjbImpl.class);
 
     public Collection<ActionItem> getActionList(WorkflowUser workflowUser, ActionListFilter filter) {
-        LOG.info("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+        LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
         Criteria crit = new Criteria();
         crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
         if (filter != null) {
             setUpActionListCriteria(crit, filter);
         }
-        LOG.info("running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+        LOG.debug("running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
         Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItemActionListExtension.class, crit));
-        LOG.info("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+        LOG.debug("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
         return createActionList(collection);
     }
 
     private void setUpActionListCriteria(Criteria crit, ActionListFilter filter) {
-        LOG.info("setting up Action List criteria");
+        LOG.debug("setting up Action List criteria");
         boolean filterOn = false;
         String filteredByItems = "";
         if (filter.getActionRequestCd() != null && !"".equals(filter.getActionRequestCd().trim()) && !filter.getActionRequestCd().equals(EdenConstants.ALL_CODE)) {
@@ -237,7 +236,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         filter.setFilterLegend(filteredByItems);
         filter.setFilterOn(filterOn);
 
-        LOG.info("returning from Action List criteria");
+        LOG.debug("returning from Action List criteria");
     }
 
     private static final String ACTION_LIST_COUNT_QUERY = "select count(distinct(ai.doc_hdr_id)) from en.en_actn_itm_t ai where ai.actn_itm_prsn_en_id = ? and (ai.dlgn_typ is null or ai.dlgn_typ = 'P')";

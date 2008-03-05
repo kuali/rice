@@ -189,7 +189,7 @@ public abstract class ActionTakenEvent {
 			}
 		} catch (Exception ex) {
 			LOG.warn(ex, ex);
-			throw new WorkflowRuntimeException(ex.getMessage());
+			throw new WorkflowRuntimeException(ex.getMessage(), ex);
 		}
 	}
 

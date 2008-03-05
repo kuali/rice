@@ -20,17 +20,47 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import org.apache.log4j.Logger;
 
 /**
  * This class handles XSLT transformations.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ContentTransformer {
+    private static final Logger LOG = Logger.getLogger(ContentTransformer.class);
+
+    private static final class LoggingErrorListener implements ErrorListener {
+        private final ErrorListener delegate;
+        public LoggingErrorListener(ErrorListener delegate) {
+            this.delegate = delegate;
+        }
+
+        public void error(TransformerException exception) throws TransformerException {
+            LOG.error("Error transforming document", exception);
+        }
+
+        public void fatalError(TransformerException exception) throws TransformerException {
+            if (delegate != null) {
+                delegate.fatalError(exception);
+            } else {
+                throw exception;
+            }
+            
+        }
+
+        public void warning(TransformerException exception) throws TransformerException {
+            LOG.warn("Error transforming document", exception);
+        }
+        
+    };
 
     private Transformer transformer;
 
@@ -62,6 +92,7 @@ public class ContentTransformer {
           String value = (String) parametermap.get(param);
           transformer.setParameter(param, value);
        }
+       transformer.setErrorListener(new LoggingErrorListener(transformer.getErrorListener()));
     }
 
     /**

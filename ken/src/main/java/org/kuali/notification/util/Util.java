@@ -176,7 +176,7 @@ public final class Util {
         NotificationContentType contentType = notification.getContentType();
         String xsl = contentType.getXsl();
         
-        LOG.info("xsl: "+xsl);
+        LOG.debug("xsl: "+xsl);
         
         XslSourceResolver xslresolver = new XslSourceResolver();
         //StreamSource xslsource = xslresolver.resolveXslFromFile(xslpath);
@@ -188,7 +188,7 @@ public final class Util {
         try {
           ContentTransformer transformer = new ContentTransformer(xslsource);
           contenthtml = transformer.transform(content);
-          LOG.info("html: "+contenthtml);
+          LOG.debug("html: "+contenthtml);
         } catch (IOException ex) {
             LOG.error("IOException transforming document",ex);
         } catch (Exception ex) {

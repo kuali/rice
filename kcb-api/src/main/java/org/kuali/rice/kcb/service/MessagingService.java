@@ -32,7 +32,7 @@ public interface MessagingService {
      * @param message message to deliver
      * @return identifier for the message
      */
-    public long deliver(MessageVO message) throws MessageDeliveryException;
+    public Long deliver(MessageVO message) throws MessageDeliveryException;
     /**
      * Removes a specific message and all deliveries
      * 

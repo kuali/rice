@@ -61,12 +61,14 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
     private BusinessObjectDao dao;
     private MessageDelivererRegistryService registry;
     private MessageDeliveryService messageDeliveryService;
+    private Long messageId;
     private Mode mode = null;
     private String user;
     private String cause;
 
-    public MessageProcessingJob(Mode mode, String user, String cause) {
+    public MessageProcessingJob(Long messageId, Mode mode, String user, String cause) {
         this();
+        this.messageId = messageId;
         this.mode = mode;
         this.user = user;
         this.cause = cause;
@@ -110,12 +112,25 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
     @Override
     protected Collection<MessageDelivery> takeAvailableWorkItems() {
         MessageDeliveryStatus[] statuses;
-        if (mode == Mode.DELIVER) {
-            statuses = new MessageDeliveryStatus[] { MessageDeliveryStatus.UNDELIVERED };
-        } else {
-            statuses = new MessageDeliveryStatus[] { MessageDeliveryStatus.DELIVERED, MessageDeliveryStatus.UNDELIVERED };
+        switch (mode) {
+            case DELIVER: {
+                statuses = new MessageDeliveryStatus[] { MessageDeliveryStatus.UNDELIVERED };
+                break;
+            }
+            case REMOVE: {
+                if (messageId == null) {
+                    throw new IllegalStateException("Message id must be specified for message removal mode");
+                }
+                statuses = new MessageDeliveryStatus[] { MessageDeliveryStatus.DELIVERED, MessageDeliveryStatus.UNDELIVERED };
+                break;
+            }
+            default:
+                throw new RuntimeException("Invalid mode: " + mode);
         }
-        Collection<MessageDelivery> ds = messageDeliveryService.lockAndTakeMessageDeliveries(statuses);
+        for (MessageDeliveryStatus status: statuses) {
+            LOG.debug("Taking message deliveries with status: " + status);
+        }
+        Collection<MessageDelivery> ds = messageDeliveryService.lockAndTakeMessageDeliveries(messageId, statuses);
         LOG.debug("Took " + ds.size() + " deliveries");
         for (MessageDelivery md: ds) {
             LOG.debug(md);
@@ -306,12 +321,12 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
         } else {
             this.mode = Mode.DELIVER;
         }
-        LOG.debug("==== message processing job: " + this.mode + " ====");
         this.user = context.getMergedJobDataMap().getString("user");
         this.cause = context.getMergedJobDataMap().getString("cause");
-        /*if (context.getMergedJobDataMap().containsKey("messageId")) {
+        if (context.getMergedJobDataMap().containsKey("messageId")) {
             this.messageId = context.getMergedJobDataMap().getLong("messageId");
-        }*/
+        }
+        LOG.debug("==== message processing job: " + this.mode + " message id: " + this.messageId + "====");
         super.run();
     }
 }

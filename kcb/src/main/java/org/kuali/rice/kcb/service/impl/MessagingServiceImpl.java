@@ -53,7 +53,6 @@ public class MessagingServiceImpl implements MessagingService {
 
     private MessageService messageService;
     private MessageDeliveryService messageDeliveryService;
-    private MessageDelivererRegistryService delivererRegistry;
     private RecipientPreferenceService recipientPrefs;
     private String jobName;
     private String jobGroup;
@@ -105,14 +104,6 @@ public class MessagingServiceImpl implements MessagingService {
         LOG.debug("Setting synchronous messaging to: " + sync);
         this.synchronous = sync;
     }
-    /**
-     * Sets the MessageDelivererRegistryService
-     * @param registry the MessageDelivererRegistryService
-     */
-    @Required
-    public void setMessageDelivererRegistryService(MessageDelivererRegistryService registry) {
-        this.delivererRegistry = registry;
-    }
 
     /**
      * Sets the RecipientPreferencesService
@@ -126,7 +117,16 @@ public class MessagingServiceImpl implements MessagingService {
     /**
      * @see org.kuali.rice.kcb.service.MessagingService#deliver(org.kuali.rice.kcb.vo.MessageVO)
      */
-    public long deliver(MessageVO message) throws MessageDeliveryException {
+    public Long deliver(MessageVO message) throws MessageDeliveryException {
+        Collection<String> delivererTypes = getDelivererTypesForUserAndChannel(message.getRecipient(), message.getChannel());
+        LOG.debug("Deliverer types for " + message.getRecipient() + "/" + message.getChannel() + ": " + delivererTypes.size());
+
+        if (delivererTypes.size() == 0) {
+            // no deliverers configured? just skipp it
+            LOG.debug("No deliverers are configured for " + message.getRecipient() + "/" + message.getChannel());
+            return null;
+        }
+
         final Message m = new Message();
         m.setTitle(message.getTitle());
         m.setDeliveryType(message.getDeliveryType());
@@ -140,8 +140,6 @@ public class MessagingServiceImpl implements MessagingService {
         LOG.debug("saving message: " +m);
         messageService.saveMessage(m);
 
-        Collection<String> delivererTypes = getDelivererTypesForUserAndChannel(m.getRecipient(), m.getChannel());
-        LOG.debug("Deliverer types for " + m.getRecipient() + "/" + m.getChannel() + ": " + delivererTypes.size());
         for (String type: delivererTypes) {
             
             MessageDelivery delivery = new MessageDelivery();
@@ -276,7 +274,7 @@ public class MessagingServiceImpl implements MessagingService {
                 Scheduler scheduler = KSBServiceLocator.getScheduler();
                 if (synchronous) {
                     LOG.debug("Invoking job synchronously in Thread " + Thread.currentThread());
-                    MessageProcessingJob job = new MessageProcessingJob(mode, user, cause);
+                    MessageProcessingJob job = new MessageProcessingJob(messageId, mode, user, cause);
                     job.run();
                 } else {
                     String uniqueTriggerName = jobName + "-Trigger-" + System.currentTimeMillis() + Math.random();

@@ -69,5 +69,18 @@ public interface MessageDeliveryService {
      */
     public Collection<MessageDelivery> getMessageDeliveries(Message message);
     
+    /**
+     * Locks and takes all message deliveries of a given message in the system with any of the specified statuses
+     * @param messageId the id of the message whose deliveries to take 
+     * @param status the statuses of message deliveries to take
+     * @return a collection of message deliveries
+     */
+    public Collection<MessageDelivery> lockAndTakeMessageDeliveries(Long messageId, MessageDeliveryStatus[] status);
+
+    /**
+     * Locks and takes all message deliveries in the system with any of the specified statuses
+     * @param status the statuses of message deliveries to take
+     * @return a collection of message deliveries
+     */
     public Collection<MessageDelivery> lockAndTakeMessageDeliveries(MessageDeliveryStatus[] status);
 }

@@ -86,22 +86,25 @@ public class MessageDeliveryServiceImpl extends BusinessObjectServiceImpl implem
         return dao.findMatching(MessageDelivery.class, criteria);
     }
 
-    /**
-     * This method is responsible for atomically finding all untaken, undelivered messagedeliveries, marking them as taken
+    /* This method is responsible for atomically finding messagedeliveries, marking them as taken
      * and returning them to the caller for processing.
      * NOTE: it is important that this method execute in a SEPARATE dedicated transaction; either the caller should
      * NOT be wrapped by Spring declarative transaction and this service should be wrapped (which is the case), or
      * the caller should arrange to invoke this from within a newly created transaction).
-
-     * @return a list of available message deliveries that have been marked as taken by the caller
      */
     public Collection<MessageDelivery> lockAndTakeMessageDeliveries(MessageDeliveryStatus[] statuses) {
+        return lockAndTakeMessageDeliveries(null, statuses);
+    }
+    public Collection<MessageDelivery> lockAndTakeMessageDeliveries(Long messageId, MessageDeliveryStatus[] statuses) {
         // DO WITHIN TRANSACTION: get all untaken messagedeliveries, and mark as "taken" so no other thread/job takes them
         // need to think about durability of work list
 
         // get all undelivered message deliveries
         Criteria criteria = new Criteria();
         criteria.addIsNull(MessageDelivery.LOCKED_DATE);
+        if (messageId != null) {
+            criteria.addEqualTo(MessageDelivery.MESSAGEID_FIELD, messageId);
+        }
         Collection<String> statusCollection = new ArrayList<String>(statuses.length);
         for (MessageDeliveryStatus status: statuses) {
             statusCollection.add(status.name());

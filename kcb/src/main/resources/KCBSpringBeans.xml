@@ -110,7 +110,6 @@
         <property name="jobGroup"><value>${kcb.quartz.group}</value></property>
         <property name="messageService"><ref local="messageService"/></property>
         <property name="messageDeliveryService"><ref local="messageDeliveryService"/></property>
-        <property name="messageDelivererRegistryService"><ref local="messageDelivererRegistryService"/></property>
         <property name="recipientPreferenceService"><ref local="recipientPreferenceService"/></property>
         <property name="synchronous"><value>${kcb.messaging.synchronous}</value></property>
     </bean>

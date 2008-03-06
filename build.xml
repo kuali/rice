@@ -42,6 +42,10 @@
 		<maven goals="clean"/>
 	</target>
 	
+	<target name="site" depends="init">
+		<maven goals="clean test site" options="-U"/>
+	</target>
+	
 	<target name="update-eclipse-classpath" depends="init">
 	    <maven goals="eclipse:eclipse" options="-DdownloadSources=true"/>
 		<antcall target="merge-module-classpaths"/>

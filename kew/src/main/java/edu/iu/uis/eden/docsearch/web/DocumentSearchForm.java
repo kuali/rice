@@ -121,7 +121,7 @@ public class DocumentSearchForm extends ActionForm {
 	    return getCriteria().getDocTypeFullName();
 	}
 
-	public void clearSearchableAttributes() {
+	public void clearSearchableAttributeProperties() {
 		searchableAttributeRows = new ArrayList<Row>();
 		searchableAttributeColumns = new ArrayList();
         propertyFields = new ArrayList();
@@ -178,6 +178,8 @@ public class DocumentSearchForm extends ActionForm {
 						addSearchableAttributeRow(row);
 					}
 				}
+				// update any potential propertyFields to hold data already in searchable attributes
+				setupPropertyFieldsUsingCriteria();
 			} else {
 				updateSearchableAttributeData(documentType, searchableAttributes);
 			}
@@ -212,12 +214,16 @@ public class DocumentSearchForm extends ActionForm {
 		if (docType == null) {
 			return;
 		}
-		if (!StringUtils.isBlank(getSearchableAttributes())) {
-			List<SearchAttributeCriteriaComponent> components = DocSearchUtils.buildSearchableAttributesFromString(getSearchableAttributes(), docType.getName());
-			for (SearchAttributeCriteriaComponent component : components) {
-				getCriteria().addSearchableAttribute(component);
-			}
-		}
+		getCriteria().getSearchableAttributes().clear();
+		Map<String,SearchAttributeCriteriaComponent> urlParameterSearchAttributesByFormKey = new HashMap<String,SearchAttributeCriteriaComponent>();
+        if (!StringUtils.isBlank(getSearchableAttributes())) {
+            List<SearchAttributeCriteriaComponent> components = DocSearchUtils.buildSearchableAttributesFromString(getSearchableAttributes(), docType.getName());
+            for (SearchAttributeCriteriaComponent component : components) {
+                urlParameterSearchAttributesByFormKey.put(component.getFormKey(), component);
+                getCriteria().addSearchableAttribute(component);
+            }
+            setSearchableAttributes(null);
+        }
 		if (!propertyFields.isEmpty()) {
 			Map criteriaComponentsByFormKey = new HashMap();
 			for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
@@ -247,24 +253,47 @@ public class DocumentSearchForm extends ActionForm {
 						LOG.error("addSearchableAttributesToCriteria() " + errorMsg);
 						throw new RuntimeException(errorMsg);
 					}
-                    if ( (Field.CHECKBOX_YES_NO.equals(sacc.getLookupableFieldType())) && (!propertyField.isValueSet()) ) {
-                        // value was not set on the form so we must use the alternate value which for checkbox is the 'unchecked' value
-                        sacc.setValue(propertyField.getAlternateValue());
-                    } else if (Field.MULTI_VALUE_FIELD_TYPES.contains(sacc.getLookupableFieldType())) {
-                        sacc.setCanHoldMultipleValues(true);
-                        if (propertyField.getValues() == null) {
-                            sacc.setValues(new ArrayList<String>());
+					// if the url parameter has already set up the search attribute change the propertyField
+					if (urlParameterSearchAttributesByFormKey.containsKey(sacc.getFormKey())) {
+					    setupPropertyField(urlParameterSearchAttributesByFormKey.get(sacc.getFormKey()));
+					} else {
+                        if ( (Field.CHECKBOX_YES_NO.equals(sacc.getLookupableFieldType())) && (!propertyField.isValueSet()) ) {
+                            // value was not set on the form so we must use the alternate value which for checkbox is the 'unchecked' value
+                            sacc.setValue(propertyField.getAlternateValue());
+                        } else if (Field.MULTI_VALUE_FIELD_TYPES.contains(sacc.getLookupableFieldType())) {
+                            // set the multivalue lookup indicator
+                            sacc.setCanHoldMultipleValues(true);
+                            if (propertyField.getValues() == null) {
+                                sacc.setValues(new ArrayList<String>());
+                            } else {
+                                sacc.setValues(Arrays.asList(propertyField.getValues()));
+                            }
                         } else {
-                            sacc.setValues(Arrays.asList(propertyField.getValues()));
+                            sacc.setValue(propertyField.getValue());
                         }
-                    } else {
-                        sacc.setValue(propertyField.getValue());
-                    }
-					getCriteria().addSearchableAttribute(sacc);
+                        getCriteria().addSearchableAttribute(sacc);
+					}
 				}
 			}
 		}
 	}
+
+    public void setupPropertyFieldsUsingCriteria() {
+        for (Iterator iter = getCriteria().getSearchableAttributes().iterator(); iter.hasNext();) {
+            SearchAttributeCriteriaComponent searchableAttribute = (SearchAttributeCriteriaComponent) iter.next();
+            setupPropertyField(searchableAttribute);
+        }
+    }
+    
+    private void setupPropertyField(SearchAttributeCriteriaComponent searchableAttribute) {
+        SearchAttributeFormContainer propertyField = getPropertyField(searchableAttribute.getFormKey());
+        if (propertyField != null) {
+            propertyField.setValue(searchableAttribute.getValue());
+            if (searchableAttribute.getValues() != null) {
+                propertyField.setValues(searchableAttribute.getValues().toArray(new String[searchableAttribute.getValues().size()]));
+            }
+        }
+    }
 
 	public String getDocTypeDisplayName() {
 		DocumentType docType = getDocumentType();

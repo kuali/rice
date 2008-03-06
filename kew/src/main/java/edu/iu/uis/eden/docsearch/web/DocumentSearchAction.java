@@ -92,7 +92,7 @@ public class DocumentSearchAction extends WorkflowAction {
 
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
-        setupPropertyFieldsUsingCriteria(docSearchForm);
+        docSearchForm.setupPropertyFieldsUsingCriteria();
         adjustStateAndForm(getCurrentState(request), docSearchForm, getUserSession(request));
         // if there's no search criteria, just execute the search
         if (!docSearchForm.isShowSearchCriteria()) {
@@ -194,7 +194,7 @@ public class DocumentSearchAction extends WorkflowAction {
 //            processor = buildCriteriaProcessor(processor, docSearchForm, newCriteria, getUserSession(request));
 //            setAdjustedState(request, state);
 //        }
-       docSearchForm.clearSearchableAttributes();
+       docSearchForm.clearSearchableAttributeProperties();
        return mapping.findForward("success");
     }
 
@@ -211,9 +211,9 @@ public class DocumentSearchAction extends WorkflowAction {
             currentState = null;
             docSearchForm.setCriteriaProcessor(buildCriteriaProcessor(null, docSearchForm, getUserSession(request)));
             docSearchForm.getCriteriaProcessor().setDocSearchCriteriaVO(result.getDocSearchCriteriaVO());
-            docSearchForm.clearSearchableAttributes();
+            docSearchForm.clearSearchableAttributeProperties();
             docSearchForm.checkForAdditionalFields();
-            setupPropertyFieldsUsingCriteria(docSearchForm);
+            docSearchForm.setupPropertyFieldsUsingCriteria();
             docSearchForm.setNamedSearch("");
             setDropdowns(docSearchForm, request);
             results = result.getSearchResult();
@@ -272,19 +272,6 @@ public class DocumentSearchAction extends WorkflowAction {
 
         LOG.info("end doDocSearch");
         return mapping.findForward("success");
-    }
-
-    private void setupPropertyFieldsUsingCriteria(DocumentSearchForm docSearchForm) {
-        for (Iterator iter = docSearchForm.getCriteria().getSearchableAttributes().iterator(); iter.hasNext();) {
-            SearchAttributeCriteriaComponent searchableAttribute = (SearchAttributeCriteriaComponent) iter.next();
-            SearchAttributeFormContainer container = docSearchForm.getPropertyField(searchableAttribute.getFormKey());
-            if (container != null) {
-                container.setValue(searchableAttribute.getValue());
-                if (searchableAttribute.getValues() != null) {
-                    container.setValues(searchableAttribute.getValues().toArray(new String[searchableAttribute.getValues().size()]));
-                }
-            }
-        }
     }
 
     private static DocumentType getValidDocumentType(String docTypeName) {
@@ -413,7 +400,7 @@ public class DocumentSearchAction extends WorkflowAction {
     private void updateNamedSearches(HttpServletRequest request, DocumentSearchForm docSearchForm) {
         request.setAttribute("namedSearches", getSavedSearches(getUserSession(request).getWorkflowUser()));
         docSearchForm.checkForAdditionalFields();
-        setupPropertyFieldsUsingCriteria(docSearchForm);
+        docSearchForm.setupPropertyFieldsUsingCriteria();
     }
 
     @Override
@@ -456,7 +443,7 @@ public class DocumentSearchAction extends WorkflowAction {
         if (docTypeFullName != null) {
             documentSearchForm.setNamedSearch("");
             documentSearchForm.getCriteria().setNamedSearch("");
-            documentSearchForm.clearSearchableAttributes();
+            documentSearchForm.clearSearchableAttributeProperties();
         }
         if (request.getParameter("workgroupId") != null) {
             Long groupId = new Long(request.getParameter("workgroupId"));

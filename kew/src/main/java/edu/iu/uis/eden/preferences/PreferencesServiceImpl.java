@@ -18,7 +18,6 @@ package edu.iu.uis.eden.preferences;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.concurrent.Semaphore;
 
 import org.kuali.rice.core.Core;
 import org.kuali.rice.util.ConcurrencyDetector;
@@ -129,7 +128,7 @@ public class PreferencesServiceImpl implements PreferencesService {
                 option.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
                 option.setOptionId(optionKey);
                 option.setOptionVal(defaultValue);
-                optionSrv.save(option);
+                //optionSrv.save(option);
             }
             LOG.debug("end fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
         return option;

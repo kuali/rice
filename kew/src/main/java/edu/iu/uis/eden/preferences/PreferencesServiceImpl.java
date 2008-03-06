@@ -18,8 +18,10 @@ package edu.iu.uis.eden.preferences;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.Semaphore;
 
 import org.kuali.rice.core.Core;
+import org.kuali.rice.util.ConcurrencyDetector;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -112,19 +114,28 @@ public class PreferencesServiceImpl implements PreferencesService {
         return preferences;
     }
 
+    /* @see https://test.kuali.org/jira/browse/KULRICE-1726 */
+    private static ConcurrencyDetector detector = new ConcurrencyDetector("Concurrency in PreferencesServiceImpl", false);
+
     private UserOptions getOption(String optionKey, String defaultValue, WorkflowUser user) {
-        LOG.debug("start fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
-        UserOptionsService optionSrv = getUserOptionService();
-        UserOptions option =  optionSrv.findByOptionId(optionKey, user);
-        if (option == null) {
-            option = new UserOptions();
-            option.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
-            option.setOptionId(optionKey);
-            option.setOptionVal(defaultValue);
-            optionSrv.save(option);
-        }
-        LOG.debug("end fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
+        detector.enter();
+
+        try {
+            LOG.debug("start fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
+            UserOptionsService optionSrv = getUserOptionService();
+            UserOptions option =  optionSrv.findByOptionId(optionKey, user);
+            if (option == null) {
+                option = new UserOptions();
+                option.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
+                option.setOptionId(optionKey);
+                option.setOptionVal(defaultValue);
+                optionSrv.save(option);
+            }
+            LOG.debug("end fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
         return option;
+        } finally {
+            detector.exit();
+        }
     }
 
     public void savePreferences(WorkflowUser user, Preferences preferences) {

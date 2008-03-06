@@ -16,7 +16,9 @@
  */
 package edu.iu.uis.eden.preferences;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
@@ -46,5 +48,49 @@ public class PreferencesServiceTest extends KEWTestCase {
        userOptions = userOptionsService.findByWorkflowUser(user);
        assertTrue("Preferences should not be empty", !userOptions.isEmpty());
     }
-    
+	
+	/**
+     * Tests default saving concurrently which can cause a race condition on startup
+     * that leads to constraint violations
+     */
+    @Test public void testPreferencesConcurrentDefaultSave() throws Throwable {
+       //verify that user doesn't have any preferences in the db.
+       final UserOptionsService userOptionsService = KEWServiceLocator.getUserOptionsService();
+       final WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
+       Collection userOptions = userOptionsService.findByWorkflowUser(user);
+       assertTrue("Preferences should be empty", userOptions.isEmpty());
+
+       final PreferencesService preferencesService = KEWServiceLocator.getPreferencesService();
+       Runnable getPrefRunnable = new Runnable() {
+           public void run() {
+               preferencesService.getPreferences(user);
+               Collection updatedOptions = userOptionsService.findByWorkflowUser(user);
+               assertTrue("Preferences should not be empty", !updatedOptions.isEmpty());        
+           }           
+       };
+       final List<Throwable> errors = new ArrayList<Throwable>();
+       Thread.UncaughtExceptionHandler ueh = new Thread.UncaughtExceptionHandler() {
+           public void uncaughtException(Thread thread, Throwable error) {
+               errors.add(error);
+           }
+       };
+       
+       // 3 threads should do
+       Thread t1 = new Thread(getPrefRunnable);
+       Thread t2 = new Thread(getPrefRunnable);
+       Thread t3 = new Thread(getPrefRunnable);
+       t1.setUncaughtExceptionHandler(ueh);
+       t2.setUncaughtExceptionHandler(ueh);
+       t3.setUncaughtExceptionHandler(ueh);
+       t1.start();
+       t2.start();
+       t3.start();
+       t1.join();
+       t2.join();
+       t3.join();
+       
+       if (errors.size() > 0) {
+           throw errors.iterator().next();
+       }
+    }
 }

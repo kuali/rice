@@ -25,11 +25,14 @@ import org.kuali.notification.service.UserPreferenceService;
 import org.kuali.notification.test.NotificationTestCaseBase;
 import org.kuali.notification.test.TestConstants;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * This class tests the user preferences service impl.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@BaselineMode(Mode.ROLLBACK)
 public class UserPreferenceServiceImplTest extends NotificationTestCaseBase {
     public static final String VALID_USER_ID = TestConstants.TEST_USER_ONE;
     public static final String VALID_CHANNEL_ID = TestConstants.VALID_CHANNEL_ONE_ID.toString();
@@ -44,111 +47,110 @@ public class UserPreferenceServiceImplTest extends NotificationTestCaseBase {
 
     @Test
     public void testSubscribeToChannel() {
-	UserPreferenceService impl = services.getUserPreferenceService();
-	HashMap primaryKeys = new HashMap();
-	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, VALID_CHANNEL_ID_LONG);
-	NotificationChannel channel = (NotificationChannel) services.getBusinesObjectDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
-	
-	UserChannelSubscription newSub = new UserChannelSubscription();
-	newSub.setUserId(VALID_USER_ID);
-	newSub.setChannel(channel);
-	impl.subscribeToChannel(newSub);
-	UserChannelSubscription sub = impl.getSubscription(VALID_CHANNEL_ID, VALID_USER_ID);
-	assertNotNull(sub);
-	assertEquals(VALID_USER_ID, sub.getUserId());
-	assertEquals(VALID_CHANNEL_ID_LONG, sub.getChannel().getId());
-	
+        UserPreferenceService impl = services.getUserPreferenceService();
+        HashMap primaryKeys = new HashMap();
+        primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, VALID_CHANNEL_ID_LONG);
+        NotificationChannel channel = (NotificationChannel) services.getBusinesObjectDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
+
+        UserChannelSubscription newSub = new UserChannelSubscription();
+        newSub.setUserId(VALID_USER_ID);
+        newSub.setChannel(channel);
+        impl.subscribeToChannel(newSub);
+        UserChannelSubscription sub = impl.getSubscription(VALID_CHANNEL_ID, VALID_USER_ID);
+        assertNotNull(sub);
+        assertEquals(VALID_USER_ID, sub.getUserId());
+        assertEquals(VALID_CHANNEL_ID_LONG, sub.getChannel().getId());
+
     }
     @Test
     public void testGetCurrentSubscriptions() {
-	UserPreferenceService impl = services.getUserPreferenceService();
-	HashMap primaryKeys = new HashMap();
-	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, VALID_CHANNEL_ID_LONG);
-	NotificationChannel channel = (NotificationChannel) services.getBusinesObjectDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
-	
-	UserChannelSubscription newSub = new UserChannelSubscription();
-	newSub.setUserId(VALID_USER_ID);
-	newSub.setChannel(channel);
-	impl.subscribeToChannel(newSub);
-	Collection<UserChannelSubscription> subs = impl.getCurrentSubscriptions(VALID_USER_ID);
-	assertEquals(1, subs.size());
+        UserPreferenceService impl = services.getUserPreferenceService();
+        HashMap primaryKeys = new HashMap();
+        primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, VALID_CHANNEL_ID_LONG);
+        NotificationChannel channel = (NotificationChannel) services.getBusinesObjectDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
+
+        UserChannelSubscription newSub = new UserChannelSubscription();
+        newSub.setUserId(VALID_USER_ID);
+        newSub.setChannel(channel);
+        impl.subscribeToChannel(newSub);
+        Collection<UserChannelSubscription> subs = impl.getCurrentSubscriptions(VALID_USER_ID);
+        assertEquals(1, subs.size());
     }
 
     @Test
     public void testUnsubscribeFromChannel() {
-	UserPreferenceService impl = services.getUserPreferenceService();
-	HashMap primaryKeys = new HashMap();
-	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, VALID_CHANNEL_ID_LONG);
-	NotificationChannel channel = (NotificationChannel) services.getBusinesObjectDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
-	
-	
-	UserChannelSubscription newSub = new UserChannelSubscription();
-	newSub.setUserId(VALID_USER_ID);
-	newSub.setChannel(channel);
-	impl.subscribeToChannel(newSub);
-	
-	UserChannelSubscription userChannelSubscription = impl.getSubscription(VALID_CHANNEL_ID, VALID_USER_ID);
-	impl.unsubscribeFromChannel(userChannelSubscription);
-	
-	UserChannelSubscription sub = impl.getSubscription(VALID_CHANNEL_ID, VALID_USER_ID);
-	assertNull(sub);
-	
+        UserPreferenceService impl = services.getUserPreferenceService();
+        HashMap primaryKeys = new HashMap();
+        primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, VALID_CHANNEL_ID_LONG);
+        NotificationChannel channel = (NotificationChannel) services.getBusinesObjectDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
+
+
+        UserChannelSubscription newSub = new UserChannelSubscription();
+        newSub.setUserId(VALID_USER_ID);
+        newSub.setChannel(channel);
+        impl.subscribeToChannel(newSub);
+
+        UserChannelSubscription userChannelSubscription = impl.getSubscription(VALID_CHANNEL_ID, VALID_USER_ID);
+        impl.unsubscribeFromChannel(userChannelSubscription);
+
+        UserChannelSubscription sub = impl.getSubscription(VALID_CHANNEL_ID, VALID_USER_ID);
+        assertNull(sub);
+
     }
 
-//    @Test
-//    public void testSaveUserRecipientPreferences() {
-//	UserPreferenceService impl = services.getUserPreferenceService();
-//	NotificationMessageDelivererRegistryService delivererService = services.getNotificationMessageDelivererRegistryService();
-//	NotificationMessageDeliverer deliverer = delivererService.getDelivererByName(VALID_DELIVERER_NAME);
-//	if (deliverer == null) {
-//	    throw new RuntimeException("Message deliverer could not be obtained");
-//	}
-//		
-//	HashMap<String, String> userprefs = new HashMap<String, String>();
-//	userprefs.put(VALID_PROPERTY, VALID_VALUE);
-//	userprefs.put("Email.email_delivery_format", "text");
-//	try {
-//	  impl.saveUserRecipientPreferences(VALID_USER_ID, userprefs, deliverer);
-//	} catch (ErrorList list) {
-//	    throw new RuntimeException(list);
-//	}
-//	RecipientPreference recipientPreference = new RecipientPreference();
-//	recipientPreference.setRecipientId(VALID_USER_ID);
-//	Collection<RecipientPreference> prefs = services.getBusinesObjectDao().findMatchingByExample(recipientPreference);
-//	assertEquals(2, prefs.size()); 
-//    }
+//  @Test
+//  public void testSaveUserRecipientPreferences() {
+//  UserPreferenceService impl = services.getUserPreferenceService();
+//  NotificationMessageDelivererRegistryService delivererService = services.getNotificationMessageDelivererRegistryService();
+//  NotificationMessageDeliverer deliverer = delivererService.getDelivererByName(VALID_DELIVERER_NAME);
+//  if (deliverer == null) {
+//  throw new RuntimeException("Message deliverer could not be obtained");
+//  }
 
-//    @Test
-//    public void testGetUserRecipientPreferences() {
-//	UserPreferenceService impl = services.getUserPreferenceService();
-//	NotificationMessageDelivererRegistryService delivererService = services.getNotificationMessageDelivererRegistryService();
-//	NotificationMessageDeliverer deliverer = delivererService.getDelivererByName(VALID_DELIVERER_NAME);
-//	if (deliverer == null) {
-//	    throw new RuntimeException("Message deliverer could not be obtained");
-//	}
-//	HashMap<String, String> userprefs = new HashMap<String, String>();
-//	userprefs.put(VALID_PROPERTY, VALID_VALUE);
-//	userprefs.put("Email.email_delivery_format", "text");
-//	try {
-//	   impl.saveUserRecipientPreferences(VALID_USER_ID, userprefs, deliverer);
-//	} catch (ErrorList list) {
-//	   throw new RuntimeException(list);
-//	}
-//	
-//	RecipientPreference recipientPreference = impl.getUserRecipientPreferences(VALID_USER_ID, VALID_PROPERTY);
-//	assertEquals(VALID_VALUE, recipientPreference.getValue()); 
-//    }
+//  HashMap<String, String> userprefs = new HashMap<String, String>();
+//  userprefs.put(VALID_PROPERTY, VALID_VALUE);
+//  userprefs.put("Email.email_delivery_format", "text");
+//  try {
+//  impl.saveUserRecipientPreferences(VALID_USER_ID, userprefs, deliverer);
+//  } catch (ErrorList list) {
+//  throw new RuntimeException(list);
+//  }
+//  RecipientPreference recipientPreference = new RecipientPreference();
+//  recipientPreference.setRecipientId(VALID_USER_ID);
+//  Collection<RecipientPreference> prefs = services.getBusinesObjectDao().findMatchingByExample(recipientPreference);
+//  assertEquals(2, prefs.size()); 
+//  }
 
-//    @Test
-//    public void testSaveUserDelivererConfigs() {
-//	UserPreferenceService impl = services.getUserPreferenceService();
-//	impl.saveUserDelivererConfig(VALID_USER_ID, VALID_DELIVERER_NAME, CHANNEL_SELECTED);
-//	
-//	UserDelivererConfig tmpUserDelivererConfig = new UserDelivererConfig();
-//	tmpUserDelivererConfig.setUserId(VALID_USER_ID);
-//	Collection<UserDelivererConfig> userDelivererConfigList = services.getBusinesObjectDao().findMatchingByExample(tmpUserDelivererConfig);
-//	assertEquals(1, userDelivererConfigList.size()); 
-//    }   
-    
+//  @Test
+//  public void testGetUserRecipientPreferences() {
+//  UserPreferenceService impl = services.getUserPreferenceService();
+//  NotificationMessageDelivererRegistryService delivererService = services.getNotificationMessageDelivererRegistryService();
+//  NotificationMessageDeliverer deliverer = delivererService.getDelivererByName(VALID_DELIVERER_NAME);
+//  if (deliverer == null) {
+//  throw new RuntimeException("Message deliverer could not be obtained");
+//  }
+//  HashMap<String, String> userprefs = new HashMap<String, String>();
+//  userprefs.put(VALID_PROPERTY, VALID_VALUE);
+//  userprefs.put("Email.email_delivery_format", "text");
+//  try {
+//  impl.saveUserRecipientPreferences(VALID_USER_ID, userprefs, deliverer);
+//  } catch (ErrorList list) {
+//  throw new RuntimeException(list);
+//  }
+
+//  RecipientPreference recipientPreference = impl.getUserRecipientPreferences(VALID_USER_ID, VALID_PROPERTY);
+//  assertEquals(VALID_VALUE, recipientPreference.getValue()); 
+//  }
+
+//  @Test
+//  public void testSaveUserDelivererConfigs() {
+//  UserPreferenceService impl = services.getUserPreferenceService();
+//  impl.saveUserDelivererConfig(VALID_USER_ID, VALID_DELIVERER_NAME, CHANNEL_SELECTED);
+
+//  UserDelivererConfig tmpUserDelivererConfig = new UserDelivererConfig();
+//  tmpUserDelivererConfig.setUserId(VALID_USER_ID);
+//  Collection<UserDelivererConfig> userDelivererConfigList = services.getBusinesObjectDao().findMatchingByExample(tmpUserDelivererConfig);
+//  assertEquals(1, userDelivererConfigList.size()); 
+//  }   
 
 }

@@ -25,7 +25,6 @@ import org.kuali.notification.service.NotificationContentTypeService;
 import org.kuali.notification.service.NotificationEmailService;
 import org.kuali.notification.service.NotificationMessageContentService;
 import org.kuali.notification.service.NotificationMessageDeliveryAutoRemovalService;
-import org.kuali.notification.service.NotificationMessageDeliveryDispatchService;
 import org.kuali.notification.service.NotificationMessageDeliveryResolverService;
 import org.kuali.notification.service.NotificationMessageDeliveryService;
 import org.kuali.notification.service.NotificationRecipientService;
@@ -81,12 +80,6 @@ public interface NotificationServiceLocator {
      */
     public NotificationWorkflowDocumentService getNotificationWorkflowDocumentService();
     
-    /**
-     * This method returns an instance of the Spring configured impl for the NotificationMessageDeliveryDispatchService.
-     * @return NotificationMessageDeliveryDispatchService
-     */
-    public NotificationMessageDeliveryDispatchService getNotificationMessageDeliveryDispatchService();
-
     /**
      * This method returns an instance of the Spring configured impl for the NotificationMessageDeliveryAutoRemovalService.
      * @return NotificationMessageDeliveryAutoRemovalService

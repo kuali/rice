@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
@@ -33,6 +34,8 @@ import org.kuali.rice.kcb.service.MessageDeliveryService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class MessageDeliveryServiceImpl extends BusinessObjectServiceImpl implements MessageDeliveryService {
+    private static final Logger LOG = Logger.getLogger(MessageDeliveryServiceImpl.class);
+
     /**
      * @see org.kuali.rice.kcb.service.MessageDeliveryService#saveMessageDelivery(org.kuali.rice.kcb.bo.MessageDelivery)
      */
@@ -96,6 +99,7 @@ public class MessageDeliveryServiceImpl extends BusinessObjectServiceImpl implem
         return lockAndTakeMessageDeliveries(null, statuses);
     }
     public Collection<MessageDelivery> lockAndTakeMessageDeliveries(Long messageId, MessageDeliveryStatus[] statuses) {
+        LOG.debug("========>> ENTERING LockAndTakeMessageDeliveries: " + Thread.currentThread());
         // DO WITHIN TRANSACTION: get all untaken messagedeliveries, and mark as "taken" so no other thread/job takes them
         // need to think about durability of work list
 
@@ -122,6 +126,7 @@ public class MessageDeliveryServiceImpl extends BusinessObjectServiceImpl implem
             dao.save(delivery);
         }
 
+        LOG.debug("<<=======  LEAVING LockAndTakeMessageDeliveries: " + Thread.currentThread());
         return messageDeliveries;
     }
 }

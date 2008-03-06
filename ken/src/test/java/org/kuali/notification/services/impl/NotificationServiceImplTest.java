@@ -18,10 +18,10 @@ package org.kuali.notification.services.impl;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.notification.bo.Notification;
 import org.kuali.notification.bo.NotificationMessageDelivery;
@@ -35,71 +35,75 @@ import org.kuali.notification.test.TestConstants;
 import org.kuali.notification.util.NotificationConstants;
 import org.quartz.SchedulerException;
 
+import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.actionrequests.ActionRequestValue;
+import edu.iu.uis.eden.doctype.DocumentType;
+
 /**
  * This class tests the notification service impl.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Ignore // this whole test case is suspect
+// this whole test case is suspect
 public class NotificationServiceImplTest extends NotificationTestCaseBase {
-    
+
     public NotificationServiceImplTest() {
     }
 
     @Test
     public void testGetNotification_validNotification() {
-	NotificationService nSvc = services.getNotificationService();
-	
-	Notification notification = nSvc.getNotification(TestConstants.NOTIFICATION_1);
-	
-	assertNotNull(notification.getContent());
-	assertTrue(notification.getDeliveryType().equals(TestConstants.NOTIFICATION_1_DELIVERY_TYPE));
+        NotificationService nSvc = services.getNotificationService();
+
+        Notification notification = nSvc.getNotification(TestConstants.NOTIFICATION_1);
+
+        assertNotNull(notification.getContent());
+        assertTrue(notification.getDeliveryType().equals(TestConstants.NOTIFICATION_1_DELIVERY_TYPE));
     }
 
     @Test
     public void testGetNotification_nonExistentNotification() {
-	NotificationService nSvc = services.getNotificationService();
-	
-	Notification notification = nSvc.getNotification(TestConstants.NON_EXISTENT_ID);
-	
-	assertNull(notification);
+        NotificationService nSvc = services.getNotificationService();
+
+        Notification notification = nSvc.getNotification(TestConstants.NON_EXISTENT_ID);
+
+        assertNull(notification);
     }
 
     @Test
     public void testGetNotificationsForRecipientByType_validInput() {
-	NotificationService nSvc = services.getNotificationService();
-	
-	assertTrue(nSvc.getNotificationsForRecipientByType(TestConstants.NOTIFICATION_RECIPIENT_CONTENT_TYPE, TestConstants.NOTIFICATION_RECIPIENT_ID).size() > 0);
+        NotificationService nSvc = services.getNotificationService();
+
+        assertTrue(nSvc.getNotificationsForRecipientByType(TestConstants.NOTIFICATION_RECIPIENT_CONTENT_TYPE, TestConstants.NOTIFICATION_RECIPIENT_ID).size() > 0);
     }
 
     @Test
     public void testGetNotificationsForRecipientByType_invalidInput() {
-	NotificationService nSvc = services.getNotificationService();
-	
-	assertTrue(nSvc.getNotificationsForRecipientByType(TestConstants.INVALID_CONTENT_TYPE, TestConstants.NOTIFICATION_RECIPIENT_ID).size() == 0);
+        NotificationService nSvc = services.getNotificationService();
+
+        assertTrue(nSvc.getNotificationsForRecipientByType(TestConstants.INVALID_CONTENT_TYPE, TestConstants.NOTIFICATION_RECIPIENT_ID).size() == 0);
     }
 
     @Test
-    @Ignore // deadlocks
+    // deadlocks
     public void testSendNotificationAsXml_validInput() throws InterruptedException, SchedulerException, IOException, InvalidXMLException  {
         services.getNotificationMessageDeliveryResolverService().resolveNotificationMessageDeliveries();
-        services.getNotificationMessageDeliveryDispatchService().processUndeliveredNotificationMessageDeliveries();
+        
+        Thread.sleep(10000);
         services.getNotificationMessageDeliveryAutoRemovalService().processAutoRemovalOfDeliveredNotificationMessageDeliveries();
 
         // get the count of pending action requests
-        /*
         DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("KualiNotification");
         List<ActionRequestValue> list = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocumentType(docType.getDocumentTypeId());
         int count_before = list.size();
         LOG.info("ActionRequests: " + count_before);
         for (ActionRequestValue v: list) {
             LOG.info("Root request: " + v.getActionRequested() + " " + v.getWorkflowId() + " " + v.getStatus() + " " + v.getRoleName());
-        }*/
+        }
 
         // now send ours
         final NotificationService nSvc = services.getNotificationService();
-        
+
         final String notificationMessageAsXml = IOUtils.toString(getClass().getResourceAsStream("valid_input.xml"));
-        
+
         Map map = new HashMap();
         map.put(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
         Collection<Notification> notifications = services.getBusinesObjectDao().findMatching(Notification.class, map);
@@ -113,30 +117,28 @@ public class NotificationServiceImplTest extends NotificationTestCaseBase {
         notifications = services.getBusinesObjectDao().findMatching(Notification.class, map);
         assertEquals(1, notifications.size());
         LOG.info("Notification: " + notifications.iterator().next());
-       
+
         services.getNotificationMessageDeliveryResolverService().resolveNotificationMessageDeliveries();
-        services.getNotificationMessageDeliveryDispatchService().processUndeliveredNotificationMessageDeliveries();
         services.getNotificationMessageDeliveryAutoRemovalService().processAutoRemovalOfDeliveredNotificationMessageDeliveries();
 
-        /*
         list = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocumentType(docType.getDocumentTypeId());
         int count_after = list.size();
         LOG.info("ActionRequests before: " + count_before);
         LOG.info("ActionRequests after: " + count_after);
         for (ActionRequestValue v: list) {
             LOG.info("Root request: " + v.getActionRequested() + " " + v.getWorkflowId() + " " + v.getStatus() + " " + v.getRoleName());
-        }*/
-        
+        }
+
         // should have 6 requests, 1 to each user in in Rice Team group
-        //assertEquals(6, count_after - count_before);
+        assertEquals(6, count_after - count_before);
     }
 
     @Test
     public void testSendNotificationAsXml_invalidInput() throws IOException {
-	NotificationService nSvc = services.getNotificationService();
-	
+        NotificationService nSvc = services.getNotificationService();
+
         final String notificationMessageAsXml = IOUtils.toString(getClass().getResourceAsStream("invalid_input.xml"));
-	
+
         try {
             nSvc.sendNotification(notificationMessageAsXml);
             fail("InvalidXMLException not thrown");
@@ -147,20 +149,20 @@ public class NotificationServiceImplTest extends NotificationTestCaseBase {
         } catch (Exception e) {
             fail("Wrong exception thrown, expected InvalidXMLException: " + e);
         }
-        
+
     }
 
     @Test
     public void testSendNotificationAsXml_producerNotAuthorized() throws IOException, InvalidXMLException {
-	NotificationService nSvc = services.getNotificationService();
-	
+        NotificationService nSvc = services.getNotificationService();
+
         final String notificationMessageAsXml = IOUtils.toString(getClass().getResourceAsStream("producer_not_authorized.xml"));
-	
+
         NotificationResponse response = nSvc.sendNotification(notificationMessageAsXml);
         assertEquals(NotificationConstants.RESPONSE_STATUSES.FAILURE, response.getStatus());
         assertEquals(NotificationConstants.RESPONSE_MESSAGES.PRODUCER_NOT_AUTHORIZED_FOR_CHANNEL, response.getMessage());
     }
-    
+
     /**
      * Tests that dismissing a single message delivery for a given user, also removes all other message deliveries for that
      * user that were generated for the same notification 
@@ -178,11 +180,11 @@ public class NotificationServiceImplTest extends NotificationTestCaseBase {
         for (NotificationMessageDelivery delivery: deliveries) {
             assertEquals(NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED, delivery.getMessageDeliveryStatus());
         }
-        
+
         NotificationService nSvc = services.getNotificationService();
 
         // go ahead and dispatch the message deliveries...
-        ProcessingResult result = services.getNotificationMessageDeliveryDispatchService().processUndeliveredNotificationMessageDeliveries();
+        ProcessingResult result = services.getNotificationMessageDeliveryResolverService().resolveNotificationMessageDeliveries();
 
         deliveries = nmds.getNotificationMessageDeliveries(n, TestConstants.TEST_USER_FIVE);
         assertNotNull(deliveries);
@@ -193,7 +195,7 @@ public class NotificationServiceImplTest extends NotificationTestCaseBase {
                 assertEquals("Message Delivery #" + delivery.getId() + "was not delivered", NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED, delivery.getMessageDeliveryStatus());
             }
         }
-        
+
         String action;
         if (NotificationConstants.DELIVERY_TYPES.FYI.equals(TestConstants.NOTIFICATION_1_DELIVERY_TYPE)) {
             action = "fyi";
@@ -203,7 +205,7 @@ public class NotificationServiceImplTest extends NotificationTestCaseBase {
             throw new RuntimeException("A new delivery type was defined...this test needs to be updated");
         }
         nSvc.dismissNotificationMessageDelivery(TestConstants.NOT_MSG_DELIV_NOTIF_1_TEST_USER_5_EMAIL, TestConstants.TEST_USER_FIVE, action);
-        
+
         // after dismissing ONE message delivery, they should ALL be dismissed/removed
         deliveries = nmds.getNotificationMessageDeliveries(n, TestConstants.TEST_USER_FIVE);
         assertNotNull(deliveries);

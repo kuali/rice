@@ -31,7 +31,7 @@ import org.kuali.notification.util.NotificationConstants;
  * Tests NotificationMessageDeliveryAutoRemovalServiceImpl
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Ignore // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
+// deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends NotificationTestCaseBase {
     // NOTE: this value is highly dependent on test data 
     private static final int EXPECTED_SUCCESSES = 8;
@@ -54,13 +54,12 @@ public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends Notif
      * Test auto-removal message deliveries
      */
     @Test
-    @Ignore
     public void testAutoRemovedNotificationMessageDeliveries() {
         NotificationMessageDeliveryAutoRemovalService nSvc = services.getNotificationMessageDeliveryAutoRemovalService();
 
 
         services.getNotificationMessageDeliveryResolverService().resolveNotificationMessageDeliveries();
-        services.getNotificationMessageDeliveryDispatchService().processUndeliveredNotificationMessageDeliveries();
+
         ProcessingResult result = nSvc.processAutoRemovalOfDeliveredNotificationMessageDeliveries();
         
         assertEquals(0, result.getFailures().size());
@@ -72,13 +71,11 @@ public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends Notif
     /**
      * Test concurrent auto-removal of message deliveries
      */
-    @Ignore
     @Test
     public void testAutoRemovalConcurrency() throws InterruptedException {
         final NotificationMessageDeliveryAutoRemovalService nSvc = services.getNotificationMessageDeliveryAutoRemovalService();
 
         services.getNotificationMessageDeliveryResolverService().resolveNotificationMessageDeliveries();
-        services.getNotificationMessageDeliveryDispatchService().processUndeliveredNotificationMessageDeliveries();
 
         final ProcessingResult[] results = new ProcessingResult[2];
         Thread t1 = new Thread(new Runnable() {

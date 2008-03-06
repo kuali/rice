@@ -144,7 +144,6 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
     /**
      * Test concurrent resolution of notifications
      */
-    @Ignore
     @Test
     public void testResolverConcurrency() throws InterruptedException {
         final NotificationMessageDeliveryResolverService nSvc = getResolverService();

@@ -15,6 +15,7 @@
  */
 package org.kuali.core.workflow.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.RiceConstants;
 import org.kuali.core.util.spring.Cached;
@@ -38,7 +39,6 @@ import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
 import edu.iu.uis.eden.exception.InvalidWorkgroupException;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
-import edu.iu.uis.eden.util.Utilities;
 
 @SuppressWarnings("deprecation")
 @Transactional
@@ -73,7 +73,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
      * @deprecated
      */
     public WorkgroupVO getWorkgroup(String workgroupName) throws WorkflowException {
-        if (Utilities.isEmpty(workgroupName)) {
+        if (StringUtils.isBlank(workgroupName)) {
             throw new InvalidWorkgroupException("Workgroup name cannot be empty");
         }
         return getWorkgroup(new WorkgroupNameIdVO(workgroupName));// getWorkflowUtility().getWorkgroup(new

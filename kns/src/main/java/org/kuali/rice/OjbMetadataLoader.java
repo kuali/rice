@@ -23,10 +23,9 @@ import org.apache.log4j.Logger;
 import org.apache.ojb.broker.metadata.ConnectionRepository;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.MetadataManager;
+import org.kuali.rice.util.ClassLoaderUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.DefaultResourceLoader;
-
-import edu.iu.uis.eden.util.ClassLoaderUtils;
 
 public class OjbMetadataLoader implements InitializingBean {
     

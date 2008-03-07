@@ -30,6 +30,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
+import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
@@ -44,12 +45,6 @@ import edu.iu.uis.eden.web.KeyValue;
 public class RoutingReportForm extends ActionForm {
 
 	private static final long serialVersionUID = 509542372934250061L;
-    public static final String DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME = "documentTypeParam";
-    public static final String INITIATOR_ID_ATTRIBUTE_NAME = "initiatorNetworkId";
-    public static final String DOCUMENT_CONTENT_ATTRIBUTE_NAME = "documentContent";
-    public static final String RETURN_URL_ATTRIBUTE_NAME = "backUrl";
-    public static final String DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME = "showCloseButton";
-    public static final String DISPLAY_CLOSE_BUTTON_TRUE_VALUE = "showCloseButton";
 
     private Long ruleTemplateId;
     private String methodToCall = "";
@@ -285,7 +280,7 @@ public class RoutingReportForm extends ActionForm {
     }
 
     public boolean isDisplayCloseButton() {
-        return (DISPLAY_CLOSE_BUTTON_TRUE_VALUE.equals(getShowCloseButton()));
+        return (EdenConstants.DISPLAY_CLOSE_BUTTON_TRUE_VALUE.equals(getShowCloseButton()));
     }
 
     public String getShowCloseButton() {

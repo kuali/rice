@@ -35,12 +35,11 @@ import org.kuali.core.datadictionary.exception.ParseException;
 import org.kuali.core.datadictionary.exception.SourceException;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.service.KualiGroupService;
+import org.kuali.rice.util.ClassLoaderUtils;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
-
-import edu.iu.uis.eden.util.ClassLoaderUtils;
 
 /**
  * Assembles a DataDictionary from the contents of one or more specifed XML

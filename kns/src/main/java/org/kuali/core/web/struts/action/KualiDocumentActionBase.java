@@ -52,7 +52,6 @@ import org.kuali.core.exceptions.AuthorizationException;
 import org.kuali.core.exceptions.DocumentAuthorizationException;
 import org.kuali.core.exceptions.ModuleAuthorizationException;
 import org.kuali.core.exceptions.UnknownDocumentIdException;
-import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.question.ConfirmationQuestion;
 import org.kuali.core.rule.PreRulesCheck;
 import org.kuali.core.rule.event.AddAdHocRoutePersonEvent;
@@ -80,7 +79,6 @@ import edu.iu.uis.eden.clientapp.vo.WorkflowGroupIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
 import edu.iu.uis.eden.exception.InvalidWorkgroupException;
 import edu.iu.uis.eden.exception.WorkflowException;
-import edu.iu.uis.eden.routetemplate.web.RoutingReportForm;
 
 /**
  * This class handles all of the document handling related actions in terms of passing them from here at a central point to the
@@ -474,17 +472,17 @@ public class KualiDocumentActionBase extends KualiAction {
         // setup route report form variables
         request.setAttribute("workflowRouteReportUrl", KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceConstants.WORKFLOW_URL_KEY) + "/" + EdenConstants.DOCUMENT_ROUTING_REPORT_PAGE);
         List<KeyLabelPair> generalRouteReportFormParameters = new ArrayList<KeyLabelPair>();
-        generalRouteReportFormParameters.add(new KeyLabelPair(RoutingReportForm.INITIATOR_ID_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getInitiatorNetworkId()));
-        generalRouteReportFormParameters.add(new KeyLabelPair(RoutingReportForm.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getDocumentType()));
+        generalRouteReportFormParameters.add(new KeyLabelPair(EdenConstants.INITIATOR_ID_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getInitiatorNetworkId()));
+        generalRouteReportFormParameters.add(new KeyLabelPair(EdenConstants.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getDocumentType()));
         // prepareForRouteReport() method should populate document header workflow document application content xml
         String xml = document.getXmlForRouteReport();
         LOG.debug("XML being used for Routing Report is: " + xml);
-        generalRouteReportFormParameters.add(new KeyLabelPair(RoutingReportForm.DOCUMENT_CONTENT_ATTRIBUTE_NAME,xml));
+        generalRouteReportFormParameters.add(new KeyLabelPair(EdenConstants.DOCUMENT_CONTENT_ATTRIBUTE_NAME,xml));
         
         // set up the variables for the form if java script is working (includes a close button variable and no back url)
         List<KeyLabelPair> javaScriptFormParameters = new ArrayList<KeyLabelPair>();
         javaScriptFormParameters.addAll(generalRouteReportFormParameters);
-        javaScriptFormParameters.add(new KeyLabelPair(RoutingReportForm.DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME, RoutingReportForm.DISPLAY_CLOSE_BUTTON_TRUE_VALUE));
+        javaScriptFormParameters.add(new KeyLabelPair(EdenConstants.DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME, EdenConstants.DISPLAY_CLOSE_BUTTON_TRUE_VALUE));
         request.setAttribute("javaScriptFormVariables", javaScriptFormParameters);
 
         // set up the variables for the form if java script is NOT working (includes a back url but no close button)
@@ -494,7 +492,7 @@ public class KualiDocumentActionBase extends KualiAction {
         for (KeyLabelPair pair : backFormParameters) {
             parameters.put(pair.getKey(), pair.getLabel());
         }
-        noJavaScriptFormParameters.add(new KeyLabelPair(RoutingReportForm.RETURN_URL_ATTRIBUTE_NAME,UrlFactory.parameterizeUrl(backUrlBase, parameters)));
+        noJavaScriptFormParameters.add(new KeyLabelPair(EdenConstants.RETURN_URL_ATTRIBUTE_NAME,UrlFactory.parameterizeUrl(backUrlBase, parameters)));
         request.setAttribute("noJavaScriptFormVariables", noJavaScriptFormParameters);
 
         return mapping.findForward(RiceConstants.MAPPING_ROUTE_REPORT);

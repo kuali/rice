@@ -158,6 +158,14 @@ public class EdenConstants extends JSTLConstants {
     public static final String IDOCHANDLER_ROUTEHEADER_ID_PARAMETER = IDocHandler.ROUTEHEADER_ID_PARAMETER;
     public static final String IDOCANDLER_BACKDOOR_ID_PARAMETER  = IDocHandler.BACKDOOR_ID_PARAMETER;
     public static final String FEEDBACK_URL = "feedback.do";
+    
+    // Routing Report constants
+    public static final String DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME = "documentTypeParam";
+    public static final String INITIATOR_ID_ATTRIBUTE_NAME = "initiatorNetworkId";
+    public static final String DOCUMENT_CONTENT_ATTRIBUTE_NAME = "documentContent";
+    public static final String RETURN_URL_ATTRIBUTE_NAME = "backUrl";
+    public static final String DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME = "showCloseButton";
+    public static final String DISPLAY_CLOSE_BUTTON_TRUE_VALUE = "showCloseButton";
 
     public static final String WORKFLOW_SUPER_USER_WORKGROUP_NAME = "WorkflowAdmin";
 

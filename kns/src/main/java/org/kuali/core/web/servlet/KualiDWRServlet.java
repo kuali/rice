@@ -27,12 +27,11 @@ import org.kuali.RiceConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.util.spring.NamedOrderedListBean;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.util.ClassLoaderUtils;
 import org.springframework.core.io.DefaultResourceLoader;
 
 import uk.ltd.getahead.dwr.Configuration;
 import uk.ltd.getahead.dwr.DWRServlet;
-
-import edu.iu.uis.eden.util.ClassLoaderUtils;
 
 public class KualiDWRServlet extends DWRServlet {
 	/**

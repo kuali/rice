@@ -52,35 +52,35 @@ public class KSBServiceLocator {
     public static final String BUS_ADMIN_SERVICE = "busAdminService";
 
     public static Object getService(String name) {
-	return GlobalResourceLoader.getService(name);
+        return GlobalResourceLoader.getService(name);
     }
 
     public static TransactionTemplate getTransactionTemplate() {
-	return (TransactionTemplate) getService("transactionTemplate");
+        return (TransactionTemplate) getService("transactionTemplate");
     }
 
     public static PlatformTransactionManager getPlatformTransactionManager() {
-	return (PlatformTransactionManager) getService("transactionManager");
+        return (PlatformTransactionManager) getService("transactionManager");
     }
 
     public static BAMService getBAMService() {
-	return (BAMService) getService("bamService");
+        return (BAMService) getService("bamService");
     }
 
     public static MessageHelper getMessageHelper() {
-	return (MessageHelper) getService("enMessageHelper");
+        return (MessageHelper) getService("enMessageHelper");
     }
 
     public static MessageQueueService getRouteQueueService() {
-	return (MessageQueueService) getService("enRouteQueueService");
+        return (MessageQueueService) getService("enRouteQueueService");
     }
 
     public static ExceptionRoutingService getExceptionRoutingService() {
-	return (ExceptionRoutingService) getService("exceptionMessagingService");
+        return (ExceptionRoutingService) getService("exceptionMessagingService");
     }
 
     public static RemotedServiceRegistry getServiceDeployer() {
-	return (RemotedServiceRegistry) getService(REMOTED_SERVICE_REGISTRY);
+        return (RemotedServiceRegistry) getService(REMOTED_SERVICE_REGISTRY);
     }
 
     public static DigitalSignatureService getDigitalSignatureService() {
@@ -92,39 +92,43 @@ public class KSBServiceLocator {
     }
 
     public static KSBThreadPool getThreadPool() {
-	return (KSBThreadPool) getService(THREAD_POOL_SERVICE);
+        return (KSBThreadPool) getService(THREAD_POOL_SERVICE);
     }
 
     public static KSBScheduledPool getScheduledPool() {
-    	return (KSBScheduledPool) getService(SCHEDULED_THREAD_POOL_SERVICE);
+        return (KSBScheduledPool) getService(SCHEDULED_THREAD_POOL_SERVICE);
     }
 
     public static ServiceRegistry getIPTableService() {
-	return (ServiceRegistry) getService("enRoutingTableService");
+        return (ServiceRegistry) getService("enRoutingTableService");
     }
 
     public static ServiceFactory getXFireServiceFactory() {
-	return (ServiceFactory) getService("xfire.serviceFactory");
+        return (ServiceFactory) getService("xfire.serviceFactory");
     }
 
     public static XFire getXFire() {
-	return (XFire) getService("xfire");
+        return (XFire) getService("xfire");
     }
 
     public static DataSource getMessageDataSource() {
-	return (DataSource) getService("ksbMessageDataSource");
+        return (DataSource) getService("ksbMessageDataSource");
+    }
+
+    public static DataSource getMessageNonTransactionalDataSource() {
+        return (DataSource) getService("ksbMessageNonTransactionalDataSource");
     }
 
     public static DataSource getRegistryDataSource() {
-	return (DataSource) getService("ksbRegistryDataSource");
+        return (DataSource) getService("ksbRegistryDataSource");
     }
 
     public static Scheduler getScheduler() {
-    	return (Scheduler) getService("ksbScheduler");
+        return (Scheduler) getService("ksbScheduler");
     }
 
     public static BusAdminService getService() {
-	return (BusAdminService) getService(BUS_ADMIN_SERVICE);
+        return (BusAdminService) getService(BUS_ADMIN_SERVICE);
     }
 
 }

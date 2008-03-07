@@ -24,9 +24,6 @@
     </bean>
 
     <bean id="kenDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean">
-        <property name="transactionManager">
-            <ref local="jtaTransactionManager" />
-        </property>
         <property name="preferredDataSourceParams">
             <list>
                 <value>org.kuali.ken.datasource</value>

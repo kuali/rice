@@ -12,6 +12,8 @@
  */
 package edu.iu.uis.eden.messaging.quartz;
 
+import javax.sql.DataSource;
+
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.RiceConstants;
 import org.kuali.rice.config.ConfigurationException;
@@ -25,48 +27,82 @@ import org.springframework.transaction.PlatformTransactionManager;
 /**
  * An implementation of the Quartz SchedulerFactoryBean which uses a database-backed quartz if the useQuartzDatabase property
  * is set.
- *
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
 
     private PlatformTransactionManager jtaTransactionManager;
-    
+    private boolean transactionManagerSet = false;
+    private boolean nonTransactionalDataSourceIsNull = true;
+
     @Override
-	protected Scheduler createScheduler(SchedulerFactory schedulerFactory, String schedulerName) throws SchedulerException {
-    	if (Core.getCurrentContextConfig().getObject(RiceConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY) != null) {
-    	    try {
-				Scheduler scheduler = (Scheduler) Core.getCurrentContextConfig().getObject(RiceConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY);
-    	    	scheduler.addJobListener(new MessageServiceExecutorJobListener());
-    	    	return scheduler;
-    	    } catch (Exception e) {
-    	    	throw new ConfigurationException(e);
-    	    }
-    	}
-		return super.createScheduler(schedulerFactory, schedulerName);
-	}
+    protected Scheduler createScheduler(SchedulerFactory schedulerFactory, String schedulerName) throws SchedulerException {
+        if (Core.getCurrentContextConfig().getObject(RiceConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY) != null) {
+            try {
+                Scheduler scheduler = (Scheduler) Core.getCurrentContextConfig().getObject(RiceConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY);
+                scheduler.addJobListener(new MessageServiceExecutorJobListener());
+                return scheduler;
+            } catch (Exception e) {
+                throw new ConfigurationException(e);
+            }
+        }
+        return super.createScheduler(schedulerFactory, schedulerName);
+    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
 
-		boolean useQuartzDatabase = new Boolean(Core.getCurrentContextConfig().getProperty(RiceConstants.USE_QUARTZ_DATABASE));
-	if (useQuartzDatabase) {
-	    if (jtaTransactionManager == null) {
-		throw new ConfigurationException("No jta transaction manager was configured for the KSB Quartz Scheduler");
-	    }
-	    setTransactionManager(jtaTransactionManager);
-	    setDataSource(KSBServiceLocator.getMessageDataSource());
-	}
-	super.afterPropertiesSet();
+        boolean useQuartzDatabase = new Boolean(Core.getCurrentContextConfig().getProperty(RiceConstants.USE_QUARTZ_DATABASE));
+        if (useQuartzDatabase) {
+            // require a transaction manager
+            if (jtaTransactionManager == null) {
+                throw new ConfigurationException("No jta transaction manager was configured for the KSB Quartz Scheduler");
+            }
+            // since transaction manager is required... require a non transactional datasource
+            DataSource nonTransDataSource = KSBServiceLocator.getMessageNonTransactionalDataSource();
+            if (nonTransDataSource == null) {
+                throw new ConfigurationException("No non-transactional data source was found but is required for the KSB Quartz Scheduler");
+            }
+            setTransactionManager(jtaTransactionManager);
+            setDataSource(KSBServiceLocator.getMessageDataSource());
+            setNonTransactionalDataSource(nonTransDataSource);
+        }
+        if (transactionManagerSet && nonTransactionalDataSourceIsNull) {
+            throw new ConfigurationException("A valid transaction manager was set but no non-transactional data source was found");
+        }
+        super.afterPropertiesSet();
     }
 
     /**
-         * This is to work around an issue with the GRL when you've got more than one module with a bean named
-         * "transactionManager".
+     * This is to work around an issue with the GRL when you've got more than one module with a bean named
+     * "transactionManager".
      * 
      * @param jtaTransactionManager
      */
     public void setJtaTransactionManager(PlatformTransactionManager jtaTransactionManager) {
         this.jtaTransactionManager = jtaTransactionManager;
+    }
+    
+    /**
+     * This overridden method is used simply to keep track of whether the transactionManager property has been set
+     * 
+     * @see org.springframework.scheduling.quartz.SchedulerFactoryBean#setTransactionManager(org.springframework.transaction.PlatformTransactionManager)
+     */
+    @Override
+    public void setTransactionManager(PlatformTransactionManager transactionManager) {
+        transactionManagerSet = transactionManager != null;
+        super.setTransactionManager(transactionManager);
+    }
+    
+    /**
+     * This overridden method is used to keep track of whether the non transactional data source is null
+     * 
+     * @see org.springframework.scheduling.quartz.SchedulerFactoryBean#setNonTransactionalDataSource(javax.sql.DataSource)
+     */
+    @Override
+    public void setNonTransactionalDataSource(DataSource nonTransactionalDataSource) {
+        nonTransactionalDataSourceIsNull = nonTransactionalDataSource == null;
+        super.setNonTransactionalDataSource(nonTransactionalDataSource);
     }
 }

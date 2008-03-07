@@ -20,7 +20,6 @@ import java.util.List;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import javax.transaction.TransactionManager;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.config.Config;
@@ -31,179 +30,206 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.jndi.JndiTemplate;
 
 /**
- * A class that can be used to load the primary datasource for a Rice module
- * from an object in the Config system or from a JNDI url specified by the
- * Configuration system.  By default, it loads these values from the
- * follwing properties:
- *
+ * A class that can be used to load the primary datasource for a Rice module from an object in the Config system or from a
+ * JNDI url specified by the Configuration system. By default, it loads these values from the following properties if the
+ * <code>useNonTransactionalDataSource</code> param is not set or is set to false:
  * <ul>
- *   <li>{@link Config#DATASOURCE_OBJ}</li>
- *   <li>{@link Config#DATASOURCE_JNDI}</li>
+ * <li>{@link Config#DATASOURCE_OBJ}</li>
+ * <li>{@link Config#DATASOURCE_JNDI}</li>
  * </ul>
- *
- * <p>The config properties checked can be overridden by setting the
- *
- *
+ * If the <code>useNonTransactionalDataSource</code> param is set to true the following properties will be used:<br>
+ * <br>
+ * <ul>
+ * <li>{@link Config#NON_TRANSACTIONAL_DATASOURCE_OBJ}</li>
+ * <li>{@link Config#NON_TRANSACTIONAL_DATASOURCE_JNDI}</li>
+ * </ul>
+ * <p>
+ * The config properties checked can be overridden by setting values into the list parameters
+ * <code>preferredDataSourceParams</code> and <code>preferredDataSourceJndiParams</code>
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
 
-	private static final String DEFAULT_DATASOURCE_PARAM = Config.DATASOURCE_OBJ;
-	private static final String DEFAULT_DATASOURCE_JNDI_PARAM = Config.DATASOURCE_JNDI;
+    private static final String DEFAULT_DATASOURCE_PARAM = Config.DATASOURCE_OBJ;
+    private static final String DEFAULT_NONTRANSACTIONAL_DATASOURCE_PARAM = Config.NON_TRANSACTIONAL_DATASOURCE_OBJ;
+    private static final String DEFAULT_DATASOURCE_JNDI_PARAM = Config.DATASOURCE_JNDI;
+    private static final String DEFAULT_NONTRANSACTIONAL_DATASOURCE_JNDI_PARAM = Config.NON_TRANSACTIONAL_DATASOURCE_JNDI;
 
-	private TransactionManager transactionManager;
-	private JndiTemplate jndiTemplate;
-	private String defaultDataSourceParam = DEFAULT_DATASOURCE_PARAM;
-	private String defaultDataSourceJndiParam = DEFAULT_DATASOURCE_JNDI_PARAM;
-	private List<String> preferredDataSourceParams = new ArrayList<String>();
-	private List<String> preferredDataSourceJndiParams = new ArrayList<String>();
+    private JndiTemplate jndiTemplate;
+    private boolean nonTransactionalDataSource = false;
+    private String defaultDataSourceParam = DEFAULT_DATASOURCE_PARAM;
+    private String defaultNonTransactionalDataSourceParam = DEFAULT_NONTRANSACTIONAL_DATASOURCE_PARAM;
+    private String defaultDataSourceJndiParam = DEFAULT_DATASOURCE_JNDI_PARAM;
+    private String defaultNonTransactionalDataSourceJndiParam = DEFAULT_NONTRANSACTIONAL_DATASOURCE_JNDI_PARAM;
+    private List<String> preferredDataSourceParams = new ArrayList<String>();
+    private List<String> preferredDataSourceJndiParams = new ArrayList<String>();
 
-	public PrimaryDataSourceFactoryBean() {
-		setSingleton(true);
-	}
+    public PrimaryDataSourceFactoryBean() {
+        setSingleton(true);
+    }
 
-	public Class getObjectType() {
-		return DataSource.class;
-	}
+    public Class getObjectType() {
+        return DataSource.class;
+    }
 
-	@Override
-	protected Object createInstance() throws Exception {
-		Config config = Core.getCurrentContextConfig();
-		DataSource dataSource = createDataSource(config);
-		if (dataSource != null) {
-			return dataSource;
-		}
-		if (this.transactionManager == null) {
-			throw new ConfigurationException("A transactionManager must be specified!");
-		}
-		throw new ConfigurationException("Failed to configure the Primary Data Source.");
-	}
+    @Override
+    protected Object createInstance() throws Exception {
+        Config config = Core.getCurrentContextConfig();
+        DataSource dataSource = createDataSource(config);
+        if (dataSource != null) {
+            return dataSource;
+        }
+        throw new ConfigurationException("Failed to configure the Primary Data Source.");
+    }
 
-	protected DataSource createDataSource(Config config) throws Exception {
-		DataSource dataSource = loadPreferredDataSourceFromConfig(config);
-		if (dataSource == null) {
-			Object dataSourceObject = config.getObject(getDefaultDataSourceParam());
-			if (dataSourceObject != null) {
-				validateDataSource(getDefaultDataSourceParam(), dataSourceObject);
-				dataSource = (DataSource)dataSourceObject;
-			} else {
-				dataSource = getDataSourceFromJndi(config, getDefaultDataSourceJndiParam());
-			}
-		}
-		return dataSource;
-	}
+    protected String getDefaultDataSourceParamByType() {
+        return (nonTransactionalDataSource) ? getDefaultNonTransactionalDataSourceParam() : getDefaultDataSourceParam();
+    }
 
-	protected DataSource loadPreferredDataSourceFromConfig(Config config) {
-		for (String dataSourceParam : getPreferredDataSourceParams()) {
-			Object dataSource = config.getObject(dataSourceParam);
-			if (dataSource != null) {
-				validateDataSource(dataSourceParam, dataSource);
-				return (DataSource)dataSource;
-			}
-		}
-		if (this.jndiTemplate == null) {
-		    this.jndiTemplate = new JndiTemplate();
-		}
-		for (String dataSourceJndiParam : getPreferredDataSourceJndiParams()) {
-			DataSource dataSource = getDataSourceFromJndi(config, dataSourceJndiParam);
-			if (dataSource != null) {
-				return dataSource;
-			}
-		}
-		return null;
-	}
+    protected String getDefaultDataSourceJndiParamByType() {
+        return (nonTransactionalDataSource) ? getDefaultNonTransactionalDataSourceJndiParam() : getDefaultDataSourceJndiParam();
+    }
 
-	protected void validateDataSource(String paramName, Object dataSourceObject) {
-		if (!(dataSourceObject instanceof DataSource)) {
-			throw new ConfigurationException("DataSource configured for parameter '" + paramName + "' was not an instance of DataSource.  Was instead " + dataSourceObject.getClass().getName());
-		}
-	}
+    protected DataSource createDataSource(Config config) throws Exception {
+        DataSource dataSource = loadPreferredDataSourceFromConfig(config);
+        if (dataSource == null) {
 
-	protected DataSource getDataSourceFromJndi(Config config, String dataSourceJndiParam) {
-		String jndiName = config.getProperty(dataSourceJndiParam);
-		if (!StringUtils.isBlank(jndiName)) {
-			try {
-				Object dataSource = getJndiTemplate().lookup(jndiName, DataSource.class);
-				if (dataSource != null) {
-					validateDataSource(dataSourceJndiParam, dataSource);
-					return (DataSource)dataSource;
-				}
-			} catch (NamingException e) {
-				throw new ConfigurationException("Could not locate the DataSource at the given JNDI location: '" + jndiName + "'", e);
-			}
-		}
-		return null;
-	}
+            Object dataSourceObject = config.getObject(getDefaultDataSourceParamByType());
+            if (dataSourceObject != null) {
+                validateDataSource(getDefaultDataSourceParamByType(), dataSourceObject);
+                dataSource = (DataSource) dataSourceObject;
+            } else {
+                dataSource = getDataSourceFromJndi(config, getDefaultDataSourceJndiParamByType());
+            }
+        }
+        return dataSource;
+    }
 
-	protected void destroyInstance(Object instance) throws Exception {
-		if (instance instanceof Lifecycle) {
-			((Lifecycle)instance).stop();
-		}
-	}
+    protected DataSource loadPreferredDataSourceFromConfig(Config config) {
+        for (String dataSourceParam : getPreferredDataSourceParams()) {
+            Object dataSource = config.getObject(dataSourceParam);
+            if (dataSource != null) {
+                validateDataSource(dataSourceParam, dataSource);
+                return (DataSource) dataSource;
+            }
+        }
+        if (this.jndiTemplate == null) {
+            this.jndiTemplate = new JndiTemplate();
+        }
+        for (String dataSourceJndiParam : getPreferredDataSourceJndiParams()) {
+            DataSource dataSource = getDataSourceFromJndi(config, dataSourceJndiParam);
+            if (dataSource != null) {
+                return dataSource;
+            }
+        }
+        return null;
+    }
 
-	protected String getStringProperty(Config config, String propertyName) {
-		String data = config.getProperty(propertyName);
-		if (StringUtils.isEmpty(data)) {
-			throw new ConfigurationException("Could not locate a value for the given property '" + propertyName + "'.");
-		}
-		return data;
-	}
+    protected void validateDataSource(String paramName, Object dataSourceObject) {
+        if (!(dataSourceObject instanceof DataSource)) {
+            throw new ConfigurationException("DataSource configured for parameter '" + paramName + "' was not an instance of DataSource.  Was instead " + dataSourceObject.getClass().getName());
+        }
+    }
 
-	protected int getIntProperty(Config config, String propertyName) {
-		String data = getStringProperty(config, propertyName);
-		try {
-			int intData = Integer.parseInt(data);
-			return intData;
-		} catch (NumberFormatException e) {
-			throw new ConfigurationException("The given property '" + propertyName + "' was not a valid integer.  Value was '" + data + "'");
-		}
-	}
+    protected DataSource getDataSourceFromJndi(Config config, String dataSourceJndiParam) {
+        String jndiName = config.getProperty(dataSourceJndiParam);
+        if (!StringUtils.isBlank(jndiName)) {
+            try {
+                Object dataSource = getJndiTemplate().lookup(jndiName, DataSource.class);
+                if (dataSource != null) {
+                    validateDataSource(dataSourceJndiParam, dataSource);
+                    return (DataSource) dataSource;
+                }
+            } catch (NamingException e) {
+                throw new ConfigurationException("Could not locate the DataSource at the given JNDI location: '" + jndiName + "'", e);
+            }
+        }
+        return null;
+    }
 
-	public void setTransactionManager(TransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
-	}
+    protected void destroyInstance(Object instance) throws Exception {
+        if (instance instanceof Lifecycle) {
+            ((Lifecycle) instance).stop();
+        }
+    }
 
-	public JndiTemplate getJndiTemplate() {
-		return this.jndiTemplate;
-	}
+    protected String getStringProperty(Config config, String propertyName) {
+        String data = config.getProperty(propertyName);
+        if (StringUtils.isEmpty(data)) {
+            throw new ConfigurationException("Could not locate a value for the given property '" + propertyName + "'.");
+        }
+        return data;
+    }
 
-	public void setJndiTemplate(JndiTemplate jndiTemplate) {
-		this.jndiTemplate = jndiTemplate;
-	}
+    protected int getIntProperty(Config config, String propertyName) {
+        String data = getStringProperty(config, propertyName);
+        try {
+            int intData = Integer.parseInt(data);
+            return intData;
+        } catch (NumberFormatException e) {
+            throw new ConfigurationException("The given property '" + propertyName + "' was not a valid integer.  Value was '" + data + "'");
+        }
+    }
 
-	public String getDefaultDataSourceJndiParam() {
-		return defaultDataSourceJndiParam;
-	}
+    public JndiTemplate getJndiTemplate() {
+        return this.jndiTemplate;
+    }
 
-	public void setDefaultDataSourceJndiParam(String defaultDataSourceJndiParam) {
-		this.defaultDataSourceJndiParam = defaultDataSourceJndiParam;
-	}
+    public void setJndiTemplate(JndiTemplate jndiTemplate) {
+        this.jndiTemplate = jndiTemplate;
+    }
 
-	public String getDefaultDataSourceParam() {
-		return defaultDataSourceParam;
-	}
+    public String getDefaultDataSourceJndiParam() {
+        return defaultDataSourceJndiParam;
+    }
 
-	public void setDefaultDataSourceParam(String defaultDataSourceParam) {
-		this.defaultDataSourceParam = defaultDataSourceParam;
-	}
+    public void setDefaultDataSourceJndiParam(String defaultDataSourceJndiParam) {
+        this.defaultDataSourceJndiParam = defaultDataSourceJndiParam;
+    }
 
-	public List<String> getPreferredDataSourceJndiParams() {
-		return preferredDataSourceJndiParams;
-	}
+    public String getDefaultNonTransactionalDataSourceJndiParam() {
+        return defaultNonTransactionalDataSourceJndiParam;
+    }
 
-	public void setPreferredDataSourceJndiParams(List<String> preferredDataSourceJndiParams) {
-		this.preferredDataSourceJndiParams = preferredDataSourceJndiParams;
-	}
+    public void setDefaultNonTransactionalDataSourceJndiParam(String defaultNonTransactionalDataSourceJndiParam) {
+        this.defaultNonTransactionalDataSourceJndiParam = defaultNonTransactionalDataSourceJndiParam;
+    }
 
-	public List<String> getPreferredDataSourceParams() {
-		return preferredDataSourceParams;
-	}
+    public String getDefaultDataSourceParam() {
+        return defaultDataSourceParam;
+    }
 
-	public void setPreferredDataSourceParams(List<String> preferredDataSourceParams) {
-		this.preferredDataSourceParams = preferredDataSourceParams;
-	}
+    public void setDefaultDataSourceParam(String defaultDataSourceParam) {
+        this.defaultDataSourceParam = defaultDataSourceParam;
+    }
 
+    public String getDefaultNonTransactionalDataSourceParam() {
+        return defaultNonTransactionalDataSourceParam;
+    }
 
+    public void setDefaultNonTransactionalDataSourceParam(String defaultNonTransactionalDataSourceParam) {
+        this.defaultNonTransactionalDataSourceParam = defaultNonTransactionalDataSourceParam;
+    }
 
+    public List<String> getPreferredDataSourceJndiParams() {
+        return preferredDataSourceJndiParams;
+    }
+
+    public void setPreferredDataSourceJndiParams(List<String> preferredDataSourceJndiParams) {
+        this.preferredDataSourceJndiParams = preferredDataSourceJndiParams;
+    }
+
+    public List<String> getPreferredDataSourceParams() {
+        return preferredDataSourceParams;
+    }
+
+    public void setPreferredDataSourceParams(List<String> preferredDataSourceParams) {
+        this.preferredDataSourceParams = preferredDataSourceParams;
+    }
+
+    public void setNonTransactionalDataSource(boolean nonTransactionalDataSource) {
+        this.nonTransactionalDataSource = nonTransactionalDataSource;
+    }
 
 }

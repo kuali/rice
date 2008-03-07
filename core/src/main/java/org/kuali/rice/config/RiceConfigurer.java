@@ -26,6 +26,7 @@ import javax.transaction.UserTransaction;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.lifecycle.Lifecycle;
@@ -49,10 +50,12 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	private String environment = "dev";
 	private String messageEntity;
 	private DataSource dataSource;
+	private DataSource nonTransactionalDataSource;
 	private String platform;
 	private UserTransaction userTransaction;
 	private TransactionManager transactionManager;
-	private String dataSourceJndiLocation;
+    private String dataSourceJndiLocation;
+    private String nonTransactionalDataSourceJndiLocation;
 	private String userTransactionJndiLocation;
 	private String transactionManagerJndiLocation;
 	private CredentialsSourceFactory credentialsSourceFactory;
@@ -176,6 +179,11 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 		} else if (!StringUtils.isBlank(this.dataSourceJndiLocation)) {
 			config.getProperties().put(Config.DATASOURCE_JNDI, this.dataSourceJndiLocation);
 		}
+        if (this.nonTransactionalDataSource != null) {
+            config.getObjects().put(Config.NON_TRANSACTIONAL_DATASOURCE_OBJ, this.nonTransactionalDataSource);
+        } else if (!StringUtils.isBlank(this.nonTransactionalDataSourceJndiLocation)) {
+            config.getProperties().put(Config.NON_TRANSACTIONAL_DATASOURCE_JNDI, this.nonTransactionalDataSourceJndiLocation);
+        }
 	}
 
 	/**
@@ -230,7 +238,15 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 		this.dataSource = dataSource;
 	}
 
-	public String getPlatform() {
+    public DataSource getNonTransactionalDataSource() {
+        return this.nonTransactionalDataSource;
+    }
+
+    public void setNonTransactionalDataSource(DataSource nonTransactionalDataSource) {
+        this.nonTransactionalDataSource = nonTransactionalDataSource;
+    }
+
+    public String getPlatform() {
 		return this.platform;
 	}
 
@@ -282,11 +298,15 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 		this.dataSourceJndiLocation = dataSourceJndiLocation;
 	}
 
+    public void setNonTransactionalDataSourceJndiLocation(String nonTransactionalDataSourceJndiLocation) {
+        this.nonTransactionalDataSourceJndiLocation = nonTransactionalDataSourceJndiLocation;
+    }
+
 	public String getTransactionManagerJndiLocation() {
 		return this.transactionManagerJndiLocation;
 	}
 
-	public void setTransactionManagerJndiLocation(String transactionManagerJndiLocation) {
+    public void setTransactionManagerJndiLocation(String transactionManagerJndiLocation) {
 		this.transactionManagerJndiLocation = transactionManagerJndiLocation;
 	}
 

@@ -1158,6 +1158,24 @@
           <messageEntity>TRAVEL</messageEntity>
           <type>RuleAttribute</type>
         </ruleAttribute>
+        <ruleAttribute>
+            <name>TravelAccountDocumentAccountNumberAttribute</name>
+            <className>org.kuali.workflow.attribute.KualiXmlSearchableAttributeImpl</className>
+            <label>Account Number Attribute</label>
+            <description>The search attribute used to find documents by account number.</description>
+            <type>SearchableXmlAttribute</type>
+            <searchingConfig>
+                <fieldDef name="accountNumber" title="kuali_dd_label(TravelAccount)">
+                    <display>
+                        <type>text</type>
+                    </display>
+                    <validation required="false" />
+                    <fieldEvaluation>
+                        <xpathexpression>wf:xstreamsafe('//newMaintainableObject/businessObject/number')</xpathexpression>
+                    </fieldEvaluation>
+                </fieldDef>
+            </searchingConfig>
+        </ruleAttribute>
     
 
     </ruleAttributes>
@@ -1796,24 +1814,33 @@
             </routeNodes>
         </documentType>
         <documentType>
-            <name>TravelAccountMaintenanceDocument</name>
-            <description>Create a New Travel Request</description>
-            <label>Travel Request</label>
-            <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-            <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
-            <routePaths>
-                <routePath>
-                    <start name="Initiated" />
-                </routePath>
-            </routePaths>
-            <routeNodes>
-                <start name="Initiated">
-                    <activationType>P</activationType>
-                </start>
-            </routeNodes>
+          <name>TravelAccountMaintenanceDocument</name>
+          <description>Create a New Travel Account Maintenance Document</description>
+          <label>Travel Account Maintenance Document</label>
+          <postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+          <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+          <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+          <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+          <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+          <active>true</active>
+          <attributes>
+              <attribute>
+                  <name>TravelAccountDocumentAccountNumberAttribute</name>
+              </attribute>
+          </attributes>
+          <routingVersion>2</routingVersion>
+          <routePaths>
+              <routePath>
+                  <start name="Initiated" />
+              </routePath>
+          </routePaths>
+          <routeNodes>
+              <start name="Initiated">
+                  <activationType>P</activationType>
+                  <mandatoryRoute>false</mandatoryRoute>
+                  <finalApproval>false</finalApproval>
+              </start>
+          </routeNodes>
         </documentType>
         <documentType>
             <name>FiscalOfficerMaintenanceDocument</name>

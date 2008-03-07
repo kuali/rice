@@ -17,6 +17,7 @@
 package edu.iu.uis.eden.messaging.config;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -79,10 +80,14 @@ public class KSBConfigurer extends ModuleConfigurer {
 	private DataSource registryDataSource;
 
 	private DataSource messageDataSource;
+	
+	private DataSource nonTransactionalMessageDataSource;
 
 	private String registryDataSourceJndiName;
 
-	private String messageDataSourceJndiName;
+    private String messageDataSourceJndiName;
+
+    private String nonTransactionalMessageDataSourceJndiName;
 
 	private Scheduler exceptionMessagingScheduler;
 
@@ -92,7 +97,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 	private boolean isStarted = false;
 
 	public Config loadConfig(Config parentConfig) throws Exception {
-		LOG.info("Starting configuration of KEW for message entity " + getMessageEntity(parentConfig));
+		LOG.info("Starting configuration of KSB for message entity " + getMessageEntity(parentConfig));
 		Config currentConfig = Core.getCurrentContextConfig();
 		configureDataSource(currentConfig);
 		configureBus(currentConfig);
@@ -206,24 +211,29 @@ public class KSBConfigurer extends ModuleConfigurer {
 	}
 
 	protected void configureDataSource(Config config) {
-		if (getMessageDataSource() != null && getRegistryDataSource() == null) {
-			throw new ConfigurationException("A message data source was defined but a registry data source was not defined.  Both must be specified.");
-		}
-		if (getMessageDataSource() == null && getRegistryDataSource() != null) {
-			throw new ConfigurationException("A registry data source was defined but a message data source was not defined.  Both must be specified.");
-		}
+        if (getMessageDataSource() != null && getRegistryDataSource() == null) {
+            throw new ConfigurationException("A message data source was defined but a registry data source was not defined.  Both must be specified.");
+        }
+        if (getMessageDataSource() == null && getRegistryDataSource() != null) {
+            throw new ConfigurationException("A registry data source was defined but a message data source was not defined.  Both must be specified.");
+        }
 
-		if (getMessageDataSource() != null) {
-			config.getObjects().put(RiceConstants.KSB_MESSAGE_DATASOURCE, getMessageDataSource());
-		} else if (!StringUtils.isBlank(getMessageDataSourceJndiName())) {
-			config.getProperties().put(RiceConstants.KSB_MESSAGE_DATASOURCE_JNDI, getMessageDataSourceJndiName());
-		}
-		if (getRegistryDataSource() != null) {
-			config.getObjects().put(RiceConstants.KSB_REGISTRY_DATASOURCE, getRegistryDataSource());
-		} else if (!StringUtils.isBlank(getRegistryDataSourceJndiName())) {
-			config.getProperties().put(RiceConstants.KSB_REGISTRY_DATASOURCE_JNDI, getRegistryDataSourceJndiName());
-		}
-	}
+        if (getMessageDataSource() != null) {
+            config.getObjects().put(RiceConstants.KSB_MESSAGE_DATASOURCE, getMessageDataSource());
+        } else if (!StringUtils.isBlank(getMessageDataSourceJndiName())) {
+            config.getProperties().put(RiceConstants.KSB_MESSAGE_DATASOURCE_JNDI, getMessageDataSourceJndiName());
+        }
+        if (getNonTransactionalMessageDataSource() != null) {
+            config.getObjects().put(RiceConstants.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE, getNonTransactionalMessageDataSource());
+        } else if (!StringUtils.isBlank(getMessageDataSourceJndiName())) {
+            config.getProperties().put(RiceConstants.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE_JNDI, getNonTransactionalMessageDataSourceJndiName());
+        }
+        if (getRegistryDataSource() != null) {
+            config.getObjects().put(RiceConstants.KSB_REGISTRY_DATASOURCE, getRegistryDataSource());
+        } else if (!StringUtils.isBlank(getRegistryDataSourceJndiName())) {
+            config.getProperties().put(RiceConstants.KSB_REGISTRY_DATASOURCE_JNDI, getRegistryDataSourceJndiName());
+        }
+    }
 
 	protected void configurePlatformTransactionManager(Config config) {
 		if (getPlatformTransactionManager() == null) {
@@ -320,7 +330,15 @@ public class KSBConfigurer extends ModuleConfigurer {
 		this.messageDataSource = messageDataSource;
 	}
 
-	public String getMessageDataSourceJndiName() {
+    public DataSource getNonTransactionalMessageDataSource() {
+        return this.nonTransactionalMessageDataSource;
+    }
+
+    public void setNonTransactionalMessageDataSource(DataSource nonTransactionalMessageDataSource) {
+        this.nonTransactionalMessageDataSource = nonTransactionalMessageDataSource;
+    }
+
+    public String getMessageDataSourceJndiName() {
 		return this.messageDataSourceJndiName;
 	}
 
@@ -328,7 +346,15 @@ public class KSBConfigurer extends ModuleConfigurer {
 		this.messageDataSourceJndiName = messageDataSourceJndiName;
 	}
 
-	public DataSource getRegistryDataSource() {
+    public String getNonTransactionalMessageDataSourceJndiName() {
+        return this.nonTransactionalMessageDataSourceJndiName;
+    }
+
+    public void setNonTransactionalMessageDataSourceJndiName(String nonTransactionalMessageDataSourceJndiName) {
+        this.nonTransactionalMessageDataSourceJndiName = nonTransactionalMessageDataSourceJndiName;
+    }
+
+    public DataSource getRegistryDataSource() {
 		return this.registryDataSource;
 	}
 

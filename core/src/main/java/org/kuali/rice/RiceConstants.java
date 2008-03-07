@@ -54,8 +54,10 @@ public class RiceConstants extends JSTLConstants {
     public static final String ROUTE_QUEUE_FILTER_SUFFIX = "Filter";
 
     public static final String KSB_MESSAGE_DATASOURCE = "ksbMessage.datasource";
+    public static final String KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE = "ksbMessage.nonTransactional.datasource";
     public static final String KSB_REGISTRY_DATASOURCE = "ksbRegistry.datasource";
     public static final String KSB_MESSAGE_DATASOURCE_JNDI = "ksbMessage.datasource.jndi.location";
+    public static final String KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE_JNDI = "ksbMessage.nonTransactional.datasource.jndi.location";
     public static final String KSB_REGISTRY_DATASOURCE_JNDI = "ksbRegistry.datasource.jndi.location";
     public static final String USE_QUARTZ_DATABASE = "useQuartzDatabase";
     public static final String KSB_ALTERNATE_ENDPOINTS = "ksb.alternateEndpoints";

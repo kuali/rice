@@ -40,11 +40,24 @@
   	<property name="password" value="${datasource.password}"/>
   </bean>
 
+    <bean id="nonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${datasource.driver.name}"/>
+        <property name="url" value="${datasource.url}"/>
+        <property name="maxActive" value="${datasource.pool.maxActive}"/>
+        <property name="minIdle" value="7"/>
+        <property name="initialSize" value="7"/>
+        <property name="validationQuery" value="${datasource.pool.validationQuery}"/>
+        <property name="username" value="${datasource.username}" />
+        <property name="password" value="${datasource.password}" />
+        <property name="accessToUnderlyingConnectionAllowed" value="${datasource.dbcp.accessToUnderlyingConnectionAllowed}"/>
+    </bean>
+
 	<bean id="cache" class="edu.iu.uis.eden.cache.RiceCacheAdministratorImpl"/>
 
 	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
 		<property name="messageEntity" value="KEW" />
 		<property name="dataSource" ref="dataSource" />
+		<property name="nonTransactionalDataSource" ref="nonTransactionalDataSource" />
 		<property name="transactionManager" ref="atomikosTransactionManager" />
 		<property name="userTransaction" ref="atomikosUserTransaction" />
 		<property name="rootConfig" ref="config" />
@@ -52,6 +65,7 @@
 			<list>
 				<bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
 					<property name="serviceServletUrl" value="http://localhost:${ksb.testharness.port}/en-test/remoting/" />
+					<property name="nonTransactionalMessageDataSource" value="nonTransactionalDataSource" />
 					<property name="overrideServices">
 						<list>
 							<bean class="edu.iu.uis.eden.messaging.config.ServiceHolder">

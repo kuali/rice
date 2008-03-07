@@ -40,6 +40,18 @@
   	<property name="password" value="${datasource.password}"/>
   </bean>
 
+    <bean id="client2NonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${datasource.driver.name}"/>
+        <property name="url" value="${datasource.url}"/>
+        <property name="maxActive" value="${datasource.pool.maxActive}"/>
+        <property name="minIdle" value="7"/>
+        <property name="initialSize" value="7"/>
+        <property name="validationQuery" value="${datasource.pool.validationQuery}"/>
+        <property name="username" value="${datasource.username}" />
+        <property name="password" value="${datasource.password}" />
+        <property name="accessToUnderlyingConnectionAllowed" value="${datasource.dbcp.accessToUnderlyingConnectionAllowed}"/>
+    </bean>
+
 	<bean id="echoService" class="edu.iu.uis.eden.testclient2.EchoService2Impl" />
 	<bean id="chainedRequestService" class="edu.iu.uis.eden.testclient2.ChainedRequestService2Impl" />
 	<bean id="sharedQueue" class="edu.iu.uis.eden.testclient2.ClientApp2SharedQueue" />
@@ -50,6 +62,7 @@
 
 	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
 		<property name="dataSource" ref="dataSource" />
+		<property name="nonTransactionalDataSource" ref="client2NonTransactionalDataSource" />
 		<property name="transactionManager" ref="atomikosTransactionManager" />
 		<property name="userTransaction" ref="atomikosUserTransaction" />
 		<property name="credentialsSourceFactory" ref="credentialsSourceFactory" />

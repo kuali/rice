@@ -39,8 +39,21 @@
   	<property name="password" value="${datasource.password}"/>
   </bean>
 
+    <bean id="knsNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${datasource.driver.name}"/>
+        <property name="url" value="${datasource.url}"/>
+        <property name="maxActive" value="${datasource.pool.maxActive}"/>
+        <property name="minIdle" value="7"/>
+        <property name="initialSize" value="7"/>
+        <property name="validationQuery" value="${datasource.pool.validationQuery}"/>
+        <property name="username" value="${datasource.username}" />
+        <property name="password" value="${datasource.password}" />
+        <property name="accessToUnderlyingConnectionAllowed" value="${datasource.dbcp.accessToUnderlyingConnectionAllowed}"/>
+    </bean>
+
 	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
 		<property name="dataSource" ref="dataSource" />
+		<property name="nonTransactionalDataSource" ref="knsNonTransactionalDataSource" />
 		<property name="transactionManager" ref="atomikosTransactionManager" />
 		<property name="userTransaction" ref="atomikosUserTransaction" />
 		<property name="rootConfig" ref="config" />

@@ -45,6 +45,9 @@
 	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
 		<property name="messageEntity" value="KEW" />
 		<property name="dataSource" ref="dataSource" />
+		<property name="nonTransactionalDataSource" ref="dataSource" />
+
+		
 		<property name="rootConfig" ref="config" />
 		<property name="modules">
 			<list>

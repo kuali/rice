@@ -21,9 +21,6 @@
 	</bean>
 
 	<bean id="ksbRegistryDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean" lazy-init="true">
-		<property name="transactionManager">
-			<ref local="jtaTransactionManager" />
-		</property>
 		<property name="preferredDataSourceParams">
 			<list>
 				<value>ksbRegistry.datasource</value>
@@ -37,9 +34,6 @@
 	</bean>
 
 	<bean id="ksbMessageDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean" lazy-init="true">
-		<property name="transactionManager">
-			<ref local="jtaTransactionManager" />
-		</property>
 		<property name="preferredDataSourceParams">
 			<list>
 				<value>ksbMessage.datasource</value>
@@ -48,6 +42,20 @@
 		<property name="preferredDataSourceJndiParams">
 			<list>
 				<value>ksbMessage.datasource.jndi.location</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="ksbMessageNonTransactionalDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+		<property name="nonTransactionalDataSource" value="true"/>
+		<property name="preferredDataSourceParams">
+			<list>
+				<value>ksbMessage.nonTransactional.datasource</value>
+			</list>
+		</property>
+		<property name="preferredDataSourceJndiParams">
+			<list>
+				<value>ksbMessage.nonTransactional.datasource.jndi.location</value>
 			</list>
 		</property>
 	</bean>

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -131,18 +132,27 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      * @throws Exception if a PerSuiteDataLoaderLifecycle is unable to be started
      */
     protected void startSuiteDataLoaderLifecycles() throws Exception {
+        List<Class> classesToCheck = new ArrayList<Class>();
         if (getClass().isAnnotationPresent(PerSuiteUnitTestData.class)) {
-            perSuiteDataLoaderLifecycleNamesRun.add(getClass().getName());
-            Class clazz = getClass().getSuperclass();
+            Class clazz = getClass();
             while (!clazz.getName().equals(Object.class.getName())) {
-                for (Annotation annotation : clazz.getDeclaredAnnotations()) {
-                    if (annotation.annotationType().getName().equals(PerSuiteUnitTestData.class.getName()) && !perSuiteDataLoaderLifecycleNamesRun.contains(clazz.getName())) {
-                        new PerSuiteDataLoaderLifecycle(getClass()).start();
-                    }
-                }
-                perSuiteDataLoaderLifecycleNamesRun.add(clazz.getName());
+                classesToCheck.add(0, clazz);
+//                for (Annotation annotation : clazz.getDeclaredAnnotations()) {
+//                    if (annotation.annotationType().getName().equals(PerSuiteUnitTestData.class.getName()) && !perSuiteDataLoaderLifecycleNamesRun.contains(clazz.getName())) {
+//                        new PerSuiteDataLoaderLifecycle(clazz).start();
+//                    }
+//                }
+//                perSuiteDataLoaderLifecycleNamesRun.add(clazz.getName());
                 clazz = clazz.getSuperclass();
             }
+        }
+        for (Class clazz : classesToCheck) {
+            for (Annotation annotation : clazz.getDeclaredAnnotations()) {
+                if (annotation.annotationType().getName().equals(PerSuiteUnitTestData.class.getName()) && !perSuiteDataLoaderLifecycleNamesRun.contains(clazz.getName())) {
+                    new PerSuiteDataLoaderLifecycle(clazz).start();
+                }
+            }
+            perSuiteDataLoaderLifecycleNamesRun.add(clazz.getName());
         }
     }
 

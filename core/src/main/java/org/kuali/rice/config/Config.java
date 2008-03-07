@@ -110,11 +110,13 @@ public interface Config {
 
 	public static final String TRANSACTION_MANAGER_JNDI = "transactionManager.jndi.location";
 	public static final String USER_TRANSACTION_JNDI = "transactionManager.jndi.location";
-	public static final String DATASOURCE_JNDI = "datasource.jndi.location";
+    public static final String DATASOURCE_JNDI = "datasource.jndi.location";
+    public static final String NON_TRANSACTIONAL_DATASOURCE_JNDI = "nonTransactional.datasource.jndi.location";
 
 	// Configuration Objects
 
 	public static final String DATASOURCE_OBJ = "datasource";
+	public static final String NON_TRANSACTIONAL_DATASOURCE_OBJ = "nonTransactionalDatasource";
 	public static final String TRANSACTION_MANAGER_OBJ = "transactionManager";
 	public static final String USER_TRANSACTION_OBJ = "userTransaction";
 	public static final String DEFAULT_NOTE_CLASS = "default.note.class";

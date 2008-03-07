@@ -4,7 +4,7 @@
 	<!-- below used by atomikos data sources -->
 	<param name="datasource.pool.size">5</param>
 	<!-- below used by dbcp BasicDataSource objects configured for quartz scheduler's non transactional data source -->
-	<param name="datasource.pool.datasource.pool.maxActive">50</param>
+	<param name="datasource.pool.maxActive">50</param>
 
 	<param name="application.url">http://localhost:9912/${app.context.name}</param>
 	<param name="serviceServletUrl">${application.url}/remoting/</param>

@@ -2,7 +2,7 @@
 
 	<param name="datasource.pool.size">5</param>
 	<!-- below are dbcp properties used for non-JTA datasources needed by KSB in some instances -->
-	<param name="datasource.pool.datasource.pool.maxActive">50</param>
+	<param name="datasource.pool.maxActive">50</param>
 	<param name="datasource.dbcp.accessToUnderlyingConnectionAllowed">true</param>
 	
 </config>

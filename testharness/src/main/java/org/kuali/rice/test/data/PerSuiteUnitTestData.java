@@ -29,5 +29,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface PerSuiteUnitTestData {
+    boolean overrideSuperClasses() default false;
     UnitTestData[] value();    
 }

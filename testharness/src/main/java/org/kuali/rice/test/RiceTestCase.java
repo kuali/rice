@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -39,7 +38,6 @@ import org.kuali.rice.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.lifecycles.PerSuiteDataLoaderLifecycle;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -132,23 +130,28 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      * @throws Exception if a PerSuiteDataLoaderLifecycle is unable to be started
      */
     protected void startSuiteDataLoaderLifecycles() throws Exception {
+        // get a list of all classes the current class extends from that use the PerSuiteUnitTestData annotation
         List<Class> classesToCheck = new ArrayList<Class>();
+        // here we get the list apart checking the annotations to support the perSuiteDataLoaderLifecycleNamesRun variable better
         if (getClass().isAnnotationPresent(PerSuiteUnitTestData.class)) {
             Class clazz = getClass();
-            while (!clazz.getName().equals(Object.class.getName())) {
-                classesToCheck.add(0, clazz);
-//                for (Annotation annotation : clazz.getDeclaredAnnotations()) {
-//                    if (annotation.annotationType().getName().equals(PerSuiteUnitTestData.class.getName()) && !perSuiteDataLoaderLifecycleNamesRun.contains(clazz.getName())) {
-//                        new PerSuiteDataLoaderLifecycle(clazz).start();
-//                    }
-//                }
-//                perSuiteDataLoaderLifecycleNamesRun.add(clazz.getName());
+            superClassLoop: while (!clazz.getName().equals(Object.class.getName())) {
+                for (Annotation annotation : clazz.getDeclaredAnnotations()) {
+                    // check if the annotation is a PerSuiteUnitTestData annotation
+                    if (annotation.annotationType().getName().equals(PerSuiteUnitTestData.class.getName())) {
+                        classesToCheck.add(0, clazz);
+                        // now check to see if annotation overrides super class implementations
+                        if (((PerSuiteUnitTestData) annotation).overrideSuperClasses()) {
+                            break superClassLoop;
+                        }
+                    }
+                }
                 clazz = clazz.getSuperclass();
             }
         }
         for (Class clazz : classesToCheck) {
             for (Annotation annotation : clazz.getDeclaredAnnotations()) {
-                if (annotation.annotationType().getName().equals(PerSuiteUnitTestData.class.getName()) && !perSuiteDataLoaderLifecycleNamesRun.contains(clazz.getName())) {
+                if (!perSuiteDataLoaderLifecycleNamesRun.contains(clazz.getName())) {
                     new PerSuiteDataLoaderLifecycle(clazz).start();
                 }
             }

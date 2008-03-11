@@ -50,11 +50,8 @@
             <foreignkey field-ref="parentOrganizationId" />
         </reference-descriptor>
 
-
-        <collection-descriptor name="organizationContexts" element-class-ref="org.kuali.rice.kom.bo.OrganizationContext" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="link" auto-delete="link"
-            indirection-table="KOM_ORGANIZATIONS_CONTEXTS_T">
-            <fk-pointing-to-this-class column="ORGANIZATION_ID"/>
-            <fk-pointing-to-element-class column="CONTEXT_ID"/>
+        <collection-descriptor name="organizationsContexts" element-class-ref="org.kuali.rice.kom.bo.OrganizationsContexts" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
+            <inverse-foreignkey field-ref="organizationId" />
         </collection-descriptor>
 
  	</class-descriptor>
@@ -74,4 +71,22 @@
         </collection-descriptor>
 
 	</class-descriptor>
+
+	   <!-- ORGANIZATIONS CONTEXTS -->
+    <class-descriptor class="org.kuali.rice.kom.bo.OrganizationsContexts" table="KOM_ORGANIZATIONS_CONTEXTS_T">
+        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KOM_ORGNZTN_CNTXTS_ID" index="true" />
+        <field-descriptor name="organizationId" column="ORGANIZATION_ID" jdbc-type="BIGINT" />
+        <field-descriptor name="contextId" column="CONTEXT_ID" jdbc-type="BIGINT" />
+        <field-descriptor name="active" column="ACTIVE" jdbc-type="VARCHAR" />
+
+        <reference-descriptor name="organization" class-ref="org.kuali.rice.kom.bo.Organization" auto-retrieve="true" auto-update="none" auto-delete="none">
+            <foreignkey field-ref="organizationId" />
+        </reference-descriptor>
+
+        <reference-descriptor name="organizationContext" class-ref="org.kuali.rice.kom.bo.OrganizationContext" auto-retrieve="true" auto-update="none" auto-delete="none">
+            <foreignkey field-ref="contextId" />
+        </reference-descriptor>
+
+    </class-descriptor>
+
 </descriptor-repository>

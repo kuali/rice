@@ -44,6 +44,10 @@
 
         <allowsNewOrCopy>true</allowsNewOrCopy>
 
+        <defaultExistenceChecks>
+            <reference collection="organizationsContexts" attributeName="organizationContext" attributeToHighlightOnFail="id" />
+        </defaultExistenceChecks>
+
         <maintainableSections>
             <maintainableSection title="Edit Organization">
                 <maintainableItems>
@@ -52,29 +56,24 @@
                     <maintainableField name="name" required="true" />
                     <maintainableField name="parentOrganizationId" required="false" />
                     <maintainableField name="categoryId" required="true" />
-                    <maintainableField name="active" required="true" />
                     <maintainableField name="versionNumber" />
+                    <maintainableField name="active" />
                 </maintainableItems>
             </maintainableSection>
 
-            <maintainableSection title="Organization Contexts">
+            <maintainableSection title="Organizations Contexts">
                 <maintainableItems>
-                    <maintainableCollection name="organizationContexts"
-                        businessObjectClass="org.kuali.rice.kom.bo.OrganizationContext"  includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kom.bo.OrganizationContext" sourceAttributeName="organizationContexts" includeAddLine="true" summaryTitle="Contexts">
+                    <maintainableCollection name="organizationsContexts"
+                        businessObjectClass="org.kuali.rice.kom.bo.OrganizationsContexts" includeMultipleLookupLine="true" includeAddLine="true" sourceAttributeName="organizationsContexts" summaryTitle="Organizations Contexts">
                         <maintainableField name="id" required="true"
                             readOnly="true" readOnlyAfterAdd="true" template="id" />
-                        <maintainableField name="name" required="true" readOnly="true" template="name" />
-                        <maintainableField name="description" required="true" readOnly="true" template="description" />
-                    </maintainableCollection>
-                </maintainableItems>
-            </maintainableSection>
-            <maintainableSection title="Organization Parents">
-                <maintainableItems>
-                    <maintainableCollection name="organizationParents"
-                        businessObjectClass="org.kuali.rice.kom.bo.Organization"  includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kom.bo.Organization" sourceAttributeName="organizationParents" includeAddLine="true" summaryTitle="Contexts">
-                        <maintainableField name="id" required="true"
-                            readOnly="true" readOnlyAfterAdd="true" template="id" />
-                        <maintainableField name="name" required="true" readOnly="true" template="name" />
+
+                        <maintainableField name="active" required="true" readOnly="false" template="active" />
+                        <maintainableField name="contextName" required="true" readOnly="true" template="contextName" />
+
+ <!--
+                         <maintainableField name="organizationContext.description" required="true" readOnly="true" template="description" />
+-->
                     </maintainableCollection>
                 </maintainableItems>
             </maintainableSection>

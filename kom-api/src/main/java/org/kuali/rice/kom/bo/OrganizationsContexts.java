@@ -21,8 +21,8 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.util.OjbCharBooleanConversion;
 
 /**
- * This is a description of what this class does - pberres don't forget to fill this in. 
- * 
+ * This is a description of what this class does - pberres don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -33,6 +33,9 @@ public class OrganizationsContexts extends PersistableBusinessObjectBase {
     private Long organizationId;
     private Long contextId;
     private String active;
+    private Organization organization;
+    private OrganizationContext organizationContext;
+
     public Long getId() {
         return this.id;
     }
@@ -60,7 +63,7 @@ public class OrganizationsContexts extends PersistableBusinessObjectBase {
     }
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
      */
     @Override
@@ -72,5 +75,25 @@ public class OrganizationsContexts extends PersistableBusinessObjectBase {
         propMap.put("active", getActive());
         return propMap;
     }
+    public Organization getOrganization() {
+        return this.organization;
+    }
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+    public OrganizationContext getOrganizationContext() {
+        return this.organizationContext;
+    }
+    public void setOrganizationContext(OrganizationContext organizationContext) {
+        this.organizationContext = organizationContext;
+    }
 
+    // Kludge
+    public String getContextName() {
+        if (organizationContext != null) {
+        return organizationContext.getName();
+        } else {
+            return "not set";
+        }
+    }
 }

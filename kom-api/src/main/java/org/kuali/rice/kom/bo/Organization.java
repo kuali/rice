@@ -37,10 +37,10 @@ public class Organization extends PersistableBusinessObjectBase {
     private Long parentOrganizationId;
     private String active;
 
-    private ArrayList<OrganizationContext> organizationContexts = new ArrayList<OrganizationContext>(0);
     private ArrayList<Organization> organizationParents = new ArrayList<Organization>(0);
     private OrganizationCategory organizationCategory;
     private Organization parent;
+    private ArrayList<OrganizationsContexts> organizationsContexts = new ArrayList<OrganizationsContexts>(0);
 
     public OrganizationCategory getOrganizationCategory() {
         return this.organizationCategory;
@@ -106,14 +106,6 @@ public class Organization extends PersistableBusinessObjectBase {
         return propMap;
     }
 
-    public ArrayList<OrganizationContext> getOrganizationContexts() {
-        return organizationContexts;
-    }
-
-    public void setOrganizationContexts(ArrayList<OrganizationContext> organizationContexts) {
-        this.organizationContexts = organizationContexts;
-    }
-
     public Long getParentOrganizationId() {
         return this.parentOrganizationId;
     }
@@ -136,6 +128,14 @@ public class Organization extends PersistableBusinessObjectBase {
 
     public void setOrganizationParents(ArrayList<Organization> organizationParents) {
         this.organizationParents = organizationParents;
+    }
+
+    public ArrayList<OrganizationsContexts> getOrganizationsContexts() {
+        return this.organizationsContexts;
+    }
+
+    public void setOrganizationsContexts(ArrayList<OrganizationsContexts> organizationsContexts) {
+        this.organizationsContexts = organizationsContexts;
     }
 
 }

@@ -5,6 +5,9 @@
 	<param name="datasource.pool.size">5</param>
 	<!-- below used by dbcp BasicDataSource objects configured for quartz scheduler's non transactional data source -->
 	<param name="datasource.pool.maxActive">50</param>
+	<param name="datasource.minIdle">7</param>
+	<param name="datasource.initialSize">7</param>
+	<param name="datasource.accessToUnderlyingConnectionAllowed">true</param>
 
 	<param name="application.url">http://localhost:9912/${app.context.name}</param>
 	<param name="serviceServletUrl">${application.url}/remoting/</param>

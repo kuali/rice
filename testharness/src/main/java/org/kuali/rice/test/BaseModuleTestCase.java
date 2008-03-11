@@ -45,20 +45,21 @@ public class BaseModuleTestCase extends RiceTestCase {
         return moduleName;
     }
 
-    /**
-     * Overrides to allow (enforce) per-module (MODULE)TestHarnessSpringBeans.xml 
-     * @see org.kuali.rice.test.RiceTestCase#getTestHarnessSpringBeansLocation()
-     */
-    @Override
-    protected String[] getTestHarnessSpringBeansLocation() {
-        String[] locations = super.getTestHarnessSpringBeansLocation();
-
-        String moduleTestHarnessSpringBeansPath = getModuleName().toUpperCase() + "TestHarnessSpringBeans.xml";
-        Resource resource = new ClassPathResource(moduleTestHarnessSpringBeansPath);
-        if (resource.exists()) {
-            locations = (String[]) ArrayUtils.add(locations, "classpath:" + moduleTestHarnessSpringBeansPath);
-        }
-        
-        return locations;
-    }
+// BELOW REMOVED DUE TO RiceTestCase.getTestHarnessSpringBeansLocation() implementation being a duplicate
+//    /**
+//     * Overrides to allow (enforce) per-module (MODULE)TestHarnessSpringBeans.xml 
+//     * @see org.kuali.rice.test.RiceTestCase#getTestHarnessSpringBeansLocation()
+//     */
+//    @Override
+//    protected String[] getTestHarnessSpringBeansLocation() {
+//        String[] locations = super.getTestHarnessSpringBeansLocation();
+//
+//        String moduleTestHarnessSpringBeansPath = getModuleName().toUpperCase() + "TestHarnessSpringBeans.xml";
+//        Resource resource = new ClassPathResource(moduleTestHarnessSpringBeansPath);
+//        if (resource.exists()) {
+//            locations = (String[]) ArrayUtils.add(locations, "classpath:" + moduleTestHarnessSpringBeansPath);
+//        }
+//        
+//        return locations;
+//    }
 }

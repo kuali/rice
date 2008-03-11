@@ -73,7 +73,7 @@ public class DerbyDBCreationLifecycle implements Lifecycle {
 	}
 	
 	protected boolean isDoingDerby() {
-		if (sqlFile == null) {
+		if (this.getSqlFile() == null) {
 			return false;
 		}
 		String dbDriverName = Core.getCurrentContextConfig().getProperty("datasource.driver.name");

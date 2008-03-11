@@ -23,7 +23,7 @@
         <inquiry>
             <title>Travel Account Inquiry</title>
 
-            <inquirySections><inquirySection title="Travel Account Inquiry"><inquiryFields>
+            <inquirySections><inquirySection title="Account Information"><inquiryFields>
                 <field attributeName="number" forceInquiry="true" />
                 <field attributeName="name" />
                 <field attributeName="extension.accountType.codeAndDescription" />
@@ -56,7 +56,7 @@
             </resultFields>
         </lookup>
         
-        <titleAttribute>number</titleAttribute>
+        <titleAttribute>Travel Account</titleAttribute>
  
         <attributes>
 

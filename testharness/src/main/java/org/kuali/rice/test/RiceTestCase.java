@@ -324,20 +324,7 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
 
     public SpringResourceLoader getTestHarnessSpringResourceLoader() {
         if (testHarnessSpringResourceLoader == null) {
-            String[] locations;
-            String moduleTestHarnessSpringBeansPath = getModuleName().toUpperCase() + "TestHarnessSpringBeans.xml";
-            LOG.info("Looking for: " + moduleTestHarnessSpringBeansPath);
-            Resource resource = new ClassPathResource(moduleTestHarnessSpringBeansPath);
-            if (resource.exists()) {
-                LOG.info("FOUND " + resource);
-                locations = new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS, "classpath:" + moduleTestHarnessSpringBeansPath };  
-            } else {
-                LOG.info("NOT FOUND " + resource);
-                locations = new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS };
-            }
-            
-            
-            testHarnessSpringResourceLoader = new SpringResourceLoader(new QName("TestHarnessSpringContext"), locations);
+            testHarnessSpringResourceLoader = new SpringResourceLoader(new QName("TestHarnessSpringContext"), getTestHarnessSpringBeansLocation());
         }
         return testHarnessSpringResourceLoader;
     }
@@ -348,7 +335,18 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      * @return the location of the test harness spring beans context file.
      */
     protected String[] getTestHarnessSpringBeansLocation() {
-        return new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS };
+        String[] locations;
+        String moduleTestHarnessSpringBeansPath = getModuleName().toUpperCase() + "TestHarnessSpringBeans.xml";
+        LOG.info("Looking for: " + moduleTestHarnessSpringBeansPath);
+        Resource resource = new ClassPathResource(moduleTestHarnessSpringBeansPath);
+        if (resource.exists()) {
+            LOG.info("FOUND " + resource);
+            locations = new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS, "classpath:" + moduleTestHarnessSpringBeansPath };  
+        } else {
+            LOG.info("NOT FOUND " + resource);
+            locations = new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS };
+        }
+        return locations;
     }
 
     protected Config getTestHarnessConfig() throws Exception {

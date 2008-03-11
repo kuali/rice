@@ -85,6 +85,8 @@ NOT NULL,
 ;
 
 CREATE TABLE EN_UNITTEST_T (
-        ID              BIGINT
+        COL         VARCHAR(1),
+        CONSTRAINT EN_UNITTEST_T_PK PRIMARY KEY (COL)
 )
- ;
+
+;

@@ -70,6 +70,7 @@
     <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
 
     <!-- default config files -->
+    <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
     <param name="config.location">/usr/local/rice/rice-config.xml</param>
     <param name="config.location">${rice.base}../../../conf/rice-config.xml</param>
     <param name="config.location">${rice.base}../../conf/rice-config.xml</param>

@@ -49,7 +49,10 @@
 		<condition property="alt.config.location.prop" value="alt.config.location" else="property.name.that.means.nothing">
 			<isset property="alt.config.location"/>
 		</condition>
-		<maven goals="clean test site" options="-U -D${alt.config.location.prop}=${alt.config.location}"/>
+		<condition property="alt.log4j.config.location.prop" value="alt.log4j.config.location" else="property.name.that.means.nothing">
+		    <isset property="alt.log4j.config.location"/>
+		</condition>
+		<maven goals="clean test site" options="-U -D${alt.config.location.prop}=${alt.config.location} -D${alt.log4j.config.location.prop}=${alt.log4j.config.location}"/>
 	</target>
 	
 	<target name="update-eclipse-classpath" depends="init">

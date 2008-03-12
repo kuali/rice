@@ -43,7 +43,13 @@
 	</target>
 	
 	<target name="site" depends="init">
-		<maven goals="clean test site" options="-U"/>
+		<!-- I hate doing logic in Ant :( 
+			Basically, if they don't pass in an alt.config.location, I don't want to pass that property to Maven
+		-->
+		<condition property="alt.config.location.prop" value="alt.config.location" else="property.name.that.means.nothing">
+			<isset property="alt.config.location"/>
+		</condition>
+		<maven goals="clean test site" options="-U -D${alt.config.location.prop}=${alt.config.location}"/>
 	</target>
 	
 	<target name="update-eclipse-classpath" depends="init">

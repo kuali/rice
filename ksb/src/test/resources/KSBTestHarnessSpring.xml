@@ -65,7 +65,7 @@
 			<list>
 				<bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
 					<property name="serviceServletUrl" value="http://localhost:${ksb.testharness.port}/en-test/remoting/" />
-					<property name="nonTransactionalMessageDataSource" value="nonTransactionalDataSource" />
+					<property name="nonTransactionalMessageDataSource" ref="nonTransactionalDataSource" />
 					<property name="overrideServices">
 						<list>
 							<bean class="edu.iu.uis.eden.messaging.config.ServiceHolder">

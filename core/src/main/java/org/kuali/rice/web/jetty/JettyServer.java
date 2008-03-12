@@ -22,11 +22,21 @@ import org.mortbay.jetty.Server;
 import org.mortbay.jetty.webapp.WebAppContext;
 
 public class JettyServer implements Lifecycle {
+    /**
+     * The name of an attribute we set in the ServletContext to indicate to the webapp
+     * that it is running within unit tests, in case it needs to alter its configuration
+     * or behavior.
+     */
+    public static final String JETTYSERVER_TESTMODE_ATTRIB = "JETTYSERVER_TESTMODE";
 
 	private int port;
 	private String contextName;	
 	private String relativeWebappRoot;
 	private Server server;
+	/**
+	 * Whether we are in test mode
+	 */
+	private boolean testMode = false;
 
 	public JettyServer() {
 		this(8080, null);
@@ -45,6 +55,14 @@ public class JettyServer implements Lifecycle {
 		this.contextName = contextName;
 		this.relativeWebappRoot = relativeWebappRoot;
 	}	
+
+	public void setTestMode(boolean t) {
+	    this.testMode = t;
+	}
+
+	public boolean isTestMode() {
+	    return testMode;
+	}
 
 	public Server getServer() {
 		return server;
@@ -69,6 +87,7 @@ public class JettyServer implements Lifecycle {
 			setBaseDirSystemProperty();
 			WebAppContext context = new WebAppContext(System.getProperty("basedir") + getRelativeWebappRoot(), getContextName());
 			context.setTempDirectory(new File(System.getProperty("basedir") + "/jetty-tmp"));
+			context.setAttribute(JETTYSERVER_TESTMODE_ATTRIB, String.valueOf(isTestMode()));
 			server.addHandler(context);
 		} catch (Exception e) {
 			e.printStackTrace();

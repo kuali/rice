@@ -35,7 +35,12 @@ import org.mortbay.jetty.webapp.WebAppClassLoader;
 public class JettyServerLifecycle implements Lifecycle {
     private static final Logger LOG = Logger.getLogger(JettyServerLifecycle.class);
 
-	private boolean started;
+    /**
+     * By default we set the JettyServer to test mode
+     */
+    private boolean testMode = true;
+    private boolean started;
+
 	
 	private JettyServer jettyServer;
 		
@@ -53,8 +58,17 @@ public class JettyServerLifecycle implements Lifecycle {
 	
 	public JettyServerLifecycle(int port, String contextName, String relativeWebappRoot) {
 		jettyServer = new JettyServer(port, contextName, relativeWebappRoot);
+		jettyServer.setTestMode(testMode);
 	}	
 	
+    public void setTestMode(boolean t) {
+        this.testMode = t;
+    }
+
+    public boolean isTestMode() {
+        return testMode;
+    }
+
 	public boolean isStarted() {
 		return started;
 	}

@@ -15,21 +15,38 @@
  */
 package edu.sampleu.travel.infrastructure;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.core.util.spring.ClassPathXmlApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
+/**
+ * Initializes the Travel App Spring context.
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ */
 public class TravelServiceLocator {
-	
-	private static ConfigurableApplicationContext appContext;
+    private static final Logger LOG = Logger.getLogger(TravelServiceLocator.class);
 
-	private static void initialize() {
+    private static final String STANDARD_CONTEXT = "classpath:SampleAppBeans.xml";
+    private static final String TEST_CONTEXT = "classpath:SampleAppBeans-test.xml";
+
+    private static ConfigurableApplicationContext appContext;
+
+	public static synchronized void initialize(boolean test) {
 		if (appContext == null) {
-			appContext = new ClassPathXmlApplicationContext("classpath:SpringBeans.xml");
+		    final String[] resources;
+		    // check if we are running in unit tests, and if so, add the test context resource
+		    if (test) {
+		        resources = new String[] { STANDARD_CONTEXT, TEST_CONTEXT };
+		    } else {
+		        resources = new String[] { STANDARD_CONTEXT };
+		    }
+		    LOG.info("Loading contexts: " + StringUtils.join(resources, ", "));
+			appContext = new ClassPathXmlApplicationContext(resources);
 		}
 	}
 
-	public static ConfigurableApplicationContext getAppContext() {
-		initialize();
+	public static synchronized ConfigurableApplicationContext getAppContext() {
 		return appContext;
 	}	
 }

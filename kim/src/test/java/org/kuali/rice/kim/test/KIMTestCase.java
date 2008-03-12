@@ -56,6 +56,7 @@ public abstract class KIMTestCase extends RiceTestCase {
 	protected List<Lifecycle> getSuiteLifecycles() {
 		List<Lifecycle> lifeCycles = super.getSuiteLifecycles();
 		JettyServer server = new JettyServer(9972, "/kim-test", "/../kim/src/test/webapp");
+		server.setTestMode(true);
         lifeCycles.add(server);
         lifeCycles.add(new InitializeGRL());
         

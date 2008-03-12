@@ -20,21 +20,40 @@ import java.io.FileNotFoundException;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.log4j.Logger;
+import org.kuali.rice.web.jetty.JettyServer;
 import org.springframework.util.Log4jConfigurer;
 
+import uk.ltd.getahead.dwr.util.LoggingOutput;
+
+/**
+ * A ServletContextListener that fires up the Spring context.
+ * This is used instead of a standard ContextLoaderListener in order to load
+ * an extra test context if running in unit tests. 
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ */
 public class TravelAppInitializeListener implements ServletContextListener {
+    private static final Logger LOG = Logger.getLogger(TravelAppInitializeListener.class);
 
 	public void contextDestroyed(ServletContextEvent sce) {
 
 	}
 
 	public void contextInitialized(ServletContextEvent sce) {
-	    	try {
+    	try {
 		    Log4jConfigurer.initLogging("classpath:log4j.properties");
 		} catch (FileNotFoundException e) {
 		    throw new RuntimeException("Failed to start sample application.", e);
 		}
-		TravelServiceLocator.getAppContext();
-	}
 
+		Object o = sce.getServletContext().getAttribute(JettyServer.JETTYSERVER_TESTMODE_ATTRIB);
+		boolean testMode = false;
+		if (o != null) {
+		    testMode = Boolean.valueOf((String) o);
+		}
+		LOG.info("Travel webapp starting up in " + (testMode ? "test" : "normal") + " mode");
+		// this loads up the Spring context
+		TravelServiceLocator.initialize(testMode);
+	}
 }

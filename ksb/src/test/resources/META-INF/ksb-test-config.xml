@@ -1,4 +1,5 @@
 <config>
+    <param name="module.name">ksb</param>
 
     <param name="config.location">classpath:META-INF/test-config-defaults.xml</param>
 

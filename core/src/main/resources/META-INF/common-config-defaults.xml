@@ -1,10 +1,30 @@
 <config>
+    <param name="app.code">kr</param>
+    <param name="app.context.name">${app.code}-${environment}</param>
 
+	<!-- below used by atomikos data sources -->
 	<param name="datasource.pool.size">5</param>
 	<!-- below are dbcp properties used for non-JTA datasources needed by KSB in some instances -->
 	<param name="datasource.pool.maxActive">50</param>
-	<param name="datasource.minIdle">7</param>
-	<param name="datasource.initialSize">7</param>
-	<param name="datasource.accessToUnderlyingConnectionAllowed">true</param>
-	
+    <param name="transaction.timeout">30000</param>
+    <param name="datasource.minIdle">7</param>
+    <param name="datasource.initialSize">7</param>
+    <param name="datasource.accessToUnderlyingConnectionAllowed">true</param>
+
+    <param name="mail.transport.protocol">smtp</param>
+    <param name="mail.debug">false</param>
+    <param name="mail.smtp.host">localhost</param>
+    
+    <param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
+    
+    <!-- KEW XML-related filesystem locations -->
+    <!-- These should be overridden, but the defaults are here so they do not have to
+         be specified everywhere when they are not used -->
+    <param name="data.xml.root.location">${java.io.tmpdir}/${environment}/kew/xml</param>
+    <param name="data.xml.pending.location">${data.xml.root.location}pending</param>
+    <param name="data.xml.loaded.location">${data.xml.root.location}loaded</param>
+    <param name="data.xml.problem.location">${data.xml.root.location}problem</param>
+    <param name="attachment.dir.location">${java.io.tmpdir}/${environment}/attachments</param>
+    <param name="data.xml.pollIntervalSecs">30</param>
+    <param name="initialDelaySecs">10</param>
 </config>

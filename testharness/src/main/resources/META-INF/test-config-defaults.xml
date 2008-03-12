@@ -1,0 +1,14 @@
+<!-- config file loaded by the TestHarness root test case. -->
+<config>
+    <param name="environment" override="false">dev</param> <!--  NOTE: This environment parameter must be the first parameter in the file. -->
+
+    <!-- add all the common defaults -->    
+    <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
+
+    <!-- Default to the single test keystore. -->
+    <param name="keystore.alias">rice</param>
+    <param name="keystore.password">r1c3pw</param>
+    <param name="keystore.file">${basedir}/src/test/resources/keystore/ricekeystore</param>
+    <param name="keystore.location">${basedir}/src/test/resources/keystore/ricekeystore</param>
+
+</config>

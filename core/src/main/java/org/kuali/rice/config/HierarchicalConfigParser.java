@@ -34,6 +34,7 @@ import javax.xml.transform.TransformerException;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.util.XmlJotter;
+import org.springframework.core.io.ClassPathResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -87,7 +88,7 @@ public class HierarchicalConfigParser {
 			return;
 		}
 
-		LOG.info("Preparing to parse config file " + fileLoc);
+		LOG.info("Parsing config file " + fileLoc);
 
 		if (!baseFile) {
 			fileProperties.put(fileLoc, new Properties());
@@ -184,6 +185,12 @@ public class HierarchicalConfigParser {
 	public static InputStream getConfigAsStream(String fileLoc) throws MalformedURLException, IOException {
 		if (fileLoc.lastIndexOf("classpath:") > -1) {
 			String configName = fileLoc.split("classpath:")[1];
+			/*ClassPathResource cpr = new  ClassPathResource(configName, Thread.currentThread().getContextClassLoader());
+			if (cpr.exists()) {
+			    return cpr.getInputStream();
+			} else {
+			    return null;
+			}*/
 			return Thread.currentThread().getContextClassLoader().getResourceAsStream(configName);
 		} else if (fileLoc.lastIndexOf("http://") > -1 || fileLoc.lastIndexOf("file:/") > -1) {
 			return new URL(fileLoc).openStream();

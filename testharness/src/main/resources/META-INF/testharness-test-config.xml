@@ -1,0 +1,16 @@
+<!--
+  config file loaded by the TestHarness root test case.
+  This file is filtered by maven in order to get the override location in place.
+  As 'environment' is a function of the RiceConfigurer, it is not available at the
+  time the test harness loads this file.
+  Defaults present in test-config-defaults.xml or common-config-defaults.xml need to be delayed
+  and included on a per-module config basis.
+-->
+<config>
+	<param name="transaction.timeout">3600</param>
+	<param name="config.location">classpath:META-INF/common-derby-connection-config.xml</param>
+	<param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
+	<param name="config.location">${alt.config.location}</param>
+	<!-- this is used for the testharness test -->
+	<param name="rice.test.case.test">test</param>
+</config>

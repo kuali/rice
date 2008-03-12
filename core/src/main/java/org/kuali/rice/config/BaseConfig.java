@@ -18,12 +18,18 @@ package org.kuali.rice.config;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.util.RiceUtilities;
@@ -58,7 +64,7 @@ public abstract class BaseConfig implements Config {
 	}
 
 	public void parseConfig() throws IOException {
-		LOG.info("Loading workflow configs");
+		LOG.info("Loading Rice configs");
 		Map<String, Object> baseObjects = getBaseObjects();
 		if (baseObjects != null) {
 			this.objects.putAll(baseObjects);
@@ -70,7 +76,6 @@ public abstract class BaseConfig implements Config {
 		}
 		for (String fileLoc : this.fileLocs) {
 			HierarchicalConfigParser configParser = new HierarchicalConfigParser(this.propertiesUsed);
-			LOG.info("Passing config " + fileLoc + " to config parser");
 			this.configs.putAll(configParser.parse(fileLoc));
 			// get all the properties from all the potentially nested configs in
 			// the master set
@@ -82,7 +87,7 @@ public abstract class BaseConfig implements Config {
 					putPropertiesInPropsUsed((Properties) config.getValue(), config.getKey());
 				} else {
 					String configValue = (String) config.getValue();
-					LOG.info("-->Putting root config Prop " + config.getKey() + "=[" + configValue + "]");
+					LOG.debug("-->Putting root config Prop " + config.getKey() + "=[" + configValue + "]");
 					this.propertiesUsed.put(config.getKey(), configValue);
 				}
 			}
@@ -94,11 +99,20 @@ public abstract class BaseConfig implements Config {
 			LOG.info("####################################");
 			LOG.info("#");
 			LOG.info("# Properties used after config override/replacement");
+			LOG.info("# " + StringUtils.join(fileLocs, ", "));
 			LOG.info("#");
 			LOG.info("####################################");
 			LOG.info("");
 			Map<String, String> safePropsUsed = ConfigLogger.getDisplaySafeConfig(this.propertiesUsed);
-			for (Map.Entry<String, String> propUsed : safePropsUsed.entrySet()) {
+			Set<Map.Entry<String,String>> entrySet = safePropsUsed.entrySet();
+			// sort it for display
+			SortedSet<Map.Entry<String,String>> sorted = new TreeSet<Map.Entry<String,String>>(new Comparator<Map.Entry<String,String>>() {
+			    public int compare(Map.Entry<String,String> a, Map.Entry<String,String> b) {
+			        return a.getKey().compareTo(b.getKey());
+			    }
+			});
+			sorted.addAll(entrySet);
+			for (Map.Entry<String, String> propUsed: sorted) {
 				LOG.info("Using config Prop " + propUsed.getKey() + "=[" + propUsed.getValue() + "]");
 			}
 		}
@@ -107,13 +121,13 @@ public abstract class BaseConfig implements Config {
 	protected void putPropertiesInPropsUsed(Properties properties, String fileName) {
 		// Properties configProperties = (Properties)config.getValue();
 		Map<String, String> safeConfig = ConfigLogger.getDisplaySafeConfig(properties);
-		LOG.info("-->Loading properties for config " + fileName);
+		LOG.info("Loading properties for config " + fileName);
 		for (Iterator iterator2 = properties.entrySet().iterator(); iterator2.hasNext();) {
 			Map.Entry configProp = (Map.Entry) iterator2.next();
 			String key = (String) configProp.getKey();
 			String value = (String) configProp.getValue();
 			String safeValue = safeConfig.get(key);
-			LOG.info("---->Putting config Prop " + key + "=[" + safeValue + "]");
+			LOG.debug("---->Putting config Prop " + key + "=[" + safeValue + "]");
 			this.propertiesUsed.put(key, value);
 		}
 	}

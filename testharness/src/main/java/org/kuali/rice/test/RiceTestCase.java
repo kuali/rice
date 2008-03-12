@@ -337,13 +337,13 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     protected String[] getTestHarnessSpringBeansLocation() {
         String[] locations;
         String moduleTestHarnessSpringBeansPath = getModuleName().toUpperCase() + "TestHarnessSpringBeans.xml";
-        LOG.info("Looking for: " + moduleTestHarnessSpringBeansPath);
+        LOG.debug("Looking for module override test harness spring beans: " + moduleTestHarnessSpringBeansPath);
         Resource resource = new ClassPathResource(moduleTestHarnessSpringBeansPath);
         if (resource.exists()) {
-            LOG.info("FOUND " + resource);
+            LOG.debug("Found: " + resource);
             locations = new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS, "classpath:" + moduleTestHarnessSpringBeansPath };  
         } else {
-            LOG.info("NOT FOUND " + resource);
+            LOG.debug("Not found: " + resource);
             locations = new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS };
         }
         return locations;

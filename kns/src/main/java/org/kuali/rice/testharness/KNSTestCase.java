@@ -66,8 +66,8 @@ public class KNSTestCase extends RiceTestCase {
 	@Override
 	protected List<String> getConfigLocations() {
         List<String> configLocations = new ArrayList<String>();
-        configLocations.add(getTestConfigFilename());
         configLocations.add(getRiceMasterDefaultConfigFile());
+        configLocations.add(getTestConfigFilename());
         return configLocations;
 	}
 

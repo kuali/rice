@@ -152,6 +152,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 		// we want to only clear out the quartz tables one time, therefore we want to pass this lifecycle the
 		// opposite of what is passed to the clear database lifecycle that runs on every test execution
 		JettyServer server = new JettyServer(9952, "/en-test", "/../kns/src/test/webapp/en");
+		server.setTestMode(true);
 		lifeCycles.add(server);
 		lifeCycles.add(new InitializeGRL());
 		return lifeCycles;

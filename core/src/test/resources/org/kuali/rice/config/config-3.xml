@@ -1,0 +1,4 @@
+<config>
+  <!-- define quux -->
+  <param name="quux">config-3:quux</param>
+</config>

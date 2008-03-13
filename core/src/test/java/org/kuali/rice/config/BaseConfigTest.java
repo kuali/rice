@@ -20,7 +20,6 @@ package org.kuali.rice.config;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import junit.framework.TestCase;
@@ -28,22 +27,6 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 public class BaseConfigTest extends TestCase {
-    private static final class SimpleConfig extends BaseConfig {
-        private Properties baseProps;
-        private Map baseObjects;
-        public SimpleConfig(List<String> fileLocs, Properties baseProps, Map baseObjects) {
-            super(fileLocs);
-            this.baseProps = baseProps;
-            this.baseObjects = baseObjects;
-        }
-        public Properties getBaseProperties() {
-            return this.baseProps;
-        }
-        public Map getBaseObjects() {
-        	return this.baseObjects;
-        }
-    }
-
     /**
      * Tests the hierarchical override capabilities.
      */
@@ -53,11 +36,12 @@ public class BaseConfigTest extends TestCase {
         base.setProperty("boo", "base:boo");
         List<String> configs = new ArrayList<String>(1);
         configs.add("classpath:org/kuali/rice/config/config-1.xml");
-        SimpleConfig sc = new SimpleConfig(configs, base, null);
+        SimpleConfig sc = new SimpleConfig(configs, base);
         sc.parseConfig();
         assertEquals("base:boo", sc.getProperty("boo"));
         assertEquals("config-1:foo base:boo", sc.getProperty("foo"));
         assertEquals("config-2:bar config-1:baz", sc.getProperty("bar"));
         assertEquals("config-2:blah base:boo", sc.getProperty("blah"));
+        assertEquals("config-2:quux", sc.getProperty("quux"));
     }
 }

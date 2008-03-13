@@ -3,4 +3,7 @@
   <param name="bar">config-2:bar ${baz}</param>
   <!-- define blah, reference ancestor ${boo} -->
   <param name="blah">config-2:blah ${boo}</param>
+  <param name="config.location">classpath:org/kuali/rice/config/config-3.xml</param>
+  <!-- override quux here -->
+  <param name="quux">config-2:quux</param>
 </config>

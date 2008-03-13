@@ -32,6 +32,7 @@ public class KSBResourceLoaderFactoryTest extends TestCase {
 
 	
 	@Test public void testCreateKSBResourceLoader() throws Exception {
+	    fail("Testing failure!!!");
 		String me = "TestME";
 		Properties props = new Properties();
 		props.put(Config.MESSAGE_ENTITY, me);

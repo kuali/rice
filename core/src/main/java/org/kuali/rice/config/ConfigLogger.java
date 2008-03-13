@@ -55,7 +55,7 @@ public class ConfigLogger {
 	 * Returns a Map of configuration paramters that have display-safe values.  This allows for the suppression
 	 * of sensitive configuration paramters from being displayed (i.e. passwords).
 	 */
-	public static Map<String, String> getDisplaySafeConfig(Properties properties) {
+	public static Map<String, String> getDisplaySafeConfig(Map properties) {
 		Map<String, String> parameters = new HashMap<String, String>();
 		for (Iterator iter = properties.entrySet().iterator(); iter.hasNext();) {
 			Map.Entry property = (Map.Entry) iter.next();

@@ -17,9 +17,6 @@ import java.lang.reflect.Method;
 import org.apache.commons.beanutils.MethodUtils;
 import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
-import org.junit.runner.Description;
-import org.junit.runner.Result;
-import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.kuali.rice.test.lifecycles.PerTestDataLoaderLifecycle;
 
@@ -34,21 +31,27 @@ import org.kuali.rice.test.lifecycles.PerTestDataLoaderLifecycle;
 public class RiceUnitTestClassRunner extends JUnit4ClassRunner {
 
     private PerTestDataLoaderLifecycle perTestDataLoaderLifecycle;
-
+    private Method currentMethod;
+    
     public RiceUnitTestClassRunner(final Class<?> testClass) throws InitializationError {
         super(testClass);
     }
 
     @Override
     protected void invokeTestMethod(Method method, RunNotifier runNotifier) {
-        perTestDataLoaderLifecycle = new PerTestDataLoaderLifecycle(method);
-        super.invokeTestMethod(method, runNotifier);
+        this.currentMethod = method;
+        try {
+            perTestDataLoaderLifecycle = new PerTestDataLoaderLifecycle(method);
+            super.invokeTestMethod(method, runNotifier);
+        } finally {
+            this.currentMethod = null;
+        }
     }
 
     @Override
     protected Object createTest() throws Exception {
         Object test = super.createTest();
-        setTestName(test, getName());
+        setTestName(test, currentMethod);
         setTestPerTestDataLoaderLifecycle(test);
         return test;
     }
@@ -62,33 +65,16 @@ public class RiceUnitTestClassRunner extends JUnit4ClassRunner {
         }
     }
 
-    protected void setTestName(final Object test, final String name) {
+    protected void setTestName(final Object test, final Method testMethod) {
         try {
+            String name = testMethod == null ? "" : testMethod.getName();
             final Method setNameMethod = MethodUtils.getAccessibleMethod(test.getClass(), "setName", new Class[]{String.class});
-            setNameMethod.invoke(test, new Object[]{name});
+            if (setNameMethod != null) {
+                setNameMethod.invoke(test, new Object[]{name});
+            }
         } catch (final Exception e) {
             // no setName method or we failed to invoke it so we can't set the name
         }
-    }
-
-    @Override
-    public void run(RunNotifier runNotifier) {
-        runNotifier.addListener(new RiceRunListener());
-        super.run(runNotifier);
-    }
-
-    private class RiceRunListener extends RunListener {
-
-        @Override
-        public void testRunFinished(Result result) throws Exception {
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TEST RUN FINISHED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        }
-
-        @Override
-        public void testRunStarted(Description description) throws Exception {
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TEST RUN STARTED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        }
-
     }
 
 }

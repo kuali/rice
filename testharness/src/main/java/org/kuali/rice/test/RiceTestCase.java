@@ -81,8 +81,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     @Before
     public void setUp() throws Exception {
         try {
-            beforeRun();
             configureLogging();
+            logBeforeRun();
 
             final long initTime = System.currentTimeMillis();
 
@@ -185,24 +185,24 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     @After
     public void tearDown() throws Exception {
         stopLifecycles(this.perTestLifeCycles);
-        afterRun();
+        logAfterRun();
     }
 
-    protected void beforeRun() {
-        System.out.println("##############################################################");
-        System.out.println("# Starting test " + getClass().getSimpleName() + "...");
-        System.out.println("# " + dumpMemory());
-        System.out.println("##############################################################");
+    protected void logBeforeRun() {
+        LOG.info("##############################################################");
+        LOG.info("# Starting test " + getClass().getSimpleName() + "." + getName() + "...");
+        LOG.info("# " + dumpMemory());
+        LOG.info("##############################################################");
     }
 
-    protected void afterRun() {
-        System.out.println("##############################################################");
-        System.out.println("# ...finished test " + getClass().getSimpleName());
-        System.out.println("# " + dumpMemory());
+    protected void logAfterRun() {
+        LOG.info("##############################################################");
+        LOG.info("# ...finished test " + getClass().getSimpleName() + "." + getName());
+        LOG.info("# " + dumpMemory());
         for (final String report : this.reports) {
-            System.out.println("# " + report);
+            LOG.info("# " + report);
         }
-        System.out.println("##############################################################\n\n\n");
+        LOG.info("##############################################################\n\n\n");
     }
 
 	protected void configureLogging() throws IOException {

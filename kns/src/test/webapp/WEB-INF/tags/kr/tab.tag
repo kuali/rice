@@ -16,6 +16,7 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <%@ attribute name="tabTitle" required="true" %>
+<%@ attribute name="spanForLongTabTitle" required="false" %>
 <%@ attribute name="tabDescription" required="false" %>
 <%@ attribute name="defaultOpen" required="true" %>
 <%@ attribute name="tabErrorKey" required="false" %>
@@ -76,6 +77,11 @@
   <c:set var="tabTitle" value="${tabTitle} (${tabItemCount})" />
 </c:if>
 
+<c:set var="tabTitleSpan" value="1" />
+<c:if test="${! empty spanForLongTabTitle && spanForLongTabTitle eq true}">
+	<c:set var="tabTitleSpan" value="${tabTitleSpan + 1}" />
+</c:if>
+
 <c:set var="leftTabImage" value="${ConfigProperties.kr.externalizable.images.url}tab-topleft1.gif" />
 <c:set var="rightTabImage" value="${ConfigProperties.kr.externalizable.images.url}tab-topright1.gif" />
 <c:set var="rightTabClass" value="tabtable2-right" />
@@ -89,7 +95,7 @@
 
         <table width="100%" class="tab" cellpadding="0" cellspacing="0" summary="" border="1" <c:if test="${hidden}">style="display:none;"</c:if>>
           <tr>
-            <td class="tabtable1-left">
+            <td class="tabtable1-left" colspan="${tabTitleSpan}">
               <img src="${leftTabImage}" alt="" width="12" height="29" align="absmiddle" />
               <c:if test="${not empty leftSideHtmlProperty and not empty leftSideHtmlAttribute}"><kul:htmlControlAttribute property="${leftSideHtmlProperty}" attributeEntry="${leftSideHtmlAttribute}" disabled="${leftSideHtmlDisabled}" /></c:if>
               <a name="${tabKey}" ></a> ${tabTitle}

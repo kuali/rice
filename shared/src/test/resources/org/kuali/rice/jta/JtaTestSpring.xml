@@ -9,7 +9,7 @@
     <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp"/>
         
     <bean id="dataSource" class="com.atomikos.jdbc.nonxa.NonXADataSourceBean">
-  	  <property name="uniqueResourceName" value="dataSource"/>
+  	  <property name="uniqueResourceName" value="jtaTestDataSource"/>
   	  <property name="driverClassName" value="org.apache.derby.jdbc.ClientDriver"/>
   	  <property name="url" value="jdbc:derby://localhost:1573/target/JtaTest;create=true;user=jtatestuser;password=jtatestpassword"/>
   	  <property name="poolSize" value="2"/>

@@ -933,15 +933,26 @@ public class KualiDocumentActionBase extends KualiAction {
         // create the attachment first, so that failure-to-create-attachment can be treated as a validation failure
         FormFile attachmentFile = kualiDocumentFormBase.getAttachmentFile();
         if (attachmentFile == null) {
-            GlobalVariables.getErrorMap().putError("newDocumentNote.attachmentFile", RiceKeyConstants.ERROR_UPLOADFILE_NULL);
-            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+            GlobalVariables.getErrorMap().putError(
+                    String.format("%s.%s",
+                            RiceConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
+                            RiceConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
+                    RiceKeyConstants.ERROR_UPLOADFILE_NULL);
+            // This line was removed in order to continue to validates other
+//            return mapping.findForward(RiceConstants.MAPPING_BASIC);
         }
 
         Attachment attachment = null;
         if (!StringUtils.isBlank(attachmentFile.getFileName())) {
             if (attachmentFile.getFileSize() == 0) {
-                GlobalVariables.getErrorMap().putError("newDocumentNote.attachmentFile", RiceKeyConstants.ERROR_UPLOADFILE_EMPTY, attachmentFile.getFileName());
-                return mapping.findForward(RiceConstants.MAPPING_BASIC);
+                GlobalVariables.getErrorMap().putError(
+                        String.format("%s.%s",
+                                RiceConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
+                                RiceConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
+                        RiceKeyConstants.ERROR_UPLOADFILE_EMPTY,
+                        attachmentFile.getFileName());
+                // This line was removed in order to continue to validates other
+//                return mapping.findForward(RiceConstants.MAPPING_BASIC);
             }
             else {
                 String attachmentType = null;
@@ -959,7 +970,12 @@ public class KualiDocumentActionBase extends KualiAction {
         if(entry.getDisplayTopicFieldInNotes()) {
             String topicText = kualiDocumentFormBase.getNewNote().getNoteTopicText();
             if(StringUtils.isBlank(topicText)) {
-                GlobalVariables.getErrorMap().putError("newDocumentNote.financialDocumentNoteTopicText", RiceKeyConstants.ERROR_REQUIRED, "Note Topic (Note Topic)");
+                GlobalVariables.getErrorMap().putError(
+                        String.format("%s.%s",
+                                RiceConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
+                                RiceConstants.NOTE_TOPIC_TEXT_PROPERTY_NAME),
+                        RiceKeyConstants.ERROR_REQUIRED,
+                        "Note Topic (Note Topic)");
             }
         }
 

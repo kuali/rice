@@ -53,6 +53,10 @@
 	<c:set var="noteColSpan" value="${noteColSpan + 1}" />
 </c:if>
 
+<c:if test="${empty displayTopicFieldInNotes}">
+  <c:set var="displayTopicFieldInNotes" value="${travelAttributes.displayTopicFieldInNotes}" />
+</c:if>
+
 <c:if test="${displayTopicFieldInNotes eq true}">
 	<c:set var="noteColSpan" value="${noteColSpan + 1}" />
 </c:if>

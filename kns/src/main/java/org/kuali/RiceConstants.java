@@ -111,7 +111,6 @@ public class RiceConstants extends JstlConstants {
     public static final String DOCUMENT_DISAPPROVE_QUESTION = "DocDisapprove";
     public static final String DOCUMENT_HEADER_ID = "documentHeaderId";
     public static final String DOCUMENT_HEADER_DOCUMENT_STATUS_CODE_PROPERTY_NAME = "financialDocumentStatusCode";
-    public static final String NOTE_TEXT_PROPERTY_NAME = "noteText";
     public static final String DOCUMENT_HEADER_PROPERTY_NAME = "documentHeader";
     public static final String DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION = "DocSaveBeforeClose";
     public static final String EMPLOYEE_ACTIVE_STATUS = "A";
@@ -119,7 +118,6 @@ public class RiceConstants extends JstlConstants {
     public static final String EXISTING_TARGET_ACCT_LINE_PROPERTY_NAME = "targetAccountingLine";
     public static final String EXTRA_BUTTON_SOURCE = "extraButtonSource";
     public static final String EXTRA_BUTTON_PARAMS = "extraButtonParams";
-    public static final String NEW_DOCUMENT_NOTE_PROPERTY_NAME = "newDocumentNote";
     public static final String NEW_AD_HOC_ROUTE_PERSON_PROPERTY_NAME = "newAdHocRoutePerson";
     public static final String NEW_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME = "newAdHocRouteWorkgroup";
     public static final String EXISTING_AD_HOC_ROUTE_PERSON_PROPERTY_NAME = "adHocRoutePerson";
@@ -135,6 +133,13 @@ public class RiceConstants extends JstlConstants {
     public static final String GENERIC_CODE_PROPERTY_NAME = "code";
     public static final String STAND_IN_BUSINESS_OBJECT_FOR_ATTRIBUTES = "AttributeReferenceDummy";
     public static final String OVERRIDE_KEYS = "overrideKeys";
+
+    // **************** Begin Note & Attachments defines
+    public static final String NEW_DOCUMENT_NOTE_PROPERTY_NAME = "newNote";
+    public static final String NOTE_TEXT_PROPERTY_NAME = "noteText";
+    public static final String NOTE_TOPIC_TEXT_PROPERTY_NAME = "noteTopicText";
+    public static final String NOTE_ATTACHMENT_FILE_PROPERTY_NAME = "attachmentFile";
+    // **************** End Note & Attachments defines
 
     /**
      * This value is the name of the param for the default max column length of a lookup result field if 
@@ -304,7 +309,7 @@ public class RiceConstants extends JstlConstants {
     public static final String DOCUMENT_HEADER_ERRORS = "document.header*";
     public static final String DOCUMENT_ERRORS_LESS_DOCUMENT = DOCUMENT_EXPLANATION_ERRORS + "," + DOCUMENT_REVERSAL_ERRORS + "," + DOCUMENT_SELECTED_ERRORS + "," + DOCUMENT_HEADER_ERRORS;
     public static final String DOCUMENT_ERRORS = DOCUMENT_DOCUMENT_ERRORS + "," + DOCUMENT_EXPLANATION_ERRORS + "," + DOCUMENT_REVERSAL_ERRORS + "," + DOCUMENT_SELECTED_ERRORS + "," + DOCUMENT_HEADER_ERRORS;
-    public static final String DOCUMENT_NOTES_ERRORS = "newDocumentNote*";
+    public static final String DOCUMENT_NOTES_ERRORS = "newNote*";
 
     public enum NoteTypeEnum {
         BUSINESS_OBJECT_NOTE_TYPE ("BO","documentBusinessObject"),

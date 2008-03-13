@@ -24,6 +24,8 @@
 		<property name="dist.binary.webcontent.dir" value="${dist.binary.dir}/webcontent"/>
 		<property name="dist.binary.config.dir" value="${dist.binary.dir}/config"/>
 		<property name="dist.src.dir" value="${dist.build.dir}/dist-src/rice-${maven.project.version}-src"/>
+		<property name="junit.report.dir" value="target/junitreport"/>
+		<property name="groovy.lib.dir" value="scripts/groovy-1.5.4/lib"/>
 		
 		<property name="oracle.driver.version" value="10.2.0.2.0"/>
 
@@ -42,7 +44,7 @@
 		<maven goals="clean"/>
 	</target>
 	
-	<target name="site" depends="init">
+	<target name="tests" depends="init">
 		<!-- I hate doing logic in Ant :( 
 			Basically, if they don't pass in an alt.config.location, I don't want to pass that property to Maven
 		-->
@@ -52,7 +54,30 @@
 		<condition property="alt.log4j.config.location.prop" value="alt.log4j.config.location" else="property.name.that.means.nothing">
 		    <isset property="alt.log4j.config.location"/>
 		</condition>
-		<maven goals="clean test site" options="-U -Dmaven.test.skip=false -D${alt.config.location.prop}=${alt.config.location} -D${alt.log4j.config.location.prop}=${alt.log4j.config.location}"/>
+		<maven goals="clean test site" options="-U -Dtest=KSBResourceLoaderFactoryTest -Dmaven.test.skip=false -D${alt.config.location.prop}=${alt.config.location} -D${alt.log4j.config.location.prop}=${alt.log4j.config.location}"/>
+		<mkdir dir="${junit.report.dir}"/>
+		<junitreport todir="${junit.report.dir}">
+			<fileset dir="${basedir}">
+				<include name="**/target/surefire-reports/*.xml" />
+			</fileset>
+			<report format="frames" todir="${junit.report.dir}" />
+		</junitreport>
+		<antcall target="check-failure"/>
+	</target>
+	
+	<target name="check-failure" depends="init">
+		<taskdef name="groovy" classname="org.codehaus.groovy.ant.Groovy">
+			<classpath>
+				<fileset dir="${groovy.lib.dir}" includes="*.jar"/>
+			</classpath>
+		</taskdef>
+		<groovy src="scripts/CheckTestResults.groovy" >
+			<classpath>
+				<fileset dir="${groovy.lib.dir}" includes="*.jar"/>
+			</classpath>
+		</groovy>
+		<fail if="testsfailed" message="One or more test failures was detected!"/>
+		<fail if="notestreports" message="Failed to locate junit test reports!"/>
 	</target>
 	
 	<target name="update-eclipse-classpath" depends="init">
@@ -219,8 +244,9 @@
 	<macrodef name="maven">
 		<attribute name="goals" />
 		<attribute name="options" default="" />
+		<attribute name="failonerror" default="true"/>
 		<sequential>
-			<java classname="org.codehaus.classworlds.Launcher" dir="." fork="true" failonerror="true">
+			<java classname="org.codehaus.classworlds.Launcher" dir="." fork="true" failonerror="@{failonerror}">
 				<arg line="@{options} @{goals}" />
 				<sysproperty key="classworlds.conf" value="${maven.home.directory}/bin/m2.conf" />
 				<sysproperty key="maven.home" value="${maven.home.directory}" />

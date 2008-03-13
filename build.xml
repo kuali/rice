@@ -54,7 +54,7 @@
 		<condition property="alt.log4j.config.location.prop" value="alt.log4j.config.location" else="property.name.that.means.nothing">
 		    <isset property="alt.log4j.config.location"/>
 		</condition>
-		<maven goals="clean test site" options="-U -Dtest=KSBResourceLoaderFactoryTest -Dmaven.test.skip=false -D${alt.config.location.prop}=${alt.config.location} -D${alt.log4j.config.location.prop}=${alt.log4j.config.location}"/>
+		<maven goals="clean test site" options="-U -Dmaven.test.skip=false -D${alt.config.location.prop}=${alt.config.location} -D${alt.log4j.config.location.prop}=${alt.log4j.config.location}"/>
 		<mkdir dir="${junit.report.dir}"/>
 		<junitreport todir="${junit.report.dir}">
 			<fileset dir="${basedir}">

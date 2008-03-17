@@ -47,7 +47,7 @@ import org.xml.sax.SAXException;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class HierarchicalConfigParser {
+class HierarchicalConfigParser {
     private static final Logger LOG = Logger.getLogger(HierarchicalConfigParser.class);
 
     private static final String VAR_START_TOKEN = "${";
@@ -61,7 +61,7 @@ public class HierarchicalConfigParser {
     // has been made by a parent config file of the one this is parsing
     Map currentProperties;
 
-    public HierarchicalConfigParser(final Map currentProperties) {
+    HierarchicalConfigParser(final Map currentProperties) {
         if (currentProperties == null) {
             this.currentProperties = new LinkedHashMap();
         } else {

@@ -2,6 +2,41 @@
     <param name="app.code">kr</param>
     <param name="app.context.name">${app.code}-${environment}</param>
 
+    <!-- App specific parameters -->
+    <param name="externalizable.help.url">/${app.context.name}/kr/static/help/</param>
+    <param name="externalizable.images.url">/${app.context.name}/kr/static/images/</param>
+    <param name="kr.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
+    <param name="travel.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
+    <param name="kr.url">/${app.context.name}/kr</param>
+
+    <!-- by default non-tests are not in "dev.mode" -->
+    <param name="dev.mode">false</param>
+    <!-- by default bam is not enabled -->
+    <param name="bam.enabled">false</param>
+
+    <!-- TODO: doc this param -->
+    <param name="production.environment.code">PRD</param>
+     <!-- I think this is workflow related; everywhere it was specified as 'iu' so I'll just keep that for now -->
+    <param name="institution">iu</param>
+    <!-- TODO: doc these params -->
+    <param name="security.directory">/usr/local/rice/</param>
+    <param name="settings.directory">/usr/local/rice/</param>
+    <param name="memory.monitor.threshold">.85</param>
+    <!-- TODO: ksn related? -->
+    <param name="maintain.users.locally">true</param>
+    <param name="mail.relay.server">mail.relay.server</param>
+    <param name="mailing.list.batch">mailing.list.batch</param>
+    <param name="kfsLocator.useAppContext">true</param>
+    <!-- TODO: doc this param
+    <param name="rice.user">true</param>
+    -->    
+
+    <!-- TODO: do we still need these? -->
+    <param name="workgroup.url">Workgroup.do</param>
+    <param name="workgroup.report.url">Workgroup.do</param>
+    <param name="user.url">WorkflowUser.do</param>
+    <param name="user.report.url">WorkflowUserReport.do</param>
+
 	<!-- below used by atomikos data sources -->
 	<param name="datasource.pool.size">5</param>
 	<!-- below are dbcp properties used for non-JTA datasources needed by KSB in some instances -->
@@ -24,7 +59,14 @@
     <param name="data.xml.pending.location">${data.xml.root.location}pending</param>
     <param name="data.xml.loaded.location">${data.xml.root.location}loaded</param>
     <param name="data.xml.problem.location">${data.xml.root.location}problem</param>
+
+    <!-- TODO: doc this param -->
+    <param name="attachments.pending.directory">${java.io.tmpdir}/${environment}/attachments</param>
+
     <param name="attachment.dir.location">${java.io.tmpdir}/${environment}/attachments</param>
     <param name="data.xml.pollIntervalSecs">30</param>
     <param name="initialDelaySecs">10</param>
+    
+    <param name="log4j.reload.minutes">5</param>
+    <param name="log4j.settings.path">classpath:log4j.properties</param>
 </config>

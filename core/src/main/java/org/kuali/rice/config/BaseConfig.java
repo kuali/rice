@@ -29,6 +29,10 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang.time.DurationFormatUtils;
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.util.RiceUtilities;
@@ -62,17 +66,15 @@ public abstract class BaseConfig implements Config {
         this.fileLocs = fileLocs;
     }
 
-    public void parseConfig() throws IOException {
-        LOG.info("Loading Rice configs: " + StringUtils.join(fileLocs, ", "));
-        Map<String, Object> baseObjects = getBaseObjects();
-        if (baseObjects != null) {
-            this.objects.putAll(baseObjects);
-        }
-        configureBuiltIns(this.propertiesUsed);
-        Properties baseProperties = getBaseProperties();
-        if (baseProperties != null) {
-            this.propertiesUsed.putAll(baseProperties);
-        }
+    protected void parseWithConfigParserImpl() throws IOException {
+        ConfigParserImpl cp = new ConfigParserImpl();
+        Map p = new Properties();
+        p.putAll(propertiesUsed);
+        cp.parse(p, fileLocs.toArray(new String[fileLocs.size()]));
+        putPropertiesInPropsUsed(p, StringUtils.join(fileLocs, ", "));
+    }
+
+    protected void parseWithHierarchicalConfigParser() throws IOException {
         for (String fileLoc : this.fileLocs) {
             HierarchicalConfigParser configParser = new HierarchicalConfigParser(this.propertiesUsed);
             this.configs.putAll(configParser.parse(fileLoc));
@@ -91,8 +93,24 @@ public abstract class BaseConfig implements Config {
                 }
             }
         }
+    }
 
-        if (!fileLocs.isEmpty()) {
+    public void parseConfig() throws IOException {
+        LOG.info("Loading Rice configs: " + StringUtils.join(fileLocs, ", "));
+        Map<String, Object> baseObjects = getBaseObjects();
+        if (baseObjects != null) {
+            this.objects.putAll(baseObjects);
+        }
+        configureBuiltIns(this.propertiesUsed);
+        Properties baseProperties = getBaseProperties();
+        if (baseProperties != null) {
+            this.propertiesUsed.putAll(baseProperties);
+        }
+
+        parseWithConfigParserImpl();
+        //parseWithHierarchicalConfigParser();
+
+        //if (!fileLocs.isEmpty()) {
             LOG.info("");
             LOG.info("####################################");
             LOG.info("#");
@@ -113,7 +131,7 @@ public abstract class BaseConfig implements Config {
             for (Map.Entry<String, String> propUsed: sorted) {
                 LOG.info("Using config Prop " + propUsed.getKey() + "=[" + propUsed.getValue() + "]");
             }
-        }
+        //}
     }
 
     protected void putPropertiesInPropsUsed(Map properties, String fileName) {
@@ -125,7 +143,7 @@ public abstract class BaseConfig implements Config {
             String key = (String) configProp.getKey();
             String value = (String) configProp.getValue();
             String safeValue = safeConfig.get(key);
-            LOG.info("---->Putting config Prop " + key + "=[" + safeValue + "]");
+            LOG.debug("---->Putting config Prop " + key + "=[" + safeValue + "]");
             this.propertiesUsed.put(key, value);
         }
     }

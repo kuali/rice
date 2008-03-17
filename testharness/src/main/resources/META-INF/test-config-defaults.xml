@@ -5,6 +5,9 @@
     <!-- add all the common defaults -->    
     <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
 
+    <param name="dev.mode">true</param>
+    <param name="encryption.key">7IC64w6ksLU</param>
+
     <!-- Default to the single test keystore. -->
     <param name="keystore.alias">rice</param>
     <param name="keystore.password">r1c3pw</param>

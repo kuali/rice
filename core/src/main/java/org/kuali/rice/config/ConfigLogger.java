@@ -52,6 +52,23 @@ public class ConfigLogger {
 	}
 	
 	/**
+	 * Returns a value for a parameter that is safe for displaying on screen or in a log file.
+	 * @param name the name of the parameter
+	 * @param value the parameter value
+	 * @return the parameter value if the parameter is non-secret, or a replacement if the parameter is secret
+	 */
+	public static String getDisplaySafeValue(String name, String value) {
+	    String safeValue = value;
+        for (String[] secretKey : SECRET_KEYS) {
+            if (name.indexOf(secretKey[0]) > -1) {
+                safeValue = secretKey[1];
+                break;
+            }   
+        }
+        return safeValue;
+	}
+
+	/**
 	 * Returns a Map of configuration paramters that have display-safe values.  This allows for the suppression
 	 * of sensitive configuration paramters from being displayed (i.e. passwords).
 	 */
@@ -61,13 +78,7 @@ public class ConfigLogger {
 			Map.Entry property = (Map.Entry) iter.next();
 			String key = (String) property.getKey();
 			String value = (String) property.getValue();
-			String safeValue = value;
-			for (String[] secretKey : SECRET_KEYS) {
-				if (key.indexOf(secretKey[0]) > -1) {
-					safeValue = secretKey[1];
-					break;
-				}	
-			}
+			String safeValue = getDisplaySafeValue(key, value);
 			parameters.put(key, safeValue);
 		}
 		return parameters;

@@ -16,12 +16,19 @@
  */
 package org.kuali.rice.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 
 import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.FileSystemResourceLoader;
+import org.springframework.core.io.Resource;
 
 /**
  *
@@ -53,7 +60,58 @@ public class RiceUtilities {
 		}
 	}
 
-	 /**
+	/**
+	 * The standard Spring FileSystemResourceLoader does not support normal absolute file paths
+	 * for historical backwards-compatibility reasons.  This class simply circumvents that behavior
+	 * to allow proper interpretation of absolute paths (i.e. not stripping a leading slash)  
+	 */
+	private static class AbsoluteFileSystemResourceLoader extends FileSystemResourceLoader {
+        @Override
+        protected Resource getResourceByPath(String path) {
+            return new FileSystemResource(path);
+        }
+	}
+
+	/**
+	 * Attempts to retrieve the resource stream.
+	 * 
+	 * @param resourceLoc resource location; syntax supported by {@link DefaultResourceLoader} 
+	 * @return the resource stream or null if the resource could not be obtained
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @see DefaultResourceLoader
+	 */
+	public static InputStream getResourceAsStream(String resourceLoc) throws MalformedURLException, IOException {
+	    AbsoluteFileSystemResourceLoader rl = new AbsoluteFileSystemResourceLoader();
+	    rl.setClassLoader(Thread.currentThread().getContextClassLoader());
+	    Resource r = rl.getResource(resourceLoc);
+	    if (r.exists()) {
+	        return r.getInputStream();
+	    } else {
+	        return null;
+	    }
+//	    
+//        if (resourceLoc.lastIndexOf("classpath:") > -1) {
+//            String configName = resourceLoc.split("classpath:")[1];
+//            /*ClassPathResource cpr = new  ClassPathResource(configName, Thread.currentThread().getContextClassLoader());
+//            if (cpr.exists()) {
+//                return cpr.getInputStream();
+//            } else {
+//                return null;
+//            }*/
+//            return Thread.currentThread().getContextClassLoader().getResourceAsStream(configName);
+//        } else if (resourceLoc.lastIndexOf("http://") > -1 || resourceLoc.lastIndexOf("file:/") > -1) {
+//            return new URL(resourceLoc).openStream();
+//        } else {
+//            try {
+//                return new FileInputStream(resourceLoc);
+//            } catch (FileNotFoundException e) {
+//                return null; // logged by caller
+//            }
+//        }
+    }
+
+	/**
      * This method searches for an exception of the specified type in the stack trace of the given
      * exception.
      * @param topLevelException the exception whose stack to traverse

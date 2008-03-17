@@ -32,7 +32,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 public class NotificationLifeCycle extends LifecycleBean implements BeanFactoryAware {
     private static final Logger LOG = Logger.getLogger(NotificationLifeCycle.class);
 
-    private String ojbPlatform;
+    //private String ojbPlatform;
     private BeanFactory theFactory;
     private PlatformTransactionManager txMgr;
     private DataSource dataSource;
@@ -41,9 +41,10 @@ public class NotificationLifeCycle extends LifecycleBean implements BeanFactoryA
      * This method sets the OJB platform.
      * @param platform
      */
+    /*
     public void setOjbPlatform(String platform) {
         this.ojbPlatform = platform;
-    }
+    }*/
 
     /**
      * @see org.springframework.beans.factory.BeanFactoryAware#setBeanFactory(org.springframework.beans.factory.BeanFactory)
@@ -75,9 +76,9 @@ public class NotificationLifeCycle extends LifecycleBean implements BeanFactoryA
      * @see org.kuali.notification.core.BaseLifecycle#start()
      */
     public void start() throws Exception {
-        if (ojbPlatform == null) {
+        /*if (ojbPlatform == null) {
             throw new BeanInitializationException("No platform was configured, please configure the datasource.ojb.platform property.");
-        }
+        }*/
 
         GlobalNotificationServiceLocator.init(theFactory);
         /*

@@ -49,10 +49,8 @@
         </property>
     </bean>
 
-    <!-- Eager-initnotification lifecycle; sets OJB platform dynamically for now -->
-    <bean id="lifecycle" class="org.kuali.notification.core.NotificationLifeCycle" lazy-init="false" depends-on="ojbConfigurer">
-        <property name="ojbPlatform"><value>${notification.ojb.platform}</value></property>
-    </bean>
+    <!-- Eager-init notification lifecycle -->
+    <bean id="lifecycle" class="org.kuali.notification.core.NotificationLifeCycle" lazy-init="false" depends-on="ojbConfigurer"/>
 
     <!-- Applys a transaction template to the actual transaction manager bean -->
     <!-- This is needed to recognize services as transactions -->

@@ -25,7 +25,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import org.kuali.rice.config.HierarchicalConfigParser;
+import org.kuali.rice.util.RiceUtilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -43,7 +43,7 @@ public class EDLGlobalConfigFactory {
 
 	public static EDLGlobalConfig createEDLGlobalConfig(String edlConfigLocation) throws Exception {
 		EDLGlobalConfig edlConfig = new EDLGlobalConfig();
-		InputStream configStream = HierarchicalConfigParser.getConfigAsStream(edlConfigLocation);
+		InputStream configStream = RiceUtilities.getResourceAsStream(edlConfigLocation);
 		Document configXml = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(configStream);
 
 		edlConfig.setPreProcessors(createProcessorMap("//preProcessors/preProcessor", configXml));

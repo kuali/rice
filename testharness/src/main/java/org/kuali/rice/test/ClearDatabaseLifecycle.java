@@ -28,6 +28,8 @@ import javax.sql.DataSource;
 import junit.framework.Assert;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DurationFormatUtils;
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.BaseLifecycle;
@@ -108,6 +110,8 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
     protected void clearTables(final PlatformTransactionManager transactionManager, final DataSource dataSource) {
         Assert.assertNotNull("DataSource could not be located.", dataSource);
         try {
+            StopWatch s = new StopWatch();
+            s.start();
             new TransactionTemplate(transactionManager).execute(new TransactionCallback() {
                 public Object doInTransaction(final TransactionStatus status) {
                     verifyTestEnvironment(dataSource);
@@ -152,6 +156,8 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
                     });
                 }
             });
+            s.stop();
+            LOG.info("Time to clear tables: " + DurationFormatUtils.formatDurationHMS(s.getTime()));
         } catch (Exception e) {
             LOG.error(e);
             throw new RuntimeException(e);

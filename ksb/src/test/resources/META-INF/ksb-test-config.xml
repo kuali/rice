@@ -44,6 +44,6 @@
     <param name="org.quartz.jobStore.tablePrefix">KR_QRTZ_</param>
      -->
 	
+    <param name="config.location">${additional.config.locations}</param>
 	<param name="config.location">${alt.config.location}</param>
-	
 </config>

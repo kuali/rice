@@ -39,6 +39,7 @@ public class DevModeTest extends KSBTestCase {
 	@Override
 	public void setUp() throws Exception {
 		System.setProperty("dev.mode", "true");
+		// included in ksb-test-config.xml
 		System.setProperty("additional.config.locations", "classpath:edu/iu/uis/eden/messaging/dev_mode_config.xml");
 		super.setUp();
 	}
@@ -49,6 +50,7 @@ public class DevModeTest extends KSBTestCase {
 	public void tearDown() throws Exception {
 	    try {
 		System.clearProperty("dev.mode");
+	    // included in ksb-test-config.xml
 		System.clearProperty("additional.config.locations");
 	    } finally {
 		super.tearDown();

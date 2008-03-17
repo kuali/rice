@@ -3,6 +3,9 @@
 
     <param name="config.location">classpath:META-INF/test-config-defaults.xml</param>
 
+    <!-- override default of dev.mode = true -->
+    <param name="dev.mode">false</param>
+    
 	<param name="config.location">classpath:META-INF/common-derby-connection-config.xml</param>
 	<param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
 

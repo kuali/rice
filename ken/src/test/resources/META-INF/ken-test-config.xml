@@ -36,11 +36,6 @@
     <param name="notification.quartz.autostartup">false</param>
     <param name="notification.concurrent.jobs">true</param>
 
-    <param name="notification.basewebappurl">http://localhost:8080/kr-dev/ken</param>
-
-    <!-- Email Plugin Properties -->
-    <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
-
     <!-- Turn off KEW use of quartz db to avoid db clear issues -->
     <param name="useQuartzDatabase">false</param>   
     

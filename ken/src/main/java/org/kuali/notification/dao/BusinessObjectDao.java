@@ -148,9 +148,10 @@ public interface BusinessObjectDao {
      * @param clazz
      * @param criteria
      * @param selectForUpdate whether to perform a select for update query
+     * @param wait millis to wait for select for update
      * @return Collection
      */
-    public Collection findMatching(Class clazz, Criteria criteria, boolean selectForUpdate);
+    public Collection findMatching(Class clazz, Criteria criteria, boolean selectForUpdate, long wait);
 
     /**
      * @param clazz

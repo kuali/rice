@@ -26,9 +26,9 @@ import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.notification.bo.NotificationRecipient;
 import org.kuali.notification.bo.NotificationResponse;
 import org.kuali.notification.dao.BusinessObjectDao;
+import org.kuali.notification.database.Platform;
 import org.kuali.notification.deliverer.impl.KEWActionListMessageDeliverer;
 import org.kuali.notification.exception.InvalidXMLException;
-import org.kuali.notification.exception.NotificationMessageDismissalException;
 import org.kuali.notification.service.NotificationAuthorizationService;
 import org.kuali.notification.service.NotificationMessageContentService;
 import org.kuali.notification.service.NotificationMessageDeliveryService;
@@ -262,7 +262,7 @@ public class NotificationServiceImpl implements NotificationService {
         criteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
         //criteria = Util.makeSelectForUpdate(criteria);
         
-        Collection<Notification> available_notifications = businessObjectDao.findMatching(Notification.class, criteria, true);
+        Collection<Notification> available_notifications = businessObjectDao.findMatching(Notification.class, criteria, true, Platform.NO_WAIT);
         
         LOG.debug("Available notifications: " + available_notifications.size());
 
@@ -285,7 +285,7 @@ public class NotificationServiceImpl implements NotificationService {
         criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.ID, notification.getId());
         //criteria = Util.makeSelectForUpdate(criteria);
 
-        Collection<Notification> notifications = businessObjectDao.findMatching(Notification.class, criteria, true);
+        Collection<Notification> notifications = businessObjectDao.findMatching(Notification.class, criteria, true, Platform.NO_WAIT);
         if (notifications == null || notifications.size() == 0) {
             throw new RuntimeException("Notification #" + notification.getId() + " not found to unlock");
         }

@@ -177,12 +177,6 @@
       <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
     </bean>
     
-    <bean id="notificationEmailService" class="org.kuali.notification.service.impl.NotificationEmailServiceImpl" >
-       <property name="weburl"><value>${notification.basewebappurl}</value></property>
-       <property name="smtpHost"><value>${emailDeliverer.smtp.host}</value></property>
-    </bean>
-    
-    
     <!-- END SERVICES -->
        
 

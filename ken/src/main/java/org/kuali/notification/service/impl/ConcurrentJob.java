@@ -15,12 +15,14 @@
  */
 package org.kuali.notification.service.impl;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.OptimisticLockException;
 import org.kuali.notification.service.ProcessingResult;
@@ -42,6 +44,16 @@ import edu.emory.mathcs.backport.java.util.concurrent.Future;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public abstract class ConcurrentJob<T> {
+    /**
+     * Oracle's "ORA-00054: resource busy and acquire with NOWAIT specified"
+     */
+    private static final int ORACLE_00054 = 54;
+    /**
+     * Oracle's "ORA-00060 deadlock detected while waiting for resource"
+     */
+    private static final int ORACLE_00060 = 60;
+    
+
     protected final Logger LOG = Logger.getLogger(getClass());
 
     protected ExecutorService executor;
@@ -136,6 +148,18 @@ public abstract class ConcurrentJob<T> {
             } else {
                 // in addition to logging a message, should we throw an exception or log a failure here?
                 LOG.error("Error taking work items", dae);
+                Throwable t = dae.getMostSpecificCause();
+                if (t != null && t instanceof SQLException) {
+                    SQLException sqle = (SQLException) t;
+                    if (sqle.getErrorCode() == ORACLE_00054 && StringUtils.contains(sqle.getMessage(), "resource busy")) {
+                        // this is expected and non-fatal given that these jobs will run again
+                        LOG.warn("Select for update lock contention encountered");
+                    } else if (sqle.getErrorCode() == ORACLE_00060 && StringUtils.contains(sqle.getMessage(), "deadlock detected")) {
+                        // this is bad...two parties are waiting forever somewhere...
+                        // database is probably wedged now :(
+                        LOG.error("Select for update deadlock encountered!");
+                    }
+                }
             }
             return result;
         } catch (UnexpectedRollbackException ure) {

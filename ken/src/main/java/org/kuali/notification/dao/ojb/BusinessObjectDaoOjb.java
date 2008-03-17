@@ -25,6 +25,8 @@ import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.notification.dao.BusinessObjectDao;
+import org.kuali.notification.database.OraclePlatform;
+import org.kuali.notification.database.Platform;
 import org.kuali.rice.ojb.SuffixableQueryByCriteria;
 import org.springframework.dao.DataAccessException;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -39,6 +41,8 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 public class BusinessObjectDaoOjb extends PersistenceBrokerDaoSupport implements BusinessObjectDao {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectDaoOjb.class);
 
+    // not configurable at the moment as we only support Oracle anyway
+    private Platform platform = new OraclePlatform();
     private boolean useSelectForUpdate = true;
     
     /**
@@ -219,7 +223,7 @@ public class BusinessObjectDaoOjb extends PersistenceBrokerDaoSupport implements
      * @see org.kuali.notification.dao.BusinessObjectDao#findMatching(java.lang.Class, org.apache.ojb.broker.query.Criteria)
      */
     public Collection findMatching(Class clazz, Criteria criteria) {
-        return findMatching(clazz, criteria, false);
+        return findMatching(clazz, criteria, false, Platform.NO_WAIT);
 	/*return getPersistenceBrokerTemplate().getCollectionByQuery(
 		QueryFactory.newQuery(clazz, criteria));*/
     }
@@ -227,7 +231,7 @@ public class BusinessObjectDaoOjb extends PersistenceBrokerDaoSupport implements
     /**
      * @see org.kuali.notification.dao.BusinessObjectDao#findMatching(Class, Criteria, boolean)
      */
-    public Collection findMatching(Class clazz, Criteria criteria, boolean selectForUpdate) {
+    public Collection findMatching(Class clazz, Criteria criteria, boolean selectForUpdate, long wait) {
         Query query;
         if (selectForUpdate && !useSelectForUpdate) {
             LOG.warn("Pessimistic locking was requested but select for update is disabled");
@@ -235,7 +239,7 @@ public class BusinessObjectDaoOjb extends PersistenceBrokerDaoSupport implements
         if (selectForUpdate && useSelectForUpdate) {
             SuffixableQueryByCriteria q = new SuffixableQueryByCriteria(clazz, criteria);
             // XXX: hax
-            q.setQuerySuffix(" for update");
+            q.setQuerySuffix(" " + platform.getSelectForUpdateSuffix(wait));
             query = q;            
         } else {
             query = QueryFactory.newQuery(clazz, criteria);

@@ -22,7 +22,6 @@ import org.kuali.notification.service.KENAPIService;
 import org.kuali.notification.service.NotificationAuthorizationService;
 import org.kuali.notification.service.NotificationChannelService;
 import org.kuali.notification.service.NotificationContentTypeService;
-import org.kuali.notification.service.NotificationEmailService;
 import org.kuali.notification.service.NotificationMessageContentService;
 import org.kuali.notification.service.NotificationMessageDeliveryAutoRemovalService;
 import org.kuali.notification.service.NotificationMessageDeliveryResolverService;
@@ -115,12 +114,6 @@ public interface NotificationServiceLocator {
      * @return NotificationChannelService
      */
     public NotificationChannelService getNotificationChannelService();
-    
-    /**
-     * This method returns an instance of the Spring configured impl for the NotificationChannelService.
-     * @return NotificationEmailService
-     */
-    public NotificationEmailService getNotificationEmailService();
 
     /**
      * Returns the Notification system configuration properties

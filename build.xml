@@ -105,7 +105,7 @@
 		<maven goals="install:install-file" options="-DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=${oracle.driver.version} -Dpackaging=jar -Dfile=${oracle.driver.jar}"/>
 	</target>
 	
-	<target name="retrieve-maven-dependencies" depends="init">
+	<target name="retrieve-maven-dependencies" depends="install-oracle-jar">
 		<!--
         <maven goals="dependency:resolve" options="-DexcludeGroupIds=org.kuali.rice,"/>
         -->

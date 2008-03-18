@@ -84,12 +84,15 @@
 							<value>classpath:org/kuali/rice/kim/bo/datadictionary/Principal.xml</value>
 							<value>classpath:org/kuali/rice/kim/bo/datadictionary/Role.xml</value>
 							<value>classpath:org/kuali/rice/kim/bo/datadictionary/EntityType.xml</value>
+							<value>classpath:org/kuali/rice/kim/bo/datadictionary/Entity.xml</value>
+							<value>classpath:org/kuali/rice/kim/bo/datadictionary/EntityAttribute.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/AttributeTypeMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/GroupMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/NamespaceMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/PrincipalMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/RoleMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/EntityTypeMaintenanceDocument.xml</value>
+							<value>classpath:org/kuali/rice/kim/document/datadictionary/EntityMaintenanceDocument.xml</value>
                             <value>classpath:org/kuali/rice/kom/bo/datadictionary/Organization.xml</value>
                             <value>classpath:org/kuali/rice/kom/bo/datadictionary/OrganizationCategory.xml</value>
                             <value>classpath:org/kuali/rice/kom/bo/datadictionary/OrganizationContext.xml</value>

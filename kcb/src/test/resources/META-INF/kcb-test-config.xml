@@ -5,7 +5,7 @@
 
     <param name="config.location">classpath:META-INF/test-config-defaults.xml</param>
 
-    <param name="serviceServletUrl">fake service servlet url</param>
+    <param name="serviceServletUrl">http://kcbUnitTestFake-fakeServiceServletUrl</param>
     <param name="kcb.messaging.synchronous">false</param>
 	<param name="transaction.timeout">3600</param>
     <param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>

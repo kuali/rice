@@ -18,14 +18,12 @@ package org.kuali.rice.standalone;
 import javax.servlet.ServletContextEvent;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.SystemUtils;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.test.BaseRiceTestCase;
 import org.springframework.mock.web.MockServletContext;
 
 import edu.iu.uis.eden.EdenConstants;
-
-import junit.framework.TestCase;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
@@ -33,7 +31,7 @@ import junit.framework.TestCase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class StandaloneInitializeListenerTest extends TestCase {
+public class StandaloneInitializeListenerTest extends BaseRiceTestCase {
 
     private static final String CONTEXT_NAME = "rice-standalone-version";
     private static final String TEST_INIT_PARAM = "test.init.param";

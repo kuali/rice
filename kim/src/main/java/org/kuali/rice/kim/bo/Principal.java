@@ -26,9 +26,11 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
 public class Principal extends PersistableBusinessObjectBase implements java.security.Principal {
     private static final long serialVersionUID = -5021417605671339853L;
     private Long id;
+    private Long entityId;
     private String name;
     
-
+    
+   private Entity entity;
 
     /**
      * Constructs a NotificationSender.java instance.
@@ -60,7 +62,8 @@ public class Principal extends PersistableBusinessObjectBase implements java.sec
     @Override
     protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-        propMap.put("id", getId().toString());
+        propMap.put("id", getId());
+        propMap.put("entityId", getEntityId());
         return propMap;
     }
 
@@ -80,4 +83,33 @@ public class Principal extends PersistableBusinessObjectBase implements java.sec
     public void setName(String name) {
         this.name = name;
     }
+
+    /**
+     * @return the entityId
+     */
+    public Long getEntityId() {
+        return this.entityId;
+    }
+
+    /**
+     * @param entityId the entityId to set
+     */
+    public void setEntityId(Long entityId) {
+        this.entityId = entityId;
+    }
+
+    /**
+     * @return the entity
+     */
+    public Entity getEntity() {
+        return this.entity;
+    }
+
+    /**
+     * @param entity the entity to set
+     */
+    public void setEntity(Entity entity) {
+        this.entity = entity;
+    }
+
 }

@@ -28,10 +28,15 @@ public class EntityAttribute extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 2861440911751860350L;
 	private Long id;
+	private Long entityId;
 	private Long attributeTypeId;
 	private Long namespaceId;
 	private String attributeName;
 	private String value;
+	
+	private AttributeType attributeType;
+    private Entity entity;
+    private Namespace namespace;
 
 	public Long getNamespaceId() {
 		return namespaceId;
@@ -76,6 +81,7 @@ public class EntityAttribute extends PersistableBusinessObjectBase {
 	protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
         propMap.put("id", getId());
+        propMap.put("entityId", getEntityId());
         propMap.put("attributeTypeId", getAttributeTypeId());
         propMap.put("namespaceId", getNamespaceId());
         propMap.put("attributeName", getAttributeName());
@@ -86,4 +92,60 @@ public class EntityAttribute extends PersistableBusinessObjectBase {
 	public void refresh() {
 		// not going to implement unless needed
 	}
+
+    /**
+     * @return the entityId
+     */
+    public Long getEntityId() {
+        return this.entityId;
+    }
+
+    /**
+     * @param entityId the entityId to set
+     */
+    public void setEntityId(Long entityId) {
+        this.entityId = entityId;
+    }
+
+    /**
+     * @return the attributeType
+     */
+    public AttributeType getAttributeType() {
+        return this.attributeType;
+    }
+
+    /**
+     * @param attributeType the attributeType to set
+     */
+    public void setAttributeType(AttributeType attributeType) {
+        this.attributeType = attributeType;
+    }
+
+    /**
+     * @return the entity
+     */
+    public Entity getEntity() {
+        return this.entity;
+    }
+
+    /**
+     * @param entity the entity to set
+     */
+    public void setEntity(Entity entity) {
+        this.entity = entity;
+    }
+
+    /**
+     * @return the namespace
+     */
+    public Namespace getNamespace() {
+        return this.namespace;
+    }
+
+    /**
+     * @param namespace the namespace to set
+     */
+    public void setNamespace(Namespace namespace) {
+        this.namespace = namespace;
+    }
 }

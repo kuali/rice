@@ -355,6 +355,8 @@ INSERT INTO FP_DOC_TYPE_T values ('KRMD', SYS_GUID(), 1, 'KR', 'KIM ROLE', 'N', 
 /
 INSERT INTO FP_DOC_TYPE_T values ('KETM', SYS_GUID(), 1, 'KR', 'KIM ENTITY TYPE', 'N', 'Y', 'N', 0, 'N', 'N')
 /
+INSERT INTO FP_DOC_TYPE_T values ('KEMD', SYS_GUID(), 1, 'KR', 'ENTITY', 'N', 'Y', 'N', 0, 'N', 'N')
+/
 
 COMMIT
 /

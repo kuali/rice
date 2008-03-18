@@ -30,15 +30,16 @@ import org.kuali.core.util.TypedArrayList;
 public class Entity extends PersistableBusinessObjectBase {
 	private static final long serialVersionUID = -1207463934478758540L;
 	private Long id;
-	private String username;
-	private String password;
 	private Long entityTypeId;
 	
 	private EntityType entityType;
 	private ArrayList<EntityAttribute> entityAttributes;
+	private ArrayList<Principal> principals;
+	
 	
 	public Entity() {
 	    this.entityAttributes = new TypedArrayList(EntityAttribute.class);
+	    this.principals = new TypedArrayList(Principal.class);
 	}
 	
 	public Long getId() {
@@ -48,23 +49,6 @@ public class Entity extends PersistableBusinessObjectBase {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	
 	/**
      * @return the entityTypeId
      */
@@ -110,8 +94,6 @@ public class Entity extends PersistableBusinessObjectBase {
     protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
         propMap.put("id", getId());
-        propMap.put("username", getUsername());
-        propMap.put("password", getPassword());
         propMap.put("entityType", getEntityType());
         return propMap;
 	}
@@ -119,4 +101,18 @@ public class Entity extends PersistableBusinessObjectBase {
 	public void refresh() {
 		// not doing this unless we need it
 	}
+
+    /**
+     * @return the principals
+     */
+    public ArrayList<Principal> getPrincipals() {
+        return this.principals;
+    }
+
+    /**
+     * @param principals the principals to set
+     */
+    public void setPrincipals(ArrayList<Principal> principals) {
+        this.principals = principals;
+    }
 }

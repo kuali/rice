@@ -5,7 +5,32 @@
 <beans>
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
-    <bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer"/>
+    <bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer">
+        <!-- all our lovely defaults -->
+        <property name="properties">
+            <props>
+                <prop key="kcb.messaging.synchronous">false</prop>
+                <prop key="message.delivery">asynchronous</prop>
+                <prop key="message.persistence">true</prop>
+                <prop key="Routing.ImmediateExceptionRouting">false</prop>
+            
+                <prop key="notification.resolveMessageDeliveriesJob.startDelayMS">5000</prop>
+                <prop key="notification.resolveMessageDeliveriesJob.intervalMS">10000</prop>
+            
+                <prop key="notification.processUndeliveredJob.startDelayMS">10000</prop>
+                <prop key="notification.processUndeliveredJob.intervalMS">10000</prop>
+            
+                <prop key="notification.processAutoRemovalJob.startDelayMS">60000</prop>
+                <prop key="notification.processAutoRemovalJob.intervalMS">60000</prop>
+            
+                <prop key="notification.quartz.autostartup">true</prop>
+                <prop key="notification.concurrent.jobs">true</prop>
+            
+                <!-- Turn off KEW use of quartz db to avoid db clear issues -->
+                <prop key="useQuartzDatabase">false</prop>   
+            </props>
+        </property>
+    </bean>
 
     <bean id="userTransaction" class="org.kuali.rice.jta.UserTransactionFactoryBean" lazy-init="true" />
     <bean id="jtaTransactionManager" class="org.kuali.rice.jta.TransactionManagerFactoryBean" lazy-init="true" />

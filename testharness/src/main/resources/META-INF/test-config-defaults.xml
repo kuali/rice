@@ -1,12 +1,10 @@
 <!-- config file loaded by the TestHarness root test case. -->
 <config>
-    <param name="environment" override="false">dev</param> <!--  NOTE: This environment parameter must be the first parameter in the file. -->
-
     <!-- add all the common defaults -->    
     <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
 
+    <param name="message.persistence">synchronous</param>
     <param name="dev.mode">true</param>
-    <param name="encryption.key">7IC64w6ksLU</param>
 
     <!-- Default to the single test keystore. -->
     <param name="keystore.alias">rice</param>

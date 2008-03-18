@@ -225,18 +225,23 @@ public class ConfigParserImpl implements ConfigParser {
             return;
         }
         if (override) {
+            final String message;
             Object existingValue = params.get(name);
             if (existingValue != null) {
-                if (LOG.isDebugEnabled()) {
-                    if (!existingValue.equals(value)) {
-                        LOG.debug(indent + "Overriding parameter: " + name + " (" + params.get(name)  + " --> " + value + ")");
-                    }
-                }
+                //if (!existingValue.equals(value)) {
+                    message = indent + "Overriding property " + name + "=[" + existingValue + "] with " + name + "=[" + value + "]"; 
+                //}
                 params.remove(name);
+            } else {
+                message = indent + "Defining property " + name + "=[" + value + "]";
             }
+            LOG.debug(message);
             params.put(name, value);
         } else if (!params.containsKey(name)) {
+            LOG.debug(indent + "Defining property " + name + "=[" + value + "]");
             params.put(name, value);
+        } else {
+            LOG.info("Not overriding existing parameter: " + name + " '" + params.get(name) + "'");
         }
     }
 }

@@ -34,6 +34,7 @@
 
 	<class-descriptor class="org.kuali.rice.kim.bo.Principal" table="KIM_PRINCIPALS_T">
 		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_PRINCIPALS_ID" index="true" />
+		<field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="BIGINT" />
 		<field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
@@ -134,6 +135,48 @@
 		<field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+	</class-descriptor>
+	
+	<class-descriptor class="org.kuali.rice.kim.bo.Entity" table="KIM_ENTITYS_T">
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_ENTITYS_ID" index="true" />
+		<field-descriptor name="entityTypeId" column="ENTITY_TYPE_ID" jdbc-type="BIGINT" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		
+		<reference-descriptor name="entityType" class-ref="org.kuali.rice.kim.bo.EntityType" auto-retrieve="true" auto-update="none" auto-delete="none">
+			<foreignkey field-ref="entityTypeId" />
+		</reference-descriptor>
+		
+		<collection-descriptor name="entityAttributes" element-class-ref="org.kuali.rice.kim.bo.EntityAttribute" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
+			<inverse-foreignkey field-ref="entityId" />
+		</collection-descriptor>
+		
+		<collection-descriptor name="principals" element-class-ref="org.kuali.rice.kim.bo.Principal" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
+            <inverse-foreignkey field-ref="entityId" />
+        </collection-descriptor>
+	</class-descriptor>
+	
+	<class-descriptor class="org.kuali.rice.kim.bo.EntityAttribute" table="KIM_ENTITY_ATTRIBUTES_T">
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_ENTITY_ATTRIBS_ID" index="true" />
+		<field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="BIGINT" />
+		<field-descriptor name="attributeTypeId" column="ATTRIBUTE_TYPE_ID" jdbc-type="BIGINT" />
+		<field-descriptor name="namespaceId" column="SPONSOR_NAMESPACE_ID" jdbc-type="BIGINT" />
+		<field-descriptor name="attributeName" column="ATTRIBUTE_NAME" jdbc-type="VARCHAR" />
+		<field-descriptor name="value" column="ATTRIBUTE_VALUES" jdbc-type="VARCHAR" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		
+		<reference-descriptor name="entity" class-ref="org.kuali.rice.kim.bo.Entity" auto-retrieve="true" auto-update="none" auto-delete="none">
+			<foreignkey field-ref="entityId" />
+		</reference-descriptor>
+		
+		<reference-descriptor name="attributeType" class-ref="org.kuali.rice.kim.bo.AttributeType" auto-retrieve="true" auto-update="none" auto-delete="none">
+			<foreignkey field-ref="attributeTypeId" />
+		</reference-descriptor>
+		
+		<reference-descriptor name="namespace" class-ref="org.kuali.rice.kim.bo.Namespace" auto-retrieve="true" auto-update="none" auto-delete="none">
+			<foreignkey field-ref="namespaceId" />
+		</reference-descriptor>
 	</class-descriptor>
 
 

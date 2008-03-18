@@ -54,7 +54,7 @@
 		<condition property="alt.log4j.config.location.prop" value="alt.log4j.config.location" else="property.name.that.means.nothing">
 		    <isset property="alt.log4j.config.location"/>
 		</condition>
-		<maven goals="clean test site" options="-U -Dmaven.test.skip=false -D${alt.config.location.prop}=${alt.config.location} -D${alt.log4j.config.location.prop}=${alt.log4j.config.location}"/>
+		<maven goals="clean test site" options="-U -D${alt.config.location.prop}=${alt.config.location} -D${alt.log4j.config.location.prop}=${alt.log4j.config.location}"/>
 		<mkdir dir="${junit.report.dir}"/>
 		<junitreport todir="${junit.report.dir}">
 			<fileset dir="${basedir}">
@@ -81,10 +81,9 @@
 	</target>
 	
 	<target name="update-eclipse-classpath" depends="init">
-	    <maven goals="eclipse:eclipse" options="-DdownloadSources=true"/>
+	    <maven goals="install eclipse:eclipse" options="-DdownloadSources=true -DskipTests=true"/>
 		<antcall target="merge-module-classpaths"/>
     </target>
-	
 	
 	<target name="merge-module-classpaths" depends="init">
 		<dirname property="project.dir" file="${ant.file}"/>
@@ -250,7 +249,6 @@
 				<arg line="@{options} @{goals}" />
 				<sysproperty key="classworlds.conf" value="${maven.home.directory}/bin/m2.conf" />
 				<sysproperty key="maven.home" value="${maven.home.directory}" />
-				<sysproperty key="maven.test.skip" value="true" />
 				<classpath>
 					<fileset dir="${maven.home.directory}/boot">
 						<include name="classworlds-*.jar" />

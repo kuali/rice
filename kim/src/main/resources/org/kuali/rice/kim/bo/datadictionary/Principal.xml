@@ -80,6 +80,22 @@
                 </control>
 
 			</attribute>
+			
+			<attributeReference name="entityId"
+				sourceAttributeName="id"
+				sourceClassName="org.kuali.rice.kim.bo.Entity">
+				<label>Entity Id</label>
+                <shortLabel>Entity Id</shortLabel>
+				<required>true</required>
+				<control>
+					<select
+						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+						businessObjectClass="org.kuali.rice.kim.bo.Entity"
+						keyAttribute="id" labelAttribute="id" 
+						includeKeyInLabel="true" />
+				</control>
+			</attributeReference>
+		
 
             <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
 			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />

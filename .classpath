@@ -71,9 +71,8 @@
     <classpathentry kind="var" path="M2_REPO/com/thoughtworks/xstream/xstream/1.2.2/xstream-1.2.2.jar" sourcepath="M2_REPO/com/thoughtworks/xstream/xstream/1.2.2/xstream-1.2.2-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/commons-attributes/commons-attributes-api/2.1/commons-attributes-api-2.1.jar" sourcepath="M2_REPO/commons-attributes/commons-attributes-api/2.1/commons-attributes-api-2.1-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar" sourcepath="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0-sources.jar"/>
-    <classpathentry kind="var" path="M2_REPO/commons-cli/commons-cli/1.0/commons-cli-1.0.jar" sourcepath="M2_REPO/commons-cli/commons-cli/1.0/commons-cli-1.0-sources.jar"/>
-    <classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.2/commons-codec-1.2.jar"/>
-    <classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.1/commons-collections-3.1.jar" sourcepath="M2_REPO/commons-collections/commons-collections/3.1/commons-collections-3.1-sources.jar"/>
+    <classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.3/commons-codec-1.3.jar" sourcepath="M2_REPO/commons-codec/commons-codec/1.3/commons-codec-1.3-sources.jar"/>
+    <classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.2/commons-collections-3.2.jar" sourcepath="M2_REPO/commons-collections/commons-collections/3.2/commons-collections-3.2-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/commons-dbcp/commons-dbcp/1.2.1/commons-dbcp-1.2.1.jar" sourcepath="M2_REPO/commons-dbcp/commons-dbcp/1.2.1/commons-dbcp-1.2.1-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/commons-digester/commons-digester/1.6/commons-digester-1.6.jar" sourcepath="M2_REPO/commons-digester/commons-digester/1.6/commons-digester-1.6-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/commons-discovery/commons-discovery/0.2/commons-discovery-0.2.jar" sourcepath="M2_REPO/commons-discovery/commons-discovery/0.2/commons-discovery-0.2-sources.jar"/>
@@ -83,13 +82,12 @@
     <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/1.1/commons-io-1.1.jar" sourcepath="M2_REPO/commons-io/commons-io/1.1/commons-io-1.1-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.3/commons-lang-2.3.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.3/commons-lang-2.3-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1/commons-logging-1.1.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.1/commons-logging-1.1-sources.jar"/>
-    <classpathentry kind="var" path="M2_REPO/commons-pool/commons-pool/1.3/commons-pool-1.3.jar"/>
+    <classpathentry kind="var" path="M2_REPO/commons-pool/commons-pool/1.2/commons-pool-1.2.jar" sourcepath="M2_REPO/commons-pool/commons-pool/1.2/commons-pool-1.2-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/commons-transaction/commons-transaction/1.1/commons-transaction-1.1.jar"/>
     <classpathentry kind="var" path="M2_REPO/commons-validator/commons-validator/1.1.4/commons-validator-1.1.4.jar" sourcepath="M2_REPO/commons-validator/commons-validator/1.1.4/commons-validator-1.1.4-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/displaytag/displaytag/1.1/displaytag-1.1.jar" sourcepath="M2_REPO/displaytag/displaytag/1.1/displaytag-1.1-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" sourcepath="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/dwr/dwr/1.1.3/dwr-1.1.3.jar" sourcepath="M2_REPO/dwr/dwr/1.1.3/dwr-1.1.3-sources.jar"/>
-    <classpathentry kind="var" path="M2_REPO/groovy/groovy-all-minimal/1.0/groovy-all-minimal-1.0.jar"/>
     <classpathentry kind="var" path="M2_REPO/howl/howl-logger/0.1.11/howl-logger-0.1.11.jar"/>
     <classpathentry kind="var" path="M2_REPO/htmlunit/htmlunit/1.13/htmlunit-1.13.jar" sourcepath="M2_REPO/htmlunit/htmlunit/1.13/htmlunit-1.13-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/incubator-activemq/activeio-core/3.0-beta3/activeio-core-3.0-beta3.jar"/>
@@ -100,7 +98,6 @@
     <classpathentry kind="var" path="M2_REPO/javax/resource/connector/1.0/connector-1.0.jar"/>
     <classpathentry kind="var" path="M2_REPO/javax/servlet/jsp-api/2.0/jsp-api-2.0.jar"/>
     <classpathentry kind="var" path="M2_REPO/javax/servlet/jstl/1.1.2/jstl-1.1.2.jar" sourcepath="M2_REPO/javax/servlet/jstl/1.1.2/jstl-1.1.2-sources.jar"/>
-    <classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.3/servlet-api-2.3.jar" sourcepath="M2_REPO/javax/servlet/servlet-api/2.3/servlet-api-2.3-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.4/servlet-api-2.4.jar" sourcepath="M2_REPO/javax/servlet/servlet-api/2.4/servlet-api-2.4-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.0.1B/jta-1.0.1B.jar"/>
     <classpathentry kind="var" path="M2_REPO/javax/xml/bind/jaxb-api/2.0/jaxb-api-2.0.jar"/>
@@ -131,6 +128,7 @@
     <classpathentry kind="var" path="M2_REPO/org/apache/geronimo/specs/geronimo-jms_1.1_spec/1.0/geronimo-jms_1.1_spec-1.0.jar"/>
     <classpathentry kind="var" path="M2_REPO/org/apache/ws/commons/XmlSchema/1.1/XmlSchema-1.1.jar"/>
     <classpathentry kind="var" path="M2_REPO/org/apache/xbean/xbean-spring/2.8/xbean-spring-2.8.jar" sourcepath="M2_REPO/org/apache/xbean/xbean-spring/2.8/xbean-spring-2.8-sources.jar"/>
+    <classpathentry kind="var" path="M2_REPO/org/codehaus/groovy/groovy-all-minimal/1.5.4/groovy-all-minimal-1.5.4.jar" sourcepath="M2_REPO/org/codehaus/groovy/groovy-all-minimal/1.5.4/groovy-all-minimal-1.5.4-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/org/codehaus/woodstox/wstx-asl/3.2.0/wstx-asl-3.2.0.jar"/>
     <classpathentry kind="var" path="M2_REPO/org/codehaus/xfire/bcprov-jdk15/133/bcprov-jdk15-133.jar"/>
     <classpathentry kind="var" path="M2_REPO/org/codehaus/xfire/xfire-aegis/1.2.6/xfire-aegis-1.2.6.jar" sourcepath="M2_REPO/org/codehaus/xfire/xfire-aegis/1.2.6/xfire-aegis-1.2.6-sources.jar"/>
@@ -172,7 +170,7 @@
     <classpathentry kind="var" path="M2_REPO/xfire/opensaml/1.0.1/opensaml-1.0.1.jar"/>
     <classpathentry kind="var" path="M2_REPO/xfire/saaj-impl/1.3/saaj-impl-1.3.jar"/>
     <classpathentry kind="var" path="M2_REPO/xfire/xfire-jsr181-api/1.0-M1/xfire-jsr181-api-1.0-M1.jar"/>
-    <classpathentry kind="var" path="M2_REPO/xml-apis/xml-apis/1.3.02/xml-apis-1.3.02.jar"/>
+    <classpathentry kind="var" path="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" sourcepath="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/xml-security/xmlsec/1.3.0/xmlsec-1.3.0.jar"/>
     <classpathentry kind="var" path="M2_REPO/xmlbeans/xbean/2.2.0/xbean-2.2.0.jar"/>
     <classpathentry kind="var" path="M2_REPO/xom/xom/1.1/xom-1.1.jar" sourcepath="M2_REPO/xom/xom/1.1/xom-1.1-sources.jar"/>

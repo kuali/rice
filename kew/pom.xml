@@ -56,9 +56,9 @@
     </dependency>
 
     <dependency>
-      <groupId>groovy</groupId>
+      <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all-minimal</artifactId>
-      <version>1.0</version>
+      <version>1.5.4</version>
     </dependency>
 
     <dependency>

@@ -2972,6 +2972,8 @@ INSERT INTO FP_DOC_TYPE_T values ('KATD', SYS_GUID(), 1, 'KR', 'KIM ATTRIBUTE TY
 /
 INSERT INTO FP_DOC_TYPE_T values ('KETM', SYS_GUID(), 1, 'KR', 'KIM ENTITY TYPE', 'N', 'Y', 'N', 0, 'N', 'N')
 /
+INSERT INTO FP_DOC_TYPE_T values ('KEMD', SYS_GUID(), 1, 'KR', 'ENTITY', 'N', 'Y', 'N', 0, 'N', 'N')
+/
 -- Concatenating KENBootstrap.sql
 -- KEN Core Data --
 

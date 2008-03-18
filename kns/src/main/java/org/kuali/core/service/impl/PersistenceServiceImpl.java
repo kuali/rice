@@ -107,7 +107,9 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
 //	}
 
 	public void loadRepositoryDescriptor(String ojbRepositoryFilePath) {
-		LOG.info("Begin loading OJB Metadata for: " + ojbRepositoryFilePath);
+	    if ( LOG.isInfoEnabled() ) {
+	        LOG.info("Begin loading OJB Metadata for: " + ojbRepositoryFilePath);
+	    }
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
 		InputStream is = null;
 		try {
@@ -129,7 +131,7 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
 				try {
 					is.close();
 				} catch (IOException e) {
-					LOG.info("Failed to close InputStream on OJB repository path " + ojbRepositoryFilePath, e);
+					LOG.warn("Failed to close InputStream on OJB repository path " + ojbRepositoryFilePath, e);
 				}
 			}
 			throw new RiceRuntimeException(ioe);
@@ -138,11 +140,13 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
 				try {
 					is.close();
 				} catch (IOException e) {
-					LOG.info("Failed to close InputStream on OJB repository path " + ojbRepositoryFilePath, e);
+					LOG.warn("Failed to close InputStream on OJB repository path " + ojbRepositoryFilePath, e);
 				}
 			}
 		}
-		LOG.info("Finished loading OJB Metadata for: " + ojbRepositoryFilePath);
+        if ( LOG.isInfoEnabled() ) {
+            LOG.info("Finished loading OJB Metadata for: " + ojbRepositoryFilePath);
+        }
 	}
 
     /**
@@ -152,7 +156,9 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
         if (persistableObject == null) {
             throw new IllegalArgumentException("invalid (null) persistableObject");
         }
-        LOG.debug("retrieving non-key fields for " + persistableObject);
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("retrieving non-key fields for " + persistableObject);
+        }
 
         persistenceDao.retrieveAllReferences(persistableObject);
     }
@@ -165,7 +171,9 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
         if (persistableObject == null) {
             throw new IllegalArgumentException("invalid (null) persistableObject");
         }
-        LOG.debug("retrieving reference object " + referenceObjectName + " for " + persistableObject);
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("retrieving reference object " + referenceObjectName + " for " + persistableObject);
+        }
 
         persistenceDao.retrieveReference(persistableObject, referenceObjectName);
     }

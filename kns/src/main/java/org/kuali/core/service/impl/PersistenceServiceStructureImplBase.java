@@ -28,7 +28,7 @@ import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.exceptions.ClassNotPersistableException;
 import org.kuali.core.exceptions.ObjectNotABusinessObjectRuntimeException;
-import org.kuali.core.util.spring.Cached;
+import org.kuali.core.util.spring.CacheNoCopy;
 
 public class PersistenceServiceStructureImplBase {
 
@@ -69,6 +69,7 @@ public class PersistenceServiceStructureImplBase {
     /**
      * @see org.kuali.core.service.PersistenceMetadataExplorerService#listPrimaryKeyFieldNames(java.lang.Class)
      */
+    @CacheNoCopy
     public List listPrimaryKeyFieldNames(Class clazz) {
         ClassDescriptor classDescriptor = getClassDescriptor(clazz);
 
@@ -90,6 +91,7 @@ public class PersistenceServiceStructureImplBase {
 	 * @return name of the database table associated with given classDescriptor,
 	 *         stripped of its leading schemaName
      */
+    @CacheNoCopy
     protected String getTableName(ClassDescriptor classDescriptor) {
         String schemaName = classDescriptor.getSchema();
         String fullTableName = classDescriptor.getFullTableName();
@@ -113,6 +115,7 @@ public class PersistenceServiceStructureImplBase {
 	 * @throws ClassNotPersistableException
 	 *             if the given Class is unknown to OJB
      */
+    @CacheNoCopy
     protected ClassDescriptor getClassDescriptor(Class persistableClass) {
         if (persistableClass == null) {
             throw new IllegalArgumentException("invalid (null) object");
@@ -132,7 +135,7 @@ public class PersistenceServiceStructureImplBase {
     /**
      * @see org.kuali.core.service.PersistenceStructureService#getBusinessObjectAttributeClass(java.lang.Class, java.lang.String)
      */
-    @Cached
+    @CacheNoCopy
     public Class getBusinessObjectAttributeClass(Class clazz, String attributeName) throws ObjectNotABusinessObjectRuntimeException {
     	Class attributeClass = null;
     	

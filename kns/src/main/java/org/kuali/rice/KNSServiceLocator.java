@@ -35,6 +35,7 @@ import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.service.DateTimeService;
 import org.kuali.core.service.DictionaryValidationService;
 import org.kuali.core.service.DocumentAuthorizationService;
+import org.kuali.core.service.DocumentSerializerService;
 import org.kuali.core.service.DocumentService;
 import org.kuali.core.service.DocumentTypeService;
 import org.kuali.core.service.EncryptionService;
@@ -417,6 +418,12 @@ public class KNSServiceLocator<T extends Object> {
 
     public static TransactionTemplate getTransactionTemplate() {
 	return (TransactionTemplate) getService(TRANSACTION_TEMPLATE);
+    }
+    
+    public static final String DOCUMENT_SERIALIZER_SERVICE = "documentSerializerService";
+    
+    public static DocumentSerializerService getDocumentSerializerService() {
+        return (DocumentSerializerService) getService(DOCUMENT_SERIALIZER_SERVICE);
     }
 
 }

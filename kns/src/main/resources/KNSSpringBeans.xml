@@ -661,4 +661,13 @@
 			<ref bean="persistenceStructureService" />
 		</property>
 	</bean>
+	
+	<bean id="documentSerializerService" class="org.kuali.core.service.impl.DocumentSerializerServiceImpl">
+		<property name="persistenceService">
+			<ref bean="persistenceService" />
+		</property>
+		<property name="xmlObjectSerializerService">
+			<ref bean="xmlObjectSerializerService"/>
+		</property>
+	</bean>
 </beans>

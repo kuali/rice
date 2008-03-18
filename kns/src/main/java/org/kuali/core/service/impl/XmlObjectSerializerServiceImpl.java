@@ -68,6 +68,7 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
 	public XmlObjectSerializerServiceImpl() {
 		xstream = new XStream(new ProxyAwareJavaReflectionProvider());
 		xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
+		xstream.addDefaultImplementation(ArrayList.class, ListProxyDefaultImpl.class);
 	}
 	
     /**
@@ -107,32 +108,23 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
     }
 
 
+    /**
+     * This custom converter only handles proxies for BusinessObjects.  List-type proxies are handled by configuring XStream to treat
+     * ListProxyDefaultImpl as ArrayLists (see constructor for this service). 
+     */
     public class ProxyConverter extends ReflectionConverter {
         public ProxyConverter(Mapper mapper, ReflectionProvider reflectionProvider) {
             super(mapper, reflectionProvider);
         }
         public boolean canConvert(Class clazz) {
-            return clazz.getName().indexOf("CGLIB") > -1 || clazz.getName().equals("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
+            return clazz.getName().indexOf("CGLIB") > -1;
         }
 
         public void marshal(Object obj, HierarchicalStreamWriter writer, MarshallingContext context) {
-        	if (obj instanceof ListProxyDefaultImpl) { 
-                List copiedList = new ArrayList(); 
-                List proxiedList = (List) obj; 
-                for (Iterator iter = proxiedList.iterator(); iter.hasNext();) { 
-                    copiedList.add(iter.next()); 
-                } 
-                context.convertAnother( copiedList );
-                //super.marshal(copiedList, writer, context);
-            } 
-            else { 
-                super.marshal(getPersistenceService().resolveProxy(obj), writer, context);
-            }         	
+            super.marshal(getPersistenceService().resolveProxy(obj), writer, context);
         }
-
-        public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-            return null;
-        }
+        
+        // we shouldn't need an unmarshal method because all proxy metadata is taken out of the XML, so we'll reserialize as a base BO. 
     }
     
     public class ProxyAwareJavaReflectionProvider extends PureJavaReflectionProvider {

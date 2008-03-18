@@ -623,6 +623,23 @@
                 <set-next-rule methodname="addMaintainableSection" />
             </pattern>
 
+            <pattern value="workflowProperties">
+            	<object-create-rule classname="org.kuali.core.datadictionary.WorkflowProperties" />
+                <pattern value="workflowPropertyGroup">
+                    <object-create-rule classname="org.kuali.core.datadictionary.WorkflowPropertyGroup"/>
+                    <set-properties-rule/>
+
+                    <pattern value="workflowProperty">
+                        <object-create-rule classname="org.kuali.core.datadictionary.WorkflowProperty"/>
+                        <set-properties-rule/>
+
+                        <set-next-rule methodname="addWorkflowProperty"/>
+                    </pattern>
+                    <set-next-rule methodname="addWorkflowPropertyGroup"/>
+                </pattern>
+                <set-next-rule methodname="setWorkflowProperties"/>
+            </pattern>
+            
             <call-method-rule pattern="allowsNoteAttachments" methodname="setAllowsNoteAttachments" paramcount="0" paramtypes="java.lang.Boolean" />
             <set-next-rule methodname="addDocumentEntry" />
         </pattern>
@@ -747,6 +764,23 @@
                 </pattern>
             </pattern>
 
+            <pattern value="workflowProperties">
+            	<object-create-rule classname="org.kuali.core.datadictionary.WorkflowProperties" />
+                <pattern value="workflowPropertyGroup">
+                    <object-create-rule classname="org.kuali.core.datadictionary.WorkflowPropertyGroup"/>
+                    <set-properties-rule/>
+
+                    <pattern value="workflowProperty">
+                        <object-create-rule classname="org.kuali.core.datadictionary.WorkflowProperty"/>
+                        <set-properties-rule/>
+
+                        <set-next-rule methodname="addWorkflowProperty"/>
+                    </pattern>
+                    <set-next-rule methodname="addWorkflowPropertyGroup"/>
+                </pattern>
+                <set-next-rule methodname="setWorkflowProperties"/>
+            </pattern>
+            
             <set-next-rule methodname="addDocumentEntry" />
         </pattern>
                 	</pattern>

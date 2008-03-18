@@ -30,13 +30,18 @@ import org.kuali.RiceKeyConstants;
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.GlobalBusinessObject;
 import org.kuali.core.bo.PersistableBusinessObject;
+import org.kuali.core.datadictionary.DocumentEntry;
+import org.kuali.core.datadictionary.WorkflowProperties;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.rule.event.KualiDocumentEvent;
 import org.kuali.core.rule.event.SaveDocumentEvent;
+import org.kuali.core.service.DataDictionaryService;
+import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.UrlFactory;
+import org.kuali.core.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
 import org.w3c.dom.Document;
@@ -698,5 +703,14 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
             documentBusinessObject=this.newMaintainableObject.getBusinessObject();
         }
         return documentBusinessObject;
+    }
+
+    @Override
+    public PropertySerializabilityEvaluator getDocumentPropertySerizabilityEvaluator() {
+        MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+        String docTypeName = maintenanceDocumentDictionaryService.getDocumentTypeName(this.newMaintainableObject.getBoClass());
+        DocumentEntry documentEntry = maintenanceDocumentDictionaryService.getMaintenanceDocumentEntry(docTypeName);
+        WorkflowProperties workflowProperties = documentEntry.getWorkflowProperties();
+        return createPropertySerializabilityEvaluator(workflowProperties);
     }
 }

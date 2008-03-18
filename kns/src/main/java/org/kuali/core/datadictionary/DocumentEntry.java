@@ -72,7 +72,8 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     private List<HeaderNavigation> headerNavigationList;
 
     private boolean allowsCopy;
-
+    private WorkflowProperties workflowProperties;
+    
     /**
      * Default constructor
      */
@@ -83,6 +84,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         authorizations = new HashMap();
         headerNavigationList = new ArrayList<HeaderNavigation>();
         webScriptFiles = new ArrayList<String>( 3 );
+        workflowProperties = null;
     }
 
     /**
@@ -470,6 +472,14 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
      */
     public void setAllowsNoteAttachments(boolean allowsNoteAttachments) {
         this.allowsNoteAttachments = allowsNoteAttachments;
+    }
+
+    public WorkflowProperties getWorkflowProperties() {
+        return this.workflowProperties;
+    }
+
+    public void setWorkflowProperties(WorkflowProperties workflowProperties) {
+        this.workflowProperties = workflowProperties;
     }
 
 }

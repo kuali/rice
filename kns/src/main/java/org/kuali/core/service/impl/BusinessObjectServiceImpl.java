@@ -47,7 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
  * This class is the service implementation for the BusinessObjectService structure. This is the default implementation, that is
  * delivered with Kuali.
  */
-@Transactional
+
 public class BusinessObjectServiceImpl implements BusinessObjectService {
 
     private PersistenceService persistenceService;
@@ -59,6 +59,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     /**
      * @see org.kuali.core.service.BusinessObjectService#save(org.kuali.bo.BusinessObject)
      */
+    @Transactional
     public void save(PersistableBusinessObject bo) {
         if (!(bo instanceof PersistableBusinessObject)) {
             throw new IllegalArgumentException("Object passed in is not a BusinessObject class or subclass.");
@@ -69,6 +70,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     /**
      * @see org.kuali.core.service.BusinessObjectService#save(java.util.List)
      */
+    @Transactional
     public void save(List businessObjects) {
         int index = 0;
         for (Iterator i = businessObjects.iterator(); i.hasNext(); index++) {
@@ -84,6 +86,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      * 
      * @see org.kuali.core.service.BusinessObjectService#linkAndSave(org.kuali.core.bo.BusinessObject)
      */
+    @Transactional
     public void linkAndSave(PersistableBusinessObject bo) {
         if (!(bo instanceof PersistableBusinessObject)) {
             throw new IllegalArgumentException("Object passed in is not a BusinessObject class or subclass.");
@@ -96,6 +99,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      * 
      * @see org.kuali.core.service.BusinessObjectService#linkAndSave(java.util.List)
      */
+    @Transactional
     public void linkAndSave(List<PersistableBusinessObject> businessObjects) {
         for (PersistableBusinessObject bo : businessObjects) {
             if (!(bo instanceof PersistableBusinessObject)) {
@@ -159,6 +163,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     /**
      * @see org.kuali.core.service.BusinessObjectService#delete(org.kuali.bo.BusinessObject)
      */
+    @Transactional
     public void delete(PersistableBusinessObject bo) {
         businessObjectDao.delete(bo);
     }
@@ -166,6 +171,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     /**
      * @see org.kuali.core.service.BusinessObjectService#delete(java.util.List)
      */
+    @Transactional
     public void delete(List<PersistableBusinessObject> boList) {
         businessObjectDao.delete(boList);
     }
@@ -174,6 +180,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     /**
      * @see org.kuali.core.service.BusinessObjectService#deleteMatching(java.lang.Class, java.util.Map)
      */
+    @Transactional
     public void deleteMatching(Class clazz, Map fieldValues) {
         businessObjectDao.deleteMatching(clazz, fieldValues);
     }

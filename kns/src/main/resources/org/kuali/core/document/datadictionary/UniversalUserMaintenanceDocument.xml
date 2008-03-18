@@ -93,7 +93,11 @@
             </maintainableSection>
         </maintainableSections>
         
-        
-        
+        <workflowProperties>
+        	<workflowPropertyGroup>
+        		<workflowProperty path="newMaintainableObject.businessObject" />
+        		<workflowProperty path="newMaintainableObject.businessObject.changedModuleCodes" />
+        	</workflowPropertyGroup>
+        </workflowProperties>
     </maintenanceDocument>
 </dictionaryEntry>

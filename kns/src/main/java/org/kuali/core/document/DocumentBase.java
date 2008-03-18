@@ -31,14 +31,22 @@ import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.bo.user.AuthenticationUserId;
 import org.kuali.core.bo.user.UniversalUser;
+import org.kuali.core.datadictionary.DocumentEntry;
+import org.kuali.core.datadictionary.WorkflowProperties;
+import org.kuali.core.datadictionary.WorkflowPropertyGroup;
 import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.rule.event.KualiDocumentEvent;
+import org.kuali.core.service.DataDictionaryService;
+import org.kuali.core.service.DocumentSerializerService;
 import org.kuali.core.util.ErrorMessage;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.TypeUtils;
 import org.kuali.core.util.TypedArrayList;
+import org.kuali.core.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
+import org.kuali.core.util.documentserializer.BusinessObjectPropertySerializibilityEvaluator;
+import org.kuali.core.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.core.workflow.DocumentInitiator;
 import org.kuali.core.workflow.KualiDocumentXmlMaterializer;
 import org.kuali.core.workflow.KualiTransactionalDocumentInformation;
@@ -349,10 +357,24 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         documentHeader.getWorkflowDocument().setApplicationContent(serializeDocumentToXml());
     }
     
+    /**
+     * @see org.kuali.core.document.Document#serializeDocumentToXml()
+     */
     public String serializeDocumentToXml() {
+        DocumentSerializerService documentSerializerService = KNSServiceLocator.getDocumentSerializerService();
+        String xml = documentSerializerService.serializeDocumentToXmlForRouting(this);
+        return xml;
+    }
+
+    /**
+     * Wraps a document in an instance of KualiDocumentXmlMaterializer, that provides additional metadata for serialization
+     * 
+     * @see org.kuali.core.document.Document#wrapDocumentWithMetadataForXmlSerialization()
+     */
+    public KualiDocumentXmlMaterializer wrapDocumentWithMetadataForXmlSerialization() {
         KualiTransactionalDocumentInformation transInfo = new KualiTransactionalDocumentInformation();
         DocumentInitiator initiatior = new DocumentInitiator();
-        String initiatorNetworkId = documentHeader.getWorkflowDocument().getInitiatorNetworkId();
+        String initiatorNetworkId = getDocumentHeader().getWorkflowDocument().getInitiatorNetworkId();
         try {
             UniversalUser initiatorUser = KNSServiceLocator.getUniversalUserService().getUniversalUser(new AuthenticationUserId(initiatorNetworkId));
             initiatorUser.getModuleUsers(); // init the module users map for serialization
@@ -365,17 +387,54 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         KualiDocumentXmlMaterializer xmlWrapper = new KualiDocumentXmlMaterializer();
         xmlWrapper.setDocument(getDocumentRepresentationForSerialization());
         xmlWrapper.setKualiTransactionalDocumentInformation(transInfo);
-        String xml = KNSServiceLocator.getXmlObjectSerializerService().toXml(xmlWrapper);
-        return xml;
+        return xmlWrapper;
     }
 
+    /**
+     * If workflowProperties have been defined within the data dictionary for this document, then it returns an instance of 
+     * {@link BusinessObjectPropertySerializibilityEvaluator} initialized with the properties.  If none have been defined, then returns 
+     * {@link AlwaysTruePropertySerializibilityEvaluator}.
+     * 
+     * @see org.kuali.core.document.Document#getDocumentPropertySerizabilityEvaluator()
+     */
+    public PropertySerializabilityEvaluator getDocumentPropertySerizabilityEvaluator() {
+        String docTypeName = getDocumentHeader().getWorkflowDocument().getDocumentType();
+        DocumentEntry documentEntry = KNSServiceLocator.getBean(DataDictionaryService.class).getDataDictionary().getDocumentEntry(docTypeName);
+        WorkflowProperties workflowProperties = documentEntry.getWorkflowProperties();
+        return createPropertySerializabilityEvaluator(workflowProperties);
+    }
+    
+    protected PropertySerializabilityEvaluator createPropertySerializabilityEvaluator(WorkflowProperties workflowProperties) {
+        if (workflowProperties == null) {
+            return new AlwaysTruePropertySerializibilityEvaluator();
+        }
+        else {
+            PropertySerializabilityEvaluator evaluator = new BusinessObjectPropertySerializibilityEvaluator();
+            evaluator.initializeEvaluator(this);
+            return evaluator;
+        }
+    }
+    
+    /**
+     * Returns the POJO property name of "this" document in the object returned by {@link #wrapDocumentWithMetadataForXmlSerialization()}
+     * 
+     * @see org.kuali.core.document.Document#getBasePathToDocumentDuringSerialization()
+     */
+    public String getBasePathToDocumentDuringSerialization() {
+        return "document";
+    }
+    
     /**
      * This method was added because of performance problems with the default workflow xml serialization strategy.
      * This allows individual "big" document implementations to defer to a service that can be overriden for translation
      * of the real document into a much smaller object structure for serialization.
      * 
-     * @return the Document instance that should be used to generate the xml for workfow
+     * @return the Document instance that should be used to generate the xml for workflow
+     * @deprecated As of rice 0.9.2.1, document implementations wishing to generate a smaller workflow XML file should instead
+     * use the data dictionary to define &lt;workflowProperties&gt; that specify which properties of a Document should be
+     * serialized, rather than serializing all properties of a document
      */
+    @Deprecated
     protected Document getDocumentRepresentationForSerialization() {
 	return this;
     }

@@ -23,6 +23,9 @@ import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.exceptions.IllegalObjectStateException;
 import org.kuali.core.rule.event.KualiDocumentEvent;
+import org.kuali.core.service.DocumentSerializerService;
+import org.kuali.core.util.documentserializer.PropertySerializabilityEvaluator;
+import org.kuali.core.workflow.KualiDocumentXmlMaterializer;
 
 import edu.iu.uis.eden.exception.WorkflowException;
 
@@ -205,4 +208,36 @@ public interface Document extends PersistableBusinessObject{
      */
     public PersistableBusinessObject getDocumentBusinessObject();
     
+    /**
+     * When documents are serialized for workflow XML routing, it may be the case that the root object being serialized (i.e. the top level node)
+     * is not the document itself (e.g. see {@link #wrapDocumentWithMetadataForXmlSerialization()}).  If this is the case, then this method returns a POJO property
+     * name that represents the document relative to the root object.  If the document is the root object being serialized, then this method is serialized.
+     * 
+     * @return if the document is the root object being serialized, an empty string.  If not the root object, then the POJO property name that can be
+     * applied on the root object to retrieve the document
+     * @see KualiDocumentXmlMaterializer
+     */
+    public String getBasePathToDocumentDuringSerialization();
+    
+    /**
+     * Returns an evaluator object that determines whether a given property relative to the root object ({@link #wrapDocumentWithMetadataForXmlSerialization()}
+     * is serializable during the document serialization process.
+     * 
+     * @return a fully initialized evaluator object, ready to be used for workflow routing
+     * 
+     * @see DocumentSerializerService
+     * @see #wrapDocumentWithMetadataForXmlSerialization()
+     */
+    public PropertySerializabilityEvaluator getDocumentPropertySerizabilityEvaluator();
+    
+    /**
+     * This method will return the root object to be serialized for workflow routing.  If necessary, this method will wrap this document object with a wrapper (i.e. contains a reference back to this document).  This
+     * wrapper may also contain references to additional objects that provide metadata useful to the workflow engine.
+     * 
+     * If no wrappers are necessary, then this object may return "this"
+     * 
+     * @return a wrapper object (most likely containing a refrernce to "this"), or "this" itself.
+     * @see KualiDocumentXmlMaterializer
+     */
+    public Object wrapDocumentWithMetadataForXmlSerialization();
 }

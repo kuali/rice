@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2006 The Kuali Foundation.
+ 
+ Licensed under the Educational Community License, Version 1.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl1.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!DOCTYPE dictionaryEntry PUBLIC
+    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
+    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
+<dictionaryEntry>
+    <businessObject businessObjectClass="org.kuali.rice.kim.bo.Entity">
+
+        <inquiry>
+        	<title>Entity Inquiry</title>
+
+        	<inquirySections>
+        		<inquirySection title="Header Text">
+        			<inquiryFields>
+        				<field attributeName="id" />
+        				<field attributeName="entityType.name" />
+        			</inquiryFields>		
+        		</inquirySection>
+        		<inquirySection title="Entity Attributes">
+        			<inquiryFields>
+        				<inquiryCollection name="entityAttributes"
+        					businessObjectClass="org.kuali.rice.kim.bo.EntityAttribute">
+        					<field attributeName="id" />
+        					<field attributeName="name" />
+        				</inquiryCollection>
+        			</inquiryFields>
+        		</inquirySection> 
+        		<inquirySection title="Entity Principals">
+        			<inquiryFields>
+        				<inquiryCollection name="principals"
+        					businessObjectClass="org.kuali.rice.kim.bo.Principal">
+        					<field attributeName="id" />
+        					<field attributeName="name" />
+        				</inquiryCollection>
+        			</inquiryFields>
+        		</inquirySection> 			
+        	</inquirySections>
+        </inquiry>
+
+        <lookup>
+            <title>Entity Lookup</title>
+
+            <instructions>Lookup a Entity</instructions>
+
+            <defaultSort sortAscending="true">
+                <sortAttributes>
+                    <sortAttribute attributeName="id" />
+                </sortAttributes>
+            </defaultSort>
+
+            <lookupFields>
+                <lookupField attributeName="id" required="false" forceLookup="true" noLookup="false" />
+                <lookupField attributeName="entityTypeId" required="false" forceLookup="true" />
+            </lookupFields>
+
+            <resultFields>
+                <field attributeName="id" />
+                <field attributeName="entityType.name" />
+            </resultFields>
+        </lookup>
+
+        <titleAttribute>id</titleAttribute>
+
+        <attributes>
+
+            <attribute name="id" forceUppercase="false">
+                <label>ID</label>
+                <shortLabel>id</shortLabel>
+
+                <maxLength>8</maxLength>
+                <validationPattern><anyCharacter /></validationPattern>
+				
+				<required>true</required>
+				
+                <control>
+                    <text size="8" />
+                </control>
+                
+			</attribute>
+
+            <attributeReference name="entityTypeId"
+				sourceAttributeName="id"
+				sourceClassName="org.kuali.rice.kim.bo.EntityType">
+				<label>Entity Type Name</label>
+                <shortLabel>Type Name</shortLabel>
+				<required>true</required>
+				<control>
+					<select
+						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+						businessObjectClass="org.kuali.rice.kim.bo.EntityType"
+						keyAttribute="id" labelAttribute="name" 
+						includeKeyInLabel="true" />
+				</control>
+			</attributeReference>
+
+
+            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
+			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
+        </attributes>
+        
+        <collections>
+        	<collection name="entityAttributes">
+        		<label>Entity Attributes</label>
+        		<shortLabel>Entity Attributes</shortLabel>
+        		<summary>Entity Attributes</summary>
+        		<description>
+        			Entity Attributes of this Entity
+        		</description>
+        	</collection>
+        	
+        	<collection name="principals">
+        		<label>principals</label>
+        		<shortLabel>principals</shortLabel>
+        		<summary>principals</summary>
+        		<description>
+        			principals of this Entity
+        		</description>
+        	</collection>
+        	
+        </collections>
+
+        <objectLabel>Entity</objectLabel>
+    </businessObject>
+</dictionaryEntry>

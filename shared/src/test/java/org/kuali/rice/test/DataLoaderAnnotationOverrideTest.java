@@ -15,6 +15,13 @@
  */
 package org.kuali.rice.test;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 import org.junit.Test;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.PerTestUnitTestData;
@@ -31,14 +38,25 @@ import org.kuali.rice.test.data.UnitTestData;
         value = {@UnitTestData("insert into " + AnnotationTestParent.TEST_TABLE_NAME + " (COL) values ('3')"),
         @UnitTestData(filename = "classpath:DataLoaderAnnotationTestData.sql")
 })
+@DataLoaderAnnotationOverrideTest.Nothing
 public class DataLoaderAnnotationOverrideTest extends AnnotationTestParent {
+    // a dummy annotation to test that data loading annotations work in presence of
+    // other annotations
+    @Documented
+    @Target({ElementType.TYPE, ElementType.METHOD})
+    @Retention(RetentionPolicy.RUNTIME)
+    @Inherited
+    public static @interface Nothing {
+    }
     
     @Test public void testParentAndSubClassImplementation() throws Exception {
+        // verify that the sql only ran once...
+
         // check sql statement from this class
-        verifyExistence("3");
+        verifyCount("3", 1);
         
         // check sql file from this class
-        verifyExistence("4");
+        verifyCount("4", 1);
         
         // check sql statement from parent class
         verifyNonExistent("1");

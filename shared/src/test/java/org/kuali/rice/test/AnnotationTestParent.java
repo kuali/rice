@@ -63,6 +63,10 @@ public abstract class AnnotationTestParent extends RiceTestCase {
         return "classpath:db/derby/testharness.sql";
     }
 
+    protected void verifyCount(String valueToVerify, int count) throws SQLException {
+        assertEquals(count + " value(s) should be found for id " + valueToVerify, count, countTableResults(valueToVerify));
+    }
+
     protected void verifyExistence(String valueToVerify) throws SQLException {
         assertTrue("Value should be found for id " + valueToVerify, hasTableResults(valueToVerify));
     }
@@ -72,16 +76,24 @@ public abstract class AnnotationTestParent extends RiceTestCase {
     }
 
     protected boolean hasTableResults(String valueToVerify) {
+        return countTableResults(valueToVerify) > 0;
+    }
+
+    protected int countTableResults(String valueToVerify) {
         final String valueToCheck = valueToVerify;
         final DataSource dataSource = TestHarnessServiceLocator.getDataSource();
-        return (Boolean) new JdbcTemplate(dataSource).execute(new ConnectionCallback() {
+        return (Integer) new JdbcTemplate(dataSource).execute(new ConnectionCallback() {
             public Object doInConnection(final Connection connection) throws SQLException {
                 Statement statement = null;
                 try {
                     statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                     final ResultSet resultSet = statement.executeQuery("Select * from " + TEST_TABLE_NAME + " where COL = '" + valueToCheck + "'");
                     assertNotNull("ResultSet should not be null",resultSet);
-                    return new Boolean(resultSet.next());
+                    int count = 0;
+                    while (resultSet.next()) {
+                        count++;
+                    }
+                    return count;
                 } finally {
                     if (statement != null) {
                         statement.close();

@@ -150,12 +150,10 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
             }
         }
         for (Class clazz : classesToCheck) {
-            for (Annotation annotation : clazz.getDeclaredAnnotations()) {
-                if (!perSuiteDataLoaderLifecycleNamesRun.contains(clazz.getName())) {
-                    new PerSuiteDataLoaderLifecycle(clazz).start();
-                }
+            if (!perSuiteDataLoaderLifecycleNamesRun.contains(clazz.getName())) {
+                new PerSuiteDataLoaderLifecycle(clazz).start();
+                perSuiteDataLoaderLifecycleNamesRun.add(clazz.getName());
             }
-            perSuiteDataLoaderLifecycleNamesRun.add(clazz.getName());
         }
     }
 

@@ -200,7 +200,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
                     Maintainable maintainable = document.getNewMaintainableObject();
 
-                    maintainable.processAfterCopy( request.getParameterMap() );
+                    maintainable.processAfterCopy( document, request.getParameterMap() );
 
                     // mark so that this clearing doesnt happen again
                     document.setFieldsClearedOnCopy(true);
@@ -210,7 +210,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 }
             }
             else if (RiceConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction)) {
-                document.getNewMaintainableObject().processAfterEdit( request.getParameterMap() );
+                document.getNewMaintainableObject().processAfterEdit( document, request.getParameterMap() );
             }
         }
         // if new with existing we need to populate we need to populate with passed in parameters
@@ -240,13 +240,13 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 }
             }
             newBO.refresh();
-            document.getNewMaintainableObject().setupNewFromExisting( request.getParameterMap() );
+            document.getNewMaintainableObject().setupNewFromExisting( document, request.getParameterMap() );
         }
 
         // for new maintainble need to pick up default values
         if (RiceConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) {
             document.getNewMaintainableObject().setGenerateDefaultValues(true);
-            document.getNewMaintainableObject().processAfterNew( request.getParameterMap() );
+            document.getNewMaintainableObject().processAfterNew( document, request.getParameterMap() );
         }
 
         // set maintenance action state
@@ -282,10 +282,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      */
     @Override
     public ActionForward save(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        KualiMaintenanceForm maintForm = (KualiMaintenanceForm) form;
-        MaintenanceDocument maintDoc = (MaintenanceDocument) maintForm.getDocument();
-
-        doProcessingAfterPost((KualiMaintenanceForm) form);
+        doProcessingAfterPost( (KualiMaintenanceForm) form, request );
         return super.save(mapping, form, request, response);
     }
 
@@ -301,7 +298,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      */
     @Override
     public ActionForward route(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        doProcessingAfterPost((KualiMaintenanceForm) form);
+        doProcessingAfterPost( (KualiMaintenanceForm) form, request );
         return super.route(mapping, form, request, response);
     }
 
@@ -318,7 +315,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      */
     @Override
     public ActionForward blanketApprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        doProcessingAfterPost((KualiMaintenanceForm) form);
+        doProcessingAfterPost( (KualiMaintenanceForm) form, request );
         return super.blanketApprove(mapping, form, request, response);
     }
 
@@ -334,7 +331,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      */
     @Override
     public ActionForward approve(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        doProcessingAfterPost((KualiMaintenanceForm) form);
+        doProcessingAfterPost( (KualiMaintenanceForm) form, request );
         return super.approve(mapping, form, request, response);
     }
 
@@ -623,6 +620,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             
 // End of whether we should continue to keep this logic and use currentTabIndex as the key            
         }
+        doProcessingAfterPost( (KualiMaintenanceForm) form, request );
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
@@ -747,6 +745,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 //        
 //End of whether we should continue to keep this logic and use currentTabIndex as the key            
         
+        doProcessingAfterPost( (KualiMaintenanceForm) form, request );
         
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
@@ -850,11 +849,13 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      * 
      * @param form
      */
-    private void doProcessingAfterPost(KualiMaintenanceForm form) {
+    private void doProcessingAfterPost( KualiMaintenanceForm form, HttpServletRequest request ) {
         MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
         Maintainable maintainable = document.getNewMaintainableObject();
         PersistableBusinessObject bo = maintainable.getBusinessObject();
-
+        
         KNSServiceLocator.getBusinessObjectService().linkUserFields(bo);
+
+        maintainable.processAfterPost(document, request.getParameterMap() );
     }
 }

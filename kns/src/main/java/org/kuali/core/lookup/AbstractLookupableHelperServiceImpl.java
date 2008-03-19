@@ -771,6 +771,8 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         
         HashMap<String,Class> propertyTypes = new HashMap<String, Class>(); 
         
+        boolean hasReturnableRow = false;
+        
         // iterate through result list and wrap rows with return url and action urls
         for (Iterator iter = displayList.iterator(); iter.hasNext();) {
             BusinessObject element = (BusinessObject) iter.next();
@@ -846,8 +848,16 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             if ( element instanceof PersistableBusinessObject ) {
                 row.setObjectId(((PersistableBusinessObject)element).getObjectId());
             }
+            
+            boolean rowReturnable = isResultReturnable(element);
+            row.setRowReturnable(rowReturnable);
+            if (rowReturnable) {
+                hasReturnableRow = true;
+            }
             resultTable.add(row);
         }
+
+        lookupForm.setHasReturnableRow(hasReturnableRow);
 
         return displayList;
     }
@@ -902,5 +912,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      */
     public String getPrimaryKeyFieldLabels() {
         return RiceConstants.NOT_AVAILABLE_STRING;
+    }
+
+    /**
+     * @see org.kuali.core.lookup.LookupableHelperService#isResultReturnable(org.kuali.core.bo.BusinessObject)
+     */
+    public boolean isResultReturnable(BusinessObject object) {
+        return true;
     }
 }

@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.RiceConstants;
@@ -32,6 +33,7 @@ import org.kuali.core.datadictionary.MaintainableItemDefinition;
 import org.kuali.core.datadictionary.MaintainableSectionDefinition;
 import org.kuali.core.lookup.LookupUtils;
 import org.kuali.core.lookup.SelectiveReferenceRefresher;
+import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.web.ui.Field;
 import org.kuali.core.web.ui.Row;
 import org.kuali.core.web.ui.Section;
@@ -131,17 +133,73 @@ public class MaintenanceUtils {
         if (maintainableFieldDefinition.getOverrideLookupClass() != null && StringUtils.isNotBlank(maintainableFieldDefinition.getOverrideFieldConversions())) {
             field.setQuickFinderClassNameImpl(maintainableFieldDefinition.getOverrideLookupClass().getName());
             field.setFieldConversions(maintainableFieldDefinition.getOverrideFieldConversions());
+            
+            field.setReferencesToRefresh(LookupUtils.convertReferencesToSelectCollectionToString(
+                    srr.getAffectedReferencesFromLookup(businessObject, attributeName, "")));
             return field;
         }
 
         return LookupUtils.setFieldQuickfinder(businessObject, attributeName, field, displayedFieldNames, srr);
     }
 
+    public static final Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index,
+            String attributeName, Field field, List displayedFieldNames, Maintainable maintainable, MaintainableFieldDefinition maintainableFieldDefinition) {
+        if (maintainableFieldDefinition.getOverrideLookupClass() != null && StringUtils.isNotBlank(maintainableFieldDefinition.getOverrideFieldConversions())) {
+            if (maintainable != null) {
+                String collectionPrefix = "";
+                if ( collectionName != null ) {
+                    if (addLine) {
+                        collectionPrefix = RiceConstants.MAINTENANCE_ADD_PREFIX + collectionName + ".";
+                    }
+                    else {
+                        collectionPrefix = collectionName + "[" + index + "].";
+                    }
+                }
+                field.setQuickFinderClassNameImpl(maintainableFieldDefinition.getOverrideLookupClass().getName());
+                
+                String prefixedFieldConversions = prefixFieldConversionsDestinationsWithCollectionPrefix(maintainableFieldDefinition.getOverrideFieldConversions(), collectionPrefix);
+                field.setFieldConversions(prefixedFieldConversions);
+                
+                field.setReferencesToRefresh(LookupUtils.convertReferencesToSelectCollectionToString(
+                        maintainable.getAffectedReferencesFromLookup(businessObject, attributeName, collectionPrefix)));
+            }
+            return field;
+        }
+        return LookupUtils.setFieldQuickfinder(businessObject, collectionName, addLine, index,
+                attributeName, field, displayedFieldNames, maintainable);
+    }
+    
+    private static String prefixFieldConversionsDestinationsWithCollectionPrefix(String originalFieldConversions, String collectionPrefix) {
+        StringBuilder buf = new StringBuilder();
+        StringTokenizer tok = new StringTokenizer(originalFieldConversions, RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
+        boolean needsSeparator = false;
+        while (tok.hasMoreTokens()) {
+            String conversionPair = tok.nextToken();
+            if (StringUtils.isBlank(conversionPair)) {
+                continue;
+            }
+            
+            String fromValue = StringUtils.substringBefore(conversionPair, RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+            String toValue = StringUtils.substringAfter(conversionPair, RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+            
+            if (needsSeparator) {
+                buf.append(RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
+            }
+            needsSeparator = true;
+            
+            buf.append(fromValue).append(RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR).append(collectionPrefix).append(toValue);
+        }
+        return buf.toString();
+    }
     
     public static final void setFieldDirectInquiry(BusinessObject businessObject, String attributeName, MaintainableFieldDefinition maintainableFieldDefinition, Field field, List displayedFieldNames) {
         LookupUtils.setFieldDirectInquiry(field);
     }
     
+    public static final void setFieldDirectInquiry(BusinessObject businessObject, String collectionName, boolean addLine, int index,
+            String attributeName, Field field, List displayedFieldNames, Maintainable maintainable, MaintainableFieldDefinition maintainableFieldDefinition) {
+        LookupUtils.setFieldDirectInquiry(field);
+    }
     /**
      * Given a section, returns a comma delimited string of all fields, representing the error keys that exist for a section
      * 

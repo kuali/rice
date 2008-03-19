@@ -58,7 +58,11 @@ public class LookupForm extends KualiForm {
     private boolean searchUsingOnlyPrimaryKeyValues;
     private String primaryKeyFieldLabels;
     private boolean showMaintenanceLinks;
-
+    /**
+     * Whether the results contain at least one row that is returnable.
+     */
+    private boolean hasReturnableRow;
+    
     /**
      * Picks out business object name from the request to get retrieve a lookupable and set properties.
      */
@@ -490,5 +494,21 @@ public class LookupForm extends KualiForm {
         this.showMaintenanceLinks = hideMaintenanceLinks;
     }
 
+    /**
+     * Returns whether the results contain at least one row that is returnable
+     * 
+     * @return
+     */
+    public boolean isHasReturnableRow() {
+        return this.hasReturnableRow;
+    }
 
+    /**
+     * Sets whether the results contain at least one row that is returnable
+     * 
+     * @param hasReturnableRow
+     */
+    public void setHasReturnableRow(boolean hasReturnableRow) {
+        this.hasReturnableRow = hasReturnableRow;
+    }
 }

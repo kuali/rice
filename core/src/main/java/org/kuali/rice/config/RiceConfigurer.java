@@ -86,6 +86,11 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 			GlobalResourceLoader.addResourceLoaderFirst(getRootResourceLoader());
 		}
 	}
+	
+	public void stop() throws Exception {
+	    super.stop();
+	    GlobalResourceLoader.stop();
+	}
 
 	protected List<Lifecycle> loadLifecycles() {
 		 List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();

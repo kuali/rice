@@ -43,9 +43,11 @@ import org.kuali.core.datadictionary.SubSectionHeaderDefinitionI;
 import org.kuali.core.datadictionary.mask.Mask;
 import org.kuali.core.inquiry.Inquirable;
 import org.kuali.core.lookup.LookupUtils;
+import org.kuali.core.lookup.SelectiveReferenceRefresher;
 import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.util.FieldUtils;
 import org.kuali.core.util.GlobalVariables;
+import org.kuali.core.util.MaintenanceUtils;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.rice.KNSServiceLocator;
 
@@ -275,16 +277,16 @@ public class SectionBridge {
                                 // rendering a maint doc
                                 if (!hidableRowsPresent) {
                                     hidableRowsPresent = isRowHideableForMaintenanceDocument(lineBusinessObject, oldLineBusinessObject);
-                                	}
+                                    }
                                 setRowHidden = isRowHiddenForMaintenanceDocument(lineBusinessObject, oldLineBusinessObject, m, collectionName);
-                                	}
+                                    }
                             if (inquirable != null) {
                                 // rendering an inquiry screen
                                 if (!hidableRowsPresent) {
                                     hidableRowsPresent = isRowHideableForInquiry(lineBusinessObject);
-                        		}
+                                }
                                 setRowHidden = isRowHiddenForInquiry(lineBusinessObject, inquirable, collectionName);
-                        	}
+                            }
                         }
 
                         collFields = new ArrayList<Field>();
@@ -292,10 +294,10 @@ public class SectionBridge {
                         //We only need to do this if the collection definition is a maintainable collection definition, 
                         //don't need it for inquiry collection definition.
                         if (collectionDefinition instanceof MaintainableCollectionDefinition) {
-	                        Collection<MaintainableFieldDefinition> duplicateFieldDefs = ((MaintainableCollectionDefinition)collectionDefinition).getDuplicateIdentificationFields();
-	                        for (MaintainableFieldDefinition eachFieldDef : duplicateFieldDefs) {
-	                    		duplicateIdentificationFieldNames.add(eachFieldDef.getName());
-	                    	}
+                            Collection<MaintainableFieldDefinition> duplicateFieldDefs = ((MaintainableCollectionDefinition)collectionDefinition).getDuplicateIdentificationFields();
+                            for (MaintainableFieldDefinition eachFieldDef : duplicateFieldDefs) {
+                                duplicateIdentificationFieldNames.add(eachFieldDef.getName());
+                            }
                         }
                         
                         for (Iterator iterator = collectionFields.iterator(); iterator.hasNext();) {
@@ -310,7 +312,7 @@ public class SectionBridge {
                             //If the duplicateIdentificationFields were specified in the maint. doc. DD, we'll need
                             //to set the fields to be read only as well, in addition to the primary key fields.
                             if (duplicateIdentificationFieldNames.size() > 0) {
-                            	setDuplicateIdentificationFieldsReadOnly(collField, duplicateIdentificationFieldNames);
+                                setDuplicateIdentificationFieldsReadOnly(collField, duplicateIdentificationFieldNames);
                             }
                             
                             FieldUtils.setInquiryURL(collField, lineBusinessObject, fieldDefinition.getName());
@@ -324,8 +326,14 @@ public class SectionBridge {
                             // subCollField.setContainerName(collectionDefinition.getName() + "["+i+"]" +"." +
                             // subCollectionDefinition.getName() + "[" + j + "]");
 
-                            LookupUtils.setFieldQuickfinder(lineBusinessObject, collectionDefinition.getName(), false, i, name, collField, displayedFieldNames, m);
-                            LookupUtils.setFieldDirectInquiry(collField);
+                            if (fieldDefinition instanceof MaintainableFieldDefinition) {
+                                MaintenanceUtils.setFieldQuickfinder(lineBusinessObject, collectionDefinition.getName(), false, i, name, collField, displayedFieldNames, m, (MaintainableFieldDefinition) fieldDefinition);
+                                MaintenanceUtils.setFieldDirectInquiry(lineBusinessObject, name, (MaintainableFieldDefinition) fieldDefinition, collField, displayedFieldNames);
+                            }
+                            else {
+                                LookupUtils.setFieldQuickfinder(lineBusinessObject, collectionDefinition.getName(), false, i, name, collField, displayedFieldNames, m);
+                                LookupUtils.setFieldDirectInquiry(collField);
+                            }
 
                             Object propertyValue = ObjectUtils.getPropertyValue(lineBusinessObject, fieldDefinition.getName());
                             // set field value from business object
@@ -372,11 +380,11 @@ public class SectionBridge {
                         }
 
                         if (StringUtils.isNotEmpty(collectionElementLabel)) {
-                        	//We don't want to associate any indexes to the containerElementName anymore so that
-                        	//when the element is deleted, the currentTabIndex won't be associated with the
-                        	//wrong tab for the remaining tab.
-                        	//containerField.setContainerElementName(collectionElementLabel + " " + (i + 1));
-                        	containerField.setContainerElementName(collectionElementLabel);
+                            //We don't want to associate any indexes to the containerElementName anymore so that
+                            //when the element is deleted, the currentTabIndex won't be associated with the
+                            //wrong tab for the remaining tab.
+                            //containerField.setContainerElementName(collectionElementLabel + " " + (i + 1));
+                            containerField.setContainerElementName(collectionElementLabel);
                             // reorder summaryFields to make sure they are in the order specified in the summary section
                             List orderedSummaryFields = getSummaryFields(summaryFields, collectionDefinition);
                             containerField.setContainerDisplayFields(orderedSummaryFields);
@@ -440,20 +448,20 @@ public class SectionBridge {
                                     // determine if sub collection line is inactive and should be hidden
                                     boolean setSubRowHidden = false;
                                     if (lineSubBusinessObject instanceof Inactivateable && !((Inactivateable) lineSubBusinessObject).isActive() ) {
-                                    	if (oldSubObj != null) { 
+                                        if (oldSubObj != null) { 
                                             // get corresponding elements in both the new list and the old list
                                             BusinessObject oldLineSubBusinessObject = (BusinessObject) ((List) oldSubObj).get(j);
                                             if (m != null) {
                                                     if (!hidableRowsPresent) {
                                                         hidableRowsPresent = isRowHideableForMaintenanceDocument(lineSubBusinessObject, oldLineSubBusinessObject);
-                                            	}
+                                                }
                                                     setSubRowHidden = isRowHiddenForMaintenanceDocument(lineSubBusinessObject, oldLineSubBusinessObject, m, collectionName);
-                                            	}
-                                    		}
+                                                }
+                                            }
                                         if (inquirable != null) {
                                             if (!hidableRowsPresent) {
                                                 hidableRowsPresent = isRowHideableForInquiry(lineSubBusinessObject);
-                                    	}
+                                        }
                                             setSubRowHidden = isRowHiddenForInquiry(lineSubBusinessObject, inquirable, collectionName);
                                     }
                                     }
@@ -474,12 +482,19 @@ public class SectionBridge {
                                         // save the simple property name
                                         String name = subCollField.getPropertyName();
 
+                                        String subCollectionFullName = collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionDefinition.getName() + "[" + j + "].";
                                         // prefix name for multi line (indexed)
-                                        subCollField.setPropertyName(collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionDefinition.getName() + "[" + j + "]." + subCollField.getPropertyName());
+                                        subCollField.setPropertyName(subCollectionFullName + subCollField.getPropertyName());
 
                                         // commenting out codes for sub-collections show/hide for now
-                                        LookupUtils.setFieldQuickfinder(lineSubBusinessObject, collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionDefinition.getName() + "[" + j + "].", false, i, name, subCollField, displayedFieldNames);
-                                        LookupUtils.setFieldDirectInquiry(subCollField);
+                                        if (fieldDefinition instanceof MaintainableFieldDefinition) {
+                                            MaintenanceUtils.setFieldQuickfinder(lineSubBusinessObject, subCollectionFullName, false, i, name, subCollField, displayedFieldNames, m, (MaintainableFieldDefinition) fieldDefinition);
+                                            MaintenanceUtils.setFieldDirectInquiry(lineSubBusinessObject, subCollectionFullName, false, i, name, subCollField, displayedFieldNames, m, (MaintainableFieldDefinition) fieldDefinition);
+                                        }
+                                        else {
+                                            LookupUtils.setFieldQuickfinder(lineSubBusinessObject, subCollectionFullName, false, i, name, subCollField, displayedFieldNames);
+                                            LookupUtils.setFieldDirectInquiry(subCollField);
+                                        }
 
                                         Object propertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject, fieldDefinition.getName());
                                         // set field value from business object
@@ -517,10 +532,10 @@ public class SectionBridge {
                                     // summary line code
                                     if (StringUtils.isNotEmpty(subCollectionElementLabel)) {
                                         //We don't want to associate any indexes to the containerElementName anymore so that
-                                    	//when the element is deleted, the currentTabIndex won't be associated with the
-                                    	//wrong tab for the remaining tab.
+                                        //when the element is deleted, the currentTabIndex won't be associated with the
+                                        //wrong tab for the remaining tab.
                                         //subContainerField.setContainerElementName(subCollectionElementLabel + " " + (j + 1));
-                                    	subContainerField.setContainerElementName(collectionElementLabel + "-" + subCollectionElementLabel);
+                                        subContainerField.setContainerElementName(collectionElementLabel + "-" + subCollectionElementLabel);
                                     }
                                     subContainerField.setContainerName(collectionDefinition.getName() + "." + subCollectionName);
                                     if (!summaryFields.isEmpty()) {
@@ -539,7 +554,7 @@ public class SectionBridge {
                         }
                     }
                     if ( !hidableRowsPresent ) {
-                    	s.setExtraButtonSource( "" );
+                        s.setExtraButtonSource( "" );
                     }
                 }
             }
@@ -604,7 +619,7 @@ public class SectionBridge {
     
     private static void setDuplicateIdentificationFieldsReadOnly(Field field, List<String>duplicateIdentificationFieldNames) {
         if (duplicateIdentificationFieldNames.contains(field.getPropertyName())) {
-        	field.setReadOnly(true);
+            field.setReadOnly(true);
         }
     }
 

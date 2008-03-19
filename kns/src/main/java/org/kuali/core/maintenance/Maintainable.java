@@ -157,21 +157,28 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * This method is a hook to do any necessary post-copy processing.
      * 
      */
-    public void processAfterCopy( Map parameters );
+    public void processAfterCopy( MaintenanceDocument document, Map<String,String[]> parameters );
     
     /**
      * This method is a hook to do any necessary post-edit processing, which is to say that it is called when a document is about to be edited;
      * this is therefore a hook to write any code to modify the business object before it is displayed to the end user to edit.
      */
-    public void processAfterEdit( Map parameters );
+    public void processAfterEdit( MaintenanceDocument document, Map<String,String[]> parameters );
 
     /**
      * 
      * This method is a hook to do any necessary post-copy processing.
      * 
      */
-    public void processAfterNew( Map parameters );
+    public void processAfterNew( MaintenanceDocument document, Map<String,String[]> parameters );
 
+    /**
+     * 
+     * This method is a hook to do any necessary post-post processing.
+     * 
+     */
+    public void processAfterPost( MaintenanceDocument document, Map<String,String[]> parameters );
+    
     /**
      * 
      * This method will cause the Maintainable implementation to save/store the relevant business object(s). This typically is
@@ -210,7 +217,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * For example, create a division Vendor based on an existing parent Vendor.
      * (Please see VendorMaintainableImpl.java)
      */
-    public void setupNewFromExisting( Map parameters );
+    public void setupNewFromExisting( MaintenanceDocument document, Map<String,String[]> parameters );
     
     /**
      * Indicates whether inactive records for the given collection should be display.

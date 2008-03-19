@@ -61,8 +61,4 @@ public class WebApplicationGlobalResourceLifecycle extends BaseLifecycle {
 		super.start();
 	}
 
-	public void stop() throws Exception {
-		GlobalResourceLoader.stop();
-		super.stop();
-	}
 }

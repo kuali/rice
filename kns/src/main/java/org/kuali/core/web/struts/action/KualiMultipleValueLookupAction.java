@@ -15,6 +15,7 @@
  */
 package org.kuali.core.web.struts.action;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,6 +25,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -218,7 +220,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
     }
     
     /**
-     * This method overrides the super class calcel method because it is basically equivalent to clicking prepare to return none 
+     * This method overrides the super class cancel method because it is basically equivalent to clicking prepare to return none 
      * 
      * @see org.kuali.core.web.struts.action.KualiLookupAction#cancel(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
@@ -448,6 +450,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
                 // we're returning nothing, so we try to get rid of stuff
                 LookupResultsService lookupResultsService = KNSServiceLocator.getLookupResultsService();
                 lookupResultsService.clearPersistedLookupResults(lookupResultsSequenceNumber);
+                multipleValueLookupForm.setLookupResultsSequenceNumber(null);
             }
         }
         catch (Exception e) {
@@ -513,6 +516,16 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         return resultTable;
     }
     
+    @Override
+    public ActionForward clearValues(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        MultipleValueLookupForm multipleValueLookupForm = (MultipleValueLookupForm) form;
+        
+        // call the following methods to clear the persisted results
+        prepareToReturnNone(multipleValueLookupForm);
+        
+        return super.clearValues(mapping, form, request, response);
+    }
+
     /**
      * This method performs the operations necessary for a multiple value lookup to unselect all of the results and rerender the page
      * @param multipleValueLookupForm
@@ -541,7 +554,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         
         return resultTable;
     }
-    
+
     /**
      * This method computes the max number of rows that should be rendered per page for a multiple value lookup.
      * 

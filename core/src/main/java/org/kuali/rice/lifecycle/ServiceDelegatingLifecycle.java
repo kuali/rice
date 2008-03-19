@@ -39,13 +39,28 @@ public class ServiceDelegatingLifecycle extends BaseLifecycle {
 	}
 
 	public void start() throws Exception {
-		((Lifecycle)GlobalResourceLoader.getService(this.serviceName)).start();
+	    if (!isStarted()) {
+	        loadService(this.serviceName).start();
+	    }
 		super.start();
 	}
 
 	public void stop() throws Exception {
-		((Lifecycle)GlobalResourceLoader.getService(this.serviceName)).stop();
+	    if (isStarted()) {
+	        loadService(this.serviceName).stop();
+	    }
 		super.stop();
+	}
+
+	protected Lifecycle loadService(QName serviceName) {
+	    Object service = GlobalResourceLoader.getService(serviceName);
+	    if (service == null) {
+	        throw new RuntimeException("Failed to locate service with name " + serviceName);
+	    }
+	    if (!(service instanceof Lifecycle)) {
+	        throw new RuntimeException("Service with name " + serviceName + " does not implement the Lifecycle interface!");
+	    }
+	    return (Lifecycle) service;
 	}
 
 }

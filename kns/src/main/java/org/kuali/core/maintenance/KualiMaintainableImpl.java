@@ -105,7 +105,11 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         this.businessObject = businessObject;
     }
 
-    public void setupNewFromExisting( Map parameters ) {
+    public void setupNewFromExisting( MaintenanceDocument document, Map<String,String[]> parameters ) {
+        
+    }
+
+    public void processAfterPost( MaintenanceDocument document, Map<String,String[]> parameters ) {
         
     }
     
@@ -546,7 +550,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * 
 	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterCopy()
 	 */
-	public void processAfterCopy( Map parameters ) {
+	public void processAfterCopy( MaintenanceDocument document, Map<String,String[]> parameters ) {
         try {
             ObjectUtils.setObjectPropertyDeep(businessObject, RicePropertyConstants.NEW_COLLECTION_RECORD, boolean.class, true, 2);
         }
@@ -559,13 +563,13 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     /**
      * @see org.kuali.core.maintenance.Maintainable#processAfterEdit()
      */
-    public void processAfterEdit( Map parameters ) {
+    public void processAfterEdit( MaintenanceDocument document, Map<String,String[]> parameters ) {
     }
 
     /**
      * @see org.kuali.core.maintenance.Maintainable#processAfterNew()
      */
-    public void processAfterNew( Map parameters ) {
+    public void processAfterNew( MaintenanceDocument document, Map<String,String[]> parameters ) {
     }
     
     /**

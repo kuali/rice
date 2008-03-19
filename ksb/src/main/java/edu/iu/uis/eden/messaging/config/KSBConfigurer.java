@@ -33,6 +33,7 @@ import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.config.ModuleConfigurer;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.lifecycle.BaseLifecycle;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.lifecycle.ServiceDelegatingLifecycle;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
@@ -247,13 +248,21 @@ public class KSBConfigurer extends ModuleConfigurer {
 	}
 
 	public void stop() throws Exception {
-	    	super.stop();
-		try {
-			GlobalResourceLoader.stop();
-		} finally {
-			this.isStarted = false;
-		}
+	    super.stop();
+	    cleanUpConfiguration();
 	}
+	
+	/**
+     * Because our configuration is global, shutting down Rice does not get rid of objects stored there.  For that reason
+     * we need to manually clean these up.  This is most important in the case of the service bus because the configuration
+     * is used to store services to be exported.  If we don't clean this up then a shutdown/startup within the same
+     * class loading context causes the service list to be doubled and results in "multiple endpoint" error messages.
+     *
+     */
+    protected void cleanUpConfiguration() {
+        Core.getCurrentContextConfig().getObjects().remove(Config.BUS_DEPLOYED_SERVICES);
+        Core.getCurrentContextConfig().getObjects().remove(RiceConstants.KSB_ALTERNATE_ENDPOINTS);
+    }
 
 	public boolean isStarted() {
 		return this.isStarted;
@@ -408,7 +417,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	public void setAuthorizationService(AuthorizationService authorizationService) {
 	    this.authorizationService = authorizationService;
-}
+	}
 
     public List<AlternateEndpoint> getAlternateEndpoints() {
         return this.alternateEndpoints;
@@ -416,6 +425,6 @@ public class KSBConfigurer extends ModuleConfigurer {
 
     public void setAlternateEndpoints(List<AlternateEndpoint> alternateEndpoints) {
         this.alternateEndpoints = alternateEndpoints;
-    }	
-	
+    }
+    
 }

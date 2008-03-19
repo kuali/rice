@@ -251,4 +251,5 @@ public class KualiLookupAction extends KualiAction {
         request.setAttribute("reqSearchResultsActualSize", request.getParameter("reqSearchResultsActualSize"));
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
+    
 }

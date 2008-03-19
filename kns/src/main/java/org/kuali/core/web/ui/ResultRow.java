@@ -28,11 +28,17 @@ public class ResultRow implements Serializable {
     private String returnUrl;
     private String actionUrls;
     private String objectId;
+    /**
+     * Whether to show the return URL (for single value lookups invoked from a document or nested lookup) or the return checkbox (for
+     * multiple value lookups)
+     */
+    private boolean rowReturnable;
 
     public ResultRow(List<Column> columns, String returnUrl, String actionUrls) {
         this.columns = columns;
         this.returnUrl = returnUrl;
         this.actionUrls = actionUrls;
+        this.rowReturnable = true;
     }
 
     /**
@@ -91,5 +97,25 @@ public class ResultRow implements Serializable {
      */
     public void setObjectId(String objectId) {
         this.objectId = objectId;
+    }
+
+    /**
+     * Gets whether to show the return URL (for single value lookups invoked from a document or nested lookup) or the return checkbox (for
+     * multiple value lookups)
+     * 
+     * @return
+     */
+    public boolean isRowReturnable() {
+        return this.rowReturnable;
+    }
+
+    /**
+     * Sets whether to show the return URL (for single value lookups invoked from a document or nested lookup) or the return checkbox (for
+     * multiple value lookups)
+     * 
+     * @param rowReturnable
+     */
+    public void setRowReturnable(boolean rowReturnable) {
+        this.rowReturnable = rowReturnable;
     }
 }

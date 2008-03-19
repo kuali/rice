@@ -211,4 +211,17 @@ public interface LookupableHelperService extends Serializable{
      * @see LookupableHelperService#isSearchUsingOnlyPrimaryKeyValues()
      */
     public String getPrimaryKeyFieldLabels();
+    
+    /**
+     * Determines whether a given BusinessObject that's returned as one of the lookup's results is considered returnable, which means that for
+     * single-value lookups, a "return value" link may be rendered, and for multiple value lookups, a checkbox is rendered.
+     * 
+     * Note that this can be part of an authorization mechanism, but not the complete authorization mechanism.  The component that invoked the lookup/
+     * lookup caller (e.g. document, nesting lookup, etc.) needs to check that the object that was passed to it was returnable as well because there
+     * are ways around this method (e.g. crafting a custom return URL).
+     * 
+     * @param object an object from the search result set
+     * @return
+     */
+    public boolean isResultReturnable(BusinessObject object);
 }

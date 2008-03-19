@@ -26,6 +26,12 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.RiceConstants;
 import org.kuali.core.lookup.LookupUtils;
 
+/**
+ * Form to handle multiple value lookups 
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
+ */
 public class MultipleValueLookupForm extends LookupForm {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MultipleValueLookupForm.class);
     
@@ -362,5 +368,4 @@ public class MultipleValueLookupForm extends LookupForm {
     public void jumpToPage(int pageNumber, int listSize, int maxRowsPerPage) {
         tableMetadata.jumpToPage(pageNumber, listSize, maxRowsPerPage);
     }
-    
 }

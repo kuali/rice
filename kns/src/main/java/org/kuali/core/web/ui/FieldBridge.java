@@ -369,9 +369,15 @@ public class FieldBridge {
                 } 
                  
                 //  set the QuickFinderClass 
-                BusinessObject collectionBoInstance = (BusinessObject) collectionDefinition.getBusinessObjectClass().newInstance(); 
-                LookupUtils.setFieldQuickfinder(collectionBoInstance, parents+collectionDefinition.getName(), true, 0, fieldDefinition.getName(), collField, displayedFieldNames, m); 
-                LookupUtils.setFieldDirectInquiry(collField);
+                BusinessObject collectionBoInstance = (BusinessObject) collectionDefinition.getBusinessObjectClass().newInstance();
+                if (collectionDefinition instanceof MaintainableCollectionDefinition) {
+                    MaintenanceUtils.setFieldQuickfinder(collectionBoInstance, parents+collectionDefinition.getName(), true, 0, fieldDefinition.getName(), collField, displayedFieldNames, m, (MaintainableFieldDefinition) fieldDefinition);
+                    MaintenanceUtils.setFieldDirectInquiry(collectionBoInstance, parents+collectionDefinition.getName(), true, 0, fieldDefinition.getName(), collField, displayedFieldNames, m, (MaintainableFieldDefinition) fieldDefinition);
+                }
+                else {
+                    LookupUtils.setFieldQuickfinder(collectionBoInstance, parents+collectionDefinition.getName(), true, 0, fieldDefinition.getName(), collField, displayedFieldNames, m); 
+                    LookupUtils.setFieldDirectInquiry(collField);
+                }
 
                 collFields.add(collField); 
             }

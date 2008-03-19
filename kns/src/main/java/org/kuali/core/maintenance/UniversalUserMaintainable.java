@@ -32,6 +32,7 @@ import org.kuali.core.datadictionary.DataDictionaryDefinitionBase;
 import org.kuali.core.datadictionary.MaintainableFieldDefinition;
 import org.kuali.core.datadictionary.MaintainableSectionDefinition;
 import org.kuali.core.document.Document;
+import org.kuali.core.document.MaintenanceDocument;
 import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.lookup.LookupUtils;
 import org.kuali.core.service.DocumentService;
@@ -243,9 +244,10 @@ public class UniversalUserMaintainable extends KualiMaintainableImpl {
     /**
      * @see org.kuali.core.maintenance.Maintainable#processAfterCopy()
      */
-    public void processAfterCopy( Map parameters ) {
+    @Override
+    public void processAfterCopy( MaintenanceDocument document, Map<String,String[]> parameters ) {
         UniversalUser user = (UniversalUser) businessObject;
         user.setPersonUserIdentifier("");
-        super.processAfterCopy(parameters);
+        super.processAfterCopy( document, parameters );
     }
 }

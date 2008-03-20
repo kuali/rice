@@ -12,6 +12,8 @@
  */
 package org.kuali.rice.test;
 
+import java.lang.reflect.Method;
+
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
@@ -21,19 +23,22 @@ import org.kuali.rice.test.runners.RiceUnitTestClassRunner;
 /**
  * A generic Rice Unit Test base class.
  * 
- * 1) Sets up a generic logger. 2) Sets the name of the class being run to mimic jUnit 3 functionality. 3) Sets the
- * PerTestDataLoaderLifecycle that will load sql for the currently running test.
+ * 1) Sets up a generic logger.
+ * 2) Sets the name of the class being run to mimic jUnit 3 functionality.
+ * 3) Stores the name of the method being run for use by subclasses (set by {@link RiceUnitTestClassRunner}
+ * 4) Sets the PerTestDataLoaderLifecycle that will load sql for the currently running test.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  */
 @RunWith(RiceUnitTestClassRunner.class)
-public abstract class BaseRiceTestCase extends Assert {
+public abstract class BaseRiceTestCase extends Assert implements MethodAware {
 
 	protected final Logger log = Logger.getLogger(getClass());
 
 	private String name;
 	private PerTestDataLoaderLifecycle perTestDataLoaderLifecycle;
+	protected Method method;
 
 	public BaseRiceTestCase() {
 		super();
@@ -47,12 +52,16 @@ public abstract class BaseRiceTestCase extends Assert {
 		this.name = name;
 	}
 
-	public PerTestDataLoaderLifecycle getPerTestDataLoaderLifecycle() {
+	/**
+	 * @see org.kuali.rice.test.MethodAware#setTestMethod(java.lang.reflect.Method)
+	 */
+	public void setTestMethod(Method testMethod) {
+        this.method = testMethod;
+
+        perTestDataLoaderLifecycle = new PerTestDataLoaderLifecycle(method);
+    }
+
+    protected PerTestDataLoaderLifecycle getPerTestDataLoaderLifecycle() {
 		return this.perTestDataLoaderLifecycle;
 	}
-
-	public void setPerTestDataLoaderLifecycle(PerTestDataLoaderLifecycle perTestDataLoaderLifecycle) {
-		this.perTestDataLoaderLifecycle = perTestDataLoaderLifecycle;
-	}
-
 }

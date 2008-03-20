@@ -18,30 +18,29 @@ import org.apache.commons.beanutils.MethodUtils;
 import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.notification.RunNotifier;
-import org.kuali.rice.test.lifecycles.PerTestDataLoaderLifecycle;
+import org.kuali.rice.test.MethodAware;
 
 /**
  * A Runner which sets up Rice unit tests appropriately. 
  * 1) It invokes setName() on the Test (if the method exists) and sets it to the name of the test method being invoked. 
- * 2) It reads the test data annotations and bootstraps the database for test runs.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @since 0.9
  */
 public class RiceUnitTestClassRunner extends JUnit4ClassRunner {
-
-    private PerTestDataLoaderLifecycle perTestDataLoaderLifecycle;
+    //private PerTestDataLoaderLifecycle perTestDataLoaderLifecycle;
     private Method currentMethod;
     
     public RiceUnitTestClassRunner(final Class<?> testClass) throws InitializationError {
         super(testClass);
+        
     }
 
     @Override
     protected void invokeTestMethod(Method method, RunNotifier runNotifier) {
         this.currentMethod = method;
         try {
-            perTestDataLoaderLifecycle = new PerTestDataLoaderLifecycle(method);
+            //perTestDataLoaderLifecycle = new PerTestDataLoaderLifecycle(method);
             super.invokeTestMethod(method, runNotifier);
         } finally {
             this.currentMethod = null;
@@ -52,10 +51,27 @@ public class RiceUnitTestClassRunner extends JUnit4ClassRunner {
     protected Object createTest() throws Exception {
         Object test = super.createTest();
         setTestName(test, currentMethod);
-        setTestPerTestDataLoaderLifecycle(test);
+        setTestMethod(test, currentMethod);
+        //setTestPerTestDataLoaderLifecycle(test);
         return test;
     }
 
+    /**
+     * Sets the {@link java.lang.reflect.Method} on the test case if it is {@link MethodAware}
+     * @param method the current method to be run
+     */
+    protected void setTestMethod(Object test, Method method) {
+        try {
+            if (test instanceof MethodAware) {
+                ((MethodAware) test).setTestMethod(method);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // something went horribly wrong?
+        }
+    }
+
+    /*
     protected void setTestPerTestDataLoaderLifecycle(final Object test) {
         try {
             final Method setPerTestDataLoaderLifecycle = MethodUtils.getAccessibleMethod(test.getClass(), "setPerTestDataLoaderLifecycle", new Class[]{PerTestDataLoaderLifecycle.class});
@@ -63,7 +79,7 @@ public class RiceUnitTestClassRunner extends JUnit4ClassRunner {
         } catch (final Exception e) {
             // no setPerTestDataLoaderLifecycle method or we failed to invoke it so we can't set the lifecycle
         }
-    }
+    }*/
 
     protected void setTestName(final Object test, final Method testMethod) {
         try {

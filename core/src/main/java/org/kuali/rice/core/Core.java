@@ -18,9 +18,11 @@ package org.kuali.rice.core;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -50,8 +52,8 @@ public class Core {
      * Concurrency utility which allows other, loosely coupled, components to wait for configuration initialization
      * to complete before proceeding (namely the SpringServiceLocator, before it initializes Spring)
      */
-    private static ContextualConfigLock initialized = new ContextualConfigLock("ConfigurationInitialized");
-    private static Map<ClassLoader, Config> CONFIGS = new HashMap<ClassLoader, Config>();
+    private static final ContextualConfigLock initialized = new ContextualConfigLock("ConfigurationInitialized");
+    private static final Map<ClassLoader, Config> CONFIGS = new HashMap<ClassLoader, Config>();
 
     private Core() {
         // nothing to do here
@@ -136,6 +138,14 @@ public class Core {
     	return CONFIGS.get(Thread.currentThread().getContextClassLoader());
     }
 
+    /**
+     * @param cl the classloader whose Config to return
+     * @return the Config of a particular class loader
+     */
+    public synchronized static Config getConfig(ClassLoader cl) {
+        return CONFIGS.get(cl);
+    }
+
     public synchronized static Object getObjectFromConfigHierarchy(String name) {
     	return getObjectFromClassLoader(name, ClassLoaderUtils.getDefaultClassLoader());
     }
@@ -179,14 +189,18 @@ public class Core {
     }
 
     /**
-     * Returns the map of config objects with their associated classloaders.  
-     * Alter this map at your own risk.  This map is the cornerstone of all 
-     * service and resource acquisition.
-     * 
-     * @return
+     * @return an immutable view of the Configs entry set
      */
-	public static Map<ClassLoader, Config> getCONFIGS() {
-		return CONFIGS;
-	}
-
+    public static Set<Map.Entry<ClassLoader, Config>> getConfigs() {
+        return Collections.unmodifiableSet(CONFIGS.entrySet());
+    }
+    
+    /**
+     * Overrides any existing Config for the classloader 
+     * @param cl the classloader whose Config should be overridden
+     * @param config the config
+     */
+    public static void overrideConfig(ClassLoader cl, Config config) {
+        CONFIGS.put(cl, config);
+    }
 }

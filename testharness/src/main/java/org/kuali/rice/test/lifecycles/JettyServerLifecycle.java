@@ -16,7 +16,7 @@
 package org.kuali.rice.test.lifecycles;
 
 import java.net.BindException;
-import java.util.Map;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.config.Config;
@@ -26,7 +26,6 @@ import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.resourceloader.ResourceLoader;
 import org.kuali.rice.util.RiceUtilities;
 import org.kuali.rice.web.jetty.JettyServer;
-import org.mortbay.jetty.webapp.WebAppClassLoader;
 
 /**
  * A lifecycle for running a jetty web server.
@@ -35,14 +34,40 @@ import org.mortbay.jetty.webapp.WebAppClassLoader;
 public class JettyServerLifecycle implements Lifecycle {
     private static final Logger LOG = Logger.getLogger(JettyServerLifecycle.class);
 
+    private static final HashMap<Integer, Config> WEBAPP_CONFIGS = new HashMap<Integer, Config>();
+
+    public static Config getWebappConfig(int port) {
+        return WEBAPP_CONFIGS.get(port);
+    }
+
+    /**
+     * Enum for dealing with the webapp's Config
+     */
+    public static enum ConfigMode {
+        /**
+         * Do nothing
+         */
+        NONE,
+        /**
+         * Override the Config for the context class loader
+         */
+        OVERRIDE,
+        /**
+         * Merge the webapp's Config into the existing context class loader config
+         */
+        MERGE
+    }
+
     /**
      * By default we set the JettyServer to test mode
      */
     private boolean testMode = true;
     private boolean started;
+    private ConfigMode configMode = ConfigMode.OVERRIDE;
+    private boolean addWebappResourceLoaders = true;
 
 	
-	private JettyServer jettyServer;
+	protected JettyServer jettyServer;
 		
 	public JettyServerLifecycle() {
 		this(8080, null);
@@ -69,6 +94,22 @@ public class JettyServerLifecycle implements Lifecycle {
         return testMode;
     }
 
+    public ConfigMode getConfigMode() {
+        return this.configMode;
+    }
+
+    public void setConfigMode(ConfigMode configMode) {
+        this.configMode = configMode;
+    }
+
+    public boolean isAddWebappResourceLoaders() {
+        return this.addWebappResourceLoaders;
+    }
+
+    public void setAddWebappResourceLoaders(boolean addWebappResourceLoaders) {
+        this.addWebappResourceLoaders = addWebappResourceLoaders;
+    }
+
 	public boolean isStarted() {
 		return started;
 	}
@@ -76,6 +117,7 @@ public class JettyServerLifecycle implements Lifecycle {
 	public void start() throws Exception {
 	    try {
 	        jettyServer.start();
+	        
 	    } catch (RuntimeException re) {
 	        // add some handling to make port conflicts more easily identified
 	        if (RiceUtilities.findExceptionInStack(re, BindException.class) != null) {
@@ -83,21 +125,39 @@ public class JettyServerLifecycle implements Lifecycle {
 	        }
 	        throw re;
 	    }
-		Map<ClassLoader, Config> configs = Core.getCONFIGS();
-		for (Map.Entry<ClassLoader, Config> configEntry : configs.entrySet()) {
-			if (configEntry.getKey() instanceof WebAppClassLoader) {
-				ResourceLoader rl = GlobalResourceLoader.getResourceLoader(configEntry.getKey());
-				if (rl == null) {
-					throw new RuntimeException("Could not find resource loader for workflow test harness web app for: " + configEntry.getKey());
-				}
-				GlobalResourceLoader.addResourceLoader(rl);
-				configs.put(Thread.currentThread().getContextClassLoader(), configEntry.getValue());
-			}
-		}
+
+	    ClassLoader webappClassLoader = jettyServer.getContext().getClassLoader();
+	    if (addWebappResourceLoaders) {
+	        ResourceLoader rl = GlobalResourceLoader.getResourceLoader(webappClassLoader);
+            if (rl == null) {
+                throw new RuntimeException("Could not find resource loader for workflow test harness web app for: " + webappClassLoader);
+            }
+            GlobalResourceLoader.addResourceLoader(rl);
+	    }
+	    Config webappConfig = Core.getConfig(webappClassLoader);
+	    WEBAPP_CONFIGS.put(jettyServer.getPort(), webappConfig);
+	    if (ConfigMode.OVERRIDE == configMode) {
+            // this overrides the test harness classloader config with the webapp's config...
+            Core.overrideConfig(Thread.currentThread().getContextClassLoader(), webappConfig);
+        } else if (ConfigMode.MERGE == configMode) {
+            Config curCtxConfig = Core.getCurrentContextConfig();
+            if (webappConfig != null) {
+                curCtxConfig.getProperties().putAll(webappConfig.getProperties());
+                curCtxConfig.getObjects().putAll(webappConfig.getObjects());
+            }
+        }
+
 		started = true;
 	}
 
 	public void stop() throws Exception {
+	    LOG.info("Shutting down jetty: " + jettyServer);
+	    try {
+	        jettyServer.stop();
+	        WEBAPP_CONFIGS.remove(jettyServer.getPort());
+	    } catch (Exception e) {
+	        LOG.error("Error shutting down Jetty " + jettyServer.getContextName() + " " + jettyServer.getRelativeWebappRoot(), e);
+	    }
 		started = false;
 	}
 }

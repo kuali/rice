@@ -130,30 +130,10 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      * @throws Exception if a PerSuiteDataLoaderLifecycle is unable to be started
      */
     protected void startSuiteDataLoaderLifecycles() throws Exception {
-        // get a list of all classes the current class extends from that use the PerSuiteUnitTestData annotation
-        List<Class> classesToCheck = new ArrayList<Class>();
-        // here we get the list apart checking the annotations to support the perSuiteDataLoaderLifecycleNamesRun variable better
-        if (getClass().isAnnotationPresent(PerSuiteUnitTestData.class)) {
-            Class clazz = getClass();
-            superClassLoop: while (!clazz.getName().equals(Object.class.getName())) {
-                for (Annotation annotation : clazz.getDeclaredAnnotations()) {
-                    // check if the annotation is a PerSuiteUnitTestData annotation
-                    if (annotation.annotationType().getName().equals(PerSuiteUnitTestData.class.getName())) {
-                        classesToCheck.add(0, clazz);
-                        // now check to see if annotation overrides super class implementations
-                        if (((PerSuiteUnitTestData) annotation).overrideSuperClasses()) {
-                            break superClassLoop;
-                        }
-                    }
-                }
-                clazz = clazz.getSuperclass();
-            }
-        }
-        for (Class clazz : classesToCheck) {
-            if (!perSuiteDataLoaderLifecycleNamesRun.contains(clazz.getName())) {
-                new PerSuiteDataLoaderLifecycle(clazz).start();
-                perSuiteDataLoaderLifecycleNamesRun.add(clazz.getName());
-            }
+        List<Class> classes = TestUtilities.getHierarchyClassesToHandle(getClass(), new Class[] { PerSuiteUnitTestData.class }, perSuiteDataLoaderLifecycleNamesRun);
+        for (Class c: classes) {
+            new PerSuiteDataLoaderLifecycle(c).start();
+            perSuiteDataLoaderLifecycleNamesRun.add(c.getName());
         }
     }
 
@@ -361,10 +341,14 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     protected List<String> getConfigLocations() {
         List<String> configLocations = new ArrayList<String>();
         configLocations.add(getRiceMasterDefaultConfigFile());
-        configLocations.add("classpath:META-INF/" + getModuleName().toLowerCase() + "-test-config.xml");
+        configLocations.add(getModuleTestConfigLocation());
         return configLocations;
     }
     
+    protected String getModuleTestConfigLocation() {
+        return "classpath:META-INF/" + getModuleName().toLowerCase() + "-test-config.xml";
+    }
+
     protected String getRiceMasterDefaultConfigFile() {
         return "classpath:META-INF/test-config-defaults.xml";
     }

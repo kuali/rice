@@ -164,17 +164,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	private class InitializeGRL extends BaseLifecycle {
 		@Override
 		public void start() throws Exception {
-			Map<ClassLoader, Config> configs = Core.getCONFIGS();
-			for (Map.Entry<ClassLoader, Config> configEntry : configs.entrySet()) {
-				if (configEntry.getKey() instanceof WebAppClassLoader) {
-					ResourceLoader rl = GlobalResourceLoader.getResourceLoader(configEntry.getKey());
-					if (rl == null) {
-						fail("didn't find resource loader for workflow test harness web app");
-					}
-					GlobalResourceLoader.addResourceLoader(rl);
-					configs.put(Thread.currentThread().getContextClassLoader(), configEntry.getValue());
-				}
-			}
+		    org.kuali.rice.test.TestUtilities.addWebappsToContext();
 			super.start();
 		}
 

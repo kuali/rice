@@ -16,7 +16,6 @@
 package org.kuali.bus.test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +40,7 @@ import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 import edu.iu.uis.eden.server.TestClient1;
 import edu.iu.uis.eden.server.TestClient2;
 
-public class KSBTestCase extends RiceTestCase {
+public abstract class KSBTestCase extends RiceTestCase {
     
     protected static final String MOCK_JAVA_SECURITY_MANAGEMENT_SERVICE_BEAN_ID = "testJavaSecurityManagementService";
 
@@ -145,8 +144,7 @@ public class KSBTestCase extends RiceTestCase {
     }
 
     public static Object getServiceFromWebAppResourceLoader(String serviceName) {
-        Map<ClassLoader, Config> configs = Core.getCONFIGS();
-        for (Map.Entry<ClassLoader, Config> configEntry : configs.entrySet()) {
+        for (Map.Entry<ClassLoader, Config> configEntry : Core.getConfigs()) {
             if (configEntry.getKey() instanceof WebAppClassLoader) {
                 ClassLoader old = Thread.currentThread().getContextClassLoader();
                 // to make GRL select services from correct classloader
@@ -162,8 +160,7 @@ public class KSBTestCase extends RiceTestCase {
     }
 
     public static Object getServiceFromTestClient1SpringContext(String serviceName) {
-        Map<ClassLoader, Config> configs = Core.getCONFIGS();
-        for (Map.Entry<ClassLoader, Config> configEntry : configs.entrySet()) {
+        for (Map.Entry<ClassLoader, Config> configEntry : Core.getConfigs()) {
             if (configEntry.getKey() instanceof WebAppClassLoader) {
                 ClassLoader old = Thread.currentThread().getContextClassLoader();
                 // to make GRL select services from correct classloader

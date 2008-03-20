@@ -23,6 +23,7 @@ import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.resourceloader.ResourceLoader;
 import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.test.TestUtilities;
 import org.kuali.rice.web.jetty.JettyServer;
 import org.mortbay.jetty.webapp.WebAppClassLoader;
 
@@ -68,17 +69,7 @@ public abstract class KIMTestCase extends RiceTestCase {
 	private class InitializeGRL extends BaseLifecycle {
         @Override
         public void start() throws Exception {
-            Map<ClassLoader, Config> configs = Core.getCONFIGS();
-            for (Map.Entry<ClassLoader, Config> configEntry : configs.entrySet()) {
-                if (configEntry.getKey() instanceof WebAppClassLoader) {
-                    ResourceLoader rl = GlobalResourceLoader.getResourceLoader(configEntry.getKey());
-                    if (rl == null) {
-                        fail("didn't find resource loader for workflow test harness web app");
-                    }
-                    GlobalResourceLoader.addResourceLoader(rl);
-                    configs.put(Thread.currentThread().getContextClassLoader(), configEntry.getValue());
-                }
-            }
+            TestUtilities.addWebappsToContext();
             super.start();
         }
 

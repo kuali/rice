@@ -55,9 +55,8 @@ public class ObjectRemotingTest extends KSBTestCase {
 			}
 		});
 		
-		Map<ClassLoader, Config> configs = Core.getCONFIGS();
 		boolean madeTempServicesCheck = false;
-		for (Map.Entry<ClassLoader, Config> configEntry : configs.entrySet()) {
+		for (Map.Entry<ClassLoader, Config> configEntry : Core.getConfigs()) {
 			if (configEntry.getKey() instanceof WebAppClassLoader) {
 				ClassLoader old = Thread.currentThread().getContextClassLoader();
 				//to make KSBServiceLocator select services from Client1WebApp

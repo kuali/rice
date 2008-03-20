@@ -166,15 +166,6 @@
     <field-descriptor name="senderName" column="NAME" jdbc-type="VARCHAR" indexed="true" nullable="false" />
   </class-descriptor>
   
-  <!-- RECIPIENT_PREFERENCES -->
-  <class-descriptor class="org.kuali.notification.bo.RecipientPreference" table="RECIPIENT_PREFERENCES">
-    <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="RECIPIENT_PREFERENCES_SEQ" />
-    <field-descriptor name="recipientId" column="RECIPIENT_ID" jdbc-type="VARCHAR" indexed="true" nullable="false" />
-    <field-descriptor name="recipientType" column="RECIPIENT_TYPE" jdbc-type="VARCHAR" indexed="true" nullable="false" />
-    <field-descriptor name="property" column="PROPERTY" jdbc-type="VARCHAR" indexed="true" nullable="false" />
-    <field-descriptor name="value" column="VALUE" jdbc-type="VARCHAR" nullable="false" />
-  </class-descriptor>
-  
   <!-- USER_CHANNEL_SUBSCRIPTIONS -->
   <class-descriptor class="org.kuali.notification.bo.UserChannelSubscription" table="USER_CHANNEL_SUBSCRIPTIONS">
     <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="USER_CHANNEL_SUBSCRIPTIONS_SEQ" />
@@ -193,7 +184,6 @@
   <class-descriptor class="org.kuali.notification.bo.NotificationMessageDelivery" table="NOTIFICATION_MSG_DELIVS">
     <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="NOTIFICATION_MSG_DELIVS_SEQ" />
     <field-descriptor name="messageDeliveryStatus" column="MESSAGE_DELIVERY_STATUS" jdbc-type="VARCHAR" indexed="false" nullable="false" />
-    <field-descriptor name="messageDeliveryTypeName" column="MESSAGE_DELIVERY_TYPE_NAME" jdbc-type="VARCHAR" indexed="true" nullable="false" />
     <field-descriptor name="userRecipientId" column="USER_RECIPIENT_ID" jdbc-type="VARCHAR" indexed="true" nullable="false" />
     <field-descriptor name="deliverySystemId" column="DELIVERY_SYSTEM_ID" jdbc-type="VARCHAR" indexed="false" nullable="true" />
     <field-descriptor name="lockedDate" column="LOCKED_DATE" jdbc-type="TIMESTAMP" indexed="false" nullable="true"/>
@@ -205,21 +195,6 @@
     <!-- Object references -->
     <reference-descriptor name="notification" class-ref="org.kuali.notification.bo.Notification" auto-retrieve="true" auto-update="false" auto-delete="false">
         <foreignkey field-ref="notificationId" />
-    </reference-descriptor>
-  </class-descriptor>
-  
-  <!-- USER_DELIVERER_CONFIG -->
-  <class-descriptor class="org.kuali.notification.bo.UserDelivererConfig" table="USER_DELIVERER_CONFIG">
-    <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="USER_DELIVERER_CONFIG_SEQ" />
-    <field-descriptor name="userId" column="USER_ID" jdbc-type="VARCHAR" indexed="true" nullable="false" />
-    <field-descriptor name="delivererName" column="DELIVERER_NAME" jdbc-type="VARCHAR" indexed="true" nullable="false" />
-    
-    <!-- Anonymous keys - our foreign keys -->
-    <field-descriptor name="channelId" column="CHANNEL_ID" jdbc-type="BIGINT" access="anonymous" indexed="true" nullable="false" />
-    
-    <!-- Object references -->
-    <reference-descriptor name="channel" class-ref="org.kuali.notification.bo.NotificationChannel" auto-retrieve="true" auto-update="false" auto-delete="false">
-        <foreignkey field-ref="channelId" />
     </reference-descriptor>
   </class-descriptor>
 </descriptor-repository>

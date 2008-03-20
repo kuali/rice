@@ -34,7 +34,7 @@ import org.kuali.notification.util.NotificationConstants;
 // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends NotificationTestCaseBase {
     // NOTE: this value is highly dependent on test data 
-    private static final int EXPECTED_SUCCESSES = 8;
+    private static final int EXPECTED_SUCCESSES = 6;
     
     protected void assertProcessResults() {
         // one error should have occurred and the delivery should have been marked unlocked again

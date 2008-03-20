@@ -204,7 +204,7 @@ public class NotificationServiceImplTest extends NotificationTestCaseBase {
         } else {
             throw new RuntimeException("A new delivery type was defined...this test needs to be updated");
         }
-        nSvc.dismissNotificationMessageDelivery(TestConstants.NOT_MSG_DELIV_NOTIF_1_TEST_USER_5_EMAIL, TestConstants.TEST_USER_FIVE, action);
+        nSvc.dismissNotificationMessageDelivery(TestConstants.NOT_MSG_DELIV_NOTIF_1_TEST_USER_5, TestConstants.TEST_USER_FIVE, action);
 
         // after dismissing ONE message delivery, they should ALL be dismissed/removed
         deliveries = nmds.getNotificationMessageDeliveries(n, TestConstants.TEST_USER_FIVE);

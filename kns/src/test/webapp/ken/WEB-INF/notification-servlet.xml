@@ -91,7 +91,6 @@
             <prop key="${prefix}/UpdateContentType.form">contentTypeController</prop>
             <prop key="${prefix}/AddContentType.form">contentTypeController</prop>
             <prop key="${prefix}/DisplayUserPreferences.form">userPreferencesController</prop>
-            <prop key="${prefix}/DisplayDelivererConfigurationForm.form">userPreferencesController</prop>
             <prop key="${prefix}/DisplayActionListPreferences.form">userPreferencesController</prop>
             <prop key="${prefix}/SaveDelivererConfiguration.form">userPreferencesController</prop>
             <prop key="${prefix}/SubscribeToChannel.form">userPreferencesController</prop>

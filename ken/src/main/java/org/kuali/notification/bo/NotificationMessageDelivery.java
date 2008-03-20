@@ -28,7 +28,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class NotificationMessageDelivery implements Lockable {
     private Long id;
     private String messageDeliveryStatus;
-    private String messageDeliveryTypeName;
     private String userRecipientId;
     private String deliverySystemId;  // can hold an identifier from the endpoint delivery mechanism system (i.e. workflow id, SMS id, etc)
     private Timestamp lockedDate;
@@ -128,22 +127,6 @@ public class NotificationMessageDelivery implements Lockable {
     }
 
     /**
-     * Gets the messageDeliveryTypeName attribute. 
-     * @return Returns the messageDeliveryTypeName.
-     */
-    public String getMessageDeliveryTypeName() {
-        return messageDeliveryTypeName;
-    }
-
-    /**
-     * Sets the messageDeliveryTypeName attribute value.
-     * @param messageDeliveryTypeName The messageDeliveryTypeName to set.
-     */
-    public void setMessageDeliveryTypeName(String messageDeliveryTypeName) {
-        this.messageDeliveryTypeName = messageDeliveryTypeName;
-    }
-
-    /**
      * Gets the notification attribute. 
      * @return Returns the notification.
      */
@@ -167,7 +150,6 @@ public class NotificationMessageDelivery implements Lockable {
         return new ToStringBuilder(this)
                        .append("id", id)
                        .append("messageDeliveryStatus", messageDeliveryStatus)
-                       .append("messageDeliveryTypename", messageDeliveryTypeName)
                        .append("userRecipientId", userRecipientId)
                        .append("deliverySystemId", deliverySystemId)
                        .append("lockedDate", lockedDate)

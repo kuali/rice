@@ -32,46 +32,6 @@ import org.kuali.notification.exception.NotificationMessageDismissalException;
  */
 public interface NotificationMessageDeliverer {
     /**
-     * This method is responsible for returning a list of preference key names along with their corresponding labels that get 
-     * rendered in the UI.  For example, if you were creating a NotificationEmailDeliverer class, one of the key preferences 
-     * that this method would return back would be "email_address" and the label would be "Email Address".
-     * @return LinkedHashMap
-     */
-    public LinkedHashMap<String, String> getPreferenceKeys();
-    
-    /**
-     * This method is responsible for validating preference values when a person saves their preferences for the particular
-     * NotificationMessageDeliverer.  For example, if "phoneNumber" is one of the preferences for an SMS deliverer, 
-     * then this method would be responsible for validating the value entered by a particular user such that it was properly 
-     * constructed with hyphens or not, etc.  Errors would be constructed and added to the ErrorList instance and be thrown from 
-     * the method if any occurred.
-     * @throws ErrorList
-     */
-    public void validatePreferenceValues(HashMap prefs) throws ErrorList;
-    
-    /**
-     * This method returns the human readable name of the plugin.  This name is the 
-     * key for this message delivery type. It must be unique and not contain
-     * any spaces.
-     * @return String
-     */
-    public String getName();
-    
-    /**
-     * This method returns the human readable Title of the plugin.  This name is the 
-     * string used for identifying the plugin in the UI. It may contain
-     * spaces characters.
-     * @return String
-     */
-    public String getTitle();
-    
-    /**
-     * This method returns the human readable description for this plugin.
-     * @return String
-     */
-    public String getDescription();
-    
-    /**
      * This method is responsible for delivering the passed in messageDelivery record.
      * @param messageDelivery The messageDelivery to process
      * @throws NotificationMessageDeliveryException

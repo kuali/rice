@@ -21,15 +21,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.kuali.notification.bo.Notification;
-import org.kuali.notification.bo.NotificationChannel;
 import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.notification.bo.NotificationRecipient;
 import org.kuali.notification.bo.NotificationRecipientList;
 import org.kuali.notification.bo.UserChannelSubscription;
-import org.kuali.notification.bo.UserDelivererConfig;
 import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.deliverer.impl.KEWActionListMessageDeliverer;
 import org.kuali.notification.exception.NotificationMessageDeliveryException;
@@ -142,29 +139,6 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
     }
 
     /**
-     * Determines what delivery endpoints the user has configured
-     * @param userRecipientId the user
-     * @return a Set of NotificationConstants.MESSAGE_DELIVERY_TYPES
-     */
-    private Set<String> getDelivererTypesForUserAndChannel(String userRecipientId, NotificationChannel channel) {
-        Set<String> deliveryTypes = new HashSet<String>(1);
-        // manually add the default one since they don't have an option on this one
-        deliveryTypes.add(NotificationConstants.MESSAGE_DELIVERY_TYPES.DEFAULT_MESSAGE_DELIVERY_TYPE);
-        
-        //now look for what they've configured for themselves
-        Iterator<UserDelivererConfig> userDelivererConfigs = userPreferenceService.getMessageDelivererConfigurationsForUserAndChannel(userRecipientId, channel).iterator();
-        
-        // and add each config's name to the list that gets passed out, by which messages will be sent to
-        while(userDelivererConfigs.hasNext()) {
-            UserDelivererConfig config = userDelivererConfigs.next();
-            
-            deliveryTypes.add(config.getDelivererName());
-        }
-        
-        return deliveryTypes;
-    }
-
-    /**
      * Generates all message deliveries for a given notification and save thems to the database.
      * Updates each Notification record to indicate it has been resolved.
      * Should be performed within a separate transaction
@@ -187,34 +161,26 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
             while(j.hasNext()) {
                 String userRecipientId = j.next();
             
-                Set<String> deliveryTypes = getDelivererTypesForUserAndChannel(userRecipientId, notification.getChannel());
+                NotificationMessageDelivery defaultMessageDelivery = new NotificationMessageDelivery();
+                defaultMessageDelivery.setMessageDeliveryStatus(NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
+                defaultMessageDelivery.setNotification(notification);
+                defaultMessageDelivery.setUserRecipientId(userRecipientId);
     
-                for (String type: deliveryTypes) {
-                    NotificationMessageDelivery defaultMessageDelivery = new NotificationMessageDelivery();
-                    defaultMessageDelivery.setMessageDeliveryStatus(NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
-                    defaultMessageDelivery.setMessageDeliveryTypeName(type);
-                    defaultMessageDelivery.setNotification(notification);
-                    defaultMessageDelivery.setUserRecipientId(userRecipientId);
-    
-                    //now save that delivery end point; this record will be later processed by the dispatch service which will actually deliver it
-                    businessObjectDao.save(defaultMessageDelivery);
+                //now save that delivery end point; this record will be later processed by the dispatch service which will actually deliver it
+                businessObjectDao.save(defaultMessageDelivery);
                     
-                    if (NotificationConstants.MESSAGE_DELIVERY_TYPES.KEW_ACTION_LIST_MESSAGE_DELIVERY_TYPE.equals(type)) {
-                        // if it's the action list deliverer just go ahead and invoke it for now since we are removing dispatch from KEN
-                        try {
-                            new KEWActionListMessageDeliverer().deliverMessage(defaultMessageDelivery);
-                        } catch (NotificationMessageDeliveryException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    
-                    // we have no delivery stage any more, anything we send to KCB needs to be considered "delivered" from
-                    // the perspective of KEN
-                    defaultMessageDelivery.setMessageDeliveryStatus(NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED);
-                    businessObjectDao.save(defaultMessageDelivery);
-
-                    successes.add(defaultMessageDelivery);
+                try {
+                    new KEWActionListMessageDeliverer().deliverMessage(defaultMessageDelivery);
+                } catch (NotificationMessageDeliveryException e) {
+                    throw new RuntimeException(e);
                 }
+
+                // we have no delivery stage any more, anything we send to KCB needs to be considered "delivered" from
+                // the perspective of KEN
+                defaultMessageDelivery.setMessageDeliveryStatus(NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED);
+                businessObjectDao.save(defaultMessageDelivery);
+
+                successes.add(defaultMessageDelivery);
 
                 // also, update the status of the notification so that it's message deliveries are not resolved again
                 notification.setProcessingFlag(NotificationConstants.PROCESSING_FLAGS.RESOLVED);

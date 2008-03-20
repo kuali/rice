@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.kuali.notification.bo.NotificationChannel;
-import org.kuali.notification.bo.RecipientPreference;
-import org.kuali.notification.bo.UserDelivererConfig;
 import org.kuali.notification.service.KENAPIService;
 import org.kuali.notification.service.NotificationChannelService;
 import org.kuali.notification.service.UserPreferenceService;
@@ -69,7 +67,7 @@ public class KENAPIServiceImpl implements KENAPIService {
      * @see org.kuali.notification.service.KENAPIService#getDeliverersForRecipientAndChannel(java.lang.String, java.lang.String)
      */
     public Collection<String> getDeliverersForRecipientAndChannel(String recipient, String channel) {
-        NotificationChannel nc = channelService.getNotificationChannelByName(channel);
+        /*NotificationChannel nc = channelService.getNotificationChannelByName(channel);
         if (nc == null) {
             throw new RuntimeException("Invalid channel: '" + channel + "'");
         }
@@ -78,15 +76,18 @@ public class KENAPIServiceImpl implements KENAPIService {
         for (UserDelivererConfig cfg: configs) {
             deliverers.add(cfg.getDelivererName());
         }
-        return deliverers;
+        return deliverers;*/
+        return null;
     }
 
     /**
      * @see org.kuali.notification.service.KENAPIService#getRecipientPreference(java.lang.String, java.lang.String)
      */
     public String getRecipientPreference(String recipient, String prefKey) {
-        RecipientPreference rp = prefsService.getUserRecipientPreferences(recipient, prefKey);
+        /*RecipientPreference rp = prefsService.getUserRecipientPreferences(recipient, prefKey);
         if (rp == null) return null;
         return rp.getValue();
+        */
+        return null;
     }
 }

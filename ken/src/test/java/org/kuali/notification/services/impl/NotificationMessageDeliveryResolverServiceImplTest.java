@@ -59,7 +59,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 public class NotificationMessageDeliveryResolverServiceImplTest extends NotificationTestCaseBase {
     // NOTE: this value is HIGHLY dependent on the test data, make sure that it reflects the results
     // expected from the test data
-    private static final int EXPECTED_SUCCESSES = 8;
+    private static final int EXPECTED_SUCCESSES = 6;
     
     /**
      * Id of notification for which we will intentionally generate an exception during processing
@@ -124,18 +124,14 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
         }
 
         assertEquals(EXPECTED_SUCCESSES, result.getSuccesses().size());
-        int kewMessages = 0;
+
         Collection<NotificationMessageDelivery> ds = services.getNotificationMessageDeliveryService().getNotificationMessageDeliveries();
-        for (NotificationMessageDelivery d: (Collection<NotificationMessageDelivery>) result.getSuccesses()) {
-            if (NotificationConstants.MESSAGE_DELIVERY_TYPES.KEW_ACTION_LIST_MESSAGE_DELIVERY_TYPE.equals(d.getMessageDeliveryTypeName()))
-                kewMessages++;
-        }
 
         MessageService ms = (MessageService) GlobalKCBServiceLocator.getInstance().getMessageService();
         for (Message m: ms.getAllMessages()) {
             System.err.println(m);
         }
-        assertEquals(kewMessages, ms.getAllMessages().size());
+        assertEquals(result.getSuccesses().size(), ms.getAllMessages().size());
         
         assertProcessResults();
     }

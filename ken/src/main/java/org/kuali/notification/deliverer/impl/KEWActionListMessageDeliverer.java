@@ -194,40 +194,4 @@ public class KEWActionListMessageDeliverer implements NotificationMessageDeliver
         }
         doc.getDocumentContent().setAttributeContent("<whatever>" + new String(baos.toByteArray()) + "</whatever>");
     }
-
-    /**
-     * @see org.kuali.notification.deliverer.NotificationMessageDeliverer#getDescription()
-     */
-    public String getDescription() {
-        return "The default message delivery type is the Action List.";
-    }
-
-    /**
-     * @see org.kuali.notification.deliverer.NotificationMessageDeliverer#getName()
-     */
-    public String getName() {
-        return "KEWActionList";
-    }
-
-    /**
-     * @see org.kuali.notification.deliverer.NotificationMessageDeliverer#getTitle()
-     */
-    public String getTitle() {
-        return "KEW Action List";
-    }
-
-    /**
-     * This implementation returns an empty String array b/c this deliverer doesn't make use of this method.
-     * @see org.kuali.notification.deliverer.NotificationMessageDeliverer#getPreferenceKeys()
-     */
-    public LinkedHashMap<String, String> getPreferenceKeys() {
-        return new LinkedHashMap<String, String>();
-    }
-
-    /**
-     * This method does nothing in this implementation b/c this deliverer impl doesn't make use of this feature.
-     * @see org.kuali.notification.deliverer.NotificationMessageDeliverer#validatePreferenceValues()
-     */
-    public void validatePreferenceValues(HashMap prefs) throws ErrorList {
-    }
 }

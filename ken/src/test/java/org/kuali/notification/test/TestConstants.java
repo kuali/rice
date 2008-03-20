@@ -96,7 +96,7 @@ public class TestConstants {
     /**
      * Number of existing message deliveries in test data
      */
-    public static final int NUM_OF_MSG_DELIVS_IN_TEST_DATA = 8;
+    public static final int NUM_OF_MSG_DELIVS_IN_TEST_DATA = 5;
 
     /**
      * A valid 'Email' message delivery id in the test data 
@@ -171,7 +171,7 @@ public class TestConstants {
     /**
      * Number of message deliveries in the test data that are associated with notification #2
      */
-    public static final int NUM_OF_MSG_DELIVS_FOR_NOTIF_1_TEST_USER_5 = 2;
+    public static final int NUM_OF_MSG_DELIVS_FOR_NOTIF_1_TEST_USER_5 = 1;
     
     /**
      * Id of the message delivery in the test data for notification 1, test user 5, kew action list deliverer
@@ -181,7 +181,7 @@ public class TestConstants {
     /**
      * Id of the message delivery in the test data for notification 1, test user 5, email deliverer
      */
-    public static final Long NOT_MSG_DELIV_NOTIF_1_TEST_USER_5_EMAIL = new Long(7);
+    public static final Long NOT_MSG_DELIV_NOTIF_1_TEST_USER_5 = new Long(1);
 
     /**
      * Email deliverer property

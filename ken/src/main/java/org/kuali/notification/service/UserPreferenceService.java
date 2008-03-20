@@ -16,14 +16,8 @@
 package org.kuali.notification.service;
 
 import java.util.Collection;
-import java.util.HashMap;
 
-import org.kuali.notification.bo.NotificationChannel;
-import org.kuali.notification.bo.RecipientPreference;
 import org.kuali.notification.bo.UserChannelSubscription;
-import org.kuali.notification.bo.UserDelivererConfig;
-import org.kuali.notification.deliverer.NotificationMessageDeliverer;
-import org.kuali.notification.exception.ErrorList;
 
 /**
  * Service for accessing user preferences in the KEN system.{@link UserPreference}
@@ -57,53 +51,4 @@ public interface UserPreferenceService {
      * @param userChannelSubscription
      */
     public void unsubscribeFromChannel(UserChannelSubscription userChannelSubscription);
-    
-    /**
-     * This method will save a user recipient preference in the system.
-     * @param userid
-     * @param prefs a hashmap of key/values
-     * @param deliveryTypeName name of deliverer
-     */
-    public void saveUserRecipientPreferences(String userid, HashMap prefs, NotificationMessageDeliverer deliverer) throws ErrorList;
-    
-    /**
-     * This method will get a specific user recipient preference from the system.
-     * @param userid
-     * @param key
-     */
-    public RecipientPreference getUserRecipientPreferences(String userid, String key);
-    
-    /**
-     * This method will get all  user recipient preference from the system.
-     * @param userid
-     */
-    public HashMap<String, String> getPreferencesForUser(String userid);
-    
-    /**
-     * This method will remove all user deliverer configuration preference in the system.
-     * @param userid
-     */
-    public void removeUserDelivererConfig(String userid);
-    
-    /**
-     * This method will save a user deliverer configuration preference in the system.
-     * @param userid
-     * @param delivererName
-     * @param selected
-     */
-    public void saveUserDelivererConfig(String userid, String delivererName, String[] selected);
-    
-    /**
-     * This method will retrieve all of the message deliverer configurations for a given user, associated with a 
-     * particular channel.
-     * @param userId
-     * @param channel
-     */
-    public Collection<UserDelivererConfig> getMessageDelivererConfigurationsForUserAndChannel(String userId, NotificationChannel channel);
-    
-    /**
-     * This method will retrieve all of the message deliverer configurations for a given user 
-     * @param userId
-     */
-    public Collection<UserDelivererConfig> getMessageDelivererConfigurationsForUser(String userId);
 }

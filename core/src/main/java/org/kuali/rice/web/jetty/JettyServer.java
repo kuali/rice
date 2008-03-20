@@ -17,6 +17,7 @@ package org.kuali.rice.web.jetty;
 
 import java.io.File;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.webapp.WebAppContext;
@@ -33,6 +34,8 @@ public class JettyServer implements Lifecycle {
 	private String contextName;	
 	private String relativeWebappRoot;
 	private Server server;
+	private WebAppContext context;
+
 	/**
 	 * Whether we are in test mode
 	 */
@@ -68,6 +71,10 @@ public class JettyServer implements Lifecycle {
 		return server;
 	}
 
+	public WebAppContext getContext() {
+	    return context;
+	}
+
 	public void start() throws Exception {
 		server = createServer();
 		server.start();
@@ -85,7 +92,7 @@ public class JettyServer implements Lifecycle {
 		Server server = new Server(getPort());
 		try {
 			setBaseDirSystemProperty();
-			WebAppContext context = new WebAppContext(System.getProperty("basedir") + getRelativeWebappRoot(), getContextName());
+			context = new WebAppContext(System.getProperty("basedir") + getRelativeWebappRoot(), getContextName());
 			context.setTempDirectory(new File(System.getProperty("basedir") + "/jetty-tmp"));
 			context.setAttribute(JETTYSERVER_TESTMODE_ATTRIB, String.valueOf(isTestMode()));
 			server.addHandler(context);
@@ -131,15 +138,21 @@ public class JettyServer implements Lifecycle {
 		this.port = port;
 	}
 
-	public static void main(String[] args) {
-		int port = args.length > 0 ? Integer.parseInt(args[0]) : 8080;
-		String contextName = args.length > 1 ? args[1] : null;
-		String relativeWebappRoot = args.length > 2 ? args[2] : null;
-		try {
-			new JettyServer(port, contextName, relativeWebappRoot).start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public String toString() {
+	    return new ToStringBuilder(this).append("port", port)
+	                                    .append("contextName", contextName)
+	                                    .append("relativeWebappRoot", relativeWebappRoot)
+	                                    .toString();
 	}
 
+    public static void main(String[] args) {
+        int port = args.length > 0 ? Integer.parseInt(args[0]) : 8080;
+        String contextName = args.length > 1 ? args[1] : null;
+        String relativeWebappRoot = args.length > 2 ? args[2] : null;
+        try {
+            new JettyServer(port, contextName, relativeWebappRoot).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

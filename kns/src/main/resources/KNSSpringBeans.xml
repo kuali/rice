@@ -660,6 +660,9 @@
 		<property name="persistenceStructureService">
 			<ref bean="persistenceStructureService" />
 		</property>
+		<property name="ojbCollectionHelper">
+			<ref bean="ojbCollectionHelper" />
+		</property>
 	</bean>
 	
 	<bean id="documentSerializerService" class="org.kuali.core.service.impl.DocumentSerializerServiceImpl">

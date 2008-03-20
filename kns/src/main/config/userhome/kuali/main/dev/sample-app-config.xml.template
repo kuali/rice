@@ -1,6 +1,7 @@
 <config>
     <param name="application.url">http://localhost:8080/${app.context.name}</param>
     <param name="workflow.url">${application.url}/en</param>
+    <param name="notification.basewebapp.url">${application.url}/ken</param>
     <param name="kr.url">${application.url}/kr</param>
     <param name="serviceServletUrl">${application.url}/remoting/</param>
 

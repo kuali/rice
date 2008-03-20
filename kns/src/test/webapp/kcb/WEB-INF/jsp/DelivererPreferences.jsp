@@ -11,6 +11,8 @@
 </head>
 <body>
 
+<div class="background-content">
+<div style="padding: 5px;">
 <div class="title">Configure Delivery Types</div>
 <p>Enter the appropriate information for each delivery type then select which channels for which you want the delivery type enabled. Select "None" in channel list to remove a delivery type for all
 channels.</p>
@@ -67,12 +69,18 @@ channels.</p>
         </c:if>
     </c:forEach>
     <tr>
-        <td class="thnormal" colspan="3" align="center"><input type="image" src="images/buttonsmall_save.gif" value="save" alt="Save" name="save" /> <img src="images/transparent_002.gif"
-            height="1" width="1"> <a href="HomePage.form"><img src="images/buttonsmall_cancel.gif" alt="Cancel" border="0" /></a></td>
+        <td class="thnormal" colspan="3" align="center">
+            <input type="image" src="../ken/images/buttonsmall_save.gif" value="save" alt="Save" name="save" />
+            <img src="../ken/images/transparent_002.gif" height="1" width="1">
+            <a href="../ken/HomePage.form" target="parent">
+              <img src="../ken/images/buttonsmall_cancel.gif" alt="Cancel" border="0" />
+            </a>
+        </td>
     </tr>
 </table>
 </form>
 </div>
-
+</div>
+</div>
 </body>
 </html>

@@ -29,10 +29,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateFormatUtils;
-import org.apache.commons.lang.time.DateUtils;
-import org.apache.commons.lang.time.DurationFormatUtils;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.util.RiceUtilities;
@@ -320,5 +317,9 @@ public abstract class BaseConfig implements Config {
             return true;
         }
         return new Boolean(getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON));
+    }
+    
+    public String toString() {
+        return new ToStringBuilder(this).append("fileLocs", fileLocs).toString();
     }
 }

@@ -19,12 +19,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.text.StrLookup;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.log4j.Logger;
@@ -45,9 +47,15 @@ import org.xml.sax.SAXException;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ConfigParserImpl implements ConfigParser {
+    // keep the same random
+    private static final Random RANDOM = new Random();
+
     private static final Logger LOG = Logger.getLogger(ConfigParserImpl.class);
     private static final String IMPORT_NAME = "config.location";
     private static final String PARAM_NAME= "param";
+    private static final String NAME_ATTR = "name";
+    private static final String OVERRIDE_ATTR = "override";
+    private static final String RANDOM_ATTR = "random";
     private static final String INDENT = "  ";
     
     public static final String ALTERNATE_BUILD_LOCATION_KEY = "alt.build.location";
@@ -156,13 +164,13 @@ public class ConfigParserImpl implements ConfigParser {
                 continue;
             }
             Element param = (Element) node;
-            String name = param.getAttribute("name");
+            String name = param.getAttribute(NAME_ATTR);
             if (name == null) {
                 LOG.error("Unnamed parameter in config resource '" + location + "': " + XmlJotter.jotNode(param));
                 continue;
             }
             Boolean override = Boolean.TRUE;
-            String overrideVal = param.getAttribute("override");
+            String overrideVal = param.getAttribute(OVERRIDE_ATTR);
             if (!StringUtils.isEmpty(overrideVal)) {
                 override = Boolean.valueOf(overrideVal);
             }
@@ -183,12 +191,43 @@ public class ConfigParserImpl implements ConfigParser {
                     parse(params, value, subs, depth + 1);
                 }
             } else {
+                if (Boolean.valueOf(param.getAttribute(RANDOM_ATTR))) {
+                    // this is a special type of property whose value is a randomly generated number in the range specified
+                    value = String.valueOf(generateRandomInteger(value));   
+                }
                 setParam(params, override, name, value, prefix + INDENT);
             }
         }
         LOG.info(prefix + "- Parsed config: " + location);
     }
     
+    /**
+     * Generates a random integer in the range specified by the specifier, in the format: min-max
+     * @param rangeSpec a range specification, 'min-max'
+     * @return a random integer in the range specified by the specifier, in the format: min-max
+     */
+    protected int generateRandomInteger(String rangeSpec) {
+        String[] range = rangeSpec.split("-");
+        if (range.length != 2) {
+            throw new RuntimeException("Invalid range specifier: " + rangeSpec);
+        }
+        int from = Integer.parseInt(range[0].trim());
+        int to = Integer.parseInt(range[1].trim());
+        if (from > to) {
+            int tmp = from;
+            from = to;
+            to = tmp;
+        }
+        int num;
+        // not very random huh...
+        if (from == to) {
+            num = from;
+        } else {
+            num = from + RANDOM.nextInt((to - from) + 1);
+        }
+        return num;
+    }
+
     /**
      * @param name name of the node
      * @param location config file location
@@ -241,7 +280,7 @@ public class ConfigParserImpl implements ConfigParser {
             LOG.debug(indent + "Defining property " + name + "=[" + value + "]");
             params.put(name, value);
         } else {
-            LOG.info("Not overriding existing parameter: " + name + " '" + params.get(name) + "'");
+            LOG.info(indent + "Not overriding existing parameter: " + name + " '" + params.get(name) + "'");
         }
     }
 }

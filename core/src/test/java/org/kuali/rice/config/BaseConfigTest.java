@@ -43,5 +43,21 @@ public class BaseConfigTest extends TestCase {
         assertEquals("config-2:bar config-1:baz", sc.getProperty("bar"));
         assertEquals("config-2:blah base:boo", sc.getProperty("blah"));
         assertEquals("config-2:quux", sc.getProperty("quux"));
+        
+        String r1 = sc.getProperty("random1");
+        String r2 = sc.getProperty("random2");
+        String r3 = sc.getProperty("random3");
+        
+        assertNotNull(r1);
+        assertNotNull(r2);
+        assertNotNull(r3);
+        
+        assertTrue(between(100, 199, Integer.parseInt(r1)));
+        assertTrue(between(200, 299, Integer.parseInt(r2)));
+        assertTrue(between(300, 399, Integer.parseInt(r3)));
+    }
+    
+    protected boolean between(int min, int max, int val) {
+        return val >= min && val <= max;
     }
 }

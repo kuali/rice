@@ -280,7 +280,7 @@ public class ConfigParserImpl implements ConfigParser {
             LOG.debug(indent + "Defining property " + name + "=[" + value + "]");
             params.put(name, value);
         } else {
-            LOG.info(indent + "Not overriding existing parameter: " + name + " '" + params.get(name) + "'");
+            LOG.debug(indent + "Not overriding existing parameter: " + name + " '" + params.get(name) + "'");
         }
     }
 }

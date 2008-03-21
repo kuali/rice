@@ -20,11 +20,11 @@ import java.rmi.RemoteException;
 import org.apache.log4j.Logger;
 import org.kuali.notification.bo.Notification;
 import org.kuali.notification.core.GlobalNotificationServiceLocator;
-import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.document.kew.NotificationWorkflowDocument;
 import org.kuali.notification.service.NotificationMessageContentService;
 import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.dao.GenericDao;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.PostProcessorRemote;
@@ -43,7 +43,7 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
     private static final Logger LOG = Logger.getLogger(NotificationSenderFormPostProcessor.class);
     
     NotificationService notificationService;
-    BusinessObjectDao businessObjectDao;
+    GenericDao businessObjectDao;
     NotificationMessageContentService messageContentService;
     
     /**
@@ -51,7 +51,7 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
      */
     public NotificationSenderFormPostProcessor() {
 	this.notificationService = GlobalNotificationServiceLocator.getInstance().getNotificationService();
-	this.businessObjectDao = GlobalNotificationServiceLocator.getInstance().getBusinesObjectDao();
+	this.businessObjectDao = GlobalNotificationServiceLocator.getInstance().getGenericDao();
 	this.messageContentService = GlobalNotificationServiceLocator.getInstance().getNotificationMessageContentService();
     }
 
@@ -60,7 +60,7 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
      * @param notificationService
      * @param businessObjectDao
      */
-    public NotificationSenderFormPostProcessor(NotificationService notificationService, BusinessObjectDao businessObjectDao) {
+    public NotificationSenderFormPostProcessor(NotificationService notificationService, GenericDao businessObjectDao) {
 	this.notificationService = notificationService;
 	this.businessObjectDao = businessObjectDao;
     }

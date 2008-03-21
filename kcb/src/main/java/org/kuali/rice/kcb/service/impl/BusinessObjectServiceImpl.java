@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kcb.service.impl;
 
-import org.kuali.rice.kcb.dao.BusinessObjectDao;
+import org.kuali.rice.dao.GenericDao;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
@@ -24,14 +24,14 @@ import org.springframework.beans.factory.annotation.Required;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BusinessObjectServiceImpl {
-    protected BusinessObjectDao dao;
+    protected GenericDao dao;
 
     /**
      * Sets our BusinessObjectDao
      * @param bos the BusinessObjectDao
      */
     @Required
-    public void setBusinessObjectDao(BusinessObjectDao dao) {
+    public void setGenericDao(GenericDao dao) {
         this.dao = dao;
     }
 }

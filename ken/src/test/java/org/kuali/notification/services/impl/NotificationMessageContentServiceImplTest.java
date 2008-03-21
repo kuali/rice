@@ -81,7 +81,7 @@ public class NotificationMessageContentServiceImplTest extends NotificationTestC
         //fail("Not yet implemented");
 
         notification.setCreationDateTime(new Timestamp(System.currentTimeMillis()));
-        services.getBusinesObjectDao().save(notification);
+        services.getGenericDao().save(notification);
         //setComplete();
     }
 

@@ -22,10 +22,10 @@ import java.util.HashMap;
 import org.apache.ojb.broker.query.Criteria;
 import org.kuali.notification.bo.Notification;
 import org.kuali.notification.bo.NotificationMessageDelivery;
-import org.kuali.notification.dao.BusinessObjectDao;
-import org.kuali.notification.database.Platform;
 import org.kuali.notification.service.NotificationMessageDeliveryService;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.dao.GenericDao;
+import org.kuali.rice.database.Platform;
 
 /**
  * NotificationService implementation - this is the default out-of-the-box implementation of the service that uses the 
@@ -36,13 +36,13 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 	.getLogger(NotificationMessageDeliveryServiceImpl.class);
     
-    private BusinessObjectDao businessObjectDao;
+    private GenericDao businessObjectDao;
     
     /**
      * Constructs a NotificationServiceImpl class instance.
      * @param businessObjectDao
      */
-    public NotificationMessageDeliveryServiceImpl(BusinessObjectDao businessObjectDao) {
+    public NotificationMessageDeliveryServiceImpl(GenericDao businessObjectDao) {
         this.businessObjectDao = businessObjectDao;
     }
 

@@ -12,9 +12,7 @@
  */
 package org.kuali.rice.kcb.test;
 
-import org.kuali.rice.kcb.GlobalKCBServiceLocator;
-import org.kuali.rice.kcb.KCBServiceLocator;
-import org.kuali.rice.kcb.dao.BusinessObjectDao;
+import org.kuali.rice.dao.GenericDao;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
@@ -25,12 +23,12 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
  */
 @BaselineMode(Mode.ROLLBACK)
 public abstract class BusinessObjectTestCase extends KCBTestCase {
-    protected BusinessObjectDao businessObjectDao;
+    protected GenericDao businessObjectDao;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        businessObjectDao = services.getBusinessObjectDao();
+        businessObjectDao = services.getGenericDao();
     }
 
 	/**

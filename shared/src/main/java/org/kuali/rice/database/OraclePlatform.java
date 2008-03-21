@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.notification.database;
+package org.kuali.rice.database;
 
 import org.apache.log4j.Logger;
 
 /**
- * Oracle implementation of KEN {@link Platform}
+ * Oracle implementation of {@link Platform}
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */

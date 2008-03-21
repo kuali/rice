@@ -25,11 +25,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.dao.GenericDao;
 import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
-import org.kuali.rice.kcb.dao.BusinessObjectDao;
 import org.kuali.rice.kcb.deliverer.BulkMessageDeliverer;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
 import org.kuali.rice.kcb.exception.MessageDeliveryProcessingException;
@@ -58,7 +58,7 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
 
     private static final Logger LOG = Logger.getLogger(MessageProcessingJob.class);
     
-    private BusinessObjectDao dao;
+    private GenericDao dao;
     private MessageDelivererRegistryService registry;
     private MessageDeliveryService messageDeliveryService;
     private Long messageId;
@@ -76,18 +76,18 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
 
 
     public MessageProcessingJob() {
-        dao = GlobalKCBServiceLocator.getInstance().getBusinessObjectDao();
+        dao = GlobalKCBServiceLocator.getInstance().getGenericDao();
         registry = GlobalKCBServiceLocator.getInstance().getMessageDelivererRegistryService();
         messageDeliveryService = GlobalKCBServiceLocator.getInstance().getMessageDeliveryService();
         txManager = GlobalKCBServiceLocator.getInstance().getTransactionManager();
     }
 
     /**
-     * Sets the {@link BusinessObjectDao}
-     * @param dao the {@link BusinessObjectDao}
+     * Sets the {@link GenericDao}
+     * @param dao the {@link GenericDao}
      */
     @Required
-    public void setBusinessObjectDao(BusinessObjectDao dao) {
+    public void setGenericDao(GenericDao dao) {
         this.dao = dao;
     }
 

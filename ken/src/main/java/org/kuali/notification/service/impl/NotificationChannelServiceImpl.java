@@ -20,21 +20,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.kuali.notification.bo.NotificationChannel;
-import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.service.NotificationChannelService;
+import org.kuali.rice.dao.GenericDao;
 
 /**
  * NotificationChannelService implementation - uses the businessObjectDao to get at data in the underlying database.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationChannelServiceImpl implements NotificationChannelService {
-    private BusinessObjectDao businessObjectDao;
+    private GenericDao businessObjectDao;
 
     /**
      * Constructs a NotificationChannelServiceImpl.java.
      * @param businessObjectDao
      */
-    public NotificationChannelServiceImpl(BusinessObjectDao businessObjectDao) {
+    public NotificationChannelServiceImpl(GenericDao businessObjectDao) {
         this.businessObjectDao = businessObjectDao;
     }
 

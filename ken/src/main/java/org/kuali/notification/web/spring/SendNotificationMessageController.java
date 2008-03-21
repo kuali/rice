@@ -37,7 +37,6 @@ import org.kuali.notification.bo.NotificationPriority;
 import org.kuali.notification.bo.NotificationProducer;
 import org.kuali.notification.bo.NotificationRecipient;
 import org.kuali.notification.bo.NotificationSender;
-import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.document.kew.NotificationWorkflowDocument;
 import org.kuali.notification.exception.ErrorList;
 import org.kuali.notification.service.NotificationChannelService;
@@ -47,6 +46,7 @@ import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.util.NotificationConstants;
 import org.kuali.notification.util.Util;
+import org.kuali.rice.dao.GenericDao;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
@@ -101,7 +101,7 @@ public class SendNotificationMessageController extends MultiActionController {
 
     protected NotificationMessageContentService messageContentService;
 
-    protected BusinessObjectDao businessObjectDao;
+    protected GenericDao businessObjectDao;
 
     /**
      * Set the NotificationService
@@ -151,7 +151,7 @@ public class SendNotificationMessageController extends MultiActionController {
      * Sets the businessObjectDao attribute value.
      * @param businessObjectDao The businessObjectDao to set.
      */
-    public void setBusinessObjectDao(BusinessObjectDao businessObjectDao) {
+    public void setBusinessObjectDao(GenericDao businessObjectDao) {
 	this.businessObjectDao = businessObjectDao;
     }
 

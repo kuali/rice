@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.notification.database;
+package org.kuali.rice.database;
 
 /**
  * Database platform abstraction for KEN... need to sync all these and put in shared :( 

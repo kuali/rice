@@ -19,21 +19,21 @@ import java.util.Collection;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.kuali.notification.bo.NotificationContentType;
-import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.service.NotificationContentTypeService;
+import org.kuali.rice.dao.GenericDao;
 
 /**
  * NotificationContentTypeService implementation - uses the businessObjectDao to get at the underlying data in the stock DBMS.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationContentTypeServiceImpl implements NotificationContentTypeService {
-    private BusinessObjectDao businessObjectDao;
+    private GenericDao businessObjectDao;
 
     /**
      * Constructs a NotificationContentTypeServiceImpl.java.
      * @param businessObjectDao
      */
-    public NotificationContentTypeServiceImpl(BusinessObjectDao businessObjectDao) {
+    public NotificationContentTypeServiceImpl(GenericDao businessObjectDao) {
         this.businessObjectDao = businessObjectDao;
     }
 

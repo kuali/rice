@@ -95,6 +95,7 @@
         <property name="beanNames">
             <list>
                 <value>*Service</value>
+                <value>genericDao</value>
             </list>
         </property>
     </bean>
@@ -112,17 +113,17 @@
     </bean>
 
     <bean id="messageService" class="org.kuali.rice.kcb.service.impl.MessageServiceImpl">
-        <property name="businessObjectDao"><ref local="businessObjectDao"/></property>
+        <property name="genericDao"><ref local="genericDao"/></property>
     </bean>
 
     <bean id="messageDeliveryService" class="org.kuali.rice.kcb.service.impl.MessageDeliveryServiceImpl">
-        <property name="businessObjectDao"><ref local="businessObjectDao"/></property>
+        <property name="genericDao"><ref local="genericDao"/></property>
     </bean>
 
     <bean id="messageDelivererRegistryService" class="org.kuali.rice.kcb.service.impl.MessageDelivererRegistryServiceImpl"/>
 
     <bean id="recipientPreferenceService" class="org.kuali.rice.kcb.service.impl.RecipientPreferenceServiceImpl">
-        <property name="businessObjectDao"><ref local="businessObjectDao"/></property>
+        <property name="genericDao"><ref local="genericDao"/></property>
     </bean>
 
     <bean id="emailService" class="org.kuali.rice.kcb.service.impl.EmailServiceImpl">
@@ -135,7 +136,7 @@
     </bean>
     
     <bean id="notificationMessageDeliveryService" class="org.kuali.notification.service.impl.NotificationMessageDeliveryServiceImpl">
-      <constructor-arg><ref local="businessObjectDao"/></constructor-arg>
+      <constructor-arg><ref local="genericDao"/></constructor-arg>
     </bean>
     
     <bean id="notificationMessageDelivererRegistryService" class="org.kuali.notification.service.impl.NotificationMessageDelivererRegistryServiceImpl" />
@@ -157,7 +158,7 @@
 
     <!-- DAOS -->
 
-    <bean id="businessObjectDao" class="org.kuali.rice.kcb.dao.ojb.BusinessObjectDaoOjb">
+    <bean id="genericDao" class="org.kuali.rice.dao.ojb.GenericDaoOjb">
         <property name="jcdAlias">
             <value>kcbDataSource</value>
         </property>

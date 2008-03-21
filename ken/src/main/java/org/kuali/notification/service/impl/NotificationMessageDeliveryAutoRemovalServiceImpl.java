@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kuali.notification.bo.NotificationMessageDelivery;
-import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.deliverer.NotificationMessageDeliverer;
 import org.kuali.notification.deliverer.impl.KEWActionListMessageDeliverer;
 import org.kuali.notification.exception.NotificationAutoRemoveException;
@@ -29,6 +28,7 @@ import org.kuali.notification.service.NotificationMessageDeliveryAutoRemovalServ
 import org.kuali.notification.service.NotificationMessageDeliveryService;
 import org.kuali.notification.service.ProcessingResult;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.dao.GenericDao;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
@@ -38,7 +38,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NotificationMessageDeliveryAutoRemovalServiceImpl extends ConcurrentJob<NotificationMessageDelivery> implements NotificationMessageDeliveryAutoRemovalService {
-    private BusinessObjectDao businessObjectDao;
+    private GenericDao businessObjectDao;
     private NotificationMessageDeliveryService messageDeliveryService;
 
     /**
@@ -48,7 +48,7 @@ public class NotificationMessageDeliveryAutoRemovalServiceImpl extends Concurren
      * @param executor
      * @param messageDeliveryRegistryService
      */
-    public NotificationMessageDeliveryAutoRemovalServiceImpl(BusinessObjectDao businessObjectDao, PlatformTransactionManager txManager, 
+    public NotificationMessageDeliveryAutoRemovalServiceImpl(GenericDao businessObjectDao, PlatformTransactionManager txManager, 
 	    ExecutorService executor, NotificationMessageDeliveryService messageDeliveryService) {
         super(txManager, executor);
         this.messageDeliveryService = messageDeliveryService;

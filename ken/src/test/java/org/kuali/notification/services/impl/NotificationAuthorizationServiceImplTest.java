@@ -40,11 +40,11 @@ public class NotificationAuthorizationServiceImplTest extends NotificationTestCa
     public void testIsProducerAuthorizedForNotificationChannel_validInput() {
 	HashMap primaryKeys = new HashMap();
 	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, TestConstants.CHANNEL_ID_1);
-	NotificationChannel channel = (NotificationChannel) services.getBusinesObjectDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
+	NotificationChannel channel = (NotificationChannel) services.getGenericDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
 	
 	primaryKeys.clear();
 	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, TestConstants.PRODUCER_3.getId());
-	NotificationProducer producer = (NotificationProducer) services.getBusinesObjectDao().findByPrimaryKey(NotificationProducer.class, primaryKeys);
+	NotificationProducer producer = (NotificationProducer) services.getGenericDao().findByPrimaryKey(NotificationProducer.class, primaryKeys);
 	
 	assertTrue(services.getNotificationAuthorizationService().isProducerAuthorizedToSendNotificationForChannel(producer, channel));
     }
@@ -53,11 +53,11 @@ public class NotificationAuthorizationServiceImplTest extends NotificationTestCa
     public void testIsProducerAuthorizedForNotificationChannel_invalidInput() {
 	HashMap primaryKeys = new HashMap();
 	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, TestConstants.CHANNEL_ID_1);
-	NotificationChannel channel = (NotificationChannel) services.getBusinesObjectDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
+	NotificationChannel channel = (NotificationChannel) services.getGenericDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
 	
 	primaryKeys.clear();
 	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID,TestConstants. PRODUCER_4.getId());
-	NotificationProducer producer = (NotificationProducer) services.getBusinesObjectDao().findByPrimaryKey(NotificationProducer.class, primaryKeys);
+	NotificationProducer producer = (NotificationProducer) services.getGenericDao().findByPrimaryKey(NotificationProducer.class, primaryKeys);
 	
 	assertFalse(services.getNotificationAuthorizationService().isProducerAuthorizedToSendNotificationForChannel(producer, channel));
     }

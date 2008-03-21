@@ -50,7 +50,7 @@ public class UserPreferenceServiceImplTest extends NotificationTestCaseBase {
         UserPreferenceService impl = services.getUserPreferenceService();
         HashMap primaryKeys = new HashMap();
         primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, VALID_CHANNEL_ID_LONG);
-        NotificationChannel channel = (NotificationChannel) services.getBusinesObjectDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
+        NotificationChannel channel = (NotificationChannel) services.getGenericDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
 
         UserChannelSubscription newSub = new UserChannelSubscription();
         newSub.setUserId(VALID_USER_ID);
@@ -67,7 +67,7 @@ public class UserPreferenceServiceImplTest extends NotificationTestCaseBase {
         UserPreferenceService impl = services.getUserPreferenceService();
         HashMap primaryKeys = new HashMap();
         primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, VALID_CHANNEL_ID_LONG);
-        NotificationChannel channel = (NotificationChannel) services.getBusinesObjectDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
+        NotificationChannel channel = (NotificationChannel) services.getGenericDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
 
         UserChannelSubscription newSub = new UserChannelSubscription();
         newSub.setUserId(VALID_USER_ID);
@@ -82,7 +82,7 @@ public class UserPreferenceServiceImplTest extends NotificationTestCaseBase {
         UserPreferenceService impl = services.getUserPreferenceService();
         HashMap primaryKeys = new HashMap();
         primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, VALID_CHANNEL_ID_LONG);
-        NotificationChannel channel = (NotificationChannel) services.getBusinesObjectDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
+        NotificationChannel channel = (NotificationChannel) services.getGenericDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
 
 
         UserChannelSubscription newSub = new UserChannelSubscription();

@@ -16,6 +16,7 @@
 package org.kuali.notification.dao;
 
 import org.kuali.notification.test.NotificationTestCaseBase;
+import org.kuali.rice.dao.GenericDao;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
@@ -26,7 +27,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
  */
 @BaselineMode(Mode.ROLLBACK)
 public abstract class BusinessObjectDaoTestCaseBase extends NotificationTestCaseBase {
-    protected BusinessObjectDao businessObjectDao;
+    protected GenericDao businessObjectDao;
 
     /**
      * @see org.kuali.rice.test.BaselineTestCase#setUp()
@@ -34,6 +35,6 @@ public abstract class BusinessObjectDaoTestCaseBase extends NotificationTestCase
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        businessObjectDao = services.getBusinesObjectDao();
+        businessObjectDao = services.getGenericDao();
     }
 }

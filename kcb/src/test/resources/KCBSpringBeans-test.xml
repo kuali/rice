@@ -8,13 +8,6 @@
 <beans>
   <import resource="KCBSpringBeans.xml"/>
 
-  <!-- override business object dao -->
-  <bean id="businessObjectDao" class="org.kuali.rice.kcb.dao.ojb.BusinessObjectDaoOjb">
-    <property name="jcdAlias">
-      <value>kcbDataSource</value>
-    </property>
-  </bean>
-
   <!-- override the notificationEmailService with a Mock implementation -->
   <bean id="emailService" class="org.kuali.rice.kcb.test.service.impl.MockEmailServiceImpl" >
     <property name="weburl"><value>${kcb.url}</value></property>

@@ -27,7 +27,6 @@ import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.notification.bo.NotificationRecipient;
 import org.kuali.notification.bo.NotificationRecipientList;
 import org.kuali.notification.bo.UserChannelSubscription;
-import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.deliverer.impl.KEWActionListMessageDeliverer;
 import org.kuali.notification.exception.NotificationMessageDeliveryException;
 import org.kuali.notification.service.NotificationMessageDeliveryResolverService;
@@ -36,6 +35,7 @@ import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.service.ProcessingResult;
 import org.kuali.notification.service.UserPreferenceService;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.dao.GenericDao;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
@@ -51,7 +51,7 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
 	.getLogger(NotificationMessageDeliveryResolverServiceImpl.class);
     
     private NotificationRecipientService notificationRecipientService;
-    private BusinessObjectDao businessObjectDao;
+    private GenericDao businessObjectDao;
     private UserPreferenceService userPreferenceService;
     private NotificationService notificationService;
     
@@ -64,7 +64,7 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
      * @param userPreferenceService
      */
     public NotificationMessageDeliveryResolverServiceImpl(NotificationService notificationService, NotificationRecipientService notificationRecipientService, 
-	    BusinessObjectDao businessObjectDao, PlatformTransactionManager txManager, ExecutorService executor, 
+            GenericDao businessObjectDao, PlatformTransactionManager txManager, ExecutorService executor, 
 	    UserPreferenceService userPreferenceService) {
         super(txManager, executor);
         this.notificationService = notificationService;

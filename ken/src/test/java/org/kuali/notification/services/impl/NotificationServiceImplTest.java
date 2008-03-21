@@ -106,7 +106,7 @@ public class NotificationServiceImplTest extends NotificationTestCaseBase {
 
         Map map = new HashMap();
         map.put(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
-        Collection<Notification> notifications = services.getBusinesObjectDao().findMatching(Notification.class, map);
+        Collection<Notification> notifications = services.getGenericDao().findMatching(Notification.class, map);
         assertEquals(0, notifications.size());
         final String[] result = new String[1];
 
@@ -114,7 +114,7 @@ public class NotificationServiceImplTest extends NotificationTestCaseBase {
 
         LOG.info("response XML: " + response);
         assertEquals(NotificationConstants.RESPONSE_STATUSES.SUCCESS, response.getStatus());
-        notifications = services.getBusinesObjectDao().findMatching(Notification.class, map);
+        notifications = services.getGenericDao().findMatching(Notification.class, map);
         assertEquals(1, notifications.size());
         LOG.info("Notification: " + notifications.iterator().next());
 

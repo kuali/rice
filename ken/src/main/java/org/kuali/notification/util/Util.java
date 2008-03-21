@@ -52,8 +52,8 @@ import org.kuali.notification.bo.NotificationPriority;
 import org.kuali.notification.bo.NotificationProducer;
 import org.kuali.notification.bo.NotificationRecipient;
 import org.kuali.notification.bo.NotificationSender;
-import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.service.NotificationContentTypeService;
+import org.kuali.rice.dao.GenericDao;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -447,7 +447,7 @@ public final class Util {
      * @return T
      * @throws IllegalArgumentException
      */
-    public static <T> T retrieveFieldReference(String fieldName, String keyName, String keyValue, Class clazz, BusinessObjectDao boDao) throws IllegalArgumentException {
+    public static <T> T retrieveFieldReference(String fieldName, String keyName, String keyValue, Class clazz, GenericDao boDao) throws IllegalArgumentException {
         LOG.info(fieldName + " key value: " + keyValue);
         if (StringUtils.isBlank(keyValue)) {
             throw new IllegalArgumentException(fieldName + " must be specified in notification");

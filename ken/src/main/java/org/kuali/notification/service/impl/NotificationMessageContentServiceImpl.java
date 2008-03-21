@@ -45,7 +45,6 @@ import org.kuali.notification.bo.NotificationProducer;
 import org.kuali.notification.bo.NotificationRecipient;
 import org.kuali.notification.bo.NotificationResponse;
 import org.kuali.notification.bo.NotificationSender;
-import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.exception.InvalidXMLException;
 import org.kuali.notification.service.NotificationContentTypeService;
 import org.kuali.notification.service.NotificationMessageContentService;
@@ -53,6 +52,7 @@ import org.kuali.notification.util.CompoundNamespaceContext;
 import org.kuali.notification.util.ConfiguredNamespaceContext;
 import org.kuali.notification.util.NotificationConstants;
 import org.kuali.notification.util.Util;
+import org.kuali.rice.dao.GenericDao;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -83,18 +83,18 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
     /**
      * Our BusinessObjectDao persistence layer
      */
-    private BusinessObjectDao boDao;
+    private GenericDao boDao;
     /**
      * NotificationContentTypeService impl
      */
     private NotificationContentTypeService notificationContentTypeService;
 
     /**
-     * Constructor which takes a BusinessObjectDao
+     * Constructor which takes a GenericDao
      * Constructs a NotificationMessageContentServiceImpl.java.
      * @param boDao
      */
-    public NotificationMessageContentServiceImpl(BusinessObjectDao boDao,  NotificationContentTypeService notificationContentTypeService) {
+    public NotificationMessageContentServiceImpl(GenericDao boDao,  NotificationContentTypeService notificationContentTypeService) {
         this.boDao = boDao;
         this.notificationContentTypeService = notificationContentTypeService;
     }

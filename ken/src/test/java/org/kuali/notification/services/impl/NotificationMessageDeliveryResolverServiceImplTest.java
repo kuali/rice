@@ -19,11 +19,9 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.apache.ojb.broker.query.Criteria;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.notification.bo.Notification;
 import org.kuali.notification.bo.NotificationMessageDelivery;
-import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.service.NotificationMessageDeliveryResolverService;
 import org.kuali.notification.service.NotificationRecipientService;
 import org.kuali.notification.service.NotificationService;
@@ -32,6 +30,7 @@ import org.kuali.notification.service.UserPreferenceService;
 import org.kuali.notification.service.impl.NotificationMessageDeliveryResolverServiceImpl;
 import org.kuali.notification.test.NotificationTestCaseBase;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.dao.GenericDao;
 import org.kuali.rice.kcb.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.service.MessageService;
@@ -68,7 +67,7 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
     
     private static class TestNotificationMessageDeliveryResolverService extends NotificationMessageDeliveryResolverServiceImpl {
         public TestNotificationMessageDeliveryResolverService(NotificationService notificationService, NotificationRecipientService notificationRecipientService, 
-            BusinessObjectDao businessObjectDao, PlatformTransactionManager txManager, ExecutorService executor, UserPreferenceService userPreferenceService) {
+                GenericDao businessObjectDao, PlatformTransactionManager txManager, ExecutorService executor, UserPreferenceService userPreferenceService) {
             super(notificationService, notificationRecipientService, businessObjectDao, txManager, executor, userPreferenceService);
         }
 
@@ -84,7 +83,7 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
     }
 
     protected TestNotificationMessageDeliveryResolverService getResolverService() {
-        return new TestNotificationMessageDeliveryResolverService(services.getNotificationService(), services.getNotificationRecipientService(), services.getBusinesObjectDao(), transactionManager, 
+        return new TestNotificationMessageDeliveryResolverService(services.getNotificationService(), services.getNotificationRecipientService(), services.getGenericDao(), transactionManager, 
         	Executors.newFixedThreadPool(5), services.getUserPreferenceService());
     }
 
@@ -92,13 +91,13 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
         // one error should have occurred and the delivery should have been marked unlocked again
         Criteria criteria = new Criteria();
         criteria.addNotNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
-        Collection<NotificationMessageDelivery> lockedDeliveries = services.getBusinesObjectDao().findMatching(Notification.class, criteria);
+        Collection<NotificationMessageDelivery> lockedDeliveries = services.getGenericDao().findMatching(Notification.class, criteria);
         assertEquals(0, lockedDeliveries.size());
 
         // should be 1 unprocessed delivery (the one that had an error)
         HashMap<String, String> queryCriteria = new HashMap<String, String>();
         queryCriteria.put(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
-        Collection<Notification> unprocessedDeliveries = services.getBusinesObjectDao().findMatching(Notification.class, queryCriteria);
+        Collection<Notification> unprocessedDeliveries = services.getGenericDao().findMatching(Notification.class, queryCriteria);
         assertEquals(1, unprocessedDeliveries.size());
         Notification n = unprocessedDeliveries.iterator().next();
         // #3 is the bad one

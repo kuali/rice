@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kcb;
 
-import org.kuali.rice.kcb.dao.BusinessObjectDao;
+import org.kuali.rice.dao.GenericDao;
 import org.kuali.rice.kcb.service.EmailService;
 import org.kuali.rice.kcb.service.KENIntegrationService;
 import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
@@ -31,7 +31,7 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface KCBServiceLocator {
-    public BusinessObjectDao getBusinessObjectDao();
+    public GenericDao getGenericDao();
     public JobDetail getMessageProcessingJobDetail();
     public PlatformTransactionManager getTransactionManager();
     public MessageDeliveryService getMessageDeliveryService();

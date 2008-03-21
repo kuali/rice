@@ -19,9 +19,9 @@ import java.util.List;
 
 import org.kuali.notification.bo.NotificationChannel;
 import org.kuali.notification.bo.NotificationProducer;
-import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.service.NotificationAuthorizationService;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.dao.GenericDao;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
@@ -36,13 +36,13 @@ import edu.iu.uis.eden.workgroup.GroupNameId;
 public class NotificationAuthorizationServiceImpl implements NotificationAuthorizationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(NotificationAuthorizationServiceImpl.class);
     
-    private BusinessObjectDao businessObjectDao;
+    private GenericDao businessObjectDao;
     
     /**
      * Constructs a NotificationAuthorizationServiceImpl class instance.
      * @param businessObjectDao
      */
-    public NotificationAuthorizationServiceImpl(BusinessObjectDao businessObjectDao) {
+    public NotificationAuthorizationServiceImpl(GenericDao businessObjectDao) {
         this.businessObjectDao = businessObjectDao;
     }
 

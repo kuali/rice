@@ -59,7 +59,7 @@ public class RecipientPreferenceServiceTest extends KCBTestCase {
         
         RecipientPreference recipientPreference = new RecipientPreference();
         recipientPreference.setRecipientId(VALID_USER_ID);
-        Collection<RecipientPreference> prefs = services.getBusinessObjectDao().findMatchingByExample(recipientPreference);
+        Collection<RecipientPreference> prefs = services.getGenericDao().findMatchingByExample(recipientPreference);
         assertEquals(2, prefs.size());
     }
 }

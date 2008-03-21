@@ -25,8 +25,6 @@ import org.kuali.notification.bo.Notification;
 import org.kuali.notification.bo.NotificationMessageDelivery;
 import org.kuali.notification.bo.NotificationRecipient;
 import org.kuali.notification.bo.NotificationResponse;
-import org.kuali.notification.dao.BusinessObjectDao;
-import org.kuali.notification.database.Platform;
 import org.kuali.notification.deliverer.impl.KEWActionListMessageDeliverer;
 import org.kuali.notification.exception.InvalidXMLException;
 import org.kuali.notification.service.NotificationAuthorizationService;
@@ -36,6 +34,8 @@ import org.kuali.notification.service.NotificationRecipientService;
 import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.dao.GenericDao;
+import org.kuali.rice.database.Platform;
 
 /**
  * NotificationService implementation - this is the default out-of-the-box implementation of the service.
@@ -45,7 +45,7 @@ public class NotificationServiceImpl implements NotificationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 	.getLogger(NotificationServiceImpl.class);
     
-    private BusinessObjectDao businessObjectDao;
+    private GenericDao businessObjectDao;
     private NotificationMessageContentService messageContentService;
     private NotificationAuthorizationService notificationAuthorizationService;
     private NotificationRecipientService notificationRecipientService;
@@ -61,7 +61,7 @@ public class NotificationServiceImpl implements NotificationService {
      * @param notificationWorkflowDocumentService
      * @param notificationMessageDeliveryService
      */
-    public NotificationServiceImpl(BusinessObjectDao businessObjectDao, NotificationMessageContentService messageContentService, 
+    public NotificationServiceImpl(GenericDao businessObjectDao, NotificationMessageContentService messageContentService, 
 	    NotificationAuthorizationService notificationAuthorizationService, NotificationRecipientService notificationRecipientService, 
 	    NotificationWorkflowDocumentService notificationWorkflowDocumentService, 
 	    NotificationMessageDeliveryService notificationMessageDeliveryService) {

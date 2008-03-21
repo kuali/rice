@@ -17,7 +17,6 @@ package org.kuali.notification.core;
 
 import java.util.Properties;
 
-import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.service.KENAPIService;
 import org.kuali.notification.service.NotificationAuthorizationService;
 import org.kuali.notification.service.NotificationChannelService;
@@ -30,6 +29,7 @@ import org.kuali.notification.service.NotificationRecipientService;
 import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.service.UserPreferenceService;
+import org.kuali.rice.dao.GenericDao;
 import org.quartz.Scheduler;
 
 /**
@@ -63,9 +63,9 @@ public interface NotificationServiceLocator {
     
     /**
      * This method returns an instance of the Spring configured impl for the BusinessObjectDao.
-     * @return BusinessObjectDao
+     * @return GenericDao
      */
-    public BusinessObjectDao getBusinesObjectDao();
+    public GenericDao getGenericDao();
     
     /**
      * This method returns an instance of the Spring configured impl for the NotificationAuthorizationService.

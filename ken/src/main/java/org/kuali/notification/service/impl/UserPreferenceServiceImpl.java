@@ -17,24 +17,20 @@ package org.kuali.notification.service.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.kuali.notification.bo.NotificationChannel;
 import org.kuali.notification.bo.UserChannelSubscription;
-import org.kuali.notification.dao.BusinessObjectDao;
-import org.kuali.notification.deliverer.NotificationMessageDeliverer;
-import org.kuali.notification.exception.ErrorList;
 import org.kuali.notification.service.NotificationChannelService;
 import org.kuali.notification.service.UserPreferenceService;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.rice.dao.GenericDao;
 
 /**
  * UserPreferenceService implementation - uses the businessObjectDao to get at data in the underlying database.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserPreferenceServiceImpl implements UserPreferenceService {
-    private BusinessObjectDao businessObjectDao;
+    private GenericDao businessObjectDao;
     private NotificationChannelService notificationChannelService;
 
     private static final Logger LOG = Logger.getLogger(UserPreferenceServiceImpl.class);
@@ -44,7 +40,7 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
      * @param businessObjectDao
      * @param notificationChannelService
      */
-    public UserPreferenceServiceImpl(BusinessObjectDao businessObjectDao, NotificationChannelService notificationChannelService) {
+    public UserPreferenceServiceImpl(GenericDao businessObjectDao, NotificationChannelService notificationChannelService) {
         this.businessObjectDao = businessObjectDao;
         this.notificationChannelService = notificationChannelService;
     }

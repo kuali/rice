@@ -40,13 +40,13 @@ public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends Notif
         // one error should have occurred and the delivery should have been marked unlocked again
         Criteria criteria = new Criteria();
         criteria.addNotNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
-        Collection<NotificationMessageDelivery> lockedDeliveries = services.getBusinesObjectDao().findMatching(NotificationMessageDelivery.class, criteria);
+        Collection<NotificationMessageDelivery> lockedDeliveries = services.getGenericDao().findMatching(NotificationMessageDelivery.class, criteria);
         assertEquals(0, lockedDeliveries.size());
 
         // should be 1 autoremoved delivery
         HashMap<String, String> queryCriteria = new HashMap<String, String>();
         queryCriteria.put(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.AUTO_REMOVED);
-        Collection<NotificationMessageDelivery> unprocessedDeliveries = services.getBusinesObjectDao().findMatching(NotificationMessageDelivery.class, queryCriteria);
+        Collection<NotificationMessageDelivery> unprocessedDeliveries = services.getGenericDao().findMatching(NotificationMessageDelivery.class, queryCriteria);
         assertEquals(EXPECTED_SUCCESSES, unprocessedDeliveries.size());
     }
 

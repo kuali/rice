@@ -17,7 +17,6 @@ package org.kuali.notification.core;
 
 import java.util.Properties;
 
-import org.kuali.notification.dao.BusinessObjectDao;
 import org.kuali.notification.service.KENAPIService;
 import org.kuali.notification.service.NotificationAuthorizationService;
 import org.kuali.notification.service.NotificationChannelService;
@@ -30,6 +29,7 @@ import org.kuali.notification.service.NotificationRecipientService;
 import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.service.UserPreferenceService;
+import org.kuali.rice.dao.GenericDao;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.BeanFactory;
 
@@ -43,7 +43,7 @@ public class SpringNotificationServiceLocator implements NotificationServiceLoca
     private static final String NOTIFICATION_SERVICE = "notificationService";
     private static final String NOTIFICATION_CONTENT_TYPE_SERVICE = "notificationContentTypeService";
     private static final String MESSAGE_CONTENT_SERVICE = "messageContentService";
-    private static final String BUSINESS_OBJECT_DAO = "businessObjectDao";
+    private static final String GENERIC_DAO = "genericDao";
     private static final String NOTIFICATION_AUTHORIZATION_SERVICE = "notificationAuthorizationService";
     private static final String NOTIFICATION_WORKFLOW_DOCUMENT_SERVICE = "notificationWorkflowDocumentService";
     private static final String NOTIFICATION_MESSAGE_DELIVERY_DISPATCH_SERVICE = "notificationMessageDeliveryDispatchService";
@@ -95,10 +95,10 @@ public class SpringNotificationServiceLocator implements NotificationServiceLoca
     }
 
     /**
-     * @see org.kuali.notification.core.NotificationServiceLocator#getBusinesObjectDao()
+     * @see org.kuali.notification.core.NotificationServiceLocator#getGenericDao()
      */
-    public BusinessObjectDao getBusinesObjectDao() {
-        return (BusinessObjectDao) beanFactory.getBean(BUSINESS_OBJECT_DAO);
+    public GenericDao getGenericDao() {
+        return (GenericDao) beanFactory.getBean(GENERIC_DAO);
     }
 
     /**

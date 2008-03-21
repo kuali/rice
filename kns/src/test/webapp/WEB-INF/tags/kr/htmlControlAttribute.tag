@@ -138,11 +138,20 @@
     </c:when>
 
     <%-- textarea --%>
-    <c:when test="${attributeEntry.control.textarea == true}">
-            <html:textarea property="${property}" style="${textStyle}" tabindex="${tabindex}"
-                           rows="${attributeEntry.control.rows}" cols="${attributeEntry.control.cols}"
-                           styleId="${property}" disabled="${disableField}" styleClass="${styleClass}"/>
-    </c:when>
+    <c:when test="${attributeEntry.control.textarea == true}"> 
+            <html:textarea property="${property}" style="${textStyle}" tabindex="${tabindex}" 
+                           rows="${attributeEntry.control.rows}" cols="${attributeEntry.control.cols}" 
+                           styleId="${property}" disabled="${disableField}" styleClass="${styleClass}" 
+                           onkeyup="textLimit(${attributeEntry.maxLength});" /> 
+            <script type="text/javascript"> 
+              function textLimit(maxlen) { 
+              var field=window.document.forms[0].elements['${property}']; 
+                if (field.value.length > maxlen) { 
+                  field.value = field.value.substr(0, maxlen); 
+                } 
+              }; 
+            </script> 
+    </c:when> 
 
     <%-- select --%>
     <c:when test="${attributeEntry.control.select == true}">

@@ -19,7 +19,6 @@ import java.util.HashMap;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.notification.util.NotificationConstants;
 import org.kuali.rice.kcb.bo.RecipientPreference;
 import org.kuali.rice.kcb.test.BusinessObjectTestCase;
 
@@ -59,14 +58,14 @@ public class RecipientPreferenceDaoTest extends BusinessObjectTestCase {
         
         HashMap criteria = new HashMap();
         
-        criteria.put(NotificationConstants.BO_PROPERTY_NAMES.RECIPIENT_ID, recipientIds[0]);
-        criteria.put(NotificationConstants.BO_PROPERTY_NAMES.PROPERTY, propertys[0]);
+        criteria.put(RecipientPreference.RECIPIENT_FIELD, recipientIds[0]);
+        criteria.put(RecipientPreference.PROPERTY_FIELD, propertys[0]);
         pref1 = (RecipientPreference) businessObjectDao.findByUniqueKey(RecipientPreference.class, criteria);
         
         criteria.clear();
         
-        criteria.put(NotificationConstants.BO_PROPERTY_NAMES.RECIPIENT_ID, recipientIds[1]);
-        criteria.put(NotificationConstants.BO_PROPERTY_NAMES.PROPERTY, propertys[1]);
+        criteria.put(RecipientPreference.RECIPIENT_FIELD, recipientIds[1]);
+        criteria.put(RecipientPreference.PROPERTY_FIELD, propertys[1]);
         pref2 = (RecipientPreference) businessObjectDao.findByUniqueKey(RecipientPreference.class, criteria);
         
         assertNotNull(pref1);

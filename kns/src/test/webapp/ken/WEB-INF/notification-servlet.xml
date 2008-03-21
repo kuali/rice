@@ -215,7 +215,7 @@
       <property name="notificationChannelService"> <ref bean="notificationChannelService"/> </property>
       <property name="notificationRecipientService"> <ref bean="notificationRecipientService"/> </property>
       <property name="messageContentService"> <ref bean="messageContentService"/> </property>
-      <property name="businessObjectDao"> <ref bean="genericDao/> </property>
+      <property name="businessObjectDao"> <ref bean="genericDao"/> </property>
    </bean>
    
     <bean name="administerNotificationRequestController" class="org.kuali.notification.web.spring.AdministerNotificationRequestController">

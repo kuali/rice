@@ -119,7 +119,7 @@ def concat(xml, pathClosure, extra) {
 def extract(xml, file, dataType) {
     f = new File(file)
     if (!f.isFile()) return
-    println "Concatenating " + dataType + " from " + path
+    println "Concatenating " + dataType + " from " + file
     m = f.getText() =~ REGEXES[dataType]
     if (m.matches()) {
       xml << '\r\n        <!-- ' + dataType + ' elements from ' + file + ' -->\r\n'

@@ -13,6 +13,7 @@
                 <prop key="kcb.messageprocessing.repeatIntervalMS">30000</prop>
                 <prop key="kcb.quartz.group">KCB-Delivery</prop>
                 <prop key="kcb.quartz.job.name">MessageProcessingJobDetail</prop>
+                <prop key="kcb.maxProcessAttempts">3</prop>
             </props>
         </property>
     </bean>
@@ -118,6 +119,7 @@
 
     <bean id="messageDeliveryService" class="org.kuali.rice.kcb.service.impl.MessageDeliveryServiceImpl">
         <property name="genericDao"><ref local="genericDao"/></property>
+        <property name="maxProcessAttempts"><value>${kcb.maxProcessAttempts}</value></property>
     </bean>
 
     <bean id="messageDelivererRegistryService" class="org.kuali.rice.kcb.service.impl.MessageDelivererRegistryServiceImpl"/>

@@ -38,6 +38,20 @@ public class MessageDeliveryServiceImpl extends BusinessObjectServiceImpl implem
     private static final Logger LOG = Logger.getLogger(MessageDeliveryServiceImpl.class);
 
     /**
+     * Number of processing attempts to make.  {@link MessageDelivery}s with this number or more of attempts
+     * will not be selected for further processing.
+     */
+    private int maxProcessAttempts;
+
+    /**
+     * Sets the max processing attempts
+     * @param maxProcessAttempts the max delivery attempts
+     */
+    public void setMaxProcessAttempts(int maxProcessAttempts) {
+        this.maxProcessAttempts = maxProcessAttempts;
+    }
+
+    /**
      * @see org.kuali.rice.kcb.service.MessageDeliveryService#saveMessageDelivery(org.kuali.rice.kcb.bo.MessageDelivery)
      */
     public void saveMessageDelivery(MessageDelivery delivery) {
@@ -110,19 +124,20 @@ public class MessageDeliveryServiceImpl extends BusinessObjectServiceImpl implem
         if (messageId != null) {
             criteria.addEqualTo(MessageDelivery.MESSAGEID_FIELD, messageId);
         }
+        criteria.addLessThan(MessageDelivery.PROCESS_COUNT, maxProcessAttempts);
         Collection<String> statusCollection = new ArrayList<String>(statuses.length);
         for (MessageDeliveryStatus status: statuses) {
             statusCollection.add(status.name());
         }
         criteria.addIn(MessageDelivery.DELIVERY_STATUS, statusCollection);
         // implement our select for update hack
-        //criteria = Util.makeSelectForUpdate(criteria);
         Collection<MessageDelivery> messageDeliveries = dao.findMatching(MessageDelivery.class, criteria, true, Platform.NO_WAIT);
 
         //LOG.debug("Retrieved " + messageDeliveries.size() + " available message deliveries: " + System.currentTimeMillis());
 
         // mark messageDeliveries as taken
         for (MessageDelivery delivery: messageDeliveries) {
+            LOG.debug("Took: " + delivery);
             delivery.setLockedDate(new Timestamp(System.currentTimeMillis()));
             dao.save(delivery);
         }

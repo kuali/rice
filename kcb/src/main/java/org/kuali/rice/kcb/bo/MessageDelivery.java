@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kcb.bo;
 
-import java.util.Set;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
@@ -26,6 +24,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class MessageDelivery extends BaseLockable {
+    private static final Integer ZERO = Integer.valueOf(0);
+
     /**
      * Field names
      */
@@ -33,11 +33,13 @@ public class MessageDelivery extends BaseLockable {
     public static final String SYSTEMID_FIELD = "delivererSystemId";
     public static final String MESSAGEID_FIELD = "message";
     public static final String DELIVERY_STATUS = "deliveryStatus";
+    public static final String PROCESS_COUNT = "processCount";
     
     private Long id;
     private String delivererTypeName;
     private String delivererSystemId;  // can hold an identifier from the endpoint deliverer mechanism system (i.e. workflow id, SMS id, etc)
     private String deliveryStatus = MessageDeliveryStatus.UNDELIVERED.name();
+    private Integer processCount = ZERO;
 
     /**
      * This delivery's message
@@ -130,6 +132,21 @@ public class MessageDelivery extends BaseLockable {
     }
 
     /**
+     * @return the number of times processing has been attempted for this message
+     */
+    public Integer getProcessCount() {
+        return this.processCount;
+    }
+
+    /**
+     * Sets the number of times processing has been attempted for this message
+     * @param processCount the number of times processing has been attempted for this message
+     */
+    public void setProcessCount(Integer processCount) {
+        this.processCount = processCount;
+    }
+
+    /**
      * Gets the delivererTypeName attribute. 
      * @return Returns the delivererTypeName.
      */
@@ -184,6 +201,7 @@ public class MessageDelivery extends BaseLockable {
         return new ToStringBuilder(this)
                        .append("id", id)
                        .append("deliveryStatus", deliveryStatus)
+                       .append("processCount", processCount)
                        .append("delivererTypename", delivererTypeName)
                        .append("delivererSystemId", delivererSystemId)
                        .append("message", message == null ? null : message.getId())

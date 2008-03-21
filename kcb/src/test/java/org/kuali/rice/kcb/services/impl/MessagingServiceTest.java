@@ -16,6 +16,9 @@
 package org.kuali.rice.kcb.services.impl;
 
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import junit.framework.Assert;
 
@@ -48,7 +51,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 )*/
 @BaselineMode(Mode.CLEAR_DB)
 public class MessagingServiceTest extends KCBTestCase {
-    private Object lock = new Object();
+    private CountDownLatch signal = new CountDownLatch(1);
 
     @Override
     public void setUp() throws Exception {
@@ -56,6 +59,10 @@ public class MessagingServiceTest extends KCBTestCase {
     
         services.getRecipientPreferenceService().saveRecipientDelivererConfig("TestUser5", "mock", new String[] { "Test Channel #1" });
         services.getRecipientPreferenceService().saveRecipientDelivererConfig("TestUser5", "sms", new String[] { "Test Channel #1" });
+        services.getRecipientPreferenceService().saveRecipientDelivererConfig("TestUser5", "broken", new String[] { "Test Channel #1" }); // this one throws exceptions
+        services.getRecipientPreferenceService().saveRecipientDelivererConfig("TestUser5", "bogus", new String[] { "Test Channel #1" }); // this one doesn't exist
+        
+        assertEquals(4, services.getRecipientPreferenceService().getDeliverersForRecipientAndChannel("TestUser5", "Test Channel #1").size());
     }
 
     protected long deliver() throws Exception {
@@ -76,16 +83,74 @@ public class MessagingServiceTest extends KCBTestCase {
 
         Collection<MessageDelivery> deliveries = services.getMessageDeliveryService().getAllMessageDeliveries();
         assertNotNull(deliveries);
-        // HACK: for now our impl just creates deliveries for all deliverer types because we don't have preferences yet
-        // so there should be exactly as many deliveries as deliverer types
         int delivCount = services.getRecipientPreferenceService().getDeliverersForRecipientAndChannel("TestUser5", "Test Channel #1").size();
-        //int delivCount = kenApi.getDeliverersForRecipientAndChannel("TestUser5", "Test Channel #1").size();
         assertEquals(delivCount, deliveries.size());
         assertTrue(deliveries.size() > 0);
+        int failed = 0;
         for (MessageDelivery delivery: deliveries) {
-            assertEquals(MessageDeliveryStatus.DELIVERED.name(), delivery.getDeliveryStatus());
+            if ("broken".equals(delivery.getDelivererTypeName()) || "bogus".equals(delivery.getDelivererTypeName())) {
+                assertEquals(MessageDeliveryStatus.UNDELIVERED.name(), delivery.getDeliveryStatus());
+                assertEquals(1, delivery.getProcessCount().intValue());
+                failed++;
+            } else {
+                assertEquals(MessageDeliveryStatus.DELIVERED.name(), delivery.getDeliveryStatus());
+            }
         }
+
+        assertEquals(2, failed);
         
+        // try up till max attempts, which for now is 3
+        
+        waitForNextJobCompletion();
+
+        failed = 0;
+        deliveries = services.getMessageDeliveryService().getAllMessageDeliveries();
+        for (MessageDelivery delivery: deliveries) {
+            if ("broken".equals(delivery.getDelivererTypeName()) || "bogus".equals(delivery.getDelivererTypeName())) {
+                assertEquals(MessageDeliveryStatus.UNDELIVERED.name(), delivery.getDeliveryStatus());
+                assertEquals(2, delivery.getProcessCount().intValue());
+                failed++;
+            } else {
+                assertEquals(MessageDeliveryStatus.DELIVERED.name(), delivery.getDeliveryStatus());
+            }
+        }
+
+        assertEquals(2, failed);
+        
+        waitForNextJobCompletion();
+
+        failed = 0;
+        deliveries = services.getMessageDeliveryService().getAllMessageDeliveries();
+        for (MessageDelivery delivery: deliveries) {
+            if ("broken".equals(delivery.getDelivererTypeName()) || "bogus".equals(delivery.getDelivererTypeName())) {
+                assertEquals(MessageDeliveryStatus.UNDELIVERED.name(), delivery.getDeliveryStatus());
+                assertEquals(3, delivery.getProcessCount().intValue());
+                failed++;
+            } else {
+                assertEquals(MessageDeliveryStatus.DELIVERED.name(), delivery.getDeliveryStatus());
+            }
+        }
+
+        assertEquals(2, failed);
+        
+        // finally the last attempt, nothing should have changed
+        
+        waitForNextJobCompletion();
+
+        failed = 0;
+        deliveries = services.getMessageDeliveryService().getAllMessageDeliveries();
+        for (MessageDelivery delivery: deliveries) {
+            if ("broken".equals(delivery.getDelivererTypeName()) || "bogus".equals(delivery.getDelivererTypeName())) {
+                assertEquals(MessageDeliveryStatus.UNDELIVERED.name(), delivery.getDeliveryStatus());
+                assertEquals(3, delivery.getProcessCount().intValue());
+                failed++;
+            } else {
+                assertEquals(MessageDeliveryStatus.DELIVERED.name(), delivery.getDeliveryStatus());
+            }
+        }
+
+        assertEquals(2, failed);
+
         return id;
     }
 
@@ -110,8 +175,11 @@ public class MessagingServiceTest extends KCBTestCase {
 
         Collection<MessageDelivery> deliveries = services.getMessageDeliveryService().getAllMessageDeliveries();
         assertNotNull(deliveries);
-        // should be all gone
-        assertEquals(0, deliveries.size());
+        // should be all gone except for the 2 bad deliveries
+        assertEquals(2, deliveries.size());
+        for (MessageDelivery d: deliveries) {
+            assertTrue("broken".equals(d.getDelivererTypeName()) || "bogus".equals(d.getDelivererTypeName()));
+        }
     }
     
     @Test
@@ -128,8 +196,14 @@ public class MessagingServiceTest extends KCBTestCase {
 
         Collection<MessageDelivery> deliveries = services.getMessageDeliveryService().getAllMessageDeliveries();
         assertNotNull(deliveries);
-        // should be all gone
-        assertEquals(0, deliveries.size());
+        // should be all gone except for the 2 bad deliveries
+        assertEquals(2, deliveries.size());
+        
+        // should be all gone except for the 2 bad deliveries
+        assertEquals(2, deliveries.size());
+        for (MessageDelivery d: deliveries) {
+            assertTrue("broken".equals(d.getDelivererTypeName()) || "bogus".equals(d.getDelivererTypeName()));
+        }
     }
     
     protected void registerJobListener() throws SchedulerException {
@@ -138,11 +212,7 @@ public class MessagingServiceTest extends KCBTestCase {
             public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
                 log.debug("Job was executed: " + context);
                 if (MessageProcessingJob.NAME.equals(context.getJobDetail().getName())) {
-                    log.debug("Obtaining lock");
-                    synchronized (lock) {
-                        log.debug("Notifying on lock");    
-                        lock.notifyAll();
-                    }
+                    signal.countDown();
                 }
             }
             public String getName() {
@@ -152,10 +222,9 @@ public class MessagingServiceTest extends KCBTestCase {
     }
 
     protected void waitForNextJobCompletion() throws InterruptedException {
-        log.debug("Waiting for job to complete...");
-        synchronized (lock) {
-            lock.wait();
-        }
-        log.debug("Job completed...");
+        log.info("Waiting for job to complete...");
+        signal.await(45, TimeUnit.SECONDS); // time limit so as not to hang tests if something goes wrong
+        signal = new CountDownLatch(1);
+        log.info("Job completed...");
     }
 }

@@ -134,6 +134,7 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
         LOG.debug("Took " + ds.size() + " deliveries");
         for (MessageDelivery md: ds) {
             LOG.debug(md);
+            md.setProcessCount(md.getProcessCount().intValue() + 1);
         }
         return ds;
     }
@@ -215,12 +216,15 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
         try {
             if (mode == Mode.DELIVER) {
                 messageDeliverer.deliver(messageDelivery);
+                // if processing was successful, set the count back to zero
+                messageDelivery.setProcessCount(Integer.valueOf(0));
                 // by definition we have succeeded at this point if no exception was thrown by the messageDeliverer
                 // so update the status of the delivery message instance to DELIVERED (and unmark as taken)
                 // and persist
                 updateStatusAndUnlock(messageDelivery, mode == Mode.DELIVER ? MessageDeliveryStatus.DELIVERED : MessageDeliveryStatus.REMOVED);
             } else {
                 messageDeliverer.dismiss(messageDelivery, user, cause);
+                // don't need to set the processing count down to zero because we are just deleting the record entirely
                 messageDeliveryService.deleteMessageDelivery(messageDelivery);
             }
         } catch (MessageDeliveryProcessingException nmde) {
@@ -243,6 +247,7 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
      * @return collection of strings indicating successful deliveries
      */
     protected Collection<MessageDelivery> bulkProcess(BulkMessageDeliverer messageDeliverer, Collection<MessageDelivery> messageDeliveries,  Mode mode) {
+        MessageDeliveryStatus targetStatus = (mode == Mode.DELIVER ? MessageDeliveryStatus.DELIVERED : MessageDeliveryStatus.REMOVED);
         // we have our message deliverer, so tell it to deliver the message
         try {
             if (mode == Mode.DELIVER) {
@@ -263,8 +268,12 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
             successes.add(nmd);
             LOG.debug("Message delivery '" + nmd.getId() + "' for notification '" + nmd.getMessage().getId() + "' was successfully delivered.");
             //PerformanceLog.logDuration("Time to dispatch notification delivery for notification " + nmd.getMessage().getId(), System.currentTimeMillis() - nmd.getNotification().getSendDateTime().getTime());
-            updateStatusAndUnlock(nmd, mode == Mode.DELIVER ? MessageDeliveryStatus.DELIVERED : MessageDeliveryStatus.REMOVED);
-            messageDeliveryService.deleteMessageDelivery(nmd);
+            if (mode == Mode.REMOVE) {
+                messageDeliveryService.deleteMessageDelivery(nmd);
+            } else {
+                nmd.setProcessCount(0);
+                updateStatusAndUnlock(nmd, targetStatus);                
+            }
         }
         
         return successes;

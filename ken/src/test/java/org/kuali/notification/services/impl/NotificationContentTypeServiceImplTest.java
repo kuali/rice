@@ -15,12 +15,12 @@
  */
 package org.kuali.notification.services.impl;
 
-import java.util.Collection;
-
 import org.junit.Test;
+import org.kuali.notification.bo.Notification;
 import org.kuali.notification.bo.NotificationContentType;
 import org.kuali.notification.service.NotificationContentTypeService;
 import org.kuali.notification.test.NotificationTestCaseBase;
+import org.kuali.notification.test.TestConstants;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
@@ -29,41 +29,79 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
  * Tests NotificationContentTypeService implementation 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@BaselineMode(Mode.ROLLBACK)
+@BaselineMode(Mode.CLEAR_DB)
 public class NotificationContentTypeServiceImplTest extends NotificationTestCaseBase {
+    @Test public void testVersioning() {
+        NotificationContentTypeService impl = services.getNotificationContentTypeService();
+        int originalCurrentSize = impl.getAllCurrentContentTypes().size();
+        int originalSize = impl.getAllContentTypes().size();
+
+        Notification n = services.getNotificationService().getNotification(TestConstants.NOTIFICATION_1);
+        
+        NotificationContentType ct = n.getContentType(); 
+        int originalVersion = ct.getVersion();
+        assertTrue(ct.isCurrent());
+
+        ct.setDescription("I was updated");
+        impl.saveNotificationContentType(ct);
+        
+        assertEquals(originalCurrentSize, impl.getAllCurrentContentTypes().size());
+        assertEquals(originalSize + 1, impl.getAllContentTypes().size());
+
+        ct = impl.getNotificationContentType(ct.getName());
+        assertEquals("I was updated", ct.getDescription());
+        assertTrue(ct.isCurrent());
+        assertEquals(originalVersion + 1, ct.getVersion().intValue());
+        
+        n = services.getNotificationService().getNotification(TestConstants.NOTIFICATION_1);
+        NotificationContentType nct = n.getContentType();
+        assertEquals(ct.getId(), nct.getId());
+        assertEquals(ct.getVersion(), nct.getVersion());
+        assertEquals(ct.isCurrent(), nct.isCurrent());
+        assertEquals(originalVersion + 1, nct.getVersion().intValue());
+        
+        
+    }
+
     @Test public void testUpdate() {
+        NotificationContentTypeService impl = services.getNotificationContentTypeService();
+        int originalCurrentSize = impl.getAllCurrentContentTypes().size();
+        int originalSize = impl.getAllContentTypes().size();
+
         NotificationContentType type = new NotificationContentType();
         type.setDescription("blah");
         type.setName("test");
         type.setNamespace("test");
         type.setXsd("test");
         type.setXsl("test");
-        
-        NotificationContentTypeService impl = services.getNotificationContentTypeService();
+
         impl.saveNotificationContentType(type);
-        
+
+        assertEquals(originalCurrentSize + 1, impl.getAllCurrentContentTypes().size());
+        assertEquals(originalSize + 1, impl.getAllContentTypes().size());
+
         type = impl.getNotificationContentType("test");
         assertEquals("test", type.getName());
         assertEquals("blah", type.getDescription());
         assertEquals(true, type.isCurrent());
         assertEquals(Integer.valueOf(0), type.getVersion());
-        
+
         type = new NotificationContentType();
         type.setDescription("blah 2");
         type.setName("test");
         type.setNamespace("test 2");
         type.setXsd("test 2");
         type.setXsl("test 2");
-        
+
         impl.saveNotificationContentType(type);
-        
+
+        assertEquals(originalCurrentSize + 1, impl.getAllCurrentContentTypes().size());
+        assertEquals(originalSize + 2, impl.getAllContentTypes().size());
+
         type = impl.getNotificationContentType("test");
         assertEquals("test", type.getName());
         assertEquals("blah 2", type.getDescription());
         assertEquals(true, type.isCurrent());
         assertEquals(Integer.valueOf(1), type.getVersion());
-        
-        Collection<NotificationContentType> alltypes = impl.getAllCurrentContentTypes();
-        assertEquals(3, alltypes.size());
     }
 }

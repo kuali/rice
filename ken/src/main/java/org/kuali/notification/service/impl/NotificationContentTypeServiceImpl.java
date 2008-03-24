@@ -16,11 +16,18 @@
 package org.kuali.notification.service.impl;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ojb.broker.query.Criteria;
+import org.apache.ojb.broker.query.QueryByCriteria;
+import org.apache.ojb.broker.query.QueryFactory;
+import org.kuali.notification.bo.Notification;
 import org.kuali.notification.bo.NotificationContentType;
 import org.kuali.notification.service.NotificationContentTypeService;
 import org.kuali.rice.dao.GenericDao;
+
+import edu.iu.uis.eden.doctype.DocumentType;
 
 /**
  * NotificationContentTypeService implementation - uses the businessObjectDao to get at the underlying data in the stock DBMS.
@@ -52,29 +59,71 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
         }
     }
 
+    protected int findHighestContentTypeVersion(String name) {
+        // there's probably a better way...'report'? or direct SQL
+        Map<String, Object> fields = new HashMap<String, Object>(2);
+        fields.put("name", name);
+        Collection<NotificationContentType> types = businessObjectDao.findMatchingOrderBy(NotificationContentType.class, fields, "version", false);
+        if (types.size() > 0) {
+            return types.iterator().next().getVersion();
+        }
+        return -1;
+    }
+
     /**
      * @see org.kuali.notification.service.NotificationContentTypeService#saveNotificationContentType(org.kuali.notification.bo.NotificationContentType)
      */
     public void saveNotificationContentType(NotificationContentType contentType) {
-        NotificationContentType old = getNotificationContentType(contentType.getName());
-        int oldVersion = -1;
-        if (old != null) {
-            old.setCurrent(false);
-            oldVersion = old.getVersion();
-            businessObjectDao.save(old);
+        NotificationContentType previous = getNotificationContentType(contentType.getName());
+        if (previous != null) {
+            previous.setCurrent(false);
+            businessObjectDao.save(previous);
         }
-        contentType.setVersion(oldVersion + 1);
-        contentType.setCurrent(true);
-        businessObjectDao.save(contentType);
+        int lastVersion = findHighestContentTypeVersion(contentType.getName());
+        NotificationContentType next;
+        if (contentType.getId() == null) {
+            next = contentType; 
+        } else {
+            next = new NotificationContentType();
+            next.setName(contentType.getName());
+            next.setDescription(contentType.getDescription());
+            next.setNamespace(contentType.getNamespace());
+            next.setXsd(contentType.getXsd());
+            next.setXsl(contentType.getXsl());
+        }
+
+        next.setVersion(lastVersion + 1);
+        next.setCurrent(true);
+        businessObjectDao.save(next);
+        
+        // update all the old references
+        if (previous != null) {
+            Collection<Notification> ns = getNotificationsOfContentType(previous);
+            for (Notification n: ns) {
+                n.setContentType(next);
+                businessObjectDao.save(n);
+            }
+        }
     }
 
+    protected Collection<Notification> getNotificationsOfContentType(NotificationContentType ct) {
+        Map<String, Object> fields = new HashMap<String, Object>(1);
+        fields.put("contentType", ct.getId());
+        return businessObjectDao.findMatching(Notification.class, fields);
+    }
     /**
-     * @see org.kuali.notification.service.NotificationContentTypeService#getAllContentType()
+     * @see org.kuali.notification.service.NotificationContentTypeService#getAllCurrentContentTypes()
      */
     public Collection<NotificationContentType> getAllCurrentContentTypes() {
         Criteria c = new Criteria();
         c.addEqualTo("current", true);
         return businessObjectDao.findMatching(NotificationContentType.class, c);
     }
-
+    
+    /**
+     * @see org.kuali.notification.service.NotificationContentTypeService#getAllContentTypes()
+     */
+    public Collection<NotificationContentType> getAllContentTypes() {
+        return businessObjectDao.findAll(NotificationContentType.class);
+    }
 }

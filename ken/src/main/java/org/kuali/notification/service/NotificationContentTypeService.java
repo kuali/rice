@@ -44,4 +44,10 @@ public interface NotificationContentTypeService {
      * @return Collection
      */
     public Collection<NotificationContentType> getAllCurrentContentTypes();
+
+    /**
+     * This method returns all versions of all NotificationContentTypes in the system.
+     * @return Collection
+     */
+    public Collection<NotificationContentType> getAllContentTypes();
 }

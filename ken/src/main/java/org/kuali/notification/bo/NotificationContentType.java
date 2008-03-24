@@ -15,6 +15,8 @@
  */
 package org.kuali.notification.bo;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * This class represents the different types of Notification content that the system can handle.  
  * For example, and instance of content type could be "Alert" or "Event".
@@ -165,9 +167,11 @@ public class NotificationContentType {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        return "[NotificationContentType: id=" + id +
-        ", name=" + name +
-        ", namespace=" + namespace +
-        ", description=" + description + "]";
-    }
+        return new ToStringBuilder(this).append("id", id)
+                                        .append("name", name)
+                                        .append("namespace", namespace)
+                                        .append("version", version)
+                                        .append("current", current)
+                                        .toString();
+   }
 }

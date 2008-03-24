@@ -217,7 +217,7 @@
 
     <bean id="resolverExecutor" class="edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor">
         <constructor-arg><value>1</value></constructor-arg> <!--  core pool size -->
-        <constructor-arg><value>1</value></constructor-arg> <!-- max pool size -->
+        <constructor-arg><value>5</value></constructor-arg> <!-- max pool size -->
         <constructor-arg><value>30</value></constructor-arg> <!-- idle thread keepalive time -->
         <constructor-arg>
             <bean class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
@@ -229,7 +229,7 @@
     
     <bean id="autoRemovalExecutor" class="edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor">
         <constructor-arg><value>1</value></constructor-arg> <!--  core pool size -->
-        <constructor-arg><value>1</value></constructor-arg> <!-- max pool size -->
+        <constructor-arg><value>5</value></constructor-arg> <!-- max pool size -->
         <constructor-arg><value>30</value></constructor-arg> <!-- idle thread keepalive time -->
         <constructor-arg>
             <bean class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">

@@ -38,6 +38,7 @@ import edu.iu.uis.eden.routetemplate.TestRuleAttribute;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.useroptions.UserOptions;
+import edu.iu.uis.eden.useroptions.UserOptionsService;
 
 /**
  * Tests Outbox functionality
@@ -48,6 +49,15 @@ public class OutboxTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("OutboxTestConfig.xml");
+    }
+    
+    private void turnOnOutboxForUser(final WorkflowUser user) {
+        new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager()).execute(new TransactionCallback() {
+            public Object doInTransaction(TransactionStatus status) {
+                KEWServiceLocator.getUserOptionsService().save(user, PreferencesServiceImpl.USE_OUT_BOX, EdenConstants.PREFERENCES_YES_VAL);
+                return null;
+            }
+        });
     }
 
     @Test
@@ -63,14 +73,7 @@ public class OutboxTest extends KEWTestCase {
         document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
         assertTrue("approve should be requested", document.isApprovalRequested());
 
-        new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager()).execute(new TransactionCallback() {
-            public Object doInTransaction(TransactionStatus status) {
-                UserOptions option = KEWServiceLocator.getUserOptionsService().findByOptionId(PreferencesServiceImpl.USE_OUT_BOX, rkirkend);
-                option.setOptionVal(EdenConstants.PREFERENCES_YES_VAL);
-                KEWServiceLocator.getUserOptionsService().save(option);
-                return null;
-            }
-        });
+        turnOnOutboxForUser(rkirkend);
 
         document.saveDocument("");
 
@@ -92,14 +95,7 @@ public class OutboxTest extends KEWTestCase {
         document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
         assertTrue("approve should be requested", document.isApprovalRequested());
 
-        new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager()).execute(new TransactionCallback() {
-            public Object doInTransaction(TransactionStatus status) {
-                UserOptions option = KEWServiceLocator.getUserOptionsService().findByOptionId(PreferencesServiceImpl.USE_OUT_BOX, rkirkend);
-                option.setOptionVal(EdenConstants.PREFERENCES_YES_VAL);
-                KEWServiceLocator.getUserOptionsService().save(option);
-                return null;
-            }
-        });
+        turnOnOutboxForUser(rkirkend);
 
         document.approve("");
 
@@ -121,14 +117,7 @@ public class OutboxTest extends KEWTestCase {
         document = new WorkflowDocument(new NetworkIdVO("rkirkend"), document.getRouteHeaderId());
         assertTrue("approve should be requested", document.isApprovalRequested());
 
-        new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager()).execute(new TransactionCallback() {
-            public Object doInTransaction(TransactionStatus status) {
-                UserOptions option = KEWServiceLocator.getUserOptionsService().findByOptionId(PreferencesServiceImpl.USE_OUT_BOX, rkirkend);
-                option.setOptionVal(EdenConstants.PREFERENCES_YES_VAL);
-                KEWServiceLocator.getUserOptionsService().save(option);
-                return null;
-            }
-        });
+        turnOnOutboxForUser(rkirkend);
 
         document.appSpecificRouteDocumentToUser("A", "", new NetworkIdVO("user1"), "", true);
 
@@ -159,24 +148,8 @@ public class OutboxTest extends KEWTestCase {
         recipients.add(new AuthenticationUserId("user1"));
         TestRuleAttribute.setRecipients("TestRole", "qualRole", recipients);
 
-        new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager()).execute(new TransactionCallback() {
-            public Object doInTransaction(TransactionStatus status) {
-                Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(rkirkend);
-                if (!prefs.isUsingOutbox()) {
-                    UserOptions option = KEWServiceLocator.getUserOptionsService().findByOptionId(PreferencesServiceImpl.USE_OUT_BOX, rkirkend);
-                    option.setOptionVal(EdenConstants.PREFERENCES_YES_VAL);
-                    KEWServiceLocator.getUserOptionsService().save(option);
-                }
-
-                prefs = KEWServiceLocator.getPreferencesService().getPreferences(user1);
-                if (!prefs.isUsingOutbox()) {
-                    UserOptions option = KEWServiceLocator.getUserOptionsService().findByOptionId(PreferencesServiceImpl.USE_OUT_BOX, user1);
-                    option.setOptionVal(EdenConstants.PREFERENCES_YES_VAL);
-                    KEWServiceLocator.getUserOptionsService().save(option);
-                }
-                return null;
-            }
-        });
+        turnOnOutboxForUser(rkirkend);
+        turnOnOutboxForUser(user1);
 
         WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("quickstart"), "TestDocumentType");
         document.routeDocument("");
@@ -201,24 +174,8 @@ public class OutboxTest extends KEWTestCase {
         recipients.add(new AuthenticationUserId("user1"));
         TestRuleAttribute.setRecipients("TestRole", "qualRole", recipients);
 
-        new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager()).execute(new TransactionCallback() {
-            public Object doInTransaction(TransactionStatus status) {
-                Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(rkirkend);
-                if (!prefs.isUsingOutbox()) {
-                    UserOptions option = KEWServiceLocator.getUserOptionsService().findByOptionId(PreferencesServiceImpl.USE_OUT_BOX, rkirkend);
-                    option.setOptionVal(EdenConstants.PREFERENCES_YES_VAL);
-                    KEWServiceLocator.getUserOptionsService().save(option);
-                }
-
-                prefs = KEWServiceLocator.getPreferencesService().getPreferences(user1);
-                if (!prefs.isUsingOutbox()) {
-                    UserOptions option = KEWServiceLocator.getUserOptionsService().findByOptionId(PreferencesServiceImpl.USE_OUT_BOX, user1);
-                    option.setOptionVal(EdenConstants.PREFERENCES_YES_VAL);
-                    KEWServiceLocator.getUserOptionsService().save(option);
-                }
-                return null;
-            }
-        });
+        turnOnOutboxForUser(rkirkend);
+        turnOnOutboxForUser(user1);
 
         WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("rkirkend"), "TestDocumentType");
         document.blanketApprove("");
@@ -248,24 +205,8 @@ public class OutboxTest extends KEWTestCase {
         final WorkflowUser user1 = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("user1"));
         final WorkflowUser ewestfal = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("ewestfal"));
 
-        new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager()).execute(new TransactionCallback() {
-            public Object doInTransaction(TransactionStatus status) {
-                Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(rkirkend);
-                if (!prefs.isUsingOutbox()) {
-                    UserOptions option = KEWServiceLocator.getUserOptionsService().findByOptionId(PreferencesServiceImpl.USE_OUT_BOX, rkirkend);
-                    option.setOptionVal(EdenConstants.PREFERENCES_YES_VAL);
-                    KEWServiceLocator.getUserOptionsService().save(option);
-                }
-
-                prefs = KEWServiceLocator.getPreferencesService().getPreferences(user1);
-                if (!prefs.isUsingOutbox()) {
-                    UserOptions option = KEWServiceLocator.getUserOptionsService().findByOptionId(PreferencesServiceImpl.USE_OUT_BOX, user1);
-                    option.setOptionVal(EdenConstants.PREFERENCES_YES_VAL);
-                    KEWServiceLocator.getUserOptionsService().save(option);
-                }
-                return null;
-            }
-        });
+        turnOnOutboxForUser(rkirkend);
+        turnOnOutboxForUser(user1);
 
         WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user2"), "OutboxTestDocumentType");
         document.routeDocument("");

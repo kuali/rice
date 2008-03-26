@@ -26,7 +26,7 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
 
 /**
  * Tests the RuleTemplateAttribute class.
- *
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RuleTemplateAttributeTest extends KEWTestCase {
@@ -37,53 +37,53 @@ public class RuleTemplateAttributeTest extends KEWTestCase {
 
     @Test
     public void testGetWorkflowAttribute() throws Exception {
-	RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName("TemplateWithRuleValidationAttribute");
-	List<RuleTemplateAttribute> ruleTemplateAttributes = (List<RuleTemplateAttribute>)template.getRuleTemplateAttributes();
-	int index = 0;
-	for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes) {
-	    boolean runtimeThrown = false;
-	    WorkflowAttribute attribute = null;
-	    try {
-		attribute = ruleTemplateAttribute.getWorkflowAttribute();
-	    } catch (RuntimeException e) {
-		runtimeThrown = true;
-	    }
-	    if (index == 0) {
-		// should be the TestRuleAttribute
-		assertFalse("RuntimeException should not have been thrown.", runtimeThrown);
-		assertNotNull("Attribute should exist.", attribute);
-		attribute = (WorkflowAttribute)ClassLoaderUtils.unwrapFromProxy(attribute);
-		assertEquals("Should be TestRuleAttribute", TestRuleAttribute.class, attribute.getClass());
-	    } else if (index == 1) {
-		// should be the TestRuleDelegationAttribute so should be null
-		assertTrue("RuntimeException should have been thrown.", runtimeThrown);
-		assertNull("This should be the rule delegation attribute, not a WorkflowAttribute.", attribute);
-	    }
-	    index++;
-	}
+        RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName("TemplateWithRuleValidationAttribute");
+        List<RuleTemplateAttribute> ruleTemplateAttributes = (List<RuleTemplateAttribute>) template.getRuleTemplateAttributes();
+        int index = 0;
+        for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes) {
+            boolean runtimeThrown = false;
+            WorkflowAttribute attribute = null;
+            try {
+                attribute = ruleTemplateAttribute.getWorkflowAttribute();
+            } catch (RuntimeException e) {
+                runtimeThrown = true;
+            }
+            if (index == 0) {
+                // should be the TestRuleAttribute
+                assertFalse("RuntimeException should not have been thrown.", runtimeThrown);
+                assertNotNull("Attribute should exist.", attribute);
+                attribute = (WorkflowAttribute) ClassLoaderUtils.unwrapFromProxy(attribute);
+                assertEquals("Should be TestRuleAttribute", TestRuleAttribute.class, attribute.getClass());
+            } else if (index == 1) {
+                // should be the TestRuleDelegationAttribute so should be null
+                assertTrue("RuntimeException should have been thrown.", runtimeThrown);
+                assertNull("This should be the rule delegation attribute, not a WorkflowAttribute.", attribute);
+            }
+            index++;
+        }
     }
 
     @Test
     public void testIsWorkflowAttribute() throws Exception {
-	RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName("TemplateWithRuleValidationAttribute");
-	List<RuleTemplateAttribute> ruleTemplateAttributes = (List<RuleTemplateAttribute>)template.getRuleTemplateAttributes();
-	int index = 0;
-	for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes) {
-	    boolean isWorkflowAttribute = ruleTemplateAttribute.isWorkflowAttribute();
-	    Object attribute = ruleTemplateAttribute.getAttribute();
-	    attribute = ClassLoaderUtils.unwrapFromProxy(attribute);
-	    if (index == 0) {
-		// should be the TestRuleAttribute
-		assertNotNull(attribute);
-		assertEquals("Should be TestRuleAttribute", TestRuleAttribute.class, attribute.getClass());
-		assertTrue("TestRuleAttribute is a workflow attribute.", isWorkflowAttribute);
-	    } else if (index == 1) {
-		// should be the TestRuleValidationAttribute so should be null
-		assertEquals("Should be TestRuleValidationAttribute", TestRuleValidationAttribute.class, attribute.getClass());
-		assertFalse("TestRuleValidationAttribute is not a workflow attribute", isWorkflowAttribute);
-	    }
-	    index++;
-	}
+        RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName("TemplateWithRuleValidationAttribute");
+        List<RuleTemplateAttribute> ruleTemplateAttributes = (List<RuleTemplateAttribute>) template.getRuleTemplateAttributes();
+        int index = 0;
+        for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes) {
+            boolean isWorkflowAttribute = ruleTemplateAttribute.isWorkflowAttribute();
+            Object attribute = ruleTemplateAttribute.getAttribute();
+            attribute = ClassLoaderUtils.unwrapFromProxy(attribute);
+            if (index == 0) {
+                // should be the TestRuleAttribute
+                assertNotNull(attribute);
+                assertEquals("Should be TestRuleAttribute", TestRuleAttribute.class, attribute.getClass());
+                assertTrue("TestRuleAttribute is a workflow attribute.", isWorkflowAttribute);
+            } else if (index == 1) {
+                // should be the TestRuleValidationAttribute so should be null
+                assertEquals("Should be TestRuleValidationAttribute", TestRuleValidationAttribute.class, attribute.getClass());
+                assertFalse("TestRuleValidationAttribute is not a workflow attribute", isWorkflowAttribute);
+            }
+            index++;
+        }
     }
 
 }

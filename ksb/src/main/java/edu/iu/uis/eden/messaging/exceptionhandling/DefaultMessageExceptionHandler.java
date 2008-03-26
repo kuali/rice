@@ -38,111 +38,101 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
     private static final int DEFAULT_MAX_RETRIES = 7;
 
     public void handleException(Throwable throwable, PersistedMessage message, Object service) throws Exception {
-	if (isInException(message)) {
-	    placeInException(throwable, message);
-	} else {
-	    requeue(throwable, message);
-	}
+        if (isInException(message)) {
+            placeInException(throwable, message);
+        } else {
+            requeue(throwable, message);
+        }
     }
 
     public boolean isInException(PersistedMessage message) {
-	ServiceInfo serviceInfo = message.getMethodCall().getServiceInfo();
+        ServiceInfo serviceInfo = message.getMethodCall().getServiceInfo();
 
-	if (getImmediateExceptionRouting()) {
-	    return true;
-	}
+        if (getImmediateExceptionRouting()) {
+            return true;
+        }
 
-	Integer globalMaxRetryAttempts = getGlobalMaxRetryAttempts();
-	if (globalMaxRetryAttempts != null) {
-	    LOG.info("Global Max Retry has been set, so is overriding other max retry attempts.");
-	    LOG.info("Global Max Retry count = " + globalMaxRetryAttempts + ".");
-	    return (message.getRetryCount().intValue() >= globalMaxRetryAttempts.intValue());
-	}
+        Integer globalMaxRetryAttempts = getGlobalMaxRetryAttempts();
+        if (globalMaxRetryAttempts != null) {
+            LOG.info("Global Max Retry has been set, so is overriding other max retry attempts.");
+            LOG.info("Global Max Retry count = " + globalMaxRetryAttempts + ".");
+            return (message.getRetryCount().intValue() >= globalMaxRetryAttempts.intValue());
+        }
 
-	if (serviceInfo.getServiceDefinition().getRetryAttempts() > 0) {
-	    LOG.info("Message set for retry exception handling.  Message retry count = " + message.getRetryCount());
-	    if (message.getRetryCount() >= serviceInfo.getServiceDefinition().getRetryAttempts()) {
-		return true;
-	    }
-	} else if (serviceInfo.getServiceDefinition().getMillisToLive() > 0) {
-	    LOG.info("Message set for time to live exception handling.  Message expiration date = "
-		    + message.getExpirationDate().getTime());
-	    if (System.currentTimeMillis() > message.getExpirationDate().getTime()) {
-		return true;
-	    }
-	} else if (message.getRetryCount() >= this.getMaxRetryAttempts()) {
-	    LOG.info("Message set for default exception handling.  Comparing retry count = " + message.getRetryCount()
-		    + " against default max count.");
-	    return true;
-	}
-	return false;
+        if (serviceInfo.getServiceDefinition().getRetryAttempts() > 0) {
+            LOG.info("Message set for retry exception handling.  Message retry count = " + message.getRetryCount());
+            if (message.getRetryCount() >= serviceInfo.getServiceDefinition().getRetryAttempts()) {
+                return true;
+            }
+        } else if (serviceInfo.getServiceDefinition().getMillisToLive() > 0) {
+            LOG.info("Message set for time to live exception handling.  Message expiration date = " + message.getExpirationDate().getTime());
+            if (System.currentTimeMillis() > message.getExpirationDate().getTime()) {
+                return true;
+            }
+        } else if (message.getRetryCount() >= this.getMaxRetryAttempts()) {
+            LOG.info("Message set for default exception handling.  Comparing retry count = " + message.getRetryCount() + " against default max count.");
+            return true;
+        }
+        return false;
     }
 
     protected void requeue(Throwable throwable, PersistedMessage message) throws Exception {
-	Integer retryCount = message.getRetryCount();
-	message.setQueueStatus(RiceConstants.ROUTE_QUEUE_QUEUED);
-	long addMilliseconds = Math.round(getTimeIncrement() * Math.pow(2, retryCount));
-	Timestamp currentTime = message.getQueueDate();
-	Timestamp newTime = new Timestamp(currentTime.getTime() + addMilliseconds);
-	message.setQueueStatus(RiceConstants.ROUTE_QUEUE_QUEUED);
-	message.setRetryCount(new Integer(retryCount + 1));
-	message.setQueueDate(newTime);
-	scheduleExecution(throwable, message);
+        Integer retryCount = message.getRetryCount();
+        message.setQueueStatus(RiceConstants.ROUTE_QUEUE_QUEUED);
+        long addMilliseconds = Math.round(getTimeIncrement() * Math.pow(2, retryCount));
+        Timestamp currentTime = message.getQueueDate();
+        Timestamp newTime = new Timestamp(currentTime.getTime() + addMilliseconds);
+        message.setQueueStatus(RiceConstants.ROUTE_QUEUE_QUEUED);
+        message.setRetryCount(new Integer(retryCount + 1));
+        message.setQueueDate(newTime);
+        scheduleExecution(throwable, message);
     }
 
     protected void placeInException(Throwable throwable, PersistedMessage message) throws Exception {
-	message.setQueueStatus(RiceConstants.ROUTE_QUEUE_EXCEPTION);
-	message.setQueueDate(new Timestamp(System.currentTimeMillis()));
-	KSBServiceLocator.getRouteQueueService().save(message);
+        message.setQueueStatus(RiceConstants.ROUTE_QUEUE_EXCEPTION);
+        message.setQueueDate(new Timestamp(System.currentTimeMillis()));
+        KSBServiceLocator.getRouteQueueService().save(message);
     }
 
     protected void scheduleExecution(Throwable throwable, PersistedMessage message) throws Exception {
-	KSBServiceLocator.getExceptionRoutingService().scheduleExecution(throwable, message, null);
+        KSBServiceLocator.getExceptionRoutingService().scheduleExecution(throwable, message, null);
     }
 
     public Integer getMaxRetryAttempts() {
-	try {
-	    return new Integer(Core.getCurrentContextConfig().getProperty(RiceConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
-	} catch (NumberFormatException e) {
-	    LOG.error("Constant '" + RiceConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY + "' is not a number and is being "
-		    + "used as a default for exception messages.  " + DEFAULT_MAX_RETRIES
-		    + " will be used as a retry limit until this number is fixed");
-	    return DEFAULT_MAX_RETRIES;
-	}
+        try {
+            return new Integer(Core.getCurrentContextConfig().getProperty(RiceConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
+        } catch (NumberFormatException e) {
+            LOG.error("Constant '" + RiceConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY + "' is not a number and is being " + "used as a default for exception messages.  " + DEFAULT_MAX_RETRIES + " will be used as a retry limit until this number is fixed");
+            return DEFAULT_MAX_RETRIES;
+        }
     }
 
     protected Integer getGlobalMaxRetryAttempts() {
-	String globalMax = Core.getCurrentContextConfig().getProperty(
-		RiceConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY);
-	if (StringUtils.isBlank(globalMax)) {
-	    return null;
-	}
-	try {
-	    Integer globalMaxRetries = new Integer(globalMax);
-	    if (globalMaxRetries >= 0) {
-		return globalMaxRetries;
-	    }
-	} catch (NumberFormatException e) {
-	    LOG.error("Constant '" + RiceConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY
-		    + "' is not a number and is being " + "used as a default for exception messages.  "
-		    + DEFAULT_MAX_RETRIES + " will be used as a retry limit until this number is fixed");
-	}
-	return null;
+        String globalMax = Core.getCurrentContextConfig().getProperty(RiceConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY);
+        if (StringUtils.isBlank(globalMax)) {
+            return null;
+        }
+        try {
+            Integer globalMaxRetries = new Integer(globalMax);
+            if (globalMaxRetries >= 0) {
+                return globalMaxRetries;
+            }
+        } catch (NumberFormatException e) {
+            LOG.error("Constant '" + RiceConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY + "' is not a number and is being " + "used as a default for exception messages.  " + DEFAULT_MAX_RETRIES + " will be used as a retry limit until this number is fixed");
+        }
+        return null;
     }
 
     public Long getTimeIncrement() {
-	try {
-	    return new Long(Core.getCurrentContextConfig().getProperty(RiceConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY));
-	} catch (NumberFormatException e) {
-	    LOG.error("Constant '" + RiceConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY
-		    + "' is not a number and will not be used "
-		    + "as the default time increment for exception routing.  Default of " + DEFAULT_TIME_INCREMENT
-		    + " will be used.");
-	    return DEFAULT_TIME_INCREMENT;
-	}
+        try {
+            return new Long(Core.getCurrentContextConfig().getProperty(RiceConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY));
+        } catch (NumberFormatException e) {
+            LOG.error("Constant '" + RiceConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY + "' is not a number and will not be used " + "as the default time increment for exception routing.  Default of " + DEFAULT_TIME_INCREMENT + " will be used.");
+            return DEFAULT_TIME_INCREMENT;
+        }
     }
 
     public Boolean getImmediateExceptionRouting() {
-	return new Boolean(Core.getCurrentContextConfig().getProperty(RiceConstants.IMMEDIATE_EXCEPTION_ROUTING));
+        return new Boolean(Core.getCurrentContextConfig().getProperty(RiceConstants.IMMEDIATE_EXCEPTION_ROUTING));
     }
 }

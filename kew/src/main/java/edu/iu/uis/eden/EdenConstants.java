@@ -33,9 +33,7 @@ public class EdenConstants extends JSTLConstants {
     
     public static final String KEW_MESSAGING_ENTITY = "KEW";
 
-    public static final String MESSAGING_SYNCHRONOUS = "synchronous";
     public static final String MESSAGING_MEMORY = "memory";
-    public static final String MESSAGE_PERSISTENCE = "message.persistence";
 
     public static final String CORE_WORKFLOW_DATASOURCE = "enWorkflowDataSource";
     // not strictly necessary to specify if connection descriptor is configured as default
@@ -83,8 +81,6 @@ public class EdenConstants extends JSTLConstants {
     public static final String RULE_LOCKING_ON = "Config.Application.RuleLockingOn";
     public static final String APP_CONST_SHOW_ATTACHMENTS = "showAttachments";
     public static final String NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME = "Config.Workgroup.NotifyExcludedUsers";
-
-    public static final String IMMEDIATE_EXCEPTION_ROUTING = "Routing.ImmediateExceptionRouting";
 
     public static final String SECURITY_HTTP_INVOKER_SIGN_MESSAGES = "Security.HttpInvoker.SignMessages";
 

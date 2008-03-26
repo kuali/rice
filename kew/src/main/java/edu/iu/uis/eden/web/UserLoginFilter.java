@@ -46,28 +46,25 @@ import edu.iu.uis.eden.web.session.UserSession;
 
 /**
  * A filter for processing user logins and creating a {@link UserSession}.
- *
+ * 
  * @see UserSession
- *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class UserLoginFilter implements Filter {
     private static final Logger LOG = Logger.getLogger(UserLoginFilter.class);
 
-    public void init(FilterConfig config) throws ServletException {
-    }
+    public void init(FilterConfig config) throws ServletException {}
 
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-    	if (!(req instanceof HttpServletRequest && res instanceof HttpServletResponse)) {
+        if (!(req instanceof HttpServletRequest && res instanceof HttpServletResponse)) {
             chain.doFilter(req, res);
             return;
         }
 
-    	LOG.debug("Begin UserLoginFilter...");
+        LOG.debug("Begin UserLoginFilter...");
 
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
-
 
         final UserSession userSession;
         if (!isUserSessionEstablished(request)) {
@@ -80,22 +77,22 @@ public class UserLoginFilter implements Filter {
         }
 
         if (userSession != null) {
-        	// callback to the authentication service to update the user session if necessary
-        	KEWServiceLocator.getWebAuthenticationService().updateUserSession(userSession, request);
+            // callback to the authentication service to update the user session if necessary
+            KEWServiceLocator.getWebAuthenticationService().updateUserSession(userSession, request);
             if (userSession.isBackdoorInUse()) {
-                //a bad backdoorId is passed in all bets off
+                // a bad backdoorId is passed in all bets off
                 if (userSession.getWorkflowUser() == null) {
                     try {
                         userSession.setBackdoorId(userSession.getLoggedInWorkflowUser().getAuthenticationUserId().getAuthenticationId());
                     } catch (EdenUserNotFoundException e) {
-                        //realistically if we can't find the logged in user we're done.
+                        // realistically if we can't find the logged in user we're done.
                         LOG.error("Error setting backdoor id", e);
                     }
                 }
             }
 
             // Override the HttpServletRequest with one that provides
-            // our logged-in user.  This allows any engine-agnostic webapp code
+            // our logged-in user. This allows any engine-agnostic webapp code
             // that may be living in the context to obtain remote user traditionally
             LOG.debug("Wrapping servlet request: " + userSession.getNetworkId());
             request = new HttpServletRequestWrapper(request) {
@@ -110,34 +107,35 @@ public class UserLoginFilter implements Filter {
         // set up the thread local reference to the current authenticated user
         // and then forward to next filter in the chain
         try {
-			UserSession.setAuthenticatedUser(userSession);
-			if (isAuthorizedToViewResource(userSession, request)) {
-			        LOG.debug("...end UserLoginFilter.");
-				chain.doFilter(request, response);
-			} else {
-				request.getRequestDispatcher("/WEB-INF/jsp/NotAuthorized.jsp").forward(request, response);
-			}
-		} finally {
-			UserSession.setAuthenticatedUser(null);
-		}
+            UserSession.setAuthenticatedUser(userSession);
+            if (isAuthorizedToViewResource(userSession, request)) {
+                LOG.debug("...end UserLoginFilter.");
+                chain.doFilter(request, response);
+            } else {
+                request.getRequestDispatcher("/WEB-INF/jsp/NotAuthorized.jsp").forward(request, response);
+            }
+        } finally {
+            UserSession.setAuthenticatedUser(null);
+        }
 
     }
 
     /**
-	 * Checks if the user who made the request has a UserSession established
-	 *
-	 * @param request
-	 *            the HTTPServletRequest object passed in
-	 * @return true if the user session has been established, false otherwise
-	 */
+     * Checks if the user who made the request has a UserSession established
+     * 
+     * @param request
+     *            the HTTPServletRequest object passed in
+     * @return true if the user session has been established, false otherwise
+     */
     public static boolean isUserSessionEstablished(HttpServletRequest request) {
         return (request.getSession(false) != null && request.getSession(false).getAttribute(EdenConstants.USER_SESSION_KEY) != null);
     }
 
     /**
      * create a UserSession object for the workflow user
-     *
-     * @param request the servlet request
+     * 
+     * @param request
+     *            the servlet request
      * @return UserSession object if authentication was successful, null otherwise
      */
     private UserSession login(HttpServletRequest request) {
@@ -155,7 +153,7 @@ public class UserLoginFilter implements Filter {
             workflowUser = ((UserService) KEWServiceLocator.getUserService()).getWorkflowUser(id);
             LOG.debug("ending user lookup: " + workflowUser);
             UserSession userSession = new UserSession(workflowUser);
-            //load the users preferences.  The preferences action will update them if necessary
+            // load the users preferences. The preferences action will update them if necessary
             userSession.setPreferences(KEWServiceLocator.getPreferencesService().getPreferences(workflowUser));
             userSession.setGroups(KEWServiceLocator.getWorkgroupService().getUsersGroupNames(workflowUser));
             webAuthenticationService.establishInitialUserSession(userSession, request);
@@ -176,33 +174,32 @@ public class UserLoginFilter implements Filter {
     private static Set restrictedResources = new HashSet();
 
     private static boolean isAuthorizedToViewResource(UserSession userSession, HttpServletRequest request) {
-	LOG.debug("Checking authorization to view resources...");
-	try {
-	    String restrictedResourceTokens = Utilities.getApplicationConstant(EdenConstants.WORKFLOW_ADMIN_URL_KEY);
-	    if (restrictedResourceTokens == null) {
-		restrictedResourceTokens = "";
-	    }
-	    synchronized (restrictedResources) {
-		if (!currentRestrictionSet.equals(restrictedResourceTokens)) {
-		    currentRestrictionSet = restrictedResourceTokens;
-		    restrictedResources = new HashSet();
-		    StringTokenizer tokenizer = new StringTokenizer(currentRestrictionSet, " ");
-		    while (tokenizer.hasMoreTokens()) {
-			restrictedResources.add(tokenizer.nextElement());
-		    }
-		}
-	    }
-	    String requestedResource = request.getServletPath();
-	    if (restrictedResources.contains(requestedResource)) {
-		return userSession.isAdmin();
-	    } else {
-		return true;
-	    }
-	} finally {
-	    LOG.debug("...finished checking authorization to view resources.");
-	}
+        LOG.debug("Checking authorization to view resources...");
+        try {
+            String restrictedResourceTokens = Utilities.getApplicationConstant(EdenConstants.WORKFLOW_ADMIN_URL_KEY);
+            if (restrictedResourceTokens == null) {
+                restrictedResourceTokens = "";
+            }
+            synchronized (restrictedResources) {
+                if (!currentRestrictionSet.equals(restrictedResourceTokens)) {
+                    currentRestrictionSet = restrictedResourceTokens;
+                    restrictedResources = new HashSet();
+                    StringTokenizer tokenizer = new StringTokenizer(currentRestrictionSet, " ");
+                    while (tokenizer.hasMoreTokens()) {
+                        restrictedResources.add(tokenizer.nextElement());
+                    }
+                }
+            }
+            String requestedResource = request.getServletPath();
+            if (restrictedResources.contains(StringUtils.substring(requestedResource, requestedResource.lastIndexOf("/")))) {
+                return userSession.isAdmin();
+            } else {
+                return true;
+            }
+        } finally {
+            LOG.debug("...finished checking authorization to view resources.");
+        }
     }
 
-    public void destroy() {
-    }
+    public void destroy() {}
 }

@@ -27,10 +27,18 @@ import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
  *
  */
 public class KSBTestUtils {
-    
+
     public static void setMessagingToAsync() {
-	Core.getCurrentContextConfig().overrideProperty(RiceConstants.MESSAGE_DELIVERY, "async");
-	((Runnable) KSBResourceLoaderFactory.getRemoteResourceLocator()).run();
+        setupMessaging("async");
+    }
+
+    public static void setMessagingToSync() {
+        setupMessaging(RiceConstants.MESSAGING_SYNCHRONOUS);
+    }
+
+    private static void setupMessaging(String value) {
+        Core.getCurrentContextConfig().overrideProperty(RiceConstants.MESSAGE_DELIVERY, value);
+        ((Runnable) KSBResourceLoaderFactory.getRemoteResourceLocator()).run();
     }
 
 }

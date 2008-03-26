@@ -21,10 +21,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.sql.DataSource;
-import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.config.ModuleConfigurer;
@@ -35,8 +33,6 @@ import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.workflow.ojb.OjbConfigurer;
 
 import edu.iu.uis.eden.EdenConstants;
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.messaging.JavaServiceDefinition;
 
 /**
  * Configures the KEW Rice module.  KEW module initiation proceeds as follows:

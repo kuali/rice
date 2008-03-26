@@ -17,6 +17,7 @@
 package edu.iu.uis.eden.docsearch;
 
 import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
@@ -109,34 +110,33 @@ public class DocumentSearchTest extends KEWTestCase {
         DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
         DocumentSearchResultComponents result = docSearchService.getList(user, criteria);
         assertNotNull("Should have a date created value",criteria.getFromDateCreated());
-        Calendar today = Calendar.getInstance();
         Calendar criteriaDate = Calendar.getInstance();
         criteriaDate.setTime(DocSearchUtils.convertStringDateToTimestamp(criteria.getFromDateCreated()));
-        assertEquals("Criteria date minus today's date should equal the constant value", EdenConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO.doubleValue(), getDifferenceInDays(today, criteriaDate), 0);
+        assertEquals("Criteria date minus today's date should equal the constant value", EdenConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO.doubleValue(), getDifferenceInDays(criteriaDate), 0);
 
         criteria = new DocSearchCriteriaVO();
         criteria.setDocTitle("testing");
         result = docSearchService.getList(user, criteria);
         assertNotNull("Should have a date created value",criteria.getFromDateCreated());
-        today = Calendar.getInstance();
         criteriaDate = Calendar.getInstance();
         criteriaDate.setTime(DocSearchUtils.convertStringDateToTimestamp(criteria.getFromDateCreated()));
-        assertEquals("Criteria date minus today's date should equal the constant value", EdenConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO.doubleValue(), getDifferenceInDays(today, criteriaDate), 0);
+        assertEquals("Criteria date minus today's date should equal the constant value", EdenConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO.doubleValue(), getDifferenceInDays(criteriaDate), 0);
     }
 
-    private static double getDifferenceInDays(Calendar startCalendar, Calendar endCalendar) {
+    private static double getDifferenceInDays(Calendar compareDate) {
+        Calendar today = Calendar.getInstance();
         // First, get difference in whole days
-        startCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        startCalendar.set(Calendar.MINUTE, 0);
-        startCalendar.set(Calendar.SECOND, 0);
-        startCalendar.set(Calendar.MILLISECOND, 0);
+        today.set(Calendar.HOUR_OF_DAY, 0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+        today.set(Calendar.MILLISECOND, 0);
 
-        endCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        endCalendar.set(Calendar.MINUTE, 0);
-        endCalendar.set(Calendar.SECOND, 0);
-        endCalendar.set(Calendar.MILLISECOND, 0);
+        compareDate.set(Calendar.HOUR_OF_DAY, 0);
+        compareDate.set(Calendar.MINUTE, 0);
+        compareDate.set(Calendar.SECOND, 0);
+        compareDate.set(Calendar.MILLISECOND, 0);
 
-        return (endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis()) / (24 * 60 * 60 * 1000);
+        return (BigDecimal.valueOf(compareDate.getTimeInMillis()).subtract(BigDecimal.valueOf(today.getTimeInMillis()))).divide(BigDecimal.valueOf(24 * 60 * 60 * 1000.00), BigDecimal.ROUND_HALF_UP).doubleValue(); 
     }
 
 }

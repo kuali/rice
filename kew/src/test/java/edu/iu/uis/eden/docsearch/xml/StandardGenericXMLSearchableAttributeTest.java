@@ -30,7 +30,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Element;
@@ -66,6 +65,7 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routeheader.RouteHeaderService;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
+import edu.iu.uis.eden.test.TestUtilities;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -131,7 +131,6 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
 
     @Test public void testXMLStandardSearchableAttributeWithInvalidValue() throws Exception {
         String documentTypeName = "SearchDocTypeStandardSearchDataType";
-//        DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         String userNetworkId = "rkirkend";
         WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName);
 
@@ -150,6 +149,14 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
             fail("Document should be unroutable with invalid searchable attribute value");
         } catch (Exception e) {
             e.printStackTrace();
+            /*
+             * The call to TestUtilities below is needed because when exception routing spawns a new thread (see
+             * TestExceptionRoutingServiceImpl class) the next test will begin before the exception thread is complete and
+             * cause errors. This was originally discovered because the test method
+             * testXMLStandardSearchableAttributesWithDataType() would run and get errors loading xml data for workgroups
+             * perhaps because the exception thread was keeping the cache around and now allowing it to be cleared?
+             */
+            TestUtilities.waitForExceptionRouting();
         }
     }
 

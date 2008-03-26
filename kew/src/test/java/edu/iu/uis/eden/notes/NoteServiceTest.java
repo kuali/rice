@@ -29,7 +29,7 @@ import edu.iu.uis.eden.test.TestUtilities;
 
 public class NoteServiceTest extends KEWTestCase {
 		
-	@Test public void testAttachmentSave() throws Exception {		
+    @Test public void testAttachmentSave() throws Exception {
 		Note note = new Note();
 		note.setNoteAuthorWorkflowId("fakeyUser");
 		note.setRouteHeaderId(new Long(2));
@@ -62,4 +62,5 @@ public class NoteServiceTest extends KEWTestCase {
         //i'm being lazy and knowing what's in the source file
         assertEquals("Attached file content should equal source file content", "I'm an attached file", stringWriter.getBuffer().toString());
 	}
+
 }

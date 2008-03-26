@@ -48,6 +48,10 @@ INSERT INTO kr_qrtz_locks values('STATE_ACCESS')
 ;
 INSERT INTO kr_qrtz_locks values('MISFIRE_ACCESS')
 ;
+insert into SH_NTE_TYP_T (NTE_TYP_CD, NTE_TYP_DESC, NTE_TYP_ACTV_IND) values ('BO', 'DOCUMENT BUSINESS OBJECT', 'Y')
+;
+insert into SH_NTE_TYP_T (NTE_TYP_CD, NTE_TYP_DESC, NTE_TYP_ACTV_IND) values ('DH', 'DOCUMENT HEADER', 'Y')
+;
 INSERT INTO KIM_NAMESPACES_T (ID, NAME, DESCRIPTION) VALUES (1, 'KIM', 'This record represents the actual KIM system and must always be loaded by default in order for the system to work properly.') 
 ;
 insert into SH_PARM_TYP_T ("SH_PARM_TYP_CD","VER_NBR","SH_PARM_TYP_NM","ACTIVE_IND") values ('CONFG', 0,'Config',1)

@@ -157,7 +157,22 @@ public class KualiDocumentActionBase extends KualiAction {
             if ("displayActionListView".equals(formBase.getCommand())) {
                 formBase.setReturnToActionList(true);
             }
+            // This is a hack for KULRICE-1602 since the document entry is modified by a
+            // global configuration that overrides the document templates without some sort
+            // of rules or control
+            DataDictionary dataDictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
+            DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass().getName());
+
+            String attachementEnabled=
+                KNSServiceLocator.getKualiConfigurationService().getPropertyString(
+                    RiceConstants.NOTE_ATTACHMENT_ENABLED);
+            // Override the document entry
+            if (attachementEnabled != null) {
+                entry.setAllowsNoteAttachments(Boolean.parseBoolean(attachementEnabled));
+            }
+
         }
+
         t0.log();
 
         return returnForward;

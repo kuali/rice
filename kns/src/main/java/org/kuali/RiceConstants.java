@@ -135,10 +135,30 @@ public class RiceConstants extends JstlConstants {
     public static final String OVERRIDE_KEYS = "overrideKeys";
 
     // **************** Begin Note & Attachments defines
+    /**
+    * Property name for new document - Value is "newNote"
+    */
     public static final String NEW_DOCUMENT_NOTE_PROPERTY_NAME = "newNote";
+    /**
+    * Property name for note text - Value is "noteText"
+    */
     public static final String NOTE_TEXT_PROPERTY_NAME = "noteText";
+    /**
+    * Property name for note topic text - Value is "noteTopicText"
+    */
     public static final String NOTE_TOPIC_TEXT_PROPERTY_NAME = "noteTopicText";
+    /**
+    * Property name for note attachment - Value is "attachmentFile"
+    */
     public static final String NOTE_ATTACHMENT_FILE_PROPERTY_NAME = "attachmentFile";
+    /**
+     * Property name for enabling attachments to note, overriding the defaults
+     * defined by the document template - Value is "enableNoteAttachments"
+     * <p>Example: The following line defined in the application properties file
+     * <p>enableNoteAttachments=false
+     * <p>disables the attachment option in Notes & Attachment of a document
+     */
+    public static final String NOTE_ATTACHMENT_ENABLED="enableNoteAttachments";
     // **************** End Note & Attachments defines
 
     /**

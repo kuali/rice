@@ -15,8 +15,6 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<c:set var="travelAttributes" value="${DataDictionary.TravelRequest}" />
-
 <%@ attribute name="notesBo" required="false" type="java.util.List" %>
 <%-- <%@ attribute name="propPrefix" required="false" %> --%>
 <%@ attribute name="noteType" required="false" type="java.lang.Enum" %>
@@ -37,13 +35,11 @@
 	<c:set var="notesBo" value="${KualiForm.document.documentHeader.boNotes}" />
 </c:if>
 
-<c:set var="includesAttachments" value="true" />
-<c:if test="${empty allowsNoteAttachments}">
-  <c:set var="includesAttachments" value="${travelAttributes.allowsNoteAttachments}" />
-</c:if>
-
+<c:set var="documentTypeName" value="${KualiForm.document.class.name}" />
+<c:set var="documentEntry" value="${DataDictionary[documentTypeName]}" />
+<c:set var="allowsNoteAttachments" value="${documentEntry.allowsNoteAttachments}" />
 <c:set var="tabTitle" value="Notes and Attachments" />
-<c:if test="${includesAttachments eq false}">
+<c:if test="${allowsNoteAttachments eq false}">
 	<c:set var="tabTitle" value="Notes" />
 </c:if>
 
@@ -54,7 +50,7 @@
 </c:if>
 
 <c:if test="${empty displayTopicFieldInNotes}">
-  <c:set var="displayTopicFieldInNotes" value="${travelAttributes.displayTopicFieldInNotes}" />
+  <c:set var="displayTopicFieldInNotes" value="${documentEntry.displayTopicFieldInNotes}" />
 </c:if>
 
 <c:if test="${displayTopicFieldInNotes eq true}">
@@ -84,10 +80,10 @@
 
 
                     <kul:htmlAttributeHeaderCell attributeEntry="${notesAttributes.noteText}" scope="col" align="left"/>
-                    <c:if test="${includesAttachments eq true}">
+                    <c:if test="${allowsNoteAttachments eq true}">
                       <kul:htmlAttributeHeaderCell attributeEntry="${notesAttributes.attachment}" scope="col" align="left"/>
                     </c:if>
-                    <c:if test="${(not empty attachmentTypesValuesFinderClass) and (includesAttachments eq true)}">
+                    <c:if test="${(not empty attachmentTypesValuesFinderClass) and (allowsNoteAttachments eq true)}">
                       <kul:htmlAttributeHeaderCell literalLabel="Attachment Type" scope="col" align="left"/>
                     </c:if>
                     <c:if test="${allowsNoteFYI}" >
@@ -105,7 +101,7 @@
 					  <td class="infoline"><kul:htmlControlAttribute attributeEntry="${notesAttributes.noteTopicText}" property="newNote.noteTopicText" /></td>
 					</c:if>
                     <td class="infoline"><kul:htmlControlAttribute attributeEntry="${notesAttributes.noteText}" property="newNote.noteText" /></td>
-                    <c:if test="${includesAttachments eq true}">
+                    <c:if test="${allowsNoteAttachments eq true}">
                       <td class="infoline">
                         <div align="center"><br />
                         <html:file property="attachmentFile" size="30" value="" /><br /><br />
@@ -113,7 +109,7 @@
                         </div>
                       </td>
 					</c:if>
-                    <c:if test="${(not empty attachmentTypesValuesFinderClass) and (includesAttachments eq true)}">
+                    <c:if test="${(not empty attachmentTypesValuesFinderClass) and (allowsNoteAttachments eq true)}">
 					              <c:set var="finderClass" value="${fn:replace(DataDictionary.KualiBudgetDocument.attachmentTypesValuesFinderClass,'.','|')}"/>
 					              <td class="infoline">
 					                  <html:select property="newNote.attachment.attachmentTypeCode">
@@ -165,7 +161,7 @@
                                     <html:hidden property="${propPrefix}boNote[${status.index}].attachment.objectId"/>
                                     <html:hidden property="${propPrefix}boNote[${status.index}].attachment.attachmentTypeCode"/>
 
-                                    <c:if test="${includesAttachments eq true}">
+                                    <c:if test="${allowsNoteAttachments eq true}">
                                       <html:image property="methodToCall.downloadBOAttachment.attachment[${status.index}]" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
                                       <html:hidden write="true" property="${propPrefix}boNote[${status.index}].attachment.attachmentFileName" />
                                       &nbsp;
@@ -178,7 +174,7 @@
                                     </c:if>
                                   </td>
 
-                                  <c:if test="${(not empty attachmentTypesValuesFinderClass) and (includesAttachments eq true)}">
+                                  <c:if test="${(not empty attachmentTypesValuesFinderClass) and (allowsNoteAttachments eq true)}">
                                      <td class="datacell center">
                                      &nbsp;
                                        <c:set var="attachmentTypeFinderMap" value="${KualiForm.validOptionsMap[finderClass]}"  />
@@ -190,7 +186,7 @@
                                 </c:when>
                                 <c:otherwise>
                                     <td class="datacell center">&nbsp;</td>
-                                    <c:if test="${(not empty attachmentTypesValuesFinderClass) and (includesAttachments eq true)}">
+                                    <c:if test="${(not empty attachmentTypesValuesFinderClass) and (allowsNoteAttachments eq true)}">
                                         <td class="datacell center">&nbsp;</td>
                                     </c:if>
                                 </c:otherwise>

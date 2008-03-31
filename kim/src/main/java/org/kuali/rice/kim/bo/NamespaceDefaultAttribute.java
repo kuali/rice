@@ -19,10 +19,10 @@ import java.util.LinkedHashMap;
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 
 /**
- * A NamespaceDefaultAttribute represents a single meta-data attribute in the system that shows up on 
- * the Entity maintenance screen when that Entity is given permissions to use functionality 
+ * A NamespaceDefaultAttribute represents a single meta-data attribute in the system that shows up on
+ * the Entity maintenance screen when that Entity is given permissions to use functionality
  * within a certain Namespace in the system.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
@@ -34,6 +34,8 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
 	private String description;
 	private boolean required;
 	private boolean active;
+
+	private AttributeType attributeType;
 
 	public String getAttributeName() {
 		return attributeName;
@@ -61,7 +63,7 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
 
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
 	 */
 	protected LinkedHashMap<String, Object> toStringMapper() {
@@ -110,5 +112,13 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public AttributeType getAttributeType() {
+        return this.attributeType;
+    }
+
+    public void setAttributeType(AttributeType attributeType) {
+        this.attributeType = attributeType;
     }
 }

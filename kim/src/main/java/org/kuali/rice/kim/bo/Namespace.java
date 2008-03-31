@@ -28,8 +28,9 @@ public class Namespace extends PersistableBusinessObjectBase {
 	private String description;
 
     private ArrayList<NamespaceDefaultAttribute> namespaceAttributes = new TypedArrayList(NamespaceDefaultAttribute.class);
+    private ArrayList<Permission> namespacePermissions = new TypedArrayList(Permission.class);
 
-	public Long getId() {
+    public Long getId() {
 	    return this.id;
 	}
 
@@ -71,5 +72,13 @@ public class Namespace extends PersistableBusinessObjectBase {
 
     public void setNamespaceAttributes(ArrayList<NamespaceDefaultAttribute> namespaceAttributes) {
         this.namespaceAttributes = namespaceAttributes;
+    }
+
+    public ArrayList<Permission> getNamespacePermissions() {
+        return this.namespacePermissions;
+    }
+
+    public void setNamespacePermissions(ArrayList<Permission> namespacePermissions) {
+        this.namespacePermissions = namespacePermissions;
     }
 }

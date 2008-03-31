@@ -20,10 +20,10 @@ import java.util.LinkedHashMap;
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 
 /**
- * This business object represents the entity of Permission.  The ability to perform actions in a system/application 
- * is tied to permissions as these are what get checked against in the application.  A permission should describe the ability to 
- * take a certain action within a system. 
- * 
+ * This business object represents the entity of Permission.  The ability to perform actions in a system/application
+ * is tied to permissions as these are what get checked against in the application.  A permission should describe the ability to
+ * take a certain action within a system.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Permission extends PersistableBusinessObjectBase {
@@ -32,17 +32,18 @@ public class Permission extends PersistableBusinessObjectBase {
 	private Long id;
 	private String name;
 	private String description;
+	private Long namespaceId;
 	private Namespace namespace;
-	
+
 	/**
 	 * Retrieves the associated application instance for a permission instance.
-	 * 
+	 *
 	 * @return Application
 	 */
 
 	/**
 	 * This method returns the description of a permission instance.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getDescription() {
@@ -51,7 +52,7 @@ public class Permission extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method sets the description of a permission instance.
-	 * 
+	 *
 	 * @param description
 	 */
 	public void setDescription(String description) {
@@ -60,7 +61,7 @@ public class Permission extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method returns the unique identifier (primary key) for a permission instance.
-	 * 
+	 *
 	 * @return Long
 	 */
 	public Long getId() {
@@ -69,7 +70,7 @@ public class Permission extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method sets the value of the primary key for a permission instance.
-	 * 
+	 *
 	 * @param id
 	 */
 	public void setId(Long id) {
@@ -77,9 +78,9 @@ public class Permission extends PersistableBusinessObjectBase {
 	}
 
 	/**
-	 * This method returns the name of the permission, which is also a unique identifier when combined 
+	 * This method returns the name of the permission, which is also a unique identifier when combined
 	 * with the associated application.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getName() {
@@ -88,7 +89,7 @@ public class Permission extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method sets the name of the permission instance.
-	 * 
+	 *
 	 * @param name
 	 */
 	public void setName(String name) {
@@ -120,5 +121,13 @@ public class Permission extends PersistableBusinessObjectBase {
 	public void setNamespace(Namespace namespace) {
 	    this.namespace = namespace;
 	}
+
+    public Long getNamespaceId() {
+        return this.namespaceId;
+    }
+
+    public void setNamespaceId(Long namespaceId) {
+        this.namespaceId = namespaceId;
+    }
 
 }

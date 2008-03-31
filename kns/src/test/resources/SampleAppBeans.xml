@@ -98,7 +98,8 @@
                             <value>classpath:org/kuali/rice/kom/bo/datadictionary/OrganizationContext.xml</value>
                             <value>classpath:org/kuali/rice/kom/document/datadictionary/OrganizationMaintenanceDocument.xml</value>
                             <value>classpath:org/kuali/rice/kom/document/datadictionary/OrganizationContextMaintenanceDocument.xml</value>
-                            <value>classpath:org/kuali/rice/kom/document/datadictionary/OrganizationCategoryMaintenanceDocument.xml</value>
+                            <value>classpath:org/kuali/rice/kim/bo/datadictionary/Permission.xml</value>
+                            <value>classpath:org/kuali/rice/kim/document/datadictionary/PermissionMaintenanceDocument.xml</value>
  						</list>
 					</property>
 					<property name="databaseRepositoryFilePaths">

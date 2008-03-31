@@ -53,6 +53,33 @@
                     <maintainableField name="description" readOnly="false" required="true" />
                 </maintainableItems>
             </maintainableSection>
+
+            <maintainableSection title="Default Namespace Attributes">
+              <maintainableItems>
+                <maintainableCollection name="namespaceAttributes"
+                  businessObjectClass="org.kuali.rice.kim.bo.NamespaceDefaultAttribute">
+                  <maintainableField name="id" readOnly="true" required="true" />
+                  <maintainableField name="attributeTypeId" required="true" />
+                  <maintainableField name="attributeName" required="true" />
+                  <maintainableField name="description" required="true" />
+                  <maintainableField name="required" required="true" />
+                  <maintainableField name="active" required="true" />
+                 </maintainableCollection>
+              </maintainableItems>
+            </maintainableSection>
+
+            <maintainableSection title="Namespace Permissions">
+              <maintainableItems>
+                <maintainableCollection name="namespacePermissions"
+                  businessObjectClass="org.kuali.rice.kim.bo.Permission">
+                  <maintainableField name="id" readOnly="true" required="true" />
+                  <maintainableField name="name" required="true" />
+                  <maintainableField name="description" required="true" />
+                  <maintainableField name="namespaceId" required="true" />
+                 </maintainableCollection>
+              </maintainableItems>
+            </maintainableSection>
+
         </maintainableSections>
     </maintenanceDocument>
 </dictionaryEntry>

@@ -23,7 +23,7 @@
 	  <property name="forceShutdown" value="true"/>
 	  <property name="transactionTimeout" value="${transaction.timeout}"/>
 	</bean>
-  
+
     <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
       <property name="transactionTimeout" value="${transaction.timeout}"/>
     </bean>
@@ -96,6 +96,8 @@
                             <value>classpath:org/kuali/rice/kom/document/datadictionary/OrganizationMaintenanceDocument.xml</value>
                             <value>classpath:org/kuali/rice/kom/document/datadictionary/OrganizationContextMaintenanceDocument.xml</value>
                             <value>classpath:org/kuali/rice/kom/document/datadictionary/OrganizationCategoryMaintenanceDocument.xml</value>
+                            <value>classpath:org/kuali/rice/kim/bo/datadictionary/Permission.xml</value>
+                            <value>classpath:org/kuali/rice/kim/document/datadictionary/PermissionMaintenanceDocument.xml</value>
 						</list>
 					</property>
 				</bean>

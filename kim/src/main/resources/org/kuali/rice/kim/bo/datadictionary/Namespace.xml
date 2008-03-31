@@ -31,17 +31,30 @@
         				<field attributeName="description" />
         			</inquiryFields>
         		</inquirySection>
-        		<inquirySection title="Attributes">
+        		<inquirySection title="Default Namespace Attributes">
         			<inquiryFields>
-        				<inquiryCollection name="NamespaceAttributes"
+        				<inquiryCollection name="namespaceAttributes"
         					businessObjectClass="org.kuali.rice.kim.bo.NamespaceDefaultAttribute">
         					<field attributeName="id" />
         					<field attributeName="attributeTypeId" />
         					<field attributeName="attributeName" />
-        					<field attributeName="description" />
+                            <field attributeName="description" />
+                            <field attributeName="required" />
+        					<field attributeName="active" />
         				</inquiryCollection>
         			</inquiryFields>
         		</inquirySection>
+            <inquirySection title="Namespace Permissions">
+                    <inquiryFields>
+                        <inquiryCollection name="namespacePermissions"
+                            businessObjectClass="org.kuali.rice.kim.bo.Permission">
+                            <field attributeName="id" />
+                            <field attributeName="name" />
+                            <field attributeName="description" />
+                            <field attributeName="namespaceId" />
+                       </inquiryCollection>
+                    </inquiryFields>
+                </inquirySection>
         	</inquirySections>
         </inquiry>
 
@@ -117,12 +130,18 @@
         </attributes>
 
         <collections>
-        	<collection name="NamespaceAttributes">
-        		<label>Namespace Default Attributes</label>
-        		<shortLabel>Attributes</shortLabel>
-        		<summary>Namespace Default Attributes Attributes</summary>
-        		<description>Attributes of this namespace</description>
-        	</collection>
+          <collection name="namespaceAttributes">
+            <label>Namespace Default Attributes</label>
+            <shortLabel>Attributes</shortLabel>
+            <summary>Namespace Default Attributes Attributes</summary>
+            <description>Attributes of this namespace</description>
+          </collection>
+          <collection name="namespacePermissions">
+            <label>Namespace Permissions</label>
+            <shortLabel>Permissions</shortLabel>
+            <summary>Namespace Permissions</summary>
+            <description>Permissions of this namespace</description>
+          </collection>
         </collections>
 
         <objectLabel>Namespace</objectLabel>

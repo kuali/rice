@@ -53,6 +53,17 @@
                     <maintainableField name="versionNumber" />
                 </maintainableItems>
             </maintainableSection>
+            <maintainableSection title="Permissions for Role">
+				<maintainableItems>
+					<maintainableCollection name="permissions"
+						businessObjectClass="org.kuali.rice.kim.bo.Permission" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Permission" sourceAttributeName="permissions" includeAddLine="true" summaryTitle="Permissions for Role">
+						<maintainableField name="id" required="true"
+							readOnlyAfterAdd="true" template="id" />
+						<maintainableField name="name" required="false" readOnly="true" template="name"/>
+						<maintainableField name="namespaceId" required="false" readOnly="true" template="namespaceId"/>
+					</maintainableCollection>
+				</maintainableItems>
+			</maintainableSection>
             <maintainableSection title="Principals with Role">
 				<maintainableItems>
 					<maintainableCollection name="principals"
@@ -60,7 +71,7 @@
 						<maintainableField name="id" required="true"
 							readOnlyAfterAdd="true" template="id" />
 						<maintainableField name="name" required="false" readOnly="true" template="name"/>
-						<maintainableField name="entityId" required="false" readOnly="true" template="entity.name"/>
+						<maintainableField name="entityId" required="false" readOnly="true" template="entityId"/>
 					</maintainableCollection>
 				</maintainableItems>
 			</maintainableSection>

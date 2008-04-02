@@ -33,6 +33,7 @@ public class Role extends PersistableBusinessObjectBase {
 	private Long id;
 	private String name;
 	private String description;
+	private ArrayList<Group> permissions;
 	private ArrayList<Group> groups;
 	private ArrayList<Principal> principals;
 	
@@ -42,6 +43,7 @@ public class Role extends PersistableBusinessObjectBase {
 	 *
 	 */
 	public Role() {
+	    this.permissions = new TypedArrayList(Permission.class);
 	    this.groups = new TypedArrayList(Group.class);
 	    this.principals = new TypedArrayList(Principal.class);
 	}
@@ -126,6 +128,20 @@ public class Role extends PersistableBusinessObjectBase {
      */
     public void setPrincipals(ArrayList<Principal> principals) {
         this.principals = principals;
+    }
+    
+    /**
+     * @return the permissions
+     */
+    public ArrayList<Group> getPermissions() {
+        return this.permissions;
+    }
+
+    /**
+     * @param permissions the permissions to set
+     */
+    public void setPermissions(ArrayList<Group> permissions) {
+        this.permissions = permissions;
     }
 
     /**

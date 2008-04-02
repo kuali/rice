@@ -101,6 +101,14 @@
         </attributes>
         
         <collections>
+            <collection name="permissions">
+        		<label>Permissions with Role</label>
+        		<shortLabel>Permissions</shortLabel>
+        		<summary>These are the permissions that are aggregated by this role.</summary>
+        		<description>
+        			Permissions given to anyone/anything with this Role.
+        		</description>
+        	</collection>
         	<collection name="groups">
         		<label>Groups with Role</label>
         		<shortLabel>Groups</shortLabel>

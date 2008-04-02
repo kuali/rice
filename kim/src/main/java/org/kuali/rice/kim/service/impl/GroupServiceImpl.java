@@ -84,6 +84,26 @@ public class GroupServiceImpl implements GroupService {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         return null;
     }
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.GroupService#getGroupParentNames(java.lang.String)
+     */
+    public List<String> getGroupParentNames(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.GroupService#getGroupParents(java.lang.String)
+     */
+    public List<GroupDTO> getGroupParents(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
 
     /**
      * This overridden method ...

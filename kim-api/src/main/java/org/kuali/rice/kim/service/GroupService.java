@@ -129,6 +129,26 @@ public interface GroupService {
     public List<String> getGroupMemberNames(String groupName);
     
     /**
+     * KIM Group service API method that returns all Group objects that are considered parent groups 
+     * of a given group.
+     * 
+     * @param   groupName            name identifying Group
+     * @return                       List of GroupDTO objects considered parents of the group
+     * 
+     */
+    public List<GroupDTO> getGroupParents(String groupName);
+    
+    /**
+     * KIM Group service API method that returns all Group names that are considered parents 
+     * of a given group.
+     * 
+     * @param   groupName            name identifying Group
+     * @return                       List of Group names considered parents of the group
+     * 
+     */
+    public List<String> getGroupParentNames(String groupName);
+    
+    /**
      * KIM Group service API method that returns all Role objects associated 
      * with a given Group.
      * 

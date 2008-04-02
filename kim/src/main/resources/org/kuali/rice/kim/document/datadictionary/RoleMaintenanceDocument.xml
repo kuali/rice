@@ -45,7 +45,7 @@
 		<allowsNewOrCopy>true</allowsNewOrCopy>
 		
         <maintainableSections>
-            <maintainableSection title="Edit Role">
+            <maintainableSection title="Role Information">
                 <maintainableItems>
                     <maintainableField name="id" required="true" readOnly="true" />
                     <maintainableField name="name" required="true" />
@@ -53,6 +53,27 @@
                     <maintainableField name="versionNumber" />
                 </maintainableItems>
             </maintainableSection>
+            <maintainableSection title="Principals with Role">
+				<maintainableItems>
+					<maintainableCollection name="principals"
+						businessObjectClass="org.kuali.rice.kim.bo.Principal" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Principal" sourceAttributeName="principals" includeAddLine="true" summaryTitle="Principals with Role">
+						<maintainableField name="id" required="true"
+							readOnlyAfterAdd="true" template="id" />
+						<maintainableField name="name" required="false" readOnly="true" template="name"/>
+						<maintainableField name="entityId" required="false" readOnly="true" template="entity.name"/>
+					</maintainableCollection>
+				</maintainableItems>
+			</maintainableSection>
+            <maintainableSection title="Groups with Role">
+				<maintainableItems>
+					<maintainableCollection name="groups"
+						businessObjectClass="org.kuali.rice.kim.bo.Group" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="groups" includeAddLine="true" summaryTitle="Groups with Role">
+						<maintainableField name="id" required="true"
+							readOnlyAfterAdd="true" template="id" />
+						<maintainableField name="name" required="false" readOnly="true" template="name"/>
+					</maintainableCollection>
+				</maintainableItems>
+			</maintainableSection>
         </maintainableSections>
     </maintenanceDocument>
 </dictionaryEntry>

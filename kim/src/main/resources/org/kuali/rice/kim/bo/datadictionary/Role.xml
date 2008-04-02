@@ -99,6 +99,34 @@
             <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
 			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
         </attributes>
+        
+        <collections>
+        	<collection name="groups">
+        		<label>Groups with Role</label>
+        		<shortLabel>Groups</shortLabel>
+        		<summary>These are groups that have this role.</summary>
+        		<description>
+        			Groups that are given this Role.
+        		</description>
+        	</collection>
+        	<collection name="principals">
+        		<label>Principals with Role</label>
+        		<shortLabel>Principals</shortLabel>
+        		<summary>These are the principals with this role.</summary>
+        		<description>
+        			Principals that are given this Role.
+        		</description>
+        	</collection>
+        	<!-- collection name="groupAttributes">
+        		<label>Group Attributes</label>
+        		<shortLabel>Attributes</shortLabel>
+        		<summary>Group Attributes</summary>
+        		<description>
+        			Attributes of this group
+        		</description>
+        	</collection -->
+        </collections>
+
         <objectLabel>Role</objectLabel>
     </businessObject>
 </dictionaryEntry>

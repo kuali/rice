@@ -72,10 +72,9 @@
               <maintainableItems>
                 <maintainableCollection name="namespacePermissions"
                   businessObjectClass="org.kuali.rice.kim.bo.Permission">
-                  <maintainableField name="id" readOnly="true" required="true" />
-                  <maintainableField name="name" required="true" />
+                   <maintainableField name="id" readOnly="true" required="true" />
+                   <maintainableField name="name" required="true" />
                   <maintainableField name="description" required="true" />
-                  <maintainableField name="namespaceId" required="true" />
                  </maintainableCollection>
               </maintainableItems>
             </maintainableSection>

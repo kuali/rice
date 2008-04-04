@@ -125,7 +125,7 @@
         </start>
       </routeNodes>
     </documentType>
-    
+
     <documentType>
       <name>KIMEntityTypeMaintenanceDocument</name>
       <description>Create or Update a EntityType</description>
@@ -150,7 +150,7 @@
         </start>
       </routeNodes>
     </documentType>
-    
+
     <documentType>
       <name>KIMEntityMaintenanceDocument</name>
       <description>Create or Update a Entity</description>
@@ -175,6 +175,6 @@
         </start>
       </routeNodes>
     </documentType>
-    
+
   </documentTypes>
 </data>

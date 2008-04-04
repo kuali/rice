@@ -25,12 +25,13 @@
 
             <inquirySections><inquirySection title="Header Text"><inquiryFields>
                 <field attributeName="id" />
-                <field attributeName="namespaceId" />
                 <field attributeName="attributeTypeId" />
                 <field attributeName="attributeName" />
                 <field attributeName="description" />
                 <field attributeName="required" />
                 <field attributeName="active" />
+                <field attributeName="attributeType.attributeTypeName" />
+                <field attributeName="namespace.name" />
             </inquiryFields></inquirySection></inquirySections>
         </inquiry>
 
@@ -41,7 +42,7 @@
 
             <defaultSort sortAscending="true">
                 <sortAttributes>
-                    <sortAttribute attributeName="description" />
+                    <sortAttribute attributeName="attributeName" />
                 </sortAttributes>
             </defaultSort>
 
@@ -57,12 +58,12 @@
 
             <resultFields>
                 <field attributeName="id" />
-                <field attributeName="namespaceId" />
-               <field attributeName="attributeTypeId" />
                <field attributeName="attributeName" />
                <field attributeName="description" />
                <field attributeName="required" />
                <field attributeName="active" />
+               <field attributeName="attributeType.attributeTypeName" />
+               <field attributeName="namespace.name" />
             </resultFields>
         </lookup>
 
@@ -76,11 +77,9 @@
 
                 <maxLength>8</maxLength>
                 <validationPattern><anyCharacter /></validationPattern>
-
                 <control>
-                    <text size="8" />
+                 <text size="8"/>
                 </control>
-
 			</attribute>
 
            <attribute name="attributeName" forceUppercase="false">
@@ -98,6 +97,30 @@
            <attribute name="description" forceUppercase="false">
                 <label>Description</label>
                 <shortLabel>Description</shortLabel>
+
+                <maxLength>4000</maxLength>
+                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
+
+                <control>
+                    <text size="100" />
+                </control>
+
+            </attribute>
+           <attribute name="attributeType.attributeTypeName" forceUppercase="false">
+                <label>Attribute</label>
+                <shortLabel>Attr</shortLabel>
+
+                <maxLength>4000</maxLength>
+                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
+
+                <control>
+                    <text size="100" />
+                </control>
+
+            </attribute>
+           <attribute name="namespace.name" forceUppercase="false">
+                <label>Namespace</label>
+                <shortLabel>Namespace</shortLabel>
 
                 <maxLength>4000</maxLength>
                 <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
@@ -127,33 +150,35 @@
 
             </attribute>
 
-           <attributeReference name="namespaceId"
-            sourceClassName="org.kuali.rice.kim.bo.Namespace"
-            sourceAttributeName="id">
-            <label>Namespace ID</label>
-            <required>true</required>
-            <control>
-                <select
-                    valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-                    businessObjectClass="org.kuali.rice.kim.bo.Namespace"
-                    keyAttribute="id" labelAttribute="name"
-                    includeKeyInLabel="true" />
-            </control>
-           </attributeReference>
+            <attributeReference name="attributeTypeId"
+                sourceAttributeName="id"
+                sourceClassName="org.kuali.rice.kim.bo.AttributeType">
+                <label>Attribute Type Name</label>
+                <shortLabel>Type Name</shortLabel>
+                <required>true</required>
+                <control>
+                    <select
+                        valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+                        businessObjectClass="org.kuali.rice.kim.bo.AttributeType"
+                        keyAttribute="id" labelAttribute="attributeTypeName"
+                        includeKeyInLabel="true" />
+                </control>
+            </attributeReference>
 
-           <attributeReference name="attributeTypeId"
-           	sourceClassName="org.kuali.rice.kim.bo.AttributeType"
-           	sourceAttributeName="id">
-           	<label>Attribute Type ID</label>
-           	<required>true</required>
-           	<control>
-           		<select
-           			valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-           			businessObjectClass="org.kuali.rice.kim.bo.AttributeType"
-           			keyAttribute="id" labelAttribute="attributeTypeName"
-           			includeKeyInLabel="false" />
-           	</control>
-           </attributeReference>
+            <attributeReference name="namespaceId"
+                sourceAttributeName="id"
+                sourceClassName="org.kuali.rice.kim.bo.Namespace">
+                <label>Associated Group</label>
+                <shortLabel>Group</shortLabel>
+                <required>true</required>
+                <control>
+                    <select
+                        valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+                        businessObjectClass="org.kuali.rice.kim.bo.Namespace"
+                        keyAttribute="id" labelAttribute="name"
+                        includeKeyInLabel="true" />
+                </control>
+            </attributeReference>
 
            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
            <attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />

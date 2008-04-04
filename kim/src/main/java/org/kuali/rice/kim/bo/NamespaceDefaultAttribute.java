@@ -36,6 +36,7 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
 	private boolean active;
 
 	private AttributeType attributeType;
+	private Namespace namespace;
 
 	public String getAttributeName() {
 		return attributeName;
@@ -120,5 +121,13 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
 
     public void setAttributeType(AttributeType attributeType) {
         this.attributeType = attributeType;
+    }
+
+    public Namespace getNamespace() {
+        return this.namespace;
+    }
+
+    public void setNamespace(Namespace namespace) {
+        this.namespace = namespace;
     }
 }

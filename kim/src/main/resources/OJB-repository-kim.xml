@@ -129,11 +129,16 @@
         <field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR"/>
         <field-descriptor name="required" column="REQUIRED" jdbc-type="VARCHAR"  conversion="org.kuali.core.util.OjbCharBooleanConversion"/>
         <field-descriptor name="active" column="ACTIVE" jdbc-type="VARCHAR"  conversion="org.kuali.core.util.OjbCharBooleanConversion"/>
+
+        <!-- common fields -->
         <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 
         <reference-descriptor name="attributeType" class-ref="org.kuali.rice.kim.bo.AttributeType" auto-retrieve="true" auto-update="none" auto-delete="none">
             <foreignkey field-ref="attributeTypeId" />
+        </reference-descriptor>
+        <reference-descriptor name="namespace" class-ref="org.kuali.rice.kim.bo.Namespace" auto-retrieve="true" auto-update="none" auto-delete="none">
+            <foreignkey field-ref="namespaceId" />
         </reference-descriptor>
     </class-descriptor>
 
@@ -158,9 +163,11 @@
         <field-descriptor name="namespaceId" column="NAMESPACE_ID" jdbc-type="BIGINT" />
         <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+
         <reference-descriptor name="namespace" class-ref="org.kuali.rice.kim.bo.Namespace" auto-retrieve="true" auto-update="none" auto-delete="none">
             <foreignkey field-ref="namespaceId" />
         </reference-descriptor>
+
     </class-descriptor>
 
     <class-descriptor class="org.kuali.rice.kim.bo.EntityType" table="KIM_ENTITY_TYPES_T">

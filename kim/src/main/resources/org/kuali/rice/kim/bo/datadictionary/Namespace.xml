@@ -51,8 +51,7 @@
                             <field attributeName="id" />
                             <field attributeName="name" />
                             <field attributeName="description" />
-                            <field attributeName="namespaceId" />
-                       </inquiryCollection>
+                         </inquiryCollection>
                     </inquiryFields>
                 </inquirySection>
         	</inquirySections>

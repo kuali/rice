@@ -182,7 +182,7 @@ public final class Util {
         //StreamSource xslsource = xslresolver.resolveXslFromFile(xslpath);
         StreamSource xslsource = xslresolver.resolveXslFromString(xsl);
         String content = notification.getContent();
-        LOG.info("xslsource:"+xslsource.toString());
+        LOG.debug("xslsource:"+xslsource.toString());
         
         String contenthtml = new String();
         try {
@@ -448,7 +448,7 @@ public final class Util {
      * @throws IllegalArgumentException
      */
     public static <T> T retrieveFieldReference(String fieldName, String keyName, String keyValue, Class clazz, GenericDao boDao) throws IllegalArgumentException {
-        LOG.info(fieldName + " key value: " + keyValue);
+        LOG.debug(fieldName + " key value: " + keyValue);
         if (StringUtils.isBlank(keyValue)) {
             throw new IllegalArgumentException(fieldName + " must be specified in notification");
         }

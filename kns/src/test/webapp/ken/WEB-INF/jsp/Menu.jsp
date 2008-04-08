@@ -43,14 +43,14 @@
 						<td width="100%"><a href="HomePage.form" >My Notifications</a></td>
 						<td><img src="images/transparent_002.gif" height="1" width="1"></td>
 					</tr>
-					<tr>
-						<td width="100%"><a href="NotificationsSent.form" >My Sent Notifications</a></td>
-						<td><img src="images/transparent_002.gif" height="1" width="1"></td>
-					</tr>
                     <tr>
                         <td width="100%"><a href="Outbox.form">My Outbox</a></td>
                         <td><img src="images/transparent_002.gif" height="1" width="1"></td>
                     </tr>
+					<tr>
+						<td width="100%"><a href="NotificationsSent.form" >My Sent Notifications</a></td>
+						<td><img src="images/transparent_002.gif" height="1" width="1"></td>
+					</tr>
                     <tr>
 						<td width="100%"><a href="Search.form" >Search</a></td>
 						<td><img src="images/transparent_002.gif" height="1" width="1"></td>

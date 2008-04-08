@@ -77,7 +77,8 @@
         </property>
       <property name="mappings">
          <props>
-            <prop key="${prefix}/HomePage.form">notificationController</prop>
+            <prop key="${prefix}/HomePage.form">homePage</prop>
+            <prop key="${prefix}/Outbox.form">outboxPage</prop>
             <prop key="${prefix}/NotificationsSent.form">notificationController</prop>
             <prop key="${prefix}/Search.form">notificationController</prop>
             <prop key="${prefix}/DetailView.form">notificationController</prop>
@@ -107,6 +108,14 @@
             <prop key="${prefix}/KCBDelivererPreferences.form">kcbDelivererPrefs</prop>
          </props>
       </property>
+   </bean>
+   
+   <bean id="homePage" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+       <property name="viewName" value="HomePage"/>
+   </bean>
+
+   <bean id="outboxPage" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+       <property name="viewName" value="Outbox"/>
    </bean>
 
    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">

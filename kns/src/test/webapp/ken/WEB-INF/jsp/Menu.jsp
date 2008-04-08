@@ -41,33 +41,27 @@
 				<tbody>
 					<tr>
 						<td width="100%"><a href="HomePage.form" >My Notifications</a></td>
-
-						<td><img src="images/transparent_002.gif" height="1"
-							width="1"></td>
+						<td><img src="images/transparent_002.gif" height="1" width="1"></td>
 					</tr>
 					<tr>
 						<td width="100%"><a href="NotificationsSent.form" >My Sent Notifications</a></td>
-
-						<td><img src="images/transparent_002.gif" height="1"
-							width="1"></td>
+						<td><img src="images/transparent_002.gif" height="1" width="1"></td>
 					</tr>
                     <tr>
+                        <td width="100%"><a href="Outbox.form">My Outbox</a></td>
+                        <td><img src="images/transparent_002.gif" height="1" width="1"></td>
+                    </tr>
+                    <tr>
 						<td width="100%"><a href="Search.form" >Search</a></td>
-
-						<td><img src="images/transparent_002.gif" height="1"
-							width="1"></td>
+						<td><img src="images/transparent_002.gif" height="1" width="1"></td>
 					</tr>
                		<tr>
                         <td width="100%"><a href="LookupUsers.form" >Look Up Users</a></td>
-
-                        <td><img src="images/transparent_002.gif" height="1"
-                           width="1"></td>
+                        <td><img src="images/transparent_002.gif" height="1" width="1"></td>
                     </tr>
                     <tr>
                         <td width="100%"><a href="LookupWorkgroups.form" >Look Up Workgroups</a></td>
-
-                        <td><img src="images/transparent_002.gif" height="1"
-                           width="1"></td>
+                        <td><img src="images/transparent_002.gif" height="1" width="1"></td>
                     </tr>
                     <tr>
                     <td><img src="images/transparent_002.gif" height="1" width="1"></td>
@@ -83,25 +77,17 @@
                         <td><img src="images/transparent_002.gif" height="1" width="1"></td>
                     </tr>
                     <tr>
-                        <td width="100%"><img src="images/transparent_002.gif" height="1"
-                           width="4"><a href="DisplayUserPreferences.form" >Channel Subscriptions</a></td>
-
-                        <td><img src="images/transparent_002.gif" height="1"
-                           width="1"></td>
+                        <td width="100%"><img src="images/transparent_002.gif" height="1" width="4"><a href="DisplayUserPreferences.form" >Channel Subscriptions</a></td>
+                        <td><img src="images/transparent_002.gif" height="1" width="1"></td>
                     </tr>
                     <tr>
-                        <td width="100%"><img src="images/transparent_002.gif" height="1"
-                           width="4"><a href="KCBDelivererPreferences.form">Delivery Types</a></td>
-
-                        <td><img src="images/transparent_002.gif" height="1"
-                           width="1"></td>
+                        <td width="100%"><img src="images/transparent_002.gif" height="1" width="4"><a href="KCBDelivererPreferences.form">Delivery Types</a></td>
+                        <td><img src="images/transparent_002.gif" height="1" width="1"></td>
                     </tr>
                     <tr>
-                        <td width="100%"><img src="images/transparent_002.gif" height="1"
-                           width="4"><a href="DisplayActionListPreferences.form" >Action List Preferences</a></td>
+                        <td width="100%"><img src="images/transparent_002.gif" height="1" width="4"><a href="DisplayActionListPreferences.form" >Action List Preferences</a></td>
 
-                        <td><img src="images/transparent_002.gif" height="1"
-                           width="1"></td>
+                        <td><img src="images/transparent_002.gif" height="1" width="1"></td>
                     </tr>
                     					 
                     <tr>
@@ -118,13 +104,11 @@
                     	<td><img src="images/transparent_002.gif" height="1" width="1"></td>
                     </tr>
                     <tr>
-                       <td width="100%"><img src="images/transparent_002.gif" height="1"
-                           width="4"><a href="SendSimpleNotificationMessage.form" >Simple Notification</a></td>
+                       <td width="100%"><img src="images/transparent_002.gif" height="1" width="4"><a href="SendSimpleNotificationMessage.form" >Simple Notification</a></td>
                        <td><img src="images/transparent_002.gif" height="1" width="1"></td>
                     </tr>
                     <tr>
-                       <td width="100%"><img src="images/transparent_002.gif" height="1"
-                           width="4"><a href="SendEventNotificationMessage.form" >Event Notification</a></td>
+                       <td width="100%"><img src="images/transparent_002.gif" height="1" width="4"><a href="SendEventNotificationMessage.form" >Event Notification</a></td>
                        <td><img src="images/transparent_002.gif" height="1" width="1"></td>
                     </tr>
                     <tr>
@@ -145,27 +129,20 @@
                         </tr>
     
                         <tr>
-                            <td width="100%"><img src="images/transparent_002.gif" height="1"
-                               width="4"><a href="ContentTypeManager.form" >Manage Content Types</a></td>
-    
-                            <td><img src="images/transparent_002.gif" height="1"
-                               width="1"></td>
+                            <td width="100%"><img src="images/transparent_002.gif" height="1" width="4"><a href="ContentTypeManager.form" >Manage Content Types</a></td>
+                            <td><img src="images/transparent_002.gif" height="1" width="1"></td>
                         </tr>
                     </c:if>
 				</tbody>
 			</table>
 			</td>
-			<td class="channelrightborder"><img
-				src="images/transparent_002.gif" alt="" width="1" height="1"></td>
+			<td class="channelrightborder"><img src="images/transparent_002.gif" alt="" width="1" height="1"></td>
 		</tr>
 		<tr>
-			<td><img src="images/bottomleftcorner.gif" alt="" width="6"
-				height="6"></td>
+			<td><img src="images/bottomleftcorner.gif" alt="" width="6" height="6"></td>
 
-			<td class="bottomborder"><img
-				src="images/transparent_002.gif" alt="" width="1" height="1"></td>
-			<td><img src="images/bottomrightcorner.gif" alt="" width="6"
-				height="6"></td>
+			<td class="bottomborder"><img src="images/transparent_002.gif" alt="" width="1" height="1"></td>
+			<td><img src="images/bottomrightcorner.gif" alt="" width="6" height="6"></td>
 		</tr>
 	</tbody>
 </table>

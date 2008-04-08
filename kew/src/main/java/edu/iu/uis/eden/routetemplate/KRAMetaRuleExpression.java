@@ -18,6 +18,7 @@ package edu.iu.uis.eden.routetemplate;
 
 /**
  * Simply an alias for {@link MetaRuleExpression}
+ * @deprecated Use {@link MetaRuleExpression} instead
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KRAMetaRuleExpression extends MetaRuleExpression {

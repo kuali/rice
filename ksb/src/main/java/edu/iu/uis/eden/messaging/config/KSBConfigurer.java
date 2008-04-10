@@ -17,7 +17,6 @@
 package edu.iu.uis.eden.messaging.config;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,11 +31,11 @@ import org.kuali.rice.RiceConstants;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.config.ModuleConfigurer;
+import org.kuali.rice.config.event.AfterStartEvent;
+import org.kuali.rice.config.event.RiceConfigEvent;
 import org.kuali.rice.core.Core;
-import org.kuali.rice.lifecycle.BaseLifecycle;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.lifecycle.ServiceDelegatingLifecycle;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.util.ClassLoaderUtils;
 import org.quartz.Scheduler;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -151,8 +150,22 @@ public class KSBConfigurer extends ModuleConfigurer {
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.REMOTED_SERVICE_REGISTRY));
 		return lifecycles;
 	}
+	
+	
 
-	protected String getMessageEntity(Config config) {
+	/**
+     * Used to refresh the service registry after the Application Context is initialized.  This way any services that were exported on startup
+     * will be available in the service registry once startup is complete.
+     */
+    @Override
+    public void onEvent(RiceConfigEvent event) throws Exception {
+        if (event instanceof AfterStartEvent) {
+            LOG.info("Refreshing Service Regsitry to export services to the bus.");
+            KSBServiceLocator.getServiceDeployer().refresh();
+        }
+    }
+
+    protected String getMessageEntity(Config config) {
 		if (StringUtils.isBlank(config.getMessageEntity())) {
 			throw new ConfigurationException("The 'message.entity' property was not properly configured.");
 		}

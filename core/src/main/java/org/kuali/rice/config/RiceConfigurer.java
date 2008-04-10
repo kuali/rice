@@ -26,8 +26,14 @@ import javax.transaction.UserTransaction;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.RiceConstants;
+import org.kuali.bus.services.KSBServiceLocator;
+import org.kuali.rice.config.event.AfterStartEvent;
+import org.kuali.rice.config.event.AfterStopEvent;
+import org.kuali.rice.config.event.BeforeStartEvent;
+import org.kuali.rice.config.event.BeforeStopEvent;
+import org.kuali.rice.config.event.RiceConfigEvent;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.exceptions.RiceRuntimeException;
 import org.kuali.rice.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
@@ -36,6 +42,10 @@ import org.kuali.rice.resourceloader.RootResourceLoaderLifecycle;
 import org.kuali.rice.security.credentials.CredentialsSourceFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.context.event.ContextRefreshedEvent;
 
 /**
  * Used to configure common Rice configuration properties.
@@ -43,7 +53,7 @@ import org.springframework.beans.factory.InitializingBean;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean {
+public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ApplicationListener {
 
 	private static final Logger LOG = Logger.getLogger(RiceConfigurer.class);
 
@@ -77,6 +87,7 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	}
 
 	public void start() throws Exception {
+	    notify(new BeforeStartEvent());
 		initializeConfiguration();
 		super.start();
 		if (getRootResourceLoader() != null	) {
@@ -88,6 +99,7 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	}
 	
 	public void stop() throws Exception {
+	    notify(new BeforeStopEvent());
 	    super.stop();
 	    GlobalResourceLoader.stop();
 	}
@@ -100,6 +112,24 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 		 }
 		 return lifecycles;
 	}
+	
+    public void onApplicationEvent(ApplicationEvent event) {
+        try {
+            if (event instanceof ContextRefreshedEvent) {
+                notify(new AfterStartEvent());
+            } else if (event instanceof ContextClosedEvent) {
+                notify(new AfterStopEvent());
+            }
+        } catch (Exception e) {
+            throw new RiceRuntimeException(e);
+        }
+    }
+    
+    protected void notify(RiceConfigEvent event) throws Exception {
+        for (ModuleConfigurer module : modules) {
+            module.onEvent(event);
+        }
+    }
 
 	@SuppressWarnings("unchecked")
 	protected void initializeConfiguration() throws Exception {

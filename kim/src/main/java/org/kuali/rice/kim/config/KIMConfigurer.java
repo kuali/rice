@@ -19,9 +19,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ModuleConfigurer;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.lifecycle.BaseLifecycle;
 import org.kuali.rice.lifecycle.Lifecycle;
 
 /**
@@ -57,11 +59,8 @@ public class KIMConfigurer extends ModuleConfigurer {
 	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		
 		lifecycles.add(new KIMOjbConfigurer());
-
 		lifecycles.add(KIMResourceLoaderFactory.createRootKIMResourceLoader());
-
 		return lifecycles;
 	}
 }

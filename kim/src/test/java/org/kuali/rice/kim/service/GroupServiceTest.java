@@ -21,6 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.rice.TestBase;
+import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
@@ -45,7 +46,7 @@ import org.kuali.rice.test.data.UnitTestSql;
             }
         )
 )
-public class GroupServiceTest extends TestBase {
+public class GroupServiceTest extends KIMTestCase {
     private static final String TEST_GROUP = "KIM Test Group";
 
     @Test

@@ -35,19 +35,6 @@ import org.mortbay.jetty.webapp.WebAppClassLoader;
  */
 public abstract class KIMTestCase extends RiceTestCase {
 
-	//private static final String KIM_TEST_CONTEXT_LOC = "classpath:KimTestHarnessSpring.xml";
-	//private SpringResourceLoader springContextResourceLoader;
-
-	/**
-     * This overridden method just returns an empty array.
-     * 
-     * @see org.kuali.rice.test.RiceTestCase#getPerTestLifecycles()
-     */
-	@Override
-	public List<Lifecycle> getPerTestLifecycles() {
-		return new ArrayList<Lifecycle>();
-	}
-
 	/**
      * This overridden method is responsible for loading up the kimtestharness from Spring.
      * 
@@ -60,9 +47,6 @@ public abstract class KIMTestCase extends RiceTestCase {
 		server.setTestMode(true);
         lifeCycles.add(server);
         lifeCycles.add(new InitializeGRL());
-        
-		//this.springContextResourceLoader = new SpringResourceLoader(new QName("kimtestharness"), KIM_TEST_CONTEXT_LOC);
-		//lifeCycles.add(this.springContextResourceLoader);
 		return lifeCycles;
 	}
 	

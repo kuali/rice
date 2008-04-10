@@ -13,16 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.config;
+package org.kuali.rice.config.event;
 
-import org.kuali.rice.config.event.RiceConfigEvent;
-import org.kuali.rice.lifecycle.BaseCompositeLifecycle;
-
-public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer {
-
-	public abstract Config loadConfig(Config parentConfig) throws Exception;
-	
-	public void onEvent(RiceConfigEvent event) throws Exception {
-	}
+/**
+ * A simple marker interface to define events that might occur during RiceConfigurer initialization and shutdown
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ */
+public interface RiceConfigEvent {
 
 }

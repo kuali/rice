@@ -173,7 +173,7 @@
 		<module>ken</module>
 		<module>kom-api</module>
 		<module>kom</module>
-        <module>standalone</module>
+        <module>server</module>
 	</modules>
 	<repositories>
 		<repository>

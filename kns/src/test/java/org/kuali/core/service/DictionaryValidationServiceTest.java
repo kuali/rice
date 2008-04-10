@@ -17,15 +17,13 @@ package org.kuali.core.service;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.core.UserSession;
 import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.TestBase;
-
-import edu.sampleu.travel.document.TravelDocument2;
+import org.kuali.rice.kns.test.document.AccountRequestDocument;
 
 /**
  * This class tests the DictionaryValidationService (currently only recursive validation is tested).
@@ -58,12 +56,12 @@ public class DictionaryValidationServiceTest extends TestBase {
      * @throws Exception
      */
     @Test public void testRecursiveValidation() throws Exception {
-        TravelDocument2 travelDocument = (TravelDocument2) KNSServiceLocator.getDocumentService().getNewDocument("TravelRequest");
+        AccountRequestDocument travelDocument = (AccountRequestDocument) KNSServiceLocator.getDocumentService().getNewDocument("AccountRequest");
         // set all required fields except 1
         travelDocument.getDocumentHeader().setFinancialDocumentDescription("test document");
-        travelDocument.setOrigin("origin");
-        travelDocument.setDestination("destination");
-        travelDocument.setTraveler("traveler");
+        travelDocument.setReason1("reason1");
+        travelDocument.setReason2("reason2");
+        travelDocument.setRequester("requester");
 
         GlobalVariables.setErrorMap(new ErrorMap());
         KNSServiceLocator.getDictionaryValidationService().validateDocumentRecursively(travelDocument,0);
@@ -79,12 +77,12 @@ public class DictionaryValidationServiceTest extends TestBase {
      * @throws Exception
      */
     @Test public void testRecursiveValidationMultiple() throws Exception {
-        TravelDocument2 travelDocument = (TravelDocument2) KNSServiceLocator.getDocumentService().getNewDocument("TravelRequest");
+        AccountRequestDocument travelDocument = (AccountRequestDocument) KNSServiceLocator.getDocumentService().getNewDocument("AccountRequest");
         // set all required fields except 1
         travelDocument.getDocumentHeader().setFinancialDocumentDescription("test document");
-        travelDocument.setOrigin("origin");
-        travelDocument.setDestination("destination");
-        travelDocument.setTraveler("traveler");
+        travelDocument.setReason1("reason1");
+        travelDocument.setReason2("reason2");
+        travelDocument.setRequester("requester");
 
         GlobalVariables.setErrorMap(new ErrorMap());
         KNSServiceLocator.getDictionaryValidationService().validateDocumentRecursively(travelDocument,0);

@@ -27,6 +27,8 @@ import org.kuali.rice.KNSServiceLocator;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
 
+import edu.iu.uis.eden.KEWServiceLocator;
+
 @KNSWithTestSpringContext
 public class AuthorizationStoreTest extends KNSTestBase {
     private static final String NAME_OF_WORKGROUP_WITH_NO_MEMBERS = "KUALI_PED";
@@ -58,7 +60,7 @@ public class AuthorizationStoreTest extends KNSTestBase {
     @Override
 	public void setUp() throws Exception {
         super.setUp();
-
+        
         authorizationStore = new AuthorizationStore();
 
         workgroupWithNoMembers = buildGroup(NAME_OF_WORKGROUP_WITH_NO_MEMBERS);
@@ -72,6 +74,7 @@ public class AuthorizationStoreTest extends KNSTestBase {
     }
 
     @Test public final void testAddAuthorization_emptyGroupName() {
+        
         boolean failedAsExpected = false;
 
         try {

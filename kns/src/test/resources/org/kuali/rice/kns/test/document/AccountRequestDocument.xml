@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2005-2007 The Kuali Foundation.
+
+ Licensed under the Educational Community License, Version 1.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.opensource.org/licenses/ecl1.php
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!DOCTYPE dictionaryEntry PUBLIC
+    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
+    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
+
+<dictionaryEntry>
+    <transactionalDocument>
+        <documentClass>org.kuali.rice.kns.test.document.AccountRequestDocument</documentClass>
+        <businessRulesClass>org.kuali.rice.kns.test.document.AccountRequestDocumentRule</businessRulesClass>
+
+        <documentAuthorizerClass>org.kuali.rice.kns.test.document.AccountRequestDocumentAuthorizer</documentAuthorizerClass>
+        <authorizations>
+            <authorization action="initiate">
+                <workgroups>
+                    <workgroup>WorkflowAdmin</workgroup>
+                </workgroups>
+            </authorization>
+        </authorizations>
+
+        <documentTypeName>AccountRequest</documentTypeName>
+        <documentTypeCode>ARQ</documentTypeCode>
+
+        <label>Account Request</label>
+        <shortLabel>ARQDoc</shortLabel>
+
+
+        <attributes>
+
+            <attribute name="requester">
+                <label>Requester Name</label>
+                <shortLabel>Requester Name</shortLabel>
+
+                <maxLength>30</maxLength>
+                <validationPattern><anyCharacter /></validationPattern>
+
+                <required>true</required>
+
+                <control>
+                    <text size="30" />
+                </control>
+
+                <summary>Requester Name</summary>
+                <description>Requester Name</description>
+			</attribute>
+
+            <attribute name="reason1">
+                <label>Reason 1</label>
+                <shortLabel>Reason 1</shortLabel>
+
+                <maxLength>60</maxLength>
+                <validationPattern><anyCharacter /></validationPattern>
+
+                <required>true</required>
+
+                <control>
+                    <text size="60" />
+                </control>
+
+                <summary>Reason 1</summary>
+                <description>Reason 1</description>
+			</attribute>
+
+            <attribute name="reason2">
+                <label>Reason 2</label>
+                <shortLabel>Reason 2</shortLabel>
+
+                <maxLength>60</maxLength>
+                <validationPattern><anyCharacter /></validationPattern>
+
+                <required>true</required>
+
+                <control>
+                    <text size="60" />
+                </control>
+
+                <summary>Reason 2</summary>
+                <description>Reason 2</description>
+			</attribute>
+
+			<attribute name="requestType">
+                <label>Account Request Type</label>
+                <shortLabel>Request Type</shortLabel>
+
+                <maxLength>40</maxLength>
+                <validationPattern>
+                    <alphaNumeric allowWhitespace="true" />
+                </validationPattern>
+
+                <required>true</required>
+
+                <control>
+                    <select valuesFinderClass="org.kuali.rice.kns.test.document.AccountRequestType" />
+                </control>
+
+                <summary>
+                    <![CDATA[&nbsp;]]>
+                </summary>
+                <description>
+                    Account Request Type
+                </description>
+            </attribute>
+
+            <attributeReference name="accountTypeCode" sourceClassName="org.kuali.rice.kns.test.document.bo.AccountType" sourceAttributeName="accountTypeCode">
+                <control>
+                    <select valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder" businessObjectClass="org.kuali.rice.kns.test.document.bo.AccountType" keyAttribute="accountTypeCode" labelAttribute="name" includeKeyInLabel="true"/>
+                </control>
+            </attributeReference>
+
+        </attributes>
+ 
+        <summary>
+            <![CDATA[&nbsp;]]>
+        </summary>
+        <description>Doing it right</description>
+        <allowsCopy>false</allowsCopy>
+        <allowsErrorCorrection>false</allowsErrorCorrection>
+    </transactionalDocument>
+</dictionaryEntry>

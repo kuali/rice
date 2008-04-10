@@ -15,10 +15,10 @@
 		<echo>The Kuali Rice version is ${maven.project.version}</echo>
 		<echo>${maven.project.dependencies}</echo>
 		<property name="dist.build.dir" value="target/ant-build"/>
-		<property name="dist.standalone.dir" value="${dist.build.dir}/dist-standalone"/>
-		<property name="dist.standalone.lib.dir" value="${dist.standalone.dir}/WEB-INF/lib"/>
-		<property name="webapp.src.dir" value="kns/src/test/webapp"/>
-		<property name="standalone.config.src.dir" value="standalone/src/main/config"/>
+		<property name="dist.server.dir" value="${dist.build.dir}/dist-server"/>
+		<property name="dist.server.lib.dir" value="${dist.server.dir}/WEB-INF/lib"/>
+		<property name="webapp.src.dir" value="server/src/main/webapp"/>
+		<property name="server.config.src.dir" value="server/src/main/config"/>
 		<property name="dist.binary.dir" value="${dist.build.dir}/dist-binary/rice-${maven.project.version}-bin"/>
 		<property name="dist.binary.lib.dir" value="${dist.binary.dir}/lib"/>
 		<property name="dist.binary.webcontent.dir" value="${dist.binary.dir}/webcontent"/>
@@ -120,8 +120,8 @@
 		<artifact:install file="pom.xml">
 			<pom refid="maven.project" />
 		</artifact:install>
-		<artifact:dependencies filesetId="standalone.lib.fileset" versionsId="dependency.versions" useScope="runtime">
-			<dependency groupId="org.kuali.rice" artifactId="rice-standalone" version="${maven.project.version}">
+		<artifact:dependencies filesetId="server.lib.fileset" versionsId="dependency.versions" useScope="runtime">
+			<dependency groupId="org.kuali.rice" artifactId="rice-server" version="${maven.project.version}">
 				<exclusion groupId="org.kuali.rice" artifactId="rice-testharness" />
 				<exclusion groupId="junit" artifactId="junit" />
 				<exclusion groupId="htmlunit" artifactId="htmlunit" />
@@ -137,23 +137,23 @@
 		</artifact:dependencies>
 	</target>
 	
-	<target name="dist-standalone" depends="prepare-lib" description="Builds and packages the Rice Standalone distribution">
-		<copy todir="${dist.standalone.lib.dir}" flatten="true">
-			<fileset refid="standalone.lib.fileset" />
+	<target name="dist-server" depends="prepare-lib" description="Builds and packages the Rice server distribution">
+		<copy todir="${dist.server.lib.dir}" flatten="true">
+			<fileset refid="server.lib.fileset" />
 		</copy>
-		<copy todir="${dist.standalone.dir}">
+		<copy todir="${dist.server.dir}">
             <!-- Don't include the pieces from the sample app -->
 			<fileset dir="${webapp.src.dir}" excludes="*,WEB-INF/*"/>
-			<fileset dir="${standalone.config.src.dir}"/>
+			<fileset dir="${server.config.src.dir}"/>
 		</copy>
 		<!-- change the environment code appropriately -->
 		<replaceregexp match="\b(dev|snd|unt|reg|stg|trn|prd)\b" replace="${rice.environment}" byline="true" flags="g">
-			<fileset dir="${dist.standalone.dir}">
+			<fileset dir="${dist.server.dir}">
 				<include name="**/web.xml" />
 			</fileset>
 		</replaceregexp>
-		<jar destfile="target/rice-${maven.project.version}-standalone.war">
-			<fileset dir="${dist.standalone.dir}"/>
+		<jar destfile="target/rice-${maven.project.version}-server.war">
+			<fileset dir="${dist.server.dir}"/>
 		</jar>
 	</target>
 	
@@ -162,7 +162,7 @@
 			<pom refid="maven.project" />
 		</artifact:install>
 		<artifact:dependencies filesetId="binary.lib.fileset" versionsId="dependency.versions" useScope="runtime">
-			<dependency groupId="org.kuali.rice" artifactId="rice-standalone" version="${maven.project.version}">
+			<dependency groupId="org.kuali.rice" artifactId="rice-server" version="${maven.project.version}">
 				<exclusion groupId="org.kuali.rice" artifactId="rice-testharness" />
 				<exclusion groupId="junit" artifactId="junit" />
 				<exclusion groupId="htmlunit" artifactId="htmlunit" />
@@ -183,7 +183,7 @@
 			</fileset>
 		</copy>
 		<copy todir="${dist.binary.webcontent.dir}">
-			<fileset dir="kns/src/test/webapp">
+			<fileset dir="server/src/main/webapp">
 				<exclude name="*"/>
 				<exclude name="WEB-INF/*"/>
 			</fileset>
@@ -223,11 +223,11 @@
 			</tar>
 		</target>
 
-	<target name="dist-all" depends="clean, clean-maven, dist-standalone, dist-binary, dist-src" description="Creates standalone, binary and source distributions"/>
+	<target name="dist-all" depends="clean, clean-maven, dist-server, dist-binary, dist-src" description="Creates server, binary and source distributions"/>
 	
 	<!-- Used for deployments on the server -->
-	<target name="dist" depends="dist-standalone">
-		<copy file="target/rice-${maven.project.version}-standalone.war" tofile="${rice.app.code}-${rice.environment}.war"/>
+	<target name="dist" depends="dist-server">
+		<copy file="target/rice-${maven.project.version}-server.war" tofile="${rice.app.code}-${rice.environment}.war"/>
 	</target>
 	
 	<target name="prepare-new-version" depends="init" description="Prompts for a new version to change the POM and groovy scripts to">

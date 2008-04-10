@@ -36,11 +36,10 @@ import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.web.ui.Field;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.test.document.bo.Account;
+import org.kuali.rice.kns.test.document.bo.AccountExtension;
+import org.kuali.rice.kns.test.document.bo.AccountType;
 import org.kuali.test.KNSTestBase;
-
-import edu.sampleu.travel.bo.TravelAccount;
-import edu.sampleu.travel.bo.TravelAccountExtension;
-import edu.sampleu.travel.bo.TravelAccountType;
 
 public class ExtensionAttributeTest extends KNSTestBase {
 
@@ -81,12 +80,13 @@ public class ExtensionAttributeTest extends KNSTestBase {
 		//builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/FinancialSystemParameterSecurityMaintenanceDocument.xml", true);
 		//builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/FinancialSystemParameterMaintenanceDocument.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/UniversalUserMaintenanceDocument.xml", true);
-		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/TravelAccount.xml", true);
-		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/TravelAccountType.xml", true);
-		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/TravelAccountMaintenanceDocument.xml", true);
-		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/TravelAccountExtension.xml", true);
-		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/FiscalOfficer.xml", true);
-		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/FiscalOfficerMaintenanceDocument.xml", true);
+		
+		builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/Account.xml", true);
+        builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountType.xml", true);
+        builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountMaintenanceDocument.xml", true);
+        builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountExtension.xml", true);
+        builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountManager.xml", true);
+        builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountManagerMaintenanceDocument.xml", true);
 
 		// quieten things down a bit
 		setLogLevel("org.apache.commons.digester", Level.ERROR);
@@ -101,12 +101,12 @@ public class ExtensionAttributeTest extends KNSTestBase {
 
 	@Test
 	public void testExtensionAttributeType() throws Exception {
-		BusinessObjectEntry boe = builder.getDataDictionary().getBusinessObjectEntry( "TravelAccount" );
+		BusinessObjectEntry boe = builder.getDataDictionary().getBusinessObjectEntry( "Account" );
 		assertNotNull( "BusinessObjectEntry for TravelAccount should not be null", boe );
 		AttributeDefinition extAttrib = boe.getAttributeDefinition( "extension.accountTypeCode" );
 		assertNotNull( "AttributeDefinition for 'extension.accountType' should not be null", extAttrib );
 		assertEquals(PersistableBusinessObjectValuesFinder.class, extAttrib.getControl().getValuesFinderClass());
-		assertEquals(TravelAccountType.class, extAttrib.getControl().getBusinessObjectClass());
+		assertEquals(AccountType.class, extAttrib.getControl().getBusinessObjectClass());
 		assertEquals("accountTypeCode", extAttrib.getControl().getKeyAttribute());
 		assertEquals("name", extAttrib.getControl().getLabelAttribute());
 		assertEquals(true, extAttrib.getControl().getIncludeKeyInLabel());
@@ -116,12 +116,12 @@ public class ExtensionAttributeTest extends KNSTestBase {
 
 	@Test
 	public void testObjectUtils_getPropertyType() throws Exception {
-		TravelAccount ta = new TravelAccount();
+		Account ta = new Account();
 	assertEquals("physical property type mismatch", PersistableBusinessObjectExtension.class, PropertyUtils
 		.getPropertyType(ta, "extension"));
-	assertEquals("DD property type mismatch", TravelAccountExtension.class, ObjectUtils.getPropertyType(ta, "extension",
+	assertEquals("DD property type mismatch", AccountExtension.class, ObjectUtils.getPropertyType(ta, "extension",
 		KNSServiceLocator.getPersistenceStructureService()));
-	assertEquals("extension.accountType attribute class mismatch", TravelAccountType.class, ObjectUtils.getPropertyType(
+	assertEquals("extension.accountType attribute class mismatch", AccountType.class, ObjectUtils.getPropertyType(
 		ta, "extension.accountType", KNSServiceLocator.getPersistenceStructureService()));
 	assertEquals("extension.accountType.codeAndDescription attribute class mismatch", String.class, ObjectUtils
 		.getPropertyType(ta, "extension.accountType.codeAndDescription", KNSServiceLocator
@@ -130,11 +130,11 @@ public class ExtensionAttributeTest extends KNSTestBase {
 
 	@Test
 	public void testBOMetaDataService() throws Exception {
-		TravelAccount ta = new TravelAccount();
+		Account ta = new Account();
 	BusinessObjectRelationship br = KNSServiceLocator.getBusinessObjectMetaDataService().getBusinessObjectRelationship(
 		ta, "extension.accountType");
-		assertEquals( "mismatch on parent class", TravelAccount.class, br.getParentClass() );
-		assertEquals( "mismatch on related class", TravelAccountType.class, br.getRelatedClass() );
+		assertEquals( "mismatch on parent class", Account.class, br.getParentClass() );
+		assertEquals( "mismatch on related class", AccountType.class, br.getRelatedClass() );
 		System.out.println( br.getParentToChildReferences() );
 	assertEquals("parent/child key not correct - should be extension.accountTypeCode/accountTypeCode",
 		"accountTypeCode", br.getParentToChildReferences().get("extension.accountTypeCode"));
@@ -144,7 +144,7 @@ public class ExtensionAttributeTest extends KNSTestBase {
 
 	@Test
 	public void testQuickFinder() throws Exception {
-		TravelAccount ta = new TravelAccount();
+		Account ta = new Account();
 		ArrayList<String> lookupFieldAttributeList = new ArrayList<String>();
 		lookupFieldAttributeList.add( "extension.accountTypeCode");
 
@@ -153,7 +153,7 @@ public class ExtensionAttributeTest extends KNSTestBase {
 	field = LookupUtils.setFieldQuickfinder((BusinessObject) ta, "extension.accountTypeCode", field,
 		lookupFieldAttributeList);
 
-		assertEquals( "lookup class not correct", TravelAccountType.class.getName(), field.getQuickFinderClassNameImpl() );
+		assertEquals( "lookup class not correct", AccountType.class.getName(), field.getQuickFinderClassNameImpl() );
 	assertEquals("field lookup params not correct", "extension.accountTypeCode:accountTypeCode", field
 		.getLookupParameters());
 	assertEquals("lookup field conversions not correct", "accountTypeCode:extension.accountTypeCode", field
@@ -162,13 +162,13 @@ public class ExtensionAttributeTest extends KNSTestBase {
 
 	@Test
 	public void testExistenceChecks() throws Exception {
-		TravelAccount ta = new TravelAccount();
-		((TravelAccountExtension)ta.getExtension()).setAccountTypeCode( "XYZ" ); // invalid account type
+		Account ta = new Account();
+		((AccountExtension)ta.getExtension()).setAccountTypeCode( "XYZ" ); // invalid account type
 		ta.setName( "Test Name" );
 		ta.setNumber( "1234567" );
         GlobalVariables.setUserSession(new UserSession("quickstart"));
 	MaintenanceDocument document = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getNewDocument(
-		"TravelAccountMaintenanceDocument");
+		"AccountMaintenanceDocument");
         assertNotNull( "new document must not be null", document );
         document.getDocumentHeader().setFinancialDocumentDescription( getClass().getSimpleName() + "test" );
         document.getOldMaintainableObject().setBusinessObject(null);

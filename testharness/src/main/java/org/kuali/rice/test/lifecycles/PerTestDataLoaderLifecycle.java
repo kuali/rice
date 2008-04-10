@@ -51,6 +51,10 @@ public class PerTestDataLoaderLifecycle implements Lifecycle {
 	}
 
 	public void stop() throws Exception {
+	    if (method.getDeclaringClass().isAnnotationPresent(PerTestUnitTestData.class)) {
+            UnitTestData[] data = method.getDeclaringClass().getAnnotation(PerTestUnitTestData.class).tearDown();
+            UnitTestDataUtils.executeDataLoader(data);
+        }
 		started = false;
 	}
 }

@@ -22,9 +22,8 @@ import org.junit.Test;
 import org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.rice.TestBase;
-
-import edu.sampleu.travel.bo.FiscalOfficer;
-import edu.sampleu.travel.bo.TravelAccountType;
+import org.kuali.rice.kns.test.document.bo.AccountManager;
+import org.kuali.rice.kns.test.document.bo.AccountType;
 
 /**
  * This class tests the PersistableBusinessObjectValuesFinder.
@@ -69,7 +68,7 @@ public class PersistableBusinessObjectValuesFinderTest extends TestBase {
      */
     @Test public void testGetKeyValues() throws Exception {
 	PersistableBusinessObjectValuesFinder valuesFinder = new PersistableBusinessObjectValuesFinder();
-	valuesFinder.setBusinessObjectClass(TravelAccountType.class);
+	valuesFinder.setBusinessObjectClass(AccountType.class);
 	valuesFinder.setKeyAttributeName("accountTypeCode");
 	valuesFinder.setLabelAttributeName("name");
 	valuesFinder.setIncludeKeyInDescription(false);
@@ -88,7 +87,7 @@ public class PersistableBusinessObjectValuesFinderTest extends TestBase {
      */
     @Test public void testGetKeyValuesKeyInLabel() throws Exception {
 	PersistableBusinessObjectValuesFinder valuesFinder = new PersistableBusinessObjectValuesFinder();
-	valuesFinder.setBusinessObjectClass(TravelAccountType.class);
+	valuesFinder.setBusinessObjectClass(AccountType.class);
 	valuesFinder.setKeyAttributeName("accountTypeCode");
 	valuesFinder.setLabelAttributeName("name");
 	valuesFinder.setIncludeKeyInDescription(true);
@@ -107,8 +106,8 @@ public class PersistableBusinessObjectValuesFinderTest extends TestBase {
      */
     @Test public void testGetKeyValuesLongKey() throws Exception {
 	PersistableBusinessObjectValuesFinder valuesFinder = new PersistableBusinessObjectValuesFinder();
-	valuesFinder.setBusinessObjectClass(FiscalOfficer.class);
-	valuesFinder.setKeyAttributeName("id");
+	valuesFinder.setBusinessObjectClass(AccountManager.class);
+	valuesFinder.setKeyAttributeName("amId");
 	valuesFinder.setLabelAttributeName("userName");
 	valuesFinder.setIncludeKeyInDescription(false);
 	List<KeyLabelPair> keyValues = valuesFinder.getKeyValues();
@@ -126,8 +125,8 @@ public class PersistableBusinessObjectValuesFinderTest extends TestBase {
      */
     @Test public void testGetKeyValuesKeyInLabelLongKey() throws Exception {
 	PersistableBusinessObjectValuesFinder valuesFinder = new PersistableBusinessObjectValuesFinder();
-	valuesFinder.setBusinessObjectClass(FiscalOfficer.class);
-	valuesFinder.setKeyAttributeName("id");
+	valuesFinder.setBusinessObjectClass(AccountManager.class);
+	valuesFinder.setKeyAttributeName("amId");
 	valuesFinder.setLabelAttributeName("userName");
 	valuesFinder.setIncludeKeyInDescription(true);
 	List<KeyLabelPair> keyValues = valuesFinder.getKeyValues();

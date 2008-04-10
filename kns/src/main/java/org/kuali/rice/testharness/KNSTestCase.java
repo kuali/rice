@@ -30,8 +30,8 @@ import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
  */
 public abstract class KNSTestCase extends RiceTestCase {
 
-	private String contextName = "/SampleRiceClient";
-	private String relativeWebappRoot = "/src/test/webapp";
+	private String contextName = "/knstest";
+	private String relativeWebappRoot = "/../kns/src/test/webapp";
     private String sqlFilename = "classpath:KNSDefaultTestData.sql";
     private String sqlDelimiter = ";";
 	private String xmlFilename = "classpath:KNSDefaultTestData.xml";

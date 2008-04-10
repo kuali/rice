@@ -22,15 +22,8 @@ import org.junit.Test;
 import org.kuali.RiceConstants;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.TestBase;
-import org.kuali.rice.test.data.PerTestUnitTestData;
-import org.kuali.rice.test.data.UnitTestData;
-import org.kuali.rice.test.data.UnitTestFile;
-import org.kuali.rice.test.data.UnitTestSql;
-import org.kuali.test.KNSTestBase;
-import org.kuali.test.KNSWithTestSpringContext;
+import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.test.KNSTestConstants.TestConstants;
-
-import edu.sampleu.travel.bo.TravelAccount;
 
 /**
  * This class tests the KualiLookupable methods.
@@ -44,7 +37,7 @@ public class KualiLookupableTest extends TestBase {
     public void setUp() throws Exception {
         super.setUp();
         lookupableImpl = (KualiLookupableImpl) KNSServiceLocator.getKualiLookupable();
-        lookupableImpl.setBusinessObjectClass(TravelAccount.class);
+        lookupableImpl.setBusinessObjectClass(Account.class);
     }
 
     /**
@@ -57,7 +50,7 @@ public class KualiLookupableTest extends TestBase {
     	lookupProps.put("number", "a1");
     	lookupProps.put("name", "a1");
     	
-    	TravelAccount account = (TravelAccount)KNSServiceLocator.getLookupService().findObjectBySearch(TravelAccount.class, lookupProps);
+    	Account account = (Account)KNSServiceLocator.getLookupService().findObjectBySearch(Account.class, lookupProps);
 //        ObjectCode objCode = getObjectCodeService().getByPrimaryId(TestConstants.Data1.UNIVERSITY_FISCAL_YEAR, TestConstants.Data1.CHART_OF_ACCOUNTS_CODE, TestConstants.Data1.OBJECT_CODE);
 
         Map fieldConversions = new HashMap();

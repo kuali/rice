@@ -22,13 +22,12 @@ import java.util.Map;
 import org.junit.Test;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.TestBase;
+import org.kuali.rice.kns.test.document.bo.Account;
+import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;
 import org.kuali.rice.test.data.UnitTestSql;
-
-import edu.sampleu.travel.bo.FiscalOfficer;
-import edu.sampleu.travel.bo.TravelAccount;
 
 /**
  * This class tests KULRICE-984: Lookups - Relative Limit Gap
@@ -38,8 +37,9 @@ import edu.sampleu.travel.bo.TravelAccount;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+
 @PerTestUnitTestData(
-        @UnitTestData(
+        value = @UnitTestData(
                 order = {UnitTestData.Type.SQL_STATEMENTS, UnitTestData.Type.SQL_FILES},
                 sqlStatements = {
                         @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
@@ -49,7 +49,13 @@ import edu.sampleu.travel.bo.TravelAccount;
                         @UnitTestFile(filename = "classpath:testFiscalOfficers.sql", delimiter = ";")
                         , @UnitTestFile(filename = "classpath:testTravelAccounts.sql", delimiter = ";")
                 }
-        )
+        ),
+        tearDown = @UnitTestData(
+                sqlStatements = {
+                        @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
+                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
+                }
+       )
 )
 public class LookupServiceTest extends TestBase {
 
@@ -64,12 +70,12 @@ public class LookupServiceTest extends TestBase {
     public void testLookupReturnLimits() throws Exception {
         LookupService lookupService = KNSServiceLocator.getLookupService();
         Map formProps = new HashMap();
-        Collection fiscalOfficers = lookupService.findCollectionBySearchHelper(FiscalOfficer.class, formProps, false);
-        assertEquals(90, fiscalOfficers.size());
+        Collection accountManagers = lookupService.findCollectionBySearchHelper(AccountManager.class, formProps, false);
+        assertEquals(90, accountManagers.size());
 
-        fiscalOfficers = null;
-        fiscalOfficers = lookupService.findCollectionBySearch(FiscalOfficer.class, formProps);
-        assertEquals(90, fiscalOfficers.size());
+        accountManagers = null;
+        accountManagers = lookupService.findCollectionBySearch(AccountManager.class, formProps);
+        assertEquals(90, accountManagers.size());
     }
 
     /**
@@ -81,11 +87,11 @@ public class LookupServiceTest extends TestBase {
     public void testLookupReturnDefaultLimit() throws Exception {
         LookupService lookupService = KNSServiceLocator.getLookupService();
         Map formProps = new HashMap();
-        Collection travelAccounts = lookupService.findCollectionBySearchHelper(TravelAccount.class, formProps, false);
+        Collection travelAccounts = lookupService.findCollectionBySearchHelper(Account.class, formProps, false);
         assertEquals(200, travelAccounts.size());
 
         travelAccounts = null;
-        travelAccounts = lookupService.findCollectionBySearch(TravelAccount.class, formProps);
+        travelAccounts = lookupService.findCollectionBySearch(Account.class, formProps);
         assertEquals(200, travelAccounts.size());
     }
 
@@ -98,13 +104,13 @@ public class LookupServiceTest extends TestBase {
     public void testLookupReturnDefaultUnbounded() throws Exception {
         LookupService lookupService = KNSServiceLocator.getLookupService();
         Map formProps = new HashMap();
-        Collection fiscalOfficers = lookupService.findCollectionBySearchHelper(FiscalOfficer.class, formProps, true);
-        int size = fiscalOfficers.size();
+        Collection accountManagers = lookupService.findCollectionBySearchHelper(AccountManager.class, formProps, true);
+        int size = accountManagers.size();
         assertTrue("# of Fiscal Officers should be > 200", size > 200);
 
-        fiscalOfficers = null;
-        fiscalOfficers = lookupService.findCollectionBySearchUnbounded(FiscalOfficer.class, formProps);
-        size = fiscalOfficers.size();
+        accountManagers = null;
+        accountManagers = lookupService.findCollectionBySearchUnbounded(AccountManager.class, formProps);
+        size = accountManagers.size();
         assertTrue("# of Fiscal Officers should be > 200", size > 200);
     }
 
@@ -117,12 +123,12 @@ public class LookupServiceTest extends TestBase {
     public void testLookupReturnDefaultUnbounded2() throws Exception {
         LookupService lookupService = KNSServiceLocator.getLookupService();
         Map formProps = new HashMap();
-        Collection travelAccounts = lookupService.findCollectionBySearchHelper(TravelAccount.class, formProps, true);
+        Collection travelAccounts = lookupService.findCollectionBySearchHelper(Account.class, formProps, true);
         int size = travelAccounts.size();
         assertTrue("# of Travel Accounts should be > 200", size > 200);
 
         travelAccounts = null;
-        travelAccounts = lookupService.findCollectionBySearchUnbounded(TravelAccount.class, formProps);
+        travelAccounts = lookupService.findCollectionBySearchUnbounded(Account.class, formProps);
         size = travelAccounts.size();
         assertTrue("# of Travel Accounts should be > 200", size > 200);
     }

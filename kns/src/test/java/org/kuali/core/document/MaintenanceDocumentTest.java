@@ -20,10 +20,9 @@ import org.kuali.RiceConstants;
 import org.kuali.core.UserSession;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
-
-import edu.sampleu.travel.bo.FiscalOfficer;
 
 /**
  * This class...
@@ -40,26 +39,26 @@ public class MaintenanceDocumentTest extends KNSTestBase {
     public void setUp() throws Exception {
         super.setUp();
         GlobalVariables.setUserSession(new UserSession("quickstart"));
-        document = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getNewDocument("FiscalOfficerMaintenanceDocument");
+        document = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getNewDocument("AccountManagerMaintenanceDocument");
     }
 
     private void setupNewAccountMaintDoc(MaintenanceDocument document) {
 
-        FiscalOfficer fo = new FiscalOfficer();
-        fo.setId(new Long(1));
-        fo.setUserName("userName");
+        AccountManager am = new AccountManager();
+        am.setAmId(new Long(1));
+        am.setUserName("userName");
 
         document.getOldMaintainableObject().setBusinessObject(null);
-        document.getOldMaintainableObject().setBoClass(fo.getClass());
-        document.getNewMaintainableObject().setBusinessObject(fo);
-        document.getNewMaintainableObject().setBoClass(fo.getClass());
+        document.getOldMaintainableObject().setBoClass(am.getClass());
+        document.getNewMaintainableObject().setBusinessObject(am);
+        document.getNewMaintainableObject().setBoClass(am.getClass());
 
     }
 
     private void setupEditAccountMaintDoc(MaintenanceDocument document) {
 
-    	FiscalOfficer fo = new FiscalOfficer();
-    	fo.setId(new Long(1));
+    	AccountManager fo = new AccountManager();
+    	fo.setAmId(new Long(1));
     	fo.setUserName("userName");
 
         document.getOldMaintainableObject().setBusinessObject(fo);

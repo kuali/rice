@@ -66,49 +66,7 @@ import org.kuali.rice.testharness.TransactionalLifecycle;
 
 public abstract class KNSTestBase extends KNSTestCase implements KNSTestConstants {
 
-	public static final String SKIP_OPEN_OR_IN_PROGRESS_OR_REOPENED_JIRA_ISSUES = "org.kuali.test.KualiTestBase.skipOpenOrInProgressOrReopenedJiraIssues";
-
-	private static final Map<String, Level> changedLogLevels = new HashMap<String, Level>();
-
 	private TransactionalLifecycle transactionalLifecycle;
-
-
-	/**
-	 * Changes the logging-level associated with the given loggerName to the
-	 * given level. The original logging-level is saved, and will be
-	 * automatically restored at the end of each test.
-	 * 
-	 * @param loggerName
-	 *            name of the logger whose level to change
-	 * @param newLevel
-	 *            the level to change to
-	 */
-	protected void setLogLevel(String loggerName, Level newLevel) {
-		Logger logger = Logger.getLogger(loggerName);
-
-		if (!changedLogLevels.containsKey(loggerName)) {
-			Level originalLevel = logger.getLevel();
-			changedLogLevels.put(loggerName, originalLevel);
-		}
-
-		logger.setLevel(newLevel);
-	}
-
-	/**
-	 * Restores the logging-levels changed through calls to setLogLevel to their
-	 * original values.
-	 */
-	protected void resetLogLevels() {
-		for (Iterator i = changedLogLevels.entrySet().iterator(); i.hasNext();) {
-			Map.Entry e = (Map.Entry) i.next();
-
-			String loggerName = (String) e.getKey();
-			Level originalLevel = (Level) e.getValue();
-
-			Logger.getLogger(loggerName).setLevel(originalLevel);
-		}
-		changedLogLevels.clear();
-	}
 
 	@Before 
 	public void setUp() throws Exception {
@@ -124,7 +82,6 @@ public abstract class KNSTestBase extends KNSTestCase implements KNSTestConstant
 	@After 
 	public void tearDown() throws Exception {
 		final boolean needsSpring = getClass().isAnnotationPresent(KNSWithTestSpringContext.class);
-		resetLogLevels();
 		if (needsSpring) {
 		    if (transactionalLifecycle != null) {
 		        transactionalLifecycle.stop();

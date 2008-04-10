@@ -25,7 +25,7 @@ public class FloatingPointValidationPatternTest extends KNSTestBase {
     FloatingPointValidationPattern pattern;
 
     @Override
-    @Test public final void setUp() throws Exception {
+    public final void setUp() throws Exception {
         super.setUp();
 
         pattern = new FloatingPointValidationPattern();

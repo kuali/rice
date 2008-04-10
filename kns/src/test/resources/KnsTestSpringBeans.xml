@@ -1,0 +1,88 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" ref="configProperties" />
+	</bean>
+
+	<bean id="config" class="org.kuali.rice.config.spring.ConfigFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:META-INF/kns-test-config.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="config" />
+		<property name="targetMethod" value="getProperties" />
+	</bean>
+
+  <bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init" destroy-method="close">
+	<property name="forceShutdown" value="true"/>
+	<property name="transactionTimeout" value="${transaction.timeout}"/>
+  </bean>
+
+  <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+    <property name="transactionTimeout" value="${transaction.timeout}"/>
+  </bean>
+
+  <bean id="knsDataSource" class="com.atomikos.jdbc.nonxa.NonXADataSourceBean">
+    <property name="uniqueResourceName" value="knsDataSource"/>
+  	<property name="driverClassName" value="${datasource.driver.name}"/>
+  	<property name="url" value="${datasource.url}"/>
+  	<property name="poolSize" value="${datasource.pool.size}"/>
+  	<property name="connectionTimeout" value="${datasource.pool.maxWait}"/>
+  	<property name="validatingQuery" value="${datasource.pool.validationQuery}"/>
+  	<property name="testOnBorrow" value="true"/>
+  	<property name="user" value="${datasource.username}"/>
+  	<property name="password" value="${datasource.password}"/>
+  </bean>
+
+    <bean id="knsNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${datasource.driver.name}"/>
+        <property name="url" value="${datasource.url}"/>
+        <property name="maxActive" value="${datasource.pool.maxActive}"/>
+        <property name="minIdle" value="${datasource.minIdle}" />
+        <property name="initialSize" value="${datasource.initialSize}"/>
+        <property name="validationQuery" value="${datasource.pool.validationQuery}"/>
+        <property name="username" value="${datasource.username}" />
+        <property name="password" value="${datasource.password}" />
+        <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
+    </bean>
+
+	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
+		<property name="dataSource" ref="knsDataSource" />
+		<property name="nonTransactionalDataSource" ref="knsNonTransactionalDataSource" />
+		<property name="transactionManager" ref="atomikosTransactionManager" />
+		<property name="userTransaction" ref="atomikosUserTransaction" />
+		<property name="rootConfig" ref="config" />
+		<property name="messageEntity" value="TEST" />
+		<property name="modules">
+			<list>
+				<bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
+					<property name="serviceServletUrl" value="${serviceServletUrl}" />
+                    <property name="authorizationService">
+                      <bean class="edu.sampleu.travel.rice.TravelAuthorizationService"/>
+                    </property>
+				</bean>
+				<bean class="org.kuali.workflow.config.KEWConfigurer">
+					<property name="clientProtocol" value="local" />
+				</bean>
+				<bean class="org.kuali.rice.kns.config.KNSConfigurer">
+					<property name="dataDictionaryPackages">
+						<list>
+							<value>org/kuali/rice/kns/test/document</value>
+ 						</list>
+					</property>
+					<property name="databaseRepositoryFilePaths">
+						<list>
+							<value>OJB-repository-kns-test.xml</value>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>

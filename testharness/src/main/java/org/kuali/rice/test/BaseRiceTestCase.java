@@ -13,9 +13,16 @@
 package org.kuali.rice.test;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.kuali.rice.test.lifecycles.PerTestDataLoaderLifecycle;
 import org.kuali.rice.test.runners.RiceUnitTestClassRunner;
@@ -36,6 +43,8 @@ public abstract class BaseRiceTestCase extends Assert implements MethodAware {
 
 	protected final Logger log = Logger.getLogger(getClass());
 
+	private static final Map<String, Level> changedLogLevels = new HashMap<String, Level>();
+	
 	private String name;
 	private PerTestDataLoaderLifecycle perTestDataLoaderLifecycle;
 	protected Method method;
@@ -51,7 +60,53 @@ public abstract class BaseRiceTestCase extends Assert implements MethodAware {
 	public void setName(String name) {
 		this.name = name;
 	}
+    
+	@Before
+	public void setUp() throws Exception {
+	}
+	
+    @After
+    public void tearDown() throws Exception {
+        resetLogLevels();
+    }
+    
+    /**
+     * Changes the logging-level associated with the given loggerName to the
+     * given level. The original logging-level is saved, and will be
+     * automatically restored at the end of each test.
+     * 
+     * @param loggerName
+     *            name of the logger whose level to change
+     * @param newLevel
+     *            the level to change to
+     */
+    protected void setLogLevel(String loggerName, Level newLevel) {
+        Logger logger = Logger.getLogger(loggerName);
 
+        if (!changedLogLevels.containsKey(loggerName)) {
+            Level originalLevel = logger.getLevel();
+            changedLogLevels.put(loggerName, originalLevel);
+        }
+
+        logger.setLevel(newLevel);
+    }
+
+    /**
+     * Restores the logging-levels changed through calls to setLogLevel to their
+     * original values.
+     */
+    protected void resetLogLevels() {
+        for (Iterator i = changedLogLevels.entrySet().iterator(); i.hasNext();) {
+            Map.Entry e = (Map.Entry) i.next();
+
+            String loggerName = (String) e.getKey();
+            Level originalLevel = (Level) e.getValue();
+
+            Logger.getLogger(loggerName).setLevel(originalLevel);
+        }
+        changedLogLevels.clear();
+    }
+    
 	/**
 	 * @see org.kuali.rice.test.MethodAware#setTestMethod(java.lang.reflect.Method)
 	 */
@@ -60,7 +115,7 @@ public abstract class BaseRiceTestCase extends Assert implements MethodAware {
 
         perTestDataLoaderLifecycle = new PerTestDataLoaderLifecycle(method);
     }
-
+	
     protected PerTestDataLoaderLifecycle getPerTestDataLoaderLifecycle() {
 		return this.perTestDataLoaderLifecycle;
 	}

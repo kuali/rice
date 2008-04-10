@@ -27,7 +27,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 
 public class HtmlUnitUtil {
 
-    public static final String BASE_URL = "http://localhost:" + getPort() + "/SampleRiceClient";
+    public static final String BASE_URL = "http://localhost:" + getPort() + "/knstest";
     
     public static HtmlPage gotoPageAndLogin(String url) throws Exception {
         final WebClient webClient = new WebClient(BrowserVersion.INTERNET_EXPLORER_6_0);

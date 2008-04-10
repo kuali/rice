@@ -22,11 +22,11 @@ import org.kuali.core.datadictionary.DataDictionary;
 import org.kuali.core.datadictionary.DataDictionaryBuilder;
 import org.kuali.core.datadictionary.TransactionalDocumentEntry;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.test.document.AccountRequestDocument;
+import org.kuali.rice.kns.test.document.AccountRequestDocumentAuthorizer;
+import org.kuali.rice.kns.test.document.AccountRequestDocumentRule;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
-
-import edu.sampleu.travel.document.TravelDocument2;
-import edu.sampleu.travel.document.rule.TravelDocumentRule;
 
 /**
  * This class is used to test the TransactionalDocumentEntryMapper.
@@ -47,9 +47,9 @@ public class TransactionalDocumentEntryMapperTest extends KNSTestBase {
         builder.setKualiGroupService(KNSServiceLocator.getKualiGroupService());
         builder.setKualiConfigurationService(KNSServiceLocator.getKualiConfigurationService());
 
-        builder.addUniqueEntries("classpath:/edu/sampleu/travel/datadictionary/TravelRequestDocument.xml", true);
+        builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountRequestDocument.xml", true);
         builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/AttributeReferenceDummy.xml", true);
-        builder.parseDocument("TravelRequest", true);
+        builder.parseDocument("Test1", true);
 
         dataDictionary = builder.getDataDictionary();
     }
@@ -68,57 +68,57 @@ public class TransactionalDocumentEntryMapperTest extends KNSTestBase {
     }
 
     @Test public final void testExportSimpleProperties_classname() {
-        Map entryMap = mapTravelDocument2();
+        Map entryMap = mapAccountRequest();
 
         String path = "documentClass";
         String property = (String) ExporterTestUtils.traverseMap(entryMap, path);
-        assertEquals(TravelDocument2.class.getName(), property);
+        assertEquals(AccountRequestDocument.class.getName(), property);
     }
 
 
     @Test public final void testExportSimpleProperties_documentTypeName() {
-        Map entryMap = mapTravelDocument2();
+        Map entryMap = mapAccountRequest();
 
         String path = "documentTypeName";
         String property = (String) ExporterTestUtils.traverseMap(entryMap, path);
-        assertEquals("TravelRequest", property);
+        assertEquals("AccountRequest", property);
     }
 
 
     @Test public final void testExportSimpleProperties_documentTypeCode() {
-        Map entryMap = mapTravelDocument2();
+        Map entryMap = mapAccountRequest();
 
         String path = "documentTypeCode";
         String property = (String) ExporterTestUtils.traverseMap(entryMap, path);
-        assertEquals("TRD2", property);
+        assertEquals("ARQ", property);
     }
 
     @Test public final void testExportSimpleProperties_businessRulesClass() {
-        Map entryMap = mapTravelDocument2();
+        Map entryMap = mapAccountRequest();
 
         String path = "businessRulesClass";
         String property = (String) ExporterTestUtils.traverseMap(entryMap, path);
-        assertEquals(TravelDocumentRule.class.getName(), property);
+        assertEquals(AccountRequestDocumentRule.class.getName(), property);
     }
 
     @Test public final void testExportSimpleProperties_label() {
-        Map entryMap = mapTravelDocument2();
+        Map entryMap = mapAccountRequest();
 
         String path = "label";
         String property = (String) ExporterTestUtils.traverseMap(entryMap, path);
-        assertEquals("Travel Doc 2", property);
+        assertEquals("Account Request", property);
     }
 
     @Test public final void testExportSimpleProperties_shortLabel() {
-        Map entryMap = mapTravelDocument2();
+        Map entryMap = mapAccountRequest();
 
         String path = "shortLabel";
         String property = (String) ExporterTestUtils.traverseMap(entryMap, path);
-        assertEquals("TRDoc2", property);
+        assertEquals("ARQDoc", property);
     }
 
     @Test public final void testExportSimpleProperties_summary() {
-        Map entryMap = mapTravelDocument2();
+        Map entryMap = mapAccountRequest();
 
         String path = "summary";
         String property = (String) ExporterTestUtils.traverseMap(entryMap, path);
@@ -126,7 +126,7 @@ public class TransactionalDocumentEntryMapperTest extends KNSTestBase {
     }
 
     @Test public final void testExportSimpleProperties_description() {
-        Map entryMap = mapTravelDocument2();
+        Map entryMap = mapAccountRequest();
 
         String path = "description";
         String property = (String) ExporterTestUtils.traverseMap(entryMap, path);
@@ -134,7 +134,7 @@ public class TransactionalDocumentEntryMapperTest extends KNSTestBase {
     }
 
     @Test public final void testExportSimpleProperties_allowsCopy() {
-        Map entryMap = mapTravelDocument2();
+        Map entryMap = mapAccountRequest();
 
         String path = "allowsCopy";
         String property = (String) ExporterTestUtils.traverseMap(entryMap, path);
@@ -142,7 +142,7 @@ public class TransactionalDocumentEntryMapperTest extends KNSTestBase {
     }
 
     @Test public final void testExportSimpleProperties_allowsErrorCorrection() {
-        Map entryMap = mapTravelDocument2();
+        Map entryMap = mapAccountRequest();
 
         String path = "allowsErrorCorrection";
         String property = (String) ExporterTestUtils.traverseMap(entryMap, path);
@@ -150,7 +150,7 @@ public class TransactionalDocumentEntryMapperTest extends KNSTestBase {
     }
 
     @Test public final void testExportSimpleProperties_allowsNoteAttachments() {
-        Map entryMap = mapTravelDocument2();
+        Map entryMap = mapAccountRequest();
 
         String path = "allowsNoteAttachments";
         String property = (String) ExporterTestUtils.traverseMap(entryMap, path);
@@ -158,19 +158,19 @@ public class TransactionalDocumentEntryMapperTest extends KNSTestBase {
     }
 
     @Test public final void testExportSimpleProperties_documentAuthorizerClass() {
-        Map entryMap = mapTravelDocument2();
+        Map entryMap = mapAccountRequest();
 
         String path = "documentAuthorizerClass";
         String property = (String) ExporterTestUtils.traverseMap(entryMap, path);
 
-        assertEquals("edu.sampleu.travel.document.authorizer.TravelDocumentAuthorizer", property);
+        assertEquals(AccountRequestDocumentAuthorizer.class.getName(), property);
     }
 
 
     /* utility methods */
-    private Map mapTravelDocument2() {
+    private Map mapAccountRequest() {
     	
-        TransactionalDocumentEntry entry = (TransactionalDocumentEntry)dataDictionary.getDictionaryObjectEntry(TravelDocument2.class.getName());
+        TransactionalDocumentEntry entry = (TransactionalDocumentEntry)dataDictionary.getDictionaryObjectEntry(AccountRequestDocument.class.getName());
         TransactionalDocumentEntryMapper mapper = new TransactionalDocumentEntryMapper();
         Map map = mapper.mapEntry(entry).getExportData();
 

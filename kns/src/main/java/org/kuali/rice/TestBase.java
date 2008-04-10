@@ -19,7 +19,7 @@ import org.kuali.rice.testharness.TransactionalLifecycle;
 
 public class TestBase extends KNSTestCase {
 
-    private TransactionalLifecycle transactionalLifecycle;
+	private TransactionalLifecycle transactionalLifecycle;
 
     @Before
     public void setUp() throws Exception {
@@ -27,14 +27,14 @@ public class TestBase extends KNSTestCase {
          * This overridden method is used to set up default values already contained in KNSTestCase but
          * createproject.groovy script requires them here for replacement
          */
-        setRelativeWebappRoot("/src/test/webapp");
+        setRelativeWebappRoot("/../kns/src/test/webapp");
         setTestConfigFilename("classpath:META-INF/sample-app-test-config.xml");
         super.setUp();
         transactionalLifecycle = new TransactionalLifecycle();
         transactionalLifecycle.start();
     }
 
-    @After
+	@After
     public void tearDown() throws Exception {
         try {
             if (transactionalLifecycle != null) {

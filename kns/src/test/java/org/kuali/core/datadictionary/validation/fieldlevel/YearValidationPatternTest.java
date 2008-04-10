@@ -19,6 +19,8 @@ import org.junit.Test;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
 
+import edu.iu.uis.eden.KEWServiceLocator;
+
 
 @KNSWithTestSpringContext
 public class YearValidationPatternTest extends KNSTestBase {

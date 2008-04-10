@@ -17,10 +17,9 @@ package org.kuali.core.inquiry;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
-
-import edu.sampleu.travel.bo.FiscalOfficer;
 
 /**
  * This class tests the KualiInquirable methods.
@@ -30,22 +29,23 @@ import edu.sampleu.travel.bo.FiscalOfficer;
 @KNSWithTestSpringContext
 public class KualiInquirableTest extends KNSTestBase {
 
-    private FiscalOfficer fo;
+    private AccountManager am;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        fo = new FiscalOfficer();
-        fo.setId(new Long(1));
+        am = new AccountManager();
+        am.setAmId(new Long(1));
+        
     }
 
     /**
      * Tests the inquiry url output for a given bo and property name.
      */
     @Test public final void testBuildInquiryUrl() {
-        String inquiryUrl = new KualiInquirableImpl().getInquiryUrl(fo, "id", true);
-        assertTrue("An inquiry URL to Organization should be built", StringUtils.contains(inquiryUrl, "id=1"));
-        assertTrue("An inquiry URL to Organization should be built", StringUtils.contains(inquiryUrl, "businessObjectClassName=edu.sampleu.travel.bo.FiscalOfficer"));
+        String inquiryUrl = new KualiInquirableImpl().getInquiryUrl(am, "amId", true);
+        assertTrue("An inquiry URL to AccountManager should be built", StringUtils.contains(inquiryUrl, "amId=1"));
+        assertTrue("An inquiry URL to AccountManager should be built", StringUtils.contains(inquiryUrl, "businessObjectClassName=" + AccountManager.class.getName()));
     }
 
 }

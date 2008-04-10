@@ -28,16 +28,15 @@ insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a2')
 ;
 insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a3')
 ;
-INSERT INTO FP_DOC_GROUP_T VALUES ('TR', '054EDFB3B260C8D2E043814FD881C8D2', 1,	'Travel Documents', null)
+INSERT INTO FP_DOC_GROUP_T VALUES ('TS', '044EDFB3B260C8D2E043814FD881C8D2', 1, 'Test Documents', null)
 ;
-insert into FP_DOC_TYPE_T values ('TRAV', '1A6FEB2501C7607EE043814FD881607E', 1, 'TR',	'TRAV ACCNT', 'N', 'Y', 'N', 0, 'N', 'N')
+insert into FP_DOC_TYPE_T values ('AMMD', '1A7FEB250342607EE043814FD881607E', 1, 'TS', 'ACCT MAN', 'N', 'Y', 'N', 0, 'N', 'N')
 ;
-insert into FP_DOC_TYPE_T values ('TRFO', '1A6FEB250342607EE043814FD881607E', 1, 'TR',	'TRAV FO', 'N', 'Y', 'N', 0, 'N', 'N')
+insert into FP_DOC_TYPE_T values ('ARQ', '1B7FEB250342607EE043814FD881607E', 1, 'TS', 'ACCT REQ', 'N', 'Y', 'N', 0, 'N', 'N')
 ;
-insert into FP_DOC_TYPE_T values ('TRD2', '1A6FEB250342607EE043814FD889607E', 1, 'TR',	'TRAV D2', 'N', 'Y', 'N', 0, 'N', 'N')
+insert into FP_DOC_TYPE_T values ('AMD', '1C7FEB250342607EE043814FD881607E', 1, 'TS', 'ACCT', 'N', 'Y', 'N', 0, 'N', 'N')
 ;
-insert into FP_DOC_TYPE_T values ('TRVA', '1A5FEB250342607EE043814FD889607E', 1, 'TR',	'TRAV MAINT', 'N', 'Y', 'N', 0, 'N', 'N')
-;
+
 INSERT INTO kr_qrtz_locks values('TRIGGER_ACCESS')
 ;
 INSERT INTO kr_qrtz_locks values('JOB_ACCESS')

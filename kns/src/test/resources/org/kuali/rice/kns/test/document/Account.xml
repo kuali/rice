@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2006 The Kuali Foundation.
+ 
+ Licensed under the Educational Community License, Version 1.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl1.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!DOCTYPE dictionaryEntry PUBLIC
+    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
+    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
+<dictionaryEntry>
+    <businessObject businessObjectClass="org.kuali.rice.kns.test.document.bo.Account">
+
+        <inquiry>
+            <title>Account Inquiry</title>
+
+            <inquirySections><inquirySection title="Account Information"><inquiryFields>
+                <field attributeName="number" forceInquiry="true" />
+                <field attributeName="name" />
+                <field attributeName="extension.accountType.codeAndDescription" />
+                <field attributeName="amId" forceInquiry="true" />
+            </inquiryFields></inquirySection></inquirySections>
+        </inquiry>
+
+        <lookup>
+            <title>Account Lookup</title>
+            <instructions>Look up an Account</instructions>
+
+            <defaultSort sortAscending="true">
+                <sortAttributes>
+                    <sortAttribute attributeName="number" />
+                </sortAttributes>
+            </defaultSort>
+
+            <lookupFields>
+                <lookupField attributeName="number" required="false" />
+                <lookupField attributeName="name" required="false" />
+                <lookupField attributeName="extension.accountTypeCode" required="false"/>
+                <lookupField attributeName="amId" required="false" forceLookup="true" />
+            </lookupFields>
+
+            <resultFields>
+                <field attributeName="number" forceInquiry="true" />
+                <field attributeName="name" forceInquiry="true"/>
+                <field attributeName="extension.accountType.codeAndDescription" forceInquiry="true"/>
+                <field attributeName="amId" forceInquiry="true" />
+            </resultFields>
+        </lookup>
+        
+        <titleAttribute>Travel Account</titleAttribute>
+ 
+        <attributes>
+
+            <attribute name="number">
+                <label>Account Number</label>
+                <shortLabel>Account Number</shortLabel>
+
+                <maxLength>10</maxLength>
+                <validationPattern><anyCharacter /></validationPattern>
+
+                <control>
+                    <text size="10" />
+                </control>
+                
+
+                <summary>Account Number</summary>
+                <description>Account Number</description>
+			</attribute>
+
+            <attribute name="name" forceUppercase="false">
+                <label>Account Name</label>
+                <shortLabel>Account Name</shortLabel>
+
+                <maxLength>30</maxLength>
+                <validationPattern><anyCharacter /></validationPattern>
+
+                <control>
+                    <text size="30" />
+                </control>
+
+                <summary>Account Name</summary>
+                <description>Account Name</description>
+			</attribute>
+
+            <attributeReference name="extension.accountTypeCode" sourceClassName="org.kuali.rice.kns.test.document.bo.AccountType" sourceAttributeName="accountTypeCode">
+                <required>true</required>
+                <control>
+                    <select valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder" businessObjectClass="org.kuali.rice.kns.test.document.bo.AccountType" keyAttribute="accountTypeCode" labelAttribute="name" includeKeyInLabel="true"/>
+                </control>
+            </attributeReference>
+
+            <attributeReference name="extension.accountType.codeAndDescription" sourceClassName="org.kuali.rice.kns.test.document.bo.AccountType" sourceAttributeName="codeAndDescription" />
+            		
+		    <attributeReference name="amId" sourceClassName="org.kuali.rice.kns.test.document.bo.AccountManager" sourceAttributeName="amId"/>
+		</attributes>				
+		<relationships>
+			<relationship objectAttributeName="extension">
+				<primitiveAttribute sourceName="number" targetName="number" />
+			</relationship>
+			<relationship objectAttributeName="extension.accountType">
+				<primitiveAttribute sourceName="extension.accountTypeCode" targetName="accountTypeCode" />
+			</relationship>
+		</relationships>    
+    </businessObject>
+</dictionaryEntry>

@@ -41,18 +41,14 @@
 	<classpathentry kind="src" path="shared/src/main/resources"/>
 	<classpathentry kind="src" output="shared/target/test-classes" path="shared/src/test/java"/>
 	<classpathentry kind="src" output="shared/target/test-classes" path="shared/src/test/resources"/>
-	<classpathentry kind="src" path="standalone/src/main/java"/>
-	<classpathentry kind="src" path="standalone/src/main/resources"/>
-	<classpathentry kind="src" output="standalone/target/test-classes" path="standalone/src/test/java"/>
-	<classpathentry kind="src" output="standalone/target/test-classes" path="standalone/src/test/resources"/>
 	<classpathentry kind="src" path="testharness/src/main/java"/>
 	<classpathentry kind="src" path="testharness/src/main/resources"/>
 	<classpathentry kind="src" output="testharness/target/test-classes" path="testharness/src/test/java"/>
 	<classpathentry kind="src" output="testharness/target/test-classes" path="testharness/src/test/resources"/>
 	<classpathentry kind="src" path="server/src/main/java"/>
 	<classpathentry kind="src" path="server/src/main/resources"/>
-	<classpathentry kind="src" path="server/src/test/java"/>
-	<classpathentry kind="src" path="server/src/test/resources"/>
+	<classpathentry kind="src" output="server/target/test-classes" path="server/src/test/java"/>
+	<classpathentry kind="src" output="server/target/test-classes" path="server/src/test/resources"/>
 	<classpathentry kind="var" path="M2_REPO/ant/ant/1.6.5/ant-1.6.5.jar" sourcepath="M2_REPO/ant/ant/1.6.5/ant-1.6.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/antlr/antlr/2.7.2/antlr-2.7.2.jar" sourcepath="M2_REPO/antlr/antlr/2.7.2/antlr-2.7.2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/asm/asm-util/1.3.4/asm-util-1.3.4.jar"/>

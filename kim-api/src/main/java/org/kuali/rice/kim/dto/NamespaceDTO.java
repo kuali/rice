@@ -20,20 +20,21 @@ import java.util.HashMap;
 
 /**
  * This is the Data Transfer Object (DTO) that is used for our service layer.
- *  
- * This class represents a single Namespace entity instance in the System. 
- * 
+ *
+ * This class represents a single Namespace entity instance in the System.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class NamespaceDTO implements Serializable {
 	private static final long serialVersionUID = 2733821068998561691L;
-	
+
     private Long id;
 	private String name;
 	private String description;
 
     private HashMap<String,NamespaceDefaultAttributeDTO> namespaceDefaultAttributes;
+    private HashMap<String,PermissionDTO> namespacePermissions;
 
 	public Long getId() {
 	    return this.id;
@@ -71,5 +72,19 @@ public class NamespaceDTO implements Serializable {
      */
     public void setNamespaceDefaultAttributes(HashMap<String,NamespaceDefaultAttributeDTO> namespaceDefaultAttributes) {
         this.namespaceDefaultAttributes = namespaceDefaultAttributes;
+    }
+
+    /**
+     * @return HashMap - the key is the name of the permission, the value is the DTO
+     */
+    public HashMap<String, PermissionDTO> getNamespacePermissions() {
+        return this.namespacePermissions;
+    }
+
+    /**
+     * @param namespaceDefaultAttributes - HashMap - the key is the name of the permission, the value is the DTO
+     */
+   public void setNamespacePermissions(HashMap<String, PermissionDTO> namespacePermissions) {
+        this.namespacePermissions = namespacePermissions;
     }
 }

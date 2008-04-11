@@ -96,4 +96,28 @@
         </bean>
       </property>
     </bean>
+
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+          <property name="service" ref="namespaceService" />
+          <property name="serviceNameSpaceURI" value="KIM"/>
+          <property name="localServiceName" value="namespaceSoapService" />
+          <property name="priority" value="3" />
+          <property name="retryAttempts" value="0" />
+          <property name="busSecurity" value="false"/>
+        </bean>
+      </property>
+    </bean>
+
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+          <property name="service" ref="namespaceService" />
+          <property name="serviceNameSpaceURI" value="KIM"/>
+          <property name="localServiceName" value="namespaceService" />
+          <property name="retryAttempts" value="0" />
+        </bean>
+      </property>
+    </bean>
 </beans>

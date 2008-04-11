@@ -1,8 +1,11 @@
 <config>
 	<param name="module.name">sample-app</param>
-
+	<param name="message.entity">TRAVEL</param>
+	
+	<param name="filter.login.class">edu.iu.uis.eden.web.DummyLoginFilter</param>
+	<param name="filtermapping.login.1">/*</param>
+	
 	<param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
-
 	<param name="config.location">classpath:META-INF/common-config-locations.xml</param>
 	<param name="config.location">${alt.config.location}</param>
 </config>

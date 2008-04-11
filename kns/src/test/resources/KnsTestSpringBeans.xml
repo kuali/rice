@@ -63,7 +63,9 @@
 				<bean class="edu.iu.uis.eden.messaging.config.KSBConfigurer">
 					<property name="serviceServletUrl" value="${serviceServletUrl}" />
                     <property name="authorizationService">
-                      <bean class="edu.sampleu.travel.rice.TravelAuthorizationService"/>
+                      <bean class="edu.iu.uis.eden.authorization.WorkgroupAuthorizationServiceImpl">
+                        <property name="workgroupName" value="WorkflowAdmin"/>
+                      </bean>
                     </property>
 				</bean>
 				<bean class="org.kuali.workflow.config.KEWConfigurer">

@@ -1,5 +1,9 @@
 <config>
 	<param name="module.name">sample-app</param>
+	<param name="message.entity">TRAVEL</param>
+
+	<param name="filter.login.class">edu.iu.uis.eden.web.DummyLoginFilter</param>
+	<param name="filtermapping.login.1">/*</param>
 
     <!--
       Because this file is loaded during unit tests but outside of the test harness

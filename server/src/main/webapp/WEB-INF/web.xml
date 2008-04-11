@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.4"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<display-name>Rice Sample Application</display-name>
+	<display-name>Kuali Rice Standalone</display-name>
 
-    <filter>
+    <context-param>
+      <param-name>environment</param-name>
+      <param-value>dev</param-value>
+    </context-param>
+
+	<filter>
         <filter-name>HideWebInfFilter</filter-name>
         <filter-class>org.kuali.core.web.filter.HideWebInfFilter</filter-class>
     </filter>
 
-	<filter>
-		<filter-name>LoginFilter</filter-name>
-		<filter-class>edu.iu.uis.eden.web.DummyLoginFilter</filter-class>
-	</filter>
+  <filter>
+    <filter-name>BootstrapFilter</filter-name>
+    <filter-class>edu.iu.uis.eden.core.BootstrapFilter</filter-class>
+  </filter>
 
 	<filter>
 		<filter-name>UserLoginFilter</filter-name>
@@ -29,9 +34,10 @@
     </filter-mapping>
 
     <filter-mapping>
-		<filter-name>LoginFilter</filter-name>
-		<servlet-name>action</servlet-name>
-	</filter-mapping>
+      <filter-name>BootstrapFilter</filter-name>
+      <servlet-name>action</servlet-name>
+    </filter-mapping>
+
 	<filter-mapping>
 		<filter-name>UserLoginFilter</filter-name>
 		<servlet-name>action</servlet-name>
@@ -41,11 +47,6 @@
         <servlet-name>action</servlet-name>
     </filter-mapping>
 
-    <!-- for KEN Spring Web MVC pages -->
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <servlet-name>notification</servlet-name>
-    </filter-mapping>
     <filter-mapping>
         <filter-name>UserLoginFilter</filter-name>
         <servlet-name>notification</servlet-name>
@@ -57,7 +58,7 @@
     
     <!-- for KCB Spring Web MVC pages -->
     <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
+        <filter-name>BootstrapFilter</filter-name>
         <servlet-name>kcb</servlet-name>
     </filter-mapping>
     <filter-mapping>
@@ -69,11 +70,6 @@
         <servlet-name>kcb</servlet-name>
     </filter-mapping>
 
-    <!-- for EDocLite -->
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <servlet-name>edoclite</servlet-name>
-    </filter-mapping>
     <filter-mapping>
         <filter-name>UserLoginFilter</filter-name>
         <servlet-name>edoclite</servlet-name>
@@ -83,27 +79,21 @@
         <servlet-name>edoclite</servlet-name>
     </filter-mapping>
 
-<!--
     <listener>
-        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-    </listener>
- -->
-    <listener>
-        <listener-class>edu.sampleu.travel.infrastructure.TravelAppInitializeListener</listener-class>
+      <listener-class>org.kuali.rice.standalone.StandaloneInitializeListener</listener-class>
     </listener>
 
 	<listener>
 		<listener-class>org.kuali.core.web.listener.JstlConstantsInitListener</listener-class>
 	</listener>
-
-
+	
 	<servlet>
 		<servlet-name>action</servlet-name>
 		<servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
-		<init-param>
-			<param-name>config</param-name>
-			<param-value>/WEB-INF/struts-config.xml</param-value>
-		</init-param>
+        <init-param>
+          <param-name>config</param-name>
+          <param-value>/WEB-INF/struts-config.xml</param-value>
+        </init-param>
 		<init-param>
 			<param-name>config/en</param-name>
 			<param-value>/en/WEB-INF/struts-config.xml</param-value>
@@ -180,7 +170,7 @@
           <param-value>/kcb</param-value>
         </init-param>
         <load-on-startup>2</load-on-startup>
-    </servlet>
+	</servlet>
 
 	<servlet>
 		<servlet-name>remoting</servlet-name>
@@ -222,8 +212,8 @@
         <servlet-name>notification</servlet-name>
         <url-pattern>*.form</url-pattern>
     </servlet-mapping>
-    
-    <servlet-mapping>
+
+	<servlet-mapping>
         <servlet-name>kcb</servlet-name>
         <url-pattern>*.kcb</url-pattern>
     </servlet-mapping>

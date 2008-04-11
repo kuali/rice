@@ -28,7 +28,7 @@ public class TestBase extends KNSTestCase {
          * createproject.groovy script requires them here for replacement
          */
         setRelativeWebappRoot("/../kns/src/test/webapp");
-        setTestConfigFilename("classpath:META-INF/sample-app-test-config.xml");
+        //setTestConfigFilename("classpath:META-INF/sample-app-test-config.xml");
         super.setUp();
         transactionalLifecycle = new TransactionalLifecycle();
         transactionalLifecycle.start();

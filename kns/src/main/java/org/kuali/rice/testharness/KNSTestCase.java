@@ -12,10 +12,8 @@
  */
 package org.kuali.rice.testharness;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.config.spring.ConfigFactoryBean;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
@@ -35,7 +33,7 @@ public abstract class KNSTestCase extends RiceTestCase {
     private String sqlFilename = "classpath:KNSDefaultTestData.sql";
     private String sqlDelimiter = ";";
 	private String xmlFilename = "classpath:KNSDefaultTestData.xml";
-	private String testConfigFilename = "classpath:META-INF/sample-app-test-config.xml";
+	//private String testConfigFilename = "classpath:META-INF/sample-app-test-config.xml";
 
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
@@ -48,7 +46,7 @@ public abstract class KNSTestCase extends RiceTestCase {
 			}
 
 			public void start() throws Exception {
-				ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();
+				//ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();
                 new SQLDataLoaderLifecycle(getSqlFilename(), getSqlDelimiter()).start();
 				new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
 				new KEWXmlDataLoaderLifecycle(getXmlFilename()).start();
@@ -63,13 +61,13 @@ public abstract class KNSTestCase extends RiceTestCase {
 		return lifecycles;
 	}
 
-	@Override
-	protected List<String> getConfigLocations() {
-        List<String> configLocations = new ArrayList<String>();
-        configLocations.add(getRiceMasterDefaultConfigFile());
-        configLocations.add(getTestConfigFilename());
-        return configLocations;
-	}
+//	@Override
+//	protected List<String> getConfigLocations() {
+//        List<String> configLocations = new ArrayList<String>();
+//        configLocations.add(getRiceMasterDefaultConfigFile());
+//        configLocations.add(getTestConfigFilename());
+//        return configLocations;
+//	}
 
 	@Override
 	protected String getDerbySQLFileLocation() {
@@ -81,13 +79,13 @@ public abstract class KNSTestCase extends RiceTestCase {
 		return "kns";
 	}
 
-	protected String getTestConfigFilename() {
-		return testConfigFilename;
-	}
-
-	protected void setTestConfigFilename(String testConfigFilename) {
-		this.testConfigFilename = testConfigFilename;
-	}
+//	protected String getTestConfigFilename() {
+//		return testConfigFilename;
+//	}
+//
+//	protected void setTestConfigFilename(String testConfigFilename) {
+//		this.testConfigFilename = testConfigFilename;
+//	}
 
 	protected String getContextName() {
 		return contextName;

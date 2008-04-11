@@ -25,6 +25,7 @@ import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 import org.kuali.rice.testharness.HtmlUnitUtil;
 
+import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
 
 /**
@@ -36,7 +37,7 @@ import edu.iu.uis.eden.batch.KEWXmlDataLoaderLifecycle;
 public class ServerTestBase extends RiceTestCase {
 
     private String contextName = "/knstest";
-    private String relativeWebappRoot = "/server/src/main/webapp";
+    private String relativeWebappRoot = "/../server/src/main/webapp";
     private String sqlFilename = "classpath:ServerDefaultTestData.sql";
     private String sqlDelimiter = ";";
     private String xmlFilename = "classpath:ServerDefaultTestData.xml";
@@ -53,10 +54,12 @@ public class ServerTestBase extends RiceTestCase {
             }
 
             public void start() throws Exception {
+                System.setProperty(EdenConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
                 ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();
                 new SQLDataLoaderLifecycle(getSqlFilename(), getSqlDelimiter()).start();
                 new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
                 new KEWXmlDataLoaderLifecycle(getXmlFilename()).start();
+                System.getProperties().remove(EdenConstants.BOOTSTRAP_SPRING_FILE);
                 this.started = true;
             }
 

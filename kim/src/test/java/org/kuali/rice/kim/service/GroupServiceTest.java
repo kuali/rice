@@ -32,7 +32,7 @@ import org.kuali.rice.test.data.UnitTestSql;
  *
  * FIXME: This test causes compile failure in CI because it is relying on a class
  * in KNS module test source, which maven does not expose.  Either the KNS test
- * classes need to be moved into KNS proper, or pushed down into a shared module. 
+ * classes need to be moved into KNS proper, or pushed down into a shared module.
  *
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

@@ -26,7 +26,6 @@ import javax.transaction.UserTransaction;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.event.AfterStartEvent;
 import org.kuali.rice.config.event.AfterStopEvent;
 import org.kuali.rice.config.event.BeforeStartEvent;

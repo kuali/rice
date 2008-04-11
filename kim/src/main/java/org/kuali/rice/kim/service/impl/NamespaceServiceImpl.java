@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kim.bo.Namespace;
 import org.kuali.rice.kim.bo.NamespaceDefaultAttribute;
 import org.kuali.rice.kim.bo.Permission;
@@ -20,7 +21,6 @@ import org.kuali.rice.kim.dto.NamespaceDTO;
 import org.kuali.rice.kim.dto.NamespaceDefaultAttributeDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
 import org.kuali.rice.kim.service.NamespaceService;
-import org.kuali.rice.KNSServiceLocator;
 
 /**
  * This is the default KIM Namespace implementation that is provided by Rice. This will mature over time as the KIM component
@@ -35,7 +35,6 @@ public class NamespaceServiceImpl implements NamespaceService {
      *
      * @see org.kuali.rice.kim.service.NamespaceService#getAllNamespaceNames()
      */
-    @Override
     public List<String> getAllNamespaceNames() {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         final Collection<Namespace> namespaces = (Collection<Namespace>) KNSServiceLocator.getBusinessObjectService().findAll(Namespace.class);
@@ -52,7 +51,6 @@ public class NamespaceServiceImpl implements NamespaceService {
      *
      * @see org.kuali.rice.kim.service.NamespaceService#getAllNamespaces()
      */
-    @Override
     public List<NamespaceDTO> getAllNamespaces() {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         final Collection<Namespace> namespaces = (Collection<Namespace>) KNSServiceLocator.getBusinessObjectService().findAll(Namespace.class);
@@ -68,7 +66,6 @@ public class NamespaceServiceImpl implements NamespaceService {
      *
      * @see org.kuali.rice.kim.service.NamespaceService#getPermissionNames(java.lang.String)
      */
-    @Override
     public List<String> getPermissionNames(final String namespaceName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         final Collection<Permission> permissions = (Collection<Permission>) KNSServiceLocator.getBusinessObjectService().findAll(Permission.class);
@@ -85,7 +82,6 @@ public class NamespaceServiceImpl implements NamespaceService {
      *
      * @see org.kuali.rice.kim.service.NamespaceService#getPermissions(java.lang.String)
      */
-    @Override
     public List<PermissionDTO> getPermissions(final String namespaceName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
         final Collection<Permission> permissions = (Collection<Permission>) KNSServiceLocator.getBusinessObjectService().findAll(Permission.class);

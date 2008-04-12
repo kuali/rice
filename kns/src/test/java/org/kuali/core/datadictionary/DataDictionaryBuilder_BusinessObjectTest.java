@@ -76,12 +76,13 @@ public class DataDictionaryBuilder_BusinessObjectTest extends KNSTestBase {
 		//builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/FinancialSystemParameterSecurityMaintenanceDocument.xml", true);
 		//builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/FinancialSystemParameterMaintenanceDocument.xml", true);
 		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/UniversalUserMaintenanceDocument.xml", true);
-		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/TravelAccount.xml", true);
-		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/TravelAccountType.xml", true);
-		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/TravelAccountMaintenanceDocument.xml", true);
-		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/TravelAccountExtension.xml", true);
-		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/FiscalOfficer.xml", true);
-		builder.addUniqueEntries("classpath:edu/sampleu/travel/datadictionary/FiscalOfficerMaintenanceDocument.xml", true);
+		builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/Account.xml", true);
+		builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountExtension.xml", true);
+		builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountMaintenanceDocument.xml", true);
+		builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountManager.xml", true);
+		builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountManagerMaintenanceDocument.xml", true);
+		builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountRequestDocument.xml", true);
+		builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountType.xml", true);
 		
 		// quieten things down a bit
 		setLogLevel("org.apache.commons.digester", Level.FATAL);

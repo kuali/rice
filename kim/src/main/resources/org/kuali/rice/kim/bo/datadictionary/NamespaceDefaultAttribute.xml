@@ -25,8 +25,7 @@
 
             <inquirySections><inquirySection title="Header Text"><inquiryFields>
                 <field attributeName="id" />
-                <field attributeName="attributeTypeId" />
-                <field attributeName="attributeName" />
+                 <field attributeName="attributeName" />
                 <field attributeName="description" />
                 <field attributeName="required" />
                 <field attributeName="active" />

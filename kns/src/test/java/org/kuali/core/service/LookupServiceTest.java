@@ -46,8 +46,8 @@ import org.kuali.rice.test.data.UnitTestSql;
                         ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
                 },
                 sqlFiles = {
-                        @UnitTestFile(filename = "classpath:testFiscalOfficers.sql", delimiter = ";")
-                        , @UnitTestFile(filename = "classpath:testTravelAccounts.sql", delimiter = ";")
+                        @UnitTestFile(filename = "classpath:testAccountManagers.sql", delimiter = ";")
+                        , @UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = ";")
                 }
         ),
         tearDown = @UnitTestData(

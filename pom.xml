@@ -81,7 +81,8 @@
 							<useFile>false</useFile>
 							<testFailureIgnore>true</testFailureIgnore>
 							<includes>
-								<include>**/*Test.java</include>
+								<!--<include>**/*Test.java</include>-->
+								<include>org/kuali/rice/server/**/*Test.java</include>
                             </includes>
 							<forkMode>once</forkMode>
 							<reportFormat>plain</reportFormat>

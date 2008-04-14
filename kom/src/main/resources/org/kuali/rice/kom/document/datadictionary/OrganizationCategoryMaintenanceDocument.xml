@@ -27,7 +27,7 @@
         <authorizations>
             <authorization action="initiate">
                 <workgroups>
-                    <workgroup>WorkflowAdmin</workgroup>
+                    <workgroup>kualiUniversalGroup</workgroup>
                 </workgroups>
             </authorization>
         </authorizations>
@@ -45,12 +45,11 @@
         <allowsNewOrCopy>true</allowsNewOrCopy>
 
         <maintainableSections>
-            <maintainableSection title="Edit Organization">
+            <maintainableSection title="Edit Organization Category">
                 <maintainableItems>
-                    <maintainableField name="id" required="true" readOnly="true" />
-                    <maintainableField name="name" required="true" />
-                    <maintainableField name="versionNumber" />
-                </maintainableItems>
+                    <maintainableField name="id" required="false" readOnly="true" />
+                    <maintainableField name="name" required="true" readOnly="false" />
+                 </maintainableItems>
             </maintainableSection>
         </maintainableSections>
     </maintenanceDocument>

@@ -1,4 +1,4 @@
--- Mon Apr 07 14:44:13 EDT 2008
+-- Tue Apr 15 16:46:11 EDT 2008
 -- This file has been auto-generated from dball.groovy
 -- It contains the master rice destroy sql from rice_db_destroy.sql
 -- As well as the sample app drop script rice_sample_app_drops.sql

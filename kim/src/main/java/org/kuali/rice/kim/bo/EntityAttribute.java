@@ -17,24 +17,19 @@ package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
-
 /**
- * This class represents an instance of a meta-data attribute hanging off of an Entity in the system. 
+ * This class represents an instance of a meta-data attribute hanging off of an Entity in the system.  
+ * These are group by namespace; hence, the namespace relationship.  An example of an entity attribute would 
+ * be "name" or "address"... these are essentially used for identity attribute data.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class EntityAttribute extends PersistableBusinessObjectBase {
+public class EntityAttribute extends AttributeBase {
 
 	private static final long serialVersionUID = 2861440911751860350L;
-	private Long id;
 	private Long entityId;
-	private Long attributeTypeId;
 	private Long namespaceId;
-	private String attributeName;
-	private String value;
-	
-	private AttributeType attributeType;
+
     private Entity entity;
     private Namespace namespace;
 
@@ -46,49 +41,6 @@ public class EntityAttribute extends PersistableBusinessObjectBase {
 		this.namespaceId = namespaceId;
 	}
 
-	public String getAttributeName() {
-		return attributeName;
-	}
-
-	public void setAttributeName(String attributeName) {
-		this.attributeName = attributeName;
-	}
-
-	public Long getAttributeTypeId() {
-		return attributeTypeId;
-	}
-
-	public void setAttributeTypeId(Long attributeTypeId) {
-		this.attributeTypeId = attributeTypeId;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	protected LinkedHashMap<String, Object> toStringMapper() {
-        LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-        propMap.put("id", getId());
-        propMap.put("entityId", getEntityId());
-        propMap.put("attributeTypeId", getAttributeTypeId());
-        propMap.put("namespaceId", getNamespaceId());
-        propMap.put("attributeName", getAttributeName());
-        propMap.put("value", getValue());
-        return propMap;
-	}
-	
 	public void refresh() {
 		// not going to implement unless needed
 	}
@@ -105,20 +57,6 @@ public class EntityAttribute extends PersistableBusinessObjectBase {
      */
     public void setEntityId(Long entityId) {
         this.entityId = entityId;
-    }
-
-    /**
-     * @return the attributeType
-     */
-    public AttributeType getAttributeType() {
-        return this.attributeType;
-    }
-
-    /**
-     * @param attributeType the attributeType to set
-     */
-    public void setAttributeType(AttributeType attributeType) {
-        this.attributeType = attributeType;
     }
 
     /**
@@ -147,5 +85,16 @@ public class EntityAttribute extends PersistableBusinessObjectBase {
      */
     public void setNamespace(Namespace namespace) {
         this.namespace = namespace;
+    }
+    
+    protected LinkedHashMap<String, Object> toStringMapper() {
+        LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
+        propMap.put("id", getId());
+        propMap.put("entityId", getEntityId());
+        propMap.put("attributeTypeId", getAttributeTypeId());
+        propMap.put("namespaceId", getNamespaceId());
+        propMap.put("attributeName", getAttributeName());
+        propMap.put("value", getValue());
+        return propMap;
     }
 }

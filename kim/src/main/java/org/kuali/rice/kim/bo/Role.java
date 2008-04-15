@@ -36,6 +36,7 @@ public class Role extends PersistableBusinessObjectBase {
 	private ArrayList<Group> permissions;
 	private ArrayList<Group> groups;
 	private ArrayList<Principal> principals;
+	private ArrayList<RoleAttribute> roleAttributes;
 	
 	/**
 	 * This constructs a Role instance, primarily constructing necessary TypeArrayLists for the 
@@ -46,6 +47,7 @@ public class Role extends PersistableBusinessObjectBase {
 	    this.permissions = new TypedArrayList(Permission.class);
 	    this.groups = new TypedArrayList(Group.class);
 	    this.principals = new TypedArrayList(Principal.class);
+	    this.roleAttributes = new TypedArrayList(RoleAttribute.class);
 	}
 
 	/**
@@ -142,6 +144,20 @@ public class Role extends PersistableBusinessObjectBase {
      */
     public void setPermissions(ArrayList<Group> permissions) {
         this.permissions = permissions;
+    }
+    
+    /**
+     * @return the roleAttributes
+     */
+    public ArrayList<RoleAttribute> getRoleAttributes() {
+        return this.roleAttributes;
+    }
+
+    /**
+     * @param roleAttributes the roleAttributes to set
+     */
+    public void setRoleAttributes(ArrayList<RoleAttribute> roleAttributes) {
+        this.roleAttributes = roleAttributes;
     }
 
     /**

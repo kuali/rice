@@ -81,17 +81,15 @@
 
 			</attribute>
 			
-			<attributeReference name="entityId"
-				sourceAttributeName="id"
-				sourceClassName="org.kuali.rice.kim.bo.Entity">
-				<label>Entity Id</label>
-                <shortLabel>Entity Id</shortLabel>
+			<attributeReference name="entityId" sourceClassName="org.kuali.rice.kim.bo.Entity" sourceAttributeName="id">
+				<label>Entity</label>
+                <shortLabel>Entity</shortLabel>
 				<required>true</required>
 				<control>
 					<select
 						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
 						businessObjectClass="org.kuali.rice.kim.bo.Entity"
-						keyAttribute="id" labelAttribute="id" 
+						keyAttribute="id" labelAttribute="name" 
 						includeKeyInLabel="true" />
 				</control>
 			</attributeReference>

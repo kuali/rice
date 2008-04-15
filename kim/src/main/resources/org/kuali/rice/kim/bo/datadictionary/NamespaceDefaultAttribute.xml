@@ -20,52 +20,6 @@
 <dictionaryEntry>
     <businessObject businessObjectClass="org.kuali.rice.kim.bo.NamespaceDefaultAttribute">
 
-        <inquiry>
-            <title>Namespace Default Attribute Inquiry</title>
-
-            <inquirySections><inquirySection title="Header Text"><inquiryFields>
-                <field attributeName="id" />
-                 <field attributeName="attributeName" />
-                <field attributeName="description" />
-                <field attributeName="required" />
-                <field attributeName="active" />
-                <field attributeName="attributeType.attributeTypeName" />
-                <field attributeName="namespace.name" />
-            </inquiryFields></inquirySection></inquirySections>
-        </inquiry>
-
-        <lookup>
-            <title>Namespace Default Attribute Lookup</title>
-
-            <instructions>Lookup a Namespace Default Attribute</instructions>
-
-            <defaultSort sortAscending="true">
-                <sortAttributes>
-                    <sortAttribute attributeName="attributeName" />
-                </sortAttributes>
-            </defaultSort>
-
-            <lookupFields>
-                <lookupField attributeName="id" required="false" />
-                <lookupField attributeName="namespaceId" required="false" />
-                <lookupField attributeName="attributeTypeId" required="false" />
-                <lookupField attributeName="attributeName" required="false" />
-                <lookupField attributeName="description" required="false" />
-                <lookupField attributeName="required" required="false" />
-                <lookupField attributeName="active" required="false" />
-            </lookupFields>
-
-            <resultFields>
-                <field attributeName="id" />
-               <field attributeName="attributeName" />
-               <field attributeName="description" />
-               <field attributeName="required" />
-               <field attributeName="active" />
-               <field attributeName="attributeType.attributeTypeName" />
-               <field attributeName="namespace.name" />
-            </resultFields>
-        </lookup>
-
         <titleAttribute>id</titleAttribute>
 
         <attributes>

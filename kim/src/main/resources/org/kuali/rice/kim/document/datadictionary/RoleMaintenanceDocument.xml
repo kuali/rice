@@ -85,6 +85,17 @@
 					</maintainableCollection>
 				</maintainableItems>
 			</maintainableSection>
+			<maintainableSection title="Role Attributes">
+				<maintainableItems>
+					<maintainableCollection name="roleAttributes"
+						businessObjectClass="org.kuali.rice.kim.bo.RoleAttribute" sourceClassName="org.kuali.rice.kim.bo.RoleAttribute" sourceAttributeName="roleAttributes" includeAddLine="true" summaryTitle="Role Attributes">
+						<maintainableField name="id" readOnly="true" required="true" />
+						<maintainableField name="attributeTypeId" required="true" />
+						<maintainableField name="attributeName" required="true" />
+						<maintainableField name="value" required="true" />
+					</maintainableCollection>
+				</maintainableItems>
+			</maintainableSection>
         </maintainableSections>
     </maintenanceDocument>
 </dictionaryEntry>

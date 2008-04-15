@@ -97,6 +97,20 @@
                 </control>
 
 			</attribute>
+			
+			<attributeReference name="namespaceId" sourceClassName="org.kuali.rice.kim.bo.Namespace" sourceAttributeName="id">
+				<label>Namespace</label>
+                <shortLabel>Namespace</shortLabel>
+				<required>true</required>
+				<control>
+					<select
+						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+						businessObjectClass="org.kuali.rice.kim.bo.Namespace"
+						keyAttribute="id" labelAttribute="name" 
+						includeKeyInLabel="true" />
+				</control>
+			</attributeReference>
+			
             <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
 			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
         </attributes>

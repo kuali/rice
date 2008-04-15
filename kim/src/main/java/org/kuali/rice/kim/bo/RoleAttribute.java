@@ -18,57 +18,56 @@ package org.kuali.rice.kim.bo;
 import java.util.LinkedHashMap;
 
 /**
- * This class represents arbitrary attributes that can be attached to groups.  For example, you could use 
- * this feature to have basic key value attributes attached to a Group.  More specifically, you could create a 
- * group, but then want to store a group phone number or group address.  By adding arbitrary group attributes to this, 
- * you could handle all of this. 
+ * This class represents arbitrary attributes that can be attached to roles.  For example, you could use 
+ * this feature to have basic key value attributes attached to a Role. 
  * 
  * @author Kuali Rice Team (kuali-rice@googleroles.com)
  */
-public class GroupAttribute extends AttributeBase {
+public class RoleAttribute extends AttributeBase {
 
 	private static final long serialVersionUID = -2255690191635455239L;
-	private Long groupId;
-	private Group group;
+	private Long roleId;
+
+	private Role role;
 	
 	/**
-     * @return the group
+     * @return the role
      */
-    public Group getGroup() {
-        return this.group;
+    public Role getRole() {
+        return this.role;
     }
 
     /**
-     * @param group the group to set
+     * @param role the role to set
      */
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     /**
-     * @return the groupId
+     * @return the roleId
      */
-    public Long getGroupId() {
-        return this.groupId;
+    public Long getRoleId() {
+        return this.roleId;
     }
 
     /**
-     * @param groupId the groupId to set
+     * @param roleId the roleId to set
      */
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
-    protected LinkedHashMap<String, Object> toStringMapper() {
+	protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
         propMap.put("id", getId());
-        propMap.put("groupId", getGroupId());
-        propMap.put("groupName", getGroup().getName());
+        propMap.put("roleId", getRoleId());
+        propMap.put("roleName", getRole().getName());
         propMap.put("attributeTypeId", getAttributeTypeId());
         propMap.put("attributeName", getAttributeName());
         propMap.put("value", getValue());
         return propMap;
-    }
+	}
 
 	public void refresh() {
 		// not going to add unless needed

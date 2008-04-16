@@ -426,10 +426,16 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         try {
             for (PersistableBusinessObject nextBo : rawValues) {
                 PersistableBusinessObject templatedBo = (PersistableBusinessObject) ObjectUtils.createHybridBusinessObject(collectionClass, nextBo, template);
+                
                 templatedBo.setNewCollectionRecord(true);
                 prepareBusinessObjectForAdditionFromMultipleValueLookup(collectionName, templatedBo);
+                
+                PersistableBusinessObject placeholder = (PersistableBusinessObject) collectionClass.newInstance();
+                placeholder.setNewCollectionRecord(true);
+                
                 if (!hasBusinessObjectExisted(templatedBo, existingIdentifierList, duplicateIdentifierFieldsFromDataDictionary)) {   
-                    maintCollection.add(templatedBo); 
+                    maintCollection.add(templatedBo);
+                    maintCollection.add(placeholder); 
                 }
             }
         } 
@@ -438,44 +444,6 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
             throw new RuntimeException("Unable to add multiple value lookup results " + e.getMessage());
         }
     }
-
-    /**
-     * 
-     * This method adds the blank lines required on a multi select on edit.
-     * FIXME: Chris this is an almost exact copy of the above method except for adding blanks.  These should be merged together after
-     * approval from the integration team.
-     * 
-     * @see org.kuali.core.maintenance.Maintainable#addMultipleValueLookupResults(org.kuali.core.document.MaintenanceDocument, java.lang.String, java.util.Collection)
-     */
-    public void addBlanksForMultipleValueLookupResults(MaintenanceDocument document, String collectionName, Collection<PersistableBusinessObject> rawValues) {
-        PersistableBusinessObject bo = document.getOldMaintainableObject().getBusinessObject();
-        Collection maintCollection = (Collection) ObjectUtils.getPropertyValue(bo, collectionName);
-        String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
-        
-        List<String> duplicateIdentifierFieldsFromDataDictionary = getDuplicateIdentifierFieldsFromDataDictionary(docTypeName, collectionName);
-        
-        List<String> existingIdentifierList = getMultiValueIdentifierList(maintCollection, duplicateIdentifierFieldsFromDataDictionary);
-        
-        Class collectionClass = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getCollectionBusinessObjectClass(docTypeName, collectionName);
-
-        List<MaintainableSectionDefinition> sections = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
-        Map<String, String> template = MaintenanceUtils.generateMultipleValueLookupBOTemplate(sections, collectionName);
-        try {
-            for (PersistableBusinessObject nextBo : rawValues) {
-                PersistableBusinessObject placeholder = (PersistableBusinessObject) collectionClass.newInstance();
-                placeholder.setNewCollectionRecord(true);
-                prepareBusinessObjectForAdditionFromMultipleValueLookup(collectionName, placeholder);
-                if (!hasBusinessObjectExisted(placeholder, existingIdentifierList, duplicateIdentifierFieldsFromDataDictionary)) {   
-                    maintCollection.add(placeholder); 
-                }
-            }
-        } 
-        catch (Exception e) {
-            LOG.error("Unable to add multiple value lookup results " + e.getMessage());
-            throw new RuntimeException("Unable to add multiple value lookup results " + e.getMessage());
-        }
-    }
-
     
     /**
      * This method is to retrieve a List of fields which are specified in the maintenance document

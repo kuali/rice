@@ -400,6 +400,27 @@ public class FieldBridge {
             field.setPropertyName(RiceConstants.MAINTENANCE_ADD_PREFIX + parents + collectionDefinition.getName() + "." + field.getPropertyName());
         }
         LOG.debug("Error Key for section " + collectionDefinition.getName() + " : " + containerRowErrorKey.toString());
+
+        
+        collFields = constructContainerField(collectionDefinition, parents, o, hideAdd, numberOfColumns, collName, collFields);
+
+        return collFields;
+    }
+
+    /**
+     * 
+     * This method handles setting up a container field not including the add fields
+     * 
+     * @param collectionDefinition
+     * @param parents
+     * @param o
+     * @param hideAdd
+     * @param numberOfColumns
+     * @param collName
+     * @param collFields
+     * @return
+     */
+    public static List<Field> constructContainerField(CollectionDefinitionI collectionDefinition, String parents, BusinessObject o, boolean hideAdd, int numberOfColumns, String collName, List<Field> collFields) {
         // get label for collection
         String collectionLabel = KNSServiceLocator.getDataDictionaryService().getCollectionLabel(o.getClass(), collectionDefinition.getName());
 
@@ -419,7 +440,7 @@ public class FieldBridge {
         collFields.add(containerField);
 
         // field button for adding lines
-        if(!hideAdd) {
+        if(!hideAdd  && collectionDefinition.getIncludeAddLine()) {
             Field field = new Field();
 
             String addButtonName = RiceConstants.DISPATCH_REQUEST_PARAMETER + "." + RiceConstants.ADD_LINE_METHOD + "." + parents + collectionDefinition.getName() + "." + RiceConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL + collectionDefinition.getBusinessObjectClass().getName() + RiceConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL;

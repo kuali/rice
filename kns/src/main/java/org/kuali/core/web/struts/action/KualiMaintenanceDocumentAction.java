@@ -419,7 +419,6 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             boolean isCopy = RiceConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceForm.getMaintenanceAction());
             
             if (isEdit || isCopy) {
-                document.getOldMaintainableObject().addBlanksForMultipleValueLookupResults(document, collectionName, rawValues);
                 document.getOldMaintainableObject().refresh(maintenanceForm.getRefreshCaller(), requestParams, document);
             }
         }

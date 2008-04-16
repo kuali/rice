@@ -243,7 +243,6 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
     
     public void addMultipleValueLookupResults(MaintenanceDocument document, String collectionName, Collection<PersistableBusinessObject> rawValues);
     
-    public void addBlanksForMultipleValueLookupResults(MaintenanceDocument document, String collectionName, Collection<PersistableBusinessObject> rawValues);
     /**
      * method to integrate with workflow, where we will actually handle the transitions of status for documents
      */

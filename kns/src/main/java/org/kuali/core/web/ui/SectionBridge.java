@@ -212,16 +212,26 @@ public class SectionBridge {
         }
         
         // first need to populate the containerRows with the "new" form if available
-        if (collectionDefinition.getIncludeAddLine()) {
+        if (!hideAdd) {
             List<Field> newFormFields = new ArrayList<Field>();
-            if (!hideAdd) {
+            if (collectionDefinition.getIncludeAddLine()) {
+
+
                 newFormFields = FieldBridge.getNewFormFields(collectionDefinition, o, m, displayedFieldNames, containerRowErrorKey, parents, hideAdd, numberOfColumns);
+
+
+            } else if(collectionDefinition instanceof MaintainableCollectionDefinition) {
+                MaintainableCollectionDefinition mcd = (MaintainableCollectionDefinition)collectionDefinition;
+                if(FieldUtils.isCollectionMultipleLookupEnabled(mcd)) {
+                    //do just the top line for collection if add is not allowed
+                  newFormFields = FieldBridge.constructContainerField(collectionDefinition, parents, o, hideAdd, numberOfColumns, mcd.getName(), new ArrayList<Field>());
+                }
             }
             if (null != newFormFields) {
                 containerRows.add(new Row(newFormFields));
             }
         }
-
+        
         Collection collections = collectionDefinition.getCollections();
         for (Iterator iterator = collections.iterator(); iterator.hasNext();) {
             CollectionDefinitionI subCollectionDefinition = (CollectionDefinitionI) iterator.next();

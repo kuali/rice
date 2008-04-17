@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.kuali.rice.core.Core;
-import org.kuali.rice.util.ConcurrencyDetector;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -76,37 +78,37 @@ public class PreferencesServiceImpl implements PreferencesService {
     public Preferences getPreferences(WorkflowUser user) {
         LOG.debug("start preferences fetch user " + user);
         Preferences preferences = new Preferences();
-        preferences.setColorApproved(getOption(APPROVED_DOC_COLOR, DEFAULT_COLOR, user).getOptionVal());
-        preferences.setColorCanceled(getOption(CANCELLED_DOC_COLOR, DEFAULT_COLOR, user).getOptionVal());
-        preferences.setColorDissapproveCancel(getOption(DISSAPPROVED_CANCELLED_DOC_COLOR, DEFAULT_COLOR, user).getOptionVal());
-        preferences.setColorDissaproved(getOption(DISAPPROVED_DOC_COLOR, DEFAULT_COLOR, user).getOptionVal());
-        preferences.setColorEnroute(getOption(ENROUTE_DOC_COLOR, DEFAULT_COLOR, user).getOptionVal());
-        preferences.setColorException(getOption(EXCEPTION_DOC_COLOR, DEFAULT_COLOR, user).getOptionVal());
-        preferences.setColorFinal(getOption(FINAL_DOC_COLOR, DEFAULT_COLOR, user).getOptionVal());
-        preferences.setColorInitiated(getOption(INITIATED_DOC_COLOR, DEFAULT_COLOR, user).getOptionVal());
-        preferences.setColorProccessed(getOption(PROCESSED_DOC_COLOR, DEFAULT_COLOR, user).getOptionVal());
-        preferences.setColorSaved(getOption(SAVED_DOC_COLOR, DEFAULT_COLOR, user).getOptionVal());
-        preferences.setEmailNotification(getOption(EMAIL_REMINDER_KEY, EdenConstants.EMAIL_RMNDR_IMMEDIATE, user).getOptionVal());
-        preferences.setNotifyPrimaryDelegation(getOption(EMAIL_NOTIFY_PRIMARY_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
-        preferences.setNotifySecondaryDelegation(getOption(EMAIL_NOTIFY_SECONDARY_KEY, EdenConstants.PREFERENCES_NO_VAL, user).getOptionVal());
-        preferences.setOpenNewWindow(getOption(OPEN_NEW_WINDOW_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
-        preferences.setPageSize(getOption(ACTION_LIST_SIZE_KEY, DEFAULT_ACTION_LIST_SIZE, user).getOptionVal());
-        preferences.setRefreshRate(getOption(REFRESH_RATE_KEY, DEFAULT_REFRESH_RATE, user).getOptionVal());
-        preferences.setShowActionRequested(getOption(COLUMN_ACTION_REQ_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
-        preferences.setShowDateCreated(getOption(COLUMN_DATE_CREATE_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
-        preferences.setShowDocType(getOption(COLUMN_DOC_TYPE_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
-        preferences.setShowDocumentStatus(getOption(COLUMN_DOCUMENT_STATUS_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
-        preferences.setShowInitiator(getOption(COLUMN_INITIATOR_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
-        preferences.setShowDelegator(getOption(COLUMN_DELEGATOR_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
-        preferences.setShowDocTitle(getOption(COLUMN_TITLE_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
-        preferences.setShowWorkgroupRequest(getOption(COLUMN_WORKGROUP_REQUEST_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
-        preferences.setShowClearFyi(getOption(COLUMN_CLEAR_FYI_KEY, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());
-        preferences.setDelegatorFilter(getOption(DELEGATOR_FILTER_KEY, EdenConstants.DELEGATORS_ON_ACTION_LIST_PAGE, user).getOptionVal());
+        preferences.setColorApproved(getOption(APPROVED_DOC_COLOR, DEFAULT_COLOR, user, preferences).getOptionVal());
+        preferences.setColorCanceled(getOption(CANCELLED_DOC_COLOR, DEFAULT_COLOR, user, preferences).getOptionVal());
+        preferences.setColorDissapproveCancel(getOption(DISSAPPROVED_CANCELLED_DOC_COLOR, DEFAULT_COLOR, user, preferences).getOptionVal());
+        preferences.setColorDissaproved(getOption(DISAPPROVED_DOC_COLOR, DEFAULT_COLOR, user, preferences).getOptionVal());
+        preferences.setColorEnroute(getOption(ENROUTE_DOC_COLOR, DEFAULT_COLOR, user, preferences).getOptionVal());
+        preferences.setColorException(getOption(EXCEPTION_DOC_COLOR, DEFAULT_COLOR, user, preferences).getOptionVal());
+        preferences.setColorFinal(getOption(FINAL_DOC_COLOR, DEFAULT_COLOR, user, preferences).getOptionVal());
+        preferences.setColorInitiated(getOption(INITIATED_DOC_COLOR, DEFAULT_COLOR, user, preferences).getOptionVal());
+        preferences.setColorProccessed(getOption(PROCESSED_DOC_COLOR, DEFAULT_COLOR, user, preferences).getOptionVal());
+        preferences.setColorSaved(getOption(SAVED_DOC_COLOR, DEFAULT_COLOR, user, preferences).getOptionVal());
+        preferences.setEmailNotification(getOption(EMAIL_REMINDER_KEY, EdenConstants.EMAIL_RMNDR_IMMEDIATE, user, preferences).getOptionVal());
+        preferences.setNotifyPrimaryDelegation(getOption(EMAIL_NOTIFY_PRIMARY_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setNotifySecondaryDelegation(getOption(EMAIL_NOTIFY_SECONDARY_KEY, EdenConstants.PREFERENCES_NO_VAL, user, preferences).getOptionVal());
+        preferences.setOpenNewWindow(getOption(OPEN_NEW_WINDOW_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setPageSize(getOption(ACTION_LIST_SIZE_KEY, DEFAULT_ACTION_LIST_SIZE, user, preferences).getOptionVal());
+        preferences.setRefreshRate(getOption(REFRESH_RATE_KEY, DEFAULT_REFRESH_RATE, user, preferences).getOptionVal());
+        preferences.setShowActionRequested(getOption(COLUMN_ACTION_REQ_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowDateCreated(getOption(COLUMN_DATE_CREATE_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowDocType(getOption(COLUMN_DOC_TYPE_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowDocumentStatus(getOption(COLUMN_DOCUMENT_STATUS_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowInitiator(getOption(COLUMN_INITIATOR_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowDelegator(getOption(COLUMN_DELEGATOR_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowDocTitle(getOption(COLUMN_TITLE_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowWorkgroupRequest(getOption(COLUMN_WORKGROUP_REQUEST_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setShowClearFyi(getOption(COLUMN_CLEAR_FYI_KEY, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());
+        preferences.setDelegatorFilter(getOption(DELEGATOR_FILTER_KEY, EdenConstants.DELEGATORS_ON_ACTION_LIST_PAGE, user, preferences).getOptionVal());
         
         if (Core.getCurrentContextConfig().getOutBoxDefaultPreferenceOn()) {
-            preferences.setUseOutbox(getOption(USE_OUT_BOX, EdenConstants.PREFERENCES_YES_VAL, user).getOptionVal());    
+            preferences.setUseOutbox(getOption(USE_OUT_BOX, EdenConstants.PREFERENCES_YES_VAL, user, preferences).getOptionVal());    
         } else {
-            preferences.setUseOutbox(getOption(USE_OUT_BOX, EdenConstants.PREFERENCES_NO_VAL, user).getOptionVal());
+            preferences.setUseOutbox(getOption(USE_OUT_BOX, EdenConstants.PREFERENCES_NO_VAL, user, preferences).getOptionVal());
         }
         
         LOG.debug("end preferences fetch user " + user);
@@ -114,27 +116,67 @@ public class PreferencesServiceImpl implements PreferencesService {
     }
 
     /* @see https://test.kuali.org/jira/browse/KULRICE-1726 */
-    private static ConcurrencyDetector detector = new ConcurrencyDetector("Concurrency in PreferencesServiceImpl", false);
+    //private static ConcurrencyDetector detector = new ConcurrencyDetector("Concurrency in PreferencesServiceImpl", false);
 
-    private UserOptions getOption(String optionKey, String defaultValue, WorkflowUser user) {
-        detector.enter();
-
-        try {
-            LOG.debug("start fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
-            UserOptionsService optionSrv = getUserOptionService();
-            UserOptions option =  optionSrv.findByOptionId(optionKey, user);
-            if (option == null) {
-                option = new UserOptions();
-                option.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
-                option.setOptionId(optionKey);
-                option.setOptionVal(defaultValue);
-                //optionSrv.save(option);
-            }
-            LOG.debug("end fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
-        return option;
-        } finally {
-            detector.exit();
+    private UserOptions getOption(String optionKey, String defaultValue, WorkflowUser user, Preferences preferences) {
+        LOG.debug("start fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
+        UserOptionsService optionSrv = getUserOptionService();
+        UserOptions option =  optionSrv.findByOptionId(optionKey, user);
+        if (option == null) {
+            LOG.info("User option '" + optionKey + "' on user " +  user.getAuthenticationUserId() + " has no stored value.  Preferences will require save.");
+            option = new UserOptions();
+            option.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
+            option.setOptionId(optionKey);
+            option.setOptionVal(defaultValue);
+            //optionSrv.save(option);
+            preferences.setRequiresSave(true);
         }
+        LOG.debug("end fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
+        return option;
+    }
+    
+//    private UserOptions getOption(String optionKey, String defaultValue, WorkflowUser user) {
+//        UserOptions option = getOptionTransactional(optionKey, defaultValue, user);
+//        if (option == null) {
+//            // this probably means that 2 threads tried to get the option for the first time at the same time, causing a unique constraint violation, let's try again
+//            option = getOptionTransactional(optionKey, defaultValue, user);
+//        }
+//        if (option == null) {
+//            throw new WorkflowRuntimeException("Failed to load and save User Option with key '" + optionKey + "'");
+//        }
+//        return option;
+//    }
+    
+    private UserOptions getOptionTransactional(final String optionKey, final String defaultValue, final WorkflowUser user) {
+        //detector.enter();
+
+        //try {
+            
+            TransactionTemplate template = new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager());
+            return (UserOptions)template.execute(new TransactionCallback() {
+                public Object doInTransaction(TransactionStatus status) {
+                    try {
+                        LOG.debug("start fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
+                        UserOptionsService optionSrv = getUserOptionService();
+                        UserOptions option =  optionSrv.findByOptionId(optionKey, user);
+                        if (option == null) {
+                            option = new UserOptions();
+                            option.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
+                            option.setOptionId(optionKey);
+                            option.setOptionVal(defaultValue);
+                            optionSrv.save(option);
+                        }
+                        LOG.debug("end fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
+                        return option;
+                    } catch (Exception e) {
+                        LOG.warn("Failed to load or save UserOption!!!", e);
+                        return null;
+                    }
+                }
+            });
+        //} finally {
+        //    detector.exit();
+        //}
     }
 
     public void savePreferences(WorkflowUser user, Preferences preferences) {

@@ -47,6 +47,7 @@ public class SimpleWebServiceClientTest extends KEWTestCase {
 		if (tempThinRL != null) {
 			throw new RuntimeException("Unable to remove ThinClientResourceLoader the remaining tests are probably messed up");
 		}
+		super.tearDown();
 	}
 
 

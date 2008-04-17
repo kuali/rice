@@ -38,6 +38,7 @@ import org.apache.log4j.MDC;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
+import edu.iu.uis.eden.preferences.Preferences;
 import edu.iu.uis.eden.user.UserId;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -154,7 +155,13 @@ public class UserLoginFilter implements Filter {
             LOG.debug("ending user lookup: " + workflowUser);
             UserSession userSession = new UserSession(workflowUser);
             // load the users preferences. The preferences action will update them if necessary
-            userSession.setPreferences(KEWServiceLocator.getPreferencesService().getPreferences(workflowUser));
+            Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(workflowUser);
+            if (preferences.isRequiresSave()) {
+                LOG.info("Detected that user preferences require saving.");
+                KEWServiceLocator.getPreferencesService().savePreferences(workflowUser, preferences);
+                preferences = KEWServiceLocator.getPreferencesService().getPreferences(workflowUser);
+            }
+            userSession.setPreferences(preferences);
             userSession.setGroups(KEWServiceLocator.getWorkgroupService().getUsersGroupNames(workflowUser));
             webAuthenticationService.establishInitialUserSession(userSession, request);
             return userSession;

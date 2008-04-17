@@ -1,7 +1,12 @@
 package edu.iu.uis.eden.messaging;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
+/**
+ * This test is currently being ignored.  See KULRICE-1852 for details.
+ */
+@Ignore
 public class SimpleServiceCallNoJtaTest extends SimpleServiceCallTest {
 
 	@Test public void testAsyncJavaCall() throws Exception  {

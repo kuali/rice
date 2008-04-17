@@ -22,10 +22,14 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.WorkflowUser;
+import edu.iu.uis.eden.useroptions.UserOptions;
 import edu.iu.uis.eden.useroptions.UserOptionsService;
 
 public class PreferencesServiceTest extends KEWTestCase {
@@ -38,16 +42,51 @@ public class PreferencesServiceTest extends KEWTestCase {
 	@Test public void testPreferencesDefaultSave() throws Exception {
        //verify that user doesn't have any preferences in the db.
         
-       UserOptionsService userOptionsService = KEWServiceLocator.getUserOptionsService();
+       final UserOptionsService userOptionsService = KEWServiceLocator.getUserOptionsService();
        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
        Collection userOptions = userOptionsService.findByWorkflowUser(user);
-       assertTrue("Preferences should be empty", userOptions.isEmpty());
+       assertTrue("UserOptions should be empty", userOptions.isEmpty());
        
        PreferencesService preferencesService = KEWServiceLocator.getPreferencesService();
-       preferencesService.getPreferences(user);
+       Preferences preferences = preferencesService.getPreferences(user);
+       assertTrue("Preferences should require a save.", preferences.isRequiresSave());
+     
        userOptions = userOptionsService.findByWorkflowUser(user);
-       assertTrue("Preferences should not be empty", !userOptions.isEmpty());
+       assertTrue("UserOptions should not empty", userOptions.isEmpty());
+       
+       preferencesService.savePreferences(user, preferences);
+       userOptions = userOptionsService.findByWorkflowUser(user);
+       assertTrue("UserOptions should not be empty", !userOptions.isEmpty());
+       
+       preferences = preferencesService.getPreferences(user);
+       assertFalse("Preferences should NOT require a save.", preferences.isRequiresSave());
+       
+       // now delete one of the options
+       final UserOptions refreshRateOption = userOptionsService.findByOptionId("REFRESH_RATE", user);
+       assertNotNull("REFRESH_RATE option should exist.", refreshRateOption);
+       TransactionTemplate template = new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager());
+       template.execute(new TransactionCallback() {
+           public Object doInTransaction(TransactionStatus status) {
+               userOptionsService.deleteUserOptions(refreshRateOption);
+               return null;
+           }
+       });
+       assertNull("REFRESH_RATE option should no longer exist.", userOptionsService.findByOptionId("REFRESH_RATE", user));
+       
+       preferences = preferencesService.getPreferences(user);
+       assertTrue("Preferences should now require a save again.", preferences.isRequiresSave());
+       
+       // save refresh rate again
+       template.execute(new TransactionCallback() {
+           public Object doInTransaction(TransactionStatus status) {
+               userOptionsService.save(refreshRateOption);
+               return null;
+           }
+       });
+       preferences = preferencesService.getPreferences(user);
+       assertFalse("Preferences should no longer require a save.", preferences.isRequiresSave());
     }
+	
 	
 	/**
      * Tests default saving concurrently which can cause a race condition on startup
@@ -58,14 +97,15 @@ public class PreferencesServiceTest extends KEWTestCase {
        final UserOptionsService userOptionsService = KEWServiceLocator.getUserOptionsService();
        final WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("rkirkend"));
        Collection userOptions = userOptionsService.findByWorkflowUser(user);
-       assertTrue("Preferences should be empty", userOptions.isEmpty());
+       assertTrue("UserOptions should be empty", userOptions.isEmpty());
 
        final PreferencesService preferencesService = KEWServiceLocator.getPreferencesService();
        Runnable getPrefRunnable = new Runnable() {
            public void run() {
-               preferencesService.getPreferences(user);
+               Preferences preferences = preferencesService.getPreferences(user);
+               assertTrue("Preferences should require a save.", preferences.isRequiresSave());
                Collection updatedOptions = userOptionsService.findByWorkflowUser(user);
-               assertTrue("Preferences should not be empty", !updatedOptions.isEmpty());        
+               assertTrue("UserOptions should be empty", updatedOptions.isEmpty());        
            }           
        };
        final List<Throwable> errors = new ArrayList<Throwable>();
@@ -92,5 +132,14 @@ public class PreferencesServiceTest extends KEWTestCase {
        if (errors.size() > 0) {
            throw errors.iterator().next();
        }
+       
+       Preferences preferences = preferencesService.getPreferences(user);
+       assertTrue("Preferences should require a save.", preferences.isRequiresSave());
+       Collection updatedOptions = userOptionsService.findByWorkflowUser(user);
+       assertTrue("UserOptions should be empty", updatedOptions.isEmpty());
+       preferencesService.savePreferences(user, preferences);
+       updatedOptions = userOptionsService.findByWorkflowUser(user);
+       assertTrue("UserOptions should not be empty", !updatedOptions.isEmpty());
+       
     }
 }

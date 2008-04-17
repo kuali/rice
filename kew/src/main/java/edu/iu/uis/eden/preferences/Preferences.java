@@ -22,13 +22,18 @@ import edu.iu.uis.eden.EdenConstants;
 
 /**
  * Model bean representing an individual user's Preferences within KEW.
+ * 
+ * <p>When loaded, Preferences could be in a state where they require being saved to the database.
+ * If this is the case then {{@link #requiresSave} will evaluate to true.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class Preferences implements Serializable {
 
 	static final long serialVersionUID = -5323719135590442782L;
-    
+   
+	private boolean requiresSave = false;
+	
     private String emailNotification;
     private String notifyPrimaryDelegation;
     private String notifySecondaryDelegation;
@@ -360,5 +365,13 @@ public class Preferences implements Serializable {
 	    return true;
 	}
 	return false;
+    }
+
+    public boolean isRequiresSave() {
+        return this.requiresSave;
+    }
+
+    public void setRequiresSave(boolean requiresSave) {
+        this.requiresSave = requiresSave;
     }
 }

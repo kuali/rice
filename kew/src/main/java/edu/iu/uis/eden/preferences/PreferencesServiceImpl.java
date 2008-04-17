@@ -20,9 +20,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.kuali.rice.core.Core;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -42,7 +39,6 @@ public class PreferencesServiceImpl implements PreferencesService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PreferencesServiceImpl.class);
 
     private static final String DISAPPROVED_DOC_COLOR = "DOCUMENT_STATUS_COLOR_D";
-    // what the hell is this status?
     private static final String DISSAPPROVED_CANCELLED_DOC_COLOR = "DOCUMENT_STATUS_COLOR_C";
     private static final String APPROVED_DOC_COLOR = "DOCUMENT_STATUS_COLOR_A";
     private static final String CANCELLED_DOC_COLOR = "DOCUMENT_STATUS_COLOR_X";
@@ -128,55 +124,10 @@ public class PreferencesServiceImpl implements PreferencesService {
             option.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
             option.setOptionId(optionKey);
             option.setOptionVal(defaultValue);
-            //optionSrv.save(option);
             preferences.setRequiresSave(true);
         }
         LOG.debug("end fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
         return option;
-    }
-    
-//    private UserOptions getOption(String optionKey, String defaultValue, WorkflowUser user) {
-//        UserOptions option = getOptionTransactional(optionKey, defaultValue, user);
-//        if (option == null) {
-//            // this probably means that 2 threads tried to get the option for the first time at the same time, causing a unique constraint violation, let's try again
-//            option = getOptionTransactional(optionKey, defaultValue, user);
-//        }
-//        if (option == null) {
-//            throw new WorkflowRuntimeException("Failed to load and save User Option with key '" + optionKey + "'");
-//        }
-//        return option;
-//    }
-    
-    private UserOptions getOptionTransactional(final String optionKey, final String defaultValue, final WorkflowUser user) {
-        //detector.enter();
-
-        //try {
-            
-            TransactionTemplate template = new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager());
-            return (UserOptions)template.execute(new TransactionCallback() {
-                public Object doInTransaction(TransactionStatus status) {
-                    try {
-                        LOG.debug("start fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
-                        UserOptionsService optionSrv = getUserOptionService();
-                        UserOptions option =  optionSrv.findByOptionId(optionKey, user);
-                        if (option == null) {
-                            option = new UserOptions();
-                            option.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
-                            option.setOptionId(optionKey);
-                            option.setOptionVal(defaultValue);
-                            optionSrv.save(option);
-                        }
-                        LOG.debug("end fetch option " + optionKey + " user " + user.getWorkflowUserId().getWorkflowId());
-                        return option;
-                    } catch (Exception e) {
-                        LOG.warn("Failed to load or save UserOption!!!", e);
-                        return null;
-                    }
-                }
-            });
-        //} finally {
-        //    detector.exit();
-        //}
     }
 
     public void savePreferences(WorkflowUser user, Preferences preferences) {

@@ -55,7 +55,6 @@ public class SQLDataLoader {
             // separator char must be the last non-whitespace char on the line
             // to avoid splitting in the middle of data that might contain the separator char
             sqlStatements = sqlStatementsContent.split("(?m)" + getSeperatorChar() + "\\s*$");
-            System.out.println(sqlStatements[0]);
         } else {
             sqlStatements = new String[]{statement};
         }

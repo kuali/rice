@@ -107,16 +107,16 @@ public abstract class NotificationTestCaseBase extends BaselineTestCase {
             public void start() throws Exception {
                 super.start();
 
-                //LOG.info("Status of Ken scheduler on start: " + services.getScheduler().isStarted());
+                LOG.info("Status of Ken scheduler on start: " + (services.getScheduler().isStarted() ? "started" : "stopped"));
                 // stop quartz if a test failed to do so
-                //disableQuartzJobs();
+                disableQuartzJobs();
             }
             public void stop() throws Exception {
                 KEWServiceLocator.getCacheAdministrator().flushAll();
 
-                LOG.info("Status of Ken scheduler on stop: " + services.getScheduler().isStarted());
+                LOG.info("Status of Ken scheduler on stop: " + (services.getScheduler().isStarted() ? "started" : "stopped"));
                 // stop quartz if a test failed to do so
-                //disableQuartzJobs();
+                disableQuartzJobs();
 
                 super.stop();
             }

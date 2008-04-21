@@ -3,8 +3,8 @@ package org.kuali.rice.config.spring;
 import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
 
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.util.RiceConstants;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.jta.JtaTransactionManager;

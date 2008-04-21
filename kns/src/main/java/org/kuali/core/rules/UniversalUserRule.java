@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.RiceConstants;
 import org.kuali.RiceKeyConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.bo.user.UniversalUser;
@@ -30,6 +29,7 @@ import org.kuali.core.rule.event.ApproveDocumentEvent;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.web.format.PhoneNumberFormatter;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 public class UniversalUserRule extends MaintenanceDocumentRuleBase {
 
@@ -99,7 +99,7 @@ public class UniversalUserRule extends MaintenanceDocumentRuleBase {
         newUser.refresh();
 
         if ( userEditWorkgroupName == null ) {
-            userEditWorkgroupName = configService.getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, RiceConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
+            userEditWorkgroupName = configService.getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, KNSConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
             installedModules = KNSServiceLocator.getKualiModuleService().getInstalledModules();
         }
     }

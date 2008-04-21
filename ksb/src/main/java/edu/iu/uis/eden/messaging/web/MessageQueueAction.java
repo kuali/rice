@@ -39,8 +39,9 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.util.KSBConstants;
+import org.kuali.rice.util.RiceConstants;
 import org.kuali.rice.util.RiceUtilities;
 
 import edu.iu.uis.eden.messaging.AsynchronousCall;
@@ -198,7 +199,7 @@ public class MessageQueueAction extends KSBAction {
          *                The populated message to be requeued.
          */
     protected void quickRequeueMessage(PersistedMessage message) {
-	message.setQueueStatus(RiceConstants.ROUTE_QUEUE_ROUTING);
+	message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
 	message.setQueueDate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 	message.setRetryCount(new Integer(0));
 	getRouteQueueService().save(message);
@@ -316,12 +317,13 @@ public class MessageQueueAction extends KSBAction {
          */
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
 	request.setAttribute("rice_constant", new RiceConstants());
+	request.setAttribute("ksb_constant", new KSBConstants());
 	MessageQueueForm routeQueueForm = (MessageQueueForm) form;
 	routeQueueForm.setMyIpAddress(RiceUtilities.getIpNumber());
-	routeQueueForm.setMyMessageEntity(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGE_ENTITY));
-	routeQueueForm.setMessagePersistence(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGE_PERSISTENCE));
-	routeQueueForm.setMessageDelivery(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGE_DELIVERY));
-	routeQueueForm.setMessageOff(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGING_OFF));
+	routeQueueForm.setMyMessageEntity(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_ENTITY));
+	routeQueueForm.setMessagePersistence(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE));
+	routeQueueForm.setMessageDelivery(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_DELIVERY));
+	routeQueueForm.setMessageOff(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF));
 	List<ServiceInfo> services = KSBServiceLocator.getIPTableService().fetchAll();
 	if (routeQueueForm.getMessageId() != null) {
 	    PersistedMessage rq = getRouteQueueService().findByRouteQueueId(routeQueueForm.getMessageId());
@@ -396,10 +398,10 @@ public class MessageQueueAction extends KSBAction {
 	    String trimmedKey = null;
 	    for (Iterator iter = request.getParameterMap().keySet().iterator(); iter.hasNext();) {
 		key = (String) iter.next();
-		if (key.endsWith(RiceConstants.ROUTE_QUEUE_FILTER_SUFFIX)) {
+		if (key.endsWith(KSBConstants.ROUTE_QUEUE_FILTER_SUFFIX)) {
 		    value = request.getParameter(key);
 		    if (StringUtils.isNotBlank(value)) {
-			trimmedKey = key.substring(0, key.indexOf(RiceConstants.ROUTE_QUEUE_FILTER_SUFFIX));
+			trimmedKey = key.substring(0, key.indexOf(KSBConstants.ROUTE_QUEUE_FILTER_SUFFIX));
 			criteriaValues.put(trimmedKey, value);
 		    }
 		}

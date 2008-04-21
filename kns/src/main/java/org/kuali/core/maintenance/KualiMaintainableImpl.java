@@ -29,7 +29,6 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.BusinessObjectRelationship;
@@ -58,6 +57,7 @@ import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.web.ui.Section;
 import org.kuali.core.web.ui.SectionBridge;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * Base Maintainable class to hold things common to all maintainables.
@@ -135,7 +135,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         
         List<MaintenanceLock> maintenanceLocks = new ArrayList<MaintenanceLock>();
         StringBuffer lockRepresentation = new StringBuffer(boClass.getName());
-        lockRepresentation.append(RiceConstants.Maintenance.AFTER_CLASS_DELIM);
+        lockRepresentation.append(KNSConstants.Maintenance.AFTER_CLASS_DELIM);
 
         PersistableBusinessObject bo = getBusinessObject();
         List keyFieldNames = getMaintenanceDocumentDictionaryService().getLockingKeys(getDocumentTypeName());
@@ -160,10 +160,10 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
             }
 
             lockRepresentation.append(fieldName);
-            lockRepresentation.append(RiceConstants.Maintenance.AFTER_FIELDNAME_DELIM);
+            lockRepresentation.append(KNSConstants.Maintenance.AFTER_FIELDNAME_DELIM);
             lockRepresentation.append(String.valueOf(fieldValue));
             if (i.hasNext()) {
-                lockRepresentation.append(RiceConstants.Maintenance.AFTER_VALUE_DELIM);
+                lockRepresentation.append(KNSConstants.Maintenance.AFTER_VALUE_DELIM);
             }
         }
 
@@ -305,7 +305,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      *      is needed on refresh.
      */
     public void refresh(String refreshCaller, Map fieldValues, MaintenanceDocument document) {
-        String referencesToRefresh = (String) fieldValues.get(RiceConstants.REFERENCES_TO_REFRESH);
+        String referencesToRefresh = (String) fieldValues.get(KNSConstants.REFERENCES_TO_REFRESH);
         refreshReferences(referencesToRefresh);
     }
 
@@ -313,12 +313,12 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     protected void refreshReferences(String referencesToRefresh) {
         PersistenceStructureService persistenceStructureService = getPersistenceStructureService();
         if (StringUtils.isNotBlank(referencesToRefresh)) {
-            String[] references = StringUtils.split(referencesToRefresh, RiceConstants.REFERENCES_TO_REFRESH_SEPARATOR);
+            String[] references = StringUtils.split(referencesToRefresh, KNSConstants.REFERENCES_TO_REFRESH_SEPARATOR);
             for (String reference : references) {
                 if (StringUtils.isNotBlank(reference)) {
-                    if (reference.startsWith(RiceConstants.ADD_PREFIX + ".")) {
+                    if (reference.startsWith(KNSConstants.ADD_PREFIX + ".")) {
                         // add one for the period
-                        reference = reference.substring(RiceConstants.ADD_PREFIX.length() + 1);
+                        reference = reference.substring(KNSConstants.ADD_PREFIX.length() + 1);
                         
                         String boToRefreshName = StringUtils.substringBeforeLast(reference, ".");
                         String propertyToRefresh = StringUtils.substringAfterLast(reference, ".");
@@ -784,9 +784,9 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
             if ( LOG.isDebugEnabled() ) {
                 LOG.debug( "values for collection: " + collectionValues );
             }
-            GlobalVariables.getErrorMap().addToErrorPath( RiceConstants.MAINTENANCE_ADD_PREFIX + collName );
-            cachedValues.putAll( FieldUtils.populateBusinessObjectFromMap( getNewCollectionLine( collName ), collectionValues, RiceConstants.MAINTENANCE_ADD_PREFIX + collName + "." ) );
-            GlobalVariables.getErrorMap().removeFromErrorPath( RiceConstants.MAINTENANCE_ADD_PREFIX + collName );
+            GlobalVariables.getErrorMap().addToErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + collName );
+            cachedValues.putAll( FieldUtils.populateBusinessObjectFromMap( getNewCollectionLine( collName ), collectionValues, KNSConstants.MAINTENANCE_ADD_PREFIX + collName + "." ) );
+            GlobalVariables.getErrorMap().removeFromErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + collName );
             cachedValues.putAll( populateNewSubCollectionLines( coll, subCollectionValues ) );
         }
         
@@ -836,9 +836,9 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 if ( LOG.isDebugEnabled() ) {
                     LOG.debug( "values for sub collection: " + collectionValues );
                 }
-                GlobalVariables.getErrorMap().addToErrorPath( RiceConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
-                cachedValues.putAll( FieldUtils.populateBusinessObjectFromMap( getNewCollectionLine( parent+"."+collName ), collectionValues, RiceConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName + "." ) );
-                GlobalVariables.getErrorMap().removeFromErrorPath( RiceConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
+                GlobalVariables.getErrorMap().addToErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
+                cachedValues.putAll( FieldUtils.populateBusinessObjectFromMap( getNewCollectionLine( parent+"."+collName ), collectionValues, KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName + "." ) );
+                GlobalVariables.getErrorMap().removeFromErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
             }
             
             cachedValues.putAll( populateNewSubCollectionLines( coll, fieldValues ) );

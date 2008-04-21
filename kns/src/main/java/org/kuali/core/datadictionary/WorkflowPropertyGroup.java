@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.kuali.RiceConstants;
 import org.kuali.core.document.Document;
 import org.kuali.core.document.DocumentBase;
 import org.kuali.core.util.documentserializer.PropertySerializabilityEvaluator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This object allows for grouping of related {@link WorkflowProperty} objects.  It defines a base path to which all {@link WorkflowProperty} are
@@ -37,7 +37,7 @@ public class WorkflowPropertyGroup {
      * 
      */
     public WorkflowPropertyGroup() {
-        basePath = RiceConstants.EMPTY_STRING;
+        basePath = KNSConstants.EMPTY_STRING;
         workflowProperties = new ArrayList<WorkflowProperty>();
     }
     

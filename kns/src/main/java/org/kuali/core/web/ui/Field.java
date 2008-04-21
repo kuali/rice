@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.core.datadictionary.mask.Mask;
 import org.kuali.core.web.format.BooleanFormatter;
 import org.kuali.core.web.format.DateFormatter;
 import org.kuali.core.web.format.Formatter;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This class represents a field render on the ui.
@@ -108,7 +108,7 @@ public class Field implements java.io.Serializable {
     private String universalIdAttributeName;
     private String userIdAttributeName;
     private String personNameAttributeName;
-    private String defaultValue = RiceConstants.EMPTY_STRING;
+    private String defaultValue = KNSConstants.EMPTY_STRING;
     private boolean keyField;
     private String displayEditMode;
     private Mask displayMask;
@@ -444,7 +444,7 @@ public class Field implements java.io.Serializable {
      */
     public String getPropertyValue() {
         if (propertyValue == null) {
-            propertyValue = RiceConstants.EMPTY_STRING;
+            propertyValue = KNSConstants.EMPTY_STRING;
         }
 
         return propertyValue;
@@ -736,7 +736,7 @@ public class Field implements java.io.Serializable {
      * @param propertyName The propertyName to set.
      */
     public void setPropertyName(String propertyName) {
-        String newPropertyName = RiceConstants.EMPTY_STRING;
+        String newPropertyName = KNSConstants.EMPTY_STRING;
         if (propertyName != null) {
             newPropertyName = propertyName;
         }
@@ -747,7 +747,7 @@ public class Field implements java.io.Serializable {
      * @param propertyValue The propertyValue to set.
      */
     public void setPropertyValue(Object propertyValue) {
-        String newPropertyValue = RiceConstants.EMPTY_STRING;
+        String newPropertyValue = KNSConstants.EMPTY_STRING;
 
         if (propertyValue != null) {
             // for Booleans always use BooleanFormatter

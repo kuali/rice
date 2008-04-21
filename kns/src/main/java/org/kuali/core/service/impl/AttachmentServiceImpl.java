@@ -26,13 +26,13 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.RiceConstants;
 import org.kuali.core.bo.Attachment;
 import org.kuali.core.bo.Note;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.service.AttachmentService;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.util.Guid;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -188,9 +188,9 @@ public class AttachmentServiceImpl implements AttachmentService {
     private String getDocumentFileStorageLocation(String objectId) {
         String location = null;
         if(StringUtils.isEmpty(objectId)) {
-            location = kualiConfigurationService.getPropertyString(RiceConstants.ATTACHMENTS_PENDING_DIRECTORY_KEY);
+            location = kualiConfigurationService.getPropertyString(KNSConstants.ATTACHMENTS_PENDING_DIRECTORY_KEY);
         } else {
-            location = kualiConfigurationService.getPropertyString(RiceConstants.ATTACHMENTS_DIRECTORY_KEY)+ File.separator + objectId;
+            location = kualiConfigurationService.getPropertyString(KNSConstants.ATTACHMENTS_DIRECTORY_KEY)+ File.separator + objectId;
         }
         return  location;
     }

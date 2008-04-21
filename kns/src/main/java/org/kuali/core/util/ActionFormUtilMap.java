@@ -22,11 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.core.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.core.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * Utility map for the action form to provide a way for calling functions through jstl.
@@ -49,7 +49,7 @@ public class ActionFormUtilMap extends HashMap {
     	    	return cachedObject;
     	    }
     	}
-        String[] methodKey = StringUtils.split((String) key, RiceConstants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER);
+        String[] methodKey = StringUtils.split((String) key, KNSConstants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER);
 
         String methodToCall = methodKey[0];
 

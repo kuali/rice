@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.core.bo.Parameter;
 import org.kuali.core.service.BusinessObjectService;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 //@Transactional
@@ -40,7 +40,7 @@ public class KualiConfigurationServiceImpl extends AbstractStaticConfigurationSe
     }
 
     public boolean constraintIsAllow(Parameter parameter) {
-	return RiceConstants.APC_ALLOWED_OPERATOR.equals(parameter.getParameterConstraintCode());
+	return KNSConstants.APC_ALLOWED_OPERATOR.equals(parameter.getParameterConstraintCode());
     }
 
     public Parameter getParameter(String namespaceCode, String detailTypeCode, String parameterName) {

@@ -19,9 +19,9 @@ import java.io.Serializable;
 import java.lang.reflect.Proxy;
 import java.util.List;
 
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.util.ClassLoaderUtils;
 
@@ -60,7 +60,7 @@ public class SynchronousServiceCallProxy extends AsynchronousServiceCallProxy {
 
     @Override
     protected void executeMessage(PersistedMessage message) {
-	if (!new Boolean(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGING_OFF))) {
+	if (!new Boolean(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF))) {
 	    new MessageServiceInvoker(message).run();
 	}
     }

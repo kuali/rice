@@ -43,12 +43,12 @@ import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.apache.struts.util.ModuleUtils;
-import org.kuali.RiceConstants;
 import org.kuali.core.exceptions.FileUploadLimitExceededException;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.web.struts.action.KualiMultipartRequestHandler;
 import org.kuali.core.web.struts.form.KualiForm;
 import org.kuali.core.web.struts.pojo.PojoFormBase;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * General helper methods for handling requests.
@@ -68,8 +68,8 @@ public class WebUtils {
         String methodToCall = null;
 
         // check if is specified cleanly
-        if (StringUtils.isNotBlank(request.getParameter(RiceConstants.DISPATCH_REQUEST_PARAMETER))) {
-            methodToCall = request.getParameter(RiceConstants.DISPATCH_REQUEST_PARAMETER);
+        if (StringUtils.isNotBlank(request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER))) {
+            methodToCall = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
         }
 
         if (methodToCall == null) {
@@ -78,18 +78,18 @@ public class WebUtils {
                 String parameterName = (String) i.nextElement();
 
                 // check if the parameter name is a specifying the methodToCall
-                if (parameterName.startsWith(RiceConstants.DISPATCH_REQUEST_PARAMETER) && parameterName.endsWith(".x")) {
-                    methodToCall = StringUtils.substringBetween(parameterName, RiceConstants.DISPATCH_REQUEST_PARAMETER + ".", ".");
-                    request.setAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE, parameterName);
+                if (parameterName.startsWith(KNSConstants.DISPATCH_REQUEST_PARAMETER) && parameterName.endsWith(".x")) {
+                    methodToCall = StringUtils.substringBetween(parameterName, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".", ".");
+                    request.setAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE, parameterName);
                     // Fix for KRACOEUS-267, KULRICE-1412, KULRICE-1425, and KFSMI-110
                     // Add this to return the method to call once it is matched
                     break; 
                 } else { 
                     // KULRICE-1218: Check if the parameter's values match (not just the name)
                     for (String value : request.getParameterValues(parameterName)) {
-                        if (value.startsWith(RiceConstants.DISPATCH_REQUEST_PARAMETER) && value.endsWith(".x")) {
-                            methodToCall = StringUtils.substringBetween(value, RiceConstants.DISPATCH_REQUEST_PARAMETER + ".", ".");
-                            request.setAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE, value);
+                        if (value.startsWith(KNSConstants.DISPATCH_REQUEST_PARAMETER) && value.endsWith(".x")) {
+                            methodToCall = StringUtils.substringBetween(value, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".", ".");
+                            request.setAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE, value);
                         }
                     }
                 }
@@ -299,7 +299,7 @@ public class WebUtils {
                 }
                 // get file elements for kualirequestprocessor
                 if (servletWrapper == null) {
-                    request.setAttribute(RiceConstants.UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY,getFileParametersForMultipartRequest(request, multipartHandler));
+                    request.setAttribute(KNSConstants.UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY,getFileParametersForMultipartRequest(request, multipartHandler));
                 }
                 // retrieve form values and put into properties
                 Map multipartParameters = getAllParametersForMultipartRequest(request, multipartHandler);

@@ -18,11 +18,11 @@ package org.kuali.core.service.impl;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.kuali.RiceConstants;
 import org.kuali.core.util.properties.KualiPropertiesFactory;
 import org.kuali.core.util.properties.PropertyHolder;
 import org.kuali.core.util.spring.Cached;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kns.util.KNSConstants;
 
 @Cached
 public abstract class AbstractStaticConfigurationServiceImpl {
@@ -33,14 +33,14 @@ public abstract class AbstractStaticConfigurationServiceImpl {
      * Harcoding the configFileName, by request.
      */
     public AbstractStaticConfigurationServiceImpl() {
-        KualiPropertiesFactory propertiesFactory = new KualiPropertiesFactory(RiceConstants.CONFIGURATION_SERVICE_DATA_FILE_NAME);
+        KualiPropertiesFactory propertiesFactory = new KualiPropertiesFactory(KNSConstants.CONFIGURATION_SERVICE_DATA_FILE_NAME);
         this.propertyHolder = propertiesFactory.getProperties(null);
         this.propertyHolder.getHeldProperties().putAll(Core.getCurrentContextConfig().getProperties());
     }
     
     public boolean isProductionEnvironment() {
-	return getPropertyString(RiceConstants.PROD_ENVIRONMENT_CODE_KEY).equals(
-		getPropertyString(RiceConstants.ENVIRONMENT_KEY));
+	return getPropertyString(KNSConstants.PROD_ENVIRONMENT_CODE_KEY).equals(
+		getPropertyString(KNSConstants.ENVIRONMENT_KEY));
     }
 
     /**

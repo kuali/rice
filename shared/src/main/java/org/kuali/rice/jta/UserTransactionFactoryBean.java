@@ -19,7 +19,7 @@ import javax.naming.NamingException;
 import javax.transaction.UserTransaction;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.RiceConstants;
+import org.kuali.rice.util.RiceConstants;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.core.Core;

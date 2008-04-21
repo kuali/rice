@@ -13,9 +13,10 @@
 package edu.iu.uis.eden.messaging.serviceproxies;
 
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.util.KSBConstants;
+import org.kuali.rice.util.RiceConstants;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import edu.iu.uis.eden.messaging.MessageServiceInvoker;
@@ -31,7 +32,7 @@ import edu.iu.uis.eden.messaging.PersistedMessage;
 public class MessageSender {
 
     public static void sendMessage(PersistedMessage message) throws Exception {
-	if (!new Boolean(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGING_OFF))) {
+	if (!new Boolean(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF))) {
 
 	    if (Core.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null
 		    || Core.getCurrentContextConfig().getObject(Config.TRANSACTION_MANAGER_OBJ) != null) {

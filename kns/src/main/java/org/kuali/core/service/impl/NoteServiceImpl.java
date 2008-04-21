@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.RiceKeyConstants;
-import org.kuali.RiceConstants.NoteTypeEnum;
 import org.kuali.core.bo.AdHocRoutePerson;
 import org.kuali.core.bo.AdHocRouteRecipient;
 import org.kuali.core.bo.Note;
@@ -37,6 +36,7 @@ import org.kuali.core.service.UniversalUserService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.workflow.service.WorkflowDocumentService;
+import org.kuali.rice.kns.util.KNSConstants.NoteTypeEnum;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.iu.uis.eden.EdenConstants;

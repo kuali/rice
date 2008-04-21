@@ -16,8 +16,8 @@
 package edu.iu.uis.eden.messaging.web;
 
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 import edu.iu.uis.eden.messaging.threadpool.KSBThreadPool;
 
@@ -71,7 +71,7 @@ public class ThreadPoolForm extends ActionForm {
         this.allServers = allServers;
     }
     public String getMessageEntity() {
-	return Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGE_ENTITY);
+	return Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_ENTITY);
     }
     public Long getMaxRetryAttempts() {
         return this.maxRetryAttempts;

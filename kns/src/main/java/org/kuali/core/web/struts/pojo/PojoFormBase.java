@@ -37,7 +37,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
-import org.kuali.RiceConstants;
 import org.kuali.core.exceptions.FileUploadLimitExceededException;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.util.GlobalVariables;
@@ -48,6 +47,7 @@ import org.kuali.core.web.format.FormatException;
 import org.kuali.core.web.format.Formatter;
 import org.kuali.core.web.struts.action.KualiMultipartRequestHandler;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This class is the base form which implements the PojoForm interface.
@@ -124,7 +124,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
         String method = request.getMethod();
 
         if ("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data")) {
-            Map fileElements = (HashMap)request.getAttribute(RiceConstants.UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY);
+            Map fileElements = (HashMap)request.getAttribute(KNSConstants.UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY);
             Enumeration names = Collections.enumeration(fileElements.keySet());
             while (names.hasMoreElements()) {
                 String name = (String) names.nextElement();
@@ -471,7 +471,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     	    customInitMaxUploadSizes();
     	    // if it's still empty, add the default
     	    if ( maxUploadFileSizes.isEmpty() ) {
-    	        addMaxUploadSize(KNSServiceLocator.getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.ALL_DETAIL_TYPE, RiceConstants.MAX_UPLOAD_SIZE_PARM_NM));
+    	        addMaxUploadSize(KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.MAX_UPLOAD_SIZE_PARM_NM));
     	    }
     	}	
     }

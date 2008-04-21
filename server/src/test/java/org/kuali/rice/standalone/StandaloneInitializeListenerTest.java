@@ -21,7 +21,6 @@ import java.net.URLClassLoader;
 import javax.servlet.ServletContextEvent;
 
 import org.apache.commons.lang.StringUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.resourceloader.ContextClassLoaderBinder;

@@ -18,7 +18,6 @@ package org.kuali.core.document.authorization;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.RiceConstants;
 import org.kuali.RicePropertyConstants;
 import org.kuali.core.authorization.AuthorizationConstants;
 import org.kuali.core.bo.user.UniversalUser;
@@ -26,6 +25,7 @@ import org.kuali.core.document.Document;
 import org.kuali.core.document.MaintenanceDocument;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * Universal User specific authorization rules.
@@ -112,9 +112,9 @@ public class UniversalUserDocumentAuthorizer extends MaintenanceDocumentAuthoriz
         }
         // get the group name that we need here
         if ( userEditWorkgroupName == null ) {
-            userEditWorkgroupName = configService.getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, RiceConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
+            userEditWorkgroupName = configService.getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, KNSConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
             // check whether users are editable within Kuali
-            usersMaintainedByKuali = configService.getPropertyAsBoolean( RiceConstants.MAINTAIN_USERS_LOCALLY_KEY );
+            usersMaintainedByKuali = configService.getPropertyAsBoolean( KNSConstants.MAINTAIN_USERS_LOCALLY_KEY );
             // check whether local CAS is in use
             passwordEditingEnabled = KNSServiceLocator.getWebAuthenticationService().isValidatePassword();
         }

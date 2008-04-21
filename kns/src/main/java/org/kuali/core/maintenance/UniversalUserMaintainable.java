@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.RiceConstants;
 import org.kuali.RicePropertyConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.bo.user.AuthenticationUserId;
@@ -45,6 +44,7 @@ import org.kuali.core.web.ui.Row;
 import org.kuali.core.web.ui.Section;
 import org.kuali.core.web.ui.SectionBridge;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 import edu.iu.uis.eden.exception.WorkflowException;
 
@@ -223,9 +223,9 @@ public class UniversalUserMaintainable extends KualiMaintainableImpl {
             universalUserService = KNSServiceLocator.getUniversalUserService();
             moduleUserPropertyService = KNSServiceLocator.getKualiModuleUserPropertyService();
             documentService = KNSServiceLocator.getDocumentService();
-            userEditWorkgroupName = configService.getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, RiceConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
+            userEditWorkgroupName = configService.getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, KNSConstants.CoreApcParms.UNIVERSAL_USER_EDIT_WORKGROUP);
             // check whether users are editable within Kuali
-            usersMaintainedByKuali = configService.getPropertyAsBoolean( RiceConstants.MAINTAIN_USERS_LOCALLY_KEY );
+            usersMaintainedByKuali = configService.getPropertyAsBoolean( KNSConstants.MAINTAIN_USERS_LOCALLY_KEY );
             kualiModuleService = KNSServiceLocator.getKualiModuleService();
         }
     }

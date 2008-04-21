@@ -19,9 +19,9 @@ package org.kuali.core.bo;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 
-import org.kuali.RiceConstants;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * Represents a user note in the system.
@@ -52,7 +52,7 @@ public class Note extends PersistableBusinessObjectBase {
 
         Timestamp now = KNSServiceLocator.getDateTimeService().getCurrentTimestamp();
         this.setNotePostedTimestamp(now);
-        this.setNoteText(RiceConstants.EMPTY_STRING);
+        this.setNoteText(KNSConstants.EMPTY_STRING);
         // for now just do this
         this.setNoteTypeCode("DH");
 

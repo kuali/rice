@@ -29,7 +29,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.RiceConstants;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.remoting.httpinvoker.CommonsHttpInvokerRequestExecutor;
 import org.springframework.remoting.httpinvoker.HttpInvokerClientConfiguration;
 
@@ -83,9 +83,9 @@ public class KEWHttpInvokerRequestExecutor extends CommonsHttpInvokerRequestExec
 	protected InputStream getResponseBody(HttpInvokerClientConfiguration config, PostMethod postMethod) throws IOException {
 		if (isSecure()) {
 			// extract and validate the headers
-			Header digitalSignatureHeader = postMethod.getResponseHeader(RiceConstants.DIGITAL_SIGNATURE_HEADER);
-			Header keyStoreAliasHeader = postMethod.getResponseHeader(RiceConstants.KEYSTORE_ALIAS_HEADER);
-			Header certificateHeader = postMethod.getResponseHeader(RiceConstants.KEYSTORE_CERTIFICATE_HEADER);
+			Header digitalSignatureHeader = postMethod.getResponseHeader(KSBConstants.DIGITAL_SIGNATURE_HEADER);
+			Header keyStoreAliasHeader = postMethod.getResponseHeader(KSBConstants.KEYSTORE_ALIAS_HEADER);
+			Header certificateHeader = postMethod.getResponseHeader(KSBConstants.KEYSTORE_CERTIFICATE_HEADER);
 			if (digitalSignatureHeader == null || StringUtils.isEmpty(digitalSignatureHeader.getValue())) {
 				throw new RuntimeException("A digital signature header was required on the response but none was found.");
 			}

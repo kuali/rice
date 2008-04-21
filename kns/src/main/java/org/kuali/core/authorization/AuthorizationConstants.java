@@ -15,14 +15,14 @@
  */
 package org.kuali.core.authorization;
 
-import org.kuali.core.JstlConstants;
+import org.kuali.rice.util.JSTLConstants;
 
 /**
  * Defines constants used in authorization-related code.
  * 
  * 
  */
-public class AuthorizationConstants extends JstlConstants {
+public class AuthorizationConstants extends JSTLConstants {
     public static class EditMode {
         public static final String UNVIEWABLE = "unviewable";
         public static final String VIEW_ONLY = "viewOnly";

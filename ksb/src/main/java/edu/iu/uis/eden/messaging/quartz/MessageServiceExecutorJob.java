@@ -16,7 +16,7 @@ import java.io.Serializable;
 
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.RiceConstants;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -43,7 +43,7 @@ public class MessageServiceExecutorJob implements Job, Serializable {
     public void execute(JobExecutionContext jec) throws JobExecutionException {
 	try {
 	    PersistedMessage message = (PersistedMessage) jec.getJobDetail().getJobDataMap().get(MESSAGE_KEY);
-	    message.setQueueStatus(RiceConstants.ROUTE_QUEUE_ROUTING);
+	    message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
 	    KSBServiceLocator.getRouteQueueService().save(message);
 	    KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));
 	} catch (Throwable t) {

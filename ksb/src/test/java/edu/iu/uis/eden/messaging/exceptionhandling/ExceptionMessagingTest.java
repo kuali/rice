@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.bus.test.KSBTestCase;
-import org.kuali.rice.RiceConstants;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.test.TestUtilities;
 
 import edu.iu.uis.eden.messaging.GlobalCallbackRegistry;
@@ -49,14 +49,12 @@ public class ExceptionMessagingTest extends KSBTestCase {
 
 
 	private QName queueTimeToLiveServiceName = new QName("KEW", "explodingQueueTimeLimit");
-//	private QName retryCountServiceName = new QName("KEW", "testExplodingRetryCount");
 	private TestCallback callback = new TestCallback();
 
 	@Override
 	public void setUp() throws Exception {
-		System.setProperty(RiceConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "500");
-		System.setProperty(RiceConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, "5");
-//		System.setProperty(RiceConstants.IMMEDIATE_EXCEPTION_ROUTING, "false");
+		System.setProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "500");
+		System.setProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, "5");
 		super.setUp();
 		GlobalCallbackRegistry.getCallbacks().clear();
 		GlobalCallbackRegistry.getCallbacks().add(this.callback);
@@ -90,7 +88,7 @@ public class ExceptionMessagingTest extends KSBTestCase {
 		//verify the entry is in exception routing
 		List<PersistedMessage> messagesQueued = KSBServiceLocator.getRouteQueueService().findByServiceName(this.queueTimeToLiveServiceName, "invoke");
 		PersistedMessage message = messagesQueued.get(0);
-		assertEquals("Message should be in exception status", RiceConstants.ROUTE_QUEUE_EXCEPTION, message.getQueueStatus());
+		assertEquals("Message should be in exception status", KSBConstants.ROUTE_QUEUE_EXCEPTION, message.getQueueStatus());
 		assertTrue("Message expiration date should be equal to or earlier than last queue date", message.getExpirationDate().getTime() <= message.getQueueDate().getTime());
 	}
 

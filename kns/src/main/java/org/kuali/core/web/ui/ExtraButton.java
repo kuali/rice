@@ -16,8 +16,8 @@
 package org.kuali.core.web.ui;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * Represents an extra button that may appear on the lookups or bottom of a
@@ -68,13 +68,13 @@ public class ExtraButton {
 							KNSServiceLocator
 									.getKualiConfigurationService()
 									.getPropertyString(
-											RiceConstants.EXTERNALIZABLE_IMAGES_URL_KEY))
+											KNSConstants.EXTERNALIZABLE_IMAGES_URL_KEY))
 					.replace(
 							"${externalizable.images.url}",
 							KNSServiceLocator
 									.getKualiConfigurationService()
 									.getPropertyString(
-											RiceConstants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
+											KNSConstants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
 		}
 	}
 

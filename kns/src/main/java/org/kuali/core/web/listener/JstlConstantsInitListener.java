@@ -17,11 +17,11 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.log4j.Logger;
-import org.kuali.RiceConstants;
 import org.kuali.RicePropertyConstants;
 import org.kuali.core.ConfigProperties;
 import org.kuali.core.authorization.AuthorizationConstants;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This class is the JstlContants implementation of the ServletContextListener.
@@ -36,7 +36,7 @@ public class JstlConstantsInitListener implements ServletContextListener {
 	ServletContext context = sce.getServletContext();
 
 	// publish application constants into JSP app context with name "Constants"
-	context.setAttribute("Constants", new RiceConstants());
+	context.setAttribute("Constants", new KNSConstants());
 
 	// publish configuration properties into JSP app context with name "ConfigProperties"
 	context.setAttribute("ConfigProperties", new ConfigProperties());

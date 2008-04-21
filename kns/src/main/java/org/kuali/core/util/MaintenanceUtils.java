@@ -25,7 +25,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.core.datadictionary.MaintainableFieldDefinition;
@@ -37,6 +36,7 @@ import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.web.ui.Field;
 import org.kuali.core.web.ui.Row;
 import org.kuali.core.web.ui.Section;
+import org.kuali.rice.kns.util.KNSConstants;
 
 public class MaintenanceUtils {
     /**
@@ -149,7 +149,7 @@ public class MaintenanceUtils {
                 String collectionPrefix = "";
                 if ( collectionName != null ) {
                     if (addLine) {
-                        collectionPrefix = RiceConstants.MAINTENANCE_ADD_PREFIX + collectionName + ".";
+                        collectionPrefix = KNSConstants.MAINTENANCE_ADD_PREFIX + collectionName + ".";
                     }
                     else {
                         collectionPrefix = collectionName + "[" + index + "].";
@@ -171,7 +171,7 @@ public class MaintenanceUtils {
     
     private static String prefixFieldConversionsDestinationsWithCollectionPrefix(String originalFieldConversions, String collectionPrefix) {
         StringBuilder buf = new StringBuilder();
-        StringTokenizer tok = new StringTokenizer(originalFieldConversions, RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
+        StringTokenizer tok = new StringTokenizer(originalFieldConversions, KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
         boolean needsSeparator = false;
         while (tok.hasMoreTokens()) {
             String conversionPair = tok.nextToken();
@@ -179,15 +179,15 @@ public class MaintenanceUtils {
                 continue;
             }
             
-            String fromValue = StringUtils.substringBefore(conversionPair, RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
-            String toValue = StringUtils.substringAfter(conversionPair, RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+            String fromValue = StringUtils.substringBefore(conversionPair, KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+            String toValue = StringUtils.substringAfter(conversionPair, KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
             
             if (needsSeparator) {
-                buf.append(RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
+                buf.append(KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
             }
             needsSeparator = true;
             
-            buf.append(fromValue).append(RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR).append(collectionPrefix).append(toValue);
+            buf.append(fromValue).append(KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR).append(collectionPrefix).append(toValue);
         }
         return buf.toString();
     }
@@ -224,7 +224,7 @@ public class MaintenanceUtils {
             
             Iterator<String> collectionIter = section.getContainedCollectionNames().iterator();
             while (collectionIter.hasNext()) {
-                buf.append(RiceConstants.MAINTENANCE_NEW_MAINTAINABLE + collectionIter.next());
+                buf.append(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE + collectionIter.next());
                 if (collectionIter.hasNext()) {
                     buf.append(",");
                 }
@@ -238,7 +238,7 @@ public class MaintenanceUtils {
      * This method recurses through all the fields of the list of rows and adds each field's property name to the set if it starts
      * with Constants.MAINTENANCE_NEW_MAINTAINABLE
      * 
-     * @see RiceConstants#MAINTENANCE_NEW_MAINTAINABLE
+     * @see KNSConstants#MAINTENANCE_NEW_MAINTAINABLE
      * @param listOfRows
      * @param errorKeys
      */
@@ -253,7 +253,7 @@ public class MaintenanceUtils {
             }
             for (Field field : fields) {
                 String fieldPropertyName = field.getPropertyName();
-                if (fieldPropertyName != null && fieldPropertyName.startsWith(RiceConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
+                if (fieldPropertyName != null && fieldPropertyName.startsWith(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
                     errorKeys.add(field.getPropertyName());
                 }
                 addRowsToErrorKeySet(field.getContainerRows(), errorKeys);

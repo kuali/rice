@@ -28,7 +28,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
-import org.kuali.RiceConstants;
 import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.exceptions.AuthorizationException;
 import org.kuali.core.exceptions.ModuleAuthorizationException;
@@ -40,6 +39,8 @@ import org.kuali.core.util.WebUtils;
 import org.kuali.core.web.struts.form.KualiDocumentFormBase;
 import org.kuali.core.web.struts.form.KualiForm;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.util.RiceConstants;
 
 /**
  * This class is the base action class for all kuali actions. Overrides execute to set methodToCall for image submits. Other setup
@@ -69,14 +70,14 @@ public abstract class KualiAction extends DispatchAction {
         if (form instanceof KualiForm && StringUtils.isNotEmpty(((KualiForm) form).getMethodToCall())) {
             methodToCall = ((KualiForm) form).getMethodToCall();
 
-            if (StringUtils.isNotBlank(getImageContext(request, RiceConstants.ANCHOR))) {
-                ((KualiForm) form).setAnchor(getImageContext(request, RiceConstants.ANCHOR));
+            if (StringUtils.isNotBlank(getImageContext(request, KNSConstants.ANCHOR))) {
+                ((KualiForm) form).setAnchor(getImageContext(request, KNSConstants.ANCHOR));
             }
-            else if (StringUtils.isNotBlank(request.getParameter(RiceConstants.ANCHOR))) {
-                ((KualiForm) form).setAnchor(request.getParameter(RiceConstants.ANCHOR));
+            else if (StringUtils.isNotBlank(request.getParameter(KNSConstants.ANCHOR))) {
+                ((KualiForm) form).setAnchor(request.getParameter(KNSConstants.ANCHOR));
             }
             else {
-                ((KualiForm) form).setAnchor(RiceConstants.ANCHOR_TOP_OF_FORM);
+                ((KualiForm) form).setAnchor(KNSConstants.ANCHOR_TOP_OF_FORM);
             }
         }
         else {
@@ -97,7 +98,7 @@ public abstract class KualiAction extends DispatchAction {
         checkAuthorization(form, methodToCall);
 
         // check if demonstration encryption is enabled
-        if (KNSServiceLocator.getKualiConfigurationService().getIndicatorParameter(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.ALL_DETAIL_TYPE, RiceConstants.SystemGroupParameterNames.CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND) && KNSServiceLocator.getEncryptionService() instanceof Demonstration) {
+        if (KNSServiceLocator.getKualiConfigurationService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND) && KNSServiceLocator.getEncryptionService() instanceof Demonstration) {
             LOG.warn("WARNING: This implementation of Kuali uses the demonstration encryption framework.");
         }
 
@@ -213,7 +214,7 @@ public abstract class KualiAction extends DispatchAction {
      */
     protected int getSelectedLine(HttpServletRequest request) {
         int selectedLine = -1;
-        String parameterName = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
+        String parameterName = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
         if (StringUtils.isNotBlank(parameterName)) {
             String lineNumber = StringUtils.substringBetween(parameterName, ".line", ".");
             selectedLine = Integer.parseInt(lineNumber);
@@ -230,7 +231,7 @@ public abstract class KualiAction extends DispatchAction {
      */
     protected String getTabToToggle(HttpServletRequest request) {
         String tabToToggle = "";
-        String parameterName = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
+        String parameterName = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
         if (StringUtils.isNotBlank(parameterName)) {
             tabToToggle = StringUtils.substringBetween(parameterName, ".tab", ".");
         }
@@ -246,7 +247,7 @@ public abstract class KualiAction extends DispatchAction {
      */
     protected String getHeaderTabNavigateTo(HttpServletRequest request) {
         String headerTabNavigateTo = RiceConstants.MAPPING_BASIC;
-        String imageContext = getImageContext(request, RiceConstants.NAVIGATE_TO);
+        String imageContext = getImageContext(request, KNSConstants.NAVIGATE_TO);
         if (StringUtils.isNotBlank(imageContext)) {
             headerTabNavigateTo = imageContext;
         }
@@ -261,13 +262,13 @@ public abstract class KualiAction extends DispatchAction {
      */
     protected String getHeaderTabDispatch(HttpServletRequest request) {
         String headerTabDispatch = null;
-        String imageContext = getImageContext(request, RiceConstants.HEADER_DISPATCH);
+        String imageContext = getImageContext(request, KNSConstants.HEADER_DISPATCH);
         if (StringUtils.isNotBlank(imageContext)) {
             headerTabDispatch = imageContext;
         }
         else {
             // In some cases it might be in request params instead
-            headerTabDispatch = request.getParameter(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
+            headerTabDispatch = request.getParameter(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
         }
         return headerTabDispatch;
     }
@@ -281,7 +282,7 @@ public abstract class KualiAction extends DispatchAction {
      */
     protected String getImageContext(HttpServletRequest request, String contextKey) {
         String imageContext = "";
-        String parameterName = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
+        String parameterName = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
         if (StringUtils.isBlank(parameterName)) {
             parameterName = request.getParameter("methodToCallPath");
         }
@@ -311,34 +312,34 @@ public abstract class KualiAction extends DispatchAction {
      */
     public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         // parse out the important strings from our methodToCall parameter
-        String fullParameter = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
+        String fullParameter = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
 
         // parse out business object class name for lookup
-        String boClassName = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL, RiceConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL);
+        String boClassName = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL, KNSConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL);
         if (StringUtils.isBlank(boClassName)) {
             throw new RuntimeException("Illegal call to perform lookup, no business object class name specified.");
         }
 
         // build the parameters for the lookup url
         Properties parameters = new Properties();
-        String conversionFields = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
+        String conversionFields = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
         if (StringUtils.isNotBlank(conversionFields)) {
-            parameters.put(RiceConstants.CONVERSION_FIELDS_PARAMETER, conversionFields);
+            parameters.put(KNSConstants.CONVERSION_FIELDS_PARAMETER, conversionFields);
         }
 
         // pass values from form that should be pre-populated on lookup search
-        String parameterFields = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM2_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM2_RIGHT_DEL);
+        String parameterFields = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM2_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM2_RIGHT_DEL);
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "fullParameter: " + fullParameter );
             LOG.debug( "parameterFields: " + parameterFields );
         }
         if (StringUtils.isNotBlank(parameterFields)) {
-            String[] lookupParams = parameterFields.split(RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
+            String[] lookupParams = parameterFields.split(KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
             if ( LOG.isDebugEnabled() ) {
                 LOG.debug( "lookupParams: " + lookupParams );
             }
             for (int i = 0; i < lookupParams.length; i++) {
-                String[] keyValue = lookupParams[i].split(RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+                String[] keyValue = lookupParams[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
 
                 // hard-coded passed value
                 if (StringUtils.contains(keyValue[0], "'")) {
@@ -356,9 +357,9 @@ public abstract class KualiAction extends DispatchAction {
         }
 
         // pass values from form that should be read-Only on lookup search
-        String readOnlyFields = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM8_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM8_RIGHT_DEL);
+        String readOnlyFields = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM8_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM8_RIGHT_DEL);
         if (StringUtils.isNotBlank(readOnlyFields)) {
-            parameters.put(RiceConstants.LOOKUP_READ_ONLY_FIELDS, readOnlyFields);
+            parameters.put(KNSConstants.LOOKUP_READ_ONLY_FIELDS, readOnlyFields);
         }
 
         if ( LOG.isDebugEnabled() ) {
@@ -367,70 +368,70 @@ public abstract class KualiAction extends DispatchAction {
         }
 
         // grab whether or not the "return value" link should be hidden or not
-        String hideReturnLink = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM3_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM3_RIGHT_DEL);
+        String hideReturnLink = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM3_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM3_RIGHT_DEL);
         if (StringUtils.isNotBlank(hideReturnLink)) {
-            parameters.put(RiceConstants.HIDE_LOOKUP_RETURN_LINK, hideReturnLink);
+            parameters.put(KNSConstants.HIDE_LOOKUP_RETURN_LINK, hideReturnLink);
         }
 
         // add the optional extra button source and parameters string
-        String extraButtonSource = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM4_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM4_RIGHT_DEL);
+        String extraButtonSource = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM4_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM4_RIGHT_DEL);
         if (StringUtils.isNotBlank(extraButtonSource)) {
-            parameters.put(RiceConstants.EXTRA_BUTTON_SOURCE, extraButtonSource);
+            parameters.put(KNSConstants.EXTRA_BUTTON_SOURCE, extraButtonSource);
         }
-        String extraButtonParams = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM5_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM5_RIGHT_DEL);
+        String extraButtonParams = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM5_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM5_RIGHT_DEL);
         if (StringUtils.isNotBlank(extraButtonParams)) {
-            parameters.put(RiceConstants.EXTRA_BUTTON_PARAMS, extraButtonParams);
+            parameters.put(KNSConstants.EXTRA_BUTTON_PARAMS, extraButtonParams);
         }
 
-        String lookupAction = RiceConstants.LOOKUP_ACTION;
+        String lookupAction = KNSConstants.LOOKUP_ACTION;
 
         // is this a multi-value return?
-        String multipleValues = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM6_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM6_RIGHT_DEL);
+        String multipleValues = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM6_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM6_RIGHT_DEL);
         if ((new Boolean(multipleValues).booleanValue())) {
-            parameters.put(RiceConstants.MULTIPLE_VALUE, multipleValues);
-            lookupAction = RiceConstants.MULTIPLE_VALUE_LOOKUP_ACTION;
+            parameters.put(KNSConstants.MULTIPLE_VALUE, multipleValues);
+            lookupAction = KNSConstants.MULTIPLE_VALUE_LOOKUP_ACTION;
         }
 
         // the name of the collection being looked up (primarily for multivalue lookups
-        String lookedUpCollectionName = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM11_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM11_RIGHT_DEL);
+        String lookedUpCollectionName = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM11_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM11_RIGHT_DEL);
         if (StringUtils.isNotBlank(lookedUpCollectionName)) {
-            parameters.put(RiceConstants.LOOKED_UP_COLLECTION_NAME, lookedUpCollectionName);
+            parameters.put(KNSConstants.LOOKED_UP_COLLECTION_NAME, lookedUpCollectionName);
         }
 
         // grab whether or not the "supress actions" column should be hidden or not
-        String supressActions = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM7_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM7_RIGHT_DEL);
+        String supressActions = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM7_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM7_RIGHT_DEL);
         if (StringUtils.isNotBlank(supressActions)) {
-            parameters.put(RiceConstants.SUPPRESS_ACTIONS, supressActions);
+            parameters.put(KNSConstants.SUPPRESS_ACTIONS, supressActions);
         }
 
         // grab the references that should be refreshed upon returning from the lookup
-        String referencesToRefresh = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM10_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM10_RIGHT_DEL);
+        String referencesToRefresh = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM10_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM10_RIGHT_DEL);
         if (StringUtils.isNotBlank(referencesToRefresh)) {
-            parameters.put(RiceConstants.REFERENCES_TO_REFRESH, referencesToRefresh);
+            parameters.put(KNSConstants.REFERENCES_TO_REFRESH, referencesToRefresh);
         }
 
         // anchor, if it exists
         if (form instanceof KualiForm && StringUtils.isNotEmpty(((KualiForm) form).getAnchor())) {
-            parameters.put(RiceConstants.LOOKUP_ANCHOR, ((KualiForm) form).getAnchor());
+            parameters.put(KNSConstants.LOOKUP_ANCHOR, ((KualiForm) form).getAnchor());
         }
 
         // now add required parameters
-        parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, "start");
+        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, "start");
 
         // pass value from form that shows if autoSearch is desired for lookup search
-        String autoSearch = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM9_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM9_RIGHT_DEL);
+        String autoSearch = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM9_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM9_RIGHT_DEL);
 
         if (StringUtils.isNotBlank(autoSearch)) {
-            parameters.put(RiceConstants.LOOKUP_AUTO_SEARCH, autoSearch);
+            parameters.put(KNSConstants.LOOKUP_AUTO_SEARCH, autoSearch);
             if ("YES".equalsIgnoreCase(autoSearch)){
-                parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, "search");
+                parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, "search");
             }
         }
 
-        parameters.put(RiceConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
-        parameters.put(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, boClassName);
+        parameters.put(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
+        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, boClassName);
 
-        parameters.put(RiceConstants.RETURN_LOCATION_PARAMETER, getReturnLocation(request, mapping));
+        parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation(request, mapping));
 
         String lookupUrl = UrlFactory.parameterizeUrl(getBasePath(request) + "/kr/" + lookupAction, parameters);
         return new ActionForward(lookupUrl, true);
@@ -439,34 +440,34 @@ public abstract class KualiAction extends DispatchAction {
     public ActionForward performInquiry(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         // parse out the important strings from our methodToCall parameter
-        String fullParameter = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
+        String fullParameter = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
 
         // parse out business object class name for lookup
-        String boClassName = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL, RiceConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL);
+        String boClassName = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL, KNSConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL);
         if (StringUtils.isBlank(boClassName)) {
             throw new RuntimeException("Illegal call to perform inquiry, no business object class name specified.");
         }
 
         // build the parameters for the inquiry url
         Properties parameters = new Properties();
-        parameters.put(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, boClassName);
+        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, boClassName);
 
-        parameters.put(RiceConstants.RETURN_LOCATION_PARAMETER, getReturnLocation(request, mapping));
+        parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation(request, mapping));
 
         // pass values from form that should be pre-populated on inquiry
-        String parameterFields = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM2_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM2_RIGHT_DEL);
+        String parameterFields = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM2_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM2_RIGHT_DEL);
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "fullParameter: " + fullParameter );
             LOG.debug( "parameterFields: " + parameterFields );
         }
         if (StringUtils.isNotBlank(parameterFields)) {
             // TODO : create a method for this to be used by both lookup & inquiry ?
-            String[] inquiryParams = parameterFields.split(RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
+            String[] inquiryParams = parameterFields.split(KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
             if ( LOG.isDebugEnabled() ) {
                 LOG.debug( "inquiryParams: " + inquiryParams );
             }
             for (int i = 0; i < inquiryParams.length; i++) {
-                String[] keyValue = inquiryParams[i].split(RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+                String[] keyValue = inquiryParams[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
 
                 // hard-coded passed value
                 if (StringUtils.contains(keyValue[0], "'")) {
@@ -484,11 +485,11 @@ public abstract class KualiAction extends DispatchAction {
                 }
             }
         }
-        parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, "start");
-        parameters.put(RiceConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
+        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, "start");
+        parameters.put(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
 
         String inquiryAction = "directInquiry.do";
-        String inquiryUrl = UrlFactory.parameterizeUrl(basePath + "/kr/" + RiceConstants.DIRECT_INQUIRY_ACTION, parameters);
+        String inquiryUrl = UrlFactory.parameterizeUrl(basePath + "/kr/" + KNSConstants.DIRECT_INQUIRY_ACTION, parameters);
         return new ActionForward(inquiryUrl, true);
 
     }
@@ -577,26 +578,26 @@ public abstract class KualiAction extends DispatchAction {
     private ActionForward performQuestion(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response, String questionId, String questionText, String questionType, String caller, String context, boolean showReasonField, String reason, String errorKey, String errorPropertyName, String errorParameter) throws Exception {
         Properties parameters = new Properties();
 
-        parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, "start");
-        parameters.put(RiceConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
-        parameters.put(RiceConstants.CALLING_METHOD, caller);
-        parameters.put(RiceConstants.QUESTION_INST_ATTRIBUTE_NAME, questionId);
-        parameters.put(RiceConstants.QUESTION_IMPL_ATTRIBUTE_NAME, questionType);
-        parameters.put(RiceConstants.QUESTION_TEXT_ATTRIBUTE_NAME, questionText);
-        parameters.put(RiceConstants.RETURN_LOCATION_PARAMETER, getReturnLocation(request, mapping));
-        parameters.put(RiceConstants.QUESTION_CONTEXT, context);
-        parameters.put(RiceConstants.QUESTION_SHOW_REASON_FIELD, Boolean.toString(showReasonField));
-        parameters.put(RiceConstants.QUESTION_REASON_ATTRIBUTE_NAME, reason);
-        parameters.put(RiceConstants.QUESTION_ERROR_KEY, errorKey);
-        parameters.put(RiceConstants.QUESTION_ERROR_PROPERTY_NAME, errorPropertyName);
-        parameters.put(RiceConstants.QUESTION_ERROR_PARAMETER, errorParameter);
-        parameters.put(RiceConstants.QUESTION_ANCHOR, form instanceof KualiForm ? ObjectUtils.toString(((KualiForm) form).getAnchor()) : "");
-        Object methodToCallAttribute = request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
+        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, "start");
+        parameters.put(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
+        parameters.put(KNSConstants.CALLING_METHOD, caller);
+        parameters.put(KNSConstants.QUESTION_INST_ATTRIBUTE_NAME, questionId);
+        parameters.put(KNSConstants.QUESTION_IMPL_ATTRIBUTE_NAME, questionType);
+        parameters.put(KNSConstants.QUESTION_TEXT_ATTRIBUTE_NAME, questionText);
+        parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation(request, mapping));
+        parameters.put(KNSConstants.QUESTION_CONTEXT, context);
+        parameters.put(KNSConstants.QUESTION_SHOW_REASON_FIELD, Boolean.toString(showReasonField));
+        parameters.put(KNSConstants.QUESTION_REASON_ATTRIBUTE_NAME, reason);
+        parameters.put(KNSConstants.QUESTION_ERROR_KEY, errorKey);
+        parameters.put(KNSConstants.QUESTION_ERROR_PROPERTY_NAME, errorPropertyName);
+        parameters.put(KNSConstants.QUESTION_ERROR_PARAMETER, errorParameter);
+        parameters.put(KNSConstants.QUESTION_ANCHOR, form instanceof KualiForm ? ObjectUtils.toString(((KualiForm) form).getAnchor()) : "");
+        Object methodToCallAttribute = request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
         if (methodToCallAttribute != null) {
-            parameters.put(RiceConstants.METHOD_TO_CALL_PATH, methodToCallAttribute);
+            parameters.put(KNSConstants.METHOD_TO_CALL_PATH, methodToCallAttribute);
         }
 
-        String questionUrl = UrlFactory.parameterizeUrl(getBasePath(request) + "/kr/" + RiceConstants.QUESTION_ACTION, parameters);
+        String questionUrl = UrlFactory.parameterizeUrl(getBasePath(request) + "/kr/" + KNSConstants.QUESTION_ACTION, parameters);
         return new ActionForward(questionUrl, true);
     }
 
@@ -620,10 +621,10 @@ public abstract class KualiAction extends DispatchAction {
     	}
 
 
-        String fullParameter = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
-        String conversionFields = StringUtils.substringBetween(fullParameter, RiceConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
+        String fullParameter = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
+        String conversionFields = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
 
-        String deploymentBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceConstants.WORKFLOW_URL_KEY);
+        String deploymentBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY);
         String workgroupLookupUrl = deploymentBaseUrl + "/Lookup.do?lookupableImplServiceName=WorkGroupLookupableImplService&methodToCall=start&docFormKey=" + GlobalVariables.getUserSession().addObject(form);
 
         if (conversionFields != null) {

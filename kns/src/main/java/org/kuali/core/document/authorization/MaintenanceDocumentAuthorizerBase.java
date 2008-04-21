@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.core.authorization.AuthorizationConstants;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.datadictionary.MaintainableFieldDefinition;
@@ -30,6 +29,7 @@ import org.kuali.core.document.Document;
 import org.kuali.core.document.MaintenanceDocument;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase implements MaintenanceDocumentAuthorizer {
 
@@ -168,6 +168,6 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
         
         // A maint doc is new when the new maintainable maintenance flag is set to either Constants.MAINTENANCE_NEW_ACTION or Constants.MAINTENANCE_COPY_ACTION
         String maintAction = maintDoc.getNewMaintainableObject().getMaintenanceAction();
-        return (RiceConstants.MAINTENANCE_NEW_ACTION.equals(maintAction) || RiceConstants.MAINTENANCE_COPY_ACTION.equals(maintAction));
+        return (KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintAction) || KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintAction));
     }
 }

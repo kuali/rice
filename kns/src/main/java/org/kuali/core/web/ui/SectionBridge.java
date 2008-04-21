@@ -24,7 +24,6 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.Inactivateable;
 import org.kuali.core.bo.PersistableBusinessObject;
@@ -50,6 +49,7 @@ import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.MaintenanceUtils;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 public class SectionBridge {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SectionBridge.class);
@@ -69,7 +69,7 @@ public class SectionBridge {
             section.setNumberOfColumns(Integer.parseInt(sd.getNumberOfColumns()));
         }
         else {
-            section.setNumberOfColumns(RiceConstants.DEFAULT_NUM_OF_COLUMNS);
+            section.setNumberOfColumns(KNSConstants.DEFAULT_NUM_OF_COLUMNS);
         }
 
         List<Field> sectionFields = new ArrayList();
@@ -141,7 +141,7 @@ public class SectionBridge {
                 section.getContainedCollectionNames().add(((MaintainableCollectionDefinition) item).getName());
 
                 StringBuffer containerRowErrorKey = new StringBuffer();
-                sectionRows = getContainerRows(section, definition, o, maintainable, oldMaintainable, displayedFieldNames, containerRowErrorKey, RiceConstants.DEFAULT_NUM_OF_COLUMNS, null);
+                sectionRows = getContainerRows(section, definition, o, maintainable, oldMaintainable, displayedFieldNames, containerRowErrorKey, KNSConstants.DEFAULT_NUM_OF_COLUMNS, null);
             }
             else if (item instanceof MaintainableSubSectionHeaderDefinition) {
                 MaintainableSubSectionHeaderDefinition definition = (MaintainableSubSectionHeaderDefinition) item;
@@ -158,7 +158,7 @@ public class SectionBridge {
             sectionFields = FieldUtils.populateFieldsFromBusinessObject(sectionFields, o);
 
             /* if maintenance action is copy, clear out secure fields */
-            if (RiceConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
+            if (KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
                 for (Iterator iterator = sectionFields.iterator(); iterator.hasNext();) {
                     Field element = (Field) iterator.next();
                     if (element.isSecure()) {
@@ -379,7 +379,7 @@ public class SectionBridge {
                         }
 
                         Field containerField;
-                        containerField = FieldUtils.constructContainerField(RiceConstants.EDIT_PREFIX + "[" + (new Integer(i)).toString() + "]", collectionLabel + " " + (i + 1), collFields, numberOfColumns);
+                        containerField = FieldUtils.constructContainerField(KNSConstants.EDIT_PREFIX + "[" + (new Integer(i)).toString() + "]", collectionLabel + " " + (i + 1), collFields, numberOfColumns);
                         // why is this only on collections and not subcollections any significance or just oversight?
                         containerField.setContainerName(collectionDefinition.getName() + "[" + (new Integer(i)).toString() + "].");
 
@@ -534,7 +534,7 @@ public class SectionBridge {
                                         subCollFields.add(subCollField);
                                     }
 
-                                    Field subContainerField = FieldUtils.constructContainerField(RiceConstants.EDIT_PREFIX + "[" + (new Integer(j)).toString() + "]", subCollectionLabel, subCollFields);
+                                    Field subContainerField = FieldUtils.constructContainerField(KNSConstants.EDIT_PREFIX + "[" + (new Integer(j)).toString() + "]", subCollectionLabel, subCollFields);
                                     if (lineSubBusinessObject instanceof PersistableBusinessObject && ((PersistableBusinessObject) lineSubBusinessObject).isNewCollectionRecord()) {
                                         subContainerField.getContainerRows().add(new Row(getDeleteRowButtonField(parents + collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionName, (new Integer(j)).toString())));
                                     }
@@ -584,7 +584,7 @@ public class SectionBridge {
     private static final Field getDeleteRowButtonField(String collectionName, String rowIndex) {
         Field deleteButtonField = new Field();
 
-        String deleteButtonName = RiceConstants.DISPATCH_REQUEST_PARAMETER + "." + RiceConstants.DELETE_LINE_METHOD + "." + collectionName + "." + RiceConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL + ".line" + rowIndex;
+        String deleteButtonName = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.DELETE_LINE_METHOD + "." + collectionName + "." + KNSConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL + ".line" + rowIndex;
         deleteButtonField.setPropertyName(deleteButtonName);
         deleteButtonField.setFieldType(Field.IMAGE_SUBMIT);
         deleteButtonField.setPropertyValue("images/tinybutton-delete1.gif");
@@ -601,8 +601,8 @@ public class SectionBridge {
      * @return Field - of type IMAGE_SUBMIT
      */
     private static final void addShowInactiveButtonField(Section section, String collectionName, boolean showInactive) {
-        String showInactiveButton = "<a name=\"showInactive" + collectionName + "\"><input type=\"image\" name=\"" + RiceConstants.DISPATCH_REQUEST_PARAMETER + "." + RiceConstants.TOGGLE_INACTIVE_METHOD + "." + collectionName.replace( '.', '_' );
-        showInactiveButton += "." + RiceConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL + showInactive  + ".anchorshowInactive" + collectionName + "\" src=\"";
+        String showInactiveButton = "<a name=\"showInactive" + collectionName + "\"><input type=\"image\" name=\"" + KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TOGGLE_INACTIVE_METHOD + "." + collectionName.replace( '.', '_' );
+        showInactiveButton += "." + KNSConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL + showInactive  + ".anchorshowInactive" + collectionName + "\" src=\"";
         
         if (showInactive) {
             showInactiveButton += "images/tinybutton-showinact.gif";

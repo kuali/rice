@@ -16,7 +16,7 @@
 package edu.iu.uis.eden.messaging.quartz;
 
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.RiceConstants;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobListener;
@@ -66,7 +66,7 @@ public class MessageServiceExecutorJobListener implements JobListener {
     public void jobWasExecuted(JobExecutionContext context, JobExecutionException exception) {
 	if (context.getJobInstance() instanceof MessageServiceExecutorJob && exception != null) {
 	    PersistedMessage message = (PersistedMessage)context.getJobDetail().getJobDataMap().get(MessageServiceExecutorJob.MESSAGE_KEY);
-	    message.setQueueStatus(RiceConstants.ROUTE_QUEUE_EXCEPTION);
+	    message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
 	    KSBServiceLocator.getRouteQueueService().save(message);
 	}
 

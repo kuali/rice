@@ -29,10 +29,10 @@ import javax.xml.namespace.QName;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.definition.ObjectDefinition;
 import org.kuali.rice.exceptions.RiceRuntimeException;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.resourceloader.ResourceLoaderContainer;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -234,7 +234,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	}
 	
 	protected void installAlternateEndpoint(ServiceInfo serviceInfo) {
-	    List<AlternateEndpoint> alternateEndpoints = (List<AlternateEndpoint>)Core.getCurrentContextConfig().getObject(RiceConstants.KSB_ALTERNATE_ENDPOINTS);
+	    List<AlternateEndpoint> alternateEndpoints = (List<AlternateEndpoint>)Core.getCurrentContextConfig().getObject(KSBConstants.KSB_ALTERNATE_ENDPOINTS);
 	    if (alternateEndpoints != null) {
 	        for (AlternateEndpoint alternateEndpoint : alternateEndpoints) {
 	            if (Pattern.matches(alternateEndpoint.getEndpointUrlPattern(), serviceInfo.getEndpointUrl())) {

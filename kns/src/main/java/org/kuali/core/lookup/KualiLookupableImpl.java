@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.service.BusinessObjectDictionaryService;
 import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.util.UrlFactory;
 import org.kuali.core.web.struts.form.LookupForm;
 import org.kuali.core.web.ui.ResultRow;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * Kuali lookup implementation. Implements methods necessary to render the lookup and provides search and return methods.
@@ -35,7 +35,7 @@ import org.kuali.core.web.ui.ResultRow;
  */
 public class KualiLookupableImpl implements Lookupable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiLookupableImpl.class);
-    private static final String[] IGNORE_LIST = { RiceConstants.DOC_FORM_KEY, RiceConstants.BACK_LOCATION };
+    private static final String[] IGNORE_LIST = { KNSConstants.DOC_FORM_KEY, KNSConstants.BACK_LOCATION };
 
     private Class businessObjectClass;
     private LookupableHelperService lookupableHelperService;
@@ -129,10 +129,10 @@ public class KualiLookupableImpl implements Lookupable {
 
         if (getLookupableHelperService().allowsMaintenanceNewOrCopyAction()) {
             Properties parameters = new Properties();
-            parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, RiceConstants.MAINTENANCE_NEW_METHOD_TO_CALL);
-            parameters.put(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.businessObjectClass.getName());
+            parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL);
+            parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.businessObjectClass.getName());
 
-            url = UrlFactory.parameterizeUrl(RiceConstants.MAINTENANCE_ACTION, parameters);
+            url = UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
             url = "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
         }
 

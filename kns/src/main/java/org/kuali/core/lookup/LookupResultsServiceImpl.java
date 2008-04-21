@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.codec.binary.Base64;
-import org.kuali.RiceConstants;
 import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.LookupResults;
 import org.kuali.core.bo.MultipleValueLookupMetadata;
@@ -36,6 +35,7 @@ import org.kuali.core.service.BusinessObjectService;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.web.ui.ResultRow;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 public class LookupResultsServiceImpl implements LookupResultsService {
     private BusinessObjectService businessObjectService;
@@ -85,7 +85,7 @@ public class LookupResultsServiceImpl implements LookupResultsService {
      */
     protected LookupResults retrieveLookupResults(String lookupResultsSequenceNumber) throws Exception {
         Map<String, String> queryCriteria = new HashMap<String, String>();
-        queryCriteria.put(RiceConstants.LOOKUP_RESULTS_SEQUENCE_NUMBER, lookupResultsSequenceNumber);
+        queryCriteria.put(KNSConstants.LOOKUP_RESULTS_SEQUENCE_NUMBER, lookupResultsSequenceNumber);
         LookupResults lookupResults = (LookupResults) businessObjectService.findByPrimaryKey(LookupResults.class, queryCriteria);
         
         return lookupResults;
@@ -99,7 +99,7 @@ public class LookupResultsServiceImpl implements LookupResultsService {
      */
     protected SelectedObjectIds retrieveSelectedObjectIds(String lookupResultsSequenceNumber) throws Exception {
         Map<String, String> queryCriteria = new HashMap<String, String>();
-        queryCriteria.put(RiceConstants.LOOKUP_RESULTS_SEQUENCE_NUMBER, lookupResultsSequenceNumber);
+        queryCriteria.put(KNSConstants.LOOKUP_RESULTS_SEQUENCE_NUMBER, lookupResultsSequenceNumber);
         SelectedObjectIds selectedObjectIds = (SelectedObjectIds) businessObjectService.findByPrimaryKey(SelectedObjectIds.class, queryCriteria);
         
         return selectedObjectIds;

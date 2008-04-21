@@ -18,8 +18,8 @@ package edu.iu.uis.eden.messaging.exceptionhandling;
 
 import org.junit.Test;
 import org.kuali.bus.test.KSBTestCase;
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 import edu.iu.uis.eden.messaging.AsynchronousCall;
 import edu.iu.uis.eden.messaging.JavaServiceDefinition;
@@ -42,7 +42,7 @@ public class DefaultMessageExceptionHandlerTest extends KSBTestCase {
     }
     
     private void setMaxRetries(String maxRetries) {
-    	Core.getCurrentContextConfig().overrideProperty(RiceConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY, maxRetries);
+    	Core.getCurrentContextConfig().overrideProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY, maxRetries);
     }
     
     @Test public void testGetGlobalMaxRetryAttempts() throws Exception {

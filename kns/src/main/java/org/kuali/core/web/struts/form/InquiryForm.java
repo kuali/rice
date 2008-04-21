@@ -28,12 +28,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.core.authorization.AuthorizationConstants;
 import org.kuali.core.inquiry.Inquirable;
 import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.service.EncryptionService;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This class is the action form for inquiries.
@@ -92,7 +92,7 @@ public class InquiryForm extends KualiForm {
         inquirable = getInquirable(getBusinessObjectClassName());
 
         // the following variable is true if the method to call is not start, meaning that we already called start
-        boolean passedFromPreviousInquiry = !RiceConstants.START_METHOD.equals(getMethodToCall());
+        boolean passedFromPreviousInquiry = !KNSConstants.START_METHOD.equals(getMethodToCall());
 
         // There is no requirement that an inquiry screen must display the primary key values.  However, when clicking on hide/show (without javascript) and
         // hide/show inactive, the PK values are needed to allow the server to properly render results after the user clicks on a hide/show button that results
@@ -142,7 +142,7 @@ public class InquiryForm extends KualiForm {
             // List of encrypted values
             List encryptedList = new ArrayList();
             if (StringUtils.isNotBlank(getEncryptedValues())) {
-                encryptedList = Arrays.asList(StringUtils.split(getEncryptedValues(), RiceConstants.FIELD_CONVERSIONS_SEPERATOR));
+                encryptedList = Arrays.asList(StringUtils.split(getEncryptedValues(), KNSConstants.FIELD_CONVERSIONS_SEPERATOR));
             }
 
             Class businessObjectClass = Class.forName(boClassName);
@@ -154,7 +154,7 @@ public class InquiryForm extends KualiForm {
                 String realPkFieldName = (String) iter.next();
                 String pkParamName = realPkFieldName;
                 if (passedFromPreviousInquiry) {
-                    pkParamName = RiceConstants.INQUIRY_PK_VALUE_PASSED_FROM_PREVIOUS_REQUEST_PREFIX + pkParamName;
+                    pkParamName = KNSConstants.INQUIRY_PK_VALUE_PASSED_FROM_PREVIOUS_REQUEST_PREFIX + pkParamName;
                 }
 
                 if (request.getParameter(pkParamName) != null) {
@@ -306,8 +306,8 @@ public class InquiryForm extends KualiForm {
     protected void populateInactiveRecordsInIntoInquirable(Inquirable inquirable, HttpServletRequest request) {
 	for (Enumeration e = request.getParameterNames(); e.hasMoreElements();) {
 	    String paramName = (String) e.nextElement();
-	    if (paramName.startsWith(RiceConstants.INACTIVE_RECORD_DISPLAY_PARAM_PREFIX)) {
-		String collectionName = StringUtils.substringAfter(paramName, RiceConstants.INACTIVE_RECORD_DISPLAY_PARAM_PREFIX);
+	    if (paramName.startsWith(KNSConstants.INACTIVE_RECORD_DISPLAY_PARAM_PREFIX)) {
+		String collectionName = StringUtils.substringAfter(paramName, KNSConstants.INACTIVE_RECORD_DISPLAY_PARAM_PREFIX);
 		Boolean showInactive = Boolean.parseBoolean(request.getParameter(paramName));
 		inquirable.setShowInactiveRecords(collectionName, showInactive);
 	    }

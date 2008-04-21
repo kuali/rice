@@ -19,10 +19,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.TransientBusinessObjectBase;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 public class KualiModuleUserBase extends TransientBusinessObjectBase implements KualiModuleUser {
 
@@ -57,7 +57,7 @@ public class KualiModuleUserBase extends TransientBusinessObjectBase implements 
     
     protected boolean isActiveFacultyStaffAffiliate() {
         return (getUniversalUser().isFaculty() || getUniversalUser().isStaff() || getUniversalUser().isAffiliate()) 
-        		&& KNSServiceLocator.getKualiConfigurationService().evaluateConstrainedValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, RiceConstants.ALLOWED_EMPLOYEE_STATUS_RULE,getUniversalUser().getEmployeeStatusCode());
+        		&& KNSServiceLocator.getKualiConfigurationService().evaluateConstrainedValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, KNSConstants.ALLOWED_EMPLOYEE_STATUS_RULE,getUniversalUser().getEmployeeStatusCode());
     }
 
     public void setActive(boolean active) {

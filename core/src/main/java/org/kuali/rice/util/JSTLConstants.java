@@ -28,23 +28,58 @@ import java.util.Map;
  */
 public class JSTLConstants extends HashMap {
 
-	private static final long serialVersionUID = 6701136401021219281L;
-	private boolean initialised = false;
+    private static final long serialVersionUID = 6701136401021219281L;
+    private boolean initialised = false;
 
     public JSTLConstants() {
-        Class c = this.getClass();
-        Field[] fields = c.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-
-            Field field = fields[i];
-            int modifier = field.getModifiers();
-            if (Modifier.isFinal(modifier) && !Modifier.isPrivate(modifier))
-                try {
-                    this.put(field.getName(), field.get(this));
-                } catch (IllegalAccessException e) {
-                }
-        }
+        publishFields(this, this.getClass());
         initialised = true;
+    }
+
+    /**
+     * Publishes all of the static, final, non-private fields of the given Class as entries in the given HashMap instance
+     * 
+     * @param constantMap
+     * @param c
+     */
+    protected void publishFields(Map constantMap, Class c) {
+        Field[] fields = c.getDeclaredFields();
+        for (Field field : fields) {
+            int modifier = field.getModifiers();
+
+            // publish values of static, final, non-private members
+            if (Modifier.isStatic(modifier) && Modifier.isFinal(modifier) && !Modifier.isPrivate(modifier)) {
+                try {
+                    String fieldName = field.getName();
+
+                    constantMap.put(fieldName, field.get(null));
+                } catch (IllegalAccessException e) {}
+            }
+        }
+
+        // publish values of appropriate fields of member classes
+        publishMemberClassFields(constantMap, c);
+    }
+
+    /**
+     * Publishes all of the static, final, non-private fields of the non-anonymous member classes of the given Class as entries in
+     * the given HashMap instance
+     * 
+     * @param constantMap
+     * @param c
+     */
+    protected void publishMemberClassFields(Map constantMap, Class c) {
+        Class[] memberClasses = c.getClasses();
+
+        for (Class memberClass : memberClasses) {
+            if (!memberClass.isAnonymousClass()) {
+                String memberPrefix = memberClass.getSimpleName();
+
+                Map subclassMap = new HashMap();
+                publishFields(subclassMap, memberClass);
+                constantMap.put(memberClass.getSimpleName(), subclassMap);
+            }
+        }
     }
 
     public void clear() {

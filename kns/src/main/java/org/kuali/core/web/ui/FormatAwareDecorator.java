@@ -21,8 +21,8 @@ import org.apache.commons.lang.StringUtils;
 import org.displaytag.decorator.DisplaytagColumnDecorator;
 import org.displaytag.exception.DecoratorException;
 import org.displaytag.properties.MediaTypeEnum;
-import org.kuali.RiceConstants;
 import org.kuali.core.web.comparator.CellComparatorHelper;
+import org.kuali.rice.kns.util.KNSConstants;
 
 public class FormatAwareDecorator implements DisplaytagColumnDecorator {
 
@@ -39,7 +39,7 @@ public class FormatAwareDecorator implements DisplaytagColumnDecorator {
         Object decoratedOutput = null;
 
         if (null == cellValue) {
-            decoratedOutput = MediaTypeEnum.HTML.equals(mediaType) ? "&nbsp" : RiceConstants.EMPTY_STRING;
+            decoratedOutput = MediaTypeEnum.HTML.equals(mediaType) ? "&nbsp" : KNSConstants.EMPTY_STRING;
         }
         //If a column resulting from lookup contains collection values, each of the collection entry
         //should be printed on one line (i.e. separated by a <BR>). If there is no entry in the

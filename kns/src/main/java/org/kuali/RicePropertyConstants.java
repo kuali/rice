@@ -15,12 +15,12 @@
  */
 package org.kuali;
 
-import org.kuali.core.JstlConstants;
+import org.kuali.rice.util.JSTLConstants;
 
 /**
  * Property name constants.
  */
-public class RicePropertyConstants extends JstlConstants {
+public class RicePropertyConstants extends JSTLConstants {
     public static final String A21_SUB_ACCOUNT = "a21SubAccount";
     public static final String ACCOUNT = "account";
     public static final String ACCOUNT_CHANGE_DETAILS = "accountChangeDetails";

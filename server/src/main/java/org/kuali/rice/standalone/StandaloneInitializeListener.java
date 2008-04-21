@@ -32,7 +32,6 @@ import org.apache.log4j.PropertyConfigurator;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

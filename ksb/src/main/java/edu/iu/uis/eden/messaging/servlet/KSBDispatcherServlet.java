@@ -18,7 +18,6 @@ package edu.iu.uis.eden.messaging.servlet;
 
 import java.io.IOException;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +25,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.exceptions.RiceRuntimeException;
 import org.springframework.beans.BeansException;
 import org.springframework.web.HttpRequestHandler;
@@ -57,15 +55,6 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 
 	private static final long serialVersionUID = 6790121225857950019L;
 	private KSBHttpInvokerHandler httpInvokerHandler;
-
-
-
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-	    // initialize RiceConstants for KSB interfaces
-	    config.getServletContext().setAttribute("org.kuali.rice.RiceConstants", new RiceConstants());
-	    super.init(config);
-	}
 
 	/**
 	 * Instantiate the WebApplicationContext for this servlet, either a default

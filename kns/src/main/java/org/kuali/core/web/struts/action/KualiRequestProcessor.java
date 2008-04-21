@@ -14,10 +14,7 @@ package org.kuali.core.web.struts.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -35,14 +32,8 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.InvalidCancelException;
 import org.apache.struts.action.RequestProcessor;
 import org.apache.struts.config.ForwardConfig;
-import org.apache.struts.config.ModuleConfig;
-import org.apache.struts.upload.MultipartRequestHandler;
-import org.apache.struts.upload.MultipartRequestWrapper;
-import org.apache.struts.util.ModuleUtils;
-import org.kuali.RiceConstants;
 import org.kuali.RiceKeyConstants;
 import org.kuali.core.UserSession;
-import org.kuali.core.exceptions.FileUploadLimitExceededException;
 import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.util.ErrorContainer;
@@ -54,6 +45,8 @@ import org.kuali.core.util.WebUtils;
 import org.kuali.core.web.struts.pojo.PojoForm;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.util.RiceConstants;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -99,15 +92,15 @@ public class KualiRequestProcessor extends RequestProcessor {
 		id = KNSServiceLocator.getWebAuthenticationService().getNetworkId(request);
 		userSession = new UserSession(id);
 	    } else {
-		userSession = (UserSession) request.getSession().getAttribute(org.kuali.RiceConstants.USER_SESSION_KEY);
+		userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
 	    }
-	    if (request.getParameter(RiceConstants.BACKDOOR_PARAMETER) != null
-		    && request.getParameter(RiceConstants.BACKDOOR_PARAMETER).trim().length() > 0) {
+	    if (request.getParameter(KNSConstants.BACKDOOR_PARAMETER) != null
+		    && request.getParameter(KNSConstants.BACKDOOR_PARAMETER).trim().length() > 0) {
 		if (Core.getCurrentContextConfig().getProperty("rice.user") != null
 			&& !new Boolean(Core.getCurrentContextConfig().getProperty("rice.user"))) {
-		    userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
+		    userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
 		}
-		userSession.setBackdoorUser(request.getParameter(RiceConstants.BACKDOOR_PARAMETER));
+		userSession.setBackdoorUser(request.getParameter(KNSConstants.BACKDOOR_PARAMETER));
 	    }
 
 	    if (!userSession.getUniversalUser().isActiveForAnyModule()) {
@@ -115,7 +108,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 			"You cannot log in, because you are not an active Kuali user.\nPlease ask someone to activate your account, if you need to use Kuali Systems.\nThe user id provided was: "
 				+ userSession.getUniversalUser().getPersonUserIdentifier() + ".\n");
 	    }
-	    request.getSession().setAttribute(org.kuali.RiceConstants.USER_SESSION_KEY, userSession);
+	    request.getSession().setAttribute(KNSConstants.USER_SESSION_KEY, userSession);
 	    GlobalVariables.setUserSession(userSession);
 	    GlobalVariables.setErrorMap(new ErrorMap());
 	    GlobalVariables.setMessageList(new ArrayList());
@@ -140,7 +133,7 @@ public class KualiRequestProcessor extends RequestProcessor {
          */
     private boolean isUserSessionEstablished(HttpServletRequest request) {
 	Timer t0 = new Timer("KualiRequestProcessor.isUserSessionEstablished");
-	boolean result = (request.getSession().getAttribute(org.kuali.RiceConstants.USER_SESSION_KEY) != null);
+	boolean result = (request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY) != null);
 	t0.log();
 	return result;
     }
@@ -261,27 +254,27 @@ public class KualiRequestProcessor extends RequestProcessor {
     protected ActionForm processActionForm(HttpServletRequest request, HttpServletResponse response, ActionMapping mapping) {
         Timer t0 = new Timer("KualiRequestProcessor.processActionForm");
 
-        UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
+        UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
 
-        String docFormKey = request.getParameter(RiceConstants.DOC_FORM_KEY);
-        String methodToCall = request.getParameter(RiceConstants.DISPATCH_REQUEST_PARAMETER);
-        String refreshCaller = request.getParameter(RiceConstants.REFRESH_CALLER);
-        String searchListRequestKey = request.getParameter(RiceConstants.SEARCH_LIST_REQUEST_KEY);
-        String documentWebScope = request.getParameter(RiceConstants.DOCUMENT_WEB_SCOPE);
+        String docFormKey = request.getParameter(KNSConstants.DOC_FORM_KEY);
+        String methodToCall = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
+        String refreshCaller = request.getParameter(KNSConstants.REFRESH_CALLER);
+        String searchListRequestKey = request.getParameter(KNSConstants.SEARCH_LIST_REQUEST_KEY);
+        String documentWebScope = request.getParameter(KNSConstants.DOCUMENT_WEB_SCOPE);
 
         if (StringUtils.isNotBlank(docFormKey)
-            && (mapping.getPath().startsWith(RiceConstants.REFRESH_MAPPING_PREFIX)
-                || RiceConstants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall)
-                || RiceConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller) || RiceConstants.SESSION_SCOPE
+            && (mapping.getPath().startsWith(KNSConstants.REFRESH_MAPPING_PREFIX)
+                || KNSConstants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall)
+                || KNSConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller) || KNSConstants.SESSION_SCOPE
                 .equalsIgnoreCase(documentWebScope))) {
 
             // check for search result storage and clear
-            GlobalVariables.getUserSession().removeObjectsByPrefix(RiceConstants.SEARCH_LIST_KEY_PREFIX);
+            GlobalVariables.getUserSession().removeObjectsByPrefix(KNSConstants.SEARCH_LIST_KEY_PREFIX);
 
             if (userSession.retrieveObject(docFormKey) != null) {
             ActionForm form = (ActionForm) userSession.retrieveObject(docFormKey);
             request.setAttribute(mapping.getAttribute(), form);
-            if (!RiceConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
+            if (!KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
                 userSession.removeObject(docFormKey);
             }
             t0.log();
@@ -312,11 +305,11 @@ public class KualiRequestProcessor extends RequestProcessor {
         // to determine the doc form key value.
         if (("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data")) ) {            
             Map params = WebUtils.getMultipartParameters(request, null, form);
-            docFormKey = request.getParameter(RiceConstants.DOC_FORM_KEY);
-            documentWebScope = request.getParameter(RiceConstants.DOCUMENT_WEB_SCOPE);
+            docFormKey = request.getParameter(KNSConstants.DOC_FORM_KEY);
+            documentWebScope = request.getParameter(KNSConstants.DOCUMENT_WEB_SCOPE);
 
             if (StringUtils.isNotBlank(docFormKey)
-                &&  RiceConstants.SESSION_SCOPE
+                &&  KNSConstants.SESSION_SCOPE
                     .equalsIgnoreCase(documentWebScope)) {
                 if (userSession.retrieveObject(docFormKey) != null) {
                 form = (ActionForm) userSession.retrieveObject(docFormKey);
@@ -389,7 +382,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 		// add a generic error message if there are none
 		if (GlobalVariables.getErrorMap().isEmpty()) {
 
-		    GlobalVariables.getErrorMap().putError(RiceConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_CUSTOM,
+		    GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_CUSTOM,
 			    e.getMessage());
 		}
 
@@ -483,7 +476,7 @@ public class KualiRequestProcessor extends RequestProcessor {
          */
     private void saveMessages(HttpServletRequest request) {
 	if (!GlobalVariables.getMessageList().isEmpty()) {
-	    request.setAttribute(RiceConstants.GLOBAL_MESSAGES, GlobalVariables.getMessageList());
+	    request.setAttribute(KNSConstants.GLOBAL_MESSAGES, GlobalVariables.getMessageList());
 	}
     }
 
@@ -492,7 +485,7 @@ public class KualiRequestProcessor extends RequestProcessor {
          */
     private void saveAuditErrors(HttpServletRequest request) {
 	if (!GlobalVariables.getAuditErrorMap().isEmpty()) {
-	    request.setAttribute(RiceConstants.AUDIT_ERRORS, GlobalVariables.getAuditErrorMap());
+	    request.setAttribute(KNSConstants.AUDIT_ERRORS, GlobalVariables.getAuditErrorMap());
 	}
     }
 

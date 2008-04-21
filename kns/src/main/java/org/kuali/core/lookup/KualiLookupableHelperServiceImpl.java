@@ -20,10 +20,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.util.BeanPropertyComparator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This class...
@@ -77,9 +77,9 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
 
         searchUsingOnlyPrimaryKeyValues = getLookupService().allPrimaryKeyValuesPresentAndNotWildcard(getBusinessObjectClass(), fieldValues);
 
-        setBackLocation(fieldValues.get(RiceConstants.BACK_LOCATION));
-        setDocFormKey(fieldValues.get(RiceConstants.DOC_FORM_KEY));
-        setReferencesToRefresh(fieldValues.get(RiceConstants.REFERENCES_TO_REFRESH));
+        setBackLocation(fieldValues.get(KNSConstants.BACK_LOCATION));
+        setDocFormKey(fieldValues.get(KNSConstants.DOC_FORM_KEY));
+        setReferencesToRefresh(fieldValues.get(KNSConstants.REFERENCES_TO_REFRESH));
         List searchResults;
         if (UniversalUser.class.equals(getBusinessObjectClass())) {
             searchResults = (List) getUniversalUserService().findUniversalUsers(fieldValues);
@@ -130,7 +130,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
                 buf.append(", ");
             }
         }
-        return buf.length() == 0 ? RiceConstants.NOT_AVAILABLE_STRING : buf.toString();
+        return buf.length() == 0 ? KNSConstants.NOT_AVAILABLE_STRING : buf.toString();
     }
     
     

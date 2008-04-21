@@ -20,7 +20,7 @@ import java.security.cert.Certificate;
 
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.RiceConstants;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 /**
  * A DigitalSigner implementation which places the alias and digital signature into the request
@@ -53,12 +53,12 @@ public class HttpClientHeaderDigitalSigner extends AbstractDigitalSigner {
     
 	public void sign() throws Exception {
         if (StringUtils.isNotBlank(this.alias) ) {
-            this.method.addRequestHeader(RiceConstants.KEYSTORE_ALIAS_HEADER, this.alias);
+            this.method.addRequestHeader(KSBConstants.KEYSTORE_ALIAS_HEADER, this.alias);
         }
 	    if (this.certificate != null) {
-	        this.method.addRequestHeader(RiceConstants.KEYSTORE_CERTIFICATE_HEADER, getEncodedCertificate(this.certificate));
+	        this.method.addRequestHeader(KSBConstants.KEYSTORE_CERTIFICATE_HEADER, getEncodedCertificate(this.certificate));
 	    }
-	    this.method.addRequestHeader(RiceConstants.DIGITAL_SIGNATURE_HEADER, getEncodedSignature());
+	    this.method.addRequestHeader(KSBConstants.DIGITAL_SIGNATURE_HEADER, getEncodedSignature());
 	}
 
 }

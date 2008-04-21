@@ -19,8 +19,8 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.bus.test.KSBTestCase;
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.test.TestUtilities;
 
 import edu.iu.uis.eden.messaging.remotedservices.TesetHarnessExplodingQueue;
@@ -39,8 +39,8 @@ public class ExceptionRetryCountTest extends KSBTestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		System.setProperty(RiceConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "500");
-	System.setProperty(RiceConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, "2");
+		System.setProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "500");
+	System.setProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, "2");
 		super.setUp();
 		GlobalCallbackRegistry.getCallbacks().clear();
 		GlobalCallbackRegistry.getCallbacks().add(this.callback);
@@ -66,7 +66,7 @@ public class ExceptionRetryCountTest extends KSBTestCase {
     public void testRetryCount() throws Exception {
 		//Turn the requeue up very high so the message will go through all it's requeues immediately
 
-		Core.getCurrentContextConfig().overrideProperty(RiceConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "100");
+		Core.getCurrentContextConfig().overrideProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "100");
 
 	KEWJavaService explodingQueue = (KEWJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(
 		this.retryCountServiceName);
@@ -95,7 +95,7 @@ public class ExceptionRetryCountTest extends KSBTestCase {
 	List<PersistedMessage> messagesQueued = KSBServiceLocator.getRouteQueueService().findByServiceName(
 		this.retryCountServiceName, "invoke");
 		PersistedMessage message = messagesQueued.get(0);
-		assertEquals("Message should be in exception status", RiceConstants.ROUTE_QUEUE_EXCEPTION, message.getQueueStatus());
+		assertEquals("Message should be in exception status", KSBConstants.ROUTE_QUEUE_EXCEPTION, message.getQueueStatus());
 		assertEquals("Message retry count not what was configured", new Integer(2), message.getRetryCount());
 	}
 

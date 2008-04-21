@@ -18,10 +18,10 @@ package org.kuali.core.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.RiceConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 public class ModuleValuesFinder extends KeyValuesBase {
 

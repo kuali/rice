@@ -29,7 +29,6 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
-import org.kuali.RiceConstants;
 import org.kuali.RiceKeyConstants;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
@@ -42,6 +41,7 @@ import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.TypeUtils;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springmodules.orm.ojb.OjbOperationException;
 
@@ -155,7 +155,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             if (StringUtils.isBlank(pkValue)) {
                 throw new RuntimeException("Missing pk value for field " + pkFieldName + " when a search based on PK values only is performed.");
             }
-            else if (StringUtils.indexOfAny(pkValue, RiceConstants.QUERY_CHARACTERS) != -1) {
+            else if (StringUtils.indexOfAny(pkValue, KNSConstants.QUERY_CHARACTERS) != -1) {
                 throw new RuntimeException("Value \"" + pkValue + "\" for PK field " + pkFieldName + " contains wildcard/operator characters.");
             }
             createCriteria(businessObject, pkValue, pkFieldName, false, criteria);
@@ -377,12 +377,12 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      */
     private void addCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
 
-        if (StringUtils.contains(propertyValue, RiceConstants.OR_LOGICAL_OPERATOR)) {
+        if (StringUtils.contains(propertyValue, KNSConstants.OR_LOGICAL_OPERATOR)) {
             addOrCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
             return;
         }
 
-        if (StringUtils.contains(propertyValue, RiceConstants.AND_LOGICAL_OPERATOR)) {
+        if (StringUtils.contains(propertyValue, KNSConstants.AND_LOGICAL_OPERATOR)) {
             addAndCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
             return;
         }
@@ -393,7 +393,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         		propertyName = getDbPlatform().getUpperCaseFunction() + "(" + propertyName + ")";
         		propertyValue = propertyValue.toUpperCase();
         	}
-            if (StringUtils.contains(propertyValue, RiceConstants.NOT_LOGICAL_OPERATOR)) {
+            if (StringUtils.contains(propertyValue, KNSConstants.NOT_LOGICAL_OPERATOR)) {
                 addNotCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
             } else if (StringUtils.contains(propertyValue, "..") || StringUtils.contains(propertyValue, ">")
                     || StringUtils.contains(propertyValue, "<")  || StringUtils.contains(propertyValue, ">=")
@@ -422,7 +422,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      * @param criteria
      */
     private void addOrCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
-        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, RiceConstants.OR_LOGICAL_OPERATOR);
+        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, KNSConstants.OR_LOGICAL_OPERATOR);
     }
 
     /**
@@ -432,17 +432,17 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      * @param criteria
      */
     private void addAndCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
-        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, RiceConstants.AND_LOGICAL_OPERATOR);
+        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, KNSConstants.AND_LOGICAL_OPERATOR);
     }
 
     private void addNotCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
 
-        String[] splitPropVal = StringUtils.split(propertyValue, RiceConstants.NOT_LOGICAL_OPERATOR);
+        String[] splitPropVal = StringUtils.split(propertyValue, KNSConstants.NOT_LOGICAL_OPERATOR);
 
         int strLength = splitPropVal.length;
         // if more than one NOT operator assume an implicit and (i.e. !a!b = !a&!b)
         if (strLength > 1) {
-            String expandedNot = "!" + StringUtils.join(splitPropVal, RiceConstants.AND_LOGICAL_OPERATOR + RiceConstants.NOT_LOGICAL_OPERATOR);
+            String expandedNot = "!" + StringUtils.join(splitPropVal, KNSConstants.AND_LOGICAL_OPERATOR + KNSConstants.NOT_LOGICAL_OPERATOR);
             addCriteria(propertyName, expandedNot, propertyType, caseInsensitive, criteria);
         }
         else {
@@ -464,10 +464,10 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         	Criteria predicate = new Criteria();
 
             addCriteria(propertyName, splitPropVal[i], propertyType, caseInsensitive, predicate);
-            if (splitValue == RiceConstants.OR_LOGICAL_OPERATOR) {
+            if (splitValue == KNSConstants.OR_LOGICAL_OPERATOR) {
             	subCriteria.addOrCriteria(predicate);
             }
-            if (splitValue == RiceConstants.AND_LOGICAL_OPERATOR) {
+            if (splitValue == KNSConstants.AND_LOGICAL_OPERATOR) {
             	subCriteria.addAndCriteria(predicate);
             }
         }
@@ -528,7 +528,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         try {
             return new BigDecimal( cleanedValue );
         } catch ( NumberFormatException ex ) {
-            GlobalVariables.getErrorMap().putError(RiceConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_CUSTOM, new String[] { "Invalid Numeric Input: " + value });
+            GlobalVariables.getErrorMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_CUSTOM, new String[] { "Invalid Numeric Input: " + value });
             return null;
         }
     }

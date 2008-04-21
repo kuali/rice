@@ -16,11 +16,11 @@
 package org.kuali.core.document;
 
 import org.junit.Test;
-import org.kuali.RiceConstants;
 import org.kuali.core.UserSession;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
 
@@ -71,7 +71,7 @@ public class MaintenanceDocumentTest extends KNSTestBase {
     @Test public void test_NewDoc() {
 
         setupNewAccountMaintDoc(document);
-        document.getNewMaintainableObject().setMaintenanceAction(RiceConstants.MAINTENANCE_NEW_ACTION);
+        document.getNewMaintainableObject().setMaintenanceAction(KNSConstants.MAINTENANCE_NEW_ACTION);
 
         assertEquals("Document should indicate New.", true, document.isNew());
         assertEquals("Document should not indicate Edit.", false, document.isEdit());
@@ -81,7 +81,7 @@ public class MaintenanceDocumentTest extends KNSTestBase {
     @Test public void test_EditDoc() {
 
         setupEditAccountMaintDoc(document);
-        document.getNewMaintainableObject().setMaintenanceAction(RiceConstants.MAINTENANCE_EDIT_ACTION);
+        document.getNewMaintainableObject().setMaintenanceAction(KNSConstants.MAINTENANCE_EDIT_ACTION);
 
         assertEquals("Document should not indicate New.", false, document.isNew());
         assertEquals("Document should indicate Edit.", true, document.isEdit());
@@ -92,7 +92,7 @@ public class MaintenanceDocumentTest extends KNSTestBase {
     @Test public void test_CopyDoc() {
 
         setupEditAccountMaintDoc(document);
-        document.getNewMaintainableObject().setMaintenanceAction(RiceConstants.MAINTENANCE_COPY_ACTION);
+        document.getNewMaintainableObject().setMaintenanceAction(KNSConstants.MAINTENANCE_COPY_ACTION);
 
         assertEquals("Document should indicate New.", true, document.isNew());
         assertEquals("Document should not indicate Edit.", false, document.isEdit());

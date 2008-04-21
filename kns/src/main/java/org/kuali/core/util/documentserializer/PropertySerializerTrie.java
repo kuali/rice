@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This is a implementation of a trie/prefix tree of that contains metadata about property serializability
@@ -32,7 +32,7 @@ public class PropertySerializerTrie {
     private PropertySerializerTrieNode rootNode;
     
     public PropertySerializerTrie() {
-        rootNode = new PropertySerializerTrieNode(RiceConstants.EMPTY_STRING, RiceConstants.EMPTY_STRING);
+        rootNode = new PropertySerializerTrieNode(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
     }
     
     /**

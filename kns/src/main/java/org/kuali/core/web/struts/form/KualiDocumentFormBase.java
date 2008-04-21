@@ -28,7 +28,6 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
-import org.kuali.RiceConstants;
 import org.kuali.RiceKeyConstants;
 import org.kuali.core.UserSession;
 import org.kuali.core.authorization.AuthorizationConstants;
@@ -46,6 +45,7 @@ import org.kuali.core.web.format.NoOpStringFormatter;
 import org.kuali.core.web.format.TimestampAMPMFormatter;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.util.AutoPopulatingList;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -186,9 +186,9 @@ public abstract class KualiDocumentFormBase extends KualiForm {
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         // check that annotation does not exceed 2000 characters
         setAnnotation(StringUtils.stripToNull(getAnnotation()));
-        int diff = StringUtils.defaultString(getAnnotation()).length() - RiceConstants.DOCUMENT_ANNOTATION_MAX_LENGTH;
+        int diff = StringUtils.defaultString(getAnnotation()).length() - KNSConstants.DOCUMENT_ANNOTATION_MAX_LENGTH;
         if (diff > 0) {
-            GlobalVariables.getErrorMap().putError("annotation", RiceKeyConstants.ERROR_DOCUMENT_ANNOTATION_MAX_LENGTH_EXCEEDED, new String[] { Integer.toString(RiceConstants.DOCUMENT_ANNOTATION_MAX_LENGTH), Integer.toString(diff) });
+            GlobalVariables.getErrorMap().putError("annotation", RiceKeyConstants.ERROR_DOCUMENT_ANNOTATION_MAX_LENGTH_EXCEEDED, new String[] { Integer.toString(KNSConstants.DOCUMENT_ANNOTATION_MAX_LENGTH), Integer.toString(diff) });
         }
         return super.validate(mapping, request);
     }
@@ -617,6 +617,6 @@ public abstract class KualiDocumentFormBase extends KualiForm {
     @Override
     protected void customInitMaxUploadSizes() {
         super.customInitMaxUploadSizes();
-        addMaxUploadSize(KNSServiceLocator.getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, RiceConstants.ATTACHMENT_MAX_FILE_SIZE_PARM_NM));
+        addMaxUploadSize(KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.ATTACHMENT_MAX_FILE_SIZE_PARM_NM));
     }
 }

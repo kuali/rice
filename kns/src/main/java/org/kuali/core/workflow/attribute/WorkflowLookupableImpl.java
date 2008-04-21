@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import net.sf.cglib.proxy.Enhancer;
 
 import org.apache.log4j.Logger;
-import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.lookup.LookupUtils;
 import org.kuali.core.lookup.Lookupable;
@@ -36,6 +35,7 @@ import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.workflow.WorkflowUtils;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.workflow.attribute.WorkflowLookupableInvocationHandler;
 import org.kuali.workflow.attribute.WorkflowLookupableResult;
 
@@ -91,7 +91,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
             Class businessObjectClass = Class.forName(businessObjectClassName);
             lookupableImplName = KNSServiceLocator.getBusinessObjectDictionaryService().getLookupableID(businessObjectClass);
             if (lookupableImplName == null) {
-                lookupableImplName = RiceConstants.KUALI_LOOKUPABLE_IMPL;
+                lookupableImplName = KNSConstants.KUALI_LOOKUPABLE_IMPL;
             }
             lookupable = KNSServiceLocator.getLookupable(lookupableImplName);
             if (lookupable == null) {
@@ -267,7 +267,7 @@ public class WorkflowLookupableImpl implements WorkflowLookupable {
         if (GlobalVariables.getUserSession() == null) {
             GlobalVariables.setUserSession(new org.kuali.core.UserSession(workflowUserSession.getNetworkId()));
         }
-        Object priorForm = workflowUserSession.retrieveObject(request.getParameter(RiceConstants.DOC_FORM_KEY));
+        Object priorForm = workflowUserSession.retrieveObject(request.getParameter(KNSConstants.DOC_FORM_KEY));
         if (priorForm instanceof LookupForm) {
             Map lookupParameters = LookupUtils.translateFieldConversions(this.lookupParameters);
             Iterator lookupParameterKeyItr = lookupParameters.keySet().iterator();

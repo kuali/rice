@@ -19,7 +19,7 @@ package org.kuali.bus.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.RiceConstants;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 /**
  * Utility class to translate the various codes used in Eden into labels and vice versa.
@@ -32,9 +32,9 @@ public class CodeTranslator {
 
     private static Map<String, String> getRouteQueueStatusLabels() {
         Map<String, String> routeQueueStatusLabels = new HashMap<String, String>();
-        routeQueueStatusLabels.put(RiceConstants.ROUTE_QUEUE_EXCEPTION, RiceConstants.ROUTE_QUEUE_EXCEPTION_LABEL);
-        routeQueueStatusLabels.put(RiceConstants.ROUTE_QUEUE_QUEUED, RiceConstants.ROUTE_QUEUE_QUEUED_LABEL);
-        routeQueueStatusLabels.put(RiceConstants.ROUTE_QUEUE_ROUTING, RiceConstants.ROUTE_QUEUE_ROUTING_LABEL);
+        routeQueueStatusLabels.put(KSBConstants.ROUTE_QUEUE_EXCEPTION, KSBConstants.ROUTE_QUEUE_EXCEPTION_LABEL);
+        routeQueueStatusLabels.put(KSBConstants.ROUTE_QUEUE_QUEUED, KSBConstants.ROUTE_QUEUE_QUEUED_LABEL);
+        routeQueueStatusLabels.put(KSBConstants.ROUTE_QUEUE_ROUTING, KSBConstants.ROUTE_QUEUE_ROUTING_LABEL);
         return routeQueueStatusLabels;
     }
 

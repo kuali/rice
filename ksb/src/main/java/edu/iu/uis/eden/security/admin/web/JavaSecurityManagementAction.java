@@ -31,7 +31,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.RiceConstants;
+import org.kuali.rice.util.RiceConstants;
 
 import edu.iu.uis.eden.messaging.web.KSBAction;
 import edu.iu.uis.eden.security.admin.ExportServlet;

@@ -22,7 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.RiceConstants;
 import org.kuali.RiceKeyConstants;
 import org.kuali.core.datadictionary.AttributeDefinition;
 import org.kuali.core.datadictionary.BusinessObjectEntry;
@@ -37,6 +36,8 @@ import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.web.struts.form.KualiHelpForm;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.util.RiceConstants;
 
 /**
  * This class handles requests for help text.
@@ -376,6 +377,6 @@ public class KualiHelpAction extends KualiAction {
     }
 
     private String getHelpUrl(String parameterNamespace, String parameterDetailTypeCode, String parameterName) {
-        return getConfigurationService().getPropertyString(RiceConstants.EXTERNALIZABLE_HELP_URL_KEY) + getConfigurationService().getParameterValue(parameterNamespace, parameterDetailTypeCode, parameterName);
+        return getConfigurationService().getPropertyString(KNSConstants.EXTERNALIZABLE_HELP_URL_KEY) + getConfigurationService().getParameterValue(parameterNamespace, parameterDetailTypeCode, parameterName);
     }
     }

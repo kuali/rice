@@ -23,7 +23,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.RiceConstants;
 import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.Note;
@@ -51,6 +50,7 @@ import org.kuali.core.workflow.DocumentInitiator;
 import org.kuali.core.workflow.KualiDocumentXmlMaterializer;
 import org.kuali.core.workflow.KualiTransactionalDocumentInformation;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
@@ -254,16 +254,16 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      */
     public void handleRouteStatusChange() {
         if (getDocumentHeader().getWorkflowDocument().stateIsCanceled()) {
-            getDocumentHeader().setFinancialDocumentStatusCode(RiceConstants.DocumentStatusCodes.CANCELLED);
+            getDocumentHeader().setFinancialDocumentStatusCode(KNSConstants.DocumentStatusCodes.CANCELLED);
         }
         else if (getDocumentHeader().getWorkflowDocument().stateIsEnroute()) {
-            getDocumentHeader().setFinancialDocumentStatusCode(RiceConstants.DocumentStatusCodes.ENROUTE);
+            getDocumentHeader().setFinancialDocumentStatusCode(KNSConstants.DocumentStatusCodes.ENROUTE);
         }
         if (getDocumentHeader().getWorkflowDocument().stateIsDisapproved()) {
-            getDocumentHeader().setFinancialDocumentStatusCode(RiceConstants.DocumentStatusCodes.DISAPPROVED);
+            getDocumentHeader().setFinancialDocumentStatusCode(KNSConstants.DocumentStatusCodes.DISAPPROVED);
         }
         if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
-            getDocumentHeader().setFinancialDocumentStatusCode(RiceConstants.DocumentStatusCodes.APPROVED);
+            getDocumentHeader().setFinancialDocumentStatusCode(KNSConstants.DocumentStatusCodes.APPROVED);
         }
         LOG.info("Status is: " + getDocumentHeader().getFinancialDocumentStatusCode());
     }

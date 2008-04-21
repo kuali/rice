@@ -15,13 +15,7 @@
  */
 package org.kuali.core.web.struts.action;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,21 +24,16 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.RiceConstants;
 import org.kuali.RiceKeyConstants;
 import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.bo.BusinessObject;
-import org.kuali.core.document.MaintenanceDocument;
 import org.kuali.core.exceptions.AuthorizationException;
 import org.kuali.core.exceptions.ModuleAuthorizationException;
 import org.kuali.core.inquiry.Inquirable;
-import org.kuali.core.maintenance.Maintainable;
-import org.kuali.core.service.DataDictionaryService;
-import org.kuali.core.service.EncryptionService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.web.struts.form.InquiryForm;
-import org.kuali.core.web.struts.form.KualiMaintenanceForm;
-import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.util.RiceConstants;
 
 /**
  * This class handles actions for inquiries of business objects.
@@ -73,7 +62,7 @@ public class KualiInquiryAction extends KualiAction {
 
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setAttribute(RiceConstants.PARAM_MAINTENANCE_VIEW_MODE, RiceConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
+        request.setAttribute(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
         return super.execute(mapping, form, request, response);
     }
 
@@ -91,7 +80,7 @@ public class KualiInquiryAction extends KualiAction {
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
         if (bo == null) {
             LOG.error("No records found in inquiry action.");
-            GlobalVariables.getErrorMap().putError(RiceConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
+            GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
             request.setAttribute("backLocation", request.getParameter("returnLocation"));
             return mapping.findForward("inquiryError");
         }
@@ -116,20 +105,20 @@ public class KualiInquiryAction extends KualiAction {
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
         if (bo == null) {
             LOG.error("No records found in inquiry action.");
-            GlobalVariables.getErrorMap().putError(RiceConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
+            GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
             request.setAttribute("backLocation", request.getParameter("returnLocation"));
             return mapping.findForward("inquiryError");
         }
         
         Inquirable kualiInquirable = inquiryForm.getInquirable();
         //////////////////////////////
-        String collectionName = extractCollectionName(request, RiceConstants.TOGGLE_INACTIVE_METHOD);
+        String collectionName = extractCollectionName(request, KNSConstants.TOGGLE_INACTIVE_METHOD);
         if (collectionName == null) {
             LOG.error("Unable to get find collection name in request.");
             throw new RuntimeException("Unable to get find collection class in request.");
         }  
-        String parameterName = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
-        boolean showInactive = Boolean.parseBoolean(StringUtils.substringBetween(parameterName, RiceConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL, "."));
+        String parameterName = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
+        boolean showInactive = Boolean.parseBoolean(StringUtils.substringBetween(parameterName, KNSConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL, "."));
         kualiInquirable.setShowInactiveRecords(collectionName, showInactive);
         //////////////////////////////
         
@@ -150,7 +139,7 @@ public class KualiInquiryAction extends KualiAction {
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
         if (bo == null) {
             LOG.error("No records found in inquiry action.");
-            GlobalVariables.getErrorMap().putError(RiceConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
+            GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
             request.setAttribute("backLocation", request.getParameter("returnLocation"));
             return mapping.findForward("inquiryError");
         }
@@ -169,7 +158,7 @@ public class KualiInquiryAction extends KualiAction {
      */
     protected String extractCollectionName(HttpServletRequest request, String methodToCall) {
         // collection name and underlying object type from request parameter
-        String parameterName = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
+        String parameterName = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
         String collectionName = null;
         if (StringUtils.isNotBlank(parameterName)) {
             collectionName = StringUtils.substringBetween(parameterName, methodToCall + ".", ".(");
@@ -183,7 +172,7 @@ public class KualiInquiryAction extends KualiAction {
         BusinessObject bo = kualiInquirable.getBusinessObject(inquiryForm.retrieveInquiryDecryptedPrimaryKeys());
         if (bo == null) {
             LOG.error("No records found in inquiry action.");
-            GlobalVariables.getErrorMap().putError(RiceConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
+            GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
         }
         return bo;
     }
@@ -195,6 +184,6 @@ public class KualiInquiryAction extends KualiAction {
         List sections = kualiInquirable.getSections(bo);
         inquiryForm.setSections(sections);
         kualiInquirable.addAdditionalSections(sections, bo);
-        request.setAttribute(RiceConstants.INQUIRABLE_ATTRIBUTE_NAME, kualiInquirable);
+        request.setAttribute(KNSConstants.INQUIRABLE_ATTRIBUTE_NAME, kualiInquirable);
     }
 }

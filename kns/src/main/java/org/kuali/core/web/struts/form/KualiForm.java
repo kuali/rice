@@ -22,7 +22,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.core.datadictionary.HeaderNavigation;
 import org.kuali.core.util.ActionFormUtilMap;
 import org.kuali.core.util.TypedArrayList;
@@ -31,6 +30,7 @@ import org.kuali.core.web.struts.pojo.PojoFormBase;
 import org.kuali.core.web.ui.ExtraButton;
 import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This class common properites for all action forms.
@@ -87,8 +87,8 @@ public class KualiForm extends PojoFormBase {
      * @param request
      */
     protected void populateFieldLevelHelpEnabled(HttpServletRequest request) {
-	setFieldLevelHelpEnabled(KNSServiceLocator.getKualiConfigurationService().getIndicatorParameter(RiceConstants.KNS_NAMESPACE,
-        	RiceConstants.DetailTypes.ALL_DETAIL_TYPE, RiceConstants.SystemGroupParameterNames.ENABLE_FIELD_LEVEL_HELP_IND));
+	setFieldLevelHelpEnabled(KNSServiceLocator.getKualiConfigurationService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE,
+        	KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_FIELD_LEVEL_HELP_IND));
     }
 
     public Map getDisplayedErrors() {
@@ -150,7 +150,7 @@ public class KualiForm extends PojoFormBase {
      * Special getter based on key to work with multi rows for tab state objects
      */
     public String getTabState(String key) {
-        String state = RiceConstants.EMPTY_STRING;
+        String state = KNSConstants.EMPTY_STRING;
         if (tabStates.containsKey(key)) {
             if (tabStates.get(key) instanceof String) {
             	state = tabStates.get(key);

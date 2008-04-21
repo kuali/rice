@@ -26,7 +26,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.RiceConstants;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.JobDetail;
 import org.quartz.Trigger;
 
@@ -77,7 +77,7 @@ public class QuartzQueueAction extends KSBAction {
 	
 	JobDetail job = KSBServiceLocator.getScheduler().getJobDetail(quartzForm.getJobName(), quartzForm.getJobGroup());
 	PersistedMessage message = (PersistedMessage)job.getJobDataMap().get(MessageServiceExecutorJob.MESSAGE_KEY);
-	message.setQueueStatus(RiceConstants.ROUTE_QUEUE_EXCEPTION);
+	message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
 	
 	KSBServiceLocator.getRouteQueueService().save(message);
 	KSBServiceLocator.getScheduler().deleteJob(quartzForm.getJobName(), quartzForm.getJobGroup());

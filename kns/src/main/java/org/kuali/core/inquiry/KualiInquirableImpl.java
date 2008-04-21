@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.datadictionary.InquirySectionDefinition;
@@ -44,6 +43,7 @@ import org.kuali.core.web.format.Formatter;
 import org.kuali.core.web.ui.Section;
 import org.kuali.core.web.ui.SectionBridge;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * Kuali inquirable implementation. Implements methods necessary to retrieve the business object and render the ui.
@@ -133,7 +133,7 @@ public class KualiInquirableImpl implements Inquirable {
      */
     public String getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
         Properties parameters = new Properties();
-        parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, "start");
+        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, "start");
 
         Class inquiryBusinessObjectClass = null;
         String attributeRefName = "";
@@ -168,7 +168,7 @@ public class KualiInquirableImpl implements Inquirable {
         }
 
         if (inquiryBusinessObjectClass == null || getBusinessObjectDictionaryService().isInquirable(inquiryBusinessObjectClass) == null || !getBusinessObjectDictionaryService().isInquirable(inquiryBusinessObjectClass).booleanValue()) {
-            return RiceConstants.EMPTY_STRING;
+            return KNSConstants.EMPTY_STRING;
         }
 
         synchronized (HACK_LIST) {
@@ -180,7 +180,7 @@ public class KualiInquirableImpl implements Inquirable {
             }    
         }
         
-        parameters.put(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, inquiryBusinessObjectClass.getName());
+        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, inquiryBusinessObjectClass.getName());
 
         List keys = new ArrayList();
         if (getPersistenceStructureService().isPersistable(inquiryBusinessObjectClass)) {
@@ -237,7 +237,7 @@ public class KualiInquirableImpl implements Inquirable {
                     encryptedList = keyName;
                 }
                 else {
-                    encryptedList = encryptedList + RiceConstants.FIELD_CONVERSIONS_SEPERATOR + keyName;
+                    encryptedList = encryptedList + KNSConstants.FIELD_CONVERSIONS_SEPERATOR + keyName;
                 }
             }
 
@@ -246,10 +246,10 @@ public class KualiInquirableImpl implements Inquirable {
 
         // if we did encrypt a value (or values), add the list of those that are encrypted to the parameters
         if (!encryptedList.equals("")) {
-            parameters.put(RiceConstants.ENCRYPTED_LIST_PREFIX, encryptedList);
+            parameters.put(KNSConstants.ENCRYPTED_LIST_PREFIX, encryptedList);
         }
 
-        return UrlFactory.parameterizeUrl(RiceConstants.INQUIRY_ACTION, parameters);
+        return UrlFactory.parameterizeUrl(KNSConstants.INQUIRY_ACTION, parameters);
     }
 
     public void addAdditionalSections(List columns, BusinessObject bo) {

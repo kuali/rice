@@ -23,13 +23,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.core.lookup.LookupUtils;
 import org.kuali.core.lookup.Lookupable;
 import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.web.ui.Field;
 import org.kuali.core.web.ui.Row;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This class is the action form for all lookups.
@@ -73,9 +73,9 @@ public class LookupForm extends KualiForm {
 
         try {
             Lookupable localLookupable = null;
-            if (StringUtils.isBlank(request.getParameter(RiceConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME)) && StringUtils.isBlank(getLookupableImplServiceName())) {
+            if (StringUtils.isBlank(request.getParameter(KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME)) && StringUtils.isBlank(getLookupableImplServiceName())) {
                 // get the business object class for the lookup
-                String localBusinessObjectClassName = request.getParameter(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);
+                String localBusinessObjectClassName = request.getParameter(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);
                 setBusinessObjectClassName(localBusinessObjectClassName);
                 if (StringUtils.isBlank(localBusinessObjectClassName)) {
                     LOG.error("Business object class not passed to lookup.");
@@ -98,16 +98,16 @@ public class LookupForm extends KualiForm {
             }
 
 
-            if (request.getParameter(RiceConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME) != null) {
-                setLookupableImplServiceName(request.getParameter(RiceConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME));
+            if (request.getParameter(KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME) != null) {
+                setLookupableImplServiceName(request.getParameter(KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME));
             }
 
             // check the doc form key is empty before setting so we don't override a restored lookup form
-            if (request.getAttribute(RiceConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
-                setFormKey((String) request.getAttribute(RiceConstants.DOC_FORM_KEY));
+            if (request.getAttribute(KNSConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
+                setFormKey((String) request.getAttribute(KNSConstants.DOC_FORM_KEY));
             }
-            else if (request.getParameter(RiceConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
-                setFormKey(request.getParameter(RiceConstants.DOC_FORM_KEY));
+            else if (request.getParameter(KNSConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
+                setFormKey(request.getParameter(KNSConstants.DOC_FORM_KEY));
             }
 
             if (request.getParameter("returnLocation") != null) {
@@ -116,11 +116,11 @@ public class LookupForm extends KualiForm {
             if (request.getParameter("conversionFields") != null) {
                 setConversionFields(request.getParameter("conversionFields"));
             }
-            if (request.getParameter(RiceConstants.EXTRA_BUTTON_SOURCE) != null) {
-                setExtraButtonSource(request.getParameter(RiceConstants.EXTRA_BUTTON_SOURCE));
+            if (request.getParameter(KNSConstants.EXTRA_BUTTON_SOURCE) != null) {
+                setExtraButtonSource(request.getParameter(KNSConstants.EXTRA_BUTTON_SOURCE));
             }
-            if (request.getParameter(RiceConstants.EXTRA_BUTTON_PARAMS) != null) {
-                setExtraButtonParams(request.getParameter(RiceConstants.EXTRA_BUTTON_PARAMS));
+            if (request.getParameter(KNSConstants.EXTRA_BUTTON_PARAMS) != null) {
+                setExtraButtonParams(request.getParameter(KNSConstants.EXTRA_BUTTON_PARAMS));
             }
             String value = request.getParameter("multipleValues");
             if (value != null) {
@@ -131,8 +131,8 @@ public class LookupForm extends KualiForm {
                     setMultipleValues(new Boolean(request.getParameter("multipleValues")).booleanValue());
                 }
             }
-            if (request.getParameter(RiceConstants.REFERENCES_TO_REFRESH) != null) {
-                setReferencesToRefresh(request.getParameter(RiceConstants.REFERENCES_TO_REFRESH));
+            if (request.getParameter(KNSConstants.REFERENCES_TO_REFRESH) != null) {
+                setReferencesToRefresh(request.getParameter(KNSConstants.REFERENCES_TO_REFRESH));
             }
 
             if (request.getParameter("readOnlyFields") != null) {
@@ -189,10 +189,10 @@ public class LookupForm extends KualiForm {
                     }
                 }
             }
-            fieldValues.put(RiceConstants.DOC_FORM_KEY, this.getFormKey());
-            fieldValues.put(RiceConstants.BACK_LOCATION, this.getBackLocation());
+            fieldValues.put(KNSConstants.DOC_FORM_KEY, this.getFormKey());
+            fieldValues.put(KNSConstants.BACK_LOCATION, this.getBackLocation());
             if (StringUtils.isNotBlank(getReferencesToRefresh())) {
-                fieldValues.put(RiceConstants.REFERENCES_TO_REFRESH, this.getReferencesToRefresh());
+                fieldValues.put(KNSConstants.REFERENCES_TO_REFRESH, this.getReferencesToRefresh());
             }
 
             this.setFields(fieldValues);
@@ -203,7 +203,7 @@ public class LookupForm extends KualiForm {
             setFieldsForLookup(fieldValues);
 
             // only show maintenance links if the lookup was called from the portal (or index.html for the generated applications)
-            if (StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceConstants.APPLICATION_URL_KEY) + "/" + RiceConstants.MAPPING_PORTAL) || StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceConstants.APPLICATION_URL_KEY) + "/index.html")) {
+            if (StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/" + KNSConstants.MAPPING_PORTAL) || StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/index.html")) {
                 showMaintenanceLinks = true;
             }
             else {

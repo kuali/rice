@@ -23,7 +23,7 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.RiceConstants;
+import org.kuali.rice.util.RiceConstants;
 
 /**
  * This forwards to MAPPING_BASIC without doing anything else; useful for displaying JSPs whose contents don't depend on anything

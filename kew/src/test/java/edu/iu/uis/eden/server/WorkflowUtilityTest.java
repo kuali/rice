@@ -644,6 +644,45 @@ public class WorkflowUtilityTest extends KEWTestCase {
     	
     }
     
+    @Test public void testRoutingReportOnRouteHeaderId() throws Exception {
+        WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("user1"), "SeqDocType");
+        WorkflowInfo info = new WorkflowInfo();
+        
+        ReportCriteriaVO criteria = new ReportCriteriaVO(doc.getRouteHeaderId());
+        criteria.setRuleTemplateNames(new String[] { "WorkflowDocumentTemplate" });
+        DocumentDetailVO documentDetail = info.routingReport(criteria);
+        assertNotNull(documentDetail);
+        assertEquals("Route header id returned should be the same as the one passed in", doc.getRouteHeaderId(), documentDetail.getRouteHeaderId());
+        assertEquals("Should have been 2 requests generated.", 2, documentDetail.getActionRequests().length);
+        
+        // let's try doing both WorkflowDocumentTemplate and WorkflowDocumentTemplate2 together
+        criteria.setRuleTemplateNames(new String[] { "WorkflowDocumentTemplate", "WorkflowDocument2Template" });
+        documentDetail = info.routingReport(criteria);
+        assertEquals("Should have been 3 requests generated.", 3, documentDetail.getActionRequests().length);
+        
+        boolean foundRkirkend = false;
+        boolean foundBmcgough = false;
+        boolean foundPmckown = false;
+        for (int index = 0; index < documentDetail.getActionRequests().length; index++) {
+            ActionRequestVO actionRequest = documentDetail.getActionRequests()[index];
+            String netId = actionRequest.getUserVO().getNetworkId(); 
+            if (netId.equals("rkirkend")) {
+                foundRkirkend = true;
+                assertEquals(SeqSetup.WORKFLOW_DOCUMENT_NODE, actionRequest.getNodeName());
+            } else if (netId.equals("bmcgough")) {
+                foundBmcgough = true;
+                assertEquals(SeqSetup.WORKFLOW_DOCUMENT_NODE, actionRequest.getNodeName());
+            } else if (netId.equals("pmckown")) {
+                foundPmckown = true;
+                assertEquals(SeqSetup.WORKFLOW_DOCUMENT_2_NODE, actionRequest.getNodeName());
+            }
+        }
+        assertTrue("Did not find request for rkirkend", foundRkirkend);
+        assertTrue("Did not find request for bmcgough", foundBmcgough);
+        assertTrue("Did not find request for pmckown", foundPmckown);
+        
+    }
+    
     @Test public void testRuleReportGeneralFunction() throws Exception {
         WorkflowInfo info = new WorkflowInfo();
         

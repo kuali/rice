@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.Summarizable;
 import org.kuali.core.datadictionary.CollectionDefinitionI;
@@ -48,6 +47,7 @@ import org.kuali.core.web.format.BooleanFormatter;
 import org.kuali.core.web.format.Formatter;
 import org.kuali.core.web.format.SummarizableFormatter;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 public class FieldBridge {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(FieldBridge.class);
@@ -147,7 +147,7 @@ public class FieldBridge {
                         propValue = prop.toString();
                     }
                 } else {
-                    propValue = RiceConstants.EMPTY_STRING;
+                    propValue = KNSConstants.EMPTY_STRING;
                 }
 
             }
@@ -357,7 +357,7 @@ public class FieldBridge {
                 }
                 //generate the error key for the add row
                 String[] nameParts = StringUtils.split(collField.getPropertyName(), ".");
-                String fieldErrorKey = RiceConstants.MAINTENANCE_NEW_MAINTAINABLE + RiceConstants.ADD_PREFIX + ".";
+                String fieldErrorKey = KNSConstants.MAINTENANCE_NEW_MAINTAINABLE + KNSConstants.ADD_PREFIX + ".";
                 fieldErrorKey += collName + ".";
                 for (int i = 0; i < nameParts.length; i++) {
                     fieldErrorKey += nameParts[i];
@@ -397,7 +397,7 @@ public class FieldBridge {
         // does not handle the prefixes on the property names
         for ( Field field : collFields ) {
             // prefix name for add line
-            field.setPropertyName(RiceConstants.MAINTENANCE_ADD_PREFIX + parents + collectionDefinition.getName() + "." + field.getPropertyName());
+            field.setPropertyName(KNSConstants.MAINTENANCE_ADD_PREFIX + parents + collectionDefinition.getName() + "." + field.getPropertyName());
         }
         LOG.debug("Error Key for section " + collectionDefinition.getName() + " : " + containerRowErrorKey.toString());
 
@@ -443,7 +443,7 @@ public class FieldBridge {
         if(!hideAdd  && collectionDefinition.getIncludeAddLine()) {
             Field field = new Field();
 
-            String addButtonName = RiceConstants.DISPATCH_REQUEST_PARAMETER + "." + RiceConstants.ADD_LINE_METHOD + "." + parents + collectionDefinition.getName() + "." + RiceConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL + collectionDefinition.getBusinessObjectClass().getName() + RiceConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL;
+            String addButtonName = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.ADD_LINE_METHOD + "." + parents + collectionDefinition.getName() + "." + KNSConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL + collectionDefinition.getBusinessObjectClass().getName() + KNSConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL;
             field.setPropertyName(addButtonName);
             field.setFieldType(Field.IMAGE_SUBMIT);
             field.setPropertyValue("images/tinybutton-add1.gif");

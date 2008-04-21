@@ -19,7 +19,6 @@ import java.rmi.RemoteException;
 
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.OptimisticLockException;
-import org.kuali.RiceConstants;
 import org.kuali.core.UserSession;
 import org.kuali.core.document.Document;
 import org.kuali.core.exceptions.UserNotFoundException;
@@ -28,6 +27,7 @@ import org.kuali.core.service.DocumentService;
 import org.kuali.core.service.PostProcessorService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -197,7 +197,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      */
     protected void establishGlobalVariables() throws WorkflowException, UserNotFoundException {
         if (GlobalVariables.getUserSession() == null) {
-            GlobalVariables.setUserSession(new UserSession(RiceConstants.SYSTEM_USER));
+            GlobalVariables.setUserSession(new UserSession(KNSConstants.SYSTEM_USER));
         }
         GlobalVariables.clear();
     }

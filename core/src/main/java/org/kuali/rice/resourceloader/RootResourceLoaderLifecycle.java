@@ -17,7 +17,7 @@ package org.kuali.rice.resourceloader;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.RiceConstants;
+import org.kuali.rice.util.RiceConstants;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.BaseLifecycle;
 

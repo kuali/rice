@@ -18,7 +18,6 @@ package org.kuali.core.service.impl;
 import java.util.Collections;
 import java.util.List;
 
-import org.kuali.RiceConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.bo.user.KualiModuleUser;
 import org.kuali.core.bo.user.UniversalUser;
@@ -28,6 +27,7 @@ import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.service.KualiModuleUserService;
 import org.kuali.core.service.UniversalUserService;
+import org.kuali.rice.kns.util.KNSConstants;
 
 public abstract class KualiModuleUserServiceBaseImpl<T extends KualiModuleUser> implements KualiModuleUserService<T> {
 
@@ -111,7 +111,7 @@ public abstract class KualiModuleUserServiceBaseImpl<T extends KualiModuleUser> 
 	}
     
 	public Object getActiveFacultyStaffAffiliateCriteria() {
-        String[] allowedEmployeeStatusValues = getConfigService().getParameterValues( RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, RiceConstants.ALLOWED_EMPLOYEE_STATUS_RULE).toArray(new String[]{});
+        String[] allowedEmployeeStatusValues = getConfigService().getParameterValues( KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.UNIVERSAL_USER_DETAIL_TYPE, KNSConstants.ALLOWED_EMPLOYEE_STATUS_RULE).toArray(new String[]{});
 		return kualiModuleUserDao.getActiveFacultyStaffAffiliateCriteria(allowedEmployeeStatusValues);
 	}
 }

@@ -20,10 +20,10 @@ import java.util.Properties;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 
-import org.kuali.RiceConstants;
 import org.kuali.RicePropertyConstants;
 import org.kuali.core.util.UrlFactory;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.w3c.dom.Document;
 
 import edu.iu.uis.eden.engine.RouteContext;
@@ -75,9 +75,9 @@ public class WorkflowUtils {
      */
     public static String getHelpUrl(org.kuali.core.web.ui.Field field) {
         Properties params = new Properties();
-        params.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, "getAttributeHelpText");
-        params.put(RiceConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, field.getBusinessObjectClassName());
+        params.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, "getAttributeHelpText");
+        params.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, field.getBusinessObjectClassName());
         params.put(RicePropertyConstants.ATTRIBUTE_NAME, field.getPropertyName());
-        return UrlFactory.parameterizeUrl(KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceConstants.APPLICATION_URL_KEY) + "/kr/help.do", params);
+        return UrlFactory.parameterizeUrl(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/kr/help.do", params);
     }
 }

@@ -20,7 +20,7 @@ import java.sql.Timestamp;
 
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.RiceConstants;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.util.RiceUtilities;
 
 import edu.iu.uis.eden.messaging.AsynchronousCall;
@@ -45,13 +45,13 @@ public class ForwardedCallHandlerImpl implements ForwardedCallHandler {
 		copy.setMethodName(message.getMethodName());
 		copy.setQueueDate(new Timestamp(System.currentTimeMillis()));
 		copy.setQueuePriority(message.getQueuePriority());
-		copy.setQueueStatus(RiceConstants.ROUTE_QUEUE_QUEUED);
+		copy.setQueueStatus(KSBConstants.ROUTE_QUEUE_QUEUED);
 		copy.setRetryCount(message.getRetryCount());
 		AsynchronousCall methodCall = message.getPayload().getMethodCall();
 		methodCall.setIgnoreStoreAndForward(true);
 		copy.setPayload(new PersistedMassagePayload(methodCall, copy));
 		copy.setServiceName(message.getServiceName());
-		message.setQueueStatus(RiceConstants.ROUTE_QUEUE_ROUTING);
+		message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
 		KSBServiceLocator.getRouteQueueService().save(message);
 		MessageSender.sendMessage(message);
 	}

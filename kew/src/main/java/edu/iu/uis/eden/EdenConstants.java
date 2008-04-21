@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.kuali.rice.util.JSTLConstants;
+import org.kuali.rice.util.RiceConstants;
 
 import edu.iu.uis.eden.clientapp.IDocHandler;
 import edu.iu.uis.eden.doctype.DocumentTypePolicyEnum;
@@ -165,17 +166,17 @@ public class EdenConstants extends JSTLConstants {
 
     public static final String WORKFLOW_SUPER_USER_WORKGROUP_NAME = "WorkflowAdmin";
 
-	public static final String SIMPLE_DATE_FORMAT_FOR_DATE = "MM/dd/yyyy";
-	public static final String SIMPLE_DATE_FORMAT_FOR_TIME = "hh:mm a";
-	public static final String DEFAULT_DATE_FORMAT_PATTERN = SIMPLE_DATE_FORMAT_FOR_TIME + " " + SIMPLE_DATE_FORMAT_FOR_DATE;
+	public static final String SIMPLE_DATE_FORMAT_FOR_DATE = RiceConstants.SIMPLE_DATE_FORMAT_FOR_DATE;
+	public static final String SIMPLE_DATE_FORMAT_FOR_TIME = RiceConstants.SIMPLE_DATE_FORMAT_FOR_TIME;
+	public static final String DEFAULT_DATE_FORMAT_PATTERN = RiceConstants.DEFAULT_DATE_FORMAT_PATTERN;
     public static DateFormat getDefaultDateFormat() {
-    	return new SimpleDateFormat(SIMPLE_DATE_FORMAT_FOR_DATE);
+        return RiceConstants.getDefaultDateFormat();
     }
     public static DateFormat getDefaultTimeFormat() {
-    	return new SimpleDateFormat(SIMPLE_DATE_FORMAT_FOR_TIME);
+        return RiceConstants.getDefaultTimeFormat();
     }
     public static DateFormat getDefaultDateAndTimeFormat() {
-    	return new SimpleDateFormat(DEFAULT_DATE_FORMAT_PATTERN);
+        return RiceConstants.getDefaultDateAndTimeFormat();
     }
 
     public static final String DAILY_UNIT = "Daily";

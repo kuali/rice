@@ -22,8 +22,8 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -99,7 +99,7 @@ public class MessageServiceInvoker implements Runnable {
 	    KSBServiceLocator.getExceptionRoutingService().placeInExceptionRouting(throwable, this.message, service);
     	} catch (Throwable t2) {
     	    LOG.error("An error was encountered when invoking exception handler for message. Attempting to change message status to EXCEPTION.", t2);
-    	    message.setQueueStatus(RiceConstants.ROUTE_QUEUE_EXCEPTION);
+    	    message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
     	    message.setQueueDate(new Timestamp(System.currentTimeMillis()));
     	    try {
     		KSBServiceLocator.getRouteQueueService().save(message);

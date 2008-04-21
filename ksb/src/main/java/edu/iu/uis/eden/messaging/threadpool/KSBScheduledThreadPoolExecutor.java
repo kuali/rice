@@ -15,8 +15,8 @@
  */
 package edu.iu.uis.eden.messaging.threadpool;
 import org.apache.log4j.Logger;
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -38,7 +38,7 @@ public class KSBScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor 
 	public void start() throws Exception {
 		LOG.info("starting " + KSBScheduledThreadPoolExecutor.class.getSimpleName());
 		try {
-			Integer size = new Integer(Core.getCurrentContextConfig().getProperty(RiceConstants.FIXED_POOL_SIZE));
+			Integer size = new Integer(Core.getCurrentContextConfig().getProperty(KSBConstants.FIXED_POOL_SIZE));
 			this.setCorePoolSize(size);
 		} catch (NumberFormatException nfe) {
 

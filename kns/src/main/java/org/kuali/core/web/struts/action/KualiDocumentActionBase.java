@@ -30,7 +30,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
-import org.kuali.RiceConstants;
 import org.kuali.RiceKeyConstants;
 import org.kuali.RicePropertyConstants;
 import org.kuali.core.UserSession;
@@ -71,6 +70,8 @@ import org.kuali.core.web.struts.form.KualiDocumentFormBase;
 import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.util.RiceConstants;
 import org.springmodules.orm.ojb.OjbOperationException;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -128,7 +129,7 @@ public class KualiDocumentActionBase extends KualiAction {
             Throwable cause = ooe.getCause();
             if (cause instanceof OptimisticLockException) {
                 OptimisticLockException ole = (OptimisticLockException) cause;
-                GlobalVariables.getErrorMap().putError(RiceConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_OPTIMISTIC_LOCK);
+                GlobalVariables.getErrorMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_OPTIMISTIC_LOCK);
                 logOjbOptimisticLockException(ole);
             }
             else {
@@ -144,7 +145,7 @@ public class KualiDocumentActionBase extends KualiAction {
             Document document = formBase.getDocument();
             DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
             formBase.populateAuthorizationFields(documentAuthorizer);
-            UserSession userSession = (UserSession) request.getSession().getAttribute(RiceConstants.USER_SESSION_KEY);
+            UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
             if (document instanceof SessionDocument) {
                 if (StringUtils.isBlank(formBase.getFormKey()) || userSession.retrieveObject(formBase.getFormKey()) == null) {
                 // generate doc form key here if it does not exist
@@ -165,7 +166,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
             String attachementEnabled=
                 KNSServiceLocator.getKualiConfigurationService().getPropertyString(
-                    RiceConstants.NOTE_ATTACHMENT_ENABLED);
+                    KNSConstants.NOTE_ATTACHMENT_ENABLED);
             // Override the document entry
             if (attachementEnabled != null) {
                 entry.setAllowsNoteAttachments(Boolean.parseBoolean(attachementEnabled));
@@ -480,12 +481,12 @@ public class KualiDocumentActionBase extends KualiAction {
         // setup back form variables
         request.setAttribute("backUrlBase", backUrlBase);
         List<KeyLabelPair> backFormParameters = new ArrayList<KeyLabelPair>();
-        backFormParameters.add(new KeyLabelPair(RiceConstants.DISPATCH_REQUEST_PARAMETER,RiceConstants.RETURN_METHOD_TO_CALL));
-        backFormParameters.add(new KeyLabelPair(RiceConstants.DOC_FORM_KEY,globalVariableFormKey));
+        backFormParameters.add(new KeyLabelPair(KNSConstants.DISPATCH_REQUEST_PARAMETER,KNSConstants.RETURN_METHOD_TO_CALL));
+        backFormParameters.add(new KeyLabelPair(KNSConstants.DOC_FORM_KEY,globalVariableFormKey));
         request.setAttribute("backFormHiddenVariables", backFormParameters);
 
         // setup route report form variables
-        request.setAttribute("workflowRouteReportUrl", KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceConstants.WORKFLOW_URL_KEY) + "/" + EdenConstants.DOCUMENT_ROUTING_REPORT_PAGE);
+        request.setAttribute("workflowRouteReportUrl", KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + "/" + EdenConstants.DOCUMENT_ROUTING_REPORT_PAGE);
         List<KeyLabelPair> generalRouteReportFormParameters = new ArrayList<KeyLabelPair>();
         generalRouteReportFormParameters.add(new KeyLabelPair(EdenConstants.INITIATOR_ID_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getInitiatorNetworkId()));
         generalRouteReportFormParameters.add(new KeyLabelPair(EdenConstants.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getDocumentType()));
@@ -510,7 +511,7 @@ public class KualiDocumentActionBase extends KualiAction {
         noJavaScriptFormParameters.add(new KeyLabelPair(EdenConstants.RETURN_URL_ATTRIBUTE_NAME,UrlFactory.parameterizeUrl(backUrlBase, parameters)));
         request.setAttribute("noJavaScriptFormVariables", noJavaScriptFormParameters);
 
-        return mapping.findForward(RiceConstants.MAPPING_ROUTE_REPORT);
+        return mapping.findForward(KNSConstants.MAPPING_ROUTE_REPORT);
     }
 
     /**
@@ -603,8 +604,8 @@ public class KualiDocumentActionBase extends KualiAction {
     public ActionForward disapprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
 
-        Object question = request.getParameter(RiceConstants.QUESTION_INST_ATTRIBUTE_NAME);
-        String reason = request.getParameter(RiceConstants.QUESTION_REASON_ATTRIBUTE_NAME);
+        Object question = request.getParameter(KNSConstants.QUESTION_INST_ATTRIBUTE_NAME);
+        String reason = request.getParameter(KNSConstants.QUESTION_REASON_ATTRIBUTE_NAME);
         String disapprovalNoteText = "";
 
         KualiConfigurationService kualiConfiguration = KNSServiceLocator.getKualiConfigurationService();
@@ -612,24 +613,24 @@ public class KualiDocumentActionBase extends KualiAction {
         // start in logic for confirming the disapproval
         if (question == null) {
             // ask question if not already asked
-            return this.performQuestionWithInput(mapping, form, request, response, RiceConstants.DOCUMENT_DISAPPROVE_QUESTION, kualiConfiguration.getPropertyString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT), RiceConstants.CONFIRMATION_QUESTION, RiceConstants.MAPPING_DISAPPROVE, "");
+            return this.performQuestionWithInput(mapping, form, request, response, KNSConstants.DOCUMENT_DISAPPROVE_QUESTION, kualiConfiguration.getPropertyString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT), KNSConstants.CONFIRMATION_QUESTION, KNSConstants.MAPPING_DISAPPROVE, "");
         }
         else {
-            Object buttonClicked = request.getParameter(RiceConstants.QUESTION_CLICKED_BUTTON);
-            if ((RiceConstants.DOCUMENT_DISAPPROVE_QUESTION.equals(question)) && ConfirmationQuestion.NO.equals(buttonClicked)) {
+            Object buttonClicked = request.getParameter(KNSConstants.QUESTION_CLICKED_BUTTON);
+            if ((KNSConstants.DOCUMENT_DISAPPROVE_QUESTION.equals(question)) && ConfirmationQuestion.NO.equals(buttonClicked)) {
                 // if no button clicked just reload the doc
                 return mapping.findForward(RiceConstants.MAPPING_BASIC);
             }
             else {
                 // have to check length on value entered
-                String introNoteMessage = kualiConfiguration.getPropertyString(RiceKeyConstants.MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO) + RiceConstants.BLANK_SPACE;
+                String introNoteMessage = kualiConfiguration.getPropertyString(RiceKeyConstants.MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO) + KNSConstants.BLANK_SPACE;
 
                 // build out full message
                 disapprovalNoteText = introNoteMessage + reason;
                 int disapprovalNoteTextLength = disapprovalNoteText.length();
 
                 // get note text max length from DD
-                int noteTextMaxLength = KNSServiceLocator.getDataDictionaryService().getAttributeMaxLength(Note.class, RiceConstants.NOTE_TEXT_PROPERTY_NAME).intValue();
+                int noteTextMaxLength = KNSServiceLocator.getDataDictionaryService().getAttributeMaxLength(Note.class, KNSConstants.NOTE_TEXT_PROPERTY_NAME).intValue();
 
                 if (StringUtils.isBlank(reason) || (disapprovalNoteTextLength > noteTextMaxLength)) {
                     // figure out exact number of characters that the user can enter
@@ -639,7 +640,7 @@ public class KualiDocumentActionBase extends KualiAction {
                         // prevent a NPE by setting the reason to a blank string
                         reason = "";
                     }
-                    return this.performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response, RiceConstants.DOCUMENT_DISAPPROVE_QUESTION, kualiConfiguration.getPropertyString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT), RiceConstants.CONFIRMATION_QUESTION, RiceConstants.MAPPING_DISAPPROVE, "", reason, RiceKeyConstants.ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED, RiceConstants.QUESTION_REASON_ATTRIBUTE_NAME, new Integer(reasonLimit).toString());
+                    return this.performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response, KNSConstants.DOCUMENT_DISAPPROVE_QUESTION, kualiConfiguration.getPropertyString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT), KNSConstants.CONFIRMATION_QUESTION, KNSConstants.MAPPING_DISAPPROVE, "", reason, RiceKeyConstants.ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED, KNSConstants.QUESTION_REASON_ATTRIBUTE_NAME, new Integer(reasonLimit).toString());
                 }
             }
         }
@@ -662,18 +663,18 @@ public class KualiDocumentActionBase extends KualiAction {
      * @throws Exception
      */
     public ActionForward cancel(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Object question = request.getParameter(RiceConstants.QUESTION_INST_ATTRIBUTE_NAME);
+        Object question = request.getParameter(KNSConstants.QUESTION_INST_ATTRIBUTE_NAME);
         // this should probably be moved into a private instance variable
         KualiConfigurationService kualiConfiguration = KNSServiceLocator.getKualiConfigurationService();
 
         // logic for cancel question
         if (question == null) {
             // ask question if not already asked
-            return this.performQuestionWithoutInput(mapping, form, request, response, RiceConstants.DOCUMENT_CANCEL_QUESTION, kualiConfiguration.getPropertyString("document.question.cancel.text"), RiceConstants.CONFIRMATION_QUESTION, RiceConstants.MAPPING_CANCEL, "");
+            return this.performQuestionWithoutInput(mapping, form, request, response, KNSConstants.DOCUMENT_CANCEL_QUESTION, kualiConfiguration.getPropertyString("document.question.cancel.text"), KNSConstants.CONFIRMATION_QUESTION, KNSConstants.MAPPING_CANCEL, "");
         }
         else {
-            Object buttonClicked = request.getParameter(RiceConstants.QUESTION_CLICKED_BUTTON);
-            if ((RiceConstants.DOCUMENT_CANCEL_QUESTION.equals(question)) && ConfirmationQuestion.NO.equals(buttonClicked)) {
+            Object buttonClicked = request.getParameter(KNSConstants.QUESTION_CLICKED_BUTTON);
+            if ((KNSConstants.DOCUMENT_CANCEL_QUESTION.equals(question)) && ConfirmationQuestion.NO.equals(buttonClicked)) {
                 // if no button clicked just reload the doc
                 return mapping.findForward(RiceConstants.MAPPING_BASIC);
             }
@@ -702,17 +703,17 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // only want to prompt them to save if they already can save
         if (docForm.getDocumentActionFlags().getCanSave()) {
-            Object question = request.getParameter(RiceConstants.QUESTION_INST_ATTRIBUTE_NAME);
+            Object question = request.getParameter(KNSConstants.QUESTION_INST_ATTRIBUTE_NAME);
             KualiConfigurationService kualiConfiguration = KNSServiceLocator.getKualiConfigurationService();
 
             // logic for close question
             if (question == null) {
                 // ask question if not already asked
-                return this.performQuestionWithoutInput(mapping, form, request, response, RiceConstants.DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION, kualiConfiguration.getPropertyString(RiceKeyConstants.QUESTION_SAVE_BEFORE_CLOSE), RiceConstants.CONFIRMATION_QUESTION, RiceConstants.MAPPING_CLOSE, "");
+                return this.performQuestionWithoutInput(mapping, form, request, response, KNSConstants.DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION, kualiConfiguration.getPropertyString(RiceKeyConstants.QUESTION_SAVE_BEFORE_CLOSE), KNSConstants.CONFIRMATION_QUESTION, KNSConstants.MAPPING_CLOSE, "");
             }
             else {
-                Object buttonClicked = request.getParameter(RiceConstants.QUESTION_CLICKED_BUTTON);
-                if ((RiceConstants.DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION.equals(question)) && ConfirmationQuestion.YES.equals(buttonClicked)) {
+                Object buttonClicked = request.getParameter(KNSConstants.QUESTION_CLICKED_BUTTON);
+                if ((KNSConstants.DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION.equals(question)) && ConfirmationQuestion.YES.equals(buttonClicked)) {
                     // if yes button clicked - save the doc
                     KNSServiceLocator.getDocumentService().saveDocument(docForm.getDocument());
                 }
@@ -773,7 +774,7 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
 
 
-        String workflowSuperUserUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceConstants.WORKFLOW_URL_KEY) + "/SuperUser.do?methodToCall=displaySuperUserDocument&routeHeaderId=" + kualiDocumentFormBase.getDocument().getDocumentHeader().getDocumentNumber();
+        String workflowSuperUserUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + "/SuperUser.do?methodToCall=displaySuperUserDocument&routeHeaderId=" + kualiDocumentFormBase.getDocument().getDocumentHeader().getDocumentNumber();
         response.sendRedirect(workflowSuperUserUrl);
 
         return null;
@@ -906,7 +907,7 @@ public class KualiDocumentActionBase extends KualiAction {
     protected int selectedAttachmentIndex(HttpServletRequest request) {
         int attachmentIndex = -1;
 
-        String parameterName = (String) request.getAttribute(RiceConstants.METHOD_TO_CALL_ATTRIBUTE);
+        String parameterName = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
         if (StringUtils.isNotBlank(parameterName)) {
             String attachmentIndexParam = StringUtils.substringBetween(parameterName, ".attachment[", "].");
 
@@ -950,8 +951,8 @@ public class KualiDocumentActionBase extends KualiAction {
         if (attachmentFile == null) {
             GlobalVariables.getErrorMap().putError(
                     String.format("%s.%s",
-                            RiceConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
-                            RiceConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
+                            KNSConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
+                            KNSConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
                     RiceKeyConstants.ERROR_UPLOADFILE_NULL);
             // This line was removed in order to continue to validates other
 //            return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -962,8 +963,8 @@ public class KualiDocumentActionBase extends KualiAction {
             if (attachmentFile.getFileSize() == 0) {
                 GlobalVariables.getErrorMap().putError(
                         String.format("%s.%s",
-                                RiceConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
-                                RiceConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
+                                KNSConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
+                                KNSConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
                         RiceKeyConstants.ERROR_UPLOADFILE_EMPTY,
                         attachmentFile.getFileName());
                 // This line was removed in order to continue to validates other
@@ -987,8 +988,8 @@ public class KualiDocumentActionBase extends KualiAction {
             if(StringUtils.isBlank(topicText)) {
                 GlobalVariables.getErrorMap().putError(
                         String.format("%s.%s",
-                                RiceConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
-                                RiceConstants.NOTE_TOPIC_TEXT_PROPERTY_NAME),
+                                KNSConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
+                                KNSConstants.NOTE_TOPIC_TEXT_PROPERTY_NAME),
                         RiceKeyConstants.ERROR_REQUIRED,
                         "Note Topic (Note Topic)");
             }
@@ -1107,7 +1108,7 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     protected String determineNoteWorkflowNotificationAction(HttpServletRequest request, KualiDocumentFormBase kualiDocumentFormBase, Note note) {
         KualiConfigurationService kcs = KNSServiceLocator.getKualiConfigurationService();
-        String notificationAction = kcs.getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, RiceConstants.SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM);
+        String notificationAction = kcs.getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM);
         return notificationAction;
     }
     
@@ -1277,13 +1278,13 @@ public class KualiDocumentActionBase extends KualiAction {
         ActionForward dest = null;
         if (form.isReturnToActionList()) {
             KualiConfigurationService kcs = KNSServiceLocator.getKualiConfigurationService();
-            String workflowBase = kcs.getPropertyString(RiceConstants.WORKFLOW_URL_KEY);
+            String workflowBase = kcs.getPropertyString(KNSConstants.WORKFLOW_URL_KEY);
             String actionListUrl = workflowBase + "/ActionList.do";
 
             dest = new ActionForward(actionListUrl, true);
         }
         else {
-            dest = mapping.findForward(RiceConstants.MAPPING_PORTAL);
+            dest = mapping.findForward(KNSConstants.MAPPING_PORTAL);
         }
 
         return dest;

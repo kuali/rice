@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -314,8 +314,8 @@ public class ErrorMap implements Map, Serializable {
     public String getKeyPath(String propertyName, boolean prependFullErrorPath) {
         String keyPath = "";
 
-        if (RiceConstants.GLOBAL_ERRORS.equals(propertyName)) {
-            return RiceConstants.GLOBAL_ERRORS;
+        if (KNSConstants.GLOBAL_ERRORS.equals(propertyName)) {
+            return KNSConstants.GLOBAL_ERRORS;
         }
 
         if (!errorPath.isEmpty() && prependFullErrorPath) {

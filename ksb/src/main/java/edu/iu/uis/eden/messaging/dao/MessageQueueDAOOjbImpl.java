@@ -23,8 +23,8 @@ import javax.xml.namespace.QName;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.util.RiceUtilities;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -126,7 +126,7 @@ public class MessageQueueDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		Criteria crit = new Criteria();
 		String messagingEntity = Core.getCurrentContextConfig().getMessageEntity();
 		crit.addEqualTo("messageEntity", messagingEntity);
-		crit.addNotEqualTo("queueStatus", RiceConstants.ROUTE_QUEUE_EXCEPTION);
+		crit.addNotEqualTo("queueStatus", KSBConstants.ROUTE_QUEUE_EXCEPTION);
 		crit.addEqualTo("ipNumber", RiceUtilities.getIpNumber());
 
 		QueryByCriteria query = new QueryByCriteria(PersistedMessage.class, crit);

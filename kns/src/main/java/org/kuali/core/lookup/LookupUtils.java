@@ -28,7 +28,6 @@ import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
-import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.BusinessObjectRelationship;
 import org.kuali.core.bo.PersistableBusinessObject;
@@ -47,6 +46,7 @@ import org.kuali.core.web.comparator.NullValueComparator;
 import org.kuali.core.web.ui.Field;
 import org.kuali.core.web.ui.ResultRow;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This is a static utility class for Lookup related utilities and helper methods.
@@ -214,7 +214,7 @@ public class LookupUtils {
      * be made private and become an internal method.
      */
     public static Integer getApplicationSearchResultsLimit() {
-        String limitString = KNSServiceLocator.getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, RiceConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
+        String limitString = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
         if (limitString != null) {
             return Integer.valueOf(limitString);
         }
@@ -238,11 +238,11 @@ public class LookupUtils {
     /**
      * This method the maximum rows per page in a multiple value lookup
      *
-     * @see org.kuali.RiceConstants.SystemGroupParameterNames#MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE
+     * @see org.kuali.rice.kns.util.KNSConstants.SystemGroupParameterNames#MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE
      * @return
      */
     public static Integer getApplicationMaximumSearchResulsPerPageForMultipleValueLookups() {
-        String limitString = KNSServiceLocator.getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, RiceConstants.SystemGroupParameterNames.MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE);
+        String limitString = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE);
         if (limitString != null) {
             return Integer.valueOf(limitString);
         }
@@ -315,7 +315,7 @@ public class LookupUtils {
             String collectionPrefix = "";
             if ( collectionName != null ) {
                 if (addLine) {
-                    collectionPrefix = RiceConstants.MAINTENANCE_ADD_PREFIX + collectionName + ".";
+                    collectionPrefix = KNSConstants.MAINTENANCE_ADD_PREFIX + collectionName + ".";
                 }
                 else {
                     collectionPrefix = collectionName + "[" + index + "].";
@@ -351,7 +351,7 @@ public class LookupUtils {
         String collectionPrefix = "";
         if ( collectionName != null ) {
             if (addLine) {
-                collectionPrefix = RiceConstants.MAINTENANCE_ADD_PREFIX + collectionName + ".";
+                collectionPrefix = KNSConstants.MAINTENANCE_ADD_PREFIX + collectionName + ".";
             }
             else {
                 collectionPrefix = collectionName + "[" + index + "].";
@@ -405,22 +405,22 @@ public class LookupUtils {
      */
     public static void setFieldDirectInquiry(Field field) {
         if (StringUtils.isNotBlank(field.getFieldConversions())) {
-            boolean directInquiriesEnabled = kualiConfigurationService.getIndicatorParameter(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.ALL_DETAIL_TYPE, RiceConstants.SystemGroupParameterNames.ENABLE_DIRECT_INQUIRIES_IND);
+            boolean directInquiriesEnabled = kualiConfigurationService.getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_DIRECT_INQUIRIES_IND);
             if (directInquiriesEnabled) {
                 if (StringUtils.isNotBlank(field.getFieldConversions())) {
                     String fieldConversions = field.getFieldConversions();
-                    String newInquiryParameters = RiceConstants.EMPTY_STRING;
-                    String[] conversions = StringUtils.split(fieldConversions, RiceConstants.FIELD_CONVERSIONS_SEPERATOR);
+                    String newInquiryParameters = KNSConstants.EMPTY_STRING;
+                    String[] conversions = StringUtils.split(fieldConversions, KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
 
                     for (int l = 0; l < conversions.length; l++) {
                         String conversion = conversions[l];
-                        String[] conversionPair = StringUtils.split(conversion, RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+                        String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
                         String conversionFrom = conversionPair[0];
                         String conversionTo = conversionPair[1];
-                        newInquiryParameters += (conversionTo + RiceConstants.FIELD_CONVERSION_PAIR_SEPERATOR + conversionFrom);
+                        newInquiryParameters += (conversionTo + KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR + conversionFrom);
 
                         if (l < conversions.length - 1) {
-                            newInquiryParameters += RiceConstants.FIELD_CONVERSIONS_SEPERATOR;
+                            newInquiryParameters += KNSConstants.FIELD_CONVERSIONS_SEPERATOR;
                         }
                     }
 
@@ -641,11 +641,11 @@ public class LookupUtils {
     public static String convertReferencesToSelectCollectionToString(Collection<String> referencesToRefresh) {
         StringBuilder buf = new StringBuilder();
         for (String reference : referencesToRefresh) {
-            buf.append(reference).append(RiceConstants.REFERENCES_TO_REFRESH_SEPARATOR);
+            buf.append(reference).append(KNSConstants.REFERENCES_TO_REFRESH_SEPARATOR);
         }
         if (!referencesToRefresh.isEmpty()) {
             // we appended one too many separators, remove it
-            buf.delete(buf.length() - RiceConstants.REFERENCES_TO_REFRESH_SEPARATOR.length(), buf.length());
+            buf.delete(buf.length() - KNSConstants.REFERENCES_TO_REFRESH_SEPARATOR.length(), buf.length());
         }
         return buf.toString();
     }
@@ -656,13 +656,13 @@ public class LookupUtils {
         }
         StringBuilder buf = new StringBuilder();
         for (String objectId : objectIds) {
-            if (objectId.contains(RiceConstants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR)) {
+            if (objectId.contains(KNSConstants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR)) {
                 throw new RuntimeException("object ID " + objectId + " contains the selected obj ID separator");
             }
-            buf.append(objectId).append(RiceConstants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR);
+            buf.append(objectId).append(KNSConstants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR);
         }
         // added one extra separator, remove it
-        buf.delete(buf.length() - RiceConstants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR.length(), buf.length());
+        buf.delete(buf.length() - KNSConstants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR.length(), buf.length());
 
         return buf.toString();
     }
@@ -671,7 +671,7 @@ public class LookupUtils {
         Set<String> set = new HashSet<String>();
 
         if (StringUtils.isNotBlank(objectIdsString)) {
-            String[] objectIds = StringUtils.splitByWholeSeparator(objectIdsString, RiceConstants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR);
+            String[] objectIds = StringUtils.splitByWholeSeparator(objectIdsString, KNSConstants.MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR);
             for (String objectId : objectIds) {
                 set.add(objectId);
             }

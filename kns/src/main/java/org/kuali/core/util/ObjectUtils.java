@@ -33,7 +33,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
-import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.PersistableBusinessObjectExtension;
@@ -43,6 +42,7 @@ import org.kuali.core.web.format.FormatException;
 import org.kuali.core.web.format.Formatter;
 import org.kuali.core.web.struts.pojo.PojoPropertyUtilsBean;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This class contains various Object, Proxy, and serialization utilities.
@@ -519,8 +519,8 @@ public class ObjectUtils {
      * @return Cleaned string
      */
     public static String clean(String string) {
-        for (int i = 0; i < RiceConstants.QUERY_CHARACTERS.length; i++) {
-            string = StringUtils.replace(string, RiceConstants.QUERY_CHARACTERS[i], RiceConstants.EMPTY_STRING);
+        for (int i = 0; i < KNSConstants.QUERY_CHARACTERS.length; i++) {
+            string = StringUtils.replace(string, KNSConstants.QUERY_CHARACTERS[i], KNSConstants.EMPTY_STRING);
         }
         return string;
     }

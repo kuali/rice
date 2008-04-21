@@ -25,7 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.core.bo.AdHocRouteRecipient;
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.Note;
@@ -62,6 +61,7 @@ import org.kuali.core.util.Timer;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.WorkflowDocumentService;
 import org.kuali.rice.config.ConfigurationException;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -692,9 +692,9 @@ public class DocumentServiceImpl implements DocumentService {
         note.setVersionNumber(new Long(1));
         note.setNoteText(text);
         if(document.isBoNotesSupport()) {
-            note.setNoteTypeCode(RiceConstants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE.getCode());
+            note.setNoteTypeCode(KNSConstants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE.getCode());
         } else {
-            note.setNoteTypeCode(RiceConstants.NoteTypeEnum.DOCUMENT_HEADER_NOTE_TYPE.getCode());
+            note.setNoteTypeCode(KNSConstants.NoteTypeEnum.DOCUMENT_HEADER_NOTE_TYPE.getCode());
         }
         
         PersistableBusinessObject bo = null;

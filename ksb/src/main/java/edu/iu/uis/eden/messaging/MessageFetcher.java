@@ -17,7 +17,7 @@ package edu.iu.uis.eden.messaging;
 
 import org.apache.log4j.Logger;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.RiceConstants;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
@@ -68,7 +68,7 @@ public class MessageFetcher implements Runnable {
 	try {
 	    if (this.routeQueueId != null) {
 		PersistedMessage message = getRouteQueueService().findByRouteQueueId(this.routeQueueId);
-		message.setQueueStatus(RiceConstants.ROUTE_QUEUE_ROUTING);
+		message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
 		getRouteQueueService().save(message);
 		executeMessage(message);
 	    }
@@ -89,7 +89,7 @@ public class MessageFetcher implements Runnable {
 	try {
 	    KSBServiceLocator.getTransactionTemplate().execute(new TransactionCallback() {
 		public Object doInTransaction(TransactionStatus status) {
-		    message.setQueueStatus(RiceConstants.ROUTE_QUEUE_ROUTING);
+		    message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
 		    getRouteQueueService().save(message);
 		    return null;
 		}

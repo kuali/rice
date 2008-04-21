@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.RiceConstants;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 /**
  * An HttpServletRequestWrapper which will wraps the underlying request's InputStream in a 
@@ -44,12 +44,12 @@ public class SignatureVerifyingRequestWrapper extends HttpServletRequestWrapper 
 	
 	public SignatureVerifyingRequestWrapper(HttpServletRequest request) {
 		super(request);
-		String encodedSignature = request.getHeader(RiceConstants.DIGITAL_SIGNATURE_HEADER);
+		String encodedSignature = request.getHeader(KSBConstants.DIGITAL_SIGNATURE_HEADER);
 		if (StringUtils.isEmpty(encodedSignature)) {
 			throw new RuntimeException("A digital signature was required on the request but none was found.");
 		}
-		String verificationAlias = request.getHeader(RiceConstants.KEYSTORE_ALIAS_HEADER);
-		String encodedCertificate = request.getHeader(RiceConstants.KEYSTORE_CERTIFICATE_HEADER);
+		String verificationAlias = request.getHeader(KSBConstants.KEYSTORE_ALIAS_HEADER);
+		String encodedCertificate = request.getHeader(KSBConstants.KEYSTORE_CERTIFICATE_HEADER);
 		if ( (StringUtils.isEmpty(verificationAlias)) && (StringUtils.isEmpty(encodedCertificate)) ) {
             throw new RuntimeException("A verification alias or certificate was required on the request but neither was found.");
 		}

@@ -15,8 +15,8 @@
  */
 package edu.iu.uis.eden.messaging;
 
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 import edu.iu.uis.eden.messaging.resourceloading.KSBResourceLoaderFactory;
 
@@ -33,11 +33,11 @@ public class KSBTestUtils {
     }
 
     public static void setMessagingToSync() {
-        setupMessaging(RiceConstants.MESSAGING_SYNCHRONOUS);
+        setupMessaging(KSBConstants.MESSAGING_SYNCHRONOUS);
     }
 
     private static void setupMessaging(String value) {
-        Core.getCurrentContextConfig().overrideProperty(RiceConstants.MESSAGE_DELIVERY, value);
+        Core.getCurrentContextConfig().overrideProperty(KSBConstants.MESSAGE_DELIVERY, value);
         ((Runnable) KSBResourceLoaderFactory.getRemoteResourceLocator()).run();
     }
 

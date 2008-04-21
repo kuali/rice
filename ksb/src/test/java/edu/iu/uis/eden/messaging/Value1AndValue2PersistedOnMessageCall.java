@@ -20,8 +20,8 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.bus.test.KSBTestCase;
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 /**
  * verify that value1 and value2 are preserved when passed into message helper and making an async call.  
@@ -33,7 +33,7 @@ public class Value1AndValue2PersistedOnMessageCall extends KSBTestCase {
     
     @Test public void testCallingQueueAsnyc() throws Exception {
 	KSBTestUtils.setMessagingToAsync();
-	Core.getCurrentContextConfig().overrideProperty(RiceConstants.MESSAGING_OFF, "true");
+	Core.getCurrentContextConfig().overrideProperty(KSBConstants.MESSAGING_OFF, "true");
 	
 	QName serviceName = QName.valueOf("{testAppsSharedTopic}sharedTopic");
 	String value1 = "value1";

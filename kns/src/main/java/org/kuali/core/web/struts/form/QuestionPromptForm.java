@@ -20,9 +20,9 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.RiceConstants;
 import org.kuali.core.question.Question;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This class is the action form for all Question Prompts.
@@ -123,23 +123,23 @@ public class QuestionPromptForm extends KualiForm {
         super.populate(request);
 
         // set the title of the jsp, this should come from a resource bundle
-        title = RiceConstants.QUESTION_PAGE_TITLE;
+        title = KNSConstants.QUESTION_PAGE_TITLE;
 
-        if (request.getAttribute(RiceConstants.DOC_FORM_KEY) != null) {
-            this.setFormKey((String) request.getAttribute(RiceConstants.DOC_FORM_KEY));
+        if (request.getAttribute(KNSConstants.DOC_FORM_KEY) != null) {
+            this.setFormKey((String) request.getAttribute(KNSConstants.DOC_FORM_KEY));
         }
-        else if (request.getParameter(RiceConstants.DOC_FORM_KEY) != null) {
-            this.setFormKey(request.getParameter(RiceConstants.DOC_FORM_KEY));
-        }
-
-        if (request.getParameter(RiceConstants.RETURN_LOCATION_PARAMETER) != null) {
-            this.setBackLocation(request.getParameter(RiceConstants.RETURN_LOCATION_PARAMETER));
+        else if (request.getParameter(KNSConstants.DOC_FORM_KEY) != null) {
+            this.setFormKey(request.getParameter(KNSConstants.DOC_FORM_KEY));
         }
 
-        if (getMethodToCall().equals(RiceConstants.START_METHOD)) { // don't do this for the processAnswer action otherwise it blows up
+        if (request.getParameter(KNSConstants.RETURN_LOCATION_PARAMETER) != null) {
+            this.setBackLocation(request.getParameter(KNSConstants.RETURN_LOCATION_PARAMETER));
+        }
+
+        if (getMethodToCall().equals(KNSConstants.START_METHOD)) { // don't do this for the processAnswer action otherwise it blows up
             Question kualiQuestion = KNSServiceLocator.getQuestion(questionType);
             if (kualiQuestion == null) {
-                throw new RuntimeException("question implementation not found: " + request.getParameter(RiceConstants.QUESTION_IMPL_ATTRIBUTE_NAME));
+                throw new RuntimeException("question implementation not found: " + request.getParameter(KNSConstants.QUESTION_IMPL_ATTRIBUTE_NAME));
             }
 
 

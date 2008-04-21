@@ -13,7 +13,6 @@
 package org.kuali.core.rules;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.RiceKeyConstants;
 import org.kuali.RicePropertyConstants;
 import org.kuali.core.KualiModule;
@@ -42,6 +41,7 @@ import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
@@ -110,15 +110,15 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	LOG.debug("isDocumentOverviewValid(Document) - start");
 
 	// add in the documentHeader path
-	GlobalVariables.getErrorMap().addToErrorPath(RiceConstants.DOCUMENT_PROPERTY_NAME);
-	GlobalVariables.getErrorMap().addToErrorPath(RiceConstants.DOCUMENT_HEADER_PROPERTY_NAME);
+	GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+	GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_HEADER_PROPERTY_NAME);
 
 	// check the document header for fields like the description
 	getDictionaryValidationService().validateBusinessObject(document.getDocumentHeader());
 
 	// drop the error path keys off now
-	GlobalVariables.getErrorMap().removeFromErrorPath(RiceConstants.DOCUMENT_HEADER_PROPERTY_NAME);
-	GlobalVariables.getErrorMap().removeFromErrorPath(RiceConstants.DOCUMENT_PROPERTY_NAME);
+	GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_HEADER_PROPERTY_NAME);
+	GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
 	boolean returnboolean = GlobalVariables.getErrorMap().isEmpty();
 	LOG.debug("isDocumentOverviewValid(Document) - end");
@@ -136,13 +136,13 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	LOG.debug("isDocumentAttributesValid(Document) - start");
 
 	// start updating the error path name
-	GlobalVariables.getErrorMap().addToErrorPath(RiceConstants.DOCUMENT_PROPERTY_NAME);
+	GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
 	// check the document for fields like explanation and org doc #
 	getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), validateRequired);
 
 	// drop the error path keys off now
-	GlobalVariables.getErrorMap().removeFromErrorPath(RiceConstants.DOCUMENT_PROPERTY_NAME);
+	GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
 	boolean returnboolean = GlobalVariables.getErrorMap().isEmpty();
 	LOG.debug("isDocumentAttributesValid(Document) - end");
@@ -165,9 +165,9 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
 	boolean isValid = true;
 	isValid &= isDocumentOverviewValid(document);
-	GlobalVariables.getErrorMap().addToErrorPath(RiceConstants.DOCUMENT_PROPERTY_NAME);
+	GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 	getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), false);
-	GlobalVariables.getErrorMap().removeFromErrorPath(RiceConstants.DOCUMENT_PROPERTY_NAME);
+	GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 	isValid &= GlobalVariables.getErrorMap().isEmpty();
 	isValid &= processCustomSaveDocumentBusinessRules(document);
 	
@@ -292,13 +292,13 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	// TODO: Chris change these constants!
 
 	// add the error path keys on the stack
-	GlobalVariables.getErrorMap().addToErrorPath(RiceConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME);
+	GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME);
 
 	// check the document header for fields like the description
 	KNSServiceLocator.getDictionaryValidationService().validateBusinessObject(note);
 
 	// drop the error path keys off now
-	GlobalVariables.getErrorMap().removeFromErrorPath(RiceConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME);
+	GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME);
 
 	return GlobalVariables.getErrorMap().isEmpty();
     }
@@ -346,7 +346,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	// new recipients are not embedded in the error path; existing lines should be
 	if (errorMap.getErrorPath().size() == 0) {
 	    // add the error path keys on the stack
-	    errorMap.addToErrorPath(RiceConstants.NEW_AD_HOC_ROUTE_PERSON_PROPERTY_NAME);
+	    errorMap.addToErrorPath(KNSConstants.NEW_AD_HOC_ROUTE_PERSON_PROPERTY_NAME);
 	}
 
 	if (StringUtils.isNotBlank(person.getId())) {
@@ -384,7 +384,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	}
 
 	// drop the error path keys off now
-	errorMap.removeFromErrorPath(RiceConstants.NEW_AD_HOC_ROUTE_PERSON_PROPERTY_NAME);
+	errorMap.removeFromErrorPath(KNSConstants.NEW_AD_HOC_ROUTE_PERSON_PROPERTY_NAME);
 
 	boolean returnboolean = GlobalVariables.getErrorMap().isEmpty();
 	LOG.debug("isAddHocRoutePersonValid(AdHocRoutePerson) - end");
@@ -437,7 +437,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	// new recipients are not embedded in the error path; existing lines should be
 	if (errorMap.getErrorPath().size() == 0) {
 	    // add the error path keys on the stack
-	    GlobalVariables.getErrorMap().addToErrorPath(RiceConstants.NEW_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME);
+	    GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.NEW_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME);
 	}
 
 	if (StringUtils.isNotBlank(workgroup.getId())) {
@@ -460,7 +460,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	}
 
 	// drop the error path keys off now
-	GlobalVariables.getErrorMap().removeFromErrorPath(RiceConstants.NEW_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME);
+	GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.NEW_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME);
 
 	boolean returnboolean = GlobalVariables.getErrorMap().isEmpty();
 	LOG.debug("isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup) - end");

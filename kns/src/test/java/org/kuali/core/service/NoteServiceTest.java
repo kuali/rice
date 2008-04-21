@@ -16,12 +16,12 @@
 package org.kuali.core.service;
 
 import org.junit.Test;
-import org.kuali.RiceConstants;
 import org.kuali.core.bo.Note;
 import org.kuali.core.dao.UniversalUserDao;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.RiceKNSDefaultUserDAOImpl;
 import org.kuali.rice.TestBase;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This class is used to test the {@link NoteService} implementation 
@@ -42,8 +42,12 @@ public class NoteServiceTest extends TestBase {
         note.setNotePostedTimestamp(KNSServiceLocator.getDateTimeService().getCurrentTimestamp());
         note.setNoteText("i like notes");
         note.setRemoteObjectIdentifier("1209348109834u");
-        note.setNoteTypeCode(RiceConstants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE.getCode());
-        KNSServiceLocator.getNoteService().save(note);
+        note.setNoteTypeCode(KNSConstants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE.getCode());
+        try {
+            KNSServiceLocator.getNoteService().save(note);
+        } catch (Exception e) {
+            fail("Saving a note should not fail");
+        }
     }
     
 }

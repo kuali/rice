@@ -22,8 +22,8 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.util.RiceUtilities;
 
 import edu.iu.uis.eden.messaging.dao.MessageQueueDAO;
@@ -35,7 +35,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
     private MessageQueueDAO messageQueueDAO;
 
     public void delete(PersistedMessage routeQueue) {
-	    if (new Boolean(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGE_PERSISTENCE))) {
+	    if (new Boolean(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE))) {
 		if (LOG.isDebugEnabled()) {
 		    LOG.debug("Message Persistence is on.  Deleting stored message" + routeQueue);
 		}
@@ -44,7 +44,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
 	}
 
     public void save(PersistedMessage routeQueue) {
-	    if (new Boolean(Core.getCurrentContextConfig().getProperty(RiceConstants.MESSAGE_PERSISTENCE))) {
+	    if (new Boolean(Core.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE))) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Persisting Message " + routeQueue);
 		}
@@ -89,7 +89,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
     }
 
     public Integer getMaxRetryAttempts() {
-	return new Integer(Core.getCurrentContextConfig().getProperty(RiceConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
+	return new Integer(Core.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
     }
 
     public PersistedMessage getMessage(ServiceInfo serviceInfo, AsynchronousCall methodCall) {
@@ -99,11 +99,11 @@ public class MessageQueueServiceImpl implements MessageQueueService {
 	message.setServiceName(serviceInfo.getQname().toString());
 	    message.setQueueDate(new Timestamp(System.currentTimeMillis()));
 	if (serviceInfo.getServiceDefinition().getPriority() == null) {
-	    message.setQueuePriority(RiceConstants.ROUTE_QUEUE_DEFAULT_PRIORITY);
+	    message.setQueuePriority(KSBConstants.ROUTE_QUEUE_DEFAULT_PRIORITY);
 	} else {
 	    message.setQueuePriority(serviceInfo.getServiceDefinition().getPriority());
 	}
-	message.setQueueStatus(RiceConstants.ROUTE_QUEUE_QUEUED);
+	message.setQueueStatus(KSBConstants.ROUTE_QUEUE_QUEUED);
 	message.setRetryCount(0);
 	if (serviceInfo.getServiceDefinition().getMillisToLive() > 0) {
 			message.setExpirationDate(new Timestamp(System.currentTimeMillis() + serviceInfo.getServiceDefinition().getMillisToLive()));

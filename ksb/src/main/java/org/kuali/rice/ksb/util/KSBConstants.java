@@ -13,30 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+package org.kuali.rice.ksb.util;
 
 import org.kuali.rice.util.JSTLConstants;
 
-public class RiceConstants extends JSTLConstants {
+/**
+ * This is a description of what this class does - delyea don't forget to fill this in.
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ */
+public class KSBConstants extends JSTLConstants {
 
-    private static final long serialVersionUID = -8828648691393487244L;
+    private static final long serialVersionUID = -958108423493026266L;
 
-    public static final int DEFAULT_TRANSACTION_TIMEOUT_SECONDS = 3600;
     public static final String MESSAGE_ENTITY = "message.entity";
     public static final String MESSAGE_PERSISTENCE = "message.persistence";
     public static final String MESSAGING_OFF = "message.off";
     public static final String MESSAGE_DELIVERY = "message.delivery";
     public static final String MESSAGING_SYNCHRONOUS = "synchronous";
-    public static final String DEFAULT_CONFIG_LOCATION_PARAM = "default.config.location";
     public static final String INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY = "message.injected.scheduler";
     public static final String FIXED_POOL_SIZE = "ksb.fixedPoolSize";
     public static final String KSB_AUTH_SERVICE = "ksb.authService";
-
-    public static final String ROOT_RESOURCE_LOADER_CONTAINER_NAME = "RootResourceLoaderContainer";
-    public static final String DEFAULT_ROOT_RESOURCE_LOADER_NAME = "RootResourceLoader";
 
     // message queue constants
     public static final String ROUTE_QUEUE_QUEUED = "Q";
@@ -66,25 +63,5 @@ public class RiceConstants extends JSTLConstants {
     public static final String DIGITAL_SIGNATURE_HEADER = "KEW_DIGITAL_SIGNATURE";
     public static final String KEYSTORE_ALIAS_HEADER = "KEW_KEYSTORE_ALIAS";
     public static final String KEYSTORE_CERTIFICATE_HEADER = "KEW_CERTIFICATE_ALIAS";
-
-    private static final String SIMPLE_DATE_FORMAT_FOR_DATE = "MM/dd/yyyy";
-    private static final String SIMPLE_DATE_FORMAT_FOR_TIME = "hh:mm a";
-    public static final String DEFAULT_DATE_FORMAT_PATTERN = SIMPLE_DATE_FORMAT_FOR_TIME + " " + SIMPLE_DATE_FORMAT_FOR_DATE;
-
-	public static final String SPRING_TRANSACTION_MANAGER = "SPRING_TRANSACTION_MANAGER";
-
-	public static final String SERVICES_TO_CACHE = "rice.resourceloader.servicesToCache";
-
-    public static DateFormat getDefaultDateFormat() {
-	return new SimpleDateFormat(SIMPLE_DATE_FORMAT_FOR_DATE);
-    }
-
-    public static DateFormat getDefaultTimeFormat() {
-	return new SimpleDateFormat(SIMPLE_DATE_FORMAT_FOR_TIME);
-    }
-
-    public static DateFormat getDefaultDateAndTimeFormat() {
-	return new SimpleDateFormat(DEFAULT_DATE_FORMAT_PATTERN);
-    }
 
 }

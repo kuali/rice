@@ -25,13 +25,13 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.kuali.RiceConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.BusinessObjectAttributeEntry;
 import org.kuali.core.datadictionary.control.ControlDefinition;
 import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.util.BeanPropertyComparator;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 public class DictionaryLookupableHelperServiceImpl extends AbstractLookupableHelperServiceImpl {
     private static final long serialVersionUID = 970484069493741447L;
@@ -51,13 +51,13 @@ public class DictionaryLookupableHelperServiceImpl extends AbstractLookupableHel
      * definitions.
      */
     public List getSearchResults(Map fieldValues, Map fieldConversions) {
-        setBackLocation((String) fieldValues.get(RiceConstants.BACK_LOCATION));
-        setDocFormKey((String) fieldValues.get(RiceConstants.DOC_FORM_KEY));
+        setBackLocation((String) fieldValues.get(KNSConstants.BACK_LOCATION));
+        setDocFormKey((String) fieldValues.get(KNSConstants.DOC_FORM_KEY));
 
         List searchResults = new ArrayList();
         DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
         try {
-            String boClassName = (String) fieldValues.get(RiceConstants.DICTIONARY_BO_NAME);
+            String boClassName = (String) fieldValues.get(KNSConstants.DICTIONARY_BO_NAME);
 
             // get bo class to query on
             Class boClass = Class.forName(boClassName);
@@ -128,7 +128,7 @@ public class DictionaryLookupableHelperServiceImpl extends AbstractLookupableHel
      */
     @Override
     public String getReturnUrl(BusinessObject bo, Map fieldConversions, String lookupImpl) {
-        return RiceConstants.EMPTY_STRING;
+        return KNSConstants.EMPTY_STRING;
     }
 
     /**
@@ -136,7 +136,7 @@ public class DictionaryLookupableHelperServiceImpl extends AbstractLookupableHel
      */
     @Override
     public String getMaintenanceUrl(BusinessObject bo, String methodToCall) {
-        return RiceConstants.EMPTY_STRING;
+        return KNSConstants.EMPTY_STRING;
     }
 
     /**

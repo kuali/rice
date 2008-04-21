@@ -28,8 +28,8 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.RequestProcessor;
 import org.kuali.bus.auth.AuthorizationService;
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 /**
  * A RequestProcessor implementation for Struts which handles determining whether or not access
@@ -48,7 +48,7 @@ public class KSBStrutsRequestProcessor extends RequestProcessor {
     }
 
     private boolean isAdministrator(HttpServletRequest request) {
-	AuthorizationService authService = (AuthorizationService)Core.getCurrentContextConfig().getObject(RiceConstants.KSB_AUTH_SERVICE);
+	AuthorizationService authService = (AuthorizationService)Core.getCurrentContextConfig().getObject(KSBConstants.KSB_AUTH_SERVICE);
 	// if no auth service is defined then everyone's an admin
 	return authService == null || authService.isAdministrator(request);
     }

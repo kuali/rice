@@ -25,7 +25,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.RiceKeyConstants;
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.GlobalBusinessObject;
@@ -44,6 +43,7 @@ import org.kuali.core.util.UrlFactory;
 import org.kuali.core.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -183,16 +183,16 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
      * functionality.
      */
     public boolean isNew() {
-        if (RiceConstants.MAINTENANCE_EDIT_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
+        if (KNSConstants.MAINTENANCE_EDIT_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
             return false;
         }
-        else if (RiceConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
+        else if (KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
             return false;
         }
-        else if (RiceConstants.MAINTENANCE_NEW_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
+        else if (KNSConstants.MAINTENANCE_NEW_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
             return true;
         }
-        else if (RiceConstants.MAINTENANCE_COPY_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
+        else if (KNSConstants.MAINTENANCE_COPY_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
             return true;
         }
         else {
@@ -206,7 +206,7 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
      * functionality.
      */
     public boolean isEdit() {
-        if (RiceConstants.MAINTENANCE_EDIT_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
+        if (KNSConstants.MAINTENANCE_EDIT_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
             return true;
         }
         else {
@@ -216,7 +216,7 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
     }
 
     public boolean isNewWithExisting() {
-        if (RiceConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
+        if (KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
             return true;
         }
         else {
@@ -628,10 +628,10 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
 
         // build the link URL for the blocking document
         Properties parameters = new Properties();
-        parameters.put(RiceConstants.DISPATCH_REQUEST_PARAMETER, RiceConstants.DOC_HANDLER_METHOD);
-        parameters.put(RiceConstants.PARAMETER_DOC_ID, blockingDocId);
-        parameters.put(RiceConstants.PARAMETER_COMMAND, RiceConstants.METHOD_DISPLAY_DOC_SEARCH_VIEW);
-        String blockingUrl = UrlFactory.parameterizeUrl(RiceConstants.MAINTENANCE_ACTION, parameters);
+        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
+        parameters.put(KNSConstants.PARAMETER_DOC_ID, blockingDocId);
+        parameters.put(KNSConstants.PARAMETER_COMMAND, KNSConstants.METHOD_DISPLAY_DOC_SEARCH_VIEW);
+        String blockingUrl = UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("blockingUrl = '" + blockingUrl + "'");
             LOG.debug("Maintenance record: " + lockedDocument.getDocumentHeader().getDocumentNumber() + "is locked.");
@@ -639,7 +639,7 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
 
         // post an error about the locked document
         String[] errorParameters = { blockingUrl, blockingDocId };
-        GlobalVariables.getErrorMap().putError(RiceConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_MAINTENANCE_LOCKED, errorParameters);
+        GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_MAINTENANCE_LOCKED, errorParameters);
 
         throw new ValidationException("Maintenance Record is locked by another document.");
     }
@@ -669,7 +669,7 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
         }
 
         // if the blocking document hasn't been routed, we can ignore it
-        return RiceConstants.DocumentStatusCodes.INITIATED.equals(documentHeader.getFinancialDocumentStatusCode());
+        return KNSConstants.DocumentStatusCodes.INITIATED.equals(documentHeader.getFinancialDocumentStatusCode());
     }
 
     /**

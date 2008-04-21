@@ -23,8 +23,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.core.lookup.LookupUtils;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * Form to handle multiple value lookups 
@@ -93,19 +93,19 @@ public class MultipleValueLookupForm extends LookupForm {
     public void populate(HttpServletRequest request) {
         super.populate(request);
         
-        if (StringUtils.isNotBlank(request.getParameter(RiceConstants.TableRenderConstants.VIEWED_PAGE_NUMBER))) {
-            setViewedPageNumber(Integer.parseInt(request.getParameter(RiceConstants.TableRenderConstants.VIEWED_PAGE_NUMBER)));
+        if (StringUtils.isNotBlank(request.getParameter(KNSConstants.TableRenderConstants.VIEWED_PAGE_NUMBER))) {
+            setViewedPageNumber(Integer.parseInt(request.getParameter(KNSConstants.TableRenderConstants.VIEWED_PAGE_NUMBER)));
         }
         else {
             setViewedPageNumber(0); // first page is page 0
         }
         
-        if (RiceConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD.equals(getMethodToCall())) {
+        if (KNSConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD.equals(getMethodToCall())) {
             // look for the page number to switch to
             setSwitchToPageNumber(-1);
             
             // the param we're looking for looks like: methodToCall.switchToPage.1.x , where 1 is the page nbr
-            String paramPrefix = RiceConstants.DISPATCH_REQUEST_PARAMETER + "." + RiceConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD + ".";
+            String paramPrefix = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD + ".";
             for (Enumeration i = request.getParameterNames(); i.hasMoreElements();) {
                 String parameterName = (String) i.nextElement();
                 if (parameterName.startsWith(paramPrefix) && parameterName.endsWith(".x")) {
@@ -118,11 +118,11 @@ public class MultipleValueLookupForm extends LookupForm {
             }
         }
         
-        if (RiceConstants.TableRenderConstants.SORT_METHOD.equals(getMethodToCall())) {
+        if (KNSConstants.TableRenderConstants.SORT_METHOD.equals(getMethodToCall())) {
             setColumnToSortIndex(-1);
             
             // the param we're looking for looks like: methodToCall.sort.1.x , where 1 is the column to sort on
-            String paramPrefix = RiceConstants.DISPATCH_REQUEST_PARAMETER + "." + RiceConstants.TableRenderConstants.SORT_METHOD + ".";
+            String paramPrefix = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TableRenderConstants.SORT_METHOD + ".";
             for (Enumeration i = request.getParameterNames(); i.hasMoreElements();) {
                 String parameterName = (String) i.nextElement();
                 if (parameterName.startsWith(paramPrefix) && parameterName.endsWith(".x")) {
@@ -154,7 +154,7 @@ public class MultipleValueLookupForm extends LookupForm {
     }
 
     protected Set<String> parsePreviouslySelectedObjectIds(HttpServletRequest request) {
-        String previouslySelectedObjectIds = request.getParameter(RiceConstants.MULTIPLE_VALUE_LOOKUP_PREVIOUSLY_SELECTED_OBJ_IDS_PARAM);
+        String previouslySelectedObjectIds = request.getParameter(KNSConstants.MULTIPLE_VALUE_LOOKUP_PREVIOUSLY_SELECTED_OBJ_IDS_PARAM);
         return LookupUtils.convertStringOfObjectIdsToSet(previouslySelectedObjectIds);
     }
     
@@ -164,8 +164,8 @@ public class MultipleValueLookupForm extends LookupForm {
         Enumeration paramNames = request.getParameterNames();
         while (paramNames.hasMoreElements()) {
             String paramName = (String) paramNames.nextElement();
-            if (paramName.startsWith(RiceConstants.MULTIPLE_VALUE_LOOKUP_SELECTED_OBJ_ID_PARAM_PREFIX) && StringUtils.isNotBlank(request.getParameter(paramName))) {
-                set.add(StringUtils.substringAfter(paramName, RiceConstants.MULTIPLE_VALUE_LOOKUP_SELECTED_OBJ_ID_PARAM_PREFIX));
+            if (paramName.startsWith(KNSConstants.MULTIPLE_VALUE_LOOKUP_SELECTED_OBJ_ID_PARAM_PREFIX) && StringUtils.isNotBlank(request.getParameter(paramName))) {
+                set.add(StringUtils.substringAfter(paramName, KNSConstants.MULTIPLE_VALUE_LOOKUP_SELECTED_OBJ_ID_PARAM_PREFIX));
             }
         }
         return set;
@@ -177,8 +177,8 @@ public class MultipleValueLookupForm extends LookupForm {
         Enumeration paramNames = request.getParameterNames();
         while (paramNames.hasMoreElements()) {
             String paramName = (String) paramNames.nextElement();
-            if (paramName.startsWith(RiceConstants.MULTIPLE_VALUE_LOOKUP_DISPLAYED_OBJ_ID_PARAM_PREFIX) && StringUtils.isNotBlank(request.getParameter(paramName))) {
-                set.add(StringUtils.substringAfter(paramName, RiceConstants.MULTIPLE_VALUE_LOOKUP_DISPLAYED_OBJ_ID_PARAM_PREFIX));
+            if (paramName.startsWith(KNSConstants.MULTIPLE_VALUE_LOOKUP_DISPLAYED_OBJ_ID_PARAM_PREFIX) && StringUtils.isNotBlank(request.getParameter(paramName))) {
+                set.add(StringUtils.substringAfter(paramName, KNSConstants.MULTIPLE_VALUE_LOOKUP_DISPLAYED_OBJ_ID_PARAM_PREFIX));
             }
         }
         return set;
@@ -195,7 +195,7 @@ public class MultipleValueLookupForm extends LookupForm {
      */
     protected boolean parseSearchUsingOnlyPrimaryKeyValues(HttpServletRequest request) {
         // the param we're looking for looks like: methodToCall.sort.1.(::;true;::).x , we want to parse out the "true" component
-        String paramPrefix = RiceConstants.DISPATCH_REQUEST_PARAMETER + "." + getMethodToCall() + ".";
+        String paramPrefix = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + getMethodToCall() + ".";
         for (Enumeration i = request.getParameterNames(); i.hasMoreElements();) {
             String parameterName = (String) i.nextElement();
             if (parameterName.startsWith(paramPrefix) && parameterName.endsWith(".x")) {
@@ -216,7 +216,7 @@ public class MultipleValueLookupForm extends LookupForm {
      * @return the value between the delimiters, false if there are no delimiters
      */
     protected boolean parseSearchUsingOnlyPrimaryKeyValues(String methodToCallParam) {
-        String searchUsingOnlyPrimaryKeyValuesStr = StringUtils.substringBetween(methodToCallParam, RiceConstants.METHOD_TO_CALL_PARM12_LEFT_DEL, RiceConstants.METHOD_TO_CALL_PARM12_RIGHT_DEL);
+        String searchUsingOnlyPrimaryKeyValuesStr = StringUtils.substringBetween(methodToCallParam, KNSConstants.METHOD_TO_CALL_PARM12_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM12_RIGHT_DEL);
         if (StringUtils.isBlank(searchUsingOnlyPrimaryKeyValuesStr)) {
             return false;
         }

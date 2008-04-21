@@ -24,10 +24,10 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.definition.ObjectDefinition;
 import org.kuali.rice.util.ClassLoaderUtils;
+import org.kuali.rice.util.RiceConstants;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 

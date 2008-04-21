@@ -23,12 +23,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
-import org.kuali.RiceConstants;
 import org.kuali.core.document.Document;
 import org.kuali.core.question.ConfirmationQuestion;
 import org.kuali.core.rule.PreRulesCheck;
 import org.kuali.core.rule.event.PreRulesCheckEvent;
 import org.kuali.core.web.struts.form.KualiForm;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.util.RiceConstants;
 
 /**
  * 
@@ -80,7 +81,7 @@ public abstract class PreRulesContinuationBase implements PreRulesCheck {
 
         public void askQuestion(String id, String text) {
             event.setQuestionId(id);
-            event.setQuestionType(RiceConstants.CONFIRMATION_QUESTION);
+            event.setQuestionType(KNSConstants.CONFIRMATION_QUESTION);
             event.setQuestionText(text);
             event.setPerformQuestion(true);
 
@@ -132,8 +133,8 @@ public abstract class PreRulesContinuationBase implements PreRulesCheck {
 
     public boolean processPreRuleChecks(ActionForm form, HttpServletRequest request, PreRulesCheckEvent event) {
 
-        question = request.getParameter(RiceConstants.QUESTION_INST_ATTRIBUTE_NAME);
-        buttonClicked = request.getParameter(RiceConstants.QUESTION_CLICKED_BUTTON);
+        question = request.getParameter(KNSConstants.QUESTION_INST_ATTRIBUTE_NAME);
+        buttonClicked = request.getParameter(KNSConstants.QUESTION_CLICKED_BUTTON);
         this.event = event;
         this.form = (KualiForm) form;
 
@@ -144,7 +145,7 @@ public abstract class PreRulesContinuationBase implements PreRulesCheck {
             LOG.debug("QuestionContext() is: " + event.getQuestionContext());
         }
 
-        session = new ContextSession(request.getParameter(RiceConstants.QUESTION_CONTEXT), event);
+        session = new ContextSession(request.getParameter(KNSConstants.QUESTION_CONTEXT), event);
 
         boolean result = false;
 

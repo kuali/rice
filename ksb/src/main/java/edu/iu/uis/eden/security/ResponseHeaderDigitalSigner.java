@@ -22,7 +22,7 @@ import java.security.cert.Certificate;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.RiceConstants;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 /**
  * A DigitalSinger which places the alias and digital signature into the response headers of an HttpServletResponse.
@@ -54,12 +54,12 @@ public class ResponseHeaderDigitalSigner extends AbstractDigitalSigner {
     
 	public void sign() throws Exception {
 	    if (StringUtils.isNotBlank(this.alias) ) {
-	        this.response.setHeader(RiceConstants.KEYSTORE_ALIAS_HEADER, this.alias);
+	        this.response.setHeader(KSBConstants.KEYSTORE_ALIAS_HEADER, this.alias);
 	    }
 	    if (this.certificate != null) {
-	        this.response.setHeader(RiceConstants.KEYSTORE_CERTIFICATE_HEADER, getEncodedCertificate(this.certificate));
+	        this.response.setHeader(KSBConstants.KEYSTORE_CERTIFICATE_HEADER, getEncodedCertificate(this.certificate));
 	    }
-	    this.response.setHeader(RiceConstants.DIGITAL_SIGNATURE_HEADER, getEncodedSignature());
+	    this.response.setHeader(KSBConstants.DIGITAL_SIGNATURE_HEADER, getEncodedSignature());
 	}
 
 }

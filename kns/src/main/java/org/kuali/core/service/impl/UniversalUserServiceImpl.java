@@ -28,7 +28,6 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.RiceConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.bo.BusinessObjectRelationship;
 import org.kuali.core.bo.PersistableBusinessObject;
@@ -53,6 +52,7 @@ import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.service.UniversalUserService;
 import org.kuali.core.util.spring.Cached;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.iu.uis.eden.clientapp.vo.EmplIdVO;
@@ -242,8 +242,8 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
                 Object personUserIdentifier = fieldValues.get(propertyName);
                 if (personUserIdentifier != null) {
                     String containerPropertyName = propertyName;
-                    if (containerPropertyName.startsWith(RiceConstants.MAINTENANCE_ADD_PREFIX)) {
-                        containerPropertyName = propertyName.substring(RiceConstants.MAINTENANCE_ADD_PREFIX.length());
+                    if (containerPropertyName.startsWith(KNSConstants.MAINTENANCE_ADD_PREFIX)) {
+                        containerPropertyName = propertyName.substring(KNSConstants.MAINTENANCE_ADD_PREFIX.length());
                     }
                     // get the class of the object that is referenced by the property name
                     if (containerPropertyName.indexOf(".") > 0) {
@@ -481,14 +481,14 @@ public class UniversalUserServiceImpl extends BaseUserService implements Univers
 
     private String getSupervisorWorkgroup() {
         if (supervisorWorkgroup == null) {
-            supervisorWorkgroup = KNSServiceLocator.getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, RiceConstants.CoreApcParms.SUPERVISOR_WORKGROUP);
+            supervisorWorkgroup = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP);
         }
         return supervisorWorkgroup;
     }
 
     private String getWorkflowExceptionWorkgroup() {
         if (workflowExceptionWorkgroup == null) {
-            workflowExceptionWorkgroup = KNSServiceLocator.getKualiConfigurationService().getParameterValue(RiceConstants.KNS_NAMESPACE, RiceConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, RiceConstants.CoreApcParms.WORKFLOW_EXCEPTION_WORKGROUP);
+            workflowExceptionWorkgroup = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.WORKFLOW_EXCEPTION_WORKGROUP);
         }
         return workflowExceptionWorkgroup;
     }

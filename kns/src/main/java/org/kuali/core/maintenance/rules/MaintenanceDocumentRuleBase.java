@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RiceConstants;
 import org.kuali.RiceKeyConstants;
 import org.kuali.core.authorization.FieldAuthorization;
 import org.kuali.core.bo.GlobalBusinessObject;
@@ -59,6 +58,7 @@ import org.kuali.core.util.TypedArrayList;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.WorkflowDocumentService;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 import edu.iu.uis.eden.exception.WorkflowException;
 
@@ -74,7 +74,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
     // these two constants are used to correctly prefix errors added to
     // the global errors
-    public static final String MAINTAINABLE_ERROR_PREFIX = RiceConstants.MAINTENANCE_NEW_MAINTAINABLE;
+    public static final String MAINTAINABLE_ERROR_PREFIX = KNSConstants.MAINTENANCE_NEW_MAINTAINABLE;
     public static final String DOCUMENT_ERROR_PREFIX = "document.";
     public static final String MAINTAINABLE_ERROR_PATH = DOCUMENT_ERROR_PREFIX + "newMaintainableObject";
 
@@ -249,8 +249,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * 
      */
     protected void putGlobalError(String errorConstant) {
-        if (!errorAlreadyExists(RiceConstants.DOCUMENT_ERRORS, errorConstant)) {
-            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(RiceConstants.DOCUMENT_ERRORS, errorConstant);
+        if (!errorAlreadyExists(KNSConstants.DOCUMENT_ERRORS, errorConstant)) {
+            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(KNSConstants.DOCUMENT_ERRORS, errorConstant);
         }
     }
 
@@ -264,8 +264,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * 
      */
     protected void putGlobalError(String errorConstant, String parameter) {
-        if (!errorAlreadyExists(RiceConstants.DOCUMENT_ERRORS, errorConstant)) {
-            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(RiceConstants.DOCUMENT_ERRORS, errorConstant, parameter);
+        if (!errorAlreadyExists(KNSConstants.DOCUMENT_ERRORS, errorConstant)) {
+            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(KNSConstants.DOCUMENT_ERRORS, errorConstant, parameter);
         }
     }
 
@@ -279,8 +279,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * 
      */
     protected void putGlobalError(String errorConstant, String[] parameters) {
-        if (!errorAlreadyExists(RiceConstants.DOCUMENT_ERRORS, errorConstant)) {
-            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(RiceConstants.DOCUMENT_ERRORS, errorConstant, parameters);
+        if (!errorAlreadyExists(KNSConstants.DOCUMENT_ERRORS, errorConstant)) {
+            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(KNSConstants.DOCUMENT_ERRORS, errorConstant, parameters);
         }
     }
 
@@ -558,7 +558,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             if (!ObjectUtils.equalByKeys(oldBo, newBo)) { // this is a very handy utility on our ObjectUtils
 
                 // add a complaint to the errors
-                putDocumentError(RiceConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_PRIMARY_KEYS_CHANGED_ON_EDIT, getHumanReadablePrimaryKeyFieldNames(boClass));
+                putDocumentError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_PRIMARY_KEYS_CHANGED_ON_EDIT, getHumanReadablePrimaryKeyFieldNames(boClass));
                 success &= false;
             }
         }
@@ -581,7 +581,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             // if the retrieve was successful, then this object already exists, and we need
             // to complain
             if (testBo != null) {
-                putDocumentError(RiceConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_KEYS_ALREADY_EXIST_ON_CREATE_NEW, getHumanReadablePrimaryKeyFieldNames(boClass));
+                putDocumentError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_KEYS_ALREADY_EXIST_ON_CREATE_NEW, getHumanReadablePrimaryKeyFieldNames(boClass));
                 success &= false;
             }
         }
@@ -1527,7 +1527,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         }
         getBoDictionaryService().performForceUppercase(bo);
         getMaintDocDictionaryService().validateMaintainableCollectionsAddLineRequiredFields( document, document.getNewMaintainableObject().getBusinessObject(), collectionName );
-        String errorPath = RiceConstants.MAINTENANCE_ADD_PREFIX + collectionName;
+        String errorPath = KNSConstants.MAINTENANCE_ADD_PREFIX + collectionName;
         map.addToErrorPath( errorPath );
         getDictionaryValidationService().validateBusinessObject( bo, false );
         success &= map.getErrorCount() == errorCount; 

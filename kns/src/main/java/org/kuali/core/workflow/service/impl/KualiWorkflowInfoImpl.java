@@ -17,9 +17,9 @@ package org.kuali.core.workflow.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.RiceConstants;
 import org.kuali.core.util.spring.Cached;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
@@ -62,7 +62,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
 
     public RouteHeaderVO getRouteHeader(Long routeHeaderId) throws WorkflowException {
         try {
-            return getWorkflowUtility().getRouteHeader(new NetworkIdVO(RiceConstants.SYSTEM_USER), routeHeaderId);
+            return getWorkflowUtility().getRouteHeader(new NetworkIdVO(KNSConstants.SYSTEM_USER), routeHeaderId);
         }
         catch (Exception e) {
             throw new WorkflowException(e);

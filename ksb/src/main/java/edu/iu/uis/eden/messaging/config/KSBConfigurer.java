@@ -27,16 +27,17 @@ import org.apache.log4j.Logger;
 import org.kuali.bus.auth.AuthorizationService;
 import org.kuali.bus.ojb.OjbConfigurer;
 import org.kuali.bus.services.KSBServiceLocator;
-import org.kuali.rice.RiceConstants;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.config.ModuleConfigurer;
 import org.kuali.rice.config.event.AfterStartEvent;
 import org.kuali.rice.config.event.RiceConfigEvent;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.kuali.rice.lifecycle.ServiceDelegatingLifecycle;
 import org.kuali.rice.util.ClassLoaderUtils;
+import org.kuali.rice.util.RiceConstants;
 import org.quartz.Scheduler;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -200,14 +201,14 @@ public class KSBConfigurer extends ModuleConfigurer {
 	protected void configureScheduler(Config config) {
 		if (this.getExceptionMessagingScheduler() != null) {
 			LOG.info("Configuring injected exception messaging Scheduler");
-			config.getObjects().put(RiceConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY, this.getExceptionMessagingScheduler());
+			config.getObjects().put(KSBConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY, this.getExceptionMessagingScheduler());
 		}
 	}
 
 	protected void configureAuthorization(Config config) {
 	    if (this.getAuthorizationService() != null) {
 		LOG.info("Configuring injected AuthorizationService: " + getAuthorizationService().getClass().getName());
-		config.getObjects().put(RiceConstants.KSB_AUTH_SERVICE, this.getAuthorizationService());
+		config.getObjects().put(KSBConstants.KSB_AUTH_SERVICE, this.getAuthorizationService());
 	}
 	}
 
@@ -233,19 +234,19 @@ public class KSBConfigurer extends ModuleConfigurer {
         }
 
         if (getMessageDataSource() != null) {
-            config.getObjects().put(RiceConstants.KSB_MESSAGE_DATASOURCE, getMessageDataSource());
+            config.getObjects().put(KSBConstants.KSB_MESSAGE_DATASOURCE, getMessageDataSource());
         } else if (!StringUtils.isBlank(getMessageDataSourceJndiName())) {
-            config.getProperties().put(RiceConstants.KSB_MESSAGE_DATASOURCE_JNDI, getMessageDataSourceJndiName());
+            config.getProperties().put(KSBConstants.KSB_MESSAGE_DATASOURCE_JNDI, getMessageDataSourceJndiName());
         }
         if (getNonTransactionalMessageDataSource() != null) {
-            config.getObjects().put(RiceConstants.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE, getNonTransactionalMessageDataSource());
+            config.getObjects().put(KSBConstants.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE, getNonTransactionalMessageDataSource());
         } else if (!StringUtils.isBlank(getMessageDataSourceJndiName())) {
-            config.getProperties().put(RiceConstants.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE_JNDI, getNonTransactionalMessageDataSourceJndiName());
+            config.getProperties().put(KSBConstants.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE_JNDI, getNonTransactionalMessageDataSourceJndiName());
         }
         if (getRegistryDataSource() != null) {
-            config.getObjects().put(RiceConstants.KSB_REGISTRY_DATASOURCE, getRegistryDataSource());
+            config.getObjects().put(KSBConstants.KSB_REGISTRY_DATASOURCE, getRegistryDataSource());
         } else if (!StringUtils.isBlank(getRegistryDataSourceJndiName())) {
-            config.getProperties().put(RiceConstants.KSB_REGISTRY_DATASOURCE_JNDI, getRegistryDataSourceJndiName());
+            config.getProperties().put(KSBConstants.KSB_REGISTRY_DATASOURCE_JNDI, getRegistryDataSourceJndiName());
         }
     }
 
@@ -257,7 +258,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 	}
 	
 	protected void configureAlternateEndpoints(Config config) {
-	    config.getObjects().put(RiceConstants.KSB_ALTERNATE_ENDPOINTS, getAlternateEndpoints());
+	    config.getObjects().put(KSBConstants.KSB_ALTERNATE_ENDPOINTS, getAlternateEndpoints());
 	}
 
 	public void stop() throws Exception {
@@ -274,7 +275,7 @@ public class KSBConfigurer extends ModuleConfigurer {
      */
     protected void cleanUpConfiguration() {
         Core.getCurrentContextConfig().getObjects().remove(Config.BUS_DEPLOYED_SERVICES);
-        Core.getCurrentContextConfig().getObjects().remove(RiceConstants.KSB_ALTERNATE_ENDPOINTS);
+        Core.getCurrentContextConfig().getObjects().remove(KSBConstants.KSB_ALTERNATE_ENDPOINTS);
     }
 
 	public boolean isStarted() {

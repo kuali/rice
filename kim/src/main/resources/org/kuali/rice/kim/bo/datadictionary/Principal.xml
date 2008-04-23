@@ -25,8 +25,27 @@
 
             <inquirySections><inquirySection title="Header Text"><inquiryFields>
                 <field attributeName="id" />
-                <field attributeName="name" />
-            </inquiryFields></inquirySection></inquirySections>
+                <field attributeName="name" />                  
+            </inquiryFields></inquirySection>
+            <inquirySection title="Group Membership">
+        			<inquiryFields>
+        				<inquiryCollection name="groups"
+        					businessObjectClass="org.kuali.rice.kim.bo.Group">
+        					<field attributeName="id" />
+        					<field attributeName="name" />
+        				</inquiryCollection>
+        			</inquiryFields>
+        		</inquirySection>
+        		<inquirySection title="Roles">
+        			<inquiryFields>
+        				<inquiryCollection name="roles"
+        					businessObjectClass="org.kuali.rice.kim.bo.Role">
+        					<field attributeName="id" />
+        					<field attributeName="name" />
+        				</inquiryCollection>
+        			</inquiryFields>
+        		</inquirySection>
+        	  </inquirySections>	
         </inquiry>
 
         <lookup>
@@ -41,13 +60,13 @@
             </defaultSort>
 
             <lookupFields>
-                <lookupField attributeName="id" required="false" />
-                <lookupField attributeName="name" required="false" />
+                <lookupField attributeName="id" required="false"  />
+                <lookupField attributeName="name" required="false" />                                        
             </lookupFields>
 
             <resultFields>
                 <field attributeName="id" />
-                <field attributeName="name" />
+                <field attributeName="name" />               
             </resultFields>
         </lookup>
 
@@ -81,7 +100,9 @@
 
 			</attribute>
 			
-			<attributeReference name="entityId" sourceClassName="org.kuali.rice.kim.bo.Entity" sourceAttributeName="id">
+			<attributeReference name="entityId"
+				sourceAttributeName="id"
+				sourceClassName="org.kuali.rice.kim.bo.Entity">
 				<label>Entity</label>
                 <shortLabel>Entity</shortLabel>
 				<required>true</required>
@@ -93,11 +114,32 @@
 						includeKeyInLabel="true" />
 				</control>
 			</attributeReference>
-		
-
-            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
+			
+			 <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
 			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
         </attributes>
+			
+			<collections>
+        	<collection name="groups">
+        		<label>Groups</label>
+        		<shortLabel>Groups</shortLabel>
+        		<summary>Groups</summary>
+        		<description>
+        		 Groups of this Principal
+        		</description>
+        	</collection>
+        	<collection name="roles">
+        		<label>Roles</label>
+        		<shortLabel>Roles</shortLabel>
+        		<summary>Roles</summary>
+        		<description>
+        			Roles of this Principal
+        		</description>
+        	</collection>
+        </collections>
+		
+
+           
         <objectLabel>Principal</objectLabel>
     </businessObject>
 </dictionaryEntry>

@@ -39,6 +39,19 @@
 		<field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		
+		<collection-descriptor name="groups" element-class-ref="org.kuali.rice.kim.bo.Group" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="link" auto-delete="link"
+			indirection-table="KIM_GROUPS_PRINCIPALS_T">
+			<fk-pointing-to-this-class column="PRINCIPAL_ID"/>
+     		<fk-pointing-to-element-class column="GROUP_ID"/>
+		</collection-descriptor>
+		
+		<collection-descriptor name="roles" element-class-ref="org.kuali.rice.kim.bo.Role" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="link" auto-delete="link"
+			indirection-table="KIM_ROLES_PRINCIPALS_T">
+			<fk-pointing-to-this-class column="PRINCIPAL_ID"/>
+     		<fk-pointing-to-element-class column="ROLE_ID"/>
+		</collection-descriptor>
+		
 	</class-descriptor>
 
 	<!-- GROUPS -->

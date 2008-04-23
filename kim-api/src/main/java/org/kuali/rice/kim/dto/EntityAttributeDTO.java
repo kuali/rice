@@ -19,21 +19,17 @@ import java.io.Serializable;
 
 /**
  * This is the Data Transfer Object (DTO) that is used for our service layer.
- * 
- * Each Entity can have one to many meta-data attributes associated with them.  This DTO represents 
- * one of those. 
- * 
+ *
+ * Each Entity can have one to many meta-data attributes associated with them.  This DTO represents
+ * one of those.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class EntityAttributeDTO implements Serializable {
-	private static final long serialVersionUID = -445101091769342601L;
-	
-    private Long id;
-	private Long attributeTypeId;
+public class EntityAttributeDTO extends AbstractAttributeBaseDTO {
+    private static final long serialVersionUID = 3293833805402247836L;
+
+    private Long entityId;
 	private Long namespaceId;
-	private String attributeName;
-	private String value;
-	private Long entityId;
 
 	public Long getNamespaceId() {
 		return namespaceId;
@@ -41,38 +37,6 @@ public class EntityAttributeDTO implements Serializable {
 
 	public void setNamespaceId(Long namespaceId) {
 		this.namespaceId = namespaceId;
-	}
-
-	public String getAttributeName() {
-		return attributeName;
-	}
-
-	public void setAttributeName(String attributeName) {
-		this.attributeName = attributeName;
-	}
-
-	public Long getAttributeTypeId() {
-		return attributeTypeId;
-	}
-
-	public void setAttributeTypeId(Long attributeTypeId) {
-		this.attributeTypeId = attributeTypeId;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
 	}
 
     /**

@@ -15,20 +15,21 @@
  */
 package org.kuali.rice.kim.dto;
 
+import java.util.HashMap;
+
 /**
  * This is a Data Transfer Object (DTO) that is used by the service layer.
- * 
+ *
  * Business object that represents a single qualified role attribute record associated with a group.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class GroupQualifiedRoleAttributeDTO extends QualifiedRoleAttributeDTO {
-    private static final long serialVersionUID = -4240285371664750182L;
-    
+public class GroupQualifiedRoleAttributeDTO extends AbstractQualifiedRoleAttributeDTO {
+    private static final long serialVersionUID = 1431763543517498080L;
 
     private Long groupId;
 
-    private GroupDTO groupDto;
+    private HashMap<String, GroupQualifiedRoleAttributeDTO> qualifiedRoleAttributes;
 
     /**
      * @return the groupId
@@ -46,22 +47,16 @@ public class GroupQualifiedRoleAttributeDTO extends QualifiedRoleAttributeDTO {
     }
 
     /**
-     * 
-     * This method ...
-     * 
-     * @return GroupDTO
+     * @return the qualifiedRoleAttributes
      */
-    public GroupDTO getGroupDTO() {
-        return this.groupDto;
+    public HashMap<String, GroupQualifiedRoleAttributeDTO> getQualifiedRoleAttributes() {
+        return this.qualifiedRoleAttributes;
     }
 
     /**
-     * 
-     * This method ...
-     * 
-     * @param groupDto
+     * @param qualifiedRoleAttributes the qualifiedRoleAttributes to set
      */
-    public void setGroupDTO(GroupDTO groupDto) {
-        this.groupDto = groupDto;
+    public void setQualifiedRoleAttributes(HashMap<String, GroupQualifiedRoleAttributeDTO> qualifiedRoleAttributes) {
+        this.qualifiedRoleAttributes = qualifiedRoleAttributes;
     }
 }

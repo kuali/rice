@@ -16,21 +16,27 @@
 package org.kuali.rice.kim.dto;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * This is the Data Transfer Object (DTO) that is used for our service layer.
- * 
- * This class represents a Role instance in the system. 
- * 
+ *
+ * This class represents a Role instance in the system.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoleDTO implements Serializable {
     private static final long serialVersionUID = -3710722671286677124L;
-	
+
     private Long id;
 	private String name;
 	private String description;
-	
+
+	private HashMap<String, GroupDTO> permissions;
+	private HashMap<String, GroupDTO> groups = new HashMap<String, GroupDTO>();
+	private HashMap<String, PrincipalDTO> principals = new HashMap<String, PrincipalDTO>();
+	private HashMap<String, RoleAttributeDTO> roles = new HashMap<String, RoleAttributeDTO>();
+
 	public String getDescription() {
 		return description;
 	}
@@ -54,4 +60,60 @@ public class RoleDTO implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+    /**
+     * @return the permissions
+     */
+    public HashMap<String, GroupDTO> getPermissions() {
+        return this.permissions;
+    }
+
+    /**
+     * @param permissions the permissions to set
+     */
+    public void setPermissions(HashMap<String, GroupDTO> permissions) {
+        this.permissions = permissions;
+    }
+
+    /**
+     * @return the groups
+     */
+    public HashMap<String, GroupDTO> getGroups() {
+        return this.groups;
+    }
+
+    /**
+     * @param groups the groups to set
+     */
+    public void setGroups(HashMap<String, GroupDTO> groups) {
+        this.groups = groups;
+    }
+
+    /**
+     * @return the principals
+     */
+    public HashMap<String, PrincipalDTO> getPrincipals() {
+        return this.principals;
+    }
+
+    /**
+     * @param principals the principals to set
+     */
+    public void setPrincipals(HashMap<String, PrincipalDTO> principals) {
+        this.principals = principals;
+    }
+
+    /**
+     * @return the roles
+     */
+    public HashMap<String, RoleAttributeDTO> getRoles() {
+        return this.roles;
+    }
+
+    /**
+     * @param roles the roles to set
+     */
+    public void setRoles(HashMap<String, RoleAttributeDTO> roles) {
+        this.roles = roles;
+    }
 }

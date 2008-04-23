@@ -26,7 +26,7 @@ import java.io.Serializable;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public abstract class QualifiedRoleAttributeDTO implements Serializable {
+public abstract class AbstractQualifiedRoleAttributeDTO implements Serializable {
     
     private Long id;
     private Long roleId;

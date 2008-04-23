@@ -17,20 +17,22 @@ package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
 
+import org.kuali.rice.kim.dto.GroupAttributeDTO;
+
 /**
- * This class represents arbitrary attributes that can be attached to groups.  For example, you could use 
- * this feature to have basic key value attributes attached to a Group.  More specifically, you could create a 
- * group, but then want to store a group phone number or group address.  By adding arbitrary group attributes to this, 
- * you could handle all of this. 
- * 
+ * This class represents arbitrary attributes that can be attached to groups.  For example, you could use
+ * this feature to have basic key value attributes attached to a Group.  More specifically, you could create a
+ * group, but then want to store a group phone number or group address.  By adding arbitrary group attributes to this,
+ * you could handle all of this.
+ *
  * @author Kuali Rice Team (kuali-rice@googleroles.com)
  */
 public class GroupAttribute extends AttributeBase {
+	private static final long serialVersionUID = 5512700461635442326L;
 
-	private static final long serialVersionUID = -2255690191635455239L;
-	private Long groupId;
+    private Long groupId;
 	private Group group;
-	
+
 	/**
      * @return the group
      */
@@ -72,5 +74,19 @@ public class GroupAttribute extends AttributeBase {
 
 	public void refresh() {
 		// not going to add unless needed
+	}
+
+	/**
+	 *
+	 * This method creates a DTO of the BO
+	 *
+	 * @param GroupAttribute
+	 * @return GroupAttributeDTO
+	 */
+	public static GroupAttributeDTO toDTO(final GroupAttribute ga) {
+	    final GroupAttributeDTO dto = new GroupAttributeDTO();
+	    AttributeBase.fillInDTO(dto, ga);
+	    dto.setGroupId(ga.getGroupId());
+	    return dto;
 	}
 }

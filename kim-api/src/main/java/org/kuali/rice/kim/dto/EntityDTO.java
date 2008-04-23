@@ -19,30 +19,48 @@ import java.util.HashMap;
 
 /**
  * This is a Data Transfer Object (DTO) that is used by the service layer.
- * 
- * An Entity represents a specific instance of a person, process, company, system, etc in the system.  An Entity 
- * has meta-data that hangs off of it.  User XYZ would be represented in the system as an Entity of type Person. 
- * 
+ *
+ * An Entity represents a specific instance of a person, process, company, system, etc in the system.  An Entity
+ * has meta-data that hangs off of it.  User XYZ would be represented in the system as an Entity of type Person.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EntityDTO extends AbstractEntityBaseDTO {
     private static final long serialVersionUID = -3136254886317498473L;
-    
+
     private HashMap<String,EntityAttributeDTO> entityAttributeDtos;
-    
+
+    private HashMap<String,PrincipalDTO> principalDtos;
+
     /**
-     * @return entityAttributeDtos - the key to the HashMap is the name of the attribute, the value 
-     *                            is the actual DTO object 
+     * @return entityAttributeDtos - the key to the HashMap is the name of the attribute, the value
+     *                            is the actual DTO object
      */
     public HashMap<String, EntityAttributeDTO> getEntityAttributeDtos() {
         return this.entityAttributeDtos;
     }
 
     /**
-     * @param entityAttributeDtos - the key to the HashMap is the name of the attribute, the value 
+     * @param entityAttributeDtos - the key to the HashMap is the name of the attribute, the value
      *                           is the actual DTO object
      */
     public void setEntityAttributesDtos(HashMap<String, EntityAttributeDTO> entityAttributeDtos) {
         this.entityAttributeDtos = entityAttributeDtos;
+    }
+
+    /**
+     * @return PrincipalDTO - the key to the HashMap is the name of the principal, the value
+     *                            is the actual DTO object
+     */
+    public HashMap<String, PrincipalDTO> getPrincipalDtos() {
+        return this.principalDtos;
+    }
+
+    /**
+     * @param PrincipalDTOs - the key to the HashMap is the name of the principal, the value
+     *                           is the actual DTO object
+     */
+    public void setPrincipalDtos(HashMap<String, PrincipalDTO> principalDtos) {
+        this.principalDtos = principalDtos;
     }
 }

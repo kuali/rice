@@ -27,13 +27,13 @@ import java.util.HashMap;
  *
  */
 public class NamespaceDTO implements Serializable {
-	private static final long serialVersionUID = 2733821068998561691L;
+    private static final long serialVersionUID = -4727192833249130942L;
 
     private Long id;
 	private String name;
 	private String description;
 
-    private HashMap<String,NamespaceDefaultAttributeDTO> namespaceDefaultAttributes;
+    private HashMap<String,NamespaceDefaultAttributeDTO> namespaceAttributes;
     private HashMap<String,PermissionDTO> namespacePermissions;
 
 	public Long getId() {
@@ -63,15 +63,15 @@ public class NamespaceDTO implements Serializable {
 	/**
 	 * @return HashMap - the key is the name of the attribute, the value is the DTO
 	 */
-    public HashMap<String,NamespaceDefaultAttributeDTO> getNamespaceDefaultAttributes() {
-        return this.namespaceDefaultAttributes;
+    public HashMap<String,NamespaceDefaultAttributeDTO> getNamespaceAttributes() {
+        return this.namespaceAttributes;
     }
 
     /**
-     * @param namespaceDefaultAttributes - HashMap - the key is the name of the attribute, the value is the DTO
+     * @param namespaceAttributes - HashMap - the key is the name of the attribute, the value is the DTO
      */
-    public void setNamespaceDefaultAttributes(HashMap<String,NamespaceDefaultAttributeDTO> namespaceDefaultAttributes) {
-        this.namespaceDefaultAttributes = namespaceDefaultAttributes;
+    public void setNamespaceDefaultAttributes(HashMap<String,NamespaceDefaultAttributeDTO> namespaceAttributes) {
+        this.namespaceAttributes = namespaceAttributes;
     }
 
     /**
@@ -82,7 +82,7 @@ public class NamespaceDTO implements Serializable {
     }
 
     /**
-     * @param namespaceDefaultAttributes - HashMap - the key is the name of the permission, the value is the DTO
+     * @param namespaceAttributes - HashMap - the key is the name of the permission, the value is the DTO
      */
    public void setNamespacePermissions(HashMap<String, PermissionDTO> namespacePermissions) {
         this.namespacePermissions = namespacePermissions;

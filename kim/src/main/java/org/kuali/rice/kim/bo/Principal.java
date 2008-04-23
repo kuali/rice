@@ -15,9 +15,12 @@
  */
 package org.kuali.rice.kim.bo;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.core.util.TypedArrayList;
 
 /**
  * This class represents the Principal data structure
@@ -30,12 +33,19 @@ public class Principal extends PersistableBusinessObjectBase implements java.sec
     private String name;
     
     
-   private Entity entity;
+    
+   private Entity entity; 
+   private EntityType entityType;
+   private ArrayList<Group> groups;
+   private ArrayList<Role> roles;
+   
 
     /**
      * Constructs a NotificationSender.java instance.
      */
     public Principal() {
+        groups = new TypedArrayList(Group.class);
+        roles = new TypedArrayList(Role.class);
     }
 
     /**
@@ -43,7 +53,7 @@ public class Principal extends PersistableBusinessObjectBase implements java.sec
      * @return Returns the id.
      */
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     /**
@@ -63,7 +73,10 @@ public class Principal extends PersistableBusinessObjectBase implements java.sec
     protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
         propMap.put("id", getId());
+        propMap.put("name", getName());
         propMap.put("entityId", getEntityId());
+        propMap.put("entity", getEntity());
+        propMap.put("entityType", getEntityType());        
         return propMap;
     }
 
@@ -101,6 +114,48 @@ public class Principal extends PersistableBusinessObjectBase implements java.sec
     /**
      * @return the entity
      */
+    public EntityType getEntityType() {
+        return this.entityType;
+    }
+
+    /**
+     * @param entity the entity to set
+     */
+    public void setEntityType(EntityType entityType) {
+        this.entityType = entityType;
+    }
+
+    /**
+     * @return the groups
+     */
+    public ArrayList<Group> getGroups() {
+        return this.groups;
+    }
+
+    /**
+     * @param groups the groups to set
+     */
+    public void setGroups(ArrayList<Group> groups) {
+        this.groups = groups;
+    }
+
+    /**
+     * @return the roles
+     */
+    public ArrayList<Role> getRoles() {
+        return this.roles;
+    }
+
+    /**
+     * @param roles the roles to set
+     */
+    public void setRoles(ArrayList<Role> roles) {
+        this.roles = roles;
+    }
+
+    /**
+     * @return the entity
+     */
     public Entity getEntity() {
         return this.entity;
     }
@@ -112,4 +167,7 @@ public class Principal extends PersistableBusinessObjectBase implements java.sec
         this.entity = entity;
     }
 
+    
+    
+   
 }

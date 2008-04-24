@@ -48,10 +48,32 @@
             <maintainableSection title="Edit Principal">
                 <maintainableItems>
                     <maintainableField name="id" required="true" readOnly="true" />
-                    <maintainableField name="name" required="true" />
+                    <maintainableField name="name" required="true" /> 
+                    <maintainableField name="entityId" required="true" />               
                     <maintainableField name="versionNumber" />
                 </maintainableItems>
             </maintainableSection>
+            
+            <maintainableSection title="Group Membership">
+				<maintainableItems>
+					<maintainableCollection name="groups"
+						businessObjectClass="org.kuali.rice.kim.bo.Group" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="groups" includeAddLine="true"  summaryTitle="Groups">
+						<maintainableField name="id" readOnly="true" readOnlyAfterAdd="true" required="true" template="id"/>
+						<maintainableField name="name" readOnly="true" required="true" template="name"/>				
+					</maintainableCollection>
+				</maintainableItems>
+			</maintainableSection>
+			
+			<maintainableSection title="Role">
+				<maintainableItems>
+					<maintainableCollection name="roles"
+						businessObjectClass="org.kuali.rice.kim.bo.Role" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="roles" includeAddLine="true"  summaryTitle="Roles">
+						<maintainableField name="id" readOnly="true" readOnlyAfterAdd="true" required="true" template="id"/>
+						<maintainableField name="name" readOnly="true" required="true" template="name"/>				
+					</maintainableCollection>
+				</maintainableItems>
+			</maintainableSection>
+			
         </maintainableSections>
     </maintenanceDocument>
 </dictionaryEntry>

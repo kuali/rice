@@ -24,7 +24,7 @@ import java.util.List;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class GroupQualifiedRole extends QualifiedRole {
+public class GroupQualifiedRole extends AbstractQualifiedRole {
 	private static final long serialVersionUID = 6701917498866245651L;
 	
 	private Long groupId;

@@ -15,21 +15,23 @@
  */
 package org.kuali.rice.kim.bo;
 
+import java.io.Serializable;
+
 
 /**
  * Abstract class from which GroupQualifiedRole and PrincipalQualifiedRole extend.
- * For simplicity, KIM interfaces may return objects of this class, which then can be cast 
- * to the appropriate qualified role sub-class.     
- * 
+ * For simplicity, KIM interfaces may return objects of this class, which then can be cast
+ * to the appropriate qualified role sub-class.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public abstract class QualifiedRole {
+public abstract class AbstractQualifiedRole implements Serializable {
 	private static final long serialVersionUID = -5155126090045426553L;
 
 	private Long roleId;
-	
+
 	private Role role;
-	
+
 	/**
      * @return the roleId
      */
@@ -46,7 +48,7 @@ public abstract class QualifiedRole {
 
     /**
      * This method ...
-     * 
+     *
      * @return Role
      */
     public Role getRole() {
@@ -55,7 +57,7 @@ public abstract class QualifiedRole {
 
     /**
      * This method ...
-     * 
+     *
      * @param role
      */
 	public void setRole(Role role) {

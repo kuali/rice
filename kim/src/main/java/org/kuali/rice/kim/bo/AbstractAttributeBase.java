@@ -15,14 +15,17 @@
  */
 package org.kuali.rice.kim.bo;
 
+import java.io.Serializable;
+
 import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kim.dto.AbstractAttributeBaseDTO;
 
 /**
- * This is a base helper class that encapsulates common fields needed by several "Attribute" classes. 
- * 
+ * This is a base helper class that encapsulates common fields needed by several "Attribute" classes.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public abstract class AttributeBase extends PersistableBusinessObjectBase {
+public abstract class AbstractAttributeBase extends PersistableBusinessObjectBase implements Serializable {
 
     private Long id;
     private Long attributeTypeId;
@@ -32,9 +35,9 @@ public abstract class AttributeBase extends PersistableBusinessObjectBase {
 
     /**
      * This constructs an AttributeBase object instance.
-     * 
+     *
      */
-    public AttributeBase() {
+    public AbstractAttributeBase() {
         super();
     }
 
@@ -82,5 +85,19 @@ public abstract class AttributeBase extends PersistableBusinessObjectBase {
      */
     public void setAttributeType(AttributeType attributeType) {
         this.attributeType = attributeType;
+    }
+
+    /**
+     *
+     * This method fills in the base attributes values in the DTO from the BO
+     *
+     * @param dto
+     * @param bo
+     */
+    public static void fillInDTO(final AbstractAttributeBaseDTO dto, final AbstractAttributeBase bo) {
+        dto.setAttributeType(AttributeType.toDTO(bo.getAttributeType()));
+        dto.setAttributeTypeId(bo.getAttributeTypeId());
+        dto.setId(bo.getId());
+        dto.setValue(bo.getValue());
     }
 }

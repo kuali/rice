@@ -27,7 +27,7 @@ import org.kuali.rice.kim.dto.GroupAttributeDTO;
  *
  * @author Kuali Rice Team (kuali-rice@googleroles.com)
  */
-public class GroupAttribute extends AttributeBase {
+public class GroupAttribute extends AbstractAttributeBase {
 	private static final long serialVersionUID = 5512700461635442326L;
 
     private Long groupId;
@@ -85,7 +85,7 @@ public class GroupAttribute extends AttributeBase {
 	 */
 	public static GroupAttributeDTO toDTO(final GroupAttribute ga) {
 	    final GroupAttributeDTO dto = new GroupAttributeDTO();
-	    AttributeBase.fillInDTO(dto, ga);
+	    AbstractAttributeBase.fillInDTO(dto, ga);
 	    dto.setGroupId(ga.getGroupId());
 	    return dto;
 	}

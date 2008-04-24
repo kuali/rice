@@ -16,15 +16,20 @@
 package org.kuali.rice.kim.bo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.util.TypedArrayList;
+import org.kuali.rice.kim.dto.GroupDTO;
+import org.kuali.rice.kim.dto.PrincipalDTO;
+import org.kuali.rice.kim.dto.RoleAttributeDTO;
+import org.kuali.rice.kim.dto.RoleDTO;
 
 /**
- * Roles represent an aggregation of permissions.  Authorization is given to either a principal or group by attributing a role 
- * to them.  
- * 
+ * Roles represent an aggregation of permissions.  Authorization is given to either a principal or group by attributing a role
+ * to them.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -37,9 +42,9 @@ public class Role extends PersistableBusinessObjectBase {
 	private ArrayList<Group> groups;
 	private ArrayList<Principal> principals;
 	private ArrayList<RoleAttribute> roleAttributes;
-	
+
 	/**
-	 * This constructs a Role instance, primarily constructing necessary TypeArrayLists for the 
+	 * This constructs a Role instance, primarily constructing necessary TypeArrayLists for the
 	 * maintenance documents.
 	 *
 	 */
@@ -52,7 +57,7 @@ public class Role extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method retrieves the description.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getDescription() {
@@ -61,7 +66,7 @@ public class Role extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method set the description.
-	 * 
+	 *
 	 * @param description
 	 */
 	public void setDescription(String description) {
@@ -70,7 +75,7 @@ public class Role extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method retrieves the id for the role.
-	 * 
+	 *
 	 * @return
 	 */
 	public Long getId() {
@@ -79,7 +84,7 @@ public class Role extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method sets the id (PK) of the role instance.
-	 * 
+	 *
 	 * @param id Long
 	 */
 	public void setId(Long id) {
@@ -88,7 +93,7 @@ public class Role extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method retrieves the name.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getName() {
@@ -97,13 +102,13 @@ public class Role extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method sets the name.
-	 * 
+	 *
 	 * @param name
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	/**
      * @return the groups
      */
@@ -131,7 +136,7 @@ public class Role extends PersistableBusinessObjectBase {
     public void setPrincipals(ArrayList<Principal> principals) {
         this.principals = principals;
     }
-    
+
     /**
      * @return the permissions
      */
@@ -145,7 +150,7 @@ public class Role extends PersistableBusinessObjectBase {
     public void setPermissions(ArrayList<Group> permissions) {
         this.permissions = permissions;
     }
-    
+
     /**
      * @return the roleAttributes
      */
@@ -162,7 +167,7 @@ public class Role extends PersistableBusinessObjectBase {
 
     /**
 	 * This overridden method retrieves a string representation of an instance of a Role.
-	 * 
+	 *
 	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
 	 */
 	protected LinkedHashMap<String, Object> toStringMapper() {
@@ -171,5 +176,45 @@ public class Role extends PersistableBusinessObjectBase {
         propMap.put("name", getName());
         propMap.put("description", getDescription());
         return propMap;
+	}
+
+	/**
+	 *
+	 * This method returns a DTO for the BO
+	 *
+	 * @param role
+	 * @return RoleDTO
+	 */
+	public static RoleDTO toDTO(final Role role) {
+	    final RoleDTO dto = new RoleDTO();
+	    dto.setDescription(role.getDescription());
+	    dto.setId(role.getId());
+	    dto.setName(role.getName());
+
+	    final HashMap<String, GroupDTO> permissions = new HashMap<String, GroupDTO>();
+	    for (Group group : role.getPermissions()) {
+	        permissions.put(group.getName(), Group.toDTO(group));
+	    }
+	    dto.setPermissions(permissions);
+
+	    final HashMap<String, GroupDTO> groups = new HashMap<String, GroupDTO>();
+	    for (Group group : role.getGroups()) {
+	        groups.put(group.getName(), Group.toDTO(group));
+	    }
+	    dto.setGroups(groups);
+
+	    final HashMap<String, PrincipalDTO> principals = new HashMap<String, PrincipalDTO>();
+        for (Principal principal : role.getPrincipals()) {
+            principals.put(principal.getName(), Principal.toDTO(principal));
+        }
+        dto.setPrincipals(principals);
+
+	    final HashMap<String, RoleAttributeDTO> attrs = new HashMap<String, RoleAttributeDTO>();
+	    for (RoleAttribute attr : role.getRoleAttributes()) {
+	        attrs.put(attr.getAttributeName(), RoleAttribute.toDTO(attr));
+	    }
+	    dto.setRoles(attrs);
+
+        return dto;
 	}
 }

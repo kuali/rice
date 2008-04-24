@@ -17,19 +17,21 @@ package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
 
+import org.kuali.rice.kim.dto.RoleAttributeDTO;
+
 /**
- * This class represents arbitrary attributes that can be attached to roles.  For example, you could use 
- * this feature to have basic key value attributes attached to a Role. 
- * 
+ * This class represents arbitrary attributes that can be attached to roles.  For example, you could use
+ * this feature to have basic key value attributes attached to a Role.
+ *
  * @author Kuali Rice Team (kuali-rice@googleroles.com)
  */
-public class RoleAttribute extends AttributeBase {
+public class RoleAttribute extends AbstractAttributeBase {
 
 	private static final long serialVersionUID = -2255690191635455239L;
 	private Long roleId;
 
 	private Role role;
-	
+
 	/**
      * @return the role
      */
@@ -71,5 +73,18 @@ public class RoleAttribute extends AttributeBase {
 
 	public void refresh() {
 		// not going to add unless needed
+	}
+
+	/**
+	 *
+	 * This method creates a DTO from a BO
+	 *
+	 * @param role
+	 * @return RoleDTO
+	 */
+	public static RoleAttributeDTO toDTO(final RoleAttribute role) {
+	    final RoleAttributeDTO dto = new RoleAttributeDTO();
+
+	    return dto;
 	}
 }

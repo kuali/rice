@@ -22,21 +22,19 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
 /**
  * Abstract class from which GroupQualifiedRoleAttribute and PersonQualifiedRoleAttribute extend. For simplicity, KIM interfaces may return
  * objects of this class, which then can be cast to the appropriate qualified role sub-class.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public abstract class QualifiedRoleAttribute extends PersistableBusinessObjectBase {
+public abstract class AbstractQualifiedRoleAttribute extends AbstractQualifiedRole {
     private static final long serialVersionUID = -5155126090045426553L;
     private Long id;
-    private Long roleId;
     private String attributeName;
     private String attributeValue;
 
-    private Role role;
-    
+
     /**
      * This method ...
-     * 
+     *
      * @return Long
      */
     public Long getId() {
@@ -45,7 +43,7 @@ public abstract class QualifiedRoleAttribute extends PersistableBusinessObjectBa
 
     /**
      * This method ...
-     * 
+     *
      * @param id
      */
     public void setId(Long id) {
@@ -53,9 +51,9 @@ public abstract class QualifiedRoleAttribute extends PersistableBusinessObjectBa
     }
 
     /**
-     * 
+     *
      * This method ...
-     * 
+     *
      * @return String
      */
     public String getAttributeName() {
@@ -63,9 +61,9 @@ public abstract class QualifiedRoleAttribute extends PersistableBusinessObjectBa
     }
 
     /**
-     * 
+     *
      * This method ...
-     * 
+     *
      * @param attributeName
      */
     public void setAttributeName(String attributeName) {
@@ -73,9 +71,9 @@ public abstract class QualifiedRoleAttribute extends PersistableBusinessObjectBa
     }
 
     /**
-     * 
+     *
      * This method ...
-     * 
+     *
      * @return String
      */
     public String getAttributeValue() {
@@ -83,9 +81,9 @@ public abstract class QualifiedRoleAttribute extends PersistableBusinessObjectBa
     }
 
     /**
-     * 
+     *
      * This method ...
-     * 
+     *
      * @param attributeValue
      */
     public void setAttributeValue(String attributeValue) {
@@ -93,43 +91,9 @@ public abstract class QualifiedRoleAttribute extends PersistableBusinessObjectBa
     }
 
     /**
-     * 
-     * This method ...
-     * 
-     * @return Role
-     */
-    public Role getRole() {
-        return this.role;
-    }
-
-    /**
-     * 
-     * This method ...
-     * 
-     * @param role
-     */
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    /**
-     * @return the roleId
-     */
-    public Long getRoleId() {
-        return this.roleId;
-    }
-
-    /**
-     * @param roleId the roldId to set
-     */
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    /**
-     * 
+     *
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
      */
     protected LinkedHashMap<String, Object> toStringMapper() {

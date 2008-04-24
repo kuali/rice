@@ -16,67 +16,32 @@
 package org.kuali.rice.kim.bo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.util.TypedArrayList;
+import org.kuali.rice.kim.dto.EntityAttributeDTO;
+import org.kuali.rice.kim.dto.EntityDTO;
+import org.kuali.rice.kim.dto.PrincipalDTO;
 
 /**
- * An Entity represents a specific instance of a person, process, company, system, etc in the system.  An Entity 
- * has meta-data that hangs off of it.  User XYZ would be represented in the system as an Entity of type Person. 
- * 
+ * An Entity represents a specific instance of a person, process, company, system, etc in the system.  An Entity
+ * has meta-data that hangs off of it.  User XYZ would be represented in the system as an Entity of type Person.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class Entity extends PersistableBusinessObjectBase {
-	private static final long serialVersionUID = -1207463934478758540L;
-	private Long id;
-	private Long entityTypeId;
-	
-	private EntityType entityType;
+public class Entity extends AbstractEntityBase {
+	private static final long serialVersionUID = 2232201572169570616L;
+
 	private ArrayList<EntityAttribute> entityAttributes;
 	private ArrayList<Principal> principals;
-	
-	
+
+
 	public Entity() {
 	    this.entityAttributes = new TypedArrayList(EntityAttribute.class);
 	    this.principals = new TypedArrayList(Principal.class);
 	}
-	
-	public Long getId() {
-		return id; 
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-	/**
-     * @return the entityTypeId
-     */
-    public Long getEntityTypeId() {
-        return this.entityTypeId;
-    }
-
-    /**
-     * @param entityTypeId the entityTypeId to set
-     */
-    public void setEntityTypeId(Long entityTypeId) {
-        this.entityTypeId = entityTypeId;
-    }
-
-    /**
-     * @return the entityType
-     */
-    public EntityType getEntityType() {
-        return this.entityType;
-    }
-
-    /**
-     * @param entityType the entityType to set
-     */
-    public void setEntityType(EntityType entityType) {
-        this.entityType = entityType;
-    }
-    
     /**
      * @return the entityAttributes
      */
@@ -114,5 +79,33 @@ public class Entity extends PersistableBusinessObjectBase {
      */
     public void setPrincipals(ArrayList<Principal> principals) {
         this.principals = principals;
+    }
+
+    /**
+     *
+     * This method creates a DTO from a BO
+     *
+     * @param Entity
+     * @return EntityDTO
+     */
+    public static EntityDTO toDTO(final Entity entity) {
+        final EntityDTO dto = new EntityDTO();
+        dto.setEntityTypeId(entity.getEntityTypeId());
+        dto.setId(entity.getId());
+        dto.setEntityType(EntityType.toDTO(entity.getEntityType()));
+
+        final HashMap<String, EntityAttributeDTO> attrs = new HashMap<String, EntityAttributeDTO>();
+        for (EntityAttribute attr : entity.getEntityAttributes()) {
+            attrs.put(attr.getAttributeName(), EntityAttribute.toDTO(attr));
+        }
+        dto.setEntityAttributesDtos(attrs);
+
+        final HashMap<String,PrincipalDTO> principals = new HashMap<String, PrincipalDTO>();
+        for (Principal principal : entity.getPrincipals()) {
+            principals.put(principal.getName(), Principal.toDTO(principal));
+        }
+        dto.setPrincipalDtos(principals);
+
+        return dto;
     }
 }

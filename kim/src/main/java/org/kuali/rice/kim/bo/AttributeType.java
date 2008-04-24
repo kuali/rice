@@ -18,13 +18,14 @@ package org.kuali.rice.kim.bo;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kim.dto.AttributeTypeDTO;
 
 /**
- * This class defines the concept of an attribute type.  Given KIM's need for dynamic lists of attributes attached 
- * to various entities in the system, this class organizes or categorizes the type of attribute.  For example, 
- * one instance of attribute type could be "text" or "radio button".  Every attribute attached to a person, group, etc 
- * in KIM will need to have an attribute type associated with it.  
- * 
+ * This class defines the concept of an attribute type.  Given KIM's need for dynamic lists of attributes attached
+ * to various entities in the system, this class organizes or categorizes the type of attribute.  For example,
+ * one instance of attribute type could be "text" or "radio button".  Every attribute attached to a person, group, etc
+ * in KIM will need to have an attribute type associated with it.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class AttributeType extends PersistableBusinessObjectBase {
@@ -36,7 +37,7 @@ public class AttributeType extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method retrieves the attribute type name.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getAttributeTypeName() {
@@ -45,7 +46,7 @@ public class AttributeType extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method sets the attribute type name.
-	 * 
+	 *
 	 * @param attributeTypeName
 	 */
 	public void setAttributeTypeName(String attributeTypeName) {
@@ -54,7 +55,7 @@ public class AttributeType extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method retrieves the unique id (primary key) for an attribute type instance.
-	 * 
+	 *
 	 * @return Long
 	 */
 	public Long getId() {
@@ -63,7 +64,7 @@ public class AttributeType extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method sets the unique id (primary key) for an attribute type instance.
-	 * 
+	 *
 	 * @param id
 	 */
 	public void setId(Long id) {
@@ -83,7 +84,7 @@ public class AttributeType extends PersistableBusinessObjectBase {
 	public void setDescription(String description) {
 	    this.description = description;
 	}
-	
+
 	/**
 	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
 	 */
@@ -101,4 +102,19 @@ public class AttributeType extends PersistableBusinessObjectBase {
 		// not doing this unless needed
 	}
 
+	/**
+	 *
+	 * This method creates a DTO from a BO
+	 *
+	 * @param AttributeType
+	 * @return AttributeTypeDTO
+	 */
+	public static AttributeTypeDTO toDTO(final AttributeType at) {
+	    final AttributeTypeDTO dto = new AttributeTypeDTO();
+	    dto.setAttributeTypeName(at.getAttributeTypeName());
+	    dto.setDescription(at.getDescription());
+	    dto.setId(at.getId());
+
+	    return dto;
+	}
 }

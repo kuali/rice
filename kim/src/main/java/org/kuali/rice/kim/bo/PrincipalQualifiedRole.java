@@ -24,7 +24,7 @@ import java.util.List;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class PrincipalQualifiedRole extends QualifiedRole {
+public class PrincipalQualifiedRole extends AbstractQualifiedRole {
    	private static final long serialVersionUID = -3834313283054550673L;
    	
    	private Long principalId;

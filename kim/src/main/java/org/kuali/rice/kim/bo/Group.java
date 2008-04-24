@@ -16,10 +16,14 @@
 package org.kuali.rice.kim.bo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.util.TypedArrayList;
+import org.kuali.rice.kim.dto.GroupAttributeDTO;
+import org.kuali.rice.kim.dto.GroupDTO;
+import org.kuali.rice.kim.dto.RoleDTO;
 
 public class Group extends PersistableBusinessObjectBase {
 
@@ -32,14 +36,14 @@ public class Group extends PersistableBusinessObjectBase {
 	private ArrayList<Group> parentGroups;
     private ArrayList<Role> groupRoles;
     private ArrayList<GroupAttribute> groupAttributes;
-    
+
 	public Group() {
 	    memberGroups = new TypedArrayList(Group.class);
 	    parentGroups = new TypedArrayList(Group.class);
         groupRoles = new TypedArrayList(Role.class);
         groupAttributes = new TypedArrayList(GroupAttribute.class);
 	}
-	
+
 	/**
      * @return the memberGroups
      */
@@ -77,7 +81,7 @@ public class Group extends PersistableBusinessObjectBase {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	protected LinkedHashMap toStringMapper() {
             LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
             propMap.put("id", getId());
@@ -128,5 +132,43 @@ public class Group extends PersistableBusinessObjectBase {
      */
     public void setGroupAttributes(ArrayList<GroupAttribute> groupAttributes) {
         this.groupAttributes = groupAttributes;
+    }
+
+    /**
+     *
+     * This method creates a DTO from a BO
+     *
+     * @param group
+     * @return GroupDTO
+     */
+    public static GroupDTO toDTO(final Group group) {
+        final GroupDTO dto = new GroupDTO();
+        dto.setDescription(group.getDescription());
+        dto.setId(group.getId());
+        dto.setName(group.getName());
+
+        final HashMap<String, RoleDTO> roles = new HashMap<String, RoleDTO>();
+        for (Role role : group.getGroupRoles()) {
+            roles.put(role.getName(), Role.toDTO(role));
+        }
+        dto.setGroupRoleDtos(roles);
+
+        final HashMap<String, GroupDTO> memberGroups = new HashMap<String, GroupDTO>();
+        for (Group memberGroup : group.getMemberGroups()) {
+            memberGroups.put(memberGroup.getName(), Group.toDTO(memberGroup));
+        }
+        dto.setMemberGroupDtos(memberGroups);
+
+        final HashMap<String, GroupDTO> parentGroups = new HashMap<String, GroupDTO>();
+        for (Group parentGroup : group.getMemberGroups()) {
+            parentGroups.put(parentGroup.getName(), Group.toDTO(parentGroup));
+        }
+        dto.setParentGroupDtos(parentGroups);
+
+        final HashMap<String, GroupAttributeDTO> gas = new HashMap<String, GroupAttributeDTO>();
+        for (GroupAttribute ga : group.getGroupAttributes()) {
+            gas.put(ga.getAttributeName(), GroupAttribute.toDTO(ga));
+        }
+        return dto;
     }
 }

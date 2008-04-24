@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,29 +16,24 @@
 package org.kuali.rice.kim.bo;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.util.TypedArrayList;
+import org.kuali.rice.kim.dto.PrincipalDTO;
 
 /**
  * This class represents the Principal data structure
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class Principal extends PersistableBusinessObjectBase implements java.security.Principal {
+public class Principal extends AbstractEntityBase implements java.security.Principal {
     private static final long serialVersionUID = -5021417605671339853L;
-    private Long id;
     private Long entityId;
     private String name;
-    
-    
-    
-   private Entity entity; 
-   private EntityType entityType;
+
+   private Entity entity;
    private ArrayList<Group> groups;
    private ArrayList<Role> roles;
-   
+
 
     /**
      * Constructs a NotificationSender.java instance.
@@ -49,24 +44,8 @@ public class Principal extends PersistableBusinessObjectBase implements java.sec
     }
 
     /**
-     * Gets the id attribute. 
-     * @return Returns the id.
-     */
-    public Long getId() {
-        return this.id;
-    }
-
-    /**
-     * Sets the id attribute value.
-     * @param id The id to set.
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
      */
     @Override
@@ -76,20 +55,20 @@ public class Principal extends PersistableBusinessObjectBase implements java.sec
         propMap.put("name", getName());
         propMap.put("entityId", getEntityId());
         propMap.put("entity", getEntity());
-        propMap.put("entityType", getEntityType());        
+        propMap.put("entityType", getEntityType());
         return propMap;
     }
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see java.security.Principal#getName()
      */
     public String getName() {
         // TODO Chris - THIS METHOD NEEDS JAVADOCS
         return name;
     }
-    
+
     /**
      * @param name the name to set
      */
@@ -109,20 +88,6 @@ public class Principal extends PersistableBusinessObjectBase implements java.sec
      */
     public void setEntityId(Long entityId) {
         this.entityId = entityId;
-    }
-
-    /**
-     * @return the entity
-     */
-    public EntityType getEntityType() {
-        return this.entityType;
-    }
-
-    /**
-     * @param entity the entity to set
-     */
-    public void setEntityType(EntityType entityType) {
-        this.entityType = entityType;
     }
 
     /**
@@ -167,7 +132,21 @@ public class Principal extends PersistableBusinessObjectBase implements java.sec
         this.entity = entity;
     }
 
-    
-    
-   
+
+
+    /**
+     *
+     * This method creates a DTO from a BO
+     *
+     * @param principal
+     * @return PrincipalDTO
+     */
+    public static PrincipalDTO toDTO(final Principal principal) {
+        final PrincipalDTO dto = new PrincipalDTO();
+        dto.setId(principal.getId());
+        dto.setName(principal.getName());
+
+        return dto;
+    }
+
 }

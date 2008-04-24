@@ -22,7 +22,7 @@ import java.util.LinkedHashMap;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class PrincipalQualifiedRoleAttribute extends QualifiedRoleAttribute {
+public class PrincipalQualifiedRoleAttribute extends AbstractQualifiedRoleAttribute {
     private static final long serialVersionUID = -3834313283054550673L;
 
     private Long principalId;
@@ -60,7 +60,7 @@ public class PrincipalQualifiedRoleAttribute extends QualifiedRoleAttribute {
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.bo.QualifiedRole#toStringMapper()
+     * @see org.kuali.rice.kim.bo.AbstractQualifiedRole#toStringMapper()
      */
     protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = super.toStringMapper();

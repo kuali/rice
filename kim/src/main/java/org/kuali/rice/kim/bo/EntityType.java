@@ -18,22 +18,24 @@ package org.kuali.rice.kim.bo;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kim.dto.EntityTypeDTO;
 
 /**
- * This class defines the concept of an entity type.  Person, process, system, or company 
- * could be an entity type in the system.  This is a generic organizing classification.  
- * 
+ * This class defines the concept of an entity type.  Person, process, system, or company
+ * could be an entity type in the system.  This is a generic organizing classification.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class EntityType extends PersistableBusinessObjectBase {
-	private static final long serialVersionUID = -1620314685432900896L;
+    private static final long serialVersionUID = 4459950167476366438L;
+
     private Long id;
 	private String name;
 	private String description;
 
 	/**
 	 * This method retrieves the entity type name.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getName() {
@@ -42,7 +44,7 @@ public class EntityType extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method sets the entity type name.
-	 * 
+	 *
 	 * @param name
 	 */
 	public void setName(String name) {
@@ -51,7 +53,7 @@ public class EntityType extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method retrieves the unique id (primary key) for an entity type instance.
-	 * 
+	 *
 	 * @return Long
 	 */
 	public Long getId() {
@@ -60,7 +62,7 @@ public class EntityType extends PersistableBusinessObjectBase {
 
 	/**
 	 * This method sets the unique id (primary key) for an entity type instance.
-	 * 
+	 *
 	 * @param id
 	 */
 	public void setId(Long id) {
@@ -80,7 +82,7 @@ public class EntityType extends PersistableBusinessObjectBase {
 	public void setDescription(String description) {
 	    this.description = description;
 	}
-	
+
 	/**
 	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
 	 */
@@ -96,6 +98,22 @@ public class EntityType extends PersistableBusinessObjectBase {
      */
     public void refresh() {
         // not doing this unless needed
+    }
+
+    /**
+     *
+     * This method creates a DTO from a BO
+     *
+     * @param EntityType
+     * @return EntityTypeDTO
+     */
+    public static EntityTypeDTO toDTO(final EntityType et) {
+        final EntityTypeDTO dto = new EntityTypeDTO();
+        dto.setDescription(et.getDescription());
+        dto.setId(et.getId());
+        dto.setName(et.getName());
+
+        return dto;
     }
 
 }

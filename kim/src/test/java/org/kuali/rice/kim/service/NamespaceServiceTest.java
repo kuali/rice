@@ -29,7 +29,6 @@ import org.kuali.rice.test.data.PerSuiteUnitTestData;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 
-@PerSuiteUnitTestData(@UnitTestData(sqlStatements = {@UnitTestSql("INSERT INTO KIM_NAMESPACES_T (ID, NAME, DESCRIPTION) VALUES(1, 'KIM Test Namespace', 'Test case')"), @UnitTestSql("INSERT INTO KIM_PERMISSIONS_T (ID, NAME, DESCRIPTION, NAMESPACE_ID) VALUES(1, 'KIM Test Permission', 'Test case', 1)"), @UnitTestSql("INSERT INTO KIM_ATTRIBUTE_TYPES_T (ID, NAME, DESCRIPTION) VALUES(1, 'KIM Test AttributeType', 'Test case')"), @UnitTestSql("INSERT INTO KIM_NAMESPACE_DFLT_ATTRIBS_T (ID, NAMESPACE_ID, ATTRIBUTE_NAME, ATTRIBUTE_TYPE_ID, DESCRIPTION, REQUIRED, ACTIVE) VALUES(1, 1, 'KIM Test Namespace Default Attribute', 1, 'Test case', 'Y', 'Y' )")}))
 public class NamespaceServiceTest extends KIMTestCase {
     private static final String KIM_TEST_NAMESPACE_NAME = "KIM Test Namespace";
     private static final String KIM_TEST_NAMESPACE_DEFAULT_ATTRIBUTE_NAME = "KIM Test Namespace Default Attribute";
@@ -74,7 +73,7 @@ public class NamespaceServiceTest extends KIMTestCase {
         final NamespaceDTO namespace = namespaces.get(0);
         assertEquals(namespace.getName(), KIM_TEST_NAMESPACE_NAME);
 
-        final HashMap<String, NamespaceDefaultAttributeDTO> namespaceDefaultAttributes = namespace.getNamespaceDefaultAttributes();
+        final HashMap<String, NamespaceDefaultAttributeDTO> namespaceDefaultAttributes = namespace.getNamespaceAttributes();
         assertTrue(namespaceDefaultAttributes.size() == 1);
 
         final NamespaceDefaultAttributeDTO namespaceDefaultAttribute = namespaceDefaultAttributes.get(KIM_TEST_NAMESPACE_DEFAULT_ATTRIBUTE_NAME);

@@ -68,8 +68,7 @@
 				<maintainableItems>
 					<maintainableCollection name="principals"
 						businessObjectClass="org.kuali.rice.kim.bo.Principal"  includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Principal" sourceAttributeName="principals" includeAddLine="true" summaryTitle="Principals">
-						<maintainableField name="id" required="true"
-							readOnly="true" readOnlyAfterAdd="true" template="id" />
+						<maintainableField name="id" required="true" readOnly="true"  template="id" />
 						<maintainableField name="name" required="true" readOnly="true" template="name" />
 					</maintainableCollection>
 				</maintainableItems>
@@ -79,11 +78,11 @@
 				<maintainableItems>
 					<maintainableCollection name="entityAttributes"
 						businessObjectClass="org.kuali.rice.kim.bo.EntityAttribute">
-						<maintainableField name="id" readOnly="true" required="true" />
-						<maintainableField name="attributeTypeId" required="true" />
-						<maintainableField name="namespaceId" required="true" />
-						<maintainableField name="attributeName" required="true" />
-						<maintainableField name="value" required="true" />
+						<maintainableField name="id" readOnly="true" required="true" template="id"/>
+						<maintainableField name="attributeTypeId" required="true" template="attributeTypeId"/>
+						<maintainableField name="namespaceId" required="true" template="namespaceId"/>
+						<maintainableField name="attributeName" required="true" template="attributeName"/>
+						<maintainableField name="value" required="true" template="value"/>
 					</maintainableCollection>
 				</maintainableItems>
 			</maintainableSection>

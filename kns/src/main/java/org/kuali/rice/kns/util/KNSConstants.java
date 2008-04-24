@@ -355,9 +355,9 @@ public class KNSConstants extends JSTLConstants {
             return this.noteTypePath;
         }
 
-//        public String getFullPath() {
-//            return DOCUMENT_PROPERTY_NAME + "." + getPath();
-//        }
+        public String getFullPath() {
+            return DOCUMENT_PROPERTY_NAME + "." + getPath();
+        }
     }
 
     public static final String AND_LOGICAL_OPERATOR = "&&";

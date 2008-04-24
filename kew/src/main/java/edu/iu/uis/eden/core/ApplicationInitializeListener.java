@@ -27,7 +27,6 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
@@ -48,7 +47,7 @@ public class ApplicationInitializeListener implements ServletContextListener {
 
     private static final Logger LOG = Logger.getLogger(ApplicationInitializeListener.class);
 
-    private static final String DEFAULT_LOG4J_CONFIG = "kew-default-log4j.properties";
+//    private static final String DEFAULT_LOG4J_CONFIG = "kew-default-log4j.properties";
 
     //private List<Lifecycle> lifeCycles = new LinkedList<Lifecycle>();
     private ConfigurableApplicationContext context = null;
@@ -58,13 +57,13 @@ public class ApplicationInitializeListener implements ServletContextListener {
 	 * of the lifecycle
      */
 	public void contextInitialized(ServletContextEvent sce) {
-	    try {
-	    Properties p = new Properties();
-	    p.load(getClass().getClassLoader().getResourceAsStream(DEFAULT_LOG4J_CONFIG));
-	    PropertyConfigurator.configure(p);
-	    } catch (Exception e) {
-		throw new WorkflowRuntimeException(e);
-	    }
+//	    try {
+//	    Properties p = new Properties();
+//	    p.load(getClass().getClassLoader().getResourceAsStream(DEFAULT_LOG4J_CONFIG));
+//	    PropertyConfigurator.configure(p);
+//	    } catch (Exception e) {
+//		throw new WorkflowRuntimeException(e);
+//	    }
 
 		LOG.info("Initializing Workflow...");
 

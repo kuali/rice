@@ -58,7 +58,7 @@ public class ClassLoaderEntityResolver extends ClassLoaderResourceResolver imple
         InputStream is = getClass().getClassLoader().getResourceAsStream(path);
         if (is == null) {
             String message = "Unable to find schema (" + path + ") for: " + systemId;
-            LOG.error(message);
+            LOG.warn(message);
             // necessary if processContents is lax, because lax doesn't care...if it doesn't resolve it won't validate
             // (not quite clear, as lax could be interpreted as *if the namespace is valid*, treating a present, but invalid
             // namespace as a fatal error. instead, apparently a present but invalid namespace is ignored with 'lax'

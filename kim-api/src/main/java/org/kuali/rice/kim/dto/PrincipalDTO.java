@@ -29,11 +29,9 @@ public class PrincipalDTO extends AbstractEntityBaseDTO implements java.security
     private String name;
 
     /**
-     * This overridden method ...
      *
      * @see java.security.Principal#getName()
      */
-    @Override
     public String getName() {
         return name;
     }

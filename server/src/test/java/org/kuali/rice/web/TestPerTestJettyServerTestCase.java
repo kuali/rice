@@ -37,7 +37,7 @@ import org.springframework.test.AssertThrows;
 @Ignore
 public class TestPerTestJettyServerTestCase extends JettyServerTestCase {
     public TestPerTestJettyServerTestCase() {
-        super("kns");
+        super("server");
     }
 
     @Override
@@ -50,9 +50,10 @@ public class TestPerTestJettyServerTestCase extends JettyServerTestCase {
     @Test
     @JettyServer(
             context = "SampleRiceClient",
-            webapp = "/src/test/webapp",
+            webapp = "/src/main/webapp",
             portConfigParam = "unittest.jetty.server2.port",
-            configMode = ConfigMode.NONE
+            configMode = ConfigMode.NONE,
+            addWebappResourceLoader = false
         )
     public void testJettyStartsOnRandomPortPerTest() {
         String portStr = Core.getCurrentContextConfig().getProperty("unittest.jetty.server2.port");

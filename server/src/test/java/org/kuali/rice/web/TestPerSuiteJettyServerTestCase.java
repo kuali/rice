@@ -27,6 +27,8 @@ import org.kuali.rice.test.lifecycles.JettyServerLifecycle.ConfigMode;
 import org.kuali.rice.test.server.JettyServer;
 import org.springframework.test.AssertThrows;
 
+import edu.iu.uis.eden.EdenConstants;
+
 /**
  * Tests that the JettyServer is present for the duration of all tests in this class 
  *
@@ -37,18 +39,15 @@ import org.springframework.test.AssertThrows;
 @Ignore
 @JettyServer(
     context = "SampleRiceClient",
-    webapp = "/src/test/webapp",
+    webapp = "/src/main/webapp",
     portConfigParam = "unittest.jetty.server1.port",
-    configMode = ConfigMode.NONE
+    configMode = ConfigMode.NONE,
+    addWebappResourceLoader = false
 )
 public class TestPerSuiteJettyServerTestCase extends JettyServerTestCase {
     public TestPerSuiteJettyServerTestCase() {
-        super("kns");
-    }
-
-    @Override
-    protected String getModuleTestConfigLocation() {
-        return "classpath:META-INF/sample-app-test-config.xml";
+        super("server");
+        System.setProperty(EdenConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
     }
 
     private void testJettyServerIsPresent() {

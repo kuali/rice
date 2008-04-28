@@ -17,9 +17,12 @@ package org.kuali.rice.web.jetty;
 
 import java.io.File;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.servlet.Context;
+import org.mortbay.jetty.servlet.ServletHolder;
 import org.mortbay.jetty.webapp.WebAppContext;
 
 public class JettyServer implements Lifecycle {
@@ -33,8 +36,9 @@ public class JettyServer implements Lifecycle {
 	private int port;
 	private String contextName;	
 	private String relativeWebappRoot;
+	private Class servletClass;
 	private Server server;
-	private WebAppContext context;
+	private Context context;
 
 	/**
 	 * Whether we are in test mode
@@ -42,24 +46,33 @@ public class JettyServer implements Lifecycle {
 	private boolean testMode = false;
 
 	public JettyServer() {
-		this(8080, null);
+		this(8080);
 	}
 
 	public JettyServer(int port) {
-		this(port, null, null);
+		this(port, null, null, null);
 	}
 
 	public JettyServer(int port, String contextName) {
-		this(port, contextName, null);
+		this(port, contextName, null, null);
 	}
 	
 	public JettyServer(int port, String contextName, String relativeWebappRoot) {
-		this.port = port;
-		this.contextName = contextName;
-		this.relativeWebappRoot = relativeWebappRoot;
+        this(port, contextName, relativeWebappRoot, null);
 	}	
 
-	public void setTestMode(boolean t) {
+    public JettyServer(int port, String contextName, Class servletClass) {
+        this(port, contextName, null, servletClass);
+    }   
+
+    public JettyServer(int port, String contextName, String relativeWebappRoot, Class servletClass) {
+        this.port = port;
+        this.contextName = contextName;
+        this.relativeWebappRoot = relativeWebappRoot;
+        this.servletClass = servletClass;
+    }   
+
+    public void setTestMode(boolean t) {
 	    this.testMode = t;
 	}
 
@@ -71,7 +84,7 @@ public class JettyServer implements Lifecycle {
 		return server;
 	}
 
-	public WebAppContext getContext() {
+	public Context getContext() {
 	    return context;
 	}
 
@@ -92,10 +105,18 @@ public class JettyServer implements Lifecycle {
 		Server server = new Server(getPort());
 		try {
 			setBaseDirSystemProperty();
-			context = new WebAppContext(System.getProperty("basedir") + getRelativeWebappRoot(), getContextName());
-			context.setTempDirectory(new File(System.getProperty("basedir") + "/jetty-tmp"));
-			context.setAttribute(JETTYSERVER_TESTMODE_ATTRIB, String.valueOf(isTestMode()));
-			server.addHandler(context);
+			if (StringUtils.isNotBlank(this.relativeWebappRoot)) {
+			    WebAppContext webAppContext = new WebAppContext(System.getProperty("basedir") + getRelativeWebappRoot(), getContextName());
+			    webAppContext.setTempDirectory(new File(System.getProperty("basedir") + "/jetty-tmp"));
+			    webAppContext.setAttribute(JETTYSERVER_TESTMODE_ATTRIB, String.valueOf(isTestMode()));
+			    context = webAppContext;
+	            server.addHandler(context);
+			} else {
+			    Context root = new Context(server,"/",Context.SESSIONS);
+			    root.addServlet(new ServletHolder(servletClass), getContextName());
+			    root.setAttribute(JETTYSERVER_TESTMODE_ATTRIB, String.valueOf(isTestMode()));
+			    context = root;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -142,6 +163,7 @@ public class JettyServer implements Lifecycle {
 	    return new ToStringBuilder(this).append("port", port)
 	                                    .append("contextName", contextName)
 	                                    .append("relativeWebappRoot", relativeWebappRoot)
+                                        .append("servletClass", servletClass)
 	                                    .toString();
 	}
 

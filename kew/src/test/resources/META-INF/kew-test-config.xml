@@ -13,7 +13,8 @@
 	<param name="message.entity">KEW</param>
 	<param name="findServicesLocally">true</param>
 	<param name="http.service.port">9952</param>
-	<param name="serviceServletUrl">http://localhost:${http.service.port}/en-test/remoting/</param>
+	<param name="kew.url.host">http://localhost</param>
+	<param name="serviceServletUrl">${kew.url.host}:${http.service.port}/en-test/remoting/</param>
 	<param name="dev.mode">true</param>
     <param name="message.delivery">synchronous</param>
 	<param name="message.persistence">true</param>
@@ -24,7 +25,7 @@
 	<param name="keystore.password">s1t0spss!xX-tst</param>
 	<param name="keystore.file">${basedir}/../ksb/src/test/resources/keystore/onestartsharedservices-devandtst_keystore</param>
 
-	<param name="webservices.settings.url">http://localhost:${http.service.port}/en-test/services</param>
+	<param name="webservices.settings.url">${kew.url.host}:${http.service.port}/en-test/services</param>
     <param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
 
 	<param name="gds.settings.path">/opt/j2ee/dev/edu/iu/uis/settings/en/MYGDS.properties</param>

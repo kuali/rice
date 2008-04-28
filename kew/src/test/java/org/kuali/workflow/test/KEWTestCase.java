@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.BaseLifecycle;
@@ -151,11 +152,19 @@ public abstract class KEWTestCase extends RiceTestCase {
 	    List<Lifecycle> lifeCycles = super.getInitialLifecycles();
 		// we want to only clear out the quartz tables one time, therefore we want to pass this lifecycle the
 		// opposite of what is passed to the clear database lifecycle that runs on every test execution
-		JettyServer server = new JettyServer(9952, "/en-test", "/../server/src/main/webapp/en");
+		JettyServer server = new JettyServer(getJettyServerPort(), "/en-test", "/../server/src/main/webapp/en");
 		server.setTestMode(true);
 		lifeCycles.add(server);
 		lifeCycles.add(new InitializeGRL());
 		return lifeCycles;
+	}
+	
+	protected int getJettyServerPort() {
+//	    String port = Core.getCurrentContextConfig().getProperty(EdenConstants.HTTP_SERVICE_PORT);
+//	    if (StringUtils.isNotBlank(port)) {
+//	        return Integer.valueOf(port).intValue();
+//	    }
+	    return 9952;
 	}
 
 	/**

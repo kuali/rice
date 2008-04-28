@@ -59,6 +59,11 @@ import edu.iu.uis.eden.util.XmlHelper;
 public class EDocLitePostProcessor extends DefaultPostProcessor {
     private static final Logger LOG = Logger.getLogger(EDocLitePostProcessor.class);
     private static final Timer TIMER = new Timer();
+    public static final int SUBMIT_URL_MILLISECONDS_WAIT = 60000;
+    public static final String EVENT_TYPE_ACTION_TAKEN = "actionTaken";
+    public static final String EVENT_TYPE_DELETE_ROUTE_HEADER = "deleteRouteHeader";
+    public static final String EVENT_TYPE_ROUTE_LEVEL_CHANGE = "routeLevelChange";
+    public static final String EVENT_TYPE_ROUTE_STATUS_CHANGE = "statusChange";
 
     private static String getURL(Document edlDoc) throws XPathExpressionException {
         XPath xpath = XPathFactory.newInstance().newXPath();
@@ -74,7 +79,7 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
         try {
             content = XmlHelper.writeNode(eventDoc, true);
         } catch (TransformerException te) {
-            LOG.error("Error writing serializing event doc: "+ eventDoc);
+            LOG.error("Error writing serializing event doc: " + eventDoc);
             throw te;
         }
         byte[] contentBytes = content.getBytes("UTF-8");
@@ -157,7 +162,7 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
     protected static void postEvent(Long docId, Object event, String eventName) throws Exception {
         DocumentRouteHeaderValue val = KEWServiceLocator.getRouteHeaderService().getRouteHeader(docId);
         Document doc = getEDLContent(val);
-        LOG.debug("Submitting doc: " + XmlHelper.jotNode(doc));
+        LOG.info("Submitting doc: " + XmlHelper.jotNode(doc));
 
         String urlstring = getURL(doc);
         if (Utilities.isEmpty(urlstring)) {
@@ -191,7 +196,9 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
         final Thread t = new Thread(new Runnable() {
             public void run() {
                 try {
+                    LOG.debug("Post Event calling url: " + _urlstring);
                     submitURL(_urlstring, _eventDoc);
+                    LOG.debug("Post Event done calling url: " + _urlstring);
                 } catch (Exception e) {
                     LOG.error(e);
                 }
@@ -205,45 +212,46 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
             public void run() {
                 t.interrupt();
             }
-        }, 60000);
+        }, SUBMIT_URL_MILLISECONDS_WAIT);
     }
 
     public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange event) throws Exception {
         LOG.debug("doRouteStatusChange: " + event);
-//        postEvent(event.getRouteHeaderId(), event, "statusChange");
+        postEvent(event.getRouteHeaderId(), event, EVENT_TYPE_ROUTE_STATUS_CHANGE);
         return super.doRouteStatusChange(event);
     }
 
     public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
         LOG.debug("doActionTaken: " + event);
-//        postEvent(event.getRouteHeaderId(), event, "actionTaken");
+        postEvent(event.getRouteHeaderId(), event, EVENT_TYPE_ACTION_TAKEN);
         return super.doActionTaken(event);
     }
 
     public ProcessDocReport doDeleteRouteHeader(DeleteEvent event) throws Exception {
         LOG.debug("doDeleteRouteHeader: " + event);
-//        postEvent(event.getRouteHeaderId(), event, "deleteRouteHeader");
+        postEvent(event.getRouteHeaderId(), event, EVENT_TYPE_DELETE_ROUTE_HEADER);
         return super.doDeleteRouteHeader(event);
     }
 
     public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange event) throws Exception {
         LOG.debug("doRouteLevelChange: " + event);
-//        postEvent(event.getRouteHeaderId(), event, "routeLevelChange");
+        postEvent(event.getRouteHeaderId(), event, EVENT_TYPE_ROUTE_LEVEL_CHANGE);
         return super.doRouteLevelChange(event);
     }
 
     public static Document getEDLContent(DocumentRouteHeaderValue routeHeader) throws Exception {
         String content = routeHeader.getDocContent();
-        Document doc =  DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(content)));
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(content)));
         return doc;
     }
 
     public static DocumentBuilder getDocumentBuilder() throws Exception {
-    	return DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        return DocumentBuilderFactory.newInstance().newDocumentBuilder();
     }
 
     private static String lowerCaseFirstChar(String s) {
-        if (s.length() == 0 || Character.isLowerCase(s.charAt(0))) return s;
+        if (s.length() == 0 || Character.isLowerCase(s.charAt(0)))
+            return s;
         StringBuffer sb = new StringBuffer(s.length());
         sb.append(Character.toLowerCase(s.charAt(0)));
         if (s.length() > 1) {
@@ -252,7 +260,6 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
         return sb.toString();
     }
 
-
     public static Element propertiesToXml(Object o, String elementName) throws Exception {
         Class c = o.getClass();
         Document doc = getDocumentBuilder().newDocument();
@@ -260,9 +267,10 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
         Method[] methods = c.getMethods();
         for (int i = 0; i < methods.length; i++) {
             String name = methods[i].getName();
-            if ("getClass".equals(name)) continue;
-            if (!name.startsWith("get") ||
-                methods[i].getParameterTypes().length > 0) continue;
+            if ("getClass".equals(name))
+                continue;
+            if (!name.startsWith("get") || methods[i].getParameterTypes().length > 0)
+                continue;
             name = name.substring("get".length());
             name = lowerCaseFirstChar(name);
             String value = null;

@@ -45,6 +45,9 @@ public class EdenConstants extends JSTLConstants {
 
     public static final String BOOTSTRAP_SPRING_FILE = "kew.bootstrap.spring.file";
 
+    public static final String KEW_URL_HOST = "kew.url.host";
+    public static final String HTTP_SERVICE_PORT = "http.service.port";
+
     public static final String RELOAD_ACTION_LIST = "RELOAD_ACTION_LIST";
     public static final String DELEGATION_WIZARD = "delegationWizard";
     public static final String PERFORM_REALTIME_DOCUMENT_UPGRADE = "Document.PerformRealtimeUpgrade";

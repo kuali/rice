@@ -52,10 +52,10 @@ import edu.iu.uis.eden.messaging.KEWXMLService;
   @UnitTestData(filename="file:ken/src/test/resources/org/kuali/ken/test/DefaultTestData.sql", delimiter=";") 
 })
 public class KENWebServiceTest extends ServerTestBase {
-private static final String notificationMessageAsXml;
+    private static final String notificationMessageAsXml;
     
     static {
-        InputStream notificationXML = NotificationWebServiceTest.class.getResourceAsStream("webservice_notification.xml");
+        InputStream notificationXML = KENWebServiceTest.class.getResourceAsStream("webservice_notification.xml");
         try {
             notificationMessageAsXml = IOUtils.toString(notificationXML);
         } catch (IOException ioe) {

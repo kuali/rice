@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.core.service.impl;
+package org.kuali.rice.core.service.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
@@ -27,31 +27,37 @@ import javax.crypto.spec.DESKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.service.Demonstration;
-import org.kuali.core.service.EncryptionService;
+import org.kuali.rice.core.Core;
+import org.kuali.rice.core.service.Demonstration;
+import org.kuali.rice.core.service.EncryptionService;
 
 /**
  * Implementation of encryption service for demonstration. 
  * 
- * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DemonstrationGradeEncryptionServiceImpl implements EncryptionService, Demonstration {
     public final static String ALGORITHM = "DES/ECB/PKCS5Padding";
     public final static String HASH_ALGORITHM = "SHA"; 
 
+    private final static String CHARSET = "UTF-8";
+
     private transient SecretKey desKey;
+
+    private boolean isEnabled = false;
 
     public DemonstrationGradeEncryptionServiceImpl() throws Exception {
         if (desKey != null) {
             throw new RuntimeException("The secret key must be kept secret. Storing it in the Java source code is a really bad idea.");
         }
+        String key = Core.getCurrentContextConfig().getProperty("encryption.key");
+        if (!StringUtils.isEmpty(key)) {
+            setSecretKey(key);
+        }
     }
     
-    /**
-     * @see edu.iu.uis.eden.security.EncryptionService#isEnabled()
-     */
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 
     public String encrypt(Object valueToHide) throws GeneralSecurityException {
@@ -63,13 +69,17 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, desKey);
 
-        // Our cleartext
-        byte[] cleartext = valueToHide.toString().getBytes();
-
-        // Encrypt the cleartext
-        byte[] ciphertext = cipher.doFinal(cleartext);
-
-        return new String(Base64.encodeBase64(ciphertext));
+        try {
+            // Our cleartext
+            byte[] cleartext = valueToHide.toString().getBytes(CHARSET);
+    
+            // Encrypt the cleartext
+            byte[] ciphertext = cipher.doFinal(cleartext);
+    
+            return new String(Base64.encodeBase64(ciphertext), CHARSET);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -82,12 +92,16 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, desKey);
 
-        // un-Base64 encode the encrypted data
-        byte[] encryptedData = Base64.decodeBase64(ciphertext.getBytes());
-        
-        // Decrypt the ciphertext
-        byte[] cleartext1 = cipher.doFinal(encryptedData);
-        return new String(cleartext1);
+        try {
+            // un-Base64 encode the encrypted data
+            byte[] encryptedData = Base64.decodeBase64(ciphertext.getBytes(CHARSET));
+
+            // Decrypt the ciphertext
+            byte[] cleartext1 = cipher.doFinal(encryptedData);
+            return new String(cleartext1, CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -98,30 +112,27 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
      * @return
      * @throws Exception
      */
-    public String generateEncodedKey() throws Exception {
-        Cipher cipher;
+    public static String generateEncodedKey() throws Exception {
         KeyGenerator keygen = KeyGenerator.getInstance("DES");
         SecretKey desKey = keygen.generateKey();
 
         // Create the cipher
-        cipher = Cipher.getInstance(ALGORITHM);
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init((Cipher.WRAP_MODE), desKey);
         
         SecretKeyFactory desFactory = SecretKeyFactory.getInstance("DES");
         DESKeySpec desSpec = (DESKeySpec) desFactory.getKeySpec(desKey, javax.crypto.spec.DESKeySpec.class);
         byte[] rawDesKey = desSpec.getKey();
 
-
         return new String(Base64.encodeBase64(rawDesKey));
     }
 
     private SecretKey unwrapEncodedKey(String key) throws Exception {
-        Cipher cipher;
         KeyGenerator keygen = KeyGenerator.getInstance("DES");
         SecretKey desKey = keygen.generateKey();
 
         // Create the cipher
-        cipher = Cipher.getInstance(ALGORITHM);
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init((Cipher.UNWRAP_MODE), desKey);
 
         byte[] bytes = Base64.decodeBase64(key.getBytes());
@@ -143,6 +154,7 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
      */
     public void setSecretKey(String secretKey) throws Exception {
         desKey = this.unwrapEncodedKey(secretKey);
+        isEnabled = true;
         // Create the cipher
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init((Cipher.WRAP_MODE), desKey);
@@ -159,7 +171,7 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
         }
         try {
             MessageDigest md = MessageDigest.getInstance(HASH_ALGORITHM);
-            return new String( Base64.encodeBase64( md.digest( valueToHide.toString().getBytes( "UTF-8" ) ) ), "UTF-8" );
+            return new String( Base64.encodeBase64( md.digest( valueToHide.toString().getBytes( CHARSET ) ) ), CHARSET );
         } catch ( UnsupportedEncodingException ex ) {
             // should never happen
         }

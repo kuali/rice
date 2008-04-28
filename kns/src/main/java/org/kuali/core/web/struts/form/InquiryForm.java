@@ -31,8 +31,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.core.authorization.AuthorizationConstants;
 import org.kuali.core.inquiry.Inquirable;
 import org.kuali.core.service.DataDictionaryService;
-import org.kuali.core.service.EncryptionService;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**

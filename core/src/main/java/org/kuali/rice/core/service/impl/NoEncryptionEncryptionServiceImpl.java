@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.core.service.impl;
+package org.kuali.rice.core.service.impl;
 
 import java.security.GeneralSecurityException;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.core.service.Demonstration;
-import org.kuali.core.service.EncryptionService;
+import org.kuali.rice.core.service.Demonstration;
+import org.kuali.rice.core.service.EncryptionService;
 
 /**
  * Implementation of encryption service for demonstration. 

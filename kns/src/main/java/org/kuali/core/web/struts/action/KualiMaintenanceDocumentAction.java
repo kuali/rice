@@ -50,7 +50,6 @@ import org.kuali.core.exceptions.ModuleAuthorizationException;
 import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.rule.event.KualiAddLineEvent;
 import org.kuali.core.service.DocumentAuthorizationService;
-import org.kuali.core.service.EncryptionService;
 import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.GlobalVariables;
@@ -58,6 +57,7 @@ import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.web.format.Formatter;
 import org.kuali.core.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.util.RiceConstants;
 

@@ -142,7 +142,7 @@
 	</bean>
 
 	<bean id="exceptionMessagingService" class="edu.iu.uis.eden.messaging.exceptionhandling.DefaultExceptionServiceImpl" lazy-init="true" />
-	<bean id="enEncryptionService" class="edu.iu.uis.eden.security.DESEncryptionService" lazy-init="true" />
+	<bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DESEncryptionService" lazy-init="true" />
 	<bean id="digitalSignatureService" class="edu.iu.uis.eden.security.DigitalSignatureServiceImpl" lazy-init="true" />
 	<bean id="ksbJavaSecurityManagementService" class="edu.iu.uis.eden.security.admin.JavaSecurityManagementServiceImpl" lazy-init="true" />
 

@@ -7,6 +7,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.config.NodeSettings;
+import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 import org.kuali.workflow.role.RoleService;
 import org.kuali.workflow.workgroup.WorkgroupTypeService;
@@ -48,7 +49,6 @@ import edu.iu.uis.eden.routetemplate.RuleAttributeService;
 import edu.iu.uis.eden.routetemplate.RuleDelegationService;
 import edu.iu.uis.eden.routetemplate.RuleService;
 import edu.iu.uis.eden.routetemplate.RuleTemplateService;
-import edu.iu.uis.eden.security.EncryptionService;
 import edu.iu.uis.eden.server.WorkflowDocumentActions;
 import edu.iu.uis.eden.server.WorkflowUtility;
 import edu.iu.uis.eden.user.UserService;

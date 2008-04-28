@@ -35,7 +35,6 @@ import org.kuali.core.datadictionary.control.KualiUserControlDefinition;
 import org.kuali.core.document.authorization.MaintenanceDocumentAuthorizations;
 import org.kuali.core.exceptions.UnknownBusinessClassAttributeException;
 import org.kuali.core.inquiry.Inquirable;
-import org.kuali.core.inquiry.KualiInquirableImpl;
 import org.kuali.core.lookup.LookupUtils;
 import org.kuali.core.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.core.lookup.keyvalues.IndicatorValuesFinder;
@@ -45,7 +44,6 @@ import org.kuali.core.lookup.valueFinder.ValueFinder;
 import org.kuali.core.service.BusinessObjectDictionaryService;
 import org.kuali.core.service.BusinessObjectMetaDataService;
 import org.kuali.core.service.DataDictionaryService;
-import org.kuali.core.service.EncryptionService;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.web.format.FormatException;
 import org.kuali.core.web.format.Formatter;
@@ -53,6 +51,7 @@ import org.kuali.core.web.ui.Field;
 import org.kuali.core.web.ui.Row;
 import org.kuali.core.web.ui.Section;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.util.KNSConstants;
 
 

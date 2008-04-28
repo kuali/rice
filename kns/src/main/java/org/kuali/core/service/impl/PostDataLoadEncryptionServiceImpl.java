@@ -22,10 +22,9 @@ import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.dao.PostDataLoadEncryptionDao;
 import org.kuali.core.exceptions.ClassNotPersistableException;
 import org.kuali.core.service.BusinessObjectService;
-import org.kuali.core.service.EncryptionService;
 import org.kuali.core.service.PostDataLoadEncryptionService;
 import org.kuali.core.util.OjbKualiEncryptDecryptFieldConversion;
-import org.springframework.transaction.annotation.Transactional;
+import org.kuali.rice.core.service.EncryptionService;
 
 public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBase implements PostDataLoadEncryptionService {
     private BusinessObjectService businessObjectService;

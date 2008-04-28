@@ -14,10 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.iu.uis.eden.security;
+package org.kuali.rice.core.service.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -28,8 +29,7 @@ import javax.crypto.spec.DESKeySpec;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
-
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
+import org.kuali.rice.core.service.EncryptionService;
 
 /**
  * An EncryptionService implementation which encrypts and decrypts values using the DES
@@ -39,8 +39,8 @@ import edu.iu.uis.eden.exception.WorkflowRuntimeException;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DESEncryptionService implements EncryptionService {
-
 	public final static String ALGORITHM = "DES/ECB/PKCS5Padding";
+    public final static String HASH_ALGORITHM = "SHA"; 
 
 	private final static String CHARSET = "UTF-8";
 
@@ -52,13 +52,10 @@ public class DESEncryptionService implements EncryptionService {
 		if (desKey != null) {
 			throw new RuntimeException("The secret key must be kept secret. Storing it in the Java source code is a really bad idea.");
 		}
-
 		String key = Core.getCurrentContextConfig().getProperty("encryption.key");
-
 		if (!StringUtils.isEmpty(key)) {
 			setSecretKey(key);
 		}
-
 	}
 
 	public boolean isEnabled() {
@@ -83,7 +80,7 @@ public class DESEncryptionService implements EncryptionService {
 
 			return new String(Base64.encodeBase64(ciphertext), CHARSET);
 		} catch (Exception e) {
-			throw new WorkflowRuntimeException(e);
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -105,7 +102,7 @@ public class DESEncryptionService implements EncryptionService {
 
 			return new String(cleartext1, CHARSET);
 		} catch (UnsupportedEncodingException e) {
-			throw new WorkflowRuntimeException(e);
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -162,5 +159,23 @@ public class DESEncryptionService implements EncryptionService {
 		desKey = this.unwrapEncodedKey(secretKey);
 		isEnabled = true;
 	}
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.core.service.EncryptionService#hash(java.lang.Object)
+     */
+    public String hash(Object valueToHide) throws GeneralSecurityException {
+        if ( valueToHide == null || StringUtils.isEmpty( valueToHide.toString() ) ) {
+            return "";
+        }
+        try {
+            MessageDigest md = MessageDigest.getInstance(HASH_ALGORITHM);
+            return new String( Base64.encodeBase64( md.digest( valueToHide.toString().getBytes( CHARSET) ) ), CHARSET );
+        } catch ( UnsupportedEncodingException ex ) {
+            // should never happen
+        }
+        return "";
+    }
 
 }

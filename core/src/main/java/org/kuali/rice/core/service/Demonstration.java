@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.core.service;
+package org.kuali.rice.core.service;
 
 /**
  * Marks a class to be for demonstration only. This is following the marker interface design pattern.

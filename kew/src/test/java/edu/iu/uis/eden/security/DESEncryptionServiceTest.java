@@ -24,6 +24,8 @@ import junit.framework.TestCase;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.SimpleConfig;
 import org.kuali.rice.core.Core;
+import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl;
 
 /**
  * Tests the DESEncryptionService.
@@ -39,7 +41,8 @@ public class DESEncryptionServiceTest extends TestCase {
 	 * thread-safety of the implementation so we added this test to verify and prevent regression.
 	 */
 	public void testEncryptionMultiThreaded() throws Exception {
-		String key = DESEncryptionService.generateEncodedKey();
+		String key = DemonstrationGradeEncryptionServiceImpl.generateEncodedKey();
+//        String key = DESEncryptionService.generateEncodedKey();
 		Config config = Core.getCurrentContextConfig();
 		if (config == null) {
 		    // because of previously running tests, the config might already be initialized
@@ -48,7 +51,8 @@ public class DESEncryptionServiceTest extends TestCase {
 		}
 		config.overrideProperty("encryption.key", key);
 
-		final EncryptionService service = new DESEncryptionService();
+		final EncryptionService service = new DemonstrationGradeEncryptionServiceImpl();
+//        final EncryptionService service = new DESEncryptionService();
 		List<Thread> threads = new ArrayList<Thread>();
 		failed = false;
 		for (int i =0; i < 10; i++) {
@@ -84,7 +88,8 @@ public class DESEncryptionServiceTest extends TestCase {
 	 * Similar to the test above except that a new DESEncryptionService is created for each thread.
 	 */
 	public void testEncryptionMultiThreadedSafe() throws Exception {
-		String key = DESEncryptionService.generateEncodedKey();
+        String key = DemonstrationGradeEncryptionServiceImpl.generateEncodedKey();
+//        String key = DESEncryptionService.generateEncodedKey();
 		Config config = Core.getCurrentContextConfig();
 		if (config == null) {
 		    // because of previously running tests, the config might already be initialized
@@ -98,7 +103,8 @@ public class DESEncryptionServiceTest extends TestCase {
 			threads.add(new Thread() {
 				public void run() {
 					try {
-						final EncryptionService service = new DESEncryptionService();
+				        final EncryptionService service = new DemonstrationGradeEncryptionServiceImpl();
+//                        final EncryptionService service = new DESEncryptionService();
 						for (int j = 0; j < 100; j++) {
 							String badText = "This is so going to NOT explode";
 							String badEnc = service.encrypt(badText);

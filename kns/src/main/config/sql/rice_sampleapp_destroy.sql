@@ -1,4 +1,4 @@
--- Mon Apr 28 12:24:36 EDT 2008
+-- Tue Apr 29 15:47:09 EDT 2008
 -- This file has been auto-generated from dball.groovy
 -- It contains the master rice destroy sql from rice_db_destroy.sql
 -- As well as the sample app drop script rice_sample_app_drops.sql
@@ -51,10 +51,6 @@ DROP TABLE FS_LOOKUP_RESULTS_MT CASCADE CONSTRAINTS
 DROP TABLE FS_LOOKUP_SELECTIONS_MT CASCADE CONSTRAINTS
 /
 DROP TABLE SH_ATT_T CASCADE CONSTRAINTS
-/
-DROP TABLE SH_LOCK_T CASCADE CONSTRAINTS
-/
-DROP TABLE SH_LOCK_TYP_DESC_T CASCADE CONSTRAINTS
 /
 DROP TABLE SH_NTE_T CASCADE CONSTRAINTS
 /

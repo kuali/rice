@@ -1,4 +1,4 @@
--- Mon Apr 28 12:24:36 EDT 2008
+-- Tue Apr 29 15:47:09 EDT 2008
 -- This file has been auto-generated from dball.groovy
 -- It contains the master rice bootstrap sql from rice_db_bootstrap.sql
 -- As well as sample data contributed by modules and the rice_sample_create.sql
@@ -144,29 +144,6 @@ CREATE TABLE SH_ATT_T (
      CONSTRAINT SH_ATT_TC0 UNIQUE (OBJ_ID)
 )
 /
-CREATE TABLE SH_LOCK_T (
-        TRN_SMPHR_TYP_CD               VARCHAR2(10) CONSTRAINT SH_LOCK_TN1 NOT NULL,
-        TRN_SMPHR_ID                   VARCHAR2(10) CONSTRAINT SH_LOCK_TN2 NOT NULL,
-        OBJ_ID                         VARCHAR2(36) DEFAULT SYS_GUID() CONSTRAINT SH_LOCK_TN3 NOT NULL,
-        VER_NBR                        NUMBER(8) DEFAULT 1 CONSTRAINT SH_LOCK_TN4 NOT NULL,
-        PERSON_UNVL_ID                 VARCHAR2(10),
-        TRN_LCKTM_TS                   DATE,
-     CONSTRAINT SH_LOCK_TP1 PRIMARY KEY (
-        TRN_SMPHR_TYP_CD,
-        TRN_SMPHR_ID),
-     CONSTRAINT SH_LOCK_TC0 UNIQUE (OBJ_ID)
-)
-/
-CREATE TABLE SH_LOCK_TYP_DESC_T (
-        TRN_SMPHR_TYP_CD               VARCHAR2(10) CONSTRAINT SH_LOCK_TYP_DESC_TN1 NOT NULL,
-        OBJ_ID                         VARCHAR2(36) DEFAULT SYS_GUID() CONSTRAINT SH_LOCK_TYP_DESC_TN2 NOT NULL,
-        VER_NBR                        NUMBER(8) DEFAULT 1 CONSTRAINT SH_LOCK_TYP_DESC_TN3 NOT NULL,
-        PRSN_UPDTABLTY_NBR             NUMBER(12),
-        TRN_SMPHR_DESC                 VARCHAR2(60),
-     CONSTRAINT SH_LOCK_TYP_DESC_TP1 PRIMARY KEY (TRN_SMPHR_TYP_CD),
-     CONSTRAINT SH_LOCK_TYP_DESC_TC0 UNIQUE (OBJ_ID)
-)
-/
 CREATE TABLE SH_NTE_T (
         NTE_ID                         NUMBER(14) CONSTRAINT SH_NTE_TN1 NOT NULL, 
         OBJ_ID                         VARCHAR2(36) DEFAULT SYS_GUID() CONSTRAINT SH_NTE_TN2 NOT NULL,
@@ -287,12 +264,6 @@ ALTER TABLE SH_ATT_T
         NTE_ID )
   REFERENCES SH_NTE_T (
         NTE_ID ))
-/
-ALTER TABLE SH_LOCK_T
-  ADD ( CONSTRAINT SH_LOCK_TR1 FOREIGN KEY (
-        TRN_SMPHR_TYP_CD )
-  REFERENCES SH_LOCK_TYP_DESC_T ( 
-        TRN_SMPHR_TYP_CD ))
 /
 ALTER TABLE SH_NTE_T
   ADD (CONSTRAINT SH_NTE_TR1 FOREIGN KEY (

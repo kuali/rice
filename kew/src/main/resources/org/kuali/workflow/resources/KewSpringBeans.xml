@@ -441,7 +441,12 @@
 		<property name="jcdAlias" value="enWorkflowDataSource" />
     </bean>
 
-    <bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DESEncryptionService" lazy-init="true"/>
+    <!-- <bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DESEncryptionService" lazy-init="true"/> -->
+	<bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl" lazy-init="true">
+		<property name="secretKey">
+			<value>${encryption.key}</value>
+		</property>
+	</bean>
 
   <bean id="matchAllTxCheckedExceptionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
     <property name="transactionManager">

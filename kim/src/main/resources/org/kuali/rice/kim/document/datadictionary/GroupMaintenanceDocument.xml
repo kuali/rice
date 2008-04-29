@@ -68,7 +68,7 @@
 			<maintainableSection title="Parent Groups">
 				<maintainableItems>
 					<maintainableCollection name="parentGroups"
-						businessObjectClass="org.kuali.rice.kim.bo.Group" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="parentGroups" includeAddLine="true" summaryTitle="Parent Groups">
+						businessObjectClass="org.kuali.rice.kim.bo.Group" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="parentGroups" includeAddLine="false" summaryTitle="Parent Groups">
 						<maintainableField name="id" required="true"
 							readOnlyAfterAdd="true" template="id" />
 						<maintainableField name="name" required="false" readOnly="true" template="name"/>
@@ -78,7 +78,7 @@
 			<maintainableSection title="Member Groups">
 				<maintainableItems>
 					<maintainableCollection name="memberGroups" 
-						businessObjectClass="org.kuali.rice.kim.bo.Group" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="memberGroups" includeAddLine="true" summaryTitle="Member Groups">
+						businessObjectClass="org.kuali.rice.kim.bo.Group" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="memberGroups" includeAddLine="false" summaryTitle="Member Groups">
 						<maintainableField name="id" required="true"
 							readOnly="true" readOnlyAfterAdd="true" template="id" />
 						<maintainableField name="name" required="false" readOnly="true" template="name" />
@@ -88,7 +88,7 @@
 			<maintainableSection title="Group Roles">
 				<maintainableItems>
 					<maintainableCollection name="groupRoles"
-						businessObjectClass="org.kuali.rice.kim.bo.Role"  includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="groupRoles" includeAddLine="true" summaryTitle="Roles">
+						businessObjectClass="org.kuali.rice.kim.bo.Role"  includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="groupRoles" includeAddLine="false" summaryTitle="Roles">
 						<maintainableField name="id" required="true"
 							readOnly="true" readOnlyAfterAdd="true" template="id" />
 						<maintainableField name="name" required="true" readOnly="true" template="name" />

@@ -653,7 +653,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         DocumentDetailVO documentDetail = info.routingReport(criteria);
         assertNotNull(documentDetail);
         assertEquals("Route header id returned should be the same as the one passed in", doc.getRouteHeaderId(), documentDetail.getRouteHeaderId());
-        assertEquals("Should have been 2 requests generated.", 2, documentDetail.getActionRequests().length);
+        assertEquals("Wrong number of action requests generated", 2, documentDetail.getActionRequests().length);
         
         // let's try doing both WorkflowDocumentTemplate and WorkflowDocumentTemplate2 together
         criteria.setRuleTemplateNames(new String[] { "WorkflowDocumentTemplate", "WorkflowDocument2Template" });

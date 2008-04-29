@@ -334,11 +334,12 @@ public class SimulationEngine extends StandardWorkflowEngine {
         	document.setDocumentTypeId(documentType.getDocumentTypeId());
     		document.setDocRouteStatus(EdenConstants.ROUTE_HEADER_INITIATED_CD);
     		initializeDocument(document);
-    		installSimulationNodeInstances(context, criteria);
         }
         if (document == null) {
         	throw new IllegalArgumentException("Workflow simulation engine could not locate document with id "+documentId);
         }
+        context.setDocument(document);
+        installSimulationNodeInstances(context, criteria);
 		return document;
     }
 

@@ -1,0 +1,100 @@
+<!-- Maven 2 Assembly descriptor for KEW plugin zip.
+  This descriptor can be used by standalone invocation on the command line:
+  
+  mvn assembly:assembly mvn assembly:assembly -Ddescriptor=src/main/assembly/kew_plugin.xml -DskipTests=true
+  
+  Or can be integrated ("attached") to your project's existing Maven 'package' goal, by the inclusion of the following
+  XML in your project descriptor:
+  
+  <build>
+    [...]
+    <plugins>
+      [...]
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/main/assembly/kew-plugin.xml</descriptor>
+          </descriptors>
+          <executions>
+              <execution>
+                <id>make-assembly</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>attached</goal>
+                </goals>
+              </execution>
+          </executions>
+        </configuration>
+      </plugin>
+
+  at which point the assembly will be generated whenever the 'package' goal is executed, e.g.:
+  
+  mvn package -DskipTests=true
+  
+  (I could not get this to work (Maven 2.0.9) and reverted to calling mvn assembly:assembly -DskipTests=true)
+-->
+<assembly>
+
+  <!-- the assembly descriptor id -->
+  <id>kew-plugin</id>
+
+  <!-- we don't want the base group/artifact directory in the zip -->
+  <includeBaseDirectory>false</includeBaseDirectory>
+
+  <!-- plugin must be in Zip format -->
+  <formats>
+    <format>zip</format>
+  </formats>
+
+  <fileSets>
+    <!-- include the referencing project's classes -->
+    <fileSet>
+      <directory>target/classes</directory>
+      <outputDirectory>/classes</outputDirectory>
+    </fileSet>
+  </fileSets>
+
+  <files>
+    <!--
+      We need the workflow.xml config file in META-INF/ dir in the Zip
+      This illustrates a slight discrepancy in that the workflow.xml file
+      referred to here is in the project's main resources which is not
+      strictly necessary...it could live outside the project resources
+    -->
+    <file>
+      <source>src/main/resources/META-INF/workflow.xml</source>
+      <outputDirectory>/META-INF</outputDirectory>
+    </file>
+  </files>
+
+  <dependencySets>
+    <!--
+      Another way of including project resources; this form could be used
+      to refer to the institutional plugin artifact if the assembly is invoked
+      from another project which is not the institutional plugin project
+    <dependencySet>
+      <includes>
+        <include>edu.sampleu:inst-plugin</include>
+      </includes>
+      <unpack>true</unpack>
+      <outputDirectory>/classes</outputDirectory>
+    </dependencySet>
+    -->
+    <!--
+      Include all runtime dependencies of the institutional plugin;
+      be careful with dependencies as this will conveniently include everything 
+     -->
+    <dependencySet>
+      <useProjectArtifact>false</useProjectArtifact>
+      <outputDirectory>/lib</outputDirectory>
+      <excludes>
+        <!-- can't have rice in our plugin -->
+        <exclude>org.kuali.rice:*</exclude>
+        <!-- ... or any rice dependencies -->
+        <exclude>org.springframework:*</exclude>
+        <!-- todo...fill everything else in...? -->
+      </excludes>
+    </dependencySet>
+  </dependencySets>  
+</assembly>

@@ -222,27 +222,6 @@
 		<field-descriptor name="financialDocumentClassCode" column="FDOC_CLASS_CD" jdbc-type="VARCHAR" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.core.bo.ConcurrentLock" table="SH_LOCK_T">
-		<field-descriptor name="transactionSemaphoreTypeCode" column="TRN_SMPHR_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
-		<field-descriptor name="transactionSemaphoreId" column="TRN_SMPHR_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="personUniversalIdentifier" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" />
-		<field-descriptor name="transactionLocktimeTimestamp" column="TRN_LCKTM_TS" jdbc-type="TIMESTAMP" />
-		<reference-descriptor name="lockTypeDescription" class-ref="org.kuali.core.bo.LockTypeDescription" auto-retrieve="true" auto-update="none"
-			auto-delete="none" proxy="true">
-			<foreignkey field-ref="transactionSemaphoreTypeCode" />
-		</reference-descriptor>
-	</class-descriptor>
-
-	<class-descriptor class="org.kuali.core.bo.LockTypeDescription" table="SH_LOCK_TYP_DESC_T">
-		<field-descriptor name="transactionSemaphoreTypeCode" column="TRN_SMPHR_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="personUpdateAbilityNumber" column="PRSN_UPDTABLTY_NBR" jdbc-type="BIGINT" />
-		<field-descriptor name="transactionSemaphoreDescription" column="TRN_SMPHR_DESC" jdbc-type="VARCHAR" />
-	</class-descriptor>
-
 	<class-descriptor class="org.kuali.core.bo.ParameterNamespace" table="SH_PARM_NMSPC_T">
 		<field-descriptor name="code" column="SH_PARM_NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="SH_PARM_NMSPC_NM" jdbc-type="VARCHAR" />

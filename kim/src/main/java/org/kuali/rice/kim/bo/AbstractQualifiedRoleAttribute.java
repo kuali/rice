@@ -25,12 +25,45 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public abstract class AbstractQualifiedRoleAttribute extends AbstractQualifiedRole {
+public abstract class AbstractQualifiedRoleAttribute extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = -5155126090045426553L;
     private Long id;
     private String attributeName;
     private String attributeValue;
+    private Long roleId;
+    private Role role;
 
+    /**
+     * @return the roleId
+     */
+    public Long getRoleId() {
+        return this.roleId;
+    }
+
+    /**
+     * @param roleId the roleId to set
+     */
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
+
+    /**
+     * This method ...
+     *
+     * @return Role
+     */
+    public Role getRole() {
+        return this.role;
+    }
+
+    /**
+     * This method ...
+     *
+     * @param role
+     */
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     /**
      * This method ...

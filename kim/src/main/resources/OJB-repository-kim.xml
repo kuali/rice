@@ -103,9 +103,25 @@
 			<fk-pointing-to-this-class column="ROLE_ID"/>
      		<fk-pointing-to-element-class column="GROUP_ID"/>
 		</collection-descriptor>
+		<collection-descriptor name="groupQualifiedRoleAttributes" element-class-ref="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
+			<inverse-foreignkey field-ref="roleId" />
+		</collection-descriptor>
 		<collection-descriptor name="roleAttributes" element-class-ref="org.kuali.rice.kim.bo.RoleAttribute" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
 			<inverse-foreignkey field-ref="roleId" />
 		</collection-descriptor>
+	</class-descriptor>
+	
+	<!-- GROUP QUALIFIED ROLE ATTRIBUTES -->
+	<class-descriptor class="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute" table="KIM_GROUP_QLFD_ROLES_T">
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_GROUP_QLFD_ROLES_ID" index="true" />
+		<field-descriptor name="groupId" column="GROUP_ID" jdbc-type="BIGINT" />
+		<field-descriptor name="roleId" column="ROLE_ID" jdbc-type="BIGINT" />
+		<field-descriptor name="attributeName" column="ATTRIBUTE_NAME" jdbc-type="VARCHAR" />
+		<field-descriptor name="attributeValue" column="ATTRIBUTE_VALUE" jdbc-type="VARCHAR" />
+		
+		<!-- common fields -->
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 	</class-descriptor>
 	
 	<!-- ROLE ATTRIBUTES -->

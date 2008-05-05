@@ -38,10 +38,14 @@ public class Role extends PersistableBusinessObjectBase {
 	private Long id;
 	private String name;
 	private String description;
-	private ArrayList<Group> permissions;
+	private ArrayList<Permission> permissions;
 	private ArrayList<Group> groups;
 	private ArrayList<Principal> principals;
 	private ArrayList<RoleAttribute> roleAttributes;
+	
+	private ArrayList<GroupQualifiedRole> groupQualifiedRoles;
+	private ArrayList<PrincipalQualifiedRole> principalQualifiedRoles;
+	private ArrayList<GroupQualifiedRoleAttribute> groupQualifiedRoleAttributes;
 
 	/**
 	 * This constructs a Role instance, primarily constructing necessary TypeArrayLists for the
@@ -53,6 +57,9 @@ public class Role extends PersistableBusinessObjectBase {
 	    this.groups = new TypedArrayList(Group.class);
 	    this.principals = new TypedArrayList(Principal.class);
 	    this.roleAttributes = new TypedArrayList(RoleAttribute.class);
+	    this.groupQualifiedRoles = new TypedArrayList(GroupQualifiedRole.class);
+	    this.principalQualifiedRoles = new TypedArrayList(PrincipalQualifiedRole.class);
+	    this.groupQualifiedRoleAttributes = new TypedArrayList(GroupQualifiedRoleAttribute.class);
 	}
 
 	/**
@@ -140,14 +147,14 @@ public class Role extends PersistableBusinessObjectBase {
     /**
      * @return the permissions
      */
-    public ArrayList<Group> getPermissions() {
+    public ArrayList<Permission> getPermissions() {
         return this.permissions;
     }
 
     /**
      * @param permissions the permissions to set
      */
-    public void setPermissions(ArrayList<Group> permissions) {
+    public void setPermissions(ArrayList<Permission> permissions) {
         this.permissions = permissions;
     }
 
@@ -163,6 +170,48 @@ public class Role extends PersistableBusinessObjectBase {
      */
     public void setRoleAttributes(ArrayList<RoleAttribute> roleAttributes) {
         this.roleAttributes = roleAttributes;
+    }
+    
+    /**
+     * @return the groupQualifiedRoles
+     */
+    public ArrayList<GroupQualifiedRole> getGroupQualifiedRoles() {
+        return this.groupQualifiedRoles;
+    }
+
+    /**
+     * @param groupQualifiedRoles the groupQualifiedRoles to set
+     */
+    public void setGroupQualifiedRoles(ArrayList<GroupQualifiedRole> groupQualifiedRoles) {
+        this.groupQualifiedRoles = groupQualifiedRoles;
+    }
+
+    /**
+     * @return the principalQualifiedRoles
+     */
+    public ArrayList<PrincipalQualifiedRole> getPrincipalQualifiedRoles() {
+        return this.principalQualifiedRoles;
+    }
+
+    /**
+     * @param principalQualifiedRoles the principalQualifiedRoles to set
+     */
+    public void setPrincipalQualifiedRoles(ArrayList<PrincipalQualifiedRole> principalQualifiedRoles) {
+        this.principalQualifiedRoles = principalQualifiedRoles;
+    }
+    
+    /**
+     * @return the groupQualifiedRoleAttributes
+     */
+    public ArrayList<GroupQualifiedRoleAttribute> getGroupQualifiedRoleAttributes() {
+        return this.groupQualifiedRoleAttributes;
+    }
+
+    /**
+     * @param groupQualifiedRoleAttributes the groupQualifiedRoleAttributes to set
+     */
+    public void setGroupQualifiedRoleAttributes(ArrayList<GroupQualifiedRoleAttribute> groupQualifiedRoleAttributes) {
+        this.groupQualifiedRoleAttributes = groupQualifiedRoleAttributes;
     }
 
     /**
@@ -192,9 +241,9 @@ public class Role extends PersistableBusinessObjectBase {
 	    dto.setName(role.getName());
 
 	    final HashMap<String, GroupDTO> permissions = new HashMap<String, GroupDTO>();
-	    for (Group group : role.getPermissions()) {
-	        permissions.put(group.getName(), Group.toDTO(group));
-	    }
+//	    for (Group group : role.getPermissions()) {
+//	        permissions.put(group.getName(), Group.toDTO(group));
+//	    }
 	    dto.setPermissions(permissions);
 
 	    final HashMap<String, GroupDTO> groups = new HashMap<String, GroupDTO>();

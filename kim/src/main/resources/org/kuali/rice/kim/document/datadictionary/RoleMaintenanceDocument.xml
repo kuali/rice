@@ -21,7 +21,7 @@
 <dictionaryEntry>
     <maintenanceDocument>
         <businessObjectClass>org.kuali.rice.kim.bo.Role</businessObjectClass>
-        <maintainableClass>org.kuali.core.maintenance.KualiMaintainableImpl</maintainableClass>
+        <maintainableClass>org.kuali.rice.kim.document.maintenance.RoleMaintainable</maintainableClass>
 
         <documentAuthorizerClass>org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase</documentAuthorizerClass>
         <authorizations>
@@ -77,11 +77,18 @@
 			</maintainableSection>
             <maintainableSection title="Groups with Role">
 				<maintainableItems>
-					<maintainableCollection name="groups"
-						businessObjectClass="org.kuali.rice.kim.bo.Group" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="groups" includeAddLine="true" summaryTitle="Groups with Role">
+					<maintainableCollection name="groupQualifiedRoles"
+						businessObjectClass="org.kuali.rice.kim.bo.GroupQualifiedRole" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="groupQualifiedRoles" includeAddLine="false" summaryTitle="Groups with Role">
 						<maintainableField name="id" required="true"
 							readOnlyAfterAdd="true" template="id" />
 						<maintainableField name="name" required="false" readOnly="true" template="name"/>
+						
+						<maintainableCollection name="qualifiedRoleAttributes"
+								businessObjectClass="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute" summaryTitle="Role Qualifications for Group">
+							<maintainableField name="id" required="true" readOnlyAfterAdd="true" />
+							<maintainableField name="attributeName" required="true" readOnly="false" />
+							<maintainableField name="attributeValue" required="true" readOnly="false" />
+						</maintainableCollection>
 					</maintainableCollection>
 				</maintainableItems>
 			</maintainableSection>

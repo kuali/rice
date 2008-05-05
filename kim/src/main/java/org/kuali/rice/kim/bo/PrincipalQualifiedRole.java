@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ import java.util.List;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class PrincipalQualifiedRole extends AbstractQualifiedRole {
+public class PrincipalQualifiedRole extends PrincipalQualifiedRoleAttribute {
    	private static final long serialVersionUID = -3834313283054550673L;
    	
    	private Long principalId;
@@ -73,5 +74,15 @@ public class PrincipalQualifiedRole extends AbstractQualifiedRole {
      */
     public void setQualifiedRoleAttributes(List<PrincipalQualifiedRoleAttribute> qualifiedRoleAttributes) {
         this.qualifiedRoleAttributes = qualifiedRoleAttributes;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
+     */
+    @Override
+    protected LinkedHashMap toStringMapper() {
+        return null;
     }
 }

@@ -109,10 +109,10 @@
         			Permissions given to anyone/anything with this Role.
         		</description>
         	</collection>
-        	<collection name="groups">
+        	<collection name="groupQualifiedRoles">
         		<label>Groups with Role</label>
         		<shortLabel>Groups</shortLabel>
-        		<summary>These are groups that have this role.</summary>
+        		<summary>These are groups that have this role along with their qualifications.</summary>
         		<description>
         			Groups that are given this Role.
         		</description>
@@ -125,14 +125,6 @@
         			Principals that are given this Role.
         		</description>
         	</collection>
-        	<!-- collection name="groupAttributes">
-        		<label>Group Attributes</label>
-        		<shortLabel>Attributes</shortLabel>
-        		<summary>Group Attributes</summary>
-        		<description>
-        			Attributes of this group
-        		</description>
-        	</collection -->
         </collections>
 
         <objectLabel>Role</objectLabel>

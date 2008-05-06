@@ -110,7 +110,7 @@
 					<select
 						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
 						businessObjectClass="org.kuali.rice.kim.bo.Entity"
-						keyAttribute="id" labelAttribute="name" 
+						keyAttribute="id" labelAttribute="EntityType.name" 
 						includeKeyInLabel="true" />
 				</control>
 			</attributeReference>

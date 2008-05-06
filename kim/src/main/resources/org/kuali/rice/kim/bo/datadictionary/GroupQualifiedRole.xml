@@ -49,6 +49,7 @@
           <collection name="qualifiedRoleAttributes">
             <label>Qualifications</label>
             <shortLabel>Qualifications</shortLabel>
+            <elementLabel>Qualification</elementLabel>
             <summary>Qualification Attributes</summary>
             <description>Qualification Attributes</description>
           </collection>

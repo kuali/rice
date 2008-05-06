@@ -71,12 +71,12 @@
 
 			</attribute>
 
-            <attribute name="attributeTypeName" forceUppercase="true">
+            <attribute name="attributeTypeName" forceUppercase="false">
                 <label>Attribute Type Name</label>
                 <shortLabel>Type Name</shortLabel>
 
                 <maxLength>500</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="false" /></validationPattern>
+                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
 
                 <control>
                     <text size="100" />

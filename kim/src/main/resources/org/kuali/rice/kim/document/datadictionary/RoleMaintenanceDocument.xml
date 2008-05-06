@@ -56,7 +56,7 @@
             <maintainableSection title="Permissions for Role">
 				<maintainableItems>
 					<maintainableCollection name="permissions"
-						businessObjectClass="org.kuali.rice.kim.bo.Permission" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Permission" sourceAttributeName="permissions" includeAddLine="true" summaryTitle="Permissions for Role">
+						businessObjectClass="org.kuali.rice.kim.bo.Permission" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Permission" sourceAttributeName="permissions" includeAddLine="false" summaryTitle="Permissions for Role">
 						<maintainableField name="id" required="true"
 							readOnlyAfterAdd="true" template="id" />
 						<maintainableField name="name" required="false" readOnly="true" template="name"/>
@@ -85,10 +85,17 @@
 						
 						<maintainableCollection name="qualifiedRoleAttributes"
 								businessObjectClass="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute" summaryTitle="Role Qualifications for Group">
-							<maintainableField name="id" required="true" readOnlyAfterAdd="true" />
+							<maintainableField name="id" required="true" readOnly="true" />
 							<maintainableField name="attributeName" required="true" readOnly="false" />
 							<maintainableField name="attributeValue" required="true" readOnly="false" />
+							<summaryFields>
+           		       			<summaryField name="attributeName" />
+           		       		</summaryFields>
 						</maintainableCollection>
+						
+						<summaryFields>
+     		       			<summaryField name="name" />
+         		       	</summaryFields>
 					</maintainableCollection>
 				</maintainableItems>
 			</maintainableSection>

@@ -22,14 +22,19 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.util.TypedArrayList;
 
 public class Namespace extends PersistableBusinessObjectBase {
-    	private static final long serialVersionUID = 9118112248900436184L;
+    private static final long serialVersionUID = 9118112248900436184L;
 	private Long id;
 	private String name;
 	private String description;
 
-    private ArrayList<NamespaceDefaultAttribute> namespaceAttributes = new TypedArrayList(NamespaceDefaultAttribute.class);
-    private ArrayList<Permission> namespacePermissions = new TypedArrayList(Permission.class);
+    private ArrayList<NamespaceDefaultAttribute> namespaceAttributes;
+    private ArrayList<Permission> namespacePermissions;
 
+    public Namespace() {
+        this.namespaceAttributes = new TypedArrayList(NamespaceDefaultAttribute.class);
+        this.namespacePermissions = new TypedArrayList(Permission.class);
+    }
+    
     public Long getId() {
 	    return this.id;
 	}

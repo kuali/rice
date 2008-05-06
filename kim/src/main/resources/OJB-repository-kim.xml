@@ -182,7 +182,7 @@
 
 	<!-- NAMESPACES -->
     <class-descriptor class="org.kuali.rice.kim.bo.Namespace" table="KIM_NAMESPACES_T">
-        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_NAMESPACE_ID" index="true" />
+        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_NAMESPACES_ID" index="true" />
         <field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
         <field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" />
         <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
@@ -197,7 +197,7 @@
 
 	<!-- PERMISSIONS -->
     <class-descriptor class="org.kuali.rice.kim.bo.Permission" table="KIM_PERMISSIONS_T">
-        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_NAMESPACE_ID" index="true" />
+        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_PERMISSIONS_ID" index="true" />
         <field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
         <field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" />
         <field-descriptor name="namespaceId" column="NAMESPACE_ID" jdbc-type="BIGINT" />

@@ -86,8 +86,8 @@
         <attributes>
 
             <attribute name="id" forceUppercase="true">
-                <label>ID</label>
-                <shortLabel>id</shortLabel>
+                <label>Namespace Id</label>
+                <shortLabel>Id</shortLabel>
 
                 <maxLength>8</maxLength>
                 <validationPattern><anyCharacter /></validationPattern>
@@ -98,12 +98,12 @@
 
             </attribute>
 
-            <attribute name="name" forceUppercase="true">
+            <attribute name="name" forceUppercase="false">
                 <label>Namespace Name</label>
                 <shortLabel>Name</shortLabel>
 
                 <maxLength>500</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="false" /></validationPattern>
+                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
 
                 <control>
                     <text size="100" />
@@ -132,12 +132,14 @@
           <collection name="namespaceAttributes">
             <label>Namespace Default Attributes</label>
             <shortLabel>Attributes</shortLabel>
+            <elementLabel>Attribute</elementLabel>
             <summary>Namespace Default Attributes Attributes</summary>
             <description>Attributes of this namespace</description>
           </collection>
           <collection name="namespacePermissions">
             <label>Namespace Permissions</label>
             <shortLabel>Permissions</shortLabel>
+            <elementLabel>Permission</elementLabel>
             <summary>Namespace Permissions</summary>
             <description>Permissions of this namespace</description>
           </collection>

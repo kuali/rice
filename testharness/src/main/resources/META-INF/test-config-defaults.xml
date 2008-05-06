@@ -8,6 +8,8 @@
     -->
     <param name="message.delivery">synchronous</param>
     <param name="dev.mode">true</param>
+    <param name="rice.ken.testMode">true</param>
+    <param name="rice.kcb.testmode">true</param>
 
     <!-- Default to the single test keystore. -->
     <param name="keystore.alias">rice</param>

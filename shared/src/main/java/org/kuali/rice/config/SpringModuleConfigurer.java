@@ -17,6 +17,7 @@ package org.kuali.rice.config;
 
 import javax.xml.namespace.QName;
 
+import org.kuali.rice.config.event.RiceConfigEvent;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.resourceloader.ResourceLoader;
 import org.kuali.rice.resourceloader.SpringResourceLoader;
@@ -90,6 +91,19 @@ public class SpringModuleConfigurer extends BaseModuleConfigurer {
         this.resourceLoaderName = resourceLoaderName;
         this.springResource = springResource;
         this.springResourceTest = testSpringResource;
+    }
+
+    @Override
+    public Config loadConfig(Config parentConfig) throws Exception {
+        Config c = super.loadConfig(parentConfig);
+        // check for test flag
+        String s = c.getProperty("rice." + moduleName.toLowerCase() + ".testMode");
+
+        if (Boolean.valueOf(s)) {
+            testMode = true;
+        }
+        
+        return c;
     }
 
     /**

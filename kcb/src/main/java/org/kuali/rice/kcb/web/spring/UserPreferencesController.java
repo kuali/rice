@@ -50,7 +50,7 @@ public class UserPreferencesController extends MultiActionController {
     private static final Logger LOG = Logger.getLogger(UserPreferencesController.class);
 
     private static final String VIEW = "DelivererPreferences";
-    private static final String KEW_CHANNEL = "Workflow"; 
+    private static final String KEW_CHANNEL = "KEW"; 
     protected RecipientPreferenceService recipientPreferenceService;
     protected MessageDelivererRegistryService messageDelivererRegistryService;
     protected KENIntegrationService kenIntegrationService;
@@ -88,7 +88,7 @@ public class UserPreferencesController extends MultiActionController {
     protected Collection<String> getAllChannels() {
         // TODO: does not traverse bus yet
         Collection<String> allChannels = new ArrayList<String>();
-        allChannels.add(KEW_CHANNEL);
+        //allChannels.add(KEW_CHANNEL);
         allChannels.addAll(kenIntegrationService.getAllChannelNames());
         return allChannels;
     }

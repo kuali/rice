@@ -80,6 +80,44 @@
 			<inverse-foreignkey field-ref="groupId" />
 		</collection-descriptor>
 	</class-descriptor>
+	
+	<!-- GROUP TYPE DEFAULT ATTRIBUTES -->
+    <class-descriptor class="org.kuali.rice.kim.bo.GroupTypeDefaultAttribute" table="KIM_GRP_TYP_DFLT_ATTRIBS_T">
+        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_GRP_TYP_DFLT_ATTR_ID" index="true" />
+        <field-descriptor name="groupTypeId" column="GROUP_TYPE_ID" jdbc-type="BIGINT"/>
+        <field-descriptor name="attributeName" column="ATTRIBUTE_NAME" jdbc-type="VARCHAR"/>
+        <field-descriptor name="attributeTypeId" column="ATTRIBUTE_TYPE_ID" jdbc-type="BIGINT"/>
+        <field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR"/>
+        <field-descriptor name="required" column="REQUIRED" jdbc-type="VARCHAR"  conversion="org.kuali.core.util.OjbCharBooleanConversion"/>
+        <field-descriptor name="active" column="ACTIVE" jdbc-type="VARCHAR"  conversion="org.kuali.core.util.OjbCharBooleanConversion"/>
+
+        <!-- common fields -->
+        <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+        <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+
+        <reference-descriptor name="attributeType" class-ref="org.kuali.rice.kim.bo.AttributeType" auto-retrieve="true" auto-update="none" auto-delete="none">
+            <foreignkey field-ref="attributeTypeId" />
+        </reference-descriptor>
+        <reference-descriptor name="groupType" class-ref="org.kuali.rice.kim.bo.GroupType" auto-retrieve="true" auto-update="none" auto-delete="none">
+            <foreignkey field-ref="groupTypeId" />
+        </reference-descriptor>
+    </class-descriptor>
+
+	<!-- GROUP TYPES -->
+    <class-descriptor class="org.kuali.rice.kim.bo.GroupType" table="KIM_GROUP_TYPES_T">
+        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_GROUP_TYPES_ID" index="true" />
+        <field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
+        <field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" />
+        <field-descriptor name="workflowDocumentType" column="WORKFLOW_DOCUMENT_TYPE" jdbc-type="VARCHAR" />
+        
+        <!--  common fields -->
+        <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+        <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+        
+        <collection-descriptor name="groupTypeDefaultAttributes" element-class-ref="org.kuali.rice.kim.bo.GroupTypeDefaultAttribute" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
+            <inverse-foreignkey field-ref="groupTypeId" />
+        </collection-descriptor>
+    </class-descriptor>
 
 	<!-- ROLES -->
 	<class-descriptor class="org.kuali.rice.kim.bo.Role" table="KIM_ROLES_T">

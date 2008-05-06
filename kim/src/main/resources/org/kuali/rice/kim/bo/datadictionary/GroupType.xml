@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2006 The Kuali Foundation.
+
+ Licensed under the Educational Community License, Version 1.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.opensource.org/licenses/ecl1.php
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!DOCTYPE dictionaryEntry PUBLIC
+    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
+    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
+<dictionaryEntry>
+    <businessObject businessObjectClass="org.kuali.rice.kim.bo.GroupType">
+
+        <inquiry>
+        	<title>Group Type Inquiry</title>
+
+        	<inquirySections>
+        		<inquirySection title="Group Type Information">
+        			<inquiryFields>
+        				<field attributeName="id" />
+        				<field attributeName="name" />
+        				<field attributeName="description" />
+        				<field attributeName="workflowDocumentType" />
+        			</inquiryFields>
+        		</inquirySection>
+           		<inquirySection title="Default Attributes">
+        			<inquiryFields>
+        				<inquiryCollection name="groupTypeDefaultAttributes"
+        					businessObjectClass="org.kuali.rice.kim.bo.GroupTypeDefaultAttribute">
+        					<field attributeName="id" />
+        					<field attributeName="attributeTypeId" />
+        					<field attributeName="attributeName" />
+                            <field attributeName="description" />
+                            <field attributeName="required" />
+        					<field attributeName="active" />
+        				</inquiryCollection>
+        			</inquiryFields>
+        		</inquirySection>
+        	</inquirySections>
+        </inquiry>
+
+        <lookup>
+            <title>Group Type Lookup</title>
+
+            <instructions>Lookup a Group Type</instructions>
+
+            <defaultSort sortAscending="true">
+                <sortAttributes>
+                    <sortAttribute attributeName="name" />
+                </sortAttributes>
+            </defaultSort>
+
+            <lookupFields>
+                <lookupField attributeName="id" required="false" />
+                <lookupField attributeName="name" required="false" />
+                <lookupField attributeName="description" required="false" />
+                <lookupField attributeName="workflowDocumentType" required="false" />
+            </lookupFields>
+
+            <resultFields>
+                <field attributeName="id" />
+                <field attributeName="name" />
+                <field attributeName="description" />
+                <field attributeName="workflowDocumentType" />
+            </resultFields>
+        </lookup>
+
+        <titleAttribute>name</titleAttribute>
+
+        <attributes>
+
+            <attribute name="id" forceUppercase="true">
+                <label>Id</label>
+                <shortLabel>Id</shortLabel>
+
+                <maxLength>8</maxLength>
+                <validationPattern><anyCharacter /></validationPattern>
+
+                <control>
+                 <hidden/>
+                </control>
+
+            </attribute>
+
+            <attribute name="name" forceUppercase="false">
+                <label>Name</label>
+                <shortLabel>Name</shortLabel>
+
+                <maxLength>500</maxLength>
+                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
+
+                <control>
+                    <text size="100" />
+                </control>
+
+            </attribute>
+
+            <attribute name="description" forceUppercase="false">
+                <label>Description</label>
+                <shortLabel>Description</shortLabel>
+
+                <maxLength>4000</maxLength>
+                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
+
+                <control>
+                    <text size="100" />
+                </control>
+
+            </attribute>
+            
+            <attribute name="workflowDocumentType" forceUppercase="false">
+                <label>Workflow Document Type</label>
+                <shortLabel>Workflow Doc Type</shortLabel>
+
+                <maxLength>500</maxLength>
+                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
+
+                <control>
+                    <text size="100" />
+                </control>
+
+            </attribute>
+            
+            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
+            <attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
+
+        </attributes>
+
+        <collections>
+          <collection name="groupTypeDefaultAttributes">
+            <label>Group Type Default Attributes</label>
+            <shortLabel>Default Attributes</shortLabel>
+            <elementLabel>Attribute</elementLabel>
+            <summary>Group Type Default Attributes</summary>
+            <description>Default attributes for this group type.</description>
+          </collection>
+        </collections>
+
+        <objectLabel>Group Type</objectLabel>
+    </businessObject>
+</dictionaryEntry>

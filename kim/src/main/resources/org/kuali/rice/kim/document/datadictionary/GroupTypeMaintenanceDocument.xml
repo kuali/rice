@@ -19,7 +19,7 @@
     "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
 <dictionaryEntry>
     <maintenanceDocument>
-        <businessObjectClass>org.kuali.rice.kim.bo.Namespace</businessObjectClass>
+        <businessObjectClass>org.kuali.rice.kim.bo.GroupType</businessObjectClass>
         <maintainableClass>org.kuali.core.maintenance.KualiMaintainableImpl</maintainableClass>
 
        <documentAuthorizerClass>org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase</documentAuthorizerClass>
@@ -31,13 +31,13 @@
             </authorization>
         </authorizations>
 
-        <documentTypeName>KIMNamespaceMaintenanceDocument</documentTypeName>
-        <documentTypeCode>KNSD</documentTypeCode>
-        <label>Namespace Document</label>
-        <shortLabel>Namespace Maintenence</shortLabel>
+        <documentTypeName>KIMGroupTypeMaintenanceDocument</documentTypeName>
+        <documentTypeCode>KGTM</documentTypeCode>
+        <label>Group Type Maintenance Document</label>
+        <shortLabel>Group Type</shortLabel>
 
-        <summary>Namespace Document</summary>
-        <description>This document is used to create or update Namespaces.</description>
+        <summary>Group Type Maintenance Document</summary>
+        <description>This document is used to create or update Group Types.</description>
 
         <lockingKeys>
             <field attributeName="id"/>
@@ -46,40 +46,30 @@
         <allowsNewOrCopy>true</allowsNewOrCopy>
 
         <maintainableSections>
-            <maintainableSection title="Namespace Information">
+            <maintainableSection title="Group Type Information">
                 <maintainableItems>
                     <maintainableField name="id" readOnly="true" required="false" />
                     <maintainableField name="name" readOnly="false" required="true" />
                     <maintainableField name="description" readOnly="false" required="true" />
+                    <maintainableField name="workflowDocumentType" readOnly="false" required="true" />
                     <maintainableField name="versionNumber" />
                 </maintainableItems>
             </maintainableSection>
 
-            <maintainableSection title="Default Namespace Attributes">
+            <maintainableSection title="Group Type Default Attributes">
               <maintainableItems>
-                <maintainableCollection name="namespaceAttributes"
-                  businessObjectClass="org.kuali.rice.kim.bo.NamespaceDefaultAttribute">
+                <maintainableCollection name="groupTypeDefaultAttributes"
+                  businessObjectClass="org.kuali.rice.kim.bo.GroupTypeDefaultAttribute">
                   <maintainableField name="id" readOnly="true" required="true" />
                   <maintainableField name="attributeTypeId" required="true" />
                   <maintainableField name="attributeName" required="true" />
                   <maintainableField name="description" required="true" />
                   <maintainableField name="required" required="true" />
                   <maintainableField name="active" required="true" />
+                  <maintainableField name="versionNumber" />
                  </maintainableCollection>
               </maintainableItems>
             </maintainableSection>
-
-            <maintainableSection title="Namespace Permissions">
-              <maintainableItems>
-                <maintainableCollection name="namespacePermissions"
-                  businessObjectClass="org.kuali.rice.kim.bo.Permission">
-                   <maintainableField name="id" readOnly="true" required="true" />
-                   <maintainableField name="name" required="true" />
-                  <maintainableField name="description" required="true" />
-                 </maintainableCollection>
-              </maintainableItems>
-            </maintainableSection>
-
         </maintainableSections>
     </maintenanceDocument>
 </dictionaryEntry>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2008 The Kuali Foundation.
+
+ Licensed under the Educational Community License, Version 1.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.opensource.org/licenses/ecl1.php
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!DOCTYPE dictionaryEntry PUBLIC
+    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
+    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
+<dictionaryEntry>
+    <businessObject businessObjectClass="org.kuali.rice.kim.bo.GroupTypeDefaultAttribute">
+
+        <titleAttribute>id</titleAttribute>
+
+        <attributes>
+
+            <attribute name="id" forceUppercase="true">
+                <label>Id</label>
+                <shortLabel>Id</shortLabel>
+
+                <maxLength>8</maxLength>
+                <validationPattern><anyCharacter /></validationPattern>
+                <control>
+                 <text size="8"/>
+                </control>
+			</attribute>
+
+           <attribute name="attributeName" forceUppercase="false">
+                <label>Attribute Name</label>
+                <shortLabel>Name</shortLabel>
+
+                <maxLength>500</maxLength>
+                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
+
+                <control>
+                    <text size="100" />
+                </control>
+
+            </attribute>
+            
+           <attribute name="description" forceUppercase="false">
+                <label>Description</label>
+                <shortLabel>Description</shortLabel>
+
+                <maxLength>4000</maxLength>
+                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
+
+                <control>
+                    <text size="100" />
+                </control>
+
+            </attribute>
+           
+           <attributeReference name="attributeTypeId"
+				sourceAttributeName="id"
+				sourceClassName="org.kuali.rice.kim.bo.AttributeType">
+				<label>Attribute Type</label>
+                <shortLabel>Type</shortLabel>
+				<required>true</required>
+				<control>
+					<select
+						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+						businessObjectClass="org.kuali.rice.kim.bo.AttributeType"
+						keyAttribute="id" labelAttribute="attributeTypeName" 
+						includeKeyInLabel="true" />
+				</control>
+			</attributeReference>
+			
+			<attributeReference name="groupTypeId"
+				sourceAttributeName="id"
+				sourceClassName="org.kuali.rice.kim.bo.GroupType">
+				<label>Associated Group Type</label>
+                <shortLabel>Group Type</shortLabel>
+				<required>true</required>
+				<control>
+					<select
+						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+						businessObjectClass="org.kuali.rice.kim.bo.GroupType"
+						keyAttribute="id" labelAttribute="name" 
+						includeKeyInLabel="true" />
+				</control>
+			</attributeReference>
+			
+           <attribute name="required" forceUppercase="true">
+                <label>Required</label>
+
+                <maxLength>3</maxLength>
+               <control>
+                <select valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"/>
+               </control>
+
+           </attribute>
+             
+           <attribute name="active" forceUppercase="true">
+                <label>Active</label>
+                <shortLabel>Active</shortLabel>
+
+                <maxLength>3</maxLength>
+               <control>
+                <select valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"/>
+               </control>
+
+            </attribute>
+
+           <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
+           <attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
+        </attributes>
+
+        <objectLabel>Group Type Default Attribute</objectLabel>
+    </businessObject>
+</dictionaryEntry>

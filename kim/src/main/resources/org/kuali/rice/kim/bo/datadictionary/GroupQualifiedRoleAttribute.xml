@@ -22,7 +22,6 @@
         <titleAttribute>attributeName</titleAttribute>
 
         <attributes>
-
             <attribute name="id" forceUppercase="true">
                 <label>Id</label>
                 <shortLabel>Id</shortLabel>
@@ -67,11 +66,7 @@
                 <shortLabel>Role Id</shortLabel>
 				<required>true</required>
 				<control>
-					<select
-						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-						businessObjectClass="org.kuali.rice.kim.bo.Role"
-						keyAttribute="id" labelAttribute="name" 
-						includeKeyInLabel="true" />
+					<hidden/>
 				</control>
 			</attributeReference>
 			
@@ -80,16 +75,16 @@
                 <shortLabel>Group Id</shortLabel>
 				<required>true</required>
 				<control>
-					<select
-						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-						businessObjectClass="org.kuali.rice.kim.bo.Group"
-						keyAttribute="id" labelAttribute="name" 
-						includeKeyInLabel="true" />
+					<hidden/>
 				</control>
 			</attributeReference>
 
             <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
-			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
+			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" >
+				<control>
+					<hidden/>
+				</control>
+			</attributeReference>
 
         </attributes>
         <objectLabel>Group Qualified Role Attribute</objectLabel>

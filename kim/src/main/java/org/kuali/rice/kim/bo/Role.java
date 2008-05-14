@@ -43,8 +43,12 @@ public class Role extends PersistableBusinessObjectBase {
 	private ArrayList<Principal> principals;
 	private ArrayList<RoleAttribute> roleAttributes;
 	
+	//these lists are used for rendering the UI appropriately using the maintenance document framework
+	//these can be considered essentially form objects
 	private ArrayList<GroupQualifiedRole> groupQualifiedRoles;
 	private ArrayList<PrincipalQualifiedRole> principalQualifiedRoles;
+	
+	//this list is what actually gets persisted for group qualifications
 	private ArrayList<GroupQualifiedRoleAttribute> groupQualifiedRoleAttributes;
 
 	/**

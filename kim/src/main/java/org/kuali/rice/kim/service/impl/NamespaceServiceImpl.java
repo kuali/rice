@@ -151,7 +151,7 @@ public class NamespaceServiceImpl implements NamespaceService {
         dto.setId(permission.getId());
         dto.setName(permission.getName());
         dto.setNamespaceId(permission.getNamespaceId());
-        dto.setNamespaceDto(namespaceDTO);
+//        dto.setNamespaceDto(namespaceDTO);
         return dto;
     }
 }

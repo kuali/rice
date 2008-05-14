@@ -78,16 +78,20 @@
             <maintainableSection title="Groups with Role">
 				<maintainableItems>
 					<maintainableCollection name="groupQualifiedRoles"
-						businessObjectClass="org.kuali.rice.kim.bo.GroupQualifiedRole" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="groupQualifiedRoles" includeAddLine="false" summaryTitle="Groups with Role">
+						businessObjectClass="org.kuali.rice.kim.bo.GroupQualifiedRole" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="groupQualifiedRoles" includeAddLine="false" summaryTitle="Group with Role">
 						<maintainableField name="id" required="true"
 							readOnlyAfterAdd="true" template="id" />
 						<maintainableField name="name" required="false" readOnly="true" template="name"/>
 						
 						<maintainableCollection name="qualifiedRoleAttributes"
-								businessObjectClass="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute" summaryTitle="Role Qualifications for Group">
+								businessObjectClass="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute" summaryTitle="Role Qualification for Group">
 							<maintainableField name="id" required="true" readOnly="true" />
 							<maintainableField name="attributeName" required="true" readOnly="false" />
 							<maintainableField name="attributeValue" required="true" readOnly="false" />
+							<maintainableField name="groupId" required="false" readOnly="true" />
+							<maintainableField name="roleId" required="false" readOnly="true" />
+							<maintainableField name="versionNumber" required="false" readOnly="true" />
+							<maintainableField name="objectId" required="false" readOnly="true" />
 							<summaryFields>
            		       			<summaryField name="attributeName" />
            		       		</summaryFields>

@@ -90,6 +90,8 @@
 							<value>classpath:org/kuali/rice/kim/bo/datadictionary/Permission.xml</value>
 							<value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupType.xml</value>
 							<value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupTypeDefaultAttribute.xml</value>
+							<value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupQualifiedRole.xml</value>
+							<value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupQualifiedRoleAttribute.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/AttributeTypeMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/GroupMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/NamespaceMaintenanceDocument.xml</value>

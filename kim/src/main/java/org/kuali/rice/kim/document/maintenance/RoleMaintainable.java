@@ -25,6 +25,7 @@ import org.kuali.core.document.MaintenanceLock;
 import org.kuali.core.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupQualifiedRole;
+import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Role;
 
 /**
@@ -110,8 +111,16 @@ public class RoleMaintainable extends KualiMaintainableImpl {
                 gqr.setDescription(g.getDescription());
                 gqr.setRoleId(role.getId());
 
+                ArrayList<GroupQualifiedRoleAttribute> gqrAttribs = role.getGroupQualifiedRoleAttributes();
+                for(GroupQualifiedRoleAttribute gqrAttrib : gqrAttribs) {
+                    if(gqrAttrib.getGroupId().equals(gqr.getId())) {
+                        gqr.getQualifiedRoleAttributes().add(gqrAttrib);
+                    }
+                }
+                
                 role.getGroupQualifiedRoles().add(gqr);
             }
+            
     }
 
     /**
@@ -165,10 +174,18 @@ public class RoleMaintainable extends KualiMaintainableImpl {
         ArrayList<GroupQualifiedRole> groupQualifiedRoles = role.getGroupQualifiedRoles();
 
         role.getGroups().clear();
+        role.getGroupQualifiedRoleAttributes().clear();
+        
+        // construct the list of groups to save through the persistable list of groups on the role BO
         for(GroupQualifiedRole gqr : groupQualifiedRoles) {
             Group g = new Group();
             g.setId(gqr.getId());
             role.getGroups().add(g);
+            
+            ArrayList<GroupQualifiedRoleAttribute> gqrAttribs = gqr.getQualifiedRoleAttributes();
+            for(GroupQualifiedRoleAttribute gqrAttrib : gqrAttribs) {
+                role.getGroupQualifiedRoleAttributes().add(gqrAttrib);
+            }
         }
         
         super.saveBusinessObject();

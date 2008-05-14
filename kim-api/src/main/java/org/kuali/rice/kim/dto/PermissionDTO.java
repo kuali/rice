@@ -19,40 +19,24 @@ import java.io.Serializable;
 
 /**
  * This is the Data Transfer Object (DTO) that is used for our service layer.
- * 
- * This business object represents the entity of Permission.  The ability to perform actions in a system/application 
- * is tied to permissions as these are what get checked against in the application.  A permission should describe the ability to 
- * take a certain action within a system. 
- * 
+ *
+ * This business object represents the entity of Permission.  The ability to perform actions in a system/application
+ * is tied to permissions as these are what get checked against in the application.  A permission should describe the ability to
+ * take a certain action within a system.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PermissionDTO implements Serializable {
 	private static final long serialVersionUID = 6742054701723826912L;
-	
+
     private Long id;
 	private String name;
 	private String description;
 	private Long namespaceId;
-	
-	private NamespaceDTO namespaceDto;
-	
-	/**
-     * @return the namespaceDto
-     */
-    public NamespaceDTO getNamespaceDto() {
-        return this.namespaceDto;
-    }
-
-    /**
-     * @param namespaceDto the namespaceDto to set
-     */
-    public void setNamespaceDto(NamespaceDTO namespaceDto) {
-        this.namespaceDto = namespaceDto;
-    }
 
     /**
 	 * This method returns the description of a permission instance.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getDescription() {
@@ -61,7 +45,7 @@ public class PermissionDTO implements Serializable {
 
 	/**
 	 * This method sets the description of a permission instance.
-	 * 
+	 *
 	 * @param description
 	 */
 	public void setDescription(String description) {
@@ -70,7 +54,7 @@ public class PermissionDTO implements Serializable {
 
 	/**
 	 * This method returns the unique identifier (primary key) for a permission instance.
-	 * 
+	 *
 	 * @return Long
 	 */
 	public Long getId() {
@@ -79,7 +63,7 @@ public class PermissionDTO implements Serializable {
 
 	/**
 	 * This method sets the value of the primary key for a permission instance.
-	 * 
+	 *
 	 * @param id
 	 */
 	public void setId(Long id) {
@@ -87,9 +71,9 @@ public class PermissionDTO implements Serializable {
 	}
 
 	/**
-	 * This method returns the name of the permission, which is also a unique identifier when combined 
+	 * This method returns the name of the permission, which is also a unique identifier when combined
 	 * with the associated application.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getName() {
@@ -98,7 +82,7 @@ public class PermissionDTO implements Serializable {
 
 	/**
 	 * This method sets the name of the permission instance.
-	 * 
+	 *
 	 * @param name
 	 */
 	public void setName(String name) {

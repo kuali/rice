@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kim.dto.NamespaceDefaultAttributeDTO;
 
 /**
  * A NamespaceDefaultAttribute represents a single meta-data attribute in the system that shows up on
@@ -129,5 +130,23 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
 
     public void setNamespace(Namespace namespace) {
         this.namespace = namespace;
+    }
+
+    /**
+     * This method creates a NamespaceDefaultAttributeDTO from a NamespaceDefaultAttribute
+     *
+     * @param nda
+     * @return NamespaceDefaultAttributeDTO
+     */
+    public static NamespaceDefaultAttributeDTO toDTO(final NamespaceDefaultAttribute nda) {
+        final NamespaceDefaultAttributeDTO dto = new NamespaceDefaultAttributeDTO();
+        dto.setActive(nda.getActive());
+        dto.setAttributeName(nda.getAttributeName());
+        dto.setAttributeTypeId(nda.getAttributeTypeId());
+        dto.setDescription(nda.getDescription());
+        dto.setId(nda.getId());
+        dto.setNamespaceId(nda.getNamespaceId());
+        dto.setRequired(nda.getRequired());
+        return dto;
     }
 }

@@ -16,10 +16,15 @@
 package org.kuali.rice.kim.bo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.util.TypedArrayList;
+import org.kuali.rice.kim.dto.NamespaceDTO;
+import org.kuali.rice.kim.dto.NamespaceDefaultAttributeDTO;
+import org.kuali.rice.kim.dto.PermissionDTO;
 
 public class Namespace extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 9118112248900436184L;
@@ -34,7 +39,7 @@ public class Namespace extends PersistableBusinessObjectBase {
         this.namespaceAttributes = new TypedArrayList(NamespaceDefaultAttribute.class);
         this.namespacePermissions = new TypedArrayList(Permission.class);
     }
-    
+
     public Long getId() {
 	    return this.id;
 	}
@@ -86,4 +91,35 @@ public class Namespace extends PersistableBusinessObjectBase {
     public void setNamespacePermissions(ArrayList<Permission> namespacePermissions) {
         this.namespacePermissions = namespacePermissions;
     }
+
+    /**
+     * This method creates a NamespaceDTO from a Namespace
+     *
+     * @param namespace
+     * @return NamespaceDTO
+     */
+    public static NamespaceDTO toDTO(final Namespace namespace) {
+        final NamespaceDTO dto = new NamespaceDTO();
+        dto.setDescription(namespace.getDescription());
+        dto.setId(namespace.getId());
+        dto.setName(namespace.getName());
+        final HashMap<String, NamespaceDefaultAttributeDTO> namespaceDefaultAttributes = new HashMap<String, NamespaceDefaultAttributeDTO>();
+        final Iterator<NamespaceDefaultAttribute> i = namespace.getNamespaceAttributes().iterator();
+        while (i.hasNext()) {
+            final NamespaceDefaultAttribute nda = i.next();
+            namespaceDefaultAttributes.put(nda.getAttributeName(), NamespaceDefaultAttribute.toDTO(nda));
+        }
+        dto.setNamespaceDefaultAttributes(namespaceDefaultAttributes);
+
+        final HashMap<String, PermissionDTO> namespacePermissions = new HashMap<String, PermissionDTO>();
+        final Iterator<Permission> i2 = namespace.getNamespacePermissions().iterator();
+        while (i2.hasNext()) {
+            final Permission permission = i2.next();
+            namespacePermissions.put(permission.getName(), Permission.toDTO(permission));
+        }
+        dto.setNamespacePermissions(namespacePermissions);
+        return dto;
+    }
+
+
 }

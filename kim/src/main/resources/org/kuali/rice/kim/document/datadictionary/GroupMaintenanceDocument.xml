@@ -60,7 +60,8 @@
 				<maintainableItems>
 					<maintainableField name="id" required="true"
 						readOnly="true" />
-					<maintainableField name="name" required="true" />
+                    <maintainableField name="name" required="true" />
+                    <maintainableField name="groupTypeId" required="true" />
 					<maintainableField name="description" required="true" />
 					<maintainableField name="versionNumber" />
 				</maintainableItems>
@@ -69,8 +70,7 @@
 				<maintainableItems>
 					<maintainableCollection name="parentGroups"
 						businessObjectClass="org.kuali.rice.kim.bo.Group" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="parentGroups" includeAddLine="false" summaryTitle="Parent Groups">
-						<maintainableField name="id" required="true"
-							readOnlyAfterAdd="true" template="id" />
+						<maintainableField name="id" required="true" readOnly="true" template="id" />
 						<maintainableField name="name" required="false" readOnly="true" template="name"/>
 					</maintainableCollection>
 				</maintainableItems>
@@ -79,18 +79,16 @@
 				<maintainableItems>
 					<maintainableCollection name="memberGroups" 
 						businessObjectClass="org.kuali.rice.kim.bo.Group" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="memberGroups" includeAddLine="false" summaryTitle="Member Groups">
-						<maintainableField name="id" required="true"
-							readOnly="true" readOnlyAfterAdd="true" template="id" />
+						<maintainableField name="id" required="true" readOnly="true" template="id" />
 						<maintainableField name="name" required="false" readOnly="true" template="name" />
 					</maintainableCollection>
 				</maintainableItems>
 			</maintainableSection>
-			<maintainableSection title="Group Roles">
+			<maintainableSection title="Assigned Roles">
 				<maintainableItems>
 					<maintainableCollection name="groupRoles"
-						businessObjectClass="org.kuali.rice.kim.bo.Role"  includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="groupRoles" includeAddLine="false" summaryTitle="Roles">
-						<maintainableField name="id" required="true"
-							readOnly="true" readOnlyAfterAdd="true" template="id" />
+						businessObjectClass="org.kuali.rice.kim.bo.Role"  includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="groupRoles" includeAddLine="false" summaryTitle="Assigned Roles">
+						<maintainableField name="id" required="true" readOnly="true" template="id" />
 						<maintainableField name="name" required="true" readOnly="true" template="name" />
 					</maintainableCollection>
 				</maintainableItems>
@@ -101,8 +99,8 @@
 					<maintainableCollection name="groupAttributes"
 						businessObjectClass="org.kuali.rice.kim.bo.GroupAttribute">
 						<maintainableField name="id" readOnly="true" required="true" />
-						<maintainableField name="attributeTypeId" required="true" />
 						<maintainableField name="attributeName" required="true" />
+						<maintainableField name="attributeTypeId" required="true" />
 						<maintainableField name="value" required="true" />
 					</maintainableCollection>
 				</maintainableItems>

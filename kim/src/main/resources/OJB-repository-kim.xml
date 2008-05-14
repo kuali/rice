@@ -59,6 +59,7 @@
 		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_GROUPS_ID" index="true" />
 		<field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
 		<field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" />
+		<field-descriptor name="groupTypeId" column="GROUP_TYPE_ID" jdbc-type="BIGINT"/>
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<collection-descriptor name="memberGroups" element-class-ref="org.kuali.rice.kim.bo.Group" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="link" auto-delete="link"
@@ -79,6 +80,9 @@
 		<collection-descriptor name="groupAttributes" element-class-ref="org.kuali.rice.kim.bo.GroupAttribute" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
 			<inverse-foreignkey field-ref="groupId" />
 		</collection-descriptor>
+		<reference-descriptor name="groupType" class-ref="org.kuali.rice.kim.bo.GroupType" auto-retrieve="true" auto-update="none" auto-delete="none">
+            <foreignkey field-ref="groupTypeId" />
+        </reference-descriptor>
 	</class-descriptor>
 	
 	<!-- GROUP TYPE DEFAULT ATTRIBUTES -->

@@ -24,10 +24,12 @@
         	<title>Group Inquiry</title>
 
         	<inquirySections>
-        		<inquirySection title="Header Text">
+        		<inquirySection title="Group Info">
         			<inquiryFields>
         				<field attributeName="id" />
         				<field attributeName="name" />
+        				<field attributeName="description" />
+        				<field attributeName="groupType.name" />
         			</inquiryFields>		
         		</inquirySection>
         		<inquirySection title="Parent Group">
@@ -84,8 +86,9 @@
 
             <lookupFields>
                 <lookupField attributeName="id" required="false" forceLookup="true" noLookup="false" />
-                <lookupField attributeName="name" required="false" forceLookup="true" />
-                <lookupField attributeName="description" required="false" forceLookup="true" />
+                <lookupField attributeName="name" required="false" forceLookup="false" />
+                <lookupField attributeName="description" required="false" forceLookup="false" />
+                <lookupField attributeName="groupTypeId" required="false" forceLookup="false" />
             </lookupFields>
 
             <resultFields>
@@ -139,7 +142,19 @@
                 </control>
 
 			</attribute>
-
+			
+			<attributeReference name="groupTypeId" sourceClassName="org.kuali.rice.kim.bo.GroupType" sourceAttributeName="id">
+				<label>Group Type</label>
+                <shortLabel>Type</shortLabel>
+				<required>true</required>
+				<control>
+					<select
+						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+						businessObjectClass="org.kuali.rice.kim.bo.GroupType"
+						keyAttribute="id" labelAttribute="name" 
+						includeKeyInLabel="true" />
+				</control>
+			</attributeReference>
 
             <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
 			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />

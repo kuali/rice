@@ -57,18 +57,18 @@
             <maintainableSection title="Group Membership">
 				<maintainableItems>
 					<maintainableCollection name="groups"
-						businessObjectClass="org.kuali.rice.kim.bo.Group" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="groups" includeAddLine="true"  summaryTitle="Groups">
+						businessObjectClass="org.kuali.rice.kim.bo.Group" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="groups" includeAddLine="false"  summaryTitle="Groups">
 						<maintainableField name="id" readOnly="true" readOnlyAfterAdd="true" required="true" template="id"/>
 						<maintainableField name="name" readOnly="true" required="true" template="name"/>				
 					</maintainableCollection>
 				</maintainableItems>
 			</maintainableSection>
 			
-			<maintainableSection title="Role">
+			<maintainableSection title="Assigned Roles">
 				<maintainableItems>
 					<maintainableCollection name="roles"
-						businessObjectClass="org.kuali.rice.kim.bo.Role" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="roles" includeAddLine="true"  summaryTitle="Roles">
-						<maintainableField name="id" readOnly="true" readOnlyAfterAdd="true" required="true" template="id"/>
+						businessObjectClass="org.kuali.rice.kim.bo.Role" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="roles" includeAddLine="false"  summaryTitle="Assigned Roles">
+						<maintainableField name="id" readOnly="true" required="true" template="id"/>
 						<maintainableField name="name" readOnly="true" required="true" template="name"/>				
 					</maintainableCollection>
 				</maintainableItems>

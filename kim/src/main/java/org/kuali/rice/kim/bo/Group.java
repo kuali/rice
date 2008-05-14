@@ -32,11 +32,15 @@ public class Group extends PersistableBusinessObjectBase {
 	private Long id;
 	private String name;
 	private String description;
+	private Long groupTypeId;
 	private ArrayList<Group> memberGroups;
 	private ArrayList<Group> parentGroups;
     private ArrayList<Role> groupRoles;
     private ArrayList<GroupAttribute> groupAttributes;
+    private GroupType groupType;
 
+    /**
+     */
 	public Group() {
 	    memberGroups = new TypedArrayList(Group.class);
 	    parentGroups = new TypedArrayList(Group.class);
@@ -58,41 +62,71 @@ public class Group extends PersistableBusinessObjectBase {
         this.memberGroups = memberGroups;
     }
 
+    /**
+     * @return
+     */
     public String getDescription() {
 		return description;
 	}
 
+    /**
+     * @param description
+     */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	/**
+	 * @return
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * @param id
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	/**
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
+	 */
 	protected LinkedHashMap toStringMapper() {
             LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
             propMap.put("id", getId());
             propMap.put("name", getName());
             propMap.put("description", getDescription());
+            propMap.put("groupType name", getGroupType().getName());
             return propMap;
 	}
 
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.core.bo.PersistableBusinessObjectBase#refresh()
+	 */
 	public void refresh() {
 		// not implemented unless needed
 	}
+	
     /**
      * @return the groupRoles
      */
@@ -132,6 +166,34 @@ public class Group extends PersistableBusinessObjectBase {
      */
     public void setGroupAttributes(ArrayList<GroupAttribute> groupAttributes) {
         this.groupAttributes = groupAttributes;
+    }
+    
+    /**
+     * @return the groupType
+     */
+    public GroupType getGroupType() {
+        return this.groupType;
+    }
+
+    /**
+     * @param groupType the groupType to set
+     */
+    public void setGroupType(GroupType groupType) {
+        this.groupType = groupType;
+    }
+    
+    /**
+     * @return the groupTypeId
+     */
+    public Long getGroupTypeId() {
+        return this.groupTypeId;
+    }
+
+    /**
+     * @param groupTypeId the groupTypeId to set
+     */
+    public void setGroupTypeId(Long groupTypeId) {
+        this.groupTypeId = groupTypeId;
     }
 
     /**

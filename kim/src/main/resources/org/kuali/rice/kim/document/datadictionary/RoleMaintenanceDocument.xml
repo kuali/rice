@@ -67,7 +67,7 @@
             <maintainableSection title="Principals with Role">
 				<maintainableItems>
 					<maintainableCollection name="principals"
-						businessObjectClass="org.kuali.rice.kim.bo.Principal" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Principal" sourceAttributeName="principals" includeAddLine="true" summaryTitle="Principals with Role">
+						businessObjectClass="org.kuali.rice.kim.bo.Principal" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Principal" sourceAttributeName="principals" includeAddLine="false" summaryTitle="Principals with Role">
 						<maintainableField name="id" required="true"
 							readOnlyAfterAdd="true" template="id" />
 						<maintainableField name="name" required="false" readOnly="true" template="name"/>

@@ -410,7 +410,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     }
     
 
-    public void addMultipleValueLookupResults(MaintenanceDocument document, String collectionName, Collection<PersistableBusinessObject> rawValues) {
+    public void addMultipleValueLookupResults(MaintenanceDocument document, String collectionName, Collection<PersistableBusinessObject> rawValues, boolean needsBlank) {
         PersistableBusinessObject bo = document.getNewMaintainableObject().getBusinessObject();
         Collection maintCollection = (Collection) ObjectUtils.getPropertyValue(bo, collectionName);
         String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
@@ -425,17 +425,19 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         Map<String, String> template = MaintenanceUtils.generateMultipleValueLookupBOTemplate(sections, collectionName);
         try {
             for (PersistableBusinessObject nextBo : rawValues) {
-                PersistableBusinessObject templatedBo = (PersistableBusinessObject) ObjectUtils.createHybridBusinessObject(collectionClass, nextBo, template);
+                PersistableBusinessObject templatedBo;
+                if(needsBlank) {
+                    templatedBo = (PersistableBusinessObject) collectionClass.newInstance();                    
+                } else {
+                    templatedBo = (PersistableBusinessObject) ObjectUtils.createHybridBusinessObject(collectionClass, nextBo, template);
                 
-                templatedBo.setNewCollectionRecord(true);
-                prepareBusinessObjectForAdditionFromMultipleValueLookup(collectionName, templatedBo);
-                
-                PersistableBusinessObject placeholder = (PersistableBusinessObject) collectionClass.newInstance();
-                placeholder.setNewCollectionRecord(true);
+                    prepareBusinessObjectForAdditionFromMultipleValueLookup(collectionName, templatedBo);
+                }
+                    templatedBo.setNewCollectionRecord(true);
                 
                 if (!hasBusinessObjectExisted(templatedBo, existingIdentifierList, duplicateIdentifierFieldsFromDataDictionary)) {   
                     maintCollection.add(templatedBo);
-                    maintCollection.add(placeholder); 
+
                 }
             }
         } 

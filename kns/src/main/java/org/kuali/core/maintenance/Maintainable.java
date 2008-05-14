@@ -241,7 +241,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      */
     public void setShowInactiveRecords(String collectionName, boolean showInactive);
     
-    public void addMultipleValueLookupResults(MaintenanceDocument document, String collectionName, Collection<PersistableBusinessObject> rawValues);
+    public void addMultipleValueLookupResults(MaintenanceDocument document, String collectionName, Collection<PersistableBusinessObject> rawValues, boolean needsBlank);
     
     /**
      * method to integrate with workflow, where we will actually handle the transitions of status for documents

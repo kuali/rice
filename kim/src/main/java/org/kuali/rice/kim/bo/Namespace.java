@@ -115,7 +115,7 @@ public class Namespace extends PersistableBusinessObjectBase {
         final Iterator<Permission> i2 = namespace.getNamespacePermissions().iterator();
         while (i2.hasNext()) {
             final Permission permission = i2.next();
-//            namespacePermissions.put(permission.getName(), Permission.toDTO(permission));
+            namespacePermissions.put(permission.getName(), Permission.toDTO(permission));
         }
         dto.setNamespacePermissions(namespacePermissions);
         return dto;

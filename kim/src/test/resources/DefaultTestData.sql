@@ -1,4 +1,5 @@
-INSERT INTO KIM_GROUPS_T (ID, NAME, DESCRIPTION) VALUES(1, 'KIM Test Group', 'Test case');
+INSERT INTO KIM_GROUP_TYPES_T (ID, NAME, DESCRIPTION, WORKFLOW_DOCUMENT_TYPE) values (1, 'Default', 'This is the standard group type that most groups default to.', 'KIMGroupMaintenanceDocument');
+INSERT INTO KIM_GROUPS_T (ID, NAME, DESCRIPTION, GROUP_TYPE_ID) VALUES(1, 'KIM Test Group', 'Test case', 1);
 INSERT INTO KIM_NAMESPACES_T (ID, NAME, DESCRIPTION) VALUES(1, 'KIM Test Namespace', 'Test case');
 INSERT INTO KIM_PERMISSIONS_T (ID, NAME, DESCRIPTION, NAMESPACE_ID) VALUES(1, 'KIM Test Permission', 'Test case', 1);
 INSERT INTO KIM_ATTRIBUTE_TYPES_T (ID, NAME, DESCRIPTION) VALUES(1, 'KIM Test AttributeType', 'Test case');

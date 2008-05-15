@@ -10,15 +10,12 @@ package org.kuali.rice.kim.service.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kim.bo.Namespace;
-import org.kuali.rice.kim.bo.NamespaceDefaultAttribute;
 import org.kuali.rice.kim.bo.Permission;
 import org.kuali.rice.kim.dto.NamespaceDTO;
-import org.kuali.rice.kim.dto.NamespaceDefaultAttributeDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
 import org.kuali.rice.kim.service.NamespaceService;
 
@@ -56,25 +53,24 @@ public class NamespaceServiceImpl implements NamespaceService {
         final Collection<Namespace> namespaces = (Collection<Namespace>) KNSServiceLocator.getBusinessObjectService().findAll(Namespace.class);
         final ArrayList<NamespaceDTO> namespacesDto = new ArrayList<NamespaceDTO>(namespaces.size());
         for (Namespace namespace : namespaces) {
-            namespacesDto.add(namespaceToDTO(namespace));
+            namespacesDto.add(Namespace.toDTO(namespace));
         }
         return namespacesDto;
     }
 
     /**
-     * This method returns all the permission names
+     * This method returns all the permission names for a namespace
      *
      * @see org.kuali.rice.kim.service.NamespaceService#getPermissionNames(java.lang.String)
      */
     public List<String> getPermissionNames(final String namespaceName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        final Collection<Permission> permissions = (Collection<Permission>) KNSServiceLocator.getBusinessObjectService().findAll(Permission.class);
+        final ArrayList<Permission> permissions = findPermissions(namespaceName);
         final ArrayList<String> names = new ArrayList<String>(permissions.size());
         for (Permission permission : permissions) {
             names.add(permission.getName());
         }
         return names;
-
     }
 
     /**
@@ -84,74 +80,26 @@ public class NamespaceServiceImpl implements NamespaceService {
      */
     public List<PermissionDTO> getPermissions(final String namespaceName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        final Collection<Permission> permissions = (Collection<Permission>) KNSServiceLocator.getBusinessObjectService().findAll(Permission.class);
+        final ArrayList<Permission> permissions = findPermissions(namespaceName);
+
         final ArrayList<PermissionDTO> permissionsDto = new ArrayList<PermissionDTO>(permissions.size());
         for (Permission permission : permissions) {
-            permissionsDto.add(permissionToDTO(permission, namespaceToDTO(permission.getNamespace())));
+            permissionsDto.add(Permission.toDTO(permission));
         }
         return permissionsDto;
     }
 
     /**
-     * This method creates a NamespaceDTO from a Namespace
      *
-     * @param namespace
-     * @return NamespaceDTO
-     */
-    private static NamespaceDTO namespaceToDTO(final Namespace namespace) {
-        final NamespaceDTO dto = new NamespaceDTO();
-        dto.setDescription(namespace.getDescription());
-        dto.setId(namespace.getId());
-        dto.setName(namespace.getName());
-        final HashMap<String, NamespaceDefaultAttributeDTO> namespaceDefaultAttributes = new HashMap<String, NamespaceDefaultAttributeDTO>();
-        final Iterator<NamespaceDefaultAttribute> i = namespace.getNamespaceAttributes().iterator();
-        while (i.hasNext()) {
-            final NamespaceDefaultAttribute nda = i.next();
-            namespaceDefaultAttributes.put(nda.getAttributeName(), namespaceDefaultAttributeToDTO(nda));
-        }
-        dto.setNamespaceDefaultAttributes(namespaceDefaultAttributes);
-
-        final HashMap<String, PermissionDTO> namespacePermissions = new HashMap<String, PermissionDTO>();
-        final Iterator<Permission> i2 = namespace.getNamespacePermissions().iterator();
-        while (i2.hasNext()) {
-            final Permission permission = i2.next();
-            namespacePermissions.put(permission.getName(), permissionToDTO(permission, dto));
-        }
-        dto.setNamespacePermissions(namespacePermissions);
-        return dto;
-    }
-
-    /**
-     * This method creates a NamespaceDefaultAttributeDTO from a NamespaceDefaultAttribute
+     * This method finds the permissions for a specific Namespace
      *
-     * @param nda
-     * @return NamespaceDefaultAttributeDTO
+     * @param namespaceName
+     * @return list of Permissions
      */
-    private static NamespaceDefaultAttributeDTO namespaceDefaultAttributeToDTO(final NamespaceDefaultAttribute nda) {
-        final NamespaceDefaultAttributeDTO dto = new NamespaceDefaultAttributeDTO();
-        dto.setActive(nda.getActive());
-        dto.setAttributeName(nda.getAttributeName());
-        dto.setAttributeTypeId(nda.getAttributeTypeId());
-        dto.setDescription(nda.getDescription());
-        dto.setId(nda.getId());
-        dto.setNamespaceId(nda.getNamespaceId());
-        dto.setRequired(nda.getRequired());
-        return dto;
-    }
-
-    /**
-     * This method creates a PermissionDTO from a Permission
-     *
-     * @param permission
-     * @return PermissionDTO
-     */
-    private static PermissionDTO permissionToDTO(final Permission permission, final NamespaceDTO namespaceDTO) {
-        final PermissionDTO dto = new PermissionDTO();
-        dto.setDescription(permission.getDescription());
-        dto.setId(permission.getId());
-        dto.setName(permission.getName());
-        dto.setNamespaceId(permission.getNamespaceId());
-//        dto.setNamespaceDto(namespaceDTO);
-        return dto;
+    private ArrayList<Permission> findPermissions(final String namespaceName) {
+        final HashMap<String, String> criteria= new HashMap<String, String>();
+        criteria.put("NAME", namespaceName);
+        final Collection<Namespace> namespace = (Collection<Namespace>) KNSServiceLocator.getBusinessObjectService().findMatching(Namespace.class, criteria);
+        return namespace.iterator().next().getNamespacePermissions();
     }
 }

@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kim.dto.PermissionDTO;
 
 /**
  * This business object represents the entity of Permission.  The ability to perform actions in a system/application
@@ -130,4 +131,19 @@ public class Permission extends PersistableBusinessObjectBase {
         this.namespaceId = namespaceId;
     }
 
+    /**
+     * This method creates a PermissionDTO from a Permission
+     *
+     * @param permission
+     * @return PermissionDTO
+     */
+    public static PermissionDTO toDTO(final Permission permission) {
+        final PermissionDTO dto = new PermissionDTO();
+        dto.setDescription(permission.getDescription());
+        dto.setId(permission.getId());
+
+        dto.setName(permission.getName());
+        dto.setNamespaceId(permission.getNamespaceId());
+        return dto;
+    }
 }

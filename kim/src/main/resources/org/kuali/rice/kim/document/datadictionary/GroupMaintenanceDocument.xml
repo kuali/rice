@@ -72,6 +72,7 @@
 						businessObjectClass="org.kuali.rice.kim.bo.Group" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="parentGroups" includeAddLine="false" summaryTitle="Parent Groups">
 						<maintainableField name="id" required="true" readOnly="true" template="id" />
 						<maintainableField name="name" required="false" readOnly="true" template="name"/>
+						<maintainableField name="newCollectionRecord" />
 					</maintainableCollection>
 				</maintainableItems>
 			</maintainableSection>
@@ -102,6 +103,7 @@
 						<maintainableField name="attributeName" required="true" />
 						<maintainableField name="attributeTypeId" required="true" />
 						<maintainableField name="value" required="true" />
+						<maintainableField name="newCollectionRecord" />
 					</maintainableCollection>
 				</maintainableItems>
 			</maintainableSection>

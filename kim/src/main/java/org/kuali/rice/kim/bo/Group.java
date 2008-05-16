@@ -233,4 +233,14 @@ public class Group extends PersistableBusinessObjectBase {
         }
         return dto;
     }
+
+    /**
+     * This overridden method makes
+     * 
+     * @see org.kuali.core.bo.PersistableBusinessObjectBase#isNewCollectionRecord()
+     */
+    @Override
+    public boolean isNewCollectionRecord() {
+        return true;
+    }
 }

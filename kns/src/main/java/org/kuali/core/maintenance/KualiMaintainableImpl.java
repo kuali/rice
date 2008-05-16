@@ -410,8 +410,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     }
     
 
-    public void addMultipleValueLookupResults(MaintenanceDocument document, String collectionName, Collection<PersistableBusinessObject> rawValues, boolean needsBlank) {
-        PersistableBusinessObject bo = document.getNewMaintainableObject().getBusinessObject();
+    public void addMultipleValueLookupResults(MaintenanceDocument document, String collectionName, Collection<PersistableBusinessObject> rawValues, boolean needsBlank, PersistableBusinessObject bo) {
         Collection maintCollection = (Collection) ObjectUtils.getPropertyValue(bo, collectionName);
         String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
         

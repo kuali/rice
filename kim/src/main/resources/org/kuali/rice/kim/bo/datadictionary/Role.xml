@@ -23,11 +23,41 @@
         <inquiry>
             <title>Role Inquiry</title>
 
-            <inquirySections><inquirySection title="Header Text"><inquiryFields>
-                <field attributeName="id" />
-                <field attributeName="name" />
-                <field attributeName="description" />
-            </inquiryFields></inquirySection></inquirySections>
+            <inquirySections>
+            <inquirySection title="Header Text">
+	            <inquiryFields>
+	                <field attributeName="id" />
+	                <field attributeName="name" />
+	                <field attributeName="description" />
+	            </inquiryFields>
+            </inquirySection>
+
+            <inquirySection title="Role Attributes">
+                    <inquiryFields>
+                        <inquiryCollection name="roleAttributes"
+                            businessObjectClass="org.kuali.rice.kim.bo.RoleAttribute">
+                            <field attributeName="id" />
+                            <field attributeName="attributeTypeId" />
+                            <field attributeName="attributeName" />
+                            <field attributeName="value" />
+                            <field attributeName="roleId" />
+                         </inquiryCollection>
+                    </inquiryFields>
+            </inquirySection>
+
+            
+            <inquirySection title="Role Permissions">
+                    <inquiryFields>
+                        <inquiryCollection name="permissions"
+                            businessObjectClass="org.kuali.rice.kim.bo.Permission">
+                            <field attributeName="id" />
+                            <field attributeName="name" />
+                            <field attributeName="description" />
+                         </inquiryCollection>
+                    </inquiryFields>
+            </inquirySection>
+            
+           </inquirySections>
         </inquiry>
 
         <lookup>
@@ -101,6 +131,16 @@
         </attributes>
         
         <collections>
+
+            <collection name="roleAttributes">
+        		<label>Role Attributes</label>
+        		<shortLabel>RoleAttributes</shortLabel>
+        		<summary>These are attributes for the role.</summary>
+        		<description>
+        			Attributes defined for the role.
+        		</description>
+        	</collection>
+        
             <collection name="permissions">
         		<label>Permissions with Role</label>
         		<shortLabel>Permissions</shortLabel>
@@ -109,6 +149,7 @@
         			Permissions given to anyone/anything with this Role.
         		</description>
         	</collection>
+        	
         	<collection name="groupQualifiedRoles">
         		<label>Groups with Role</label>
         		<shortLabel>Groups</shortLabel>

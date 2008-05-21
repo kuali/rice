@@ -60,7 +60,7 @@
         <attributes>
 
             <attribute name="id" forceUppercase="true">
-                <label>ID</label>
+                <label>Id</label>
                 <shortLabel>id</shortLabel>
 
                 <maxLength>8</maxLength>

@@ -16,16 +16,16 @@
 package org.kuali.rice.kim.document.maintenance;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.document.MaintenanceDocument;
-import org.kuali.core.document.MaintenanceLock;
 import org.kuali.core.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupQualifiedRole;
 import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
+import org.kuali.rice.kim.bo.Principal;
+import org.kuali.rice.kim.bo.PrincipalQualifiedRole;
+import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Role;
 
 /**
@@ -38,65 +38,40 @@ public class RoleMaintainable extends KualiMaintainableImpl {
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.core.maintenance.KualiMaintainableImpl#generateMaintenanceLocks()
-     */
-    @Override
-    public List<MaintenanceLock> generateMaintenanceLocks() {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return super.generateMaintenanceLocks();
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.core.maintenance.KualiMaintainableImpl#getBoClass()
-     */
-    @Override
-    public Class getBoClass() {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return super.getBoClass();
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.core.maintenance.KualiMaintainableImpl#getBusinessObject()
-     */
-    @Override
-    public PersistableBusinessObject getBusinessObject() {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return super.getBusinessObject();
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.core.maintenance.KualiMaintainableImpl#prepareForSave()
-     */
-    @Override
-    public void prepareForSave() {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        super.prepareForSave();
-    }
-
-    /**
-     * This overridden method ...
-     * 
      * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterEdit(org.kuali.core.document.MaintenanceDocument, java.util.Map)
      */
     @Override
     public void processAfterEdit(MaintenanceDocument document, Map<String, String[]> parameters) {
         Role oldRoleBO = (Role)document.getOldMaintainableObject().getBusinessObject();
         populateGroupQualifiedRoles(oldRoleBO);
+        populatePrincipalQualifiedRoles(oldRoleBO);
         
         Role newRoleBO = (Role)document.getNewMaintainableObject().getBusinessObject();
         populateGroupQualifiedRoles(newRoleBO);
+        populatePrincipalQualifiedRoles(newRoleBO);
         
         super.processAfterEdit(document, parameters);
     }
     
     /**
-     * This method ...
+     * This overridden method deals with translating the data from the maint. doc UI into the appropriate
+     * persistable business objects that map down to the ORM level.
+     * 
+     * @see org.kuali.core.maintenance.KualiMaintainableImpl#saveBusinessObject()
+     */
+    @Override
+    public void saveBusinessObject() {
+        Role role = (Role)getBusinessObject();
+
+        prepareGroupQualifiedRoleAttributesForSave(role);
+        preparePrincipalQualifiedRoleAttributesForSave(role);
+        
+        super.saveBusinessObject();
+    }
+    
+    /**
+     * This method is responsible for taking the persisted group qualified role attributes and pushing them into 
+     * the appropriate value added helper bos for displaying in the maintenance document user interface.
      * 
      * @param role
      */
@@ -108,7 +83,6 @@ public class RoleMaintainable extends KualiMaintainableImpl {
                 GroupQualifiedRole gqr = new GroupQualifiedRole();
                 gqr.setId(g.getId());
                 gqr.setName(g.getName());
-                gqr.setDescription(g.getDescription());
                 gqr.setRoleId(role.getId());
 
                 ArrayList<GroupQualifiedRoleAttribute> gqrAttribs = role.getGroupQualifiedRoleAttributes();
@@ -120,57 +94,42 @@ public class RoleMaintainable extends KualiMaintainableImpl {
                 
                 role.getGroupQualifiedRoles().add(gqr);
             }
-            
     }
 
     /**
-     * This overridden method ...
+     * This method is responsible for taking the persisted principal qualified role attributes and pushing them into 
+     * the appropriate value added helper bos for displaying in the maintenance document user interface.
      * 
-     * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterNew(org.kuali.core.document.MaintenanceDocument, java.util.Map)
+     * @param role
      */
-    @Override
-    public void processAfterNew(MaintenanceDocument document, Map<String, String[]> parameters) {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        super.processAfterNew(document, parameters);
+    private void populatePrincipalQualifiedRoles(Role role) {
+            role.getPrincipalQualifiedRoles().clear();
+
+            ArrayList<Principal> principals = role.getPrincipals();
+            for (Principal p : principals) {
+                PrincipalQualifiedRole pqr = new PrincipalQualifiedRole();
+                pqr.setId(p.getId());
+                pqr.setName(p.getName());
+                pqr.setRoleId(role.getId());
+
+                ArrayList<PrincipalQualifiedRoleAttribute> pqrAttribs = role.getPrincipalQualifiedRoleAttributes();
+                for(PrincipalQualifiedRoleAttribute pqrAttrib : pqrAttribs) {
+                    if(pqrAttrib.getPrincipalId().equals(pqr.getId())) {
+                        pqr.getQualifiedRoleAttributes().add(pqrAttrib);
+                    }
+                }
+                
+                role.getPrincipalQualifiedRoles().add(pqr);
+            }
     }
 
     /**
-     * This overridden method ...
+     * This method will extract the data entered into the UI and populate that into the persistable BOs that will
+     * be used for actually storing the object.
      * 
-     * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterPost(org.kuali.core.document.MaintenanceDocument, java.util.Map)
+     * @param role
      */
-    @Override
-    public void processAfterPost(MaintenanceDocument document, Map<String, String[]> parameters) {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        super.processAfterPost(document, parameters);
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterRetrieve()
-     */
-    @Override
-    public void processAfterRetrieve() {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        super.processAfterRetrieve();
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.core.maintenance.KualiMaintainableImpl#refresh(java.lang.String, java.util.Map, org.kuali.core.document.MaintenanceDocument)
-     */
-    @Override
-    public void refresh(String refreshCaller, Map fieldValues, MaintenanceDocument document) {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        super.refresh(refreshCaller, fieldValues, document);
-    }
-
-    @Override
-    public void saveBusinessObject() {
-        Role role = (Role)getBusinessObject();
-
+    private void prepareGroupQualifiedRoleAttributesForSave(Role role) {
         ArrayList<GroupQualifiedRole> groupQualifiedRoles = role.getGroupQualifiedRoles();
 
         role.getGroups().clear();
@@ -187,20 +146,30 @@ public class RoleMaintainable extends KualiMaintainableImpl {
                 role.getGroupQualifiedRoleAttributes().add(gqrAttrib);
             }
         }
-        
-        super.saveBusinessObject();
     }
-
+    
     /**
-     * @see org.kuali.core.maintenance.Maintainable#populateBusinessObject(java.util.Map)
+     * This method will extract the data entered into the UI and populate that into the persistable BOs that will
+     * be used for actually storing the object.
+     * 
+     * @param role
      */
-    public Map populateBusinessObject(Map fieldValues) {
-        /*
-        // need to make sure that the UUID is populated first for later fields
-        if ( fieldValues.containsKey( RicePropertyConstants.PERSON_UNIVERSAL_IDENTIFIER ) ) {
-            ((UniversalUser)getBusinessObject()).setPersonUniversalIdentifier( (String)fieldValues.get( RicePropertyConstants.PERSON_UNIVERSAL_IDENTIFIER ) );
+    private void preparePrincipalQualifiedRoleAttributesForSave(Role role) {
+        ArrayList<PrincipalQualifiedRole> principalQualifiedRoles = role.getPrincipalQualifiedRoles();
+
+        role.getPrincipals().clear();
+        role.getPrincipalQualifiedRoleAttributes().clear();
+        
+        // construct the list of principals to save through the persistable list of principals on the role BO
+        for(PrincipalQualifiedRole pqr : principalQualifiedRoles) {
+            Principal p = new Principal();
+            p.setId(pqr.getId());
+            role.getPrincipals().add(p);
+            
+            ArrayList<PrincipalQualifiedRoleAttribute> gqrAttribs = pqr.getQualifiedRoleAttributes();
+            for(PrincipalQualifiedRoleAttribute gqrAttrib : gqrAttribs) {
+                role.getPrincipalQualifiedRoleAttributes().add(gqrAttrib);
+            }
         }
-        */
-        return super.populateBusinessObject( fieldValues );
     }
 }

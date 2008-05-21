@@ -48,8 +48,9 @@ public class Role extends PersistableBusinessObjectBase {
 	private ArrayList<GroupQualifiedRole> groupQualifiedRoles;
 	private ArrayList<PrincipalQualifiedRole> principalQualifiedRoles;
 	
-	//this list is what actually gets persisted for group qualifications
+	//these lists are what actually get persisted for group and principal qualifications
 	private ArrayList<GroupQualifiedRoleAttribute> groupQualifiedRoleAttributes;
+	private ArrayList<PrincipalQualifiedRoleAttribute> principalQualifiedRoleAttributes;
 
 	/**
 	 * This constructs a Role instance, primarily constructing necessary TypeArrayLists for the
@@ -64,6 +65,7 @@ public class Role extends PersistableBusinessObjectBase {
 	    this.groupQualifiedRoles = new TypedArrayList(GroupQualifiedRole.class);
 	    this.principalQualifiedRoles = new TypedArrayList(PrincipalQualifiedRole.class);
 	    this.groupQualifiedRoleAttributes = new TypedArrayList(GroupQualifiedRoleAttribute.class);
+	    this.principalQualifiedRoleAttributes = new TypedArrayList(PrincipalQualifiedRoleAttribute.class);
 	}
 
 	/**
@@ -217,6 +219,21 @@ public class Role extends PersistableBusinessObjectBase {
     public void setGroupQualifiedRoleAttributes(ArrayList<GroupQualifiedRoleAttribute> groupQualifiedRoleAttributes) {
         this.groupQualifiedRoleAttributes = groupQualifiedRoleAttributes;
     }
+    
+    /**
+     * @return the principalQualifiedRoleAttributes
+     */
+    public ArrayList<PrincipalQualifiedRoleAttribute> getPrincipalQualifiedRoleAttributes() {
+        return this.principalQualifiedRoleAttributes;
+    }
+
+    /**
+     * @param principalQualifiedRoleAttributes the principalQualifiedRoleAttributes to set
+     */
+    public void setPrincipalQualifiedRoleAttributes(ArrayList<PrincipalQualifiedRoleAttribute> principalQualifiedRoleAttributes) {
+        this.principalQualifiedRoleAttributes = principalQualifiedRoleAttributes;
+    }
+
 
     /**
 	 * This overridden method retrieves a string representation of an instance of a Role.

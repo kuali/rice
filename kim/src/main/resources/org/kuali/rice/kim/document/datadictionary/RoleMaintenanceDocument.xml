@@ -66,12 +66,29 @@
 			</maintainableSection>
             <maintainableSection title="Principals with Role">
 				<maintainableItems>
-					<maintainableCollection name="principals"
-						businessObjectClass="org.kuali.rice.kim.bo.Principal" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Principal" sourceAttributeName="principals" includeAddLine="false" summaryTitle="Principals with Role">
+					<maintainableCollection name="principalQualifiedRoles"
+						businessObjectClass="org.kuali.rice.kim.bo.PrincipalQualifiedRole" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Principal" sourceAttributeName="principalQualifiedRoles" includeAddLine="false" summaryTitle="Principal with Role">
 						<maintainableField name="id" required="true"
 							readOnlyAfterAdd="true" template="id" />
 						<maintainableField name="name" required="false" readOnly="true" template="name"/>
-						<maintainableField name="entityId" required="false" readOnly="true" template="entityId"/>
+						
+						<maintainableCollection name="qualifiedRoleAttributes"
+								businessObjectClass="org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute" summaryTitle="Role Qualification for Principal">
+							<maintainableField name="id" required="true" readOnly="true" />
+							<maintainableField name="attributeName" required="true" readOnly="false" />
+							<maintainableField name="attributeValue" required="true" readOnly="false" />
+							<maintainableField name="principalId" required="false" readOnly="true" />
+							<maintainableField name="roleId" required="false" readOnly="true" />
+							<maintainableField name="versionNumber" required="false" readOnly="true" />
+							<maintainableField name="objectId" required="false" readOnly="true" />
+							<summaryFields>
+           		       			<summaryField name="attributeName" />
+           		       		</summaryFields>
+						</maintainableCollection>
+						
+						<summaryFields>
+     		       			<summaryField name="name" />
+         		       	</summaryFields>
 					</maintainableCollection>
 				</maintainableItems>
 			</maintainableSection>

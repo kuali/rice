@@ -23,12 +23,12 @@ import java.util.LinkedHashMap;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PrincipalQualifiedRoleAttribute extends AbstractQualifiedRoleAttribute {
-    private static final long serialVersionUID = -3834313283054550673L;
+    private static final long serialVersionUID = 6701917498866245651L;
 
     private Long principalId;
 
     private Principal principal;
-    
+
     /**
      * @return the principalId
      */
@@ -37,21 +37,28 @@ public class PrincipalQualifiedRoleAttribute extends AbstractQualifiedRoleAttrib
     }
 
     /**
-     * @param principalId the principalId to set
+     * @param principalId
+     *            the principalId to set
      */
     public void setPrincipalId(Long principalId) {
         this.principalId = principalId;
     }
 
     /**
-     * @return the principal
+     * 
+     * This method ...
+     * 
+     * @return Principal
      */
     public Principal getPrincipal() {
         return this.principal;
     }
 
     /**
-     * @param principal the principal to set
+     * 
+     * This method ...
+     * 
+     * @param principal
      */
     public void setPrincipal(Principal principal) {
         this.principal = principal;

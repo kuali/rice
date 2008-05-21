@@ -15,8 +15,10 @@
  */
 package org.kuali.rice.kim.bo;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
+
+import org.kuali.core.util.TypedArrayList;
 
 /**
  * Primarily a helper business object that provides a list of qualified role attributes for 
@@ -25,54 +27,43 @@ import java.util.List;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class PrincipalQualifiedRole extends PrincipalQualifiedRoleAttribute {
-   	private static final long serialVersionUID = -3834313283054550673L;
-   	
-   	private Long principalId;
-   	
-   	private Principal principal;
-   	
-   	private List<PrincipalQualifiedRoleAttribute> qualifiedRoleAttributes;
-   	
-	/**
-     * @return the principalId
-     */
-    public Long getPrincipalId() {
-        return this.principalId;
+public class PrincipalQualifiedRole extends Principal {
+    private static final long serialVersionUID = 6701917498866245651L;
+    
+    private Long roleId;
+    
+    private ArrayList<PrincipalQualifiedRoleAttribute> qualifiedRoleAttributes;
+
+    public PrincipalQualifiedRole() {
+        super();
+        this.qualifiedRoleAttributes = new TypedArrayList(PrincipalQualifiedRoleAttribute.class);
     }
 
     /**
-     * @param principalId the principalId to set
+     * @return the roleId
      */
-    public void setPrincipalId(Long principalId) {
-        this.principalId = principalId;
+    public Long getRoleId() {
+        return this.roleId;
     }
 
     /**
-     * @return the principal
+     * @param roleId the roleId to set
      */
-    public Principal getPrincipal() {
-        return this.principal;
-    }
-
-    /**
-     * @param principal the principal to set
-     */
-    public void setPrincipal(Principal principal) {
-        this.principal = principal;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
     /**
      * @return the qualifiedRoleAttributes
      */
-    public List<PrincipalQualifiedRoleAttribute> getQualifiedRoleAttributes() {
+    public ArrayList<PrincipalQualifiedRoleAttribute> getQualifiedRoleAttributes() {
         return this.qualifiedRoleAttributes;
     }
 
     /**
-     * @param qualifiedRoleAttributes the principalQualifiedRoleAttributes to set
+     * @param qualifiedRoleAttributes the qualifiedRoleAttributes to set
      */
-    public void setQualifiedRoleAttributes(List<PrincipalQualifiedRoleAttribute> qualifiedRoleAttributes) {
+    public void setQualifiedRoleAttributes(ArrayList<PrincipalQualifiedRoleAttribute> qualifiedRoleAttributes) {
         this.qualifiedRoleAttributes = qualifiedRoleAttributes;
     }
 

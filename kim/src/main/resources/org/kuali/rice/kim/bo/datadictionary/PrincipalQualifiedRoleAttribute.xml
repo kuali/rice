@@ -18,7 +18,7 @@
     "-//Kuali Project//DTD Data Dictionary 1.0//EN"
     "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
 <dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute">
+    <businessObject businessObjectClass="org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute">
         <titleAttribute>attributeName</titleAttribute>
 
         <attributes>
@@ -27,9 +27,9 @@
 			<attributeReference name="attributeValue" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="attributeValue" />
    			<attributeReference name="roleId" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="roleId" />
             
-			<attributeReference name="groupId" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="id">
-				<label>Group Id</label>
-                <shortLabel>Group Id</shortLabel>
+			<attributeReference name="principalId" sourceClassName="org.kuali.rice.kim.bo.Principal" sourceAttributeName="id">
+				<label>Principal Id</label>
+                <shortLabel>Principal Id</shortLabel>
 				<required>true</required>
 				<control>
 					<hidden/>
@@ -39,6 +39,6 @@
             <attributeReference name="versionNumber" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="versionNumber" />
             <attributeReference name="objectId" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="objectId" />
         </attributes>
-        <objectLabel>Group Qualified Role Attribute</objectLabel>
+        <objectLabel>Principal Qualified Role Attribute</objectLabel>
     </businessObject>
 </dictionaryEntry>

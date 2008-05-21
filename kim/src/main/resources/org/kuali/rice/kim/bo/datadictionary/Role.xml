@@ -131,7 +131,6 @@
         </attributes>
         
         <collections>
-
             <collection name="roleAttributes">
         		<label>Role Attributes</label>
         		<shortLabel>RoleAttributes</shortLabel>
@@ -140,7 +139,6 @@
         			Attributes defined for the role.
         		</description>
         	</collection>
-        
             <collection name="permissions">
         		<label>Permissions with Role</label>
         		<shortLabel>Permissions</shortLabel>
@@ -149,13 +147,20 @@
         			Permissions given to anyone/anything with this Role.
         		</description>
         	</collection>
-        	
         	<collection name="groupQualifiedRoles">
-        		<label>Groups with Role</label>
-        		<shortLabel>Groups</shortLabel>
+        		<label>Groups with Qualified Roles</label>
+        		<shortLabel>Group Qualified Roles</shortLabel>
         		<summary>These are groups that have this role along with their qualifications.</summary>
         		<description>
-        			Groups that are given this Role.
+        			Groups that have Qualified Roles for this Role.
+        		</description>
+        	</collection>
+        	<collection name="principalQualifiedRoles">
+        		<label>Principals with Qualified Roles</label>
+        		<shortLabel>Principal Qualified Roles</shortLabel>
+        		<summary>These are principals that have this role along with their qualifications.</summary>
+        		<description>
+        			Principals that have Qualified Roles for this Role.
         		</description>
         	</collection>
         	<collection name="principals">
@@ -166,6 +171,31 @@
         			Principals that are given this Role.
         		</description>
         	</collection>
+        	<collection name="groups">
+        		<label>Groups with Role</label>
+        		<shortLabel>Groups</shortLabel>
+        		<summary>These are the groups with this role.</summary>
+        		<description>
+        			Groups that are given this Role.
+        		</description>
+        	</collection>
+        	<collection name="groupQualifiedRoleAttributes">
+        		<label>Groups with Qualified Role Attributes</label>
+        		<shortLabel>Group Qualified Role Attributes</shortLabel>
+        		<summary>These are groups that have this role along with their qualification attributes.</summary>
+        		<description>
+        			Group Qualified Role Attributes for this Role.
+        		</description>
+        	</collection>
+        	<collection name="principalQualifiedRoleAttributes">
+        		<label>Principals with Qualified Role Attributes</label>
+        		<shortLabel>Principal Qualified Role Attributes</shortLabel>
+        		<summary>These are principals that have this role along with their qualification attributes.</summary>
+        		<description>
+        			Principal Qualified Role Attributes for this Role.
+        		</description>
+        	</collection>
+        	
         </collections>
 
         <objectLabel>Role</objectLabel>

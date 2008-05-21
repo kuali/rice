@@ -45,7 +45,7 @@
 		<allowsNewOrCopy>true</allowsNewOrCopy>
 		
         <maintainableSections>
-            <maintainableSection title="Edit Principal">
+            <maintainableSection title="Principal Information">
                 <maintainableItems>
                     <maintainableField name="id" required="true" readOnly="true" />
                     <maintainableField name="name" required="true" /> 

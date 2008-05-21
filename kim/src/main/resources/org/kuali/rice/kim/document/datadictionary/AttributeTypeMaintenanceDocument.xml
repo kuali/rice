@@ -46,7 +46,7 @@
         <allowsNewOrCopy>true</allowsNewOrCopy>
 
         <maintainableSections>
-            <maintainableSection title="Edit Attribute Type Information">
+            <maintainableSection title="Attribute Type Information">
                 <maintainableItems>
                     <maintainableField name="id" readOnly="true" required="false" />
                     <maintainableField name="attributeTypeName" readOnly="false" required="true" />

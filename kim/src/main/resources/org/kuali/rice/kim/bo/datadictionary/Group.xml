@@ -87,8 +87,8 @@
             <lookupFields>
                 <lookupField attributeName="id" required="false" forceLookup="true" noLookup="false" />
                 <lookupField attributeName="name" required="false" forceLookup="false" />
-                <lookupField attributeName="description" required="false" forceLookup="false" />
                 <lookupField attributeName="groupTypeId" required="false" forceLookup="false" />
+                <lookupField attributeName="description" required="false" forceLookup="false" />
             </lookupFields>
 
             <resultFields>

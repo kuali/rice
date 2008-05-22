@@ -285,98 +285,101 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
      * @exception NoSuchMethodException if an accessor method for this propety cannot be found
      */
     public PropertyDescriptor getPropertyDescriptor(Object bean, String name) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-
         if (bean == null) {
             throw new IllegalArgumentException("No bean specified");
         }
         if (name == null) {
             throw new IllegalArgumentException("No name specified");
         }
-
-        // Resolve nested references
-        Object propBean = null;
-        while (true) {
-            int delim = findNextNestedIndex(name);
-            //int delim = name.indexOf(PropertyUtils.NESTED_DELIM);
-            if (delim < 0) {
-                break;
-            }
-            String next = name.substring(0, delim);
-            int indexOfINDEXED_DELIM = next.indexOf(PropertyUtils.INDEXED_DELIM);
-            int indexOfMAPPED_DELIM = next.indexOf(PropertyUtils.MAPPED_DELIM);
-            if (indexOfMAPPED_DELIM >= 0 && (indexOfINDEXED_DELIM < 0 || indexOfMAPPED_DELIM < indexOfINDEXED_DELIM)) {
-                propBean = getMappedProperty(bean, next);
-            }
-            else {
-                if (indexOfINDEXED_DELIM >= 0) {
-                    propBean = getIndexedProperty(bean, next);
+        try {
+            // Resolve nested references
+            Object propBean = null;
+            while (true) {
+                int delim = findNextNestedIndex(name);
+                //int delim = name.indexOf(PropertyUtils.NESTED_DELIM);
+                if (delim < 0) {
+                    break;
+                }
+                String next = name.substring(0, delim);
+                int indexOfINDEXED_DELIM = next.indexOf(PropertyUtils.INDEXED_DELIM);
+                int indexOfMAPPED_DELIM = next.indexOf(PropertyUtils.MAPPED_DELIM);
+                if (indexOfMAPPED_DELIM >= 0 && (indexOfINDEXED_DELIM < 0 || indexOfMAPPED_DELIM < indexOfINDEXED_DELIM)) {
+                    propBean = getMappedProperty(bean, next);
                 }
                 else {
-                    propBean = getSimpleProperty(bean, next);
-                }
-            }
-            if (propBean == null) {
-                Class propertyType = getPropertyType(bean, next);
-                if (propertyType != null) {
-                    try {
-                        setSimpleProperty(bean, next, propertyType.newInstance());
+                    if (indexOfINDEXED_DELIM >= 0) {
+                        propBean = getIndexedProperty(bean, next);
+                    }
+                    else {
                         propBean = getSimpleProperty(bean, next);
                     }
-                    catch (InstantiationException e) {
-                        throw new IllegalArgumentException("Null property value for '" + name.substring(0, delim) + "'");
+                }
+                if (propBean == null) {
+                    Class propertyType = getPropertyType(bean, next);
+                    if (propertyType != null) {
+                        try {
+                            setSimpleProperty(bean, next, propertyType.newInstance());
+                            propBean = getSimpleProperty(bean, next);
+                        }
+                        catch (InstantiationException e) {
+                            throw new IllegalArgumentException("Null property value for '" + name.substring(0, delim) + "'");
+                        }
                     }
                 }
+                bean = propBean;
+                name = name.substring(delim + 1);
             }
-            bean = propBean;
-            name = name.substring(delim + 1);
-        }
-
-        // Remove any subscript from the final name value
-        int left = name.indexOf(PropertyUtils.INDEXED_DELIM);
-        if (left >= 0) {
-            name = name.substring(0, left);
-        }
-        left = name.indexOf(PropertyUtils.MAPPED_DELIM);
-        if (left >= 0) {
-            name = name.substring(0, left);
-        }
-
-        // Look up and return this property from our cache
-        // creating and adding it to the cache if not found.
-        if ((bean == null) || (name == null)) {
-            return (null);
-        }
-
-        PropertyDescriptor descriptors[] = getPropertyDescriptors(bean);
-        if (descriptors != null) {
-
-            for (int i = 0; i < descriptors.length; i++) {
-                if (name.equals(descriptors[i].getName()))
-                    return (descriptors[i]);
+    
+            // Remove any subscript from the final name value
+            int left = name.indexOf(PropertyUtils.INDEXED_DELIM);
+            if (left >= 0) {
+                name = name.substring(0, left);
             }
-        }
-
-        PropertyDescriptor result = null;
-        FastHashMap mappedDescriptors = getMappedPropertyDescriptors(bean);
-        if (mappedDescriptors == null) {
-            mappedDescriptors = new FastHashMap();
-            mappedDescriptors.setFast(true);
-        }
-        result = (PropertyDescriptor) mappedDescriptors.get(name);
-        if (result == null) {
-            // not found, try to create it
-            try {
-                result = new MappedPropertyDescriptor(name, bean.getClass());
+            left = name.indexOf(PropertyUtils.MAPPED_DELIM);
+            if (left >= 0) {
+                name = name.substring(0, left);
             }
-            catch (IntrospectionException ie) {
+    
+            // Look up and return this property from our cache
+            // creating and adding it to the cache if not found.
+            if ((bean == null) || (name == null)) {
+                return (null);
             }
-            if (result != null) {
-                mappedDescriptors.put(name, result);
+    
+            PropertyDescriptor descriptors[] = getPropertyDescriptors(bean);
+            if (descriptors != null) {
+    
+                for (int i = 0; i < descriptors.length; i++) {
+                    if (name.equals(descriptors[i].getName()))
+                        return (descriptors[i]);
+                }
             }
+    
+            PropertyDescriptor result = null;
+            FastHashMap mappedDescriptors = getMappedPropertyDescriptors(bean);
+            if (mappedDescriptors == null) {
+                mappedDescriptors = new FastHashMap();
+                mappedDescriptors.setFast(true);
+            }
+            result = (PropertyDescriptor) mappedDescriptors.get(name);
+            if (result == null) {
+                // not found, try to create it
+                try {
+                    result = new MappedPropertyDescriptor(name, bean.getClass());
+                }
+                catch (IntrospectionException ie) {
+                }
+                if (result != null) {
+                    mappedDescriptors.put(name, result);
+                }
+            }
+    
+            return result;
+        } catch ( RuntimeException ex ) {
+            LOG.error( "Unable to get property descriptor for " + bean.getClass().getName() + " . " + name
+                    + "\n" + ex.getClass().getName() + ": " + ex.getMessage() );
+            throw ex;
         }
-
-        return result;
-
     }
     // end Kuali Foundation modification
 

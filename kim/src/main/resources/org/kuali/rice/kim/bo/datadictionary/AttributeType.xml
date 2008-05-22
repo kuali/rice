@@ -1,104 +1,147 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="AttributeType" parent="AttributeType-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="AttributeType-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.AttributeType" />
+    <property name="inquiryDefinition" >
+      <ref bean="AttributeType-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="AttributeType-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="id" />
+    <property name="objectLabel" value="Attribute Type" />
+    <property name="attributes" >
+      <list>
+        <ref bean="AttributeType-id" />
+        <ref bean="AttributeType-attributeTypeName" />
+        <ref bean="AttributeType-description" />
+        <ref bean="AttributeType-versionNumber" />
+      </list>
+    </property>
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kim.bo.AttributeType">
+<!-- Attribute Definitions -->
 
-        <inquiry>
-            <title>Attribute Type Inquiry</title>
 
-            <inquirySections><inquirySection title="Header Text"><inquiryFields>
-                <field attributeName="id" />
-                <field attributeName="attributeTypeName" />
-                <field attributeName="description" />
-            </inquiryFields></inquirySection></inquirySections>
-        </inquiry>
+  <bean id="AttributeType-id" parent="AttributeType-id-parentBean" />
 
-        <lookup>
-            <title>Attribute Type Lookup</title>
+  <bean id="AttributeType-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="id" />
+    <property name="maxLength" value="8" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="8" />
+    </property>
+    <property name="name" value="id" />
+    <property name="label" value="ID" />
+  </bean>
+  <bean id="AttributeType-attributeTypeName" parent="AttributeType-attributeTypeName-parentBean" />
 
-            <instructions>Lookup a Attribute Type</instructions>
+  <bean id="AttributeType-attributeTypeName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Type Name" />
+    <property name="maxLength" value="500" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="attributeTypeName" />
+    <property name="label" value="Attribute Type Name" />
+  </bean>
+  <bean id="AttributeType-description" parent="AttributeType-description-parentBean" />
 
-            <defaultSort sortAscending="true">
-                <sortAttributes>
-                    <sortAttribute attributeName="attributeTypeName" />
-                </sortAttributes>
-            </defaultSort>
+  <bean id="AttributeType-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Description" />
+    <property name="maxLength" value="4000" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="description" />
+    <property name="label" value="Description" />
+  </bean>
+  <bean id="AttributeType-versionNumber" parent="AttributeType-versionNumber-parentBean" />
 
-            <lookupFields>
-                <lookupField attributeName="id" required="false" />
-                <lookupField attributeName="attributeTypeName" required="false" />
-                <lookupField attributeName="description" required="false" />
-            </lookupFields>
+  <bean id="AttributeType-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
 
-            <resultFields>
-                <field attributeName="id" />
-                <field attributeName="attributeTypeName" />
-               <field attributeName="description" />
-            </resultFields>
-        </lookup>
+<!-- Business Object Inquiry Definition -->
 
-        <titleAttribute>id</titleAttribute>
 
-        <attributes>
+  <bean id="AttributeType-inquiryDefinition" parent="AttributeType-inquiryDefinition-parentBean" />
 
-            <attribute name="id" forceUppercase="true">
-                <label>ID</label>
-                <shortLabel>id</shortLabel>
+  <bean id="AttributeType-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="id" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="attributeTypeName" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="description" />
+            </list>
+          </property>
+          <property name="title" value="Header Text" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="Attribute Type Inquiry" />
+  </bean>
 
-                <maxLength>8</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+<!-- Business Object Lookup Definition -->
 
-                <control>
-                    <text size="8" />
-                </control>
 
-			</attribute>
+  <bean id="AttributeType-lookupDefinition" parent="AttributeType-lookupDefinition-parentBean" />
 
-            <attribute name="attributeTypeName" forceUppercase="false">
-                <label>Attribute Type Name</label>
-                <shortLabel>Type Name</shortLabel>
-
-                <maxLength>500</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
-
-                <control>
-                    <text size="100" />
-                </control>
-
-			</attribute>
-
-            <attribute name="description" forceUppercase="false">
-                <label>Description</label>
-                <shortLabel>Description</shortLabel>
-
-                <maxLength>4000</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
-
-                <control>
-                    <text size="100" />
-                </control>
-
-            </attribute>
-            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
-
-        </attributes>
-        <objectLabel>Attribute Type</objectLabel>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="AttributeType-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Lookup a Attribute Type" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="attributeTypeName" />
+        <bean parent="FieldDefinition"
+              p:attributeName="description" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="attributeTypeName" />
+        <bean parent="FieldDefinition"
+              p:attributeName="description" />
+      </list>
+    </property>
+    <property name="title" value="Attribute Type Lookup" />
+  </bean>
+</beans>

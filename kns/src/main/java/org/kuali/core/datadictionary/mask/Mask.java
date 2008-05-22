@@ -15,7 +15,6 @@
  */
 package org.kuali.core.datadictionary.mask;
 
-import java.io.Serializable;
 
 
 /**
@@ -23,11 +22,9 @@ import java.io.Serializable;
  * 
  * 
  */
-public class Mask implements Serializable {
-    static final public long serialVersionUID = 0L;
-    
+public class Mask {   
     private MaskFormatter maskFormatter;
-    private Class maskFormatterClass;
+    private Class<? extends MaskFormatter> maskFormatterClass;
 
     /**
      * Masks a data value with the configured maskFormatter;
@@ -76,7 +73,7 @@ public class Mask implements Serializable {
      * 
      * @return Returns the maskFormatterClass.
      */
-    public Class getMaskFormatterClass() {
+    public Class<? extends MaskFormatter> getMaskFormatterClass() {
         return maskFormatterClass;
     }
 
@@ -85,7 +82,7 @@ public class Mask implements Serializable {
      * 
      * @param maskFormatterClass The maskFormatterClass to set.
      */
-    public void setMaskFormatterClass(Class maskFormatterClass) {
+    public void setMaskFormatterClass(Class<? extends MaskFormatter> maskFormatterClass) {
         this.maskFormatterClass = maskFormatterClass;
     }
 

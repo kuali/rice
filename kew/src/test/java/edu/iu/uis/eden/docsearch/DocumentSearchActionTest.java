@@ -97,7 +97,7 @@ public class DocumentSearchActionTest extends KEWHtmlUnitTestCase {
         verifySearchableAttribute(false,basicSearchClearedPage, SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME, expectedValues.get(SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME), true);
         
         // check advanced search clear function
-        HtmlPage advancedSearchPage = getPage("DocumentSearch.do?isAdvancedSearch=" + DocumentSearchForm.ADVANCED_SEARCH_INDICATOR_STRING + "&criteria.docTypeFullName=" + DOCUMENT_TYPE_NAME_HIDE_SPECIFIC);
+        HtmlPage advancedSearchPage = getPage("DocumentSearch.do?isAdvancedSearch=" + DocSearchCriteriaVO.ADVANCED_SEARCH_INDICATOR_STRING + "&criteria.docTypeFullName=" + DOCUMENT_TYPE_NAME_HIDE_SPECIFIC);
         checkStandardCriteriaFields(advancedSearchPage, expectedValues, Arrays.asList(new String[]{"criteria.docTypeFullName","criteria.initiator","criteria.docTitle"}), Arrays.asList(new String[]{}));
         verifySearchableAttribute(true,advancedSearchPage, SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME, expectedValues.get(SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME), false);
 
@@ -135,7 +135,7 @@ public class DocumentSearchActionTest extends KEWHtmlUnitTestCase {
         }
 
         // check advanced search
-        HtmlPage advancedSearchPage = getPage("DocumentSearch.do?criteria.initiator=delyea&isAdvancedSearch=" + DocumentSearchForm.ADVANCED_SEARCH_INDICATOR_STRING + "&criteria.docTypeFullName=" + documentTypeName + "&searchableAttributes=givenname:" + searchAttributeUrlValue + ((Utilities.isEmpty(urlParameters)) ? "" : "&" + urlParameters));
+        HtmlPage advancedSearchPage = getPage("DocumentSearch.do?criteria.initiator=delyea&isAdvancedSearch=" + DocSearchCriteriaVO.ADVANCED_SEARCH_INDICATOR_STRING + "&criteria.docTypeFullName=" + documentTypeName + "&searchableAttributes=givenname:" + searchAttributeUrlValue + ((Utilities.isEmpty(urlParameters)) ? "" : "&" + urlParameters));
         checkStandardCriteriaFields(advancedSearchPage, expectedValues, Arrays.asList(new String[]{"criteria.docTypeFullName","criteria.initiator","fromDateCreated","criteria.appDocId","criteria.docTitle"}), Arrays.asList(new String[]{}));
         verifySearchableAttribute(true,advancedSearchPage, SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME, expectedValues.get(SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME), false);
         // test that header bar is hidden

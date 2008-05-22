@@ -16,53 +16,66 @@
 
 package org.kuali.core.datadictionary;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.kuali.core.datadictionary.exception.ClassValidationException;
+import org.kuali.core.bo.BusinessObject;
 
 /**
  * A single BusinessObject entry in the DataDictionary, which contains information relating to the display, validation, and general
  * maintenance of a BusinessObject and its attributes.
  * 
+ * 
+    DD: See BusinessObjectEntry.java
+
+    JSTL: each businessObject is exposed as a Map which is accessed
+    using a key of the business object class name.
+    This map contains enties with the following keys
+
+        * businessObjectClass (String)
+        * inquiry (Map, optional)
+        * lookup (Map, optional)
+        * attributes (Map)
+        * collections (Map, optional)
+        * relationships (Map, optional)
+        * objectLabel (String, optional)
+        * objectDescription (String, optional)
+
+    See BusinessObjectEntryMapper.java
+
+    Note: the use of extraButton in the <businessObject> tag is deprecated, and may be removed in future versions of the data dictionary.
+
  * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
  */
 public class BusinessObjectEntry extends DataDictionaryEntryBase {
     // logger
-    private static Log LOG = LogFactory.getLog(BusinessObjectEntry.class);
+    //private static Log LOG = LogFactory.getLog(BusinessObjectEntry.class);
 
-    private Class businessObjectClass;
+    private Class<? extends BusinessObject> businessObjectClass;
 
-    private boolean boNotesEnabled;
+    private boolean boNotesEnabled = false;
     
     private InquiryDefinition inquiryDefinition;
     private LookupDefinition lookupDefinition;
+    private HelpDefinition helpDefinition;
 
     private String titleAttribute;
     private String objectLabel;
     private String objectDescription;
 
-    private HelpDefinition helpDefinition;
 
-    public BusinessObjectEntry() {
-        super();
-        LOG.debug("creating new BusinessObjectEntry");
-    }
+    public BusinessObjectEntry() {}
 
     /**
      * @see org.kuali.core.datadictionary.DataDictionaryEntry#getJstlKey()
      */
     public String getJstlKey() {
-        if (this.businessObjectClass == null) {
+        if (businessObjectClass == null) {
             throw new IllegalStateException("cannot generate JSTL key: businessObjectClass is null");
         }
 
-        String jstlKey = StringUtils.substringAfterLast(this.businessObjectClass.getName(), ".");
-        return jstlKey;
+        return businessObjectClass.getSimpleName();
     }
 
 
-    public void setBusinessObjectClass(Class businessObjectClass) {
+    public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
         if (businessObjectClass == null) {
             throw new IllegalArgumentException("invalid (null) businessObjectClass");
         }
@@ -70,7 +83,7 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
         this.businessObjectClass = businessObjectClass;
     }
 
-    public Class getBusinessObjectClass() {
+    public Class<? extends BusinessObject> getBusinessObjectClass() {
         return businessObjectClass;
     }
 
@@ -78,6 +91,13 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
         return boNotesEnabled;
     }
 
+    /**
+     *            boNotesEnabled = true or false
+           * true indicates that notes and attachments will be permanently
+             associated with the business object
+           * false indicates that notes and attachments are associated
+             with the document used to create or edit the business object.
+     */
     public void setBoNotesEnabled(boolean boNotesEnabled) {
         this.boNotesEnabled = boNotesEnabled;
     }
@@ -97,17 +117,19 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * Sets the inquiryDefinition for this BusinessObjectEntry to the given inquiryDefinition.
-     * 
-     * @param inquiryDefinition
+           The inquiry element is used to specify the fields that will be displayed on the
+            inquiry screen for this business object and the order in which they will appear.
+
+            DD: See InquiryDefinition.java
+
+            JSTL: The inquiry element is a Map which is accessed using
+            a key of "inquiry".  This map contains the following keys:
+                * title (String)
+                * inquiryFields (Map)
+
+            See InquiryMapBuilder.java
      */
     public void setInquiryDefinition(InquiryDefinition inquiryDefinition) {
-        if (inquiryDefinition == null) {
-            throw new IllegalArgumentException("invalid (null) inquiryDefinition");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setInquiryDefinition '" + inquiryDefinition.getTitle() + "'");
-        }
         this.inquiryDefinition = inquiryDefinition;
     }
 
@@ -126,17 +148,27 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * Sets the lookupDefinition for this BusinessObjectEntry to the given lookupDefinition.
-     * 
-     * @param lookupDefinition
+            The lookup element is used to specify the rules for "looking up"
+            a business object.  These specifications define the following:
+            * How to specify the search criteria used to locate a set of business objects
+            * How to display the search results
+
+            DD: See LookupDefinition.java
+
+            JSTL: The lookup element is a Map which is accessed using
+            a key of "lookup".  This map contains the following keys:
+            * lookupableID (String, optional)
+            * title (String)
+            * menubar (String, optional)
+            * instructions (String, optional)
+            * defaultSort (Map, optional)
+            * lookupFields (Map)
+            * resultFields (Map)
+            * resultSetLimit (String, optional)
+
+            See LookupMapBuilder.java
      */
     public void setLookupDefinition(LookupDefinition lookupDefinition) {
-        if (lookupDefinition == null) {
-            throw new IllegalArgumentException("invalid (null) lookupDefinition");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setLookupDefinition '" + lookupDefinition.getTitle() + "'");
-        }
         this.lookupDefinition = lookupDefinition;
     }
 
@@ -149,7 +181,13 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
 
 
     /**
-     * @param titleAttribute The titleAttribute to set.
+           The titleAttribute element is the name of the attribute that
+            will be used as an inquiry field when the lookup search results
+            fields are displayed.
+
+            For some business objects, there is no obvious field to serve
+            as the inquiry field. in that case a special field may be required
+            for inquiry purposes.
      */
     public void setTitleAttribute(String titleAttribute) {
         this.titleAttribute = titleAttribute;
@@ -159,19 +197,15 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     /**
      * Directly validate simple fields, call completeValidation on Definition fields.
      */
-    public void completeValidation(ValidationCompletionUtils validationCompletionUtils) {
-        super.completeValidation(validationCompletionUtils);
-
-        if (!validationCompletionUtils.isBusinessObjectClass(businessObjectClass)) {
-            throw new ClassValidationException("businessObjectClass '" + businessObjectClass.getName() + "' is not a BusinessObject class");
-        }
+    public void completeValidation() {
+        super.completeValidation();
 
         if (hasInquiryDefinition()) {
-            inquiryDefinition.completeValidation(businessObjectClass, null, validationCompletionUtils);
+            inquiryDefinition.completeValidation(businessObjectClass, null);
         }
 
         if (hasLookupDefinition()) {
-            lookupDefinition.completeValidation(businessObjectClass, null, validationCompletionUtils);
+            lookupDefinition.completeValidation(businessObjectClass, null);
         }
 
     }
@@ -180,7 +214,7 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
      * @see org.kuali.core.datadictionary.DataDictionaryEntryBase#getEntryClass()
      */
     public Class getEntryClass() {
-        return getBusinessObjectClass();
+        return businessObjectClass;
     }
 
 
@@ -188,7 +222,7 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
      * @see org.kuali.core.datadictionary.DataDictionaryEntry#getFullClassName()
      */
     public String getFullClassName() {
-        return getBusinessObjectClass().getName();
+        return businessObjectClass.getName();
     }
 
     /**
@@ -216,12 +250,6 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
      * @param description The description to set.
      */
     public void setObjectDescription(String objectDescription) {
-        if (StringUtils.isBlank(objectDescription)) {
-            throw new IllegalArgumentException("invalid (blank) objectDescription");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setObjectDescription '" + objectDescription + "'");
-        }
         this.objectDescription = objectDescription;
     }
 
@@ -247,12 +275,7 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        String className = null;
-        if (getBusinessObjectClass() != null) {
-            className = getBusinessObjectClass().getName();
-        }
-
-        return "BusinessObjectEntry for class " + className;
+        return "BusinessObjectEntry for " + getBusinessObjectClass();
     }
 
 

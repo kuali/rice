@@ -18,7 +18,6 @@ package org.kuali.core.datadictionary;
 import java.util.ArrayList;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.log4j.Level;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,65 +42,27 @@ import org.kuali.test.KNSTestBase;
 
 public class ExtensionAttributeTest extends KNSTestBase {
 
-	DataDictionaryBuilder builder = null;
+	DataDictionary dd = null;
 
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
 
-		builder = new DataDictionaryBuilder(KNSServiceLocator.getValidationCompletionUtils());
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/AdHocRoutePerson.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/AdHocRouteWorkgroup.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/Attachment.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/AttributeReferenceDummy.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/BusinessObjectAttributeEntry.xml", true);
-		//builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/BusinessRule.xml", true);
-		//builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/BusinessRuleSecurity.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/Campus.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/CampusType.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/DocumentGroup.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/DocumentHeader.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/DocumentStatus.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/DocumentType.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/EmployeeStatus.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/EmployeeType.xml", true);
-		//builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/FinancialSystemParameter.xml", true);
-		//builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/FinancialSystemParameterSecurity.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/Note.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/NoteType.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/bo/datadictionary/UniversalUser.xml", true);
-		//builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/BusinessRuleMaintenanceDocument.xml", true);
-		//builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/BusinessRuleSecurityMaintenanceDocument.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/CampusMaintenanceDocument.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/CampusTypeMaintenanceDocument.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/DocumentTypeMaintenanceDocument.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/EmployeeStatusMaintenanceDocument.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/EmployeeTypeMaintenanceDocument.xml", true);
-		//builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/FinancialSystemParameterSecurityMaintenanceDocument.xml", true);
-		//builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/FinancialSystemParameterMaintenanceDocument.xml", true);
-		builder.addUniqueEntries("classpath:org/kuali/core/document/datadictionary/UniversalUserMaintenanceDocument.xml", true);
-		
-		builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/Account.xml", true);
-        builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountType.xml", true);
-        builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountMaintenanceDocument.xml", true);
-        builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountExtension.xml", true);
-        builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountManager.xml", true);
-        builder.addUniqueEntries("classpath:org/kuali/rice/kns/test/document/AccountManagerMaintenanceDocument.xml", true);
-
-		// quieten things down a bit
-		setLogLevel("org.apache.commons.digester", Level.ERROR);
-		setLogLevel("org.kuali.core.datadictionary.XmlErrorHandler", Level.ERROR);
+		dd = new DataDictionary();
+		dd.addConfigFileLocation("classpath:org/kuali/core/bo/datadictionary");
+		dd.addConfigFileLocation("classpath:org/kuali/core/document/datadictionary");
+		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/test/document");
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		super.tearDown();
-		builder = null;
+		dd = null;
 	}
 
 	@Test
 	public void testExtensionAttributeType() throws Exception {
-		BusinessObjectEntry boe = builder.getDataDictionary().getBusinessObjectEntry( "Account" );
+		BusinessObjectEntry boe = dd.getBusinessObjectEntry( "Account" );
 		assertNotNull( "BusinessObjectEntry for TravelAccount should not be null", boe );
 		AttributeDefinition extAttrib = boe.getAttributeDefinition( "extension.accountTypeCode" );
 		assertNotNull( "AttributeDefinition for 'extension.accountType' should not be null", extAttrib );

@@ -1,150 +1,221 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="Namespace" parent="Namespace-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="Namespace-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Namespace" />
+    <property name="inquiryDefinition" >
+      <ref bean="Namespace-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="Namespace-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="id" />
+    <property name="objectLabel" value="Namespace" />
+    <property name="collections" >
+      <list>
+        <bean parent="CollectionDefinition"
+              p:shortLabel="Attributes"
+              p:summary="Namespace Default Attributes Attributes"
+              p:elementLabel="Attribute"
+              p:name="namespaceAttributes"
+              p:label="Namespace Default Attributes"
+              p:description="Attributes of this namespace" />
+        <bean parent="CollectionDefinition"
+              p:shortLabel="Permissions"
+              p:summary="Namespace Permissions"
+              p:elementLabel="Permission"
+              p:name="namespacePermissions"
+              p:label="Namespace Permissions"
+              p:description="Permissions of this namespace" />
+      </list>
+    </property>
+    <property name="attributes" >
+      <list>
+        <ref bean="Namespace-id" />
+        <ref bean="Namespace-name" />
+        <ref bean="Namespace-description" />
+        <ref bean="Namespace-versionNumber" />
+        <ref bean="Namespace-objectId" />
+      </list>
+    </property>
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kim.bo.Namespace">
+<!-- Attribute Definitions -->
 
-        <inquiry>
-        	<title>Namespace Inquiry</title>
 
-        	<inquirySections>
-        		<inquirySection title="Header Text">
-        			<inquiryFields>
-        				<field attributeName="id" />
-        				<field attributeName="name" />
-        				<field attributeName="description" />
-        			</inquiryFields>
-        		</inquirySection>
-        		<inquirySection title="Default Namespace Attributes">
-        			<inquiryFields>
-        				<inquiryCollection name="namespaceAttributes"
-        					businessObjectClass="org.kuali.rice.kim.bo.NamespaceDefaultAttribute">
-        					<field attributeName="id" />
-        					<field attributeName="attributeTypeId" />
-        					<field attributeName="attributeName" />
-                            <field attributeName="description" />
-                            <field attributeName="required" />
-        					<field attributeName="active" />
-        				</inquiryCollection>
-        			</inquiryFields>
-        		</inquirySection>
-            <inquirySection title="Namespace Permissions">
-                    <inquiryFields>
-                        <inquiryCollection name="namespacePermissions"
-                            businessObjectClass="org.kuali.rice.kim.bo.Permission">
-                            <field attributeName="id" />
-                            <field attributeName="name" />
-                            <field attributeName="description" />
-                         </inquiryCollection>
-                    </inquiryFields>
-                </inquirySection>
-        	</inquirySections>
-        </inquiry>
+  <bean id="Namespace-id" parent="Namespace-id-parentBean" />
 
-        <lookup>
-            <title>Namespace Lookup</title>
+  <bean id="Namespace-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Id" />
+    <property name="maxLength" value="8" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="HiddenControlDefinition" />
+    </property>
+    <property name="name" value="id" />
+    <property name="label" value="Namespace Id" />
+  </bean>
+  <bean id="Namespace-name" parent="Namespace-name-parentBean" />
 
-            <instructions>Lookup a Namespace</instructions>
+  <bean id="Namespace-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="500" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="name" />
+    <property name="label" value="Namespace Name" />
+  </bean>
+  <bean id="Namespace-description" parent="Namespace-description-parentBean" />
 
-            <defaultSort sortAscending="true">
-                <sortAttributes>
-                    <sortAttribute attributeName="name" />
-                </sortAttributes>
-            </defaultSort>
+  <bean id="Namespace-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Description" />
+    <property name="maxLength" value="4000" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="description" />
+    <property name="label" value="Description" />
+  </bean>
+  <bean id="Namespace-versionNumber" parent="Namespace-versionNumber-parentBean" />
 
-            <lookupFields>
-                <lookupField attributeName="id" required="false" />
-                <lookupField attributeName="name" required="false" />
-                <lookupField attributeName="description" required="false" />
-            </lookupFields>
+  <bean id="Namespace-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+  <bean id="Namespace-objectId" parent="Namespace-objectId-parentBean" />
 
-            <resultFields>
-                <field attributeName="id" />
-                <field attributeName="name" />
-                <field attributeName="description" />
-            </resultFields>
-        </lookup>
+  <bean id="Namespace-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
+  </bean>
 
-        <titleAttribute>id</titleAttribute>
+<!-- Business Object Inquiry Definition -->
 
-        <attributes>
 
-            <attribute name="id" forceUppercase="true">
-                <label>Namespace Id</label>
-                <shortLabel>Id</shortLabel>
+  <bean id="Namespace-inquiryDefinition" parent="Namespace-inquiryDefinition-parentBean" />
 
-                <maxLength>8</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+  <bean id="Namespace-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="id" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="name" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="description" />
+            </list>
+          </property>
+          <property name="title" value="Header Text" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="namespaceAttributes" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.NamespaceDefaultAttribute" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="id" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="attributeTypeId" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="attributeName" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="description" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="required" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="active" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Default Namespace Attributes" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="namespacePermissions" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Permission" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="id" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="name" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="description" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Namespace Permissions" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="Namespace Inquiry" />
+  </bean>
 
-                <control>
-                 <hidden/>
-                </control>
+<!-- Business Object Lookup Definition -->
 
-            </attribute>
 
-            <attribute name="name" forceUppercase="false">
-                <label>Namespace Name</label>
-                <shortLabel>Name</shortLabel>
+  <bean id="Namespace-lookupDefinition" parent="Namespace-lookupDefinition-parentBean" />
 
-                <maxLength>500</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
-
-                <control>
-                    <text size="100" />
-                </control>
-
-            </attribute>
-
-            <attribute name="description" forceUppercase="false">
-                <label>Description</label>
-                <shortLabel>Description</shortLabel>
-
-                <maxLength>4000</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
-
-                <control>
-                    <text size="100" />
-                </control>
-
-            </attribute>
-             <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
-            <attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
-
-        </attributes>
-
-        <collections>
-          <collection name="namespaceAttributes">
-            <label>Namespace Default Attributes</label>
-            <shortLabel>Attributes</shortLabel>
-            <elementLabel>Attribute</elementLabel>
-            <summary>Namespace Default Attributes Attributes</summary>
-            <description>Attributes of this namespace</description>
-          </collection>
-          <collection name="namespacePermissions">
-            <label>Namespace Permissions</label>
-            <shortLabel>Permissions</shortLabel>
-            <elementLabel>Permission</elementLabel>
-            <summary>Namespace Permissions</summary>
-            <description>Permissions of this namespace</description>
-          </collection>
-        </collections>
-
-        <objectLabel>Namespace</objectLabel>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="Namespace-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Lookup a Namespace" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="description" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="description" />
+      </list>
+    </property>
+    <property name="title" value="Namespace Lookup" />
+  </bean>
+</beans>

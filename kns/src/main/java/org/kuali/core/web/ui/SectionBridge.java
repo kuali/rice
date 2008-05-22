@@ -63,10 +63,11 @@ public class SectionBridge {
      */
     public static final Section toSection(Inquirable inquirable, InquirySectionDefinition sd, BusinessObject o) {
         Section section = new Section();
+        section.setSectionId( sd.getId() );
         section.setSectionTitle(sd.getTitle());
         section.setRows(new ArrayList());
-        if (StringUtils.isNotBlank(sd.getNumberOfColumns())) {
-            section.setNumberOfColumns(Integer.parseInt(sd.getNumberOfColumns()));
+        if (sd.getNumberOfColumns() != null) {
+            section.setNumberOfColumns(sd.getNumberOfColumns());
         }
         else {
             section.setNumberOfColumns(KNSConstants.DEFAULT_NUM_OF_COLUMNS);
@@ -81,7 +82,7 @@ public class SectionBridge {
                 InquiryCollectionDefinition inquiryCollectionDefinition = (InquiryCollectionDefinition) fieldDefinition;
 
                 List<Row> sectionRows = new ArrayList();
-                sectionRows = getContainerRows(section, inquiryCollectionDefinition, o, null, null, new ArrayList(), new StringBuffer(section.getErrorKey()), Integer.parseInt(inquiryCollectionDefinition.getNumberOfColumns()), inquirable);
+                sectionRows = getContainerRows(section, inquiryCollectionDefinition, o, null, null, new ArrayList(), new StringBuffer(section.getErrorKey()), inquiryCollectionDefinition.getNumberOfColumns(), inquirable);
                 section.setRows(sectionRows);
             }
             else if (fieldDefinition instanceof InquirySubSectionHeaderDefinition) {
@@ -121,6 +122,7 @@ public class SectionBridge {
     public static final Section toSection(MaintainableSectionDefinition sd, BusinessObject o, Maintainable maintainable, Maintainable oldMaintainable, String maintenanceAction, boolean autoFillDefaultValues, boolean autoFillBlankRequiredValues, List<String> displayedFieldNames) throws InstantiationException, IllegalAccessException {
         Section section = new Section();
 
+        section.setSectionId( sd.getId() );
         section.setSectionTitle(sd.getTitle());
         section.setSectionClass(o.getClass());
         section.setHidden( sd.isHidden() );
@@ -238,8 +240,8 @@ public class SectionBridge {
             int subCollectionNumberOfColumn = numberOfColumns;
             if (collectionDefinition instanceof InquiryCollectionDefinition) {
                 InquiryCollectionDefinition icd = (InquiryCollectionDefinition) subCollectionDefinition;
-                if (StringUtils.isNotBlank(icd.getNumberOfColumns())) {
-                    subCollectionNumberOfColumn = Integer.parseInt(icd.getNumberOfColumns());
+                if (icd.getNumberOfColumns() != null) {
+                    subCollectionNumberOfColumn = icd.getNumberOfColumns();
                 }
             }
             // no colNum for add rows
@@ -424,8 +426,8 @@ public class SectionBridge {
 
                             if (subCollectionDefinition instanceof InquiryCollectionDefinition) {
                                 InquiryCollectionDefinition icd = (InquiryCollectionDefinition) subCollectionDefinition;
-                                if (StringUtils.isNotBlank(icd.getNumberOfColumns())) {
-                                    subCollectionNumberOfColumns = Integer.parseInt(icd.getNumberOfColumns());
+                                if (icd.getNumberOfColumns() != null) {
+                                    subCollectionNumberOfColumns = icd.getNumberOfColumns();
                                 }
                             }
                             // get label for collection

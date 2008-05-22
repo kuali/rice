@@ -1,111 +1,143 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="edu.sampleu.travel.bo.TravelAccountType">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-        <inquiry>
-            <title>Travel Account Type Inquiry</title>
+  <bean id="TravelAccountType" parent="TravelAccountType-parentBean" />
 
-            <inquirySections><inquirySection title="Header Text"><inquiryFields>
-                <field attributeName="accountTypeCode" forceInquiry="true" />
-                <field attributeName="name" />
-            </inquiryFields></inquirySection></inquirySections>
-        </inquiry>
+  <bean id="TravelAccountType-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="edu.sampleu.travel.bo.TravelAccountType" />
+    <property name="inquiryDefinition" >
+      <ref bean="TravelAccountType-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="TravelAccountType-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="accountTypeCode" />
+    <property name="attributes" >
+      <list>
+        <ref bean="TravelAccountType-accountTypeCode" />
+        <ref bean="TravelAccountType-name" />
+        <ref bean="TravelAccountType-codeAndDescription" />
+      </list>
+    </property>
+  </bean>
 
-        <lookup>
-            <title>Travel Account Type Lookup</title>
-            <instructions>Look up a Travel Account Type</instructions>
+<!-- Attribute Definitions -->
 
-            <defaultSort sortAscending="true">
-                <sortAttributes>
-                    <sortAttribute attributeName="name" />
-                </sortAttributes>
-            </defaultSort>
 
-            <lookupFields>
-                <lookupField attributeName="accountTypeCode" required="false" />
-                <lookupField attributeName="name" required="false" />
-            </lookupFields>
+  <bean id="TravelAccountType-accountTypeCode" parent="TravelAccountType-accountTypeCode-parentBean" />
 
-            <resultFields>
-                <field attributeName="accountTypeCode" />
-                <field attributeName="name" />
-            </resultFields>
-        </lookup>
-        
-        <titleAttribute>accountTypeCode</titleAttribute>
- 
-        <attributes>
+  <bean id="TravelAccountType-accountTypeCode-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Code" />
+    <property name="maxLength" value="3" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="3" />
+    </property>
+    <property name="summary" value="Travel Account Type Code" />
+    <property name="name" value="accountTypeCode" />
+    <property name="label" value="Travel Account Type Code" />
+    <property name="description" value="Travel Account Type Code" />
+  </bean>
+  <bean id="TravelAccountType-name" parent="TravelAccountType-name-parentBean" />
 
-            <attribute name="accountTypeCode">
-                <label>Travel Account Type Code</label>
-                <shortLabel>Code</shortLabel>
+  <bean id="TravelAccountType-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="summary" value="Account Type Name" />
+    <property name="name" value="name" />
+    <property name="label" value="Account Type Name" />
+    <property name="description" value="Account Type Name" />
+  </bean>
+  <bean id="TravelAccountType-codeAndDescription" parent="TravelAccountType-codeAndDescription-parentBean" />
 
-                <maxLength>3</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+  <bean id="TravelAccountType-codeAndDescription-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Account Type" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="summary" value="Account Type" />
+    <property name="name" value="codeAndDescription" />
+    <property name="label" value="Account Type" />
+    <property name="description" value="Account Type" />
+  </bean>
 
-                <required>true</required>
+<!-- Business Object Inquiry Definition -->
 
-                <control>
-                    <text size="3" />
-                </control>
-                
 
-                <summary>Travel Account Type Code</summary>
-                <description>Travel Account Type Code</description>
-			</attribute>
+  <bean id="TravelAccountType-inquiryDefinition" parent="TravelAccountType-inquiryDefinition-parentBean" />
 
-            <attribute name="name" forceUppercase="false">
-                <label>Account Type Name</label>
-                <shortLabel>Name</shortLabel>
+  <bean id="TravelAccountType-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="accountTypeCode"
+                    p:forceInquiry="true" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="name" />
+            </list>
+          </property>
+          <property name="title" value="Header Text" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="Travel Account Type Inquiry" />
+  </bean>
 
-                <maxLength>30</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+<!-- Business Object Lookup Definition -->
 
-                <required>true</required>
 
-                <control>
-                    <text size="30" />
-                </control>
+  <bean id="TravelAccountType-lookupDefinition" parent="TravelAccountType-lookupDefinition-parentBean" />
 
-                <summary>Account Type Name</summary>
-                <description>Account Type Name</description>
-			</attribute>
-
-            <attribute name="codeAndDescription" forceUppercase="false">
-                <label>Account Type</label>
-                <shortLabel>Account Type</shortLabel>
-
-                <maxLength>30</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-
-                <required>true</required>
-
-                <control>
-                    <text size="30" />
-                </control>
-
-                <summary>Account Type</summary>
-                <description>Account Type</description>
-			</attribute>
-		</attributes>				
-    </businessObject>
-    
-</dictionaryEntry>
+  <bean id="TravelAccountType-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Look up a Travel Account Type" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="accountTypeCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="accountTypeCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+      </list>
+    </property>
+    <property name="title" value="Travel Account Type Lookup" />
+  </bean>
+</beans>

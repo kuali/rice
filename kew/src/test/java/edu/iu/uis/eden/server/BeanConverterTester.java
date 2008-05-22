@@ -17,6 +17,8 @@
 package edu.iu.uis.eden.server;
 
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,11 +28,14 @@ import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.actionitem.ActionItem;
+import edu.iu.uis.eden.clientapp.vo.ActionItemVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentContentVO;
 import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
 import edu.iu.uis.eden.clientapp.vo.WorkflowGroupIdVO;
 import edu.iu.uis.eden.exception.InvalidXmlException;
 import edu.iu.uis.eden.routetemplate.TestRuleAttribute;
+import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.workgroup.BaseWorkgroup;
 import edu.iu.uis.eden.workgroup.GroupId;
@@ -191,6 +196,84 @@ public class BeanConverterTester extends KEWTestCase {
         assertEquals("Application content is invalid.", applicationContent, contentVO.getApplicationContent());
         assertEquals("Incorrect number of attribute definitions.", 0, contentVO.getAttributeDefinitions().length);
         assertEquals("Incorrect number of searchable attribute definitions.", 0, contentVO.getSearchableDefinitions().length);
+    }
+    
+    @Test public void testConvertActionItem() throws Exception {
+        // get test data
+        String testWorkgroupName = "TestWorkgroup";
+        Workgroup testWorkgroup = KEWServiceLocator.getWorkgroupService().getWorkgroup(new GroupNameId(testWorkgroupName));
+        Long testWorkgroupId = testWorkgroup.getWorkflowGroupId().getGroupId();
+        assertTrue("Test workgroup '" + testWorkgroupName + "' should have at least one user", testWorkgroup.getMembers().size() > 0);
+        WorkflowUser testUser = (WorkflowUser)testWorkgroup.getMembers().get(0);
+        assertNotNull("User from workgroup should not be null", testUser);
+        String workflowId = testUser.getWorkflowId();
+        String actionRequestCd = EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
+        Long actionRequestId = Long.valueOf(4);
+        String docName = "dummy";
+        String roleName = "fakeRole";
+        Long routeHeaderId = Long.valueOf(23);
+        Timestamp dateAssigned = new Timestamp(new Date().getTime());
+        String docHandlerUrl = "http://this.is.not.us";
+        String docTypeLabel = "Label Me Sexy";
+        String docTitle = "Title me Nicely";
+        Long responsibilityId = Long.valueOf(35);
+        String delegationType = EdenConstants.DELEGATION_PRIMARY;
+
+        // create fake action item
+        ActionItem actionItem = new ActionItem();
+        actionItem.setActionRequestCd(actionRequestCd);
+        actionItem.setActionRequestId(actionRequestId);
+        actionItem.setDocName(docName);
+        actionItem.setRoleName(roleName);
+        actionItem.setWorkflowId(workflowId);
+        actionItem.setRouteHeaderId(routeHeaderId);
+        actionItem.setDateAssigned(dateAssigned);
+        actionItem.setDocHandlerURL(docHandlerUrl);
+        actionItem.setDocLabel(docTypeLabel);
+        actionItem.setDocTitle(docTitle);
+        actionItem.setWorkgroupId(testWorkgroupId);
+        actionItem.setResponsibilityId(responsibilityId);
+        actionItem.setDelegationType(delegationType);
+        actionItem.setDelegatorWorkflowId(workflowId);
+        actionItem.setDelegatorWorkgroupId(testWorkgroupId);
+        
+        // convert to action item vo object and verify
+        ActionItemVO actionItemVO = BeanConverter.convertActionItem(actionItem);
+        assertEquals("Action Item VO object has incorrect value", actionRequestCd, actionItemVO.getActionRequestCd());
+        assertEquals("Action Item VO object has incorrect value", actionRequestId, actionItemVO.getActionRequestId());
+        assertEquals("Action Item VO object has incorrect value", docName, actionItemVO.getDocName());
+        assertEquals("Action Item VO object has incorrect value", roleName, actionItemVO.getRoleName());
+        assertEquals("Action Item VO object has incorrect value", workflowId, actionItemVO.getWorkflowId());
+        assertEquals("Action Item VO object has incorrect value", routeHeaderId, actionItemVO.getRouteHeaderId());
+        assertEquals("Action Item VO object has incorrect value", dateAssigned, actionItemVO.getDateAssigned());
+        assertEquals("Action Item VO object has incorrect value", docHandlerUrl, actionItemVO.getDocHandlerURL());
+        assertEquals("Action Item VO object has incorrect value", docTypeLabel, actionItemVO.getDocLabel());
+        assertEquals("Action Item VO object has incorrect value", docTitle, actionItemVO.getDocTitle());
+        assertEquals("Action Item VO object has incorrect value", testWorkgroupId, actionItemVO.getWorkgroupId());
+        assertEquals("Action Item VO object has incorrect value", responsibilityId, actionItemVO.getResponsibilityId());
+        assertEquals("Action Item VO object has incorrect value", delegationType, actionItemVO.getDelegationType());
+        assertEquals("Action Item VO object has incorrect value", workflowId, actionItemVO.getDelegatorWorkflowId());
+        assertEquals("Action Item VO object has incorrect value", testWorkgroupId, actionItemVO.getDelegatorWorkgroupId());
+        try {
+            actionItemVO.getUser();
+        } catch (Throwable e) {
+            fail("Action Item VO object should be able to get valid user object");
+        }
+        try {
+            actionItemVO.getWorkgroup();
+        } catch (Throwable e) {
+            fail("Action Item VO object should be able to get valid workgroup object");
+        }
+        try {
+            actionItemVO.getDelegatorUser();
+        } catch (Throwable e) {
+            fail("Action Item VO object should be able to get valid delegator user object");
+        }
+        try {
+            actionItemVO.getDelegatorWorkgroup();
+        } catch (Throwable e) {
+            fail("Action Item VO object should be able to get valid delegator workgroup object");
+        }
     }
 
 }

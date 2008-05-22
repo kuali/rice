@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -31,8 +30,6 @@ import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.exception.WorkflowException;
-import edu.iu.uis.eden.lookupable.Field;
-import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
@@ -44,46 +41,46 @@ import edu.iu.uis.eden.user.WorkflowUser;
  * KULWF-654: Tests the resolution to this issue by configuring a CustomActionListAttribute as well as a
  * searchable attribute.
  */
-public class SearchableAttributeTest extends KEWTestCase {
+public class SearchableAttributeTest extends DocumentSearchTestBase {
     
     protected void loadTestData() throws Exception {
         loadXmlFile("SearchAttributeConfig.xml");
     }
 
-    private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
-    	String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX);
-    	String savedKey = key;
-    	SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
-    	Field field = getFieldByFormKey(docType, formKey);
-    	if (field != null) {
-        	sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
-        	sacc.setRangeSearch(field.isMemberOfRange());
-        	sacc.setAllowWildcards(field.isAllowingWildcards());
-        	sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
-        	sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
-        	sacc.setCaseSensitive(field.isCaseSensitive());
-        	sacc.setSearchInclusive(field.isInclusive());
-            sacc.setSearchable(field.isSearchable());
-            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-    	}
-    	return sacc;
-    }
-
-    private Field getFieldByFormKey(DocumentType docType, String formKey) {
-    	if (docType == null) {
-    		return null;
-    	}
-		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
-			for (Row row : searchableAttribute.getSearchingRows()) {
-				for (Field field : row.getFields()) {
-					if (field.getPropertyName().equals(formKey)) {
-						return field;
-					}
-				}
-			}
-		}
-		return null;
-    }
+//    private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
+//    	String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX);
+//    	String savedKey = key;
+//    	SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
+//    	Field field = getFieldByFormKey(docType, formKey);
+//    	if (field != null) {
+//        	sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
+//        	sacc.setRangeSearch(field.isMemberOfRange());
+//        	sacc.setAllowWildcards(field.isAllowingWildcards());
+//        	sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
+//        	sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
+//        	sacc.setCaseSensitive(field.isCaseSensitive());
+//        	sacc.setSearchInclusive(field.isInclusive());
+//            sacc.setSearchable(field.isSearchable());
+//            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+//    	}
+//    	return sacc;
+//    }
+//
+//    private Field getFieldByFormKey(DocumentType docType, String formKey) {
+//    	if (docType == null) {
+//    		return null;
+//    	}
+//		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
+//			for (Row row : searchableAttribute.getSearchingRows()) {
+//				for (Field field : row.getFields()) {
+//					if (field.getPropertyName().equals(formKey)) {
+//						return field;
+//					}
+//				}
+//			}
+//		}
+//		return null;
+//    }
 
     @Test public void testCustomSearchableAttributesWithDataType() throws Exception {
         String documentTypeName = "SearchDocType";

@@ -16,15 +16,9 @@
 
 package org.kuali.core.datadictionary;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.core.datadictionary.exception.CompletionException;
-import org.kuali.core.service.KualiGroupService;
 
 
 /**
@@ -33,19 +27,13 @@ import org.kuali.core.service.KualiGroupService;
  * 
  */
 public class AuthorizationDefinition extends DataDictionaryDefinitionBase {
-    // logger
-    private static Log LOG = LogFactory.getLog(AuthorizationDefinition.class);
 
     private String action;
 
-    private Set authorizedGroups;
+    private Set<String> authorizedGroups;
 
 
-    public AuthorizationDefinition() {
-        LOG.debug("creating new AuthorizationDefinition");
-
-        authorizedGroups = new HashSet();
-    }
+    public AuthorizationDefinition() {}
 
 
     /**
@@ -62,56 +50,15 @@ public class AuthorizationDefinition extends DataDictionaryDefinitionBase {
         return action;
     }
 
-
-    /**
-     * Adds the given groupName to the set of authorized groupNames
-     * 
-     * @param groupName
-     */
-    public void addGroupName(String groupName) {
-        if (StringUtils.isBlank(groupName)) {
-            throw new IllegalArgumentException("invalid (blank) groupName");
-        }
-
-        authorizedGroups.add(groupName);
-    }
-
-    /**
-     * @return current set of groupNames
-     */
-    public Set getGroupNames() {
-        return Collections.unmodifiableSet(authorizedGroups);
-    }
-
-
     /**
      * Does nothing useful, since real validation is deferred until the validateWorkgroups method below
      * 
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
-        // validate non-empty group list
-        if (authorizedGroups.isEmpty()) {
-            throw new CompletionException("empty workgroups list for action '" + action + "'");
-        }
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
 
         // validation of workgroup names deferred until later, since it requires access to a service which may not have been
         // initialized yet
-    }
-
-
-    public void validateWorkroups(KualiGroupService kualiGroupService) {
-        //
-        // commented out because it increase webapp startup time by 30 seconds or more
-
-        // // validate existence of all specified groups
-        // for (Iterator i = authorizedGroups.iterator(); i.hasNext();) {
-        // String groupName = (String) i.next();
-        //
-        // if (!kualiGroupService.groupExists(groupName)) {
-        // throw new CompletionException("unable to retrieve group named '" + groupName + "'");
-        // }
-        // }
     }
 
 
@@ -120,5 +67,19 @@ public class AuthorizationDefinition extends DataDictionaryDefinitionBase {
      */
     public String toString() {
         return "AuthorizationDefinition for action " + getAction();
+    }
+
+
+    public Set<String> getAuthorizedGroups() {
+        return this.authorizedGroups;
+    }
+
+
+    public void setAuthorizedGroups(Set<String> authorizedGroups) {
+        // validate non-empty group list
+        if (authorizedGroups.isEmpty()) {
+            throw new CompletionException("empty workgroups list for action '" + action + "'");
+        }
+        this.authorizedGroups = authorizedGroups;
     }
 }

@@ -71,8 +71,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String WORKFLOW_URL_KEY = "workflow.url";
     public static final String PROD_ENVIRONMENT_CODE_KEY = "production.environment.code";
     public static final String MAINTAIN_USERS_LOCALLY_KEY = "maintain.users.locally";
-//    public static final String DOCHANDLER_DO_URL = "/DocHandler.do?docId=";
-//    public static final String DOCHANDLER_URL_CHUNK = "&command=displayDocSearchView";
+    public static final String DOCHANDLER_DO_URL = "/DocHandler.do?docId=";
+    public static final String DOCHANDLER_URL_CHUNK = "&command=displayDocSearchView";
 
 //    public static final String DATABASE_REPOSITORY_FILES_LIST_NAME = "databaseRepositoryFilePaths";
     public static final String SCRIPT_CONFIGURATION_FILES_LIST_NAME = "scriptConfigurationFilePaths";

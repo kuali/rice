@@ -231,7 +231,7 @@ public class DocumentTypeLookupableImpl implements WorkflowLookupable, Exportabl
         List columns = new ArrayList();
 
         Column column = new Column(DOC_TYP_ID_COLUMN_LABEL, "true", "documentTypeId");
-        column.setType(Column.INTEGER);
+        column.setType(EdenConstants.LOOKUP_COLUMN_TYPE_INTEGER);
         columns.add(column);
         columns.add(new Column(DOC_TYP_NAME_COLUMN_LABEL, Column.COLUMN_IS_SORTABLE_VALUE, "name"));
         columns.add(new Column(DOC_TYP_PARENT_COLUMN_LABEL, Column.COLUMN_IS_SORTABLE_VALUE, "lookupParentName"));

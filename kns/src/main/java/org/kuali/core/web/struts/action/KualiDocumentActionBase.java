@@ -31,7 +31,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.kuali.RiceKeyConstants;
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.UserSession;
 import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.bo.AdHocRoutePerson;
@@ -71,6 +70,7 @@ import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.util.RiceConstants;
 import org.springmodules.orm.ojb.OjbOperationException;
 
@@ -1122,14 +1122,14 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // verify recipient was specified
         if (StringUtils.isBlank(note.getAdHocRouteRecipient().getId())) {
-            GlobalVariables.getErrorMap().putError(RicePropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_NOTE_NOTIFICATION_RECIPIENT);
+            GlobalVariables.getErrorMap().putError(KNSPropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_NOTE_NOTIFICATION_RECIPIENT);
             return mapping.findForward(RiceConstants.MAPPING_BASIC);
         }
         // check recipient is valid
         else {
             note.getAdHocRouteRecipient().setActionRequested(determineNoteWorkflowNotificationAction(request, kualiDocumentFormBase, note));
             
-            boolean rulePassed = KNSServiceLocator.getKualiRuleService().applyRules(new AddAdHocRoutePersonEvent(RicePropertyConstants.NEW_DOCUMENT_NOTE, document, (AdHocRoutePerson) note.getAdHocRouteRecipient()));
+            boolean rulePassed = KNSServiceLocator.getKualiRuleService().applyRules(new AddAdHocRoutePersonEvent(KNSPropertyConstants.NEW_DOCUMENT_NOTE, document, (AdHocRoutePerson) note.getAdHocRouteRecipient()));
             if (!rulePassed) {
                 return mapping.findForward(RiceConstants.MAPPING_BASIC);
             }
@@ -1143,7 +1143,7 @@ public class KualiDocumentActionBase extends KualiAction {
             GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SEND_NOTE_NOTIFICATION_SUCCESSFUL);
         }
         else {
-            GlobalVariables.getErrorMap().putError(RicePropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_NOTE_NOTIFICATION_DOCSTATUS);
+            GlobalVariables.getErrorMap().putError(KNSPropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_NOTE_NOTIFICATION_DOCSTATUS);
         }
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -1209,12 +1209,12 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
 
         /* callback to any pre rules check class */
-        Class preRulesClass = KNSServiceLocator.getDataDictionaryService().getPreRulesCheckClass(kualiDocumentFormBase.getDocTypeName());
+        Class<? extends PreRulesCheck> preRulesClass = KNSServiceLocator.getDataDictionaryService().getPreRulesCheckClass(kualiDocumentFormBase.getDocTypeName());
         if (LOG.isDebugEnabled()) {
             LOG.debug("PreRulesCheckClass: " + preRulesClass);
         }
         if (preRulesClass != null) {
-            PreRulesCheck preRules = (PreRulesCheck) preRulesClass.newInstance();
+            PreRulesCheck preRules = preRulesClass.newInstance();
             PreRulesCheckEvent event = new PreRulesCheckEvent("Pre Maint route Check", "", kualiDocumentFormBase.getDocument());
             boolean continueRoute = preRules.processPreRuleChecks(form, request, event);
             if (!continueRoute) {

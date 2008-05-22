@@ -17,11 +17,11 @@
 package edu.iu.uis.eden.docsearch;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import edu.iu.uis.eden.KEWPropertyConstants;
 import edu.iu.uis.eden.web.KeyValueSort;
 
 /**
@@ -31,24 +31,39 @@ import edu.iu.uis.eden.web.KeyValueSort;
 public class DocumentSearchResult {
 
     // following much match documentation for XML result processor attribute
-    public static final String PROPERTY_NAME_ROUTE_HEADER_ID = "routeHeaderId";
-    public static final String PROPERTY_NAME_DOC_TYPE_LABEL = "docTypeLabel";
-    public static final String PROPERTY_NAME_DOCUMENT_TITLE = "documentTitle";
-    public static final String PROPERTY_NAME_ROUTE_STATUS_DESC = "docRouteStatusCodeDesc"; 
-	public static final String PROPERTY_NAME_INITIATOR = "initiator";
-	public static final String PROPERTY_NAME_DATE_CREATED = "dateCreated";
-	public static final String PROPERTY_NAME_ROUTE_LOG = "routeLog";
+    /**
+     *@deprecated - USE {@link KEWPropertyConstants#DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID} INSTEAD
+     */
+    public static final String PROPERTY_NAME_ROUTE_HEADER_ID = KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID;
+    /**
+     *@deprecated - USE {@link KEWPropertyConstants#DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL} INSTEAD
+     */
+    public static final String PROPERTY_NAME_DOC_TYPE_LABEL = KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL;
+    /**
+     *@deprecated - USE {@link KEWPropertyConstants#DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE} INSTEAD
+     */
+    public static final String PROPERTY_NAME_DOCUMENT_TITLE = KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE;
+    /**
+     *@deprecated - USE {@link KEWPropertyConstants#DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC} INSTEAD
+     */
+    public static final String PROPERTY_NAME_ROUTE_STATUS_DESC = KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC; 
+    /**
+     *@deprecated - USE {@link KEWPropertyConstants#DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR} INSTEAD
+     */
+	public static final String PROPERTY_NAME_INITIATOR = KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR;
+    /**
+     *@deprecated - USE {@link KEWPropertyConstants#DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED} INSTEAD
+     */
+	public static final String PROPERTY_NAME_DATE_CREATED = KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED;
+    /**
+     *@deprecated - USE {@link KEWPropertyConstants#DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG} INSTEAD
+     */
+	public static final String PROPERTY_NAME_ROUTE_LOG = KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG;
 	
-	public static final Set<String> PROPERTY_NAME_SET = new HashSet<String>();
-	static {
-		PROPERTY_NAME_SET.add(PROPERTY_NAME_ROUTE_HEADER_ID);
-		PROPERTY_NAME_SET.add(PROPERTY_NAME_DOC_TYPE_LABEL);
-		PROPERTY_NAME_SET.add(PROPERTY_NAME_DOCUMENT_TITLE);
-		PROPERTY_NAME_SET.add(PROPERTY_NAME_ROUTE_STATUS_DESC);
-		PROPERTY_NAME_SET.add(PROPERTY_NAME_INITIATOR);
-		PROPERTY_NAME_SET.add(PROPERTY_NAME_DATE_CREATED);
-		PROPERTY_NAME_SET.add(PROPERTY_NAME_ROUTE_LOG);
-	}
+    /**
+     *@deprecated - USE {@link KEWPropertyConstants#DOC_SEARCH_RESULT_PROPERTY_NAME_SET} INSTEAD
+     */
+	public static final Set<String> PROPERTY_NAME_SET = KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_SET;
 	
 	private List<KeyValueSort> resultContainers = new ArrayList<KeyValueSort>();
 

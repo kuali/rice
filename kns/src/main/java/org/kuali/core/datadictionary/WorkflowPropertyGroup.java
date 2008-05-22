@@ -16,12 +16,9 @@
 package org.kuali.core.datadictionary;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.kuali.core.document.Document;
-import org.kuali.core.document.DocumentBase;
-import org.kuali.core.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -29,37 +26,16 @@ import org.kuali.rice.kns.util.KNSConstants;
  * relative. See {@link #getBasePath()} for a explanation of the meaning of the base path
  */
 public class WorkflowPropertyGroup {
-    private String basePath;
-    private List<WorkflowProperty> workflowProperties;
-    
-    /**
-     * Default constructor, sets the basePath to an empty string and an empty collection of {@link WorkflowProperty} objects.
-     * 
-     */
-    public WorkflowPropertyGroup() {
-        basePath = KNSConstants.EMPTY_STRING;
-        workflowProperties = new ArrayList<WorkflowProperty>();
-    }
-    
-    /**
-     * Adds a {@link WorkflowProperty} element to this group
-     * 
-     * @param workflowProperty must be non-null
-     */
-    public void addWorkflowProperty(WorkflowProperty workflowProperty) {
-        if (workflowProperty == null) {
-            throw new IllegalArgumentException("WorkflowProperty is null");
-        }
-        workflowProperties.add(workflowProperty);
-    }
-    
+    private String basePath = KNSConstants.EMPTY_STRING;
+    private List<WorkflowProperty> workflowProperties = new ArrayList<WorkflowProperty>();
+        
     /**
      * Returns the list of added {@link WorkflowProperty} objects.
      * 
-     * @return an unmodifiable list (but its elements are modifiable, but they should not be modified)
+     * @return list of {@link WorkflowProperty} objects.
      */
     public List<WorkflowProperty> getWorkflowProperties() {
-        return Collections.unmodifiableList(workflowProperties);
+        return workflowProperties;
     }
 
     /**
@@ -81,4 +57,9 @@ public class WorkflowPropertyGroup {
     public void setBasePath(String basePath) {
         this.basePath = basePath;
     }
+
+    public void setWorkflowProperties(List<WorkflowProperty> workflowProperties) {
+        this.workflowProperties = workflowProperties;
+    }
+
 }

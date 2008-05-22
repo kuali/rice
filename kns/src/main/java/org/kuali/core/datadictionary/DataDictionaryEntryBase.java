@@ -15,17 +15,14 @@
  */
 package org.kuali.core.datadictionary;
 
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.kuali.core.datadictionary.exception.CompletionException;
 import org.kuali.core.datadictionary.exception.DuplicateEntryException;
-import org.kuali.core.datadictionary.exception.OverrideEntryException;
 import org.kuali.core.exceptions.ValidationException;
 
 /**
@@ -35,108 +32,44 @@ import org.kuali.core.exceptions.ValidationException;
  */
 abstract public class DataDictionaryEntryBase implements DataDictionaryEntry {
     // logger
-    private static Log LOG = LogFactory.getLog(DataDictionaryEntryBase.class);
+    //private static Log LOG = LogFactory.getLog(DataDictionaryEntryBase.class);
 
-    private Map<String, AttributeDefinition> attributes;
-    private Map<String, CollectionDefinition> collections;
-    private Map<String, RelationshipDefinition> relationships;
+    private List<AttributeDefinition> attributes;
+    private List<CollectionDefinition> collections;
+    private List<RelationshipDefinition> relationships;
+    private Map<String, AttributeDefinition> attributeMap;
+    private Map<String, CollectionDefinition> collectionMap;
+    private Map<String, RelationshipDefinition> relationshipMap;
     
     public DataDictionaryEntryBase() {
-        this.attributes = new LinkedHashMap();
-        this.collections = new LinkedHashMap();
-        this.relationships = new LinkedHashMap();
+        this.attributes = new ArrayList<AttributeDefinition>();
+        this.collections = new ArrayList<CollectionDefinition>();
+        this.relationships = new ArrayList<RelationshipDefinition>();
+        this.attributeMap = new LinkedHashMap<String, AttributeDefinition>();
+        this.collectionMap = new LinkedHashMap<String, CollectionDefinition>();
+        this.relationshipMap = new LinkedHashMap<String, RelationshipDefinition>();
     }
     
     /* Returns the given entry class (bo class or document class) */
     public abstract Class getEntryClass();
     
     /**
-     * Adds the given AttributeDefinition to the collection of AttributeDefinitions associated with this BusinessObjectEntry.
-     * 
-     * @param attributeDefinition
-     */
-    public void addAttributeDefinition(AttributeDefinition attributeDefinition) {
-        if (attributeDefinition == null) {
-            throw new IllegalArgumentException("invalid (null) attributeDefinition");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling addAttributeDefinition '" + attributeDefinition.getName() + "'");
-        }
-        String attributeName = attributeDefinition.getName();
-        if (StringUtils.isBlank(attributeName)) {
-            throw new ValidationException("invalid (blank) attributeName");
-        }
-
-        if (collections.containsKey(attributeName)) {
-            throw new DuplicateEntryException("attribute '" + attributeName + "' already defined as a Collection for class '" + getEntryClass().getName() + "'");
-        }
-        else {
-            if (Boolean.TRUE.equals(attributeDefinition.getOverride())) {
-                if (!attributes.containsKey(attributeName)) {
-                    throw new OverrideEntryException("overriding attribute '" + attributeName + "' doesn't have an attribute to override for class '" + getEntryClass().getName() + "'");
-                }
-            }
-            else {
-                if (attributes.containsKey(attributeName)) {
-                    throw new DuplicateEntryException("attribute '" + attributeName + "' already defined for class '" + getEntryClass().getName() + "'");
-                }
-            }
-        }
-
-        this.attributes.put(attributeName, attributeDefinition);
-    }
-
-    /**
      * @param attributeName
      * @return AttributeDefinition with the given name, or null if none with that name exists
      */
-    final public AttributeDefinition getAttributeDefinition(String attributeName) {
+    public AttributeDefinition getAttributeDefinition(String attributeName) {
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling getAttributeDefinition '" + attributeName + "'");
-        }
-        return (AttributeDefinition) attributes.get(attributeName);
+        return (AttributeDefinition) attributeMap.get(attributeName);
     }
 
     /**
      * @return a Map containing all AttributeDefinitions associated with this BusinessObjectEntry, indexed by attributeName
      */
-    public Map getAttributes() {
-        LOG.debug("calling getAttributeDefinitions");
-
-        return Collections.unmodifiableMap(this.attributes);
+    public List<AttributeDefinition> getAttributes() {
+        return this.attributes;
     }
-
-
-    /**
-     * Adds the given CollectionDefinition to the collection of CollectionDefinitions associated with this BusinessObjectEntry.
-     * 
-     * @param collectionEntry
-     */
-    public void addCollectionDefinition(CollectionDefinition collectionDefinition) {
-        if (collectionDefinition == null) {
-            throw new IllegalArgumentException("invalid (null) collectionDefinition");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling addCollectionDefinition '" + collectionDefinition.getName() + "'");
-        }
-        String collectionName = collectionDefinition.getName();
-        if (StringUtils.isBlank(collectionName)) {
-            throw new ValidationException("invalid (blank) collectionName");
-        }
-
-        if (collections.containsKey(collectionName)) {
-            throw new DuplicateEntryException("collection '" + collectionName + "' already defined for class '" + getEntryClass().getName() + "'");
-        }
-        else if (attributes.containsKey(collectionName)) {
-            throw new DuplicateEntryException("collection '" + collectionName + "' already defined as an Attribute for class '" + getEntryClass().getName() + "'");
-        }
-
-        this.collections.put(collectionName, collectionDefinition);
-    }
-
 
     /**
      * @param collectionName
@@ -146,60 +79,15 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry {
         if (StringUtils.isBlank(collectionName)) {
             throw new IllegalArgumentException("invalid (blank) collectionName");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling getCollectionDefinition '" + collectionName + "'");
-        }
-        return (CollectionDefinition) collections.get(collectionName);
+        return (CollectionDefinition) collectionMap.get(collectionName);
     }
 
     /**
      * @return a Map containing all CollectionDefinitions associated with this BusinessObjectEntry, indexed by collectionName
      */
-    public Map getCollections() {
-        return Collections.unmodifiableMap(this.collections);
+    public List<CollectionDefinition> getCollections() {
+        return this.collections;
     }
-
-    /**
-     * Locates the delegates putatively associated with all component AttributeReferences, if any, or dies trying.
-     * 
-     * @param dataDictionary
-     * @throws CompletionException if an AttributeReference can't be expanded
-     */
-    public void expandAttributeReferences(DataDictionary dataDictionary, ValidationCompletionUtils validationCompletionUtils) {
-        for (Iterator i = attributes.entrySet().iterator(); i.hasNext();) {
-            Map.Entry e = (Map.Entry) i.next();
-
-            AttributeDefinition attributeDefinition = (AttributeDefinition) e.getValue();
-            if (attributeDefinition instanceof AttributeReferenceDefinition) {
-                AttributeReferenceDefinition attributeReferenceDefinition = (AttributeReferenceDefinition) attributeDefinition;
-
-                attributeReferenceDefinition.assignDelegate(this, dataDictionary);
-                attributeReferenceDefinition.completeDeferredValidation(getEntryClass(), validationCompletionUtils);
-            }
-        }
-    }
-
-
-    /**
-     * Adds the given RelationshipDefinition to the collection of RelationshipDefinitions associated with this BusinessObjectEntry.
-     * 
-     * @param relationshipDefinition
-     */
-    public void addRelationshipDefinition(RelationshipDefinition relationshipDefinition) {
-        if (relationshipDefinition == null) {
-            throw new IllegalArgumentException("invalid (null) relationshipDefinition");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling addRelationshipDefinition '" + relationshipDefinition.getObjectAttributeName() + "'");
-        }
-        String relationshipName = relationshipDefinition.getObjectAttributeName();
-        if (StringUtils.isBlank(relationshipName)) {
-            throw new ValidationException("invalid (blank) relationshipName");
-        }
-
-        this.relationships.put(relationshipName, relationshipDefinition);
-    }
-
 
     /**
      * @param relationshipName
@@ -209,44 +97,214 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry {
         if (StringUtils.isBlank(relationshipName)) {
             throw new IllegalArgumentException("invalid (blank) relationshipName");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling getRelationshipDefinition '" + relationshipName + "'");
-        }
-        return (RelationshipDefinition) relationships.get(relationshipName);
+        return (RelationshipDefinition) relationshipMap.get(relationshipName);
     }
 
     /**
      * @return a Map containing all RelationshipDefinitions associated with this BusinessObjectEntry, indexed by relationshipName
      */
-    public Map<String, RelationshipDefinition> getRelationships() {
-        return Collections.unmodifiableMap(this.relationships);
+    public List<RelationshipDefinition> getRelationships() {
+        return this.relationships;
     }
 
 
     /**
      * Directly validate simple fields, call completeValidation on Definition fields.
      */
-    public void completeValidation(ValidationCompletionUtils validationCompletionUtils) {
+    public void completeValidation() {
         
-        for (Iterator i = attributes.entrySet().iterator(); i.hasNext();) {
-            Map.Entry e = (Map.Entry) i.next();
-
-            AttributeDefinition attributeDefinition = (AttributeDefinition) e.getValue();
-            attributeDefinition.completeValidation(getEntryClass(), null, validationCompletionUtils);
+        for ( AttributeDefinition attributeDefinition : attributes ) {
+            attributeDefinition.completeValidation(getEntryClass(), null);
         }
 
-        for (Iterator i = collections.entrySet().iterator(); i.hasNext();) {
-            Map.Entry e = (Map.Entry) i.next();
-
-            CollectionDefinition collectionDefinition = (CollectionDefinition) e.getValue();
-            collectionDefinition.completeValidation(getEntryClass(), null, validationCompletionUtils);
+        for ( CollectionDefinition collectionDefinition : collections ) {
+            collectionDefinition.completeValidation(getEntryClass(), null);
         }
 
-        for (Iterator i = relationships.entrySet().iterator(); i.hasNext();) {
-            Map.Entry e = (Map.Entry) i.next();
-
-            RelationshipDefinition relationshipDefinition = (RelationshipDefinition) e.getValue();
-            relationshipDefinition.completeValidation(getEntryClass(), null, validationCompletionUtils);
+        for ( RelationshipDefinition relationshipDefinition : relationships ) {
+            relationshipDefinition.completeValidation(getEntryClass(), null);
         }
+    }
+
+    /**
+            The attributes element contains attribute 
+            elements.  These define the specifications for business object fields.
+
+            JSTL: attributes is a Map which is accessed by a key of "attributes".
+            This map contains entries with the following keys:
+                * attributeName of first attribute
+                * attributeName of second attribute
+                etc.
+
+            The corresponding value for each entry is an attribute ExportMap.
+            By the time the JSTL export happens, all attributeReferences will be
+            indistinguishable from attributes.
+
+            See AttributesMapBuilder.java
+
+                The attribute element specifies the way in which a business object
+                field appears on a screen for data entry or display purposes.  These
+                specifications include the following:
+                * The title and formatting of the field
+                * Descriptive information about the field
+                * The edits used at time of data-entry
+
+                DD: See AttributeDefinition.java
+
+                JSTL: attribute is a Map which is accessed using a key which is the attributeName
+                of an attribute.  Each entry contains the following keys:
+                    * name (String)
+                    * forceUppercase (boolean String)
+                    * label (String)
+                    * shortLabel (String, copied from label if not present)
+                    * maxLength (String)
+                    * exclusiveMin (bigdecimal String)
+                    * exclusiveMax (bigdecimal String)
+                    * validationPattern (Map, optional)
+                    * required (boolean String)
+                    * control (Map)
+                    * summary (String)
+                    * description (String)
+                    * formatterClass (String, optional)
+                    * fullClassName (String)
+                    * displayWorkgroup(String, optional)
+                    * displayMaskClass(String, optional)
+
+                See AttributesMapBuilder.java
+                Note: exclusiveMax is mapped from the inclusiveMax element!
+                The validation logic seems to be assuming inclusiveMax.
+     *
+     */
+    public void setAttributes(List<AttributeDefinition> attributes) {
+        attributeMap.clear();
+        for ( AttributeDefinition attribute : attributes ) {
+            if (attribute == null) {
+                throw new IllegalArgumentException("invalid (null) attributeDefinition");
+            }
+            String attributeName = attribute.getName();
+            if (StringUtils.isBlank(attributeName)) {
+                throw new ValidationException("invalid (blank) attributeName");
+            }
+
+            if (attributeMap.containsKey(attributeName)) {
+                throw new DuplicateEntryException("collection '" + attributeName + "' already defined as an Attribute for class '" + getEntryClass().getName() + "'");
+            } else if (collectionMap.containsKey(attributeName)) {
+                throw new DuplicateEntryException("attribute '" + attributeName + "' already defined as a Collection for class '" + getEntryClass().getName() + "'");
+            }
+
+            attributeMap.put(attributeName, attribute);            
+        }
+        this.attributes = attributes;
+    }
+
+    /**
+            The collections element contains collection elements.  These define
+            the lists of other business objects which are related to and
+            defined in the business objects.
+
+            JSTL: collections is a Map which is accessed by a key of "collections".
+            This map contains entries with the following keys:
+                * name of first collection
+                * name of second collection
+                etc.
+            The corresponding value for each entry is a collection ExportMap.
+
+            The collection element defines the name and description a
+            list of objects related to the business object.
+
+            DD: See CollectionDefinition.java.
+
+            JSTL: collection is a Map which is accessed using a key which is the
+            name of the collection.  Each entry contains the following keys:
+                * name (String)
+                * label (String)
+                * shortLabel (String, copied from label if missing)
+                * elementLabel (String, copied from contained class if missing)
+                * summary (String)
+                * description (String)
+
+            See CollectionsMapBuilder.java.
+     */
+    public void setCollections(List<CollectionDefinition> collections) {
+        collectionMap.clear();
+        for ( CollectionDefinition collection : collections ) {
+            if (collection == null) {
+                throw new IllegalArgumentException("invalid (null) collectionDefinition");
+            }
+            String collectionName = collection.getName();
+            if (StringUtils.isBlank(collectionName)) {
+                throw new ValidationException("invalid (blank) collectionName");
+            }
+
+            if (collectionMap.containsKey(collectionName)) {
+                throw new DuplicateEntryException("collection '" + collectionName + "' already defined for class '" + getEntryClass().getName() + "'");
+            } else if (attributeMap.containsKey(collectionName)) {
+                throw new DuplicateEntryException("collection '" + collectionName + "' already defined as an Attribute for class '" + getEntryClass().getName() + "'");
+            }
+
+            collectionMap.put(collectionName, collection);
+            
+        }
+        this.collections = collections;
+    }
+
+    /**
+            The relationships element contains relationship elements.
+            These are used to map attribute names to fields in a reference object.
+
+            JSTL: relationships is a Map which is accessed by a key of "relationships".
+            This map contains entries with the following keys:
+                * objectAttributeName of first relationship
+                * objectAttributeName of second relationship
+                etc.
+            The corresponding value for each entry is a relationship ExportMap.
+
+            The relationship element defines how primitive attributes of this
+            class can be used to retrieve an instance of some related Object instance
+            DD: See RelationshipDefinition.java.
+
+            JSTL: relationship is a Map which is accessed using a key which is the
+            objectAttributeName of a relationship.  The map contains a single entry
+            with a key of "primitiveAttributes" and value which is an attributesMap ExportMap.
+
+            The attributesMap ExportMap contains the following keys:
+                * 0   (for first primitiveAttribute)
+                * 1   (for second primitiveAttribute)
+                etc.
+            The corresponding value for each entry is an primitiveAttribute ExportMap
+            which contains the following keys:
+                * "sourceName"
+                * "targetName"
+
+            See RelationshipsMapBuilder.java.
+            
+     */
+    public void setRelationships(List<RelationshipDefinition> relationships) {
+        relationshipMap.clear();
+        for ( RelationshipDefinition relationship : relationships ) {            
+            if (relationship == null) {
+                throw new IllegalArgumentException("invalid (null) relationshipDefinition");
+            }
+            String relationshipName = relationship.getObjectAttributeName();
+            if (StringUtils.isBlank(relationshipName)) {
+                throw new ValidationException("invalid (blank) relationshipName");
+            }
+    
+            relationshipMap.put(relationshipName, relationship);
+        }
+        
+        this.relationships = relationships;
+    }
+
+    public Set<String> getCollectionNames() {
+        return collectionMap.keySet();
+    }
+    
+    public Set<String> getAttributeNames() {
+        return attributeMap.keySet();
+    }
+
+    public Set<String> getRelationshipNames() {
+        return relationshipMap.keySet();
     }
 }

@@ -158,7 +158,7 @@ public interface BusinessObjectDictionaryService {
     /**
      * returns String indicating the result set limit for the lookup
      */
-    public String getLookupResultSetLimit(Class businessObjectClass);
+    public Integer getLookupResultSetLimit(Class businessObjectClass);
 
     /**
      * indicates whether a field is required for a lookup

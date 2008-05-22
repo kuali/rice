@@ -20,9 +20,9 @@ import java.util.Collection;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.dao.DocumentHeaderDao;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
  * This class is the OJB implementation of the DocumentHeaderDao interface.
@@ -68,7 +68,7 @@ public class DocumentHeaderDaoOjb extends PlatformAwareDaoBaseOjb implements Doc
      */
     public Collection getByDocumentFinalDate(Date documentFinalDate) {
         Criteria criteria = new Criteria();
-        criteria.addEqualTo(RicePropertyConstants.DOCUMENT_FINAL_DATE, documentFinalDate);
+        criteria.addEqualTo(KNSPropertyConstants.DOCUMENT_FINAL_DATE, documentFinalDate);
         return getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(DocumentHeader.class, criteria));
     }
 }

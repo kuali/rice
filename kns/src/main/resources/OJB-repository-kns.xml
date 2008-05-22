@@ -287,27 +287,27 @@
 		<field-descriptor name="type" column="ACTN_RQST_RECP_TYP_CD" jdbc-type="INTEGER" primarykey="true" index="true" />
 		<field-descriptor name="actionRequested" column="ACTN_RQST_CD" jdbc-type="CHAR" primarykey="true" index="true" />
 		<field-descriptor name="id" column="ACTN_RQST_RECP_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" />
-		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" index="true" />
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.core.bo.AdHocRoutePerson" table="FS_ADHOC_RTE_ACTN_RECP_T">
 		<field-descriptor name="type" column="ACTN_RQST_RECP_TYP_CD" jdbc-type="INTEGER" primarykey="true" index="true" />
 		<field-descriptor name="actionRequested" column="ACTN_RQST_CD" jdbc-type="CHAR" primarykey="true" index="true" />
 		<field-descriptor name="id" column="ACTN_RQST_RECP_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" />
-		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" index="true" />
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.core.bo.AdHocRouteWorkgroup" table="FS_ADHOC_RTE_ACTN_RECP_T">
 		<field-descriptor name="type" column="ACTN_RQST_RECP_TYP_CD" jdbc-type="INTEGER" primarykey="true" index="true" />
 		<field-descriptor name="actionRequested" column="ACTN_RQST_CD" jdbc-type="CHAR" primarykey="true" index="true" />
 		<field-descriptor name="id" column="ACTN_RQST_RECP_ID" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" />
-		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" index="true" />
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.core.bo.LookupResults" table="FS_LOOKUP_RESULTS_MT">

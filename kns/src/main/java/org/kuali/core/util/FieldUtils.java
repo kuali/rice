@@ -1056,8 +1056,8 @@ public class FieldUtils {
      */
     static final public void modifyFieldToSupportMultipleValueLookups(Field field, String parents, MaintainableCollectionDefinition definition) {
         field.setMultipleValueLookedUpCollectionName(parents + definition.getName());
-        field.setMultipleValueLookupClassName(definition.getSourceClassName());
-        field.setMultipleValueLookupClassLabel(dictionaryService.getDataDictionary().getBusinessObjectEntry(definition.getSourceClassName()).getObjectLabel());
+        field.setMultipleValueLookupClassName(definition.getSourceClassName().getName());
+        field.setMultipleValueLookupClassLabel(dictionaryService.getDataDictionary().getBusinessObjectEntry(definition.getSourceClassName().getName()).getObjectLabel());
     }
 
     /**
@@ -1068,7 +1068,7 @@ public class FieldUtils {
      * @return
      */
     static final public boolean isCollectionMultipleLookupEnabled(MaintainableCollectionDefinition definition) {
-        return definition.getSourceClassName() != null && definition.getSourceClassName().length() > 0 && definition.isIncludeMultipleLookupLine();
+        return definition.getSourceClassName() != null && definition.isIncludeMultipleLookupLine();
     }
 
     /**

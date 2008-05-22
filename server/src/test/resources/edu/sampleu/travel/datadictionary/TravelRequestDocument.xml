@@ -1,135 +1,136 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2005-2007 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="TravelRequest" parent="TravelRequest-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="TravelRequest-parentBean" abstract="true" parent="TransactionalDocumentEntry">
+    <property name="shortLabel" value="TRDoc2" />
+    <property name="summary" value="&amp;nbsp;" />
+    <property name="documentTypeName" value="TravelRequest" />
+    <property name="documentClass" value="edu.sampleu.travel.document.TravelDocument2" />
+    <property name="businessRulesClass" value="edu.sampleu.travel.document.rule.TravelDocumentRule" />
+    <property name="documentAuthorizerClass" value="edu.sampleu.travel.document.authorizer.TravelDocumentAuthorizer" />
+    <property name="documentTypeCode" value="TRD2" />
+    <property name="authorizations" >
+      <list>
+        <bean parent="AuthorizationDefinition">
+          <property name="authorizedGroups" >
+            <set>
+              <value>WorkflowAdmin</value>
+            </set>
+          </property>
+          <property name="action" value="initiate" />
+        </bean>
+      </list>
+    </property>
+    <property name="label" value="Travel Doc 2" />
+    <property name="description" value="Doing it right" />
+    <property name="attributes" >
+      <list>
+        <ref bean="TravelRequest-traveler" />
+        <ref bean="TravelRequest-origin" />
+        <ref bean="TravelRequest-destination" />
+        <ref bean="TravelRequest-requestType" />
+        <ref bean="TravelRequest-accountType" />
+      </list>
+    </property>
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
+<!-- Attribute Definitions -->
 
-<dictionaryEntry>
-    <transactionalDocument>
-        <documentClass>edu.sampleu.travel.document.TravelDocument2</documentClass>
-        <businessRulesClass>edu.sampleu.travel.document.rule.TravelDocumentRule</businessRulesClass>
 
-        <documentAuthorizerClass>edu.sampleu.travel.document.authorizer.TravelDocumentAuthorizer</documentAuthorizerClass>
-        <authorizations>
-            <authorization action="initiate">
-                <workgroups>
-                    <workgroup>WorkflowAdmin</workgroup>
-                </workgroups>
-            </authorization>
-        </authorizations>
+  <bean id="TravelRequest-traveler" parent="TravelRequest-traveler-parentBean" />
 
-        <documentTypeName>TravelRequest</documentTypeName>
-        <documentTypeCode>TRD2</documentTypeCode>
+  <bean id="TravelRequest-traveler-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Traveler Name" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="summary" value="Traveler Name" />
+    <property name="name" value="traveler" />
+    <property name="label" value="Traveler Name" />
+    <property name="description" value="Traveler Name" />
+  </bean>
+  <bean id="TravelRequest-origin" parent="TravelRequest-origin-parentBean" />
 
-        <label>Travel Doc 2</label>
-        <shortLabel>TRDoc2</shortLabel>
+  <bean id="TravelRequest-origin-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Traveler Origin" />
+    <property name="maxLength" value="60" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="60" />
+    </property>
+    <property name="summary" value="Traveler Origin" />
+    <property name="name" value="origin" />
+    <property name="label" value="Traveler Origin" />
+    <property name="description" value="Traveler Origin" />
+  </bean>
+  <bean id="TravelRequest-destination" parent="TravelRequest-destination-parentBean" />
 
-        <attributes>
+  <bean id="TravelRequest-destination-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Traveler Destination" />
+    <property name="maxLength" value="60" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="60" />
+    </property>
+    <property name="summary" value="Traveler Destination" />
+    <property name="name" value="destination" />
+    <property name="label" value="Traveler Destination" />
+    <property name="description" value="Traveler Destination" />
+  </bean>
+  <bean id="TravelRequest-requestType" parent="TravelRequest-requestType-parentBean" />
 
-            <attribute name="traveler">
-                <label>Traveler Name</label>
-                <shortLabel>Traveler Name</shortLabel>
+  <bean id="TravelRequest-requestType-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Travel Request Type" />
+    <property name="maxLength" value="40" />
+    <property name="validationPattern" >
+      <bean parent="AlphaNumericValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="edu.sampleu.travel.document.keyvalue.TravelRequestType"
+            p:includeKeyInLabel="false" />
+    </property>
+    <property name="summary" value="&amp;nbsp;" />
+    <property name="name" value="requestType" />
+    <property name="label" value="Travel Request Type" />
+    <property name="description" value="Travel Request Type" />
+  </bean>
+  <bean id="TravelRequest-accountType" parent="TravelRequest-accountType-parentBean" />
 
-                <maxLength>30</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-
-                <required>true</required>
-
-                <control>
-                    <text size="30" />
-                </control>
-
-                <summary>Traveler Name</summary>
-                <description>Traveler Name</description>
-			</attribute>
-
-            <attribute name="origin">
-                <label>Traveler Origin</label>
-                <shortLabel>Traveler Origin</shortLabel>
-
-                <maxLength>60</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-
-                <required>true</required>
-
-                <control>
-                    <text size="60" />
-                </control>
-
-                <summary>Traveler Origin</summary>
-                <description>Traveler Origin</description>
-			</attribute>
-
-            <attribute name="destination">
-                <label>Traveler Destination</label>
-                <shortLabel>Traveler Destination</shortLabel>
-
-                <maxLength>60</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-
-                <required>true</required>
-
-                <control>
-                    <text size="60" />
-                </control>
-
-                <summary>Traveler Destination</summary>
-                <description>Traveler Destination</description>
-			</attribute>
-
-			<attribute name="requestType">
-                <label>Travel Request Type</label>
-                <shortLabel>Travel Request Type</shortLabel>
-
-                <maxLength>40</maxLength>
-                <validationPattern>
-                    <alphaNumeric allowWhitespace="true" />
-                </validationPattern>
-
-                <required>true</required>
-
-                <control>
-                    <select valuesFinderClass="edu.sampleu.travel.document.keyvalue.TravelRequestType" />
-                </control>
-
-                <summary>
-                    <![CDATA[&nbsp;]]>
-                </summary>
-                <description>
-                    Travel Request Type
-                </description>
-            </attribute>
-
-            <attributeReference name="accountType" sourceClassName="edu.sampleu.travel.bo.TravelAccountType" sourceAttributeName="accountTypeCode">
-                <control>
-                    <select valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder" businessObjectClass="edu.sampleu.travel.bo.TravelAccountType" keyAttribute="accountTypeCode" labelAttribute="name" includeKeyInLabel="true"/>
-                </control>
-            </attributeReference>
-
-        </attributes>
-
-        <summary>
-            <![CDATA[&nbsp;]]>
-        </summary>
-        <description>Doing it right</description>
- 		<!--
-        <help parameterNamespace="KR-NS" parameterDetailType="N/A" parameterName="FINANCIAL_HELP_INTERNAL_BILLING" />
- 		-->
-        <allowsCopy>false</allowsCopy>
-        <allowsErrorCorrection>false</allowsErrorCorrection>
-    </transactionalDocument>
-</dictionaryEntry>
+  <bean id="TravelRequest-accountType-parentBean" abstract="true" parent="TravelAccountType-accountTypeCode">
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:businessObjectClass="edu.sampleu.travel.bo.TravelAccountType"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeKeyInLabel="true"
+            p:keyAttribute="accountTypeCode"
+            p:labelAttribute="name" />
+    </property>
+    <property name="name" value="accountType" />
+  </bean>
+</beans>

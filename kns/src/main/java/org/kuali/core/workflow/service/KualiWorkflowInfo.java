@@ -15,8 +15,13 @@
  */
 package org.kuali.core.workflow.service;
 
+import java.rmi.RemoteException;
+import java.util.List;
+
 import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchCriteriaVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchResultVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
 import edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO;
 import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
@@ -96,4 +101,23 @@ public interface KualiWorkflowInfo {
      * @throws WorkflowException
      */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes) throws WorkflowException;
+    
+    /**
+     * This method returns a list of Universal User Ids that have approval or completion requested of them for the document represented by the routeHeaderId parameter
+     * 
+     * @param routeHeaderId - the id of the document to check
+     * @return a list of Universal User Ids that have approval or completion requested of them for the document with the given route header id
+     * @throws WorkflowException
+     */
+    public List<String> getApprovalRequestedUsers(Long routeHeaderId) throws WorkflowException;
+
+    /**
+     * This method allows a document search to be executed just as would occur from the User Interface
+     * 
+     * @param criteriaVO - criteria to use for the search
+     * @return a {@link DocumentSearchResultVO} object containing a list of search result columns and data rows
+     * @throws RemoteException
+     * @throws WorkflowException
+     */
+    public DocumentSearchResultVO performDocumentSearch(DocumentSearchCriteriaVO criteriaVO) throws WorkflowException;
 }

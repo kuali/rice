@@ -22,8 +22,6 @@ package org.kuali.core.datadictionary;
  */
 public class DataDictionaryException extends RuntimeException {
 
-    private static final long serialVersionUID = -7026045486585397119L;
-    
     public DataDictionaryException(Throwable t) {
     	super(t);
     }

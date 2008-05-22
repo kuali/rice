@@ -30,7 +30,6 @@ import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.BusinessObjectEntry;
 import org.kuali.core.datadictionary.FieldDefinition;
-import org.kuali.core.datadictionary.FieldPairDefinition;
 import org.kuali.core.datadictionary.InquiryDefinition;
 import org.kuali.core.datadictionary.InquirySectionDefinition;
 import org.kuali.core.datadictionary.LookupDefinition;
@@ -241,10 +240,10 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
     /**
      * @see org.kuali.core.service.BusinessObjectDictionaryService#getLookupResultSetLimit(java.lang.Class)
      */
-    public String getLookupResultSetLimit(Class businessObjectClass) {
+    public Integer getLookupResultSetLimit(Class businessObjectClass) {
         LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
         if ( lookupDefinition != null ) {
-            return lookupDefinition.getResultSetLimit();
+            return lookupDefinition.getResultSetLimit(); //TODO: stupid, change to return int
         } else {
             return null;
         }
@@ -590,28 +589,6 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
         if (!BusinessObject.class.isAssignableFrom(businessObjectClass)) {
             throw new IllegalArgumentException("class '" + businessObjectClass.getName() + "' is not a descendent of BusinessObject");
         }
-    }
-
-    /**
-     * @param fieldPairs
-     * @param toFirst
-     * @return
-     */
-    private String buildFieldPairString(List fieldPairs, boolean toFirst) {
-        StringBuffer assembly = new StringBuffer();
-
-        for (Iterator i = fieldPairs.iterator(); i.hasNext();) {
-            FieldPairDefinition fieldPair = (FieldPairDefinition) i.next();
-            String field1 = toFirst ? fieldPair.getFieldTo() : fieldPair.getFieldFrom();
-            String field2 = toFirst ? fieldPair.getFieldFrom() : fieldPair.getFieldTo();
-            // TODO BJM -- due to a bug? I switched the order of these below...
-            assembly.append(field2 + ":" + field1);
-            if (i.hasNext()) {
-                assembly.append(",");
-            }
-        }
-
-        return assembly.toString();
     }
 
     /**

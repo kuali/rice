@@ -28,7 +28,28 @@ import edu.iu.uis.eden.user.WorkflowUser;
  */
 public interface DocumentSearchService {
 
+    /**
+     * This method performs a standard document search
+     * 
+     * @param user - user executing the search
+     * @param criteria - criteria to use to search documents
+     * @return a {@link DocumentSearchResultComponents} object holding the search result columns and search result rows
+     *         represented by a list of {@link DocumentSearchResult} objects
+     * @throws EdenUserNotFoundException
+     */
     public DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaVO criteria) throws EdenUserNotFoundException;
+
+    /**
+     * This method performs a standard document search but uses the value returned by
+     * {@link DocSearchCriteriaVO#getThreshold()} as the maximum search results returned
+     * 
+     * @param user - user executing the search
+     * @param criteria - criteria to use to search documents
+     * @return a {@link DocumentSearchResultComponents} object holding the search result columns and search result rows
+     *         represented by a list of {@link DocumentSearchResult} objects
+     * @throws EdenUserNotFoundException
+     */
+    public DocumentSearchResultComponents getListBoundByCriteria(WorkflowUser user, DocSearchCriteriaVO criteria) throws EdenUserNotFoundException;
     public SavedSearchResult getSavedSearchResults(WorkflowUser user, String savedSearchName) throws EdenUserNotFoundException;
     public void clearNamedSearches(WorkflowUser user);
     public List getNamedSearches(WorkflowUser user);

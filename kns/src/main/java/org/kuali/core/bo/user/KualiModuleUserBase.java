@@ -19,10 +19,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.TransientBusinessObjectBase;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 public class KualiModuleUserBase extends TransientBusinessObjectBase implements KualiModuleUser {
 
@@ -52,7 +52,7 @@ public class KualiModuleUserBase extends TransientBusinessObjectBase implements 
     }
 
     public boolean isActive() {
-        return getUserProperty( RicePropertyConstants.ACTIVE ).equals( "Y" );
+        return getUserProperty( KNSPropertyConstants.ACTIVE ).equals( "Y" );
     }
     
     protected boolean isActiveFacultyStaffAffiliate() {
@@ -61,8 +61,8 @@ public class KualiModuleUserBase extends TransientBusinessObjectBase implements 
     }
 
     public void setActive(boolean active) {
-        if (KNSServiceLocator.getKualiModuleService().getModule(moduleId).getModuleUserService().getPropertyList().contains(RicePropertyConstants.ACTIVE)) { 
-            setUserProperty( RicePropertyConstants.ACTIVE, active?"Y":"N" );
+        if (KNSServiceLocator.getKualiModuleService().getModule(moduleId).getModuleUserService().getPropertyList().contains(KNSPropertyConstants.ACTIVE)) { 
+            setUserProperty( KNSPropertyConstants.ACTIVE, active?"Y":"N" );
         }
     }
 
@@ -113,7 +113,7 @@ public class KualiModuleUserBase extends TransientBusinessObjectBase implements 
     protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
 
-        m.put( RicePropertyConstants.PERSON_UNIVERSAL_IDENTIFIER, getPersonUniversalIdentifier());
+        m.put( KNSPropertyConstants.PERSON_UNIVERSAL_IDENTIFIER, getPersonUniversalIdentifier());
 
         return m;
     }

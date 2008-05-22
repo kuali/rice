@@ -298,22 +298,19 @@ public class KualiHelpAction extends KualiAction {
         DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
         DocumentEntry entry = dataDictionary.getDocumentEntry(documentTypeName);
 
-        HeaderNavigation[] headerTabNavigation = null;
         String apcHelpUrl = null;
         String label = "";
         String objectDescription = "";
         if (entry != null) {
-            headerTabNavigation = entry.getHeaderTabNavigation();
-            for (int i = 0; i < headerTabNavigation.length; i++) {
-                HeaderNavigation headerNavigation = (HeaderNavigation) headerTabNavigation[i];
+            for ( HeaderNavigation headerNavigation : entry.getHeaderNavigationList() ) {
                 if (headerNavigation.getHeaderTabDisplayName().equals(pageName)) {
                     HelpDefinition helpDefinition = headerNavigation.getHelpDefinition();
                     if (null != helpDefinition && null != helpDefinition.getParameterNamespace() && null != helpDefinition.getParameterDetailType() && null != helpDefinition.getParameterName()) {
                         apcHelpUrl = getHelpUrl(helpDefinition.getParameterNamespace(), helpDefinition.getParameterDetailType(), helpDefinition.getParameterName());
-                        }
-                        }
                     }
                 }
+            }
+        }
 
         if ( !StringUtils.isBlank(apcHelpUrl) ) {
             response.sendRedirect(apcHelpUrl);

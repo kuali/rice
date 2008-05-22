@@ -1,262 +1,321 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="Organization" parent="Organization-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="Organization-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kom.bo.Organization" />
+    <property name="inquiryDefinition" >
+      <ref bean="Organization-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="Organization-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="id" />
+    <property name="objectLabel" value="Organization" />
+    <property name="collections" >
+      <list>
+        <bean parent="CollectionDefinition"
+              p:shortLabel="OrganizationsContexts"
+              p:summary="Organizations Contexts"
+              p:elementLabel="Contexts"
+              p:name="organizationsContexts"
+              p:label="Organization Contexts"
+              p:description="Contexts of this Organization" />
+      </list>
+    </property>
+    <property name="attributes" >
+      <list>
+        <ref bean="Organization-id" />
+        <ref bean="Organization-shortName" />
+        <ref bean="Organization-name" />
+        <ref bean="Organization-organizationCategory.name" />
+        <ref bean="Organization-organizationsContexts.contextName" />
+        <ref bean="Organization-parent.name" />
+        <ref bean="Organization-organizationsContexts.active" />
+        <ref bean="Organization-active" />
+        <ref bean="Organization-parentOrganizationId" />
+        <ref bean="Organization-categoryId" />
+        <ref bean="Organization-versionNumber" />
+        <ref bean="Organization-objectId" />
+      </list>
+    </property>
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kom.bo.Organization">
-
-        <inquiry>
-            <title>Organization Inquiry</title>
-
-            <inquirySections>
-                <inquirySection title="Header Text">
-                    <inquiryFields>
-                        <field attributeName="id" />
-                        <field attributeName="shortName" />
-                        <field attributeName="name" />
-                        <field attributeName="organizationCategory.name" />
-                        <field attributeName="parentOrganizationId" />
-                    </inquiryFields>
-                </inquirySection>
-
-                <inquirySection title="Organizations Contexts">
-                    <inquiryFields>
-                        <inquiryCollection name="organizationsContexts"
-                            businessObjectClass="org.kuali.rice.kom.bo.OrganizationsContexts">
-                            <field attributeName="id" />
-                            <field attributeName="active" />
-                             <field attributeName="organizationContext.name" />
-                             <field attributeName="organizationContext.description" />
-                        </inquiryCollection>
-                    </inquiryFields>
-                </inquirySection>
-
-             </inquirySections>
-
-        </inquiry>
-
-        <lookup>
-            <title>Organization Lookup</title>
-
-            <instructions>Lookup a Organization</instructions>
-
-            <defaultSort sortAscending="true">
-                <sortAttributes>
-                    <sortAttribute attributeName="name" />
-                </sortAttributes>
-            </defaultSort>
-
-            <lookupFields>
-                <lookupField attributeName="id" required="false"  />
-                <lookupField attributeName="name" required="false" />
-                <lookupField attributeName="shortName" required="false" />
-                <lookupField attributeName="categoryId" required="false" />
-                <lookupField attributeName="parentOrganizationId" required="false" />
-            </lookupFields>
-
-            <resultFields>
-                <field attributeName="id" />
-                <field attributeName="name" />
-                <field attributeName="shortName" />
-                <field attributeName="organizationCategory.name" />
-                <field attributeName="organizationsContexts" />
-                <field attributeName="parent.name" />
-                <field attributeName="active" />
-            </resultFields>
-        </lookup>
-
-        <titleAttribute>id</titleAttribute>
-
-        <attributes>
-
-            <attribute name="id" forceUppercase="true">
-                <label>ID</label>
-                <shortLabel>id</shortLabel>
-
-                <maxLength>8</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-
-                <control>
-                    <text size="8" />
-                </control>
-
-            </attribute>
-
-            <attribute name="shortName" forceUppercase="false">
-                <label>Short Name</label>
-                <shortLabel>Short Name</shortLabel>
-
-                <maxLength>255</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-
-                <control>
-                    <text size="100" />
-                </control>
-
-            </attribute>
-            <attribute name="name" forceUppercase="false">
-                <label>Organization Name</label>
-                <shortLabel>Name</shortLabel>
-
-                <maxLength>255</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-
-                <control>
-                    <text size="100" />
-                </control>
-
-            </attribute>
-
-           <attribute name="organizationCategory.name" forceUppercase="false">
-                <label>Category</label>
-                <shortLabel>Name</shortLabel>
-
-                <maxLength>255</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-
-                <control>
-                    <text size="100" />
-                </control>
-
-            </attribute>
+<!-- Attribute Definitions -->
 
 
-            <attribute name="organizationsContexts.contextName" forceUppercase="false">
-                <label>Category</label>
-                <shortLabel>Name</shortLabel>
+  <bean id="Organization-id" parent="Organization-id-parentBean" />
 
-                <maxLength>255</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+  <bean id="Organization-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="id" />
+    <property name="maxLength" value="8" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="8" />
+    </property>
+    <property name="name" value="id" />
+    <property name="label" value="ID" />
+  </bean>
+  <bean id="Organization-shortName" parent="Organization-shortName-parentBean" />
 
-                <control>
-                    <text size="100" />
-                </control>
+  <bean id="Organization-shortName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Short Name" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="shortName" />
+    <property name="label" value="Short Name" />
+  </bean>
+  <bean id="Organization-name" parent="Organization-name-parentBean" />
 
-            </attribute>
+  <bean id="Organization-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="name" />
+    <property name="label" value="Organization Name" />
+  </bean>
+  <bean id="Organization-organizationCategory.name" parent="Organization-organizationCategory.name-parentBean" />
 
-<!--
-            <attribute name="organizationsContexts.description" forceUppercase="false">
-                <label>Category</label>
-                <shortLabel>Name</shortLabel>
+  <bean id="Organization-organizationCategory.name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="organizationCategory.name" />
+    <property name="label" value="Category" />
+  </bean>
+  <bean id="Organization-organizationsContexts.contextName" parent="Organization-organizationsContexts.contextName-parentBean" />
 
-                <maxLength>255</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+  <bean id="Organization-organizationsContexts.contextName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="organizationsContexts.contextName" />
+    <property name="label" value="Category" />
+  </bean>
+  <bean id="Organization-parent.name" parent="Organization-parent.name-parentBean" />
 
-                <control>
-                    <text size="100" />
-                </control>
+  <bean id="Organization-parent.name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Parent" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="parent.name" />
+    <property name="label" value="Parent" />
+  </bean>
+  <bean id="Organization-organizationsContexts.active" parent="Organization-organizationsContexts.active-parentBean" />
 
-            </attribute>
- -->
-           <attribute name="parent.name" forceUppercase="false">
-                <label>Parent</label>
-                <shortLabel>Parent</shortLabel>
+  <bean id="Organization-organizationsContexts.active-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Con Active" />
+    <property name="maxLength" value="3" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"
+            p:includeKeyInLabel="false" />
+    </property>
+    <property name="name" value="organizationsContexts.active" />
+    <property name="label" value="Context Active" />
+  </bean>
+  <bean id="Organization-active" parent="Organization-active-parentBean" />
 
-                <maxLength>255</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+  <bean id="Organization-active-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Active" />
+    <property name="maxLength" value="3" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"
+            p:includeKeyInLabel="false" />
+    </property>
+    <property name="name" value="active" />
+    <property name="label" value="Active" />
+  </bean>
+  <bean id="Organization-parentOrganizationId" parent="Organization-parentOrganizationId-parentBean" />
 
-                <control>
-                    <text size="100" />
-                </control>
+  <bean id="Organization-parentOrganizationId-parentBean" abstract="true" parent="Organization-id">
+    <property name="shortLabel" value="Parent" />
+    <property name="required" value="false" />
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:businessObjectClass="org.kuali.rice.kom.bo.Organization"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeKeyInLabel="false"
+            p:labelAttribute="name" />
+    </property>
+    <property name="name" value="parentOrganizationId" />
+    <property name="label" value="Parent Organization" />
+  </bean>
+  <bean id="Organization-categoryId" parent="Organization-categoryId-parentBean" />
 
-            </attribute>
+  <bean id="Organization-categoryId-parentBean" abstract="true" parent="OrganizationCategory-id">
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:businessObjectClass="org.kuali.rice.kom.bo.OrganizationCategory"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeKeyInLabel="false"
+            p:keyAttribute="id"
+            p:labelAttribute="name" />
+    </property>
+    <property name="name" value="categoryId" />
+    <property name="label" value="Category" />
+  </bean>
+  <bean id="Organization-versionNumber" parent="Organization-versionNumber-parentBean" />
 
-            <attribute name="organizationsContexts.active" forceUppercase="true">
-                <label>Context Active</label>
-                <shortLabel>Con Active</shortLabel>
+  <bean id="Organization-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+  <bean id="Organization-objectId" parent="Organization-objectId-parentBean" />
 
-                <maxLength>3</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+  <bean id="Organization-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
+  </bean>
 
-                <control>
-                   <select valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"/>
-                </control>
-            </attribute>
+<!-- Business Object Inquiry Definition -->
 
-            <attribute name="active" forceUppercase="true">
-                <label>Active</label>
-                <shortLabel>Active</shortLabel>
 
-                <maxLength>3</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+  <bean id="Organization-inquiryDefinition" parent="Organization-inquiryDefinition-parentBean" />
 
-                <control>
-                   <select valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"/>
-                </control>
-            </attribute>
+  <bean id="Organization-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="id" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="shortName" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="name" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="organizationCategory.name" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="parentOrganizationId" />
+            </list>
+          </property>
+          <property name="title" value="Header Text" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="organizationsContexts" />
+                <property name="businessObjectClass" value="org.kuali.rice.kom.bo.OrganizationsContexts" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="id" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="active" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="organizationContext.name" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="organizationContext.description" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Organizations Contexts" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="Organization Inquiry" />
+  </bean>
 
-             <attributeReference name="parentOrganizationId"
-                sourceAttributeName="id"
-                sourceClassName="org.kuali.rice.kom.bo.Organization">
-                <label>Parent Organization</label>
-                <shortLabel>Parent</shortLabel>
-                <required>false</required>
-                <control>
-                    <select
-                        valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-                        businessObjectClass="org.kuali.rice.kom.bo.Organization"
-                         labelAttribute="name"
-                        includeKeyInLabel="false" />
-                </control>
+<!-- Business Object Lookup Definition -->
 
-            </attributeReference>
 
-           <attributeReference name="categoryId"
-            sourceClassName="org.kuali.rice.kom.bo.OrganizationCategory"
-            sourceAttributeName="id">
-            <label>Category</label>
-            <required>true</required>
-            <control>
-                <select
-                    valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-                    businessObjectClass="org.kuali.rice.kom.bo.OrganizationCategory"
-                    keyAttribute="id" labelAttribute="name"
-                    includeKeyInLabel="false" />
-            </control>
-           </attributeReference>
+  <bean id="Organization-lookupDefinition" parent="Organization-lookupDefinition-parentBean" />
 
-<!--
-           <attributeReference sourceAttributeName="name" name="organizationsContexts.organizationContext.name" sourceClassName="org.kuali.rice.kom.bo.OrganizationContext">
-            <label>Organization Context Name</label>
-            <shortLabel>Org Contx Name</shortLabel>
-           </attributeReference>
- -->
-            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
-            <attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
-        </attributes>
-
-       <collections>
-        <collection name="organizationsContexts">
-                <label>Organization Contexts</label>
-                <shortLabel>OrganizationsContexts</shortLabel>
-                <elementLabel>Contexts</elementLabel>
-                <summary>Organizations Contexts</summary>
-                <description>Contexts of this Organization</description>
-            </collection>
-        </collections>
-
-<!--
-        <relationships>
-          <relationship objectAttributeName="organizationsContexts.organizationContext">
-             <primitiveAttribute sourceName="organizationsContexts.organizationContext.name" targetName="name"/>
-          </relationship>
-        </relationships>
--->
-        <objectLabel>Organization</objectLabel>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="Organization-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Lookup a Organization" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="shortName" />
+        <bean parent="FieldDefinition"
+              p:attributeName="categoryId" />
+        <bean parent="FieldDefinition"
+              p:attributeName="parentOrganizationId" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="shortName" />
+        <bean parent="FieldDefinition"
+              p:attributeName="organizationCategory.name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="organizationsContexts" />
+        <bean parent="FieldDefinition"
+              p:attributeName="parent.name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="active" />
+      </list>
+    </property>
+    <property name="title" value="Organization Lookup" />
+  </bean>
+</beans>

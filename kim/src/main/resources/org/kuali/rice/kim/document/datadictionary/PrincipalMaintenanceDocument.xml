@@ -1,98 +1,181 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2007 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-<dictionaryEntry>
-    <maintenanceDocument>
-        <businessObjectClass>org.kuali.rice.kim.bo.Principal</businessObjectClass>
-        <maintainableClass>org.kuali.rice.kim.document.maintenance.PrincipalMaintainable</maintainableClass>
+  <bean id="KIMPrincipalMaintenanceDocument" parent="KIMPrincipalMaintenanceDocument-parentBean" />
 
-        <documentAuthorizerClass>org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase</documentAuthorizerClass>
-        <authorizations>
-            <authorization action="initiate">
-                <workgroups>
-                    <workgroup>kualiUniversalGroup</workgroup>
-                </workgroups>
-            </authorization>
-        </authorizations>
+  <bean id="KIMPrincipalMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Principal" />
+    <property name="maintainableClass" value="org.kuali.rice.kim.document.maintenance.PrincipalMaintainable" />
+    <property name="maintainableSections" >
+      <list>
+        <ref bean="KIMPrincipalMaintenanceDocument-PrincipalInformation" />
+        <ref bean="KIMPrincipalMaintenanceDocument-GroupMembership" />
+        <ref bean="KIMPrincipalMaintenanceDocument-AssignedRoles" />
+      </list>
+    </property>
+    <property name="lockingKeys" >
+      <list>
+        <value>id</value>
+      </list>
+    </property>
+    <property name="shortLabel" value="Principal" />
+    <property name="summary" value="Principal Maintenance Document" />
+    <property name="documentTypeName" value="KIMPrincipalMaintenanceDocument" />
+    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentTypeCode" value="KPMD" />
+    <property name="authorizations" >
+      <list>
+        <bean parent="AuthorizationDefinition">
+          <property name="authorizedGroups" >
+            <set>
+              <value>kualiUniversalGroup</value>
+            </set>
+          </property>
+          <property name="action" value="initiate" />
+        </bean>
+      </list>
+    </property>
+    <property name="label" value="Principal" />
+    <property name="description" value="Maintenance document which allows you to create new Principal, or modify existing Principal." />
+  </bean>
 
-        <documentTypeName>KIMPrincipalMaintenanceDocument</documentTypeName>
-        <documentTypeCode>KPMD</documentTypeCode>
-        <label>Principal</label>
-        <summary>Principal Maintenance Document</summary>
-        <description>Maintenance document which allows you to create new Principal, or modify existing Principal.</description>
+<!-- Maintenance Section Definitions -->
 
-        <lockingKeys>
-            <field attributeName="id" />
-        </lockingKeys>
-        
-		<allowsNewOrCopy>true</allowsNewOrCopy>
-		
-        <maintainableSections>
-            <maintainableSection title="Principal Information">
-                <maintainableItems>
-                    <maintainableField name="id" required="true" readOnly="true" />
-                    <maintainableField name="name" required="true" /> 
-                    <maintainableField name="entityId" required="true" />               
-                    <maintainableField name="versionNumber" />
-                </maintainableItems>
-            </maintainableSection>
-            
-            <maintainableSection title="Group Membership">
-				<maintainableItems>
-					<maintainableCollection name="groups"
-						businessObjectClass="org.kuali.rice.kim.bo.Group" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="groups" includeAddLine="false"  summaryTitle="Groups">
-						<maintainableField name="id" readOnly="true" readOnlyAfterAdd="true" required="true" template="id"/>
-						<maintainableField name="name" readOnly="true" required="true" template="name"/>				
-					</maintainableCollection>
-				</maintainableItems>
-			</maintainableSection>
-			
-			<maintainableSection title="Assigned Roles">
-				<maintainableItems>
-					<maintainableCollection name="roleQualificationsForPrincipal"
-						businessObjectClass="org.kuali.rice.kim.bo.RoleQualificationForPrincipal" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="roleQualificationsForPrincipal" includeAddLine="false" summaryTitle="Assigned Role">
-						<maintainableField name="id" required="true"
-							readOnlyAfterAdd="true" template="id" />
-						<maintainableField name="name" required="false" readOnly="true" template="name"/>
-						
-						<maintainableCollection name="qualifiedRoleAttributes"
-								businessObjectClass="org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute" summaryTitle="Qualification">
-							<maintainableField name="id" required="true" readOnly="true" />
-							<maintainableField name="attributeName" required="true" readOnly="false" />
-							<maintainableField name="attributeValue" required="true" readOnly="false" />
-							<maintainableField name="principalId" required="false" readOnly="true" />
-							<maintainableField name="roleId" required="false" readOnly="true" />
-							<maintainableField name="versionNumber" required="false" readOnly="true" />
-							<maintainableField name="objectId" required="false" readOnly="true" />
-							<summaryFields>
-           		       			<summaryField name="attributeName" />
-           		       		</summaryFields>
-						</maintainableCollection>
-						
-						<summaryFields>
-     		       			<summaryField name="name" />
-         		       	</summaryFields>
-					</maintainableCollection>
-				</maintainableItems>
-			</maintainableSection>
-			
-        </maintainableSections>
-    </maintenanceDocument>
-</dictionaryEntry>
+
+  <bean id="KIMPrincipalMaintenanceDocument-PrincipalInformation" parent="KIMPrincipalMaintenanceDocument-PrincipalInformation-parentBean" />
+
+  <bean id="KIMPrincipalMaintenanceDocument-PrincipalInformation-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="id"
+              p:readOnly="true" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="name" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="entityId" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="versionNumber" />
+      </list>
+    </property>
+    <property name="id" value="Principal Information" />
+    <property name="title" value="Principal Information" />
+  </bean>
+  <bean id="KIMPrincipalMaintenanceDocument-GroupMembership" parent="KIMPrincipalMaintenanceDocument-GroupMembership-parentBean" />
+
+  <bean id="KIMPrincipalMaintenanceDocument-GroupMembership-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableCollectionDefinition">
+          <property name="sourceClassName" value="org.kuali.rice.kim.bo.Group" />
+          <property name="sourceAttributeName" value="groups" />
+          <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Group" />
+          <property name="includeAddLine" value="false" />
+          <property name="summaryTitle" value="Groups" />
+          <property name="maintainableFields" >
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:readOnlyAfterAdd="true"
+                    p:template="id"
+                    p:name="id"
+                    p:readOnly="true" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:template="name"
+                    p:name="name"
+                    p:readOnly="true" />
+            </list>
+          </property>
+          <property name="name" value="groups" />
+        </bean>
+      </list>
+    </property>
+    <property name="id" value="Group Membership" />
+    <property name="title" value="Group Membership" />
+  </bean>
+  <bean id="KIMPrincipalMaintenanceDocument-AssignedRoles" parent="KIMPrincipalMaintenanceDocument-AssignedRoles-parentBean" />
+
+  <bean id="KIMPrincipalMaintenanceDocument-AssignedRoles-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableCollectionDefinition">
+          <property name="sourceClassName" value="org.kuali.rice.kim.bo.Role" />
+          <property name="sourceAttributeName" value="roleQualificationsForPrincipal" />
+          <property name="businessObjectClass" value="org.kuali.rice.kim.bo.RoleQualificationForPrincipal" />
+          <property name="includeAddLine" value="false" />
+          <property name="summaryTitle" value="Assigned Role" />
+          <property name="summaryFields" >
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+                    p:name="name" />
+            </list>
+          </property>
+          <property name="maintainableFields" >
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:readOnlyAfterAdd="true"
+                    p:template="id"
+                    p:name="id" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:template="name"
+                    p:name="name"
+                    p:readOnly="true" />
+            </list>
+          </property>
+          <property name="maintainableCollections" >
+            <list>
+              <bean parent="MaintainableCollectionDefinition">
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute" />
+                <property name="summaryTitle" value="Qualification" />
+                <property name="summaryFields" >
+                  <list>
+                    <bean parent="MaintainableFieldDefinition"
+                          p:name="attributeName" />
+                  </list>
+                </property>
+                <property name="maintainableFields" >
+                  <list>
+                    <bean parent="MaintainableFieldDefinition"
+                          p:required="true"
+                          p:name="id"
+                          p:readOnly="true" />
+                    <bean parent="MaintainableFieldDefinition"
+                          p:required="true"
+                          p:name="attributeName" />
+                    <bean parent="MaintainableFieldDefinition"
+                          p:required="true"
+                          p:name="attributeValue" />
+                    <bean parent="MaintainableFieldDefinition"
+                          p:name="principalId"
+                          p:readOnly="true" />
+                    <bean parent="MaintainableFieldDefinition"
+                          p:name="roleId"
+                          p:readOnly="true" />
+                    <bean parent="MaintainableFieldDefinition"
+                          p:name="versionNumber"
+                          p:readOnly="true" />
+                    <bean parent="MaintainableFieldDefinition"
+                          p:name="objectId"
+                          p:readOnly="true" />
+                  </list>
+                </property>
+                <property name="name" value="qualifiedRoleAttributes" />
+              </bean>
+            </list>
+          </property>
+          <property name="name" value="roleQualificationsForPrincipal" />
+        </bean>
+      </list>
+    </property>
+    <property name="id" value="Assigned Roles" />
+    <property name="title" value="Assigned Roles" />
+  </bean>
+</beans>

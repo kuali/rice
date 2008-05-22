@@ -15,7 +15,6 @@
  */
 package org.kuali.core.service.impl;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -81,15 +80,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     public void setupAuthorizations(DocumentEntry documentEntry) {
 
         String documentType = documentEntry.getDocumentTypeName();
-        Map authorizationDefinitions = documentEntry.getAuthorizationDefinitions();
-        for (Iterator j = authorizationDefinitions.entrySet().iterator(); j.hasNext();) {
-            AuthorizationDefinition auth = (AuthorizationDefinition) ((Map.Entry) j.next()).getValue();
-
+        for ( AuthorizationDefinition auth : documentEntry.getAuthorizationDefinitions() ) {
             String authorizedAction = auth.getAction();
-            Set authorizedGroups = auth.getGroupNames();
-            for (Iterator k = authorizedGroups.iterator(); k.hasNext();) {
-                String authorizedGroup = (String) k.next();
-
+            Set<String> authorizedGroups = auth.getAuthorizedGroups();
+            for (String authorizedGroup : authorizedGroups ) {
                 authorizationStore.addAuthorization(authorizedGroup, authorizedAction, documentType);
             }
         }

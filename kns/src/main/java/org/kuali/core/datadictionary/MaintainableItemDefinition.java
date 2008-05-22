@@ -16,8 +16,6 @@
 package org.kuali.core.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * MaintainableItemDefinition
@@ -25,13 +23,10 @@ import org.apache.commons.logging.LogFactory;
  * 
  */
 public abstract class MaintainableItemDefinition extends DataDictionaryDefinitionBase {
-    // logger
-    private static Log LOG = LogFactory.getLog(MaintainableItemDefinition.class);
 
     private String name;
 
     public MaintainableItemDefinition() {
-        LOG.debug("creating new MaintainableItemDefinition");
     }
 
 
@@ -51,9 +46,6 @@ public abstract class MaintainableItemDefinition extends DataDictionaryDefinitio
     public void setName(String name) {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("invalid (blank) name");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setName '" + name + "'");
         }
         this.name = name;
     }

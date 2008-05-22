@@ -17,8 +17,6 @@
 package org.kuali.core.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
 
 /**
@@ -29,15 +27,11 @@ import org.kuali.core.datadictionary.exception.AttributeValidationException;
  * 
  */
 public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
-    // logger
-    private static Log LOG = LogFactory.getLog(PrimitiveAttributeDefinition.class);
 
     private String sourceName;
     private String targetName;
 
-    public PrimitiveAttributeDefinition() {
-        LOG.debug("creating new PrimitiveAttributeDefinition");
-    }
+    public PrimitiveAttributeDefinition() {}
 
 
     /**
@@ -56,9 +50,6 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
     public void setSourceName(String sourceName) {
         if (StringUtils.isBlank(sourceName)) {
             throw new IllegalArgumentException("invalid (blank) sourceName");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setSourceName '" + sourceName + "'");
         }
 
         this.sourceName = sourceName;
@@ -82,9 +73,6 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(targetName)) {
             throw new IllegalArgumentException("invalid (blank) targetName");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setTargetName '" + targetName + "'");
-        }
 
         this.targetName = targetName;
     }
@@ -95,23 +83,23 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
      * 
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
-        if (!validationCompletionUtils.isPropertyOf(rootBusinessObjectClass, sourceName)) {
-            throw new AttributeValidationException("unable to find attribute '" + sourceName + "' in relationship class '" + rootBusinessObjectClass + "' (" + getParseLocation() + ")");
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+        if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, sourceName)) {
+            throw new AttributeValidationException("unable to find attribute '" + sourceName + "' in relationship class '" + rootBusinessObjectClass + "' (" + "" + ")");
         }
-        if (!validationCompletionUtils.isPropertyOf(otherBusinessObjectClass, targetName)) {
-            throw new AttributeValidationException("unable to find attribute '" + targetName + "' in related class '" + otherBusinessObjectClass.getName() + "' (" + getParseLocation() + ")");
+        if (!DataDictionary.isPropertyOf(otherBusinessObjectClass, targetName)) {
+            throw new AttributeValidationException("unable to find attribute '" + targetName + "' in related class '" + otherBusinessObjectClass.getName() + "' (" + "" + ")");
         }
 
-        Class sourceClass = validationCompletionUtils.getAttributeClass(rootBusinessObjectClass, sourceName);
-        Class targetClass = validationCompletionUtils.getAttributeClass(otherBusinessObjectClass, targetName);
+        Class sourceClass = DataDictionary.getAttributeClass(rootBusinessObjectClass, sourceName);
+        Class targetClass = DataDictionary.getAttributeClass(otherBusinessObjectClass, targetName);
         if ((null == sourceClass && null != targetClass) || (null != sourceClass && null == targetClass) || !StringUtils.equals(sourceClass.getName(), targetClass.getName())) {
             String sourceClassName = rootBusinessObjectClass.getName();
             String targetClassName = otherBusinessObjectClass.getName();
             String sourcePath = sourceClassName + "." + sourceName;
             String targetPath = targetClassName + "." + targetName;
 
-            throw new AttributeValidationException("source attribute '" + sourcePath + "' (" + sourceClass + ") and target attribute '" + targetPath + "' (" + targetClass + ") are of differing types (" + getParseLocation() + ")");
+            throw new AttributeValidationException("source attribute '" + sourcePath + "' (" + sourceClass + ") and target attribute '" + targetPath + "' (" + targetClass + ") are of differing types (" + "" + ")");
         }
     }
 

@@ -17,22 +17,18 @@
 package org.kuali.core.datadictionary;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.core.datadictionary.exception.ClassValidationException;
 import org.kuali.core.datadictionary.exception.DuplicateEntryException;
+import org.kuali.core.document.Document;
 import org.kuali.core.document.authorization.DocumentAuthorizer;
 import org.kuali.core.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.core.rule.BusinessRule;
-import org.kuali.core.service.KualiConfigurationService;
-import org.kuali.core.service.KualiGroupService;
+import org.kuali.core.rule.PreRulesCheck;
 
 /**
  * A single Document entry in the DataDictionary, which contains information relating to the display, validation, and general
@@ -43,12 +39,10 @@ import org.kuali.core.service.KualiGroupService;
  * 
  */
 abstract public class DocumentEntry extends DataDictionaryEntryBase {
-    // logger
-    private static Log LOG = LogFactory.getLog(DocumentEntry.class);
 
-    private Class documentClass;
-    private Class businessRulesClass;
-    private Class preRulesCheckClass;
+    private Class<? extends Document> documentClass;
+    private Class<? extends BusinessRule> businessRulesClass;
+    private Class<? extends PreRulesCheck> preRulesCheckClass;
 
     private String documentTypeName;
     private String documentTypeCode;
@@ -58,47 +52,34 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 
     private HelpDefinition helpDefinition;
 
-    private boolean allowsNoteDelete;
-    private boolean allowsNoteAttachments=true;
-    private Class attachmentTypesValuesFinderClass;
-    private boolean displayTopicFieldInNotes;
+    private boolean allowsNoteDelete = false;
+    private boolean allowsNoteAttachments = true;
+    private Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass;
+    private boolean displayTopicFieldInNotes = false;
     
     private String summary;
     private String description;
-    private List<String> webScriptFiles;
+    private List<String> webScriptFiles = new ArrayList<String>( 3 );
 
-    protected Class documentAuthorizerClass;
-    private Map authorizations;
-    private List<HeaderNavigation> headerNavigationList;
+    protected Class<? extends DocumentAuthorizer> documentAuthorizerClass;
+    private List<AuthorizationDefinition> authorizations = new ArrayList<AuthorizationDefinition>();
+    private List<HeaderNavigation> headerNavigationList = new ArrayList<HeaderNavigation>();
 
-    private boolean allowsCopy;
-    private WorkflowProperties workflowProperties;
-    
-    /**
-     * Default constructor
-     */
-    public DocumentEntry() {
-        super();
-
-        LOG.debug("creating new DocumentEntry");
-        authorizations = new HashMap();
-        headerNavigationList = new ArrayList<HeaderNavigation>();
-        webScriptFiles = new ArrayList<String>( 3 );
-        workflowProperties = null;
-    }
+    private boolean allowsCopy = false;
+    private WorkflowProperties workflowProperties;   
 
     /**
      * @see org.kuali.core.datadictionary.DataDictionaryEntry#getJstlKey()
      */
     public String getJstlKey() {
-        if (StringUtils.isBlank(this.documentTypeName)) {
+        if (StringUtils.isBlank(documentTypeName)) {
             throw new IllegalStateException("unable to generate JSTL key: documentTypeName is blank");
         }
 
-        return this.documentTypeName;
+        return documentTypeName;
     }
 
-    public void setDocumentClass(Class documentClass) {
+    public void setDocumentClass(Class<? extends Document> documentClass) {
         if (documentClass == null) {
             throw new IllegalArgumentException("invalid (null) documentClass");
         }
@@ -106,72 +87,51 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         this.documentClass = documentClass;
     }
 
-    public Class getDocumentClass() {
-        return this.documentClass;
+    public Class<? extends Document> getDocumentClass() {
+        return documentClass;
     }
 
-    public void setBusinessRulesClass(Class businessRulesClass) {
+    public void setBusinessRulesClass(Class<? extends BusinessRule> businessRulesClass) {
         this.businessRulesClass = businessRulesClass;
     }
 
-    public Class getBusinessRulesClass() {
+    public Class<? extends BusinessRule> getBusinessRulesClass() {
         return businessRulesClass;
     }
 
-    public void setDocumentAuthorizerClass(Class documentAuthorizerClass) {
+    public void setDocumentAuthorizerClass(Class<? extends DocumentAuthorizer> documentAuthorizerClass) {
         this.documentAuthorizerClass = documentAuthorizerClass;
     }
 
-    public Class getDocumentAuthorizerClass() {
+    public Class<? extends DocumentAuthorizer> getDocumentAuthorizerClass() {
         return documentAuthorizerClass;
     }
 
     /**
      * @return Returns the preRulesCheckClass.
      */
-    public Class getPreRulesCheckClass() {
+    public Class<? extends PreRulesCheck> getPreRulesCheckClass() {
         return preRulesCheckClass;
     }
 
     /**
      * @param preRulesCheckClass The preRulesCheckClass to set.
      */
-    public void setPreRulesCheckClass(Class preRulesCheckClass) {
+    public void setPreRulesCheckClass(Class<? extends PreRulesCheck> preRulesCheckClass) {
         this.preRulesCheckClass = preRulesCheckClass;
-    }
-
-    /**
-     * Adds the given AuthorizationDefinition to the authorization map for this documentEntry
-     * 
-     * @param authorizationDefinition
-     */
-    public void addAuthorizationDefinition(AuthorizationDefinition authorizationDefinition) {
-        String action = authorizationDefinition.getAction();
-        if (StringUtils.isBlank(action)) {
-            throw new IllegalArgumentException("invalid (blank) action name");
-        }
-
-        if (authorizations.containsKey(action)) {
-            throw new DuplicateEntryException("an authorizationDefinition with action '" + action + "' already exists for this document type");
-        }
-
-        authorizations.put(action, authorizationDefinition);
     }
 
     /**
      * 
      * @return
      */
-    public Map getAuthorizationDefinitions() {
-        return Collections.unmodifiableMap(authorizations);
+    public List<AuthorizationDefinition> getAuthorizationDefinitions() {
+        return authorizations;
     }
 
     public void setDocumentTypeName(String documentTypeName) {
         if (StringUtils.isBlank(documentTypeName)) {
             throw new IllegalArgumentException("invalid (blank) documentTypeName");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setDocumentTypeName '" + documentTypeName + "'");
         }
         this.documentTypeName = documentTypeName;
     }
@@ -183,9 +143,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     public void setDocumentTypeCode(String documentTypeCode) {
         if (StringUtils.isBlank(documentTypeCode)) {
             throw new IllegalArgumentException("invalid (blank) documentTypeCode");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setDocumentTypeCode '" + documentTypeCode + "'");
         }
         this.documentTypeCode = documentTypeCode;
     }
@@ -202,9 +159,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         if (StringUtils.isBlank(label)) {
             throw new IllegalArgumentException("invalid (blank) label");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setLabel '" + label + "'");
-        }
         this.label = label;
     }
 
@@ -212,15 +166,12 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
      * @return the shortLabel, or the label if no shortLabel has been set
      */
     public String getShortLabel() {
-        return (shortLabel != null) ? shortLabel : getLabel();
+        return (shortLabel != null) ? shortLabel : label;
     }
 
     public void setShortLabel(String shortLabel) {
         if (StringUtils.isBlank(shortLabel)) {
             throw new IllegalArgumentException("invalid (blank) shortLabel");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setShortLabel '" + shortLabel + "'");
         }
         this.shortLabel = shortLabel;
     }
@@ -230,12 +181,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     public void setSummary(String summary) {
-        if (StringUtils.isBlank(summary)) {
-            throw new IllegalArgumentException("invalid (blank) summary");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setSummary '" + summary + "'");
-        }
         this.summary = summary;
     }
 
@@ -244,87 +189,30 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     public void setDescription(String description) {
-        if (StringUtils.isBlank(description)) {
-            throw new IllegalArgumentException("invalid (blank) description");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setDescription '" + description + "'");
-        }
         this.description = description;
     }
 
     /**
      * Validate common fields for subclass' benefit.
      * 
-     * @see org.kuali.core.datadictionary.DataDictionaryEntry#completeValidation(java.lang.Object)
+     * @see org.kuali.core.datadictionary.DataDictionaryEntry#completeValidation()
      */
-    public void completeValidation(ValidationCompletionUtils validationCompletionUtils) {
-        super.completeValidation(validationCompletionUtils);
-        // TODO: validate documentTypeName against some external source
+    public void completeValidation() {
+        super.completeValidation();
         // TODO: validate documentTypeCode against some external source
 
-        if (businessRulesClass != null) {
-            if (!validationCompletionUtils.isDescendentClass(businessRulesClass, BusinessRule.class)) {
-                throw new ClassValidationException("businessRulesClass value '" + businessRulesClass.getName() + "' is not a BusinessRule class");
-            }
-        }
-
-        if (!authorizations.isEmpty()) {
-            for (Iterator i = authorizations.entrySet().iterator(); i.hasNext();) {
-                Map.Entry e = (Map.Entry) i.next();
-
-                String action = (String) e.getKey();
-                AuthorizationDefinition auth = (AuthorizationDefinition) e.getValue();
-
-                auth.completeValidation(null, null, validationCompletionUtils);
-            }
-        }
-
-        if (!validationCompletionUtils.isDocumentClass(this.documentClass)) {
-            throw new ClassValidationException("documentClass '" + documentClass.getName() + "' is not a Document class");
-        }
-
-        if (this.preRulesCheckClass != null && !validationCompletionUtils.isPreRulesCheckClass(this.preRulesCheckClass)) {
-            throw new ClassValidationException("class '" + this.preRulesCheckClass + "' is not a PreRulesCheck class");
-        }
-    }
-
-    /**
-     * Perform authorization validation, which requires access to KualiGroupService which isn't available during earlier
-     * validation-related methods
-     * 
-     * @param kualiGroupService
-     */
-    public void validateAuthorizations(KualiGroupService kualiGroupService) {
-        if (!authorizations.isEmpty()) {
-            for (Iterator i = authorizations.entrySet().iterator(); i.hasNext();) {
-                Map.Entry e = (Map.Entry) i.next();
-
-                String action = (String) e.getKey();
-                AuthorizationDefinition auth = (AuthorizationDefinition) e.getValue();
-
-                auth.validateWorkroups(kualiGroupService);
-            }
+        for ( AuthorizationDefinition auth : authorizations ) {
+            auth.completeValidation(null, null);
         }
     }
 
     /**
      * Validate the required documentAuthorizerClass
-     * 
-     * @param kualiConfigurationService
      */
-    public void validateAuthorizer(KualiConfigurationService kualiConfigurationService, ValidationCompletionUtils validationCompletionUtils) {
+    public void validateAuthorizer() {
         if (documentAuthorizerClass == null) {
             throw new ClassValidationException("documentAuthorizerClass is required");
         }
-        else {
-            
-            if (!validationCompletionUtils.isDescendentClass(documentAuthorizerClass, DocumentAuthorizer.class)) {
-                throw new ClassValidationException("documentAuthorizerClass value '" + documentAuthorizerClass.getName() + "' is not a DocumentAuthorizer class");
-            }
-            
-        }
-
     }
 
     /**
@@ -368,9 +256,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
      * @param allowsNoteDelete
      */
     public void setAllowsNoteDelete(boolean allowsNoteDelete) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setAllowsNoteDelete '" + allowsNoteDelete + "'");
-        }
         this.allowsNoteDelete = allowsNoteDelete;
     }
 
@@ -398,38 +283,28 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
      * @param displayTopicFieldInNotes
      */
     public void setDisplayTopicFieldInNotes(boolean displayTopicFieldInNotes) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setDisplayTopicFieldInNotes '" + displayTopicFieldInNotes + "'");
-        }
         this.displayTopicFieldInNotes = displayTopicFieldInNotes;
     }
 
     /**
      * @see org.kuali.core.datadictionary.control.ControlDefinition#setKeyValuesFinder(java.lang.String)
      */
-    public void setAttachmentTypesValuesFinderClass(Class<KeyValuesFinder> attachmentTypesValuesFinderClass) {
+    public void setAttachmentTypesValuesFinderClass(Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass) {
         if (attachmentTypesValuesFinderClass == null) {
             throw new IllegalArgumentException("invalid (null) attachmentTypesValuesFinderClass");
         }
 
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setAttachmentTypesValuesFinderClass '" + attachmentTypesValuesFinderClass.getName() + "'");
-        }
         this.attachmentTypesValuesFinderClass = attachmentTypesValuesFinderClass;
     }
 
     /**
      * @see org.kuali.core.datadictionary.control.ControlDefinition#getKeyValuesFinder()
      */
-    public Class getAttachmentTypeValuesFinderClass() {
+    public Class<? extends KeyValuesFinder> getAttachmentTypesValuesFinderClass() {
         return attachmentTypesValuesFinderClass;
     }
 
     public void setAllowsCopy(boolean allowsCopy) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setAllowsCopy '" + allowsCopy + "'");
-        }
-
         this.allowsCopy = allowsCopy;
     }
 
@@ -437,19 +312,8 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return allowsCopy;
     }
     
-    public HeaderNavigation[] getHeaderTabNavigation() {
-        return headerNavigationList.toArray(new HeaderNavigation[headerNavigationList.size()]);
-    }
-
-    public void addHeaderNavigation(HeaderNavigation headerNavigation) {
-        this.headerNavigationList.add(headerNavigation);
-    }
-
-    public void addWebScriptFile(String webScriptFile) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling addWebScriptFile '" + webScriptFile + "'");
-        }
-        this.webScriptFiles.add( webScriptFile );
+    public List<HeaderNavigation> getHeaderNavigationList() {
+        return headerNavigationList;
     }
 
     public List<String> getWebScriptFiles() {
@@ -480,6 +344,29 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 
     public void setWorkflowProperties(WorkflowProperties workflowProperties) {
         this.workflowProperties = workflowProperties;
+    }
+
+    public void setHeaderNavigationList(List<HeaderNavigation> headerNavigationList) {
+        this.headerNavigationList = headerNavigationList;
+    }
+
+    public List<AuthorizationDefinition> getAuthorizations() {
+        return this.authorizations;
+    }
+
+    public void setAuthorizations(List<AuthorizationDefinition> authorizations) {
+        Set<String> actions = new HashSet<String>();
+        for ( AuthorizationDefinition authorizationDefinition : authorizations ) {
+            String action = authorizationDefinition.getAction();
+            if (StringUtils.isBlank(action)) {
+                throw new IllegalArgumentException("invalid (blank) action name");
+            }
+            if (actions.contains(action)) {
+                throw new DuplicateEntryException("an authorizationDefinition with action '" + action + "' already exists for this document type");
+            }
+            actions.add(action);
+        }
+        this.authorizations = authorizations;
     }
 
 }

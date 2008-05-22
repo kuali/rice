@@ -14,13 +14,11 @@ package org.kuali.core.rules;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.RiceKeyConstants;
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.bo.AdHocRoutePerson;
 import org.kuali.core.bo.AdHocRouteWorkgroup;
 import org.kuali.core.bo.Note;
-import org.kuali.core.bo.Parameter;
 import org.kuali.core.bo.user.AuthenticationUserId;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.document.Document;
@@ -42,6 +40,7 @@ import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
@@ -358,11 +357,11 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 		LOG.warn("isAddHocRoutePersonValid(AdHocRoutePerson) - exception ignored", userNotFoundException);
 	    }
 	    if (user == null) {
-		GlobalVariables.getErrorMap().putError(RicePropertyConstants.ID,
+		GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
 			RiceKeyConstants.ERROR_INVALID_ADHOC_PERSON_ID);
 	    }
 	    else if (!user.isActiveForAnyModule()) {
-		GlobalVariables.getErrorMap().putError(RicePropertyConstants.ID,
+		GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
 			RiceKeyConstants.ERROR_INACTIVE_ADHOC_PERSON_ID);
 	    } else {
 		// determine the module for the document
@@ -375,12 +374,12 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 		}
 		if (!getKualiModuleService().isAuthorized(user,
 			new AuthorizationType.AdHocRequest(docOrBoClass, person.getActionRequested()))) {
-		    GlobalVariables.getErrorMap().putError(RicePropertyConstants.ID,
+		    GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
 			    RiceKeyConstants.ERROR_UNAUTHORIZED_ADHOC_PERSON_ID);
 		}
 	    }
 	} else {
-	    GlobalVariables.getErrorMap().putError(RicePropertyConstants.ID, RiceKeyConstants.ERROR_MISSING_ADHOC_PERSON_ID);
+	    GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID, RiceKeyConstants.ERROR_MISSING_ADHOC_PERSON_ID);
 	}
 
 	// drop the error path keys off now
@@ -445,17 +444,17 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	    try {
 		WorkgroupVO workgroupVo = getWorkflowInfoService().getWorkgroup(new WorkgroupNameIdVO(workgroup.getId()));
 		if (workgroupVo == null || !workgroupVo.isActiveInd()) {
-		    GlobalVariables.getErrorMap().putError(RicePropertyConstants.ID,
+		    GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
 			    RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
 		}
 	    } catch (WorkflowException e) {
 		LOG.error("isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup)", e);
 
-		GlobalVariables.getErrorMap().putError(RicePropertyConstants.ID,
+		GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
 			RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
 	    }
 	} else {
-	    GlobalVariables.getErrorMap().putError(RicePropertyConstants.ID,
+	    GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID,
 		    RiceKeyConstants.ERROR_MISSING_ADHOC_WORKGROUP_ID);
 	}
 

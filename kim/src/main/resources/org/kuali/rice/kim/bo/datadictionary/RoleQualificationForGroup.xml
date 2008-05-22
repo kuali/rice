@@ -1,60 +1,59 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="RoleQualificationForGroup" parent="RoleQualificationForGroup-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="RoleQualificationForGroup-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.RoleQualificationForGroup" />
+    <property name="titleAttribute" value="id" />
+    <property name="objectLabel" value="Role Qualification for Group" />
+    <property name="collections" >
+      <list>
+        <bean parent="CollectionDefinition"
+              p:shortLabel="Qualifications"
+              p:summary="Qualification Attributes"
+              p:elementLabel="Qualification"
+              p:name="qualifiedRoleAttributes"
+              p:label="Qualifications"
+              p:description="Qualification Attributes" />
+      </list>
+    </property>
+    <property name="attributes" >
+      <list>
+        <ref bean="RoleQualificationForGroup-id" />
+        <ref bean="RoleQualificationForGroup-name" />
+      </list>
+    </property>
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kim.bo.RoleQualificationForGroup">
+<!-- Attribute Definitions -->
 
-        <titleAttribute>id</titleAttribute>
 
-        <attributes>
-           <attributeReference name="id" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="id">
-				<label>Role Id</label>
-                <shortLabel>Id</shortLabel>
-				<required>true</required>
-				<control>
-					<select
-						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-						businessObjectClass="org.kuali.rice.kim.bo.Role"
-						keyAttribute="id" labelAttribute="name" 
-						includeKeyInLabel="true" />
-				</control>
-			</attributeReference>
-			<attributeReference name="name" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="name">
-				<label>Role Name</label>
-                <shortLabel>Name</shortLabel>
-				<required>true</required>
-				<control>
-					<text size="40" />
-				</control>
-			</attributeReference>
-        </attributes>
+  <bean id="RoleQualificationForGroup-id" parent="RoleQualificationForGroup-id-parentBean" />
 
-        <collections>
-          <collection name="qualifiedRoleAttributes">
-            <label>Qualifications</label>
-            <shortLabel>Qualifications</shortLabel>
-            <elementLabel>Qualification</elementLabel>
-            <summary>Qualification Attributes</summary>
-            <description>Qualification Attributes</description>
-          </collection>
-        </collections>
+  <bean id="RoleQualificationForGroup-id-parentBean" abstract="true" parent="Role-id">
+    <property name="shortLabel" value="Id" />
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:businessObjectClass="org.kuali.rice.kim.bo.Role"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeKeyInLabel="true"
+            p:keyAttribute="id"
+            p:labelAttribute="name" />
+    </property>
+    <property name="label" value="Role Id" />
+  </bean>
+  <bean id="RoleQualificationForGroup-name" parent="RoleQualificationForGroup-name-parentBean" />
 
-        <objectLabel>Role Qualification for Group</objectLabel>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="RoleQualificationForGroup-name-parentBean" abstract="true" parent="Role-name">
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="40" />
+    </property>
+  </bean>
+</beans>

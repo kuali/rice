@@ -1,83 +1,99 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="AbstractQualifiedRoleAttribute" parent="AbstractQualifiedRoleAttribute-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="AbstractQualifiedRoleAttribute-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" />
+    <property name="titleAttribute" value="attributeName" />
+    <property name="objectLabel" value="Abstract Qualified Role Attribute" />
+    <property name="attributes" >
+      <list>
+        <ref bean="AbstractQualifiedRoleAttribute-id" />
+        <ref bean="AbstractQualifiedRoleAttribute-attributeName" />
+        <ref bean="AbstractQualifiedRoleAttribute-attributeValue" />
+        <ref bean="AbstractQualifiedRoleAttribute-roleId" />
+        <ref bean="AbstractQualifiedRoleAttribute-versionNumber" />
+        <ref bean="AbstractQualifiedRoleAttribute-objectId" />
+      </list>
+    </property>
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute">
-        <titleAttribute>attributeName</titleAttribute>
+<!-- Attribute Definitions -->
 
-        <attributes>
-            <attribute name="id" forceUppercase="true">
-                <label>Id</label>
-                <shortLabel>Id</shortLabel>
 
-                <maxLength>8</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+  <bean id="AbstractQualifiedRoleAttribute-id" parent="AbstractQualifiedRoleAttribute-id-parentBean" />
 
-                <control>
-                    <text size="8" />
-                </control>
+  <bean id="AbstractQualifiedRoleAttribute-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Id" />
+    <property name="maxLength" value="8" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="8" />
+    </property>
+    <property name="name" value="id" />
+    <property name="label" value="Id" />
+  </bean>
+  <bean id="AbstractQualifiedRoleAttribute-attributeName" parent="AbstractQualifiedRoleAttribute-attributeName-parentBean" />
 
-			</attribute>
+  <bean id="AbstractQualifiedRoleAttribute-attributeName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="attributeName" />
+    <property name="label" value="Name" />
+  </bean>
+  <bean id="AbstractQualifiedRoleAttribute-attributeValue" parent="AbstractQualifiedRoleAttribute-attributeValue-parentBean" />
 
-            <attribute name="attributeName" forceUppercase="false">
-                <label>Name</label>
-                <shortLabel>Name</shortLabel>
+  <bean id="AbstractQualifiedRoleAttribute-attributeValue-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Value" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="attributeValue" />
+    <property name="label" value="Value" />
+  </bean>
+  <bean id="AbstractQualifiedRoleAttribute-roleId" parent="AbstractQualifiedRoleAttribute-roleId-parentBean" />
 
-                <maxLength>255</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="false" /></validationPattern>
+  <bean id="AbstractQualifiedRoleAttribute-roleId-parentBean" abstract="true" parent="Role-id">
+    <property name="shortLabel" value="Role Id" />
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="HiddenControlDefinition" />
+    </property>
+    <property name="name" value="roleId" />
+    <property name="label" value="Role Id" />
+  </bean>
+  <bean id="AbstractQualifiedRoleAttribute-versionNumber" parent="AbstractQualifiedRoleAttribute-versionNumber-parentBean" />
 
-                <control>
-                    <text size="100" />
-                </control>
+  <bean id="AbstractQualifiedRoleAttribute-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+  <bean id="AbstractQualifiedRoleAttribute-objectId" parent="AbstractQualifiedRoleAttribute-objectId-parentBean" />
 
-			</attribute>
-
-            <attribute name="attributeValue" forceUppercase="false">
-                <label>Value</label>
-                <shortLabel>Value</shortLabel>
-
-                <maxLength>255</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
-
-                <control>
-                    <text size="100" />
-                </control>
-
-            </attribute>
-            
-            <attributeReference name="roleId" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="id">
-				<label>Role Id</label>
-                <shortLabel>Role Id</shortLabel>
-				<required>true</required>
-				<control>
-					<hidden/>
-				</control>
-			</attributeReference>
-			
-            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
-			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" >
-				<control>
-					<hidden/>
-				</control>
-			</attributeReference>
-
-        </attributes>
-        <objectLabel>Abstract Qualified Role Attribute</objectLabel>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="AbstractQualifiedRoleAttribute-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
+    <property name="control" >
+      <bean parent="HiddenControlDefinition" />
+    </property>
+  </bean>
+</beans>

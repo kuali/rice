@@ -17,7 +17,6 @@
 package edu.iu.uis.eden.docsearch;
 
 import org.junit.Test;
-import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -28,8 +27,6 @@ import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
-import edu.iu.uis.eden.lookupable.Field;
-import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -40,45 +37,45 @@ import edu.iu.uis.eden.util.Utilities;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class CustomDocumentSearchGeneratorTest extends KEWTestCase {
+public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
 //	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(CustomSearchAttributesTest.class);
 
     protected void loadTestData() throws Exception {
         loadXmlFile("SearchAttributeConfig.xml");
     }
 
-    private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {
-    	SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(key,value,key);
-    	Field field = getFieldByFormKey(docType, key);
-    	if (field != null) {
-        	sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
-        	sacc.setRangeSearch(field.isMemberOfRange());
-        	sacc.setAllowWildcards(field.isAllowingWildcards());
-        	sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
-        	sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
-        	sacc.setCaseSensitive(field.isCaseSensitive());
-        	sacc.setSearchInclusive(field.isInclusive());
-            sacc.setSearchable(field.isSearchable());
-            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-    	}
-    	return sacc;
-    }
-    
-    private Field getFieldByFormKey(DocumentType docType, String formKey) {
-    	if (docType == null) {
-    		return null;
-    	}
-		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
-			for (Row row : searchableAttribute.getSearchingRows()) {
-				for (Field field : row.getFields()) {
-					if (field.getPropertyName().equals(formKey)) {
-						return field;
-					}
-				}
-			}
-		}
-		return null;
-    }
+//    private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {
+//    	SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(key,value,key);
+//    	Field field = getFieldByFormKey(docType, key);
+//    	if (field != null) {
+//        	sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
+//        	sacc.setRangeSearch(field.isMemberOfRange());
+//        	sacc.setAllowWildcards(field.isAllowingWildcards());
+//        	sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
+//        	sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
+//        	sacc.setCaseSensitive(field.isCaseSensitive());
+//        	sacc.setSearchInclusive(field.isInclusive());
+//            sacc.setSearchable(field.isSearchable());
+//            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+//    	}
+//    	return sacc;
+//    }
+//    
+//    private Field getFieldByFormKey(DocumentType docType, String formKey) {
+//    	if (docType == null) {
+//    		return null;
+//    	}
+//		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
+//			for (Row row : searchableAttribute.getSearchingRows()) {
+//				for (Field field : row.getFields()) {
+//					if (field.getPropertyName().equals(formKey)) {
+//						return field;
+//					}
+//				}
+//			}
+//		}
+//		return null;
+//    }
 
     @Test public void testCustomDocumentSearchGeneratorUse() throws Exception {
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName("SearchDocType");
@@ -111,18 +108,18 @@ public class CustomDocumentSearchGeneratorTest extends KEWTestCase {
         // adjust the app constant to be greater than custom generator value
         adjustResultSetCapApplicationConstantValue(CustomDocumentSearchGenerator.RESULT_SET_LIMIT + 1);
         KEWServiceLocator.getDocumentSearchService().getList(user, criteria);
-        assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshhold());
+        assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshold().intValue());
 
         // adjust the app constant to be less than custom generator value
         int newLimit = CustomDocumentSearchGenerator.RESULT_SET_LIMIT - 1;
         adjustResultSetCapApplicationConstantValue(newLimit);
         KEWServiceLocator.getDocumentSearchService().getList(user, criteria);
-        assertEquals("Criteria threshold should equal system result set threshold", newLimit, criteria.getThreshhold());
+        assertEquals("Criteria threshold should equal system result set threshold", newLimit, criteria.getThreshold().intValue());
 
         // delete the app constant
         KEWServiceLocator.getApplicationConstantsService().delete(KEWServiceLocator.getApplicationConstantsService().findByName(EdenConstants.DOC_SEARCH_RESULT_CAP_KEY));
         KEWServiceLocator.getDocumentSearchService().getList(user, criteria);
-        assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshhold());
+        assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshold().intValue());
     }
     
     private void adjustResultSetCapApplicationConstantValue(Integer newValue) {

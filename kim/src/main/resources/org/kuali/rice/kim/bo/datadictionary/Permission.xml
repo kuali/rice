@@ -1,119 +1,172 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="Permission" parent="Permission-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="Permission-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Permission" />
+    <property name="inquiryDefinition" >
+      <ref bean="Permission-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="Permission-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="id" />
+    <property name="objectLabel" value="Permission" />
+    <property name="attributes" >
+      <list>
+        <ref bean="Permission-id" />
+        <ref bean="Permission-name" />
+        <ref bean="Permission-description" />
+        <ref bean="Permission-namespaceId" />
+        <ref bean="Permission-versionNumber" />
+        <ref bean="Permission-objectId" />
+      </list>
+    </property>
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kim.bo.Permission">
+<!-- Attribute Definitions -->
 
-        <inquiry>
-            <title>Permission Inquiry</title>
 
-            <inquirySections><inquirySection title="Header Text"><inquiryFields>
-                <field attributeName="id" />
-                <field attributeName="name" />
-                <field attributeName="description" />
-                <field attributeName="namespaceId" />
-            </inquiryFields></inquirySection></inquirySections>
-        </inquiry>
+  <bean id="Permission-id" parent="Permission-id-parentBean" />
 
-        <lookup>
-            <title>Permission Lookup</title>
+  <bean id="Permission-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="id" />
+    <property name="maxLength" value="8" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="8" />
+    </property>
+    <property name="name" value="id" />
+    <property name="label" value="Id" />
+  </bean>
+  <bean id="Permission-name" parent="Permission-name-parentBean" />
 
-            <instructions>Lookup a Permission</instructions>
+  <bean id="Permission-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="500" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="name" />
+    <property name="label" value="Permission Name" />
+  </bean>
+  <bean id="Permission-description" parent="Permission-description-parentBean" />
 
-            <defaultSort sortAscending="true">
-                <sortAttributes>
-                    <sortAttribute attributeName="name" />
-                </sortAttributes>
-            </defaultSort>
+  <bean id="Permission-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Description" />
+    <property name="maxLength" value="4000" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextareaControlDefinition"
+            p:cols="40"
+            p:rows="10" />
+    </property>
+    <property name="name" value="description" />
+    <property name="label" value="Permission Description" />
+  </bean>
+  <bean id="Permission-namespaceId" parent="Permission-namespaceId-parentBean" />
 
-            <lookupFields>
-                <lookupField attributeName="id" required="false" />
-                <lookupField attributeName="name" required="false" />
-            </lookupFields>
+  <bean id="Permission-namespaceId-parentBean" abstract="true" parent="Namespace-id">
+    <property name="shortLabel" value="Namespace" />
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:businessObjectClass="org.kuali.rice.kim.bo.Namespace"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeKeyInLabel="true"
+            p:keyAttribute="id"
+            p:labelAttribute="name" />
+    </property>
+    <property name="name" value="namespaceId" />
+    <property name="label" value="Namespace" />
+  </bean>
+  <bean id="Permission-versionNumber" parent="Permission-versionNumber-parentBean" />
 
-            <resultFields>
-                <field attributeName="id" />
-                <field attributeName="name" />
-                <field attributeName="description" />
-                <field attributeName="namespaceId" />
-            </resultFields>
-        </lookup>
+  <bean id="Permission-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+  <bean id="Permission-objectId" parent="Permission-objectId-parentBean" />
 
-        <titleAttribute>id</titleAttribute>
+  <bean id="Permission-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
+  </bean>
 
-        <attributes>
+<!-- Business Object Inquiry Definition -->
 
-            <attribute name="id" forceUppercase="true">
-                <label>Id</label>
-                <shortLabel>id</shortLabel>
 
-                <maxLength>8</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+  <bean id="Permission-inquiryDefinition" parent="Permission-inquiryDefinition-parentBean" />
 
-                <control>
-                    <text size="8" />
-                </control>
+  <bean id="Permission-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="id" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="name" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="description" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="namespaceId" />
+            </list>
+          </property>
+          <property name="title" value="Header Text" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="Permission Inquiry" />
+  </bean>
 
-			</attribute>
+<!-- Business Object Lookup Definition -->
 
-            <attribute name="name" forceUppercase="false">
-                <label>Permission Name</label>
-                <shortLabel>Name</shortLabel>
 
-                <maxLength>500</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true"/></validationPattern>
+  <bean id="Permission-lookupDefinition" parent="Permission-lookupDefinition-parentBean" />
 
-                <control>
-                    <text size="100" />
-                </control>
-
-			</attribute>
-
-			<attribute name="description" forceUppercase="false">
-                <label>Permission Description</label>
-                <shortLabel>Description</shortLabel>
-
-                <maxLength>4000</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true"/></validationPattern>
-
-                <control>
-                    <textarea cols="40" rows="10"/>
-                </control>
-
-			</attribute>
-			
-			<attributeReference name="namespaceId" sourceClassName="org.kuali.rice.kim.bo.Namespace" sourceAttributeName="id">
-				<label>Namespace</label>
-                <shortLabel>Namespace</shortLabel>
-				<required>true</required>
-				<control>
-					<select
-						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-						businessObjectClass="org.kuali.rice.kim.bo.Namespace"
-						keyAttribute="id" labelAttribute="name" 
-						includeKeyInLabel="true" />
-				</control>
-			</attributeReference>
-			
-            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
-			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
-        </attributes>
-        <objectLabel>Permission</objectLabel>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="Permission-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Lookup a Permission" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="description" />
+        <bean parent="FieldDefinition"
+              p:attributeName="namespaceId" />
+      </list>
+    </property>
+    <property name="title" value="Permission Lookup" />
+  </bean>
+</beans>

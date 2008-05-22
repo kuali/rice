@@ -18,11 +18,11 @@ package org.kuali.core.service.impl;
 import java.util.Collection;
 import java.util.Map;
 
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.dao.BusinessObjectDao;
 import org.kuali.core.service.KeyValuesService;
 import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.spring.CacheNoCopy;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -117,7 +117,7 @@ public class KeyValuesServiceImpl implements KeyValuesService {
     private boolean containsActiveIndicator(Class clazz) {
         boolean containsActive = false;
 
-        if (persistenceStructureService.listFieldNames(clazz).contains(RicePropertyConstants.ACTIVE)) {
+        if (persistenceStructureService.listFieldNames(clazz).contains(KNSPropertyConstants.ACTIVE)) {
             containsActive = true;
         }
 

@@ -17,8 +17,8 @@ package org.kuali.core.document;
 
 import java.util.LinkedHashMap;
 
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
  * List of business objects that this maintenance document is locking (prevents two documents from being routed trying to update the same object)
@@ -50,7 +50,7 @@ public class MaintenanceLock extends PersistableBusinessObjectBase {
     protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
         m.put("lockingRepresentation", this.lockingRepresentation);
-        m.put(RicePropertyConstants.DOCUMENT_NUMBER, getDocumentNumber());
+        m.put(KNSPropertyConstants.DOCUMENT_NUMBER, getDocumentNumber());
         return m;
     }
 }

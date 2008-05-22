@@ -21,8 +21,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
 
@@ -33,33 +31,26 @@ import org.kuali.core.datadictionary.exception.AttributeValidationException;
  * 
  */
 public class RelationshipDefinition extends DataDictionaryDefinitionBase {
-    // logger
-    private static Log LOG = LogFactory.getLog(RelationshipDefinition.class);
 
     private String objectAttributeName;
-    private Class sourceClass;
-    private Class targetClass;
+    private Class<? extends BusinessObject> sourceClass;
+    private Class<? extends BusinessObject> targetClass;
 
-    private List<PrimitiveAttributeDefinition> primitiveAttributes;
-    private List<SupportAttributeDefinition> supportAttributes;
+    private List<PrimitiveAttributeDefinition> primitiveAttributes = new ArrayList<PrimitiveAttributeDefinition>();
+    private List<SupportAttributeDefinition> supportAttributes = new ArrayList<SupportAttributeDefinition>();
 
 
-    public RelationshipDefinition() {
-        LOG.debug("creating new RelationshipDefinition");
-
-        primitiveAttributes = new ArrayList<PrimitiveAttributeDefinition>();
-        supportAttributes = new ArrayList<SupportAttributeDefinition>();
-    }
+    public RelationshipDefinition() {}
 
     public String getObjectAttributeName() {
         return objectAttributeName;
     }
 
-    public Class getSourceClass() {
+    public Class<? extends BusinessObject> getSourceClass() {
         return sourceClass;
     }
 
-    public Class getTargetClass() {
+    public Class<? extends BusinessObject> getTargetClass() {
         return targetClass;
     }
 
@@ -68,32 +59,12 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(objectAttributeName)) {
             throw new IllegalArgumentException("invalid (blank) objectAttributeName");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setObjectAttributeName '" + objectAttributeName + "'");
-        }
 
         this.objectAttributeName = objectAttributeName;
     }
 
-
-    public void addPrimitiveAttributeDefinition(PrimitiveAttributeDefinition primitiveAttributeDefinition) {
-        if (primitiveAttributeDefinition == null) {
-            throw new IllegalArgumentException("invalid (null) primitiveAttributeDefinition");
-        }
-
-        primitiveAttributes.add(primitiveAttributeDefinition);
-    }
-
-    public void addSupportAttributeDefinition(SupportAttributeDefinition supportAttributeDefinition) {
-        if (supportAttributeDefinition == null) {
-            throw new IllegalArgumentException("invalid (null) supportAttributeDefinition");
-        }
-
-        supportAttributes.add(supportAttributeDefinition);
-    }
-
     public List<PrimitiveAttributeDefinition> getPrimitiveAttributes() {
-        return Collections.unmodifiableList(primitiveAttributes);
+        return primitiveAttributes;
     }    
 
     public List<SupportAttributeDefinition> getSupportAttributes() {
@@ -123,24 +94,24 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
      * 
      * @see org.kuali.core.datadictionary.DataDictionaryEntry#completeValidation()
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         String propertyName = objectAttributeName;
-        if (!validationCompletionUtils.isPropertyOf(rootBusinessObjectClass, propertyName)) {
-            throw new AttributeValidationException("property '" + propertyName + "' is not an attribute of class '" + rootBusinessObjectClass + "' (" + getParseLocation() + ")");
+        if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, propertyName)) {
+            throw new AttributeValidationException("property '" + propertyName + "' is not an attribute of class '" + rootBusinessObjectClass + "' (" + "" + ")");
         }
-        Class propertyClass = validationCompletionUtils.getAttributeClass(rootBusinessObjectClass, propertyName);
-        if (!validationCompletionUtils.isDescendentClass(propertyClass, BusinessObject.class)) {
-            throw new AttributeValidationException("property '" + propertyName + "' is not a BusinessObject (" + getParseLocation() + ")");
+        Class propertyClass = DataDictionary.getAttributeClass(rootBusinessObjectClass, propertyName);
+        if (!BusinessObject.class.isAssignableFrom(propertyClass)) {
+            throw new AttributeValidationException("property '" + propertyName + "' is not a BusinessObject (" + "" + ")");
         }
 
         sourceClass = rootBusinessObjectClass;
         targetClass = propertyClass;
 
         for (PrimitiveAttributeDefinition primitiveAttributeDefinition : primitiveAttributes) {
-            primitiveAttributeDefinition.completeValidation(rootBusinessObjectClass, propertyClass, validationCompletionUtils);
+            primitiveAttributeDefinition.completeValidation(rootBusinessObjectClass, propertyClass);
         }
         for (SupportAttributeDefinition supportAttributeDefinition : supportAttributes) {
-            supportAttributeDefinition.completeValidation(rootBusinessObjectClass, propertyClass, validationCompletionUtils);
+            supportAttributeDefinition.completeValidation(rootBusinessObjectClass, propertyClass);
         }
     }
 
@@ -151,5 +122,13 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
     @Override
     public String toString() {
         return "RelationshipDefinition for relationship " + getObjectAttributeName();
+    }
+
+    public void setPrimitiveAttributes(List<PrimitiveAttributeDefinition> primitiveAttributes) {
+        this.primitiveAttributes = primitiveAttributes;
+    }
+
+    public void setSupportAttributes(List<SupportAttributeDefinition> supportAttributes) {
+        this.supportAttributes = supportAttributes;
     }
 }

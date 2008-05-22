@@ -1,114 +1,189 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="edu.sampleu.travel.bo.TravelAccount">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-        <inquiry>
-            <title>Travel Account Inquiry</title>
+  <bean id="TravelAccount" parent="TravelAccount-parentBean" />
 
-            <inquirySections><inquirySection title="Account Information"><inquiryFields>
-                <field attributeName="number" forceInquiry="true" />
-                <field attributeName="name" />
-                <field attributeName="extension.accountType.codeAndDescription" />
-                <field attributeName="foId" forceInquiry="true" />
-            </inquiryFields></inquirySection></inquirySections>
-        </inquiry>
+  <bean id="TravelAccount-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="edu.sampleu.travel.bo.TravelAccount" />
+    <property name="inquiryDefinition" >
+      <ref bean="TravelAccount-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="TravelAccount-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="Travel Account" />
+    <property name="relationships" >
+      <list>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="extension" />
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="number"
+                    p:targetName="number" />
+            </list>
+          </property>
+        </bean>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="extension.accountType" />
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="extension.accountTypeCode"
+                    p:targetName="accountTypeCode" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="attributes" >
+      <list>
+        <ref bean="TravelAccount-number" />
+        <ref bean="TravelAccount-name" />
+        <ref bean="TravelAccount-extension.accountTypeCode" />
+        <ref bean="TravelAccount-extension.accountType.codeAndDescription" />
+        <ref bean="TravelAccount-foId" />
+      </list>
+    </property>
+  </bean>
 
-        <lookup>
-            <title>Travel Account Lookup</title>
-            <instructions>Look up a Travel Account</instructions>
+<!-- Attribute Definitions -->
 
-            <defaultSort sortAscending="true">
-                <sortAttributes>
-                    <sortAttribute attributeName="number" />
-                </sortAttributes>
-            </defaultSort>
 
-            <lookupFields>
-                <lookupField attributeName="number" required="false" />
-                <lookupField attributeName="name" required="false" />
-                <lookupField attributeName="extension.accountTypeCode" required="false"/>
-                <lookupField attributeName="foId" required="false" forceLookup="true" />
-            </lookupFields>
+  <bean id="TravelAccount-number" parent="TravelAccount-number-parentBean" />
 
-            <resultFields>
-                <field attributeName="number" forceInquiry="true" />
-                <field attributeName="name" forceInquiry="true"/>
-                <field attributeName="extension.accountType.codeAndDescription" forceInquiry="true"/>
-                <field attributeName="foId" forceInquiry="true" />
-            </resultFields>
-        </lookup>
-        
-        <titleAttribute>Travel Account</titleAttribute>
- 
-        <attributes>
+  <bean id="TravelAccount-number-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Travel Account Number" />
+    <property name="maxLength" value="10" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="10" />
+    </property>
+    <property name="summary" value="Travel Account Number" />
+    <property name="name" value="number" />
+    <property name="label" value="Travel Account Number" />
+    <property name="description" value="Travel Account Number" />
+  </bean>
+  <bean id="TravelAccount-name" parent="TravelAccount-name-parentBean" />
 
-            <attribute name="number">
-                <label>Travel Account Number</label>
-                <shortLabel>Travel Account Number</shortLabel>
+  <bean id="TravelAccount-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Account Name" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="summary" value="Account Name" />
+    <property name="name" value="name" />
+    <property name="label" value="Account Name" />
+    <property name="description" value="Account Name" />
+  </bean>
+  <bean id="TravelAccount-extension.accountTypeCode" parent="TravelAccount-extension.accountTypeCode-parentBean" />
 
-                <maxLength>10</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+  <bean id="TravelAccount-extension.accountTypeCode-parentBean" abstract="true" parent="TravelAccountType-accountTypeCode">
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:businessObjectClass="edu.sampleu.travel.bo.TravelAccountType"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeKeyInLabel="true"
+            p:keyAttribute="accountTypeCode"
+            p:labelAttribute="name" />
+    </property>
+    <property name="name" value="extension.accountTypeCode" />
+  </bean>
+  <bean id="TravelAccount-extension.accountType.codeAndDescription" parent="TravelAccount-extension.accountType.codeAndDescription-parentBean" />
 
-                <control>
-                    <text size="10" />
-                </control>
-                
+  <bean id="TravelAccount-extension.accountType.codeAndDescription-parentBean" abstract="true" parent="TravelAccountType-codeAndDescription">
+    <property name="name" value="extension.accountType.codeAndDescription" />
+  </bean>
+  <bean id="TravelAccount-foId" parent="TravelAccount-foId-parentBean" />
 
-                <summary>Travel Account Number</summary>
-                <description>Travel Account Number</description>
-			</attribute>
+  <bean id="TravelAccount-foId-parentBean" abstract="true" parent="FiscalOfficer-id">
+    <property name="name" value="foId" />
+  </bean>
 
-            <attribute name="name" forceUppercase="false">
-                <label>Account Name</label>
-                <shortLabel>Account Name</shortLabel>
+<!-- Business Object Inquiry Definition -->
 
-                <maxLength>30</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
 
-                <control>
-                    <text size="30" />
-                </control>
+  <bean id="TravelAccount-inquiryDefinition" parent="TravelAccount-inquiryDefinition-parentBean" />
 
-                <summary>Account Name</summary>
-                <description>Account Name</description>
-			</attribute>
+  <bean id="TravelAccount-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="number"
+                    p:forceInquiry="true" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="name" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="extension.accountType.codeAndDescription" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="foId"
+                    p:forceInquiry="true" />
+            </list>
+          </property>
+          <property name="title" value="Account Information" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="Travel Account Inquiry" />
+  </bean>
 
-            <attributeReference name="extension.accountTypeCode" sourceClassName="edu.sampleu.travel.bo.TravelAccountType" sourceAttributeName="accountTypeCode">
-                <required>true</required>
-                <control>
-                    <select valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder" businessObjectClass="edu.sampleu.travel.bo.TravelAccountType" keyAttribute="accountTypeCode" labelAttribute="name" includeKeyInLabel="true"/>
-                </control>
-            </attributeReference>
+<!-- Business Object Lookup Definition -->
 
-            <attributeReference name="extension.accountType.codeAndDescription" sourceClassName="edu.sampleu.travel.bo.TravelAccountType" sourceAttributeName="codeAndDescription" />
-            		
-		    <attributeReference name="foId" sourceClassName="edu.sampleu.travel.bo.FiscalOfficer" sourceAttributeName="id"/>
-		</attributes>				
-		<relationships>
-			<relationship objectAttributeName="extension">
-				<primitiveAttribute sourceName="number" targetName="number" />
-			</relationship>
-			<relationship objectAttributeName="extension.accountType">
-				<primitiveAttribute sourceName="extension.accountTypeCode" targetName="accountTypeCode" />
-			</relationship>
-		</relationships>    
-    </businessObject>
-</dictionaryEntry>
+
+  <bean id="TravelAccount-lookupDefinition" parent="TravelAccount-lookupDefinition-parentBean" />
+
+  <bean id="TravelAccount-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Look up a Travel Account" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="number" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="extension.accountTypeCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="foId"
+              p:forceLookup="true" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="number"
+              p:forceInquiry="true" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name"
+              p:forceInquiry="true" />
+        <bean parent="FieldDefinition"
+              p:attributeName="extension.accountType.codeAndDescription"
+              p:forceInquiry="true" />
+        <bean parent="FieldDefinition"
+              p:attributeName="foId"
+              p:forceInquiry="true" />
+      </list>
+    </property>
+    <property name="title" value="Travel Account Lookup" />
+  </bean>
+</beans>

@@ -1,58 +1,65 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2007 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="KIMAttributeTypeMaintenanceDocument" parent="KIMAttributeTypeMaintenanceDocument-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="KIMAttributeTypeMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.AttributeType" />
+    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    <property name="maintainableSections" >
+      <list>
+        <ref bean="KIMAttributeTypeMaintenanceDocument-AttributeTypeInformation" />
+      </list>
+    </property>
+    <property name="lockingKeys" >
+      <list>
+        <value>id</value>
+      </list>
+    </property>
+    <property name="shortLabel" value="Attribute Type Maintenence" />
+    <property name="summary" value="Attribute Type Document" />
+    <property name="documentTypeName" value="KIMAttributeTypeMaintenanceDocument" />
+    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentTypeCode" value="KATD" />
+    <property name="authorizations" >
+      <list>
+        <bean parent="AuthorizationDefinition">
+          <property name="authorizedGroups" >
+            <set>
+              <value>kualiUniversalGroup</value>
+            </set>
+          </property>
+          <property name="action" value="initiate" />
+        </bean>
+      </list>
+    </property>
+    <property name="label" value="Attribute Type Document" />
+    <property name="description" value="This document is used to create or update attribute types." />
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <maintenanceDocument>
-        <businessObjectClass>org.kuali.rice.kim.bo.AttributeType</businessObjectClass>
-        <maintainableClass>org.kuali.core.maintenance.KualiMaintainableImpl</maintainableClass>
+<!-- Maintenance Section Definitions -->
 
-       <documentAuthorizerClass>org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase</documentAuthorizerClass>
-        <authorizations>
-            <authorization action="initiate">
-                <workgroups>
-                    <workgroup>kualiUniversalGroup</workgroup>
-                </workgroups>
-            </authorization>
-        </authorizations>
 
-        <documentTypeName>KIMAttributeTypeMaintenanceDocument</documentTypeName>
-        <documentTypeCode>KATD</documentTypeCode>
-        <label>Attribute Type Document</label>
-        <shortLabel>Attribute Type Maintenence</shortLabel>
+  <bean id="KIMAttributeTypeMaintenanceDocument-AttributeTypeInformation" parent="KIMAttributeTypeMaintenanceDocument-AttributeTypeInformation-parentBean" />
 
-        <summary>Attribute Type Document</summary>
-        <description>This document is used to create or update attribute types.</description>
-
-        <lockingKeys>
-            <field attributeName="id"/>
-        </lockingKeys>
-
-        <allowsNewOrCopy>true</allowsNewOrCopy>
-
-        <maintainableSections>
-            <maintainableSection title="Attribute Type Information">
-                <maintainableItems>
-                    <maintainableField name="id" readOnly="true" required="false" />
-                    <maintainableField name="attributeTypeName" readOnly="false" required="true" />
-                    <maintainableField name="description" readOnly="false" required="true" />
-                </maintainableItems>
-            </maintainableSection>
-        </maintainableSections>
-    </maintenanceDocument>
-</dictionaryEntry>
+  <bean id="KIMAttributeTypeMaintenanceDocument-AttributeTypeInformation-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="id"
+              p:readOnly="true" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="attributeTypeName" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="description" />
+      </list>
+    </property>
+    <property name="id" value="Attribute Type Information" />
+    <property name="title" value="Attribute Type Information" />
+  </bean>
+</beans>

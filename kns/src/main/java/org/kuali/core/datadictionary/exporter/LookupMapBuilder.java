@@ -63,7 +63,7 @@ public class LookupMapBuilder {
             }
 
             if (lookupDefinition.hasResultSetLimit()) {
-                lookupMap.set("resultSetLimit", lookupDefinition.getResultSetLimit());
+                lookupMap.set("resultSetLimit", lookupDefinition.getResultSetLimit().toString());
             }
             // complex properties
             lookupMap.setOptional(buildDefaultSortMap(lookupDefinition));

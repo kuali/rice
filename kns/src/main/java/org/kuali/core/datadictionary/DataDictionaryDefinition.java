@@ -16,7 +16,6 @@
 
 package org.kuali.core.datadictionary;
 
-import java.io.Serializable;
 
 
 /**
@@ -24,7 +23,7 @@ import java.io.Serializable;
  * 
  * 
  */
-public interface DataDictionaryDefinition extends Serializable {
+public interface DataDictionaryDefinition {
     /**
      * Performs complete intra-definition validation which couldn't be done earlier - for example, verifies that field references
      * refer to actual fields of some specific class.
@@ -33,5 +32,7 @@ public interface DataDictionaryDefinition extends Serializable {
      * @param otherBusinessObjectClass other stuff required to complete validation
      * @throws org.kuali.core.datadictionary.exception.CompletionException if a problem arises during validation-completion
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils);
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass);
+    
+    public String getId();
 }

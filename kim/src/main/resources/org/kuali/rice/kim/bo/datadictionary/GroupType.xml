@@ -1,150 +1,215 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="GroupType" parent="GroupType-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="GroupType-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupType" />
+    <property name="inquiryDefinition" >
+      <ref bean="GroupType-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="GroupType-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="name" />
+    <property name="objectLabel" value="Group Type" />
+    <property name="collections" >
+      <list>
+        <bean parent="CollectionDefinition"
+              p:shortLabel="Default Attributes"
+              p:summary="Group Type Default Attributes"
+              p:elementLabel="Attribute"
+              p:name="groupTypeDefaultAttributes"
+              p:label="Group Type Default Attributes"
+              p:description="Default attributes for this group type." />
+      </list>
+    </property>
+    <property name="attributes" >
+      <list>
+        <ref bean="GroupType-id" />
+        <ref bean="GroupType-name" />
+        <ref bean="GroupType-description" />
+        <ref bean="GroupType-workflowDocumentType" />
+        <ref bean="GroupType-versionNumber" />
+        <ref bean="GroupType-objectId" />
+      </list>
+    </property>
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kim.bo.GroupType">
+<!-- Attribute Definitions -->
 
-        <inquiry>
-        	<title>Group Type Inquiry</title>
 
-        	<inquirySections>
-        		<inquirySection title="Group Type Information">
-        			<inquiryFields>
-        				<field attributeName="id" />
-        				<field attributeName="name" />
-        				<field attributeName="description" />
-        				<field attributeName="workflowDocumentType" />
-        			</inquiryFields>
-        		</inquirySection>
-           		<inquirySection title="Default Attributes">
-        			<inquiryFields>
-        				<inquiryCollection name="groupTypeDefaultAttributes"
-        					businessObjectClass="org.kuali.rice.kim.bo.GroupTypeDefaultAttribute">
-        					<field attributeName="id" />
-        					<field attributeName="attributeTypeId" />
-        					<field attributeName="attributeName" />
-                            <field attributeName="description" />
-                            <field attributeName="required" />
-        					<field attributeName="active" />
-        				</inquiryCollection>
-        			</inquiryFields>
-        		</inquirySection>
-        	</inquirySections>
-        </inquiry>
+  <bean id="GroupType-id" parent="GroupType-id-parentBean" />
 
-        <lookup>
-            <title>Group Type Lookup</title>
+  <bean id="GroupType-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Id" />
+    <property name="maxLength" value="8" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="HiddenControlDefinition" />
+    </property>
+    <property name="name" value="id" />
+    <property name="label" value="Id" />
+  </bean>
+  <bean id="GroupType-name" parent="GroupType-name-parentBean" />
 
-            <instructions>Lookup a Group Type</instructions>
+  <bean id="GroupType-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="500" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="name" />
+    <property name="label" value="Name" />
+  </bean>
+  <bean id="GroupType-description" parent="GroupType-description-parentBean" />
 
-            <defaultSort sortAscending="true">
-                <sortAttributes>
-                    <sortAttribute attributeName="name" />
-                </sortAttributes>
-            </defaultSort>
+  <bean id="GroupType-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Description" />
+    <property name="maxLength" value="4000" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="description" />
+    <property name="label" value="Description" />
+  </bean>
+  <bean id="GroupType-workflowDocumentType" parent="GroupType-workflowDocumentType-parentBean" />
 
-            <lookupFields>
-                <lookupField attributeName="id" required="false" />
-                <lookupField attributeName="name" required="false" />
-                <lookupField attributeName="description" required="false" />
-                <lookupField attributeName="workflowDocumentType" required="false" />
-            </lookupFields>
+  <bean id="GroupType-workflowDocumentType-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Workflow Doc Type" />
+    <property name="maxLength" value="500" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="workflowDocumentType" />
+    <property name="label" value="Workflow Document Type" />
+  </bean>
+  <bean id="GroupType-versionNumber" parent="GroupType-versionNumber-parentBean" />
 
-            <resultFields>
-                <field attributeName="id" />
-                <field attributeName="name" />
-                <field attributeName="description" />
-                <field attributeName="workflowDocumentType" />
-            </resultFields>
-        </lookup>
+  <bean id="GroupType-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+  <bean id="GroupType-objectId" parent="GroupType-objectId-parentBean" />
 
-        <titleAttribute>name</titleAttribute>
+  <bean id="GroupType-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
+  </bean>
 
-        <attributes>
+<!-- Business Object Inquiry Definition -->
 
-            <attribute name="id" forceUppercase="true">
-                <label>Id</label>
-                <shortLabel>Id</shortLabel>
 
-                <maxLength>8</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+  <bean id="GroupType-inquiryDefinition" parent="GroupType-inquiryDefinition-parentBean" />
 
-                <control>
-                 <hidden/>
-                </control>
+  <bean id="GroupType-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="id" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="name" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="description" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="workflowDocumentType" />
+            </list>
+          </property>
+          <property name="title" value="Group Type Information" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="groupTypeDefaultAttributes" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupTypeDefaultAttribute" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="id" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="attributeTypeId" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="attributeName" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="description" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="required" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="active" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Default Attributes" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="Group Type Inquiry" />
+  </bean>
 
-            </attribute>
+<!-- Business Object Lookup Definition -->
 
-            <attribute name="name" forceUppercase="false">
-                <label>Name</label>
-                <shortLabel>Name</shortLabel>
 
-                <maxLength>500</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
+  <bean id="GroupType-lookupDefinition" parent="GroupType-lookupDefinition-parentBean" />
 
-                <control>
-                    <text size="100" />
-                </control>
-
-            </attribute>
-
-            <attribute name="description" forceUppercase="false">
-                <label>Description</label>
-                <shortLabel>Description</shortLabel>
-
-                <maxLength>4000</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
-
-                <control>
-                    <text size="100" />
-                </control>
-
-            </attribute>
-            
-            <attribute name="workflowDocumentType" forceUppercase="false">
-                <label>Workflow Document Type</label>
-                <shortLabel>Workflow Doc Type</shortLabel>
-
-                <maxLength>500</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
-
-                <control>
-                    <text size="100" />
-                </control>
-
-            </attribute>
-            
-            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
-            <attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
-
-        </attributes>
-
-        <collections>
-          <collection name="groupTypeDefaultAttributes">
-            <label>Group Type Default Attributes</label>
-            <shortLabel>Default Attributes</shortLabel>
-            <elementLabel>Attribute</elementLabel>
-            <summary>Group Type Default Attributes</summary>
-            <description>Default attributes for this group type.</description>
-          </collection>
-        </collections>
-
-        <objectLabel>Group Type</objectLabel>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="GroupType-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Lookup a Group Type" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="description" />
+        <bean parent="FieldDefinition"
+              p:attributeName="workflowDocumentType" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="description" />
+        <bean parent="FieldDefinition"
+              p:attributeName="workflowDocumentType" />
+      </list>
+    </property>
+    <property name="title" value="Group Type Lookup" />
+  </bean>
+</beans>

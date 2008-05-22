@@ -24,7 +24,6 @@ import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.AdHocRoutePerson;
 import org.kuali.core.bo.AdHocRouteWorkgroup;
 import org.kuali.core.bo.PersistableBusinessObject;
@@ -33,6 +32,7 @@ import org.kuali.core.dao.DocumentDao;
 import org.kuali.core.document.Document;
 import org.kuali.core.util.OjbCollectionAware;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -88,7 +88,7 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
      */
     public List findByDocumentHeaderIds(Class clazz, List idList) throws DataAccessException {
         Criteria criteria = new Criteria();
-        criteria.addIn(RicePropertyConstants.DOCUMENT_NUMBER, idList);
+        criteria.addIn(KNSPropertyConstants.DOCUMENT_NUMBER, idList);
 
         QueryByCriteria query = QueryFactory.newQuery(clazz, criteria);
         ArrayList <Document> tempList = new ArrayList(this.getPersistenceBrokerTemplate().getCollectionByQuery(query));
@@ -103,7 +103,7 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
      */
     public Collection findByDocumentHeaderStatusCode(Class clazz, String statusCode) {
         Criteria criteria = new Criteria();
-        criteria.addEqualTo(RicePropertyConstants.DOCUMENT_HEADER + "." + RicePropertyConstants.FINANCIAL_DOCUMENT_STATUS_CODE, statusCode);
+        criteria.addEqualTo(KNSPropertyConstants.DOCUMENT_HEADER + "." + KNSPropertyConstants.FINANCIAL_DOCUMENT_STATUS_CODE, statusCode);
 
         QueryByCriteria query = QueryFactory.newQuery(clazz, criteria);
 

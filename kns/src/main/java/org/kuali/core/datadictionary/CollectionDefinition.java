@@ -17,8 +17,6 @@
 package org.kuali.core.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
 
 /**
@@ -29,7 +27,7 @@ import org.kuali.core.datadictionary.exception.AttributeValidationException;
  */
 public class CollectionDefinition extends DataDictionaryDefinitionBase {
     // logger
-    private static Log LOG = LogFactory.getLog(CollectionDefinition.class);
+    //private static Log LOG = LogFactory.getLog(CollectionDefinition.class);
 
     private String name;
     private String label;
@@ -39,9 +37,7 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
     private String summary;
     private String description;
 
-    public CollectionDefinition() {
-        LOG.debug("creating new CollectionDefinition");
-    }
+    public CollectionDefinition() {}
 
     public String getName() {
         return name;
@@ -50,9 +46,6 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
     public void setName(String name) {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("invalid (blank) name");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setName '" + name + "'");
         }
         this.name = name;
     }
@@ -64,9 +57,6 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
     public void setLabel(String label) {
         if (StringUtils.isBlank(label)) {
             throw new IllegalArgumentException("invalid (blank) label");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setLabel '" + label + "'");
         }
         this.label = label;
     }
@@ -81,9 +71,6 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
     public void setShortLabel(String shortLabel) {
         if (StringUtils.isBlank(shortLabel)) {
             throw new IllegalArgumentException("invalid (blank) shortLabel");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setShortLabel '" + shortLabel + "'");
         }
         this.shortLabel = shortLabel;
     }
@@ -109,12 +96,6 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
     }
 
     public void setSummary(String summary) {
-        if (StringUtils.isBlank(summary)) {
-            throw new IllegalArgumentException("invalid (blank) summary");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setSummary '" + summary + "'");
-        }
         this.summary = summary;
     }
 
@@ -123,12 +104,6 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
     }
 
     public void setDescription(String description) {
-        if (StringUtils.isBlank(description)) {
-            throw new IllegalArgumentException("invalid (blank) description");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setDescription '" + description + "'");
-        }
         this.description = description;
     }
 
@@ -138,10 +113,9 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
      * 
      * @see org.kuali.core.datadictionary.DataDictionaryEntry#completeValidation()
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
-
-        if (!validationCompletionUtils.isCollectionPropertyOf(rootBusinessObjectClass, name)) {
-            throw new AttributeValidationException("property '" + name + "' is not a collection property of class '" + rootBusinessObjectClass + "' (" + getParseLocation() + ")");
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+        if (!DataDictionary.isCollectionPropertyOf(rootBusinessObjectClass, name)) {
+            throw new AttributeValidationException("property '" + name + "' is not a collection property of class '" + rootBusinessObjectClass + "' (" + "" + ")");
         }
     }
 

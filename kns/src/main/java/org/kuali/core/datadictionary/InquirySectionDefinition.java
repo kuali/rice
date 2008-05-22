@@ -17,35 +17,38 @@
 package org.kuali.core.datadictionary;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.core.datadictionary.exception.DuplicateEntryException;
 
 /**
+ *                  inquirySection defines the format and content of
+                 one section of the inquiry.
+                 DD:  See InquirySectionDefinition.java
+                 
+                numberOfColumns = the number of fields to be displayed in each row of the inquiry section.
+                For example, numberOfColumns = 2 indicates that the label and values for two fields will be
+                displayed in each row as follows:
+                    field1label field1value  |   field2label field2value
+                    field3label field3value  |   field4label field4value
+                etc.
+                 
  * Contains section-related information for inquiry sections
  * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
  */
 public class InquirySectionDefinition extends DataDictionaryDefinitionBase {
-    private static Log LOG = LogFactory.getLog(InquirySectionDefinition.class);
 
     private String title;
-    private Map<String, FieldDefinition> inquiryFields;
+    private List<FieldDefinition> inquiryFields = new ArrayList<FieldDefinition>();
+    private Map<String, FieldDefinition> inquiryFieldMap = new LinkedHashMap<String, FieldDefinition>();
     private Map inquiryCollections;
     
-    private String numberOfColumns;
+    private Integer numberOfColumns;
 
     public InquirySectionDefinition() {
-        LOG.debug("creating new InquirySectionDefinition");
-        this.inquiryFields = new LinkedHashMap();
-        this.inquiryCollections = new LinkedHashMap();
     }
 
 
@@ -66,47 +69,26 @@ public class InquirySectionDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(title)) {
             throw new IllegalArgumentException("invalid (blank) title");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setTitle '" + title + "'");
-        }
         this.title = title;
-    }
-
-
-    /**
-     * @param FieldDefinition
-     * @throws IllegalArgumentException if the given FieldDefinition is null
-     */
-    public void addInquiryField(FieldDefinition inquiryField) {
-        if (inquiryField == null) {
-            throw new IllegalArgumentException("invalid (null) inquiryField");
-        }
-
-        String itemName = inquiryField.getAttributeName();
-        if (this.inquiryFields.containsKey(itemName)) {
-            throw new DuplicateEntryException("duplicate itemName entry for item '" + itemName + "'");
-        }
-
-        this.inquiryFields.put(itemName, inquiryField);
     }
 
     /**
      * @return List of attributeNames of all FieldDefinitions associated with this InquirySection, in the order in
      *         which they were added
      */
-    public List getInquiryFieldNames() {
-        List itemNames = new ArrayList();
-        itemNames.addAll(this.inquiryFields.keySet());
+    public List<String> getInquiryFieldNames() {
+        List<String> itemNames = new ArrayList<String>();
+        itemNames.addAll(this.inquiryFieldMap.keySet());
 
-        return Collections.unmodifiableList(itemNames);
+        return itemNames;
     }
 
     /**
      * @return Collection of all FieldDefinitions associated with this InquirySection, in the order in which they
      *         were added
      */
-    public Collection<FieldDefinition> getInquiryFields() {
-        return Collections.unmodifiableCollection(this.inquiryFields.values());
+    public List<FieldDefinition> getInquiryFields() {
+        return inquiryFields;
     }
 
     /**
@@ -114,12 +96,9 @@ public class InquirySectionDefinition extends DataDictionaryDefinitionBase {
      * 
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
-        for (Iterator i = inquiryFields.entrySet().iterator(); i.hasNext();) {
-            Map.Entry e = (Map.Entry) i.next();
-
-            FieldDefinition inquiryField = (FieldDefinition) e.getValue();
-            inquiryField.completeValidation(rootBusinessObjectClass, null, validationCompletionUtils);
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+        for (FieldDefinition inquiryField : inquiryFields ) {
+            inquiryField.completeValidation(rootBusinessObjectClass, null);
         }
     }
 
@@ -131,15 +110,100 @@ public class InquirySectionDefinition extends DataDictionaryDefinitionBase {
         return inquiryCollections;
     }
 
+    /**
+                   The inquiryCollection defines a collection within the Business Object which contains
+                   data that should be displayed with the BO when the inquiry is performed.
+
+                   Each inquiryCollection defines a set of data fields, nested inquiryCollections
+                   and summaryFields.  The summaryFields will be reported in the header of
+                   this inquiryCollection, .
+
+                   DD: See InquiryCollectionDefinition.java
+                   JSTL: The inquiryCollection element is a Map with the following keys:
+                       * name (String)
+                       * businessObjectClass (String)
+                       * numberOfColumns (String)
+                       * inquiryFields (Map)
+                       * inquiryCollections (Map, optional)
+                       * summaryTitle (String)
+                       * summaryFields (Map, optional)
+     */
     public void setInquiryCollections(Map inquiryCollections) {
         this.inquiryCollections = inquiryCollections;
     }
 
-    public String getNumberOfColumns() {
+    public Integer getNumberOfColumns() {
         return numberOfColumns;
     }
 
-    public void setNumberOfColumns(String numberOfColumns) {
+    /**
+                numberOfColumns = the number of fields to be displayed in each row of the inquiry section.
+                For example, numberOfColumns = 2 indicates that the label and values for two fields will be
+                displayed in each row as follows:
+                    field1label field1value  |   field2label field2value
+                    field3label field3value  |   field4label field4value
+                etc.
+     */
+    public void setNumberOfColumns(Integer numberOfColumns) {
         this.numberOfColumns = numberOfColumns;
     }
+
+
+    /**
+                JSTL: inquiryFields is a Map which is accessed using a
+                key of "inquiryFields".  This map contains the following types
+                of elements:
+                    * inquirySubSectionHeader
+                    * field
+                    * inquiryCollection
+                Each of these entries are keyed by "attributeName".
+                The associated value is the attributeName of the
+                mapped element.
+
+                  The inquirySubSectionHeader allows a separator containing text to
+                  separate groups of fields.  The name attribute is the displayed text.
+
+                  DD:   See InquirySubSectionHeaderDefinition.
+                  JSTL: inquirySubSectionHeader appears in the inquiryFields map as:
+                      * key = "attributeName"
+                      * value = name of inquirySubSectionHeader
+
+
+                    The field element defines the attributes of a single data field.
+
+                    DD:  See FieldDefinition.java
+                    JSTL: The field element is a Map which is accessed using
+                    a key of the attributeName.  This map contains the following keys:
+                        * attributeName (String)
+                        * forceInquiry (boolean String)
+                        * noInquiry (boolean String)
+                        * maxLength (String)
+
+                forceInquiry = true means that the displayed field value will
+                always be made inquirable (this attribute is not used within the code).
+
+                noInquiry = true means that the displayed field will never be made inquirable.
+
+                maxLength = the maximum allowable length of the field in the lookup result fields.  In other contexts,
+                like inquiries, this field has no effect.
+
+     *
+     */
+    public void setInquiryFields(List<FieldDefinition> inquiryFields) {
+        inquiryFieldMap.clear();
+        for (FieldDefinition inquiryField : inquiryFields ) {
+            if (inquiryField == null) {
+                throw new IllegalArgumentException("invalid (null) inquiryField");
+            }
+
+            String itemName = inquiryField.getAttributeName();
+            if (inquiryFieldMap.containsKey(itemName)) {
+                throw new DuplicateEntryException("duplicate itemName entry for item '" + itemName + "'");
+            }
+
+            inquiryFieldMap.put(itemName, inquiryField);        
+        }
+        this.inquiryFields = inquiryFields;
+    }
+
 }

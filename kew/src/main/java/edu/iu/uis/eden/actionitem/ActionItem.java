@@ -81,13 +81,29 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     private Map customActions = new HashMap();
     
     private transient DocumentRouteHeaderValue routeHeader;
-    
-    public Workgroup getWorkgroup() {
+
+    private Workgroup getWorkgroup(Long workgroupId) {
         return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId)); 
     }
     
-    public WorkflowUser getUser() throws EdenUserNotFoundException {
+    public Workgroup getWorkgroup() {
+        return getWorkgroup(workgroupId);
+    }
+    
+    public Workgroup getDelegatorWorkgroup() {
+        return getWorkgroup(delegatorWorkgroupId);
+    }
+
+    private WorkflowUser getUser(String workflowId) throws EdenUserNotFoundException {
         return KEWServiceLocator.getUserService().getWorkflowUser(new WorkflowUserId(workflowId));
+    }
+    
+    public WorkflowUser getUser() throws EdenUserNotFoundException {
+        return getUser(workflowId);
+    }
+    
+    public WorkflowUser getDelegatorUser() throws EdenUserNotFoundException {
+        return getUser(delegatorWorkflowId);
     }
 
     public String getRecipientTypeCode() {

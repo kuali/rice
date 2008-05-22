@@ -1,114 +1,188 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kns.test.document.bo.Account">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-        <inquiry>
-            <title>Account Inquiry</title>
+  <bean id="Account" parent="Account-parentBean" />
 
-            <inquirySections><inquirySection title="Account Information"><inquiryFields>
-                <field attributeName="number" forceInquiry="true" />
-                <field attributeName="name" />
-                <field attributeName="extension.accountType.codeAndDescription" />
-                <field attributeName="amId" forceInquiry="true" />
-            </inquiryFields></inquirySection></inquirySections>
-        </inquiry>
+  <bean id="Account-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kns.test.document.bo.Account" />
+    <property name="inquiryDefinition" >
+      <ref bean="Account-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="Account-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="Travel Account" />
+    <property name="relationships" >
+      <list>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="extension" />
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="number"
+                    p:targetName="number" />
+            </list>
+          </property>
+        </bean>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="extension.accountType" />
+          <property name="primitiveAttributes" >
+            <list>
+              <bean parent="PrimitiveAttributeDefinition"
+                    p:sourceName="extension.accountTypeCode"
+                    p:targetName="accountTypeCode" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="attributes" >
+      <list>
+        <ref bean="Account-number" />
+        <ref bean="Account-name" />
+        <ref bean="Account-extension.accountTypeCode" />
+        <ref bean="Account-extension.accountType.codeAndDescription" />
+        <ref bean="Account-amId" />
+      </list>
+    </property>
+  </bean>
 
-        <lookup>
-            <title>Account Lookup</title>
-            <instructions>Look up an Account</instructions>
+<!-- Attribute Definitions -->
 
-            <defaultSort sortAscending="true">
-                <sortAttributes>
-                    <sortAttribute attributeName="number" />
-                </sortAttributes>
-            </defaultSort>
 
-            <lookupFields>
-                <lookupField attributeName="number" required="false" />
-                <lookupField attributeName="name" required="false" />
-                <lookupField attributeName="extension.accountTypeCode" required="false"/>
-                <lookupField attributeName="amId" required="false" forceLookup="true" />
-            </lookupFields>
+  <bean id="Account-number" parent="Account-number-parentBean" />
 
-            <resultFields>
-                <field attributeName="number" forceInquiry="true" />
-                <field attributeName="name" forceInquiry="true"/>
-                <field attributeName="extension.accountType.codeAndDescription" forceInquiry="true"/>
-                <field attributeName="amId" forceInquiry="true" />
-            </resultFields>
-        </lookup>
-        
-        <titleAttribute>Travel Account</titleAttribute>
- 
-        <attributes>
+  <bean id="Account-number-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Account Number" />
+    <property name="maxLength" value="10" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="10" />
+    </property>
+    <property name="summary" value="Account Number" />
+    <property name="name" value="number" />
+    <property name="label" value="Account Number" />
+    <property name="description" value="Account Number" />
+  </bean>
+  <bean id="Account-name" parent="Account-name-parentBean" />
 
-            <attribute name="number">
-                <label>Account Number</label>
-                <shortLabel>Account Number</shortLabel>
+  <bean id="Account-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Account Name" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="summary" value="Account Name" />
+    <property name="name" value="name" />
+    <property name="label" value="Account Name" />
+    <property name="description" value="Account Name" />
+  </bean>
+  <bean id="Account-extension.accountTypeCode" parent="Account-extension.accountTypeCode-parentBean" />
 
-                <maxLength>10</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+  <bean id="Account-extension.accountTypeCode-parentBean" abstract="true" parent="AccountType-accountTypeCode">
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:businessObjectClass="org.kuali.rice.kns.test.document.bo.AccountType"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeKeyInLabel="true"
+            p:keyAttribute="accountTypeCode"
+            p:labelAttribute="name" />
+    </property>
+    <property name="name" value="extension.accountTypeCode" />
+  </bean>
+  <bean id="Account-extension.accountType.codeAndDescription" parent="Account-extension.accountType.codeAndDescription-parentBean" />
 
-                <control>
-                    <text size="10" />
-                </control>
-                
+  <bean id="Account-extension.accountType.codeAndDescription-parentBean" abstract="true" parent="AccountType-codeAndDescription">
+    <property name="name" value="extension.accountType.codeAndDescription" />
+  </bean>
+  <bean id="Account-amId" parent="Account-amId-parentBean" />
 
-                <summary>Account Number</summary>
-                <description>Account Number</description>
-			</attribute>
+  <bean id="Account-amId-parentBean" abstract="true" parent="AccountManager-amId">
+  </bean>
 
-            <attribute name="name" forceUppercase="false">
-                <label>Account Name</label>
-                <shortLabel>Account Name</shortLabel>
+<!-- Business Object Inquiry Definition -->
 
-                <maxLength>30</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
 
-                <control>
-                    <text size="30" />
-                </control>
+  <bean id="Account-inquiryDefinition" parent="Account-inquiryDefinition-parentBean" />
 
-                <summary>Account Name</summary>
-                <description>Account Name</description>
-			</attribute>
+  <bean id="Account-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="number"
+                    p:forceInquiry="true" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="name" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="extension.accountType.codeAndDescription" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="amId"
+                    p:forceInquiry="true" />
+            </list>
+          </property>
+          <property name="title" value="Account Information" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="Account Inquiry" />
+  </bean>
 
-            <attributeReference name="extension.accountTypeCode" sourceClassName="org.kuali.rice.kns.test.document.bo.AccountType" sourceAttributeName="accountTypeCode">
-                <required>true</required>
-                <control>
-                    <select valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder" businessObjectClass="org.kuali.rice.kns.test.document.bo.AccountType" keyAttribute="accountTypeCode" labelAttribute="name" includeKeyInLabel="true"/>
-                </control>
-            </attributeReference>
+<!-- Business Object Lookup Definition -->
 
-            <attributeReference name="extension.accountType.codeAndDescription" sourceClassName="org.kuali.rice.kns.test.document.bo.AccountType" sourceAttributeName="codeAndDescription" />
-            		
-		    <attributeReference name="amId" sourceClassName="org.kuali.rice.kns.test.document.bo.AccountManager" sourceAttributeName="amId"/>
-		</attributes>				
-		<relationships>
-			<relationship objectAttributeName="extension">
-				<primitiveAttribute sourceName="number" targetName="number" />
-			</relationship>
-			<relationship objectAttributeName="extension.accountType">
-				<primitiveAttribute sourceName="extension.accountTypeCode" targetName="accountTypeCode" />
-			</relationship>
-		</relationships>    
-    </businessObject>
-</dictionaryEntry>
+
+  <bean id="Account-lookupDefinition" parent="Account-lookupDefinition-parentBean" />
+
+  <bean id="Account-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Look up an Account" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="number" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="extension.accountTypeCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="amId"
+              p:forceLookup="true" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="number"
+              p:forceInquiry="true" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name"
+              p:forceInquiry="true" />
+        <bean parent="FieldDefinition"
+              p:attributeName="extension.accountType.codeAndDescription"
+              p:forceInquiry="true" />
+        <bean parent="FieldDefinition"
+              p:attributeName="amId"
+              p:forceInquiry="true" />
+      </list>
+    </property>
+    <property name="title" value="Account Lookup" />
+  </bean>
+</beans>

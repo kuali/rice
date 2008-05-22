@@ -18,6 +18,7 @@ package edu.iu.uis.eden.server;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -43,6 +44,7 @@ import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actionrequests.ActionRequestFactory;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actions.AdHocRevoke;
@@ -50,6 +52,7 @@ import edu.iu.uis.eden.actions.MovePoint;
 import edu.iu.uis.eden.actions.ValidActions;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
 import edu.iu.uis.eden.clientapp.DeleteEvent;
+import edu.iu.uis.eden.clientapp.vo.ActionItemVO;
 import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
@@ -59,8 +62,13 @@ import edu.iu.uis.eden.clientapp.vo.DocumentContentVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentDetailVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchCriteriaVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchResultRowVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchResultVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
 import edu.iu.uis.eden.clientapp.vo.EmplIdVO;
+import edu.iu.uis.eden.clientapp.vo.KeyValueVO;
+import edu.iu.uis.eden.clientapp.vo.LookupableColumnVO;
 import edu.iu.uis.eden.clientapp.vo.MovePointVO;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.clientapp.vo.NoteVO;
@@ -91,7 +99,12 @@ import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
 import edu.iu.uis.eden.definition.AttributeDefinition;
+import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
+import edu.iu.uis.eden.docsearch.DocSearchUtils;
+import edu.iu.uis.eden.docsearch.DocumentSearchResult;
+import edu.iu.uis.eden.docsearch.DocumentSearchResultComponents;
 import edu.iu.uis.eden.docsearch.SearchableAttribute;
+import edu.iu.uis.eden.docsearch.web.SearchAttributeFormContainer;
 import edu.iu.uis.eden.docsearch.xml.GenericXMLSearchableAttribute;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.CompatUtils;
@@ -107,6 +120,7 @@ import edu.iu.uis.eden.exception.DocumentTypeNotFoundException;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
+import edu.iu.uis.eden.lookupable.Column;
 import edu.iu.uis.eden.notes.Note;
 import edu.iu.uis.eden.notes.NoteService;
 import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
@@ -133,6 +147,7 @@ import edu.iu.uis.eden.user.WorkflowUserId;
 import edu.iu.uis.eden.util.ResponsibleParty;
 import edu.iu.uis.eden.util.Utilities;
 import edu.iu.uis.eden.util.XmlHelper;
+import edu.iu.uis.eden.web.KeyValueSort;
 import edu.iu.uis.eden.workgroup.GroupId;
 import edu.iu.uis.eden.workgroup.GroupNameId;
 import edu.iu.uis.eden.workgroup.WorkflowGroupId;
@@ -140,7 +155,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
 
 /**
  * Translates Workflow server side beans into client side VO beans.
- *
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class BeanConverter {
@@ -154,10 +169,10 @@ public class BeanConverter {
         populateRouteHeaderVO(routeHeaderVO, routeHeader);
 
         if (user != null) {
-        	routeHeaderVO.setUserBlanketApprover(false);  // default to false
-        	if (routeHeader.getDocumentType() != null) {
+            routeHeaderVO.setUserBlanketApprover(false); // default to false
+            if (routeHeader.getDocumentType() != null) {
                 routeHeaderVO.setUserBlanketApprover(routeHeader.getDocumentType().isUserBlanketApprover(user));
-        	}
+            }
             String topActionRequested = EdenConstants.ACTION_REQUEST_FYI_REQ;
             for (Iterator iter = routeHeader.getActionRequests().iterator(); iter.hasNext();) {
                 ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
@@ -188,7 +203,7 @@ public class BeanConverter {
         }
 
         if (user != null) {
-        	routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(user, routeHeader)));
+            routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(user, routeHeader)));
         }
         return routeHeaderVO;
     }
@@ -201,10 +216,10 @@ public class BeanConverter {
         populateRouteHeaderVO(routeHeaderVO, routeHeader);
 
         if (user != null) {
-        	routeHeaderVO.setUserBlanketApprover(false);  // default to false
-        	if (routeHeader.getDocumentType() != null) {
+            routeHeaderVO.setUserBlanketApprover(false); // default to false
+            if (routeHeader.getDocumentType() != null) {
                 routeHeaderVO.setUserBlanketApprover(routeHeader.getDocumentType().isUserBlanketApprover(user));
-        	}
+            }
             String topActionRequested = EdenConstants.ACTION_REQUEST_FYI_REQ;
             for (Iterator iter = routeHeader.getActionRequests().iterator(); iter.hasNext();) {
                 ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
@@ -244,7 +259,8 @@ public class BeanConverter {
         return validActionsVO;
     }
 
-    // private static void populateActionListRouteHeaderVO(RouteHeaderVO routeHeaderVO, DocumentRouteHeaderValue routeHeader) throws WorkflowException {
+    // private static void populateActionListRouteHeaderVO(RouteHeaderVO routeHeaderVO, DocumentRouteHeaderValue routeHeader)
+    // throws WorkflowException {
     // routeHeaderVO.setAppDocId(routeHeader.getAppDocId());
     // routeHeaderVO.setDateApproved(Utilities.convertTimestamp(routeHeader.getApprovedDate()));
     // routeHeaderVO.setDateCreated(Utilities.convertTimestamp(routeHeader.getCreateDate()));
@@ -253,7 +269,8 @@ public class BeanConverter {
     // //routeHeaderVO.setDocumentContent(convertDocumentContent(routeHeader.getDocContent()));
     // routeHeaderVO.setDocRouteLevel(routeHeader.getDocRouteLevel());
     //
-    // Collection activeNodes = SpringServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeaderVO.getRouteHeaderId());
+    // Collection activeNodes =
+    // SpringServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeaderVO.getRouteHeaderId());
     // routeHeaderVO.setNodeNames(new String[activeNodes.size()]);
     // int index = 0;
     // for (Iterator iterator = activeNodes.iterator(); iterator.hasNext(); index++) {
@@ -285,25 +302,24 @@ public class BeanConverter {
          * This is the original code which set everything up for lazy loading of document content
          */
         // by default, a non-initialized document content object will be sent so that it can be fetched lazily
-        //DocumentContentVO documentContentVO = new DocumentContentVO();
-        //documentContentVO.setRouteHeaderId(routeHeader.getRouteHeaderId());
-        //routeHeaderVO.setDocumentContent(documentContentVO);
-
+        // DocumentContentVO documentContentVO = new DocumentContentVO();
+        // documentContentVO.setRouteHeaderId(routeHeader.getRouteHeaderId());
+        // routeHeaderVO.setDocumentContent(documentContentVO);
         /**
          * Since we removed the lazy loading in the 2.3 release, this is the code which bypasses lazy loading
          */
-        //routeHeaderVO.setDocumentContent(convertDocumentContent(routeHeader.getDocContent(), routeHeader.getRouteHeaderId()));
-
+        // routeHeaderVO.setDocumentContent(convertDocumentContent(routeHeader.getDocContent(),
+        // routeHeader.getRouteHeaderId()));
         routeHeaderVO.setDocRouteLevel(routeHeader.getDocRouteLevel());
         routeHeaderVO.setCurrentRouteNodeNames(routeHeader.getCurrentRouteLevelName());
 
-        /*Collection activeNodes = SpringServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeaderVO.getRouteHeaderId());
-        routeHeaderVO.setNodeNames(new String[activeNodes.size()]);
-        int index = 0;
-        for (Iterator iterator = activeNodes.iterator(); iterator.hasNext();) {
-            RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
-            routeHeaderVO.getNodeNames()[index++] = nodeInstance.getRouteNode().getRouteNodeName();
-        }*/
+        /*
+         * Collection activeNodes =
+         * SpringServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeaderVO.getRouteHeaderId());
+         * routeHeaderVO.setNodeNames(new String[activeNodes.size()]); int index = 0; for (Iterator iterator =
+         * activeNodes.iterator(); iterator.hasNext();) { RouteNodeInstance nodeInstance = (RouteNodeInstance)
+         * iterator.next(); routeHeaderVO.getNodeNames()[index++] = nodeInstance.getRouteNode().getRouteNodeName(); }
+         */
 
         routeHeaderVO.setDocRouteStatus(routeHeader.getDocRouteStatus());
         routeHeaderVO.setDocTitle(routeHeader.getDocTitle());
@@ -326,7 +342,7 @@ public class BeanConverter {
             List listOfBranchStates = routeNodeInstance.getBranch().getBranchState();
             Iterator it = listOfBranchStates.iterator();
             while (it.hasNext()) {
-                BranchState bs = (BranchState)  it.next();
+                BranchState bs = (BranchState) it.next();
                 if (bs.getKey() != null && bs.getKey().startsWith(BranchState.VARIABLE_PREFIX)) {
                     LOG.debug("Setting branch state variable on vo: " + bs.getKey() + "=" + bs.getValue());
                     routeHeaderVO.setVariable(bs.getKey().substring(BranchState.VARIABLE_PREFIX.length()), bs.getValue());
@@ -340,17 +356,17 @@ public class BeanConverter {
         routeHeader.setAppDocId(routeHeaderVO.getAppDocId());
         routeHeader.setApprovedDate(Utilities.convertCalendar(routeHeaderVO.getDateApproved()));
         routeHeader.setCreateDate(Utilities.convertCalendar(routeHeaderVO.getDateCreated()));
-        //String updatedDocumentContent = buildUpdatedDocumentContent(routeHeaderVO);
+        // String updatedDocumentContent = buildUpdatedDocumentContent(routeHeaderVO);
         // if null is returned from this method it indicates that the document content on the route header
         // contained no changes, since we are creating a new document here, we will default the
         // document content approriately if no changes are detected on the incoming DocumentContentVO
-        //if (updatedDocumentContent != null) {
-        //	routeHeader.setDocContent(updatedDocumentContent);
-        //} else {
-        //	routeHeader.setDocContent(EdenConstants.DEFAULT_DOCUMENT_CONTENT);
-        //}
+        // if (updatedDocumentContent != null) {
+        // routeHeader.setDocContent(updatedDocumentContent);
+        // } else {
+        // routeHeader.setDocContent(EdenConstants.DEFAULT_DOCUMENT_CONTENT);
+        // }
         if (StringUtils.isEmpty(routeHeader.getDocContent())) {
-        	routeHeader.setDocContent(EdenConstants.DEFAULT_DOCUMENT_CONTENT);
+            routeHeader.setDocContent(EdenConstants.DEFAULT_DOCUMENT_CONTENT);
         }
         routeHeader.setDocRouteLevel(routeHeaderVO.getDocRouteLevel());
         routeHeader.setDocRouteStatus(routeHeaderVO.getDocRouteStatus());
@@ -376,114 +392,87 @@ public class BeanConverter {
 
         return routeHeader;
     }
-
-//    private static boolean hasDocumentContentChanged(DocumentContentVO documentContentVO) {
-//    	return documentContentVO.getApplicationContent() != null ||
-//    		documentContentVO.getAttributeContent() != null ||
-//    		documentContentVO.getSearchableContent() != null ||
-//    		documentContentVO.getAttributeDefinitions().length > 0 ||
-//    		documentContentVO.getSearchableDefinitions().length > 0;
-//    }
+    
+    public static ActionItemVO convertActionItem(ActionItem actionItem) throws EdenUserNotFoundException {
+        ActionItemVO actionItemVO = new ActionItemVO();
+        actionItemVO.setActionItemId(actionItem.getActionItemId());
+        actionItemVO.setActionItemIndex(actionItem.getActionItemIndex());
+        actionItemVO.setActionRequestCd(actionItem.getActionRequestCd());
+        actionItemVO.setActionRequestId(actionItem.getActionRequestId());
+        actionItemVO.setActionToTake(actionItem.getActionToTake());
+        actionItemVO.setDateAssigned(actionItem.getDateAssigned());
+        actionItemVO.setDateAssignedString(actionItem.getDateAssignedString());
+        actionItemVO.setDelegationType(actionItem.getDelegationType());
+        actionItemVO.setDelegatorWorkflowId(actionItem.getDelegatorWorkflowId());
+        if (StringUtils.isNotEmpty(actionItem.getDelegatorWorkflowId())) {
+            actionItemVO.setDelegatorUser(convertUser(actionItem.getDelegatorUser()));
+        }
+        actionItemVO.setDelegatorWorkgroupId(actionItem.getDelegatorWorkgroupId());
+        if (actionItem.getDelegatorWorkgroupId() != null) {
+            actionItemVO.setDelegatorWorkgroup(convertWorkgroup(actionItem.getDelegatorWorkgroup()));
+        }
+        actionItemVO.setDocHandlerURL(actionItem.getDocHandlerURL());
+        actionItemVO.setDocLabel(actionItem.getDocLabel());
+        actionItemVO.setDocName(actionItem.getDocName());
+        actionItemVO.setDocTitle(actionItem.getDocTitle());
+        actionItemVO.setResponsibilityId(actionItem.getResponsibilityId());
+        actionItemVO.setRoleName(actionItem.getRoleName());
+        actionItemVO.setRouteHeaderId(actionItem.getRouteHeaderId());
+        actionItemVO.setWorkflowId(actionItem.getWorkflowId());
+        if (StringUtils.isNotEmpty(actionItem.getWorkflowId())) {
+            actionItemVO.setUser(convertUser(actionItem.getUser()));
+        }
+        actionItemVO.setWorkgroupId(actionItem.getWorkgroupId());
+        if (actionItem.getWorkgroupId() != null) {
+            actionItemVO.setWorkgroup(convertWorkgroup(actionItem.getWorkgroup()));
+        }
+        return actionItemVO;
+    }
 
     /**
-     * Converts the given DocumentContentVO to a document content string.  This method considers existing
-     * content on the document and updates approriately.  The string returned will be the new document
-     * content for the document.  If null is returned, then the document content is unchanged.
+     * Converts the given DocumentContentVO to a document content string. This method considers existing content on the
+     * document and updates approriately. The string returned will be the new document content for the document. If null is
+     * returned, then the document content is unchanged.
      */
-//    public static String buildUpdatedDocumentContent(RouteHeaderVO routeHeaderVO) throws WorkflowException {
-//    	// prevent the document content from auto materializing when we are looking through it
-//
-//    	//documentContentVO.turnOffMaterialization();
-//    	DocumentContentVO documentContentVO = routeHeaderVO.getDocumentContent();
-//    	// if the document content hasn't changed, no need to eagerly update it
-//    	if (!hasDocumentContentChanged(documentContentVO)) {
-//    		return null;
-//    	}
-//        String documentContent = EdenConstants.DEFAULT_DOCUMENT_CONTENT;
-//        try {
-//        	// parse the existing content on the document
-//        	String existingDocContent = EdenConstants.DEFAULT_DOCUMENT_CONTENT;
-//        	if (documentContentVO.getRouteHeaderId() != null) {
-//        		DocumentRouteHeaderValue document = SpringServiceLocator.getRouteHeaderService().getRouteHeader(documentContentVO.getRouteHeaderId());
-//        		existingDocContent = document.getDocContent();
-//        	}
-//        	StandardDocumentContent standardDocContent = new StandardDocumentContent(existingDocContent);
-//        	DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-//        	Document document = builder.newDocument();
-//        	Element root = document.createElement(EdenConstants.DOCUMENT_CONTENT_ELEMENT);
-//        	document.appendChild(root);
-//        	Element applicationContentElement = standardDocContent.getApplicationContent();
-//        	if (documentContentVO.getApplicationContent() != null) {
-//        		// application content has changed
-//            	if (!Utilities.isEmpty(documentContentVO.getApplicationContent())) {
-//            		applicationContentElement = document.createElement(EdenConstants.APPLICATION_CONTENT_ELEMENT);
-//            		XmlHelper.appendXml(applicationContentElement, documentContentVO.getApplicationContent());
-//            	} else {
-//            		// they've cleared the application content
-//            		applicationContentElement = null;
-//            	}
-//        	}
-//        	Element attributeContentElement = createDocumentContentSection(document, standardDocContent.getAttributeContent(), documentContentVO.getAttributeDefinitions(), documentContentVO.getAttributeContent(), EdenConstants.ATTRIBUTE_CONTENT_ELEMENT, routeHeaderVO);
-//        	Element searchableContentElement = createDocumentContentSection(document, standardDocContent.getSearchableContent(), documentContentVO.getSearchableDefinitions(), documentContentVO.getSearchableContent(), EdenConstants.SEARCHABLE_CONTENT_ELEMENT, routeHeaderVO);
-//        	if (applicationContentElement != null) {
-//        		root.appendChild(applicationContentElement);
-//        	}
-//        	if (attributeContentElement != null) {
-//        		root.appendChild(attributeContentElement);
-//        	}
-//        	if (searchableContentElement != null) {
-//        		root.appendChild(searchableContentElement);
-//        	}
-//        	documentContent = XmlHelper.writeNode(document);
-//        } catch (Exception e) {
-//            handleException("Error parsing document content.", e);
-//        }
-//        return documentContent;
-//    }
-
-  public static String buildUpdatedDocumentContent(DocumentContentVO documentContentVO) throws WorkflowException {
-    	// if the document content hasn't changed, no need to eagerly update it
-//		if (!hasDocumentContentChanged(documentContentVO)) {
-//			return null;
-//		}
-		DocumentType documentType = null;
+    public static String buildUpdatedDocumentContent(DocumentContentVO documentContentVO) throws WorkflowException {
+        DocumentType documentType = null;
         String documentContent = EdenConstants.DEFAULT_DOCUMENT_CONTENT;
         try {
-        	// parse the existing content on the document
-        	String existingDocContent = EdenConstants.DEFAULT_DOCUMENT_CONTENT;
-        	if (documentContentVO.getRouteHeaderId() != null) {
-        		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentContentVO.getRouteHeaderId());
-				documentType = document.getDocumentType();
-        		existingDocContent = document.getDocContent();
-        	}
-        	StandardDocumentContent standardDocContent = new StandardDocumentContent(existingDocContent);
-        	DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        	Document document = builder.newDocument();
-        	Element root = document.createElement(EdenConstants.DOCUMENT_CONTENT_ELEMENT);
-        	document.appendChild(root);
-        	Element applicationContentElement = standardDocContent.getApplicationContent();
-        	if (documentContentVO.getApplicationContent() != null) {
-        		// application content has changed
-            	if (!Utilities.isEmpty(documentContentVO.getApplicationContent())) {
-            		applicationContentElement = document.createElement(EdenConstants.APPLICATION_CONTENT_ELEMENT);
-            		XmlHelper.appendXml(applicationContentElement, documentContentVO.getApplicationContent());
-            	} else {
-            		// they've cleared the application content
-            		applicationContentElement = null;
-            	}
-        	}
-			Element attributeContentElement = createDocumentContentSection(document, standardDocContent.getAttributeContent(), documentContentVO.getAttributeDefinitions(), documentContentVO.getAttributeContent(), EdenConstants.ATTRIBUTE_CONTENT_ELEMENT, documentType);
-			Element searchableContentElement = createDocumentContentSection(document, standardDocContent.getSearchableContent(), documentContentVO.getSearchableDefinitions(), documentContentVO.getSearchableContent(), EdenConstants.SEARCHABLE_CONTENT_ELEMENT, documentType);
-        	if (applicationContentElement != null) {
-        		root.appendChild(applicationContentElement);
-        	}
-        	if (attributeContentElement != null) {
-        		root.appendChild(attributeContentElement);
-        	}
-        	if (searchableContentElement != null) {
-        		root.appendChild(searchableContentElement);
-        	}
-        	documentContent = XmlHelper.writeNode(document);
+            // parse the existing content on the document
+            String existingDocContent = EdenConstants.DEFAULT_DOCUMENT_CONTENT;
+            if (documentContentVO.getRouteHeaderId() != null) {
+                DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentContentVO.getRouteHeaderId());
+                documentType = document.getDocumentType();
+                existingDocContent = document.getDocContent();
+            }
+            StandardDocumentContent standardDocContent = new StandardDocumentContent(existingDocContent);
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document document = builder.newDocument();
+            Element root = document.createElement(EdenConstants.DOCUMENT_CONTENT_ELEMENT);
+            document.appendChild(root);
+            Element applicationContentElement = standardDocContent.getApplicationContent();
+            if (documentContentVO.getApplicationContent() != null) {
+                // application content has changed
+                if (!Utilities.isEmpty(documentContentVO.getApplicationContent())) {
+                    applicationContentElement = document.createElement(EdenConstants.APPLICATION_CONTENT_ELEMENT);
+                    XmlHelper.appendXml(applicationContentElement, documentContentVO.getApplicationContent());
+                } else {
+                    // they've cleared the application content
+                    applicationContentElement = null;
+                }
+            }
+            Element attributeContentElement = createDocumentContentSection(document, standardDocContent.getAttributeContent(), documentContentVO.getAttributeDefinitions(), documentContentVO.getAttributeContent(), EdenConstants.ATTRIBUTE_CONTENT_ELEMENT, documentType);
+            Element searchableContentElement = createDocumentContentSection(document, standardDocContent.getSearchableContent(), documentContentVO.getSearchableDefinitions(), documentContentVO.getSearchableContent(), EdenConstants.SEARCHABLE_CONTENT_ELEMENT, documentType);
+            if (applicationContentElement != null) {
+                root.appendChild(applicationContentElement);
+            }
+            if (attributeContentElement != null) {
+                root.appendChild(attributeContentElement);
+            }
+            if (searchableContentElement != null) {
+                root.appendChild(searchableContentElement);
+            }
+            documentContent = XmlHelper.writeNode(document);
         } catch (Exception e) {
             handleException("Error parsing document content.", e);
         }
@@ -491,49 +480,50 @@ public class BeanConverter {
     }
 
     private static Element createDocumentContentSection(Document document, Element existingAttributeElement, WorkflowAttributeDefinitionVO[] definitions, String content, String elementName, DocumentType documentType) throws Exception {
-    	Element contentSectionElement = existingAttributeElement;
-    	// if they've updated the content, we're going to re-build the content section element from scratch
-    	if (content != null) {
-    		if (!Utilities.isEmpty(content)) {
-        		contentSectionElement = document.createElement(elementName);
-    			// if they didn't merely clear the content, let's build the content section element by combining the children of the incoming XML content
-    			Element incomingAttributeElement = XmlHelper.readXml(content).getDocumentElement();
+        Element contentSectionElement = existingAttributeElement;
+        // if they've updated the content, we're going to re-build the content section element from scratch
+        if (content != null) {
+            if (!Utilities.isEmpty(content)) {
+                contentSectionElement = document.createElement(elementName);
+                // if they didn't merely clear the content, let's build the content section element by combining the children
+                // of the incoming XML content
+                Element incomingAttributeElement = XmlHelper.readXml(content).getDocumentElement();
                 NodeList children = incomingAttributeElement.getChildNodes();
                 for (int index = 0; index < children.getLength(); index++) {
                     contentSectionElement.appendChild(document.importNode(children.item(index), true));
                 }
-    		} else {
-    			contentSectionElement = null;
-    		}
-    	}
-    	// if they have new definitions we're going to append those to the existing content section
-    	if (!Utilities.isEmpty(definitions)) {
+            } else {
+                contentSectionElement = null;
+            }
+        }
+        // if they have new definitions we're going to append those to the existing content section
+        if (!Utilities.isEmpty(definitions)) {
             String errorMessage = "";
             boolean inError = false;
             if (contentSectionElement == null) {
-            	contentSectionElement = document.createElement(elementName);
+                contentSectionElement = document.createElement(elementName);
             }
             for (int index = 0; index < definitions.length; index++) {
-            	WorkflowAttributeDefinitionVO definitionVO = definitions[index];
-            	AttributeDefinition definition = convertWorkflowAttributeDefinitionVO(definitionVO, documentType);
-            	RuleAttribute ruleAttribute = definition.getRuleAttribute();
+                WorkflowAttributeDefinitionVO definitionVO = definitions[index];
+                AttributeDefinition definition = convertWorkflowAttributeDefinitionVO(definitionVO, documentType);
+                RuleAttribute ruleAttribute = definition.getRuleAttribute();
                 Object attribute = GlobalResourceLoader.getResourceLoader().getObject(definition.getObjectDefinition());
                 boolean propertiesAsMap = false;
                 if (EdenConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                	((GenericXMLRuleAttribute) attribute).setRuleAttribute(ruleAttribute);
-                	propertiesAsMap = true;
+                    ((GenericXMLRuleAttribute) attribute).setRuleAttribute(ruleAttribute);
+                    propertiesAsMap = true;
                 } else if (EdenConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                	((GenericXMLSearchableAttribute) attribute).setRuleAttribute(ruleAttribute);
-                	propertiesAsMap = true;
+                    ((GenericXMLSearchableAttribute) attribute).setRuleAttribute(ruleAttribute);
+                    propertiesAsMap = true;
                 }
                 if (propertiesAsMap) {
-                	for (PropertyDefinitionVO propertyDefinitionVO : definitionVO.getProperties()) {
-                		if (attribute instanceof GenericXMLRuleAttribute) {
-                			((GenericXMLRuleAttribute) attribute).getParamMap().put(propertyDefinitionVO.getName(), propertyDefinitionVO.getValue());
-                		} else if (attribute instanceof GenericXMLSearchableAttribute) {
-                			((GenericXMLSearchableAttribute) attribute).getParamMap().put(propertyDefinitionVO.getName(), propertyDefinitionVO.getValue());
-                		}
-                	}
+                    for (PropertyDefinitionVO propertyDefinitionVO : definitionVO.getProperties()) {
+                        if (attribute instanceof GenericXMLRuleAttribute) {
+                            ((GenericXMLRuleAttribute) attribute).getParamMap().put(propertyDefinitionVO.getName(), propertyDefinitionVO.getValue());
+                        } else if (attribute instanceof GenericXMLSearchableAttribute) {
+                            ((GenericXMLSearchableAttribute) attribute).getParamMap().put(propertyDefinitionVO.getName(), propertyDefinitionVO.getValue());
+                        }
+                    }
                 }
 
                 // validate inputs from client application if the attribute is capable
@@ -551,15 +541,15 @@ public class BeanConverter {
                 // dont add to xml if attribute is in error
                 if (!inError) {
                     if (attribute instanceof WorkflowAttribute) {
-                    	String attributeDocContent = ((WorkflowAttribute) attribute).getDocContent();
-                    	if (!StringUtils.isEmpty(attributeDocContent)) {
-                    		XmlHelper.appendXml(contentSectionElement, attributeDocContent);
-                    	}
+                        String attributeDocContent = ((WorkflowAttribute) attribute).getDocContent();
+                        if (!StringUtils.isEmpty(attributeDocContent)) {
+                            XmlHelper.appendXml(contentSectionElement, attributeDocContent);
+                        }
                     } else if (attribute instanceof SearchableAttribute) {
-                    	String searcheAttributeContent = ((SearchableAttribute) attribute).getSearchContent();
-                    	if (!StringUtils.isEmpty(searcheAttributeContent)) {
-                    		XmlHelper.appendXml(contentSectionElement, searcheAttributeContent);
-                    	}
+                        String searcheAttributeContent = ((SearchableAttribute) attribute).getSearchContent();
+                        if (!StringUtils.isEmpty(searcheAttributeContent)) {
+                            XmlHelper.appendXml(contentSectionElement, searcheAttributeContent);
+                        }
                     }
                 }
             }
@@ -567,12 +557,13 @@ public class BeanConverter {
                 throw new WorkflowRuntimeException(errorMessage);
             }
 
-    	}
-    	if (contentSectionElement != null) {
-    		// always be sure and import the element into the new document, if it originated from the existing doc content and
-    		// appended to it, it will need to be imported
-    		contentSectionElement = (Element)document.importNode(contentSectionElement, true);
-    	}
+        }
+        if (contentSectionElement != null) {
+            // always be sure and import the element into the new document, if it originated from the existing doc content
+            // and
+            // appended to it, it will need to be imported
+            contentSectionElement = (Element) document.importNode(contentSectionElement, true);
+        }
         return contentSectionElement;
     }
 
@@ -766,8 +757,8 @@ public class BeanConverter {
         actionRequestVO.setRouteLevel(actionRequest.getRouteLevel());
         actionRequestVO.setNodeName(actionRequest.getPotentialNodeName());
         actionRequestVO.setNodeInstanceId((actionRequest.getNodeInstance() == null ? null : actionRequest.getNodeInstance().getRouteNodeInstanceId()));
-//        actionRequestVO.setRouteMethodName(actionRequest.getRouteMethodName());
-//      TODO delyea - should below be using actionRequest.getRoleName()?
+        // actionRequestVO.setRouteMethodName(actionRequest.getRouteMethodName());
+        // TODO delyea - should below be using actionRequest.getRoleName()?
         actionRequestVO.setRoleName(actionRequest.getQualifiedRoleName());
         actionRequestVO.setQualifiedRoleName(actionRequest.getQualifiedRoleName());
         actionRequestVO.setQualifiedRoleNameLabel(actionRequest.getQualifiedRoleNameLabel());
@@ -789,9 +780,9 @@ public class BeanConverter {
     }
 
     public static ActionTakenVO convertActionTaken(ActionTakenValue actionTaken) throws EdenUserNotFoundException {
-    	if (actionTaken == null) {
-    		return null;
-    	}
+        if (actionTaken == null) {
+            return null;
+        }
         ActionTakenVO actionTakenVO = new ActionTakenVO();
         actionTakenVO.setActionDate(Utilities.convertTimestamp(actionTaken.getActionDate()));
         actionTakenVO.setActionTaken(actionTaken.getActionTaken());
@@ -907,30 +898,36 @@ public class BeanConverter {
 
     /**
      * refactor name to convertResponsiblePartyVO when ResponsibleParty object is gone
+     * 
      * @param responsiblePartyVO
      * @return
      * @throws EdenUserNotFoundException
      */
     public static Recipient convertResponsiblePartyVOtoRecipient(ResponsiblePartyVO responsiblePartyVO) throws EdenUserNotFoundException {
-    	if (responsiblePartyVO == null) {
-    		return null;
-    	}
-    	if (responsiblePartyVO.getRoleName() != null) {
-    		return new RoleRecipient(responsiblePartyVO.getRoleName());
-    	}
-    	GroupId groupId = convertWorkgroupIdVO(responsiblePartyVO.getWorkgroupId());
-    	if (groupId != null) {
-    		return KEWServiceLocator.getWorkgroupService().getWorkgroup(groupId);
-    	}
-    	UserId userId = convertUserIdVO(responsiblePartyVO.getUserId());
-    	if (userId != null) {
-    		return KEWServiceLocator.getUserService().getWorkflowUser(userId);
-    	}
-    	throw new WorkflowRuntimeException("ResponsibleParty of unknown type");
+        if (responsiblePartyVO == null) {
+            return null;
+        }
+        if (responsiblePartyVO.getRoleName() != null) {
+            return new RoleRecipient(responsiblePartyVO.getRoleName());
+        }
+        GroupId groupId = convertWorkgroupIdVO(responsiblePartyVO.getWorkgroupId());
+        if (groupId != null) {
+            return KEWServiceLocator.getWorkgroupService().getWorkgroup(groupId);
+        }
+        UserId userId = convertUserIdVO(responsiblePartyVO.getUserId());
+        if (userId != null) {
+            return KEWServiceLocator.getUserService().getWorkflowUser(userId);
+        }
+        throw new WorkflowRuntimeException("ResponsibleParty of unknown type");
     }
 
     /**
-     * Converts an ActionRequestVO to an ActionRequest. The ActionRequestVO passed in must be the root action request in the graph, otherwise an IllegalArgumentException is thrown. This is to avoid potentially sticky issues with circular references in the conversion. NOTE: This method's primary purpose is to convert ActionRequestVOs returned from a RouteModule. Incidentally, the VO's returned from the route module will be lacking some information (like the node instance) so no attempts are made to convert this data since further initialization is handled by a higher level component (namely ActionRequestService.initializeActionRequestGraph).
+     * Converts an ActionRequestVO to an ActionRequest. The ActionRequestVO passed in must be the root action request in the
+     * graph, otherwise an IllegalArgumentException is thrown. This is to avoid potentially sticky issues with circular
+     * references in the conversion. NOTE: This method's primary purpose is to convert ActionRequestVOs returned from a
+     * RouteModule. Incidentally, the VO's returned from the route module will be lacking some information (like the node
+     * instance) so no attempts are made to convert this data since further initialization is handled by a higher level
+     * component (namely ActionRequestService.initializeActionRequestGraph).
      */
     public static ActionRequestValue convertActionRequestVO(ActionRequestVO actionRequestVO) throws EdenUserNotFoundException {
         if (actionRequestVO == null) {
@@ -997,7 +994,7 @@ public class BeanConverter {
         // properties set in routemanagerservice
         actionRequest.setRouteLevel(actionRequestVO.getRouteLevel());
         // TODO add the node instance to the VO
-//        actionRequest.setRouteMethodName(actionRequestVO.getRouteMethodName());
+        // actionRequest.setRouteMethodName(actionRequestVO.getRouteMethodName());
         actionRequest.setStatus(actionRequestVO.getStatus());
         // TODO this should be moved to a validate somewhere's...
         boolean userSet = false;
@@ -1131,23 +1128,22 @@ public class BeanConverter {
             String parameter = definitionVO.getConstructorParameters()[index];
             definition.addConstructorParameter(new DataDefinition(parameter, String.class));
         }
-        boolean propertiesAsMap = EdenConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType()) ||
-        	EdenConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType());
+        boolean propertiesAsMap = EdenConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType()) || EdenConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType());
         if (!propertiesAsMap) {
-        	for (int index = 0; index < definitionVO.getProperties().length; index++) {
-        		PropertyDefinitionVO propertyDefVO = definitionVO.getProperties()[index];
-        		definition.addProperty(new PropertyDefinition(propertyDefVO.getName(), new DataDefinition(propertyDefVO.getValue(), String.class)));
-        	}
+            for (int index = 0; index < definitionVO.getProperties().length; index++) {
+                PropertyDefinitionVO propertyDefVO = definitionVO.getProperties()[index];
+                definition.addProperty(new PropertyDefinition(propertyDefVO.getName(), new DataDefinition(propertyDefVO.getValue(), String.class)));
+            }
         }
 
-        //this is likely from an EDL validate call and ME may needed to be added to the AttDefinitionVO.
+        // this is likely from an EDL validate call and ME may needed to be added to the AttDefinitionVO.
         if (ruleAttribute.getMessageEntity() != null) {
-        	definition.setMessageEntity(ruleAttribute.getMessageEntity());
+            definition.setMessageEntity(ruleAttribute.getMessageEntity());
         } else {
-        	//get the me from the document type if it's been passed in - the document is having action taken on it.
-        	if (documentType != null) {
-        		definition.setMessageEntity(documentType.getMessageEntity());
-        	}
+            // get the me from the document type if it's been passed in - the document is having action taken on it.
+            if (documentType != null) {
+                definition.setMessageEntity(documentType.getMessageEntity());
+            }
         }
 
         return new AttributeDefinition(ruleAttribute, definition);
@@ -1294,154 +1290,154 @@ public class BeanConverter {
     }
 
     public static AdHocRevoke convertAdHocRevokeVO(AdHocRevokeVO revokeVO) throws WorkflowException {
-    	AdHocRevoke revoke = new AdHocRevoke();
-    	revoke.setActionRequestId(revokeVO.getActionRequestId());
-    	revoke.setNodeName(revokeVO.getNodeName());
-    	if (revokeVO.getUserId() != null) {
-    		revoke.setUser(KEWServiceLocator.getUserService().getWorkflowUser(revokeVO.getUserId()));
-    	}
-    	if (revokeVO.getWorkgroupId() != null) {
-    		revoke.setWorkgroup(KEWServiceLocator.getWorkgroupService().getWorkgroup(revokeVO.getWorkgroupId()));
-    	}
-    	return revoke;
+        AdHocRevoke revoke = new AdHocRevoke();
+        revoke.setActionRequestId(revokeVO.getActionRequestId());
+        revoke.setNodeName(revokeVO.getNodeName());
+        if (revokeVO.getUserId() != null) {
+            revoke.setUser(KEWServiceLocator.getUserService().getWorkflowUser(revokeVO.getUserId()));
+        }
+        if (revokeVO.getWorkgroupId() != null) {
+            revoke.setWorkgroup(KEWServiceLocator.getWorkgroupService().getWorkgroup(revokeVO.getWorkgroupId()));
+        }
+        return revoke;
     }
 
     public static WorkflowAttributeValidationErrorVO convertWorkflowAttributeValidationError(WorkflowAttributeValidationError error) {
         return new WorkflowAttributeValidationErrorVO(error.getKey(), error.getMessage());
     }
 
-    //Method added for updating notes on server sites based on NoteVO change. Modfy on April 7, 2006
-    public static void updateNotes (RouteHeaderVO routeHeaderVO, Long routeHeaderId){
-    	NoteVO[] notes = routeHeaderVO.getNotes();
-    	NoteVO[] notesToDelete = routeHeaderVO.getNotesToDelete();
-    	Note noteToDelete = null;
-    	Note noteToSave = null;
+    // Method added for updating notes on server sites based on NoteVO change. Modfy on April 7, 2006
+    public static void updateNotes(RouteHeaderVO routeHeaderVO, Long routeHeaderId) {
+        NoteVO[] notes = routeHeaderVO.getNotes();
+        NoteVO[] notesToDelete = routeHeaderVO.getNotesToDelete();
+        Note noteToDelete = null;
+        Note noteToSave = null;
 
-    	// Add or update notes to note table based on notes array in RouteHeaderVO
-    	if (notes != null){
-    		for (int i=0; i<notes.length; i++){
-    			if (notes[i]!=null){
-	    			noteToSave = new Note();
-	    			noteToSave.setNoteId(notes[i].getNoteId());
-	    			noteToSave.setRouteHeaderId(routeHeaderId);
-	    			noteToSave.setNoteAuthorWorkflowId(notes[i].getNoteAuthorWorkflowId());
-	    			noteToSave.setNoteCreateDate(Utilities.convertCalendar(notes[i].getNoteCreateDate()));
-	    			noteToSave.setNoteText(notes[i].getNoteText());
-	    			noteToSave.setLockVerNbr(notes[i].getLockVerNbr());
-//	    			 if notes[i].getNoteId() == null, add note to note table, otherwise update note to note table
-	    			getNoteService().saveNote(noteToSave);
-    			}
-    		}
+        // Add or update notes to note table based on notes array in RouteHeaderVO
+        if (notes != null) {
+            for (int i = 0; i < notes.length; i++) {
+                if (notes[i] != null) {
+                    noteToSave = new Note();
+                    noteToSave.setNoteId(notes[i].getNoteId());
+                    noteToSave.setRouteHeaderId(routeHeaderId);
+                    noteToSave.setNoteAuthorWorkflowId(notes[i].getNoteAuthorWorkflowId());
+                    noteToSave.setNoteCreateDate(Utilities.convertCalendar(notes[i].getNoteCreateDate()));
+                    noteToSave.setNoteText(notes[i].getNoteText());
+                    noteToSave.setLockVerNbr(notes[i].getLockVerNbr());
+                    // if notes[i].getNoteId() == null, add note to note table, otherwise update note to note table
+                    getNoteService().saveNote(noteToSave);
+                }
+            }
 
-    	}
+        }
 
-    	//  Delete notes from note table based on notesToDelete array in RouteHeaderVO
-    	if (notesToDelete != null){
-    		for (int i=0; i< notesToDelete.length; i++){
-    			noteToDelete = getNoteService().getNoteByNoteId(notesToDelete[i].getNoteId());
-    			if (noteToDelete != null){
-    				getNoteService().deleteNote(noteToDelete);
-    			}
-    		}
-    		routeHeaderVO.setNotesToDelete(null);
-    	}
+        // Delete notes from note table based on notesToDelete array in RouteHeaderVO
+        if (notesToDelete != null) {
+            for (int i = 0; i < notesToDelete.length; i++) {
+                noteToDelete = getNoteService().getNoteByNoteId(notesToDelete[i].getNoteId());
+                if (noteToDelete != null) {
+                    getNoteService().deleteNote(noteToDelete);
+                }
+            }
+            routeHeaderVO.setNotesToDelete(null);
+        }
     }
 
     private static NoteService getNoteService() {
         return (NoteService) KEWServiceLocator.getService(KEWServiceLocator.NOTE_SERVICE);
     }
 
-    private static NoteVO[] convertNotesArrayListToNoteVOArray (List notesArrayList){
-    	if (notesArrayList.size()>0){
-    		NoteVO[] noteVOArray = new NoteVO[notesArrayList.size()];
-    		int i = 0;
-    		Note tempNote;
-    		NoteVO tempNoteVO;
-    		for (Iterator it = notesArrayList.iterator(); it.hasNext();){
-    			tempNote = (Note)it.next();
-    			tempNoteVO = new NoteVO();
-    			tempNoteVO.setNoteId(tempNote.getNoteId());
-    			tempNoteVO.setRouteHeaderId(tempNote.getRouteHeaderId());
-    			tempNoteVO.setNoteAuthorWorkflowId(tempNote.getNoteAuthorWorkflowId());
-    			tempNoteVO.setNoteCreateDate(Utilities.convertTimestamp(tempNote.getNoteCreateDate()));
-    			tempNoteVO.setNoteText(tempNote.getNoteText());
-    			tempNoteVO.setLockVerNbr(tempNote.getLockVerNbr());
-    			noteVOArray[i]= tempNoteVO;
-    			i++;
-    		}
-    		return noteVOArray;
-    	}else {
-    		return null;
-    	}
+    private static NoteVO[] convertNotesArrayListToNoteVOArray(List notesArrayList) {
+        if (notesArrayList.size() > 0) {
+            NoteVO[] noteVOArray = new NoteVO[notesArrayList.size()];
+            int i = 0;
+            Note tempNote;
+            NoteVO tempNoteVO;
+            for (Iterator it = notesArrayList.iterator(); it.hasNext();) {
+                tempNote = (Note) it.next();
+                tempNoteVO = new NoteVO();
+                tempNoteVO.setNoteId(tempNote.getNoteId());
+                tempNoteVO.setRouteHeaderId(tempNote.getRouteHeaderId());
+                tempNoteVO.setNoteAuthorWorkflowId(tempNote.getNoteAuthorWorkflowId());
+                tempNoteVO.setNoteCreateDate(Utilities.convertTimestamp(tempNote.getNoteCreateDate()));
+                tempNoteVO.setNoteText(tempNote.getNoteText());
+                tempNoteVO.setLockVerNbr(tempNote.getLockVerNbr());
+                noteVOArray[i] = tempNoteVO;
+                i++;
+            }
+            return noteVOArray;
+        } else {
+            return null;
+        }
     }
 
     public static SimulationCriteria convertReportCriteriaVO(ReportCriteriaVO criteriaVO) throws EdenUserNotFoundException {
-    	if (criteriaVO == null) {
-    		return null;
-    	}
-    	SimulationCriteria criteria = new SimulationCriteria();
-    	criteria.setDestinationNodeName(criteriaVO.getTargetNodeName());
-    	criteria.setDocumentId(criteriaVO.getRouteHeaderId());
-    	criteria.setDocumentTypeName(criteriaVO.getDocumentTypeName());
-    	criteria.setXmlContent(criteriaVO.getXmlContent());
-    	criteria.setActivateRequests(criteriaVO.getActivateRequests());
-    	if (criteriaVO.getRoutingUser() != null) {
-			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(criteriaVO.getRoutingUser());
-			if (user == null) {
-				throw new EdenUserNotFoundException("Could not locate user for the given id: " + criteriaVO.getRoutingUser());
-			}
-			criteria.setRoutingUser(user);
-    	}
-    	if (criteriaVO.getRuleTemplateNames() != null) {
-    		for (int index = 0; index < criteriaVO.getRuleTemplateNames().length; index++) {
-				String ruleTemplateName = criteriaVO.getRuleTemplateNames()[index];
-				criteria.getRuleTemplateNames().add(ruleTemplateName);
-			}
-    	}
-    	if (criteriaVO.getNodeNames() != null) {
-    	    for (int i = 0; i < criteriaVO.getNodeNames().length; i++) {
+        if (criteriaVO == null) {
+            return null;
+        }
+        SimulationCriteria criteria = new SimulationCriteria();
+        criteria.setDestinationNodeName(criteriaVO.getTargetNodeName());
+        criteria.setDocumentId(criteriaVO.getRouteHeaderId());
+        criteria.setDocumentTypeName(criteriaVO.getDocumentTypeName());
+        criteria.setXmlContent(criteriaVO.getXmlContent());
+        criteria.setActivateRequests(criteriaVO.getActivateRequests());
+        if (criteriaVO.getRoutingUser() != null) {
+            WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(criteriaVO.getRoutingUser());
+            if (user == null) {
+                throw new EdenUserNotFoundException("Could not locate user for the given id: " + criteriaVO.getRoutingUser());
+            }
+            criteria.setRoutingUser(user);
+        }
+        if (criteriaVO.getRuleTemplateNames() != null) {
+            for (int index = 0; index < criteriaVO.getRuleTemplateNames().length; index++) {
+                String ruleTemplateName = criteriaVO.getRuleTemplateNames()[index];
+                criteria.getRuleTemplateNames().add(ruleTemplateName);
+            }
+        }
+        if (criteriaVO.getNodeNames() != null) {
+            for (int i = 0; i < criteriaVO.getNodeNames().length; i++) {
                 String nodeName = criteriaVO.getNodeNames()[i];
                 criteria.getNodeNames().add(nodeName);
             }
-    	}
-    	if (criteriaVO.getTargetUsers() != null) {
-    		for (int index = 0; index < criteriaVO.getTargetUsers().length; index++) {
-    			UserIdVO userIdVO = criteriaVO.getTargetUsers()[index];
-    			WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userIdVO);
-    			if (user == null) {
-    				throw new EdenUserNotFoundException("Could not locate user for the given id: " + userIdVO);
-    			}
-    			criteria.getDestinationRecipients().add(user);
-    		}
-    	}
-    	if (criteriaVO.getActionsToTake() != null) {
-    		for (int index = 0; index < criteriaVO.getActionsToTake().length; index++) {
-    			ReportActionToTakeVO actionToTakeVO = criteriaVO.getActionsToTake()[index];
-    			criteria.getActionsToTake().add(convertReportActionToTakeVO(actionToTakeVO));
-			}
-    	}
-    	return criteria;
+        }
+        if (criteriaVO.getTargetUsers() != null) {
+            for (int index = 0; index < criteriaVO.getTargetUsers().length; index++) {
+                UserIdVO userIdVO = criteriaVO.getTargetUsers()[index];
+                WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userIdVO);
+                if (user == null) {
+                    throw new EdenUserNotFoundException("Could not locate user for the given id: " + userIdVO);
+                }
+                criteria.getDestinationRecipients().add(user);
+            }
+        }
+        if (criteriaVO.getActionsToTake() != null) {
+            for (int index = 0; index < criteriaVO.getActionsToTake().length; index++) {
+                ReportActionToTakeVO actionToTakeVO = criteriaVO.getActionsToTake()[index];
+                criteria.getActionsToTake().add(convertReportActionToTakeVO(actionToTakeVO));
+            }
+        }
+        return criteria;
     }
 
     public static SimulationActionToTake convertReportActionToTakeVO(ReportActionToTakeVO actionToTakeVO) throws EdenUserNotFoundException {
-    	if (actionToTakeVO == null) {
-    		return null;
-    	}
-    	SimulationActionToTake actionToTake = new SimulationActionToTake();
-    	actionToTake.setNodeName(actionToTakeVO.getNodeName());
-    	if (StringUtils.isBlank(actionToTakeVO.getActionToPerform())) {
-    		throw new IllegalArgumentException("ReportActionToTakeVO must contain an action taken code and does not");
-    	}
-    	actionToTake.setActionToPerform(actionToTakeVO.getActionToPerform());
-    	if (actionToTakeVO.getUserIdVO() == null) {
-    		throw new IllegalArgumentException("ReportActionToTakeVO must contain a userId and does not");
-    	}
-		WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(actionToTakeVO.getUserIdVO());
-		if (user == null) {
-			throw new EdenUserNotFoundException("Could not locate user for the given id: " + actionToTakeVO.getUserIdVO());
-		}
-		actionToTake.setUser(user);
-		return actionToTake;
+        if (actionToTakeVO == null) {
+            return null;
+        }
+        SimulationActionToTake actionToTake = new SimulationActionToTake();
+        actionToTake.setNodeName(actionToTakeVO.getNodeName());
+        if (StringUtils.isBlank(actionToTakeVO.getActionToPerform())) {
+            throw new IllegalArgumentException("ReportActionToTakeVO must contain an action taken code and does not");
+        }
+        actionToTake.setActionToPerform(actionToTakeVO.getActionToPerform());
+        if (actionToTakeVO.getUserIdVO() == null) {
+            throw new IllegalArgumentException("ReportActionToTakeVO must contain a userId and does not");
+        }
+        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(actionToTakeVO.getUserIdVO());
+        if (user == null) {
+            throw new EdenUserNotFoundException("Could not locate user for the given id: " + actionToTakeVO.getUserIdVO());
+        }
+        actionToTake.setUser(user);
+        return actionToTake;
     }
 
     public static RuleDelegationVO convertRuleDelegation(RuleDelegation ruleDelegation) throws WorkflowException {
@@ -1454,16 +1450,16 @@ public class BeanConverter {
         return ruleDelegationVO;
     }
 
-//    public static RuleDelegation convertRuleExtensionVO(RuleExtensionVO ruleExtensionVO) throws WorkflowException {}
+    // public static RuleDelegation convertRuleExtensionVO(RuleExtensionVO ruleExtensionVO) throws WorkflowException {}
 
     public static Collection<RuleExtensionVO> convertRuleExtension(RuleExtension ruleExtension) throws WorkflowException {
         if (ruleExtension == null) {
             return null;
         }
-        List<RuleExtensionVO> extensionVOs =  new ArrayList<RuleExtensionVO>();
+        List<RuleExtensionVO> extensionVOs = new ArrayList<RuleExtensionVO>();
         for (Iterator iter = ruleExtension.getExtensionValues().iterator(); iter.hasNext();) {
             RuleExtensionValue extensionValue = (RuleExtensionValue) iter.next();
-            extensionVOs.add(new RuleExtensionVO(extensionValue.getKey(),extensionValue.getValue()));
+            extensionVOs.add(new RuleExtensionVO(extensionValue.getKey(), extensionValue.getValue()));
         }
         return extensionVOs;
     }
@@ -1472,7 +1468,7 @@ public class BeanConverter {
         if (ruleExtensionVO == null) {
             return null;
         }
-        return new KeyValuePair(ruleExtensionVO.getKey(),ruleExtensionVO.getValue());
+        return new KeyValuePair(ruleExtensionVO.getKey(), ruleExtensionVO.getValue());
     }
 
     public static RuleResponsibilityVO convertRuleResponsibility(RuleResponsibility ruleResponsibility) throws WorkflowException {
@@ -1494,7 +1490,8 @@ public class BeanConverter {
         return ruleResponsibilityVO;
     }
 
-//    public static KeyValuePair convertRuleResponsibilityVO(RuleResponsibilityVO ruleResponsibilityVO) throws WorkflowException {}
+    // public static KeyValuePair convertRuleResponsibilityVO(RuleResponsibilityVO ruleResponsibilityVO) throws
+    // WorkflowException {}
 
     public static RuleVO convertRule(RuleBaseValues ruleValues) throws WorkflowException {
         if (ruleValues == null) {
@@ -1522,8 +1519,131 @@ public class BeanConverter {
         }
         return rule;
     }
+    
+    public static DocSearchCriteriaVO convertDocumentSearchCriteriaVO(DocumentSearchCriteriaVO criteriaVO) throws WorkflowException {
+        DocSearchCriteriaVO criteria = new DocSearchCriteriaVO();
+        criteria.setAppDocId(criteriaVO.getAppDocId());
+        criteria.setApprover(criteriaVO.getApprover());
+        criteria.setDocRouteStatus(criteriaVO.getDocRouteStatus());
+        criteria.setDocTitle(criteriaVO.getDocTitle());
+        criteria.setDocTypeFullName(criteriaVO.getDocTypeFullName());
+        criteria.setDocVersion(criteriaVO.getDocVersion());
+        criteria.setFromDateApproved(criteriaVO.getFromDateApproved());
+        criteria.setFromDateCreated(criteriaVO.getFromDateCreated());
+        criteria.setFromDateFinalized(criteriaVO.getFromDateFinalized());
+        criteria.setFromDateLastModified(criteriaVO.getFromDateLastModified());
+        criteria.setInitiator(criteriaVO.getInitiator());
+        criteria.setIsAdvancedSearch((criteriaVO.isAdvancedSearch()) ? DocSearchCriteriaVO.ADVANCED_SEARCH_INDICATOR_STRING : "NO");
+        criteria.setSuperUserSearch((criteriaVO.isSuperUserSearch()) ? DocSearchCriteriaVO.SUPER_USER_SEARCH_INDICATOR_STRING : "NO");
+        criteria.setRouteHeaderId(criteriaVO.getRouteHeaderId());
+        criteria.setViewer(criteriaVO.getViewer());
+        criteria.setWorkgroupViewerName(criteriaVO.getWorkgroupViewerName());
+        criteria.setToDateApproved(criteriaVO.getToDateApproved());
+        criteria.setToDateCreated(criteriaVO.getToDateCreated());
+        criteria.setToDateFinalized(criteriaVO.getToDateFinalized());
+        criteria.setToDateLastModified(criteriaVO.getToDateLastModified());
+        criteria.setThreshold(criteriaVO.getThreshold());
+        
+        // generate the route node criteria
+        if ( (StringUtils.isNotBlank(criteriaVO.getDocRouteNodeName())) && (StringUtils.isBlank(criteriaVO.getDocTypeFullName())) ) {
+            throw new WorkflowException("No document type name specified when attempting to search by route node name '" + criteriaVO.getDocRouteNodeName() + "'");
+        } else if ( (StringUtils.isNotBlank(criteriaVO.getDocRouteNodeName())) && (StringUtils.isNotBlank(criteriaVO.getDocTypeFullName())) ) {
+            criteria.setDocRouteNodeLogic(criteriaVO.getDocRouteNodeLogic());
+            List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(getDocumentTypeByName(criteria.getDocTypeFullName()), true);
+            String routeNodeCriteriaToUse = null;
+            for (Iterator iterator = routeNodes.iterator(); iterator.hasNext();) {
+                RouteNode routeNode = (RouteNode) iterator.next();
+                if (criteriaVO.getDocRouteNodeName().equals(routeNode.getRouteNodeName())) {
+                    routeNodeCriteriaToUse = routeNode.getRouteNodeId().toString();
+                }
+            }
+            if (routeNodeCriteriaToUse == null) {
+                throw new WorkflowException("Could not find route node name '" + criteriaVO.getDocRouteNodeName() + "' for document type name '" + criteriaVO.getDocTypeFullName() + "'");
+            }
+            criteria.setDocRouteNodeId(routeNodeCriteriaToUse);
+        }
+        
+        // build a map of the search attributes passed in from the client creating lists where keys are duplicated
+        HashMap<String, List<String>> searchAttributeValues = new HashMap<String,List<String>>();
+        for (KeyValueVO keyValueVO : criteriaVO.getSearchAttributeValues()) {
+            if (searchAttributeValues.containsKey(keyValueVO.getKey())) {
+                searchAttributeValues.get(keyValueVO.getKey()).add(keyValueVO.getValue());
+            } else {
+                searchAttributeValues.put(keyValueVO.getKey(), Arrays.asList(new String[]{keyValueVO.getValue()}));
+            }
+        }
+        // build the list of SearchAttributeFormContainer objects
+        List propertyFields = new ArrayList();
+        for (String key : searchAttributeValues.keySet()) {
+            List<String> values = searchAttributeValues.get(key);
+            SearchAttributeFormContainer container = null;
+            if (values.size() == 1) {
+                container = new SearchAttributeFormContainer(key, values.get(0));
+            } else if (values.size() > 1) {
+                container = new SearchAttributeFormContainer(key, (String[])values.toArray());
+            }
+            if (container != null) {
+                propertyFields.add(container);
+            }
+        }
+        DocSearchUtils.addSearchableAttributesToCriteria(criteria, propertyFields, true);
+        return criteria;
+    }
+    
+    private static DocumentType getDocumentTypeByName(String documentTypeName) {
+        return KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+    }
+    
+    public static DocumentSearchResultVO convertDocumentSearchResultComponents(DocumentSearchResultComponents searchResult) throws WorkflowException {
+        DocumentSearchResultVO resultsVO = new DocumentSearchResultVO();
+        resultsVO.setColumns(convertColumns(searchResult.getColumns()));
+        resultsVO.setSearchResults(convertDocumentSearchResults(searchResult.getSearchResults()));
+        return resultsVO;
+    }
+    
+    private static List<DocumentSearchResultRowVO> convertDocumentSearchResults(List<DocumentSearchResult> searchResults) throws WorkflowException {
+        List<DocumentSearchResultRowVO> rowVOs = new ArrayList<DocumentSearchResultRowVO>();
+        for (DocumentSearchResult documentSearchResult : searchResults) {
+            rowVOs.add(convertDocumentSearchResult(documentSearchResult));
+        }
+        return rowVOs;
+    }
+    
+    public static DocumentSearchResultRowVO convertDocumentSearchResult(DocumentSearchResult resultRow) throws WorkflowException {
+        DocumentSearchResultRowVO rowVO = new DocumentSearchResultRowVO();
+        List<KeyValueVO> fieldValues = new ArrayList<KeyValueVO>();
+        for (KeyValueSort keyValueSort : resultRow.getResultContainers()) {
+            fieldValues.add(new KeyValueVO(keyValueSort.getKey(),keyValueSort.getValue()));
+        }
+        rowVO.setFieldValues(fieldValues);
+        return rowVO;
+    }
+    
+    private static List<LookupableColumnVO> convertColumns(List<Column> columns) throws WorkflowException {
+        List<LookupableColumnVO> columnVOs = new ArrayList<LookupableColumnVO>();
+        for (Column column : columns) {
+            columnVOs.add(convertColumn(column));
+        }
+        return columnVOs;
+    }
+    
+    public static LookupableColumnVO convertColumn(Column column) throws WorkflowException {
+        LookupableColumnVO columnVO = new LookupableColumnVO();
+        columnVO.setColumnTitle(column.getColumnTitle());
+        columnVO.setKey(column.getKey());
+        columnVO.setPropertyName(column.getPropertyName());
+        columnVO.setSortable(column.isSortable());
+        columnVO.setSortPropertyName(column.getSortPropertyName());
+        columnVO.setType(column.getType());
+        List<KeyValueVO> displayParameters = new ArrayList<KeyValueVO>();
+        for (String key : column.getDisplayParameters().keySet()) {
+            displayParameters.add(new KeyValueVO(key,column.getDisplayParameters().get(key)));
+        }
+        columnVO.setDisplayParameters(displayParameters);
+        return null;
+    }
 
-//    public static RuleBaseValues convertRuleVO(RuleVO ruleVO) throws WorkflowException {}
+    //    public static RuleBaseValues convertRuleVO(RuleVO ruleVO) throws WorkflowException {}
 
     private static void handleException(String message, Exception e) throws WorkflowException {
         if (e instanceof RuntimeException) {

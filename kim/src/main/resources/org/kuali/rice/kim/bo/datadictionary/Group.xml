@@ -1,202 +1,297 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kim.bo.Group">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-        <inquiry>
-        	<title>Group Inquiry</title>
+  <bean id="Group" parent="Group-parentBean" />
 
-        	<inquirySections>
-        		<inquirySection title="Group Info">
-        			<inquiryFields>
-        				<field attributeName="id" />
-        				<field attributeName="name" />
-        				<field attributeName="description" />
-        				<field attributeName="groupType.name" />
-        			</inquiryFields>		
-        		</inquirySection>
-        		<inquirySection title="Parent Group">
-        			<inquiryFields>
-        				<inquiryCollection name="parentGroups"
-        					businessObjectClass="org.kuali.rice.kim.bo.Group">
-        					<field attributeName="id" />
-        					<field attributeName="name" />
-        				</inquiryCollection>
-        			</inquiryFields>
-        		</inquirySection>
-        		<inquirySection title="Sub Groups">
-        			<inquiryFields>
-        				<inquiryCollection name="memberGroups"
-        					businessObjectClass="org.kuali.rice.kim.bo.Group">
-        					<field attributeName="id" />
-        					<field attributeName="name" />
-        				</inquiryCollection>
-        			</inquiryFields>
-        		</inquirySection>
-        		<inquirySection title="Group Roles">
-        			<inquiryFields>
-        				<inquiryCollection name="groupRoles"
-        					businessObjectClass="org.kuali.rice.kim.bo.Role">
-        					<field attributeName="id" />
-        					<field attributeName="name" />
-        				</inquiryCollection>
-        			</inquiryFields>
-        		</inquirySection>
-        		<inquirySection title="Group Attributes">
-        			<inquiryFields>
-        				<inquiryCollection name="groupAttributes"
-        					businessObjectClass="org.kuali.rice.kim.bo.GroupAttribute">
-        					<field attributeName="id" />
-							<field attributeName="attributeTypeId" />
-							<field attributeName="attributeName" />
-							<field attributeName="value" />
-        				</inquiryCollection>
-        			</inquiryFields>
-        		</inquirySection>
-        	</inquirySections>
-        </inquiry>
+  <bean id="Group-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Group" />
+    <property name="inquiryDefinition" >
+      <ref bean="Group-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="Group-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="id" />
+    <property name="objectLabel" value="Group" />
+    <property name="collections" >
+      <list>
+        <bean parent="CollectionDefinition"
+              p:shortLabel="SubGroups"
+              p:summary="Member Groups"
+              p:name="memberGroups"
+              p:label="Member Groups"
+              p:description="Sub Groups of this group" />
+        <bean parent="CollectionDefinition"
+              p:shortLabel="ParentGroups"
+              p:summary="Parent Groups"
+              p:name="parentGroups"
+              p:label="Parent Groups"
+              p:description="Parents of this group" />
+        <bean parent="CollectionDefinition"
+              p:shortLabel="Roles"
+              p:summary="Group Roles"
+              p:name="groupRoles"
+              p:label="Group Roles"
+              p:description="Roles of this group" />
+        <bean parent="CollectionDefinition"
+              p:shortLabel="Attributes"
+              p:summary="Group Attributes"
+              p:name="groupAttributes"
+              p:label="Group Attributes"
+              p:description="Attributes of this group" />
+      </list>
+    </property>
+    <property name="attributes" >
+      <list>
+        <ref bean="Group-id" />
+        <ref bean="Group-name" />
+        <ref bean="Group-description" />
+        <ref bean="Group-groupTypeId" />
+        <ref bean="Group-newCollectionRecord" />
+        <ref bean="Group-versionNumber" />
+        <ref bean="Group-objectId" />
+      </list>
+    </property>
+  </bean>
 
-        <lookup>
-            <title>Group Lookup</title>
+<!-- Attribute Definitions -->
 
-            <instructions>Lookup a Group</instructions>
 
-            <defaultSort sortAscending="true">
-                <sortAttributes>
-                    <sortAttribute attributeName="name" />
-                </sortAttributes>
-            </defaultSort>
+  <bean id="Group-id" parent="Group-id-parentBean" />
 
-            <lookupFields>
-                <lookupField attributeName="id" required="false" forceLookup="true" noLookup="false" />
-                <lookupField attributeName="name" required="false" forceLookup="false" />
-                <lookupField attributeName="groupTypeId" required="false" forceLookup="false" />
-                <lookupField attributeName="description" required="false" forceLookup="false" />
-            </lookupFields>
+  <bean id="Group-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="id" />
+    <property name="maxLength" value="8" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="8" />
+    </property>
+    <property name="name" value="id" />
+    <property name="label" value="ID" />
+  </bean>
+  <bean id="Group-name" parent="Group-name-parentBean" />
 
-            <resultFields>
-                <field attributeName="id" />
-                <field attributeName="name" />
-                <field attributeName="description" />
-            </resultFields>
-        </lookup>
+  <bean id="Group-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="500" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="name" />
+    <property name="label" value="Group Name" />
+  </bean>
+  <bean id="Group-description" parent="Group-description-parentBean" />
 
-        <titleAttribute>id</titleAttribute>
+  <bean id="Group-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Description" />
+    <property name="maxLength" value="4000" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextareaControlDefinition"
+            p:cols="50"
+            p:rows="10" />
+    </property>
+    <property name="name" value="description" />
+    <property name="label" value="Group Description" />
+  </bean>
+  <bean id="Group-groupTypeId" parent="Group-groupTypeId-parentBean" />
 
-        <attributes>
+  <bean id="Group-groupTypeId-parentBean" abstract="true" parent="GroupType-id">
+    <property name="shortLabel" value="Type" />
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:businessObjectClass="org.kuali.rice.kim.bo.GroupType"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeKeyInLabel="true"
+            p:keyAttribute="id"
+            p:labelAttribute="name" />
+    </property>
+    <property name="name" value="groupTypeId" />
+    <property name="label" value="Group Type" />
+  </bean>
+  <bean id="Group-newCollectionRecord" parent="Group-newCollectionRecord-parentBean" />
 
-            <attribute name="id" forceUppercase="false">
-                <label>ID</label>
-                <shortLabel>id</shortLabel>
+  <bean id="Group-newCollectionRecord-parentBean" abstract="true" parent="AttributeReferenceDummy-newCollectionRecord">
+  </bean>
+  <bean id="Group-versionNumber" parent="Group-versionNumber-parentBean" />
 
-                <maxLength>8</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-				
-				<required>true</required>
-				
-                <control>
-                    <text size="8" />
-                </control>
-                
-			</attribute>
+  <bean id="Group-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+  <bean id="Group-objectId" parent="Group-objectId-parentBean" />
 
-            <attribute name="name" forceUppercase="false">
-                <label>Group Name</label>
-                <shortLabel>Name</shortLabel>
+  <bean id="Group-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
+  </bean>
 
-                <maxLength>500</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
+<!-- Business Object Inquiry Definition -->
 
-                <control>
-                    <text size="100" />
-                </control>
 
-			</attribute>
+  <bean id="Group-inquiryDefinition" parent="Group-inquiryDefinition-parentBean" />
 
-            <attribute name="description" forceUppercase="false">
-                <label>Group Description</label>
-                <shortLabel>Description</shortLabel>
+  <bean id="Group-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="id" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="name" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="description" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="groupType.name" />
+            </list>
+          </property>
+          <property name="title" value="Group Info" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="parentGroups" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Group" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="id" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="name" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Parent Group" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="memberGroups" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Group" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="id" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="name" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Sub Groups" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="groupRoles" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Role" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="id" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="name" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Group Roles" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="groupAttributes" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupAttribute" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="id" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="attributeTypeId" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="attributeName" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="value" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Group Attributes" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="Group Inquiry" />
+  </bean>
 
-                <maxLength>4000</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
+<!-- Business Object Lookup Definition -->
 
-                <control>
-                    <textarea rows="10" cols="50" />
-                </control>
 
-			</attribute>
-			
-			<attributeReference name="groupTypeId" sourceClassName="org.kuali.rice.kim.bo.GroupType" sourceAttributeName="id">
-				<label>Group Type</label>
-                <shortLabel>Type</shortLabel>
-				<required>true</required>
-				<control>
-					<select
-						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-						businessObjectClass="org.kuali.rice.kim.bo.GroupType"
-						keyAttribute="id" labelAttribute="name" 
-						includeKeyInLabel="true" />
-				</control>
-			</attributeReference>
-			<attributeReference name="newCollectionRecord" 
-                                sourceClassName="org.kuali.core.bo.AttributeReferenceDummy"
-                                sourceAttributeName="newCollectionRecord" />
-            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
-			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
-        </attributes>
-        
-        <collections>
-        	<collection name="memberGroups">
-        		<label>Member Groups</label>
-        		<shortLabel>SubGroups</shortLabel>
-        		<summary>Member Groups</summary>
-        		<description>
-        			Sub Groups of this group
-        		</description>
-        	</collection>
-        	<collection name="parentGroups">
-        		<label>Parent Groups</label>
-        		<shortLabel>ParentGroups</shortLabel>
-        		<summary>Parent Groups</summary>
-        		<description>
-        			Parents of this group
-        		</description>
-        	</collection>
-        	<collection name="groupRoles">
-        		<label>Group Roles</label>
-        		<shortLabel>Roles</shortLabel>
-        		<summary>Group Roles</summary>
-        		<description>
-        			Roles of this group
-        		</description>
-        	</collection>
-        	<collection name="groupAttributes">
-        		<label>Group Attributes</label>
-        		<shortLabel>Attributes</shortLabel>
-        		<summary>Group Attributes</summary>
-        		<description>
-        			Attributes of this group
-        		</description>
-        	</collection>
-        </collections>
+  <bean id="Group-lookupDefinition" parent="Group-lookupDefinition-parentBean" />
 
-        <objectLabel>Group</objectLabel>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="Group-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Lookup a Group" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id"
+              p:forceLookup="true" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="groupTypeId" />
+        <bean parent="FieldDefinition"
+              p:attributeName="description" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="description" />
+      </list>
+    </property>
+    <property name="title" value="Group Lookup" />
+  </bean>
+</beans>

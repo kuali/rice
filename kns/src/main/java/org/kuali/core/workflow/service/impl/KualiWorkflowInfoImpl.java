@@ -15,6 +15,9 @@
  */
 package org.kuali.core.workflow.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.core.util.spring.Cached;
@@ -22,9 +25,13 @@ import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
 
+import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
+import edu.iu.uis.eden.clientapp.vo.ActionItemVO;
 import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchCriteriaVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchResultVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO;
@@ -237,6 +244,31 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
             return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, actionRequestedCodes);
         }
         catch (Exception e) {
+            throw new WorkflowException(e);
+        }
+    }
+    
+    /**
+     * @see org.kuali.core.workflow.service.KualiWorkflowInfo#getApprovalRequestedUsers(java.lang.Long)
+     */
+    public List<String> getApprovalRequestedUsers(Long routeHeaderId) throws WorkflowException {
+        try {
+            ActionItemVO[] actionItemVOs = getWorkflowUtility().getActionItems(routeHeaderId, new String[]{EdenConstants.ACTION_REQUEST_COMPLETE_REQ, EdenConstants.ACTION_REQUEST_APPROVE_REQ});
+            List users = new ArrayList();
+            for (int i = 0; i < actionItemVOs.length; i++) {
+                ActionItemVO actionItemVO = actionItemVOs[i];
+                users.add(actionItemVO.getUser().getUuId());
+            }
+            return users;
+        } catch (Exception e) {
+            throw new WorkflowException(e);
+        }
+    }
+
+    public DocumentSearchResultVO performDocumentSearch(DocumentSearchCriteriaVO criteriaVO) throws WorkflowException {
+        try {
+            return getWorkflowUtility().performDocumentSearch(criteriaVO);
+        } catch (Exception e) {
             throw new WorkflowException(e);
         }
     }

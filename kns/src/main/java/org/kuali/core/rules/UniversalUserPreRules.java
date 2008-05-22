@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.bo.user.KualiModuleUser;
 import org.kuali.core.bo.user.UniversalUser;
@@ -30,6 +29,7 @@ import org.kuali.core.document.MaintenanceDocument;
 import org.kuali.core.util.FieldUtils;
 import org.kuali.core.web.ui.Field;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 public class UniversalUserPreRules extends PreRulesContinuationBase {
 
@@ -40,8 +40,8 @@ public class UniversalUserPreRules extends PreRulesContinuationBase {
         UniversalUser newUser = (UniversalUser) maintenanceDocument.getNewMaintainableObject().getBusinessObject();
 
         //KULCOA-1164: If FULLNAME is blank, replace it with "Last,First"
-        Field nameField = FieldUtils.getPropertyField( UniversalUser.class, RicePropertyConstants.PERSON_NAME, false );
-        ControlDefinition controlDef = KNSServiceLocator.getDataDictionaryService().getAttributeControlDefinition(UniversalUser.class, RicePropertyConstants.PERSON_NAME );
+        Field nameField = FieldUtils.getPropertyField( UniversalUser.class, KNSPropertyConstants.PERSON_NAME, false );
+        ControlDefinition controlDef = KNSServiceLocator.getDataDictionaryService().getAttributeControlDefinition(UniversalUser.class, KNSPropertyConstants.PERSON_NAME );
         // KULCOA-3104 - always set the display name to match the first/last if the field is not visible or editable 
         if ( controlDef.isHidden() || nameField.isReadOnly() || StringUtils.isBlank( newUser.getPersonName() ) ){
             if ( !StringUtils.isBlank( newUser.getPersonFirstName() ) && !StringUtils.isBlank( newUser.getPersonLastName() ) ){

@@ -37,6 +37,8 @@ public interface ActionListService {
     public ActionItem createActionItemForActionRequest(ActionRequestValue actionRequest);
 
     public Collection getActionList(WorkflowUser workflowUser, ActionListFilter filter);
+    
+    public Collection getActionList(Long routeHeaderId, ActionListFilter filter);
 
     public Collection<Recipient> findUserDelegators(WorkflowUser workflowUser, String delegationType) throws EdenUserNotFoundException;
 

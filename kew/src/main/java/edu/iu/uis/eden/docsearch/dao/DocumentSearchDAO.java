@@ -21,7 +21,9 @@ import java.util.List;
 import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
 import edu.iu.uis.eden.docsearch.DocumentSearchGenerator;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
+import edu.iu.uis.eden.user.WorkflowUser;
 
 public interface DocumentSearchDAO {
-    public List getList(DocumentSearchGenerator docSearchGenerator,DocSearchCriteriaVO criteria) throws EdenUserNotFoundException;
+    public List getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaVO criteria, WorkflowUser user) throws EdenUserNotFoundException;
+    public List getList(DocumentSearchGenerator docSearchGenerator,DocSearchCriteriaVO criteria, WorkflowUser user) throws EdenUserNotFoundException;
 }

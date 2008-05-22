@@ -1,39 +1,36 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="edu.sampleu.travel.bo.TravelAccountExtension">
-        
-        <titleAttribute>number</titleAttribute>
- 
-        <attributes>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-            <attributeReference name="number" sourceClassName="edu.sampleu.travel.bo.TravelAccount" sourceAttributeName="number" />
+  <bean id="TravelAccountExtension" parent="TravelAccountExtension-parentBean" />
 
-            <attributeReference name="accountTypeCode" sourceClassName="edu.sampleu.travel.bo.TravelAccountType" sourceAttributeName="accountTypeCode">
-                <required>true</required>
-                <control>
-                    <select valuesFinderClass="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues" />
-                </control>
-            </attributeReference>
+  <bean id="TravelAccountExtension-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="edu.sampleu.travel.bo.TravelAccountExtension" />
+    <property name="titleAttribute" value="number" />
+    <property name="attributes" >
+      <list>
+        <ref bean="TravelAccountExtension-number" />
+        <ref bean="TravelAccountExtension-accountTypeCode" />
+      </list>
+    </property>
+  </bean>
 
-		</attributes>				
-    </businessObject>
-    
-</dictionaryEntry>
+<!-- Attribute Definitions -->
+
+
+  <bean id="TravelAccountExtension-number" parent="TravelAccountExtension-number-parentBean" />
+
+  <bean id="TravelAccountExtension-number-parentBean" abstract="true" parent="TravelAccount-number">
+  </bean>
+  <bean id="TravelAccountExtension-accountTypeCode" parent="TravelAccountExtension-accountTypeCode-parentBean" />
+
+  <bean id="TravelAccountExtension-accountTypeCode-parentBean" abstract="true" parent="TravelAccountType-accountTypeCode">
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues"
+            p:includeKeyInLabel="false" />
+    </property>
+  </bean>
+</beans>

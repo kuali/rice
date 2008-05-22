@@ -97,9 +97,13 @@ public class DateFormatter extends Formatter {
      * @return a formatted String
      */
     public Object format(Object value) {
-        if (value == null)
+        if (value == null) {
             return null;
+        }
         // begin Kuali Foundation modification
+        if ("".equals(value)) {
+            return null;
+        }
         return getDateTimeService().toDateString((java.util.Date)value);
         // end Kuali Foundation modification
     }

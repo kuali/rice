@@ -34,7 +34,6 @@ import edu.iu.uis.eden.docsearch.dao.DocumentSearchDAO;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.node.RouteNode;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
-import edu.iu.uis.eden.notes.CustomNoteAttribute;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
 import edu.iu.uis.eden.user.WorkflowUser;
@@ -84,7 +83,15 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		return new SavedSearchResult(criteria, getList(user, criteria));
 	}
 
-	public DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaVO criteria) throws EdenUserNotFoundException {
+    public DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaVO criteria) throws EdenUserNotFoundException {
+        return getList(user, criteria, false);
+    }
+    
+    public DocumentSearchResultComponents getListBoundByCriteria(WorkflowUser user, DocSearchCriteriaVO criteria) throws EdenUserNotFoundException {
+        return getList(user, criteria, true);
+    }
+	
+	private DocumentSearchResultComponents getList(WorkflowUser user, DocSearchCriteriaVO criteria, boolean useCriteriaThreshold) throws EdenUserNotFoundException {
 		DocumentSearchGenerator docSearchGenerator = null;
 		DocumentSearchResultProcessor docSearchResultProcessor = null;
 		if (!Utilities.isEmpty(criteria.getDocTypeFullName())) {
@@ -105,7 +112,12 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         validateDocumentSearchCriteria(docSearchGenerator,criteria);
         DocumentSearchResultComponents searchResult = null;
         try {
-            List docListResults = docSearchDao.getList(docSearchGenerator,criteria);
+            List docListResults = null;
+            if (useCriteriaThreshold) {
+                docListResults = docSearchDao.getListBoundedByCritera(docSearchGenerator,criteria, user);
+            } else {
+                docListResults = docSearchDao.getList(docSearchGenerator,criteria, user);
+            }
             searchResult = docSearchResultProcessor.processIntoFinalResults(docListResults, criteria, user);
 		} catch (Exception e) {
 			String errorMsg = "Error received trying to execute search: " + e.getLocalizedMessage();

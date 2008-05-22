@@ -1,103 +1,164 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2007 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-<dictionaryEntry>
-    <maintenanceDocument>
-        <businessObjectClass>org.kuali.core.bo.user.UniversalUser</businessObjectClass>
-        <maintainableClass>org.kuali.core.maintenance.UniversalUserMaintainable</maintainableClass>
-		<businessRulesClass>org.kuali.core.rules.UniversalUserRule</businessRulesClass>
-        <preRulesCheckClass>org.kuali.core.rules.UniversalUserPreRules</preRulesCheckClass>
-        <documentAuthorizerClass>org.kuali.core.document.authorization.UniversalUserDocumentAuthorizer</documentAuthorizerClass>
-        <authorizations>
-            <authorization action="initiate">
-                <workgroups>
-                    <workgroup>kualiUniversalGroup</workgroup>
-                </workgroups>
-            </authorization>
-        </authorizations>
+  <bean id="UniversalUserMaintenanceDocument" parent="UniversalUserMaintenanceDocument-parentBean" />
 
-        <documentTypeName>UniversalUserMaintenanceDocument</documentTypeName>
-        <documentTypeCode>UNVL</documentTypeCode>
+  <bean id="UniversalUserMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+    <property name="businessObjectClass" value="org.kuali.core.bo.user.UniversalUser" />
+    <property name="maintainableClass" value="org.kuali.core.maintenance.UniversalUserMaintainable" />
+    <property name="maintainableSections" >
+      <list>
+        <ref bean="UniversalUserMaintenanceDocument-EditUser" />
+      </list>
+    </property>
+    <property name="defaultExistenceChecks" >
+      <list>
+        <bean parent="ReferenceDefinition"
+              p:attributeName="campus"
+              p:attributeToHighlightOnFail="campusCode" />
+        <bean parent="ReferenceDefinition"
+              p:attributeName="employeeStatus"
+              p:attributeToHighlightOnFail="employeeStatusCode" />
+        <bean parent="ReferenceDefinition"
+              p:attributeName="employeeType"
+              p:attributeToHighlightOnFail="employeeTypeCode" />
+      </list>
+    </property>
+    <property name="lockingKeys" >
+      <list>
+        <value>personUniversalIdentifier</value>
+      </list>
+    </property>
+    <property name="shortLabel" value="User" />
+    <property name="summary" value="User maintenance document" />
+    <property name="helpDefinition" >
+      <bean parent="HelpDefinition"
+            p:parameterNamespace="KR-NS"
+            p:parameterName="UNIVERSAL_USER"
+            p:parameterDetailType="UniversalUser" />
+    </property>
+    <property name="documentTypeName" value="UniversalUserMaintenanceDocument" />
+    <property name="businessRulesClass" value="org.kuali.core.rules.UniversalUserRule" />
+    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.UniversalUserDocumentAuthorizer" />
+    <property name="preRulesCheckClass" value="org.kuali.core.rules.UniversalUserPreRules" />
+    <property name="documentTypeCode" value="UNVL" />
+    <property name="workflowProperties" >
+      <ref bean="UniversalUserMaintenanceDocument-workflowProperties" />
+    </property>
+    <property name="authorizations" >
+      <list>
+        <bean parent="AuthorizationDefinition">
+          <property name="authorizedGroups" >
+            <set>
+              <value>kualiUniversalGroup</value>
+            </set>
+          </property>
+          <property name="action" value="initiate" />
+        </bean>
+      </list>
+    </property>
+    <property name="label" value="User" />
+    <property name="description" value="Document used to create or update User objects" />
+  </bean>
 
-        <label>User</label>
+<!-- Maintenance Section Definitions -->
 
-        <summary>User maintenance document</summary>
-        <description>Document used to create or update User objects</description>
-        <help parameterNamespace="KR-NS" parameterDetailType="UniversalUser" parameterName="UNIVERSAL_USER" />
 
-        <lockingKeys>
-            <field attributeName="personUniversalIdentifier" />
-        </lockingKeys>
+  <bean id="UniversalUserMaintenanceDocument-EditUser" parent="UniversalUserMaintenanceDocument-EditUser-parentBean" />
 
-		<allowsNewOrCopy>true</allowsNewOrCopy>
+  <bean id="UniversalUserMaintenanceDocument-EditUser-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="personUserIdentifier" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="personUniversalIdentifier" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="personFirstName" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="personMiddleName" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="personLastName" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="personName" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="personEmailAddress" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="staff" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="faculty" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="student" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="affiliate" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="employeeStatusCode"
+              p:defaultValue="A" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="employeeTypeCode"
+              p:defaultValue="P" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="campusCode" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="primaryDepartmentCode" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="personPayrollIdentifier" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="personTaxIdentifierTypeCode" />
+        <bean parent="MaintainableFieldDefinition">
+          <property name="displayMask" >
+            <bean parent="Mask">
+              <property name="maskFormatter" >
+                <bean parent="MaskFormatterLiteral"
+                      p:literal="***************" />
+              </property>
+            </bean>
+          </property>
+          <property name="displayEditMode" value="ssnEditEntry" />
+          <property name="name" value="personTaxIdentifier" />
+        </bean>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="financialSystemsEncryptedPasswordText" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="personCampusAddress" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="personLocalPhoneNumber" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="personBaseSalaryAmount" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="versionNumber" />
+      </list>
+    </property>
+    <property name="id" value="Edit User" />
+    <property name="title" value="Edit User" />
+  </bean>
 
-		<defaultExistenceChecks>
-            <reference attributeName="campus" attributeToHighlightOnFail="campusCode" />
-            <reference attributeName="employeeStatus" attributeToHighlightOnFail="employeeStatusCode" />
-            <reference attributeName="employeeType" attributeToHighlightOnFail="employeeTypeCode" />
-        </defaultExistenceChecks>
-        
-        <maintainableSections>
-            <maintainableSection title="Edit User">
-                <maintainableItems>
-	                <maintainableField name="personUserIdentifier" required="true"/>
-	                <maintainableField name="personUniversalIdentifier" required="true" />
-   	                <maintainableField name="personFirstName" required="true"/>
-   	                <maintainableField name="personMiddleName" />
-   	                <maintainableField name="personLastName" required="true"/>
-	                <maintainableField name="personName" />
-   	                <maintainableField name="personEmailAddress" />
-	                <maintainableField name="staff" />
-	                <maintainableField name="faculty" />
-	                <maintainableField name="student" />
-	                <maintainableField name="affiliate" />
-	                <maintainableField name="employeeStatusCode">
-	                	<defaultValue>A</defaultValue>
-	                </maintainableField>
-	                <maintainableField name="employeeTypeCode">
-	                	<defaultValue>P</defaultValue>
-	                </maintainableField>
-	                <maintainableField name="campusCode" />
-	                <maintainableField name="primaryDepartmentCode" />
-	                <maintainableField name="personPayrollIdentifier" />
-	                <maintainableField name="personTaxIdentifierTypeCode" />
-	                <maintainableField name="personTaxIdentifier" >
-	                  <fieldAuthorization>
-	                    <displayEditMode>ssnEditEntry</displayEditMode>
-	                    <displayMask><maskLiteral literal="***************"/></displayMask>
-	                  </fieldAuthorization>
-	                </maintainableField>
-   	                <maintainableField name="financialSystemsEncryptedPasswordText" />
-   	                <maintainableField name="personCampusAddress" />
-   	                <maintainableField name="personLocalPhoneNumber" />
-   	                <maintainableField name="personBaseSalaryAmount" />
-                    <maintainableField name="versionNumber" />
-                </maintainableItems>
-            </maintainableSection>
-        </maintainableSections>
-        
-        <workflowProperties>
-        	<workflowPropertyGroup>
-        		<workflowProperty path="newMaintainableObject.businessObject" />
-        		<workflowProperty path="newMaintainableObject.businessObject.changedModuleCodes" />
-        	</workflowPropertyGroup>
-        </workflowProperties>
-    </maintenanceDocument>
-</dictionaryEntry>
+<!-- Exported Workflow Properties -->
+
+
+  <bean id="UniversalUserMaintenanceDocument-workflowProperties" parent="UniversalUserMaintenanceDocument-workflowProperties-parentBean" />
+
+  <bean id="UniversalUserMaintenanceDocument-workflowProperties-parentBean" abstract="true" parent="WorkflowProperties">
+    <property name="workflowPropertyGroups" >
+      <list>
+        <bean parent="WorkflowPropertyGroup">
+          <property name="workflowProperties" >
+            <list>
+              <bean parent="WorkflowProperty"
+                    p:path="newMaintainableObject.businessObject" />
+              <bean parent="WorkflowProperty"
+                    p:path="newMaintainableObject.businessObject.changedModuleCodes" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+</beans>

@@ -24,13 +24,13 @@ import java.util.Set;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.dao.BusinessObjectDao;
 import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.OjbCollectionAware;
 import org.kuali.core.util.OjbCollectionHelper;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -274,7 +274,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
      */
     private Criteria buildActiveCriteria(){
         Criteria criteria = new Criteria();
-        criteria.addEqualTo(RicePropertyConstants.ACTIVE, true);
+        criteria.addEqualTo(KNSPropertyConstants.ACTIVE, true);
         
         return criteria;
     }

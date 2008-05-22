@@ -21,8 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.kuali.core.datadictionary.exception.AttributeValidationException;
 
 /**
  * Contains sorting-related information for DataDictionary entries.
@@ -32,61 +31,44 @@ import org.apache.commons.logging.LogFactory;
  * 
  */
 public class SortDefinition extends DataDictionaryDefinitionBase {
-    // logger
-    private static Log LOG = LogFactory.getLog(SortDefinition.class);
 
-    private boolean sortAscending;
-    private String attributeName;
-    private List attributes;
-    private List attributeNames;
+    private boolean sortAscending = true;
+    private List<String> attributeNames = new ArrayList<String>();
 
-    public SortDefinition() {
-        LOG.debug("creating new SortDefinition");
-
-        this.sortAscending = true;
-        this.attributes = new ArrayList();
-        this.attributeNames = new ArrayList();
-    }
+    public SortDefinition() {}
 
 
     /**
-     * Sets attributeName to the given value.
-     * 
-     * @param attributeName
+                       The sortAttribute element defines one part of the sort key.
+                        The full sort key is comprised of the sortAttribute's in the
+                        order in which they have been defined.
+
+                        DD: See SortAttributesDefinition.java.
+
+                        JSTL: sortAttribute is a Map which is accessed using a
+                        key of the attributeName of the sortAttribute.
+                        It contains a single entry with the following key:
+                            * "attributeName"
+
+                        The associated value is the attributeName of the sortAttribute.
+                        See LookupMapBuilder.java
      * @throws IllegalArgumentException if the given attributeName is blank
      */
     public void setAttributeName(String attributeName) {
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setAttributeName '" + attributeName + "'");
-        }
-        if (attributes.size() != 0) {
+        if (attributeNames.size() != 0) {
             throw new IllegalStateException("unable to set sort attributeName when sortAttributes have already been added");
         }
 
-        this.attributeName = attributeName;
+        attributeNames.add(attributeName);
     }
-
-    /**
-     * Adds the given attribute to the list of attributes associated with this sortDefinition.
-     * 
-     * @param sortAttributeDefinition
-     */
-    public void addSortAttribute(SortAttributeDefinition sortAttributeDefinition) {
-        if (attributeName != null) {
-            throw new IllegalStateException("unable to add sortAttributes when sort attributeName has already been set");
-        }
-
-        this.attributes.add(sortAttributeDefinition);
-    }
-
 
     /**
      * @return the List of associated attribute names as Strings
      */
-    public List getAttributeNames() {
+    public List<String> getAttributeNames() {
         return this.attributeNames;
     }
 
@@ -104,10 +86,6 @@ public class SortDefinition extends DataDictionaryDefinitionBase {
      * @param sortAscending
      */
     public void setSortAscending(boolean sortAscending) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setSortAscending '" + sortAscending + "'");
-        }
-
         this.sortAscending = sortAscending;
     }
 
@@ -117,23 +95,11 @@ public class SortDefinition extends DataDictionaryDefinitionBase {
      * 
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
-        if (this.attributeName != null) {
-            boolean oldIsParsingFile = isParsingFile;
-            isParsingFile = false;
-            SortAttributeDefinition syntheticAttribute = new SortAttributeDefinition();
-            isParsingFile = oldIsParsingFile;
-            syntheticAttribute.setAttributeName(this.attributeName);
-            this.attributeName = null;
-
-            addSortAttribute(syntheticAttribute);
-        }
-
-        for (Iterator i = attributes.iterator(); i.hasNext();) {
-            SortAttributeDefinition sortAttributeDefinition = (SortAttributeDefinition) i.next();
-            sortAttributeDefinition.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass, validationCompletionUtils);
-
-            attributeNames.add(sortAttributeDefinition.getAttributeName());
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+        for ( String attributeName : attributeNames ) {
+            if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, attributeName)) {
+                throw new AttributeValidationException("unable to find sort attribute '" + attributeName + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
+            }            
         }
     }
 
@@ -143,14 +109,30 @@ public class SortDefinition extends DataDictionaryDefinitionBase {
      */
     public String toString() {
         StringBuffer attrList = new StringBuffer("[");
-        for (Iterator i = attributes.iterator(); i.hasNext();) {
-            attrList.append(((SortAttributeDefinition) i.next()).getAttributeName());
+        for (Iterator<String> i = attributeNames.iterator(); i.hasNext();) {
+            attrList.append(i.next());
             if (i.hasNext()) {
                 attrList.append(",");
             }
         }
         attrList.append("]");
 
-        return "SortDefinition for attribute " + attrList.toString();
+        return "SortDefinition :  " + attrList.toString();
     }
+
+
+    /**
+                     The sortAttributes element allows a multiple-part sort key
+                      to be defined
+
+                      JSTL: sortAttributes is a Map which is accessed using a
+                      key of "sortAttributes". This map contains an entry for
+                      sort attribute.  The key is:
+                      * attributeName of a sort field.
+                      The associated value is a sortAttribute ExportMap.
+     */
+    public void setAttributeNames(List<String> attributeNames) {
+        this.attributeNames = attributeNames;
+    }
+    
 }

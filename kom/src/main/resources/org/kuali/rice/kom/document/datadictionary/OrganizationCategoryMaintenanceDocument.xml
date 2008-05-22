@@ -1,56 +1,62 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2007 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="KualiOrganizationCategoryMaintenanceDocument" parent="KualiOrganizationCategoryMaintenanceDocument-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="KualiOrganizationCategoryMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kom.bo.OrganizationCategory" />
+    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    <property name="maintainableSections" >
+      <list>
+        <ref bean="KualiOrganizationCategoryMaintenanceDocument-EditOrganizationCategory" />
+      </list>
+    </property>
+    <property name="lockingKeys" >
+      <list>
+        <value>id</value>
+      </list>
+    </property>
+    <property name="shortLabel" value="Organization Category" />
+    <property name="summary" value="Organization Category Maintenance Document" />
+    <property name="documentTypeName" value="KualiOrganizationCategoryMaintenanceDocument" />
+    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentTypeCode" value="KOCD" />
+    <property name="authorizations" >
+      <list>
+        <bean parent="AuthorizationDefinition">
+          <property name="authorizedGroups" >
+            <set>
+              <value>kualiUniversalGroup</value>
+            </set>
+          </property>
+          <property name="action" value="initiate" />
+        </bean>
+      </list>
+    </property>
+    <property name="label" value="Organization Category" />
+    <property name="description" value="Maintenance document which allows you to create a new Organization Category, or modify existing Organization Category." />
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
+<!-- Maintenance Section Definitions -->
 
-<dictionaryEntry>
-    <maintenanceDocument>
-        <businessObjectClass>org.kuali.rice.kom.bo.OrganizationCategory</businessObjectClass>
-        <maintainableClass>org.kuali.core.maintenance.KualiMaintainableImpl</maintainableClass>
 
-        <documentAuthorizerClass>org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase</documentAuthorizerClass>
-        <authorizations>
-            <authorization action="initiate">
-                <workgroups>
-                    <workgroup>kualiUniversalGroup</workgroup>
-                </workgroups>
-            </authorization>
-        </authorizations>
+  <bean id="KualiOrganizationCategoryMaintenanceDocument-EditOrganizationCategory" parent="KualiOrganizationCategoryMaintenanceDocument-EditOrganizationCategory-parentBean" />
 
-        <documentTypeName>KualiOrganizationCategoryMaintenanceDocument</documentTypeName>
-        <documentTypeCode>KOCD</documentTypeCode>
-        <label>Organization Category</label>
-        <summary>Organization Category Maintenance Document</summary>
-        <description>Maintenance document which allows you to create a new Organization Category, or modify existing Organization Category.</description>
-
-        <lockingKeys>
-            <field attributeName="id" />
-        </lockingKeys>
-
-        <allowsNewOrCopy>true</allowsNewOrCopy>
-
-        <maintainableSections>
-            <maintainableSection title="Edit Organization Category">
-                <maintainableItems>
-                    <maintainableField name="id" required="false" readOnly="true" />
-                    <maintainableField name="name" required="true" readOnly="false" />
-                 </maintainableItems>
-            </maintainableSection>
-        </maintainableSections>
-    </maintenanceDocument>
-</dictionaryEntry>
+  <bean id="KualiOrganizationCategoryMaintenanceDocument-EditOrganizationCategory-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="id"
+              p:readOnly="true" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="name" />
+      </list>
+    </property>
+    <property name="id" value="Edit Organization Category" />
+    <property name="title" value="Edit Organization Category" />
+  </bean>
+</beans>

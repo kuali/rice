@@ -27,6 +27,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.KEWPropertyConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
@@ -177,19 +178,19 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	}
 
 	public void addStandardSearchColumns(List<Column> columns) {
-		this.addColumnUsingKey(columns, DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL);
-		this.addColumnUsingKey(columns, DocumentSearchResult.PROPERTY_NAME_DOCUMENT_TITLE);
-		this.addColumnUsingKey(columns, DocumentSearchResult.PROPERTY_NAME_ROUTE_STATUS_DESC);
-		this.addColumnUsingKey(columns, DocumentSearchResult.PROPERTY_NAME_INITIATOR);
-		this.addColumnUsingKey(columns, DocumentSearchResult.PROPERTY_NAME_DATE_CREATED);
+		this.addColumnUsingKey(columns, KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL);
+		this.addColumnUsingKey(columns, KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE);
+		this.addColumnUsingKey(columns, KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC);
+		this.addColumnUsingKey(columns, KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR);
+		this.addColumnUsingKey(columns, KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED);
 	}
 
 	public void addRouteHeaderIdColumn(List<Column> columns) {
-		this.addColumnUsingKey(columns, DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID);
+		this.addColumnUsingKey(columns, KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID);
 	}
 
 	public void addRouteLogColumn(List<Column> columns) {
-		this.addColumnUsingKey(columns, DocumentSearchResult.PROPERTY_NAME_ROUTE_LOG);
+		this.addColumnUsingKey(columns, KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG);
 	}
 
 	public void addSearchableAttributeColumnsNoOverrides(List<Column> columns,DocSearchCriteriaVO criteria) {
@@ -251,7 +252,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 
 	public void addCustomStandardCriteriaColumns(List<Column> columns,DocSearchCriteriaVO criteria,List<Column> customDisplayColumns) {
 		for (Column customColumn : customDisplayColumns) {
-			if (DocumentSearchResult.PROPERTY_NAME_SET.contains(customColumn.getKey())) {
+			if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_SET.contains(customColumn.getKey())) {
 				this.addCustomColumn(columns,customColumn);
 			}
 		}
@@ -259,7 +260,7 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 
 //	public void addCustomSearchAttributeColumns(List<Column> columns,DocSearchCriteriaVO criteria,List<Column> customDisplayColumns) {
 //		for (Column customColumn : customDisplayColumns) {
-//			if (!DocumentSearchResult.PROPERTY_NAME_SET.contains(customColumn.getKey())) {
+//			if (!KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_SET.contains(customColumn.getKey())) {
 //				this.addCustomColumn(columns,customColumn);
 //			}
 //		}
@@ -334,25 +335,25 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 		String columnKeyName = column.getKey();
 		SearchableAttributeValue attributeValue = null;
 
-		if (DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID.equals(columnKeyName)) {
+		if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID.equals(columnKeyName)) {
 			fieldValue = this.getRouteHeaderIdFieldDisplayValue(docSearchVO.getRouteHeaderId().toString(), docSearchVO.isUsingSuperUserSearch());
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
-		} else if (DocumentSearchResult.PROPERTY_NAME_ROUTE_LOG.equals(columnKeyName)) {
+		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG.equals(columnKeyName)) {
 			fieldValue = this.getRouteLogFieldDisplayValue(docSearchVO.getRouteHeaderId().toString());
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
-		} else if (DocumentSearchResult.PROPERTY_NAME_DATE_CREATED.equals(columnKeyName)) {
+		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED.equals(columnKeyName)) {
 			fieldValue = DocSearchUtils.getDisplayValueWithDateTime(docSearchVO.getDateCreated());
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
-		} else if (DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL.equals(columnKeyName)) {
+		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL.equals(columnKeyName)) {
 			fieldValue = docSearchVO.getDocTypeLabel();
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
-		} else if (DocumentSearchResult.PROPERTY_NAME_DOCUMENT_TITLE.equals(columnKeyName)) {
+		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE.equals(columnKeyName)) {
 			fieldValue = docSearchVO.getDocumentTitle();
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
-		} else if (DocumentSearchResult.PROPERTY_NAME_INITIATOR.equals(columnKeyName)) {
+		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR.equals(columnKeyName)) {
 			fieldValue = this.getInitiatorFieldDisplayValue(docSearchVO.getInitiatorTransposedName(), docSearchVO.getInitiatorWorkflowId());
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
-		} else if (DocumentSearchResult.PROPERTY_NAME_ROUTE_STATUS_DESC.equals(columnKeyName)) {
+		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC.equals(columnKeyName)) {
 			fieldValue = docSearchVO.getDocRouteStatusCodeDesc();
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else {
@@ -417,9 +418,9 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 
 	private Map<String,Object> getSortValuesMap(DocSearchVO docSearchVO) {
 		Map<String, Object> alternateSort = new HashMap<String, Object>();
-		alternateSort.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID, docSearchVO.getRouteHeaderId());
-		alternateSort.put(DocumentSearchResult.PROPERTY_NAME_INITIATOR, docSearchVO.getInitiatorTransposedName());
-		alternateSort.put(DocumentSearchResult.PROPERTY_NAME_DATE_CREATED, docSearchVO.getDateCreated());
+		alternateSort.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID, docSearchVO.getRouteHeaderId());
+		alternateSort.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR, docSearchVO.getInitiatorTransposedName());
+		alternateSort.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED, docSearchVO.getDateCreated());
 		return alternateSort;
 	}
 
@@ -432,13 +433,13 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 
 	protected Map<String,Boolean> constructSortableColumnByKey() {
 		Map<String,Boolean> sortable = new HashMap<String,Boolean>();
-		sortable.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID, Boolean.TRUE);
-		sortable.put(DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL, Boolean.TRUE);
-		sortable.put(DocumentSearchResult.PROPERTY_NAME_DOCUMENT_TITLE, Boolean.TRUE);
-		sortable.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_STATUS_DESC, Boolean.TRUE);
-		sortable.put(DocumentSearchResult.PROPERTY_NAME_INITIATOR, Boolean.TRUE);
-		sortable.put(DocumentSearchResult.PROPERTY_NAME_DATE_CREATED, Boolean.TRUE);
-		sortable.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_LOG, Boolean.FALSE);
+		sortable.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID, Boolean.TRUE);
+		sortable.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL, Boolean.TRUE);
+		sortable.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE, Boolean.TRUE);
+		sortable.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC, Boolean.TRUE);
+		sortable.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR, Boolean.TRUE);
+		sortable.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED, Boolean.TRUE);
+		sortable.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG, Boolean.FALSE);
 		return sortable;
 	}
 
@@ -451,13 +452,13 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 
 	protected Map<String,Boolean> constructSortableByKey() {
 		Map<String,Boolean> sortable = new HashMap<String,Boolean>();
-		sortable.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID, Boolean.TRUE);
-		sortable.put(DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL, Boolean.TRUE);
-		sortable.put(DocumentSearchResult.PROPERTY_NAME_DOCUMENT_TITLE, Boolean.TRUE);
-		sortable.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_STATUS_DESC, Boolean.TRUE);
-		sortable.put(DocumentSearchResult.PROPERTY_NAME_INITIATOR, Boolean.TRUE);
-		sortable.put(DocumentSearchResult.PROPERTY_NAME_DATE_CREATED, Boolean.TRUE);
-		sortable.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_LOG, Boolean.FALSE);
+		sortable.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID, Boolean.TRUE);
+		sortable.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL, Boolean.TRUE);
+		sortable.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE, Boolean.TRUE);
+		sortable.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC, Boolean.TRUE);
+		sortable.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR, Boolean.TRUE);
+		sortable.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED, Boolean.TRUE);
+		sortable.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG, Boolean.FALSE);
 		return sortable;
 	}
 

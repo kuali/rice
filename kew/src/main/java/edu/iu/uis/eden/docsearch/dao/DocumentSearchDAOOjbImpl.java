@@ -35,6 +35,7 @@ import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
 import edu.iu.uis.eden.docsearch.DocumentSearchGenerator;
 import edu.iu.uis.eden.doctype.DocumentSecurityService;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
+import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.util.PerformanceLogger;
 import edu.iu.uis.eden.util.Utilities;
 
@@ -42,12 +43,18 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
 
     public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSearchDAOOjbImpl.class);
 
-	private static final int DEFAULT_FETCH_MORE_ITERATION_LIMIT = 10;
+    private static final int DEFAULT_FETCH_MORE_ITERATION_LIMIT = 10;
 
-    public List getList(DocumentSearchGenerator documentSearchGenerator,DocSearchCriteriaVO criteria) throws EdenUserNotFoundException {
+    public List getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaVO criteria, WorkflowUser user) throws EdenUserNotFoundException {
+        return getList(documentSearchGenerator, criteria, criteria.getThreshold(), user);
+    }
+
+    public List getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaVO criteria, WorkflowUser user) throws EdenUserNotFoundException {
+        return getList(documentSearchGenerator, criteria, Integer.valueOf(getSearchResultCap(documentSearchGenerator)), user);
+    }
+
+    private List getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaVO criteria, Integer searchResultCap, WorkflowUser user) throws EdenUserNotFoundException {
         LOG.debug("start getList");
-        int searchResultCap = getSearchResultCap(documentSearchGenerator);
-        int fetchMoreIterationLimit = getFetchMoreIterationLimit();
         DocumentSecurityService documentSecurityService = KEWServiceLocator.getDocumentSecurityService();
         List docList = new ArrayList();
         PersistenceBroker broker = null;
@@ -58,103 +65,109 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         try {
             broker = getPersistenceBroker(false);
             conn = broker.serviceConnectionManager().getConnection();
-            String sql = documentSearchGenerator.generateSearchSql(criteria);
-            LOG.info("Executing document search w/fetch size="+searchResultCap+": " + sql);
-            int fetchLimit = fetchMoreIterationLimit * searchResultCap;
-            criteria.setThreshhold(searchResultCap);
-            criteria.setFetchLimit(fetchLimit);
-            statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-            statement.setMaxRows(fetchLimit+1);
-            statement.setFetchSize(searchResultCap+1);
+            statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            criteria.setThreshold(searchResultCap);
+            if (searchResultCap != null) {
+                int fetchLimit = getFetchMoreIterationLimit() * searchResultCap.intValue();
+                criteria.setFetchLimit(Integer.valueOf(fetchLimit));
+                statement.setFetchSize(searchResultCap.intValue() + 1);
+                statement.setMaxRows(fetchLimit + 1);
+            } else {
+                criteria.setFetchLimit(null);
+            }
             PerformanceLogger perfLog = new PerformanceLogger();
+            String sql = documentSearchGenerator.generateSearchSql(criteria);
+            perfLog.log("Time to generate search sql from documentSearchGenerator class: " + documentSearchGenerator.getClass().getName(), true);
+            LOG.info("Executing document search with statement max rows: " + statement.getMaxRows());
+            LOG.info("Executing document search with statement fetch size: " + statement.getFetchSize());
+            perfLog = new PerformanceLogger();
             rs = statement.executeQuery(sql);
             perfLog.log("Time to execute doc search database query.", true);
             // TODO delyea - look at refactoring
-            searchAttributeStatement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-            docList = documentSearchGenerator.processResultSet(searchAttributeStatement, rs, criteria);
+            searchAttributeStatement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            docList = documentSearchGenerator.processResultSet(searchAttributeStatement, rs, criteria, user);
         } catch (SQLException sqle) {
-        	String errorMsg = "SQLException: " + sqle.getMessage();
+            String errorMsg = "SQLException: " + sqle.getMessage();
             LOG.error("getList() " + errorMsg, sqle);
-            throw new RuntimeException(errorMsg,sqle);
+            throw new RuntimeException(errorMsg, sqle);
         } catch (LookupException le) {
-        	String errorMsg = "LookupException: " + le.getMessage();
+            String errorMsg = "LookupException: " + le.getMessage();
             LOG.error("getList() " + errorMsg, le);
-            throw new RuntimeException(errorMsg,le);
+            throw new RuntimeException(errorMsg, le);
         } finally {
-        	if (rs != null) {
-        		try {
-        			rs.close();
-        		} catch (SQLException e) {
-        			LOG.warn("Could not close result set.");
-        		}
-        	}
-        	if (statement != null) {
-    		try {
-    			statement.close();
-    		} catch (SQLException e) {
-    			LOG.warn("Could not close statement.");
-    		}
-    	}
-        	if (searchAttributeStatement != null) {
-    		try {
-    		searchAttributeStatement.close();
-    		} catch (SQLException e) {
-    			LOG.warn("Could not close search attribute statement.");
-    		}
-    	}
-        	if (broker != null) {
-        		try {
-        			OjbFactoryUtils.releasePersistenceBroker(broker, this.getPersistenceBrokerTemplate().getPbKey());
-        		} catch (Exception e) {
-        			LOG.error("Failed closing connection: " + e.getMessage(), e);
-        		}
-        	}
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    LOG.warn("Could not close result set.");
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    LOG.warn("Could not close statement.");
+                }
+            }
+            if (searchAttributeStatement != null) {
+                try {
+                    searchAttributeStatement.close();
+                } catch (SQLException e) {
+                    LOG.warn("Could not close search attribute statement.");
+                }
+            }
+            if (broker != null) {
+                try {
+                    OjbFactoryUtils.releasePersistenceBroker(broker, this.getPersistenceBrokerTemplate().getPbKey());
+                } catch (Exception e) {
+                    LOG.error("Failed closing connection: " + e.getMessage(), e);
+                }
+            }
         }
 
         LOG.info("end getlist");
         return docList;
     }
-
+    
     private int getSearchResultCap(DocumentSearchGenerator docSearchGenerator) {
-    	int resultCap = docSearchGenerator.getDocumentSearchResultSetLimit();
-    	String resultCapValue = Utilities.getApplicationConstant(EdenConstants.DOC_SEARCH_RESULT_CAP_KEY);
-    	if (!StringUtils.isBlank(resultCapValue)) {
-    		try {
-    		    Integer maxResultCap = Integer.parseInt(resultCapValue);
-    		    if (resultCap > maxResultCap) {
-    			LOG.warn("Document Search Generator (" + docSearchGenerator.getClass().getName() + ") gives result set cap of " + resultCap + " which is greater than app constant " + EdenConstants.DOC_SEARCH_RESULT_CAP_KEY + " value of " + maxResultCap);
-    			resultCap = maxResultCap;
-    		    }
-    		    else if (maxResultCap <= 0) {
-    			LOG.warn(EdenConstants.DOC_SEARCH_RESULT_CAP_KEY + " was less than or equal to zero.  Please use a positive integer.");
-    		    }
-    		} catch (NumberFormatException e) {
-    			LOG.warn(EdenConstants.DOC_SEARCH_RESULT_CAP_KEY + " is not a valid number.  Value was " + resultCapValue);
-    		}
-    	}
-    	return resultCap;
+        int resultCap = docSearchGenerator.getDocumentSearchResultSetLimit();
+        String resultCapValue = Utilities.getApplicationConstant(EdenConstants.DOC_SEARCH_RESULT_CAP_KEY);
+        if (!StringUtils.isBlank(resultCapValue)) {
+            try {
+                Integer maxResultCap = Integer.parseInt(resultCapValue);
+                if (resultCap > maxResultCap) {
+                    LOG.warn("Document Search Generator (" + docSearchGenerator.getClass().getName() + ") gives result set cap of " + resultCap + " which is greater than app constant " + EdenConstants.DOC_SEARCH_RESULT_CAP_KEY + " value of " + maxResultCap);
+                    resultCap = maxResultCap;
+                } else if (maxResultCap <= 0) {
+                    LOG.warn(EdenConstants.DOC_SEARCH_RESULT_CAP_KEY + " was less than or equal to zero.  Please use a positive integer.");
+                }
+            } catch (NumberFormatException e) {
+                LOG.warn(EdenConstants.DOC_SEARCH_RESULT_CAP_KEY + " is not a valid number.  Value was " + resultCapValue);
+            }
+        }
+        return resultCap;
     }
 
     // TODO delyea: use searchable attribute count here?
     private int getFetchMoreIterationLimit() {
-    	int fetchMoreLimit = DEFAULT_FETCH_MORE_ITERATION_LIMIT;
-    	String fetchMoreLimitValue = Utilities.getApplicationConstant(EdenConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT_KEY);
-    	if (!StringUtils.isBlank(fetchMoreLimitValue)) {
-    		try {
-    			fetchMoreLimit = Integer.parseInt(fetchMoreLimitValue);
-    			if (fetchMoreLimit < 0) {
-    				LOG.warn(EdenConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT_KEY + " was less than zero.  Please use a value greater than or equal to zero.");
-    				fetchMoreLimit = DEFAULT_FETCH_MORE_ITERATION_LIMIT;
-    			}
-    		} catch (NumberFormatException e) {
-    			LOG.warn(EdenConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT_KEY + " is not a valid number.  Value was " + fetchMoreLimitValue);
-    		}
-    	}
-    	return fetchMoreLimit;
+        int fetchMoreLimit = DEFAULT_FETCH_MORE_ITERATION_LIMIT;
+        String fetchMoreLimitValue = Utilities.getApplicationConstant(EdenConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT_KEY);
+        if (!StringUtils.isBlank(fetchMoreLimitValue)) {
+            try {
+                fetchMoreLimit = Integer.parseInt(fetchMoreLimitValue);
+                if (fetchMoreLimit < 0) {
+                    LOG.warn(EdenConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT_KEY + " was less than zero.  Please use a value greater than or equal to zero.");
+                    fetchMoreLimit = DEFAULT_FETCH_MORE_ITERATION_LIMIT;
+                }
+            } catch (NumberFormatException e) {
+                LOG.warn(EdenConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT_KEY + " is not a valid number.  Value was " + fetchMoreLimitValue);
+            }
+        }
+        return fetchMoreLimit;
     }
 
-//
-//    protected Platform getPlatform() {
-//    	return (Platform)GlobalResourceLoader.getService(KEWServiceLocator.DB_PLATFORM);
-//    }
+    //
+    //    protected Platform getPlatform() {
+    //    	return (Platform)GlobalResourceLoader.getService(KEWServiceLocator.DB_PLATFORM);
+    //    }
 }

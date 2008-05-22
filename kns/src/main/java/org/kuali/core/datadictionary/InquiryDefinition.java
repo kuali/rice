@@ -17,107 +17,58 @@
 package org.kuali.core.datadictionary;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.kuali.core.datadictionary.exception.DuplicateEntryException;
+import org.kuali.core.inquiry.Inquirable;
 
 /**
  * Contains inquiry-related information relating to the parent BusinessObject.
  * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
  */
 public class InquiryDefinition extends DataDictionaryDefinitionBase {
-    private static Log LOG = LogFactory.getLog(InquiryDefinition.class);
 
     private String title;
-    private Map inquirySections;
-    private Class inquirableClass;
+    private List<InquirySectionDefinition> inquirySections = new ArrayList<InquirySectionDefinition>();
+    private Class<? extends Inquirable> inquirableClass;
 
     public InquiryDefinition() {
-        LOG.debug("creating new InquiryDefinition");
-        this.inquirySections = new LinkedHashMap();
     }
 
 
-    /**
-     * @return title
-     */
     public String getTitle() {
         return title;
     }
 
     /**
-     * Sets title to the given value.
-     * 
-     * @param title
+               The title element is used specify the title that will appear in the header
+                of an Inquiry or Lookup screen.
      * @throws IllegalArgumentException if the given title is blank
      */
     public void setTitle(String title) {
         if (StringUtils.isBlank(title)) {
             throw new IllegalArgumentException("invalid (blank) title");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setTitle '" + title + "'");
-        }
 
         this.title = title;
-    }
-
-
-    /**
-     * @param inquirySection
-     * @throws IllegalArgumentException if the given inquirySection is null
-     */
-    public void addInquirySection(InquirySectionDefinition inquirySection) {
-        if (inquirySection == null) {
-            throw new IllegalArgumentException("invalid (null) inquirySection");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling addInquirySection for section '" + inquirySection.getTitle() + "'");
-        }
-        String sectionTitle = inquirySection.getTitle();
-        if (this.inquirySections.containsKey(sectionTitle)) {
-            throw new DuplicateEntryException("duplicate inquirySection entry for attribute '" + sectionTitle + "'");
-        }
-
-        this.inquirySections.put(sectionTitle, inquirySection);
     }
 
     /**
      * @return Collection of all inquiryField FieldDefinitions associated with this InquiryDefinition, in the order in which they
      *         were added
      */
-    public List getInquirySections() {
-        List sectionList = new ArrayList();
-
-        sectionList.addAll(this.inquirySections.values());
-
-        return Collections.unmodifiableList(sectionList);
+    public List<InquirySectionDefinition> getInquirySections() {
+        return inquirySections;
     }
-
-    /**
-     * @return InquirySectionDefinition for the inquiry section associated with the given section title, or null if there is none
-     */
-    public InquirySectionDefinition getInquirySection(String sectionTitle) {
-        return (InquirySectionDefinition) inquirySections.get(sectionTitle);
-    }
-     
+   
     /**
      * Returns the FieldDefinition associated with the field attribute name
      * @param fieldName
      * @return
      */
     public FieldDefinition getFieldDefinition(String fieldName) {
-        for (Iterator iter = inquirySections.values().iterator(); iter.hasNext();) {
-            InquirySectionDefinition section = (InquirySectionDefinition) iter.next();
-            for (Iterator iterator = section.getInquiryFields().iterator(); iterator.hasNext();) {
-                FieldDefinition field = (FieldDefinition) iterator.next();
+        for (InquirySectionDefinition section : inquirySections ) {
+            for (FieldDefinition field : section.getInquiryFields() ) {
                 if (field.getAttributeName().equals(fieldName)) {
                     return field;
                 }
@@ -132,16 +83,22 @@ public class InquiryDefinition extends DataDictionaryDefinitionBase {
      * 
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
-        for (Iterator i = inquirySections.entrySet().iterator(); i.hasNext();) {
-            Map.Entry e = (Map.Entry) i.next();
-
-            InquirySectionDefinition inquirySection = (InquirySectionDefinition) e.getValue();
-            inquirySection.completeValidation(rootBusinessObjectClass, null, validationCompletionUtils);
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+        for ( InquirySectionDefinition inquirySection : inquirySections ) {
+            inquirySection.completeValidation(rootBusinessObjectClass, null);
         }
     }
 
-
+    public InquirySectionDefinition getInquirySection( String sectionTitle ) {
+        for ( InquirySectionDefinition inquirySection : inquirySections ) {
+            if ( inquirySection.getTitle().equals(sectionTitle) ) {
+                return inquirySection;
+            }
+        }
+        return null;
+    }
+    
+    
     /**
      * @see java.lang.Object#toString()
      */
@@ -150,12 +107,29 @@ public class InquiryDefinition extends DataDictionaryDefinitionBase {
     }
 
 
-    public Class getInquirableClass() {
+    public Class<? extends Inquirable> getInquirableClass() {
         return inquirableClass;
     }
 
+    /**
 
-    public void setInquirableClass(Class inquirableClass) {
+            inquirableClass is required if a custom inquirable is required which will show
+            additional data other than the business object attributes.
+
+            Example from Org.xml:
+                <inquirableClass>org.kuali.module.chart.maintenance.OrgInquirable</inquirableClass>
+            The custom inquirable is required in this case because the organization hierarchy
+            is shown on the inquiry screen.
+     */
+    public void setInquirableClass(Class<? extends Inquirable> inquirableClass) {
         this.inquirableClass = inquirableClass;
+    }
+
+    /**
+     *                 inquirySections allows inquiry to be presented in sections.
+                Each section can have a different format.
+     */
+    public void setInquirySections(List<InquirySectionDefinition> inquirySections) {
+        this.inquirySections = inquirySections;
     }
 }

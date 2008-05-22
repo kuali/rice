@@ -17,11 +17,11 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.log4j.Logger;
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.ConfigProperties;
 import org.kuali.core.authorization.AuthorizationConstants;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
  * This class is the JstlContants implementation of the ServletContextListener.
@@ -32,26 +32,25 @@ public class JstlConstantsInitListener implements ServletContextListener {
 
     public void contextInitialized(ServletContextEvent sce) {
 
-	LOG.info("Starting " + JstlConstantsInitListener.class.getName() + "...");
-	ServletContext context = sce.getServletContext();
+        LOG.info("Starting " + JstlConstantsInitListener.class.getName() + "...");
+        ServletContext context = sce.getServletContext();
 
 	// publish application constants into JSP app context with name "Constants"
 	context.setAttribute("Constants", new KNSConstants());
 
-	// publish configuration properties into JSP app context with name "ConfigProperties"
-	context.setAttribute("ConfigProperties", new ConfigProperties());
+        // publish configuration properties into JSP app context with name "ConfigProperties"
+        context.setAttribute("ConfigProperties", new ConfigProperties());
 
-	// publish dataDictionary property Map into JSP app context with name "DataDictionary"
-	context.setAttribute("DataDictionary", KNSServiceLocator.getDataDictionaryService().getDataDictionaryMap());
+        // publish dataDictionary property Map into JSP app context with name "DataDictionary"
+        context.setAttribute("DataDictionary", KNSServiceLocator.getDataDictionaryService().getDataDictionaryMap());
 
-	// public AuthorizationConstants property Map into JSP app context with name "AuthorizationConstants"
-	context.setAttribute("AuthorizationConstants", new AuthorizationConstants());
+        // public AuthorizationConstants property Map into JSP app context with name "AuthorizationConstants"
+        context.setAttribute("AuthorizationConstants", new AuthorizationConstants());
 
-	// publish property constants into JSP app context with name "PropertyConstants"
-	context.setAttribute("PropertyConstants", new RicePropertyConstants());
+        // publish property constants into JSP app context with name "PropertyConstants"
+        context.setAttribute("PropertyConstants", new KNSPropertyConstants());
     }
 
-    public void contextDestroyed(ServletContextEvent sce) {
-    }
+    public void contextDestroyed(ServletContextEvent sce) {}
 
 }

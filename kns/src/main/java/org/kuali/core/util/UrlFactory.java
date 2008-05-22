@@ -60,20 +60,22 @@ public class UrlFactory {
         for ( Object key : params.keySet() ) {
             String paramName = StringUtils.trim( (String)key );
             String paramValue = params.getProperty(paramName);
+            ret.append( delimiter );
             if (StringUtils.isEmpty(paramName)) {
                 throw new IllegalArgumentException("invalid (blank) paramName");
             }
             if (paramValue == null) {
-                throw new IllegalArgumentException("invalid (null) paramValue");
-            }
-            ret.append( delimiter );
-            try {
                 ret.append( paramName );
                 ret.append( "=" );
-                ret.append( urlCodec.encode(paramValue) );
-            } catch ( EncoderException ex ) {
-                LOG.error("Unable to encode parameter name or value: " + paramName + "=" + paramValue, ex);
-                throw new RuntimeException( "Unable to encode parameter name or value: " + paramName + "=" + paramValue, ex );
+            } else {
+                try {
+                    ret.append( paramName );
+                    ret.append( "=" );
+                    ret.append( urlCodec.encode(paramValue) );
+                } catch ( EncoderException ex ) {
+                    LOG.error("Unable to encode parameter name or value: " + paramName + "=" + paramValue, ex);
+                    throw new RuntimeException( "Unable to encode parameter name or value: " + paramName + "=" + paramValue, ex );
+                }
             }
             delimiter = "&";
         }

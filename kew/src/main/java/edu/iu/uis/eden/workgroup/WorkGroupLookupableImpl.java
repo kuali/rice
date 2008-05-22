@@ -141,7 +141,7 @@ public class WorkGroupLookupableImpl implements WorkflowLookupable, Exportable {
 	private static List establishColumns() {
 		List columns = new ArrayList();
 		Column column = new Column("WorkGroup Id", Column.COLUMN_IS_SORTABLE_VALUE, "workgroupId");
-		column.setType(Column.INTEGER);
+		column.setType(EdenConstants.LOOKUP_COLUMN_TYPE_INTEGER);
 		columns.add(column);
 		columns.add(new Column("WorkGroup Name", Column.COLUMN_IS_SORTABLE_VALUE, "workgroupName"));
 		columns.add(new Column("Type", Column.COLUMN_IS_SORTABLE_VALUE, "workgroupType"));

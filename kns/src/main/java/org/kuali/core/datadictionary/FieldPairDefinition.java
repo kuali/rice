@@ -17,8 +17,6 @@
 package org.kuali.core.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
 
 /**
@@ -27,14 +25,11 @@ import org.kuali.core.datadictionary.exception.AttributeValidationException;
  * 
  */
 public class FieldPairDefinition extends DataDictionaryDefinitionBase {
-    // logger
-    private static Log log = LogFactory.getLog(FieldPairDefinition.class);
 
     private String fieldTo;
     private String fieldFrom;
 
     public FieldPairDefinition() {
-        log.debug("creating new FieldPairDefinition");
     }
 
 
@@ -68,13 +63,13 @@ public class FieldPairDefinition extends DataDictionaryDefinitionBase {
      * 
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
-        if (!validationCompletionUtils.isPropertyOf(rootBusinessObjectClass, fieldTo)) {
-            throw new AttributeValidationException("unable to find attribute '" + fieldTo + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + getParseLocation() + ")");
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+        if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, fieldTo)) {
+            throw new AttributeValidationException("unable to find attribute '" + fieldTo + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
         }
 
-        if (!validationCompletionUtils.isPropertyOf(otherBusinessObjectClass, fieldFrom)) {
-            throw new AttributeValidationException("unable to find attribute '" + fieldFrom + "' in otherBusinessObjectClass '" + otherBusinessObjectClass.getName() + "' (" + getParseLocation() + ")");
+        if (!DataDictionary.isPropertyOf(otherBusinessObjectClass, fieldFrom)) {
+            throw new AttributeValidationException("unable to find attribute '" + fieldFrom + "' in otherBusinessObjectClass '" + otherBusinessObjectClass.getName() + "' (" + "" + ")");
         }
     }
 

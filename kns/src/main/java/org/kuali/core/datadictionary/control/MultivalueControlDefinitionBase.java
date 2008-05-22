@@ -16,7 +16,6 @@
 
 package org.kuali.core.datadictionary.control;
 
-import org.kuali.core.datadictionary.ValidationCompletionUtils;
 import org.kuali.core.datadictionary.exception.ClassValidationException;
 import org.kuali.core.datadictionary.exception.CompletionException;
 import org.kuali.core.lookup.keyvalues.KeyValuesFinder;
@@ -29,15 +28,15 @@ public abstract class MultivalueControlDefinitionBase extends ControlDefinitionB
     /**
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
-        super.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass, validationCompletionUtils);
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+        super.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass);
 
         Class valuesFinder = getValuesFinderClass();
         if (valuesFinder == null) {
-            throw new CompletionException("error validating " + rootBusinessObjectClass.getName() + " control: keyValuesFinder was never set (" + getParseLocation() + ")");
+            throw new CompletionException("error validating " + rootBusinessObjectClass.getName() + " control: keyValuesFinder was never set (" + "" + ")");
         }
         if (!KeyValuesFinder.class.isAssignableFrom(valuesFinder)) {
-            throw new ClassValidationException("error validating " + rootBusinessObjectClass.getName() + " control: class '" + valuesFinder.getName() + "' is not a KeyValuesFinder subclass (" + getParseLocation() + ")");
+            throw new ClassValidationException("error validating " + rootBusinessObjectClass.getName() + " control: class '" + valuesFinder.getName() + "' is not a KeyValuesFinder subclass (" + "" + ")");
         }
     }
 }

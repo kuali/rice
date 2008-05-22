@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.kuali.core.datadictionary.ValidationCompletionUtils;
 import org.kuali.core.inquiry.Inquirable;
 import org.kuali.core.lookup.LookupResultsService;
 import org.kuali.core.lookup.Lookupable;
@@ -140,10 +139,6 @@ public class KNSServiceLocator<T extends Object> {
 	    }
 	}
 	return namedOrderedListBeans;
-    }
-
-    public static final ValidationCompletionUtils getValidationCompletionUtils() {
-	return (ValidationCompletionUtils) getService(VALIDATION_COMPLETION_UTILS);
     }
 
     public static final String ENCRYPTION_SERVICE = "encryptionService";

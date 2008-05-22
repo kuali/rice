@@ -16,11 +16,9 @@
 
 package org.kuali.core.datadictionary;
 
-import org.apache.log4j.Level;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
 
@@ -47,33 +45,27 @@ public class DataDictionaryBuilderTest extends KNSTestBase {
 
 	static final String TESTPACKAGE_INVALID = "org/kuali/core/datadictionary/test/invalid/";
 
-	DataDictionaryBuilder builder = null;
+	DataDictionary dd = null;
 
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
 
-		builder = new DataDictionaryBuilder(KNSServiceLocator.getValidationCompletionUtils());
-		builder.setKualiGroupService(KNSServiceLocator.getKualiGroupService());
-		builder.setKualiConfigurationService(KNSServiceLocator.getKualiConfigurationService());
-
-		// quieten things down a bit
-		setLogLevel("org.apache.commons.digester", Level.FATAL);
-		setLogLevel("org.kuali.core.datadictionary.XmlErrorHandler", Level.FATAL);
+		dd = new DataDictionary();
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		super.tearDown();
-		builder = null;
+		dd = null;
 	}
 
 	@Test
-	public final void testDataDictionaryBuilder_source_invalid() {
+	public final void testDataDictionaryBuilder_source_invalid() throws Exception {
 		boolean failedAsExpected = false;
 
 		try {
-			builder.addUniqueEntries(null, true);
+			dd.addConfigFileLocation(null);
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
 		}
@@ -82,13 +74,13 @@ public class DataDictionaryBuilderTest extends KNSTestBase {
 	}
 
 	@Test
-	public final void testDataDictionaryBuilder_source_unknownFile() {
+	public final void testDataDictionaryBuilder_source_unknownFile() throws Exception {
 		String INPUT_FILE = TESTPACKAGE_INVALID + "foo.xml";
 
 		boolean failedAsExpected = false;
 
 		try {
-			builder.addUniqueEntries(INPUT_FILE, true);
+			dd.addConfigFileLocation(INPUT_FILE);
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
 		}
@@ -103,7 +95,7 @@ public class DataDictionaryBuilderTest extends KNSTestBase {
 		boolean failedAsExpected = false;
 
 		try {
-			builder.addUniqueEntries(UNKNOWN_PACKAGE, true);
+			dd.addConfigFileLocation(UNKNOWN_PACKAGE);
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
 		}
@@ -112,14 +104,14 @@ public class DataDictionaryBuilderTest extends KNSTestBase {
 	}
 
 	@Test
-	public final void testDataDictionaryBuilder_invalidXml() {
+	public final void testDataDictionaryBuilder_invalidXml() throws Exception {
 		String INPUT_FILE = TESTPACKAGE_INVALID + "InvalidXml.xml";
 
 		boolean failedAsExpected = false;
 
 		try {
-			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.parseBO("InvalidXml", true);
+			dd.addConfigFileLocation(INPUT_FILE);
+			dd.parseDataDictionaryConfigurationFiles( false );
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
 		}
@@ -128,14 +120,14 @@ public class DataDictionaryBuilderTest extends KNSTestBase {
 	}
 
 	@Test
-	public final void testDataDictionaryBuilder_getInvalidDictionary() {
+	public final void testDataDictionaryBuilder_getInvalidDictionary() throws Exception {
 		String INPUT_FILE = TESTPACKAGE_INVALID + "InvalidXml.xml";
 
 		boolean failedAsExpected = false;
 
 		try {
-			builder.addUniqueEntries(INPUT_FILE, true);
-			builder.parseBO("InvalidXml", true);
+			dd.addConfigFileLocation(INPUT_FILE);
+			dd.parseDataDictionaryConfigurationFiles( false );
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
 		}

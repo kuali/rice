@@ -15,9 +15,6 @@
  */
 package org.kuali.core.datadictionary.exporter;
 
-import java.util.Iterator;
-import java.util.Map;
-
 import org.kuali.core.datadictionary.CollectionDefinition;
 import org.kuali.core.datadictionary.DataDictionaryEntryBase;
 
@@ -42,10 +39,7 @@ public class CollectionsMapBuilder {
     public ExportMap buildCollectionsMap(DataDictionaryEntryBase entry) {
         ExportMap collectionsMap = new ExportMap("collections");
 
-        for (Iterator i = entry.getCollections().entrySet().iterator(); i.hasNext();) {
-            Map.Entry e = (Map.Entry) i.next();
-
-            CollectionDefinition collection = (CollectionDefinition) e.getValue();
+        for ( CollectionDefinition collection : entry.getCollections() ) {
             collectionsMap.set(buildCollectionMap(collection));
         }
 

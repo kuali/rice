@@ -1,104 +1,150 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kim.bo.EntityType">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-        <inquiry>
-            <title>EntityType Inquiry</title>
+  <bean id="EntityType" parent="EntityType-parentBean" />
 
-            <inquirySections><inquirySection title="Header Text"><inquiryFields>
-                <field attributeName="id" />
-                <field attributeName="name" />
-            </inquiryFields></inquirySection></inquirySections>
-        </inquiry>
+  <bean id="EntityType-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.EntityType" />
+    <property name="inquiryDefinition" >
+      <ref bean="EntityType-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="EntityType-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="id" />
+    <property name="objectLabel" value="EntityType" />
+    <property name="attributes" >
+      <list>
+        <ref bean="EntityType-id" />
+        <ref bean="EntityType-name" />
+        <ref bean="EntityType-description" />
+        <ref bean="EntityType-versionNumber" />
+        <ref bean="EntityType-objectId" />
+      </list>
+    </property>
+  </bean>
 
-        <lookup>
-            <title>EntityType Lookup</title>
+<!-- Attribute Definitions -->
 
-            <instructions>Lookup a EntityType</instructions>
 
-            <defaultSort sortAscending="true">
-                <sortAttributes>
-                    <sortAttribute attributeName="name" />
-                </sortAttributes>
-            </defaultSort>
+  <bean id="EntityType-id" parent="EntityType-id-parentBean" />
 
-            <lookupFields>
-                <lookupField attributeName="id" required="false" />
-                <lookupField attributeName="name" required="false" />
-                <lookupField attributeName="description" required="false" />
-            </lookupFields>
+  <bean id="EntityType-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="id" />
+    <property name="maxLength" value="8" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="8" />
+    </property>
+    <property name="name" value="id" />
+    <property name="label" value="ID" />
+  </bean>
+  <bean id="EntityType-name" parent="EntityType-name-parentBean" />
 
-            <resultFields>
-                <field attributeName="id" />
-                <field attributeName="name" />
-                <field attributeName="description" />
-            </resultFields>
-        </lookup>
+  <bean id="EntityType-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="500" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="name" />
+    <property name="label" value="EntityType Name" />
+  </bean>
+  <bean id="EntityType-description" parent="EntityType-description-parentBean" />
 
-        <titleAttribute>id</titleAttribute>
+  <bean id="EntityType-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Description" />
+    <property name="maxLength" value="4000" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextareaControlDefinition"
+            p:cols="50"
+            p:rows="10" />
+    </property>
+    <property name="name" value="description" />
+    <property name="label" value="EntityType Description" />
+  </bean>
+  <bean id="EntityType-versionNumber" parent="EntityType-versionNumber-parentBean" />
 
-        <attributes>
+  <bean id="EntityType-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+  <bean id="EntityType-objectId" parent="EntityType-objectId-parentBean" />
 
-            <attribute name="id" forceUppercase="true">
-                <label>ID</label>
-                <shortLabel>id</shortLabel>
+  <bean id="EntityType-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
+  </bean>
 
-                <maxLength>8</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+<!-- Business Object Inquiry Definition -->
 
-                <control>
-                    <text size="8" />
-                </control>
 
-			</attribute>
+  <bean id="EntityType-inquiryDefinition" parent="EntityType-inquiryDefinition-parentBean" />
 
-            <attribute name="name" forceUppercase="false">
-                <label>EntityType Name</label>
-                <shortLabel>Name</shortLabel>
+  <bean id="EntityType-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="id" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="name" />
+            </list>
+          </property>
+          <property name="title" value="Header Text" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="EntityType Inquiry" />
+  </bean>
 
-                <maxLength>500</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+<!-- Business Object Lookup Definition -->
 
-                <control>
-                    <text size="100" />
-                </control>
 
-			</attribute>
-			
-			<attribute name="description" forceUppercase="false">
-                <label>EntityType Description</label>
-                <shortLabel>Description</shortLabel>
+  <bean id="EntityType-lookupDefinition" parent="EntityType-lookupDefinition-parentBean" />
 
-                <maxLength>4000</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
-
-                <control>
-                    <textarea rows="10" cols="50" />
-                </control>
-
-			</attribute>
-
-            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
-			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
-        </attributes>
-        <objectLabel>EntityType</objectLabel>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="EntityType-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Lookup a EntityType" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="description" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="description" />
+      </list>
+    </property>
+    <property name="title" value="EntityType Lookup" />
+  </bean>
+</beans>

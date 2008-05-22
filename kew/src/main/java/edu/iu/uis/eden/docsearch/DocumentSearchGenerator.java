@@ -37,7 +37,21 @@ public interface DocumentSearchGenerator {
     public List<WorkflowServiceError> performPreSearchConditions(WorkflowUser user, DocSearchCriteriaVO searchCriteria);
     public List<WorkflowServiceError> validateSearchableAttributes(DocSearchCriteriaVO searchCriteria);
     public String generateSearchSql(DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException;
+    /**
+     * @deprecated Removed as of version 0.9.3.  Use {@link #processResultSet(Statement, ResultSet, DocSearchCriteriaVO, WorkflowUser)} instead.
+     */
     public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException, SQLException;
-    public DocSearchCriteriaVO clearSearch(DocSearchCriteriaVO searchCriteria);
+    /**
+     * This method processes search results in the given <code>resultSet</code> into {@link DocSearchVO} objects
+     * 
+     * @param searchAttributeStatement - statement to use when fetching search attributes
+     * @param resultSet - resultSet containing data from document search main tables
+     * @param searchCriteria - criteria used to perform the search
+     * @param user - user who performed the search
+     * @return a list of DocSearchVO objects (one for each route header id)
+     * @throws EdenUserNotFoundException
+     * @throws SQLException
+     */
+    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria, WorkflowUser user) throws EdenUserNotFoundException, SQLException;    public DocSearchCriteriaVO clearSearch(DocSearchCriteriaVO searchCriteria);
     public int getDocumentSearchResultSetLimit();
 }

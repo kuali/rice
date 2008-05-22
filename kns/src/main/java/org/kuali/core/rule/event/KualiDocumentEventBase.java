@@ -20,8 +20,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.document.Document;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
  * Abstract superclass for document-related events.
@@ -132,7 +132,7 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
         if (document != null) {
             String documentNumber = document.getDocumentNumber();
             if (StringUtils.isBlank(documentNumber)) {
-                docId = "(blank " + RicePropertyConstants.DOCUMENT_NUMBER + ")";
+                docId = "(blank " + KNSPropertyConstants.DOCUMENT_NUMBER + ")";
             }
             else {
                 docId = documentNumber;

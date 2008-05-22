@@ -1,91 +1,138 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-	Copyright 2007 The Kuali Foundation.
-	
-	Licensed under the Educational Community License, Version 1.0 (the "License");
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
-	
-	http://www.opensource.org/licenses/ecl1.php
-	
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an "AS IS" BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-<dictionaryEntry>
-	<maintenanceDocument>
-		<businessObjectClass>
-			org.kuali.rice.kim.bo.Entity
-		</businessObjectClass>
-		<maintainableClass>
-			org.kuali.core.maintenance.KualiMaintainableImpl
-		</maintainableClass>
+  <bean id="KIMEntityMaintenanceDocument" parent="KIMEntityMaintenanceDocument-parentBean" />
 
-		<documentAuthorizerClass>
-			org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase
-		</documentAuthorizerClass>
-		<authorizations>
-			<authorization action="initiate">
-				<workgroups>
-					<workgroup>kualiUniversalGroup</workgroup>
-				</workgroups>
-			</authorization>
-		</authorizations>
+  <bean id="KIMEntityMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Entity" />
+    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    <property name="maintainableSections" >
+      <list>
+        <ref bean="KIMEntityMaintenanceDocument-EditEntity" />
+        <ref bean="KIMEntityMaintenanceDocument-EntityPrincipal" />
+        <ref bean="KIMEntityMaintenanceDocument-EntityAttributes" />
+      </list>
+    </property>
+    <property name="lockingKeys" >
+      <list>
+        <value>id</value>
+      </list>
+    </property>
+    <property name="shortLabel" value="Entity" />
+    <property name="summary" value="Entity Maintenance Document" />
+    <property name="documentTypeName" value="KIMEntityMaintenanceDocument" />
+    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentTypeCode" value="KEMD" />
+    <property name="authorizations" >
+      <list>
+        <bean parent="AuthorizationDefinition">
+          <property name="authorizedGroups" >
+            <set>
+              <value>kualiUniversalGroup</value>
+            </set>
+          </property>
+          <property name="action" value="initiate" />
+        </bean>
+      </list>
+    </property>
+    <property name="label" value="Entity" />
+    <property name="description" value="Maintenance document which allows you to create new Entity,
+			or modify existing Entity." />
+  </bean>
 
-		<documentTypeName>
-			KIMEntityMaintenanceDocument
-		</documentTypeName>
-		<documentTypeCode>KEMD</documentTypeCode>
-		<label>Entity</label>
-		<summary>Entity Maintenance Document</summary>
-		<description>
-			Maintenance document which allows you to create new Entity,
-			or modify existing Entity.
-		</description>
+<!-- Maintenance Section Definitions -->
 
-		<lockingKeys>
-			<field attributeName="id" />
-		</lockingKeys>
 
-		<allowsNewOrCopy>true</allowsNewOrCopy>
+  <bean id="KIMEntityMaintenanceDocument-EditEntity" parent="KIMEntityMaintenanceDocument-EditEntity-parentBean" />
 
-		<maintainableSections>
-			<maintainableSection title="Edit Entity">
-				<maintainableItems>
-					<maintainableField name="id" required="true"
-						readOnly="true" />
-					<maintainableField name="entityTypeId" required="true" />
-					<maintainableField name="versionNumber" />
-				</maintainableItems>
-			</maintainableSection>
-	    	<maintainableSection title="Entity Principal">
-				<maintainableItems>
-					<maintainableCollection name="principals"
-						businessObjectClass="org.kuali.rice.kim.bo.Principal"  includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Principal" sourceAttributeName="principals" includeAddLine="true" summaryTitle="Principals">
-						<maintainableField name="id" required="true" readOnly="true"  template="id" />
-						<maintainableField name="name" required="true" readOnly="true" template="name" />
-					</maintainableCollection>
-				</maintainableItems>
-			</maintainableSection> 
-			
-			<maintainableSection title="Entity Attributes">
-				<maintainableItems>
-					<maintainableCollection name="entityAttributes"
-						businessObjectClass="org.kuali.rice.kim.bo.EntityAttribute">
-						<maintainableField name="id" readOnly="true" required="true" template="id"/>
-						<maintainableField name="attributeTypeId" required="true" template="attributeTypeId"/>
-						<maintainableField name="namespaceId" required="true" template="namespaceId"/>
-						<maintainableField name="attributeName" required="true" template="attributeName"/>
-						<maintainableField name="value" required="true" template="value"/>
-					</maintainableCollection>
-				</maintainableItems>
-			</maintainableSection>
-		</maintainableSections>
-	</maintenanceDocument>
-</dictionaryEntry>
+  <bean id="KIMEntityMaintenanceDocument-EditEntity-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="id"
+              p:readOnly="true" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="entityTypeId" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="versionNumber" />
+      </list>
+    </property>
+    <property name="id" value="Edit Entity" />
+    <property name="title" value="Edit Entity" />
+  </bean>
+  <bean id="KIMEntityMaintenanceDocument-EntityPrincipal" parent="KIMEntityMaintenanceDocument-EntityPrincipal-parentBean" />
+
+  <bean id="KIMEntityMaintenanceDocument-EntityPrincipal-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableCollectionDefinition">
+          <property name="sourceClassName" value="org.kuali.rice.kim.bo.Principal" />
+          <property name="sourceAttributeName" value="principals" />
+          <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Principal" />
+          <property name="summaryTitle" value="Principals" />
+          <property name="maintainableFields" >
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:template="id"
+                    p:name="id"
+                    p:readOnly="true" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:template="name"
+                    p:name="name"
+                    p:readOnly="true" />
+            </list>
+          </property>
+          <property name="name" value="principals" />
+        </bean>
+      </list>
+    </property>
+    <property name="id" value="Entity Principal" />
+    <property name="title" value="Entity Principal" />
+  </bean>
+  <bean id="KIMEntityMaintenanceDocument-EntityAttributes" parent="KIMEntityMaintenanceDocument-EntityAttributes-parentBean" />
+
+  <bean id="KIMEntityMaintenanceDocument-EntityAttributes-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableCollectionDefinition">
+          <property name="businessObjectClass" value="org.kuali.rice.kim.bo.EntityAttribute" />
+          <property name="maintainableFields" >
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:template="id"
+                    p:name="id"
+                    p:readOnly="true" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:template="attributeTypeId"
+                    p:name="attributeTypeId" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:template="namespaceId"
+                    p:name="namespaceId" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:template="attributeName"
+                    p:name="attributeName" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:template="value"
+                    p:name="value" />
+            </list>
+          </property>
+          <property name="name" value="entityAttributes" />
+        </bean>
+      </list>
+    </property>
+    <property name="id" value="Entity Attributes" />
+    <property name="title" value="Entity Attributes" />
+  </bean>
+</beans>

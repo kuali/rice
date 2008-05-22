@@ -17,10 +17,7 @@
 package org.kuali.core.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
-import org.kuali.core.datadictionary.exception.ClassValidationException;
 import org.kuali.core.datadictionary.mask.Mask;
 import org.kuali.core.lookup.valueFinder.ValueFinder;
 
@@ -32,35 +29,22 @@ import org.kuali.core.lookup.valueFinder.ValueFinder;
  * 
  */
 public class FieldDefinition extends DataDictionaryDefinitionBase implements FieldDefinitionI {
-    // logger
-    private static Log LOG = LogFactory.getLog(FieldDefinition.class);
-
+ 
     private String attributeName;
-    private boolean required;
-    private boolean forceInquiry;
-    private boolean noInquiry;
-    private boolean forceLookup;
-    private boolean noLookup;
+    private boolean required = false;
+    private boolean forceInquiry = false;
+    private boolean noInquiry = false;
+    private boolean forceLookup = false;
+    private boolean noLookup = false;
     private String defaultValue;
-    private Class defaultValueFinderClass;
-    /**
-     * This field is stored as a String because apache digester does not make it
-     * easy to detect number format exceptions because it swallows parsing exceptions.
-     */
-    private Integer maxLength;
+    private Class<? extends ValueFinder> defaultValueFinderClass;
+
+    private Integer maxLength = null;
 
     private String displayEditMode;
     private Mask displayMask;
 
     public FieldDefinition() {
-        LOG.debug("creating new FieldDefinition");
-
-        this.required = false;
-        this.forceInquiry = false;
-        this.noInquiry = false;
-        this.forceLookup = false;
-        this.noLookup = false;
-        this.maxLength = null;
     }
 
 
@@ -81,9 +65,6 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setAttributeName '" + attributeName + "'");
-        }
         this.attributeName = attributeName;
     }
 
@@ -102,9 +83,6 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
      * @param required
      */
     public void setRequired(boolean required) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setRequired '" + required + "'");
-        }
         this.required = required;
     }
 
@@ -176,7 +154,8 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 
 
     /**
-     * @param defaultValue The defaultValue to set.
+           The defaultValue element will pre-load the specified value
+           into the field.
      */
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
@@ -184,20 +163,9 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 
 
     /**
-     * @param defaultValueFinderClass
-     */
-    public void setDefaultValueFinderClass(Class defaultValueFinderClass) {
-        if (defaultValueFinderClass == null) {
-            throw new IllegalArgumentException("invalid (null) defaultValueFinderClass");
-        }
-
-        this.defaultValueFinderClass = defaultValueFinderClass;
-    }
-
-    /**
      * @return custom defaultValue class
      */
-    public Class getDefaultValueFinderClass() {
+    public Class<? extends ValueFinder> getDefaultValueFinderClass() {
         return this.defaultValueFinderClass;
     }
 
@@ -206,20 +174,14 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
      * 
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         
-        if (!validationCompletionUtils.isPropertyOf(rootBusinessObjectClass, getAttributeName())) {
-            throw new AttributeValidationException("unable to find attribute '" + attributeName + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + getParseLocation() + ")");
+        if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getAttributeName())) {
+            throw new AttributeValidationException("unable to find attribute '" + attributeName + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
         }
 
         if (defaultValueFinderClass != null && defaultValue != null) {
             throw new AttributeValidationException("Both defaultValue and defaultValueFinderClass can not be specified on attribute " + getAttributeName() + " in rootBusinessObjectClass " + rootBusinessObjectClass.getName());
-        }
-
-        if (defaultValueFinderClass != null) {
-            if (!ValueFinder.class.isAssignableFrom(defaultValueFinderClass)) {
-                throw new ClassValidationException("defaultValueFinderClass '" + defaultValueFinderClass + "' is not a subclasss of ValueFinder (" + getParseLocation() + ")");
-            }
         }
 
         if (forceInquiry == true && noInquiry == true) {
@@ -240,7 +202,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 
 
     public String getName() {
-        return this.getAttributeName();
+        return attributeName;
     }
 
 
@@ -284,5 +246,18 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
      */
     public void setMaxLength(Integer maxLength) {
         this.maxLength = maxLength;
+    }
+
+
+    /**
+                      The defaultValueFinderClass specifies the java class that will be
+                      used to determine the default value of a field.  The classname
+                      specified in this field must implement org.kuali.core.lookup.valueFinder.ValueFinder
+     */
+    public void setDefaultValueFinderClass(Class<? extends ValueFinder> defaultValueFinderClass) {
+        if (defaultValueFinderClass == null) {
+            throw new IllegalArgumentException("invalid (null) defaultValueFinderClass");
+        }
+        this.defaultValueFinderClass = defaultValueFinderClass;
     }
 }

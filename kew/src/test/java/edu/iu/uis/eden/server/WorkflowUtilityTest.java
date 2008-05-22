@@ -17,6 +17,9 @@
 package edu.iu.uis.eden.server;
 
 
+import java.rmi.RemoteException;
+import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,8 +32,13 @@ import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.applicationconstants.ApplicationConstant;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.WorkflowInfo;
+import edu.iu.uis.eden.clientapp.vo.ActionItemVO;
 import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentDetailVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchCriteriaVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchResultRowVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchResultVO;
+import edu.iu.uis.eden.clientapp.vo.KeyValueVO;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 import edu.iu.uis.eden.clientapp.vo.ReportActionToTakeVO;
 import edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO;
@@ -40,6 +48,12 @@ import edu.iu.uis.eden.clientapp.vo.RuleResponsibilityVO;
 import edu.iu.uis.eden.clientapp.vo.RuleVO;
 import edu.iu.uis.eden.clientapp.vo.UserIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupNameIdVO;
+import edu.iu.uis.eden.docsearch.DocSearchUtils;
+import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeDateTime;
+import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeFloat;
+import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeLong;
+import edu.iu.uis.eden.docsearch.TestXMLSearchableAttributeString;
+import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.test.TestUtilities;
 import edu.iu.uis.eden.util.Utilities;
 
@@ -55,7 +69,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         super.setUpTransaction();
         utility = KEWServiceLocator.getWorkflowUtilityService();
     }
-
+    
     @Test public void testIsUserInRouteLog() throws Exception {
         WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
@@ -954,6 +968,340 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Rule workgroup name is incorrect",RuleTestOrgReviewSetup.RULE_TEST_WORKGROUP,responsibilityVO.getWorkgroup().getWorkgroupName());
         assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibilityVO.getPriority());
         assertEquals("Rule action request is incorrect",EdenConstants.ACTION_REQUEST_APPROVE_REQ,responsibilityVO.getActionRequestedCd());
+    }
+    
+    @Test public void testGetUserActionItemCount() throws Exception {
+        WorkflowInfo info = new WorkflowInfo();
+        UserIdVO userIdVO = new NetworkIdVO("ewestfal");
+        WorkflowDocument document = new WorkflowDocument(userIdVO, SeqSetup.DOCUMENT_TYPE_NAME);
+        document.routeDocument("");
+        assertTrue(document.stateIsEnroute());
+
+        assertEquals("Count is incorrect for user " + userIdVO, Integer.valueOf(0), info.getUserActionItemCount(userIdVO));
+        userIdVO = new NetworkIdVO("bmcgough");
+        document = new WorkflowDocument(userIdVO, document.getRouteHeaderId());
+        assertTrue(document.isApprovalRequested());
+        assertEquals("Count is incorrect for user " + userIdVO, Integer.valueOf(1), info.getUserActionItemCount(userIdVO));
+        userIdVO = new NetworkIdVO("rkirkend");
+        document = new WorkflowDocument(userIdVO, document.getRouteHeaderId());
+        assertTrue(document.isApprovalRequested());
+        assertEquals("Count is incorrect for user " + userIdVO, Integer.valueOf(1), info.getUserActionItemCount(userIdVO));
+
+        TestUtilities.assertAtNode(document, "WorkflowDocument");
+        document.returnToPreviousNode("", "AdHoc");
+        TestUtilities.assertAtNode(document, "AdHoc");
+        // verify count after return to previous
+        userIdVO = new NetworkIdVO("ewestfal");
+        document = new WorkflowDocument(userIdVO, document.getRouteHeaderId());
+        assertTrue(document.isApprovalRequested());
+        // expect one action item for approval request
+        assertEquals("Count is incorrect for user " + userIdVO, Integer.valueOf(1), info.getUserActionItemCount(userIdVO));
+        userIdVO = new NetworkIdVO("bmcgough");
+        document = new WorkflowDocument(userIdVO, document.getRouteHeaderId());
+        assertFalse(document.isApprovalRequested());
+        assertTrue(document.isFYIRequested());
+        // expect one action item for fyi action request
+        assertEquals("Count is incorrect for user " + userIdVO, Integer.valueOf(1), info.getUserActionItemCount(userIdVO));
+        userIdVO = new NetworkIdVO("rkirkend");
+        document = new WorkflowDocument(userIdVO, document.getRouteHeaderId());
+        assertFalse(document.isApprovalRequested());
+        // expect no action items
+        assertEquals("Count is incorrect for user " + userIdVO, Integer.valueOf(0), info.getUserActionItemCount(userIdVO));
+
+        userIdVO = new NetworkIdVO("ewestfal");
+        document = new WorkflowDocument(userIdVO, document.getRouteHeaderId());
+        document.approve("");
+        TestUtilities.assertAtNode(document, "WorkflowDocument");
+
+        // we should be back where we were
+        userIdVO = new NetworkIdVO("ewestfal");
+        document = new WorkflowDocument(userIdVO, document.getRouteHeaderId());
+        assertFalse(document.isApprovalRequested());
+        assertEquals("Count is incorrect for user " + userIdVO, Integer.valueOf(0), info.getUserActionItemCount(userIdVO));
+        userIdVO = new NetworkIdVO("bmcgough");
+        document = new WorkflowDocument(userIdVO, document.getRouteHeaderId());
+        assertTrue(document.isApprovalRequested());
+        assertEquals("Count is incorrect for user " + userIdVO, Integer.valueOf(1), info.getUserActionItemCount(userIdVO));
+        userIdVO = new NetworkIdVO("rkirkend");
+        document = new WorkflowDocument(userIdVO, document.getRouteHeaderId());
+        assertTrue(document.isApprovalRequested());
+        assertEquals("Count is incorrect for user " + userIdVO, Integer.valueOf(1), info.getUserActionItemCount(userIdVO));
+    }
+    
+    @Test public void testGetActionItems() throws Exception {
+        String initiatorNetworkId = "ewestfal";
+        String user1NetworkId = "bmcgough";
+        String user2NetworkId ="rkirkend";
+        WorkflowInfo info = new WorkflowInfo();
+        UserIdVO userIdVO = new NetworkIdVO(initiatorNetworkId);
+        String docTitle = "this is the doc title";
+        WorkflowDocument document = new WorkflowDocument(userIdVO, SeqSetup.DOCUMENT_TYPE_NAME);
+        document.setTitle(docTitle);
+        document.routeDocument("");
+        assertTrue(document.stateIsEnroute());
+
+        ActionItemVO[] actionItems = info.getActionItems(document.getRouteHeaderId()); 
+        assertEquals("Incorrect number of action items returned",2,actionItems.length);
+        for (ActionItemVO actionItem : actionItems) {
+            assertEquals("Action Item should be Approve request", EdenConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
+            assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
+            assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1NetworkId.equals(actionItem.getUser().getNetworkId()) || user2NetworkId.equals(actionItem.getUser().getNetworkId()));
+        }
+        
+        userIdVO = new NetworkIdVO(user2NetworkId);
+        document = new WorkflowDocument(userIdVO, document.getRouteHeaderId());
+        assertTrue(document.isApprovalRequested());
+        TestUtilities.assertAtNode(document, "WorkflowDocument");
+        document.returnToPreviousNode("", "AdHoc");
+        TestUtilities.assertAtNode(document, "AdHoc");
+        // verify count after return to previous
+        actionItems = info.getActionItems(document.getRouteHeaderId()); 
+        assertEquals("Incorrect number of action items returned",2,actionItems.length);
+        for (ActionItemVO actionItem : actionItems) {
+            assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
+            assertTrue("Action Items should be Approve or FYI requests only", EdenConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd()) || EdenConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd()));
+            if (EdenConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd())) {
+                assertTrue("User should be '" + initiatorNetworkId + "'", initiatorNetworkId.equals(actionItem.getUser().getNetworkId()));
+            } else if (EdenConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd())) {
+                assertTrue("User should be  '" + user1NetworkId + "'", user1NetworkId.equals(actionItem.getUser().getNetworkId()));
+            }
+        }
+
+        userIdVO = new NetworkIdVO(initiatorNetworkId);
+        document = new WorkflowDocument(userIdVO, document.getRouteHeaderId());
+        assertTrue(document.isApprovalRequested());
+        document.approve("");
+        TestUtilities.assertAtNode(document, "WorkflowDocument");
+
+        // we should be back where we were
+        actionItems = info.getActionItems(document.getRouteHeaderId()); 
+        assertEquals("Incorrect number of action items returned",2,actionItems.length);
+        for (ActionItemVO actionItem : actionItems) {
+            assertEquals("Action Item should be Approve request", EdenConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
+            assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
+            assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1NetworkId.equals(actionItem.getUser().getNetworkId()) || user2NetworkId.equals(actionItem.getUser().getNetworkId()));
+        }
+    }
+    
+    /**
+     * This method routes two test documents of the type specified.  One has the given title and another has a dummy title.
+     */
+    private void setupPerformDocumentSearchTests(String documentTypeName, String docTitle) throws WorkflowException {
+        String userNetworkId = "ewestfal";
+        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName);
+        int size = docTitle.length();
+        workflowDocument.setTitle("Respect my Authoritah");
+        workflowDocument.routeDocument("routing this document.");
+
+        userNetworkId = "rkirkend";
+        workflowDocument = new WorkflowDocument(new NetworkIdVO(userNetworkId), documentTypeName);
+        workflowDocument.setTitle(docTitle);
+        workflowDocument.routeDocument("routing this document.");
+    }
+
+    @Test public void testPerformDocumentSearch_CustomThreshold() throws Exception {
+        String documentTypeName = SeqSetup.DOCUMENT_TYPE_NAME;
+        String docTitle = "Routing Style";
+        setupPerformDocumentSearchTests(documentTypeName, docTitle);
+
+        DocumentSearchCriteriaVO criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        DocumentSearchResultVO result = utility.performDocumentSearch(criteria);
+        List<DocumentSearchResultRowVO> searchResults = result.getSearchResults();
+        assertEquals("Search results should have two documents.", 2, searchResults.size());
+
+        int threshold = 1;
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setThreshold(Integer.valueOf(threshold));
+        result = utility.performDocumentSearch(criteria);
+        assertTrue("Search results should signify search went over the given threshold: " + threshold, result.isOverThreshold());
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should have one document.", threshold, searchResults.size());
+    }
+
+    @Test public void testPerformDocumentSearch_BasicCriteria() throws Exception {
+        String documentTypeName = SeqSetup.DOCUMENT_TYPE_NAME;
+        String docTitle = "Routing Style";
+        setupPerformDocumentSearchTests(documentTypeName, docTitle);
+
+        DocumentSearchCriteriaVO criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setDocTitle(docTitle);
+        DocumentSearchResultVO result = utility.performDocumentSearch(criteria);
+        List<DocumentSearchResultRowVO> searchResults = result.getSearchResults();
+        assertEquals("Search results should have one document.", 1, searchResults.size());
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setInitiator("rkirkend");
+        result = utility.performDocumentSearch(criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should have one document.", 1, searchResults.size());
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setInitiator("user1");
+        result = utility.performDocumentSearch(criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should be empty.", 0, searchResults.size());
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        result = utility.performDocumentSearch(criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should have two documents.", 2, searchResults.size());
+    }
+
+    @Test public void testPerformDocumentSearch_RouteNodeSearch() throws Exception {
+        String documentTypeName = SeqSetup.DOCUMENT_TYPE_NAME;
+        setupPerformDocumentSearchTests(documentTypeName, "Doc Title");
+        
+        // test exception thrown when route node specified and no doc type specified
+        DocumentSearchCriteriaVO criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocRouteNodeName(SeqSetup.ADHOC_NODE);
+        try {
+            utility.performDocumentSearch(criteria);
+            fail("Exception should have been thrown when specifying a route node name but no document type name");
+        } catch (Exception e) {}
+        
+        // test exception thrown when route node specified does not exist on document type
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setDocRouteNodeName("Yo homes!");
+        try {
+            utility.performDocumentSearch(criteria);
+            fail("Exception should have been thrown when specifying a route node name that does not exist on the specified document type name");
+        } catch (Exception e) {}
+        
+        runPerformDocumentSearch_RouteNodeSearch(SeqSetup.ADHOC_NODE, documentTypeName, 0, 0, 2);
+        runPerformDocumentSearch_RouteNodeSearch(SeqSetup.WORKFLOW_DOCUMENT_NODE, documentTypeName, 0, 2, 0);
+        runPerformDocumentSearch_RouteNodeSearch(SeqSetup.WORKFLOW_DOCUMENT_2_NODE, documentTypeName, 2, 0 , 0);
+    }
+    
+    private void runPerformDocumentSearch_RouteNodeSearch(String routeNodeName, String documentTypeName, int countBeforeNode, int countAtNode, int countAfterNode) throws RemoteException, WorkflowException {
+        DocumentSearchCriteriaVO criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setDocRouteNodeName(routeNodeName);
+        DocumentSearchResultVO result = utility.performDocumentSearch(criteria);
+        List<DocumentSearchResultRowVO> searchResults = result.getSearchResults();
+        assertEquals("Wrong number of search results when checking default node qualifier.", countAtNode, searchResults.size());
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setDocRouteNodeName(routeNodeName);
+        criteria.findDocsAtExactSpecifiedRouteNode();
+        result = utility.performDocumentSearch(criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Wrong number of search results when checking docs at exact node.", countAtNode, searchResults.size());
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setDocRouteNodeName(routeNodeName);
+        criteria.findDocsBeforeSpecifiedRouteNode();
+        result = utility.performDocumentSearch(criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Wrong number of search results when checking docs before node.", countBeforeNode, searchResults.size());
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setDocRouteNodeName(routeNodeName);
+        criteria.findDocsAfterSpecifiedRouteNode();
+        result = utility.performDocumentSearch(criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Wrong number of search results when checking docs after node.", countAfterNode, searchResults.size());
+    }
+
+    @Test public void testPerformDocumentSearch_SearchAttributes() throws Exception {
+        String documentTypeName = SeqSetup.DOCUMENT_TYPE_NAME;
+        String docTitle = "Routing Style";
+        setupPerformDocumentSearchTests(documentTypeName, docTitle);
+
+        DocumentSearchCriteriaVO criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueVO[]{new KeyValueVO(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE)}));
+        DocumentSearchResultVO result = utility.performDocumentSearch(criteria);
+        List<DocumentSearchResultRowVO> searchResults = result.getSearchResults();
+        assertEquals("Search results should have two documents.", 2, searchResults.size());
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueVO[]{new KeyValueVO(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,"fred")}));
+        result = utility.performDocumentSearch(criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should be empty.", 0, searchResults.size());
+        
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueVO[]{new KeyValueVO("fakeproperty", "doesntexist")}));
+        try {
+            result = utility.performDocumentSearch(criteria);
+            fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
+        } catch (Exception e) {}
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueVO[]{new KeyValueVO(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString())}));
+        result = utility.performDocumentSearch(criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should have two documents.", 2, searchResults.size());
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueVO[]{new KeyValueVO(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "1111111")}));
+        result = utility.performDocumentSearch(criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should be empty.", 0, searchResults.size());
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueVO[]{new KeyValueVO("fakeymcfakefake", "99999999")}));
+        try {
+            result = utility.performDocumentSearch(criteria);
+            fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
+        } catch (Exception e) {}
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueVO[]{new KeyValueVO(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString())}));
+        result = utility.performDocumentSearch(criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should have two documents.", 2, searchResults.size());
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueVO[]{new KeyValueVO(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "215.3548")}));
+        result = utility.performDocumentSearch(criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should be empty.", 0, searchResults.size());
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueVO[]{new KeyValueVO("fakeylostington", "9999.9999")}));
+        try {
+            result = utility.performDocumentSearch(criteria);
+            fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
+        } catch (Exception e) {}
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueVO[]{new KeyValueVO(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(new Timestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS)))}));
+        result = utility.performDocumentSearch(criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should have two documents.", 2, searchResults.size());
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueVO[]{new KeyValueVO(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "07/06/1979")}));
+        result = utility.performDocumentSearch(criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should be empty.", 0, searchResults.size());
+
+        criteria = new DocumentSearchCriteriaVO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueVO[]{new KeyValueVO("lastingsfakerson","07/06/2007")}));
+        try {
+            result = utility.performDocumentSearch(criteria);
+            fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
+        } catch (Exception e) {}
     }
     
     private void ruleExceptionTest(WorkflowInfo info, RuleReportCriteriaVO ruleReportCriteria, String message) {

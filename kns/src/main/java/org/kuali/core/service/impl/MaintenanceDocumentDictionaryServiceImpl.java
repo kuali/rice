@@ -209,7 +209,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
 
         MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(docTypeName);
         if (entry != null) {
-            lockingKeys = entry.getLockingKeyFieldnames();
+            lockingKeys = entry.getLockingKeyFieldNames();
         }
 
         return lockingKeys;
@@ -696,7 +696,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
     private void validateMaintainableCollectionsForDuplicateEntries(PersistableBusinessObject businessObject, MaintainableCollectionDefinition maintainableCollectionDefinition) {
         final String collectionName = maintainableCollectionDefinition.getName();
 
-        if (maintainableCollectionDefinition.dissalowDuplicateKey()) {
+        if (maintainableCollectionDefinition.dissallowDuplicateKey()) {
             final Class maintainableBusinessObjectClass = businessObject.getClass();
             // validate that no duplicates based on keys exist
             Collection<PersistableBusinessObject> collection = (Collection) ObjectUtils.getPropertyValue(businessObject, collectionName);

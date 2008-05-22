@@ -143,20 +143,6 @@
 				</plugins>
 			</build>
 		</profile>
-		<profile>
-			<id>install-kns-dev</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<configuration>
-							<source>1.5</source>
-							<target>1.5</target>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 	</profiles>
 	<modules>
 		<module>core</module>

@@ -47,6 +47,7 @@ import org.displaytag.util.ParamEncoder;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 import edu.iu.uis.eden.EdenConstants;
+import edu.iu.uis.eden.KEWPropertyConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
 import edu.iu.uis.eden.docsearch.DocumentSearchCriteriaProcessor;
@@ -81,13 +82,13 @@ public class DocumentSearchAction extends WorkflowAction {
     
     public static final Map<String,String> SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY = new HashMap<String,String>();
     static {
-        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID,"docSearch.DocumentSearch.results.label.documentId");
-        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL,"docSearch.DocumentSearch.results.label.type");
-        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(DocumentSearchResult.PROPERTY_NAME_DOCUMENT_TITLE,"docSearch.DocumentSearch.results.label.title");
-        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_STATUS_DESC,"docSearch.DocumentSearch.results.label.routeStatus");
-        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(DocumentSearchResult.PROPERTY_NAME_INITIATOR,"docSearch.DocumentSearch.results.label.initiator");
-        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(DocumentSearchResult.PROPERTY_NAME_DATE_CREATED,"docSearch.DocumentSearch.results.label.dateCreated");
-        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(DocumentSearchResult.PROPERTY_NAME_ROUTE_LOG,"docSearch.DocumentSearch.results.label.routeLog");
+        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,"docSearch.DocumentSearch.results.label.documentId");
+        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL,"docSearch.DocumentSearch.results.label.type");
+        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE,"docSearch.DocumentSearch.results.label.title");
+        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC,"docSearch.DocumentSearch.results.label.routeStatus");
+        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR,"docSearch.DocumentSearch.results.label.initiator");
+        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED,"docSearch.DocumentSearch.results.label.dateCreated");
+        SEARCH_RESULT_LABEL_KEYS_BY_COLUMN_KEY.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG,"docSearch.DocumentSearch.results.label.routeLog");
     }
 
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -140,13 +141,13 @@ public class DocumentSearchAction extends WorkflowAction {
 
     public ActionForward advanced(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
-        docSearchForm.setIsAdvancedSearch(DocumentSearchForm.ADVANCED_SEARCH_INDICATOR_STRING);
+        docSearchForm.setIsAdvancedSearch(DocSearchCriteriaVO.ADVANCED_SEARCH_INDICATOR_STRING);
         return mapping.findForward("success");
     }
 
     public ActionForward superUserSearch(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         DocumentSearchForm docSearchForm = (DocumentSearchForm) form;
-        docSearchForm.setSuperUserSearch(DocumentSearchForm.SUPER_USER_SEARCH_INDICATOR_STRING);
+        docSearchForm.setSuperUserSearch(DocSearchCriteriaVO.SUPER_USER_SEARCH_INDICATOR_STRING);
         return mapping.findForward("success");
     }
 
@@ -207,23 +208,23 @@ public class DocumentSearchAction extends WorkflowAction {
         if (docSearchForm.getNamedSearch() != null && !"".equals(docSearchForm.getNamedSearch()) && !"ignore".equals(docSearchForm.getNamedSearch())) {
             result = getDocumentSearchService().getSavedSearchResults(getUserSession(request).getWorkflowUser(), docSearchForm.getNamedSearch());
             if (result != null) {
-            // if using a saved search assume new state needs created by discarding old state
-            currentState = null;
-            docSearchForm.setCriteriaProcessor(buildCriteriaProcessor(null, docSearchForm, getUserSession(request)));
-            docSearchForm.getCriteriaProcessor().setDocSearchCriteriaVO(result.getDocSearchCriteriaVO());
-            docSearchForm.clearSearchableAttributeProperties();
-            docSearchForm.checkForAdditionalFields();
-            docSearchForm.setupPropertyFieldsUsingCriteria();
-            docSearchForm.setNamedSearch("");
-            setDropdowns(docSearchForm, request);
-            results = result.getSearchResult();
-	    } else {
-		LOG.warn("Could not find saved search with name '" + docSearchForm.getNamedSearch() + "' for user " + getUserSession(request).getWorkflowUser());
-		ActionErrors errors = new ActionErrors();
-		errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.savedSearches.notFound", docSearchForm.getNamedSearch()));
-		saveErrors(request, errors);
-		return mapping.findForward("success");
-	    }
+                // if using a saved search assume new state needs created by discarding old state
+                currentState = null;
+                docSearchForm.setCriteriaProcessor(buildCriteriaProcessor(null, docSearchForm, getUserSession(request)));
+                docSearchForm.getCriteriaProcessor().setDocSearchCriteriaVO(result.getDocSearchCriteriaVO());
+                docSearchForm.clearSearchableAttributeProperties();
+                docSearchForm.checkForAdditionalFields();
+                docSearchForm.setupPropertyFieldsUsingCriteria();
+                docSearchForm.setNamedSearch("");
+                setDropdowns(docSearchForm, request);
+                results = result.getSearchResult();
+            } else {
+                LOG.warn("Could not find saved search with name '" + docSearchForm.getNamedSearch() + "' for user " + getUserSession(request).getWorkflowUser());
+                ActionErrors errors = new ActionErrors();
+                errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("docsearch.DocumentSearchService.savedSearches.notFound", docSearchForm.getNamedSearch()));
+                saveErrors(request, errors);
+                return mapping.findForward("success");
+            }
         } else {
             docSearchForm.addSearchableAttributesToCriteria();
             DocSearchCriteriaVO criteria = docSearchForm.getCriteria();
@@ -463,9 +464,9 @@ public class DocumentSearchAction extends WorkflowAction {
 
         if (!Utilities.isEmpty(dsForm.getCriteria().getDocTypeFullName())) {
             List qualifierLogic = new ArrayList();
-            qualifierLogic.add(new KeyValue("equal", "Exactly"));
-            qualifierLogic.add(new KeyValue("before", "Before"));
-            qualifierLogic.add(new KeyValue("after", "After"));
+            for (String key : EdenConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.keySet()) {
+                qualifierLogic.add(new KeyValue(key, EdenConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.get(key)));
+            }
             request.setAttribute("qualifierLogic", qualifierLogic);
 
             // people are going to be feeding us doctype names by url for inline doc search so check for a null doctype to

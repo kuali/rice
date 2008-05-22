@@ -1,60 +1,76 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2007 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-<dictionaryEntry>
-    <maintenanceDocument>
-        <businessObjectClass>org.kuali.core.bo.Campus</businessObjectClass>
-        <maintainableClass>org.kuali.core.maintenance.KualiMaintainableImpl</maintainableClass>
+  <bean id="KualiCampusMaintenanceDocument" parent="KualiCampusMaintenanceDocument-parentBean" />
 
-        <documentAuthorizerClass>org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase</documentAuthorizerClass>
-        <authorizations>
-            <authorization action="initiate">
-                <workgroups>
-                    <workgroup>KUALI_ROLE_MAINTENANCE</workgroup>
-                </workgroups>
-            </authorization>
-        </authorizations>
+  <bean id="KualiCampusMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+    <property name="businessObjectClass" value="org.kuali.core.bo.Campus" />
+    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    <property name="maintainableSections" >
+      <list>
+        <ref bean="KualiCampusMaintenanceDocument-EditCampus" />
+      </list>
+    </property>
+    <property name="lockingKeys" >
+      <list>
+        <value>campusCode</value>
+      </list>
+    </property>
+    <property name="shortLabel" value="Campus" />
+    <property name="summary" value="Campus maintenance document" />
+    <property name="helpDefinition" >
+      <bean parent="HelpDefinition"
+            p:parameterNamespace="KR-NS"
+            p:parameterName="CAMPUS"
+            p:parameterDetailType="Campus" />
+    </property>
+    <property name="documentTypeName" value="KualiCampusMaintenanceDocument" />
+    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentTypeCode" value="CMPS" />
+    <property name="authorizations" >
+      <list>
+        <bean parent="AuthorizationDefinition">
+          <property name="authorizedGroups" >
+            <set>
+              <value>KUALI_ROLE_MAINTENANCE</value>
+            </set>
+          </property>
+          <property name="action" value="initiate" />
+        </bean>
+      </list>
+    </property>
+    <property name="label" value="Campus" />
+    <property name="description" value="Document used to create or update Campus objects" />
+  </bean>
 
-        <documentTypeName>KualiCampusMaintenanceDocument</documentTypeName>
-        <documentTypeCode>CMPS</documentTypeCode>
+<!-- Maintenance Section Definitions -->
 
-        <label>Campus</label>
 
-        <summary>Campus maintenance document</summary>
-        <description>Document used to create or update Campus objects</description>
-        <help parameterNamespace="KR-NS" parameterDetailType="Campus" parameterName="CAMPUS" />
+  <bean id="KualiCampusMaintenanceDocument-EditCampus" parent="KualiCampusMaintenanceDocument-EditCampus-parentBean" />
 
-        <lockingKeys>
-            <field attributeName="campusCode" />
-        </lockingKeys>
-
-        <maintainableSections>
-            <maintainableSection title="Edit Campus">
-                <maintainableItems>
-                    <maintainableField name="campusCode" required="true" />
-                    <maintainableField name="campusName" required="true" />
-                    <maintainableField name="campusShortName" required="true" />
-                    <maintainableField name="campusTypeCode" required="true" />
-                    <maintainableField name="versionNumber" />
-                </maintainableItems>
-            </maintainableSection>
-        </maintainableSections>
-    </maintenanceDocument>
-</dictionaryEntry>
+  <bean id="KualiCampusMaintenanceDocument-EditCampus-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="campusCode" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="campusName" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="campusShortName" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="campusTypeCode" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="versionNumber" />
+      </list>
+    </property>
+    <property name="id" value="Edit Campus" />
+    <property name="title" value="Edit Campus" />
+  </bean>
+</beans>

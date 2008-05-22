@@ -76,6 +76,10 @@ public class ActionListServiceImpl implements ActionListService {
         return getActionListDAO().getActionList(workflowUser, filter);
     }
 
+    public Collection getActionList(Long routeHeaderId, ActionListFilter filter) {
+        return getActionListDAO().getActionList(routeHeaderId, filter);
+    }
+
     public void setActionListDAO(ActionListDAO actionListDAO) {
         this.actionListDAO = actionListDAO;
     }

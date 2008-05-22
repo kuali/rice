@@ -27,7 +27,6 @@ import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.BusinessObjectRelationship;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.BusinessObjectEntry;
-import org.kuali.core.datadictionary.CollectionDefinition;
 import org.kuali.core.datadictionary.FieldDefinition;
 import org.kuali.core.datadictionary.InquirySectionDefinition;
 import org.kuali.core.datadictionary.PrimitiveAttributeDefinition;
@@ -55,10 +54,8 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
     private PersistenceStructureService persistenceStructureService;
 
     public Collection<String> getCollectionNames(BusinessObject bo) {
-        Map<String, CollectionDefinition> collections = dataDictionaryService.getDataDictionary()
-            .getBusinessObjectEntry(bo.getClass().getName()).getCollections();
-        
-        return collections.keySet();
+        return dataDictionaryService.getDataDictionary()
+            .getBusinessObjectEntry(bo.getClass().getName()).getCollectionNames();
     }
 
     public Collection<String> getInquirableFieldNames(Class boClass, String sectionTitle) {
@@ -349,11 +346,10 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
             return null;
         }
 
-        Map<String, RelationshipDefinition> ddRelationships = entryBase.getRelationships();
+        List<RelationshipDefinition> ddRelationships = entryBase.getRelationships();
         RelationshipDefinition relationship = null;
         int minKeys = Integer.MAX_VALUE;
-        for(String key : ddRelationships.keySet()) {
-            RelationshipDefinition def = ddRelationships.get(key);
+        for( RelationshipDefinition def : ddRelationships ) {
             //favor key sizes of 1 first
             if(def.getPrimitiveAttributes().size() == 1) {
                 for(PrimitiveAttributeDefinition primitive : def.getPrimitiveAttributes()) {
@@ -375,7 +371,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
         }
         // check the support attributes
         if ( relationship == null ) {
-            for ( RelationshipDefinition def : ddRelationships.values() ) {
+            for ( RelationshipDefinition def : ddRelationships ) {
                 if ( def.hasIdentifier() ) {
                     if ( def.getIdentifier().getSourceName().equals(attributeName) ) {
                         relationship = def;
@@ -394,7 +390,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
         if ( bo instanceof PersistableBusinessObject ) {
             referenceClasses = getPersistenceStructureService().listReferenceObjectFields( bo.getClass() );
         }
-        Map<String, RelationshipDefinition> ddRelationships = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry(bo.getClass().getName()).getRelationships();
+        List<RelationshipDefinition> ddRelationships = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry(bo.getClass().getName()).getRelationships();
         List<BusinessObjectRelationship> relationships = new ArrayList<BusinessObjectRelationship>();
         
         // loop over all relationships
@@ -412,7 +408,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
             }
         }
         
-        for ( RelationshipDefinition rd : ddRelationships.values() ) {
+        for ( RelationshipDefinition rd : ddRelationships ) {
             if ( isLookupable( rd.getTargetClass() ) ) {
                 BusinessObjectRelationship rel = new BusinessObjectRelationship( bo.getClass(), rd.getObjectAttributeName(), rd.getTargetClass() );
                 for ( PrimitiveAttributeDefinition def : rd.getPrimitiveAttributes() ) {

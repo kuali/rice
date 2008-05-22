@@ -54,14 +54,28 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
         Criteria crit = new Criteria();
         crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
+        Collection<ActionItem> collection = getActionList(crit, filter);
+        LOG.debug("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
+        return createActionListForUser(collection);
+    }
+    
+    public Collection<ActionItem> getActionList(Long routeHeaderId, ActionListFilter filter) {
+        LOG.debug("getting action list for route header id " + routeHeaderId);
+        Criteria crit = new Criteria();
+        crit.addEqualTo("routeHeaderId", routeHeaderId);
+        Collection<ActionItem> collection = getActionList(crit, filter);
+        LOG.debug("found " + collection.size() + " action items for route header id " + routeHeaderId);
+        return createActionListForRouteHeader(collection);
+    }
+    
+    private Collection<ActionItem> getActionList(Criteria crit, ActionListFilter filter) {
         if (filter != null) {
             setUpActionListCriteria(crit, filter);
         }
-        LOG.debug("running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-        Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItemActionListExtension.class, crit));
-        LOG.debug("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-        return createActionList(collection);
+        LOG.debug("running query to get action list for criteria " + crit);
+        return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItemActionListExtension.class, crit));
     }
+    
 
     private void setUpActionListCriteria(Criteria crit, ActionListFilter filter) {
         LOG.debug("setting up Action List criteria");
@@ -239,7 +253,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         LOG.debug("returning from Action List criteria");
     }
 
-    private static final String ACTION_LIST_COUNT_QUERY = "select count(distinct(ai.doc_hdr_id)) from en.en_actn_itm_t ai where ai.actn_itm_prsn_en_id = ? and (ai.dlgn_typ is null or ai.dlgn_typ = 'P')";
+    private static final String ACTION_LIST_COUNT_QUERY = "select count(distinct(ai.doc_hdr_id)) from en_actn_itm_t ai where ai.actn_itm_prsn_en_id = ? and (ai.dlgn_typ is null or ai.dlgn_typ = 'P')";
 
     public int getCount(final String workflowId) {
     	return (Integer)getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
@@ -282,19 +296,37 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
      *
      * @return the Action List as a Collection of ActionItems
      */
-    private Collection<ActionItem> createActionList(Collection<ActionItem> actionItems) {
-    	Map<Long, ActionItem> actionItemMap = new HashMap<Long, ActionItem>();
-    	ActionListPriorityComparator comparator = new ActionListPriorityComparator();
-    	for (ActionItem potentialActionItem: actionItems) {
-			ActionItem existingActionItem = actionItemMap.get(potentialActionItem.getRouteHeaderId());
-			if (existingActionItem == null || comparator.compare(potentialActionItem, existingActionItem) > 0) {
-				actionItemMap.put(potentialActionItem.getRouteHeaderId(), potentialActionItem);
-			}
-		}
-    	return actionItemMap.values();
+    private Collection<ActionItem> createActionListForUser(Collection<ActionItem> actionItems) {
+        Map<Long, ActionItem> actionItemMap = new HashMap<Long, ActionItem>();
+        ActionListPriorityComparator comparator = new ActionListPriorityComparator();
+        for (ActionItem potentialActionItem: actionItems) {
+            ActionItem existingActionItem = actionItemMap.get(potentialActionItem.getRouteHeaderId());
+            if (existingActionItem == null || comparator.compare(potentialActionItem, existingActionItem) > 0) {
+                actionItemMap.put(potentialActionItem.getRouteHeaderId(), potentialActionItem);
+            }
+        }
+        return actionItemMap.values();
     }
 
-    
+    /**
+     * Creates an Action List from the given collection of Action Items.  The Action List should
+     * contain only one action item per user.  The action item chosen should be the most "critical"
+     * or "important" one on the document.
+     *
+     * @return the Action List as a Collection of ActionItems
+     */
+    private Collection<ActionItem> createActionListForRouteHeader(Collection<ActionItem> actionItems) {
+        Map<String, ActionItem> actionItemMap = new HashMap<String, ActionItem>();
+        ActionListPriorityComparator comparator = new ActionListPriorityComparator();
+        for (ActionItem potentialActionItem: actionItems) {
+            ActionItem existingActionItem = actionItemMap.get(potentialActionItem.getWorkflowId());
+            if (existingActionItem == null || comparator.compare(potentialActionItem, existingActionItem) > 0) {
+                actionItemMap.put(potentialActionItem.getWorkflowId(), potentialActionItem);
+            }
+        }
+        return actionItemMap.values();
+    }
+
     public Collection<ActionItem> getOutbox(WorkflowUser workflowUser, ActionListFilter filter) {
         LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
         Criteria crit = new Criteria();
@@ -305,7 +337,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         LOG.debug("running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
         Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
         LOG.debug("finished running query to get action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-        return createActionList(collection);
+        return createActionListForUser(collection);
     }
 
     /**

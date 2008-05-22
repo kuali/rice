@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.GlobalBusinessObject;
 import org.kuali.core.bo.GlobalBusinessObjectDetail;
 import org.kuali.core.bo.PersistableBusinessObject;
@@ -27,6 +26,7 @@ import org.kuali.core.document.MaintenanceLock;
 import org.kuali.core.service.BusinessObjectService;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl {
     private static final long serialVersionUID = 4814145799502207182L;
@@ -88,7 +88,7 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
         else if (!primaryKeys.get(0).getClass().equals(String.class)) {
             assumptionIsWrong = true;
         }
-        else if (!RicePropertyConstants.DOCUMENT_NUMBER.equalsIgnoreCase((String) primaryKeys.get(0))) {
+        else if (!KNSPropertyConstants.DOCUMENT_NUMBER.equalsIgnoreCase((String) primaryKeys.get(0))) {
             assumptionIsWrong = true;
         }
         if (assumptionIsWrong) {
@@ -101,7 +101,7 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
         // move this sort of thing into the global-doc-specific subclasses of
         // KualiGlobalMaintainableImpl, this will simplify tremendously.
         Map pkMap = new HashMap();
-        pkMap.put(RicePropertyConstants.DOCUMENT_NUMBER, finDocNumber);
+        pkMap.put(KNSPropertyConstants.DOCUMENT_NUMBER, finDocNumber);
         PersistableBusinessObject newBo = null;
         newBo = (PersistableBusinessObject) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(gboClass, pkMap);
         if (newBo == null) {
@@ -110,7 +110,7 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
         
         // property newCollectionRecord of PersistableObjectBase is not persisted, but is always true for globals
         try {
-            ObjectUtils.setObjectPropertyDeep(newBo, RicePropertyConstants.NEW_COLLECTION_RECORD, boolean.class, true, 2);
+            ObjectUtils.setObjectPropertyDeep(newBo, KNSPropertyConstants.NEW_COLLECTION_RECORD, boolean.class, true, 2);
         }
         catch (Exception e) {
             LOG.error("unable to set newCollectionRecord property: " + e.getMessage());

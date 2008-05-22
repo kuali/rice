@@ -16,21 +16,33 @@
 
 package org.kuali.core.datadictionary;
 
-import java.io.Serializable;
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.core.datadictionary.exception.DuplicateEntryException;
-import org.kuali.core.exceptions.DuplicateKeyException;
+import org.kuali.core.bo.BusinessObject;
+import org.kuali.core.bo.PersistableBusinessObjectExtension;
+import org.kuali.core.datadictionary.exception.AttributeValidationException;
+import org.kuali.core.datadictionary.exception.CompletionException;
+import org.kuali.core.service.PersistenceStructureService;
+import org.kuali.core.util.ObjectUtils;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.util.ClassLoaderUtils;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
 
 /**
  * Collection of named BusinessObjectEntry objects, each of which contains
@@ -39,212 +51,197 @@ import org.kuali.rice.KNSServiceLocator;
  * 
  * 
  */
-public class DataDictionary implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4707349557978305232L;
+public class DataDictionary {
+
+    private DefaultListableBeanFactory ddBeans = new DefaultListableBeanFactory();
+    private XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(ddBeans);
 
 	// logger
 	private static final Log LOG = LogFactory.getLog(DataDictionary.class);
 
-	private DataDictionaryBuilder dataDictionaryBuilder;
-
 	// keyed by BusinessObject class
 	private Map<String, BusinessObjectEntry> businessObjectEntries;
-
 	// keyed by documentTypeName
 	private Map<String, DocumentEntry> documentEntries;
-
 	// keyed by other things
 	private Map<Class, DocumentEntry> documentEntriesByDocumentClass;
-
 	private Map<Class, DocumentEntry> documentEntriesByBusinessObjectClass;
-
 	private Map<Class, DocumentEntry> documentEntriesByMaintainableClass;
-
 	private Map<String, DataDictionaryEntry> entriesByJstlKey;
+	private List<String> configFileLocations = new ArrayList<String>();
 
-	private Set jstlKeys;
-
-	private ValidationCompletionUtils validationCompletionUtils;
-
-	private boolean allowOverrides = true;
-
-	public DataDictionary(ValidationCompletionUtils validationCompletionUtils, DataDictionaryBuilder dataDictionaryBuilder) {
-		LOG.debug("creating new DataDictionary");
-
-		this.validationCompletionUtils = validationCompletionUtils;
-
-		// primary indices
-		businessObjectEntries = new HashMap<String, BusinessObjectEntry>();
-		documentEntries = new HashMap<String, DocumentEntry>();
-
-		// alternate indices
-		documentEntriesByDocumentClass = new HashMap<Class, DocumentEntry>();
-		documentEntriesByBusinessObjectClass = new HashMap<Class, DocumentEntry>();
-		documentEntriesByMaintainableClass = new HashMap<Class, DocumentEntry>();
-		entriesByJstlKey = new HashMap<String, DataDictionaryEntry>();
-
-		this.dataDictionaryBuilder = dataDictionaryBuilder;
-		jstlKeys = new HashSet();
-	}
+    public DataDictionary() {}
+    
 	
-	protected Map<String,String> getFileLocationMap() {
-		return dataDictionaryBuilder.getFileLocationMap();
-	}
+	public List<String> getConfigFileLocations() {
+        return this.configFileLocations;
+    }
 
-	// called by digester
-	public void addDocumentEntry(DocumentEntry documentEntry) {
-		if (documentEntry == null) {
-			throw new IllegalArgumentException("invalid (null) documentEntry");
-		}
-		if ( LOG.isDebugEnabled() ) {
-		    LOG.debug("calling addDocumentEntry '" + documentEntry.getDocumentTypeName() + "'");
-		}
+    public void setConfigFileLocations(List<String> configFileLocations) {
+        this.configFileLocations = configFileLocations;
+    }
+    
+    public void addConfigFileLocation( String location ) throws IOException {
+        indexSource( location );
+    }
 
-		String entryName = documentEntry.getDocumentTypeName();
-		if (!allowOverrides) {
-			if (documentEntries.containsKey(entryName)) {
-				throw new DuplicateEntryException("duplicate DocumentEntry for document type '" + entryName + "'");
-			}
-		}
-		if ((documentEntry instanceof TransactionalDocumentEntry) && (documentEntries.get(documentEntry.getFullClassName()) != null) && !((DocumentEntry)documentEntries.get(documentEntry.getFullClassName())).getDocumentTypeName().equals(documentEntry.getDocumentTypeName())) {
-			throw new DataDictionaryException(new StringBuffer("Two transactional document types may not share the same document class: this=").append(documentEntry.getDocumentTypeName()).append(" / existing=").append(((DocumentEntry)documentEntries.get(documentEntry.getDocumentClass().getName())).getDocumentTypeName()).toString());
-		}
-		if ((entriesByJstlKey.get(documentEntry.getJstlKey()) != null) && !((DocumentEntry)documentEntries.get(documentEntry.getJstlKey())).getDocumentTypeName().equals(documentEntry.getDocumentTypeName())) {
-			throw new DataDictionaryException(new StringBuffer("Two document types may not share the same jstl key: this=").append(documentEntry.getDocumentTypeName()).append(" / existing=").append(((DocumentEntry)documentEntries.get(documentEntry.getJstlKey())).getDocumentTypeName()).toString());
-		}
+    private void indexSource(String sourceName) throws IOException {        
+        if (sourceName == null) {
+            throw new DataDictionaryException("Source Name given is null");
+        }
 
-		documentEntry.completeValidation(validationCompletionUtils);
+        if (!sourceName.endsWith(".xml") ) {
+            Resource resource = getFileResource(sourceName);
+            if (resource.exists()) {
+                indexSource(resource.getFile());
+            } else {
+                LOG.warn("Could not find " + sourceName);
+                throw new DataDictionaryException("DD Resource " + sourceName + " not found");
+            }
+        } else {
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug("adding sourceName " + sourceName + " ");
+            }
+            Resource resource = getFileResource(sourceName);
+            if (! resource.exists()) {
+                throw new DataDictionaryException("DD Resource " + sourceName + " not found");  
+            }
+            String indexName = sourceName.substring(sourceName.lastIndexOf("/") + 1, sourceName.indexOf(".xml"));
+            configFileLocations.add( sourceName );
+        }
+    }    
 
-		documentEntries.put(entryName, documentEntry);
-		documentEntries.put(documentEntry.getFullClassName(), documentEntry);
-		entriesByJstlKey.put(documentEntry.getJstlKey(), documentEntry);
+    private Resource getFileResource(String sourceName) {
+        DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
+        return resourceLoader.getResource(sourceName);
+    }
 
-		if (documentEntry instanceof TransactionalDocumentEntry) {
-			TransactionalDocumentEntry tde = (TransactionalDocumentEntry) documentEntry;
+    private void indexSource(File dir) {
+        for (File file : dir.listFiles()) {
+            if (file.isDirectory()) {
+                indexSource(file);
+            } else if (file.getName().endsWith(".xml") ) {
+                configFileLocations.add( "file:" + file.getAbsolutePath());
+            } else {
+                if ( LOG.isDebugEnabled() ) {
+                    LOG.debug("Skipping non xml file " + file.getAbsolutePath() + " in DD load");
+                }
+            }
+        }
+    }
+    
+    public void parseDataDictionaryConfigurationFiles( boolean allowConcurrentValidation ) {
+        // expand configuration locations into files
 
-			documentEntriesByDocumentClass.put(tde.getDocumentClass(), documentEntry);
-			documentEntries.put(tde.getDocumentClass().getSimpleName(), documentEntry);
-		}
-		if (documentEntry instanceof MaintenanceDocumentEntry) {
-			MaintenanceDocumentEntry mde = (MaintenanceDocumentEntry) documentEntry;
-
-			documentEntriesByBusinessObjectClass.put(mde.getBusinessObjectClass(), documentEntry);
-			documentEntriesByMaintainableClass.put(mde.getMaintainableClass(), documentEntry);
-			documentEntries.put(mde.getBusinessObjectClass().getSimpleName() + "MaintenanceDocument", documentEntry);
-		}
-
-		String jstlKey = documentEntry.getJstlKey();
-		if (!allowOverrides) {
-			if (jstlKeys.contains(jstlKey)) {
-				StringBuffer msg = new StringBuffer("unable to add jstlKey for documentType");
-				msg.append(StringUtils.substringAfterLast(documentEntry.getDocumentTypeName(), "."));
-				msg.append(": key '");
-				msg.append(jstlKey);
-				msg.append("' is already in use");
-
-				throw new DuplicateKeyException(msg.toString());
-			}
-		}
-		jstlKeys.add(jstlKey);
-		documentEntry.validateAuthorizations(KNSServiceLocator.getKualiGroupService());
-		documentEntry.validateAuthorizer(KNSServiceLocator.getKualiConfigurationService(), validationCompletionUtils);
-		documentEntry.expandAttributeReferences(this, validationCompletionUtils);
-		KNSServiceLocator.getAuthorizationService().setupAuthorizations(documentEntry);
-	}
-
-	public void addBusinessObjectEntry(BusinessObjectEntry businessObjectEntry) {
-		if (businessObjectEntry == null) {
-			throw new IllegalArgumentException("invalid (null) businessObjectEntry");
-		}
-		if ( LOG.isDebugEnabled() ) {
-		    LOG.debug("calling addBusinessObjectEntry '" + businessObjectEntry.getBusinessObjectClass().getName() + "'");
-		}
-
-		String entryName = businessObjectEntry.getBusinessObjectClass().getName();
-		if (!allowOverrides) {
-			if (businessObjectEntries.containsKey(entryName)) {
-				throw new DuplicateEntryException("duplicate BusinessObjectEntry for class '" + entryName + "'");
-			}
-		}
-		if ((businessObjectEntries.get(businessObjectEntry.getJstlKey()) != null) && !((BusinessObjectEntry)businessObjectEntries.get(businessObjectEntry.getJstlKey())).getBusinessObjectClass().equals(businessObjectEntry.getBusinessObjectClass())) {
-			throw new DataDictionaryException(new StringBuffer("Two business object classes may not share the same jstl key: this=").append(businessObjectEntry.getBusinessObjectClass()).append(" / existing=").append(((BusinessObjectEntry)businessObjectEntries.get(businessObjectEntry.getJstlKey())).getBusinessObjectClass()).toString());
-		}
-
-		businessObjectEntry.completeValidation(validationCompletionUtils);
-
-		businessObjectEntries.put(entryName, businessObjectEntry);
-		businessObjectEntries.put(businessObjectEntry.getBusinessObjectClass().getSimpleName(), businessObjectEntry);
-		entriesByJstlKey.put(businessObjectEntry.getJstlKey(), businessObjectEntry);
-
-		String jstlKey = businessObjectEntry.getJstlKey();
-		if (!allowOverrides) {
-			if (jstlKeys.contains(jstlKey)) {
-				StringBuffer msg = new StringBuffer("unable to add jstlKey for businessObject");
-				msg.append(StringUtils.substringAfterLast(businessObjectEntry.getClass().getName(), "."));
-				msg.append(": key '");
-				msg.append(jstlKey);
-				msg.append("' is already in use");
-
-				throw new DuplicateKeyException(msg.toString());
-			}
-		}
-		jstlKeys.add(jstlKey);
-		businessObjectEntry.expandAttributeReferences(this, validationCompletionUtils);
-	}
+        LOG.info( "Starting DD XML File Load" );
+        String[] configFileLocationsArray = new String[configFileLocations.size()];
+        configFileLocationsArray = configFileLocations.toArray( configFileLocationsArray );
+        configFileLocations.clear(); // empty the list out so other items can be added
+        xmlReader.loadBeanDefinitions( configFileLocationsArray );
+        LOG.info( "Completed DD XML File Load" );
+        if ( allowConcurrentValidation ) {
+            Thread t = new Thread( new DDValidationRunnable() );
+            t.start();
+        } else {
+            new DDValidationRunnable().run();
+        }
+    }
 	
-    /**
-     * This method provides the Map of all "components" (i.e. lookup, inquiry, and document titles), keyed by business object or document class names
-     * 
-     * @return map of component names, keyed by class name
-     */
-    protected Map<String,Set<String>> getComponentNamesByClassName() {
-        Map<String,Set<String>> componentNamesByClassName = new HashMap<String,Set<String>>();
-        for (String businessObjectEntryKey : businessObjectEntries.keySet()) {
-            BusinessObjectEntry businessObjectEntry = businessObjectEntries.get(businessObjectEntryKey);
-            Set<String> componentNames = new HashSet<String>();
-            if (businessObjectEntry.getLookupDefinition() != null) {
-                componentNames.add(businessObjectEntry.getLookupDefinition().getTitle());
-            }
-            if (businessObjectEntry.getInquiryDefinition() != null) {
-                componentNames.add(businessObjectEntry.getInquiryDefinition().getTitle());
-            }
-            componentNamesByClassName.put(businessObjectEntry.getFullClassName(), componentNames);
+    private class DDValidationRunnable implements Runnable {
+
+        public void run() {
+            LOG.info( "Starting DD Index Building" );
+            buildDDIndicies();
+            LOG.info( "Completed DD Index Building" );
+            LOG.info( "Starting DD Validation" );
+            validateDD();
+            LOG.info( "Ending DD Validation" );
         }
-        for (Class businessObjectClass : documentEntriesByBusinessObjectClass.keySet()) {
-            DocumentEntry documentEntry = documentEntriesByBusinessObjectClass.get(businessObjectClass);
-            if (componentNamesByClassName.containsKey(businessObjectClass.getName())) {
-                componentNamesByClassName.get(businessObjectClass.getName()).add(documentEntry.getLabel());
+        
+    }
+    
+    private void buildDDIndicies() {
+        // primary indices
+        businessObjectEntries = new HashMap<String, BusinessObjectEntry>();
+        documentEntries = new HashMap<String, DocumentEntry>();
+
+        // alternate indices
+        documentEntriesByDocumentClass = new HashMap<Class, DocumentEntry>();
+        documentEntriesByBusinessObjectClass = new HashMap<Class, DocumentEntry>();
+        documentEntriesByMaintainableClass = new HashMap<Class, DocumentEntry>();
+        entriesByJstlKey = new HashMap<String, DataDictionaryEntry>();
+        
+        // loop over all beans in the context
+        Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
+        for ( BusinessObjectEntry entry : boBeans.values() ) {
+            String entryName = entry.getBusinessObjectClass().getName();
+            if ((businessObjectEntries.get(entry.getJstlKey()) != null) 
+                    && !((BusinessObjectEntry)businessObjectEntries.get(entry.getJstlKey())).getBusinessObjectClass().equals(entry.getBusinessObjectClass())) {
+                throw new DataDictionaryException(new StringBuffer("Two business object classes may not share the same jstl key: this=").append(entry.getBusinessObjectClass()).append(" / existing=").append(((BusinessObjectEntry)businessObjectEntries.get(entry.getJstlKey())).getBusinessObjectClass()).toString());
             }
-            else {
-                Set<String> componentNames = new HashSet<String>();
-                componentNames.add(documentEntry.getLabel());
-                componentNamesByClassName.put(businessObjectClass.getName(), componentNames);                
+
+
+            businessObjectEntries.put(entryName, entry);
+            businessObjectEntries.put(entry.getBusinessObjectClass().getSimpleName(), entry);
+            entriesByJstlKey.put(entry.getJstlKey(), entry);
+        }
+        Map<String,DocumentEntry> docBeans = ddBeans.getBeansOfType(DocumentEntry.class);
+        for ( DocumentEntry entry : docBeans.values() ) {
+            String entryName = entry.getDocumentTypeName();
+
+            if ((entry instanceof TransactionalDocumentEntry) 
+                    && (documentEntries.get(entry.getFullClassName()) != null) 
+                    && !((DocumentEntry)documentEntries.get(entry.getFullClassName())).getDocumentTypeName()
+                            .equals(entry.getDocumentTypeName())) {
+                throw new DataDictionaryException(new StringBuffer("Two transactional document types may not share the same document class: this=")
+                        .append(entry.getDocumentTypeName())
+                        .append(" / existing=")
+                        .append(((DocumentEntry)documentEntries.get(entry.getDocumentClass().getName())).getDocumentTypeName()).toString());
             }
+            if ((entriesByJstlKey.get(entry.getJstlKey()) != null) && !((DocumentEntry)documentEntries.get(entry.getJstlKey())).getDocumentTypeName().equals(entry.getDocumentTypeName())) {
+                throw new DataDictionaryException(new StringBuffer("Two document types may not share the same jstl key: this=").append(entry.getDocumentTypeName()).append(" / existing=").append(((DocumentEntry)documentEntries.get(entry.getJstlKey())).getDocumentTypeName()).toString());
+            }
+
+            documentEntries.put(entryName, entry);
+            documentEntries.put(entry.getFullClassName(), entry);
+            entriesByJstlKey.put(entry.getJstlKey(), entry);
+
+            if (entry instanceof TransactionalDocumentEntry) {
+                TransactionalDocumentEntry tde = (TransactionalDocumentEntry) entry;
+
+                documentEntriesByDocumentClass.put(tde.getDocumentClass(), entry);
+                documentEntries.put(tde.getDocumentClass().getSimpleName(), entry);
+            }
+            if (entry instanceof MaintenanceDocumentEntry) {
+                MaintenanceDocumentEntry mde = (MaintenanceDocumentEntry) entry;
+
+                documentEntriesByBusinessObjectClass.put(mde.getBusinessObjectClass(), entry);
+                documentEntriesByMaintainableClass.put(mde.getMaintainableClass(), entry);
+                documentEntries.put(mde.getBusinessObjectClass().getSimpleName() + "MaintenanceDocument", entry);
+            }
+
+            entry.validateAuthorizer();
+            // TODO: remove this locator?
+            KNSServiceLocator.getAuthorizationService().setupAuthorizations(entry);
         }
-        for (Class documentClass : documentEntriesByDocumentClass.keySet()) {
-            DocumentEntry documentEntry = documentEntriesByDocumentClass.get(documentClass);
-            Set<String> componentNames = new HashSet<String>();
-            componentNames.add(documentEntry.getLabel());
-            componentNamesByClassName.put(documentClass.getName(), componentNames);
+    }
+    
+    private void validateDD() {
+        Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
+        for ( BusinessObjectEntry entry : boBeans.values() ) {
+            entry.completeValidation();
         }
-        return componentNamesByClassName;
+        Map<String,DocumentEntry> docBeans = ddBeans.getBeansOfType(DocumentEntry.class);
+        for ( DocumentEntry entry : docBeans.values() ) {
+            entry.completeValidation();
+        }
     }
 
 	/**
 	 * @param className
 	 * @return BusinessObjectEntry for the named class, or null if none exists
 	 */
-	public BusinessObjectEntry getBusinessObjectEntry(String className) {
-		return getBusinessObjectEntry( className, true );
-	}
-	/**
-	 * @param className
-	 * @return BusinessObjectEntry for the named class, or null if none exists
-	 */
-	public BusinessObjectEntry getBusinessObjectEntry(String className, boolean parseOnFail ) {
+	public BusinessObjectEntry getBusinessObjectEntry(String className ) {
 		if (StringUtils.isBlank(className)) {
 			throw new IllegalArgumentException("invalid (blank) className");
 		}
@@ -257,13 +254,6 @@ public class DataDictionary implements Serializable {
 		}
 		// LOG.info("calling getBusinessObjectEntry truncated '" + className + "'");
 
-		BusinessObjectEntry boe = businessObjectEntries.get(className);
-		if ( boe == null && parseOnFail ) {
-		    	if ( LOG.isDebugEnabled() ) {
-		    	    LOG.debug("Unable to find BusinessObjectEntry '" + className + "' -- calling parseBO()");
-		    	}
-			this.dataDictionaryBuilder.parseBO(className, isAllowOverrides());
-		}
 		return businessObjectEntries.get(className);
 	}
 
@@ -272,7 +262,7 @@ public class DataDictionary implements Serializable {
 	 */
 	public List<String> getBusinessObjectClassNames() {
 		List classNames = new ArrayList();
-		classNames.addAll(this.businessObjectEntries.keySet());
+		classNames.addAll(businessObjectEntries.keySet());
 
 		return Collections.unmodifiableList(classNames);
 	}
@@ -281,7 +271,7 @@ public class DataDictionary implements Serializable {
 	 * @return Map of (classname, BusinessObjectEntry) pairs
 	 */
 	public Map<String, BusinessObjectEntry> getBusinessObjectEntries() {
-		return Collections.unmodifiableMap(this.businessObjectEntries);
+		return businessObjectEntries;
 	}
 
 	/**
@@ -303,33 +293,18 @@ public class DataDictionary implements Serializable {
 
 		// look in the JSTL key cache
 		DataDictionaryEntry entry = entriesByJstlKey.get(className);
+		// check the BO list
 		if ( entry == null ) {
-			// look in the BO cache
-			entry = getBusinessObjectEntry(className, false );
-			if (entry == null) {	
-				//look in the document cache
-				entry = getDocumentEntry(className, false);
-				
-				// the object does not exist in the DD currently, attempt to parse the file
-				if ( entry == null ) {
-					this.dataDictionaryBuilder.parseDocument(className, isAllowOverrides());
-					// re-try the BO and document caches after the parse
-					entry = getDocumentEntry(className, false);					
-					if ( entry == null ) {
-						entry = getBusinessObjectEntry(className, true );
-					}
-				}
-			}
+		    entry = getBusinessObjectEntry(className);
 		}
-		
+		// check the document list
+		if ( entry == null ) {
+		    entry = getDocumentEntry(className);
+		}
 		return entry;
 	}
 
-	public DocumentEntry getDocumentEntry(String documentTypeDDKey) {
-		return getDocumentEntry( documentTypeDDKey, true );
-	}	
-	
-	public DocumentEntry getDocumentEntry(String documentTypeDDKey, boolean parseOnFail ) {
+	public DocumentEntry getDocumentEntry(String documentTypeDDKey ) {
 		if (StringUtils.isBlank(documentTypeDDKey)) {
 			throw new IllegalArgumentException("invalid (blank) documentTypeName");
 		}
@@ -337,24 +312,20 @@ public class DataDictionary implements Serializable {
 		    LOG.debug("calling getDocumentEntry by documentTypeName '" + documentTypeDDKey + "'");
 		}
 
-		DocumentEntry de = documentEntries.get(documentTypeDDKey);		
-        if (de == null) {
-        	// need to attempt to convert the key to a class since the documentEntries...
-        	// maps are keyed by class objects rather than class names
-        	try {
-        		Class clazz = Class.forName( documentTypeDDKey );
-                de = documentEntriesByBusinessObjectClass.get( clazz );
-                if (de == null) {
-                    de = documentEntriesByDocumentClass.get( clazz );
-                }
-        	} catch ( ClassNotFoundException ex ) {
-        		// do nothing, just skip if not a valid class name
-        	}
-        }
-		if ( de == null && parseOnFail ) {
-			this.dataDictionaryBuilder.parseDocument(documentTypeDDKey, isAllowOverrides());
-			de = documentEntries.get(documentTypeDDKey);
+		DocumentEntry de = documentEntries.get(documentTypeDDKey);	
+		
+		if ( de == null ) {
+		    try {
+    		    Class clazz = Class.forName( documentTypeDDKey );
+    		    de = documentEntriesByBusinessObjectClass.get(clazz);
+    		    if ( de == null ) {
+    		        de = documentEntriesByMaintainableClass.get(clazz);
+    		    }
+		    } catch ( ClassNotFoundException ex ) {
+		        LOG.warn( "Unable to find document entry for key: " + documentTypeDDKey );
+		    }
 		}
+		
         return de;
 	}
 
@@ -376,16 +347,6 @@ public class DataDictionary implements Serializable {
 		    LOG.debug("calling getDocumentEntry by businessObjectClass '" + businessObjectClass + "'");
 		}
 
-		MaintenanceDocumentEntry mde = (MaintenanceDocumentEntry) documentEntriesByBusinessObjectClass.get(businessObjectClass);
-		if (mde == null) {
-			//Before attempting to parse the DD again, try to look in the documentEntries, if we found
-			//it there, then we'll return null for this method because it means that the businessObjectClass
-			//is not in maintenance document, it's transactional.
-		    if (documentEntries.get(businessObjectClass.getName()) != null) {	
-		    	return null;
-		    }
-			this.dataDictionaryBuilder.parseMaintenanceDocument(businessObjectClass.getName(), true);
-		}
 		return (MaintenanceDocumentEntry) documentEntriesByBusinessObjectClass.get(businessObjectClass);
 	}
 
@@ -393,26 +354,274 @@ public class DataDictionary implements Serializable {
 		return Collections.unmodifiableMap(this.documentEntries);
 	}
 
-	public void setAllowOverrides(boolean allowOverrides) {
-	    if ( LOG.isDebugEnabled() ) {
-		LOG.debug("calling setAllowOverrides " + allowOverrides);
-	    }
-
-	    this.allowOverrides = allowOverrides;
-	}
-
-	public boolean isAllowOverrides() {
-		return allowOverrides;
-	}
-	
-	private boolean completelyLoaded = false;
-    public void forceCompleteDataDictionaryLoad() {
-        if ( !completelyLoaded ) {
-    		for ( String key : getFileLocationMap().keySet() ) {
-    		    getDictionaryObjectEntry(key);
-}    		completelyLoaded = true;
+    /**
+     * @param clazz
+     * @param propertyName
+     * @return true if the given propertyName names a property of the given class
+     * @throws CompletionException if there is a problem accessing the named property on the given class
+     */
+    public static boolean isPropertyOf(Class targetClass, String propertyName) {
+        if (targetClass == null) {
+            throw new IllegalArgumentException("invalid (null) targetClass");
         }
+        if (StringUtils.isBlank(propertyName)) {
+            throw new IllegalArgumentException("invalid (blank) propertyName");
+        }
+
+        PropertyDescriptor propertyDescriptor = buildReadDescriptor(targetClass, propertyName);
+
+        boolean isPropertyOf = (propertyDescriptor != null);
+        return isPropertyOf;
     }
 
+    /**
+     * @param clazz
+     * @param propertyName
+     * @return true if the given propertyName names a Collection property of the given class
+     * @throws CompletionException if there is a problem accessing the named property on the given class
+     */
+    public static boolean isCollectionPropertyOf(Class targetClass, String propertyName) {
+        boolean isCollectionPropertyOf = false;
+
+        PropertyDescriptor propertyDescriptor = buildReadDescriptor(targetClass, propertyName);
+        if (propertyDescriptor != null) {
+            Class clazz = propertyDescriptor.getPropertyType();
+
+            if ((clazz != null) && Collection.class.isAssignableFrom(clazz)) {
+                isCollectionPropertyOf = true;
+            }
+        }
+
+        return isCollectionPropertyOf;
+    }
+
+    public static PersistenceStructureService persistenceStructureService;
+    
+    /**
+     * @return the persistenceStructureService
+     */
+    public static PersistenceStructureService getPersistenceStructureService() {
+        if ( persistenceStructureService == null ) {
+            persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
+        }
+        return persistenceStructureService;
+    }
+    
+    /**
+     * This method determines the Class of the attributeName passed in. Null will be returned if the member is not available, or if
+     * a reflection exception is thrown.
+     * 
+     * @param rootClass - Class that the attributeName property exists in.
+     * @param attributeName - Name of the attribute you want a class for.
+     * @return The Class of the attributeName, if the attribute exists on the rootClass. Null otherwise.
+     */
+    public static Class getAttributeClass(Class boClass, String attributeName) {
+
+        Class attributeClass = null;
+
+        // fail loudly if the attributeName isnt a member of rootClass
+        if (!isPropertyOf(boClass, attributeName)) {
+            throw new AttributeValidationException("unable to find attribute '" + attributeName + "' in rootClass '" + boClass.getName() + "'");
+        }
+
+        BusinessObject boInstance;
+        try {
+            boInstance = (BusinessObject) boClass.newInstance();
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        // attempt to retrieve the class of the property
+        try {
+            attributeClass = ObjectUtils.getPropertyType(boInstance, attributeName, getPersistenceStructureService());
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return attributeClass;
+    }
+
+    /**
+     * This method determines the Class of the elements in the collectionName passed in.
+     * 
+     * @param boClass Class that the collectionName collection exists in.
+     * @param collectionName the name of the collection you want the element class for
+     * @return
+     */
+    public static Class getCollectionElementClass(Class boClass, String collectionName) {
+        if (boClass == null) {
+            throw new IllegalArgumentException("invalid (null) boClass");
+        }
+        if (StringUtils.isBlank(collectionName)) {
+            throw new IllegalArgumentException("invalid (blank) collectionName");
+        }
+
+        PropertyDescriptor propertyDescriptor = null;
+
+        String[] intermediateProperties = collectionName.split("\\.");
+        Class currentClass = boClass;
+
+        for (int i = 0; i <intermediateProperties.length; ++i) {
+
+            String currentPropertyName = intermediateProperties[i];
+            propertyDescriptor = buildSimpleReadDescriptor(currentClass, currentPropertyName);
+
+
+                if (propertyDescriptor != null) {
+
+                    Class type = propertyDescriptor.getPropertyType();
+                    if (Collection.class.isAssignableFrom(type)) {
+
+                        if (getPersistenceStructureService().isPersistable(currentClass)) {
+
+                            Map<String, Class> collectionClasses = new HashMap<String, Class>();
+                            collectionClasses = getPersistenceStructureService().listCollectionObjectTypes(currentClass);
+                            currentClass = collectionClasses.get(currentPropertyName);
+
+                        }
+                        else {
+                            throw new RuntimeException("Can't determine the Class of Collection elements because persistenceStructureService.isPersistable(" + currentClass.getName() + ") returns false.");
+                        }
+
+                    }
+                    else {
+
+                        currentClass = propertyDescriptor.getPropertyType();
+
+                    }
+                }
+            }
+
+        return currentClass;
+    }
+
+    static private Map<String, Map<String, PropertyDescriptor>> cache = new TreeMap<String, Map<String, PropertyDescriptor>>();
+
+    /**
+     * @param propertyClass
+     * @param propertyName
+     * @return PropertyDescriptor for the getter for the named property of the given class, if one exists.
+     */
+    public static PropertyDescriptor buildReadDescriptor(Class propertyClass, String propertyName) {
+        if (propertyClass == null) {
+            throw new IllegalArgumentException("invalid (null) propertyClass");
+        }
+        if (StringUtils.isBlank(propertyName)) {
+            throw new IllegalArgumentException("invalid (blank) propertyName");
+        }
+
+        PropertyDescriptor propertyDescriptor = null;
+
+        String[] intermediateProperties = propertyName.split("\\.");
+        int lastLevel = intermediateProperties.length - 1;
+        Class currentClass = propertyClass;
+
+        for (int i = 0; i <= lastLevel; ++i) {
+
+            String currentPropertyName = intermediateProperties[i];
+            propertyDescriptor = buildSimpleReadDescriptor(currentClass, currentPropertyName);
+
+            if (i < lastLevel) {
+
+                if (propertyDescriptor != null) {
+
+                    Class propertyType = propertyDescriptor.getPropertyType();
+                    if ( propertyType.equals( PersistableBusinessObjectExtension.class ) ) {
+                        propertyType = getPersistenceStructureService().getBusinessObjectAttributeClass( currentClass, currentPropertyName );                    
+                    }
+                    if (Collection.class.isAssignableFrom(propertyType)) {
+
+                        if (getPersistenceStructureService().isPersistable(currentClass)) {
+
+                            Map<String, Class> collectionClasses = new HashMap<String, Class>();
+                            collectionClasses = getPersistenceStructureService().listCollectionObjectTypes(currentClass);
+                            currentClass = collectionClasses.get(currentPropertyName);
+
+                        }
+                        else {
+
+                            throw new RuntimeException("Can't determine the Class of Collection elements because persistenceStructureService.isPersistable(" + currentClass.getName() + ") returns false.");
+
+                        }
+
+                    }
+                    else {
+
+                        currentClass = propertyType;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return propertyDescriptor;
+    }
+
+    /**
+     * @param propertyClass
+     * @param propertyName
+     * @return PropertyDescriptor for the getter for the named property of the given class, if one exists.
+     */
+    public static PropertyDescriptor buildSimpleReadDescriptor(Class propertyClass, String propertyName) {
+        if (propertyClass == null) {
+            throw new IllegalArgumentException("invalid (null) propertyClass");
+        }
+        if (StringUtils.isBlank(propertyName)) {
+            throw new IllegalArgumentException("invalid (blank) propertyName");
+        }
+
+        PropertyDescriptor p = null;
+
+        // check to see if we've cached this descriptor already. if yes, return true.
+        String propertyClassName = propertyClass.getName();
+        Map<String, PropertyDescriptor> m = cache.get(propertyClassName);
+        if (null != m) {
+            p = m.get(propertyName);
+            if (null != p) {
+                return p;
+            }
+        }
+
+        String prefix = StringUtils.capitalize(propertyName);
+        String getName = "get" + prefix;
+        String isName = "is" + prefix;
+
+        try {
+
+            p = new PropertyDescriptor(propertyName, propertyClass, getName, null);
+
+        }
+        catch (IntrospectionException e) {
+            try {
+
+                p = new PropertyDescriptor(propertyName, propertyClass, isName, null);
+
+            }
+            catch (IntrospectionException f) {
+                // ignore it
+            }
+        }
+
+        // cache the property descriptor if we found it.
+        if (null != p) {
+
+            if (null == m) {
+
+                m = new TreeMap<String, PropertyDescriptor>();
+                cache.put(propertyClassName, m);
+
+            }
+
+            m.put(propertyName, p);
+
+        }
+
+        return p;
+    }
 	
 }

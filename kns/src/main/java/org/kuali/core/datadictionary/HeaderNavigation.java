@@ -15,22 +15,20 @@
  */
 package org.kuali.core.datadictionary;
 
-import java.io.Serializable;
 
-public class HeaderNavigation extends DataDictionaryDefinitionBase implements Serializable {
+public class HeaderNavigation extends DataDictionaryDefinitionBase {
 
     private String headerTabMethodToCall;
     private String headerTabNavigateTo;
     private String headerTabDisplayName;
     private HelpDefinition helpDefinition;
-    private boolean disabled;
+    private boolean disabled = false;
     
     public HeaderNavigation() {};
 
     public HeaderNavigation(String headerTabNavigateTo, String headerTabDisplayName) {
         this.headerTabNavigateTo = headerTabNavigateTo;
         this.headerTabDisplayName = headerTabDisplayName;
-        this.disabled = false;
     }
 
     /**
@@ -106,7 +104,7 @@ public class HeaderNavigation extends DataDictionaryDefinitionBase implements Se
     /**
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         // No real validation to be done here other than perhaps checking to be
         // sure that the security workgroup is a valid workgroup.
     }

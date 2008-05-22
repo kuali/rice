@@ -27,18 +27,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actionrequests.ActionRequestValue;
 import edu.iu.uis.eden.actiontaken.ActionTakenValue;
+import edu.iu.uis.eden.clientapp.vo.ActionItemVO;
 import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentContentVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentDetailVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchCriteriaVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchResultVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
 import edu.iu.uis.eden.clientapp.vo.PropertyDefinitionVO;
 import edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO;
@@ -55,6 +60,8 @@ import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeValidationErrorVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkgroupVO;
 import edu.iu.uis.eden.definition.AttributeDefinition;
+import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
+import edu.iu.uis.eden.docsearch.DocumentSearchResultComponents;
 import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.engine.ActivationContext;
 import edu.iu.uis.eden.engine.CompatUtils;
@@ -222,15 +229,18 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         LOG.debug("returning responsibility Id " + rid);
         return rid;
     }
-
-    public WorkgroupVO[] getUserWorkgroups(UserIdVO userId) throws WorkflowException {
-
+    
+    private WorkflowUser getWorkflowUserInternal(UserIdVO userId) throws EdenUserNotFoundException {
         if (userId == null ){
             LOG.error("null userId passed in.");
             throw new RuntimeException("null userId passed in.");
         }
-        LOG.debug("Fetching user's workgroups [userId="+userId+"]");
-        WorkflowUser user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
+        LOG.debug("Fetching user for userId '"+userId+"'");
+        return KEWServiceLocator.getUserService().getWorkflowUser(userId);
+    }
+
+    public WorkgroupVO[] getUserWorkgroups(UserIdVO userId) throws WorkflowException {
+        WorkflowUser user = getWorkflowUserInternal(userId);
         List workgroups = KEWServiceLocator.getWorkgroupService().getUsersGroups(user);
 
         WorkgroupVO[] workgroupVOs = new WorkgroupVO[workgroups.size()];
@@ -240,6 +250,39 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             workgroupVOs[i] = BeanConverter.convertWorkgroup(workgroup);
         }
         return workgroupVOs;
+    }
+
+    public Integer getUserActionItemCount(UserIdVO userId) throws WorkflowException {
+        return Integer.valueOf(KEWServiceLocator.getActionListService().getCount(getWorkflowUserInternal(userId)));
+    }
+    
+    public ActionItemVO[] getActionItems(Long routeHeaderId) throws WorkflowException {
+        Collection actionItems = KEWServiceLocator.getActionListService().getActionList(routeHeaderId, null);
+        ActionItemVO[] actionItemVOs = new ActionItemVO[actionItems.size()];
+        int i = 0;
+        for (Iterator iterator = actionItems.iterator(); iterator.hasNext(); i++) {
+            ActionItem actionItem = (ActionItem) iterator.next();
+            actionItemVOs[i] = BeanConverter.convertActionItem(actionItem);
+        }
+        return actionItemVOs;
+    }
+    
+    public ActionItemVO[] getActionItems(Long routeHeaderId, String[] actionRequestedCodes) throws WorkflowException {
+        List<String> actionRequestedCds = Arrays.asList(actionRequestedCodes);
+        ActionItemVO[] actionItems = getActionItems(routeHeaderId);
+        List<ActionItemVO> matchingActionitems = new ArrayList<ActionItemVO>();
+        for (int i = 0; i < actionItems.length; i++) {
+            ActionItemVO actionItemVO = actionItems[i];
+            if (actionRequestedCds.contains(actionItemVO.getActionRequestCd())) {
+                matchingActionitems.add(actionItemVO);
+            }
+        }
+        ActionItemVO[] returnActionItems = new ActionItemVO[matchingActionitems.size()];
+        int j = 0;
+        for (ActionItemVO actionItemVO : matchingActionitems) {
+            returnActionItems[j] = actionItemVO;
+        }
+        return returnActionItems;
     }
 
     public ActionRequestVO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
@@ -793,5 +836,23 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             i++;
         }
         return returnableRules;
+    }
+    
+    public DocumentSearchResultVO performDocumentSearch(DocumentSearchCriteriaVO criteriaVO) throws RemoteException, WorkflowException {
+        return performDocumentSearch(null, criteriaVO);
+    }
+    
+    public DocumentSearchResultVO performDocumentSearch(UserIdVO userId, DocumentSearchCriteriaVO criteriaVO) throws RemoteException, WorkflowException {
+        DocSearchCriteriaVO criteria = BeanConverter.convertDocumentSearchCriteriaVO(criteriaVO);
+        WorkflowUser user = null;
+        if (userId != null) {
+            criteria.setOverridingUserSession(true);
+            user = KEWServiceLocator.getUserService().getWorkflowUser(userId);
+        }
+        DocumentSearchResultComponents components = KEWServiceLocator.getDocumentSearchService().getListBoundByCriteria(user, criteria);
+        DocumentSearchResultVO resultVO = BeanConverter.convertDocumentSearchResultComponents(components);
+        resultVO.setOverThreshold(criteria.isOverThreshold());
+        resultVO.setSecurityFilteredRows(Integer.valueOf(criteria.getSecurityFilteredRows()));
+        return resultVO;
     }
 }

@@ -18,11 +18,11 @@ package org.kuali.core.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.user.KualiModuleUser;
 import org.kuali.core.bo.user.KualiModuleUserBase;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.exceptions.UserNotFoundException;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 public class KualiModuleUserServiceDefaultImpl extends KualiModuleUserServiceBaseImpl {
 	
@@ -31,7 +31,7 @@ public class KualiModuleUserServiceDefaultImpl extends KualiModuleUserServiceBas
 	public KualiModuleUserServiceDefaultImpl(String moduleId) {
 		this.moduleId = moduleId;
 		List<String> properties = new ArrayList<String>();
-        properties.add(RicePropertyConstants.ACTIVE);
+        properties.add(KNSPropertyConstants.ACTIVE);
         setPropertyList(properties);
 	}
 	

@@ -210,10 +210,9 @@ public class LookupUtils {
     }
 
     /**
-     * @deprecated use {@link #getSearchResultsLimit(Class)} instead; at some point this should
-     * be made private and become an internal method.
+     * 
      */
-    public static Integer getApplicationSearchResultsLimit() {
+    private static Integer getApplicationSearchResultsLimit() {
         String limitString = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
         if (limitString != null) {
             return Integer.valueOf(limitString);
@@ -228,17 +227,13 @@ public class LookupUtils {
      * @return result set limit for this BO (or null if the BO doesn't have a limit)
      */
     private static Integer getBusinessObjectSearchResultsLimit(Class businessObjectClass) {
-        String limitString = businessObjectDictionaryService.getLookupResultSetLimit(businessObjectClass);
-        if (limitString != null) {
-            return Integer.valueOf(limitString);
-        }
-        return null;
+        return businessObjectDictionaryService.getLookupResultSetLimit(businessObjectClass);
     }
 
     /**
      * This method the maximum rows per page in a multiple value lookup
      *
-     * @see org.kuali.rice.kns.util.KNSConstants.SystemGroupParameterNames#MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE
+     * @see org.kuali.KNSConstants.SystemGroupParameterNames#MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE
      * @return
      */
     public static Integer getApplicationMaximumSearchResulsPerPageForMultipleValueLookups() {
@@ -584,29 +579,29 @@ public class LookupUtils {
             String toField = entry.getValue();
 
             if ( relationship.getUserVisibleIdentifierKey() == null || relationship.getUserVisibleIdentifierKey().equals( fromField ) ) {
-	            // find the displayed from field mapping
-	            if (!displayedFieldNames.contains(fromField)) {
-	                fromField = translateToDisplayedField(businessObject.getClass(), fromField, displayedFieldNames);
-	            }
+                // find the displayed from field mapping
+                if (!displayedFieldNames.contains(fromField)) {
+                    fromField = translateToDisplayedField(businessObject.getClass(), fromField, displayedFieldNames);
+                }
 
-	            // translate to field
-	            if (displayedQFFieldNames != null && !displayedQFFieldNames.contains(toField)) {
-	                toField = translateToDisplayedField(relationship.getRelatedClass(), toField, displayedQFFieldNames);
-	            }
+                // translate to field
+                if (displayedQFFieldNames != null && !displayedQFFieldNames.contains(toField)) {
+                    toField = translateToDisplayedField(relationship.getRelatedClass(), toField, displayedQFFieldNames);
+                }
 
-	            if (StringUtils.isNotBlank(lookupParameters)) {
-	                lookupParameters += ",";
-	            }
+                if (StringUtils.isNotBlank(lookupParameters)) {
+                    lookupParameters += ",";
+                }
 
-	            if (propertyPrefix != null && !propertyPrefix.equals("")) {
-	                fromField = propertyPrefix + "." + fromField;
-	            }
+                if (propertyPrefix != null && !propertyPrefix.equals("")) {
+                    fromField = propertyPrefix + "." + fromField;
+                }
 
-	            if ( StringUtils.isNotEmpty( collectionName ) ) {
-	                fromField = collectionName + fromField;
-	            }
+                if ( StringUtils.isNotEmpty( collectionName ) ) {
+                    fromField = collectionName + fromField;
+                }
 
-	            lookupParameters += fromField + ":" + toField;
+                lookupParameters += fromField + ":" + toField;
             }
         }
 
@@ -743,15 +738,15 @@ public class LookupUtils {
     public static void removeHiddenCriteriaFields( Class businessObjectClass, Map fieldValues ) {
         List<String> lookupFieldAttributeList = businessObjectMetaDataService.getLookupableFieldNames(businessObjectClass);
         if (lookupFieldAttributeList != null) {
-	        for (Iterator iter = lookupFieldAttributeList.iterator(); iter.hasNext();) {
-	            String attributeName = (String) iter.next();
-	            if (fieldValues.containsKey(attributeName)) {
-	            	ControlDefinition controlDef = dataDictionaryService.getAttributeControlDefinition(businessObjectClass, attributeName);
-	            	if ( controlDef.isHidden() ) {
-	            		fieldValues.remove(attributeName);
-	            	}
-	            }
-	        }
+            for (Iterator iter = lookupFieldAttributeList.iterator(); iter.hasNext();) {
+                String attributeName = (String) iter.next();
+                if (fieldValues.containsKey(attributeName)) {
+                    ControlDefinition controlDef = dataDictionaryService.getAttributeControlDefinition(businessObjectClass, attributeName);
+                    if ( controlDef.isHidden() ) {
+                        fieldValues.remove(attributeName);
+                    }
+                }
+            }
         }
     }
 }

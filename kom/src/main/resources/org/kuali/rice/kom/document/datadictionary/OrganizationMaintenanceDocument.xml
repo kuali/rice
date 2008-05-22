@@ -1,82 +1,119 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2007 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="KualiOrganizationMaintenanceDocument" parent="KualiOrganizationMaintenanceDocument-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="KualiOrganizationMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kom.bo.Organization" />
+    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    <property name="maintainableSections" >
+      <list>
+        <ref bean="KualiOrganizationMaintenanceDocument-EditOrganization" />
+        <ref bean="KualiOrganizationMaintenanceDocument-OrganizationsContexts" />
+      </list>
+    </property>
+    <property name="defaultExistenceChecks" >
+      <list>
+        <bean parent="ReferenceDefinition"
+              p:attributeName="organizationContext"
+              p:collection="organizationsContexts"
+              p:attributeToHighlightOnFail="id" />
+      </list>
+    </property>
+    <property name="lockingKeys" >
+      <list>
+        <value>id</value>
+      </list>
+    </property>
+    <property name="shortLabel" value="Organization" />
+    <property name="summary" value="Organization Maintenance Document" />
+    <property name="documentTypeName" value="KualiOrganizationMaintenanceDocument" />
+    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentTypeCode" value="KORG" />
+    <property name="authorizations" >
+      <list>
+        <bean parent="AuthorizationDefinition">
+          <property name="authorizedGroups" >
+            <set>
+              <value>WorkflowAdmin</value>
+            </set>
+          </property>
+          <property name="action" value="initiate" />
+        </bean>
+      </list>
+    </property>
+    <property name="label" value="Organization" />
+    <property name="description" value="Maintenance document which allows you to create new Organization, or modify existing Organization." />
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
+<!-- Maintenance Section Definitions -->
 
-<dictionaryEntry>
-    <maintenanceDocument>
-        <businessObjectClass>org.kuali.rice.kom.bo.Organization</businessObjectClass>
-        <maintainableClass>org.kuali.core.maintenance.KualiMaintainableImpl</maintainableClass>
 
-        <documentAuthorizerClass>org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase</documentAuthorizerClass>
-        <authorizations>
-            <authorization action="initiate">
-                <workgroups>
-                    <workgroup>WorkflowAdmin</workgroup>
-                </workgroups>
-            </authorization>
-        </authorizations>
+  <bean id="KualiOrganizationMaintenanceDocument-EditOrganization" parent="KualiOrganizationMaintenanceDocument-EditOrganization-parentBean" />
 
-        <documentTypeName>KualiOrganizationMaintenanceDocument</documentTypeName>
-        <documentTypeCode>KORG</documentTypeCode>
-        <label>Organization</label>
-        <summary>Organization Maintenance Document</summary>
-        <description>Maintenance document which allows you to create new Organization, or modify existing Organization.</description>
+  <bean id="KualiOrganizationMaintenanceDocument-EditOrganization-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="id"
+              p:readOnly="true" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="shortName" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="name" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="parentOrganizationId" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="categoryId" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="versionNumber" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="active" />
+      </list>
+    </property>
+    <property name="id" value="Edit Organization" />
+    <property name="title" value="Edit Organization" />
+  </bean>
+  <bean id="KualiOrganizationMaintenanceDocument-OrganizationsContexts" parent="KualiOrganizationMaintenanceDocument-OrganizationsContexts-parentBean" />
 
-        <lockingKeys>
-            <field attributeName="id" />
-        </lockingKeys>
-
-        <allowsNewOrCopy>true</allowsNewOrCopy>
-
-        <defaultExistenceChecks>
-            <reference collection="organizationsContexts" attributeName="organizationContext" attributeToHighlightOnFail="id" />
-        </defaultExistenceChecks>
-
-        <maintainableSections>
-            <maintainableSection title="Edit Organization">
-                <maintainableItems>
-                    <maintainableField name="id" required="true" readOnly="true" />
-                    <maintainableField name="shortName" required="true" />
-                    <maintainableField name="name" required="true" />
-                    <maintainableField name="parentOrganizationId" required="false" />
-                    <maintainableField name="categoryId" required="true" />
-                    <maintainableField name="versionNumber" />
-                    <maintainableField name="active" />
-                </maintainableItems>
-            </maintainableSection>
-
-            <maintainableSection title="Organizations Contexts">
-                <maintainableItems>
-                    <maintainableCollection name="organizationsContexts"
-                        businessObjectClass="org.kuali.rice.kom.bo.OrganizationsContexts" includeMultipleLookupLine="true" includeAddLine="true" sourceAttributeName="organizationsContexts" summaryTitle="Organizations Contexts">
-                        <maintainableField name="id" required="true"
-                            readOnly="true" readOnlyAfterAdd="true" template="id" />
-
-                        <maintainableField name="active" required="true" readOnly="false" template="active" />
-                        <maintainableField name="contextName" required="true" readOnly="true" template="contextName" />
-
- <!--
-                         <maintainableField name="organizationContext.description" required="true" readOnly="true" template="description" />
--->
-                    </maintainableCollection>
-                </maintainableItems>
-            </maintainableSection>
-        </maintainableSections>
-    </maintenanceDocument>
-</dictionaryEntry>
+  <bean id="KualiOrganizationMaintenanceDocument-OrganizationsContexts-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableCollectionDefinition">
+          <property name="sourceAttributeName" value="organizationsContexts" />
+          <property name="businessObjectClass" value="org.kuali.rice.kom.bo.OrganizationsContexts" />
+          <property name="summaryTitle" value="Organizations Contexts" />
+          <property name="maintainableFields" >
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:readOnlyAfterAdd="true"
+                    p:template="id"
+                    p:name="id"
+                    p:readOnly="true" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:template="active"
+                    p:name="active" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:template="contextName"
+                    p:name="contextName"
+                    p:readOnly="true" />
+            </list>
+          </property>
+          <property name="name" value="organizationsContexts" />
+        </bean>
+      </list>
+    </property>
+    <property name="id" value="Organizations Contexts" />
+    <property name="title" value="Organizations Contexts" />
+  </bean>
+</beans>

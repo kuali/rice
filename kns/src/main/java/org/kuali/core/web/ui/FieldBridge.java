@@ -350,7 +350,6 @@ public class FieldBridge {
             for ( FieldDefinitionI fieldDefinition : collectionFields  ) {
                 // construct Field UI object from definition
                 Field collField = FieldUtils.getPropertyField(collectionDefinition.getBusinessObjectClass(), fieldDefinition.getName(), false);
-                FieldUtils.setInquiryURL(collField, o, fieldDefinition.getName());
 
                 if (fieldDefinition instanceof MaintainableFieldDefinition) {
                     setupField(collField, (MaintainableFieldDefinition)fieldDefinition);
@@ -370,6 +369,7 @@ public class FieldBridge {
 
                 //  set the QuickFinderClass
                 BusinessObject collectionBoInstance = (BusinessObject) collectionDefinition.getBusinessObjectClass().newInstance();
+                FieldUtils.setInquiryURL(collField, collectionBoInstance, fieldDefinition.getName());
                 if (collectionDefinition instanceof MaintainableCollectionDefinition) {
                     MaintenanceUtils.setFieldQuickfinder(collectionBoInstance, parents+collectionDefinition.getName(), true, 0, fieldDefinition.getName(), collField, displayedFieldNames, m, (MaintainableFieldDefinition) fieldDefinition);
                     MaintenanceUtils.setFieldDirectInquiry(collectionBoInstance, parents+collectionDefinition.getName(), true, 0, fieldDefinition.getName(), collField, displayedFieldNames, m, (MaintainableFieldDefinition) fieldDefinition);

@@ -15,15 +15,20 @@
  */
 package org.kuali.core.service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.datadictionary.DataDictionary;
 import org.kuali.core.datadictionary.control.ControlDefinition;
-import org.kuali.core.datadictionary.exception.SourceException;
 import org.kuali.core.datadictionary.mask.Mask;
+import org.kuali.core.document.Document;
+import org.kuali.core.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.core.rule.PreRulesCheck;
+import org.kuali.core.web.format.Formatter;
 
 
 /**
@@ -40,14 +45,14 @@ public interface DataDictionaryService {
      * @param baselinePackages
      * @throws SourceException if any of the given packages can't be located
      */
-    public void setBaselinePackages(List baselinePackages);
+    public void setBaselinePackages(List baselinePackages) throws IOException;
 
     /**
      * @return current DataDictionary
      */
     public DataDictionary getDataDictionary();
 
-    public void addDataDictionaryLocations(List<String> locations);
+    public void addDataDictionaryLocations(List<String> locations) throws IOException;
 
 //    /**
 //     * Hook to allow the dataDictionary service to perform any post-build initialization tasks needed before the dataDictionary
@@ -99,7 +104,7 @@ public interface DataDictionaryService {
     /**
      * the formatter class used to format the attribute value
      */
-    public Class getAttributeFormatter(Class businessObjectClass, String attributeName);
+    public Class<? extends Formatter> getAttributeFormatter(Class businessObjectClass, String attributeName);
 
 
     /**
@@ -144,7 +149,7 @@ public interface DataDictionaryService {
     /**
      * the Class that returns a values list for this attribute
      */
-    public Class getAttributeValuesFinderClass(Class businessObjectClass, String attributeName);
+    public Class<? extends KeyValuesFinder> getAttributeValuesFinderClass(Class businessObjectClass, String attributeName);
 
     /**
      * the label to be used for displaying the collection.
@@ -228,7 +233,7 @@ public interface DataDictionaryService {
     /**
      * the formatter class used to format the attribute value
      */
-    public Class getAttributeFormatter(String entryName, String attributeName);
+    public Class<? extends Formatter> getAttributeFormatter(String entryName, String attributeName);
 
 
     /**
@@ -271,7 +276,7 @@ public interface DataDictionaryService {
     /**
      * the Class that returns a values list for this attribute
      */
-    public Class getAttributeValuesFinderClass(String entryName, String attributeName);
+    public Class<? extends KeyValuesFinder> getAttributeValuesFinderClass(String entryName, String attributeName);
 
     /**
      * the label to be used for displaying the collection.
@@ -307,14 +312,14 @@ public interface DataDictionaryService {
      * @param relationshipName
      * @return source Class for the given relationship, or null if there is no relationship with that name
      */
-    public Class getRelationshipSourceClass(String entryName, String relationshipName);
+    public Class<? extends BusinessObject> getRelationshipSourceClass(String entryName, String relationshipName);
 
     /**
      * @param entryName
      * @param relationshipName
      * @return target Class for the given relationship, or null if there is no relationship with that name
      */
-    public Class getRelationshipTargetClass(String entryName, String relationshipName);
+    public Class<? extends BusinessObject> getRelationshipTargetClass(String entryName, String relationshipName);
 
     /**
      * @param entryName
@@ -405,7 +410,7 @@ public interface DataDictionaryService {
      * @param documentTypeName
      * @return document Class
      */
-    public Class getDocumentClassByTypeName(String documentTypeName);
+    public Class<? extends Document> getDocumentClassByTypeName(String documentTypeName);
 
     /**
      * Returns the document type code declared in the dd for the given document type name.
@@ -415,32 +420,12 @@ public interface DataDictionaryService {
      */
     public String getDocumentTypeCodeByTypeName(String documentTypeName);
 
-//    /**
-//     * Returns the document type name declared in the dd for the given document type code.
-//     * 
-//     * @param documentTypeName
-//     * @return documentTypeCode if the documentTypeName is registered, otherwise returns Null
-//     */
-//    public String getDocumentTypeNameByTypeCode(String documentTypeCode);
-
     /**
      * @param document
      * @return preRulesCheckClass associated with the given document's type
      */
-    public Class getPreRulesCheckClass(String docTypeName);
-
-    /**
-     * Adds entries to the data dictionary.
-     * 
-     * @return
-     */
-//    public void addUniqueEntries(String sourceName, boolean sourceMustExist);
+    public Class<? extends PreRulesCheck> getPreRulesCheckClass(String docTypeName);
 
     public Map getDataDictionaryMap();
     
-    /**
-     * Forces the DD to completely load itself immediately.  Used by application components which require
-     * a complete list of all BO and document components.
-     */
-    public void forceCompleteDataDictionaryLoad();
 }

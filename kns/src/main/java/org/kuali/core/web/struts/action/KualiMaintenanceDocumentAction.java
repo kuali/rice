@@ -838,8 +838,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                     ObjectUtils.setObjectProperty(newBo, fieldName, newValue);
                 }
                 catch (Exception e) {
-                    LOG.error("Unable to reset unauthorized field: " + e.getMessage());
-                    throw new RuntimeException("Unable to reset unauthorized field: " + e.getMessage());
+                    LOG.warn("Unable to reset unauthorized field", e);
                 }
             }
         }

@@ -1,65 +1,76 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <maintenanceDocument>
-        <businessObjectClass>edu.sampleu.travel.bo.TravelAccount</businessObjectClass>
-        <maintainableClass>org.kuali.core.maintenance.KualiMaintainableImpl</maintainableClass>    
-       
-        <businessRulesClass>edu.sampleu.travel.bo.TravelAccountRules</businessRulesClass>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-        <documentAuthorizerClass>org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase</documentAuthorizerClass>
-        <authorizations>
-            <authorization action="initiate">
-                <workgroups>
-                    <workgroup>WorkflowAdmin</workgroup>
-                </workgroups>
-            </authorization>
-        </authorizations>
-        
-        <documentTypeName>TravelAccountMaintenanceDocument</documentTypeName>
-        <documentTypeCode>TRAV</documentTypeCode>
+  <bean id="TravelAccountMaintenanceDocument" parent="TravelAccountMaintenanceDocument-parentBean" />
 
-        <label>Travel Account Maintenance Document</label>
-        <shortLabel>TravelAccountDocument</shortLabel>
+  <bean id="TravelAccountMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+    <property name="businessObjectClass" value="edu.sampleu.travel.bo.TravelAccount" />
+    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    <property name="maintainableSections" >
+      <list>
+        <ref bean="TravelAccountMaintenanceDocument-EditTravelAccount" />
+      </list>
+    </property>
+    <property name="defaultExistenceChecks" >
+      <list>
+        <bean parent="ReferenceDefinition"
+              p:attributeName="extension.accountType"
+              p:attributeToHighlightOnFail="extension.accountTypeCode" />
+      </list>
+    </property>
+    <property name="lockingKeys" >
+      <list>
+        <value>number</value>
+      </list>
+    </property>
+    <property name="shortLabel" value="TravelAccountDocument" />
+    <property name="summary" value="Travel Account Maintenance document" />
+    <property name="documentTypeName" value="TravelAccountMaintenanceDocument" />
+    <property name="businessRulesClass" value="edu.sampleu.travel.bo.TravelAccountRules" />
+    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentTypeCode" value="TRAV" />
+    <property name="authorizations" >
+      <list>
+        <bean parent="AuthorizationDefinition">
+          <property name="authorizedGroups" >
+            <set>
+              <value>WorkflowAdmin</value>
+            </set>
+          </property>
+          <property name="action" value="initiate" />
+        </bean>
+      </list>
+    </property>
+    <property name="label" value="Travel Account Maintenance Document" />
+    <property name="description" value="Document used to create or update Travel Accounts" />
+  </bean>
 
-        <summary>Travel Account Maintenance document</summary>
-        <description>Document used to create or update Travel Accounts</description>
-        
-        <lockingKeys>
-            <field attributeName="number" />
-        </lockingKeys>
-        <allowsNewOrCopy>true</allowsNewOrCopy>
+<!-- Maintenance Section Definitions -->
 
-		<defaultExistenceChecks>
-			<reference attributeName="extension.accountType" attributeToHighlightOnFail="extension.accountTypeCode" />
-		</defaultExistenceChecks>		
 
-        <maintainableSections>
-            <maintainableSection title="Edit Travel Account ">
-                <maintainableItems>
-                    <maintainableField name="number" required="true" />
-                    <maintainableField name="name" required="true" />
-                    <maintainableField name="foId" required="true" />
-                    <maintainableField name="extension.accountTypeCode" required="true" />
-                </maintainableItems>
-            </maintainableSection>
-        </maintainableSections>
-    </maintenanceDocument>
-</dictionaryEntry>
+  <bean id="TravelAccountMaintenanceDocument-EditTravelAccount" parent="TravelAccountMaintenanceDocument-EditTravelAccount-parentBean" />
+
+  <bean id="TravelAccountMaintenanceDocument-EditTravelAccount-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="number" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="name" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="foId" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="extension.accountTypeCode" />
+      </list>
+    </property>
+    <property name="id" value="Edit Travel Account " />
+    <property name="title" value="Edit Travel Account " />
+  </bean>
+</beans>

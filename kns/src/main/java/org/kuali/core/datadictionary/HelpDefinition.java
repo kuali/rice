@@ -16,8 +16,6 @@
 package org.kuali.core.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  */
@@ -27,20 +25,15 @@ public class HelpDefinition extends DataDictionaryDefinitionBase {
     private String parameterDetailType;
     private String parameterName;
 
-    private static Log LOG = LogFactory.getLog(HelpDefinition.class);
-
     /**
      * Constructs a HelpDefinition.
      */
-    public HelpDefinition() {
-        super();
-        LOG.debug("creating new HelpDefinition");
-    }
+    public HelpDefinition() {}
 
     /**
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         // No real validation to be done here other than perhaps checking to be
         // sure that the security workgroup is a valid workgroup.
     }
@@ -59,9 +52,6 @@ public class HelpDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(parameterName)) {
             throw new IllegalArgumentException("invalid (blank) parameterName");
         }
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("calling setParameterName '" + parameterName + "'");
-        }
         this.parameterName = parameterName;
     }
 
@@ -79,9 +69,6 @@ public class HelpDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(parameterNamespace)) {
             throw new IllegalArgumentException("invalid (blank) parameterNamespace");
         }
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("calling setParameterNamespace '" + parameterNamespace + "'");
-        }
         this.parameterNamespace = parameterNamespace;
     }
 
@@ -92,9 +79,6 @@ public class HelpDefinition extends DataDictionaryDefinitionBase {
 	public void setParameterDetailType(String parameterDetailType) {
         if (StringUtils.isBlank(parameterDetailType)) {
             throw new IllegalArgumentException("invalid (blank) parameterDetailType");
-        }
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("calling setParameterDetailType '" + parameterDetailType + "'");
         }
 		this.parameterDetailType = parameterDetailType;
 	}

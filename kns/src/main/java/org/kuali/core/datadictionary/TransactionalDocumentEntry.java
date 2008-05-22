@@ -15,44 +15,22 @@
  */
 package org.kuali.core.datadictionary;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * TransactionalDocumentEntry
  */
 public class TransactionalDocumentEntry extends DocumentEntry {
-    // logger
-    private static Log LOG = LogFactory.getLog(TransactionalDocumentEntry.class);
 
-    private boolean allowsErrorCorrection;
+    private boolean allowsErrorCorrection = false;
 
-    public TransactionalDocumentEntry() {
-        super();
-
-        LOG.debug("creating new TransactionalDocumentEntry");
-    }
+    public TransactionalDocumentEntry() {}
 
     public void setAllowsErrorCorrection(boolean allowsErrorCorrection) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setAllowsErrorCorrection '" + allowsErrorCorrection + "'");
-        }
-
         this.allowsErrorCorrection = allowsErrorCorrection;
     }
 
     public boolean getAllowsErrorCorrection() {
         return allowsErrorCorrection;
-    }
-
-    /**
-     * Validate simple fields.
-     * 
-     * @see org.kuali.core.datadictionary.DocumentEntry#completeValidation()
-     */
-    @Override
-    public void completeValidation(ValidationCompletionUtils validationCompletionUtils) {
-        super.completeValidation(validationCompletionUtils);
     }
 
     @Override

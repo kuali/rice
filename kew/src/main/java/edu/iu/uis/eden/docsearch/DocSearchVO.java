@@ -200,7 +200,7 @@ public class DocSearchVO implements Serializable, RowStyleable {
     }
 
     public boolean isUsingSuperUserSearch() {
-    	return DocumentSearchForm.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase(superUserSearch);
+    	return DocSearchCriteriaVO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase(superUserSearch);
     }
 
     public String getRouteLogUrl() {

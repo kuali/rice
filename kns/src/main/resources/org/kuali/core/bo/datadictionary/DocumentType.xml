@@ -1,235 +1,300 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2007 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "../../../core/datadictionary/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.core.bo.DocumentType">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="DocumentType" parent="DocumentType-parentBean" />
+
+  <bean id="DocumentType-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.core.bo.DocumentType" />
+    <property name="inquiryDefinition" >
+      <ref bean="DocumentType-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="DocumentType-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="financialDocumentTypeCode" />
+    <property name="attributes" >
+      <list>
+        <ref bean="DocumentType-financialDocumentTypeCode" />
+        <ref bean="DocumentType-financialDocumentGroupCode" />
+        <ref bean="DocumentType-financialDocumentName" />
+        <ref bean="DocumentType-finEliminationsEligibilityIndicator" />
+        <ref bean="DocumentType-finDocumentTypeActiveIndicator" />
+        <ref bean="DocumentType-finDocumentRoutingRuleCode" />
+        <ref bean="DocumentType-finDocAutomaticApprovalDays" />
+        <ref bean="DocumentType-financialDocumentBalancedIndicator" />
+        <ref bean="DocumentType-transactionScrubberOffsetGenerationIndicator" />
+        <ref bean="DocumentType-versionNumber" />
+      </list>
+    </property>
+  </bean>
+
+<!-- Attribute Definitions -->
 
 
-        <inquiry>
-            <title>Document Type Inquiry</title>
+  <bean id="DocumentType-financialDocumentTypeCode" parent="DocumentType-financialDocumentTypeCode-parentBean" />
 
-            <inquirySections><inquirySection title="Header Text"><inquiryFields>
-                <field attributeName="financialDocumentTypeCode" />
-                <field attributeName="financialDocumentGroupCode" />
-                <field attributeName="financialDocumentName" />
-                <field attributeName="finEliminationsEligibilityIndicator" />
-                <field attributeName="finDocumentTypeActiveIndicator" />
-                <field attributeName="finDocumentRoutingRuleCode" />
-                <field attributeName="finDocAutomaticApprovalDays" />
-                <field attributeName="financialDocumentBalancedIndicator" />
-                <field attributeName="transactionScrubberOffsetGenerationIndicator" />
-                <!--field attributeName="financialDocumentGroup"/-->
-            </inquiryFields></inquirySection></inquirySections>
-        </inquiry>
+  <bean id="DocumentType-financialDocumentTypeCode-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Doc Type Code" />
+    <property name="maxLength" value="4" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="6" />
+    </property>
+    <property name="summary" value="Document Type Code" />
+    <property name="name" value="financialDocumentTypeCode" />
+    <property name="label" value="Document Type Code" />
+    <property name="description" value="The code for the business function of all documents of this type." />
+  </bean>
+  <bean id="DocumentType-financialDocumentGroupCode" parent="DocumentType-financialDocumentGroupCode-parentBean" />
 
-        <lookup>
-            <title>Document Type Lookup</title>
+  <bean id="DocumentType-financialDocumentGroupCode-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Doc Group Code" />
+    <property name="maxLength" value="2" />
+    <property name="validationPattern" >
+      <bean parent="AlphaNumericValidationPattern" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="4" />
+    </property>
+    <property name="summary" value="financialDocumentGroupCode" />
+    <property name="name" value="financialDocumentGroupCode" />
+    <property name="label" value="Document Group Code" />
+    <property name="description" value="financialDocumentGroupCode description..." />
+  </bean>
+  <bean id="DocumentType-financialDocumentName" parent="DocumentType-financialDocumentName-parentBean" />
 
-            <instructions>Lookup a Document Type</instructions>
+  <bean id="DocumentType-financialDocumentName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Doc Name" />
+    <property name="maxLength" value="40" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="42" />
+    </property>
+    <property name="summary" value="financialDocumentName" />
+    <property name="name" value="financialDocumentName" />
+    <property name="label" value="Document Name" />
+    <property name="description" value="financialDocumentName Description..." />
+  </bean>
+  <bean id="DocumentType-finEliminationsEligibilityIndicator" parent="DocumentType-finEliminationsEligibilityIndicator-parentBean" />
 
-            <defaultSort attributeName="financialDocumentTypeCode" sortAscending="true" />
+  <bean id="DocumentType-finEliminationsEligibilityIndicator-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Elim Eligible" />
+    <property name="maxLength" value="1" />
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="CheckboxControlDefinition" />
+    </property>
+    <property name="summary" value="finEliminationsEligibilityIndicator" />
+    <property name="name" value="finEliminationsEligibilityIndicator" />
+    <property name="label" value="Eliminations Eligibility" />
+    <property name="description" value="finEliminationsEligibilityIndicator Description..." />
+  </bean>
+  <bean id="DocumentType-finDocumentTypeActiveIndicator" parent="DocumentType-finDocumentTypeActiveIndicator-parentBean" />
 
-            <lookupFields>
-                <lookupField attributeName="financialDocumentTypeCode" required="false" />
-                <lookupField attributeName="financialDocumentGroupCode" required="false" />
-                <lookupField attributeName="financialDocumentName" required="false" />
-                <lookupField attributeName="finEliminationsEligibilityIndicator" required="false" />
-                <lookupField attributeName="finDocumentTypeActiveIndicator" required="false">
-                    <defaultValue>Y</defaultValue>
-                </lookupField>
-                <lookupField attributeName="finDocumentRoutingRuleCode" required="false" />
-                <lookupField attributeName="finDocAutomaticApprovalDays" required="false" />
-                <lookupField attributeName="financialDocumentBalancedIndicator" required="false" />
-                <lookupField attributeName="transactionScrubberOffsetGenerationIndicator" required="false" />
-                <!--lookupField attributeName="financialDocumentGroup" required="false/-->
-            </lookupFields>
+  <bean id="DocumentType-finDocumentTypeActiveIndicator-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Active" />
+    <property name="maxLength" value="1" />
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="CheckboxControlDefinition" />
+    </property>
+    <property name="summary" value="finDocumentTypeActiveIndicator" />
+    <property name="name" value="finDocumentTypeActiveIndicator" />
+    <property name="label" value="Document Type Active" />
+    <property name="description" value="finDocumentTypeActiveIndicator Description..." />
+  </bean>
+  <bean id="DocumentType-finDocumentRoutingRuleCode" parent="DocumentType-finDocumentRoutingRuleCode-parentBean" />
 
-            <resultFields>
-                <field attributeName="financialDocumentTypeCode" />
-                <field attributeName="financialDocumentGroupCode" />
-                <field attributeName="financialDocumentName" />
-                <field attributeName="finEliminationsEligibilityIndicator" />
-                <field attributeName="finDocumentTypeActiveIndicator" />
-                <field attributeName="finDocumentRoutingRuleCode" />
-                <field attributeName="finDocAutomaticApprovalDays" />
-                <field attributeName="financialDocumentBalancedIndicator" />
-                <field attributeName="transactionScrubberOffsetGenerationIndicator" />
-                <!--field attributeName="financialDocumentGroup"/-->
-            </resultFields>
-        </lookup>
+  <bean id="DocumentType-finDocumentRoutingRuleCode-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Rule Code" />
+    <property name="maxLength" value="1" />
+    <property name="validationPattern" >
+      <bean parent="AlphaNumericValidationPattern" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="3" />
+    </property>
+    <property name="summary" value="finDocumentRoutingRuleCode" />
+    <property name="name" value="finDocumentRoutingRuleCode" />
+    <property name="label" value="Routing Rule Code" />
+    <property name="description" value="finDocumentRoutingRuleCode description..." />
+  </bean>
+  <bean id="DocumentType-finDocAutomaticApprovalDays" parent="DocumentType-finDocAutomaticApprovalDays-parentBean" />
 
-        <titleAttribute>financialDocumentTypeCode</titleAttribute>
+  <bean id="DocumentType-finDocAutomaticApprovalDays-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Auto Approve Days" />
+    <property name="maxLength" value="7" />
+    <property name="validationPattern" >
+      <bean parent="NumericValidationPattern" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="7" />
+    </property>
+    <property name="summary" value="finDocAutomaticApprovalDays" />
+    <property name="name" value="finDocAutomaticApprovalDays" />
+    <property name="label" value="Automatic Approval Days" />
+    <property name="description" value="finDocAutomaticApprovalDays ..." />
+  </bean>
+  <bean id="DocumentType-financialDocumentBalancedIndicator" parent="DocumentType-financialDocumentBalancedIndicator-parentBean" />
 
-        <attributes>
+  <bean id="DocumentType-financialDocumentBalancedIndicator-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Balanced" />
+    <property name="maxLength" value="1" />
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="CheckboxControlDefinition" />
+    </property>
+    <property name="summary" value="financialDocumentBalancedIndicator" />
+    <property name="name" value="financialDocumentBalancedIndicator" />
+    <property name="label" value="Document Balanced" />
+    <property name="description" value="financialDocumentBalancedIndicator Description..." />
+  </bean>
+  <bean id="DocumentType-transactionScrubberOffsetGenerationIndicator" parent="DocumentType-transactionScrubberOffsetGenerationIndicator-parentBean" />
 
-            <attribute name="financialDocumentTypeCode" forceUppercase="true">
-                <label>Document Type Code</label>
-                <shortLabel>Doc Type Code</shortLabel>
+  <bean id="DocumentType-transactionScrubberOffsetGenerationIndicator-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Scrubber Offset" />
+    <property name="maxLength" value="1" />
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="CheckboxControlDefinition" />
+    </property>
+    <property name="summary" value="transactionScrubberOffsetGenerationIndicator" />
+    <property name="name" value="transactionScrubberOffsetGenerationIndicator" />
+    <property name="label" value="Transaction Scrubber Offset Generation" />
+    <property name="description" value="transactionScrubberOffsetGenerationIndicator Description..." />
+  </bean>
+  <bean id="DocumentType-versionNumber" parent="DocumentType-versionNumber-parentBean" />
 
-                <maxLength>4</maxLength>
+  <bean id="DocumentType-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
 
-                <validationPattern>
-                    <anyCharacter />
-                </validationPattern>
-                <required>true</required>
-                <control>
-                    <text size="6" />
-                </control>
+<!-- Business Object Inquiry Definition -->
 
-                <summary>Document Type Code</summary>
-                <description>The code for the business function of all documents of this type.</description>
-            </attribute>
 
-            <attribute name="financialDocumentGroupCode" forceUppercase="true">
-                <label>Document Group Code</label>
-                <shortLabel>Doc Group Code</shortLabel>
+  <bean id="DocumentType-inquiryDefinition" parent="DocumentType-inquiryDefinition-parentBean" />
 
-                <maxLength>2</maxLength>
+  <bean id="DocumentType-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="financialDocumentTypeCode" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="financialDocumentGroupCode" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="financialDocumentName" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="finEliminationsEligibilityIndicator" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="finDocumentTypeActiveIndicator" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="finDocumentRoutingRuleCode" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="finDocAutomaticApprovalDays" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="financialDocumentBalancedIndicator" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="transactionScrubberOffsetGenerationIndicator" />
+            </list>
+          </property>
+          <property name="title" value="Header Text" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="Document Type Inquiry" />
+  </bean>
 
-                <validationPattern>
-                    <alphaNumeric />
-                </validationPattern>
-                <required>true</required>
-                <control>
-                    <text size="4" />
-                </control>
+<!-- Business Object Lookup Definition -->
 
-                <summary>financialDocumentGroupCode</summary>
-                <description>financialDocumentGroupCode description...</description>
-            </attribute>
 
-            <attribute name="financialDocumentName" forceUppercase="true">
-                <label>Document Name</label>
-                <shortLabel>Doc Name</shortLabel>
+  <bean id="DocumentType-lookupDefinition" parent="DocumentType-lookupDefinition-parentBean" />
 
-                <maxLength>40</maxLength>
-                <validationPattern>
-                    <anyCharacter allowWhitespace="true" />
-                </validationPattern>
-                <required>true</required>
- 
-                <control>
-                    <text size="42" />
-                </control>
-
-                <summary>financialDocumentName</summary>
-                <description>financialDocumentName Description...</description>
-            </attribute>
-
-            <attribute name="finEliminationsEligibilityIndicator" forceUppercase="true">
-                <label>Eliminations Eligibility</label>
-                <shortLabel>Elim Eligible</shortLabel>
-
-                <maxLength>1</maxLength>
-                <required>true</required>
- 
-                <control>
-                    <checkbox />
-                </control>
-
-                <summary>finEliminationsEligibilityIndicator</summary>
-                <description>finEliminationsEligibilityIndicator Description...</description>
-            </attribute>
-
-            <attribute name="finDocumentTypeActiveIndicator" forceUppercase="false">
-                <label>Document Type Active</label>
-                <shortLabel>Active</shortLabel>
-
-                <maxLength>1</maxLength>
-                <required>true</required>
- 
-                <control>
-                    <checkbox />
-                </control>
-
-                <summary>finDocumentTypeActiveIndicator</summary>
-                <description>finDocumentTypeActiveIndicator Description...</description>
-            </attribute>
-
-            <attribute name="finDocumentRoutingRuleCode" forceUppercase="true">
-                <label>Routing Rule Code</label>
-                <shortLabel>Rule Code</shortLabel>
-
-                <maxLength>1</maxLength>
-
-                <validationPattern>
-                    <alphaNumeric />
-                </validationPattern>
-                <required>true</required>
-                <control>
-                    <text size="3" />
-                </control>
-
-                <summary>finDocumentRoutingRuleCode</summary>
-                <description>finDocumentRoutingRuleCode description...</description>
-            </attribute>
-
-            <attribute name="finDocAutomaticApprovalDays" forceUppercase="false">
-                <label>Automatic Approval Days</label>
-                <shortLabel>Auto Approve Days</shortLabel>
-
-                <maxLength>7</maxLength>
-                <validationPattern>
-                    <numeric />
-                </validationPattern>
-                <required>true</required>
- 
-                <control>
-                    <text size="7" />
-                </control>
-
-                <summary>finDocAutomaticApprovalDays</summary>
-                <description>finDocAutomaticApprovalDays ...</description>
-            </attribute>
-
-            <attribute name="financialDocumentBalancedIndicator" forceUppercase="true">
-                <label>Document Balanced</label>
-                <shortLabel>Balanced</shortLabel>
-
-                <maxLength>1</maxLength>
-                <required>true</required>
- 
-                <control>
-                    <checkbox />
-                </control>
-
-                <summary>financialDocumentBalancedIndicator</summary>
-                <description>financialDocumentBalancedIndicator Description...</description>
-            </attribute>
-
-            <attribute name="transactionScrubberOffsetGenerationIndicator" forceUppercase="true">
-                <label>Transaction Scrubber Offset Generation</label>
-                <shortLabel>Scrubber Offset</shortLabel>
-
-                <maxLength>1</maxLength>
-                <required>true</required>
- 
-                <control>
-                    <checkbox />
-                </control>
-
-                <summary>transactionScrubberOffsetGenerationIndicator</summary>
-                <description>transactionScrubberOffsetGenerationIndicator Description...</description>
-            </attribute>
-
-            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
-
-        </attributes>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="DocumentType-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Lookup a Document Type" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+        <property name="attributeNames" >
+          <list>
+            <value>financialDocumentTypeCode</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="financialDocumentTypeCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="financialDocumentGroupCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="financialDocumentName" />
+        <bean parent="FieldDefinition"
+              p:attributeName="finEliminationsEligibilityIndicator" />
+        <bean parent="FieldDefinition"
+              p:attributeName="finDocumentTypeActiveIndicator"
+              p:defaultValue="Y" />
+        <bean parent="FieldDefinition"
+              p:attributeName="finDocumentRoutingRuleCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="finDocAutomaticApprovalDays" />
+        <bean parent="FieldDefinition"
+              p:attributeName="financialDocumentBalancedIndicator" />
+        <bean parent="FieldDefinition"
+              p:attributeName="transactionScrubberOffsetGenerationIndicator" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="financialDocumentTypeCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="financialDocumentGroupCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="financialDocumentName" />
+        <bean parent="FieldDefinition"
+              p:attributeName="finEliminationsEligibilityIndicator" />
+        <bean parent="FieldDefinition"
+              p:attributeName="finDocumentTypeActiveIndicator" />
+        <bean parent="FieldDefinition"
+              p:attributeName="finDocumentRoutingRuleCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="finDocAutomaticApprovalDays" />
+        <bean parent="FieldDefinition"
+              p:attributeName="financialDocumentBalancedIndicator" />
+        <bean parent="FieldDefinition"
+              p:attributeName="transactionScrubberOffsetGenerationIndicator" />
+      </list>
+    </property>
+    <property name="title" value="Document Type Lookup" />
+  </bean>
+</beans>

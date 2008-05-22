@@ -18,14 +18,14 @@ package org.kuali.core.document.authorization;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.RicePropertyConstants;
-import org.kuali.core.authorization.AuthorizationConstants;
+import org.kuali.core.authorization.UniversalUserAuthorizationConstants;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.document.Document;
 import org.kuali.core.document.MaintenanceDocument;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
  * Universal User specific authorization rules.
@@ -35,7 +35,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 public class UniversalUserDocumentAuthorizer extends MaintenanceDocumentAuthorizerBase {
 
     //private static final Logger LOG = Logger.getLogger(UniversalUserDocumentAuthorizer.class);
-
+    
     private transient static KualiConfigurationService configService;
     private transient static String userEditWorkgroupName;
     private transient static boolean usersMaintainedByKuali;
@@ -55,7 +55,7 @@ public class UniversalUserDocumentAuthorizer extends MaintenanceDocumentAuthoriz
     public Map getEditMode(Document document, UniversalUser user) {
         Map editModes = new HashMap();
         if (!(document.getDocumentHeader().getWorkflowDocument().stateIsInitiated() || document.getDocumentHeader().getWorkflowDocument().stateIsSaved())) {
-            editModes.put(AuthorizationConstants.MaintenanceEditMode.VIEW_ONLY, "TRUE");
+            editModes.put(UniversalUserAuthorizationConstants.MaintenanceEditMode.VIEW_ONLY, "TRUE");
         } else {
             editModes = super.getEditMode(document, user);            
         }
@@ -63,7 +63,7 @@ public class UniversalUserDocumentAuthorizer extends MaintenanceDocumentAuthoriz
         
         // check for ssn edit mode
         if (user.isMember( userEditWorkgroupName ) ) {
-            editModes.put(AuthorizationConstants.MaintenanceEditMode.SSN_EDIT_ENTRY, "TRUE");
+            editModes.put(UniversalUserAuthorizationConstants.MaintenanceEditMode.SSN_EDIT_ENTRY, "TRUE");
         }
         
         return editModes;
@@ -75,27 +75,27 @@ public class UniversalUserDocumentAuthorizer extends MaintenanceDocumentAuthoriz
 
         // prevent users not in the UU edit group from changing base UU properties
         if ( !(usersMaintainedByKuali && user.isMember( userEditWorkgroupName )) ) {
-            auths.addReadonlyAuthField( RicePropertyConstants.PERSON_USER_IDENTIFIER );
-            auths.addReadonlyAuthField( RicePropertyConstants.PERSON_UNIVERSAL_IDENTIFIER );
+            auths.addReadonlyAuthField( KNSPropertyConstants.PERSON_USER_IDENTIFIER );
+            auths.addReadonlyAuthField( KNSPropertyConstants.PERSON_UNIVERSAL_IDENTIFIER );
             auths.addHiddenAuthField( "personTaxIdentifier" );
             auths.addHiddenAuthField( "personTaxIdentifierTypeCode" );
-            auths.addReadonlyAuthField( RicePropertyConstants.PERSON_NAME );
-            auths.addReadonlyAuthField( RicePropertyConstants.CAMPUS_CODE );
+            auths.addReadonlyAuthField( KNSPropertyConstants.PERSON_NAME );
+            auths.addReadonlyAuthField( KNSPropertyConstants.CAMPUS_CODE );
             auths.addReadonlyAuthField( "primaryDepartmentCode" );
             auths.addHiddenAuthField( "personPayrollIdentifier" );
-            auths.addReadonlyAuthField( RicePropertyConstants.EMPLOYEE_STATUS_CODE );
-            auths.addReadonlyAuthField( RicePropertyConstants.EMPLOYEE_TYPE_CODE );
+            auths.addReadonlyAuthField( KNSPropertyConstants.EMPLOYEE_STATUS_CODE );
+            auths.addReadonlyAuthField( KNSPropertyConstants.EMPLOYEE_TYPE_CODE );
             auths.addReadonlyAuthField( "student" );
             auths.addReadonlyAuthField( "staff" );
             auths.addReadonlyAuthField( "faculty" );
             auths.addReadonlyAuthField( "affiliate" );
-            auths.addHiddenAuthField( RicePropertyConstants.PERSON_FIRST_NAME );
-            auths.addHiddenAuthField( RicePropertyConstants.PERSON_LAST_NAME );
+            auths.addHiddenAuthField( KNSPropertyConstants.PERSON_FIRST_NAME );
+            auths.addHiddenAuthField( KNSPropertyConstants.PERSON_LAST_NAME );
             auths.addHiddenAuthField( "personMiddleName" );
-            auths.addHiddenAuthField( RicePropertyConstants.PERSON_LOCAL_PHONE_NUMBER );
-            auths.addHiddenAuthField( RicePropertyConstants.PERSON_CAMPUS_ADDRESS );
-            auths.addHiddenAuthField( RicePropertyConstants.PERSON_EMAIL_ADDRESS );
-            auths.addHiddenAuthField( RicePropertyConstants.PERSON_BASE_SALARY_AMOUNT );
+            auths.addHiddenAuthField( KNSPropertyConstants.PERSON_LOCAL_PHONE_NUMBER );
+            auths.addHiddenAuthField( KNSPropertyConstants.PERSON_CAMPUS_ADDRESS );
+            auths.addHiddenAuthField( KNSPropertyConstants.PERSON_EMAIL_ADDRESS );
+            auths.addHiddenAuthField( KNSPropertyConstants.PERSON_BASE_SALARY_AMOUNT );
             auths.addHiddenAuthField( "financialSystemsEncryptedPasswordText" );
         } else {
             if ( !passwordEditingEnabled ) {

@@ -1,44 +1,64 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="PrincipalQualifiedRoleAttribute" parent="PrincipalQualifiedRoleAttribute-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="PrincipalQualifiedRoleAttribute-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute" />
+    <property name="titleAttribute" value="attributeName" />
+    <property name="objectLabel" value="Principal Qualified Role Attribute" />
+    <property name="attributes" >
+      <list>
+        <ref bean="PrincipalQualifiedRoleAttribute-id" />
+        <ref bean="PrincipalQualifiedRoleAttribute-attributeName" />
+        <ref bean="PrincipalQualifiedRoleAttribute-attributeValue" />
+        <ref bean="PrincipalQualifiedRoleAttribute-roleId" />
+        <ref bean="PrincipalQualifiedRoleAttribute-principalId" />
+        <ref bean="PrincipalQualifiedRoleAttribute-versionNumber" />
+        <ref bean="PrincipalQualifiedRoleAttribute-objectId" />
+      </list>
+    </property>
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute">
-        <titleAttribute>attributeName</titleAttribute>
+<!-- Attribute Definitions -->
 
-        <attributes>
-            <attributeReference name="id" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="id" />
-            <attributeReference name="attributeName" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="attributeName" />
-			<attributeReference name="attributeValue" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="attributeValue" />
-   			<attributeReference name="roleId" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="roleId" />
-            
-			<attributeReference name="principalId" sourceClassName="org.kuali.rice.kim.bo.Principal" sourceAttributeName="id">
-				<label>Principal Id</label>
-                <shortLabel>Principal Id</shortLabel>
-				<required>true</required>
-				<control>
-					<hidden/>
-				</control>
-			</attributeReference>
 
-            <attributeReference name="versionNumber" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="versionNumber" />
-            <attributeReference name="objectId" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="objectId" />
-        </attributes>
-        <objectLabel>Principal Qualified Role Attribute</objectLabel>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="PrincipalQualifiedRoleAttribute-id" parent="PrincipalQualifiedRoleAttribute-id-parentBean" />
+
+  <bean id="PrincipalQualifiedRoleAttribute-id-parentBean" abstract="true" parent="AbstractQualifiedRoleAttribute-id">
+  </bean>
+  <bean id="PrincipalQualifiedRoleAttribute-attributeName" parent="PrincipalQualifiedRoleAttribute-attributeName-parentBean" />
+
+  <bean id="PrincipalQualifiedRoleAttribute-attributeName-parentBean" abstract="true" parent="AbstractQualifiedRoleAttribute-attributeName">
+  </bean>
+  <bean id="PrincipalQualifiedRoleAttribute-attributeValue" parent="PrincipalQualifiedRoleAttribute-attributeValue-parentBean" />
+
+  <bean id="PrincipalQualifiedRoleAttribute-attributeValue-parentBean" abstract="true" parent="AbstractQualifiedRoleAttribute-attributeValue">
+  </bean>
+  <bean id="PrincipalQualifiedRoleAttribute-roleId" parent="PrincipalQualifiedRoleAttribute-roleId-parentBean" />
+
+  <bean id="PrincipalQualifiedRoleAttribute-roleId-parentBean" abstract="true" parent="AbstractQualifiedRoleAttribute-roleId">
+  </bean>
+  <bean id="PrincipalQualifiedRoleAttribute-principalId" parent="PrincipalQualifiedRoleAttribute-principalId-parentBean" />
+
+  <bean id="PrincipalQualifiedRoleAttribute-principalId-parentBean" abstract="true" parent="Principal-id">
+    <property name="shortLabel" value="Principal Id" />
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="HiddenControlDefinition" />
+    </property>
+    <property name="name" value="principalId" />
+    <property name="label" value="Principal Id" />
+  </bean>
+  <bean id="PrincipalQualifiedRoleAttribute-versionNumber" parent="PrincipalQualifiedRoleAttribute-versionNumber-parentBean" />
+
+  <bean id="PrincipalQualifiedRoleAttribute-versionNumber-parentBean" abstract="true" parent="AbstractQualifiedRoleAttribute-versionNumber">
+  </bean>
+  <bean id="PrincipalQualifiedRoleAttribute-objectId" parent="PrincipalQualifiedRoleAttribute-objectId-parentBean" />
+
+  <bean id="PrincipalQualifiedRoleAttribute-objectId-parentBean" abstract="true" parent="AbstractQualifiedRoleAttribute-objectId">
+  </bean>
+</beans>

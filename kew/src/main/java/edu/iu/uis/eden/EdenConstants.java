@@ -843,6 +843,25 @@ public class EdenConstants extends JSTLConstants {
     public static final String CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE = "CLEAR";
     public static final String USE_REMOTE_IDENTITY_SERVICES = "Identity.useRemoteServices";
     public static final String USE_REMOTE_EMAIL_SERVICES = "Email.useRemoteServices";
+
+    // lookupable column types
+    public static final String LOOKUP_COLUMN_TYPE_TEXT = "text";
+    public static final String LOOKUP_COLUMN_TYPE_INTEGER = "integer";
+    public static final String LOOKUP_COLUMN_TYPE_LONG = "long";
+    public static final String LOOKUP_COLUMN_TYPE_FLOAT = "float";
+    public static final String LOOKUP_COLUMN_TYPE_DATETIME = "datetime";
+    
+    // document search route status qualifiers
+    public static final String DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT = "equal";
+    public static final String DOC_SEARCH_ROUTE_STATUS_QUALIFIER_BEFORE = "before";
+    public static final String DOC_SEARCH_ROUTE_STATUS_QUALIFIER_AFTER = "after";
+    public static final Map<String,String> DOC_SEARCH_ROUTE_STATUS_QUALIFIERS;
+    static {
+        DOC_SEARCH_ROUTE_STATUS_QUALIFIERS = new HashMap<String,String>();
+        DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.put(DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT, "Exactly");
+        DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.put(DOC_SEARCH_ROUTE_STATUS_QUALIFIER_BEFORE, "Before");
+        DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.put(DOC_SEARCH_ROUTE_STATUS_QUALIFIER_AFTER, "After");
+    }
 }
 
 /*

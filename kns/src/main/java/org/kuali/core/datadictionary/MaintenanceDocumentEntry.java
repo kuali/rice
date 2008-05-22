@@ -16,18 +16,17 @@
 package org.kuali.core.datadictionary;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.kuali.core.bo.BusinessObject;
+import org.kuali.core.datadictionary.exception.AttributeValidationException;
 import org.kuali.core.datadictionary.exception.ClassValidationException;
 import org.kuali.core.datadictionary.exception.DuplicateEntryException;
 import org.kuali.core.document.MaintenanceDocumentBase;
 import org.kuali.core.document.authorization.DocumentAuthorizerBase;
+import org.kuali.core.maintenance.Maintainable;
 
 /**
  * MaintenanceDocumentEntry
@@ -36,155 +35,64 @@ import org.kuali.core.document.authorization.DocumentAuthorizerBase;
  */
 public class MaintenanceDocumentEntry extends DocumentEntry {
     // logger
-    private static Log LOG = LogFactory.getLog(MaintenanceDocumentEntry.class);
+    //private static Log LOG = LogFactory.getLog(MaintenanceDocumentEntry.class);
 
-    private Class businessObjectClass;
-    private Class maintainableClass;
+    private Class<? extends BusinessObject> businessObjectClass;
+    private Class<? extends Maintainable> maintainableClass;
 
-    private Map maintainableSections;
-    private Map lockingKeys;
-    private Map defaultExistenceChecks;
-    private Map apcRules;
+    private List<MaintainableSectionDefinition> maintainableSections = new ArrayList<MaintainableSectionDefinition>();
+    private List<String> lockingKeys = new ArrayList<String>();
+    private List<ReferenceDefinition> defaultExistenceChecks = new ArrayList<ReferenceDefinition>();
+    private List<ApcRuleDefinition> apcRules = new ArrayList<ApcRuleDefinition>();
+    private Map<String,MaintainableSectionDefinition> maintainableSectionMap = new LinkedHashMap<String, MaintainableSectionDefinition>();
+    private Map<String,ReferenceDefinition> defaultExistenceCheckMap = new LinkedHashMap<String, ReferenceDefinition>();
+    private Map<String,ApcRuleDefinition> apcRuleMap = new LinkedHashMap<String, ApcRuleDefinition>();
     
-    private boolean allowsNewOrCopy;
+    private boolean allowsNewOrCopy = true;
     private String additionalSectionsFile;
 
     public MaintenanceDocumentEntry() {
         super();
-
-        LOG.debug("creating new MaintenanceDocumentEntry");
-        maintainableSections = new LinkedHashMap();
-        lockingKeys = new LinkedHashMap();
-        defaultExistenceChecks = new LinkedHashMap();
-        apcRules = new LinkedHashMap();
-        allowsNewOrCopy = true;
-        super.setDocumentClass(MaintenanceDocumentBase.class);
+        setDocumentClass(MaintenanceDocumentBase.class);
     }
 
 
-    public void setBusinessObjectClass(Class businessObjectClass) {
+    public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
         if (businessObjectClass == null) {
             throw new IllegalArgumentException("invalid (null) businessObjectClass");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setBusinessObjectClass '" + businessObjectClass.getName() + "'");
         }
 
         this.businessObjectClass = businessObjectClass;
     }
 
-    public Class getBusinessObjectClass() {
+    public Class<? extends BusinessObject> getBusinessObjectClass() {
         return businessObjectClass;
     }
 
 
-    public void setMaintainableClass(Class maintainableClass) {
+    public void setMaintainableClass(Class<? extends Maintainable> maintainableClass) {
         if (maintainableClass == null) {
             throw new IllegalArgumentException("invalid (null) maintainableClass");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setMaintainableClass '" + maintainableClass.getName() + "'");
         }
         this.maintainableClass = maintainableClass;
     }   
 
-    public Class getMaintainableClass() {
+    public Class<? extends Maintainable> getMaintainableClass() {
         return maintainableClass;
-    }
-    
-    /**
-     * Adds the given maintainableSection to the current collection of sections defined for this MaintenanceDocumentEntry
-     * 
-     * @param maintainableSectionDefinition
-     */
-    public void addMaintainableSection(MaintainableSectionDefinition maintainableSectionDefinition) {
-        if (maintainableSectionDefinition == null) {
-            throw new IllegalArgumentException("invalid (null) maintainableSectionDefinition");
-        }
-
-        String sectionTitle = maintainableSectionDefinition.getTitle();
-        if (maintainableSections.containsKey(sectionTitle)) {
-            throw new DuplicateEntryException("section '" + sectionTitle + "' already defined for maintenanceDocument '" + getDocumentTypeName() + "'");
-        }
-
-        maintainableSections.put(sectionTitle, maintainableSectionDefinition);
     }
 
     /**
      * @return List of MaintainableSectionDefinition objects contained in this document
      */
-    public List getMaintainableSections() {
-        List sectionList = new ArrayList();
-
-        sectionList.addAll(this.maintainableSections.values());
-
-        return Collections.unmodifiableList(sectionList);
-    }
-
-    /**
-     * @param lockingKey
-     * @throws IllegalArgumentException if the given lockingKey is null
-     */
-    public void addLockingKey(FieldDefinition lockingKey) {
-        if (lockingKey == null) {
-            throw new IllegalArgumentException("invalid (null) lockingKey");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling addLockingKey for field '" + lockingKey.getAttributeName() + "'");
-        }
-        
-        String keyName = lockingKey.getAttributeName();
-        if (this.lockingKeys.containsKey(keyName)) {
-            throw new DuplicateEntryException("duplicate returnKey entry for attribute '" + keyName + "'");
-        }
-
-        this.lockingKeys.put(keyName, lockingKey);
+    public List<MaintainableSectionDefinition> getMaintainableSections() {
+        return maintainableSections;
     }
 
     /**
      * @return List of all lockingKey fieldNames associated with this LookupDefinition, in the order in which they were added
      */
-    public List getLockingKeyFieldnames() {
-        List fieldNames = new ArrayList();
-        fieldNames.addAll(this.lockingKeys.keySet());
-
-        return Collections.unmodifiableList(fieldNames);
-    }
-
-    /**
-     * @return Collection of all lockingKey FieldDefinitions associated with this LookupDefinition, in the order in which they were
-     *         added
-     */
-    public List getLockingKeys() {
-        List keyList = new ArrayList();
-
-        keyList.addAll(this.lockingKeys.values());
-
-        return Collections.unmodifiableList(keyList);
-    }
-
-    /**
-     * 
-     * Adds a new defaultExistenceCheck (ReferenceDefinition) to this MaintDoc
-     * 
-     * @param reference
-     * @throws IllegalArgumentException if the given reference is null
-     */
-    public void addDefaultExistenceCheck(ReferenceDefinition reference) {
-
-        if (reference == null) {
-            throw new IllegalArgumentException("invalid (null) reference");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling addDefaultExistenceCheck for field '" + reference.getAttributeName() + "'");
-        }
-
-        String keyName = reference.isCollectionReference()? (reference.getCollection()+"."+reference.getAttributeName()):reference.getAttributeName();
-        if (this.defaultExistenceChecks.containsKey(keyName)) {
-            throw new DuplicateEntryException("duplicate defaultExistenceCheck entry for attribute '" + keyName + "'");
-        }
-
-        this.defaultExistenceChecks.put(keyName, reference);
+    public List<String> getLockingKeyFieldNames() {
+        return lockingKeys;
     }
 
     /**
@@ -193,12 +101,8 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
      *         which they were added
      * 
      */
-    public List getDefaultExistenceChecks() {
-        List referenceList = new ArrayList();
-
-        referenceList.addAll(this.defaultExistenceChecks.values());
-
-        return Collections.unmodifiableList(referenceList);
+    public List<ReferenceDefinition> getDefaultExistenceChecks() {
+        return defaultExistenceChecks;
     }
 
     /**
@@ -207,32 +111,11 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
      *         which they were added
      * 
      */
-    public List getDefaultExistenceCheckFieldNames() {
-        List fieldNames = new ArrayList();
-        fieldNames.addAll(this.defaultExistenceChecks.keySet());
+    public List<String> getDefaultExistenceCheckFieldNames() {
+        List<String> fieldNames = new ArrayList<String>();
+        fieldNames.addAll(this.defaultExistenceCheckMap.keySet());
 
-        return Collections.unmodifiableList(fieldNames);
-    }
-
-    /**
-     * Adds a new apcRule (ApcRuleDefinition) to this class
-     * 
-     * @param apcRule
-     */
-    public void addApcRule(ApcRuleDefinition apcRule) {
-
-        if (apcRule == null) {
-            throw new IllegalArgumentException("invalid (null) apcRule");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling addApcRule for field '" + apcRule.getAttributeName() + "'");
-        }
-        String keyName = apcRule.getAttributeName();
-        if (this.apcRules.containsKey(keyName)) {
-            throw new DuplicateEntryException("duplicate apcRule entry for attribute '" + keyName + "'");
-        }
-
-        this.apcRules.put(keyName, apcRule);
+        return fieldNames;
     }
 
     /**
@@ -241,12 +124,8 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
      *         added
      * 
      */
-    public List getApcRules() {
-        List rulesList = new ArrayList();
-
-        rulesList.addAll(this.apcRules.values());
-
-        return Collections.unmodifiableList(rulesList);
+    public List<ApcRuleDefinition> getApcRules() {
+        return apcRules;
     }
 
     /**
@@ -254,11 +133,11 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
      * @return List of all apcRule rule's fieldNames associated with this MaintenanceDocument, in the order in which they were added
      * 
      */
-    public List getApcRuleFieldNames() {
-        List fieldNames = new ArrayList();
-        fieldNames.addAll(this.apcRules.keySet());
+    public List<String> getApcRuleFieldNames() {
+        List<String> fieldNames = new ArrayList<String>();
+        fieldNames.addAll(this.apcRuleMap.keySet());
 
-        return Collections.unmodifiableList(fieldNames);
+        return fieldNames;
     }
     
 
@@ -285,43 +164,25 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
      * 
      * @see org.kuali.core.datadictionary.DocumentEntry#completeValidation()
      */
-    public void completeValidation(ValidationCompletionUtils validationCompletionUtils) {
-        super.completeValidation(validationCompletionUtils);
+    public void completeValidation() {
+        super.completeValidation();
 
-        if (!validationCompletionUtils.isBusinessObjectClass(businessObjectClass)) {
-            throw new ClassValidationException("businessObjectClass '" + businessObjectClass.getName() + "' is not a BusinessObject class");
+        for ( MaintainableSectionDefinition maintainableSectionDefinition : maintainableSections ) {
+            maintainableSectionDefinition.completeValidation(businessObjectClass, null);
         }
 
-        if (!validationCompletionUtils.isMaintainableClass(maintainableClass)) {
-            throw new ClassValidationException("maintainableClasss '" + maintainableClass.getName() + "' is not a Maintainable class");
+        for ( String lockingKey : lockingKeys ) {
+            if (!DataDictionary.isPropertyOf(businessObjectClass, lockingKey)) {
+                throw new AttributeValidationException("unable to find attribute '" + lockingKey + "' for lockingKey in businessObjectClass '" + businessObjectClass.getName() );
+            }
         }
 
-        for (Iterator i = maintainableSections.entrySet().iterator(); i.hasNext();) {
-            Map.Entry e = (Map.Entry) i.next();
-
-            MaintainableSectionDefinition maintainableSectionDefinition = (MaintainableSectionDefinition) e.getValue();
-            maintainableSectionDefinition.completeValidation(businessObjectClass, null, validationCompletionUtils);
+        for ( ReferenceDefinition reference : defaultExistenceChecks ) {
+            reference.completeValidation(businessObjectClass, null);
         }
 
-        for (Iterator i = lockingKeys.entrySet().iterator(); i.hasNext();) {
-            Map.Entry e = (Map.Entry) i.next();
-
-            FieldDefinition returnKey = (FieldDefinition) e.getValue();
-            returnKey.completeValidation(businessObjectClass, null, validationCompletionUtils);
-        }
-
-        for (Iterator i = defaultExistenceChecks.entrySet().iterator(); i.hasNext();) {
-            Map.Entry e = (Map.Entry) i.next();
-
-            ReferenceDefinition reference = (ReferenceDefinition) e.getValue();
-            reference.completeValidation(businessObjectClass, null, validationCompletionUtils);
-        }
-
-        for (Iterator i = apcRules.entrySet().iterator(); i.hasNext();) {
-            Map.Entry e = (Map.Entry) i.next();
-
-            ApcRuleDefinition apcRule = (ApcRuleDefinition) e.getValue();
-            apcRule.completeValidation(businessObjectClass, null, validationCompletionUtils);
+        for ( ApcRuleDefinition apcRule : apcRules ) {
+            apcRule.completeValidation(businessObjectClass, null);
         }
 
         // its never okay for a MaintenanceDocument.xml file to have the
@@ -341,12 +202,81 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
 
 
     public String getAdditionalSectionsFile() {
-        return this.additionalSectionsFile;
+        return additionalSectionsFile;
     }
 
 
     public void setAdditionalSectionsFile(String additionalSectionsFile) {
         this.additionalSectionsFile = additionalSectionsFile;
+    }
+
+
+    public List<String> getLockingKeys() {
+        return lockingKeys;
+    }
+
+
+    public void setLockingKeys(List<String> lockingKeys) {
+        for ( String lockingKey : lockingKeys ) {
+            if (lockingKey == null) {
+                throw new IllegalArgumentException("invalid (null) lockingKey");
+            }
+        }
+        this.lockingKeys = lockingKeys;
+    }
+
+
+    public void setMaintainableSections(List<MaintainableSectionDefinition> maintainableSections) {
+        maintainableSectionMap.clear();
+        for ( MaintainableSectionDefinition maintainableSectionDefinition : maintainableSections ) {
+            if (maintainableSectionDefinition == null) {
+                throw new IllegalArgumentException("invalid (null) maintainableSectionDefinition");
+            }
+    
+            String sectionTitle = maintainableSectionDefinition.getTitle();
+            if (maintainableSectionMap.containsKey(sectionTitle)) {
+                throw new DuplicateEntryException("section '" + sectionTitle + "' already defined for maintenanceDocument '" + getDocumentTypeName() + "'");
+            }
+    
+            maintainableSectionMap.put(sectionTitle, maintainableSectionDefinition);
+        }
+        this.maintainableSections = maintainableSections;
+    }
+
+
+    public void setDefaultExistenceChecks(List<ReferenceDefinition> defaultExistenceChecks) {
+        defaultExistenceCheckMap.clear();
+        for ( ReferenceDefinition reference : defaultExistenceChecks  ) {
+            if (reference == null) {
+                throw new IllegalArgumentException("invalid (null) defaultExistenceCheck");
+            }
+    
+            String keyName = reference.isCollectionReference()? (reference.getCollection()+"."+reference.getAttributeName()):reference.getAttributeName();
+            if (defaultExistenceCheckMap.containsKey(keyName)) {
+                throw new DuplicateEntryException("duplicate defaultExistenceCheck entry for attribute '" + keyName + "'");
+            }
+    
+            defaultExistenceCheckMap.put(keyName, reference);
+        }
+        this.defaultExistenceChecks = defaultExistenceChecks;
+    }
+
+
+    public void setApcRules(List<ApcRuleDefinition> apcRules) {
+        apcRuleMap.clear();
+        for ( ApcRuleDefinition apcRule : apcRules ) {
+            if (apcRule == null) {
+                throw new IllegalArgumentException("invalid (null) apcRule");
+            }
+    
+            String keyName = apcRule.getAttributeName();
+            if (apcRuleMap.containsKey(keyName)) {
+                throw new DuplicateEntryException("duplicate apcRule entry for attribute '" + keyName + "'");
+            }
+    
+            apcRuleMap.put(keyName, apcRule);
+        }
+        this.apcRules = apcRules;
     }
 
 }

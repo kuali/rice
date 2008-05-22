@@ -27,10 +27,6 @@ public class WorkflowProperties {
     public WorkflowProperties() {
         workflowPropertyGroups = new ArrayList<WorkflowPropertyGroup>();
     }
-    
-    public void addWorkflowPropertyGroup(WorkflowPropertyGroup workflowPropertyGroup) {
-        this.workflowPropertyGroups.add(workflowPropertyGroup);
-    }
 
     /**
      * Returns a list of workflow property groups, which are used to determine which properties should be serialized when generating
@@ -41,4 +37,9 @@ public class WorkflowProperties {
     public List<WorkflowPropertyGroup> getWorkflowPropertyGroups() {
         return this.workflowPropertyGroups;
     }
+
+    public void setWorkflowPropertyGroups(List<WorkflowPropertyGroup> workflowPropertyGroups) {
+        this.workflowPropertyGroups = workflowPropertyGroups;
+    }
+
 }

@@ -15,9 +15,6 @@
  */
 package org.kuali.core.datadictionary.exporter;
 
-import java.util.Iterator;
-import java.util.Map;
-
 import org.kuali.core.datadictionary.DataDictionaryEntryBase;
 import org.kuali.core.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.core.datadictionary.RelationshipDefinition;
@@ -43,10 +40,7 @@ public class RelationshipsMapBuilder {
     public ExportMap buildRelationshipsMap(DataDictionaryEntryBase entry) {
         ExportMap relationshipsMap = new ExportMap("relationships");
 
-        for (Iterator i = entry.getRelationships().entrySet().iterator(); i.hasNext();) {
-            Map.Entry e = (Map.Entry) i.next();
-
-            RelationshipDefinition relationship = (RelationshipDefinition) e.getValue();
+        for ( RelationshipDefinition relationship : entry.getRelationships() ) {
             relationshipsMap.set(buildRelationshipMap(relationship));
         }
 

@@ -38,6 +38,7 @@ import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.doctype.SecuritySession;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
+import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserUtils;
@@ -465,20 +466,30 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     /**
+     * @deprecated Removed as of version 0.9.3.  Use {@link #processResultSet(Statement, ResultSet, DocSearchCriteriaVO, WorkflowUser)} instead.
+     */
+    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException, SQLException {
+        return processResultSet(searchAttributeStatement, resultSet, searchCriteria, null);
+    }
+    
+    /**
      * @param resultSet
      * @param criteria
      * @return
      * @throws EdenUserNotFoundException
      * @throws SQLException
      */
-    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException, SQLException {
+    public List<DocSearchVO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaVO searchCriteria, WorkflowUser user) throws EdenUserNotFoundException, SQLException {
     	setCriteria(searchCriteria);
         int size = 0;
         List docList = new ArrayList();
         Map resultMap = new HashMap();
         PerformanceLogger perfLog = new PerformanceLogger();
         int iteration = 0;
-        while ((resultMap.size() < searchCriteria.getThreshhold()) && resultSet.next() && iteration < searchCriteria.getFetchLimit()) {
+        boolean resultSetHasNext = resultSet.next();
+        while ( resultSetHasNext &&
+                ( (searchCriteria.getThreshold() == null) || (resultMap.size() < searchCriteria.getThreshold().intValue()) ) && 
+                ( (searchCriteria.getFetchLimit() == null) || (iteration < searchCriteria.getFetchLimit().intValue()) ) ) {
         	iteration++;
             DocSearchVO docSearchVO = processRow(searchAttributeStatement, resultSet);
             docSearchVO.setSuperUserSearch(getCriteria().getSuperUserSearch());
@@ -491,12 +502,24 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 DocSearchVO previousEntry = (DocSearchVO)resultMap.get(docSearchVO.getRouteHeaderId());
                 handleMultipleDocumentRows(previousEntry, docSearchVO);
             }
+            resultSetHasNext = resultSet.next();
         }
         perfLog.log("Time to read doc search results.", true);
         // if we have threshold+1 results, then we have more results than we are going to display
-        criteria.setOverThreshold(resultSet.next());
+        criteria.setOverThreshold(resultSetHasNext);
 
         UserSession userSession = UserSession.getAuthenticatedUser();
+        if ( (userSession == null) && (user != null) ) {
+            LOG.info("Authenticated User Session is null... using parameter user: " + user);
+            userSession = new UserSession(user);
+        } else if (searchCriteria.isOverridingUserSession()) {
+            if (user == null) {
+                LOG.error("Search Criteria specified UserSession override but given user paramter is null");
+                throw new WorkflowRuntimeException("Search criteria specified UserSession override but given user is null.");
+            }
+            LOG.info("Search Criteria specified UserSession override.  Using user: " + user);
+            userSession = new UserSession(user);
+        }
         if (userSession != null) {
         	// TODO do we really want to allow the document search if there is no User Session?
         	// This is mainly to allow for the unit tests to run but I wonder if we need to push
@@ -742,9 +765,9 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 //            usingAtLeastOneSearchAttribute = true;
 //            finalizedSql = generateFinalSQL(new QueryComponent(selectSQL.toString(),fromSQL.toString(),whereSQL.toString()), docHeaderTableAlias, sqlPrefix, sqlSuffix);
 //        }
-        LOG.debug("*********** SQL ***************");
-        LOG.debug(finalizedSql);
-        LOG.debug("*******************************");
+        LOG.info("*********** SEARCH SQL ***************");
+        LOG.info(finalizedSql);
+        LOG.info("**************************************");
         return finalizedSql;
     }
 
@@ -1000,6 +1023,6 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
     
     public int getDocumentSearchResultSetLimit() {
-	return DEFAULT_SEARCH_RESULT_CAP;
+        return DEFAULT_SEARCH_RESULT_CAP;
     }
 }

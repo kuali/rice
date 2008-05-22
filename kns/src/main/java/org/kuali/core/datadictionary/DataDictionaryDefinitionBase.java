@@ -26,33 +26,9 @@ package org.kuali.core.datadictionary;
 abstract public class DataDictionaryDefinitionBase implements DataDictionaryDefinition {
     //private static Log LOG = LogFactory.getLog(DataDictionaryDefinitionBase.class);
 
-    private final String parseLocation;
     private String id;
     
-    // this boolean is for the dd generator, since it does not parse dd files
-    public static boolean isParsingFile = true;
-
     public DataDictionaryDefinitionBase() {
-        if (isParsingFile) {
-            String parseFileName = DataDictionaryBuilder.getCurrentFileName();
-            int parseLineNumber = DataDictionaryBuilder.getCurrentLineNumber();
-
-            if ( parseFileName != null ) {
-                parseLocation = parseFileName + ":" + Integer.toString(parseLineNumber);
-            } else {
-                parseLocation = "";
-            }
-        }
-        else {
-            parseLocation = "";
-        }
-    }
-
-    /**
-     * @return XML filename and line number from the parser which created this object
-     */
-    protected String getParseLocation() {
-        return parseLocation;
     }
 
     public String getId() {

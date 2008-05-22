@@ -1,75 +1,110 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2007 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="KIMGroupTypeMaintenanceDocument" parent="KIMGroupTypeMaintenanceDocument-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="KIMGroupTypeMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupType" />
+    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    <property name="maintainableSections" >
+      <list>
+        <ref bean="KIMGroupTypeMaintenanceDocument-GroupTypeInformation" />
+        <ref bean="KIMGroupTypeMaintenanceDocument-GroupTypeDefaultAttributes" />
+      </list>
+    </property>
+    <property name="lockingKeys" >
+      <list>
+        <value>id</value>
+      </list>
+    </property>
+    <property name="shortLabel" value="Group Type" />
+    <property name="summary" value="Group Type Maintenance Document" />
+    <property name="documentTypeName" value="KIMGroupTypeMaintenanceDocument" />
+    <property name="documentAuthorizerClass" value="org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase" />
+    <property name="documentTypeCode" value="KGTM" />
+    <property name="authorizations" >
+      <list>
+        <bean parent="AuthorizationDefinition">
+          <property name="authorizedGroups" >
+            <set>
+              <value>kualiUniversalGroup</value>
+            </set>
+          </property>
+          <property name="action" value="initiate" />
+        </bean>
+      </list>
+    </property>
+    <property name="label" value="Group Type Maintenance Document" />
+    <property name="description" value="This document is used to create or update Group Types." />
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <maintenanceDocument>
-        <businessObjectClass>org.kuali.rice.kim.bo.GroupType</businessObjectClass>
-        <maintainableClass>org.kuali.core.maintenance.KualiMaintainableImpl</maintainableClass>
+<!-- Maintenance Section Definitions -->
 
-       <documentAuthorizerClass>org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase</documentAuthorizerClass>
-        <authorizations>
-            <authorization action="initiate">
-                <workgroups>
-                    <workgroup>kualiUniversalGroup</workgroup>
-                </workgroups>
-            </authorization>
-        </authorizations>
 
-        <documentTypeName>KIMGroupTypeMaintenanceDocument</documentTypeName>
-        <documentTypeCode>KGTM</documentTypeCode>
-        <label>Group Type Maintenance Document</label>
-        <shortLabel>Group Type</shortLabel>
+  <bean id="KIMGroupTypeMaintenanceDocument-GroupTypeInformation" parent="KIMGroupTypeMaintenanceDocument-GroupTypeInformation-parentBean" />
 
-        <summary>Group Type Maintenance Document</summary>
-        <description>This document is used to create or update Group Types.</description>
+  <bean id="KIMGroupTypeMaintenanceDocument-GroupTypeInformation-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="id"
+              p:readOnly="true" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="name" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="description" />
+        <bean parent="MaintainableFieldDefinition"
+              p:required="true"
+              p:name="workflowDocumentType" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="versionNumber" />
+      </list>
+    </property>
+    <property name="id" value="Group Type Information" />
+    <property name="title" value="Group Type Information" />
+  </bean>
+  <bean id="KIMGroupTypeMaintenanceDocument-GroupTypeDefaultAttributes" parent="KIMGroupTypeMaintenanceDocument-GroupTypeDefaultAttributes-parentBean" />
 
-        <lockingKeys>
-            <field attributeName="id"/>
-        </lockingKeys>
-
-        <allowsNewOrCopy>true</allowsNewOrCopy>
-
-        <maintainableSections>
-            <maintainableSection title="Group Type Information">
-                <maintainableItems>
-                    <maintainableField name="id" readOnly="true" required="false" />
-                    <maintainableField name="name" readOnly="false" required="true" />
-                    <maintainableField name="description" readOnly="false" required="true" />
-                    <maintainableField name="workflowDocumentType" readOnly="false" required="true" />
-                    <maintainableField name="versionNumber" />
-                </maintainableItems>
-            </maintainableSection>
-
-            <maintainableSection title="Group Type Default Attributes">
-              <maintainableItems>
-                <maintainableCollection name="groupTypeDefaultAttributes"
-                  businessObjectClass="org.kuali.rice.kim.bo.GroupTypeDefaultAttribute">
-                  <maintainableField name="id" readOnly="true" required="true" />
-                  <maintainableField name="attributeTypeId" required="true" />
-                  <maintainableField name="attributeName" required="true" />
-                  <maintainableField name="description" required="true" />
-                  <maintainableField name="required" required="true" />
-                  <maintainableField name="active" required="true" />
-                  <maintainableField name="versionNumber" />
-                 </maintainableCollection>
-              </maintainableItems>
-            </maintainableSection>
-        </maintainableSections>
-    </maintenanceDocument>
-</dictionaryEntry>
+  <bean id="KIMGroupTypeMaintenanceDocument-GroupTypeDefaultAttributes-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableCollectionDefinition">
+          <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupTypeDefaultAttribute" />
+          <property name="maintainableFields" >
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:name="id"
+                    p:readOnly="true" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:name="attributeTypeId" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:name="attributeName" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:name="description" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:name="required" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:name="active" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:name="versionNumber" />
+            </list>
+          </property>
+          <property name="name" value="groupTypeDefaultAttributes" />
+        </bean>
+      </list>
+    </property>
+    <property name="id" value="Group Type Default Attributes" />
+    <property name="title" value="Group Type Default Attributes" />
+  </bean>
+</beans>

@@ -16,11 +16,13 @@
 
 package org.kuali.core.datadictionary.control;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.datadictionary.DataDictionaryDefinitionBase;
-import org.kuali.core.datadictionary.ValidationCompletionUtils;
 import org.kuali.core.datadictionary.exception.CompletionException;
+import org.kuali.core.lookup.keyvalues.KeyValuesFinder;
 
 /**
  * A single HTML control definition in the DataDictionary, which contains information relating to the HTML control used to realize a
@@ -36,8 +38,8 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
 
     private boolean datePicker;
     private String script;
-    private Class valuesFinderClass;
-    private Class businessObjectClass;
+    private Class<? extends KeyValuesFinder> valuesFinderClass;
+    private Class<? extends BusinessObject> businessObjectClass;
     private String keyAttribute;
     private String labelAttribute;
     private Boolean includeKeyInLabel;
@@ -149,11 +151,10 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     /**
      * @see org.kuali.core.datadictionary.control.ControlDefinition#setKeyValuesFinder(java.lang.String)
      */
-    public void setValuesFinderClass(Class valuesFinderClass) {
+    public void setValuesFinderClass(Class<? extends KeyValuesFinder> valuesFinderClass) {
         if (valuesFinderClass == null) {
             throw new IllegalArgumentException("invalid (null) valuesFinderClass");
         }
-        LOG.debug("calling setValuesKey '" + valuesFinderClass.getName() + "'");
 
         this.valuesFinderClass = valuesFinderClass;
     }
@@ -161,20 +162,19 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     /**
      * @return the businessObjectClass
      */
-    public Class getBusinessObjectClass() {
+    public Class<? extends BusinessObject> getBusinessObjectClass() {
         return this.businessObjectClass;
     }
 
     /**
      * @param businessObjectClass the businessObjectClass to set
      */
-    public void setBusinessObjectClass(Class businessObjectClass) {
+    public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
         if (businessObjectClass == null) {
             throw new IllegalArgumentException("invalid (null) businessObjectClass");
         }
-        LOG.debug("calling setValuesKey '" + businessObjectClass.getName() + "'");
 
-	this.businessObjectClass = businessObjectClass;
+        this.businessObjectClass = businessObjectClass;
     }
 
     /**
@@ -222,7 +222,7 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     /**
      * @see org.kuali.core.datadictionary.control.ControlDefinition#getKeyValuesFinder()
      */
-    public Class getValuesFinderClass() {
+    public Class<? extends KeyValuesFinder> getValuesFinderClass() {
         return valuesFinderClass;
     }
 
@@ -286,9 +286,9 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
      *
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         if (!isCheckbox() && !isHidden() && !isRadio() && !isSelect() && !isApcSelect() && !isText() && !isTextarea() && !isCurrency() && !isKualiUser() && !isLookupHidden() && !isLookupReadonly() && !isWorkflowWorkgroup()) {
-            throw new CompletionException("error validating " + rootBusinessObjectClass.getName() + " control: unknown control type in control definition (" + getParseLocation() + ")");
+            throw new CompletionException("error validating " + rootBusinessObjectClass.getName() + " control: unknown control type in control definition (" + "" + ")");
         }
     }
 
@@ -306,4 +306,28 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     public void setScript(String script) {
         this.script = script;
     }
+
+    /**
+     * @see java.lang.Object#equals(Object)
+     */
+    public boolean equals(Object object) {
+    	if ( !(object instanceof ControlDefinitionBase) ) {
+    		return false;
+    	}
+    	ControlDefinitionBase rhs = (ControlDefinitionBase)object;
+    	return new EqualsBuilder()
+    	        .append( this.cols, rhs.cols )
+    			.append( this.businessObjectClass, rhs.businessObjectClass )
+    			.append( this.valuesFinderClass, rhs.valuesFinderClass )
+    			.append( this.rows, rhs.rows )
+    			.append( this.script, rhs.script )
+    			.append( this.size, rhs.size )
+    			.append( this.datePicker, rhs.datePicker )
+    			.append( this.labelAttribute,rhs.labelAttribute )
+    			.append( this.includeKeyInLabel, rhs.includeKeyInLabel )
+    			.append( this.keyAttribute, rhs.keyAttribute )
+    			.isEquals();
+    }
+    
+    
 }

@@ -1,91 +1,125 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="AccountManager" parent="AccountManager-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="AccountManager-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kns.test.document.bo.AccountManager" />
+    <property name="inquiryDefinition" >
+      <ref bean="AccountManager-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="AccountManager-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="amId" />
+    <property name="attributes" >
+      <list>
+        <ref bean="AccountManager-amId" />
+        <ref bean="AccountManager-userName" />
+      </list>
+    </property>
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kns.test.document.bo.AccountManager">
+<!-- Attribute Definitions -->
 
-        <inquiry>
-            <title>Account Manager Inquiry</title>
 
-            <inquirySections><inquirySection title="Header Text"><inquiryFields>
-                <field attributeName="amId" forceInquiry="true" />
-                <field attributeName="userName" forceInquiry="true" />
-            </inquiryFields></inquirySection></inquirySections>
-        </inquiry>
+  <bean id="AccountManager-amId" parent="AccountManager-amId-parentBean" />
 
-        <lookup>
-            <title>Account Manager Lookup</title>
+  <bean id="AccountManager-amId-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Account Manager Id" />
+    <property name="maxLength" value="10" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="10" />
+    </property>
+    <property name="summary" value="Account Manager Id" />
+    <property name="name" value="amId" />
+    <property name="label" value="Account Manager Id" />
+    <property name="description" value="Account Manager Id" />
+  </bean>
+  <bean id="AccountManager-userName" parent="AccountManager-userName-parentBean" />
 
-            <instructions>Look up an Account Manager</instructions>
+  <bean id="AccountManager-userName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Account Manager User Name" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="summary" value="Account Manager User Name" />
+    <property name="name" value="userName" />
+    <property name="label" value="Account Manager User Name" />
+    <property name="description" value="Account Manager User Name" />
+  </bean>
 
-            <defaultSort sortAscending="true">
-                <sortAttributes>
-                    <sortAttribute attributeName="userName" />
-                </sortAttributes>
-            </defaultSort>
+<!-- Business Object Inquiry Definition -->
 
-            <lookupFields>
-                <lookupField attributeName="amId" required="false" />
-                <lookupField attributeName="userName" required="false" />
-            </lookupFields>
 
-            <resultFields>
-                <field attributeName="amId" forceInquiry="true" />
-                <field attributeName="userName" forceInquiry="true"/>
-            </resultFields>
-            <resultSetLimit>90</resultSetLimit>
-        </lookup>
+  <bean id="AccountManager-inquiryDefinition" parent="AccountManager-inquiryDefinition-parentBean" />
 
-        <titleAttribute>amId</titleAttribute>
+  <bean id="AccountManager-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="amId"
+                    p:forceInquiry="true" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="userName"
+                    p:forceInquiry="true" />
+            </list>
+          </property>
+          <property name="title" value="Header Text" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="Account Manager Inquiry" />
+  </bean>
 
-        <attributes>
+<!-- Business Object Lookup Definition -->
 
-            <attribute name="amId">
-                <label>Account Manager Id</label>
-                <shortLabel>Account Manager Id</shortLabel>
 
-                <maxLength>10</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+  <bean id="AccountManager-lookupDefinition" parent="AccountManager-lookupDefinition-parentBean" />
 
-                <control>
-                    <text size="10" />
-                </control>
-
-                <summary>Account Manager Id</summary>
-                <description>Account Manager Id</description>
-			</attribute>
-
-            <attribute name="userName" forceUppercase="false">
-                <label>Account Manager User Name</label>
-                <shortLabel>Account Manager User Name</shortLabel>
-
-                <maxLength>30</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-
-                <control>
-                    <text size="30" />
-                </control>
-
-                <summary>Account Manager User Name</summary>
-                <description>Account Manager User Name</description>
-			</attribute>
-		</attributes>
-    </businessObject>
-
-</dictionaryEntry>
+  <bean id="AccountManager-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Look up an Account Manager" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="amId" />
+        <bean parent="FieldDefinition"
+              p:attributeName="userName" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="amId"
+              p:forceInquiry="true" />
+        <bean parent="FieldDefinition"
+              p:attributeName="userName"
+              p:forceInquiry="true" />
+      </list>
+    </property>
+    <property name="resultSetLimit" value="90" />
+    <property name="title" value="Account Manager Lookup" />
+  </bean>
+</beans>

@@ -15,6 +15,7 @@
  */
 package org.kuali.core.service.impl;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,60 +25,62 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.datadictionary.AttributeDefinition;
 import org.kuali.core.datadictionary.BusinessObjectEntry;
 import org.kuali.core.datadictionary.CollectionDefinition;
 import org.kuali.core.datadictionary.DataDictionary;
-import org.kuali.core.datadictionary.DataDictionaryBuilder;
 import org.kuali.core.datadictionary.DataDictionaryEntryBase;
 import org.kuali.core.datadictionary.DocumentEntry;
 import org.kuali.core.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.core.datadictionary.RelationshipDefinition;
-import org.kuali.core.datadictionary.ValidationCompletionUtils;
 import org.kuali.core.datadictionary.control.ControlDefinition;
 import org.kuali.core.datadictionary.exporter.DataDictionaryMap;
 import org.kuali.core.datadictionary.mask.Mask;
 import org.kuali.core.document.Document;
 import org.kuali.core.exceptions.UnknownBusinessClassAttributeException;
+import org.kuali.core.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.core.rule.PreRulesCheck;
 import org.kuali.core.service.AuthorizationService;
 import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.service.KualiGroupService;
 import org.kuali.core.service.KualiModuleService;
+import org.kuali.core.web.format.Formatter;
 
 /**
- * This class is the service implementation for a DataDictionary. It is a thin wrapper around creating, initializing, and returning
- * a DataDictionary. This is the default, Kuali delivered implementation.
+ * This class is the service implementation for a DataDictionary. It is a thin wrapper around creating, initializing, and
+ * returning a DataDictionary. This is the default, Kuali delivered implementation.
  */
 public class DataDictionaryServiceImpl implements DataDictionaryService {
 
-    private DataDictionaryBuilder dataDictionaryBuilder;
-    private DataDictionaryMap dataDictionaryMap = new DataDictionaryMap( this );
+    private DataDictionary dataDictionary;
+    private DataDictionaryMap dataDictionaryMap = new DataDictionaryMap(this);
 
     private KualiConfigurationService kualiConfigurationService;
     private KualiGroupService kualiGroupService;
     private KualiModuleService kualiModuleService;
     private AuthorizationService authorizationService;
-    
+
     /**
      * @see org.kuali.core.service.DataDictionaryService#setBaselinePackages(java.lang.String)
      */
-    public void setBaselinePackages(List baselinePackages) {
-    	this.addDataDictionaryLocations(baselinePackages);
+    public void setBaselinePackages(List baselinePackages) throws IOException {
+        this.addDataDictionaryLocations(baselinePackages);
     }
 
     /**
      * Default constructor.
      */
-    public DataDictionaryServiceImpl(ValidationCompletionUtils validationCompletionUtils) {
-        dataDictionaryBuilder = new DataDictionaryBuilder(validationCompletionUtils);
+    public DataDictionaryServiceImpl() {
+        dataDictionary = new DataDictionary();
     }
 
     /**
      * @see org.kuali.core.service.DataDictionaryService#getDataDictionary()
      */
     public DataDictionary getDataDictionary() {
-        return dataDictionaryBuilder.getDataDictionary();
+        return dataDictionary;
     }
 
     /**
@@ -151,8 +154,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         if (attributeDefinition != null) {
             if (attributeDefinition.hasValidationPattern()) {
                 regex = attributeDefinition.getValidationPattern().getRegexPattern();
-            }
-            else {
+            } else {
                 // workaround for existing calls which don't bother checking for null return values
                 regex = Pattern.compile(".*");
             }
@@ -169,7 +171,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         if (attributeDefinition != null) {
-            if ( !StringUtils.isEmpty( attributeDefinition.getDisplayLabelAttribute() ) ) {
+            if (!StringUtils.isEmpty(attributeDefinition.getDisplayLabelAttribute())) {
                 attributeDefinition = getAttributeDefinition(entryName, attributeDefinition.getDisplayLabelAttribute());
                 if (attributeDefinition != null) {
                     label = attributeDefinition.getLabel();
@@ -189,10 +191,10 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         if (attributeDefinition != null) {
-            if ( !StringUtils.isEmpty( attributeDefinition.getDisplayLabelAttribute() ) ) {
+            if (!StringUtils.isEmpty(attributeDefinition.getDisplayLabelAttribute())) {
                 attributeDefinition = getAttributeDefinition(entryName, attributeDefinition.getDisplayLabelAttribute());
                 if (attributeDefinition != null) {
-                    shortLabel = attributeDefinition.getShortLabel();                
+                    shortLabel = attributeDefinition.getShortLabel();
                 }
             } else {
                 shortLabel = attributeDefinition.getShortLabel();
@@ -201,7 +203,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         return shortLabel;
     }
-
 
     /**
      * @see org.kuali.core.service.BusinessObjectDictionaryService#getAttributeErrorLabel(java.lang.String)
@@ -215,7 +216,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     /**
      * @see org.kuali.core.service.BusinessObjectDictionaryService#getAttributeFormatter(java.lang.String)
      */
-    public Class getAttributeFormatter(String entryName, String attributeName) {
+    public Class<? extends Formatter> getAttributeFormatter(String entryName, String attributeName) {
         Class formatterClass = null;
 
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
@@ -242,7 +243,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         return forceUppercase;
     }
-
 
     /**
      * @see org.kuali.core.service.DataDictionaryService#getAttributeDisplayMask(java.lang.String, java.lang.String)
@@ -286,7 +286,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return summary;
     }
 
-
     /**
      * @see org.kuali.core.service.BusinessObjectDictionaryService#getAttributeDescription(java.lang.String)
      */
@@ -300,7 +299,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         return description;
     }
-
 
     /**
      * @see org.kuali.core.service.BusinessObjectDictionaryService#isAttributeRequired(java.lang.Class, java.lang.String)
@@ -327,14 +325,14 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
             isDefined = true;
         }
 
-        return Boolean.valueOf(isDefined);
+        return isDefined;
     }
 
-
     /**
-     * @see org.kuali.core.service.BusinessObjectDictionaryService#getAttributeValuesScopeId(java.lang.Class, java.lang.String)
+     * @see org.kuali.core.service.BusinessObjectDictionaryService#getAttributeValuesScopeId(java.lang.Class,
+     *      java.lang.String)
      */
-    public Class getAttributeValuesFinderClass(String entryName, String attributeName) {
+    public Class<? extends KeyValuesFinder> getAttributeValuesFinderClass(String entryName, String attributeName) {
         Class valuesFinderClass = null;
 
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
@@ -374,7 +372,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.core.service.BusinessObjectDictionaryService#getCollectionElementLabel(java.lang.Class, java.lang.String)
+     * @see org.kuali.core.service.BusinessObjectDictionaryService#getCollectionElementLabel(java.lang.Class,
+     *      java.lang.String)
      */
     public String getCollectionElementLabel(String entryName, String collectionName, Class businessObjectClass) {
         String elementLabel = "";
@@ -382,9 +381,9 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         CollectionDefinition collectionDefinition = getCollectionDefinition(entryName, collectionName);
         if (collectionDefinition != null) {
             elementLabel = collectionDefinition.getElementLabel();
-            if(StringUtils.isEmpty(elementLabel)) {
+            if (StringUtils.isEmpty(elementLabel)) {
                 BusinessObjectEntry boe = getDataDictionary().getBusinessObjectEntry(businessObjectClass.getName());
-                if(boe!=null){
+                if (boe != null) {
                     elementLabel = boe.getObjectLabel();
                 }
             }
@@ -407,9 +406,9 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return summary;
     }
 
-
     /**
-     * @see org.kuali.core.service.BusinessObjectDictionaryService#getCollectionDescription(java.lang.Class, java.lang.String)
+     * @see org.kuali.core.service.BusinessObjectDictionaryService#getCollectionDescription(java.lang.Class,
+     *      java.lang.String)
      */
     public String getCollectionDescription(String entryName, String collectionName) {
         String description = null;
@@ -422,7 +421,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return description;
     }
 
-    public Class getRelationshipSourceClass(String entryName, String relationshipName) {
+    public Class<? extends BusinessObject> getRelationshipSourceClass(String entryName, String relationshipName) {
         Class sourceClass = null;
 
         RelationshipDefinition rd = getRelationshipDefinition(entryName, relationshipName);
@@ -430,11 +429,10 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
             sourceClass = rd.getSourceClass();
         }
 
-
         return sourceClass;
     }
 
-    public Class getRelationshipTargetClass(String entryName, String relationshipName) {
+    public Class<? extends BusinessObject> getRelationshipTargetClass(String entryName, String relationshipName) {
         Class targetClass = null;
 
         RelationshipDefinition rd = getRelationshipDefinition(entryName, relationshipName);
@@ -475,13 +473,12 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return targetAttributes;
     }
 
-
     public List<String> getRelationshipEntriesForSourceAttribute(String entryName, String sourceAttributeName) {
         List<String> relationships = new ArrayList<String>();
-        
+
         DataDictionaryEntryBase entry = (DataDictionaryEntryBase) getDataDictionary().getDictionaryObjectEntry(entryName);
-        
-        for (RelationshipDefinition def : entry.getRelationships().values()) {
+
+        for (RelationshipDefinition def : entry.getRelationships()) {
             for (PrimitiveAttributeDefinition pddef : def.getPrimitiveAttributes()) {
                 if (StringUtils.equals(sourceAttributeName, pddef.getSourceName())) {
                     relationships.add(def.getObjectAttributeName());
@@ -494,10 +491,10 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
     public List<String> getRelationshipEntriesForTargetAttribute(String entryName, String targetAttributeName) {
         List<String> relationships = new ArrayList<String>();
-        
+
         DataDictionaryEntryBase entry = (DataDictionaryEntryBase) getDataDictionary().getDictionaryObjectEntry(entryName);
-        
-        for (RelationshipDefinition def : entry.getRelationships().values()) {
+
+        for (RelationshipDefinition def : entry.getRelationships()) {
             for (PrimitiveAttributeDefinition pddef : def.getPrimitiveAttributes()) {
                 if (StringUtils.equals(targetAttributeName, pddef.getTargetName())) {
                     relationships.add(def.getObjectAttributeName());
@@ -512,7 +509,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
      * @param objectClass
      * @param attributeName
      * @return AttributeDefinition for the given objectClass and attribute name, or null if there is none
-     * @throws IllegalArgumentException if the given Class is null or is not a BusinessObject class
+     * @throws IllegalArgumentException
+     *             if the given Class is null or is not a BusinessObject class
      */
     private AttributeDefinition getAttributeDefinition(String entryName, String attributeName) {
         if (StringUtils.isBlank(attributeName)) {
@@ -567,7 +565,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return relationshipDefinition;
     }
 
-
     /**
      * @see org.kuali.core.service.DataDictionaryService#getRelationshipAttributeMap(java.lang.String, java.lang.String)
      */
@@ -587,10 +584,10 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
     public List<String> getRelationshipNames(String entryName) {
         DataDictionaryEntryBase entry = (DataDictionaryEntryBase) getDataDictionary().getDictionaryObjectEntry(entryName);
-        
+
         List<String> relationshipNames = new ArrayList<String>();
-        for (String relationshipName : entry.getRelationships().keySet()) {
-            relationshipNames.add(relationshipName);
+        for (RelationshipDefinition def : entry.getRelationships()) {
+            relationshipNames.add(def.getObjectAttributeName());
         }
         return relationshipNames;
     }
@@ -619,7 +616,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     /**
      * @see org.kuali.core.service.DataDictionaryService#getAttributeFormatter(java.lang.String, java.lang.String)
      */
-    public Class getAttributeFormatter(Class businessObjectClass, String attributeName) {
+    public Class<? extends Formatter> getAttributeFormatter(Class businessObjectClass, String attributeName) {
         return getAttributeFormatter(businessObjectClass.getName(), attributeName);
     }
 
@@ -735,7 +732,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return isAttributeRequired(businessObjectClass.getName(), attributeName);
 
     }
-    
+
     /**
      * @see org.kuali.core.service.DataDictionaryService#getDocumentLabelByClass(java.lang.Class)
      */
@@ -747,7 +744,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         }
         return label;
     }
-    
+
     /**
      * @see org.kuali.core.service.DataDictionaryService#getDocumentLabelByTypeName(java.lang.String)
      */
@@ -781,11 +778,10 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return documentTypeName;
     }
 
-
     /**
      * @see org.kuali.core.service.DataDictionaryService#getDocumentClassByTypeName(java.lang.String)
      */
-    public Class getDocumentClassByTypeName(String documentTypeName) {
+    public Class<? extends Document> getDocumentClassByTypeName(String documentTypeName) {
         Class clazz = null;
 
         DocumentEntry documentEntry = getDataDictionary().getDocumentEntry(documentTypeName);
@@ -810,7 +806,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     /**
      * @see org.kuali.core.service.DataDictionaryService#getPreRulesCheckClass(java.lang.String)
      */
-    public Class getPreRulesCheckClass(String docTypeName) {
+    public Class<? extends PreRulesCheck> getPreRulesCheckClass(String docTypeName) {
         Class preRulesCheckClass = null;
 
         DocumentEntry documentEntry = getDataDictionary().getDocumentEntry(docTypeName);
@@ -820,25 +816,20 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         return preRulesCheckClass;
     }
-    
-    public void addDataDictionaryLocation(String location) {
-    	dataDictionaryBuilder.addOverrideEntries(location, true);
-                }
-                
-    public void addDataDictionaryLocations(List<String> locations) {
-    	for (String location : locations) {
-			addDataDictionaryLocation(location);
-                }
-            }
 
-    public void forceCompleteDataDictionaryLoad() {
-    	getDataDictionary().forceCompleteDataDictionaryLoad();
+    public void addDataDictionaryLocation(String location) throws IOException {
+        dataDictionary.addConfigFileLocation(location);
+    }
+
+    public void addDataDictionaryLocations(List<String> locations) throws IOException {
+        for (String location : locations) {
+            addDataDictionaryLocation(location);
+        }
     }
 
     public Map getDataDictionaryMap() {
         return dataDictionaryMap;
     }
-    
 
     public void setKualiGroupService(KualiGroupService kualiGroupService) {
         this.kualiGroupService = kualiGroupService;
@@ -863,6 +854,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public void setKualiModuleService(KualiModuleService kualiModuleService) {
         this.kualiModuleService = kualiModuleService;
     }
+
     public AuthorizationService getAuthorizationService() {
         return authorizationService;
     }

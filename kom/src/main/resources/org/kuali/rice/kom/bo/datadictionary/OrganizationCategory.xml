@@ -1,100 +1,127 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Copyright 2006 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  Licensed under the Educational Community License, Version 1.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+  <bean id="OrganizationCategory" parent="OrganizationCategory-parentBean" />
 
-  http://www.opensource.org/licenses/ecl1.php
+  <bean id="OrganizationCategory-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kom.bo.OrganizationCategory" />
+    <property name="inquiryDefinition" >
+      <ref bean="OrganizationCategory-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="OrganizationCategory-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="id" />
+    <property name="objectLabel" value="Organization Category" />
+    <property name="attributes" >
+      <list>
+        <ref bean="OrganizationCategory-id" />
+        <ref bean="OrganizationCategory-name" />
+        <ref bean="OrganizationCategory-versionNumber" />
+        <ref bean="OrganizationCategory-objectId" />
+      </list>
+    </property>
+  </bean>
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-  <businessObject
-    businessObjectClass="org.kuali.rice.kom.bo.OrganizationCategory">
+<!-- Attribute Definitions -->
 
-    <inquiry>
-      <title>Organization Category Inquiry</title>
 
-      <inquirySections>
-        <inquirySection title="Header Text">
-          <inquiryFields>
-            <field attributeName="id" />
-            <field attributeName="name" />
-          </inquiryFields>
-        </inquirySection>
-      </inquirySections>
-    </inquiry>
+  <bean id="OrganizationCategory-id" parent="OrganizationCategory-id-parentBean" />
 
-    <lookup>
-      <title>Organization Category Lookup</title>
+  <bean id="OrganizationCategory-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="id" />
+    <property name="maxLength" value="8" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="8" />
+    </property>
+    <property name="name" value="id" />
+    <property name="label" value="ID" />
+  </bean>
+  <bean id="OrganizationCategory-name" parent="OrganizationCategory-name-parentBean" />
 
-      <instructions>Lookup a Organization Category</instructions>
+  <bean id="OrganizationCategory-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="name" />
+    <property name="label" value="Organization Category Name" />
+  </bean>
+  <bean id="OrganizationCategory-versionNumber" parent="OrganizationCategory-versionNumber-parentBean" />
 
-      <defaultSort sortAscending="true">
-        <sortAttributes>
-          <sortAttribute attributeName="name" />
-        </sortAttributes>
-      </defaultSort>
+  <bean id="OrganizationCategory-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+  <bean id="OrganizationCategory-objectId" parent="OrganizationCategory-objectId-parentBean" />
 
-      <lookupFields>
-        <lookupField attributeName="id" required="false" />
-        <lookupField attributeName="name" required="false" />
-      </lookupFields>
+  <bean id="OrganizationCategory-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
+  </bean>
 
-      <resultFields>
-        <field attributeName="id" />
-        <field attributeName="name" />
-      </resultFields>
-    </lookup>
+<!-- Business Object Inquiry Definition -->
 
-    <titleAttribute>id</titleAttribute>
 
-    <attributes>
+  <bean id="OrganizationCategory-inquiryDefinition" parent="OrganizationCategory-inquiryDefinition-parentBean" />
 
-      <attribute name="id" forceUppercase="true">
-        <label>ID</label>
-        <shortLabel>id</shortLabel>
+  <bean id="OrganizationCategory-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="id" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="name" />
+            </list>
+          </property>
+          <property name="title" value="Header Text" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="Organization Category Inquiry" />
+  </bean>
 
-        <maxLength>8</maxLength>
-        <validationPattern>
-          <anyCharacter />
-        </validationPattern>
+<!-- Business Object Lookup Definition -->
 
-        <control>
-          <text size="8" />
-        </control>
 
-      </attribute>
-      <attribute name="name" forceUppercase="false">
-        <label>Organization Category Name</label>
-        <shortLabel>Name</shortLabel>
+  <bean id="OrganizationCategory-lookupDefinition" parent="OrganizationCategory-lookupDefinition-parentBean" />
 
-        <maxLength>255</maxLength>
-        <validationPattern>
-          <anyCharacter />
-        </validationPattern>
-
-        <control>
-          <text size="100" />
-        </control>
-
-      </attribute>
-      <attributeReference name="versionNumber"
-        sourceClassName="org.kuali.core.bo.AttributeReferenceDummy"
-        sourceAttributeName="versionNumber" />
-      <attributeReference name="objectId"
-        sourceClassName="org.kuali.core.bo.AttributeReferenceDummy"
-        sourceAttributeName="objectId" />
-    </attributes>
-    <objectLabel>Organization Category</objectLabel>
-  </businessObject>
-</dictionaryEntry>
+  <bean id="OrganizationCategory-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Lookup a Organization Category" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+      </list>
+    </property>
+    <property name="title" value="Organization Category Lookup" />
+  </bean>
+</beans>

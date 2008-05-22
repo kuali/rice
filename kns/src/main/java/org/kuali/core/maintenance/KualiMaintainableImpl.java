@@ -29,7 +29,6 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.BusinessObjectRelationship;
 import org.kuali.core.bo.DocumentHeader;
@@ -58,6 +57,7 @@ import org.kuali.core.web.ui.SectionBridge;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
  * Base Maintainable class to hold things common to all maintainables.
@@ -521,7 +521,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 	 */
 	public void processAfterCopy( MaintenanceDocument document, Map<String,String[]> parameters ) {
         try {
-            ObjectUtils.setObjectPropertyDeep(businessObject, RicePropertyConstants.NEW_COLLECTION_RECORD, boolean.class, true, 2);
+            ObjectUtils.setObjectPropertyDeep(businessObject, KNSPropertyConstants.NEW_COLLECTION_RECORD, boolean.class, true, 2);
         }
         catch (Exception e) {
             LOG.error("unable to set newCollectionRecord property: " + e.getMessage(), e);

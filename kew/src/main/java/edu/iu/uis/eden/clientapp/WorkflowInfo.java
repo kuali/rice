@@ -26,10 +26,13 @@ import org.kuali.workflow.config.KEWConfigurer;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
+import edu.iu.uis.eden.clientapp.vo.ActionItemVO;
 import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentContentVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentDetailVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchCriteriaVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchResultVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
 import edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO;
 import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
@@ -234,6 +237,30 @@ public class WorkflowInfo implements java.io.Serializable {
     public WorkgroupVO[] getUserWorkgroups(UserIdVO userId) throws WorkflowException {
         try {
             return getWorkflowUtility().getUserWorkgroups(userId);
+        } catch (Exception e) {
+            throw handleException(e);
+        }
+    }
+    
+    public Integer getUserActionItemCount(UserIdVO userId) throws WorkflowException {
+        try {
+            return getWorkflowUtility().getUserActionItemCount(userId);
+        } catch (Exception e) {
+            throw handleException(e);
+        }
+    }
+    
+    public ActionItemVO[] getActionItems(Long routeHeaderId) throws WorkflowException {
+        try {
+            return getWorkflowUtility().getActionItems(routeHeaderId);
+        } catch (Exception e) {
+            throw handleException(e);
+        }
+    }
+
+    public ActionItemVO[] getActionItems(Long routeHeaderId, String[] actionRequestedCodes) throws WorkflowException {
+        try {
+            return getWorkflowUtility().getActionItems(routeHeaderId, actionRequestedCodes);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -529,6 +556,40 @@ public class WorkflowInfo implements java.io.Serializable {
         }
     }
 
+    /**
+     * This method allows a document search to be executed just as would occur from the User Interface using the given user as
+     * the searching user
+     * 
+     * @param userId - user to use when executing the search (for security filtering purposes)
+     * @param criteriaVO - criteria to use for the search
+     * @return a {@link DocumentSearchResultVO} object containing a list of search result columns and data rows
+     * @throws RemoteException
+     * @throws WorkflowException
+     */
+    public DocumentSearchResultVO performDocumentSearch(UserIdVO userId, DocumentSearchCriteriaVO criteriaVO) throws RemoteException, WorkflowException {
+        try {
+            return getWorkflowUtility().performDocumentSearch(userId, criteriaVO);
+        } catch (Exception e) {
+            throw handleException(e);
+        }
+    }
+
+    /**
+     * This method allows a document search to be executed just as would occur from the User Interface
+     * 
+     * @param criteriaVO - criteria to use for the search
+     * @return a {@link DocumentSearchResultVO} object containing a list of search result columns and data rows
+     * @throws RemoteException
+     * @throws WorkflowException
+     */
+    public DocumentSearchResultVO performDocumentSearch(DocumentSearchCriteriaVO criteriaVO) throws RemoteException, WorkflowException {
+        try {
+            return getWorkflowUtility().performDocumentSearch(criteriaVO);
+        } catch (Exception e) {
+            throw handleException(e);
+        }
+    }
+
     // DEPRECATED: as of Workflow 2.0
 
     /**
@@ -633,5 +694,4 @@ public class WorkflowInfo implements java.io.Serializable {
             throw handleException(e);
         }
     }
-
 }

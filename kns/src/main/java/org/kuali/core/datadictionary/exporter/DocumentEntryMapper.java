@@ -15,8 +15,7 @@
  */
 package org.kuali.core.datadictionary.exporter;
 
-import java.util.Iterator;
-import java.util.Map;
+import java.util.List;
 
 import org.kuali.core.datadictionary.AuthorizationDefinition;
 import org.kuali.core.datadictionary.DocumentEntry;
@@ -63,8 +62,8 @@ public abstract class DocumentEntryMapper {
 
         entryMap.set("allowsNoteAttachments", Boolean.toString(entry.getAllowsNoteAttachments()));
 
-        if (entry.getAttachmentTypeValuesFinderClass() != null) {
-            entryMap.set("attachmentTypesValuesFinderClass", entry.getAttachmentTypeValuesFinderClass().getName());
+        if (entry.getAttachmentTypesValuesFinderClass() != null) {
+            entryMap.set("attachmentTypesValuesFinderClass", entry.getAttachmentTypesValuesFinderClass().getName());
         }
 
         entryMap.set("displayTopicFieldInNotes", Boolean.toString(entry.getDisplayTopicFieldInNotes()));
@@ -82,16 +81,11 @@ public abstract class DocumentEntryMapper {
     private ExportMap buildAuthorizationsMap(DocumentEntry entry) {
         ExportMap authorizationsMap = null;
 
-        Map authorizationDefinitions = entry.getAuthorizationDefinitions();
+        List<AuthorizationDefinition> authorizationDefinitions = entry.getAuthorizationDefinitions();
         if ((authorizationDefinitions != null) && !authorizationDefinitions.isEmpty()) {
             authorizationsMap = new ExportMap("authorizations");
 
-            for (Iterator i = authorizationDefinitions.entrySet().iterator(); i.hasNext();) {
-                Map.Entry e = (Map.Entry) i.next();
-
-                String authAction = (String) e.getKey();
-                AuthorizationDefinition authorizationDefinition = (AuthorizationDefinition) e.getValue();
-
+            for ( AuthorizationDefinition authorizationDefinition : authorizationDefinitions ) {
                 authorizationsMap.set(buildAuthorizationMap(authorizationDefinition));
             }
         }
@@ -103,9 +97,7 @@ public abstract class DocumentEntryMapper {
         ExportMap authorizationMap = new ExportMap(authorizationDefinition.getAction());
 
         int index = 0;
-        for (Iterator i = authorizationDefinition.getGroupNames().iterator(); i.hasNext();) {
-            String groupName = (String) i.next();
-
+        for (String groupName : authorizationDefinition.getAuthorizedGroups() ) {
             ExportMap workgroupsMap = new ExportMap("workgroups");
             workgroupsMap.set(Integer.toString(index++), groupName);
 

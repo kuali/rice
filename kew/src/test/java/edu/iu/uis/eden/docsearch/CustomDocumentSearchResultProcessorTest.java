@@ -21,8 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.workflow.test.KEWTestCase;
 
+import edu.iu.uis.eden.KEWPropertyConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessor;
 import edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl;
@@ -30,8 +30,6 @@ import edu.iu.uis.eden.doctype.DocumentType;
 import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.lookupable.Column;
-import edu.iu.uis.eden.lookupable.Field;
-import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
@@ -42,45 +40,45 @@ import edu.iu.uis.eden.util.ClassLoaderUtils;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class CustomDocumentSearchResultProcessorTest extends KEWTestCase {
+public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestBase {
 //	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(CustomSearchAttributesTest.class);
 
     protected void loadTestData() throws Exception {
         loadXmlFile("SearchAttributeConfig.xml");
     }
 
-    private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {
-    	SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(key,value,key);
-    	Field field = getFieldByFormKey(docType, key);
-    	if (field != null) {
-        	sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
-        	sacc.setRangeSearch(field.isMemberOfRange());
-        	sacc.setAllowWildcards(field.isAllowingWildcards());
-        	sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
-        	sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
-        	sacc.setCaseSensitive(field.isCaseSensitive());
-        	sacc.setSearchInclusive(field.isInclusive());
-            sacc.setSearchable(field.isSearchable());
-            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-    	}
-    	return sacc;
-    }
-    
-    private Field getFieldByFormKey(DocumentType docType, String formKey) {
-    	if (docType == null) {
-    		return null;
-    	}
-		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
-			for (Row row : searchableAttribute.getSearchingRows()) {
-				for (Field field : row.getFields()) {
-					if (field.getPropertyName().equals(formKey)) {
-						return field;
-					}
-				}
-			}
-		}
-		return null;
-    }
+//    private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {
+//    	SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(key,value,key);
+//    	Field field = getFieldByFormKey(docType, key);
+//    	if (field != null) {
+//        	sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
+//        	sacc.setRangeSearch(field.isMemberOfRange());
+//        	sacc.setAllowWildcards(field.isAllowingWildcards());
+//        	sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
+//        	sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
+//        	sacc.setCaseSensitive(field.isCaseSensitive());
+//        	sacc.setSearchInclusive(field.isInclusive());
+//            sacc.setSearchable(field.isSearchable());
+//            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+//    	}
+//    	return sacc;
+//    }
+//    
+//    private Field getFieldByFormKey(DocumentType docType, String formKey) {
+//    	if (docType == null) {
+//    		return null;
+//    	}
+//		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
+//			for (Row row : searchableAttribute.getSearchingRows()) {
+//				for (Field field : row.getFields()) {
+//					if (field.getPropertyName().equals(formKey)) {
+//						return field;
+//					}
+//				}
+//			}
+//		}
+//		return null;
+//    }
 
     @Test public void testCustomDocumentSearchResultProcessorOverrideUse() throws Exception {
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName("SearchDocType");
@@ -101,16 +99,16 @@ public class CustomDocumentSearchResultProcessorTest extends KEWTestCase {
         List<Column> columns = docSearchResult.getCustomDisplayColumns();
     	for (Iterator iter = columns.iterator(); iter.hasNext();) {
 			Column column = (Column) iter.next();
-			if (DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL.equals(column.getKey())) {
+			if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL.equals(column.getKey())) {
 				assertEquals("Attribute xml is not populating column 'sortable' value correctly", "true", column.getSortable());
 				assertEquals("Attribute xml is not populating column 'title' value correctly", "", column.getColumnTitle());
-			} else if (DocumentSearchResult.PROPERTY_NAME_DOCUMENT_TITLE.equals(column.getKey())) {
+			} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE.equals(column.getKey())) {
 				assertEquals("Attribute xml is not populating column 'sortable' value correctly", "false", column.getSortable());
 				assertEquals("Attribute xml is not populating column 'title' value correctly", null, column.getColumnTitle());
-			} else if (DocumentSearchResult.PROPERTY_NAME_INITIATOR.equals(column.getKey())) {
+			} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR.equals(column.getKey())) {
 				assertEquals("Attribute xml is not populating column 'sortable' value correctly", null, column.getSortable());
 				assertEquals("Attribute xml is not populating column 'title' value correctly", "Initiator Dude", column.getColumnTitle());
-			} else if (DocumentSearchResult.PROPERTY_NAME_ROUTE_STATUS_DESC.equals(column.getKey())) {
+			} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC.equals(column.getKey())) {
 				assertEquals("Attribute xml is not populating column 'sortable' value correctly", null, column.getSortable());
 				assertEquals("Attribute xml is not populating column 'title' value correctly", null, column.getColumnTitle());
 			} else if (TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY.equals(column.getKey())) {
@@ -184,15 +182,15 @@ public class CustomDocumentSearchResultProcessorTest extends KEWTestCase {
          *    - create date
          */
         parseList(result.getColumns(), Arrays.asList(new String[]{
-        		DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID,
-        		DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL,
         		searchableAttributeKey_Hidden,
-        		DocumentSearchResult.PROPERTY_NAME_DOCUMENT_TITLE,
-        		DocumentSearchResult.PROPERTY_NAME_INITIATOR,
-        		DocumentSearchResult.PROPERTY_NAME_ROUTE_STATUS_DESC,
-        		DocumentSearchResult.PROPERTY_NAME_ROUTE_LOG
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG
         		}), Arrays.asList(new String[]{
-        				DocumentSearchResult.PROPERTY_NAME_DATE_CREATED,
+        				KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED,
         				searchableAttributeKey_Shown
         		}));
 
@@ -217,15 +215,15 @@ public class CustomDocumentSearchResultProcessorTest extends KEWTestCase {
          *    - create date
          */
         parseList(result.getColumns(), Arrays.asList(new String[]{
-        		DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID,
-        		DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL,
-        		DocumentSearchResult.PROPERTY_NAME_DOCUMENT_TITLE,
-        		DocumentSearchResult.PROPERTY_NAME_INITIATOR,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR,
         		searchableAttributeKey_Hidden,
-        		DocumentSearchResult.PROPERTY_NAME_ROUTE_STATUS_DESC,
-        		DocumentSearchResult.PROPERTY_NAME_ROUTE_LOG
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG
         		}), Arrays.asList(new String[]{
-        				DocumentSearchResult.PROPERTY_NAME_DATE_CREATED,
+        				KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED,
         				searchableAttributeKey_Shown
         		}));
 
@@ -251,14 +249,14 @@ public class CustomDocumentSearchResultProcessorTest extends KEWTestCase {
          *    - givenname
          */
         parseList(result.getColumns(), Arrays.asList(new String[]{
-        		DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID,
-        		DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL,
-        		DocumentSearchResult.PROPERTY_NAME_DOCUMENT_TITLE,
-        		DocumentSearchResult.PROPERTY_NAME_ROUTE_STATUS_DESC,
-				DocumentSearchResult.PROPERTY_NAME_INITIATOR,
-				DocumentSearchResult.PROPERTY_NAME_DATE_CREATED,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC,
+				KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR,
+				KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED,
         		searchableAttributeKey_Hidden,
-        		DocumentSearchResult.PROPERTY_NAME_ROUTE_LOG
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG
         		}), Arrays.asList(new String[]{
         				searchableAttributeKey_Shown
         		}));
@@ -285,15 +283,15 @@ public class CustomDocumentSearchResultProcessorTest extends KEWTestCase {
          *    - create date
          */
         parseList(result.getColumns(), Arrays.asList(new String[]{
-        		DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID,
-        		DocumentSearchResult.PROPERTY_NAME_DOCUMENT_TITLE,
-        		DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL,
-        		DocumentSearchResult.PROPERTY_NAME_ROUTE_STATUS_DESC,
-        		DocumentSearchResult.PROPERTY_NAME_INITIATOR,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR,
         		searchableAttributeKey_Shown,
-        		DocumentSearchResult.PROPERTY_NAME_ROUTE_LOG
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG
         		}), Arrays.asList(new String[]{
-        				DocumentSearchResult.PROPERTY_NAME_DATE_CREATED,
+        				KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED,
                 		searchableAttributeKey_Hidden
         		}));
 
@@ -319,14 +317,14 @@ public class CustomDocumentSearchResultProcessorTest extends KEWTestCase {
          *    - givenname_hidden
          */
         parseList(result.getColumns(), Arrays.asList(new String[]{
-        		DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID,
-        		DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL,
-        		DocumentSearchResult.PROPERTY_NAME_DOCUMENT_TITLE,
-        		DocumentSearchResult.PROPERTY_NAME_ROUTE_STATUS_DESC,
-				DocumentSearchResult.PROPERTY_NAME_INITIATOR,
-				DocumentSearchResult.PROPERTY_NAME_DATE_CREATED,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC,
+				KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR,
+				KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED,
         		searchableAttributeKey_Shown,
-        		DocumentSearchResult.PROPERTY_NAME_ROUTE_LOG
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG
         		}), Arrays.asList(new String[]{
                 		searchableAttributeKey_Hidden
         		}));

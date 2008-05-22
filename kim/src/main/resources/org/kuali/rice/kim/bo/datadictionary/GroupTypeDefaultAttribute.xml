@@ -1,121 +1,149 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2008 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="GroupTypeDefaultAttribute" parent="GroupTypeDefaultAttribute-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="GroupTypeDefaultAttribute-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupTypeDefaultAttribute" />
+    <property name="titleAttribute" value="id" />
+    <property name="objectLabel" value="Group Type Default Attribute" />
+    <property name="attributes" >
+      <list>
+        <ref bean="GroupTypeDefaultAttribute-id" />
+        <ref bean="GroupTypeDefaultAttribute-attributeName" />
+        <ref bean="GroupTypeDefaultAttribute-description" />
+        <ref bean="GroupTypeDefaultAttribute-attributeTypeId" />
+        <ref bean="GroupTypeDefaultAttribute-groupTypeId" />
+        <ref bean="GroupTypeDefaultAttribute-required" />
+        <ref bean="GroupTypeDefaultAttribute-active" />
+        <ref bean="GroupTypeDefaultAttribute-versionNumber" />
+        <ref bean="GroupTypeDefaultAttribute-objectId" />
+      </list>
+    </property>
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kim.bo.GroupTypeDefaultAttribute">
+<!-- Attribute Definitions -->
 
-        <titleAttribute>id</titleAttribute>
 
-        <attributes>
+  <bean id="GroupTypeDefaultAttribute-id" parent="GroupTypeDefaultAttribute-id-parentBean" />
 
-            <attribute name="id" forceUppercase="true">
-                <label>Id</label>
-                <shortLabel>Id</shortLabel>
+  <bean id="GroupTypeDefaultAttribute-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Id" />
+    <property name="maxLength" value="8" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="8" />
+    </property>
+    <property name="name" value="id" />
+    <property name="label" value="Id" />
+  </bean>
+  <bean id="GroupTypeDefaultAttribute-attributeName" parent="GroupTypeDefaultAttribute-attributeName-parentBean" />
 
-                <maxLength>8</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-                <control>
-                 <text size="8"/>
-                </control>
-			</attribute>
+  <bean id="GroupTypeDefaultAttribute-attributeName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="500" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="attributeName" />
+    <property name="label" value="Attribute Name" />
+  </bean>
+  <bean id="GroupTypeDefaultAttribute-description" parent="GroupTypeDefaultAttribute-description-parentBean" />
 
-           <attribute name="attributeName" forceUppercase="false">
-                <label>Attribute Name</label>
-                <shortLabel>Name</shortLabel>
+  <bean id="GroupTypeDefaultAttribute-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Description" />
+    <property name="maxLength" value="4000" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="description" />
+    <property name="label" value="Description" />
+  </bean>
+  <bean id="GroupTypeDefaultAttribute-attributeTypeId" parent="GroupTypeDefaultAttribute-attributeTypeId-parentBean" />
 
-                <maxLength>500</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
+  <bean id="GroupTypeDefaultAttribute-attributeTypeId-parentBean" abstract="true" parent="AttributeType-id">
+    <property name="shortLabel" value="Type" />
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:businessObjectClass="org.kuali.rice.kim.bo.AttributeType"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeKeyInLabel="true"
+            p:keyAttribute="id"
+            p:labelAttribute="attributeTypeName" />
+    </property>
+    <property name="name" value="attributeTypeId" />
+    <property name="label" value="Attribute Type" />
+  </bean>
+  <bean id="GroupTypeDefaultAttribute-groupTypeId" parent="GroupTypeDefaultAttribute-groupTypeId-parentBean" />
 
-                <control>
-                    <text size="100" />
-                </control>
+  <bean id="GroupTypeDefaultAttribute-groupTypeId-parentBean" abstract="true" parent="GroupType-id">
+    <property name="shortLabel" value="Group Type" />
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:businessObjectClass="org.kuali.rice.kim.bo.GroupType"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeKeyInLabel="true"
+            p:keyAttribute="id"
+            p:labelAttribute="name" />
+    </property>
+    <property name="name" value="groupTypeId" />
+    <property name="label" value="Associated Group Type" />
+  </bean>
+  <bean id="GroupTypeDefaultAttribute-required" parent="GroupTypeDefaultAttribute-required-parentBean" />
 
-            </attribute>
-            
-           <attribute name="description" forceUppercase="false">
-                <label>Description</label>
-                <shortLabel>Description</shortLabel>
+  <bean id="GroupTypeDefaultAttribute-required-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Required" />
+    <property name="maxLength" value="3" />
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"
+            p:includeKeyInLabel="false" />
+    </property>
+    <property name="name" value="required" />
+    <property name="label" value="Required" />
+  </bean>
+  <bean id="GroupTypeDefaultAttribute-active" parent="GroupTypeDefaultAttribute-active-parentBean" />
 
-                <maxLength>4000</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true" /></validationPattern>
+  <bean id="GroupTypeDefaultAttribute-active-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Active" />
+    <property name="maxLength" value="3" />
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"
+            p:includeKeyInLabel="false" />
+    </property>
+    <property name="name" value="active" />
+    <property name="label" value="Active" />
+  </bean>
+  <bean id="GroupTypeDefaultAttribute-versionNumber" parent="GroupTypeDefaultAttribute-versionNumber-parentBean" />
 
-                <control>
-                    <text size="100" />
-                </control>
+  <bean id="GroupTypeDefaultAttribute-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+  <bean id="GroupTypeDefaultAttribute-objectId" parent="GroupTypeDefaultAttribute-objectId-parentBean" />
 
-            </attribute>
-           
-           <attributeReference name="attributeTypeId"
-				sourceAttributeName="id"
-				sourceClassName="org.kuali.rice.kim.bo.AttributeType">
-				<label>Attribute Type</label>
-                <shortLabel>Type</shortLabel>
-				<required>true</required>
-				<control>
-					<select
-						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-						businessObjectClass="org.kuali.rice.kim.bo.AttributeType"
-						keyAttribute="id" labelAttribute="attributeTypeName" 
-						includeKeyInLabel="true" />
-				</control>
-			</attributeReference>
-			
-			<attributeReference name="groupTypeId"
-				sourceAttributeName="id"
-				sourceClassName="org.kuali.rice.kim.bo.GroupType">
-				<label>Associated Group Type</label>
-                <shortLabel>Group Type</shortLabel>
-				<required>true</required>
-				<control>
-					<select
-						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-						businessObjectClass="org.kuali.rice.kim.bo.GroupType"
-						keyAttribute="id" labelAttribute="name" 
-						includeKeyInLabel="true" />
-				</control>
-			</attributeReference>
-			
-           <attribute name="required" forceUppercase="true">
-                <label>Required</label>
-
-                <maxLength>3</maxLength>
-               <control>
-                <select valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"/>
-               </control>
-
-           </attribute>
-             
-           <attribute name="active" forceUppercase="true">
-                <label>Active</label>
-                <shortLabel>Active</shortLabel>
-
-                <maxLength>3</maxLength>
-               <control>
-                <select valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"/>
-               </control>
-
-            </attribute>
-
-           <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
-           <attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
-        </attributes>
-
-        <objectLabel>Group Type Default Attribute</objectLabel>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="GroupTypeDefaultAttribute-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
+  </bean>
+</beans>

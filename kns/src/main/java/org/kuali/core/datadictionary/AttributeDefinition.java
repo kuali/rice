@@ -17,16 +17,12 @@
 package org.kuali.core.datadictionary;
 
 import java.math.BigDecimal;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.core.datadictionary.control.ControlDefinition;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
-import org.kuali.core.datadictionary.exception.ClassValidationException;
 import org.kuali.core.datadictionary.mask.Mask;
-import org.kuali.core.datadictionary.mask.MaskFormatter;
 import org.kuali.core.datadictionary.validation.ValidationPattern;
 import org.kuali.core.web.format.Formatter;
 
@@ -38,14 +34,8 @@ import org.kuali.core.web.format.Formatter;
  * 
  */
 public class AttributeDefinition extends DataDictionaryDefinitionBase {
-    protected final static Pattern MATCH_ANYTHING = Pattern.compile(".*");
 
-    // logger
-    private static Log LOG = LogFactory.getLog(AttributeDefinition.class);
-
-    private Boolean override = Boolean.FALSE;
-
-    private Boolean forceUppercase;
+    private Boolean forceUppercase = Boolean.FALSE;
 
     private String name;
     private String label;
@@ -58,26 +48,19 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
     private BigDecimal inclusiveMax;
 
     private ValidationPattern validationPattern;
-    private Boolean required;
+    private Boolean required = Boolean.FALSE;
 
     private ControlDefinition control;
 
-    private String displayWorkgroup;
+    private String displayWorkgroup = "";
     private Mask displayMask;
 
     private String summary;
     private String description;
 
-    private Class formatterClass;
-    private Class attributeClass;
+    private Class<? extends Formatter> formatterClass;
 
-    public AttributeDefinition() {
-        super();
-        
-        LOG.debug("creating new AttributeDefinition");
-
-        this.displayWorkgroup = "";
-    }
+    public AttributeDefinition() {}
 
 
     public void setForceUppercase(Boolean forceUppercase) {
@@ -88,16 +71,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
         return this.forceUppercase;
     }
 
-
-    public void setOverride(Boolean override) {
-        this.override = override;
-    }
-
-    public Boolean getOverride() {
-        return this.override;
-    }
-
-
     public String getName() {
         return name;
     }
@@ -105,9 +78,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
     public void setName(String name) {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("invalid (blank) name");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setName '" + name + "'");
         }
         this.name = name;
     }
@@ -119,9 +89,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
     public void setLabel(String label) {
         if (StringUtils.isBlank(label)) {
             throw new IllegalArgumentException("invalid (blank) label");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setLabel '" + label + "'");
         }
         this.label = label;
     }
@@ -144,9 +111,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(shortLabel)) {
             throw new IllegalArgumentException("invalid (blank) shortLabel");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setShortLabel '" + shortLabel + "'");
-        }
         this.shortLabel = shortLabel;
     }
 
@@ -155,9 +119,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
     }
 
     public void setMaxLength(Integer maxLength) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setMaxLength " + maxLength + "");
-        }
         this.maxLength = maxLength;
     }
 
@@ -217,9 +178,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
         if (control == null) {
             throw new IllegalArgumentException("invalid (null) control");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setControl '" + control + "'");
-        }
         this.control = control;
     }
 
@@ -268,12 +226,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
     }
 
     public void setSummary(String summary) {
-        if (StringUtils.isBlank(summary)) {
-            throw new IllegalArgumentException("invalid (blank) summary");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setSummary '" + summary + "'");
-        }
         this.summary = summary;
     }
 
@@ -282,12 +234,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
     }
 
     public void setDescription(String description) {
-        if (StringUtils.isBlank(description)) {
-            throw new IllegalArgumentException("invalid (blank) description");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setDescription '" + description + "'");
-        }
         this.description = description;
     }
 
@@ -299,22 +245,15 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
         return (displayMask != null);
     }
 
-    public Class getFormatterClass() {
+    public Class<? extends Formatter> getFormatterClass() {
         return formatterClass;
     }
 
-    public void setFormatterClass(Class formatterClass) {
+    public void setFormatterClass(Class<? extends Formatter> formatterClass) {
         if (formatterClass == null) {
             throw new IllegalArgumentException("invalid (null) formatterClass");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setFormatterClass '" + formatterClass.getName() + "'");
-        }
         this.formatterClass = formatterClass;
-    }
-
-    public Class getAttributeClass() {
-        return attributeClass;
     }
 
     /**
@@ -322,48 +261,41 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase {
      * 
      * @see org.kuali.core.datadictionary.DataDictionaryEntry#completeValidation()
      */
-    public void completeValidation(Class rootObjectClass, Class otherObjectClass, ValidationCompletionUtils validationCompletionUtils) {
-
-        if (!validationCompletionUtils.isPropertyOf(rootObjectClass, getName())) {
-            throw new AttributeValidationException("property '" + getName() + "' is not a property of class '" + rootObjectClass.getName() + "' (" + getParseLocation() + ")");
-        }
-
-        if (hasFormatterClass()) {
-            if (!Formatter.class.isAssignableFrom(getFormatterClass())) {
-                throw new ClassValidationException("formatterClass '" + getFormatterClass().getName() + "' for attribute '" + getName() + "' is not a subclass of pojo.format.Formatter (" + getParseLocation() + ")");
+    public void completeValidation(Class rootObjectClass, Class otherObjectClass) {
+        try {
+        
+            if (!DataDictionary.isPropertyOf(rootObjectClass, getName())) {
+                throw new AttributeValidationException("property '" + getName() + "' is not a property of class '" + rootObjectClass.getName() + "' (" + "" + ")");
             }
-        }
-
-        getControl().completeValidation(rootObjectClass, otherObjectClass, validationCompletionUtils);
-
-        if (StringUtils.isNotBlank(getDisplayWorkgroup()) && !hasDisplayMask()) {
-            throw new AttributeValidationException("property '" + getName() + "' has a display workgroup defined but not a valid display mask '" + rootObjectClass.getName() + "' (" + getParseLocation() + ")");
-        }
-
-        if (hasDisplayMask()) {
-            if (getDisplayMask().getMaskFormatter() == null && getDisplayMask().getMaskFormatterClass() == null) {
-                throw new AttributeValidationException("No mask formatter or formatter class specified for secure attribute " + getName() + "' (" + getParseLocation() + ")");
+    
+            if ( getControl() == null ) {
+                throw new AttributeValidationException( "property '" + getName() + "' in class '" + rootObjectClass.getName() + " does not have a control defined" );
             }
-
-            if (getDisplayMask().getMaskFormatterClass() != null) {
-                if (!MaskFormatter.class.isAssignableFrom(getDisplayMask().getMaskFormatterClass())) {
-                    throw new ClassValidationException("Class '" + getDisplayMask().getMaskFormatterClass().getName() + "' for secure attribute '" + getName() + "' does not implement org.kuali.core.datadictionary.mask.MaskFormatter (" + getParseLocation() + ")");
+            
+            getControl().completeValidation(rootObjectClass, otherObjectClass);
+    
+            if (StringUtils.isNotBlank(getDisplayWorkgroup()) && !hasDisplayMask()) {
+                throw new AttributeValidationException("property '" + getName() + "' has a display workgroup defined but not a valid display mask '" + rootObjectClass.getName() + "' (" + "" + ")");
+            }
+    
+            if (hasDisplayMask()) {
+                if (getDisplayMask().getMaskFormatter() == null && getDisplayMask().getMaskFormatterClass() == null) {
+                    throw new AttributeValidationException("No mask formatter or formatter class specified for secure attribute " + getName() + "' (" + "" + ")");
                 }
             }
+    
+    
+            // set default values
+            if (getForceUppercase() == null) {
+                setForceUppercase(Boolean.FALSE);
+            }
+            if (isRequired() == null) {
+                setRequired(Boolean.FALSE);
+            }
+        } catch ( RuntimeException ex ) {
+            LogFactory.getLog(getClass()).fatal( "Unable to validate attribute " + rootObjectClass + "." + getName() + ": " + ex.getMessage() );
+            throw ex;
         }
-
-
-        // set default values
-        if (getForceUppercase() == null) {
-            setForceUppercase(Boolean.FALSE);
-        }
-        if (isRequired() == null) {
-            setRequired(Boolean.FALSE);
-
-        }
-
-        // lookup and set attribute class
-        attributeClass = rootObjectClass;
     }
 
 

@@ -1,44 +1,63 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+  <bean id="GroupQualifiedRoleAttribute" parent="GroupQualifiedRoleAttribute-parentBean" />
 
- http://www.opensource.org/licenses/ecl1.php
+  <bean id="GroupQualifiedRoleAttribute-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute" />
+    <property name="titleAttribute" value="attributeName" />
+    <property name="objectLabel" value="Group Qualified Role Attribute" />
+    <property name="attributes" >
+      <list>
+        <ref bean="GroupQualifiedRoleAttribute-id" />
+        <ref bean="GroupQualifiedRoleAttribute-attributeName" />
+        <ref bean="GroupQualifiedRoleAttribute-attributeValue" />
+        <ref bean="GroupQualifiedRoleAttribute-roleId" />
+        <ref bean="GroupQualifiedRoleAttribute-groupId" />
+        <ref bean="GroupQualifiedRoleAttribute-versionNumber" />
+        <ref bean="GroupQualifiedRoleAttribute-objectId" />
+      </list>
+    </property>
+  </bean>
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute">
-        <titleAttribute>attributeName</titleAttribute>
+<!-- Attribute Definitions -->
 
-        <attributes>
-            <attributeReference name="id" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="id" />
-            <attributeReference name="attributeName" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="attributeName" />
-			<attributeReference name="attributeValue" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="attributeValue" />
-   			<attributeReference name="roleId" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="roleId" />
-            
-			<attributeReference name="groupId" sourceClassName="org.kuali.rice.kim.bo.Group" sourceAttributeName="id">
-				<label>Group Id</label>
-                <shortLabel>Group Id</shortLabel>
-				<required>true</required>
-				<control>
-					<hidden/>
-				</control>
-			</attributeReference>
 
-            <attributeReference name="versionNumber" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="versionNumber" />
-            <attributeReference name="objectId" sourceClassName="org.kuali.rice.kim.bo.AbstractQualifiedRoleAttribute" sourceAttributeName="objectId" />
-        </attributes>
-        <objectLabel>Group Qualified Role Attribute</objectLabel>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="GroupQualifiedRoleAttribute-id" parent="GroupQualifiedRoleAttribute-id-parentBean" />
+
+  <bean id="GroupQualifiedRoleAttribute-id-parentBean" abstract="true" parent="AbstractQualifiedRoleAttribute-id">
+  </bean>
+  <bean id="GroupQualifiedRoleAttribute-attributeName" parent="GroupQualifiedRoleAttribute-attributeName-parentBean" />
+
+  <bean id="GroupQualifiedRoleAttribute-attributeName-parentBean" abstract="true" parent="AbstractQualifiedRoleAttribute-attributeName">
+  </bean>
+  <bean id="GroupQualifiedRoleAttribute-attributeValue" parent="GroupQualifiedRoleAttribute-attributeValue-parentBean" />
+
+  <bean id="GroupQualifiedRoleAttribute-attributeValue-parentBean" abstract="true" parent="AbstractQualifiedRoleAttribute-attributeValue">
+  </bean>
+  <bean id="GroupQualifiedRoleAttribute-roleId" parent="GroupQualifiedRoleAttribute-roleId-parentBean" />
+
+  <bean id="GroupQualifiedRoleAttribute-roleId-parentBean" abstract="true" parent="AbstractQualifiedRoleAttribute-roleId">
+  </bean>
+  <bean id="GroupQualifiedRoleAttribute-groupId" parent="GroupQualifiedRoleAttribute-groupId-parentBean" />
+
+  <bean id="GroupQualifiedRoleAttribute-groupId-parentBean" abstract="true" parent="Group-id">
+    <property name="shortLabel" value="Group Id" />
+    <property name="control" >
+      <bean parent="HiddenControlDefinition" />
+    </property>
+    <property name="name" value="groupId" />
+    <property name="label" value="Group Id" />
+  </bean>
+  <bean id="GroupQualifiedRoleAttribute-versionNumber" parent="GroupQualifiedRoleAttribute-versionNumber-parentBean" />
+
+  <bean id="GroupQualifiedRoleAttribute-versionNumber-parentBean" abstract="true" parent="AbstractQualifiedRoleAttribute-versionNumber">
+  </bean>
+  <bean id="GroupQualifiedRoleAttribute-objectId" parent="GroupQualifiedRoleAttribute-objectId-parentBean" />
+
+  <bean id="GroupQualifiedRoleAttribute-objectId-parentBean" abstract="true" parent="AbstractQualifiedRoleAttribute-objectId">
+  </bean>
+</beans>

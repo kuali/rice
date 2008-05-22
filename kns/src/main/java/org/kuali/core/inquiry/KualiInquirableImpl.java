@@ -26,12 +26,14 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.core.bo.BusinessObject;
+import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.datadictionary.InquirySectionDefinition;
 import org.kuali.core.lookup.CollectionIncomplete;
 import org.kuali.core.lookup.LookupUtils;
 import org.kuali.core.service.BusinessObjectDictionaryService;
 import org.kuali.core.service.DataDictionaryService;
+import org.kuali.core.service.KualiConfigurationService;
 import org.kuali.core.service.LookupService;
 import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.service.UniversalUserService;
@@ -44,6 +46,8 @@ import org.kuali.core.web.ui.SectionBridge;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.util.RiceConstants;
 
 /**
  * Kuali inquirable implementation. Implements methods necessary to retrieve the business object and render the ui.
@@ -60,6 +64,7 @@ public class KualiInquirableImpl implements Inquirable {
     private DataDictionaryService dataDictionaryService;
     private EncryptionService encryptionService;
     private UniversalUserService universalUserService;
+    private KualiConfigurationService kualiConfigurationService;
 
     private Class businessObjectClass;
 
@@ -138,23 +143,40 @@ public class KualiInquirableImpl implements Inquirable {
         Class inquiryBusinessObjectClass = null;
         String attributeRefName = "";
         boolean isPkReference = false;
+        
+        boolean doesNestedReferenceHaveOwnPrimitiveReference = false;
+        BusinessObject nestedBusinessObject = null;
+        
         if (attributeName.equals(getBusinessObjectDictionaryService().getTitleAttribute(businessObject.getClass()))) {
             inquiryBusinessObjectClass = businessObject.getClass();
             isPkReference = true;
         }
         else {
             if (ObjectUtils.isNestedAttribute(attributeName)) {
+                // if we have a reference object, we should determine if we should either provide an inquiry link to
+                // the reference object itself, or some other nested primitive.
+                
+                // for example, if the attribute is "referenceObject.someAttribute", and there is no primitive reference for
+                // "someAttribute", then an inquiry link is provided to the "referenceObject".  If it does have a primitive reference, then
+                // the inquiry link is directed towards it instead
                 String nestedReferenceName = ObjectUtils.getNestedAttributePrefix(attributeName);
                 Object nestedReferenceObject = ObjectUtils.getPropertyValue(businessObject, nestedReferenceName);
                 
                 if (ObjectUtils.isNotNull(nestedReferenceObject) && nestedReferenceObject instanceof BusinessObject) {
-                    BusinessObject nestedBusinessObject = (BusinessObject) nestedReferenceObject;
+                    nestedBusinessObject = (BusinessObject) nestedReferenceObject;
                     String nestedAttributePrimitive = ObjectUtils.getNestedAttributePrimitive(attributeName);
                     
                     Map primitiveReference = LookupUtils.getPrimitiveReference(nestedBusinessObject, nestedAttributePrimitive);
                     if (primitiveReference != null && !primitiveReference.isEmpty()) {
                         attributeRefName = (String) primitiveReference.keySet().iterator().next();
                         inquiryBusinessObjectClass = (Class) primitiveReference.get(attributeRefName);
+                        doesNestedReferenceHaveOwnPrimitiveReference = true;
+                    }
+                    else {
+                        inquiryBusinessObjectClass = nestedBusinessObject.getClass();
+                        
+                        // I know it's already set to null, just to show how this variable is set
+                        doesNestedReferenceHaveOwnPrimitiveReference = false;
                     }
                 }
             }
@@ -167,6 +189,17 @@ public class KualiInquirableImpl implements Inquirable {
             }
         }
 
+        if (inquiryBusinessObjectClass != null && DocumentHeader.class.isAssignableFrom(inquiryBusinessObjectClass)) {
+            String documentNumber = (String) ObjectUtils.getPropertyValue(businessObject, attributeName);
+            if (!StringUtils.isBlank(documentNumber)) {
+                // if NullPointerException on the following line, maybe the Spring bean wasn't injected w/ KualiConfigurationException, or if 
+                // instances of a sub-class of this class are not Spring created, then override getKualiConfigurationService() in the subclass
+                // to return the configuration service from a Spring service locator (or set it).
+                return getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + KNSConstants.DOCHANDLER_DO_URL + documentNumber + KNSConstants.DOCHANDLER_URL_CHUNK;
+            }
+            return KNSConstants.EMPTY_STRING;
+        }
+        
         if (inquiryBusinessObjectClass == null || getBusinessObjectDictionaryService().isInquirable(inquiryBusinessObjectClass) == null || !getBusinessObjectDictionaryService().isInquirable(inquiryBusinessObjectClass).booleanValue()) {
             return KNSConstants.EMPTY_STRING;
         }
@@ -195,7 +228,15 @@ public class KualiInquirableImpl implements Inquirable {
             keyName = (String) iter.next();
             keyConversion = keyName;
             if (ObjectUtils.isNestedAttribute(attributeName)) {
-                keyConversion = ObjectUtils.getNestedAttributePrefix(attributeName) + "." + keyName;
+                if (doesNestedReferenceHaveOwnPrimitiveReference) {
+                    String nestedAttributePrefix = ObjectUtils.getNestedAttributePrefix(attributeName);
+                    String foreignKeyFieldName = getPersistenceStructureService().getForeignKeyFieldName(nestedBusinessObject.getClass(), attributeRefName, keyName);
+
+                    keyConversion = nestedAttributePrefix + "." + foreignKeyFieldName;
+                }
+                else {
+                    keyConversion = ObjectUtils.getNestedAttributePrefix(attributeName) + "." + keyName;
+                }
             }
             else {
                 if (isPkReference) {
@@ -373,6 +414,20 @@ public class KualiInquirableImpl implements Inquirable {
 
     public void setUniversalUserService(UniversalUserService universalUserService) {
         this.universalUserService = universalUserService;
+    }
+
+    /**
+     * Retrieves the {@link KualiConfigurationService}.  In the event that instances of this class are not created as Spring beans,
+     * override this method to return an instance from the service locator.
+     * 
+     * @return
+     */
+    protected KualiConfigurationService getKualiConfigurationService() {
+        return this.kualiConfigurationService;
+    }
+
+    public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
+        this.kualiConfigurationService = kualiConfigurationService;
     }
     
     

@@ -1,203 +1,253 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kim.bo.Role">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-        <inquiry>
-            <title>Role Inquiry</title>
+  <bean id="Role" parent="Role-parentBean" />
 
-            <inquirySections>
-            <inquirySection title="Header Text">
-	            <inquiryFields>
-	                <field attributeName="id" />
-	                <field attributeName="name" />
-	                <field attributeName="description" />
-	            </inquiryFields>
-            </inquirySection>
+  <bean id="Role-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Role" />
+    <property name="inquiryDefinition" >
+      <ref bean="Role-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="Role-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="id" />
+    <property name="objectLabel" value="Role" />
+    <property name="collections" >
+      <list>
+        <bean parent="CollectionDefinition"
+              p:shortLabel="RoleAttributes"
+              p:summary="These are attributes for the role."
+              p:name="roleAttributes"
+              p:label="Role Attributes"
+              p:description="Attributes defined for the role." />
+        <bean parent="CollectionDefinition"
+              p:shortLabel="Permissions"
+              p:summary="These are the permissions that are aggregated by this role."
+              p:name="permissions"
+              p:label="Permissions with Role"
+              p:description="Permissions given to anyone/anything with this Role." />
+        <bean parent="CollectionDefinition"
+              p:shortLabel="Group Qualified Roles"
+              p:summary="These are groups that have this role along with their qualifications."
+              p:name="groupQualifiedRoles"
+              p:label="Groups with Qualified Roles"
+              p:description="Groups that have Qualified Roles for this Role." />
+        <bean parent="CollectionDefinition"
+              p:shortLabel="Principal Qualified Roles"
+              p:summary="These are principals that have this role along with their qualifications."
+              p:name="principalQualifiedRoles"
+              p:label="Principals with Qualified Roles"
+              p:description="Principals that have Qualified Roles for this Role." />
+        <bean parent="CollectionDefinition"
+              p:shortLabel="Principals"
+              p:summary="These are the principals with this role."
+              p:name="principals"
+              p:label="Principals with Role"
+              p:description="Principals that are given this Role." />
+        <bean parent="CollectionDefinition"
+              p:shortLabel="Groups"
+              p:summary="These are the groups with this role."
+              p:name="groups"
+              p:label="Groups with Role"
+              p:description="Groups that are given this Role." />
+        <bean parent="CollectionDefinition"
+              p:shortLabel="Group Qualified Role Attributes"
+              p:summary="These are groups that have this role along with their qualification attributes."
+              p:name="groupQualifiedRoleAttributes"
+              p:label="Groups with Qualified Role Attributes"
+              p:description="Group Qualified Role Attributes for this Role." />
+        <bean parent="CollectionDefinition"
+              p:shortLabel="Principal Qualified Role Attributes"
+              p:summary="These are principals that have this role along with their qualification attributes."
+              p:name="principalQualifiedRoleAttributes"
+              p:label="Principals with Qualified Role Attributes"
+              p:description="Principal Qualified Role Attributes for this Role." />
+      </list>
+    </property>
+    <property name="attributes" >
+      <list>
+        <ref bean="Role-id" />
+        <ref bean="Role-name" />
+        <ref bean="Role-description" />
+        <ref bean="Role-versionNumber" />
+        <ref bean="Role-objectId" />
+      </list>
+    </property>
+  </bean>
 
-            <inquirySection title="Role Attributes">
-                    <inquiryFields>
-                        <inquiryCollection name="roleAttributes"
-                            businessObjectClass="org.kuali.rice.kim.bo.RoleAttribute">
-                            <field attributeName="id" />
-                            <field attributeName="attributeTypeId" />
-                            <field attributeName="attributeName" />
-                            <field attributeName="value" />
-                            <field attributeName="roleId" />
-                         </inquiryCollection>
-                    </inquiryFields>
-            </inquirySection>
+<!-- Attribute Definitions -->
 
-            
-            <inquirySection title="Role Permissions">
-                    <inquiryFields>
-                        <inquiryCollection name="permissions"
-                            businessObjectClass="org.kuali.rice.kim.bo.Permission">
-                            <field attributeName="id" />
-                            <field attributeName="name" />
-                            <field attributeName="description" />
-                         </inquiryCollection>
-                    </inquiryFields>
-            </inquirySection>
-            
-           </inquirySections>
-        </inquiry>
 
-        <lookup>
-            <title>Role Lookup</title>
+  <bean id="Role-id" parent="Role-id-parentBean" />
 
-            <instructions>Lookup a Role</instructions>
+  <bean id="Role-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="id" />
+    <property name="maxLength" value="8" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="8" />
+    </property>
+    <property name="name" value="id" />
+    <property name="label" value="ID" />
+  </bean>
+  <bean id="Role-name" parent="Role-name-parentBean" />
 
-            <defaultSort sortAscending="true">
-                <sortAttributes>
-                    <sortAttribute attributeName="name" />
-                </sortAttributes>
-            </defaultSort>
+  <bean id="Role-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="500" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="name" value="name" />
+    <property name="label" value="Role Name" />
+  </bean>
+  <bean id="Role-description" parent="Role-description-parentBean" />
 
-            <lookupFields>
-                <lookupField attributeName="id" required="false" />
-                <lookupField attributeName="name" required="false" />
-            </lookupFields>
+  <bean id="Role-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Description" />
+    <property name="maxLength" value="4000" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextareaControlDefinition"
+            p:cols="40"
+            p:rows="10" />
+    </property>
+    <property name="name" value="description" />
+    <property name="label" value="Role Description" />
+  </bean>
+  <bean id="Role-versionNumber" parent="Role-versionNumber-parentBean" />
 
-            <resultFields>
-                <field attributeName="id" />
-                <field attributeName="name" />
-                <field attributeName="description" />
-            </resultFields>
-        </lookup>
+  <bean id="Role-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+  <bean id="Role-objectId" parent="Role-objectId-parentBean" />
 
-        <titleAttribute>id</titleAttribute>
+  <bean id="Role-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
+  </bean>
 
-        <attributes>
+<!-- Business Object Inquiry Definition -->
 
-            <attribute name="id" forceUppercase="true">
-                <label>ID</label>
-                <shortLabel>id</shortLabel>
 
-                <maxLength>8</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
+  <bean id="Role-inquiryDefinition" parent="Role-inquiryDefinition-parentBean" />
 
-                <control>
-                    <text size="8" />
-                </control>
+  <bean id="Role-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="id" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="name" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="description" />
+            </list>
+          </property>
+          <property name="title" value="Header Text" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="roleAttributes" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.RoleAttribute" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="id" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="attributeTypeId" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="attributeName" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="value" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="roleId" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Role Attributes" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="permissions" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Permission" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="id" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="name" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="description" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Role Permissions" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="Role Inquiry" />
+  </bean>
 
-			</attribute>
+<!-- Business Object Lookup Definition -->
 
-            <attribute name="name" forceUppercase="false">
-                <label>Role Name</label>
-                <shortLabel>Name</shortLabel>
 
-                <maxLength>500</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true"/></validationPattern>
+  <bean id="Role-lookupDefinition" parent="Role-lookupDefinition-parentBean" />
 
-                <control>
-                    <text size="100" />
-                </control>
-
-			</attribute>
-			
-			<attribute name="description" forceUppercase="false">
-                <label>Role Description</label>
-                <shortLabel>Description</shortLabel>
-
-                <maxLength>4000</maxLength>
-                <validationPattern><anyCharacter allowWhitespace="true"/></validationPattern>
-
-                <control>
-                    <textarea cols="40" rows="10"/>
-                </control>
-
-			</attribute>
-
-            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
-			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
-        </attributes>
-        
-        <collections>
-            <collection name="roleAttributes">
-        		<label>Role Attributes</label>
-        		<shortLabel>RoleAttributes</shortLabel>
-        		<summary>These are attributes for the role.</summary>
-        		<description>
-        			Attributes defined for the role.
-        		</description>
-        	</collection>
-            <collection name="permissions">
-        		<label>Permissions with Role</label>
-        		<shortLabel>Permissions</shortLabel>
-        		<summary>These are the permissions that are aggregated by this role.</summary>
-        		<description>
-        			Permissions given to anyone/anything with this Role.
-        		</description>
-        	</collection>
-        	<collection name="groupQualifiedRoles">
-        		<label>Groups with Qualified Roles</label>
-        		<shortLabel>Group Qualified Roles</shortLabel>
-        		<summary>These are groups that have this role along with their qualifications.</summary>
-        		<description>
-        			Groups that have Qualified Roles for this Role.
-        		</description>
-        	</collection>
-        	<collection name="principalQualifiedRoles">
-        		<label>Principals with Qualified Roles</label>
-        		<shortLabel>Principal Qualified Roles</shortLabel>
-        		<summary>These are principals that have this role along with their qualifications.</summary>
-        		<description>
-        			Principals that have Qualified Roles for this Role.
-        		</description>
-        	</collection>
-        	<collection name="principals">
-        		<label>Principals with Role</label>
-        		<shortLabel>Principals</shortLabel>
-        		<summary>These are the principals with this role.</summary>
-        		<description>
-        			Principals that are given this Role.
-        		</description>
-        	</collection>
-        	<collection name="groups">
-        		<label>Groups with Role</label>
-        		<shortLabel>Groups</shortLabel>
-        		<summary>These are the groups with this role.</summary>
-        		<description>
-        			Groups that are given this Role.
-        		</description>
-        	</collection>
-        	<collection name="groupQualifiedRoleAttributes">
-        		<label>Groups with Qualified Role Attributes</label>
-        		<shortLabel>Group Qualified Role Attributes</shortLabel>
-        		<summary>These are groups that have this role along with their qualification attributes.</summary>
-        		<description>
-        			Group Qualified Role Attributes for this Role.
-        		</description>
-        	</collection>
-        	<collection name="principalQualifiedRoleAttributes">
-        		<label>Principals with Qualified Role Attributes</label>
-        		<shortLabel>Principal Qualified Role Attributes</shortLabel>
-        		<summary>These are principals that have this role along with their qualification attributes.</summary>
-        		<description>
-        			Principal Qualified Role Attributes for this Role.
-        		</description>
-        	</collection>
-        	
-        </collections>
-
-        <objectLabel>Role</objectLabel>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="Role-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Lookup a Role" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="name" />
+        <bean parent="FieldDefinition"
+              p:attributeName="description" />
+      </list>
+    </property>
+    <property name="title" value="Role Lookup" />
+  </bean>
+</beans>

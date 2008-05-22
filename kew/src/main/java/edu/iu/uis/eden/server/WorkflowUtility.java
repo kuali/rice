@@ -19,10 +19,13 @@ package edu.iu.uis.eden.server;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import edu.iu.uis.eden.clientapp.vo.ActionItemVO;
 import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentContentVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentDetailVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchCriteriaVO;
+import edu.iu.uis.eden.clientapp.vo.DocumentSearchResultVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentTypeVO;
 import edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO;
 import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
@@ -56,6 +59,9 @@ public interface WorkflowUtility extends Remote {
     public DocumentTypeVO getDocumentTypeByName(String documentTypeName) throws RemoteException, WorkflowException;
     public Long getNewResponsibilityId() throws RemoteException, WorkflowException;
     public WorkgroupVO[] getUserWorkgroups(UserIdVO userId) throws RemoteException, WorkflowException;
+    public Integer getUserActionItemCount(UserIdVO userId) throws WorkflowException;
+    public ActionItemVO[] getActionItems(Long routeHeaderId) throws WorkflowException;
+    public ActionItemVO[] getActionItems(Long routeHeaderId, String[] actionRequestedCodes) throws WorkflowException;
     public ActionRequestVO[] getActionRequests(Long documentId) throws RemoteException, WorkflowException;
     public ActionRequestVO[] getActionRequests(Long routeHeaderId, String nodeName, UserIdVO userId) throws RemoteException, WorkflowException;
     public ActionTakenVO[] getActionsTaken(Long documentId) throws RemoteException, WorkflowException;
@@ -67,6 +73,8 @@ public interface WorkflowUtility extends Remote {
     //public RouteHeaderDetailVO routingSimulation(RouteHeaderDetailVO detail, ActionTakenVO[] actionsToTake) throws RemoteException, WorkflowException;
     public boolean isFinalApprover(Long documentId, UserIdVO userId) throws RemoteException, WorkflowException;
     public boolean isSuperUserForDocumentType(UserIdVO userId, Long documentTypeId) throws RemoteException, WorkflowException;
+    public DocumentSearchResultVO performDocumentSearch(DocumentSearchCriteriaVO criteriaVO) throws RemoteException, WorkflowException;
+    public DocumentSearchResultVO performDocumentSearch(UserIdVO userId, DocumentSearchCriteriaVO criteriaVO) throws RemoteException, WorkflowException;
 
     // new in 2.3
 

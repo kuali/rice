@@ -36,7 +36,7 @@ public class MaintainableSubSectionHeaderDefinition extends MaintainableItemDefi
      * 
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */    
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils util) {
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         //do nothing ? 
     }
     

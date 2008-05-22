@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.kuali.workflow.test.KEWTestCase;
 
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -35,7 +34,7 @@ import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
 import edu.iu.uis.eden.docsearch.DocSearchUtils;
 import edu.iu.uis.eden.docsearch.DocumentSearchResultComponents;
 import edu.iu.uis.eden.docsearch.DocumentSearchService;
-import edu.iu.uis.eden.docsearch.SearchAttributeCriteriaComponent;
+import edu.iu.uis.eden.docsearch.DocumentSearchTestBase;
 import edu.iu.uis.eden.docsearch.SearchableAttribute;
 import edu.iu.uis.eden.docsearch.SearchableAttributeDateTimeValue;
 import edu.iu.uis.eden.docsearch.SearchableAttributeFloatValue;
@@ -51,7 +50,6 @@ import edu.iu.uis.eden.doctype.DocumentTypeService;
 import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.UserService;
@@ -64,57 +62,57 @@ import edu.iu.uis.eden.util.Utilities;
  * KULWF-654: Tests the resolution to this issue by configuring a CustomActionListAttribute as well as a
  * searchable attribute.
  */
-public class StandardGenericXMLSearchableAttributeRangesTest extends KEWTestCase {
+public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSearchTestBase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("XmlConfig.xml");
     }
 
-    private StandardGenericXMLSearchableAttribute getAttribute(String name) {
-        String attName = name;
-        if (attName == null) {
-            attName = "XMLSearchableAttribute";
-        }
-        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(attName);
-        StandardGenericXMLSearchableAttribute attribute = new StandardGenericXMLSearchableAttribute();
-        attribute.setRuleAttribute(ruleAttribute);
-        return attribute;
-    }
-
-    private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
-    	String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
-    	String savedKey = key;
-    	SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
-    	Field field = getFieldByFormKey(docType, formKey);
-    	if (field != null) {
-        	sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
-        	sacc.setRangeSearch(field.isMemberOfRange());
-        	sacc.setAllowWildcards(field.isAllowingWildcards());
-        	sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
-        	sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
-        	sacc.setCaseSensitive(field.isCaseSensitive());
-        	sacc.setSearchInclusive(field.isInclusive());
-            sacc.setSearchable(field.isSearchable());
-            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-    	}
-    	return sacc;
-    }
-
-    private Field getFieldByFormKey(DocumentType docType, String formKey) {
-    	if (docType == null) {
-    		return null;
-    	}
-		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
-			for (Row row : searchableAttribute.getSearchingRows()) {
-				for (Field field : row.getFields()) {
-					if (field.getPropertyName().equals(formKey)) {
-						return field;
-					}
-				}
-			}
-		}
-		return null;
-    }
+//    protected StandardGenericXMLSearchableAttribute getAttribute(String name) {
+//        String attName = name;
+//        if (attName == null) {
+//            attName = "XMLSearchableAttribute";
+//        }
+//        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(attName);
+//        StandardGenericXMLSearchableAttribute attribute = new StandardGenericXMLSearchableAttribute();
+//        attribute.setRuleAttribute(ruleAttribute);
+//        return attribute;
+//    }
+//
+//    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
+//    	String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
+//    	String savedKey = key;
+//    	SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
+//    	Field field = getFieldByFormKey(docType, formKey);
+//    	if (field != null) {
+//        	sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
+//        	sacc.setRangeSearch(field.isMemberOfRange());
+//        	sacc.setAllowWildcards(field.isAllowingWildcards());
+//        	sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
+//        	sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
+//        	sacc.setCaseSensitive(field.isCaseSensitive());
+//        	sacc.setSearchInclusive(field.isInclusive());
+//            sacc.setSearchable(field.isSearchable());
+//            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+//    	}
+//    	return sacc;
+//    }
+//
+//    protected Field getFieldByFormKey(DocumentType docType, String formKey) {
+//    	if (docType == null) {
+//    		return null;
+//    	}
+//		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
+//			for (Row row : searchableAttribute.getSearchingRows()) {
+//				for (Field field : row.getFields()) {
+//					if (field.getPropertyName().equals(formKey)) {
+//						return field;
+//					}
+//				}
+//			}
+//		}
+//		return null;
+//    }
 
     /*
      * Test method for 'edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchingRows()'

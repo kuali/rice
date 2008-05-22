@@ -21,13 +21,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.KualiModule;
 import org.kuali.core.bo.user.AuthenticationUserId;
 import org.kuali.core.bo.user.KualiModuleUser;
 import org.kuali.core.bo.user.KualiModuleUserProperty;
 import org.kuali.core.bo.user.UniversalUser;
-import org.kuali.core.datadictionary.DataDictionaryDefinitionBase;
 import org.kuali.core.datadictionary.MaintainableFieldDefinition;
 import org.kuali.core.datadictionary.MaintainableSectionDefinition;
 import org.kuali.core.document.Document;
@@ -45,6 +43,7 @@ import org.kuali.core.web.ui.Section;
 import org.kuali.core.web.ui.SectionBridge;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 import edu.iu.uis.eden.exception.WorkflowException;
 
@@ -73,7 +72,6 @@ public class UniversalUserMaintainable extends KualiMaintainableImpl {
         List<Section> sections = new ArrayList<Section>();
         UniversalUser universalUser = (UniversalUser)getBusinessObject();
         List<KualiModule> modules = kualiModuleService.getInstalledModules(); 
-        DataDictionaryDefinitionBase.isParsingFile = false; // prevents from attempting to retrieve file name and line number (which throws an exception)
         
         // iterate over installed modules - create a section for each        
         for ( KualiModule module : modules ) {
@@ -99,12 +97,12 @@ public class UniversalUserMaintainable extends KualiMaintainableImpl {
             // add the UUID field to support proper linking of objects
             MaintainableFieldDefinition fieldDef = new MaintainableFieldDefinition();
             fieldDef.setName( "personUniversalIdentifier" );
-            sectionDef.addMaintainableItem( fieldDef );
+            sectionDef.getMaintainableItems().add( fieldDef );
 
             for ( String propertyName : userPropertyNames ) {
                 fieldDef = new MaintainableFieldDefinition();
                 fieldDef.setName( propertyName );                
-                sectionDef.addMaintainableItem( fieldDef );
+                sectionDef.getMaintainableItems().add( fieldDef );
             }
             
             try {
@@ -235,8 +233,8 @@ public class UniversalUserMaintainable extends KualiMaintainableImpl {
      */
     public Map populateBusinessObject(Map fieldValues) {
         // need to make sure that the UUID is populated first for later fields
-        if ( fieldValues.containsKey( RicePropertyConstants.PERSON_UNIVERSAL_IDENTIFIER ) ) {
-            ((UniversalUser)getBusinessObject()).setPersonUniversalIdentifier( (String)fieldValues.get( RicePropertyConstants.PERSON_UNIVERSAL_IDENTIFIER ) );
+        if ( fieldValues.containsKey( KNSPropertyConstants.PERSON_UNIVERSAL_IDENTIFIER ) ) {
+            ((UniversalUser)getBusinessObject()).setPersonUniversalIdentifier( (String)fieldValues.get( KNSPropertyConstants.PERSON_UNIVERSAL_IDENTIFIER ) );
         }
         return super.populateBusinessObject( fieldValues );
     }

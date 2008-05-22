@@ -21,6 +21,7 @@ import java.util.List;
 import org.kuali.core.KualiModule;
 import org.kuali.core.authorization.KualiModuleAuthorizerBase;
 import org.kuali.core.web.servlet.dwr.GlobalResourceDelegatingSpringCreator;
+import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ModuleConfigurer;
 import org.kuali.rice.core.Core;
@@ -68,6 +69,7 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 					kualiModule.setModuleId(Core.getCurrentContextConfig().getMessageEntity());
 					kualiModule.setModuleName(Core.getCurrentContextConfig().getMessageEntity());
 					kualiModule.afterPropertiesSet();
+					KNSServiceLocator.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles(true);
 					this.started = true;
 				}
 

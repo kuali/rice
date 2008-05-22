@@ -33,6 +33,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  */
 public interface ActionListDAO {
     public Collection<ActionItem> getActionList(WorkflowUser workflowUser, ActionListFilter filter);
+    public Collection<ActionItem> getActionList(Long routeHeaderId, ActionListFilter filter);
     public int getCount(String workflowId);
     
     /**

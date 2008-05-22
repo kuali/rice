@@ -17,17 +17,9 @@
 package org.kuali.core.datadictionary;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.kuali.core.datadictionary.exception.DuplicateEntryException;
 
 /**
  * Contains section-related information relating to the parent MaintainableDocument.
@@ -37,21 +29,14 @@ import org.kuali.core.datadictionary.exception.DuplicateEntryException;
  * 
  */
 public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase {
-    // logger
-    private static Log LOG = LogFactory.getLog(MaintainableSectionDefinition.class);
 
     private String title;
 
-    private Map<String, MaintainableItemDefinition> maintainableItems;
+    private List<MaintainableItemDefinition> maintainableItems = new ArrayList<MaintainableItemDefinition>();
     
-    private boolean hidden;
+    private boolean hidden = false;
 
-    public MaintainableSectionDefinition() {
-        LOG.debug("creating new LookupDefinition");
-
-        this.maintainableItems = new LinkedHashMap();
-    }
-
+    public MaintainableSectionDefinition() {}
 
     /**
      * @return title
@@ -60,8 +45,6 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
         return title;
     }
 
-    
-    
     /**
      * Default the ID to the title for now.
      * 
@@ -86,50 +69,16 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
         if (StringUtils.isBlank(title)) {
             throw new IllegalArgumentException("invalid (blank) title");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setTitle '" + title + "'");
-        }
 
         this.title = title;
-    }
-
-    /**
-     * @param maintainableField
-     * @throws IllegalArgumentException if the given maintainableField is null
-     */
-    public void addMaintainableItem(MaintainableItemDefinition maintainableItem) {
-        if (maintainableItem == null) {
-            throw new IllegalArgumentException("invalid (null) maintainableItem");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling addMaintainableItem for item '" + maintainableItem.getName() + "'");
-        }
-        
-        String itemName = maintainableItem.getName();
-        if (this.maintainableItems.containsKey(itemName)) {
-            throw new DuplicateEntryException("duplicate itemName entry for item '" + itemName + "'");
-        }
-
-        this.maintainableItems.put(itemName, maintainableItem);
-    }
-
-    /**
-     * @return List of attributeNames of all MaintainableFieldDefinitions associated with this MaintainableSection, in the order in
-     *         which they were added
-     */
-    public List getMaintainableItemNames() {
-        List itemNames = new ArrayList();
-        itemNames.addAll(this.maintainableItems.keySet());
-
-        return Collections.unmodifiableList(itemNames);
     }
 
     /**
      * @return Collection of all MaintainableFieldDefinitions associated with this MaintainableSection, in the order in which they
      *         were added
      */
-    public Collection<MaintainableItemDefinition> getMaintainableItems() {
-        return Collections.unmodifiableCollection(this.maintainableItems.values());
+    public List<MaintainableItemDefinition> getMaintainableItems() {
+        return maintainableItems;
     }
 
 
@@ -138,12 +87,9 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
      * 
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
-        for (Iterator i = maintainableItems.entrySet().iterator(); i.hasNext();) {
-            Map.Entry e = (Map.Entry) i.next();
-
-            MaintainableItemDefinition maintainableItem = (MaintainableItemDefinition) e.getValue();
-            maintainableItem.completeValidation(rootBusinessObjectClass, null, validationCompletionUtils);
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+        for ( MaintainableItemDefinition maintainableItem : maintainableItems ) {
+            maintainableItem.completeValidation(rootBusinessObjectClass, null);
         }
     }
 
@@ -159,5 +105,16 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
 
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
+    }
+
+
+    public void setMaintainableItems(List<MaintainableItemDefinition> maintainableItems) {
+        for ( MaintainableItemDefinition maintainableItem : maintainableItems ) {
+            if (maintainableItem == null) {
+                throw new IllegalArgumentException("invalid (null) maintainableItem");
+            }
+        }
+        
+        this.maintainableItems = maintainableItems;
     }
 }

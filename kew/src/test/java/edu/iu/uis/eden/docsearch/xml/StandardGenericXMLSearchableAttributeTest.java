@@ -31,7 +31,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.junit.Test;
-import org.kuali.workflow.test.KEWTestCase;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
@@ -45,8 +44,7 @@ import edu.iu.uis.eden.docsearch.DocSearchUtils;
 import edu.iu.uis.eden.docsearch.DocumentSearchResult;
 import edu.iu.uis.eden.docsearch.DocumentSearchResultComponents;
 import edu.iu.uis.eden.docsearch.DocumentSearchService;
-import edu.iu.uis.eden.docsearch.SearchAttributeCriteriaComponent;
-import edu.iu.uis.eden.docsearch.SearchableAttribute;
+import edu.iu.uis.eden.docsearch.DocumentSearchTestBase;
 import edu.iu.uis.eden.docsearch.SearchableAttributeDateTimeValue;
 import edu.iu.uis.eden.docsearch.SearchableAttributeFloatValue;
 import edu.iu.uis.eden.docsearch.SearchableAttributeLongValue;
@@ -63,7 +61,6 @@ import edu.iu.uis.eden.lookupable.Field;
 import edu.iu.uis.eden.lookupable.Row;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
 import edu.iu.uis.eden.routeheader.RouteHeaderService;
-import edu.iu.uis.eden.routetemplate.RuleAttribute;
 import edu.iu.uis.eden.routetemplate.WorkflowAttributeValidationError;
 import edu.iu.uis.eden.test.TestUtilities;
 import edu.iu.uis.eden.user.AuthenticationUserId;
@@ -77,57 +74,57 @@ import edu.iu.uis.eden.web.KeyValueSort;
  * KULWF-654: Tests the resolution to this issue by configuring a CustomActionListAttribute as well as a
  * searchable attribute.
  */
-public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
+public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTestBase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("XmlConfig.xml");
     }
 
-    private StandardGenericXMLSearchableAttribute getAttribute(String name) {
-        String attName = name;
-        if (attName == null) {
-            attName = "XMLSearchableAttribute";
-        }
-        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(attName);
-        StandardGenericXMLSearchableAttribute attribute = new StandardGenericXMLSearchableAttribute();
-        attribute.setRuleAttribute(ruleAttribute);
-        return attribute;
-    }
-
-    private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {
-    	String formKey = key;
-    	String savedKey = key;
-    	SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
-    	Field field = getFieldByFormKey(docType, formKey);
-    	if (field != null) {
-        	sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
-        	sacc.setRangeSearch(field.isMemberOfRange());
-        	sacc.setAllowWildcards(field.isAllowingWildcards());
-        	sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
-        	sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
-        	sacc.setCaseSensitive(field.isCaseSensitive());
-        	sacc.setSearchInclusive(field.isInclusive());
-            sacc.setSearchable(field.isSearchable());
-            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-    	}
-    	return sacc;
-    }
-
-    private Field getFieldByFormKey(DocumentType docType, String formKey) {
-    	if (docType == null) {
-    		return null;
-    	}
-		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
-			for (Row row : searchableAttribute.getSearchingRows()) {
-				for (Field field : row.getFields()) {
-					if (field.getPropertyName().equals(formKey)) {
-						return field;
-					}
-				}
-			}
-		}
-		return null;
-    }
+//    private StandardGenericXMLSearchableAttribute getAttribute(String name) {
+//        String attName = name;
+//        if (attName == null) {
+//            attName = "XMLSearchableAttribute";
+//        }
+//        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(attName);
+//        StandardGenericXMLSearchableAttribute attribute = new StandardGenericXMLSearchableAttribute();
+//        attribute.setRuleAttribute(ruleAttribute);
+//        return attribute;
+//    }
+//
+//    private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {
+//    	String formKey = key;
+//    	String savedKey = key;
+//    	SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
+//    	Field field = getFieldByFormKey(docType, formKey);
+//    	if (field != null) {
+//        	sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
+//        	sacc.setRangeSearch(field.isMemberOfRange());
+//        	sacc.setAllowWildcards(field.isAllowingWildcards());
+//        	sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
+//        	sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
+//        	sacc.setCaseSensitive(field.isCaseSensitive());
+//        	sacc.setSearchInclusive(field.isInclusive());
+//            sacc.setSearchable(field.isSearchable());
+//            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+//    	}
+//    	return sacc;
+//    }
+//
+//    private Field getFieldByFormKey(DocumentType docType, String formKey) {
+//    	if (docType == null) {
+//    		return null;
+//    	}
+//		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
+//			for (Row row : searchableAttribute.getSearchingRows()) {
+//				for (Field field : row.getFields()) {
+//					if (field.getPropertyName().equals(formKey)) {
+//						return field;
+//					}
+//				}
+//			}
+//		}
+//		return null;
+//    }
 
     @Test public void testXMLStandardSearchableAttributeWithInvalidValue() throws Exception {
         String documentTypeName = "SearchDocTypeStandardSearchDataType";
@@ -158,6 +155,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
              */
             TestUtilities.waitForExceptionRouting();
         }
+        TestUtilities.waitForExceptionRouting();
     }
 
     @Test public void testXMLStandardSearchableAttributesWithDataType() throws Exception {
@@ -613,6 +611,7 @@ public class StandardGenericXMLSearchableAttributeTest extends KEWTestCase {
             // An exception is thrown in BeanConverter/XmlUtils.appendXml at the time of this writing
             // so I will just assume that is the expected behavior
         }
+        TestUtilities.waitForExceptionRouting();
     }
 
     /**

@@ -15,15 +15,17 @@
  */
 package org.kuali.core.datadictionary;
 
-import java.util.Collection;
+import java.util.List;
+
+import org.kuali.core.bo.BusinessObject;
 
 public interface CollectionDefinitionI {
     public String getName();
     public boolean getIncludeAddLine();
-    public Collection<? extends CollectionDefinitionI> getCollections();
-    public Collection<? extends FieldDefinitionI> getFields();
+    public List<? extends CollectionDefinitionI> getCollections();
+    public List<? extends FieldDefinitionI> getFields();
     public String getSummaryTitle();
-    public Class getBusinessObjectClass();
+    public Class<? extends BusinessObject> getBusinessObjectClass();
     public boolean hasSummaryField(String key);
-    public Collection<? extends FieldDefinitionI> getSummaryFields();
+    public List<? extends FieldDefinitionI> getSummaryFields();
 }

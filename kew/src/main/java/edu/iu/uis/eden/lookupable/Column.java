@@ -19,6 +19,7 @@ package edu.iu.uis.eden.lookupable;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.plugin.attributes.WorkflowLookupable;
 import edu.iu.uis.eden.util.Utilities;
 
@@ -34,10 +35,25 @@ public class Column {
 	public static final String COLUMN_IS_SORTABLE_VALUE = "true";
 	public static final String COLUMN_NOT_SORTABLE_VALUE = "false";
 
+	/**
+	 * @deprecated USE {@link EdenConstants#LOOKUP_COLUMN_TYPE_TEXT} instead
+	 */
 	public static final String TEXT = "text";
+    /**
+     * @deprecated USE {@link EdenConstants#LOOKUP_COLUMN_TYPE_INTEGER} instead
+     */
 	public static final String INTEGER = "integer";
+    /**
+     * @deprecated USE {@link EdenConstants#LOOKUP_COLUMN_TYPE_LONG} instead
+     */
 	public static final String LONG = "long";
+    /**
+     * @deprecated USE {@link EdenConstants#LOOKUP_COLUMN_TYPE_FLOAT} instead
+     */
 	public static final String FLOAT = "float";
+    /**
+     * @deprecated USE {@link EdenConstants#LOOKUP_COLUMN_TYPE_DATETIME} instead
+     */
 	public static final String DATETIME = "datetime";
 
 	private String columnTitle;
@@ -45,12 +61,10 @@ public class Column {
 	private String key;
 	private String propertyName;
 	private String sortPropertyName;
-	private String type = TEXT;
+	private String type = EdenConstants.LOOKUP_COLUMN_TYPE_TEXT;
 	private Map<String,String> displayParameters = new HashMap<String,String>();
 
-	public Column() {
-
-	}
+	public Column() {}
 
 	public Column(String columnTitle, String sortable, String propertyName) {
 		this.columnTitle = columnTitle;
@@ -151,6 +165,10 @@ public class Column {
 	 */
 	public String getSortable() {
 		return sortable;
+	}
+	
+	public boolean isSortable() {
+	    return COLUMN_IS_SORTABLE_VALUE.equals(getSortable());
 	}
 
 	/**

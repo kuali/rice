@@ -15,25 +15,26 @@
  */
 package org.kuali.core.datadictionary;
 
+/**
+                  The inquirySubSectionHeader allows a separator containing text to
+                  separate groups of fields.  The name attribute is the displayed text.
+
+                  DD:   See InquirySubSectionHeaderDefinition.
+                  JSTL: inquirySubSectionHeader appears in the inquiryFields map as:
+                      * key = "attributeName"
+                      * value = name of inquirySubSectionHeader
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
+ */
 public class InquirySubSectionHeaderDefinition extends FieldDefinition implements SubSectionHeaderDefinitionI{
 
-    public String name;
-
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return getAttributeName();
     }
 
     @Override
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         //no-op
-    }
-    
-    public String getAttributeName() {
-        return this.name;
-    }
-    
+    }    
 }

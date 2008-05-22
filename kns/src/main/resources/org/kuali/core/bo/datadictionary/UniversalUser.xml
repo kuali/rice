@@ -1,466 +1,567 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2007 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-	<businessObject businessObjectClass="org.kuali.core.bo.user.UniversalUser">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-		<inquiry>
-			<title>User Inquiry</title>
+  <bean id="UniversalUser" parent="UniversalUser-parentBean" />
 
-			<inquirySections>
-				<inquirySection title="Header Text">
-					<inquiryFields>
-						<field attributeName="personUserIdentifier" />
-						<field attributeName="personUniversalIdentifier" noInquiry="true" />
-						<field attributeName="personPayrollIdentifier" />
-						<field attributeName="personName" />
-						<field attributeName="campusCode" />
-						<field attributeName="primaryDepartmentCode" />
-						<field attributeName="staff" />
-						<field attributeName="faculty" />
-						<field attributeName="student" />
-						<field attributeName="affiliate" />
-						<field attributeName="employeeStatusCode" />
-						<field attributeName="employeeTypeCode" />
-						<field attributeName="personEmailAddress" />
-						<field attributeName="activeModuleCodeString" />
-					</inquiryFields>
-				</inquirySection>
-			</inquirySections>
-		</inquiry>
+  <bean id="UniversalUser-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.core.bo.user.UniversalUser" />
+    <property name="inquiryDefinition" >
+      <ref bean="UniversalUser-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="UniversalUser-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="personUniversalIdentifier" />
+    <property name="attributes" >
+      <list>
+        <ref bean="UniversalUser-personUniversalIdentifier" />
+        <ref bean="UniversalUser-personUserIdentifier" />
+        <ref bean="UniversalUser-personPayrollIdentifier" />
+        <ref bean="UniversalUser-personName" />
+        <ref bean="UniversalUser-employeeStatusCode" />
+        <ref bean="UniversalUser-employeeTypeCode" />
+        <ref bean="UniversalUser-student" />
+        <ref bean="UniversalUser-staff" />
+        <ref bean="UniversalUser-faculty" />
+        <ref bean="UniversalUser-affiliate" />
+        <ref bean="UniversalUser-primaryDepartmentCode" />
+        <ref bean="UniversalUser-personEmailAddress" />
+        <ref bean="UniversalUser-personFirstName" />
+        <ref bean="UniversalUser-personLastName" />
+        <ref bean="UniversalUser-personMiddleName" />
+        <ref bean="UniversalUser-personCampusAddress" />
+        <ref bean="UniversalUser-personLocalPhoneNumber" />
+        <ref bean="UniversalUser-personBaseSalaryAmount" />
+        <ref bean="UniversalUser-personTaxIdentifier" />
+        <ref bean="UniversalUser-personTaxIdentifierTypeCode" />
+        <ref bean="UniversalUser-financialSystemsEncryptedPasswordText" />
+        <ref bean="UniversalUser-campusCode" />
+        <ref bean="UniversalUser-activeForAnyModule" />
+        <ref bean="UniversalUser-activeModuleCodeString" />
+        <ref bean="UniversalUser-versionNumber" />
+      </list>
+    </property>
+  </bean>
 
-		<lookup>
-			<lookupableID>universalUserLookupable</lookupableID>
+<!-- Attribute Definitions -->
 
-			<title>User Lookup</title>
-			<instructions>Lookup a User</instructions>
 
-			<defaultSort attributeName="personUserIdentifier" sortAscending="true" />
+  <bean id="UniversalUser-personUniversalIdentifier" parent="UniversalUser-personUniversalIdentifier-parentBean" />
 
-			<lookupFields>
-				<lookupField attributeName="personUserIdentifier" required="false" />
-				<lookupField attributeName="personUniversalIdentifier" required="false" />
-				<lookupField attributeName="personPayrollIdentifier" required="false" />
-				<!-- uncomment if searching on the personName (as a single string is desired (see <attribute> for personName below) -->
-				<!-- lookupField attributeName="personName" required="false" /-->
-				<lookupField attributeName="personLastName" required="false" />
-				<lookupField attributeName="personFirstName" required="false" />
-				<lookupField attributeName="personEmailAddress" required="false" />
-				<lookupField attributeName="campusCode" required="false" />
-				<lookupField attributeName="primaryDepartmentCode" required="false" />
-				<lookupField attributeName="staff" />
-				<lookupField attributeName="faculty" />
-				<lookupField attributeName="student" />
-				<lookupField attributeName="affiliate" />
-				<lookupField attributeName="employeeStatusCode" required="false" />
-				<lookupField attributeName="employeeTypeCode" required="false" />
-				<lookupField attributeName="activeModuleCodeString" required="false" />
-			</lookupFields>
+  <bean id="UniversalUser-personUniversalIdentifier-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Univ User Id" />
+    <property name="maxLength" value="10" />
+    <property name="validationPattern" >
+      <bean parent="NumericValidationPattern" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="10" />
+    </property>
+    <property name="summary" value="Universal User ID" />
+    <property name="name" value="personUniversalIdentifier" />
+    <property name="label" value="Universal User ID" />
+    <property name="description" value="Universal User ID" />
+  </bean>
+  <bean id="UniversalUser-personUserIdentifier" parent="UniversalUser-personUserIdentifier-parentBean" />
 
-			<resultFields>
-				<field attributeName="personUserIdentifier" />
-				<field attributeName="personUniversalIdentifier" />
-				<field attributeName="personPayrollIdentifier" />
-				<field attributeName="personName" />
-				<field attributeName="campusCode" />
-				<field attributeName="primaryDepartmentCode" />
-				<field attributeName="employeeStatusCode" />
-				<field attributeName="employeeTypeCode" />
-				<field attributeName="activeModuleCodeString" />
-			</resultFields>
-		</lookup>
+  <bean id="UniversalUser-personUserIdentifier-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="User ID" />
+    <property name="maxLength" value="8" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="8" />
+    </property>
+    <property name="summary" value="User ID" />
+    <property name="name" value="personUserIdentifier" />
+    <property name="label" value="User ID" />
+    <property name="description" value="User ID" />
+  </bean>
+  <bean id="UniversalUser-personPayrollIdentifier" parent="UniversalUser-personPayrollIdentifier-parentBean" />
 
-		<titleAttribute>personUniversalIdentifier</titleAttribute>
-
-		<attributes>
-			<attribute name="personUniversalIdentifier" forceUppercase="true">
-				<label>Universal User ID</label>
-				<shortLabel>Univ User Id</shortLabel>
-
-				<maxLength>10</maxLength>
-				<validationPattern>
-					<numeric />
-				</validationPattern>
-				<required>true</required>
-
-				<control>
-					<text size="10" />
-				</control>
-
-				<summary>Universal User ID</summary>
-				<description>Universal User ID</description>
-			</attribute>
-
-			<attribute name="personUserIdentifier" forceUppercase="true">
-				<label>User ID</label>
-				<shortLabel>User ID</shortLabel>
-
-				<maxLength>8</maxLength>
-				<validationPattern>
-					<anyCharacter />
-				</validationPattern>
-				<required>true</required>
-
-				<control>
-					<text size="8" />
-				</control>
-
-				<summary>User ID</summary>
-				<description>User ID</description>
-			</attribute>
-
-			<attribute name="personPayrollIdentifier" forceUppercase="true">
-				<label>Employee ID</label>
-				<shortLabel>Empl ID</shortLabel>
-
-				<maxLength>11</maxLength>
-				<required>false</required>
-
-				<control>
-					<text size="13" />
-				</control>
-
-				<summary>Empl ID</summary>
-				<description>
-					This field lists the individual’s HRMS Employee ID.  
+  <bean id="UniversalUser-personPayrollIdentifier-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Empl ID" />
+    <property name="maxLength" value="11" />
+    <property name="required" value="false" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="13" />
+    </property>
+    <property name="summary" value="Empl ID" />
+    <property name="name" value="personPayrollIdentifier" />
+    <property name="label" value="Employee ID" />
+    <property name="description" value="This field lists the individual�s HRMS Employee ID.  
 					This is a unique 9-digit number assigned to each 
-					employee as they are entered into the HRMS system.
-				</description>
-			</attribute>
-
-			<attribute name="personName" forceUppercase="true">
-				<label>Display Name</label>
-				<shortLabel>Name</shortLabel>
-
-				<maxLength>80</maxLength>
-
-				<control>
-					<hidden/>
-					<!-- enable if you want to be able to set the display name separate from the individual name fields
-					     see <lookupField> definition for personName above
-					<text size="40" />
-					-->
-				</control>
-
-				<summary>Display Name</summary>
-				<description>Name</description>
-
-			</attribute>
-
-			<attributeReference name="employeeStatusCode" sourceClassName="org.kuali.core.bo.EmployeeStatus" sourceAttributeName="code">
-				<required>false</required>
-				<control>
-					<select valuesFinderClass="org.kuali.core.lookup.keyvalues.EmployeeStatusValuesFinder" /> 
-				</control>
-			</attributeReference>
-
-			<attributeReference name="employeeTypeCode" sourceClassName="org.kuali.core.bo.EmployeeType" sourceAttributeName="code">
-				<required>false</required>
-				<control>
-					<select valuesFinderClass="org.kuali.core.lookup.keyvalues.EmployeeTypeValuesFinder" />
-				</control>
-			</attributeReference>
-
-			<attributeReference name="student" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="genericBoolean">
-				<label>Student?</label>
-				<shortLabel>Stdt?</shortLabel>
-				<summary>Student?</summary>
-				<description>Is this person a student?</description>
-			</attributeReference>
-
-			<attributeReference name="staff" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="genericBoolean">
-				<label>Staff?</label>
-				<shortLabel>Stf?</shortLabel>
-				<summary>Staff?</summary>
-				<description>Is this person a staff member?</description>
-			</attributeReference>
-
-			<attributeReference name="faculty" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="genericBoolean">
-				<label>Faculty?</label>
-				<shortLabel>Fcty?</shortLabel>
-				<summary>Faculty?</summary>
-				<description>Is this person a faculty member?</description>
-			</attributeReference>
-
-			<attributeReference name="affiliate" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="genericBoolean">
-				<label>Affiliate?</label>
-				<shortLabel>Aflt?</shortLabel>
-				<summary>Affiliate?</summary>
-				<description>Is this person an affiliate of the institution?</description>
-			</attributeReference>
-
-
-			<attribute name="primaryDepartmentCode" forceUppercase="true">
-				<label>Department Id</label>
-				<shortLabel>DeptId</shortLabel>
-
-				<maxLength>10</maxLength>
-				<validationPattern>
-					<anyCharacter />
-				</validationPattern>
-
-				<control>
-					<text size="10" />
-				</control>
-
-				<summary>Chart-Org</summary>
-				<description>Chart-Org</description>
-
-			</attribute>
-
-			<attribute name="personEmailAddress" forceUppercase="true">
-				<label>Email Address</label>
-				<shortLabel>Email</shortLabel>
-
-				<maxLength>40</maxLength>
-				<validationPattern>
-					<emailAddress />
-				</validationPattern>
-
-				<control>
-					<text size="40" />
-				</control>
-
-				<summary>Email Address</summary>
-				<description>Email Address</description>
-
-			</attribute>
-
-			<attribute name="personFirstName" forceUppercase="true">
-				<label>First Name</label>
-				<shortLabel>1st Name</shortLabel>
-
-				<maxLength>20</maxLength>
-				<validationPattern>
-					<anyCharacter allowWhitespace="true" />
-				</validationPattern>
-				<required>true</required>
-
-				<control>
-					<text size="20" />
-				</control>
-
-				<summary>Person First Name</summary>
-				<description>Person First Name</description>
-
-			</attribute>
-
-			<attribute name="personLastName" forceUppercase="true">
-				<label>Last Name</label>
-				<shortLabel>Lst Name</shortLabel>
-
-				<maxLength>20</maxLength>
-				<validationPattern>
-					<anyCharacter allowWhitespace="true" />
-				</validationPattern>
-				<required>true</required>
-
-				<control>
-					<text size="20" />
-				</control>
-
-				<summary>Person Last Name</summary>
-				<description>Person Last Name</description>
-
-			</attribute>
-
-			<attribute name="personMiddleName" forceUppercase="true">
-				<label>Middle Name</label>
-				<shortLabel>Mdl Name</shortLabel>
-
-				<maxLength>20</maxLength>
-				<validationPattern>
-					<anyCharacter allowWhitespace="true" />
-				</validationPattern>
-				<required>false</required>
-
-				<control>
-					<text size="20" />
-				</control>
-
-				<summary>Person Last Name</summary>
-				<description>Person Last Name</description>
-
-			</attribute>
-
-			<attribute name="personCampusAddress" forceUppercase="true">
-				<label>Campus Address</label>
-				<shortLabel>Cmp Addr</shortLabel>
-
-				<maxLength>55</maxLength>
-
-				<control>
-					<text size="40" />
-				</control>
-
-				<summary>Person Campus Address</summary>
-				<description>Person Campus Address</description>
-
-			</attribute>
-
-			<attribute name="personLocalPhoneNumber" forceUppercase="false">
-				<label>Local Phone Number</label>
-				<shortLabel>Phn Nbr</shortLabel>
-
-				<maxLength>10</maxLength>
-				<validationPattern>
-					<anyCharacter />
-				</validationPattern>
-
-				<control>
-					<text size="11" />
-				</control>
-
-				<summary>Person Local Phone Number</summary>
-				<description>Person Local Phone Number</description>
-
-			</attribute>
-
-			<attribute name="personBaseSalaryAmount" forceUppercase="false">
-				<label>Base Salary</label>
-				<shortLabel>Salary</shortLabel>
-
-				<maxLength>19</maxLength>
-				<validationPattern>
-					<fixedPoint allowNegative="false" scale="2" precision="19"/>
-				</validationPattern>
-
-				<control>
-					<text size="10" />
-				</control>
-
-				<summary>Person Base Salary</summary>
-				<description>Person Base Salary</description>
-
-			</attribute>
-
-			<attribute name="personTaxIdentifier" forceUppercase="false">
-				<label>Tax Identifier</label>
-				<shortLabel>Tax ID</shortLabel>
-
-				<maxLength>9</maxLength>
-				<validationPattern>
-					<numeric />
-				</validationPattern>
-
-				<control>
-					<text size="10" />
-				</control>
-
-				<attributeAuthorization>
-					<displayWorkgroup>UNIVERSAL_USER_MAINTAINERS</displayWorkgroup>
-					<displayMask>
-						<maskLiteral literal="***************" />
-					</displayMask>
-				</attributeAuthorization>
-
-
-				<summary>SSN</summary>
-				<description>Social Security Number</description>
-
-			</attribute>
-
-			<attribute name="personTaxIdentifierTypeCode" forceUppercase="true">
-				<label>Tax Identifier Type</label>
-				<shortLabel>Tax ID Type</shortLabel>
-
-				<maxLength>1</maxLength>
-				<validationPattern>
-					<alphaNumeric />
-				</validationPattern>
-
-				<control>
-					<select valuesFinderClass="org.kuali.core.lookup.keyvalues.PersonTaxIdentifierTypeCodeValuesFinder"/>
-				</control>
-
-				<summary>Tax Identifier Type</summary>
-				<description>Tax Identifier Type</description>
-
-			</attribute>
-
-			<attribute name="financialSystemsEncryptedPasswordText" forceUppercase="false">
-				<label>Password</label>
-				<shortLabel>Password</shortLabel>
-
-				<maxLength>200</maxLength>
-				<validationPattern>
-					<anyCharacter />
-				</validationPattern>
-
-				<control>
-					<text size="20" />
-				</control>
-
-				<attributeAuthorization>
-					<displayWorkgroup>UNIVERSAL_USER_MAINTAINERS</displayWorkgroup>
-					<displayMask>
-						<maskLiteral literal="***************" />
-					</displayMask>
-				</attributeAuthorization>
-
-
-				<summary>Password</summary>
-				<description>Password</description>
-
-			</attribute>
-
-
-			<attributeReference name="campusCode" sourceClassName="org.kuali.core.bo.Campus" sourceAttributeName="campusCode">
-				<required>false</required>
-
-				<control>
-					<text size="2" />
-				</control>
-				<description>The code for the Campus of the user.</description>
-
-			</attributeReference>
-
-			<attributeReference name="activeForAnyModule" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="activeIndicator">
-				<label>Active Kuali User</label>
-				<shortLabel>ActiveKualiUser</shortLabel>
-				<summary>
-					<![CDATA[&nbsp;]]>
-				</summary>
-				<description>Indicates whether or not this UniversalUser is also an active user for any module of the application.</description>
-			</attributeReference>
-
-			<attribute name="activeModuleCodeString">
-				<label>Active Module List</label>
-				<shortLabel>Modules</shortLabel>
-
-				<maxLength>200</maxLength>
-				<validationPattern>
-					<anyCharacter allowWhitespace="true" />
-				</validationPattern>
-
-				<control>
-					<select valuesFinderClass="org.kuali.core.lookup.keyvalues.InstalledModulesValuesFinder" />
-				</control>
-
-				<summary>List of module codes for which this person is an active user.</summary>
-				<description>A comma-delimited list representing the modules to which this UniversalUser has access.</description>
-
-			</attribute>
-
-			<attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
-
-
-		</attributes>
-	</businessObject>
-</dictionaryEntry>
+					employee as they are entered into the HRMS system." />
+  </bean>
+  <bean id="UniversalUser-personName" parent="UniversalUser-personName-parentBean" />
+
+  <bean id="UniversalUser-personName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="80" />
+    <property name="control" >
+      <bean parent="HiddenControlDefinition" />
+    </property>
+    <property name="summary" value="Display Name" />
+    <property name="name" value="personName" />
+    <property name="label" value="Display Name" />
+    <property name="description" value="Name" />
+  </bean>
+  <bean id="UniversalUser-employeeStatusCode" parent="UniversalUser-employeeStatusCode-parentBean" />
+
+  <bean id="UniversalUser-employeeStatusCode-parentBean" abstract="true" parent="EmployeeStatus-code">
+    <property name="required" value="false" />
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.EmployeeStatusValuesFinder"
+            p:includeKeyInLabel="false" />
+    </property>
+    <property name="name" value="employeeStatusCode" />
+  </bean>
+  <bean id="UniversalUser-employeeTypeCode" parent="UniversalUser-employeeTypeCode-parentBean" />
+
+  <bean id="UniversalUser-employeeTypeCode-parentBean" abstract="true" parent="EmployeeType-code">
+    <property name="required" value="false" />
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.EmployeeTypeValuesFinder"
+            p:includeKeyInLabel="false" />
+    </property>
+    <property name="name" value="employeeTypeCode" />
+  </bean>
+  <bean id="UniversalUser-student" parent="UniversalUser-student-parentBean" />
+
+  <bean id="UniversalUser-student-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+    <property name="shortLabel" value="Stdt?" />
+    <property name="summary" value="Student?" />
+    <property name="name" value="student" />
+    <property name="label" value="Student?" />
+    <property name="description" value="Is this person a student?" />
+  </bean>
+  <bean id="UniversalUser-staff" parent="UniversalUser-staff-parentBean" />
+
+  <bean id="UniversalUser-staff-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+    <property name="shortLabel" value="Stf?" />
+    <property name="summary" value="Staff?" />
+    <property name="name" value="staff" />
+    <property name="label" value="Staff?" />
+    <property name="description" value="Is this person a staff member?" />
+  </bean>
+  <bean id="UniversalUser-faculty" parent="UniversalUser-faculty-parentBean" />
+
+  <bean id="UniversalUser-faculty-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+    <property name="shortLabel" value="Fcty?" />
+    <property name="summary" value="Faculty?" />
+    <property name="name" value="faculty" />
+    <property name="label" value="Faculty?" />
+    <property name="description" value="Is this person a faculty member?" />
+  </bean>
+  <bean id="UniversalUser-affiliate" parent="UniversalUser-affiliate-parentBean" />
+
+  <bean id="UniversalUser-affiliate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+    <property name="shortLabel" value="Aflt?" />
+    <property name="summary" value="Affiliate?" />
+    <property name="name" value="affiliate" />
+    <property name="label" value="Affiliate?" />
+    <property name="description" value="Is this person an affiliate of the institution?" />
+  </bean>
+  <bean id="UniversalUser-primaryDepartmentCode" parent="UniversalUser-primaryDepartmentCode-parentBean" />
+
+  <bean id="UniversalUser-primaryDepartmentCode-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="DeptId" />
+    <property name="maxLength" value="10" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="10" />
+    </property>
+    <property name="summary" value="Chart-Org" />
+    <property name="name" value="primaryDepartmentCode" />
+    <property name="label" value="Department Id" />
+    <property name="description" value="Chart-Org" />
+  </bean>
+  <bean id="UniversalUser-personEmailAddress" parent="UniversalUser-personEmailAddress-parentBean" />
+
+  <bean id="UniversalUser-personEmailAddress-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Email" />
+    <property name="maxLength" value="40" />
+    <property name="validationPattern" >
+      <bean parent="EmailAddressValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="40" />
+    </property>
+    <property name="summary" value="Email Address" />
+    <property name="name" value="personEmailAddress" />
+    <property name="label" value="Email Address" />
+    <property name="description" value="Email Address" />
+  </bean>
+  <bean id="UniversalUser-personFirstName" parent="UniversalUser-personFirstName-parentBean" />
+
+  <bean id="UniversalUser-personFirstName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="1st Name" />
+    <property name="maxLength" value="20" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="20" />
+    </property>
+    <property name="summary" value="Person First Name" />
+    <property name="name" value="personFirstName" />
+    <property name="label" value="First Name" />
+    <property name="description" value="Person First Name" />
+  </bean>
+  <bean id="UniversalUser-personLastName" parent="UniversalUser-personLastName-parentBean" />
+
+  <bean id="UniversalUser-personLastName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Lst Name" />
+    <property name="maxLength" value="20" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="20" />
+    </property>
+    <property name="summary" value="Person Last Name" />
+    <property name="name" value="personLastName" />
+    <property name="label" value="Last Name" />
+    <property name="description" value="Person Last Name" />
+  </bean>
+  <bean id="UniversalUser-personMiddleName" parent="UniversalUser-personMiddleName-parentBean" />
+
+  <bean id="UniversalUser-personMiddleName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Mdl Name" />
+    <property name="maxLength" value="20" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="required" value="false" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="20" />
+    </property>
+    <property name="summary" value="Person Last Name" />
+    <property name="name" value="personMiddleName" />
+    <property name="label" value="Middle Name" />
+    <property name="description" value="Person Last Name" />
+  </bean>
+  <bean id="UniversalUser-personCampusAddress" parent="UniversalUser-personCampusAddress-parentBean" />
+
+  <bean id="UniversalUser-personCampusAddress-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Cmp Addr" />
+    <property name="maxLength" value="55" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="40" />
+    </property>
+    <property name="summary" value="Person Campus Address" />
+    <property name="name" value="personCampusAddress" />
+    <property name="label" value="Campus Address" />
+    <property name="description" value="Person Campus Address" />
+  </bean>
+  <bean id="UniversalUser-personLocalPhoneNumber" parent="UniversalUser-personLocalPhoneNumber-parentBean" />
+
+  <bean id="UniversalUser-personLocalPhoneNumber-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Phn Nbr" />
+    <property name="maxLength" value="10" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="11" />
+    </property>
+    <property name="summary" value="Person Local Phone Number" />
+    <property name="name" value="personLocalPhoneNumber" />
+    <property name="label" value="Local Phone Number" />
+    <property name="description" value="Person Local Phone Number" />
+  </bean>
+  <bean id="UniversalUser-personBaseSalaryAmount" parent="UniversalUser-personBaseSalaryAmount-parentBean" />
+
+  <bean id="UniversalUser-personBaseSalaryAmount-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Salary" />
+    <property name="maxLength" value="19" />
+    <property name="validationPattern" >
+      <bean parent="FixedPointValidationPattern"
+            p:precision="19"
+            p:scale="2" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="10" />
+    </property>
+    <property name="summary" value="Person Base Salary" />
+    <property name="name" value="personBaseSalaryAmount" />
+    <property name="label" value="Base Salary" />
+    <property name="description" value="Person Base Salary" />
+  </bean>
+  <bean id="UniversalUser-personTaxIdentifier" parent="UniversalUser-personTaxIdentifier-parentBean" />
+
+  <bean id="UniversalUser-personTaxIdentifier-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Tax ID" />
+    <property name="maxLength" value="9" />
+    <property name="validationPattern" >
+      <bean parent="NumericValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="10" />
+    </property>
+    <property name="displayMask" >
+      <bean parent="Mask">
+        <property name="maskFormatter" >
+          <bean parent="MaskFormatterLiteral"
+                p:literal="***************" />
+        </property>
+      </bean>
+    </property>
+    <property name="displayWorkgroup" value="UNIVERSAL_USER_MAINTAINERS" />
+    <property name="summary" value="SSN" />
+    <property name="name" value="personTaxIdentifier" />
+    <property name="label" value="Tax Identifier" />
+    <property name="description" value="Social Security Number" />
+  </bean>
+  <bean id="UniversalUser-personTaxIdentifierTypeCode" parent="UniversalUser-personTaxIdentifierTypeCode-parentBean" />
+
+  <bean id="UniversalUser-personTaxIdentifierTypeCode-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Tax ID Type" />
+    <property name="maxLength" value="1" />
+    <property name="validationPattern" >
+      <bean parent="AlphaNumericValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersonTaxIdentifierTypeCodeValuesFinder"
+            p:includeKeyInLabel="false" />
+    </property>
+    <property name="summary" value="Tax Identifier Type" />
+    <property name="name" value="personTaxIdentifierTypeCode" />
+    <property name="label" value="Tax Identifier Type" />
+    <property name="description" value="Tax Identifier Type" />
+  </bean>
+  <bean id="UniversalUser-financialSystemsEncryptedPasswordText" parent="UniversalUser-financialSystemsEncryptedPasswordText-parentBean" />
+
+  <bean id="UniversalUser-financialSystemsEncryptedPasswordText-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Password" />
+    <property name="maxLength" value="200" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="20" />
+    </property>
+    <property name="displayMask" >
+      <bean parent="Mask">
+        <property name="maskFormatter" >
+          <bean parent="MaskFormatterLiteral"
+                p:literal="***************" />
+        </property>
+      </bean>
+    </property>
+    <property name="displayWorkgroup" value="UNIVERSAL_USER_MAINTAINERS" />
+    <property name="summary" value="Password" />
+    <property name="name" value="financialSystemsEncryptedPasswordText" />
+    <property name="label" value="Password" />
+    <property name="description" value="Password" />
+  </bean>
+  <bean id="UniversalUser-campusCode" parent="UniversalUser-campusCode-parentBean" />
+
+  <bean id="UniversalUser-campusCode-parentBean" abstract="true" parent="Campus-campusCode">
+    <property name="required" value="false" />
+    <property name="description" value="The code for the Campus of the user." />
+  </bean>
+  <bean id="UniversalUser-activeForAnyModule" parent="UniversalUser-activeForAnyModule-parentBean" />
+
+  <bean id="UniversalUser-activeForAnyModule-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
+    <property name="shortLabel" value="ActiveKualiUser" />
+    <property name="summary" value="&amp;nbsp;" />
+    <property name="name" value="activeForAnyModule" />
+    <property name="label" value="Active Kuali User" />
+    <property name="description" value="Indicates whether or not this UniversalUser is also an active user for any module of the application." />
+  </bean>
+  <bean id="UniversalUser-activeModuleCodeString" parent="UniversalUser-activeModuleCodeString-parentBean" />
+
+  <bean id="UniversalUser-activeModuleCodeString-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Modules" />
+    <property name="maxLength" value="200" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.InstalledModulesValuesFinder"
+            p:includeKeyInLabel="false" />
+    </property>
+    <property name="summary" value="List of module codes for which this person is an active user." />
+    <property name="name" value="activeModuleCodeString" />
+    <property name="label" value="Active Module List" />
+    <property name="description" value="A comma-delimited list representing the modules to which this UniversalUser has access." />
+  </bean>
+  <bean id="UniversalUser-versionNumber" parent="UniversalUser-versionNumber-parentBean" />
+
+  <bean id="UniversalUser-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+
+<!-- Business Object Inquiry Definition -->
+
+
+  <bean id="UniversalUser-inquiryDefinition" parent="UniversalUser-inquiryDefinition-parentBean" />
+
+  <bean id="UniversalUser-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="personUserIdentifier" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="personUniversalIdentifier"
+                    p:noInquiry="true" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="personPayrollIdentifier" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="personName" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="campusCode" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="primaryDepartmentCode" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="staff" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="faculty" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="student" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="affiliate" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="employeeStatusCode" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="employeeTypeCode" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="personEmailAddress" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="activeModuleCodeString" />
+            </list>
+          </property>
+          <property name="title" value="Header Text" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="User Inquiry" />
+  </bean>
+
+<!-- Business Object Lookup Definition -->
+
+
+  <bean id="UniversalUser-lookupDefinition" parent="UniversalUser-lookupDefinition-parentBean" />
+
+  <bean id="UniversalUser-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="lookupableID" value="universalUserLookupable" />
+    <property name="instructions" value="Lookup a User" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+        <property name="attributeNames" >
+          <list>
+            <value>personUserIdentifier</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="personUserIdentifier" />
+        <bean parent="FieldDefinition"
+              p:attributeName="personUniversalIdentifier" />
+        <bean parent="FieldDefinition"
+              p:attributeName="personPayrollIdentifier" />
+        <bean parent="FieldDefinition"
+              p:attributeName="personLastName" />
+        <bean parent="FieldDefinition"
+              p:attributeName="personFirstName" />
+        <bean parent="FieldDefinition"
+              p:attributeName="personEmailAddress" />
+        <bean parent="FieldDefinition"
+              p:attributeName="campusCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="primaryDepartmentCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="staff" />
+        <bean parent="FieldDefinition"
+              p:attributeName="faculty" />
+        <bean parent="FieldDefinition"
+              p:attributeName="student" />
+        <bean parent="FieldDefinition"
+              p:attributeName="affiliate" />
+        <bean parent="FieldDefinition"
+              p:attributeName="employeeStatusCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="employeeTypeCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="activeModuleCodeString" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="personUserIdentifier" />
+        <bean parent="FieldDefinition"
+              p:attributeName="personUniversalIdentifier" />
+        <bean parent="FieldDefinition"
+              p:attributeName="personPayrollIdentifier" />
+        <bean parent="FieldDefinition"
+              p:attributeName="personName" />
+        <bean parent="FieldDefinition"
+              p:attributeName="campusCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="primaryDepartmentCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="employeeStatusCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="employeeTypeCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="activeModuleCodeString" />
+      </list>
+    </property>
+    <property name="title" value="User Lookup" />
+  </bean>
+</beans>

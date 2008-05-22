@@ -37,7 +37,6 @@ public class ParameterDetailTypeLookupableHelperServiceImpl extends KualiLookupa
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
 
         List baseLookup = super.getSearchResults(fieldValues);
-        getDataDictionaryService().getDataDictionary().forceCompleteDataDictionaryLoad();
         
         // all step beans
         // all BO beans

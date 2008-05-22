@@ -1,121 +1,159 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2007 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.core.bo.NoteType">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="NoteType" parent="NoteType-parentBean" />
+
+  <bean id="NoteType-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.core.bo.NoteType" />
+    <property name="inquiryDefinition" >
+      <ref bean="NoteType-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="NoteType-lookupDefinition" />
+    </property>
+    <property name="attributes" >
+      <list>
+        <ref bean="NoteType-noteTypeActiveIndicator" />
+        <ref bean="NoteType-noteTypeCode" />
+        <ref bean="NoteType-noteTypeDescription" />
+        <ref bean="NoteType-versionNumber" />
+      </list>
+    </property>
+  </bean>
+
+<!-- Attribute Definitions -->
 
 
-        <inquiry>
-            <title>Note Type Inquiry</title>
+  <bean id="NoteType-noteTypeActiveIndicator" parent="NoteType-noteTypeActiveIndicator-parentBean" />
 
-            <inquirySections><inquirySection title="Header Text"><inquiryFields>
-                <field attributeName="noteTypeActiveIndicator" />
-                <field attributeName="noteTypeCode" />
-                <field attributeName="noteTypeDescription" />
-            </inquiryFields></inquirySection></inquirySections>
-        </inquiry>
+  <bean id="NoteType-noteTypeActiveIndicator-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Indicator" />
+    <property name="maxLength" value="1" />
+    <property name="control" >
+      <bean parent="CheckboxControlDefinition" />
+    </property>
+    <property name="summary" value="noteTypeActiveIndicator" />
+    <property name="name" value="noteTypeActiveIndicator" />
+    <property name="label" value="Note Type Active Indicator" />
+    <property name="description" value="noteTypeActiveIndicator description..." />
+  </bean>
+  <bean id="NoteType-noteTypeCode" parent="NoteType-noteTypeCode-parentBean" />
 
-        <lookup>
-            <title>Note Type Lookup</title>
+  <bean id="NoteType-noteTypeCode-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Code" />
+    <property name="maxLength" value="4" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="6" />
+    </property>
+    <property name="summary" value="noteTypeCode" />
+    <property name="name" value="noteTypeCode" />
+    <property name="label" value="Note Type Code" />
+    <property name="description" value="noteTypeCode description..." />
+  </bean>
+  <bean id="NoteType-noteTypeDescription" parent="NoteType-noteTypeDescription-parentBean" />
 
-            <instructions>Look up a Note Type</instructions>
+  <bean id="NoteType-noteTypeDescription-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Description" />
+    <property name="maxLength" value="100" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="102" />
+    </property>
+    <property name="summary" value="noteTypeDescription" />
+    <property name="name" value="noteTypeDescription" />
+    <property name="label" value="Note Type Description" />
+    <property name="description" value="noteTypeDescription description..." />
+  </bean>
+  <bean id="NoteType-versionNumber" parent="NoteType-versionNumber-parentBean" />
 
-            <defaultSort sortAscending="true">
-                <sortAttributes>
-                    <sortAttribute attributeName="noteTypeDescription" />
-                </sortAttributes>
-            </defaultSort>
+  <bean id="NoteType-versionNumber-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Number" />
+    <property name="maxLength" value="8" />
+    <property name="validationPattern" >
+      <bean parent="NumericValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="10" />
+    </property>
+    <property name="summary" value="versionNumber" />
+    <property name="name" value="versionNumber" />
+    <property name="label" value="Version Number" />
+    <property name="description" value="versionNumber description..." />
+  </bean>
 
-            <lookupFields>
-                <lookupField attributeName="noteTypeActiveIndicator" required="false" />
-                <lookupField attributeName="noteTypeCode" required="false" />
-                <lookupField attributeName="noteTypeDescription" required="false" />
-            </lookupFields>
+<!-- Business Object Inquiry Definition -->
 
-            <resultFields>
-                <field attributeName="noteTypeActiveIndicator" />
-                <field attributeName="noteTypeCode" />
-                <field attributeName="noteTypeDescription" />
-            </resultFields>
-        </lookup>
 
-        <attributes>
+  <bean id="NoteType-inquiryDefinition" parent="NoteType-inquiryDefinition-parentBean" />
 
-            <attribute name="noteTypeActiveIndicator" forceUppercase="true">
-                <label>Note Type Active Indicator</label>
-                <shortLabel>Indicator</shortLabel>
+  <bean id="NoteType-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="noteTypeActiveIndicator" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="noteTypeCode" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="noteTypeDescription" />
+            </list>
+          </property>
+          <property name="title" value="Header Text" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="Note Type Inquiry" />
+  </bean>
 
-                <maxLength>1</maxLength>
+<!-- Business Object Lookup Definition -->
 
-                <control>
-                    <checkbox />
-                </control>
 
-                <summary>noteTypeActiveIndicator</summary>
-                <description>noteTypeActiveIndicator description...</description>
-			</attribute>
+  <bean id="NoteType-lookupDefinition" parent="NoteType-lookupDefinition-parentBean" />
 
-            <attribute name="noteTypeCode" forceUppercase="true">
-                <label>Note Type Code</label>
-                <shortLabel>Code</shortLabel>
-
-                <maxLength>4</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-
-                <control>
-                    <text size="6" />
-                </control>
-
-                <summary>noteTypeCode</summary>
-                <description>noteTypeCode description...</description>
-			</attribute>
-
-            <attribute name="noteTypeDescription" forceUppercase="true">
-                <label>Note Type Description</label>
-                <shortLabel>Description</shortLabel>
-
-                <maxLength>100</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-
-                <control>
-                    <text size="102" />
-                </control>
-
-                <summary>noteTypeDescription</summary>
-                <description>noteTypeDescription description...</description>
-			</attribute>
-
-            <attribute name="versionNumber" forceUppercase="true">
-                <label>Version Number</label>
-                <shortLabel>Number</shortLabel>
-
-                <maxLength>8</maxLength>
-                <validationPattern><numeric /></validationPattern>
-
-                <control>
-                    <text size="10" />
-                </control>
-
-                <summary>versionNumber</summary>
-                <description>versionNumber description...</description>
-			</attribute>
-
-        </attributes>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="NoteType-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Look up a Note Type" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="noteTypeActiveIndicator" />
+        <bean parent="FieldDefinition"
+              p:attributeName="noteTypeCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="noteTypeDescription" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="noteTypeActiveIndicator" />
+        <bean parent="FieldDefinition"
+              p:attributeName="noteTypeCode" />
+        <bean parent="FieldDefinition"
+              p:attributeName="noteTypeDescription" />
+      </list>
+    </property>
+    <property name="title" value="Note Type Lookup" />
+  </bean>
+</beans>

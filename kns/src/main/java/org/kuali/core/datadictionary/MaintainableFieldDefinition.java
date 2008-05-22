@@ -16,13 +16,9 @@
 package org.kuali.core.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
-import org.kuali.core.datadictionary.exception.ClassValidationException;
 import org.kuali.core.datadictionary.mask.Mask;
-import org.kuali.core.datadictionary.mask.MaskFormatter;
 import org.kuali.core.lookup.valueFinder.ValueFinder;
 
 /**
@@ -32,16 +28,15 @@ import org.kuali.core.lookup.valueFinder.ValueFinder;
  */
 public class MaintainableFieldDefinition extends MaintainableItemDefinition implements FieldDefinitionI{
     // logger
-    private static Log LOG = LogFactory.getLog(MaintainableFieldDefinition.class);
+    //private static Log LOG = LogFactory.getLog(MaintainableFieldDefinition.class);
 
-    private String name;
-    private boolean required;
-    private boolean readOnly;
+    private boolean required = false;
+    private boolean readOnly = false;
     private boolean readOnlyAfterAdd = false; 
 
     private String defaultValue;
     private String template;
-    private Class defaultValueFinderClass;
+    private Class<? extends ValueFinder> defaultValueFinderClass;
 
     private String displayEditMode;
     private Mask displayMask;
@@ -49,39 +44,10 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
     private String webUILeaveFieldFunction = "";
     private String webUILeaveFieldCallbackFunction = "";
     
-    private Class overrideLookupClass;
+    private Class<? extends BusinessObject> overrideLookupClass;
     private String overrideFieldConversions;
     
-    public MaintainableFieldDefinition() {
-        LOG.debug("creating new MaintainableFieldDefinition");
-
-        this.required = false;
-    }
-
-
-    /**
-     * @return attributeName
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Sets name to the given value.
-     * 
-     * @param name
-     * @throws IllegalArgumentException if the given name is blank
-     */
-    public void setName(String name) {
-        if (StringUtils.isBlank(name)) {
-            throw new IllegalArgumentException("invalid (blank) name");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setName '" + name + "'");
-        }
-        this.name = name;
-    }
-
+    public MaintainableFieldDefinition() {}
 
     /**
      * @return true if this attribute is required
@@ -96,9 +62,6 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
      * @param isRequired
      */
     public void setRequired(boolean required) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setRequired '" + required + "'");
-        }
         this.required = required;
     }
 
@@ -119,21 +82,10 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
 
 
     /**
-     * @param defaultValueFinderClass
-     */
-    public void setDefaultValueFinderClass(Class defaultValueFinderClass) {
-        if (defaultValueFinderClass == null) {
-            throw new IllegalArgumentException("invalid (null) defaultValueFinderClass");
-        }
-
-        this.defaultValueFinderClass = defaultValueFinderClass;
-    }
-
-    /**
      * @return custom defaultValue class
      */
-    public Class getDefaultValueFinderClass() {
-        return this.defaultValueFinderClass;
+    public Class<? extends ValueFinder> getDefaultValueFinderClass() {
+        return defaultValueFinderClass;
     }
 
     /**
@@ -217,13 +169,6 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
     }
 
 
-    /**
-     * Sets the overrideLookupClass attribute value.
-     * @param overrideLookupClass The overrideLookupClass to set.
-     */
-    public void setOverrideLookupClass(Class overrideLookupClass) {
-        this.overrideLookupClass = overrideLookupClass;
-    }
 
 
     /**
@@ -231,42 +176,25 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
      * 
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
-        if (!validationCompletionUtils.isPropertyOf(rootBusinessObjectClass, name)) {
-            throw new AttributeValidationException("unable to find attribute or collection named '" + name + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + getParseLocation() + ")");
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+        if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getName())) {
+            throw new AttributeValidationException("unable to find attribute or collection named '" + getName() + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
         }
 
         if (defaultValueFinderClass != null && defaultValue != null) {
-            throw new AttributeValidationException("Both defaultValue and defaultValueFinderClass can not be specified on attribute " + name + " in rootBusinessObjectClass " + rootBusinessObjectClass.getName());
-        }
-
-        if (defaultValueFinderClass != null) {
-            if (!ValueFinder.class.isAssignableFrom(defaultValueFinderClass)) {
-                throw new ClassValidationException("defaultValueFinderClass '" + defaultValueFinderClass + "' is not a subclasss of ValueFinder (" + getParseLocation() + ")");
-            }
+            throw new AttributeValidationException("Both defaultValue and defaultValueFinderClass can not be specified on attribute " + getName() + " in rootBusinessObjectClass " + rootBusinessObjectClass.getName());
         }
 
         if (StringUtils.isNotBlank(displayEditMode) && displayMask == null) {
-            throw new AttributeValidationException("property '" + getName() + "' has a display edit mode defined but not a valid display mask '" + "' (" + getParseLocation() + ")");
+            throw new AttributeValidationException("property '" + getName() + "' has a display edit mode defined but not a valid display mask '" + "' (" + "" + ")");
         }
 
         if (displayMask != null) {
             if (getDisplayMask().getMaskFormatter() == null && getDisplayMask().getMaskFormatterClass() == null) {
-                throw new AttributeValidationException("No mask formatter or formatter class specified for secure attribute " + getName() + "' (" + getParseLocation() + ")");
-            }
-
-            if (getDisplayMask().getMaskFormatterClass() != null) {
-                if (!MaskFormatter.class.isAssignableFrom(getDisplayMask().getMaskFormatterClass())) {
-                    throw new ClassValidationException("Class '" + getDisplayMask().getMaskFormatterClass().getName() + "' for secure attribute '" + getName() + "' does not implement org.kuali.core.datadictionary.mask.MaskFormatter (" + getParseLocation() + ")");
-                }
+                throw new AttributeValidationException("No mask formatter or formatter class specified for secure attribute " + getName() + "' (" + "" + ")");
             }
         }
         
-        if (overrideLookupClass != null) {
-            if (!BusinessObject.class.isAssignableFrom(overrideLookupClass)) {
-                throw new ClassValidationException("overrideLookupClass '" + overrideLookupClass + "' is not a subclasss of BusinessObject (" + getParseLocation() + ")");
-            }
-        }
     }
 
     /**
@@ -315,4 +243,16 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
     public void setReadOnlyAfterAdd(boolean readOnlyAfterAdd) {
         this.readOnlyAfterAdd = readOnlyAfterAdd;
     }
+
+
+    public void setDefaultValueFinderClass(Class<? extends ValueFinder> defaultValueFinderClass) {
+        this.defaultValueFinderClass = defaultValueFinderClass;
+    }
+
+
+    public void setOverrideLookupClass(Class<? extends BusinessObject> overrideLookupClass) {
+        this.overrideLookupClass = overrideLookupClass;
+    }
+    
+    
 }

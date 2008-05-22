@@ -16,10 +16,7 @@
 package org.kuali.core.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
-import org.kuali.core.datadictionary.exception.ClassValidationException;
 
 public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
 
@@ -29,30 +26,21 @@ public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
     private String parameterName;
     private String errorMessage;
 
-    // logger
-    private static Log LOG = LogFactory.getLog(ReferenceDefinition.class);
-
 
     public ApcRuleDefinition() {
-        LOG.debug("creating new ApcRuleDefinition");
     }
 
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         
-        // make sure the rootBusinessObjectClass is actually a descendent of BusinessObject
-        if (!validationCompletionUtils.isBusinessObjectClass(rootBusinessObjectClass)) {
-            throw new ClassValidationException("RootBusinessObject is not a descendent of BusinessObject. " + "rootBusinessObjectClass = '" + rootBusinessObjectClass.getName() + "' " + "(" + getParseLocation() + ")");
-        }
-
         // make sure the attributeName is actually a property of the BO
-        if (!validationCompletionUtils.isPropertyOf(rootBusinessObjectClass, attributeName)) {
-            throw new AttributeValidationException("unable to find attribute '" + attributeName + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + getParseLocation() + ")");
+        if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, attributeName)) {
+            throw new AttributeValidationException("unable to find attribute '" + attributeName + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "'" );
         }
 
-        // make sure that the member referencec by attributeName is actually a string
-        Class attributeClass = validationCompletionUtils.getAttributeClass(rootBusinessObjectClass, attributeName);
+        // make sure that the member reference by attributeName is actually a string
+        Class attributeClass = DataDictionary.getAttributeClass(rootBusinessObjectClass, attributeName);
         if (!attributeClass.equals(String.class)) {
-            throw new AttributeValidationException("the attribute '" + attributeName + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' is of type '" + attributeClass.getName() + "'. These attributes may only be string. (" + getParseLocation() + ")");
+            throw new AttributeValidationException("the attribute '" + attributeName + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' is of type '" + attributeClass.getName() + "'. These attributes may only be string." );
         }
 
 
@@ -66,9 +54,6 @@ public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(parameterNamespace)) {
             throw new IllegalArgumentException("invalid (blank) parameterNamespace");
         }
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("calling parameterNamespace '" + parameterNamespace + "'");
-        }
         this.parameterNamespace = parameterNamespace;
     }
 
@@ -78,9 +63,6 @@ public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
     void setParameterName(String parameterName) {
         if (StringUtils.isBlank(parameterName)) {
             throw new IllegalArgumentException("invalid (blank) parameterName");
-        }
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("calling parameterName '" + parameterName + "'");
         }
         this.parameterName = parameterName;
     }
@@ -93,9 +75,6 @@ public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
         }
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("calling setAttributeName '" + attributeName + "'");
-        }
         this.attributeName = attributeName;
     }
 
@@ -106,9 +85,6 @@ public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
     public void setErrorMessage(String errorMessage) {
         if (StringUtils.isBlank(errorMessage)) {
             throw new IllegalArgumentException("invalid (blank) errorMessage");
-        }
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("calling setErrorMessage '" + errorMessage + "'");
         }
         this.errorMessage = errorMessage;
     }
@@ -127,9 +103,6 @@ public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
 	public void setParameterDetailType(String parameterDetailType) {
         if (StringUtils.isBlank(parameterDetailType)) {
             throw new IllegalArgumentException("invalid (blank) parameterDetailType");
-        }
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("calling setParameterDetailType '" + parameterDetailType + "'");
         }
 		this.parameterDetailType = parameterDetailType;
 	}

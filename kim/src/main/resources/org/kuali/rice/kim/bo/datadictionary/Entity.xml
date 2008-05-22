@@ -1,138 +1,188 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2006 The Kuali Foundation.
- 
- Licensed under the Educational Community License, Version 1.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl1.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!DOCTYPE dictionaryEntry PUBLIC
-    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
-    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
-<dictionaryEntry>
-    <businessObject businessObjectClass="org.kuali.rice.kim.bo.Entity">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-        <inquiry>
-        	<title>Entity Inquiry</title>
+  <bean id="Entity" parent="Entity-parentBean" />
 
-        	<inquirySections>
-        		<inquirySection title="Header Text">
-        			<inquiryFields>
-        				<field attributeName="id" />
-        				<field attributeName="entityType.name" />
-        			</inquiryFields>		
-        		</inquirySection>
-        		<inquirySection title="Entity Attributes">
-        			<inquiryFields>
-        				<inquiryCollection name="entityAttributes"
-        					businessObjectClass="org.kuali.rice.kim.bo.EntityAttribute">
-        					<field attributeName="id" />
-        					<field attributeName="name" />
-        				</inquiryCollection>
-        			</inquiryFields>
-        		</inquirySection> 
-        		<inquirySection title="Entity Principals">
-        			<inquiryFields>
-        				<inquiryCollection name="principals"
-        					businessObjectClass="org.kuali.rice.kim.bo.Principal">
-        					<field attributeName="id" />
-        					<field attributeName="name" />
-        				</inquiryCollection>
-        			</inquiryFields>
-        		</inquirySection> 			
-        	</inquirySections>
-        </inquiry>
+  <bean id="Entity-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Entity" />
+    <property name="inquiryDefinition" >
+      <ref bean="Entity-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="Entity-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="id" />
+    <property name="objectLabel" value="Entity" />
+    <property name="collections" >
+      <list>
+        <bean parent="CollectionDefinition"
+              p:shortLabel="Entity Attributes"
+              p:summary="Entity Attributes"
+              p:name="entityAttributes"
+              p:label="Entity Attributes"
+              p:description="Entity Attributes of this Entity" />
+        <bean parent="CollectionDefinition"
+              p:shortLabel="principals"
+              p:summary="principals"
+              p:name="principals"
+              p:label="principals"
+              p:description="principals of this Entity" />
+      </list>
+    </property>
+    <property name="attributes" >
+      <list>
+        <ref bean="Entity-id" />
+        <ref bean="Entity-entityTypeId" />
+        <ref bean="Entity-versionNumber" />
+        <ref bean="Entity-objectId" />
+      </list>
+    </property>
+  </bean>
 
-        <lookup>
-            <title>Entity Lookup</title>
-
-            <instructions>Lookup a Entity</instructions>
-
-            <defaultSort sortAscending="true">
-                <sortAttributes>
-                    <sortAttribute attributeName="id" />
-                </sortAttributes>
-            </defaultSort>
-
-            <lookupFields>
-                <lookupField attributeName="id" required="false" forceLookup="true" noLookup="false" />
-                <lookupField attributeName="entityTypeId" required="false" forceLookup="true" />
-            </lookupFields>
-
-            <resultFields>
-                <field attributeName="id" />
-                <field attributeName="entityType.name" />
-            </resultFields>
-        </lookup>
-
-        <titleAttribute>id</titleAttribute>
-
-        <attributes>
-
-            <attribute name="id" forceUppercase="false">
-                <label>ID</label>
-                <shortLabel>id</shortLabel>
-
-                <maxLength>8</maxLength>
-                <validationPattern><anyCharacter /></validationPattern>
-				
-				<required>true</required>
-				
-                <control>
-                    <text size="8" />
-                </control>
-                
-			</attribute>
-
-            <attributeReference name="entityTypeId"
-				sourceAttributeName="id"
-				sourceClassName="org.kuali.rice.kim.bo.EntityType">
-				<label>Entity Type Name</label>
-                <shortLabel>Type Name</shortLabel>
-				<required>true</required>
-				<control>
-					<select
-						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-						businessObjectClass="org.kuali.rice.kim.bo.EntityType"
-						keyAttribute="id" labelAttribute="name" 
-						includeKeyInLabel="true" />
-				</control>
-			</attributeReference>
+<!-- Attribute Definitions -->
 
 
-            <attributeReference name="versionNumber" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="versionNumber" />
-			<attributeReference name="objectId" sourceClassName="org.kuali.core.bo.AttributeReferenceDummy" sourceAttributeName="objectId" />
-        </attributes>
-        
-        <collections>
-        	<collection name="entityAttributes">
-        		<label>Entity Attributes</label>
-        		<shortLabel>Entity Attributes</shortLabel>
-        		<summary>Entity Attributes</summary>
-        		<description>
-        			Entity Attributes of this Entity
-        		</description>
-        	</collection>
-        	
-        	<collection name="principals">
-        		<label>principals</label>
-        		<shortLabel>principals</shortLabel>
-        		<summary>principals</summary>
-        		<description>
-        			principals of this Entity
-        		</description>
-        	</collection>
-        	
-        </collections>
+  <bean id="Entity-id" parent="Entity-id-parentBean" />
 
-        <objectLabel>Entity</objectLabel>
-    </businessObject>
-</dictionaryEntry>
+  <bean id="Entity-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="id" />
+    <property name="maxLength" value="8" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="8" />
+    </property>
+    <property name="name" value="id" />
+    <property name="label" value="ID" />
+  </bean>
+  <bean id="Entity-entityTypeId" parent="Entity-entityTypeId-parentBean" />
+
+  <bean id="Entity-entityTypeId-parentBean" abstract="true" parent="EntityType-id">
+    <property name="shortLabel" value="Type Name" />
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="SelectControlDefinition"
+            p:businessObjectClass="org.kuali.rice.kim.bo.EntityType"
+            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeKeyInLabel="true"
+            p:keyAttribute="id"
+            p:labelAttribute="name" />
+    </property>
+    <property name="name" value="entityTypeId" />
+    <property name="label" value="Entity Type Name" />
+  </bean>
+  <bean id="Entity-versionNumber" parent="Entity-versionNumber-parentBean" />
+
+  <bean id="Entity-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+  <bean id="Entity-objectId" parent="Entity-objectId-parentBean" />
+
+  <bean id="Entity-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
+  </bean>
+
+<!-- Business Object Inquiry Definition -->
+
+
+  <bean id="Entity-inquiryDefinition" parent="Entity-inquiryDefinition-parentBean" />
+
+  <bean id="Entity-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="id" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="entityType.name" />
+            </list>
+          </property>
+          <property name="title" value="Header Text" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="entityAttributes" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.EntityAttribute" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="id" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="name" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Entity Attributes" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="principals" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Principal" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="id" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="name" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Entity Principals" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="Entity Inquiry" />
+  </bean>
+
+<!-- Business Object Lookup Definition -->
+
+
+  <bean id="Entity-lookupDefinition" parent="Entity-lookupDefinition-parentBean" />
+
+  <bean id="Entity-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="instructions" value="Lookup a Entity" />
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id"
+              p:forceLookup="true" />
+        <bean parent="FieldDefinition"
+              p:attributeName="entityTypeId"
+              p:forceLookup="true" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="id" />
+        <bean parent="FieldDefinition"
+              p:attributeName="entityType.name" />
+      </list>
+    </property>
+    <property name="title" value="Entity Lookup" />
+  </bean>
+</beans>

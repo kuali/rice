@@ -16,8 +16,6 @@
 package org.kuali.core.datadictionary.exporter;
 
 import java.math.BigDecimal;
-import java.util.Iterator;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.core.datadictionary.AttributeDefinition;
@@ -46,10 +44,7 @@ public class AttributesMapBuilder {
     public ExportMap buildAttributesMap(DataDictionaryEntryBase entry) {
         ExportMap attributesMap = new ExportMap("attributes");
 
-        for (Iterator i = entry.getAttributes().entrySet().iterator(); i.hasNext();) {
-            Map.Entry e = (Map.Entry) i.next();
-
-            AttributeDefinition attribute = (AttributeDefinition) e.getValue();
+        for ( AttributeDefinition attribute : entry.getAttributes() ) {
             attributesMap.set(buildAttributeMap(attribute, entry.getFullClassName()));
         }
 

@@ -303,20 +303,16 @@ public class ObjectUtils {
         Object propertyValue = null;
         try {
             propertyValue = PropertyUtils.getProperty(businessObject, propertyName);
-        }
-        catch (NestedNullException e) {
+        } catch (NestedNullException e) {
             // continue and return null for propertyValue
-        }
-        catch (IllegalAccessException e1) {
-            LOG.error("error getting property value for  " + propertyName + " " + e1.getMessage());
-            throw new RuntimeException("error getting property value for  " + propertyName + " " + e1.getMessage());
-        }
-        catch (InvocationTargetException e1) {
+        } catch (IllegalAccessException e1) {
+            LOG.error("error getting property value for  " + businessObject.getClass() + "." + propertyName + " " + e1.getMessage());
+            throw new RuntimeException("error getting property value for  " + businessObject.getClass() + "." + propertyName + " " + e1.getMessage(), e1);
+        } catch (InvocationTargetException e1) {
             // continue and return null for propertyValue
-        }
-        catch (NoSuchMethodException e1) {
-            LOG.error("error getting property value for  " + propertyName + " " + e1.getMessage());
-            throw new RuntimeException("error getting property value for  " + propertyName + " " + e1.getMessage());
+        } catch (NoSuchMethodException e1) {
+            LOG.error("error getting property value for  " + businessObject.getClass() + "." + propertyName + " " + e1.getMessage());
+            throw new RuntimeException("error getting property value for  " + businessObject.getClass() + "." + propertyName + " " + e1.getMessage(),e1);
         }
 
         return propertyValue;
@@ -431,8 +427,10 @@ public class ObjectUtils {
 
             // Business Objects
             if (propertyDescriptor.getPropertyType() != null && (BusinessObject.class).isAssignableFrom(propertyDescriptor.getPropertyType()) && PropertyUtils.isReadable(bo, propertyDescriptor.getName())) {
-                BusinessObject nestedBo = (BusinessObject) getPropertyValue(bo, propertyDescriptor.getName());
-                setObjectPropertyDeep(nestedBo, propertyName, type, propertyValue);
+                Object nestedBo = getPropertyValue(bo, propertyDescriptor.getName());
+                if ( nestedBo instanceof BusinessObject ) {
+                    setObjectPropertyDeep((BusinessObject)nestedBo, propertyName, type, propertyValue);
+                }
             }
 
             // Lists
@@ -469,8 +467,10 @@ public class ObjectUtils {
 
             // Business Objects
             if (propertyDescriptor.getPropertyType() != null && (BusinessObject.class).isAssignableFrom(propertyDescriptor.getPropertyType()) && PropertyUtils.isReadable(bo, propertyDescriptor.getName())) {
-                BusinessObject nestedBo = (BusinessObject) getPropertyValue(bo, propertyDescriptor.getName());
-                setObjectPropertyDeep(nestedBo, propertyName, type, propertyValue, depth - 1);
+                Object nestedBo = getPropertyValue(bo, propertyDescriptor.getName());
+                if ( nestedBo instanceof BusinessObject ) {
+                    setObjectPropertyDeep((BusinessObject)nestedBo, propertyName, type, propertyValue, depth - 1);
+                }
             }
 
             // Lists

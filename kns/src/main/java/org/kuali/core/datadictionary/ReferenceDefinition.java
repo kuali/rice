@@ -16,28 +16,21 @@
 package org.kuali.core.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
-import org.kuali.core.datadictionary.exception.ClassValidationException;
 
 public class ReferenceDefinition extends DataDictionaryDefinitionBase {
 
-    // logger
-    private static Log LOG = LogFactory.getLog(ReferenceDefinition.class);
 
     private String attributeName;
     private String activeIndicatorAttributeName;
-    private boolean activeIndicatorReversed;
+    private boolean activeIndicatorReversed = false;
     private String attributeToHighlightOnFail;
     private String displayFieldName;
     private String collection;
-    private Class collectionBusinessObjectClass;
+    private Class<? extends BusinessObject> collectionBusinessObjectClass;
     
-    public ReferenceDefinition() {
-        LOG.debug("creating new ReferenceDefinition");
-        activeIndicatorReversed = false;
-    }
+    public ReferenceDefinition() {}
 
     /**
      * @return attributeName
@@ -56,9 +49,6 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setAttributeName '" + attributeName + "'");
-        }
         this.attributeName = attributeName;
     }
 
@@ -76,9 +66,6 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
      * @throws IllegalArgumentException if the given activeIndicatorAttributeName is blank
      */
     public void setActiveIndicatorAttributeName(String activeIndicatorAttributeName) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setActiveIndicatorAttributeName '" + activeIndicatorAttributeName + "'");
-        }
         this.activeIndicatorAttributeName = activeIndicatorAttributeName;
     }
 
@@ -97,9 +84,6 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
      * @param activeIndicatorReversed The activeIndicatorReversed to set.
      */
     public void setActiveIndicatorReversed(boolean activeIndicatorReversed) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setActiveIndicatorReversed '" + activeIndicatorReversed + "'");
-        }
         this.activeIndicatorReversed = activeIndicatorReversed;
     }
 
@@ -121,9 +105,6 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         if (StringUtils.isBlank(attributeToHighlightOnFail)) {
             throw new IllegalArgumentException("invalid (blank) attributeToHighlightOnFail");
         }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setAttributeToHighlightOnFail '" + attributeToHighlightOnFail + "'");
-        }
         this.attributeToHighlightOnFail = attributeToHighlightOnFail;
     }
 
@@ -142,9 +123,6 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
      * @param displayFieldName The displayFieldName to set.
      */
     public void setDisplayFieldName(String displayFieldName) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setDisplayFieldName '" + displayFieldName + "'");
-        }
         this.displayFieldName = displayFieldName;
     }
 
@@ -155,24 +133,14 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
      * @return
      */
     public boolean isDisplayFieldNameSet() {
-        if (StringUtils.isBlank(displayFieldName)) {
-            return false;
-        }
-        else {
-            return true;
-        }
+        return StringUtils.isNotBlank(displayFieldName);
     }
 
     /**
      * @return Returns true if there is an ActiveIndicatorAttributeName set, false if not.
      */
     public boolean isActiveIndicatorSet() {
-        if (StringUtils.isNotBlank(activeIndicatorAttributeName)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return StringUtils.isNotBlank(activeIndicatorAttributeName);
     }
 
     public String getCollection() {
@@ -180,9 +148,6 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     }
 
     public void setCollection(String collection) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("calling setCollection '" + collection + "'");
-        }
         this.collection = collection;
     }
 
@@ -190,11 +155,11 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         return StringUtils.isNotBlank(getCollection());
     }
 
-    public Class getCollectionBusinessObjectClass() {
+    public Class<? extends BusinessObject> getCollectionBusinessObjectClass() {
         return collectionBusinessObjectClass;
     }
 
-    public void setCollectionBusinessObjectClass(Class collectionBusinessObjectClass) {
+    public void setCollectionBusinessObjectClass(Class<? extends BusinessObject> collectionBusinessObjectClass) {
         this.collectionBusinessObjectClass = collectionBusinessObjectClass;
     }
 
@@ -203,36 +168,32 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
      * 
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationCompletionUtils validationCompletionUtils) {
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
 
-        // make sure the rootBusinessObjectClass is actually a descendent of BusinessObject
-        if (!validationCompletionUtils.isBusinessObjectClass(rootBusinessObjectClass)) {
-            throw new ClassValidationException("RootBusinessObject is not a descendent of BusinessObject. " + "rootBusinessObjectClass = '" + rootBusinessObjectClass.getName() + "' " + "(" + getParseLocation() + ")");
-        }
 
         // make sure the attributeName is actually a property of the BO
         String tmpAttributeName = isCollectionReference() ? collection : attributeName;
-        if (!validationCompletionUtils.isPropertyOf(rootBusinessObjectClass, tmpAttributeName)) {
-            throw new AttributeValidationException("unable to find attribute '" + tmpAttributeName + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + getParseLocation() + ")");
+        if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, tmpAttributeName)) {
+            throw new AttributeValidationException("unable to find attribute '" + tmpAttributeName + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
         }
         if(isCollectionReference()){
-            collectionBusinessObjectClass=validationCompletionUtils.getCollectionElementClass(rootBusinessObjectClass, collection);
+            collectionBusinessObjectClass=DataDictionary.getCollectionElementClass(rootBusinessObjectClass, collection);
         }
         // if there's an activeIndicator set, then validate it
         if (isActiveIndicatorSet()) {
 
             // make sure named activeIndicator field exists in the reference class
 
-            Class referenceClass = isCollectionReference() ? validationCompletionUtils.getAttributeClass(collectionBusinessObjectClass, attributeName) : validationCompletionUtils.getAttributeClass(rootBusinessObjectClass, attributeName);
+            Class referenceClass = isCollectionReference() ? DataDictionary.getAttributeClass(collectionBusinessObjectClass, attributeName) : DataDictionary.getAttributeClass(rootBusinessObjectClass, attributeName);
 
-            if (!validationCompletionUtils.isPropertyOf(referenceClass, activeIndicatorAttributeName)) {
-                throw new AttributeValidationException("unable to find attribute '" + activeIndicatorAttributeName + "' in reference class '" + referenceClass.getName() + "' (" + getParseLocation() + ")");
+            if (!DataDictionary.isPropertyOf(referenceClass, activeIndicatorAttributeName)) {
+                throw new AttributeValidationException("unable to find attribute '" + activeIndicatorAttributeName + "' in reference class '" + referenceClass.getName() + "' (" + "" + ")");
             }
 
             // make sure named activeIndicator field is a boolean in the reference class
-            Class activeIndicatorClass = validationCompletionUtils.getAttributeClass(referenceClass, activeIndicatorAttributeName);
+            Class activeIndicatorClass = DataDictionary.getAttributeClass(referenceClass, activeIndicatorAttributeName);
             if (!activeIndicatorClass.equals(boolean.class)) {
-                throw new AttributeValidationException("Active Indicator Attribute Name '" + activeIndicatorAttributeName + "' in reference class '" + referenceClass.getName() + "' is not a boolean, it is a '" + activeIndicatorClass.getName() + "' " + " (" + getParseLocation() + ")");
+                throw new AttributeValidationException("Active Indicator Attribute Name '" + activeIndicatorAttributeName + "' in reference class '" + referenceClass.getName() + "' is not a boolean, it is a '" + activeIndicatorClass.getName() + "' " + " (" + "" + ")");
             }
 
         }
@@ -240,13 +201,13 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         // make sure the attributeToHighlightOnFail is actually a property of the BO
         if (isCollectionReference()) {
 
-            if (!validationCompletionUtils.isPropertyOf(collectionBusinessObjectClass, attributeToHighlightOnFail)) {
-                throw new AttributeValidationException("unable to find attribute '" + attributeToHighlightOnFail + "' in collectionBusinessObjectClass '" + collectionBusinessObjectClass.getName() + "' (" + getParseLocation() + ")");
+            if (!DataDictionary.isPropertyOf(collectionBusinessObjectClass, attributeToHighlightOnFail)) {
+                throw new AttributeValidationException("unable to find attribute '" + attributeToHighlightOnFail + "' in collectionBusinessObjectClass '" + collectionBusinessObjectClass.getName() + "' (" + "" + ")");
             }
         }
         else {
-            if (!validationCompletionUtils.isPropertyOf(rootBusinessObjectClass, attributeToHighlightOnFail)) {
-                throw new AttributeValidationException("unable to find attribute '" + attributeToHighlightOnFail + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + getParseLocation() + ")");
+            if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, attributeToHighlightOnFail)) {
+                throw new AttributeValidationException("unable to find attribute '" + attributeToHighlightOnFail + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
             }
         }
 

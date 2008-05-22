@@ -368,10 +368,12 @@
 	<bean id="enEmailService" class="edu.iu.uis.eden.mail.DefaultEmailService"  lazy-init="true"/>
 
     <bean id="enEmailContentService" class="edu.iu.uis.eden.mail.HardCodedEmailContentServiceImpl"  lazy-init="true"/>
-<!--
+
 	<bean id="enNotificationService" class="edu.iu.uis.eden.notification.KCBNotificationService"  lazy-init="true"/>
--->
+
+<!-- 
     <bean id="enNotificationService" class="edu.iu.uis.eden.notification.DefaultNotificationService"  lazy-init="true"/>
+-->
 
 	<!-- db platform -->
 	<bean id="enDbPlatform" class="org.kuali.rice.config.BeanHolder">

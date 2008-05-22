@@ -33,14 +33,22 @@ public class Principal extends AbstractEntityBase implements java.security.Princ
    private Entity entity;
    private ArrayList<Group> groups;
    private ArrayList<Role> roles;
-
+   
+   //this list is used for rendering the UI appropriately using the maintenance document framework
+   //this can be considered essentially a form object
+   private ArrayList<RoleQualificationForPrincipal> roleQualificationsForPrincipal;
+   
+   //this list is what actually gets persisted for principal role qualifications
+   private ArrayList<PrincipalQualifiedRoleAttribute> principalQualifiedRoleAttributes;
 
     /**
-     * Constructs a NotificationSender.java instance.
+     * Constructs a Principal instance.
      */
     public Principal() {
-        groups = new TypedArrayList(Group.class);
-        roles = new TypedArrayList(Role.class);
+        this.groups = new TypedArrayList(Group.class);
+        this.roles = new TypedArrayList(Role.class);
+        this.roleQualificationsForPrincipal = new TypedArrayList(RoleQualificationForPrincipal.class);
+        this.principalQualifiedRoleAttributes = new TypedArrayList(PrincipalQualifiedRoleAttribute.class);
     }
 
     /**
@@ -132,7 +140,33 @@ public class Principal extends AbstractEntityBase implements java.security.Princ
         this.entity = entity;
     }
 
+    /**
+     * @return the roleQualificationsForPrincipal
+     */
+    public ArrayList<RoleQualificationForPrincipal> getRoleQualificationsForPrincipal() {
+        return this.roleQualificationsForPrincipal;
+    }
 
+    /**
+     * @param roleQualificationsForPrincipal the roleQualificationsForPrincipal to set
+     */
+    public void setRoleQualificationsForPrincipal(ArrayList<RoleQualificationForPrincipal> roleQualificationsForPrincipal) {
+        this.roleQualificationsForPrincipal = roleQualificationsForPrincipal;
+    }
+
+    /**
+     * @return the principalQualifiedRoleAttributes
+     */
+    public ArrayList<PrincipalQualifiedRoleAttribute> getPrincipalQualifiedRoleAttributes() {
+        return this.principalQualifiedRoleAttributes;
+    }
+
+    /**
+     * @param principalQualifiedRoleAttributes the principalQualifiedRoleAttributes to set
+     */
+    public void setPrincipalQualifiedRoleAttributes(ArrayList<PrincipalQualifiedRoleAttribute> principalQualifiedRoleAttributes) {
+        this.principalQualifiedRoleAttributes = principalQualifiedRoleAttributes;
+    }
 
     /**
      *
@@ -148,5 +182,4 @@ public class Principal extends AbstractEntityBase implements java.security.Princ
 
         return dto;
     }
-
 }

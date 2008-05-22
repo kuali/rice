@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2006 The Kuali Foundation.
+
+ Licensed under the Educational Community License, Version 1.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.opensource.org/licenses/ecl1.php
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!DOCTYPE dictionaryEntry PUBLIC
+    "-//Kuali Project//DTD Data Dictionary 1.0//EN"
+    "https://test.kuali.org/dtds/dataDictionary-1_0.dtd">
+<dictionaryEntry>
+    <businessObject businessObjectClass="org.kuali.rice.kim.bo.RoleQualificationForPrincipal">
+
+        <titleAttribute>id</titleAttribute>
+
+        <attributes>
+           <attributeReference name="id" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="id">
+				<label>Role Id</label>
+                <shortLabel>Id</shortLabel>
+				<required>true</required>
+				<control>
+					<select
+						valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+						businessObjectClass="org.kuali.rice.kim.bo.Role"
+						keyAttribute="id" labelAttribute="name" 
+						includeKeyInLabel="true" />
+				</control>
+			</attributeReference>
+			<attributeReference name="name" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="name">
+				<label>Role Name</label>
+                <shortLabel>Name</shortLabel>
+				<required>true</required>
+				<control>
+					<text size="40" />
+				</control>
+			</attributeReference>
+        </attributes>
+
+        <collections>
+          <collection name="qualifiedRoleAttributes">
+            <label>Qualifications</label>
+            <shortLabel>Qualifications</shortLabel>
+            <elementLabel>Qualification</elementLabel>
+            <summary>Qualification Attributes</summary>
+            <description>Qualification Attributes</description>
+          </collection>
+        </collections>
+
+        <objectLabel>Role Qualification for Principal</objectLabel>
+    </businessObject>
+</dictionaryEntry>

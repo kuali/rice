@@ -29,7 +29,9 @@ import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Role;
 
 /**
- * This is a description of what this class does - ag266 don't forget to fill this in. 
+ * This maintainable class helps with the lifecycle of a maintenance document for the Role maintenance screen.  
+ * It specifically overrides the parent to handle transferring data about role qualifications between UI specific BOs and 
+ * persistence specific BOs. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

@@ -52,6 +52,10 @@
      		<fk-pointing-to-element-class column="ROLE_ID"/>
 		</collection-descriptor>
 		
+		<collection-descriptor name="principalQualifiedRoleAttributes" element-class-ref="org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
+			<inverse-foreignkey field-ref="principalId" />
+		</collection-descriptor>
+		
 	</class-descriptor>
 
 	<!-- GROUPS -->

@@ -21,7 +21,7 @@
 <dictionaryEntry>
     <maintenanceDocument>
         <businessObjectClass>org.kuali.rice.kim.bo.Principal</businessObjectClass>
-        <maintainableClass>org.kuali.core.maintenance.KualiMaintainableImpl</maintainableClass>
+        <maintainableClass>org.kuali.rice.kim.document.maintenance.PrincipalMaintainable</maintainableClass>
 
         <documentAuthorizerClass>org.kuali.core.document.authorization.MaintenanceDocumentAuthorizerBase</documentAuthorizerClass>
         <authorizations>
@@ -66,10 +66,29 @@
 			
 			<maintainableSection title="Assigned Roles">
 				<maintainableItems>
-					<maintainableCollection name="roles"
-						businessObjectClass="org.kuali.rice.kim.bo.Role" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="roles" includeAddLine="false"  summaryTitle="Assigned Roles">
-						<maintainableField name="id" readOnly="true" required="true" template="id"/>
-						<maintainableField name="name" readOnly="true" required="true" template="name"/>				
+					<maintainableCollection name="roleQualificationsForPrincipal"
+						businessObjectClass="org.kuali.rice.kim.bo.RoleQualificationForPrincipal" includeMultipleLookupLine="true" sourceClassName="org.kuali.rice.kim.bo.Role" sourceAttributeName="roleQualificationsForPrincipal" includeAddLine="false" summaryTitle="Assigned Role">
+						<maintainableField name="id" required="true"
+							readOnlyAfterAdd="true" template="id" />
+						<maintainableField name="name" required="false" readOnly="true" template="name"/>
+						
+						<maintainableCollection name="qualifiedRoleAttributes"
+								businessObjectClass="org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute" summaryTitle="Qualification">
+							<maintainableField name="id" required="true" readOnly="true" />
+							<maintainableField name="attributeName" required="true" readOnly="false" />
+							<maintainableField name="attributeValue" required="true" readOnly="false" />
+							<maintainableField name="principalId" required="false" readOnly="true" />
+							<maintainableField name="roleId" required="false" readOnly="true" />
+							<maintainableField name="versionNumber" required="false" readOnly="true" />
+							<maintainableField name="objectId" required="false" readOnly="true" />
+							<summaryFields>
+           		       			<summaryField name="attributeName" />
+           		       		</summaryFields>
+						</maintainableCollection>
+						
+						<summaryFields>
+     		       			<summaryField name="name" />
+         		       	</summaryFields>
 					</maintainableCollection>
 				</maintainableItems>
 			</maintainableSection>

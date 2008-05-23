@@ -143,7 +143,7 @@
 		</copy>
 		<copy todir="${dist.server.dir}">
             <!-- Don't include the pieces from the sample app -->
-			<fileset dir="${webapp.src.dir}" excludes="*,WEB-INF/*"/>
+			<fileset dir="${webapp.src.dir}" excludes="*,WEB-INF/struts-config.xml"/>
 			<fileset dir="${server.config.src.dir}"/>
 		</copy>
 		<!-- change the environment code appropriately -->

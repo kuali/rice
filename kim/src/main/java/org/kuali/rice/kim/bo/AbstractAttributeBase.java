@@ -25,7 +25,7 @@ import org.kuali.rice.kim.dto.AbstractAttributeBaseDTO;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public abstract class AbstractAttributeBase extends PersistableBusinessObjectBase implements Serializable {
+public abstract class AbstractAttributeBase extends KIMPersistableBusinessObjectBase implements Serializable {
 
     private Long id;
     private Long attributeTypeId;

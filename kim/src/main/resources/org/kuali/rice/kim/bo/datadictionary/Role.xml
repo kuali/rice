@@ -75,6 +75,7 @@
         <ref bean="Role-description" />
         <ref bean="Role-versionNumber" />
         <ref bean="Role-objectId" />
+        <ref bean="Group-newCollectionRecord" />
       </list>
     </property>
   </bean>
@@ -140,6 +141,11 @@
   <bean id="Role-objectId" parent="Role-objectId-parentBean" />
 
   <bean id="Role-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
+  </bean>
+  
+  <bean id="Role-newCollectionRecord" parent="Role-newCollectionRecord-parentBean" />
+
+  <bean id="Role-newCollectionRecord-parentBean" abstract="true" parent="AttributeReferenceDummy-newCollectionRecord">
   </bean>
 
 <!-- Business Object Inquiry Definition -->

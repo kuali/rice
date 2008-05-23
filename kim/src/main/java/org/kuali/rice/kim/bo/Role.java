@@ -33,7 +33,7 @@ import org.kuali.rice.kim.dto.RoleDTO;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class Role extends PersistableBusinessObjectBase {
+public class Role extends KIMPersistableBusinessObjectBase {
 	private static final long serialVersionUID = -8535955276605020423L;
 	private Long id;
 	private String name;

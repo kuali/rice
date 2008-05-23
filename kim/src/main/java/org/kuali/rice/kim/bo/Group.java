@@ -25,7 +25,7 @@ import org.kuali.rice.kim.dto.GroupAttributeDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
 
-public class Group extends PersistableBusinessObjectBase {
+public class Group extends KIMPersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 4974576362491778342L;
 
@@ -232,15 +232,5 @@ public class Group extends PersistableBusinessObjectBase {
             gas.put(ga.getAttributeName(), GroupAttribute.toDTO(ga));
         }
         return dto;
-    }
-
-    /**
-     * This overridden method makes
-     * 
-     * @see org.kuali.core.bo.PersistableBusinessObjectBase#isNewCollectionRecord()
-     */
-    @Override
-    public boolean isNewCollectionRecord() {
-        return true;
     }
 }

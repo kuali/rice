@@ -52,7 +52,10 @@
       <list>
         <bean parent="MaintainableFieldDefinition"
               p:name="id"
-              p:readOnly="true" />
+              p:required="true"
+              p:readOnly="true"
+              p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextNamespaceIdFinder">
+        </bean>
         <bean parent="MaintainableFieldDefinition"
               p:required="true"
               p:name="name" />

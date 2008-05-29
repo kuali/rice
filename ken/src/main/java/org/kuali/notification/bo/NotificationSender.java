@@ -15,16 +15,36 @@
  */
 package org.kuali.notification.bo;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * This class represents the data structure that will house information about the non-system 
  * sender that a notification message is sent on behalf of.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="NOTIFICATION_SENDERS")
 public class NotificationSender {
-    private Long id;
-    private Long notificationId;
-    private String senderName;
-    
+    @Id
+	@Column(name="ID")
+	private Long id;
+    @Column(name="NOTIFICATION_ID", nullable=false)
+	private Long notificationId;
+    @Column(name="NAME", nullable=false)
+	private String senderName;
+
+    // Added for JPA uni-directional one-to-many (not yet supported by JPA)
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name="NOTIFICATION_ID", insertable=false, updatable=false)
+    private Notification notification;
+
     /**
      * Constructs a NotificationSender.java instance.
      */

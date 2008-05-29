@@ -15,25 +15,37 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import org.apache.commons.lang.ObjectUtils;
 
 /**
  * BO for rule expressions 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_RULE_EXPR_T")
 public class RuleExpressionDef {
     /**
      * Primary key
      */
-    private Long id;
+    @Id
+	@Column(name="RULE_EXPR_ID")
+	private Long id;
     /**
      * The type of the expression
      */
-    private String type;
+    @Column(name="RULE_EXPR_TYP")
+	private String type;
     /**
      * The content of the expression
      */
-    private String expression;
+    @Column(name="RULE_EXPR", nullable=true)
+	private String expression;
     /**
      * @return the id
      */

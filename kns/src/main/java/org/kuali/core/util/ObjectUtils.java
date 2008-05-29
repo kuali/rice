@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
 import java.util.Collection;
@@ -33,6 +34,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
+import org.hibernate.collection.PersistentBag;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.PersistableBusinessObjectExtension;
@@ -477,6 +479,24 @@ public class ObjectUtils {
             else if (propertyDescriptor.getPropertyType() != null && (List.class).isAssignableFrom(propertyDescriptor.getPropertyType()) && getPropertyValue(bo, propertyDescriptor.getName()) != null) {
 
                 List propertyList = (List) getPropertyValue(bo, propertyDescriptor.getName());
+                
+                // Complete Hibernate Hack - fetches the proxied List into the PersistenceContext and sets it on the BO Copy.
+                if (propertyList instanceof PersistentBag) {
+                	try {
+	                	PersistentBag bag = (PersistentBag) propertyList;
+	                	PersistableBusinessObject pbo = (PersistableBusinessObject) KNSServiceLocator.getEntityManagerFactory().createEntityManager().find(bo.getClass(), bag.getKey());
+	        			Field field1 = pbo.getClass().getDeclaredField(propertyDescriptor.getName());
+	        			Field field2 = bo.getClass().getDeclaredField(propertyDescriptor.getName());
+	        			field1.setAccessible(true);
+	        			field2.setAccessible(true);
+	        			field2.set(bo, field1.get(pbo));
+	        			propertyList = (List) getPropertyValue(bo, propertyDescriptor.getName());;
+                	} catch (Exception e) {
+                		LOG.error(e.getMessage(), e);
+                	}
+                }
+                // End Complete Hibernate Hack
+                
                 for(Object listedBo: propertyList) {
                     if (listedBo != null && listedBo instanceof BusinessObject) {
                         setObjectPropertyDeep(listedBo, propertyName, type, propertyValue, depth - 1);

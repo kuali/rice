@@ -257,7 +257,7 @@
 
 	<class-descriptor class="org.kuali.core.bo.Parameter" table="SH_PARM_T">
 		<field-descriptor name="parameterNamespaceCode" column="SH_PARM_NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
-        <field-descriptor name="parameterDetailTypeCode" column="SH_PARM_DTL_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="parameterDetailTypeCode" column="SH_PARM_DTL_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="parameterName" column="SH_PARM_NM" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="parameterValue" column="SH_PARM_TXT" jdbc-type="VARCHAR" />
 		<field-descriptor name="parameterDescription" column="SH_PARM_DESC" jdbc-type="VARCHAR" />

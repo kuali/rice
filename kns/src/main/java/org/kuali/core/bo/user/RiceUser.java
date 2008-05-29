@@ -17,21 +17,34 @@ package org.kuali.core.bo.user;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 
+@Entity
+@Table(name="EN_USR_T")
 public class RiceUser extends PersistableBusinessObjectBase {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2912023481237314564L;
 
+	@Id
+	@Column(name="PRSN_EN_ID")
 	private String personUniversalIdentifier;
+	@Column(name="PRSN_UNIV_ID")
 	private String universityId;
+	@Column(name="PRSN_NTWRK_ID")
 	private String personUserIdentifier;
+	@Column(name="PRSN_EMAIL_ADDR")
 	private String emailAddress;
+	@Column(name="PRSN_NM")
 	private String personName;
 	
+    @Column(name="DTYPE", insertable=false, updatable=false, nullable=true)
+    private String dtype;
+
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap map = new LinkedHashMap();
@@ -80,3 +93,4 @@ public class RiceUser extends PersistableBusinessObjectBase {
 	}
 
 }
+

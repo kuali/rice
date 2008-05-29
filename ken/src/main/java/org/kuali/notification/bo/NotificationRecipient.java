@@ -15,16 +15,38 @@
  */
 package org.kuali.notification.bo;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * This class houses information pertaining to each recipient for a Notification message.  This 
  * recipient can be either a user or a group - which is specified by the recipient type.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="NOTIFICATION_RECIPIENTS")
 public class NotificationRecipient {
-    private Long id;
-    private Long notificationId;
-    private String recipientType;
-    private String recipientId;
+    @Id
+	@Column(name="ID")
+	private Long id;
+    @Column(name="NOTIFICATION_ID", nullable=false)
+	private Long notificationId;
+    @Column(name="RECIPIENT_TYPE", nullable=false)
+	private String recipientType;
+    @Column(name="RECIPIENT_ID", nullable=false)
+	private String recipientId;
+    
+    // Added for JPA uni-directional one-to-many (not yet supported by JPA)
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name="NOTIFICATION_ID", insertable=false, updatable=false)
+    private Notification notification;
     
     /**
      * Constructs a NotificationRecipient instance.
@@ -96,3 +118,4 @@ public class NotificationRecipient {
 	this.recipientType = recipientType;
     }
 }
+

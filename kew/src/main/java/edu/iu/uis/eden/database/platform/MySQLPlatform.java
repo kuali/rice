@@ -16,10 +16,13 @@
  */
 package edu.iu.uis.eden.database.platform;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.persistence.EntityManager;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
@@ -65,6 +68,11 @@ public class MySQLPlatform extends ANSISqlPlatform {
   			}
   		}
   	}
+    
+    public Long getNextValSQL(String sequenceName, EntityManager entityManager) {
+        entityManager.createNativeQuery("INSERT INTO " + sequenceName + " VALUES (NULL);").executeUpdate();
+        return new Long(((BigInteger) entityManager.createNativeQuery("SELECT LAST_INSERT_ID()").getSingleResult()).longValue());           
+    }
 
     public boolean isSITCacheSupported() {
     	return false;

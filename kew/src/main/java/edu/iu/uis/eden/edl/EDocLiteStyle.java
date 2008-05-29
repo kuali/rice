@@ -16,32 +16,53 @@
  */
 package edu.iu.uis.eden.edl;
 
+import javax.persistence.Version;
+import javax.persistence.FetchType;
+import javax.persistence.Basic;
+import javax.persistence.Lob;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 /**
  * EDocLite XSLT stylesheet
  * Table: en_edoclt_style_t
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_EDOCLT_STYLE_T")
 public class EDocLiteStyle {
     /**
      * edoclt_style_id
      */
-    private Long eDocLiteStyleId;
+    @Id
+	@Column(name="edoclt_style_id")
+	private Long eDocLiteStyleId;
     /**
      * edoclt_style_nm
      */
-    private String name;
+    @Column(name="edoclt_style_nm")
+	private String name;
     /**
      * edoclt_style_xml
      */
-    private String xmlContent;
+    @Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(name="edoclt_style_xml")
+	private String xmlContent;
     /**
      * edoclt_style_actv_ind
      */
-    private Boolean activeInd;
+    @Column(name="edoclt_style_actv_ind")
+	private Boolean activeInd;
     /**
      * db_lock_ver_nbr
      */
-    private Integer lockVerNbr;
+    @Version
+	@Column(name="db_lock_ver_nbr")
+	private Integer lockVerNbr;
 
     public Long getEDocLiteStyleId() {
         return eDocLiteStyleId;

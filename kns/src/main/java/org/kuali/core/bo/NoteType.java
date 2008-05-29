@@ -16,16 +16,29 @@
 
 package org.kuali.core.bo;
 
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.util.LinkedHashMap;
 
 
 /**
  * 
  */
+@Entity
+@Table(name="SH_NTE_TYP_T")
 public class NoteType extends PersistableBusinessObjectBase {
 
+	@Id
+	@Column(name="NTE_TYP_CD")
 	private String noteTypeCode;
+	@Column(name="NTE_TYP_DESC")
 	private String noteTypeDescription;
+	@Column(name="NTE_TYP_ACTV_IND")
 	private boolean noteTypeActiveIndicator;
 
 	/**
@@ -108,3 +121,4 @@ public class NoteType extends PersistableBusinessObjectBase {
 	    return m;
     }
 }
+

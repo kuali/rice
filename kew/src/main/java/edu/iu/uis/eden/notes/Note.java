@@ -24,6 +24,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.WorkflowPersistable;
 
@@ -34,24 +41,42 @@ import edu.iu.uis.eden.WorkflowPersistable;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity(name="KEWNote")
+@Table(name="EN_DOC_NTE_T")
 public class Note implements WorkflowPersistable {
 
 	private static final long serialVersionUID = -6136544551121011531L;
+	@Id
+	@Column(name="DOC_NTE_ID")
 	private Long noteId;
-    private Long routeHeaderId;
-    private String noteAuthorWorkflowId;
-    private Timestamp noteCreateDate;
-    private String noteText;
-    private Integer lockVerNbr;
+    @Column(name="DOC_HDR_ID")
+	private Long routeHeaderId;
+    @Column(name="DOC_NTE_AUTH_PRSN_EN_ID")
+	private String noteAuthorWorkflowId;
+    //@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="DOC_NTE_CRT_DT")
+	private Timestamp noteCreateDate;
+    @Column(name="DOC_NTE_TXT")
+	private String noteText;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
     
+    @Transient
     private List attachments = new ArrayList();
 
     //additional data not in database
+    @Transient
     private String noteAuthorEmailAddress;
+    @Transient
     private String noteAuthorNetworkId;
+    @Transient
     private String noteAuthorFullName;
+    @Transient
     private Long noteCreateLongDate;
+    @Transient
     private Boolean authorizedToEdit; 
+    @Transient
     private Boolean editingNote;
     
     public Integer getLockVerNbr() {
@@ -190,3 +215,4 @@ public class Note implements WorkflowPersistable {
 	}
 
 }
+

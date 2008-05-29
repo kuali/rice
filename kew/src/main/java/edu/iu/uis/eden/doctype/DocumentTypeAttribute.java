@@ -16,6 +16,16 @@
  */
 package edu.iu.uis.eden.doctype;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
@@ -28,16 +38,28 @@ import edu.iu.uis.eden.routetemplate.RuleAttributeService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@Entity
+@Table(name="EN_DOC_TYP_ATTRIB_T")
 public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
 
 	private static final long serialVersionUID = -4429421648373903566L;
 
+	@Id
+	@Column(name="DOC_TYP_ATTRIB_ID")
 	private Long documentTypeAttributeId; 
-    private Long ruleAttributeId;
-    private RuleAttribute ruleAttribute;
-    private Long documentTypeId;
-    private DocumentType documentType;
-    private int orderIndex;
+    @Column(name="RULE_ATTRIB_ID")
+	private Long ruleAttributeId;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="RULE_ATTRIB_ID", insertable=false, updatable=false)
+	private RuleAttribute ruleAttribute;
+    @Column(name="DOC_TYP_ID")
+	private Long documentTypeId;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="DOC_TYP_ID", insertable=false, updatable=false)
+	private DocumentType documentType;
+    @Column(name="ORD_INDX")
+	private int orderIndex;
+    @Transient
     private Integer lockVerNbr;
     
 	/**
@@ -147,3 +169,4 @@ public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
 	}
 
 }
+

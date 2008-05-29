@@ -1,16 +1,37 @@
 package edu.iu.uis.eden.edl.extract;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
+@Entity
+@Table(name="EN_EDL_FIELD_DMP_T")
 public class Fields {
 
 	private static final long serialVersionUID = -6136544551121011531L;
 	
+	@Id
+	@Column(name="EDL_FIELD_DMP_ID")
 	private Long fieldId;
-    private Long docId;
-    private String fieldName;
-    private String fieldValue;
-    private Integer lockVerNbr;
+    @Column(name="DOC_HDR_ID")
+	private Long docId;
+    @Column(name="FLD_NM")
+	private String fieldName;
+    @Column(name="FLD_VAL")
+	private String fieldValue;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
     
-    private Dump dump;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
+	private Dump dump;
     
 	public Long getFieldId() {
 		return fieldId;
@@ -48,3 +69,4 @@ public class Fields {
 	
    
 }
+

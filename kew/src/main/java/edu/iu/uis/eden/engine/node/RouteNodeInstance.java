@@ -21,6 +21,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -34,23 +48,45 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_RTE_NODE_INSTN_T")
 public class RouteNodeInstance implements Serializable {
     
 	private static final long serialVersionUID = 7183670062805580420L;
 	
+	@Id
+	@Column(name="RTE_NODE_INSTN_ID")
 	private Long routeNodeInstanceId;
-    private Long documentId;
-    private Branch branch;
-    private RouteNode routeNode;
+    @Column(name="DOC_ID")
+	private Long documentId;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name="BRCH_ID")
+	private Branch branch;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="RTE_NODE_ID")
+	private RouteNode routeNode;
+    @Column(name="ACTV_IND")
     private boolean active = false;
+    @Column(name="CMPLT_IND")
     private boolean complete = false;
+    @Column(name="INIT_IND")
     private boolean initial = true;
-    private RouteNodeInstance process;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name="PROC_RTE_NODE_INSTN_ID")
+	private RouteNodeInstance process;
+    @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+    @JoinTable(name = "EN_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"))    
     private List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
+    @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+    @JoinTable(name = "EN_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"))    
     private List<RouteNodeInstance> previousNodeInstances = new ArrayList<RouteNodeInstance>();
+    //@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="nodeInstance")    
+    @Transient
     private List<NodeState> state = new ArrayList<NodeState>();
     	
-    private Integer lockVerNbr;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
     
     public boolean isActive() {
         return active;
@@ -224,3 +260,4 @@ public class RouteNodeInstance implements Serializable {
             .toString();
     }
 }
+

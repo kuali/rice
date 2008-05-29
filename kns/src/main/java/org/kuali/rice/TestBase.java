@@ -14,9 +14,11 @@ package org.kuali.rice;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
+import org.kuali.rice.test.lifecycles.TransactionalLifecycle;
 import org.kuali.rice.testharness.KNSTestCase;
-import org.kuali.rice.testharness.TransactionalLifecycle;
 
+@Ignore
 public class TestBase extends KNSTestCase {
 
 	private TransactionalLifecycle transactionalLifecycle;
@@ -31,6 +33,7 @@ public class TestBase extends KNSTestCase {
         //setTestConfigFilename("classpath:META-INF/sample-app-test-config.xml");
         super.setUp();
         transactionalLifecycle = new TransactionalLifecycle();
+        transactionalLifecycle.setTransactionManager(KNSServiceLocator.getTransactionManager());
         transactionalLifecycle.start();
     }
 

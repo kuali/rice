@@ -15,6 +15,17 @@
  */
 package edu.iu.uis.eden.engine.node;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.io.Serializable;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -27,17 +38,24 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@Entity
+@Table(name="EN_RTE_NODE_CFG_PARM_T")
+@AttributeOverrides({@AttributeOverride(name="key", column=@Column(name="RTE_NODE_CFG_PARM_KEY")), @AttributeOverride(name="value", column=@Column(name="RTE_NODE_CFG_PARM_VAL"))})
 public class RouteNodeConfigParam extends KeyValuePair implements Serializable {
     private static final long serialVersionUID = 5592421070149273014L;
 
     /**
      * Primary key
      */
-    private Long id;
+    @Id
+	@Column(name="RTE_NODE_CFG_PARM_ID")
+	private Long id;
     /**
      * Foreign key to routenode table
      */
-    private RouteNode routeNode;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="RTE_NODE_CFG_PARM_ND")
+	private RouteNode routeNode;
 
     public RouteNodeConfigParam() {}
 

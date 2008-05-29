@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.kom.bo;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
@@ -26,13 +32,20 @@ import org.kuali.core.util.OjbCharBooleanConversion;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@Entity
+@Table(name="KOM_ORGANIZATIONS_CONTEXTS_T")
 public class OrganizationsContexts extends PersistableBusinessObjectBase {
 
     private static final long serialVersionUID = 9021359708162166484L;
-    private Long id;
-    private Long organizationId;
-    private Long contextId;
-    private String active;
+    @Id
+	@Column(name="ID")
+	private Long id;
+    @Column(name="ORGANIZATION_ID")
+	private Long organizationId;
+    @Column(name="CONTEXT_ID")
+	private Long contextId;
+    @Column(name="ACTIVE")
+	private String active;
     private Organization organization;
     private OrganizationContext organizationContext;
 
@@ -97,3 +110,4 @@ public class OrganizationsContexts extends PersistableBusinessObjectBase {
         }
     }
 }
+

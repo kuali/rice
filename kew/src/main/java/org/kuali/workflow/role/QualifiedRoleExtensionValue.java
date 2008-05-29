@@ -16,19 +16,40 @@
  */
 package org.kuali.workflow.role;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 /**
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_QUAL_ROLE_EXT_VAL_T")
 public class QualifiedRoleExtensionValue {
 
+	@Id
+	@Column(name="QUAL_ROLE_EXT_VAL_ID")
 	private Long qualifiedRoleExtensionValueId;
 
+	@Column(name="QUAL_ROLE_EXT_ID")
 	private Long qualifiedRoleExtensionId;
+	@Column(name="EXT_KEY")
 	private String key;
+	@Column(name="EXT_VAL")
 	private String value;
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 
+	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name="QUAL_ROLE_EXT_ID", insertable=false, updatable=false)
 	private QualifiedRoleExtension extension;
 
 	public QualifiedRoleExtension getExtension() {
@@ -80,3 +101,4 @@ public class QualifiedRoleExtensionValue {
 	}
 
 }
+

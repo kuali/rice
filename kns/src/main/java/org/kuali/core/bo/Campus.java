@@ -15,21 +15,40 @@
  */
 package org.kuali.core.bo;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.util.LinkedHashMap;
 
 
 /**
  * 
  */
+@Entity
+@Table(name="SH_CAMPUS_T")
 public class Campus extends PersistableBusinessObjectBase {
 
     private static final long serialVersionUID = 787567094298971223L;
-    private String campusCode;
-    private String campusName;
-    private String campusShortName;
-    private String campusTypeCode;
+    @Id
+	@Column(name="CAMPUS_CD")
+	private String campusCode;
+    @Column(name="CAMPUS_NM")
+	private String campusName;
+    @Column(name="CAMPUS_SHRT_NM")
+	private String campusShortName;
+    @Column(name="CAMPUS_TYP_CD")
+	private String campusTypeCode;
 
-    private CampusType campusType;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="CAMPUS_TYP_CD", insertable=false, updatable=false)
+	private CampusType campusType;
     
     /**
      * Default no-arg constructor.
@@ -145,3 +164,4 @@ public class Campus extends PersistableBusinessObjectBase {
     }
 
 }
+

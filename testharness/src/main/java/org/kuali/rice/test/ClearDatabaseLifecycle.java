@@ -167,7 +167,7 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
     private boolean shouldTableBeCleared(String tableName) {
         if (getTablesToClear() != null && !getTablesToClear().isEmpty()) {
             for (String tableToClear : getTablesToClear()) {
-                if (tableName.matches(tableToClear)) {
+                if (tableName.toUpperCase().matches(tableToClear.toUpperCase())) {
                     return true;
                 }
             }
@@ -175,7 +175,7 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
         }
         if (getTablesNotToClear() != null && !getTablesNotToClear().isEmpty()) {
             for (String tableNotToClear : getTablesNotToClear()) {
-                if (tableName.matches(tableNotToClear)) {
+                if (tableName.toUpperCase().matches(tableNotToClear.toUpperCase())) {
                     return false;
                 }
             }

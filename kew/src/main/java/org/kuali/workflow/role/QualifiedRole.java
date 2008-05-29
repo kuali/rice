@@ -20,29 +20,65 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 /**
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_QUAL_ROLE_T")
 public class QualifiedRole implements java.io.Serializable {
 
+	@Id
+	@Column(name="QUAL_ROLE_ID")
 	private Long qualifiedRoleId;
 
+	@Column(name="ROLE_ID")
 	private Long roleId;
+	@Column(name="ACTV_IND")
 	private boolean active;
+	@Column(name="QUAL_ROLE_DESC")
 	private String description;
+	@Column(name="DOC_HDR_ID")
 	private Long documentId;
+	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="FRM_DT")
 	private Timestamp fromDate;
+	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="TO_DT")
 	private Timestamp toDate;
+	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="ACTVN_DT")
 	private Timestamp activationDate;
+	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="DACTVN_DT")
 	private Timestamp deactivationDate;
+	@Column(name="VER_NBR")
 	private Integer versionNumber;
+	@Column(name="CUR_IND")
 	private boolean current;
+	@Column(name="PREV_VER_ID")
 	private Long previousVersionId;
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 
+	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
 	private Role role;
+    @Transient
 	private List<QualifiedRoleMember> members = new ArrayList<QualifiedRoleMember>();
+    @Transient
 	private List<QualifiedRoleExtension> extensions = new ArrayList<QualifiedRoleExtension>();
 
 	public Timestamp getActivationDate() {
@@ -143,3 +179,4 @@ public class QualifiedRole implements java.io.Serializable {
 	}
 
 }
+

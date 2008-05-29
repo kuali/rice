@@ -18,6 +18,17 @@ package edu.iu.uis.eden.engine.node;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import edu.iu.uis.eden.doctype.DocumentType;
 
 /**
@@ -27,15 +38,27 @@ import edu.iu.uis.eden.doctype.DocumentType;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_DOC_TYP_PROC_T")
 public class Process implements Serializable {
 
 	private static final long serialVersionUID = -6338857095673479752L;
     
-    private Long processId;
+    @Id
+	@Column(name="DOC_TYP_PROC_ID")
+	private Long processId;
+	@Column(name="PROC_NM")
 	private String name;
+	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="DOC_TYP_ID")
 	private DocumentType documentType;
+	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name="INIT_RTE_NODE_ID")
 	private RouteNode initialRouteNode;
+    @Column(name="INIT_IND")
 	private boolean initial = false;
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 	
 	public Long getProcessId() {

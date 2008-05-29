@@ -34,6 +34,7 @@
 			<displayName>Eric Westfall</displayName>
 			<givenName>Eric</givenName>
 			<lastName>Westfall</lastName>
+			<dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>2</workflowId>
@@ -44,6 +45,7 @@
 			<displayName>Ryan Kirkendall</displayName>
 			<givenName>Ryan</givenName>
 			<lastName>Kirkendall</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>3</workflowId>
@@ -54,6 +56,7 @@
 			<displayName>Jeremy Hopf</displayName>
 			<givenName>Jeremy</givenName>
 			<lastName>Hopf</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>4</workflowId>
@@ -64,6 +67,7 @@
 			<displayName>Brian McGough</displayName>
 			<givenName>Brian</givenName>
 			<lastName>McGough</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>5</workflowId>
@@ -74,6 +78,7 @@
 			<displayName>Teresa May</displayName>
 			<givenName>Teresa</givenName>
 			<lastName>May</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>6</workflowId>
@@ -84,6 +89,7 @@
 			<displayName>Xiaofeng Qi</displayName>
 			<givenName>Xiaofeng</givenName>
 			<lastName>Qi</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>7</workflowId>
@@ -94,6 +100,7 @@
 			<displayName>Nate Johnson</displayName>
 			<givenName>Nate</givenName>
 			<lastName>Johnson</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>8</workflowId>
@@ -104,6 +111,7 @@
 			<displayName>Phil McKown</displayName>
 			<givenName>Phil</givenName>
 			<lastName>McKown</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>9</workflowId>
@@ -114,6 +122,7 @@
 			<displayName>Jim Thomas</displayName>
 			<givenName>Jim</givenName>
 			<lastName>Thomas</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>10</workflowId>
@@ -124,6 +133,7 @@
 			<displayName>Tara Bazler</displayName>
 			<givenName>Tara</givenName>
 			<lastName>Bazler</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>11</workflowId>
@@ -134,6 +144,7 @@
 			<displayName>Jim True</displayName>
 			<givenName>Jim</givenName>
 			<lastName>True</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>12</workflowId>
@@ -144,6 +155,7 @@
 			<displayName>Li Shen</displayName>
 			<givenName>Li</givenName>
 			<lastName>Shen</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>13</workflowId>
@@ -154,6 +166,7 @@
 			<displayName>Aaron Hamid</displayName>
 			<givenName>Aaron</givenName>
 			<lastName>Hamid</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>14</workflowId>
@@ -164,6 +177,7 @@
 			<displayName>Pan Zhang</displayName>
 			<givenName>Pan</givenName>
 			<lastName>Zhang</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>15</workflowId>
@@ -174,6 +188,7 @@
 			<displayName>David Elyea</displayName>
 			<givenName>David</givenName>
 			<lastName>Elyea</lastName>
+      <dtype>user</dtype>
 		</user>
 
         <!-- test users, range starting at id 1000 -->
@@ -186,6 +201,7 @@
 			<displayName>User One</displayName>
 			<givenName>User</givenName>
 			<lastName>One</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>1002</workflowId>
@@ -196,6 +212,7 @@
 			<displayName>User Two</displayName>
 			<givenName>User</givenName>
 			<lastName>Two</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>1003</workflowId>
@@ -206,6 +223,7 @@
 			<displayName>User Three</displayName>
 			<givenName>User</givenName>
 			<lastName>Three</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>1004</workflowId>
@@ -216,6 +234,7 @@
 			<displayName>Dewey Decimal</displayName>
 			<givenName>Dewey</givenName>
 			<lastName>Decimal</lastName>
+      <dtype>user</dtype>
 		</user>
 		<user>
 			<workflowId>1005</workflowId>
@@ -226,6 +245,7 @@
 			<displayName>Quick Start</displayName>
 			<givenName>Quick</givenName>
 			<lastName>Start</lastName>
+      <dtype>user</dtype>
 		</user>
         <user>
             <workflowId>1006</workflowId>
@@ -236,10 +256,11 @@
             <displayName>Administrator</displayName>
             <givenName>administrator</givenName>
             <lastName>administrator</lastName>
+      <dtype>user</dtype>
         </user>
 	</users>
 	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
-		<workgroup>
+		<workgroup allowOverwrite="true">
 			<id>1</id>
 			<workgroupName>TestWorkgroup</workgroupName>
 			<description>TestWorkgroup</description>
@@ -256,7 +277,7 @@
 				<authenticationId>jitrue</authenticationId>
 			</members>
 		</workgroup>
-		<workgroup>
+		<workgroup allowOverwrite="true">
 			<id>2</id>
 			<workgroupName>WorkflowAdmin</workgroupName>
 			<description>WorkflowAdmin</description>
@@ -269,7 +290,7 @@
 				<authenticationId>quickstart</authenticationId>
 			</members>
 		</workgroup>
-		<workgroup>
+		<workgroup allowOverwrite="true">
 			<id>3</id>
 			<workgroupName>NonSIT</workgroupName>
 			<description>NonSIT</description>
@@ -280,7 +301,7 @@
 				<authenticationId>dewey</authenticationId>
 			</members>
 		</workgroup>
-		<workgroup>
+		<workgroup allowOverwrite="true">
 			<id>4</id>
 			<workgroupName>BlanketApproveWorkgroup</workgroupName>
 			<description>BlanketApproveWorkgroup</description>

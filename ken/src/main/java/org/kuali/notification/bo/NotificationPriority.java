@@ -15,6 +15,12 @@
  */
 package org.kuali.notification.bo;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 /**
  * This class represents a priority for a notification - i.e. "High", "Medium", "Low", "Emergency", etc.
  * In addition, it describes information about a priority such as its ranking order of priority.  Priority 
@@ -22,11 +28,18 @@ package org.kuali.notification.bo;
  * of a notification system message.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="NOTIFICATION_PRIORITIES")
 public class NotificationPriority {
-    private Long id;
-    private String name;
-    private String description;
-    private Integer order;
+    @Id
+	@Column(name="ID")
+	private Long id;
+    @Column(name="NAME", nullable=false)
+	private String name;
+    @Column(name="DESCRIPTION", nullable=false)
+	private String description;
+    @Column(name="PRIORITY_ORDER", nullable=false)
+	private Integer order;
     
     /**
      * Constructs a NotificationPriority instance.
@@ -98,3 +111,4 @@ public class NotificationPriority {
 	this.order = order;
     }
 }
+

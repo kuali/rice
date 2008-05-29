@@ -18,10 +18,20 @@ package edu.iu.uis.eden.messaging;
 
 import java.io.Serializable;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.hibernate.annotations.Type;
 import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.util.RiceUtilities;
@@ -33,19 +43,37 @@ import org.kuali.rice.util.RiceUtilities;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_SERVICE_DEF_DUEX_T")
 public class ServiceInfo implements Serializable {
 	
 	private static final long serialVersionUID = -4244884858494208070L;
+    @Transient
 	private ServiceDefinition serviceDefinition;
+	@Id
+	@Column(name="SERVICE_DEF_ID")
 	private Long messageEntryId;
+    @Transient
 	private QName qname;
+	@Column(name="SERVICE_URL")
 	private String endpointUrl;
+    @Transient
 	private String endpointAlternateUrl;
+	@Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(name="SERVICE_DEFINITION")
 	private String serializedMessageEntity;
+	@Column(name="SERVICE_NM")
 	private String serviceName;
+	@Type(type="yes_no")
+    @Column(name="SERVICE_ALIVE")
 	private Boolean alive = true; 
+	@Column(name="MESSAGE_ENTITY_NM")
 	private String messageEntity;
+	@Column(name="SERVER_IP")
 	private String serverIp;
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 	
 	public ServiceInfo() {

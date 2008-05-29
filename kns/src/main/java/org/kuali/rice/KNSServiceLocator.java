@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.EntityManagerFactory;
+
 import org.kuali.core.inquiry.Inquirable;
 import org.kuali.core.lookup.LookupResultsService;
 import org.kuali.core.lookup.Lookupable;
@@ -419,6 +421,12 @@ public class KNSServiceLocator<T extends Object> {
     
     public static DocumentSerializerService getDocumentSerializerService() {
         return (DocumentSerializerService) getService(DOCUMENT_SERIALIZER_SERVICE);
+    }
+
+    public static final String ENTITY_MANAGER_FACTORY = "entityManagerFactory";
+
+    public static EntityManagerFactory getEntityManagerFactory() {
+    	return (EntityManagerFactory) getService(ENTITY_MANAGER_FACTORY);
     }
 
 }

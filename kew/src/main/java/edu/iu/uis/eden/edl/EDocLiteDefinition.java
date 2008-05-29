@@ -16,32 +16,53 @@
  */
 package edu.iu.uis.eden.edl;
 
+import javax.persistence.Version;
+import javax.persistence.FetchType;
+import javax.persistence.Basic;
+import javax.persistence.Lob;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 /**
  * EDocLite document definition
  * Table: en_edoclt_def_t
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_EDOCLT_DEF_T")
 public class EDocLiteDefinition {
     /**
      * edoclt_def_id
      */
-    private Long eDocLiteDefId;
+    @Id
+	@Column(name="edoclt_def_id")
+	private Long eDocLiteDefId;
     /**
      * edoclt_def_nm
      */
-    private String name;
+    @Column(name="edoclt_def_nm")
+	private String name;
     /**
      * edoclt_def_xml
      */
-    private String xmlContent;
+    @Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(name="edoclt_def_xml")
+	private String xmlContent;
     /**
      * edoclt_def_actv_ind
      */
-    private Boolean activeInd;
+    @Column(name="edoclt_def_actv_ind")
+	private Boolean activeInd;
     /**
      * db_lock_ver_nbr
      */
-    private Integer lockVerNbr;
+    @Version
+	@Column(name="db_lock_ver_nbr")
+	private Integer lockVerNbr;
 
     public Long getEDocLiteDefId() {
         return eDocLiteDefId;

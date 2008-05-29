@@ -107,4 +107,6 @@ public interface PersistableBusinessObject extends BusinessObject, PersistenceBr
     public boolean deleteNote(Note note);
 
     public PersistableBusinessObjectExtension getExtension();
+    public void setExtension(PersistableBusinessObjectExtension extension);
+    public void setAutoIncrementSet(boolean autoIncrementSet);
 }

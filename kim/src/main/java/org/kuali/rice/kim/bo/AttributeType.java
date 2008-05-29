@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.kim.bo;
 
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
@@ -28,11 +34,17 @@ import org.kuali.rice.kim.dto.AttributeTypeDTO;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="KIM_ATTRIBUTE_TYPES_T")
 public class AttributeType extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = -3856630570406063764L;
+	@Id
+	@Column(name="ID")
 	private Long id;
+	@Column(name="NAME")
 	private String attributeTypeName;
+	@Column(name="DESCRIPTION")
 	private String description;
 
 	/**

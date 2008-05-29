@@ -16,17 +16,34 @@
  */
 package edu.iu.uis.eden.engine.node;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 /**
  * The state of a {@link RouteNodeInstance} represented as a key-value pair of Strings.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_RTE_NODE_INSTN_ST_T")
+@AttributeOverride(name="stateId", column=@Column(name="RTE_NODE_INSTN_ST_ID"))
 public class NodeState extends State {
 
     private static final long serialVersionUID = -4382379569851955918L;
 
-    private RouteNodeInstance nodeInstance;
-    private Integer lockVerNbr;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="RTE_NODE_INSTN_ID")
+	private RouteNodeInstance nodeInstance;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
     
     public NodeState() {}
     

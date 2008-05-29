@@ -18,133 +18,174 @@ package org.kuali.notification.bo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 /**
- * This class represents and instance of a Notification Channel.  A Notification Channel is correlated 
- * to a specific class of notification, or in other words a specific business purpose.  For instance, 
- * all overdue books from a specific library could be a channel or a channel for concerts coming to campus 
- * could be another channel.
+ * This class represents and instance of a Notification Channel. A Notification Channel is correlated to a specific class of
+ * notification, or in other words a specific business purpose. For instance, all overdue books from a specific library could
+ * be a channel or a channel for concerts coming to campus could be another channel.
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name = "NOTIFICATION_CHANNELS")
 public class NotificationChannel {
+    @Id
+    @Column(name = "ID")
     private Long id;
+    @Column(name = "NAME", nullable = false)
     private String name;
+    @Column(name = "DESCRIPTION", nullable = false)
     private String description;
+    @Column(name = "SUBSCRIBABLE", nullable = false)
     private boolean subscribable;
 
     // List references
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, targetEntity = org.kuali.notification.bo.NotificationRecipientList.class, mappedBy = "channel")
     private List<NotificationRecipientList> recipientLists;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "NOTIFICATION_CHANNEL_PRODUCERS", joinColumns = @JoinColumn(name = "CHANNEL_ID"), inverseJoinColumns = @JoinColumn(name = "PRODUCER_ID"))
     private List<NotificationProducer> producers;
+    @Transient
     private List<NotificationChannelReviewer> reviewers = new ArrayList<NotificationChannelReviewer>();
+    @Transient
     private List<UserChannelSubscription> subscriptions = new ArrayList<UserChannelSubscription>();
 
     /**
      * Constructs a NotificationChannel instance.
      */
     public NotificationChannel() {
-	super();
-	recipientLists = new ArrayList<NotificationRecipientList>();
-	producers = new ArrayList<NotificationProducer>();
+        super();
+        recipientLists = new ArrayList<NotificationRecipientList>();
+        producers = new ArrayList<NotificationProducer>();
     }
-    
+
     /**
-     * Gets the recipientLists attribute. 
+     * Gets the recipientLists attribute.
+     * 
      * @return Returns the recipientLists.
      */
     public List<NotificationRecipientList> getRecipientLists() {
-	return recipientLists;
+        return recipientLists;
     }
 
     /**
      * Sets the recipientLists attribute value.
-     * @param recipientLists The recipientLists to set.
+     * 
+     * @param recipientLists
+     *            The recipientLists to set.
      */
     public void setRecipientLists(List<NotificationRecipientList> recipientLists) {
-	this.recipientLists = recipientLists;
+        this.recipientLists = recipientLists;
     }
-    
+
     /**
-     * This method adds a recipient list to the overall set of recipient lists that are 
-     * associated with this channnel.
+     * This method adds a recipient list to the overall set of recipient lists that are associated with this channnel.
+     * 
      * @param recipientList
      */
     public void addRecipientList(NotificationRecipientList recipientList) {
-	this.recipientLists.add(recipientList);
+        this.recipientLists.add(recipientList);
     }
-    
+
     /**
      * This method removes a recipient list object from the overall list.
+     * 
      * @param recipientList
      */
     public void removeRecipientList(NotificationRecipientList recipientList) {
-	this.recipientLists.remove(recipientList);
+        this.recipientLists.remove(recipientList);
     }
-    
+
     /**
-     * Gets the description attribute. 
+     * Gets the description attribute.
+     * 
      * @return Returns the description.
      */
     public String getDescription() {
-	return description;
+        return description;
     }
 
     /**
      * Sets the description attribute value.
-     * @param description The description to set.
+     * 
+     * @param description
+     *            The description to set.
      */
     public void setDescription(String description) {
-	this.description = description;
+        this.description = description;
     }
 
     /**
-     * Gets the id attribute. 
+     * Gets the id attribute.
+     * 
      * @return Returns the id.
      */
     public Long getId() {
-	return id;
+        return id;
     }
 
     /**
      * Sets the id attribute value.
-     * @param id The id to set.
+     * 
+     * @param id
+     *            The id to set.
      */
     public void setId(Long id) {
-	this.id = id;
+        this.id = id;
     }
 
     /**
-     * Gets the name attribute. 
+     * Gets the name attribute.
+     * 
      * @return Returns the name.
      */
     public String getName() {
-	return name;
+        return name;
     }
 
     /**
      * Sets the name attribute value.
-     * @param name The name to set.
+     * 
+     * @param name
+     *            The name to set.
      */
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
     }
 
     /**
-     * Gets the subscribable attribute. 
+     * Gets the subscribable attribute.
+     * 
      * @return Returns the subscribable.
      */
     public boolean isSubscribable() {
-	return subscribable;
+        return subscribable;
     }
 
     /**
      * Sets the subscribable attribute value.
-     * @param subscribable The subscribable to set.
+     * 
+     * @param subscribable
+     *            The subscribable to set.
      */
     public void setSubscribable(boolean subscribable) {
-	this.subscribable = subscribable;
+        this.subscribable = subscribable;
     }
 
     /**
-     * Gets the producers attribute. 
+     * Gets the producers attribute.
+     * 
      * @return Returns the producers.
      */
     public List<NotificationProducer> getProducers() {
@@ -153,7 +194,9 @@ public class NotificationChannel {
 
     /**
      * Sets the producers attribute value.
-     * @param producers The producers to set.
+     * 
+     * @param producers
+     *            The producers to set.
      */
     public void setProducers(List<NotificationProducer> producers) {
         this.producers = producers;
@@ -161,6 +204,7 @@ public class NotificationChannel {
 
     /**
      * Gets the list of reviewers for notification publications to this channel
+     * 
      * @return the list of reviewers for notification publications to this channel
      */
     public List<NotificationChannelReviewer> getReviewers() {
@@ -169,7 +213,9 @@ public class NotificationChannel {
 
     /**
      * Sets the list of reviewers for notification publications to this channel
-     * @param reviewers the list of reviewers for notification publications to this channel
+     * 
+     * @param reviewers
+     *            the list of reviewers for notification publications to this channel
      */
     public void setReviewers(List<NotificationChannelReviewer> reviewers) {
         this.reviewers = reviewers;
@@ -177,6 +223,7 @@ public class NotificationChannel {
 
     /**
      * Gets the list of subscriptions to this channel
+     * 
      * @return the list of subscriptions to this channel
      */
     public List<UserChannelSubscription> getSubscriptions() {
@@ -185,7 +232,9 @@ public class NotificationChannel {
 
     /**
      * Sets the list of subscriptions to this channel
-     * @param subscriptions the list of subscriptions to this channel
+     * 
+     * @param subscriptions
+     *            the list of subscriptions to this channel
      */
     public void setSubscriptions(List<UserChannelSubscription> subscriptions) {
         this.subscriptions = subscriptions;
@@ -193,12 +242,13 @@ public class NotificationChannel {
 
     /**
      * Compares the id values of each NotificationChannel object.
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object obj) {
-	NotificationChannel channelToCompare = (NotificationChannel) obj;
-	return this.getId().equals(channelToCompare.getId());
+        NotificationChannel channelToCompare = (NotificationChannel) obj;
+        return this.getId().equals(channelToCompare.getId());
     }
 
 }

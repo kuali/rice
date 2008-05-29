@@ -16,16 +16,29 @@
 
 package org.kuali.core.bo;
 
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.util.LinkedHashMap;
 
 
 /**
  * 
  */
+@Entity
+@Table(name="SH_CMP_TYP_T")
 public class CampusType extends PersistableBusinessObjectBase {
 
+	@Id
+	@Column(name="CAMPUS_TYP_CD")
 	private String campusTypeCode;
+	@Column(name="DOBJ_MAINT_CD_ACTV_IND")
 	private boolean dataObjectMaintenanceCodeActiveIndicator;
+	@Column(name="CMP_TYP_NM")
 	private String campusTypeName;
 
 	/**
@@ -107,3 +120,4 @@ public class CampusType extends PersistableBusinessObjectBase {
 	    return m;
     }
 }
+

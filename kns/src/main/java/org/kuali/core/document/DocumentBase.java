@@ -21,6 +21,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.core.bo.DocumentHeader;
@@ -58,14 +67,22 @@ import edu.iu.uis.eden.exception.WorkflowException;
 /**
  * @see Document
  */
+@MappedSuperclass
 public abstract class DocumentBase extends PersistableBusinessObjectBase implements Document {
     private static final Logger LOG = Logger.getLogger(DocumentBase.class);
-
+    
+    @Id
+    @Column(name="FDOC_NBR")
     protected String documentNumber;
+    @OneToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="FDOC_NBR", insertable=false, updatable=false)
     protected DocumentHeader documentHeader;
+    @Transient
     protected transient PersistableBusinessObject documentBusinessObject; //here for reflection
 
+    @Transient
     private List adHocRoutePersons;
+    @Transient
     private List adHocRouteWorkgroups;
 
     /**

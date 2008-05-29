@@ -16,11 +16,24 @@
  */
 package edu.iu.uis.eden.engine.node;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 /**
  * A piece of state on a {@link Branch} stored as a key-value pair of Strings.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_RTE_BRCH_ST_T")
+@AttributeOverride(name="stateId", column=@Column(name="RTE_BRCH_ST_ID"))
 public class BranchState extends State {
     /**
      * Prefix under which "variables" are stored in the branch state table, to distinguish
@@ -30,8 +43,12 @@ public class BranchState extends State {
 
     private static final long serialVersionUID = -7642477013444817952L;
 
-    private Branch branch;
-    private Integer lockVerNbr;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="RTE_BRCH_ID")
+	private Branch branch;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
     
     public BranchState() {}
     
@@ -67,3 +84,4 @@ public class BranchState extends State {
         return "[BranchState: stateId=" + getStateId() + ", branch=" + branch + ", key=" + key + ", value=" + value + "]"; 
     }
 }
+

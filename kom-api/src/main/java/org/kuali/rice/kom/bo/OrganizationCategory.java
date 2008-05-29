@@ -15,6 +15,13 @@
  */
 package org.kuali.rice.kom.bo;
 
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
@@ -25,11 +32,16 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@Entity
+@Table(name="KOM_ORGANIZATION_CATEGORIES_T")
 public class OrganizationCategory extends PersistableBusinessObjectBase {
 
     private static final long serialVersionUID = -181327654350445988L;
-    private Long id;
-    private String name;
+    @Id
+	@Column(name="ID")
+	private Long id;
+    @Column(name="NAME")
+	private String name;
     public Long getId() {
         return this.id;
     }
@@ -56,3 +68,4 @@ public class OrganizationCategory extends PersistableBusinessObjectBase {
     
 
 }
+

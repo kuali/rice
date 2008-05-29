@@ -16,10 +16,13 @@
  */
 package edu.iu.uis.eden.database.platform;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.persistence.EntityManager;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
@@ -66,6 +69,10 @@ public class MckoiPlatform extends ANSISqlPlatform {
 			}
 		}
 	}
+    
+    public Long getNextValSQL(String sequenceName, EntityManager entityManager) {
+        return new Long(((BigInteger) entityManager.createNativeQuery("select * NEXTVAL('" + sequenceName + "');").getSingleResult()).longValue());           
+    }
 
     public String toString() {
         return "[MckoiPlatform]";

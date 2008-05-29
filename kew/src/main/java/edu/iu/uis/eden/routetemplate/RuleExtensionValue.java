@@ -16,6 +16,16 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.util.Utilities;
 
@@ -29,16 +39,27 @@ import edu.iu.uis.eden.util.Utilities;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_RULE_EXT_VAL_T")
 public class RuleExtensionValue implements WorkflowPersistable {
 
 	private static final long serialVersionUID = 8909789087052290261L;
+	@Id
+	@Column(name="RULE_EXT_VAL_ID")
 	private Long ruleExtensionValueId;
-    private Long ruleExtensionId;
-    private String value;
-    private String key;
-    private Integer lockVerNbr;
+    @Column(name="RULE_EXT_ID")
+	private Long ruleExtensionId;
+    @Column(name="RULE_EXT_VAL")
+	private String value;
+    @Column(name="RULE_EXT_VAL_KEY")
+	private String key;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
     
-    private RuleExtension extension;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="RULE_EXT_ID", insertable=false, updatable=false)
+	private RuleExtension extension;
     
     public RuleExtensionValue() {
     }

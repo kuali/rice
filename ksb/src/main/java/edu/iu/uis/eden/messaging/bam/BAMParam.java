@@ -16,6 +16,15 @@
  */
 package edu.iu.uis.eden.messaging.bam;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -23,10 +32,17 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_BAM_PARAM_T")
 public class BAMParam {
 
+	@Id
+	@Column(name="BAM_PARAM_ID")
 	private Long bamParamId;
+	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="BAM_ID")
 	private BAMTargetEntry bamTargetEntry;
+	@Column(name="PARAM")
 	private String param;
 	
 	

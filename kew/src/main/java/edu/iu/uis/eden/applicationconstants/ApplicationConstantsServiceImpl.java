@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
@@ -36,6 +37,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Transactional
 public class ApplicationConstantsServiceImpl implements ApplicationConstantsService {
 	private static final Logger LOG = Logger.getLogger(ApplicationConstantsServiceImpl.class);
 

@@ -20,6 +20,10 @@ import java.io.StringReader;
 import java.util.LinkedHashMap;
 import java.util.Properties;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -57,6 +61,8 @@ import edu.iu.uis.eden.exception.WorkflowException;
  * <oldMaintainableObject>... </oldMaintainableObject> <newMaintainableObject>... </newMaintainableObject>
  * </maintainableDocumentContents> Maintenance Document
  */
+@Entity
+@Table(name="FP_MAINTENANCE_DOCUMENT_T")
 public final class MaintenanceDocumentBase extends DocumentBase implements MaintenanceDocument {
     private static final long serialVersionUID = -505085142412593305L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentBase.class);
@@ -65,12 +71,18 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
     public static final String NEW_MAINTAINABLE_TAG_NAME = "newMaintainableObject";
     public static final String MAINTENANCE_ACTION_TAG_NAME = "maintenanceAction";
 
+    @Transient
     protected Maintainable oldMaintainableObject;
+    @Transient
     protected Maintainable newMaintainableObject;
-    protected String xmlDocumentContents;
-    protected boolean fieldsClearedOnCopy;
-    protected boolean displayTopicFieldInNotes = false;
 
+    @Column(name="DOCUMENT_CONTENTS", length=4096)
+	protected String xmlDocumentContents;
+    @Transient
+    protected boolean fieldsClearedOnCopy;
+    @Transient
+    protected boolean displayTopicFieldInNotes = false;
+    
     public MaintenanceDocumentBase() {
         super();
         fieldsClearedOnCopy = false;

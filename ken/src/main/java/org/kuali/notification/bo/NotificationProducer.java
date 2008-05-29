@@ -15,6 +15,16 @@
  */
 package org.kuali.notification.bo;
 
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,14 +35,24 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * for processing.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="NOTIFICATION_PRODUCERS")
 public class NotificationProducer {
-    private Long id;
-    private String name;
-    private String description;
-    private String contactInfo;
+    @Id
+	@Column(name="ID")
+	private Long id;
+    @Column(name="NAME", nullable=false)
+	private String name;
+    @Column(name="DESCRIPTION", nullable=false)
+	private String description;
+    @Column(name="CONTACT_INFO", nullable=false)
+	private String contactInfo;
     
     // List references
-    private List<NotificationChannel> channels;
+    @ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})@JoinTable(name="NOTIFICATION_CHANNEL_PRODUCERS", 
+	           joinColumns=@JoinColumn(name="PRODUCER_ID"), 
+	           inverseJoinColumns=@JoinColumn(name="CHANNEL_ID"))
+	private List<NotificationChannel> channels;
     
     /**
      * Constructs a NotificationProducer instance.

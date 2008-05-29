@@ -18,6 +18,11 @@ package org.kuali.core.bo;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -27,6 +32,7 @@ import edu.iu.uis.eden.util.CodeTranslator;
  * TODO we should not be referencing eden constants from this class and wedding ourselves to that workflow application Ad Hoc Route
  * Recipient Business Object
  */
+@MappedSuperclass
 public abstract class AdHocRouteRecipient extends PersistableBusinessObjectBase {
 
     private static final long serialVersionUID = -6499610180752232494L;
@@ -34,11 +40,19 @@ public abstract class AdHocRouteRecipient extends PersistableBusinessObjectBase 
     public static final Integer PERSON_TYPE = new Integer(0);
     public static final Integer WORKGROUP_TYPE = new Integer(1);
 
-    protected Integer type;
-    protected String actionRequested;
-    protected String id; // can be networkId or workgroupname
+    @Id
+	@Column(name="ACTN_RQST_RECP_TYP_CD")
+	protected Integer type;
+    @Id
+	@Column(name="ACTN_RQST_CD")
+	protected String actionRequested;
+    @Id
+	@Column(name="ACTN_RQST_RECP_ID")
+	protected String id; // can be networkId or workgroupname
+    @Transient
     protected String name;
-    protected String documentNumber;
+    @Column(name="FDOC_NBR")
+	protected String documentNumber;
 
     public AdHocRouteRecipient() {
         // set some defaults that can be overridden

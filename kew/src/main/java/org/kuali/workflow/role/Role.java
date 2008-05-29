@@ -20,18 +20,34 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 /**
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_ROLE_T")
 public class Role implements Serializable {
 
+	@Id
+	@Column(name="ROLE_ID")
 	private Long roleId;
 
+	@Column(name="ROLE_NM")
 	private String name;
+	@Column(name="ROLE_DESC")
 	private String description;
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 
+    @Transient
 	private List<RoleAttribute> attributes = new ArrayList<RoleAttribute>();
 
 	public List<RoleAttribute> getAttributes() {
@@ -75,3 +91,4 @@ public class Role implements Serializable {
 	}
 
 }
+

@@ -57,7 +57,7 @@ public class HelpDAOOjbImpl extends PersistenceBrokerDaoSupport implements HelpD
         }
         
         if (!this.isStringEmpty(helpEntry.getHelpKey())) {
-            crit.addLike("UPPER(helpKey)", "%" + helpEntry.getHelpKey().toUpperCase() + "%");
+            crit.addLike("UPPER(helpKey)", "%" + helpEntry.getHelpKey().toUpperCase() + "%"); 	
         }
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(HelpEntry.class, crit));
     }

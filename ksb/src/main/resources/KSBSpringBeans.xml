@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
 
 	<bean id="userTransaction" class="org.kuali.rice.jta.UserTransactionFactoryBean" lazy-init="true" />
@@ -110,11 +118,14 @@
 	<bean id="enScheduledThreadPool" class="edu.iu.uis.eden.messaging.threadpool.KSBScheduledThreadPoolExecutor" lazy-init="true" />
 
 
-	<bean id="bamService" class="edu.iu.uis.eden.messaging.bam.BAMServiceImpl" lazy-init="true">
+	<bean id="bamService" class="edu.iu.uis.eden.messaging.bam.BAMServiceImpl">
 		<property name="dao">
+		  <bean class="edu.iu.uis.eden.messaging.bam.dao.BAMDaoJpaImpl" />
+		  <!-- 
 			<bean class="edu.iu.uis.eden.messaging.bam.dao.BAMDAOOjbImpl">
 				<property name="jcdAlias" value="ksbRegistryDataSource" />
 			</bean>
+			-->
 		</property>
 		<property name="configDao">
 			<bean class="edu.iu.uis.eden.messaging.bam.dao.BAMConfigDAOImpl" />
@@ -153,9 +164,9 @@
 	<bean id="digitalSignatureService" class="edu.iu.uis.eden.security.DigitalSignatureServiceImpl" lazy-init="true" />
 	<bean id="ksbJavaSecurityManagementService" class="edu.iu.uis.eden.security.admin.JavaSecurityManagementServiceImpl" lazy-init="true" />
 
-	<bean id="enRepeatTopicInvokerQueue" class="edu.iu.uis.eden.messaging.RepeatTopicInvokerQueueImpl" singleton="true" lazy-init="true" />
+	<bean id="enRepeatTopicInvokerQueue" class="edu.iu.uis.eden.messaging.RepeatTopicInvokerQueueImpl" lazy-init="true" />
 	<!-- this bean will be used by the enRepeatTopicInvokerQueue to register itself with the bus programmatically -->
-	<bean id="repeatTopicInvokerQueueDefinition" class="edu.iu.uis.eden.messaging.JavaServiceDefinition" singleton="true" lazy-init="true">
+	<bean id="repeatTopicInvokerQueueDefinition" class="edu.iu.uis.eden.messaging.JavaServiceDefinition" lazy-init="true">
 		<property name="service">
 			<ref bean="enRepeatTopicInvokerQueue" />
 		</property>
@@ -164,8 +175,8 @@
 		<property name="retryAttempts" value="0" />
 	</bean>
 
-	<bean id="ObjectRemoterService" class="edu.iu.uis.eden.messaging.objectremoting.ObjectRemoterServiceImpl" singleton="true" lazy-init="true" />
-	<bean id="ksb.objectRemoterServiceDefinition" class="edu.iu.uis.eden.messaging.JavaServiceDefinition" singleton="true" lazy-init="true">
+	<bean id="ObjectRemoterService" class="edu.iu.uis.eden.messaging.objectremoting.ObjectRemoterServiceImpl" lazy-init="true" />
+	<bean id="ksb.objectRemoterServiceDefinition" class="edu.iu.uis.eden.messaging.JavaServiceDefinition" lazy-init="true">
 		<property name="service">
 			<ref bean="ObjectRemoterService" />
 		</property>
@@ -174,13 +185,13 @@
 		<property name="retryAttempts" value="0" />
 	</bean>
 
-	<bean id="xfire.serviceRegistry" class="org.codehaus.xfire.service.DefaultServiceRegistry" singleton="true" lazy-init="true" />
+	<bean id="xfire.serviceRegistry" class="org.codehaus.xfire.service.DefaultServiceRegistry" lazy-init="true" />
 
-	<bean id="xfire.transportManager" class="org.codehaus.xfire.transport.DefaultTransportManager" singleton="true" lazy-init="true"
+	<bean id="xfire.transportManager" class="org.codehaus.xfire.transport.DefaultTransportManager" lazy-init="true"
 		init-method="initialize" destroy-method="dispose">
 	</bean>
 
-	<bean id="xfire" class="org.codehaus.xfire.DefaultXFire" singleton="true">
+	<bean id="xfire" class="org.codehaus.xfire.DefaultXFire" scope="prototype">
 		<constructor-arg index="0">
 			<ref bean="xfire.serviceRegistry" />
 		</constructor-arg>
@@ -190,17 +201,17 @@
 	</bean>
 
 	<bean id="xfire.typeMappingRegistry" class="org.codehaus.xfire.aegis.type.DefaultTypeMappingRegistry" init-method="createDefaultMappings"
-		singleton="true" lazy-init="true">
+		lazy-init="true">
 	</bean>
 
 
-	<bean id="xfire.aegisBindingProvider" class="org.codehaus.xfire.aegis.AegisBindingProvider" singleton="true" lazy-init="true">
+	<bean id="xfire.aegisBindingProvider" class="org.codehaus.xfire.aegis.AegisBindingProvider" lazy-init="true">
 		<constructor-arg index="0">
 			<ref bean="xfire.typeMappingRegistry" />
 		</constructor-arg>
 	</bean>
 
-	<bean id="xfire.serviceFactory" class="org.codehaus.xfire.service.binding.ObjectServiceFactory" singleton="true" lazy-init="true">
+	<bean id="xfire.serviceFactory" class="org.codehaus.xfire.service.binding.ObjectServiceFactory" lazy-init="true">
 		<constructor-arg index="0">
 			<ref bean="xfire.transportManager" />
 		</constructor-arg>
@@ -209,7 +220,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="xfire.servletController" class="org.codehaus.xfire.transport.http.XFireServletController" singleton="true" lazy-init="true">
+	<bean id="xfire.servletController" class="org.codehaus.xfire.transport.http.XFireServletController" lazy-init="true">
 		<constructor-arg>
 			<ref bean="xfire" />
 		</constructor-arg>
@@ -235,14 +246,90 @@
 		<property name="jtaTransactionManager" ref="transactionManager"/>
 	</bean>
 
-    <bean id="busAdminService" class="edu.iu.uis.eden.messaging.BusAdminServiceImpl"/>
-    <bean id="ksb.busAdminServiceDefinition" class="edu.iu.uis.eden.messaging.JavaServiceDefinition" singleton="true" lazy-init="true">
-      <property name="service">
-        <ref bean="busAdminService" />
-      </property>
-      <property name="localServiceName" value="busAdminService" />
-      <property name="priority" value="3" />
-      <property name="retryAttempts" value="0" />
-    </bean>
+  <bean id="busAdminService" class="edu.iu.uis.eden.messaging.BusAdminServiceImpl"/>
+  
+  <bean id="ksb.busAdminServiceDefinition" class="edu.iu.uis.eden.messaging.JavaServiceDefinition" lazy-init="true">
+    <property name="service">
+      <ref bean="busAdminService" />
+    </property>
+    <property name="localServiceName" value="busAdminService" />
+    <property name="priority" value="3" />
+    <property name="retryAttempts" value="0" />
+  </bean>
+
+
+
+  <!-- START JPA CONFIGURATION -->
+  <!-- 
+  <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>  
+  <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/> 
+    
+  <bean id="registryEntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">    
+    <property name="persistenceUnitName" value="rice"/>
+    <property name="persistenceUnitManager">
+      <bean class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
+        <property name="persistenceXmlLocations">
+          <list>
+            <value>classpath*:META-INF/persistence.xml</value>
+          </list>
+        </property>
+        <property name="dataSources">
+          <map>
+            <entry key="jdbc/ksbRegistry" value-ref="ksbRegistryDataSource"/>
+            <entry key="jdbc/ksbMessage" value-ref="ksbMessageDataSource"/>
+          </map>
+        </property>
+      </bean>
+    </property>
+    <property name="jpaVendorAdapter">
+      <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="generateDdl" value="true"/>
+        <property name="database" value="MYSQL"/>
+        <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect"/>
+      </bean>
+    </property>
+    <property name="jpaPropertyMap">
+      <map>        
+        <entry key="hibernate.show_sql" value="true"/>
+        <entry key="hibernate.format_sql" value="true"/>
+        <entry key="hibernate.use_sql_comments" value="true"/>
+        <entry key="hibernate.transaction.manager_lookup_class" value="org.kuali.rice.jta.AtomikosTransactionManagerLookup"/>
+        <entry key="hibernate.current_session_context_class" value="jta"/>
+        <entry key="hibernate.connection.release_mode" value="auto"/>
+        <entry key="hibernate.transaction.flush_before_completion" value="true"/>
+      </map>
+    </property>
+    <property name="jpaDialect">
+      <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+    </property>
+  </bean>
+  
+  <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="false"/>
+  -->
+  
+  <!-- END JPA CONFIGURATION -->
+  <!--  
+  <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.jpa.spring.NoResultExceptionInterceptor" />
+
+  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="interceptorNames">
+      <list>
+        <idref local="NoResultExceptionInterceptor" />
+      </list>
+    </property>
+    <property name="beanNames">
+      <list>
+        <idref local="enApplicationConstantsDAO"/>
+        <idref local="enUserOptionsDAO"/>
+        <idref local="enHelpDAO"/>
+      </list>
+    </property>
+  </bean>
+  -->
+
+
+
+
+
 
 </beans>

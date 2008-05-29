@@ -19,24 +19,43 @@ package org.kuali.workflow.workgroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import edu.iu.uis.eden.BaseWorkflowPersistable;
 
 /**
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_WRKGRP_TYP_T")
 public class WorkgroupType extends BaseWorkflowPersistable {
 
 	private static final long serialVersionUID = 7394951204472441349L;
 
+	@Id
+	@Column(name="WRKGRP_TYP_ID")
 	private Long workgroupTypeId;
+	@Column(name="WRKGRP_TYP_NM")
 	private String name;
+	@Column(name="WRKGRP_TYP_LBL")
 	private String label;
+	@Column(name="WRKGRP_TYP_DESC")
 	private String description;
+	@Column(name="DOC_TYP_NM")
 	private String documentTypeName;
+	@Column(name="ACTV_IND")
 	private Boolean active = true;
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 
+    @Transient
 	private List<WorkgroupTypeAttribute> attributes = new ArrayList<WorkgroupTypeAttribute>();
 
 	public String getDocumentTypeName() {
@@ -114,3 +133,4 @@ public class WorkgroupType extends BaseWorkflowPersistable {
 	}
 
 }
+

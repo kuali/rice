@@ -16,6 +16,17 @@
  */
 package org.kuali.workflow.workgroup;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.kuali.rice.definition.ObjectDefinition;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
@@ -27,13 +38,25 @@ import edu.iu.uis.eden.routetemplate.RuleAttribute;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_WRKGRP_TYP_ATTRIB_T")
 public class WorkgroupTypeAttribute {
 
+	@Id
+	@Column(name="WRKGRP_TYP_ATTRIB_ID")
 	private Long workgroupTypeAttributeId;
+	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="WRKGRP_TYP_ID")
 	private WorkgroupType workgroupType;
+	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="ATTRIB_ID")
 	private RuleAttribute attribute;
+    @Transient
 	private Boolean active = true;
+	@Column(name="ORD_INDX")
 	private int orderIndex;
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 
 	public Object loadAttribute() {
@@ -98,3 +121,4 @@ public class WorkgroupTypeAttribute {
 	}
 
 }
+

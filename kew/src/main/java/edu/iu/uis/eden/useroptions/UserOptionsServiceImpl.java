@@ -22,10 +22,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.useroptions.dao.UserOptionsDAO;
 
+@Transactional
 public class UserOptionsServiceImpl implements UserOptionsService {
 
     private UserOptionsDAO userOptionsDAO;

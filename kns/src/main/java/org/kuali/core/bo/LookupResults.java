@@ -15,8 +15,25 @@
  */
 package org.kuali.core.bo;
 
+import javax.persistence.FetchType;
+import javax.persistence.Basic;
+import javax.persistence.Lob;
+import javax.persistence.Version;
+import javax.persistence.TemporalType;
+import javax.persistence.Temporal;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
+@Entity
+@Table(name="FS_LOOKUP_RESULTS_MT")
 public class LookupResults extends MultipleValueLookupMetadata {
-    private String serializedLookupResults;
+    @Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(name="SERIALIZED_LOOKUP_RESULTS")
+	private String serializedLookupResults;
 
     public String getSerializedLookupResults() {
         return serializedLookupResults;
@@ -26,3 +43,4 @@ public class LookupResults extends MultipleValueLookupMetadata {
         this.serializedLookupResults = serializedLookupResults;
     }
 }
+

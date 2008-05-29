@@ -61,6 +61,7 @@ public class UserXmlHandler {
     private static final String DISPLAY_NAME_ELEMENT = "displayName";
     private static final String GIVEN_NAME_ELEMENT = "givenName";
     private static final String LAST_NAME_ELEMENT = "lastName";
+    private static final String DTYPE_ELEMENT = "dtype";
     //private static final String CREATE_DATE_ELEMENT = "createDate";
     //private static final String LAST_UPDATE_DATE_ELEMENT = "lastUpdateDate";
     //private static final String ID_MISSING_INDICATOR_ELEMENT = "identificationMissingIndicator";
@@ -88,6 +89,8 @@ public class UserXmlHandler {
                 userEntry.setLastName(userElement.getChildTextTrim(LAST_NAME_ELEMENT, NAMESPACE));
                 userEntry.setUuId(new UuId(userElement.getChildTextTrim(UUID_ELEMENT, NAMESPACE)));
                 userEntry.setWorkflowUserId(new WorkflowUserId(userElement.getChildTextTrim(WORKFLOW_ID_ELEMENT, NAMESPACE)));                
+
+                userEntry.setDtype(userElement.getChildTextTrim(DTYPE_ELEMENT, NAMESPACE));                
                 userEntries.add(userEntry);
            }
        }

@@ -16,6 +16,18 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.WorkflowPersistable;
 
@@ -26,17 +38,30 @@ import edu.iu.uis.eden.WorkflowPersistable;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_DLGN_RSP_T")
 public class RuleDelegation implements WorkflowPersistable {
     
 	private static final long serialVersionUID = 7989203310473741293L;
+	@Id
+	@Column(name="DLGN_RULE_ID")
 	private Long ruleDelegationId;
-    private Long ruleResponsibilityId;
-    private Long delegateRuleId;
+    @Column(name="RULE_RSP_ID")
+	private Long ruleResponsibilityId;
+    @Column(name="DLGN_RULE_BASE_VAL_ID")
+	private Long delegateRuleId;
+    @Transient
     private String delegationType = EdenConstants.DELEGATION_PRIMARY;
-    private Integer lockVerNbr;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
     
-    private RuleBaseValues delegationRuleBaseValues;
-    private RuleResponsibility ruleResponsibility;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="DLGN_RULE_BASE_VAL_ID", insertable=false, updatable=false)
+	private RuleBaseValues delegationRuleBaseValues;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="RULE_RSP_ID", insertable=false, updatable=false)
+	private RuleResponsibility ruleResponsibility;
     
     public RuleDelegation() {
     }
@@ -97,3 +122,4 @@ public class RuleDelegation implements WorkflowPersistable {
         this.ruleResponsibilityId = ruleResponsibilityId;
     }
 }
+

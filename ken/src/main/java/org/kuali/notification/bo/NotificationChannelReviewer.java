@@ -15,17 +15,34 @@
  */
 package org.kuali.notification.bo;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * A reviewer for a notification publications to a NotificationChannel
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="NOTIFICATION_REVIEWERS")
 public class NotificationChannelReviewer {
-    private Long id;
-    private NotificationChannel channel;
-    private String reviewerType;
-    private String reviewerId;
+    @Id
+	@Column(name="ID")
+	private Long id;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="CHANNEL_ID")
+	private NotificationChannel channel;
+    @Column(name="REVIEWER_TYPE", nullable=false)
+	private String reviewerType;
+    @Column(name="REVIEWER_ID", nullable=false)
+	private String reviewerId;
 
     /**
      * Returns the primary key value

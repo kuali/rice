@@ -15,6 +15,21 @@
  */
 package org.kuali.notification.bo;
 
+import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Version;
+import javax.persistence.FetchType;
+import javax.persistence.Basic;
+import javax.persistence.Lob;
+import javax.persistence.TemporalType;
+import javax.persistence.Temporal;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,30 +43,62 @@ import org.kuali.notification.util.NotificationConstants;
  * system.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="NOTIFICATIONS")
 public class Notification implements Lockable {
-    private Long id;
-    private String deliveryType;
-    private Timestamp creationDateTime;
-    private Timestamp sendDateTime;
-    private Timestamp autoRemoveDateTime;
-    private String title;
-    private String content;
-    private String processingFlag;
-    private Timestamp lockedDate;
+    @Id
+	@Column(name="ID")
+	private Long id;
+    @Column(name="DELIVERY_TYPE", nullable=false)
+	private String deliveryType;
+    //@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="CREATED_DATETIME", nullable=false)
+	private Timestamp creationDateTime;
+    //@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="SEND_DATETIME", nullable=true)
+	private Timestamp sendDateTime;
+    //@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="AUTO_REMOVE_DATETIME", nullable=true)
+	private Timestamp autoRemoveDateTime;
+    @Column(name="TITLE", nullable=true)
+	private String title;
+    @Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(name="CONTENT", nullable=false)
+	private String content;
+    @Column(name="PROCESSING_FLAG", nullable=false)
+	private String processingFlag;
+    //@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="LOCKED_DATE", nullable=true)
+	private Timestamp lockedDate;
     /**
      * Lock column for OJB optimistic locking
      */
-    private Integer lockVerNbr;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
     
     // object references
-    private NotificationPriority priority;
-    private NotificationContentType contentType;
-    private NotificationChannel channel;
-    private NotificationProducer producer;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="PRIORITY_ID")
+	private NotificationPriority priority;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="CONTENT_TYPE_ID")
+	private NotificationContentType contentType;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="NOTIFICATION_CHANNEL_ID")
+	private NotificationChannel channel;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="PRODUCER_ID")
+	private NotificationProducer producer;
     
     // lists
-    private List<NotificationRecipient> recipients;
-    private List<NotificationSender> senders;
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+           targetEntity=org.kuali.notification.bo.NotificationRecipient.class, mappedBy="notification")
+	private List<NotificationRecipient> recipients;
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+           targetEntity=org.kuali.notification.bo.NotificationSender.class, mappedBy="notification")
+	private List<NotificationSender> senders;
     
     /**
      * Constructs a Notification instance.

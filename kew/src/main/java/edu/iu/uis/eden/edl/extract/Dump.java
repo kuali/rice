@@ -1,6 +1,5 @@
 package edu.iu.uis.eden.edl.extract;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -9,22 +8,45 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import edu.iu.uis.eden.EdenConstants;
 
+@Entity
+@Table(name="EN_EDL_DMP_T")
 public class Dump {
 
 	private static final long serialVersionUID = -6136544551121011531L;
 	
+	@Id
+	@Column(name="DOC_HDR_ID")
 	private Long docId;
+	@Column(name="DOC_TYP_NM")
 	private String docTypeName;
+	@Column(name="DOC_RTE_STAT_CD")
 	private String docRouteStatusCode;
+	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="DOC_MDFN_DT")
 	private Timestamp docModificationDate;
+	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="DOC_CRTE_DT")
 	private Timestamp docCreationDate;
+	@Column(name="DOC_TTL")
 	private String docDescription;
-    private String docInitiatorId;
-    private String docCurrentNodeName;
-    private Integer lockVerNbr;
+    @Column(name="DOC_INITR_ID")
+	private String docInitiatorId;
+    @Column(name="DOC_CRNT_NODE_NM")
+	private String docCurrentNodeName;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
     
+    @Transient
     private List fields = new ArrayList();
     
 	public Timestamp getDocCreationDate() {
@@ -109,3 +131,4 @@ public class Dump {
 	}
 	
 }
+

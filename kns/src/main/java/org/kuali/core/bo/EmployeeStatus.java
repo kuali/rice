@@ -15,14 +15,24 @@
  */
 package org.kuali.core.bo;
 
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 
 /**
  * 
  * This class is a persistable business object detailing the status an employer's current relationship with the Kuali-using organization. 
  */
 
+@Entity
+@Table(name="SH_EMP_STAT_T")
 public class EmployeeStatus extends KualiCodeBase {
-    private boolean rowActiveIndicator;
+    @Column(name="ROW_ACTV_IND")
+	private boolean rowActiveIndicator;
     
     /**
      * public no-arg constructor, which accomplishes basic initialization
@@ -46,3 +56,4 @@ public class EmployeeStatus extends KualiCodeBase {
         this.rowActiveIndicator = a;
     }
 }
+

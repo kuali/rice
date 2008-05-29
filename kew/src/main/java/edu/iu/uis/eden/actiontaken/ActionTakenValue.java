@@ -20,6 +20,18 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.apache.commons.beanutils.BeanUtils;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -46,25 +58,45 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_ACTN_TKN_T")
 public class ActionTakenValue implements WorkflowPersistable {
 
     /**
 	 *
 	 */
 	private static final long serialVersionUID = -81505450567067594L;
+	@Id
+	@Column(name="ACTN_TKN_ID")
 	private Long actionTakenId;
-    private Long routeHeaderId;
-    private String actionTaken;
-    private Timestamp actionDate;
+    @Column(name="DOC_HDR_ID")
+	private Long routeHeaderId;
+    @Column(name="ACTN_TKN_CD")
+	private String actionTaken;
+    //@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="ACTN_TKN_DT")
+	private Timestamp actionDate;
+    @Column(name="ACTN_TKN_ANNOTN_TXT")
     private String annotation = "";
-    private Integer docVersion;
-    private Integer lockVerNbr;
-    private String workflowId;
-    private String delegatorWorkflowId;
-    private Long delegatorWorkgroupId;
+    @Column(name="DOC_VER_NBR")
+	private Integer docVersion;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
+    @Column(name="ACTN_TKN_PRSN_EN_ID")
+	private String workflowId;
+    @Column(name="ACTN_TKN_DLGTR_PRSN_EN_ID")
+	private String delegatorWorkflowId;
+    @Column(name="ACTN_TKN_DLGTR_WRKGRP_ID")
+	private Long delegatorWorkgroupId;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
     private DocumentRouteHeaderValue routeHeader;
-    private Collection<ActionRequestValue> actionRequests;
-    private Boolean currentIndicator = Boolean.TRUE;
+    @OneToMany(cascade={CascadeType.PERSIST}, mappedBy="actionTaken")
+	private Collection<ActionRequestValue> actionRequests;
+    @Column(name="ACTN_TKN_CUR_IND")
+    private Boolean currentIndicator = new Boolean(true);
+    @Transient
     private String actionDateString;
 
     public WorkflowUser getWorkflowUser() throws EdenUserNotFoundException {

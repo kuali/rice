@@ -10,7 +10,7 @@
 			</list>
 		</property>
 	</bean>
-	
+	<!-- 
 	<bean id="sampleAppModule" class="org.kuali.core.KualiModule">
 		<property name="moduleId" value="sa"/>
 		<property name="moduleName" value="Sample App"/>
@@ -27,5 +27,5 @@
 			</list>
 		</property>
 	</bean>
-
+  -->
 </beans>

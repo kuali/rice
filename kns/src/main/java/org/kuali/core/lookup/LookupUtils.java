@@ -188,7 +188,7 @@ public class LookupUtils {
             platform.applyLimit(limit, criteria);
         }
     }
-
+    
     /**
      * This method parses and returns the lookup result set limit, checking first for the limit
      * for the BO being looked up, and then the global application limit if there isn't a limit

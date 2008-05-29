@@ -22,6 +22,18 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.definition.ObjectDefinition;
@@ -37,8 +49,6 @@ import edu.iu.uis.eden.docsearch.DocumentSearchGenerator;
 import edu.iu.uis.eden.docsearch.DocumentSearchResultProcessor;
 import edu.iu.uis.eden.docsearch.SearchableAttribute;
 import edu.iu.uis.eden.docsearch.StandardDocumentSearchCriteriaProcessor;
-import edu.iu.uis.eden.docsearch.StandardDocumentSearchGenerator;
-import edu.iu.uis.eden.docsearch.StandardDocumentSearchResultProcessor;
 import edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessor;
 import edu.iu.uis.eden.docsearch.xml.GenericXMLSearchableAttribute;
 import edu.iu.uis.eden.engine.node.Process;
@@ -65,57 +75,95 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity(name="KEWDocumentType")
+@Table(name="EN_DOC_TYP_T")
 public class DocumentType implements WorkflowPersistable {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
 
     private static final long serialVersionUID = 1312830153583125069L;
 
-    private Long documentTypeId;
-    private Long docTypeParentId;
-    private String name;
+    @Id
+	@Column(name="DOC_TYP_ID")
+	private Long documentTypeId;
+    @Column(name="DOC_TYP_PARNT_ID")
+	private Long docTypeParentId;
+    @Column(name="DOC_TYP_NM")
+	private String name;
+    @Column(name="DOC_TYP_VER_NBR")
     private Integer version = new Integer(0);
-    private Boolean activeInd;
-    private Boolean currentInd;
-    private String description;
-    private String label;
-    private Long previousVersionId;
-    private Long routeHeaderId;
-    private String docHandlerUrl;
-    private String postProcessorName;
-    private Long workgroupId;
-    private Long blanketApproveWorkgroupId;
-    private String blanketApprovePolicy;
-    private String messageEntity;
-    private Integer lockVerNbr;
+    @Column(name="DOC_TYP_ACTV_IND")
+	private Boolean activeInd;
+    @Column(name="DOC_TYP_CUR_IND")
+	private Boolean currentInd;
+    @Column(name="DOC_TYP_DESC")
+	private String description;
+    @Column(name="DOC_TYP_LBL_TXT")
+	private String label;
+    @Column(name="DOC_TYP_PREV_VER")
+	private Long previousVersionId;
+    @Column(name="DOC_HDR_ID")
+	private Long routeHeaderId;
+    @Column(name="DOC_TYP_HDLR_URL_ADDR")
+	private String docHandlerUrl;
+    @Column(name="DOC_TYP_POST_PRCSR_NM")
+	private String postProcessorName;
+    @Column(name="WRKGRP_ID")
+	private Long workgroupId;
+    @Column(name="BLNKT_APPR_WRKGRP_ID")
+	private Long blanketApproveWorkgroupId;
+    @Column(name="BLNKT_APPR_PLCY")
+	private String blanketApprovePolicy;
+    @Column(name="MESSAGE_ENTITY_NM")
+	private String messageEntity;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
 
     /* these two fields are for the web tier lookupable
      * DocumentType is doing double-duty as a web/business tier object
      */
+    @Transient
     private String returnUrl;
+    @Transient
     private String actionsUrl;
 
     /* The default exception workgroup to apply to nodes that lack an exception workgroup definition.
      * Used at parse-time only; not stored in db.
      */
+    @Transient
     private Workgroup defaultExceptionWorkgroup;
 
-    private Collection policies;
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+           targetEntity=edu.iu.uis.eden.doctype.DocumentTypePolicy.class, mappedBy="documentType")
+	private Collection policies;
+    @Transient
     private List routeLevels;
+    @Transient
     private Collection childrenDocTypes;
-    private List<DocumentTypeAttribute> documentTypeAttributes;
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+           targetEntity=edu.iu.uis.eden.doctype.DocumentTypeAttribute.class, mappedBy="documentType")
+	private List<DocumentTypeAttribute> documentTypeAttributes;
 
     /* New Workflow 2.1 Field */
+    @Transient
     private List processes = new ArrayList();
+    @Column(name="DOC_TYP_RTE_VER_NBR")
     private String routingVersion = EdenConstants.CURRENT_ROUTING_VERSION;
 
     /* Workflow 2.2 Fields */
-    private String notificationFromAddress;
-    private String documentTypeSecurityXml;
+    @Column(name="DOC_TYP_NOTIFY_ADDR")
+	private String notificationFromAddress;
+    @Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(name="DOC_TYP_SECURITY_XML")
+	private String documentTypeSecurityXml;
+    @Transient
     private DocumentTypeSecurity documentTypeSecurity;
 
     /* Workflow 2.4 XSLT-based email message customization */
-    private String customEmailStylesheet;
+    @Column(name="DOC_TYP_EMAIL_XSL")
+	private String customEmailStylesheet;
 
     public DocumentType() {
         routeLevels = new ArrayList();

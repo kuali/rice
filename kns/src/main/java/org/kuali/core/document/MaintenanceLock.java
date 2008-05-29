@@ -15,6 +15,13 @@
  */
 package org.kuali.core.document;
 
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
@@ -24,9 +31,14 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  * List of business objects that this maintenance document is locking (prevents two documents from being routed trying to update the same object)
  * Most maintenance documents have only one lock, but globals have many 
  */
+@Entity
+@Table(name="FP_MAINT_LOCK_T")
 public class MaintenanceLock extends PersistableBusinessObjectBase {
-    private String lockingRepresentation;
-    private String documentNumber;
+    @Id
+	@Column(name="LOCK_REPRESENTATION_TXT")
+	private String lockingRepresentation;
+    @Column(name="FDOC_NBR")
+	private String documentNumber;
 
     public String getLockingRepresentation() {
         return lockingRepresentation;
@@ -54,3 +66,4 @@ public class MaintenanceLock extends PersistableBusinessObjectBase {
         return m;
     }
 }
+

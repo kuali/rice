@@ -16,19 +16,15 @@ package org.kuali.workflow.test;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.config.Config;
-import org.kuali.rice.core.Core;
+import org.junit.After;
+import org.junit.Before;
 import org.kuali.rice.lifecycle.BaseLifecycle;
 import org.kuali.rice.lifecycle.Lifecycle;
-import org.kuali.rice.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.resourceloader.ResourceLoader;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.test.lifecycles.TransactionalLifecycle;
 import org.kuali.rice.web.jetty.JettyServer;
-import org.mortbay.jetty.webapp.WebAppClassLoader;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -37,6 +33,7 @@ import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.batch.KEWXmlDataLoader;
 import edu.iu.uis.eden.exception.WorkflowRuntimeException;
+import edu.iu.uis.eden.test.KEWTransactionalTest;
 import edu.iu.uis.eden.test.SQLDataLoader;
 import edu.iu.uis.eden.test.TestUtilities;
 
@@ -50,6 +47,8 @@ public abstract class KEWTestCase extends RiceTestCase {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KEWTestCase.class);
 
+	private TransactionalLifecycle transactionalLifecycle;
+	
 	@Override
 	protected String getModuleName() {
 		return TestUtils.getModuleName();
@@ -117,17 +116,42 @@ public abstract class KEWTestCase extends RiceTestCase {
 		}
 	}
 
-	/**
-	 * Override the RiceTestCase setUpInternal in order to set a system property beforehand,
-	 * and load test data afterwards
-	 * @see org.kuali.rice.test.RiceTestCase#setUpInternal()
-	 */
+	@Before
 	@Override
-	public void setUpInternal() throws Exception {
-	    System.setProperty(EdenConstants.BOOTSTRAP_SPRING_FILE, "org/kuali/workflow/resources/TestKewSpringBeans.xml");
-	    super.setUpInternal();
-	    loadTestDataInternal();
+	public void setUp() throws Exception {
+		try {
+			System.setProperty(EdenConstants.BOOTSTRAP_SPRING_FILE, "org/kuali/workflow/resources/TestKewSpringBeans.xml");
+			configureLogging();
+			final long initTime = System.currentTimeMillis();
+			if (!SUITE_LIFE_CYCLES_RAN) {
+				this.suiteLifeCycles = getSuiteLifecycles();
+				startLifecycles(this.suiteLifeCycles);
+				SUITE_LIFE_CYCLES_RAN = true;
+			}
+			this.perTestLifeCycles = getPerTestLifecycles();
+			startLifecycles(this.perTestLifeCycles);
+			report("Time to start all Lifecycles: " + (System.currentTimeMillis() - initTime));
+			loadTestDataInternal();
+			boolean needsTransaction = getClass().isAnnotationPresent(KEWTransactionalTest.class);
+			if (needsTransaction) {
+				transactionalLifecycle = new TransactionalLifecycle();
+				transactionalLifecycle.setTransactionManager(KEWServiceLocator.getPlatformTransactionManager());
+				transactionalLifecycle.start();
+			}
+		} catch (Throwable e) {
+			LOG.error("An error was thrown from test setup, calling tearDown()", e);
+			tearDown();
+			throw new RuntimeException(e);
+		}
 	}
+	
+	@After
+    public void tearDown() throws Exception {
+		if (transactionalLifecycle != null) {
+			transactionalLifecycle.stop();
+		}
+        super.tearDown();
+    }
 
 	/**
 	 * Override the standard per-test lifecycles to prepend ClearDatabaseLifecycle and ClearCacheLifecycle

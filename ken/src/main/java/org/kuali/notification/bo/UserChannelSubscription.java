@@ -15,16 +15,32 @@
  */
 package org.kuali.notification.bo;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 /**
  * This class represents an instance of a user's subscription to a specific 
  * notification channel.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="USER_CHANNEL_SUBSCRIPTIONS")
 public class UserChannelSubscription {
-    private Long id;
-    private String userId;
+    @Id
+	@Column(name="ID")
+	private Long id;
+    @Column(name="USER_ID", nullable=false)
+	private String userId;
     
-    private NotificationChannel channel;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="CHANNEL_ID")
+	private NotificationChannel channel;
     
     /**
      * Constructs a UserChannelSubscription instance.
@@ -80,3 +96,4 @@ public class UserChannelSubscription {
 	this.userId = userId;
     }
 }
+

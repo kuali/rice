@@ -20,6 +20,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.kuali.rice.definition.ObjectDefinition;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
@@ -46,20 +57,36 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_RULE_RSP_T")
 public class RuleResponsibility implements WorkflowPersistable {
 
 	private static final long serialVersionUID = -1565688857123316797L;
+	@Id
+	@Column(name="RULE_RSP_ID")
 	private Long ruleResponsibilityKey;
-    private Long responsibilityId;
-    private Long ruleBaseValuesId;
-    private String actionRequestedCd;
-    private String ruleResponsibilityName;
-    private String ruleResponsibilityType;
-    private Integer lockVerNbr;
-    private Integer priority;
-    private String approvePolicy;
+    @Column(name="RSP_ID")
+	private Long responsibilityId;
+    @Column(name="RULE_BASE_VAL_ID")
+	private Long ruleBaseValuesId;
+    @Column(name="ACTION_RQST_CD")
+	private String actionRequestedCd;
+    @Column(name="RULE_RSP_NM")
+	private String ruleResponsibilityName;
+    @Column(name="RULE_RSP_TYP")
+	private String ruleResponsibilityType;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
+    @Column(name="RULE_RSP_PRIO_NBR")
+	private Integer priority;
+    @Column(name="RULE_RSP_APPR_PLCY")
+	private String approvePolicy;
 
-    private RuleBaseValues ruleBaseValues;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="RULE_BASE_VAL_ID", insertable=false, updatable=false)
+	private RuleBaseValues ruleBaseValues;
+    @Transient
     private List delegationRules = new ArrayList();
 
     public WorkflowUser getWorkflowUser() throws EdenUserNotFoundException {

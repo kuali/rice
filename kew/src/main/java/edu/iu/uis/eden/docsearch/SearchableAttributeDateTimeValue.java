@@ -21,11 +21,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -38,6 +46,8 @@ import edu.iu.uis.eden.util.Utilities;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_DOC_HDR_EXT_DT_T")
 public class SearchableAttributeDateTimeValue implements WorkflowPersistable, SearchableAttributeValue {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchableAttributeDateTimeValue.class);
 
@@ -49,13 +59,22 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
     private static final boolean ALLOWS_CASE_INSENSITIVE_SEARCH = false;
     private static final String ATTRIBUTE_XML_REPRESENTATION = SearchableAttribute.DATA_TYPE_DATE;
 
-    private Long searchableAttributeValueId;
-    private String searchableAttributeKey;
-    private Timestamp searchableAttributeValue;
+    @Id
+	@Column(name="DOC_HDR_EXT_ID")
+	private Long searchableAttributeValueId;
+    @Column(name="DOC_HDR_EXT_VAL_KEY")
+	private String searchableAttributeKey;
+    //@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="DOC_HDR_EXT_VAL")
+	private Timestamp searchableAttributeValue;
+    @Transient
     protected String ojbConcreteClass; // attribute needed for OJB polymorphism - do not alter!
 
-    private Long routeHeaderId;
-    private DocumentRouteHeaderValue routeHeader;
+    @Column(name="DOC_HDR_ID")
+	private Long routeHeaderId;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
+	private DocumentRouteHeaderValue routeHeader;
 
     /**
      * Default constructor.
@@ -236,3 +255,4 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
         return null;
     }
 }
+

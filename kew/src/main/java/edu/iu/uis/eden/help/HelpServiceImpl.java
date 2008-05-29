@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom.Element;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.WorkflowServiceErrorException;
@@ -31,7 +32,7 @@ import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.xml.export.HelpEntryXmlExporter;
 import edu.iu.uis.eden.xml.help.HelpEntryXmlParser;
 
-
+@Transactional
 public class HelpServiceImpl implements HelpService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(HelpServiceImpl.class);
     private HelpDAO helpDAO;

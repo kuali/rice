@@ -64,7 +64,7 @@ public class DictionaryValidationServiceTest extends TestBase {
         travelDocument.setRequester("requester");
 
         GlobalVariables.setErrorMap(new ErrorMap());
-        KNSServiceLocator.getDictionaryValidationService().validateDocumentRecursively(travelDocument,0);
+        KNSServiceLocator.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 0, true);
         ErrorMap errorMap = GlobalVariables.getErrorMap();
         int recursiveZeroErrorMapSize = errorMap.size();
 
@@ -85,12 +85,12 @@ public class DictionaryValidationServiceTest extends TestBase {
         travelDocument.setRequester("requester");
 
         GlobalVariables.setErrorMap(new ErrorMap());
-        KNSServiceLocator.getDictionaryValidationService().validateDocumentRecursively(travelDocument,0);
+        KNSServiceLocator.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 0, true);
         ErrorMap errorMap = GlobalVariables.getErrorMap();
         int recursiveZeroErrorMapSize = errorMap.size();
 
         GlobalVariables.setErrorMap(new ErrorMap());
-        KNSServiceLocator.getDictionaryValidationService().validateDocumentRecursively(travelDocument,5);
+        KNSServiceLocator.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 5, true);
         ErrorMap errorMap2 = GlobalVariables.getErrorMap();
         int recursiveFiveErrorMapSize = errorMap2.size();
 

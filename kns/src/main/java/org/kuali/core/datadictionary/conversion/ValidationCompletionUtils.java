@@ -161,6 +161,9 @@ public class ValidationCompletionUtils {
         // attempt to retrieve the class of the property
         try {
             attributeClass = ObjectUtils.getPropertyType(boInstance, attributeName, persistenceStructureService);
+            if ("extension".equalsIgnoreCase(attributeName) && PersistableBusinessObjectExtension.class.equals(attributeClass)) {
+            	attributeClass = Class.forName(boClass.getName() + "Extension");
+            }
         }
         catch (Exception e) {
             throw new RuntimeException(e);

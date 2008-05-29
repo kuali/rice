@@ -15,16 +15,33 @@
  */
 package org.kuali.notification.bo;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * This class represents the data structure that will house a default recipient list for a notification channel.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="NOTIFICATION_RECIPIENTS_LISTS")
 public class NotificationRecipientList {
-    private Long id;
-    private String recipientType;
-    private String recipientId;
+    @Id
+	@Column(name="ID")
+	private Long id;
+    @Column(name="RECIPIENT_TYPE", nullable=false)
+	private String recipientType;
+    @Column(name="RECIPIENT_ID", nullable=false)
+	private String recipientId;
     
-    private NotificationChannel channel;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="CHANNEL_ID")
+	private NotificationChannel channel;
     
     /**
      * Constructs a NotificationRecipientList.java instance.
@@ -97,3 +114,4 @@ public class NotificationRecipientList {
         this.recipientType = recipientType;
     }
 }
+

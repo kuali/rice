@@ -16,27 +16,51 @@
 
 package org.kuali.core.bo;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.util.LinkedHashMap;
 
 
 /**
  * 
  */
+@Entity
+@Table(name="FP_DOC_TYPE_T")
 public class DocumentType extends PersistableBusinessObjectBase {
 
     private static final long serialVersionUID = 2866566562262830639L;
 
-    private String financialDocumentTypeCode;
-    private String financialDocumentGroupCode;
-    private String financialDocumentName;
-    private boolean finEliminationsEligibilityIndicator;
-    private boolean finDocumentTypeActiveIndicator;
-    private String finDocumentRoutingRuleCode;
-    private Integer finDocAutomaticApprovalDays;
-    private boolean financialDocumentBalancedIndicator;
-    private boolean transactionScrubberOffsetGenerationIndicator;
+    @Id
+	@Column(name="FDOC_TYP_CD")
+	private String financialDocumentTypeCode;
+    @Column(name="FDOC_GRP_CD")
+	private String financialDocumentGroupCode;
+    @Column(name="FDOC_NM")
+	private String financialDocumentName;
+    @Column(name="FIN_ELIM_ELGBL_CD")
+	private boolean finEliminationsEligibilityIndicator;
+    @Column(name="FDOC_TYP_ACTIVE_CD")
+	private boolean finDocumentTypeActiveIndicator;
+    @Column(name="FDOC_RTNG_RULE_CD")
+	private String finDocumentRoutingRuleCode;
+    @Column(name="FDOC_AUTOAPRV_DAYS")
+	private Integer finDocAutomaticApprovalDays;
+    @Column(name="FDOC_BALANCED_CD")
+	private boolean financialDocumentBalancedIndicator;
+    @Column(name="TRN_SCRBBR_OFST_GEN_IND")
+	private boolean transactionScrubberOffsetGenerationIndicator;
 
-    private DocumentGroup documentGroup;
+    @OneToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="FDOC_GRP_CD", insertable=false, updatable=false)
+	private DocumentGroup documentGroup;
     
     /**
      * Default no-arg constructor.
@@ -255,3 +279,4 @@ public class DocumentType extends PersistableBusinessObjectBase {
 
 
 }
+

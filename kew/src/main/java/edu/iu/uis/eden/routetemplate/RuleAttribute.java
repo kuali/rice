@@ -19,6 +19,18 @@ package edu.iu.uis.eden.routetemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import edu.iu.uis.eden.WorkflowPersistable;
@@ -29,24 +41,44 @@ import edu.iu.uis.eden.WorkflowPersistable;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_RULE_ATTRIB_T")
 public class RuleAttribute implements WorkflowPersistable  {
 
 	private static final long serialVersionUID = 1027673603158346349L;
+	@Id
+	@Column(name="RULE_ATTRIB_ID")
 	private Long ruleAttributeId;
-    private String name;
-    private String label;
-    private String type;
-    private String className;
-    private String description;
-    private String xmlConfigData;
-    private Integer lockVerNbr;
-    private String messageEntity;
+    @Column(name="RULE_ATTRIB_NM")
+	private String name;
+    @Column(name="RULE_ATTRIB_LBL_TXT")
+	private String label;
+    @Column(name="RULE_ATTRIB_TYP")
+	private String type;
+    @Column(name="RULE_ATTRIB_CLS_NM")
+	private String className;
+    @Column(name="RULE_ATTRIB_DESC")
+	private String description;
+    @Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(name="RULE_ATTRIB_XML_RTE_TXT")
+	private String xmlConfigData;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
+    @Column(name="MESSAGE_ENTITY_NM")
+	private String messageEntity;
     
-    private List ruleTemplateAttributes;
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+           targetEntity=edu.iu.uis.eden.routetemplate.RuleTemplateAttribute.class, mappedBy="ruleAttribute")
+	private List ruleTemplateAttributes;
+    @Transient
     private List validValues;
     
     // required to be lookupable
+    @Transient
     private String returnUrl;
+
     public RuleAttribute() {
         ruleTemplateAttributes = new ArrayList();
         validValues = new ArrayList();

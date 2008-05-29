@@ -27,7 +27,7 @@ public class KualiDBPlatformOracle extends KualiDBPlatformBase implements KualiD
             criteria.addSql("rownum <= " + limit.intValue());
         }
     }
-
+    
     public Long getNextAvailableSequenceNumber(String sequenceName) {
         return getJdbcTemplate().queryForLong(new StringBuffer("select ").append(sequenceName).append(".nextval").append(" from dual").toString());
     }

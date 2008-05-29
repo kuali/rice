@@ -15,14 +15,24 @@
  */
 package org.kuali.core.bo;
 
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 
 /**
  * 
  * Persistable Business Object which holds a sub-categorization of employee.
  */
 
+@Entity
+@Table(name="SH_EMP_TYP_T")
 public class EmployeeType extends KualiCodeBase {
-    private boolean rowActiveIndicator;
+    @Column(name="ROW_ACTV_IND")
+	private boolean rowActiveIndicator;
     
     /**
      * public no-arg constructor, which accomplishes basic initialization
@@ -46,3 +56,4 @@ public class EmployeeType extends KualiCodeBase {
         this.rowActiveIndicator = a;
     }
 }
+

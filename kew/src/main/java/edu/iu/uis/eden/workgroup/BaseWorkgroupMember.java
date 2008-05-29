@@ -18,21 +18,48 @@ package edu.iu.uis.eden.workgroup;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 /**
  * A member of a {@link BaseWorkgroup}.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@IdClass(edu.iu.uis.eden.workgroup.BaseWorkgroupMemberId.class)
+@Entity
+@Table(name="EN_WRKGRP_MBR_T")
 public class BaseWorkgroupMember implements Serializable {
 
 	private static final long serialVersionUID = -6343373525316948409L;
 
+	@Id
+	@Column(name="WRKGRP_ID")
 	private Long workgroupId;
-    private String workflowId;
-    private String memberType;
+    @Id
+	@Column(name="WRKGRP_MBR_PRSN_EN_ID")
+	private String workflowId;
+    @Column(name="WRKGRP_MBR_TYP")
+	private String memberType;
+    @Id
+    @Column(name="WRKGRP_VER_NBR")
     private Integer workgroupVersionNumber = new Integer(0);
-    private Integer lockVerNbr;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
 
+	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST}, optional=true)
+	@JoinColumns({@JoinColumn(name="WRKGRP_ID", insertable=false, updatable=false), @JoinColumn(name="WRKGRP_VER_NBR", insertable=false, updatable=false)})
 	private BaseWorkgroup workgroup;
 
     public Integer getLockVerNbr() {
@@ -84,3 +111,4 @@ public class BaseWorkgroupMember implements Serializable {
 	}
 
 }
+

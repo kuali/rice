@@ -18,18 +18,39 @@ package edu.sampleu.travel.bo;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.jpa.annotations.Sequence;
 
 
 /**
  * FiscalOfficer
  */
+@Entity
+@Table(name="TRV_ACCT_FO")
+@Sequence(name="seq_acct_fo_id", property="id")
 public class FiscalOfficer extends PersistableBusinessObjectBase {
 	
-	private String userName;
+	private static final long serialVersionUID = -4645124696676896963L;
+
+	@Id
+	@Column(name="acct_fo_id")
 	private Long id;
+	
+	@Column(name="acct_fo_user_name")
+	private String userName;
+
+	@OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER, mappedBy="fiscalOfficer")
 	private List<TravelAccount> accounts;
 
 	public void setUserName(String userId) {
@@ -48,15 +69,9 @@ public class FiscalOfficer extends PersistableBusinessObjectBase {
                ObjectUtils.equals(id, f.getId());
 	}
 
-	/**
-	 * Returns the hashcode of the docHeaderId, which is supposed to be the
-	 * primary key for the document
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	/*public int hashCode() {
-		return (accountNum == null) ? 0 : accountNum.hashCode();
-	}*/
+	public int hashCode() {
+    	return new HashCodeBuilder().append(id).append(userName).toHashCode();
+	}
 
 	public Long getId() {
 		return id;
@@ -74,10 +89,6 @@ public class FiscalOfficer extends PersistableBusinessObjectBase {
         this.accounts = accounts;
     }
 
-    /*
-    public String toString() {
-        return "(" + userName + "," + accountNum + ")";
-    }*/
     public String toString() {
         return "[FiscalOfficer: id=" + id +
                              ", userName=" + userName +

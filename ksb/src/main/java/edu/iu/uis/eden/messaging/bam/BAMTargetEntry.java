@@ -21,6 +21,15 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import edu.iu.uis.eden.messaging.AsynchronousCallback;
 
 /**
@@ -28,20 +37,37 @@ import edu.iu.uis.eden.messaging.AsynchronousCallback;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_BAM_T")
 public class BAMTargetEntry implements Serializable {
 
 	private static final long serialVersionUID = -8376674801367598316L;
 
+	@Id
+	@Column(name="BAM_ID")
 	private Long bamId;
+	@Column(name="SERVICE_NM")
 	private String serviceName;
+	@Column(name="METHOD_NM")
 	private String methodName;
+	@Column(name="THREAD_NM")
 	private String threadName;
+	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="CALL_DT")
 	private Timestamp callDate;
+	@Column(name="SERVICE_URL")
 	private String serviceURL;
+	@Column(name="TARGET_TO_STRING")
 	private String targetToString;
+	@Column(name="EXCEPTION_TO_STRING")
 	private String exceptionToString;
+	@Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(name="EXCEPTION_MSG")
 	private String exceptionMessage;
+	@Column(name="SRVR_IND_IND")
 	private Boolean serverInvocation;
+    @Transient
 	private List<BAMParam> bamParams = new ArrayList<BAMParam>();
 	
 	//for async calls not bam
@@ -123,3 +149,4 @@ public class BAMTargetEntry implements Serializable {
 		this.callback = callback;
 	}
 }
+

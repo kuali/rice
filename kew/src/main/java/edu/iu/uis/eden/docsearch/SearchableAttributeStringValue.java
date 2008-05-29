@@ -18,11 +18,17 @@ package edu.iu.uis.eden.docsearch;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import edu.iu.uis.eden.WorkflowPersistable;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
@@ -31,6 +37,8 @@ import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_DOC_HDR_EXT_T")
 public class SearchableAttributeStringValue implements WorkflowPersistable, SearchableAttributeValue {
 
     private static final long serialVersionUID = 8696089933682052078L;
@@ -42,13 +50,21 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
     private static final String ATTRIBUTE_XML_REPRESENTATION = SearchableAttribute.DATA_TYPE_STRING;
     private static final int STRING_MAX_LENGTH = 2000; // should match table creation
 
-    private Long searchableAttributeValueId;
-    private String searchableAttributeKey;
-    private String searchableAttributeValue;
+    @Id
+	@Column(name="DOC_HDR_EXT_ID")
+	private Long searchableAttributeValueId;
+    @Column(name="DOC_HDR_EXT_VAL_KEY")
+	private String searchableAttributeKey;
+    @Column(name="DOC_HDR_EXT_VAL")
+	private String searchableAttributeValue;
+    @Transient
     protected String ojbConcreteClass; // attribute needed for OJB polymorphism - do not alter!
 
-    private Long routeHeaderId;
-    private DocumentRouteHeaderValue routeHeader;
+    @Column(name="DOC_HDR_ID")
+	private Long routeHeaderId;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
+	private DocumentRouteHeaderValue routeHeader;
 
     /**
      * Default constructor.
@@ -199,3 +215,4 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
         return null;
     }
 }
+

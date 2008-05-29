@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.testharness;
+package org.kuali.rice.test.lifecycles;
 
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.lifecycle.Lifecycle;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
@@ -28,20 +28,28 @@ public class TransactionalLifecycle implements Lifecycle {
 
 		private boolean started;
 		private TransactionStatus TRANSACTION_STATUS;
+		private PlatformTransactionManager transactionManager;
 
 		public boolean isStarted() {
 			return started;
 		}
 
 		public void start() throws Exception {
+			if (transactionManager == null) {
+				throw new RuntimeException("TransactionManager was null.  Please inject a proper PlatformTransactionManager instance.");
+			}
 			DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
 			defaultTransactionDefinition.setTimeout(3600);
-			TRANSACTION_STATUS = KNSServiceLocator.getTransactionManager().getTransaction(defaultTransactionDefinition);
+			TRANSACTION_STATUS = transactionManager.getTransaction(defaultTransactionDefinition);
 			started = true;
 		}
 
 		public void stop() throws Exception {
-			KNSServiceLocator.getTransactionManager().rollback(TRANSACTION_STATUS);
+			transactionManager.rollback(TRANSACTION_STATUS);
 			started = false;
+		}
+		
+		public void setTransactionManager(PlatformTransactionManager transactionManager) {
+			this.transactionManager = transactionManager;
 		}
 }

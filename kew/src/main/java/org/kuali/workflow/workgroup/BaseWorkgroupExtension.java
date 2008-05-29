@@ -19,6 +19,18 @@ package org.kuali.workflow.workgroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.kuali.workflow.attribute.Extension;
 import org.kuali.workflow.attribute.ExtensionData;
 
@@ -37,16 +49,27 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_WRKGRP_EXT_T")
 public class BaseWorkgroupExtension extends BaseWorkflowPersistable implements Extension {
 
 	private static final long serialVersionUID = -305147691188181612L;
 
+	@Id
+	@Column(name="WRKGRP_EXT_ID")
 	private Long workgroupExtensionId;
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 
+	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumns({@JoinColumn(name="WRKGRP_ID"), @JoinColumn(name="WRKGRP_VER_NBR")})
 	private BaseWorkgroup workgroup;
+	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="WRKGRP_TYP_ATTRIB_ID")
 	private WorkgroupTypeAttribute workgroupTypeAttribute;
 
+    @Transient
 	private List<ExtensionData> data = new ArrayList<ExtensionData>();
 
 	public String getAttributeName() {

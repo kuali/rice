@@ -15,6 +15,7 @@
  */
 package org.kuali.core.web.struts.action;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.persistence.PersistenceException;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -38,6 +40,7 @@ import org.kuali.RicePropertyConstants;
 import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.authorization.FieldAuthorization;
 import org.kuali.core.bo.PersistableBusinessObject;
+import org.kuali.core.bo.PersistableBusinessObjectExtension;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.datadictionary.DocumentEntry;
 import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
@@ -58,6 +61,9 @@ import org.kuali.core.web.format.Formatter;
 import org.kuali.core.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.jpa.metadata.EntityDescriptor;
+import org.kuali.rice.jpa.metadata.FieldDescriptor;
+import org.kuali.rice.jpa.metadata.MetadataManager;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.util.RiceConstants;
 
@@ -168,15 +174,23 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 }
             }
 
-
             // get new document from service
             document = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getNewDocument(maintenanceForm.getDocTypeName());
+            // Check for an auto-incrementing PK and set it if needed
+//            if (document.getNewMaintainableObject().getBoClass().isAnnotationPresent(Sequence.class)) {
+//    			Sequence sequence = (Sequence) document.getNewMaintainableObject().getBoClass().getAnnotation(Sequence.class);
+//    			Long pk = OrmUtils.getNextAutoIncValue(sequence);
+//    			OrmUtils.populateAutoIncValue(document.getOldMaintainableObject().getBusinessObject(), pk);
+//    			OrmUtils.populateAutoIncValue(document.getNewMaintainableObject().getBusinessObject(), pk);
+//    			document.getOldMaintainableObject().getBusinessObject().setAutoIncrementSet(true);
+//    			document.getNewMaintainableObject().getBusinessObject().setAutoIncrementSet(true);
+//            }
             maintenanceForm.setDocument(document);
         }
         else {
             document = (MaintenanceDocument) maintenanceForm.getDocument();
         }
-
+        
         // retrieve business object from request parameters
         if (!(KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) && !(KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction))) {
             Map requestParameters = buildKeyMapFromRequest(document.getNewMaintainableObject(), request);
@@ -184,6 +198,27 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             if (oldBusinessObject == null) {
                 throw new RuntimeException("Cannot retrieve old record for maintenance document, incorrect parameters passed on maint url.");
             }
+            
+            // Temp solution for loading extension objects - need to find a better way
+            if (oldBusinessObject.getExtension() != null) {
+            	PersistableBusinessObjectExtension boe = oldBusinessObject.getExtension();
+            	EntityDescriptor entity = MetadataManager.getEntityDescriptor(oldBusinessObject.getExtension().getClass());
+            	org.kuali.rice.jpa.criteria.Criteria extensionCriteria = new org.kuali.rice.jpa.criteria.Criteria(boe.getClass().getName());
+            	for (FieldDescriptor fieldDescriptor : entity.getPrimaryKeys()) {
+            		try {
+            			Field field = oldBusinessObject.getClass().getDeclaredField(fieldDescriptor.getName());
+            			field.setAccessible(true);
+            			extensionCriteria.eq(fieldDescriptor.getName(), field.get(oldBusinessObject));
+            		} catch (Exception e) {
+            			LOG.error(e.getMessage(),e);
+            		}
+            	}				
+            	try {
+            		boe = (PersistableBusinessObjectExtension) new org.kuali.rice.jpa.criteria.QueryByCriteria(KNSServiceLocator.getEntityManagerFactory().createEntityManager(), extensionCriteria).toQuery().getSingleResult();
+            	} catch (PersistenceException e) {}
+            	oldBusinessObject.setExtension(boe);
+            }
+                        
             PersistableBusinessObject newBusinessObject = (PersistableBusinessObject) ObjectUtils.deepCopy(oldBusinessObject);
 
             // set business object instance for editing
@@ -196,7 +231,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             // clear the primary key fields
             if (KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
                 if (!document.isFieldsClearedOnCopy()) {
-                    clearPrimaryKeyFields(document);
+                	clearPrimaryKeyFields(document);
                     clearUnauthorizedNewFields(document);
 
                     Maintainable maintainable = document.getNewMaintainableObject();
@@ -213,6 +248,13 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             else if (KNSConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction)) {
                 document.getNewMaintainableObject().processAfterEdit( document, request.getParameterMap() );
             }
+            // Check for an auto-incrementing PK and set it if needed
+//            if (document.getNewMaintainableObject().getBoClass().isAnnotationPresent(Sequence.class)) {
+//    			Sequence sequence = (Sequence) document.getNewMaintainableObject().getBoClass().getAnnotation(Sequence.class);
+//    			Long pk = OrmUtils.getNextAutoIncValue(sequence);
+//    			OrmUtils.populateAutoIncValue(document.getNewMaintainableObject().getBusinessObject(), pk);
+//    			document.getNewMaintainableObject().getBusinessObject().setAutoIncrementSet(true);
+//            }
         }
         // if new with existing we need to populate we need to populate with passed in parameters
         if (KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction)) {
@@ -267,7 +309,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 //      
         DocumentEntry entry = maintenanceDocumentDictionaryService.getMaintenanceDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
         document.setDisplayTopicFieldInNotes(entry.getDisplayTopicFieldInNotes());
-
+        
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 

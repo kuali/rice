@@ -16,22 +16,44 @@
  */
 package org.kuali.workflow.role;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import org.kuali.workflow.identity.IdentityType;
 
 /**
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_QUAL_ROLE_MBR_T")
 public class QualifiedRoleMember {
 
+	@Id
+	@Column(name="QUAL_ROLE_MBR_ID")
 	private Long qualifiedRoleMemberId;
 
+	@Column(name="QUAL_ROLE_ID")
 	private Long qualifiedRoleId;
+	@Column(name="RSP_ID")
 	private Long responsibilityId;
+	@Column(name="MBR_ID")
 	private String memberId;
+	@Column(name="MBR_TYP")
 	private IdentityType memberType;
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 
+	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name="QUAL_ROLE_ID", insertable=false, updatable=false)
 	private QualifiedRole qualifiedRole;
 
 	public Integer getLockVerNbr() {
@@ -91,4 +113,5 @@ public class QualifiedRoleMember {
 	}
 
 }
+
 

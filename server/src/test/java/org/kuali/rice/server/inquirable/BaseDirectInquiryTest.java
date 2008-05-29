@@ -74,6 +74,7 @@ public class BaseDirectInquiryTest extends ServerTestBase {
 	// need webclient in the main test program, so create login here. not using from htmlutil
 	HtmlPage loginPage = (HtmlPage) webClient.getPage(new URL(url));
 	HtmlForm htmlForm = (HtmlForm) loginPage.getForms().get(0);
+	htmlForm.getInputByName("__login_user").setValueAttribute("admin");
 	HtmlSubmitInput button = (HtmlSubmitInput) htmlForm.getInputByValue("Login");
 	return (HtmlPage) button.click();
     }

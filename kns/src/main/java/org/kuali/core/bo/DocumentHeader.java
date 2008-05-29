@@ -19,6 +19,17 @@ package org.kuali.core.bo;
 import java.sql.Date;
 import java.util.LinkedHashMap;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.kuali.RicePropertyConstants;
 import org.kuali.core.util.KualiDecimal;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -30,23 +41,40 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  * 
  * 
  */
+@Entity
+@Table(name="FP_DOC_HEADER_T")
 public class DocumentHeader extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 8330320294549662887L;
 
-    private String documentNumber;
-    private String financialDocumentStatusCode;
-    private String financialDocumentDescription;
-    private KualiDecimal financialDocumentTotalAmount;
-    private String organizationDocumentNumber;
-    private String financialDocumentInErrorNumber;
-    private String financialDocumentTemplateNumber;
+    @Id
+	@Column(name="FDOC_NBR")
+	private String documentNumber;
+    @Column(name="FDOC_STATUS_CD")
+	private String financialDocumentStatusCode;
+    @Column(name="FDOC_DESC")
+	private String financialDocumentDescription;
+    @Column(name="FDOC_TOTAL_AMT")
+	private KualiDecimal financialDocumentTotalAmount;
+    @Column(name="ORG_DOC_NBR")
+	private String organizationDocumentNumber;
+    @Column(name="FDOC_IN_ERR_NBR")
+	private String financialDocumentInErrorNumber;
+    @Column(name="FDOC_TMPL_NBR")
+	private String financialDocumentTemplateNumber;
     // TODO: remove following field from here, OJB, and database after workflow API to retrieve this is implemented
-    private Date documentFinalDate;
-    private String explanation;
+    //@Temporal(TemporalType.DATE)
+	@Column(name="TEMP_DOC_FNL_DT")
+	private Date documentFinalDate;
+    @Column(name="FDOC_EXPLAIN_TXT")
+	private String explanation;
     
+    @Transient
     private transient KualiWorkflowDocument workflowDocument;
-    private DocumentStatus documentStatus;
+    @OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="FDOC_STATUS_CD", insertable=false, updatable=false)
+	private DocumentStatus documentStatus;
     
+    @Transient
     private String correctedByDocumentId;
 
     /**

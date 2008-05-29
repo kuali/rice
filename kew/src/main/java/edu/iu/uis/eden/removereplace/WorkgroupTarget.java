@@ -15,16 +15,38 @@
  */
 package edu.iu.uis.eden.removereplace;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * Represents a target of a remove/replace document.  This will typically be
  * either a rule or a workgroup
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@IdClass(edu.iu.uis.eden.removereplace.WorkgroupTargetId.class)
+@Entity
+@Table(name="EN_RMV_RPLC_WRKGRP_T")
 public class WorkgroupTarget {
 
-    private Long documentId;
-    private Long workgroupId;
+    @Id
+	@Column(name="DOC_HDR_ID")
+	private Long documentId;
+    @Id
+	@Column(name="WRKGRP_ID")
+	private Long workgroupId;
+    
+    // Added for JPA uni-directional one-to-many (not yet supported by JPA)
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name="DOC_HDR_ID")
+    private RemoveReplaceDocument removeReplaceDocument;
 
     public Long getDocumentId() {
         return this.documentId;
@@ -43,3 +65,4 @@ public class WorkgroupTarget {
     }
 
 }
+

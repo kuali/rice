@@ -16,6 +16,13 @@ package edu.iu.uis.eden.messaging;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.kuali.bus.services.KSBServiceLocator;
 
 /**
@@ -23,25 +30,46 @@ import org.kuali.bus.services.KSBServiceLocator;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_MSG_QUE_T")
 public class PersistedMessage implements Serializable {
 
 	private static final long serialVersionUID = -7047766894738304195L;
 
+	@Id
+	@Column(name="MESSAGE_QUE_ID")
 	private Long routeQueueId;
+	@Column(name="MESSAGE_QUE_PRIO_NBR")
 	private Integer queuePriority;
+	@Column(name="MESSAGE_QUE_STAT_CD")
 	private String queueStatus;
+	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="MESSAGE_QUE_DT")
 	private Timestamp queueDate;
+	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="MESSAGE_EXP_DT")
 	private Timestamp expirationDate;
+	@Column(name="MESSAGE_QUE_RTRY_CNT")
 	private Integer retryCount;
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
-    private String ipNumber;
-    private String serviceName;
-    private String messageEntity;
-    private String methodName;
+    @Column(name="MESSAGE_QUE_IP_NBR")
+	private String ipNumber;
+    @Column(name="MESSAGE_SERVICE_NM")
+	private String serviceName;
+    @Column(name="MESSAGE_ENTITY_NM")
+	private String messageEntity;
+    @Column(name="SERVICE_METHOD_NM")
+	private String methodName;
+    @Transient
     private AsynchronousCall methodCall;
+    @Transient
     private PersistedMassagePayload payload;
-    private String value1;
-    private String value2;
+    @Column(name="VAL_ONE")
+	private String value1;
+    @Column(name="VAL_TWO")
+	private String value2;
     
     public PersistedMessage() {
         // default constructor

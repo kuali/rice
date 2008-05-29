@@ -18,6 +18,10 @@ package edu.iu.uis.eden.engine.node;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
@@ -25,7 +29,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@MappedSuperclass
 public abstract class State extends KeyValuePair implements Serializable {
+    @Id
     protected Long stateId;
 
     public State() {}

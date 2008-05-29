@@ -19,13 +19,22 @@ import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 
 import org.kuali.rice.kns.util.KNSConstants;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
+@MappedSuperclass
 public abstract class MultipleValueLookupMetadata extends PersistableBusinessObjectBase {
+    @Id
+    @Column(name="LOOKUP_RESULT_SEQUENCE_NBR")
     private String lookupResultsSequenceNumber;
+    @Column(name="PERSON_UNVL_ID")
     private String lookupUniversalUserId;
     /**
      * the time the lookup data was persisted, used by a batch purge job
      */
+    @Transient
     private Timestamp lookupDate;
     
     public String getLookupResultsSequenceNumber() {

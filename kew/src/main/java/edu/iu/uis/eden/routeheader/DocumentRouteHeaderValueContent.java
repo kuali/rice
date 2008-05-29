@@ -16,15 +16,31 @@
  */
 package edu.iu.uis.eden.routeheader;
 
+import javax.persistence.FetchType;
+import javax.persistence.Basic;
+import javax.persistence.Lob;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.io.Serializable;
 
+@Entity
+@Table(name="EN_DOC_HDR_CNTNT_T")
 public class DocumentRouteHeaderValueContent implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@Id
+	@Column(name="DOC_HDR_ID")
 	private Long routeHeaderId;
+	@Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(name="DOC_CNTNT_TXT")
 	private String documentContent;
 		
 	public DocumentRouteHeaderValueContent() {}
@@ -47,3 +63,4 @@ public class DocumentRouteHeaderValueContent implements Serializable {
 	}
 
 }
+

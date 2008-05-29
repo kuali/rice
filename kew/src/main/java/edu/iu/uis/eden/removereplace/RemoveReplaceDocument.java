@@ -15,6 +15,15 @@
  */
 package edu.iu.uis.eden.removereplace;
 
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -23,6 +32,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_RMV_RPLC_DOC_T")
 public class RemoveReplaceDocument implements Serializable {
 
     private static final long serialVersionUID = 6671410167992149054L;
@@ -30,13 +41,24 @@ public class RemoveReplaceDocument implements Serializable {
     public static final String REMOVE_OPERATION = "M";
     public static final String REPLACE_OPERATION = "P";
 
-    private Long documentId;
-    private String userWorkflowId;
-    private String replacementUserWorkflowId;
-    private String operation;
-    private List<WorkgroupTarget> workgroupTargets;
-    private List<RuleTarget> ruleTargets;
-    private Integer lockVerNbr;
+    @Id
+	@Column(name="DOC_HDR_ID")
+	private Long documentId;
+    @Column(name="PRSN_EN_ID")
+	private String userWorkflowId;
+    @Column(name="RPLC_PRSN_EN_ID")
+	private String replacementUserWorkflowId;
+    @Column(name="OPRN")
+	private String operation;
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+           targetEntity=edu.iu.uis.eden.removereplace.WorkgroupTarget.class, mappedBy="removeReplaceDocument")
+	private List<WorkgroupTarget> workgroupTargets;
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+           targetEntity=edu.iu.uis.eden.removereplace.RuleTarget.class, mappedBy="removeReplaceDocument")
+	private List<RuleTarget> ruleTargets;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
 
     public Long getDocumentId() {
         return this.documentId;
@@ -82,3 +104,4 @@ public class RemoveReplaceDocument implements Serializable {
     }
 
 }
+

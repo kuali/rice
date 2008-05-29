@@ -17,6 +17,9 @@ package org.kuali.core.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public class PersistableBusinessObjectExtensionBase extends
 		PersistableBusinessObjectBase implements
 		PersistableBusinessObjectExtension {

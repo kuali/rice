@@ -15,12 +15,40 @@
  */
 package edu.iu.uis.eden.actionitem;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * Outbox item.  An extension of {@link ActionItemActionListExtension} for OJB.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@Entity
+@Table(name="EN_OUT_BOX_ITM_T")
+@AttributeOverrides({
+    @AttributeOverride(name="actionItemId", column=@Column(name="ACTN_ITM_ID")), 
+    @AttributeOverride(name="workflowId", column=@Column(name="ACTN_ITM_PRSN_EN_ID")), 
+    @AttributeOverride(name="dateAssigned", column=@Column(name="ACTN_ITM_ASND_DT")), 
+    @AttributeOverride(name="actionRequestCd", column=@Column(name="ACTN_ITM_RQST_CD")), 
+    @AttributeOverride(name="actionRequestId", column=@Column(name="ACTN_RQST_ID")), 
+    @AttributeOverride(name="routeHeaderId", column=@Column(name="DOC_HDR_ID")), 
+    @AttributeOverride(name="responsibilityId", column=@Column(name="ACTN_ITM_RESP_ID")), 
+    @AttributeOverride(name="workgroupId", column=@Column(name="WRKGRP_ID")), 
+    @AttributeOverride(name="roleName", column=@Column(name="ROLE_NM")), 
+    @AttributeOverride(name="docTitle", column=@Column(name="DOC_TTL")), 
+    @AttributeOverride(name="docLabel", column=@Column(name="DOC_TYP_LBL_TXT")), 
+    @AttributeOverride(name="docHandlerURL", column=@Column(name="DOC_TYP_HDLR_URL_ADDR")), 
+    @AttributeOverride(name="docName", column=@Column(name="DOC_TYP_NM")), 
+    @AttributeOverride(name="delegatorWorkflowId", column=@Column(name="ACTN_ITM_DLGN_PRSN_EN_ID")), 
+    @AttributeOverride(name="delegatorWorkgroupId", column=@Column(name="ACTN_ITM_DLGN_WRKGRP_ID")), 
+    @AttributeOverride(name="delegationType", column=@Column(name="DLGN_TYP")), 
+    @AttributeOverride(name="lockVerNbr", column=@Column(name="DB_LOCK_VER_NBR"))
+})
+
 public class OutboxItemActionListExtension extends ActionItemActionListExtension {
 
     private static final long serialVersionUID = 5776214610837858304L;

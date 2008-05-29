@@ -15,14 +15,26 @@
  */
 package org.kuali.core.bo;
 
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.util.LinkedHashMap;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="FP_DOC_STATUS_T")
 public class DocumentStatus extends PersistableBusinessObjectBase {
 
+	@Id
+	@Column(name="FDOC_STATUS_CD")
 	private String financialDocumentStatusCode;
+	@Column(name="FDOC_STATUS_NM")
 	private String financialDocumentStatusName;
 
 	/**
@@ -82,3 +94,4 @@ public class DocumentStatus extends PersistableBusinessObjectBase {
 	    return m;
     }
 }
+

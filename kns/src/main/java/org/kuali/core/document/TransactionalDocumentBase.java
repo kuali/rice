@@ -15,6 +15,8 @@
  */
 package org.kuali.core.document;
 
+import javax.persistence.MappedSuperclass;
+
 import org.kuali.rice.KNSServiceLocator;
 
 import edu.iu.uis.eden.exception.WorkflowException;
@@ -22,6 +24,7 @@ import edu.iu.uis.eden.exception.WorkflowException;
 /**
  * This is the base class implementation for all transaction processing eDocs. 
  */
+@MappedSuperclass
 public abstract class TransactionalDocumentBase extends DocumentBase implements TransactionalDocument {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TransactionalDocumentBase.class);
 

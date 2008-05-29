@@ -23,6 +23,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -42,43 +55,81 @@ import edu.iu.uis.eden.util.Utilities;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_RULE_BASE_VAL_T")
 public class RuleBaseValues implements WorkflowPersistable {
 
     private static final long serialVersionUID = 6137765574728530156L;
-    private Long ruleBaseValuesId;
+    @Id
+	@Column(name="RULE_BASE_VAL_ID")
+	private Long ruleBaseValuesId;
     /**
      * Unique Rule name
      */
-    private String name;
-    private Long ruleTemplateId;
-    private Long previousVersionId;
-    private Boolean activeInd;
-    private String description;
-    private String docTypeName;
-    private Long routeHeaderId;
-    private Timestamp fromDate;
-    private Timestamp toDate;
-    private Timestamp deactivationDate;
-    private Boolean currentInd;
-    private Integer versionNbr;
-    private Integer lockVerNbr;
-    private Boolean ignorePrevious;
-    private List<RuleResponsibility> responsibilities;
-    private List<RuleExtension> ruleExtensions;
-    private RuleTemplate ruleTemplate;
-    private RuleExpressionDef ruleExpressionDef;
+    @Column(name="RULE_NM")
+	private String name;
+    @Column(name="RULE_TMPL_ID")
+	private Long ruleTemplateId;
+    @Column(name="RULE_BASE_VAL_PREV_VER")
+	private Long previousVersionId;
+    @Column(name="RULE_BASE_VAL_ACTV_IND")
+	private Boolean activeInd;
+    @Column(name="RULE_BASE_VAL_DESC")
+	private String description;
+    @Column(name="DOC_TYP_NM")
+	private String docTypeName;
+    @Column(name="DOC_HDR_ID")
+	private Long routeHeaderId;
+    //@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="RULE_BASE_VAL_FRM_DT")
+	private Timestamp fromDate;
+    //@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="RULE_BASE_VAL_TO_DT", nullable=false)
+	private Timestamp toDate;
+    //@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="RULE_BASE_VAL_DACTVN_DT")
+	private Timestamp deactivationDate;
+    @Column(name="RULE_BASE_VAL_CUR_IND")
+	private Boolean currentInd;
+    @Column(name="RULE_BASE_VAL_VER_NBR")
+	private Integer versionNbr;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
+    @Column(name="RULE_BASE_VAL_IGNR_PRVS")
+	private Boolean ignorePrevious;
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+           targetEntity=edu.iu.uis.eden.routetemplate.RuleResponsibility.class, mappedBy="ruleBaseValues")
+	private List<RuleResponsibility> responsibilities;
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+           targetEntity=edu.iu.uis.eden.routetemplate.RuleExtension.class, mappedBy="ruleBaseValues")
+	private List<RuleExtension> ruleExtensions;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="RULE_TMPL_ID", insertable=false, updatable=false)
+	private RuleTemplate ruleTemplate;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
+	@JoinColumn(name="RULE_EXPR_ID")
+	private RuleExpressionDef ruleExpressionDef;
+    @Transient
     private RuleBaseValues previousVersion;
-    private Timestamp activationDate;
+    //@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="RULE_BASE_VAL_ACTVN_DT")
+	private Timestamp activationDate;
+    @Column(name="RULE_BASE_VAL_DLGN_IND")
     private Boolean delegateRule = Boolean.FALSE;
     /**
      * Indicator that signifies that this rule is a defaults/template rule which contains
      * template-defined rule defaults for other rules which use the associated template
      */
+    @Column(name="TMPL_RULE_IND")
     private Boolean templateRuleInd = Boolean.FALSE;
 
     // required to be lookupable
+    @Transient
     private String returnUrl;
+    @Transient
     private String destinationUrl;
+    @Transient
     private MyColumns myColumns;
 
     public RuleBaseValues() {

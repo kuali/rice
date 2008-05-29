@@ -17,16 +17,22 @@ package org.kuali.core.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Type;
 
-
-/**
- * 
- */
+@MappedSuperclass
 public class KualiCodeBase extends PersistableBusinessObjectBase implements KualiCode {
 
+    // Code and Name will be overridden by Column annotations in their children classes
+    @Id
     protected String code;
     protected String name;
+    @Type(type="yes_no")
+    @Column(name="ACTIVE_IND")
     protected boolean active;
 
     public KualiCodeBase() {

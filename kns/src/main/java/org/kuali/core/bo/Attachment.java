@@ -15,6 +15,16 @@
  */
 package org.kuali.core.bo;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
@@ -25,16 +35,27 @@ import org.kuali.rice.KNSServiceLocator;
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="SH_ATT_T")
 public class Attachment extends PersistableBusinessObjectBase {
 
+	@Id
+	@Column(name="NTE_ID")
 	private Long noteIdentifier;
+	@Column(name="ATT_MIME_TYP_CD")
 	private String attachmentMimeTypeCode;
+	@Column(name="ATT_FL_NM")
 	private String attachmentFileName;
+	@Column(name="ATT_ID")
 	private String attachmentIdentifier;
+	@Column(name="ATT_FL_SZ")
 	private Long attachmentFileSize;
+	@Column(name="ATT_TYP_CD")
 	private String attachmentTypeCode;
 
-    private Note note;
+    @OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="NTE_ID")
+	private Note note;
 
 	/**
 	 * Default constructor.
@@ -207,3 +228,4 @@ public class Attachment extends PersistableBusinessObjectBase {
         return m;
     }
 }
+

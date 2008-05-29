@@ -15,16 +15,34 @@
  */
 package org.kuali.core.bo.user;
 
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+import javax.persistence.IdClass;
+
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 
+@IdClass(org.kuali.core.bo.user.KualiModuleUserPropertyId.class)
+@Entity
+@Table(name="SH_USR_PROP_T")
 public class KualiModuleUserProperty extends PersistableBusinessObjectBase {
 
-    private String personUniversalIdentifier;
-    private String moduleId;
-    private String name;
-    private String value;
+    @Id
+	@Column(name="PERSON_UNVL_ID")
+	private String personUniversalIdentifier;
+    @Id
+	@Column(name="APPL_MOD_ID")
+	private String moduleId;
+    @Id
+	@Column(name="USR_PROP_NM")
+	private String name;
+    @Column(name="USR_PROP_VAL")
+	private String value;
    
     
     public String getPersonUniversalIdentifier() {
@@ -76,3 +94,4 @@ public class KualiModuleUserProperty extends PersistableBusinessObjectBase {
     }
 
 }
+

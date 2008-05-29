@@ -17,6 +17,15 @@ package edu.iu.uis.eden.messaging;
 
 import java.io.Serializable;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.kuali.bus.services.KSBServiceLocator;
 
 /**
@@ -26,13 +35,22 @@ import org.kuali.bus.services.KSBServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@Entity
+@Table(name="EN_MSG_PAYLOAD_T")
 public class PersistedMassagePayload implements Serializable {
     
     private static final long serialVersionUID = 508778527504899029L;
     
-    private Long routeQueueId;
-    private String payload;
+    @Id
+	@Column(name="MESSAGE_QUE_ID")
+	private Long routeQueueId;
+    @Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(name="MESSAGE_PAYLOAD")
+	private String payload;
+    @Transient
     private AsynchronousCall methodCall;
+    @Transient
     private PersistedMessage message;
     
     public PersistedMassagePayload() {}
@@ -77,3 +95,4 @@ public class PersistedMassagePayload implements Serializable {
     
 
 }
+

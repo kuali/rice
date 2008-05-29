@@ -22,6 +22,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.core.KualiModule;
 import org.kuali.core.bo.Campus;
@@ -36,42 +46,76 @@ import org.kuali.rice.KNSServiceLocator;
 /**
  * 
  */
+@Entity
+@Table(name="FS_UNIVERSAL_USR_T")
 public class UniversalUser extends PersistableBusinessObjectBase {
     protected static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UniversalUser.class);
 
     private transient static UniversalUserService universalUserService;
     private transient static KualiModuleService kualiModuleService;
     
-    private String personUniversalIdentifier;
-    private String personUserIdentifier;
-    private String personPayrollIdentifier;
-    private String personTaxIdentifier;
-    private String personTaxIdentifierTypeCode;
-    private String personFirstName;
-    private String personLastName;
-    private String personMiddleName;
-    private String personName;
-    private String personEmailAddress;
-    private String campusCode;
-    private String primaryDepartmentCode;
-    private String personCampusAddress;
-    private String personLocalPhoneNumber;
-    private String employeeStatusCode;
-    private String employeeTypeCode;
-    private KualiDecimal personBaseSalaryAmount;
-    private String financialSystemsEncryptedPasswordText;
+    @Id
+	@Column(name="PERSON_UNVL_ID")
+	private String personUniversalIdentifier;
+    @Column(name="PERSON_USER_ID")
+	private String personUserIdentifier;
+    @Column(name="PRSN_PYRL_ID")
+	private String personPayrollIdentifier;
+    @Column(name="PRSN_TAX_ID")
+	private String personTaxIdentifier;
+    @Column(name="PRSN_TAX_ID_TYP_CD")
+	private String personTaxIdentifierTypeCode;
+    @Column(name="PRSN_1ST_NM")
+	private String personFirstName;
+    @Column(name="PRSN_LST_NM")
+	private String personLastName;
+    @Column(name="PRSN_MID_NM")
+	private String personMiddleName;
+    @Column(name="PERSON_NM")
+	private String personName;
+    @Column(name="PRSN_EMAIL_ADDR")
+	private String personEmailAddress;
+    @Column(name="CAMPUS_CD")
+	private String campusCode;
+    @Column(name="EMP_PRM_DEPT_CD")
+	private String primaryDepartmentCode;
+    @Column(name="PRSN_CMP_ADDR")
+	private String personCampusAddress;
+    @Column(name="PRSN_LOC_PHN_NBR")
+	private String personLocalPhoneNumber;
+    @Column(name="EMP_STAT_CD")
+	private String employeeStatusCode;
+    @Column(name="EMP_TYPE_CD")
+	private String employeeTypeCode;
+    @Column(name="PRSN_BASE_SLRY_AMT")
+	private KualiDecimal personBaseSalaryAmount;
+    @Column(name="FS_ENCRPTD_PWD_TXT")
+	private String financialSystemsEncryptedPasswordText;
     
-    private boolean student;
-    private boolean staff;
-    private boolean faculty;
-    private boolean affiliate;
+    @Column(name="PRSN_STU_IND")
+	private boolean student;
+    @Column(name="PRSN_STAFF_IND")
+	private boolean staff;
+    @Column(name="PRSN_FAC_IND")
+	private boolean faculty;
+    @Column(name="PRSN_AFLT_IND")
+	private boolean affiliate;
     
-    private Campus campus;
-    private EmployeeStatus employeeStatus;
-    private EmployeeType employeeType;
+    @OneToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="CAMPUS_CD", insertable=false, updatable=false)
+	private Campus campus;
+    @OneToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="EMP_STAT_CD", insertable=false, updatable=false)
+	private EmployeeStatus employeeStatus;
+    @OneToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="EMP_TYPE_CD", insertable=false, updatable=false)
+	private EmployeeType employeeType;
 
+    @Transient
     private Map<String,KualiModuleUser> moduleUsers;
+    @Transient
     private boolean activeForAnyModule = false;
+    @Transient
     private List<KualiGroup> groups;
     
     // TODO this shouldn't really be here
@@ -80,6 +124,7 @@ public class UniversalUser extends PersistableBusinessObjectBase {
     // - so, we could put it on the maintainable, but properties of the maintainable don't get put in the main doc xml in populateXmDocumentContentsFromMaintainables
     // - so, we could derive and set after populateMaintainablesFromXmlDocumentContents, but i don't see a hook - have processAfterRetrieve called then on the new maintainable, but we need the od maintainable to derive
     // - so, i could modify the framework - e.g. implement handleRouteLevelChange on maintenance document and call a method on the maintainable, where i pass the prior row - seems like a big change for this need
+    @Transient
     private Set<String> changedModuleCodes;
     
     /**
@@ -474,6 +519,7 @@ public class UniversalUser extends PersistableBusinessObjectBase {
     }
     
 
+    @Transient
     private Map<String,Map<String,String>> moduleProperties;
 
     public Map<String,Map<String,String>> getModuleProperties() {
@@ -690,8 +736,10 @@ public class UniversalUser extends PersistableBusinessObjectBase {
 
     /* added for XStream de-serialization purposes */ 
     @Deprecated
+    @Transient
     private transient String emplid;    
     @Deprecated
+    @Transient
     private transient String deptid;
 
     /**

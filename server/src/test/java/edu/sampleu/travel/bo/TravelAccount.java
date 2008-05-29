@@ -19,20 +19,36 @@ package edu.sampleu.travel.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 
-
-
+@Entity
+@Table(name="TRV_ACCT")
 public class TravelAccount extends PersistableBusinessObjectBase {
     
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = -7739303391609093875L;
+	
+	@Id
+	@Column(name="acct_num")
 	private String number;
-    private String name;
-    private Long foId;
-    private FiscalOfficer fiscalOfficer;    
+    
+	@Column(name="acct_name")
+	private String name;
+    
+	@Column(name="acct_fo_id")
+	private Long foId;
+    
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name="acct_fo_id", insertable=false, updatable=false)
+	private FiscalOfficer fiscalOfficer;  
     
     public String getName() {
         return name;
@@ -73,5 +89,5 @@ public class TravelAccount extends PersistableBusinessObjectBase {
     public void setFoId(Long foId) {
         this.foId = foId;
     }
- 
+    
 }

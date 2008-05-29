@@ -15,9 +15,26 @@
  */
 package org.kuali.core.bo;
 
+import javax.persistence.FetchType;
+import javax.persistence.Basic;
+import javax.persistence.Lob;
+import javax.persistence.Version;
+import javax.persistence.TemporalType;
+import javax.persistence.Temporal;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
 
+
+@Entity
+@Table(name="FS_LOOKUP_SELECTIONS_MT")
 public class SelectedObjectIds extends MultipleValueLookupMetadata {
-    private String selectedObjectIds;
+    @Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(name="SELECTED_OBJ_IDS")
+	private String selectedObjectIds;
     
     public String getSelectedObjectIds() {
         return selectedObjectIds;
@@ -27,3 +44,4 @@ public class SelectedObjectIds extends MultipleValueLookupMetadata {
         this.selectedObjectIds = selectedObjectIds;
     }
 }
+

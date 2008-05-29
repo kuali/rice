@@ -20,6 +20,17 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -44,43 +55,65 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
+@Entity
+@Table(name="EN_ACTN_ITM_T")
 public class ActionItem implements WorkflowPersistable, RowStyleable {
 
     private static final long serialVersionUID = -1079562205125660151L;
 
-    /**
-     * Primary key
-     */
-    private Long actionItemId;
-    /**
-     * Workflow user id of the target user (if any)
-     */
-    private String workflowId;
-    private Timestamp dateAssigned;
-    private String actionRequestCd;
-    private Long actionRequestId;
-    private Long routeHeaderId;
-    /**
-     * Workflow group id of the target group (if any)
-     */
-    private Long workgroupId;
-    private String docTitle;
-    private String docLabel;
-    private String docHandlerURL;
-    private Integer lockVerNbr;
-    private String docName;
+	@Id
+	@Column(name="ACTN_ITM_ID")
+	private Long actionItemId;
+    @Column(name="ACTN_ITM_PRSN_EN_ID")
+	private String workflowId;
+	@Column(name="ACTN_ITM_ASND_DT")
+	private Timestamp dateAssigned;
+    @Column(name="ACTN_ITM_RQST_CD")
+	private String actionRequestCd;
+    @Column(name="ACTN_RQST_ID", nullable=false)
+	private Long actionRequestId;
+    @Column(name="DOC_HDR_ID")
+	private Long routeHeaderId;
+    @Column(name="WRKGRP_ID")
+	private Long workgroupId;
+    @Column(name="DOC_TTL")
+	private String docTitle;
+    @Column(name="DOC_TYP_LBL_TXT")
+	private String docLabel;
+    @Column(name="DOC_TYP_HDLR_URL_ADDR")
+	private String docHandlerURL;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
+    @Column(name="DOC_TYP_NM")
+	private String docName;
+    @Column(name="ACTN_ITM_RESP_ID")
     private Long responsibilityId = new Long(1);
+    @Transient
     private String rowStyleClass;
-    private String roleName;
-    private String delegatorWorkflowId;
-    private Long delegatorWorkgroupId;
+    @Column(name="ROLE_NM")
+	private String roleName;
+    @Column(name="ACTN_ITM_DLGN_PRSN_EN_ID")
+	private String delegatorWorkflowId;
+    @Column(name="ACTN_ITM_DLGN_WRKGRP_ID")
+	private Long delegatorWorkgroupId;
+    @Transient
     private String dateAssignedString;
+    @Transient
     private String actionToTake;
-    private String delegationType;
+    @Column(name="DLGN_TYP")
+	private String delegationType;
+    @Transient
     private Integer actionItemIndex;
+    @Transient
     private Map customActions = new HashMap();
     
-    private transient DocumentRouteHeaderValue routeHeader;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="DOC_HDR_ID")
+	private transient DocumentRouteHeaderValue routeHeader;
+    
+    @Column(name="DTYPE", insertable=false, updatable=false, nullable=true)
+    private String dtype = "ActionItem";
 
     private Workgroup getWorkgroup(Long workgroupId) {
         return KEWServiceLocator.getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId)); 

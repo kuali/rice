@@ -60,8 +60,10 @@ public interface PersistenceStructureService {
      * @throws IllegalArgumentException if the given Object is null
      * @throws ClassNotPersistableException if the given object is of a type not described in the OJB repository
      */
+    /* No references - https://test.kuali.org/confluence/x/SYCf
     public Map getPrimaryKeyFieldAnonymousMarking(Class clazz);
-
+	*/
+    
     /**
      * 
      * This method returns a List of Strings, each containing the field name of one of the primary keys, as defined in the ORM

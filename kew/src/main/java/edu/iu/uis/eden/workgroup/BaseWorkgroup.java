@@ -22,6 +22,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.kuali.workflow.attribute.Extension;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -38,26 +46,44 @@ import edu.iu.uis.eden.util.CodeTranslator;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@IdClass(edu.iu.uis.eden.workgroup.BaseWorkgroupId.class)
+@Entity
+@Table(name="EN_WRKGRP_T")
 public class BaseWorkgroup implements Workgroup, Routable {
 
 	private static final long serialVersionUID = 8048445959385570128L;
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BaseWorkgroup.class);
 
-    protected Long workgroupId;
-    protected String workgroupName;
-    protected String description;
-    protected Boolean activeInd = Boolean.TRUE;
-    protected String workgroupType;
+    @Id
+	@Column(name="WRKGRP_ID")
+	protected Long workgroupId;
+    @Id
+    @Column(name="WRKGRP_VER_NBR")
     protected Integer versionNumber = new Integer(0);
+    @Column(name="WRKGRP_NM")
+	protected String workgroupName;
+    @Column(name="WRKGRP_DESC")
+	protected String description;
+    @Column(name="WRKGRP_ACTV_IND")
+    protected Boolean activeInd = Boolean.TRUE;
+    @Column(name="WRKGRP_TYP_CD")
+	protected String workgroupType;
+    @Version
+    @Column(name="DB_LOCK_VER_NBR")
     protected Integer lockVerNbr = new Integer(0);
+    @Transient
     protected List<Recipient> members = new ArrayList<Recipient>();
 
+    @Transient
     protected List<BaseWorkgroupMember> workgroupMembers = new ArrayList<BaseWorkgroupMember>();
+    @Transient
     protected List<Extension> extensions = new ArrayList<Extension>();
 
-    protected Long documentId;
-    protected Boolean currentInd;
+    @Column(name="DOC_HDR_ID")
+	protected Long documentId;
+    @Column(name="WRKGRP_CUR_IND")
+	protected Boolean currentInd;
 
     public BaseWorkgroup() {}
 

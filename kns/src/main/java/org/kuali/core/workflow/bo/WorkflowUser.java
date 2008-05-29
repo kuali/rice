@@ -15,6 +15,12 @@
  */
 package org.kuali.core.workflow.bo;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import edu.iu.uis.eden.user.AuthenticationUserId;
 import edu.iu.uis.eden.user.BaseWorkflowUser;
 
@@ -23,6 +29,8 @@ import edu.iu.uis.eden.user.BaseWorkflowUser;
  * 
  * 
  */
+@Entity
+@Table(name="FS_UNIVERSAL_USR_T")
 public class WorkflowUser extends BaseWorkflowUser {
     /**
      * This method returns a lower case version of the authenticationUserId
@@ -36,3 +44,4 @@ public class WorkflowUser extends BaseWorkflowUser {
         return super.getAuthenticationUserId();
     }
 }
+

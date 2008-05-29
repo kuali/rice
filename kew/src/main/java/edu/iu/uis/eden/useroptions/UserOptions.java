@@ -16,6 +16,15 @@
  */
 package edu.iu.uis.eden.useroptions;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import edu.iu.uis.eden.preferences.Preferences;
 
 /**
@@ -23,11 +32,27 @@ import edu.iu.uis.eden.preferences.Preferences;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@IdClass(edu.iu.uis.eden.useroptions.UserOptionsId.class)
+@Entity
+@Table(name="EN_USR_OPTN_T")
+@NamedQueries({
+  @NamedQuery(name="UserOptions.FindByUserQualified", query="select uo from UserOptions uo where uo.workflowId = :workflowId and uo.optionId like :optionId"), 
+  @NamedQuery(name="UserOptions.FindByWorkflowId",  query="select uo from UserOptions uo where uo.workflowId = :workflowId"),
+  @NamedQuery(name="UserOptions.FindByOptionValue", query="select uo from UserOptions uo where uo.optionId = :optionId and uo.optionVal = :optionValue"),
+  @NamedQuery(name="UserOptions.FindByOptionId", query="select uo from UserOptions uo where uo.optionId = :optionId and uo.workflowId = :workflowId")
+})
 public class UserOptions implements Comparable {
 
+	@Id
+	@Column(name="PRSN_EN_ID")
 	private String workflowId;
+	@Id
+	@Column(name="PRSN_OPTN_ID")
 	private String optionId;
+	@Column(name="PRSN_OPTN_VAL")
 	private String optionVal;
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 
 	/**
@@ -94,3 +119,4 @@ public class UserOptions implements Comparable {
         return 0;
     }
 }
+

@@ -16,6 +16,11 @@
  */
 package edu.iu.uis.eden.actionitem;
 
+import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionlist.DisplayParameters;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
@@ -32,15 +37,23 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
+@Entity
+@Table(name="EN_ACTN_ITM_T")
 public class ActionItemActionListExtension extends ActionItem {
     
     private static final long serialVersionUID = -8801104028828059623L;
     
+    @Transient
     private WorkflowUser delegatorUser = null;
+    @Transient
     private Workgroup delegatorWorkgroup = null;
+    @Transient
     private String delegatorName = "";
+    @Transient
     private Workgroup workgroup = null;   
+    @Transient
     private DisplayParameters displayParameters;
+    @Transient
     private boolean isInitialized = false;
     
     public Workgroup getWorkgroup() {
@@ -102,3 +115,4 @@ public class ActionItemActionListExtension extends ActionItem {
 	}
 
 }
+

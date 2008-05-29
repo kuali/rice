@@ -16,17 +16,41 @@
  */
 package edu.iu.uis.eden.help;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import org.kuali.rice.jpa.annotations.Sequence;
+
 /**
  * Model bean representing a piece of help information which adds extra information about fields and
  * data in the user interface.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_HLP_T")
+@NamedQueries({
+  @NamedQuery(name="HelpEntry.FindById",  query="select he from HelpEntry he where he.helpId = :helpId"),
+  @NamedQuery(name="HelpEntry.FindByKey",  query="select he from HelpEntry he where he.helpKey = :helpKey")
+})
+@Sequence(name="SEQ_HELP_ENTRY", property="helpId")
 public class HelpEntry {
-    private Long helpId;
+    @Id
+	@Column(name="EN_HLP_ID")
+	private Long helpId;
+	@Column(name="EN_HLP_NM")
 	private String helpName;
+	@Column(name="EN_HLP_TXT")
 	private String helpText;
+	@Column(name="EN_HLP_KY")
 	private String helpKey;
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 	
     public Long getHelpId() {
@@ -60,3 +84,4 @@ public class HelpEntry {
         this.helpKey = helpKey;
     }
 }
+

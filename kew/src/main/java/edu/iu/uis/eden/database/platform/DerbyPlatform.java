@@ -16,6 +16,8 @@
  */
 package edu.iu.uis.eden.database.platform;
 
+import javax.persistence.EntityManager;
+
 import org.apache.ojb.broker.PersistenceBroker;
 
 /**
@@ -37,4 +39,9 @@ public class DerbyPlatform extends ANSISqlPlatform {
     public String toString() {
         return "[Derby]";
     }
+
+    public Long getNextValSQL(String sequenceName, EntityManager entityManger) {
+        return nextVal++;
+    }
+    
 }

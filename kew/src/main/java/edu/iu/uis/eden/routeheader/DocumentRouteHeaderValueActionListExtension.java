@@ -16,6 +16,10 @@
  */
 package edu.iu.uis.eden.routeheader;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import edu.iu.uis.eden.user.UserUtils;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.web.session.UserSession;
@@ -26,10 +30,13 @@ import edu.iu.uis.eden.web.session.UserSession;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_DOC_HDR_T")
 public class DocumentRouteHeaderValueActionListExtension extends DocumentRouteHeaderValue {
 
 	private static final long serialVersionUID = 8458532812557846684L;
 
+    @Transient
 	private WorkflowUser actionListInitiatorUser = null;
 
     public WorkflowUser getActionListInitiatorUser() {
@@ -48,3 +55,4 @@ public class DocumentRouteHeaderValueActionListExtension extends DocumentRouteHe
     }
 
 }
+

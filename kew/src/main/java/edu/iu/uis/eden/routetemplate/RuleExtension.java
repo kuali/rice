@@ -16,6 +16,17 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
+import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,22 +45,36 @@ import edu.iu.uis.eden.util.Utilities;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_RULE_EXT_T")
 public class RuleExtension implements WorkflowPersistable {
 
 	private static final long serialVersionUID = 8178135296413950516L;
 
+	@Id
+	@Column(name="RULE_EXT_ID")
 	private Long ruleExtensionId;
 
+	@Column(name="RULE_TMPL_ATTRIB_ID")
 	private Long ruleTemplateAttributeId;
 
+	@Column(name="RULE_BASE_VAL_ID")
 	private Long ruleBaseValuesId;
 
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 
+	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="RULE_BASE_VAL_ID", insertable=false, updatable=false)
 	private RuleBaseValues ruleBaseValues;
 
+	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="RULE_TMPL_ATTRIB_ID", insertable=false, updatable=false)
 	private RuleTemplateAttribute ruleTemplateAttribute;
 
+	@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+           targetEntity=edu.iu.uis.eden.routetemplate.RuleExtensionValue.class, mappedBy="extension")
 	private List<RuleExtensionValue> extensionValues;
 
 	public RuleExtension() {

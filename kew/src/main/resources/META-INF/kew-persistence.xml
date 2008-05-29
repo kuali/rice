@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence
+    version="1.0" 
+    xmlns="http://java.sun.com/xml/ns/persistence" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  
+  <persistence-unit name="kew-unit" transaction-type="JTA">
+    <mapping-file>META-INF/kew-orm.xml</mapping-file>
+    <class>edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue</class>
+    <class>edu.iu.uis.eden.routeheader.DocumentRouteHeaderValueContent</class>
+    <class>edu.iu.uis.eden.notes.Note</class>
+    <class>edu.iu.uis.eden.notes.Attachment</class>
+    <class>edu.iu.uis.eden.routeheader.DocumentRouteHeaderValueActionListExtension</class>
+    <class>edu.iu.uis.eden.actionitem.ActionItem</class>
+    <class>edu.iu.uis.eden.actionitem.ActionItemActionListExtension</class>
+    <class>edu.iu.uis.eden.actionitem.OutboxItemActionListExtension</class>
+    <class>edu.iu.uis.eden.actiontaken.ActionTakenValue</class>
+    <class>edu.iu.uis.eden.actionrequests.ActionRequestValue</class>
+    <class>edu.iu.uis.eden.docsearch.SearchableAttributeStringValue</class>
+    <class>edu.iu.uis.eden.docsearch.SearchableAttributeFloatValue</class>
+    <class>edu.iu.uis.eden.docsearch.SearchableAttributeLongValue</class>
+    <class>edu.iu.uis.eden.docsearch.SearchableAttributeDateTimeValue</class>
+    <class>edu.iu.uis.eden.doctype.DocumentType</class>
+    <class>edu.iu.uis.eden.doctype.DocumentTypePolicy</class>
+    <class>edu.iu.uis.eden.doctype.DocumentTypeAttribute</class>
+    <class>edu.iu.uis.eden.useroptions.UserOptions</class>
+    <class>edu.iu.uis.eden.applicationconstants.ApplicationConstant</class>
+    <class>edu.iu.uis.eden.routetemplate.RuleTemplate</class>
+    <class>edu.iu.uis.eden.routetemplate.RuleTemplateOption</class>
+    <class>edu.iu.uis.eden.routetemplate.RuleAttribute</class>
+    <class>edu.iu.uis.eden.routetemplate.RuleTemplateAttribute</class>
+    <class>edu.iu.uis.eden.routetemplate.RuleBaseValues</class>
+    <class>edu.iu.uis.eden.routetemplate.RuleExpressionDef</class>
+    <class>edu.iu.uis.eden.routetemplate.RuleDelegation</class>
+    <class>edu.iu.uis.eden.routetemplate.RuleResponsibility</class>
+    <class>edu.iu.uis.eden.routetemplate.RuleExtension</class>
+    <class>edu.iu.uis.eden.routetemplate.RuleExtensionValue</class>
+    <class>edu.iu.uis.eden.help.HelpEntry</class>
+    <class>edu.iu.uis.eden.engine.node.RouteNode</class>
+    <class>edu.iu.uis.eden.engine.node.RouteNodeConfigParam</class>
+    <class>edu.iu.uis.eden.engine.node.BranchPrototype</class>
+    <class>edu.iu.uis.eden.engine.node.RouteNodeInstance</class>
+    <class>edu.iu.uis.eden.engine.node.Branch</class>
+    <class>edu.iu.uis.eden.engine.node.BranchState</class>
+    <class>edu.iu.uis.eden.engine.node.NodeState</class>
+    <class>edu.iu.uis.eden.engine.node.Process</class>
+    <class>edu.iu.uis.eden.edl.EDocLiteStyle</class>
+    <class>edu.iu.uis.eden.edl.EDocLiteDefinition</class>
+    <class>edu.iu.uis.eden.edl.EDocLiteAssociation</class>
+    <class>edu.iu.uis.eden.user.BaseWorkflowUser</class>
+    <class>edu.iu.uis.eden.workgroup.BaseWorkgroup</class>
+    <class>edu.iu.uis.eden.workgroup.BaseWorkgroupMember</class>
+    <class>org.kuali.workflow.workgroup.BaseWorkgroupExtension</class>
+    <class>org.kuali.workflow.workgroup.BaseWorkgroupExtensionData</class>
+    <class>org.kuali.workflow.workgroup.WorkgroupType</class>
+    <class>org.kuali.workflow.workgroup.WorkgroupTypeAttribute</class>
+    <class>edu.iu.uis.eden.messaging.bam.BAMTargetEntry</class>
+    <class>org.kuali.workflow.role.QualifiedRole</class>
+    <class>org.kuali.workflow.role.QualifiedRoleMember</class>
+    <class>org.kuali.workflow.role.QualifiedRoleExtension</class>
+    <class>org.kuali.workflow.role.QualifiedRoleExtensionValue</class>
+    <class>org.kuali.workflow.role.Role</class>
+    <class>org.kuali.workflow.role.RoleAttribute</class>
+    <class>edu.iu.uis.eden.removereplace.RemoveReplaceDocument</class>
+    <class>edu.iu.uis.eden.removereplace.RuleTarget</class>
+    <class>edu.iu.uis.eden.removereplace.WorkgroupTarget</class>
+    <class>edu.iu.uis.eden.edl.extract.Dump</class>
+    <class>edu.iu.uis.eden.edl.extract.Fields</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+  </persistence-unit>
+
+</persistence>

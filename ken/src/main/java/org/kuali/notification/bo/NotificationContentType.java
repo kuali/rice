@@ -17,20 +17,37 @@ package org.kuali.notification.bo;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 /**
  * This class represents the different types of Notification content that the system can handle.  
  * For example, and instance of content type could be "Alert" or "Event".
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="NOTIFICATION_CONTENT_TYPES")
 public class NotificationContentType {
-    private Long id;
-    private String name;
+    @Id
+	@Column(name="ID")
+	private Long id;
+    @Column(name="NAME", nullable=false)
+	private String name;
+    @Transient
     private boolean current = true;
+    @Transient
     private Integer version = Integer.valueOf(0);
-    private String description;
-    private String namespace;
-    private String xsd;
-    private String xsl;
+    @Column(name="DESCRIPTION", nullable=false)
+	private String description;
+    @Column(name="NAMESPACE", nullable=false)
+	private String namespace;
+    @Column(name="XSD", nullable=false, length=4096)
+	private String xsd;
+    @Column(name="XSL", nullable=false, length=4096)
+	private String xsl;
 
     /**
      * Constructs a NotificationContentType instance.

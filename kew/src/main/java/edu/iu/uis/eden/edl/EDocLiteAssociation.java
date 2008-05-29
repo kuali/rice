@@ -18,38 +18,56 @@ package edu.iu.uis.eden.edl;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 /**
  * Association between WorkflowDocument type -&gt; EDocLite definition, EDocLite style
  * Table: en_edoclt_assoc_t
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_EDOCLT_ASSOC_T")
 public class EDocLiteAssociation implements Serializable{
 
 	private static final long serialVersionUID = 7300251507982374010L;
 	/**
      * edoclt_assoc_id
      */
-    private Long eDocLiteAssocId;
+    @Id
+	@Column(name="edoclt_assoc_id")
+	private Long eDocLiteAssocId;
     /**
      * edoclt_assoc_doctype_nm
      */
-    private String edlName;
+    @Column(name="edoclt_assoc_doctype_nm")
+	private String edlName;
     /**
      * edoclt_assoc_def_nm
      */
-    private String definition;
+    @Column(name="edoclt_assoc_def_nm")
+	private String definition;
     /**
      * edoclt_assoc_style_nm
      */
-    private String style;
+    @Column(name="edoclt_assoc_style_nm")
+	private String style;
     /**
      * edoclt_assoc_actv_ind
      */
-    private Boolean activeInd;
+    @Column(name="edoclt_assoc_actv_ind")
+	private Boolean activeInd;
     /**
      * db_lock_ver_nbr
      */
-    private Integer lockVerNbr;
+    @Version
+	@Column(name="db_lock_ver_nbr")
+	private Integer lockVerNbr;
+    @Transient
     private String actionsUrl;//for quickfinder
 
     public Long getEDocLiteAssocId() {

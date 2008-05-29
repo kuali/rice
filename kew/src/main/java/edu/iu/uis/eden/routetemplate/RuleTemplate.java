@@ -21,6 +21,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -35,6 +47,8 @@ import edu.iu.uis.eden.exception.ResourceUnavailableException;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_RULE_TMPL_T")
 public class RuleTemplate implements WorkflowPersistable {
 
     private static final long serialVersionUID = -3387940485523951302L;
@@ -51,17 +65,31 @@ public class RuleTemplate implements WorkflowPersistable {
         EdenConstants.ACTION_REQUEST_DEFAULT_CD
     };
     
-    private Long ruleTemplateId;
-    private String name;
-    private String description;
-    private Integer lockVerNbr;
-    private Long delegationTemplateId;
-    private RuleTemplate delegationTemplate;
+    @Id
+	@Column(name="RULE_TMPL_ID")
+	private Long ruleTemplateId;
+    @Column(name="RULE_TMPL_NM")
+	private String name;
+    @Column(name="RULE_TMPL_DESC")
+	private String description;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
+    @Column(name="DLGN_RULE_TMPL_ID")
+	private Long delegationTemplateId;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="DLGN_RULE_TMPL_ID", insertable=false, updatable=false)
+	private RuleTemplate delegationTemplate;
 
-    private List<RuleTemplateAttribute> ruleTemplateAttributes;
-    private List<RuleTemplateOption> ruleTemplateOptions;
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+           targetEntity=edu.iu.uis.eden.routetemplate.RuleTemplateAttribute.class, mappedBy="ruleTemplate")
+	private List<RuleTemplateAttribute> ruleTemplateAttributes;
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+           targetEntity=edu.iu.uis.eden.routetemplate.RuleTemplateOption.class, mappedBy="ruleTemplate")
+	private List<RuleTemplateOption> ruleTemplateOptions;
 
     // required to be lookupable
+    @Transient
     private String returnUrl;
 
     public RuleTemplate() {

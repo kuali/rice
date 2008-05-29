@@ -3,11 +3,11 @@ create table trv_doc_2 (
         OBJ_ID                         VARCHAR2(36) DEFAULT SYS_GUID() CONSTRAINT FP_INT_BILL_DOC_TN2 NOT NULL,
         VER_NBR                        NUMBER(8) DEFAULT 1 CONSTRAINT FP_INT_BILL_DOC_TN3 NOT NULL,
         FDOC_EXPLAIN_TXT               VARCHAR2(400),
-	    request_trav varchar2(30) not null,
-	    traveler          varchar2(200),
+        request_trav varchar2(30) not null,
+        traveler          varchar2(200),
         org          varchar2(60),
         dest         varchar2(60),
-	    CONSTRAINT trv_doc_2P1 PRIMARY KEY (FDOC_NBR)
+        CONSTRAINT trv_doc_2P1 PRIMARY KEY (FDOC_NBR)
 )
 /
 
@@ -28,9 +28,9 @@ create table trv_doc_acct (
 /
 
 create table trv_acct_fo (
-	acct_fo_id  number(14) not null,
-	acct_fo_user_name varchar2(50) not null,
-	constraint trv_acct_fo_id_pk primary key(acct_fo_id)
+    acct_fo_id  number(14) not null,
+    acct_fo_user_name varchar2(50) not null,
+    constraint trv_acct_fo_id_pk primary key(acct_fo_id)
 )
 /
 
@@ -63,59 +63,52 @@ CREATE SEQUENCE SEQ_TRAVEL_FO_ID INCREMENT BY 1 START WITH 1000
 alter table trv_acct add constraint trv_acct_fk1 foreign key(acct_fo_id) references trv_acct_fo(acct_fo_id)
 /
 
-insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (1, 'fred')
+insert into trv_acct_fo (acct_fo_id, acct_fo_user_name, ver_nbr) values (1, 'fred', 0)
 /
-insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (2, 'fran')
+insert into trv_acct_fo (acct_fo_id, acct_fo_user_name, ver_nbr) values (2, 'fran', 0)
 /
-insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (3, 'frank')
-/
-
-insert into TRV_ACCT values ('a1', 'a1', 'CAT', 1)
-/
-insert into TRV_ACCT values ('a2', 'a2', 'EAT', 2)
-/
-insert into TRV_ACCT values ('a3', 'a3', 'IAT', 3)
+insert into trv_acct_fo (acct_fo_id, acct_fo_user_name, ver_nbr) values (3, 'frank', 0)
 /
 
-insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a1')
+insert into TRV_ACCT (acct_num, acct_name, acct_fo_id, ver_nbr) values ('a1', 'a1', 1, 0)
 /
-insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a2')
+insert into TRV_ACCT (acct_num, acct_name, acct_fo_id, ver_nbr) values ('a2', 'a2', 2, 0)
 /
-insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a3')
-/
-
-insert into en_usr_t values ('quickstart','quickstart','quickstart','quickstart','quickstart@school.edu','quickstart','quickstart','quickstart',to_date('01/01/2000', 'dd/mm/yyyy'),to_date('01/01/2100', 'dd/mm/yyyy'),0,0)
-/
-insert into EN_WRKGRP_MBR_T values ('quickstart',1,'U',1,0)
+insert into TRV_ACCT (acct_num, acct_name, acct_fo_id, ver_nbr) values ('a3', 'a3', 3, 0)
 /
 
-INSERT INTO FP_DOC_GROUP_T VALUES ('TR', '054EDFB3B260C8D2E043814FD881C8D2', 1,	'Travel Documents', null)
+insert into en_usr_t (PRSN_EN_ID, PRSN_UNIV_ID, PRSN_NTWRK_ID, PRSN_UNVL_USR_ID, PRSN_EMAIL_ADDR, PRSN_NM, PRSN_GVN_NM, PRSN_LST_NM, USR_CRTE_DT, USR_LST_UPDT_DT, DB_LOCK_VER_NBR) values ('quickstart','quickstart','quickstart','quickstart','quickstart@localhost','quickstart','quickstart','quickstart',now(),now(),0)
 /
-insert into FP_DOC_TYPE_T values ('TRAV', '1A6FEB2501C7607EE043814FD881607E', 1, 'TR', 'TRAV ACCNT', 'N', 'Y', 'N', 0, 'N', 'N')
+insert into EN_WRKGRP_MBR_T (WRKGRP_MBR_PRSN_EN_ID, WRKGRP_ID, WRKGRP_MBR_TYP, WRKGRP_VER_NBR, DB_LOCK_VER_NBR) values ('quickstart', 1, 'U', 1, 0)
 /
-insert into FP_DOC_TYPE_T values ('TRFO', '1A6FEB250342607EE043814FD881607E', 1, 'TR', 'TRAV FO', 'N', 'Y', 'N', 0, 'N', 'N')
+
+INSERT INTO FP_DOC_GROUP_T (FDOC_GRP_CD, OBJ_ID, VER_NBR, FDOC_GRP_NM, FDOC_CLASS_CD) VALUES ('TR', '054EDFB3B260C8D2E043814FD881C8D2', 1,  'Travel Documents', null)
 /
-insert into FP_DOC_TYPE_T values ('TRD2', '1A6FEB250342607EE043814FD889607E', 1, 'TR', 'TRAV D2', 'N', 'Y', 'N', 0, 'N', 'N')
+insert into FP_DOC_TYPE_T (FDOC_TYP_CD, OBJ_ID, VER_NBR, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('TRAV', '1A6FEB2501C7607EE043814FD881607E', 1, 'TR', 'TRAV ACCNT', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-insert into FP_DOC_TYPE_T values ('RUSR', '1A6FEB253342607EE043814FD889607E', 1, 'TR', 'RICE USR', 'N', 'Y', 'N', 0, 'N', 'N')
+insert into FP_DOC_TYPE_T (FDOC_TYP_CD, OBJ_ID, VER_NBR, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('TRFO', '1A6FEB250342607EE043814FD881607E', 1, 'TR', 'TRAV FO', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-insert into FP_DOC_TYPE_T values ('PARM', '1A6FRB253342607EE043814FD889607E', 1, 'TR', 'System Parms', 'N', 'Y', 'N', 0, 'N', 'N')
+insert into FP_DOC_TYPE_T (FDOC_TYP_CD, OBJ_ID, VER_NBR, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('TRD2', '1A6FEB250342607EE043814FD889607E', 1, 'TR', 'TRAV D2', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-insert into FP_DOC_TYPE_T values ('BR', '1A6FRB253343337EE043814FD889607E', 1, 'TR', 'Biz Rules', 'N', 'Y', 'N', 0, 'N', 'N')
+insert into FP_DOC_TYPE_T (FDOC_TYP_CD, OBJ_ID, VER_NBR, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('RUSR', '1A6FEB253342607EE043814FD889607E', 1, 'TR', 'RICE USR', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-insert into FP_DOC_TYPE_T values ('TRVA', '1A5FEB250342607EE043814FD889607E', 1, 'TR',  'TRAV MAINT', 'N', 'Y', 'N', 0, 'N', 'N')
+insert into FP_DOC_TYPE_T (FDOC_TYP_CD, OBJ_ID, VER_NBR, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('PARM', '1A6FRB253342607EE043814FD889607E', 1, 'TR', 'System Parms', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-insert into TRV_ACCT_EXT values ('a1', 'IAT')
+insert into FP_DOC_TYPE_T (FDOC_TYP_CD, OBJ_ID, VER_NBR, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('BR', '1A6FRB253343337EE043814FD889607E', 1, 'TR', 'Biz Rules', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-insert into TRV_ACCT_EXT values ('a2', 'EAT')
+insert into FP_DOC_TYPE_T (FDOC_TYP_CD, OBJ_ID, VER_NBR, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('TRVA', '1A5FEB250342607EE043814FD889607E', 1, 'TR',  'TRAV MAINT', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-insert into TRV_ACCT_EXT values ('a3', 'IAT')
+insert into TRV_ACCT_EXT (ACCT_NUM, ACCT_TYPE) values ('a1', 'IAT')
 /
-insert into TRV_ACCT_TYPE values ('CAT', 'Clearing Account Type')
+insert into TRV_ACCT_EXT (ACCT_NUM, ACCT_TYPE) values ('a2', 'EAT')
 /
-insert into TRV_ACCT_TYPE values ('EAT', 'Expense Account Type')
+insert into TRV_ACCT_EXT (ACCT_NUM, ACCT_TYPE) values ('a3', 'IAT')
 /
-insert into TRV_ACCT_TYPE values ('IAT', ' Income Account Type')
+insert into TRV_ACCT_TYPE (ACCT_TYPE, ACCT_TYPE_NAME) values ('CAT', 'Clearing Account Type')
+/
+insert into TRV_ACCT_TYPE (ACCT_TYPE, ACCT_TYPE_NAME) values ('EAT', 'Expense Account Type')
+/
+insert into TRV_ACCT_TYPE (ACCT_TYPE, ACCT_TYPE_NAME) values ('IAT', ' Income Account Type')
 /
 -- KEN sample data --
 
@@ -263,13 +256,18 @@ VALUES
 -- Sample data that KCB contributes to the sample app --
 -- just add some deliverer configurations
 
-insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (1, 'TestUser6', 'KEW', 'mock', 0) /
-insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (2, 'TestUser1', 'KEW', 'mock', 0) /
-insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (3, 'TestUser2', 'KEW', 'mock', 0) /
-insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (4, 'quickstart', 'KEW', 'mock', 0) /
-insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (5, 'TestUser5', 'KEW', 'mock', 0) /
-insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (6, 'TestUser4', 'KEW', 'mock', 0) /
-
+insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (1, 'TestUser6', 'KEW', 'mock', 0)
+/
+insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (2, 'TestUser1', 'KEW', 'mock', 0)
+/
+insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (3, 'TestUser2', 'KEW', 'mock', 0)
+/
+insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (4, 'quickstart', 'KEW', 'mock', 0)
+/
+insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (5, 'TestUser5', 'KEW', 'mock', 0)
+/
+insert into KCB_RECIP_DELIVS (ID, RECIPIENT_ID, CHANNEL, DELIVERER_NAME, DB_LOCK_VER_NBR) values (6, 'TestUser4', 'KEW', 'mock', 0)
+/
 
 commit
 /

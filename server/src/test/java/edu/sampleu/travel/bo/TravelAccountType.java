@@ -17,16 +17,27 @@
 
 package edu.sampleu.travel.bo;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.util.LinkedHashMap;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 
 
 
+@Entity
+@Table(name="TRV_ACCT_TYPE")
 public class TravelAccountType extends PersistableBusinessObjectBase {
     
-    private String accountTypeCode;
-    private String name;
+    @Id
+	@Column(name="acct_type")
+	private String accountTypeCode;
+    @Column(name="acct_type_name")
+	private String name;
     
 
     public String getAccountTypeCode() {

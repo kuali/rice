@@ -36,6 +36,7 @@
     <field-descriptor name="lockCode" column="DOC_LOCK_CD" jdbc-type="CHAR" />
     <field-descriptor name="jrfVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true" />
     <field-descriptor name="overrideInd" column="DOC_OVRD_IND" jdbc-type="VARCHAR" />
+    <field-descriptor name="dtype"       column="DTYPE"        jdbc-type="VARCHAR"/>
     <collection-descriptor element-class-ref="edu.iu.uis.eden.actionitem.ActionItem" auto-retrieve="true" auto-update="false"
       auto-delete="true" name="actionItems">
       <inverse-foreignkey field-ref="routeHeaderId" />
@@ -145,6 +146,7 @@
     <field-descriptor name="delegatorWorkgroupId" column="ACTN_ITM_DLGN_WRKGRP_ID" jdbc-type="BIGINT" />
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
+    <field-descriptor name="dtype"       column="DTYPE"        jdbc-type="VARCHAR"/>
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue" name="routeHeader">
       <foreignkey field-ref="routeHeaderId" />
     </reference-descriptor>
@@ -168,6 +170,7 @@
     <field-descriptor name="delegatorWorkgroupId" column="ACTN_ITM_DLGN_WRKGRP_ID" jdbc-type="BIGINT" />
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="true"/>
+    <field-descriptor name="dtype"       column="DTYPE"        jdbc-type="VARCHAR"/>
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="edu.iu.uis.eden.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
       <foreignkey field-ref="routeHeaderId" />
     </reference-descriptor>
@@ -840,6 +843,7 @@
 	<field-descriptor name="createDate"                     column="USR_CRTE_DT"      jdbc-type="TIMESTAMP"  />
     <field-descriptor name="lastUpdateDate"                 column="USR_LST_UPDT_DT"  jdbc-type="TIMESTAMP" />
     <field-descriptor name="lockVerNbr"                     column="DB_LOCK_VER_NBR" jdbc-type="INTEGER" locking="false"/>
+    <field-descriptor name="dtype"                      column="DTYPE"      jdbc-type="VARCHAR"/>
   </class-descriptor>
 
   <class-descriptor class="edu.iu.uis.eden.workgroup.BaseWorkgroup" table="EN_WRKGRP_T">

@@ -23,6 +23,19 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -96,46 +109,82 @@ import edu.iu.uis.eden.util.Utilities;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_DOC_HDR_T")
 public class DocumentRouteHeaderValue implements WorkflowPersistable {
     private static final long serialVersionUID = -4700736340527913220L;
     private static final Logger LOG = Logger.getLogger(DocumentRouteHeaderValue.class);
 
     public static final String CURRENT_ROUTE_NODE_NAME_DELIMITER = ", ";
 
-    private java.lang.Long documentTypeId;
-    private java.lang.String docRouteStatus;
-    private java.lang.Integer docRouteLevel;
-    private java.sql.Timestamp statusModDate;
-    private java.sql.Timestamp createDate;
-    private java.sql.Timestamp approvedDate;
-    private java.sql.Timestamp finalizedDate;
+    @Column(name="DOC_TYP_ID")
+	private java.lang.Long documentTypeId;
+    @Column(name="DOC_RTE_STAT_CD")
+	private java.lang.String docRouteStatus;
+    @Column(name="DOC_RTE_LVL_NBR")
+	private java.lang.Integer docRouteLevel;
+	@Column(name="DOC_STAT_MDFN_DT")
+	private java.sql.Timestamp statusModDate;
+	@Column(name="DOC_CRTE_DT")
+	private java.sql.Timestamp createDate;
+	@Column(name="DOC_APRV_DT")
+	private java.sql.Timestamp approvedDate;
+	@Column(name="DOC_FNL_DT")
+	private java.sql.Timestamp finalizedDate;
+    @Transient
     private DocumentRouteHeaderValueContent documentContent;
-    private java.lang.String docTitle;
-    private java.lang.String appDocId;
-    private java.lang.String overrideInd;
+    @Column(name="DOC_TTL")
+	private java.lang.String docTitle;
+    @Column(name="DOC_APPL_DOC_ID")
+	private java.lang.String appDocId;
+    @Column(name="DOC_OVRD_IND")
+	private java.lang.String overrideInd;
+    @Column(name="DOC_VER_NBR")
     private java.lang.Integer docVersion = new Integer(EdenConstants.DOCUMENT_VERSION_NODAL);
-    private java.lang.Integer jrfVerNbr;
-    private java.lang.String initiatorWorkflowId;
-    private java.lang.String routedByUserWorkflowId;
-    private java.sql.Timestamp routeStatusDate;
-    private java.sql.Timestamp routeLevelDate;
-    private java.lang.Long routeHeaderId;
-    private String lockCode;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private java.lang.Integer jrfVerNbr;
+    @Column(name="DOC_INITR_PRSN_EN_ID")
+	private java.lang.String initiatorWorkflowId;
+    @Column(name="DOC_RTE_USR_PRSN_EN_ID")
+	private java.lang.String routedByUserWorkflowId;
+	@Column(name="DOC_RTE_STAT_MDFN_DT")
+	private java.sql.Timestamp routeStatusDate;
+	@Column(name="DOC_RTE_LVL_MDFN_DT")
+	private java.sql.Timestamp routeLevelDate;
+    @Id
+	@Column(name="DOC_HDR_ID")
+	private java.lang.Long routeHeaderId;
+    @Column(name="DOC_LOCK_CD")
+	private String lockCode;
 
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy="routeHeader")
     private List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
-
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy="routeHeader")
     private List<ActionTakenValue> actionsTaken = new ArrayList<ActionTakenValue>();
+    //@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy="routeHeader")
+    @Transient
     private List<ActionItem> actionItems = new ArrayList<ActionItem>();
+    //@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy="routeHeader")
+    @Transient
     private List<Note> notes = new ArrayList<Note>();
+    @Transient
     private List<SearchableAttributeValue> searchableAttributeValues = new ArrayList<SearchableAttributeValue>();
+    @Transient
     private Collection queueItems = new ArrayList();
+    @Transient
     private boolean routingReport = false;
+
+    @Column(name="DTYPE", insertable=false, updatable=false, nullable=true)
+    private String dtype = "DocumentRouteHeaderValue";
 
     private static final boolean FINAL_STATE = true;
     protected static final HashMap<String,String> legalActions;
     protected static final HashMap<String,String> stateTransitionMap;
 
     /* New Workflow 2.1 Field */
+    @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+    @JoinTable(name = "EN_INIT_RTE_NODE_INSTN_T", joinColumns = @JoinColumn(name = "DOC_HDR_ID"), inverseJoinColumns = @JoinColumn(name = "RTE_NODE_INSTN_ID"))    
     private List<RouteNodeInstance> initialRouteNodeInstances = new ArrayList<RouteNodeInstance>();
 
     static {
@@ -890,6 +939,14 @@ public class DocumentRouteHeaderValue implements WorkflowPersistable {
             .append("finalizedDate", finalizedDate)
             .append("appDocId", appDocId)
             .toString();
+	}
+
+	public String getDtype() {
+		return this.dtype;
+	}
+
+	public void setDtype(String dtype) {
+		this.dtype = dtype;
 	}
 
 }

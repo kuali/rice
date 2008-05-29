@@ -16,6 +16,8 @@
  */
 package edu.iu.uis.eden.database.platform;
 
+import javax.persistence.EntityManager;
+
 import org.apache.ojb.broker.PersistenceBroker;
 
 /**
@@ -34,6 +36,7 @@ public interface Platform {
      * @return paramaterized sequence incrementation query
      */
     Long getNextValSQL(String sequenceName, PersistenceBroker persistenceBroker);
+    Long getNextValSQL(String sequenceName, EntityManager entityManager);
     /**
      * Generates the query used to select route header rows for update
      * @param routeHeaderId id of the routeHeader to select for update

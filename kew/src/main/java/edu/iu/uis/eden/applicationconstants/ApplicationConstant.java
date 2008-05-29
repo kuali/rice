@@ -18,6 +18,14 @@ package edu.iu.uis.eden.applicationconstants;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import edu.iu.uis.eden.util.Utilities;
 
 /**
@@ -26,15 +34,26 @@ import edu.iu.uis.eden.util.Utilities;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
+@Entity
+@Table(name="EN_APPL_CNST_T")
+@NamedQueries({
+  @NamedQuery(name="ApplicationConstant.FindByApplicationConstantName", query="select ac from ApplicationConstant ac where ac.applicationConstantName = :applicationConstantName"), 
+  @NamedQuery(name="ApplicationConstant.FindAll", query="select ac from ApplicationConstant ac")
+})
 public class ApplicationConstant implements Serializable {
 
 	private static final long serialVersionUID = 5561795446088281002L;
 
+	@Id
+	@Column(name="APPL_CNST_NM")
 	private String applicationConstantName;
 
-    private String applicationConstantValue;
+    @Column(name="APPL_CNST_VAL_TXT")
+	private String applicationConstantValue;
 
-    private Integer lockVerNbr;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
 
     public ApplicationConstant() {}
 

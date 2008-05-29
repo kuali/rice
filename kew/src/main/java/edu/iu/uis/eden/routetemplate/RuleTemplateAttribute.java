@@ -16,6 +16,17 @@
  */
 package edu.iu.uis.eden.routetemplate;
 
+import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.util.List;
 
 import org.kuali.rice.definition.ObjectDefinition;
@@ -33,21 +44,38 @@ import edu.iu.uis.eden.plugin.attributes.WorkflowAttribute;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_RULE_TMPL_ATTRIB_T")
 public class RuleTemplateAttribute implements WorkflowPersistable, Comparable {
 
     private static final long serialVersionUID = -3580049225424553828L;
-    private Long ruleTemplateAttributeId;
-    private Long ruleTemplateId;
-    private Long ruleAttributeId;
-    private Boolean required;
-    private Boolean active;
-    private Integer displayOrder;
-    private String defaultValue;
-    private Integer lockVerNbr;
+    @Id
+	@Column(name="RULE_TMPL_ATTRIB_ID")
+	private Long ruleTemplateAttributeId;
+    @Column(name="RULE_TMPL_ID")
+	private Long ruleTemplateId;
+    @Column(name="RULE_ATTRIB_ID")
+	private Long ruleAttributeId;
+    @Column(name="REQ_IND")
+	private Boolean required;
+    @Column(name="ACTV_IND")
+	private Boolean active;
+    @Column(name="DSPL_ORD")
+	private Integer displayOrder;
+    @Column(name="DFLT_VAL")
+	private String defaultValue;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
 
-    private RuleTemplate ruleTemplate;
-    private RuleAttribute ruleAttribute;
-    private List ruleExtensions;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="RULE_TMPL_ID", insertable=false, updatable=false)
+	private RuleTemplate ruleTemplate;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="RULE_ATTRIB_ID", insertable=false, updatable=false)
+	private RuleAttribute ruleAttribute;
+    @OneToMany(targetEntity=edu.iu.uis.eden.routetemplate.RuleExtension.class, mappedBy="ruleTemplateAttribute")
+	private List ruleExtensions;
 
     public RuleTemplateAttribute() {
 	this.required = Boolean.FALSE;

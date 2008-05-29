@@ -15,6 +15,15 @@
  */
 package org.kuali.rice.kcb.bo;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
@@ -23,21 +32,33 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * used by the tickler plugins which will need a generic and dynamic structure for user specific settings.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RecipientPreference /*implements Cloneable*/ {
-    /**
+@Entity
+@Table(name="RECIPIENT_PREFERENCES")
+public class RecipientPreference {
+
+	/**
      * Field names for queries
      */
     public static final String RECIPIENT_FIELD = "recipientId";
     public static final String PROPERTY_FIELD = "property";
-
-    private Long id;
-    private String recipientId;
-    private String property;
-    private String value;
+    
+    @Id
+	@Column(name="ID")
+	private Long id;
+    @Column(name="RECIPIENT_TYPE", nullable=false)
+	private String recipientType;
+    @Column(name="RECIPIENT_ID", nullable=false)
+	private String recipientId;
+    @Column(name="PROPERTY", nullable=false)
+	private String property;
+    @Column(name="VALUE", nullable=false)
+	private String value;
 
     /**
      * Lock column for OJB optimistic locking
      */
+    @Version
+    @Column(name="DB_LOCK_VER_NBR")
     private Integer lockVerNbr;
 
     /**

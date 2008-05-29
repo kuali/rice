@@ -27,12 +27,14 @@ import org.kuali.core.util.UrlFactory;
 import org.kuali.core.web.struts.form.LookupForm;
 import org.kuali.core.web.ui.ResultRow;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Kuali lookup implementation. Implements methods necessary to render the lookup and provides search and return methods.
  * 
  * 
  */
+@Transactional
 public class KualiLookupableImpl implements Lookupable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiLookupableImpl.class);
     private static final String[] IGNORE_LIST = { KNSConstants.DOC_FORM_KEY, KNSConstants.BACK_LOCATION };

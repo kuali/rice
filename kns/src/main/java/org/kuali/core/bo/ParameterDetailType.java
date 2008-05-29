@@ -1,17 +1,43 @@
 package org.kuali.core.bo;
 
 import java.util.LinkedHashMap;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.Type;
 
+@IdClass(org.kuali.core.bo.ParameterDetailTypeId.class)
+@Entity
+@Table(name="SH_PARM_DTL_TYP_T")
 public class ParameterDetailType extends PersistableBusinessObjectBase implements Inactivateable {
 
+	@Id
+	@Column(name="SH_PARM_NMSPC_CD")
 	private String parameterNamespaceCode;
+	@Id
+	@Column(name="SH_PARM_DTL_TYP_CD")
 	private String parameterDetailTypeCode;
+	@Column(name="SH_PARM_DTL_TYP_NM")
 	private String parameterDetailTypeName;
+	@Type(type="yes_no")
+	@Column(name="ACTIVE_IND")
 	private boolean active = true;
+    @Transient
 	private boolean virtualDetailType;
 	
+	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="SH_PARM_NMSPC_CD", insertable=false, updatable=false)
 	private ParameterNamespace parameterNamespace;
 
 	public ParameterDetailType() {
@@ -110,3 +136,4 @@ public class ParameterDetailType extends PersistableBusinessObjectBase implement
 	}
 	
 }
+

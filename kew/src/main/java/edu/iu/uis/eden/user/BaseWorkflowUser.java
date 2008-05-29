@@ -18,6 +18,13 @@ package edu.iu.uis.eden.user;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.BeanNameAware;
 
@@ -29,29 +36,50 @@ import org.springframework.beans.factory.BeanNameAware;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_USR_T")
 public class BaseWorkflowUser implements WorkflowUser, BeanNameAware {
 
 	private static final long serialVersionUID = -1498627602071447775L;
 
 	private static final String MASKED = "xxxxxx";
 
+	@Id
+	@Column(name="PRSN_EN_ID")
 	private String workflowUserId;
+	@Column(name="PRSN_NTWRK_ID")
 	private String authenticationUserId;
+	@Column(name="PRSN_UNVL_USR_ID")
 	private String uuId;
+	@Column(name="PRSN_UNIV_ID")
 	private String emplId;
 
-    private String givenName;
-    private String lastName;
-    private String displayName;
-    private String emailAddress;
+    @Column(name="PRSN_GVN_NM")
+	private String givenName;
+    @Column(name="PRSN_LST_NM")
+	private String lastName;
+    @Column(name="PRSN_NM")
+	private String displayName;
+    @Column(name="PRSN_EMAIL_ADDR")
+	private String emailAddress;
 
-    private Timestamp createDate;
-    private Timestamp lastUpdateDate;
+	@Column(name="USR_CRTE_DT")
+	private Timestamp createDate;
+	@Column(name="USR_LST_UPDT_DT")
+	private Timestamp lastUpdateDate;
+    @Transient
     private boolean defaulted;
+    @Transient
     private boolean nameRestricted;
+    @Transient
     private boolean emailRestricted;
 
+    @Version
+    @Column(name="DB_LOCK_VER_NBR")
     private Integer lockVerNbr = new Integer(0);
+
+    @Column(name="DTYPE", insertable=false, updatable=false, nullable=true)
+    private String dtype;
 
     public BaseWorkflowUser() {
     }
@@ -255,5 +283,13 @@ public class BaseWorkflowUser implements WorkflowUser, BeanNameAware {
 	public String toString() {
         return "[SimpleWorkflowUser: " + ", displayName=" + displayName + ", givenName=" + givenName + ", lastName=" + lastName + ", emailAddress=" + emailAddress + ", emplId=" + emplId + ", uuId=" + uuId + ", authenticationId=" + authenticationUserId + ", workflowId=" + workflowUserId + "]";
     }
+
+	public String getDtype() {
+		return this.dtype;
+	}
+
+	public void setDtype(String dtype) {
+		this.dtype = dtype;
+	}
 
 }

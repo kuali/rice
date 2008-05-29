@@ -16,6 +16,18 @@
  */
 package edu.iu.uis.eden.doctype;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.WorkflowPersistable;
 
@@ -24,15 +36,28 @@ import edu.iu.uis.eden.WorkflowPersistable;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@IdClass(edu.iu.uis.eden.doctype.DocumentTypePolicyId.class)
+@Entity
+@Table(name="EN_DOC_TYP_PLCY_RELN_T")
 public class DocumentTypePolicy implements WorkflowPersistable {
 
 	private static final long serialVersionUID = -4612246888683336474L;
+	@Id
+	@Column(name="DOC_TYP_ID")
 	private Long documentTypeId;
-    private String policyName;
-    private Boolean policyValue;
+    @Id
+	@Column(name="DOC_PLCY_NM")
+	private String policyName;
+    @Column(name="DOC_PLCY_VAL")
+	private Boolean policyValue;
+    @Transient
     private Boolean inheritedFlag;
-    private Integer lockVerNbr;
-    private DocumentType documentType;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="DOC_TYP_ID")
+	private DocumentType documentType;
     
     public DocumentTypePolicy() {
     }

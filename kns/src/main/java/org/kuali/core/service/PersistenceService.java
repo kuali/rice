@@ -101,7 +101,8 @@ public interface PersistenceService {
      * @param fieldName name of the field to get from the object
      * @return Object value of field in object, or null
      */
-    public Object getFieldValue(Object persistableObject, String fieldName);
+    // This method never called
+    //public Object getFieldValue(Object persistableObject, String fieldName);
 
     /**
      * @param persistableObject object whose primary key field name,value pairs you want

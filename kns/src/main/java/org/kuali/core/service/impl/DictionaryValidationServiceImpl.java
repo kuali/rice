@@ -129,7 +129,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
     
     private void validateUpdatabableReferencesRecursively(PersistableBusinessObject businessObject, int maxDepth, boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
-	if (ObjectUtils.isNull(businessObject)) {
+    if (ObjectUtils.isNull(businessObject)) {
 	    return;
 	}
 	Map<String, Class> references = persistenceStructureService.listReferenceObjectFields(businessObject);

@@ -15,6 +15,18 @@
  */
 package org.kuali.notification.bo;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.Version;
+import javax.persistence.TemporalType;
+import javax.persistence.Temporal;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.sql.Timestamp;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -25,19 +37,32 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * they have an instance of this entity.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="NOTIFICATION_MSG_DELIVS")
 public class NotificationMessageDelivery implements Lockable {
-    private Long id;
-    private String messageDeliveryStatus;
-    private String userRecipientId;
-    private String deliverySystemId;  // can hold an identifier from the endpoint delivery mechanism system (i.e. workflow id, SMS id, etc)
-    private Timestamp lockedDate;
+    @Id
+	@Column(name="ID")
+	private Long id;
+    @Column(name="MESSAGE_DELIVERY_STATUS", nullable=false)
+	private String messageDeliveryStatus;
+    @Column(name="USER_RECIPIENT_ID", nullable=false)
+	private String userRecipientId;
+    @Column(name="DELIVERY_SYSTEM_ID", nullable=true)
+	private String deliverySystemId;  // can hold an identifier from the endpoint delivery mechanism system (i.e. workflow id, SMS id, etc)
+    //@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="LOCKED_DATE", nullable=true)
+	private Timestamp lockedDate;
 
     /**
      * Lock column for OJB optimistic locking
      */
-    private Integer lockVerNbr;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
     
-    private Notification notification;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="NOTIFICATION_ID")
+	private Notification notification;
 
     /**
      * Constructs a NotificationMessageDelivery instance.

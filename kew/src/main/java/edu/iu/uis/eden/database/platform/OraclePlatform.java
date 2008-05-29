@@ -16,10 +16,13 @@
  */
 package edu.iu.uis.eden.database.platform;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.persistence.EntityManager;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
@@ -36,6 +39,11 @@ public class OraclePlatform extends ANSISqlPlatform {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(OraclePlatform.class);
 	private static final long DEFAULT_TIMEOUT_SECONDS = 60 * 60; // default to 1 hour
 
+	
+    public Long getNextValSQL(String sequenceName,  EntityManager entityManager) {
+        return new Long(((BigDecimal) entityManager.createNativeQuery("select " + sequenceName + ".nextval from dual").getSingleResult()).longValue());
+    }
+    
 	public Long getNextValSQL(String sequenceName,	PersistenceBroker persistenceBroker) {
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;

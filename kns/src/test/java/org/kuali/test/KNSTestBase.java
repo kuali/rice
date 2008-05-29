@@ -25,9 +25,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.kuali.core.util.ErrorMap;
 import org.kuali.core.util.GlobalVariables;
+import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.test.lifecycles.TransactionalLifecycle;
 import org.kuali.rice.testharness.KNSTestCase;
-import org.kuali.rice.testharness.TransactionalLifecycle;
-
+import org.kuali.rice.test.data.PerTestUnitTestData;
+import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.rice.test.data.UnitTestFile;
 
 /**
  * This class is the superclass for all test cases which may require the use of
@@ -63,7 +66,9 @@ import org.kuali.rice.testharness.TransactionalLifecycle;
  * 
  * 
  */
-
+@PerTestUnitTestData(
+	    @UnitTestData(
+	        sqlFiles = {@UnitTestFile(filename = "classpath:DefaultTestData.sql", delimiter = ";")}))
 public abstract class KNSTestBase extends KNSTestCase implements KNSTestConstants {
 
 	private TransactionalLifecycle transactionalLifecycle;
@@ -75,6 +80,7 @@ public abstract class KNSTestBase extends KNSTestCase implements KNSTestConstant
 		GlobalVariables.setErrorMap(new ErrorMap());
 		if (needsSpring) {
 			transactionalLifecycle = new TransactionalLifecycle();
+			transactionalLifecycle.setTransactionManager(KNSServiceLocator.getTransactionManager());
 			transactionalLifecycle.start();
 		}
 	}

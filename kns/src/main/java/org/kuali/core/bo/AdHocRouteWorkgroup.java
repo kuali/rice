@@ -15,10 +15,20 @@
  */
 package org.kuali.core.bo;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+import javax.persistence.IdClass;
+
 
 /**
  * Ad Hoc Route Workgroup Business Object
  */
+@IdClass(org.kuali.core.bo.AdHocRouteWorkgroupId.class)
+@Entity
+@Table(name="FS_ADHOC_RTE_ACTN_RECP_T")
 public class AdHocRouteWorkgroup extends AdHocRouteRecipient {
 
     private static final long serialVersionUID = 1L;

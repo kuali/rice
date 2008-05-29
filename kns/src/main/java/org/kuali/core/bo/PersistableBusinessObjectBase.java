@@ -21,33 +21,57 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.core.util.Guid;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.util.OrmUtils;
 
 /**
  * Business Object Base Business Object
  */
+@MappedSuperclass
 public abstract class PersistableBusinessObjectBase extends BusinessObjectBase implements PersistableBusinessObject {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersistableBusinessObjectBase.class);
+    @Version
+    @Column(name="VER_NBR")
     protected Long versionNumber;
+    @Column(name="OBJ_ID")
     private String objectId;
+    @Transient
     private boolean newCollectionRecord;
-    private PersistableBusinessObjectExtension extension;
+    @Transient
+    protected PersistableBusinessObjectExtension extension;
 
     // The following support notes on BusinessObjects (including DocumentHeader)
+    @Transient
     private List boNotes = new ArrayList();
+    @Transient
     private transient Boolean thisNotesSupport;
+    @Transient
     private transient static Map notesSupport;
-
+    
+    // This is only a flag if a @Sequence is used and is set up explicitly on Maint Doc creation
+    @Transient
+    private boolean autoIncrementSet;
+    
+    public PersistableBusinessObjectBase() {
+        autoIncrementSet = false;
+    }
+    
     public boolean isBoNotesSupport() {
         if (thisNotesSupport == null) {
             if (notesSupport == null) {
                 notesSupport = new HashMap();
             }
-
 
             thisNotesSupport = (Boolean) notesSupport.get(getClass());
             if (thisNotesSupport == null) { // not cached
@@ -171,7 +195,23 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
             this.setObjectId(new Guid().toString());
         }
     }
+    
+    @PrePersist
+    public void beforeInsert() {
+    	if (!isAutoIncrementSet()) {
+    		OrmUtils.populateAutoIncValue(this);
+    		setAutoIncrementSet(true);
+    	}
+    	setObjectId(new Guid().toString());
+    }
 
+    @PreUpdate
+    public void beforeUpdate() {
+        if (StringUtils.isEmpty(this.getObjectId())) {
+            this.setObjectId(new Guid().toString());
+        }
+    }
+    
     private void retrieveBoNotes() {
         this.boNotes = KNSServiceLocator.getNoteService().getByRemoteObjectId(this.objectId);
     }
@@ -298,8 +338,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
 	public PersistableBusinessObjectExtension getExtension() {
 		if ( extension == null ) {
 			try {
-				Class extensionClass = KNSServiceLocator.getPersistenceStructureService()
-						.getBusinessObjectAttributeClass( this.getClass(), "extension" );
+				Class extensionClass = KNSServiceLocator.getPersistenceStructureService().getBusinessObjectAttributeClass( this.getClass(), "extension" );
 				if ( extensionClass != null ) {
 					extension = (PersistableBusinessObjectExtension)extensionClass.newInstance();
 				}
@@ -312,6 +351,14 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
 
 	public void setExtension(PersistableBusinessObjectExtension extension) {
 		this.extension = extension;
+	}
+
+	public boolean isAutoIncrementSet() {
+		return this.autoIncrementSet;
+	}
+
+	public void setAutoIncrementSet(boolean autoIncrementSet) {
+		this.autoIncrementSet = autoIncrementSet;
 	}
 
 }

@@ -167,7 +167,8 @@ public interface Config {
 	public Properties getProperties();
 
 	public String getProperty(String key);
-
+	public Map<String, String> getPropertiesWithPrefix(String prefix, boolean stripPrefix);
+	
 	public Map<String, Object> getObjects();
 
 	public Object getObject(String key);

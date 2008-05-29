@@ -45,7 +45,6 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springmodules.orm.ojb.OjbOperationException;
 
-
 /**
  * This class is the OJB implementation of the LookupDao interface.
  */
@@ -53,10 +52,11 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupDaoOjb.class);
     private DateTimeService dateTimeService;
     private PersistenceStructureService persistenceStructureService;
+
     public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
         this.persistenceStructureService = persistenceStructureService;
     }
-
+    
     // TODO WARNING: this does not support nested joins, because i don't have a test case
     public Collection findCollectionBySearchHelperWithUniversalUserJoin(Class businessObjectClass, Map nonUniversalUserSearchCriteria, Map universalUserSearchCriteria, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
         PersistableBusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
@@ -97,7 +97,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly, Object additionalCriteria ) {
         PersistableBusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
         if (usePrimaryKeyValuesOnly) {
-            return executeSearch(businessObjectClass, getCollectionCriteriaFromMapUsingPrimaryKeysOnly(businessObjectClass, formProps), unbounded);
+        	return executeSearch(businessObjectClass, getCollectionCriteriaFromMapUsingPrimaryKeysOnly(businessObjectClass, formProps), unbounded);
         }
         else {
             Criteria crit = getCollectionCriteriaFromMap(businessObject, formProps);
@@ -142,7 +142,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         }
         return criteria;
     }
-
+    
     public Criteria getCollectionCriteriaFromMapUsingPrimaryKeysOnly(Class businessObjectClass, Map formProps) {
         PersistableBusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
         Criteria criteria = new Criteria();
@@ -162,7 +162,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         }
         return criteria;
     }
-
+    
     private PersistableBusinessObject checkBusinessObjectClass(Class businessObjectClass) {
         if (businessObjectClass == null) {
             throw new IllegalArgumentException("BusinessObject class passed to LookupDaoOjb findCollectionBySearchHelper... method was null");
@@ -181,32 +181,32 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     }
 
     private Collection executeSearch(Class businessObjectClass, Criteria criteria, boolean unbounded) {
-        Collection searchResults = new ArrayList();
-        Long matchingResultsCount = null;
-         try {
-            Integer searchResultsLimit = LookupUtils.getSearchResultsLimit(businessObjectClass);
-            if (!unbounded && (searchResultsLimit != null)) {
-                matchingResultsCount = new Long(getPersistenceBrokerTemplate().getCount(QueryFactory.newQuery(businessObjectClass, criteria)));
-                LookupUtils.applySearchResultsLimit(businessObjectClass, criteria, getDbPlatform());
-                    }
-            if ((matchingResultsCount == null) || (matchingResultsCount.intValue() <= searchResultsLimit.intValue())) {
-                matchingResultsCount = new Long(0);
-                }
-            searchResults = getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(businessObjectClass, criteria));
-            // populate UniversalUser objects in business objects
-            List bos = new ArrayList();
-            bos.addAll(searchResults);
-            searchResults = bos;
-        }
-        catch (OjbOperationException e) {
-            throw new RuntimeException("LookupDaoOjb encountered exception during executeSearch", e);
-        }
-        catch (DataIntegrityViolationException e) {
-            throw new RuntimeException("LookupDaoOjb encountered exception during executeSearch", e);
-        }
-        return new CollectionIncomplete(searchResults, matchingResultsCount);
+    	Collection searchResults = new ArrayList();
+    	Long matchingResultsCount = null;
+    	try {
+    		Integer searchResultsLimit = LookupUtils.getSearchResultsLimit(businessObjectClass);
+    		if (!unbounded && (searchResultsLimit != null)) {
+    			matchingResultsCount = new Long(getPersistenceBrokerTemplate().getCount(QueryFactory.newQuery(businessObjectClass, criteria)));
+    			LookupUtils.applySearchResultsLimit(businessObjectClass, criteria, getDbPlatform());
+    		}
+    		if ((matchingResultsCount == null) || (matchingResultsCount.intValue() <= searchResultsLimit.intValue())) {
+    			matchingResultsCount = new Long(0);
+    		}
+    		searchResults = getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(businessObjectClass, criteria));
+    		// populate UniversalUser objects in business objects
+    		List bos = new ArrayList();
+    		bos.addAll(searchResults);
+    		searchResults = bos;
+    	}
+    	catch (OjbOperationException e) {
+    		throw new RuntimeException("LookupDaoOjb encountered exception during executeSearch", e);
+    	}
+    	catch (DataIntegrityViolationException e) {
+    		throw new RuntimeException("LookupDaoOjb encountered exception during executeSearch", e);
+    	}
+    	return new CollectionIncomplete(searchResults, matchingResultsCount);
     }
-
+    
     /**
      * Return whether or not an attribute is writeable. This method is aware that that Collections
      * may be involved and handles them consistently with the way in which OJB handles specifying
@@ -277,17 +277,14 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
 
     }
 
-    public boolean createCriteria(Object example, String searchValue, String propertyName, Criteria criteria) {
+    public boolean createCriteria(Object example, String searchValue, String propertyName, Object criteria) {
     	return createCriteria( example, searchValue, propertyName, false, criteria );
     }
 
-    public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, Criteria criteria) {
-
+    public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, Object criteria) {
         // if searchValue is empty and the key is not a valid property ignore
-        if (StringUtils.isBlank(searchValue) || !isWriteable(example, propertyName)) {
-
+        if (!(criteria instanceof Criteria) || StringUtils.isBlank(searchValue) || !isWriteable(example, propertyName)) {
             return false;
-
         }
 
         // get property type which is used to determine type of criteria
@@ -297,10 +294,9 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         }
 
         // build criteria
-        addCriteria(propertyName, searchValue, propertyType, caseInsensitive, criteria);
+        addCriteria(propertyName, searchValue, propertyType, caseInsensitive, (Criteria)criteria);
         return true;
     }
-
 
     /**
      * Find count of records meeting criteria based on the object and map.
@@ -343,32 +339,32 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      * @see org.kuali.core.dao.LookupDao#findObjectByMap(java.lang.Object, java.util.Map)
      */
     public Object findObjectByMap(Object example, Map formProps) {
-        Criteria criteria = new Criteria();
+    	Criteria criteria = new Criteria();
 
-        // iterate through the parameter map for key values search criteria
-        Iterator propsIter = formProps.keySet().iterator();
-        while (propsIter.hasNext()) {
-            String propertyName = (String) propsIter.next();
-            String searchValue = "";
-            if (formProps.get(propertyName) != null) {
-                searchValue = (formProps.get(propertyName)).toString();
-            }
+    	// iterate through the parameter map for key values search criteria
+    	Iterator propsIter = formProps.keySet().iterator();
+    	while (propsIter.hasNext()) {
+    		String propertyName = (String) propsIter.next();
+    		String searchValue = "";
+    		if (formProps.get(propertyName) != null) {
+    			searchValue = (formProps.get(propertyName)).toString();
+    		}
 
-            if (StringUtils.isNotBlank(searchValue) & PropertyUtils.isWriteable(example, propertyName)) {
-        	Class propertyType = ObjectUtils.getPropertyType(example, propertyName, persistenceStructureService);
-        	if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) ) {
-        	    criteria.addEqualTo(propertyName, cleanNumeric(searchValue));
-        	} else if (TypeUtils.isTemporalClass(propertyType)) {
-        	    criteria.addEqualTo(propertyName, parseDate( ObjectUtils.clean(searchValue) ) );
-        	} else {
-        	    criteria.addEqualTo(propertyName, searchValue);
-        	}
-            }
-        }
+    		if (StringUtils.isNotBlank(searchValue) & PropertyUtils.isWriteable(example, propertyName)) {
+    			Class propertyType = ObjectUtils.getPropertyType(example, propertyName, persistenceStructureService);
+    			if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) ) {
+    				criteria.addEqualTo(propertyName, cleanNumeric(searchValue));
+    			} else if (TypeUtils.isTemporalClass(propertyType)) {
+    				criteria.addEqualTo(propertyName, parseDate( ObjectUtils.clean(searchValue) ) );
+    			} else {
+    				criteria.addEqualTo(propertyName, searchValue);
+    			}
+    		}
+    	}
 
-        // execute query and return result list
-        Query query = QueryFactory.newQuery(example.getClass(), criteria);
-        return getPersistenceBrokerTemplate().getObjectByQuery(query);
+    	// execute query and return result list
+    	Query query = QueryFactory.newQuery(example.getClass(), criteria);
+    	return getPersistenceBrokerTemplate().getObjectByQuery(query);
     }
 
 
@@ -414,7 +410,6 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         }
     }
 
-
     /**
      * @param propertyName
      * @param propertyValue
@@ -424,7 +419,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     private void addOrCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
         addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, KNSConstants.OR_LOGICAL_OPERATOR);
     }
-
+       
     /**
      * @param propertyName
      * @param propertyValue
@@ -451,7 +446,6 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         }
     }
 
-
     /**
      * Builds a sub criteria object joined with an 'AND' or 'OR' (depending on splitValue) using the split values of propertyValue. Then joins back the
      * sub criteria to the main criteria using an 'AND'.
@@ -474,7 +468,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
 
         criteria.addAndCriteria(subCriteria);
     }
-
+    
     private java.sql.Date parseDate(String dateString) {
 		dateString = dateString.trim();
 		try {

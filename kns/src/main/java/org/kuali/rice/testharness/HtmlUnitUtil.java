@@ -33,6 +33,7 @@ public class HtmlUnitUtil {
         final WebClient webClient = new WebClient(BrowserVersion.INTERNET_EXPLORER_6_0);
         HtmlPage loginPage = (HtmlPage)webClient.getPage(new URL(url));
         HtmlForm htmlForm = (HtmlForm)loginPage.getForms().get(0);
+        htmlForm.getInputByName("__login_user").setValueAttribute("quickstart");
         HtmlSubmitInput button = (HtmlSubmitInput)htmlForm.getInputByValue("Login");
         return (HtmlPage)button.click();
     }

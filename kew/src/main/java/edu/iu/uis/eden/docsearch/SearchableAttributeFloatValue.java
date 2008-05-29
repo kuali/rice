@@ -26,6 +26,16 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 
 import edu.iu.uis.eden.WorkflowPersistable;
@@ -36,6 +46,8 @@ import edu.iu.uis.eden.util.Utilities;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_DOC_HDR_EXT_FLT_T")
 public class SearchableAttributeFloatValue implements WorkflowPersistable, SearchableAttributeValue {
 
     private static final long serialVersionUID = -6682101853805320760L;
@@ -48,13 +60,21 @@ public class SearchableAttributeFloatValue implements WorkflowPersistable, Searc
     private static final String ATTRIBUTE_XML_REPRESENTATION = SearchableAttribute.DATA_TYPE_FLOAT;
     private static final String DEFAULT_FORMAT_PATTERN = "";
 
-    private Long searchableAttributeValueId;
-    private String searchableAttributeKey;
-    private BigDecimal searchableAttributeValue;
+    @Id
+	@Column(name="DOC_HDR_EXT_ID")
+	private Long searchableAttributeValueId;
+    @Column(name="DOC_HDR_EXT_VAL_KEY")
+	private String searchableAttributeKey;
+    @Column(name="DOC_HDR_EXT_VAL")
+	private BigDecimal searchableAttributeValue;
+    @Transient
     protected String ojbConcreteClass; // attribute needed for OJB polymorphism - do not alter!
 
-    private Long routeHeaderId;
-    private DocumentRouteHeaderValue routeHeader;
+    @Column(name="DOC_HDR_ID")
+	private Long routeHeaderId;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
+	private DocumentRouteHeaderValue routeHeader;
 
     /**
      * Default constructor.
@@ -235,3 +255,4 @@ public class SearchableAttributeFloatValue implements WorkflowPersistable, Searc
         return null;
     }
 }
+

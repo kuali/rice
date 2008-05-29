@@ -54,6 +54,8 @@
         <bean parent="MaintainableFieldDefinition"
               p:required="true"
               p:name="userName" />
+        <bean parent="MaintainableFieldDefinition"
+              p:name="versionNumber" />
       </list>
     </property>
     <property name="id" value="Edit Travel Fiscal Officer" />

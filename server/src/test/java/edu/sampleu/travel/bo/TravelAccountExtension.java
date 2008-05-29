@@ -19,15 +19,30 @@ package edu.sampleu.travel.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import org.kuali.core.bo.PersistableBusinessObjectExtensionBase;
 
-
-
+@Entity
+@Table(name="TRV_ACCT_EXT")
 public class TravelAccountExtension extends PersistableBusinessObjectExtensionBase {
     
-    private String number;
-    private String accountTypeCode;
-    private TravelAccountType accountType; 
+    @Id
+	@Column(name="acct_num")
+	private String number;
+    
+    @Column(name="acct_type")
+	private String accountTypeCode;
+    
+    @OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="acct_type", insertable=false, updatable=false)
+	private TravelAccountType accountType; 
     
     public String getNumber() {
         return number;

@@ -18,8 +18,6 @@ package org.kuali.core.dao;
 import java.util.Collection;
 import java.util.Map;
 
-import org.apache.ojb.broker.query.Criteria;
-
 /**
  * This interface defines basic methods that Lookup Dao's must provide
  * 
@@ -51,12 +49,12 @@ public interface LookupDao {
      * 
      * @return true if the criteria is created successfully; otherwise, return false
      */
-    public boolean createCriteria(Object example, String searchValue, String propertyName, Criteria criteria);
+    public boolean createCriteria(Object example, String searchValue, String propertyName, Object criteria);
 
     /**
      * Create OJB criteria based on business object, search field and value
      * 
      * @return true if the criteria is created successfully; otherwise, return false
      */
-    public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, Criteria criteria);
+    public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, Object criteria);
 }

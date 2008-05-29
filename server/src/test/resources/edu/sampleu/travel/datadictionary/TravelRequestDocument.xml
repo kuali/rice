@@ -132,5 +132,6 @@
             p:labelAttribute="name" />
     </property>
     <property name="name" value="accountType" />
+    <property name="required" value="false" />
   </bean>
 </beans>

@@ -21,6 +21,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -54,6 +65,8 @@ import edu.iu.uis.eden.workgroup.WorkgroupService;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_ACTN_RQST_T")
 public class ActionRequestValue implements WorkflowPersistable {
 
 	private static final long serialVersionUID = 8781414791855848385L;
@@ -64,44 +77,83 @@ public class ActionRequestValue implements WorkflowPersistable {
     private static final String RECIPIENT_TYPE_RANK = "RWU";
     private static final String DELEGATION_TYPE_RANK = "SPN";
 
-    private java.lang.Long actionRequestId;
-    private java.lang.String actionRequested;
-    private java.lang.Long routeHeaderId;
-    private java.lang.String status;
-    private java.lang.Long responsibilityId;
-    private java.lang.Long workgroupId;
-    private java.lang.String recipientTypeCd;
-    private java.lang.Integer priority;
-    private java.lang.Integer routeLevel;
-    private java.lang.Long actionTakenId;
+    @Id
+	@Column(name="ACTN_RQST_ID")
+	private java.lang.Long actionRequestId;
+    @Column(name="ACTN_RQST_CD")
+	private java.lang.String actionRequested;
+    @Column(name="DOC_HDR_ID")
+	private java.lang.Long routeHeaderId;
+    @Column(name="ACTN_RQST_STAT_CD")
+	private java.lang.String status;
+    @Column(name="ACTN_RQST_RESP_ID")
+	private java.lang.Long responsibilityId;
+    @Column(name="WRKGRP_ID")
+	private java.lang.Long workgroupId;
+    @Column(name="ACTN_RQST_RECP_TYP_CD")
+	private java.lang.String recipientTypeCd;
+    @Column(name="ACTN_RQST_PRIO_NBR")
+	private java.lang.Integer priority;
+    @Column(name="ACTN_RQST_RTE_LVL_NBR")
+	private java.lang.Integer routeLevel;
+    @Column(name="ACTN_TKN_ID")
+	private java.lang.Long actionTakenId;
+    @Column(name="DOC_VER_NBR")
     private java.lang.Integer docVersion = new Integer(1);
-    private java.sql.Timestamp createDate;
-    private java.lang.String responsibilityDesc;
-    private java.lang.String annotation;
-    private java.lang.Integer jrfVerNbr;
-    private java.lang.String workflowId;
-    private Boolean ignorePrevAction;
-    private Long parentActionRequestId;
-    private String qualifiedRoleName;
-    private String roleName;
-    private String qualifiedRoleNameLabel;
+    //@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="ACTN_RQST_CRTE_DT")
+	private java.sql.Timestamp createDate;
+    @Column(name="ACTN_RQST_RESP_DESC")
+	private java.lang.String responsibilityDesc;
+    @Column(name="ACTN_RQST_ANNOTN_TXT")
+	private java.lang.String annotation;
+    @Column(name="DB_LOCK_VER_NBR")
+	private java.lang.Integer jrfVerNbr;
+    @Column(name="ACTN_RQST_PRSN_EN_ID")
+	private java.lang.String workflowId;
+    @Column(name="ACTN_RQST_IGN_PREV_ACTN_IND")
+	private Boolean ignorePrevAction;
+    @Column(name="ACTN_RQST_PARNT_ID")
+	private Long parentActionRequestId;
+    @Column(name="QUAL_ROLE_NM")
+	private String qualifiedRoleName;
+    @Column(name="ROLE_NM")
+	private String roleName;
+    @Column(name="QUAL_ROLE_NM_LBL_TXT")
+	private String qualifiedRoleNameLabel;
+    @Transient
     private String displayStatus;
-    private Long ruleBaseValuesId;
+    @Column(name="RULE_BASE_VALUES_ID")
+	private Long ruleBaseValuesId;
 
+    @Column(name="DLGN_TYP")
     private String delegationType = EdenConstants.DELEGATION_NONE;
-    private String approvePolicy;
+    @Column(name="ACTN_RQST_APPR_PLCY")
+	private String approvePolicy;
 
-    private ActionRequestValue parentActionRequest;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="ACTN_RQST_PARNT_ID", insertable=false, updatable=false)
+	private ActionRequestValue parentActionRequest;
+    @Transient
     private List<ActionRequestValue> childrenRequests = new ArrayList<ActionRequestValue>();
-    private ActionTakenValue actionTaken;
-    private DocumentRouteHeaderValue routeHeader;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="ACTN_TKN_ID", insertable=false, updatable=false)
+	private ActionTakenValue actionTaken;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
+	private DocumentRouteHeaderValue routeHeader;
+    @Transient
     private List<ActionItem> actionItems = new ArrayList<ActionItem>();
+    @Column(name="ACTN_RQST_CUR_IND")
     private Boolean currentIndicator = new Boolean(true);
+    @Transient
     private String createDateString;
 
     /* New Workflow 2.1 Field */
     // The node instance at which this request was generated
-    private RouteNodeInstance nodeInstance;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="ACTN_RQST_RTE_NODE_INSTN_ID")
+	private RouteNodeInstance nodeInstance;
 
     public ActionRequestValue() {
         createDate = new Timestamp(System.currentTimeMillis());

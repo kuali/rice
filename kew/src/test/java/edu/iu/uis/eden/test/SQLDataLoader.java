@@ -52,7 +52,11 @@ public class SQLDataLoader {
                 for (String sqlStatement : sqlStatements) {
                     if (StringUtils.isNotBlank(sqlStatement)) {
                         LOG.info("# Executing sql statement ->" + sqlStatement + "<-");
-                        statement.execute(sqlStatement);
+                        try {
+                        	statement.execute(sqlStatement);
+                        } catch (Exception e) {
+                        	LOG.warn(e.getMessage());
+                        }
                     }
                 }
                 LOG.info("#");

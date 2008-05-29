@@ -21,6 +21,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.doctype.DocumentType;
@@ -36,6 +50,8 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_RTE_NODE_T")
 public class RouteNode implements Serializable {    
 
     private static final long serialVersionUID = 4891233177051752726L;
@@ -43,25 +59,50 @@ public class RouteNode implements Serializable {
     public static final String CONTENT_FRAGMENT_CFG_KEY = "contentFragment";
     public static final String RULE_SELECTOR_CFG_KEY = "ruleSelector";
 
-    private Long routeNodeId;
-    private Long documentTypeId;
-    private String routeNodeName;
-    private String routeMethodName;
-    private Boolean finalApprovalInd;
-    private Boolean mandatoryRouteInd;
-    private Long exceptionWorkgroupId;
-    private String routeMethodCode;
+    @Id
+	@Column(name="RTE_NODE_ID")
+	private Long routeNodeId;
+    @Column(name="DOC_TYP_ID")
+	private Long documentTypeId;
+    @Column(name="RTE_NODE_NM")
+	private String routeNodeName;
+    @Column(name="DOC_RTE_MTHD_NM")
+	private String routeMethodName;
+    @Column(name="DOC_FNL_APRVR_IND")
+	private Boolean finalApprovalInd;
+    @Column(name="DOC_MNDTRY_RTE_IND")
+	private Boolean mandatoryRouteInd;
+    @Column(name="WRKGRP_ID")
+	private Long exceptionWorkgroupId;
+    @Column(name="DOC_RTE_MTHD_CD")
+	private String routeMethodCode;
+    @Column(name="DOC_ACTVN_TYP_TXT")
     private String activationType = ActivationTypeEnum.PARALLEL.getCode();
 
-    private Integer lockVerNbr;
-    private DocumentType documentType;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="DOC_TYP_ID", insertable=false, updatable=false)
+	private DocumentType documentType;
+    @Transient
     private String exceptionWorkgroupName;
 
+    @Transient
     private RuleTemplate ruleTemplate;
+    @Column(name="RTE_NODE_TYP")
     private String nodeType = RequestsNode.class.getName();
+    
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "EN_RTE_NODE_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_ID"))
     private List<RouteNode> previousNodes = new ArrayList<RouteNode>();
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "EN_RTE_NODE_LNK_T", joinColumns = @JoinColumn(name = "FROM_RTE_NODE_ID"), inverseJoinColumns = @JoinColumn(name = "TO_RTE_NODE_ID"))
     private List<RouteNode> nextNodes = new ArrayList<RouteNode>();
-    private BranchPrototype branch;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name="BRCH_PROTO_ID")
+	private BranchPrototype branch;
+    @Transient
     private List<RouteNodeConfigParam> configParams  = new ArrayList<RouteNodeConfigParam>(0);
 
     /**

@@ -47,7 +47,16 @@ public class WebWorkflowUser extends WebLookupableDecorator implements WorkflowU
     private UuId oldUuid;
     private EmplId oldEmplId;
     private AuthenticationUserId oldAuthenticationUserId;
+    private String dtype;
     
+	public String getDtype() {
+		return this.dtype;
+	}
+
+	public void setDtype(String dtype) {
+		this.dtype = dtype;
+	}
+
 	public WebWorkflowUser(WorkflowUser workflowUser) {
 		this.workflowUser = workflowUser;
 	}

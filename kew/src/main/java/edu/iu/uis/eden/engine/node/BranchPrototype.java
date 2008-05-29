@@ -16,6 +16,13 @@
  */
 package edu.iu.uis.eden.engine.node;
 
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import java.io.Serializable;
 
 /**
@@ -24,12 +31,19 @@ import java.io.Serializable;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_RTE_BRCH_PROTO_T")
 public class BranchPrototype implements Serializable {
 
 	private static final long serialVersionUID = 8645994738204838275L;
     
-    private Long branchId;
+    @Id
+	@Column(name="RTE_BRCH_PROTO_ID")
+	private Long branchId;
+	@Column(name="RTE_BRCH_PROTO_NM")
 	private String name;
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 	
 	public Long getBranchId() {
@@ -57,3 +71,4 @@ public class BranchPrototype implements Serializable {
 	}
 	
 }
+

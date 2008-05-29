@@ -19,6 +19,16 @@ package org.kuali.core.bo;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -26,22 +36,40 @@ import org.kuali.rice.kns.util.KNSConstants;
 /**
  * Represents a user note in the system.
  */
+@Entity
+@Table(name="SH_NTE_T")
 public class Note extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = -7647166354016356770L;
 
-    private Long noteIdentifier;
-    private String remoteObjectIdentifier;
-    private String authorUniversalIdentifier;
-    private Timestamp notePostedTimestamp;
-    private String noteTypeCode;
-    private String noteText;
-    private String noteTopicText;
-    private String notePurgeCode;
+    @Id
+	@Column(name="NTE_ID")
+	private Long noteIdentifier;
+    @Column(name="RMT_OBJ_ID")
+	private String remoteObjectIdentifier;
+    @Column(name="NTE_AUTH_ID")
+	private String authorUniversalIdentifier;
+    //@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="NTE_POST_TS")
+	private Timestamp notePostedTimestamp;
+    @Column(name="NTE_TYP_CD")
+	private String noteTypeCode;
+    @Column(name="NTE_TXT")
+	private String noteText;
+    @Column(name="NTE_TPC_TXT")
+	private String noteTopicText;
+    @Column(name="NTE_PRG_CD")
+	private String notePurgeCode;
+    @Transient
     private String attachmentIdentifier;
 
-    private NoteType noteType;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="NTE_TYP_CD", insertable=false, updatable=false)
+	private NoteType noteType;
     private UniversalUser authorUniversal;
-    private Attachment attachment;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE})
+	@JoinColumn(name="NTE_ID")
+	private Attachment attachment;
+    @Transient
     private AdHocRouteRecipient adHocRouteRecipient;
 
     /**
@@ -334,3 +362,4 @@ public class Note extends PersistableBusinessObjectBase {
     }
 
 }
+

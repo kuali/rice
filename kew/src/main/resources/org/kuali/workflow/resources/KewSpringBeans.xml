@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
   <bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer"/>
 
@@ -17,10 +25,9 @@
    		</property>
 		<property name="transactionManager">
 			<ref local="jtaTransactionManager" />
-   		</property>
+    </property>
 	</bean>
-
-
+  
 	<bean id="enWorkflowDataSource" class="org.kuali.rice.database.PrimaryDataSourceFactoryBean">
         <property name="preferredDataSourceParams">
 			<list>
@@ -46,6 +53,8 @@
 			<value>PROPAGATION_REQUIRED,-Exception</value>
 		</property>
 	</bean>
+	
+	
 
 	<!-- Proxy for rollback on only runtime exceptions -->
 
@@ -128,6 +137,8 @@
 	</bean>
 
 	<!--  END PROPAGATION REQUIRED TX DECLARATIONS -->
+
+
 
 
 	<!-- WorkflowDocument -->
@@ -315,13 +326,17 @@
 	<!--  UserOptionsService -->
 	<bean id="enUserOptionsService" class="edu.iu.uis.eden.useroptions.UserOptionsServiceImpl" lazy-init="true">
 		<property name="userOptionsDAO">
-			<ref bean="enUserOptionsDAO" />
+			<!-- <ref bean="enUserOptionsDAO" /> -->
+      <ref bean="enUserOptionsOJBDAO" />
 		</property>
 	</bean>
-	<bean id="enUserOptionsDAO" class="edu.iu.uis.eden.useroptions.dao.UserOptionsDAOOjbImpl" lazy-init="true">
+  <bean id="enUserOptionsDAO" class="edu.iu.uis.eden.useroptions.dao.UserOptionsDaoJpaImpl" lazy-init="true"/>
+  
+	<bean id="enUserOptionsOJBDAO" class="edu.iu.uis.eden.useroptions.dao.UserOptionsDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
-
+  
+  
 	<!--  ActionTakenService -->
 	<bean id="enActionTakenService" class="edu.iu.uis.eden.actiontaken.ActionTakenServiceImpl" lazy-init="true">
 		<property name="actionTakenDAO">
@@ -343,27 +358,32 @@
     </bean>
 
 	<!-- Application Constants Service -->
-	<bean id="enApplicationConstantsDAO" class="edu.iu.uis.eden.applicationconstants.dao.ApplicationConstantsDAOOjbImpl" lazy-init="true">
+  <bean id="enApplicationConstantsDAO" class="edu.iu.uis.eden.applicationconstants.dao.ApplicationConstantsDaoJpaImpl"/>
+
+    
+	<bean id="enApplicationConstantsOJBDAO" class="edu.iu.uis.eden.applicationconstants.dao.ApplicationConstantsDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
 	</bean>
+
 
 	<bean id="enApplicationConstantsService" class="edu.iu.uis.eden.applicationconstants.ApplicationConstantsServiceImpl"
 		depends-on="enWorkflowDataSource" lazy-init="true">
 		<property name="applicationConstantsDAO">
-			<ref bean="enApplicationConstantsDAO" />
+      <!-- <ref bean="enApplicationConstantsDAO" /> -->
+      <ref bean="enApplicationConstantsOJBDAO" />
 		</property>
 	</bean>
 
 	<!-- Workflow Internal Lookups -->
-	<bean id="DocumentTypeLookupableImplService" class="edu.iu.uis.eden.lookupable.DocumentTypeLookupableImpl" singleton="false" />
-	<bean id="RoleLookupableImplService" class="edu.iu.uis.eden.lookupable.RoleLookupableImpl" singleton="false" />
-	<bean id="RuleAttributeLookupableImplService" class="edu.iu.uis.eden.lookupable.RuleAttributeLookupableImpl" singleton="false" />
-	<bean id="RuleBaseValuesLookupableImplService" class="edu.iu.uis.eden.lookupable.RuleBaseValuesLookupableImpl" singleton="false" />
-	<bean id="RuleTemplateLookupableImplService" class="edu.iu.uis.eden.lookupable.RuleTemplateLookupableImpl" singleton="false" />
-	<bean id="EDocLiteLookupableService" class="edu.iu.uis.eden.lookupable.EDocLiteLookupable" singleton="false" />
-	<bean id="UserLookupableImplService" class="edu.iu.uis.eden.user.UserLookupableImpl" singleton="false" />
-	<bean id="WorkGroupLookupableImplService" class="edu.iu.uis.eden.workgroup.WorkGroupLookupableImpl" singleton="false" />
-    <bean id="WorkgroupTypeLookup" class="org.kuali.workflow.workgroup.WorkgroupTypeLookupable" singleton="false"/>
+	<bean id="DocumentTypeLookupableImplService" class="edu.iu.uis.eden.lookupable.DocumentTypeLookupableImpl" scope="prototype" />
+	<bean id="RoleLookupableImplService" class="edu.iu.uis.eden.lookupable.RoleLookupableImpl" scope="prototype" />
+	<bean id="RuleAttributeLookupableImplService" class="edu.iu.uis.eden.lookupable.RuleAttributeLookupableImpl" scope="prototype" />
+	<bean id="RuleBaseValuesLookupableImplService" class="edu.iu.uis.eden.lookupable.RuleBaseValuesLookupableImpl" scope="prototype" />
+	<bean id="RuleTemplateLookupableImplService" class="edu.iu.uis.eden.lookupable.RuleTemplateLookupableImpl" scope="prototype" />
+	<bean id="EDocLiteLookupableService" class="edu.iu.uis.eden.lookupable.EDocLiteLookupable" scope="prototype" />
+	<bean id="UserLookupableImplService" class="edu.iu.uis.eden.user.UserLookupableImpl" scope="prototype" />
+	<bean id="WorkGroupLookupableImplService" class="edu.iu.uis.eden.workgroup.WorkGroupLookupableImpl" scope="prototype" />
+    <bean id="WorkgroupTypeLookup" class="org.kuali.workflow.workgroup.WorkgroupTypeLookupable" scope="prototype"/>
 
 	<bean id="enEmailService" class="edu.iu.uis.eden.mail.DefaultEmailService"  lazy-init="true"/>
 
@@ -435,11 +455,14 @@
 
     <bean id="enHelpService" class="edu.iu.uis.eden.help.HelpServiceImpl" lazy-init="true">
         <property name="helpDAO">
-            <ref bean="enHelpDAO" />
+            <!-- <ref bean="enHelpDAO" /> -->
+            <ref bean="enHelpOJBDAO" />
         </property>
     </bean>
 
-    <bean id="enHelpDAO" class="edu.iu.uis.eden.help.dao.HelpDAOOjbImpl" lazy-init="true">
+    <bean id="enHelpDAO" class="edu.iu.uis.eden.help.dao.HelpDaoJpaImpl" lazy-init="true"/>
+     
+    <bean id="enHelpOJBDAO" class="edu.iu.uis.eden.help.dao.HelpDAOOjbImpl" lazy-init="true">
 		<property name="jcdAlias" value="enWorkflowDataSource" />
     </bean>
 
@@ -867,5 +890,40 @@
   </bean>
 
   <bean id="enCacheAdministrator" class="edu.iu.uis.eden.messaging.RiceCacheExporterFactoryBean" />
+
+
+
+
+
+
+  <!-- START JPA CONFIGURATION -->
+
+  <!-- Used for @PersistenceContext auto-injection -->
+  <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>  
+    
+  <bean id="entityManagerFactory" class="org.kuali.rice.jpa.spring.RiceEntityManagerProxyFactoryBean">    
+    <constructor-arg value="rice.kew"/>
+    <constructor-arg ref="enWorkflowDataSource"/>
+  </bean>    
+   
+  <tx:annotation-driven transaction-manager="transactionManager"/>
+
+  <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.jpa.spring.NoResultExceptionInterceptor" />
+
+  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="interceptorNames">
+      <list>
+        <idref local="NoResultExceptionInterceptor" />
+      </list>
+    </property>
+    <property name="beanNames">
+      <list>
+        <idref local="enApplicationConstantsDAO"/>
+        <idref local="enUserOptionsDAO"/>
+        <idref local="enHelpDAO"/>
+      </list>
+    </property>
+  </bean>
+  <!-- END JPA CONFIGURATION -->
 
 </beans>

@@ -18,6 +18,17 @@ package edu.iu.uis.eden.notes;
 
 import java.io.InputStream;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 /**
  * An attachment which is attached to a {@link Note}.
  * 
@@ -25,15 +36,28 @@ import java.io.InputStream;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity(name="KEWAttachment")
+@Table(name="EN_ATTACHMENT_T")
 public class Attachment {
 
+	@Id
+	@Column(name="ATTACHMENT_ID")
 	private Long attachmentId;
+	@Column(name="NTE_ID")
 	private Long noteId;
+	@Column(name="FILE_NM")
 	private String fileName;
+	@Column(name="FILE_LOC")
 	private String fileLoc;
+	@Column(name="MIME_TYP")
 	private String mimeType;
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
+    @Transient
 	private InputStream attachedObject;
+	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="NTE_ID", insertable=false, updatable=false)
 	private Note note;
 	
 	public Long getAttachmentId() {
@@ -88,3 +112,4 @@ public class Attachment {
 	
 	
 }
+

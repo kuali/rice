@@ -19,6 +19,7 @@ package org.kuali.rice.config;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -164,6 +165,17 @@ public abstract class BaseConfig implements Config {
     public Properties getProperties() {
         return this.propertiesUsed;
     }
+    
+    public Map<String, String> getPropertiesWithPrefix(String prefix, boolean stripPrefix) {
+		Map<String, String> props = new HashMap<String, String>();
+		for (Map.Entry entry : getProperties().entrySet()) {
+			String key = (String) entry.getKey();
+			if (StringUtils.isNotBlank(key) && key.trim().startsWith(prefix)) {
+				props.put(stripPrefix ? key.substring(prefix.length()) : key, (String) entry.getValue());
+			}
+		}
+		return props;
+	}
 
     public String getProperty(String key) {
         return getProperties().getProperty(key);

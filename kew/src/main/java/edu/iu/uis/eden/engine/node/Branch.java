@@ -21,18 +21,37 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 /**
  * Represents a branch in the routing path of the document.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_RTE_BRCH_T")
 public class Branch implements Serializable {
 
 	private static final long serialVersionUID = 7164561979112939112L;
 	
+	@Id
+	@Column(name="RTE_BRCH_ID")
 	private Long branchId;
+	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="PARNT_RTE_BRCH_ID")
 	private Branch parentBranch;
+	@Column(name="BRCH_NM")
 	private String name;
+    @Transient
 	private List<BranchState> branchState = new ArrayList<BranchState>();
 //	  apache lazy list commented out due to not being serializable
 //    private List branchState = ListUtils.lazyList(new ArrayList(),
@@ -41,12 +60,21 @@ public class Branch implements Serializable {
 //					return new BranchState();
 //				}
 //			});
-    private RouteNodeInstance initialNode;
-    private RouteNodeInstance splitNode;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="INIT_RTE_NODE_INSTN_ID", insertable=false, updatable=false)
+	private RouteNodeInstance initialNode;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="SPLT_RTE_NODE_INSTN_ID", insertable=false, updatable=false)
+	private RouteNodeInstance splitNode;
+	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name="JOIN_RTE_NODE_INSTN_ID", insertable=false, updatable=false)
 	private RouteNodeInstance joinNode;
 	
+	@Column(name="INIT_RTE_NODE_INSTN_ID")
 	private Long initialNodeId;
 	
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 	
 	public String getName() {
@@ -128,3 +156,4 @@ public class Branch implements Serializable {
                       "]";
     }
 }
+

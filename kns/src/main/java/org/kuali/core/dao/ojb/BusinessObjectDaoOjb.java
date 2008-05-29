@@ -166,29 +166,29 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
         return getPersistenceBrokerTemplate().getCollectionByQuery(queryByCriteria);
     }
 
-
-    /**
-     * Saves a business object.
-     * 
-     * @see org.kuali.core.dao.BusinessObjectDao#save(org.kuali.core.bo.PersistableBusinessObject)
-     */
-    public void save(PersistableBusinessObject bo) throws DataAccessException {
-        // if collections exist on the BO, create a copy and use to process the collections to ensure
-        // that removed elements are deleted from the database
-        Set<String> boCollections = getPersistenceStructureService().listCollectionObjectTypes(bo.getClass()).keySet();
-        if ( !boCollections.isEmpty() ) {
-            // refresh bo to get db copy of collections
-            PersistableBusinessObject savedBo = (PersistableBusinessObject) ObjectUtils.deepCopy(bo);
-            for (String boCollection : boCollections) {
-                if (getPersistenceStructureService().isCollectionUpdatable(savedBo.getClass(), boCollection)) {
-                    savedBo.refreshReferenceObject(boCollection);
-                }
-            }
-            getOjbCollectionHelper().processCollections(this, bo, savedBo);
-        }
-        
-        getPersistenceBrokerTemplate().store(bo);
-    }
+	/**
+	 * Saves a business object.
+	 * 
+	 * @see org.kuali.core.dao.BusinessObjectDao#save(org.kuali.core.bo.PersistableBusinessObject)
+	 */
+	public void save(PersistableBusinessObject bo) throws DataAccessException {
+		// if collections exist on the BO, create a copy and use to process the
+		// collections to ensure
+		// that removed elements are deleted from the database
+		Set<String> boCollections = getPersistenceStructureService().listCollectionObjectTypes(bo.getClass()).keySet();
+		PersistableBusinessObject savedBo = null;
+		if (!boCollections.isEmpty()) {
+			// refresh bo to get db copy of collections
+			savedBo = (PersistableBusinessObject) ObjectUtils.deepCopy(bo);
+			for (String boCollection : boCollections) {
+				if (getPersistenceStructureService().isCollectionUpdatable(savedBo.getClass(), boCollection)) {
+					savedBo.refreshReferenceObject(boCollection);
+				}
+			}
+		}
+		getOjbCollectionHelper().processCollections(this, bo, savedBo);
+		getPersistenceBrokerTemplate().store(bo);	
+	}
     
     /**
      * Saves a business object.

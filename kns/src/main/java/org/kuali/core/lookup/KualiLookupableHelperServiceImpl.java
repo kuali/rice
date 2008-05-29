@@ -24,10 +24,12 @@ import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.util.BeanPropertyComparator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class...
  */
+@Transactional
 public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperServiceImpl {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiLookupableHelperServiceImpl.class);

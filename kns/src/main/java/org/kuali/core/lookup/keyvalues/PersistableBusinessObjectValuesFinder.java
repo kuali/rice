@@ -26,12 +26,14 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.core.service.KeyValuesService;
 import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.rice.KNSServiceLocator;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class is a Generic ValuesFinder that builds the list of KeyValuePairs it returns
  * in getKeyValues() based on a BO along with a keyAttributeName and labelAttributeName
  * that are specified.
  */
+@Transactional
 public class PersistableBusinessObjectValuesFinder extends KeyValuesBase {
 
     private static final Log LOG = LogFactory.getLog(PersistableBusinessObjectValuesFinder.class);

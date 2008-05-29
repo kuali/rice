@@ -19,16 +19,22 @@ package edu.iu.uis.eden.engine.node;
 import org.apache.commons.collections.KeyValue;
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+
 /**
  * A simple object representing a key/value pair.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@MappedSuperclass
 public class KeyValuePair implements KeyValue, Serializable {
 
 	private static final long serialVersionUID = -3819394562029060331L;
 
+	@Column(name="ST_KEY")
     protected String key;
+    @Column(name="ST_VAL_TXT")
     protected String value;
 
     public KeyValuePair() {}

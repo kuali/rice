@@ -16,21 +16,43 @@
  */
 package org.kuali.workflow.role;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.Version;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Entity;
+
 import edu.iu.uis.eden.routetemplate.RuleAttribute;
 
 /**
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="EN_ROLE_ATTRIB_T")
 public class RoleAttribute implements java.io.Serializable {
 
+	@Id
+	@Column(name="ROLE_ATTRIB_ID")
 	private Long roleAttributeId;
 
+	@Column(name="ROLE_ID")
 	private Long roleId;
+	@Column(name="RULE_ATTRIB_ID")
 	private Long ruleAttributeId;
+	@Version
+	@Column(name="DB_LOCK_VER_NBR")
 	private Integer lockVerNbr;
 
+	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
 	private Role role;
+	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name="RULE_ATTRIB_ID", insertable=false, updatable=false)
 	private RuleAttribute ruleAttribute;
 
 	public Integer getLockVerNbr() {
@@ -71,3 +93,4 @@ public class RoleAttribute implements java.io.Serializable {
 	}
 
 }
+

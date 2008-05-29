@@ -15,6 +15,11 @@
  */
 package org.kuali.core.bo;
 
+import javax.persistence.Entity;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.kuali.core.bo.user.AuthenticationUserId;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.exceptions.UserNotFoundException;
@@ -23,10 +28,14 @@ import org.kuali.rice.KNSServiceLocator;
 /**
  * Ad Hoc Route Person Business Object
  */
+@IdClass(org.kuali.core.bo.AdHocRoutePersonId.class)
+@Entity
+@Table(name="FS_ADHOC_RTE_ACTN_RECP_T")
 public class AdHocRoutePerson extends AdHocRouteRecipient {
 
     private static final long serialVersionUID = 1L;
     
+    @Transient
     private transient UniversalUser universalUser;
 
     public AdHocRoutePerson() {

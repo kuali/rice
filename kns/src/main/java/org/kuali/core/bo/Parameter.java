@@ -10,33 +10,65 @@ package org.kuali.core.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * 
  */
+@IdClass(org.kuali.core.bo.ParameterId.class)
+@Entity
+@Table(name="SH_PARM_T")
 public class Parameter extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 4874830226334867797L;
 
+	@Id
+	@Column(name="SH_PARM_NMSPC_CD")
 	private String parameterNamespaceCode;
 
-	private String parameterName;
-
-	private String parameterValue;
-
-	private String parameterDescription;
-
-	private String parameterTypeCode;
-
+	@Id
+	@Column(name="SH_PARM_DTL_TYP_CD")
 	private String parameterDetailTypeCode;
 
+	@Id
+	@Column(name="SH_PARM_NM")
+	private String parameterName;
+
+	@Column(name="SH_PARM_TXT")
+	private String parameterValue;
+
+	@Column(name="SH_PARM_DESC", length=2048)
+	private String parameterDescription;
+
+	@Column(name="SH_PARM_TYP_CD")
+	private String parameterTypeCode;
+
+	@Column(name="SH_PARM_CONS_CD")
 	private String parameterConstraintCode;
 
+	@Column(name="WRKGRP_NM")
 	private String parameterWorkgroupName;
 
+	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="SH_PARM_NMSPC_CD", insertable=false, updatable=false)
 	private ParameterNamespace parameterNamespace;
 
+	@OneToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="SH_PARM_TYP_CD", insertable=false, updatable=false)
 	private ParameterType parameterType;
 
+	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumns({@JoinColumn(name="SH_PARM_NMSPC_CD", insertable=false, updatable=false), @JoinColumn(name="SH_PARM_DTL_TYP_CD", insertable=false, updatable=false)})
 	private ParameterDetailType parameterDetailType;
 
 	public Parameter() {
@@ -152,3 +184,4 @@ public class Parameter extends PersistableBusinessObjectBase {
 	}
 
 }
+

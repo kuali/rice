@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.GroupAttributeDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
@@ -35,6 +34,7 @@ public class Group extends KIMPersistableBusinessObjectBase {
 	private Long groupTypeId;
 	private ArrayList<Group> memberGroups;
 	private ArrayList<Group> parentGroups;
+	private ArrayList<Principal> memberPrincipals;
     private ArrayList<Role> groupRoles;
     private ArrayList<GroupAttribute> groupAttributes;
     private GroupType groupType;
@@ -43,6 +43,7 @@ public class Group extends KIMPersistableBusinessObjectBase {
      */
 	public Group() {
 	    memberGroups = new TypedArrayList(Group.class);
+	    memberPrincipals = new TypedArrayList(Principal.class);
 	    parentGroups = new TypedArrayList(Group.class);
         groupRoles = new TypedArrayList(Role.class);
         groupAttributes = new TypedArrayList(GroupAttribute.class);
@@ -195,8 +196,22 @@ public class Group extends KIMPersistableBusinessObjectBase {
     public void setGroupTypeId(Long groupTypeId) {
         this.groupTypeId = groupTypeId;
     }
-
+    
     /**
+	 * @return the memberPrincipals
+	 */
+	public ArrayList<Principal> getMemberPrincipals() {
+		return this.memberPrincipals;
+	}
+
+	/**
+	 * @param memberPrincipals the memberPrincipals to set
+	 */
+	public void setMemberPrincipals(ArrayList<Principal> memberPrincipals) {
+		this.memberPrincipals = memberPrincipals;
+	}
+
+	/**
      *
      * This method creates a DTO from a BO
      *

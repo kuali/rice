@@ -51,6 +51,7 @@
         <ref bean="Principal-entityId" />
         <ref bean="Principal-versionNumber" />
         <ref bean="Principal-objectId" />
+        <ref bean="Principal-newCollectionRecord" />
       </list>
     </property>
   </bean>
@@ -104,6 +105,10 @@
     </property>
     <property name="name" value="entityId" />
     <property name="label" value="Entity" />
+  </bean>
+  <bean id="Principal-newCollectionRecord" parent="Principal-newCollectionRecord-parentBean" />
+
+  <bean id="Principal-newCollectionRecord-parentBean" abstract="true" parent="AttributeReferenceDummy-newCollectionRecord">
   </bean>
   <bean id="Principal-versionNumber" parent="Principal-versionNumber-parentBean" />
 

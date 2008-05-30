@@ -73,7 +73,6 @@ public class Principal extends AbstractEntityBase implements java.security.Princ
      * @see java.security.Principal#getName()
      */
     public String getName() {
-        // TODO Chris - THIS METHOD NEEDS JAVADOCS
         return name;
     }
 

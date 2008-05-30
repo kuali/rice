@@ -19,17 +19,23 @@
     <property name="collections" >
       <list>
         <bean parent="CollectionDefinition"
-              p:shortLabel="SubGroups"
+              p:shortLabel="Member Groups"
               p:summary="Member Groups"
               p:name="memberGroups"
               p:label="Member Groups"
-              p:description="Sub Groups of this group" />
+              p:description="Groups that belong to this group." />
         <bean parent="CollectionDefinition"
-              p:shortLabel="ParentGroups"
+              p:shortLabel="Member Principals"
+              p:summary="Member Principals"
+              p:name="memberPrincipals"
+              p:label="Member Principals"
+              p:description="Principals that are members of this group." />
+        <bean parent="CollectionDefinition"
+              p:shortLabel="Parent Groups"
               p:summary="Parent Groups"
               p:name="parentGroups"
               p:label="Parent Groups"
-              p:description="Parents of this group" />
+              p:description="Groups that this group belongs to." />
         <bean parent="CollectionDefinition"
               p:shortLabel="Roles"
               p:summary="Group Roles"
@@ -37,11 +43,11 @@
               p:label="Group Roles"
               p:description="Roles of this group" />
         <bean parent="CollectionDefinition"
-              p:shortLabel="Attributes"
+              p:shortLabel="Group Attributes"
               p:summary="Group Attributes"
               p:name="groupAttributes"
               p:label="Group Attributes"
-              p:description="Attributes of this group" />
+              p:description="Data attributes attached to this group." />
       </list>
     </property>
     <property name="attributes" >
@@ -182,7 +188,7 @@
               </bean>
             </list>
           </property>
-          <property name="title" value="Parent Group" />
+          <property name="title" value="Parent Groups" />
         </bean>
         <bean parent="InquirySectionDefinition">
           <property name="numberOfColumns" value="1" />
@@ -203,7 +209,28 @@
               </bean>
             </list>
           </property>
-          <property name="title" value="Sub Groups" />
+          <property name="title" value="Member Groups" />
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="memberPrincipals" />
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Principal" />
+                <property name="numberOfColumns" value="1" />
+                <property name="inquiryFields" >
+                  <list>
+                    <bean parent="FieldDefinition"
+                          p:attributeName="id" />
+                    <bean parent="FieldDefinition"
+                          p:attributeName="name" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="title" value="Member Principals" />
         </bean>
         <bean parent="InquirySectionDefinition">
           <property name="numberOfColumns" value="1" />

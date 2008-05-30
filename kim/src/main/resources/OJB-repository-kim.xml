@@ -71,6 +71,11 @@
 			<fk-pointing-to-this-class column="PARENT_GROUP_ID"/>
      		<fk-pointing-to-element-class column="MEMBER_GROUP_ID"/>
 		</collection-descriptor>
+		<collection-descriptor name="memberPrincipals" element-class-ref="org.kuali.rice.kim.bo.Principal" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="link" auto-delete="link"
+			indirection-table="KIM_GROUPS_PRINCIPALS_T">
+			<fk-pointing-to-this-class column="GROUP_ID"/>
+			<fk-pointing-to-element-class column="PRINCIPAL_ID"/>
+		</collection-descriptor>
 		<collection-descriptor name="parentGroups" element-class-ref="org.kuali.rice.kim.bo.Group" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="link" auto-delete="link"
 			indirection-table="KIM_GROUPS_GROUPS_T">
 			<fk-pointing-to-this-class column="MEMBER_GROUP_ID"/>

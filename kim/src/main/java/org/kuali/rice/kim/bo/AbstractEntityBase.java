@@ -17,15 +17,13 @@ package org.kuali.rice.kim.bo;
 
 import java.io.Serializable;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
-
 /**
  * This is a base helper class that encapsulates common fields needed by several "Entity" classes.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public abstract class AbstractEntityBase extends PersistableBusinessObjectBase implements Serializable {
+public abstract class AbstractEntityBase extends KIMPersistableBusinessObjectBase implements Serializable {
 
     private Long id;
     private Long entityTypeId;

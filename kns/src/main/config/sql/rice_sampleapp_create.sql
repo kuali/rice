@@ -1,4 +1,4 @@
--- Fri May 30 10:18:03 EDT 2008
+-- Fri May 30 14:52:23 EDT 2008
 -- This file has been auto-generated from dball.groovy
 -- It contains the master rice bootstrap sql from rice_db_bootstrap.sql
 -- As well as sample data contributed by modules and the rice_sample_create.sql
@@ -2993,7 +2993,7 @@ insert into EN_APPL_CNST_T (APPL_CNST_NM, APPL_CNST_VAL_TXT, DB_LOCK_VER_NBR) va
 insert into EN_APPL_CNST_T (APPL_CNST_NM, APPL_CNST_VAL_TXT, DB_LOCK_VER_NBR) values ('Config.Backdoor.TargetFrameName', 'iframe_51148', 0)
 /
 
-insert into en_usr_t (PRSN_EN_ID, PRSN_UNIV_ID, PRSN_NTWRK_ID, PRSN_UNVL_USR_ID, PRSN_EMAIL_ADDR, PRSN_NM, PRSN_GVN_NM, PRSN_LST_NM, USR_CRTE_DT, USR_LST_UPDT_DT, DB_LOCK_VER_NBR) values ('admin','admin','admin','admin','admin@localhost','admin','admin','admin',to_date('01/01/2000', 'dd/mm/yyyy'),to_date('01/01/2100', 'dd/mm/yyyy'),0)
+insert into en_usr_t (PRSN_EN_ID, PRSN_UNIV_ID, PRSN_NTWRK_ID, PRSN_UNVL_USR_ID, PRSN_EMAIL_ADDR, PRSN_NM, PRSN_GVN_NM, PRSN_LST_NM, USR_CRTE_DT, USR_LST_UPDT_DT, DB_LOCK_VER_NBR) values ('admin','admin','admin','admin','admin@localhost','admin','admin','admin',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,0)
 /
 insert into en_wrkgrp_t (WRKGRP_ID, WRKGRP_VER_NBR, WRKGRP_NM, WRKGRP_ACTV_IND, WRKGRP_TYP_CD, WRKGRP_DESC, WRKGRP_CUR_IND, DOC_HDR_ID, DB_LOCK_VER_NBR) values (1,1,'WorkflowAdmin',1,'W','Workflow Administrator Workgroup',1,null,0)
 /
@@ -3019,37 +3019,37 @@ INSERT INTO KIM_NAMESPACES_T (ID, NAME, DESCRIPTION) VALUES (2, 'Global', 'This 
 /
 
 -- Default Entity Types --
-INSERT INTO KIM_ENTITY_TYPES_T values (1, 'Person', 'This entity type represents a person.', SYS_GUID(), 1)
+INSERT INTO KIM_ENTITY_TYPES_T (ID, NAME, DESCRIPTION) values (1, 'Person', 'This entity type represents a person.')
 /
-INSERT INTO KIM_ENTITY_TYPES_T values (2, 'System', 'This entity type represents another system.', SYS_GUID(), 1)
+INSERT INTO KIM_ENTITY_TYPES_T (ID, NAME, DESCRIPTION) values (2, 'System', 'This entity type represents another system.')
 /
-INSERT INTO KIM_ENTITY_TYPES_T values (3, 'Service', 'This entity type represents a service.', SYS_GUID(), 1)
+INSERT INTO KIM_ENTITY_TYPES_T (ID, NAME, DESCRIPTION) values (3, 'Service', 'This entity type represents a service.')
 /
-INSERT INTO KIM_ENTITY_TYPES_T values (4, 'Process', 'This entity type represents a process.', SYS_GUID(), 1)
+INSERT INTO KIM_ENTITY_TYPES_T (ID, NAME, DESCRIPTION) values (4, 'Process', 'This entity type represents a process.')
 /
 
 -- Default Group Types --
-INSERT INTO KIM_GROUP_TYPES_T values (1, 'Default', 'This is the standard group type that most groups default to.', 'KIMGroupMaintenanceDocument', SYS_GUID(), 1)
+INSERT INTO KIM_GROUP_TYPES_T (ID, NAME, DESCRIPTION, WORKFLOW_DOCUMENT_TYPE) values (1, 'Default', 'This is the standard group type that most groups default to.', 'KIMGroupMaintenanceDocument')
 /
 
 -- Required By KNS for Maint. Docs - these can go away once the 0.9.3 KNS extraction tasks are finished --
-INSERT INTO FP_DOC_TYPE_T values ('KNSD', SYS_GUID(), 1, 'KR', 'KIM NAMESPACE', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T (FDOC_TYP_CD, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('KNSD', 'KR', 'KIM NAMESPACE', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-INSERT INTO FP_DOC_TYPE_T values ('KPMD', SYS_GUID(), 1, 'KR', 'KIM PRINCIPAL', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T (FDOC_TYP_CD, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('KPMD', 'KR', 'KIM PRINCIPAL', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-INSERT INTO FP_DOC_TYPE_T values ('KGMD', SYS_GUID(), 1, 'KR', 'KIM GROUP', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T (FDOC_TYP_CD, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('KGMD', 'KR', 'KIM GROUP', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-INSERT INTO FP_DOC_TYPE_T values ('KRMD', SYS_GUID(), 1, 'KR', 'KIM ROLE', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T (FDOC_TYP_CD, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('KRMD', 'KR', 'KIM ROLE', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-INSERT INTO FP_DOC_TYPE_T values ('KATD', SYS_GUID(), 1, 'KR', 'KIM ATTRIBUTE TYPE', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T (FDOC_TYP_CD, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('KATD', 'KR', 'KIM ATTRIBUTE TYPE', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-INSERT INTO FP_DOC_TYPE_T values ('KETM', SYS_GUID(), 1, 'KR', 'KIM ENTITY TYPE', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T (FDOC_TYP_CD, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('KETM', 'KR', 'KIM ENTITY TYPE', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-INSERT INTO FP_DOC_TYPE_T values ('KEMD', SYS_GUID(), 1, 'KR', 'ENTITY', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T (FDOC_TYP_CD, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('KEMD', 'KR', 'ENTITY', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-INSERT INTO FP_DOC_TYPE_T values ('KPRD', SYS_GUID(), 1, 'KR', 'KIM PERMISSION', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T (FDOC_TYP_CD, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('KPRD', 'KR', 'KIM PERMISSION', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-INSERT INTO FP_DOC_TYPE_T values ('KGTM', SYS_GUID(), 1, 'KR', 'KIM GROUP TYPE', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T (FDOC_TYP_CD, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('KGTM', 'KR', 'KIM GROUP TYPE', 'N', 'Y', 'N', 0, 'N', 'N')
 /
 -- Concatenating KENBootstrap.sql
 -- KEN Core Data --
@@ -3233,11 +3233,11 @@ to be accepted into the system. -->
 /
 
 -- Concatenating KOMBootstrap.sql
-INSERT INTO FP_DOC_TYPE_T values ('KOCD', SYS_GUID(), 1, 'KR', 'ORGANIZATION CATEGORY', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T (FDOC_TYP_CD, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('KOCD', 'KR', 'ORGANIZATION CATEGORY', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-INSERT INTO FP_DOC_TYPE_T values ('KOCT', SYS_GUID(), 1, 'KR', 'ORGANIZATION CONTEXT', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T (FDOC_TYP_CD, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('KOCT', 'KR', 'ORGANIZATION CONTEXT', 'N', 'Y', 'N', 0, 'N', 'N')
 /
-INSERT INTO FP_DOC_TYPE_T values ('KORG', SYS_GUID(), 1, 'KR', 'ORGANIZATION', 'N', 'Y', 'N', 0, 'N', 'N')
+INSERT INTO FP_DOC_TYPE_T (FDOC_TYP_CD, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('KORG', 'KR', 'ORGANIZATION', 'N', 'Y', 'N', 0, 'N', 'N')
 /
 
 -- Concatenating rice_sample_app.sql
@@ -3306,18 +3306,18 @@ CREATE SEQUENCE SEQ_TRAVEL_FO_ID INCREMENT BY 1 START WITH 1000
 alter table trv_acct add constraint trv_acct_fk1 foreign key(acct_fo_id) references trv_acct_fo(acct_fo_id)
 /
 
-insert into trv_acct_fo (acct_fo_id, acct_fo_user_name, ver_nbr) values (1, 'fred', 0)
+insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (1, 'fred')
 /
-insert into trv_acct_fo (acct_fo_id, acct_fo_user_name, ver_nbr) values (2, 'fran', 0)
+insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (2, 'fran')
 /
-insert into trv_acct_fo (acct_fo_id, acct_fo_user_name, ver_nbr) values (3, 'frank', 0)
+insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (3, 'frank')
 /
 
-insert into TRV_ACCT (acct_num, acct_name, acct_fo_id, ver_nbr) values ('a1', 'a1', 1, 0)
+insert into TRV_ACCT (acct_num, acct_name, acct_fo_id) values ('a1', 'a1', 1)
 /
-insert into TRV_ACCT (acct_num, acct_name, acct_fo_id, ver_nbr) values ('a2', 'a2', 2, 0)
+insert into TRV_ACCT (acct_num, acct_name, acct_fo_id) values ('a2', 'a2', 2)
 /
-insert into TRV_ACCT (acct_num, acct_name, acct_fo_id, ver_nbr) values ('a3', 'a3', 3, 0)
+insert into TRV_ACCT (acct_num, acct_name, acct_fo_id) values ('a3', 'a3', 3)
 /
 
 insert into en_usr_t (PRSN_EN_ID, PRSN_UNIV_ID, PRSN_NTWRK_ID, PRSN_UNVL_USR_ID, PRSN_EMAIL_ADDR, PRSN_NM, PRSN_GVN_NM, PRSN_LST_NM, USR_CRTE_DT, USR_LST_UPDT_DT, DB_LOCK_VER_NBR) values ('quickstart','quickstart','quickstart','quickstart','quickstart@localhost','quickstart','quickstart','quickstart',to_date('01/01/2000', 'dd/mm/yyyy'),to_date('01/01/2100', 'dd/mm/yyyy'),0)

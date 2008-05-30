@@ -63,18 +63,18 @@ CREATE SEQUENCE SEQ_TRAVEL_FO_ID INCREMENT BY 1 START WITH 1000
 alter table trv_acct add constraint trv_acct_fk1 foreign key(acct_fo_id) references trv_acct_fo(acct_fo_id)
 /
 
-insert into trv_acct_fo (acct_fo_id, acct_fo_user_name, ver_nbr) values (1, 'fred', 0)
+insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (1, 'fred')
 /
-insert into trv_acct_fo (acct_fo_id, acct_fo_user_name, ver_nbr) values (2, 'fran', 0)
+insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (2, 'fran')
 /
-insert into trv_acct_fo (acct_fo_id, acct_fo_user_name, ver_nbr) values (3, 'frank', 0)
+insert into trv_acct_fo (acct_fo_id, acct_fo_user_name) values (3, 'frank')
 /
 
-insert into TRV_ACCT (acct_num, acct_name, acct_fo_id, ver_nbr) values ('a1', 'a1', 1, 0)
+insert into TRV_ACCT (acct_num, acct_name, acct_fo_id) values ('a1', 'a1', 1)
 /
-insert into TRV_ACCT (acct_num, acct_name, acct_fo_id, ver_nbr) values ('a2', 'a2', 2, 0)
+insert into TRV_ACCT (acct_num, acct_name, acct_fo_id) values ('a2', 'a2', 2)
 /
-insert into TRV_ACCT (acct_num, acct_name, acct_fo_id, ver_nbr) values ('a3', 'a3', 3, 0)
+insert into TRV_ACCT (acct_num, acct_name, acct_fo_id) values ('a3', 'a3', 3)
 /
 
 insert into en_usr_t (PRSN_EN_ID, PRSN_UNIV_ID, PRSN_NTWRK_ID, PRSN_UNVL_USR_ID, PRSN_EMAIL_ADDR, PRSN_NM, PRSN_GVN_NM, PRSN_LST_NM, USR_CRTE_DT, USR_LST_UPDT_DT, DB_LOCK_VER_NBR) values ('quickstart','quickstart','quickstart','quickstart','quickstart@localhost','quickstart','quickstart','quickstart',to_date('01/01/2000', 'dd/mm/yyyy'),to_date('01/01/2100', 'dd/mm/yyyy'),0)

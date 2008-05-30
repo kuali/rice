@@ -14,7 +14,7 @@
     <property name="lookupDefinition" >
       <ref bean="Namespace-lookupDefinition" />
     </property>
-    <property name="titleAttribute" value="id" />
+    <property name="titleAttribute" value="name" />
     <property name="objectLabel" value="Namespace" />
     <property name="collections" >
       <list>
@@ -62,7 +62,7 @@
             p:size="8" />
     </property>
     <property name="name" value="id" />
-    <property name="label" value="Namespace Id" />
+    <property name="label" value="Id" />
   </bean>
   <bean id="Namespace-name" parent="Namespace-name-parentBean" />
 
@@ -79,7 +79,7 @@
             p:size="100" />
     </property>
     <property name="name" value="name" />
-    <property name="label" value="Namespace Name" />
+    <property name="label" value="Name" />
   </bean>
   <bean id="Namespace-description" parent="Namespace-description-parentBean" />
 

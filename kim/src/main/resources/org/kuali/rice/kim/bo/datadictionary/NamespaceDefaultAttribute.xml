@@ -8,7 +8,6 @@
 
   <bean id="NamespaceDefaultAttribute-parentBean" abstract="true" parent="BusinessObjectEntry">
     <property name="businessObjectClass" value="org.kuali.rice.kim.bo.NamespaceDefaultAttribute" />
-    <property name="titleAttribute" value="id" />
     <property name="objectLabel" value="Namespace Default Attribute" />
     <property name="attributes" >
       <list>
@@ -34,7 +33,7 @@
 
   <bean id="NamespaceDefaultAttribute-id-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true" />
-    <property name="shortLabel" value="id" />
+    <property name="shortLabel" value="Id" />
     <property name="maxLength" value="8" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
@@ -61,7 +60,7 @@
             p:size="100" />
     </property>
     <property name="name" value="attributeName" />
-    <property name="label" value="Attribute Name" />
+    <property name="label" value="Name" />
   </bean>
   <bean id="NamespaceDefaultAttribute-description" parent="NamespaceDefaultAttribute-description-parentBean" />
 
@@ -84,7 +83,7 @@
 
   <bean id="NamespaceDefaultAttribute-attributeType.attributeTypeName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Attr" />
+    <property name="shortLabel" value="Type" />
     <property name="maxLength" value="4000" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern"
@@ -95,7 +94,7 @@
             p:size="100" />
     </property>
     <property name="name" value="attributeType.attributeTypeName" />
-    <property name="label" value="Attribute" />
+    <property name="label" value="Type" />
   </bean>
   <bean id="NamespaceDefaultAttribute-namespace.name" parent="NamespaceDefaultAttribute-namespace.name-parentBean" />
 
@@ -145,7 +144,7 @@
   <bean id="NamespaceDefaultAttribute-attributeTypeId" parent="NamespaceDefaultAttribute-attributeTypeId-parentBean" />
 
   <bean id="NamespaceDefaultAttribute-attributeTypeId-parentBean" abstract="true" parent="AttributeType-id">
-    <property name="shortLabel" value="Type Name" />
+    <property name="shortLabel" value="Type" />
     <property name="required" value="true" />
     <property name="control" >
       <bean parent="SelectControlDefinition"
@@ -156,7 +155,7 @@
             p:labelAttribute="attributeTypeName" />
     </property>
     <property name="name" value="attributeTypeId" />
-    <property name="label" value="Attribute Type Name" />
+    <property name="label" value="Type" />
   </bean>
   <bean id="NamespaceDefaultAttribute-namespaceId" parent="NamespaceDefaultAttribute-namespaceId-parentBean" />
 

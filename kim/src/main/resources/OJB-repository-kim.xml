@@ -25,7 +25,7 @@
 
 	<!-- ATTRIBUTE TYPES -->
 	<class-descriptor class="org.kuali.rice.kim.bo.AttributeType" table="KIM_ATTRIBUTE_TYPES_T">
-		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_ATTRIBUTE_TYPES_ID" index="true" />
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
 		<field-descriptor name="attributeTypeName" column="NAME" jdbc-type="VARCHAR" />
 		<field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
@@ -34,7 +34,7 @@
 
 	<!-- PRINCIPALS -->
 	<class-descriptor class="org.kuali.rice.kim.bo.Principal" table="KIM_PRINCIPALS_T">
-		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_PRINCIPALS_ID" index="true" />
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
 		<field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="BIGINT" />
 		<field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
@@ -60,7 +60,7 @@
 
 	<!-- GROUPS -->
 	<class-descriptor class="org.kuali.rice.kim.bo.Group" table="KIM_GROUPS_T">
-		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_GROUPS_ID" index="true" />
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
 		<field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
 		<field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" />
 		<field-descriptor name="groupTypeId" column="GROUP_TYPE_ID" jdbc-type="BIGINT"/>
@@ -91,7 +91,7 @@
 	
 	<!-- GROUP TYPE DEFAULT ATTRIBUTES -->
     <class-descriptor class="org.kuali.rice.kim.bo.GroupTypeDefaultAttribute" table="KIM_GRP_TYP_DFLT_ATTRIBS_T">
-        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_GRP_TYP_DFLT_ATTR_ID" index="true" />
+        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
         <field-descriptor name="groupTypeId" column="GROUP_TYPE_ID" jdbc-type="BIGINT"/>
         <field-descriptor name="attributeName" column="ATTRIBUTE_NAME" jdbc-type="VARCHAR"/>
         <field-descriptor name="attributeTypeId" column="ATTRIBUTE_TYPE_ID" jdbc-type="BIGINT"/>
@@ -113,7 +113,7 @@
 
 	<!-- GROUP TYPES -->
     <class-descriptor class="org.kuali.rice.kim.bo.GroupType" table="KIM_GROUP_TYPES_T">
-        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_GROUP_TYPES_ID" index="true" />
+        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
         <field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
         <field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" />
         <field-descriptor name="workflowDocumentType" column="WORKFLOW_DOCUMENT_TYPE" jdbc-type="VARCHAR" />
@@ -129,7 +129,7 @@
 
 	<!-- ROLES -->
 	<class-descriptor class="org.kuali.rice.kim.bo.Role" table="KIM_ROLES_T">
-		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_ROLES_ID" index="true" />
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
 		<field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
 		<field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
@@ -162,7 +162,7 @@
 	
 	<!-- GROUP QUALIFIED ROLE ATTRIBUTES -->
 	<class-descriptor class="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute" table="KIM_GROUP_QLFD_ROLES_T">
-		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_GROUP_QLFD_ROLES_ID" index="true" />
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
 		<field-descriptor name="groupId" column="GROUP_ID" jdbc-type="BIGINT" />
 		<field-descriptor name="roleId" column="ROLE_ID" jdbc-type="BIGINT" />
 		<field-descriptor name="attributeName" column="ATTRIBUTE_NAME" jdbc-type="VARCHAR" />
@@ -175,7 +175,7 @@
 	
 	<!-- PRINCIPAL QUALIFIED ROLE ATTRIBUTES -->
 	<class-descriptor class="org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute" table="KIM_PRNCPL_QLFD_ROLES_T">
-		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_PRNCPL_QLFD_ROLES_ID" index="true" />
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
 		<field-descriptor name="principalId" column="PRINCIPAL_ID" jdbc-type="BIGINT" />
 		<field-descriptor name="roleId" column="ROLE_ID" jdbc-type="BIGINT" />
 		<field-descriptor name="attributeName" column="ATTRIBUTE_NAME" jdbc-type="VARCHAR" />
@@ -188,7 +188,7 @@
 	
 	<!-- ROLE ATTRIBUTES -->
 	<class-descriptor class="org.kuali.rice.kim.bo.RoleAttribute" table="KIM_ROLE_ATTRIBUTES_T">
-		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_ROLE_ATTRIBUTES_ID" index="true" />
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
 		<field-descriptor name="roleId" column="ROLE_ID" jdbc-type="BIGINT" />
 		<field-descriptor name="attributeTypeId" column="ATTRIBUTE_TYPE_ID" jdbc-type="BIGINT" />
 		<field-descriptor name="attributeName" column="ATTRIBUTE_NAME" jdbc-type="VARCHAR" />
@@ -205,7 +205,7 @@
 
 	<!-- GROUP ATTRIBUTES -->
 	<class-descriptor class="org.kuali.rice.kim.bo.GroupAttribute" table="KIM_GROUP_ATTRIBUTES_T">
-		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_GROUP_ATTRIBUTES_ID" index="true" />
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
 		<field-descriptor name="groupId" column="GROUP_ID" jdbc-type="BIGINT" />
 		<field-descriptor name="attributeTypeId" column="ATTRIBUTE_TYPE_ID" jdbc-type="BIGINT" />
 		<field-descriptor name="attributeName" column="ATTRIBUTE_NAME" jdbc-type="VARCHAR" />
@@ -222,7 +222,7 @@
 
 	<!-- NAMESPACE DEFAULT ATTRIBUTES -->
     <class-descriptor class="org.kuali.rice.kim.bo.NamespaceDefaultAttribute" table="KIM_NAMESPACE_DFLT_ATTRIBS_T">
-        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_NMSPCE_DFLT_ATTR_ID" index="true" />
+        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
         <field-descriptor name="namespaceId" column="NAMESPACE_ID" jdbc-type="BIGINT"/>
         <field-descriptor name="attributeName" column="ATTRIBUTE_NAME" jdbc-type="VARCHAR"/>
         <field-descriptor name="attributeTypeId" column="ATTRIBUTE_TYPE_ID" jdbc-type="BIGINT"/>
@@ -259,7 +259,7 @@
 
 	<!-- PERMISSIONS -->
     <class-descriptor class="org.kuali.rice.kim.bo.Permission" table="KIM_PERMISSIONS_T">
-        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_PERMISSIONS_ID" index="true" />
+        <field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
         <field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
         <field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" />
         <field-descriptor name="namespaceId" column="NAMESPACE_ID" jdbc-type="BIGINT" />
@@ -274,7 +274,7 @@
 
 	<!-- ENTITY TYPES -->
     <class-descriptor class="org.kuali.rice.kim.bo.EntityType" table="KIM_ENTITY_TYPES_T">
-		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_ENTITY_TYPES_ID" index="true" />
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
 		<field-descriptor name="name" column="NAME" jdbc-type="VARCHAR" />
 		<field-descriptor name="description" column="DESCRIPTION" jdbc-type="VARCHAR" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
@@ -283,7 +283,7 @@
 
 	<!-- ENTITIES -->
 	<class-descriptor class="org.kuali.rice.kim.bo.Entity" table="KIM_ENTITYS_T">
-		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_ENTITYS_ID" index="true" />
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
 		<field-descriptor name="entityTypeId" column="ENTITY_TYPE_ID" jdbc-type="BIGINT" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
@@ -303,7 +303,7 @@
 
 	<!-- ENTITY ATTRIBUTES -->
 	<class-descriptor class="org.kuali.rice.kim.bo.EntityAttribute" table="KIM_ENTITY_ATTRIBUTES_T">
-		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="SEQ_KIM_ENTITY_ATTRIBS_ID" index="true" />
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
 		<field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="BIGINT" />
 		<field-descriptor name="attributeTypeId" column="ATTRIBUTE_TYPE_ID" jdbc-type="BIGINT" />
 		<field-descriptor name="namespaceId" column="SPONSOR_NAMESPACE_ID" jdbc-type="BIGINT" />

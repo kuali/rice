@@ -14,7 +14,7 @@
     <property name="lookupDefinition" >
       <ref bean="Principal-lookupDefinition" />
     </property>
-    <property name="titleAttribute" value="id" />
+    <property name="titleAttribute" value="name" />
     <property name="objectLabel" value="Principal" />
     <property name="collections" >
       <list>
@@ -62,7 +62,7 @@
 
   <bean id="Principal-id-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true" />
-    <property name="shortLabel" value="id" />
+    <property name="shortLabel" value="Principal Id" />
     <property name="maxLength" value="8" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
@@ -72,13 +72,13 @@
             p:size="8" />
     </property>
     <property name="name" value="id" />
-    <property name="label" value="ID" />
+    <property name="label" value="Id" />
   </bean>
   <bean id="Principal-name" parent="Principal-name-parentBean" />
 
   <bean id="Principal-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Name" />
+    <property name="shortLabel" value="Principal Name" />
     <property name="maxLength" value="500" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
@@ -88,7 +88,7 @@
             p:size="100" />
     </property>
     <property name="name" value="name" />
-    <property name="label" value="Principal Name" />
+    <property name="label" value="Name" />
   </bean>
   <bean id="Principal-entityId" parent="Principal-entityId-parentBean" />
 

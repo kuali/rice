@@ -36,8 +36,7 @@
   <bean id="GroupAttribute-id" parent="GroupAttribute-id-parentBean" />
 
   <bean id="GroupAttribute-id-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="true" />
-    <property name="shortLabel" value="id" />
+    <property name="shortLabel" value="Id" />
     <property name="maxLength" value="8" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
@@ -47,7 +46,7 @@
             p:size="8" />
     </property>
     <property name="name" value="id" />
-    <property name="label" value="ID" />
+    <property name="label" value="Id" />
   </bean>
   <bean id="GroupAttribute-attributeName" parent="GroupAttribute-attributeName-parentBean" />
 
@@ -64,7 +63,7 @@
             p:size="100" />
     </property>
     <property name="name" value="attributeName" />
-    <property name="label" value="Group Attribute Name" />
+    <property name="label" value="Name" />
   </bean>
   <bean id="GroupAttribute-value" parent="GroupAttribute-value-parentBean" />
 
@@ -87,7 +86,7 @@
   <bean id="GroupAttribute-attributeTypeId" parent="GroupAttribute-attributeTypeId-parentBean" />
 
   <bean id="GroupAttribute-attributeTypeId-parentBean" abstract="true" parent="AttributeType-id">
-    <property name="shortLabel" value="Type Name" />
+    <property name="shortLabel" value="Type" />
     <property name="required" value="true" />
     <property name="control" >
       <bean parent="SelectControlDefinition"
@@ -98,7 +97,7 @@
             p:labelAttribute="attributeTypeName" />
     </property>
     <property name="name" value="attributeTypeId" />
-    <property name="label" value="Attribute Type Name" />
+    <property name="label" value="Type" />
   </bean>
   <bean id="GroupAttribute-groupId" parent="GroupAttribute-groupId-parentBean" />
 
@@ -113,7 +112,7 @@
             p:labelAttribute="name" />
     </property>
     <property name="name" value="groupId" />
-    <property name="label" value="Associated Group" />
+    <property name="label" value="Group" />
   </bean>
   <bean id="GroupAttribute-newCollectionRecord" parent="GroupAttribute-newCollectionRecord-parentBean" />
 

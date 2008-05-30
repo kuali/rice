@@ -30,8 +30,7 @@
   <bean id="EntityAttribute-id" parent="EntityAttribute-id-parentBean" />
 
   <bean id="EntityAttribute-id-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="true" />
-    <property name="shortLabel" value="id" />
+    <property name="shortLabel" value="Id" />
     <property name="maxLength" value="8" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
@@ -41,7 +40,7 @@
             p:size="8" />
     </property>
     <property name="name" value="id" />
-    <property name="label" value="ID" />
+    <property name="label" value="Id" />
   </bean>
   <bean id="EntityAttribute-entityId" parent="EntityAttribute-entityId-parentBean" />
 
@@ -56,12 +55,12 @@
             p:labelAttribute="entityTypeId" />
     </property>
     <property name="name" value="entityId" />
-    <property name="label" value="Associated Entity" />
+    <property name="label" value="Entity" />
   </bean>
   <bean id="EntityAttribute-attributeTypeId" parent="EntityAttribute-attributeTypeId-parentBean" />
 
   <bean id="EntityAttribute-attributeTypeId-parentBean" abstract="true" parent="AttributeType-id">
-    <property name="shortLabel" value="Type Name" />
+    <property name="shortLabel" value="Type" />
     <property name="required" value="true" />
     <property name="control" >
       <bean parent="SelectControlDefinition"
@@ -72,7 +71,7 @@
             p:labelAttribute="attributeTypeName" />
     </property>
     <property name="name" value="attributeTypeId" />
-    <property name="label" value="Attribute Type Name" />
+    <property name="label" value="Type" />
   </bean>
   <bean id="EntityAttribute-attributeName" parent="EntityAttribute-attributeName-parentBean" />
 
@@ -89,7 +88,7 @@
             p:size="100" />
     </property>
     <property name="name" value="attributeName" />
-    <property name="label" value="Entity Attribute Name" />
+    <property name="label" value="Name" />
   </bean>
   <bean id="EntityAttribute-namespaceId" parent="EntityAttribute-namespaceId-parentBean" />
 
@@ -105,7 +104,7 @@
             p:labelAttribute="name" />
     </property>
     <property name="name" value="namespaceId" />
-    <property name="label" value="Associated Namespace" />
+    <property name="label" value="Namespace" />
   </bean>
   <bean id="EntityAttribute-value" parent="EntityAttribute-value-parentBean" />
 
@@ -123,7 +122,7 @@
             p:rows="10" />
     </property>
     <property name="name" value="value" />
-    <property name="label" value="Entity Attribute Value" />
+    <property name="label" value="Value" />
   </bean>
   <bean id="EntityAttribute-versionNumber" parent="EntityAttribute-versionNumber-parentBean" />
 

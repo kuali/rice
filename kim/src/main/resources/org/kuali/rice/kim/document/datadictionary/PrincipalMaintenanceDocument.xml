@@ -51,9 +51,11 @@
     <property name="maintainableItems" >
       <list>
         <bean parent="MaintainableFieldDefinition"
-              p:required="true"
               p:name="id"
-              p:readOnly="true" />
+              p:required="true"
+              p:readOnly="true"
+              p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextPrincipalIdFinder">
+        </bean>
         <bean parent="MaintainableFieldDefinition"
               p:required="true"
               p:name="name" />
@@ -77,15 +79,20 @@
           <property name="sourceAttributeName" value="groups" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Group" />
           <property name="includeAddLine" value="false" />
-          <property name="summaryTitle" value="Groups" />
+          <property name="summaryTitle" value="Group" />
+          <property name="summaryFields" >
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+                    p:name="name" />
+            </list>
+          </property>
           <property name="maintainableFields" >
             <list>
               <bean parent="MaintainableFieldDefinition"
                     p:required="true"
-                    p:readOnlyAfterAdd="true"
+                    p:readOnly="true"
                     p:template="id"
-                    p:name="id"
-                    p:readOnly="true" />
+                    p:name="id" />
               <bean parent="MaintainableFieldDefinition"
                     p:required="true"
                     p:template="name"
@@ -121,10 +128,11 @@
             <list>
               <bean parent="MaintainableFieldDefinition"
                     p:required="true"
-                    p:readOnlyAfterAdd="true"
+                    p:readOnly="true"
                     p:template="id"
                     p:name="id" />
               <bean parent="MaintainableFieldDefinition"
+              		p:required="true" 
                     p:template="name"
                     p:name="name"
                     p:readOnly="true" />
@@ -144,21 +152,17 @@
                 <property name="maintainableFields" >
                   <list>
                     <bean parent="MaintainableFieldDefinition"
-                          p:required="true"
-                          p:name="id"
-                          p:readOnly="true" />
+		                  p:name="id"
+		                  p:required="true"
+		                  p:readOnly="true"
+		                  p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextPrincipalQualifiedRoleAttributeIdFinder">
+		            </bean>
                     <bean parent="MaintainableFieldDefinition"
                           p:required="true"
                           p:name="attributeName" />
                     <bean parent="MaintainableFieldDefinition"
                           p:required="true"
                           p:name="attributeValue" />
-                    <bean parent="MaintainableFieldDefinition"
-                          p:name="principalId"
-                          p:readOnly="true" />
-                    <bean parent="MaintainableFieldDefinition"
-                          p:name="roleId"
-                          p:readOnly="true" />
                     <bean parent="MaintainableFieldDefinition"
                           p:name="versionNumber"
                           p:readOnly="true" />

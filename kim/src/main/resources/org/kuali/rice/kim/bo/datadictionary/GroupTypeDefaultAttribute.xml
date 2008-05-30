@@ -8,7 +8,7 @@
 
   <bean id="GroupTypeDefaultAttribute-parentBean" abstract="true" parent="BusinessObjectEntry">
     <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupTypeDefaultAttribute" />
-    <property name="titleAttribute" value="id" />
+    <property name="titleAttribute" value="attributeName" />
     <property name="objectLabel" value="Group Type Default Attribute" />
     <property name="attributes" >
       <list>
@@ -59,7 +59,7 @@
             p:size="100" />
     </property>
     <property name="name" value="attributeName" />
-    <property name="label" value="Attribute Name" />
+    <property name="label" value="Name" />
   </bean>
   <bean id="GroupTypeDefaultAttribute-description" parent="GroupTypeDefaultAttribute-description-parentBean" />
 
@@ -92,7 +92,7 @@
             p:labelAttribute="attributeTypeName" />
     </property>
     <property name="name" value="attributeTypeId" />
-    <property name="label" value="Attribute Type" />
+    <property name="label" value="Type" />
   </bean>
   <bean id="GroupTypeDefaultAttribute-groupTypeId" parent="GroupTypeDefaultAttribute-groupTypeId-parentBean" />
 
@@ -108,7 +108,7 @@
             p:labelAttribute="name" />
     </property>
     <property name="name" value="groupTypeId" />
-    <property name="label" value="Associated Group Type" />
+    <property name="label" value="Group Type" />
   </bean>
   <bean id="GroupTypeDefaultAttribute-required" parent="GroupTypeDefaultAttribute-required-parentBean" />
 

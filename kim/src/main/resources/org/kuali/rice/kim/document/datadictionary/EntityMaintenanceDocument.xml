@@ -52,9 +52,10 @@
     <property name="maintainableItems" >
       <list>
         <bean parent="MaintainableFieldDefinition"
-              p:required="true"
               p:name="id"
-              p:readOnly="true" />
+              p:readOnly="true" 
+              p:required="true"
+              p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextEntityIdFinder" />
         <bean parent="MaintainableFieldDefinition"
               p:required="true"
               p:name="entityTypeId" />
@@ -68,13 +69,14 @@
   <bean id="KIMEntityMaintenanceDocument-EntityPrincipal" parent="KIMEntityMaintenanceDocument-EntityPrincipal-parentBean" />
 
   <bean id="KIMEntityMaintenanceDocument-EntityPrincipal-parentBean" abstract="true" parent="MaintainableSectionDefinition">
-    <property name="maintainableItems" >
+  	<property name="maintainableItems" >
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Principal" />
           <property name="sourceAttributeName" value="principals" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Principal" />
-          <property name="summaryTitle" value="Principals" />
+          <property name="includeAddLine" value="false" />
+          <property name="summaryTitle" value="Associated Principals" />
           <property name="maintainableFields" >
             <list>
               <bean parent="MaintainableFieldDefinition"
@@ -109,7 +111,8 @@
                     p:required="true"
                     p:template="id"
                     p:name="id"
-                    p:readOnly="true" />
+                    p:readOnly="true" 
+                    p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextEntityAttributeIdFinder" />
               <bean parent="MaintainableFieldDefinition"
                     p:required="true"
                     p:template="attributeTypeId"

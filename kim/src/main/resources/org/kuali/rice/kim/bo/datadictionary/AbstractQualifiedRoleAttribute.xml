@@ -35,8 +35,7 @@
       <bean parent="AnyCharacterValidationPattern" />
     </property>
     <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="8" />
+      <bean parent="HiddenControlDefinition" />
     </property>
     <property name="name" value="id" />
     <property name="label" value="Id" />
@@ -77,13 +76,13 @@
   <bean id="AbstractQualifiedRoleAttribute-roleId" parent="AbstractQualifiedRoleAttribute-roleId-parentBean" />
 
   <bean id="AbstractQualifiedRoleAttribute-roleId-parentBean" abstract="true" parent="Role-id">
-    <property name="shortLabel" value="Role Id" />
+    <property name="shortLabel" value="Role" />
     <property name="required" value="true" />
     <property name="control" >
       <bean parent="HiddenControlDefinition" />
     </property>
     <property name="name" value="roleId" />
-    <property name="label" value="Role Id" />
+    <property name="label" value="Role" />
   </bean>
   <bean id="AbstractQualifiedRoleAttribute-versionNumber" parent="AbstractQualifiedRoleAttribute-versionNumber-parentBean" />
 

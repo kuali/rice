@@ -41,11 +41,11 @@
       <bean parent="SelectControlDefinition"
             p:businessObjectClass="org.kuali.rice.kim.bo.Role"
             p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-            p:includeKeyInLabel="true"
+            p:includeKeyInLabel="false"
             p:keyAttribute="id"
-            p:labelAttribute="name" />
+            p:labelAttribute="id" />
     </property>
-    <property name="label" value="Role Id" />
+    <property name="label" value="Id" />
   </bean>
   <bean id="RoleQualificationForPrincipal-name" parent="RoleQualificationForPrincipal-name-parentBean" />
 

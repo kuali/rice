@@ -110,9 +110,11 @@ public class PrincipalMaintainable extends KualiMaintainableImpl {
             r.setId(rqfp.getId());
             principal.getRoles().add(r);
             
-            ArrayList<PrincipalQualifiedRoleAttribute> gqrAttribs = rqfp.getQualifiedRoleAttributes();
-            for(PrincipalQualifiedRoleAttribute gqrAttrib : gqrAttribs) {
-                principal.getPrincipalQualifiedRoleAttributes().add(gqrAttrib);
+            ArrayList<PrincipalQualifiedRoleAttribute> pqrAttribs = rqfp.getQualifiedRoleAttributes();
+            for(PrincipalQualifiedRoleAttribute pqrAttrib : pqrAttribs) {
+                pqrAttrib.setRoleId(rqfp.getId());
+                pqrAttrib.setPrincipalId(principal.getId());
+                principal.getPrincipalQualifiedRoleAttributes().add(pqrAttrib);
             }
         }
     }

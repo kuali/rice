@@ -45,7 +45,6 @@
   <bean id="GroupType-id" parent="GroupType-id-parentBean" />
 
   <bean id="GroupType-id-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="true" />
     <property name="shortLabel" value="Id" />
     <property name="maxLength" value="8" />
     <property name="validationPattern" >

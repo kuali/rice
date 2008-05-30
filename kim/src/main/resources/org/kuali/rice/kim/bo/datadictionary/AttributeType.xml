@@ -14,7 +14,7 @@
     <property name="lookupDefinition" >
       <ref bean="AttributeType-lookupDefinition" />
     </property>
-    <property name="titleAttribute" value="id" />
+    <property name="titleAttribute" value="attributeTypeName" />
     <property name="objectLabel" value="Attribute Type" />
     <property name="attributes" >
       <list>
@@ -32,8 +32,7 @@
   <bean id="AttributeType-id" parent="AttributeType-id-parentBean" />
 
   <bean id="AttributeType-id-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="true" />
-    <property name="shortLabel" value="id" />
+    <property name="shortLabel" value="Id" />
     <property name="maxLength" value="8" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
@@ -43,13 +42,13 @@
             p:size="8" />
     </property>
     <property name="name" value="id" />
-    <property name="label" value="ID" />
+    <property name="label" value="Id" />
   </bean>
   <bean id="AttributeType-attributeTypeName" parent="AttributeType-attributeTypeName-parentBean" />
 
   <bean id="AttributeType-attributeTypeName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Type Name" />
+    <property name="shortLabel" value="Name" />
     <property name="maxLength" value="500" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern"
@@ -60,7 +59,7 @@
             p:size="100" />
     </property>
     <property name="name" value="attributeTypeName" />
-    <property name="label" value="Attribute Type Name" />
+    <property name="label" value="Name" />
   </bean>
   <bean id="AttributeType-description" parent="AttributeType-description-parentBean" />
 

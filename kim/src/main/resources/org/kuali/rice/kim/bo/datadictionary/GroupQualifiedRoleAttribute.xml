@@ -45,12 +45,16 @@
   <bean id="GroupQualifiedRoleAttribute-groupId" parent="GroupQualifiedRoleAttribute-groupId-parentBean" />
 
   <bean id="GroupQualifiedRoleAttribute-groupId-parentBean" abstract="true" parent="Group-id">
-    <property name="shortLabel" value="Group Id" />
+    <property name="shortLabel" value="Group" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
     <property name="control" >
-      <bean parent="HiddenControlDefinition" />
+      <bean parent="TextControlDefinition"
+            p:size="8" />
     </property>
     <property name="name" value="groupId" />
-    <property name="label" value="Group Id" />
+    <property name="label" value="Group" />
   </bean>
   <bean id="GroupQualifiedRoleAttribute-versionNumber" parent="GroupQualifiedRoleAttribute-versionNumber-parentBean" />
 

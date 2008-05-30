@@ -14,7 +14,7 @@
     <property name="lookupDefinition" >
       <ref bean="Group-lookupDefinition" />
     </property>
-    <property name="titleAttribute" value="id" />
+    <property name="titleAttribute" value="name" />
     <property name="objectLabel" value="Group" />
     <property name="collections" >
       <list>
@@ -63,19 +63,17 @@
   <bean id="Group-id" parent="Group-id-parentBean" />
 
   <bean id="Group-id-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="id" />
+    <property name="shortLabel" value="Id" />
     <property name="maxLength" value="8" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
     </property>
-    <property name="required" value="true" />
     <property name="control" >
       <bean parent="TextControlDefinition"
             p:size="8" />
     </property>
     <property name="name" value="id" />
-    <property name="label" value="ID" />
+    <property name="label" value="Id" />
   </bean>
   <bean id="Group-name" parent="Group-name-parentBean" />
 
@@ -92,7 +90,7 @@
             p:size="100" />
     </property>
     <property name="name" value="name" />
-    <property name="label" value="Group Name" />
+    <property name="label" value="Name" />
   </bean>
   <bean id="Group-description" parent="Group-description-parentBean" />
 
@@ -110,7 +108,7 @@
             p:rows="10" />
     </property>
     <property name="name" value="description" />
-    <property name="label" value="Group Description" />
+    <property name="label" value="Description" />
   </bean>
   <bean id="Group-groupTypeId" parent="Group-groupTypeId-parentBean" />
 
@@ -121,12 +119,12 @@
       <bean parent="SelectControlDefinition"
             p:businessObjectClass="org.kuali.rice.kim.bo.GroupType"
             p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-            p:includeKeyInLabel="true"
+            p:includeKeyInLabel="false"
             p:keyAttribute="id"
             p:labelAttribute="name" />
     </property>
     <property name="name" value="groupTypeId" />
-    <property name="label" value="Group Type" />
+    <property name="label" value="Type" />
   </bean>
   <bean id="Group-newCollectionRecord" parent="Group-newCollectionRecord-parentBean" />
 

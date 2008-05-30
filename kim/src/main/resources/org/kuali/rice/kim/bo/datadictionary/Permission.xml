@@ -8,13 +8,6 @@
 
   <bean id="Permission-parentBean" abstract="true" parent="BusinessObjectEntry">
     <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Permission" />
-    <property name="inquiryDefinition" >
-      <ref bean="Permission-inquiryDefinition" />
-    </property>
-    <property name="lookupDefinition" >
-      <ref bean="Permission-lookupDefinition" />
-    </property>
-    <property name="titleAttribute" value="id" />
     <property name="objectLabel" value="Permission" />
     <property name="attributes" >
       <list>
@@ -34,8 +27,7 @@
   <bean id="Permission-id" parent="Permission-id-parentBean" />
 
   <bean id="Permission-id-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="true" />
-    <property name="shortLabel" value="id" />
+    <property name="shortLabel" value="Permission Id" />
     <property name="maxLength" value="8" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
@@ -51,7 +43,7 @@
 
   <bean id="Permission-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Name" />
+    <property name="shortLabel" value="Permission Name" />
     <property name="maxLength" value="500" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern"
@@ -62,13 +54,13 @@
             p:size="100" />
     </property>
     <property name="name" value="name" />
-    <property name="label" value="Permission Name" />
+    <property name="label" value="Name" />
   </bean>
   <bean id="Permission-description" parent="Permission-description-parentBean" />
 
   <bean id="Permission-description-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Description" />
+    <property name="shortLabel" value="Permission Description" />
     <property name="maxLength" value="4000" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern"
@@ -80,7 +72,7 @@
             p:rows="10" />
     </property>
     <property name="name" value="description" />
-    <property name="label" value="Permission Description" />
+    <property name="label" value="Description" />
   </bean>
   <bean id="Permission-namespaceId" parent="Permission-namespaceId-parentBean" />
 
@@ -105,68 +97,5 @@
   <bean id="Permission-objectId" parent="Permission-objectId-parentBean" />
 
   <bean id="Permission-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
-  </bean>
-
-<!-- Business Object Inquiry Definition -->
-
-
-  <bean id="Permission-inquiryDefinition" parent="Permission-inquiryDefinition-parentBean" />
-
-  <bean id="Permission-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
-    <property name="inquirySections" >
-      <list>
-        <bean parent="InquirySectionDefinition">
-          <property name="numberOfColumns" value="1" />
-          <property name="inquiryFields" >
-            <list>
-              <bean parent="FieldDefinition"
-                    p:attributeName="id" />
-              <bean parent="FieldDefinition"
-                    p:attributeName="name" />
-              <bean parent="FieldDefinition"
-                    p:attributeName="description" />
-              <bean parent="FieldDefinition"
-                    p:attributeName="namespaceId" />
-            </list>
-          </property>
-          <property name="title" value="Header Text" />
-        </bean>
-      </list>
-    </property>
-    <property name="title" value="Permission Inquiry" />
-  </bean>
-
-<!-- Business Object Lookup Definition -->
-
-
-  <bean id="Permission-lookupDefinition" parent="Permission-lookupDefinition-parentBean" />
-
-  <bean id="Permission-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
-    <property name="instructions" value="Lookup a Permission" />
-    <property name="defaultSort" >
-      <bean parent="SortDefinition">
-      </bean>
-    </property>
-    <property name="lookupFields" >
-      <list>
-        <bean parent="FieldDefinition"
-              p:attributeName="id" />
-        <bean parent="FieldDefinition"
-              p:attributeName="name" />
-      </list>
-    </property>
-    <property name="resultFields" >
-      <list>
-        <bean parent="FieldDefinition"
-              p:attributeName="id" />
-        <bean parent="FieldDefinition"
-              p:attributeName="name" />
-        <bean parent="FieldDefinition"
-              p:attributeName="description" />
-        <bean parent="FieldDefinition"
-              p:attributeName="namespaceId" />
-      </list>
-    </property>
-    <property name="title" value="Permission Lookup" />
   </bean>
 </beans>

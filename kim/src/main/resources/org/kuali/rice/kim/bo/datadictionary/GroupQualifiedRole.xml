@@ -35,7 +35,7 @@
   <bean id="GroupQualifiedRole-id" parent="GroupQualifiedRole-id-parentBean" />
 
   <bean id="GroupQualifiedRole-id-parentBean" abstract="true" parent="Group-id">
-    <property name="shortLabel" value="Id" />
+    <property name="shortLabel" value="Group" />
     <property name="control" >
       <bean parent="SelectControlDefinition"
             p:businessObjectClass="org.kuali.rice.kim.bo.Group"
@@ -44,7 +44,7 @@
             p:keyAttribute="id"
             p:labelAttribute="name" />
     </property>
-    <property name="label" value="Group Id" />
+    <property name="label" value="Group" />
   </bean>
   <bean id="GroupQualifiedRole-name" parent="GroupQualifiedRole-name-parentBean" />
 

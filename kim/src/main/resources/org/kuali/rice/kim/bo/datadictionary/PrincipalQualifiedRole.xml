@@ -35,7 +35,7 @@
   <bean id="PrincipalQualifiedRole-id" parent="PrincipalQualifiedRole-id-parentBean" />
 
   <bean id="PrincipalQualifiedRole-id-parentBean" abstract="true" parent="Principal-id">
-    <property name="shortLabel" value="Id" />
+    <property name="shortLabel" value="Principal Id" />
     <property name="required" value="true" />
     <property name="control" >
       <bean parent="SelectControlDefinition"
@@ -45,7 +45,7 @@
             p:keyAttribute="id"
             p:labelAttribute="name" />
     </property>
-    <property name="label" value="Principal Id" />
+    <property name="label" value="Id" />
   </bean>
   <bean id="PrincipalQualifiedRole-name" parent="PrincipalQualifiedRole-name-parentBean" />
 

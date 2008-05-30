@@ -53,9 +53,11 @@
     <property name="maintainableItems" >
       <list>
         <bean parent="MaintainableFieldDefinition"
-              p:required="true"
               p:name="id"
-              p:readOnly="true" />
+              p:required="true"
+              p:readOnly="true"
+              p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextRoleIdFinder">
+        </bean>
         <bean parent="MaintainableFieldDefinition"
               p:required="true"
               p:name="name" />
@@ -148,9 +150,11 @@
                 <property name="maintainableFields" >
                   <list>
                     <bean parent="MaintainableFieldDefinition"
-                          p:required="true"
-                          p:name="id"
-                          p:readOnly="true" />
+			              p:name="id"
+			              p:required="true"
+			              p:readOnly="true"
+			              p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextPrincipalQualifiedRoleAttributeIdFinder">
+			        </bean>
                     <bean parent="MaintainableFieldDefinition"
                           p:required="true"
                           p:name="attributeName" />
@@ -226,9 +230,11 @@
                 <property name="maintainableFields" >
                   <list>
                     <bean parent="MaintainableFieldDefinition"
-                          p:required="true"
-                          p:name="id"
-                          p:readOnly="true" />
+			              p:name="id"
+			              p:required="true"
+			              p:readOnly="true"
+			              p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextGroupQualifiedRoleAttributeIdFinder">
+			        </bean>
                     <bean parent="MaintainableFieldDefinition"
                           p:required="true"
                           p:name="attributeName" />
@@ -273,9 +279,11 @@
           <property name="maintainableFields" >
             <list>
               <bean parent="MaintainableFieldDefinition"
-                    p:required="true"
-                    p:name="id"
-                    p:readOnly="true" />
+	                p:name="id"
+	                p:required="true"
+	                p:readOnly="true"
+	                p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextRoleAttributeIdFinder">
+	          </bean>
               <bean parent="MaintainableFieldDefinition"
                     p:required="true"
                     p:name="attributeTypeId" />

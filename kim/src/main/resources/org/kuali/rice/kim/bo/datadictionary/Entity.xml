@@ -48,35 +48,33 @@
   <bean id="Entity-id" parent="Entity-id-parentBean" />
 
   <bean id="Entity-id-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="id" />
+    <property name="shortLabel" value="Id" />
     <property name="maxLength" value="8" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
     </property>
-    <property name="required" value="true" />
     <property name="control" >
       <bean parent="TextControlDefinition"
             p:size="8" />
     </property>
     <property name="name" value="id" />
-    <property name="label" value="ID" />
+    <property name="label" value="Id" />
   </bean>
   <bean id="Entity-entityTypeId" parent="Entity-entityTypeId-parentBean" />
 
   <bean id="Entity-entityTypeId-parentBean" abstract="true" parent="EntityType-id">
-    <property name="shortLabel" value="Type Name" />
+    <property name="shortLabel" value="Type" />
     <property name="required" value="true" />
     <property name="control" >
       <bean parent="SelectControlDefinition"
             p:businessObjectClass="org.kuali.rice.kim.bo.EntityType"
             p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-            p:includeKeyInLabel="true"
+            p:includeKeyInLabel="false"
             p:keyAttribute="id"
             p:labelAttribute="name" />
     </property>
     <property name="name" value="entityTypeId" />
-    <property name="label" value="Entity Type Name" />
+    <property name="label" value="Type" />
   </bean>
   <bean id="Entity-versionNumber" parent="Entity-versionNumber-parentBean" />
 
@@ -180,7 +178,7 @@
         <bean parent="FieldDefinition"
               p:attributeName="id" />
         <bean parent="FieldDefinition"
-              p:attributeName="entityType.name" />
+              p:attributeName="entityTypeId" />
       </list>
     </property>
     <property name="title" value="Entity Lookup" />

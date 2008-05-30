@@ -40,18 +40,21 @@
   </bean>
   <bean id="PrincipalQualifiedRoleAttribute-roleId" parent="PrincipalQualifiedRoleAttribute-roleId-parentBean" />
 
-  <bean id="PrincipalQualifiedRoleAttribute-roleId-parentBean" abstract="true" parent="AbstractQualifiedRoleAttribute-roleId">
-  </bean>
+  <bean id="PrincipalQualifiedRoleAttribute-roleId-parentBean" abstract="true" parent="AbstractQualifiedRoleAttribute-roleId" />
+  
   <bean id="PrincipalQualifiedRoleAttribute-principalId" parent="PrincipalQualifiedRoleAttribute-principalId-parentBean" />
 
   <bean id="PrincipalQualifiedRoleAttribute-principalId-parentBean" abstract="true" parent="Principal-id">
     <property name="shortLabel" value="Principal Id" />
     <property name="required" value="true" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
     <property name="control" >
       <bean parent="HiddenControlDefinition" />
     </property>
     <property name="name" value="principalId" />
-    <property name="label" value="Principal Id" />
+    <property name="label" value="Id" />
   </bean>
   <bean id="PrincipalQualifiedRoleAttribute-versionNumber" parent="PrincipalQualifiedRoleAttribute-versionNumber-parentBean" />
 

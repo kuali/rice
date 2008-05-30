@@ -54,9 +54,10 @@
     <property name="maintainableItems" >
       <list>
         <bean parent="MaintainableFieldDefinition"
-              p:required="true"
               p:name="id"
-              p:readOnly="true" />
+              p:readOnly="true" 
+              p:required="true"
+              p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextGroupIdFinder" />
         <bean parent="MaintainableFieldDefinition"
               p:required="true"
               p:name="name" />
@@ -183,9 +184,10 @@
           <property name="maintainableFields" >
             <list>
               <bean parent="MaintainableFieldDefinition"
-                    p:required="true"
-                    p:name="id"
-                    p:readOnly="true" />
+		            p:name="id"
+		            p:readOnly="true" 
+		            p:required="true"
+		            p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextGroupAttributeIdFinder" />
               <bean parent="MaintainableFieldDefinition"
                     p:required="true"
                     p:name="attributeName" />

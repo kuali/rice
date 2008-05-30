@@ -18,12 +18,15 @@ package org.kuali.rice.kns.config;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.kuali.bus.services.KSBServiceLocator;
 import org.kuali.core.KualiModule;
 import org.kuali.core.authorization.KualiModuleAuthorizerBase;
 import org.kuali.core.web.servlet.dwr.GlobalResourceDelegatingSpringCreator;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.config.Config;
 import org.kuali.rice.config.ModuleConfigurer;
+import org.kuali.rice.config.event.AfterStartEvent;
+import org.kuali.rice.config.event.RiceConfigEvent;
 import org.kuali.rice.core.Core;
 import org.kuali.rice.lifecycle.Lifecycle;
 import org.springframework.beans.BeansException;
@@ -32,6 +35,9 @@ import org.springframework.beans.factory.BeanFactoryAware;
 
 public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware {
 
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+			.getLogger(KNSConfigurer.class);
+	
 	private List<String> databaseRepositoryFilePaths;
 
 	private List<String> dataDictionaryPackages;
@@ -81,6 +87,18 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 		return lifecycles;
 	}
 
+	/**
+     * Used to "poke" the Data Dictionary again after the Spring Context is initialized.  This is to
+     * allow for modules loaded with KualiModule after the KNS has already been initialized to work.
+     */
+    @Override
+    public void onEvent(RiceConfigEvent event) throws Exception {
+        if (event instanceof AfterStartEvent) {
+            LOG.info("Processing any remaining Data Dictionary configuration.");
+            KNSServiceLocator.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles(false);
+        }
+    }
+	
 	public List<String> getDatabaseRepositoryFilePaths() {
 		return databaseRepositoryFilePaths;
 	}

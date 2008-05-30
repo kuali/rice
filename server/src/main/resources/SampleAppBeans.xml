@@ -10,7 +10,7 @@
 			</list>
 		</property>
 	</bean>
-	<!-- 
+	 
 	<bean id="sampleAppModule" class="org.kuali.core.KualiModule">
 		<property name="moduleId" value="sa"/>
 		<property name="moduleName" value="Sample App"/>
@@ -18,7 +18,7 @@
 		<property name="initializeDataDictionary" value="true"/>
 		<property name="dataDictionaryPackages">
 			<list>
-				<value>edu/sampleu/travel/datadictionary</value>
+				<value>classpath:edu/sampleu/travel/datadictionary</value>
             </list>
 		</property>
 		<property name="databaseRepositoryFilePaths">
@@ -27,5 +27,5 @@
 			</list>
 		</property>
 	</bean>
-  -->
+
 </beans>

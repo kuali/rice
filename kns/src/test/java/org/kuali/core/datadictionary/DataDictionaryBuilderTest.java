@@ -112,7 +112,7 @@ public class DataDictionaryBuilderTest extends KNSTestBase {
 		try {
 			dd.addConfigFileLocation(INPUT_FILE);
 			dd.parseDataDictionaryConfigurationFiles( false );
-		} catch (DataDictionaryException e) {
+		} catch (Exception e) {
 			failedAsExpected = true;
 		}
 
@@ -128,7 +128,7 @@ public class DataDictionaryBuilderTest extends KNSTestBase {
 		try {
 			dd.addConfigFileLocation(INPUT_FILE);
 			dd.parseDataDictionaryConfigurationFiles( false );
-		} catch (DataDictionaryException e) {
+		} catch (Exception e) {
 			failedAsExpected = true;
 		}
 

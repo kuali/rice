@@ -429,4 +429,10 @@ public class KNSServiceLocator<T extends Object> {
     	return (EntityManagerFactory) getService(ENTITY_MANAGER_FACTORY);
     }
 
+    public static final String PERSISTENCE_SERVICE_OJB = "persistenceServiceOjb";
+    
+    public static PersistenceService getPersistenceServiceOjb() {
+        return (PersistenceService) getService(PERSISTENCE_SERVICE_OJB);
+    }
+    
 }

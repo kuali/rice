@@ -23,7 +23,6 @@ import org.kuali.core.datadictionary.spring.DataDictionaryLocationConfigurer;
 import org.kuali.core.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.core.rules.PreRulesContinuationBase;
 import org.kuali.core.service.KualiModuleUserService;
-import org.kuali.core.service.PersistenceService;
 import org.kuali.core.service.impl.KualiModuleUserServiceDefaultImpl;
 import org.kuali.rice.KNSServiceLocator;
 import org.springframework.beans.factory.InitializingBean;
@@ -81,7 +80,8 @@ public class KualiModule implements InitializingBean {
 		}
 		if (getDatabaseRepositoryFilePaths() != null) {
 		    for (String repositoryLocation : getDatabaseRepositoryFilePaths()) {
-				((PersistenceService)KNSServiceLocator.getService("persistenceServiceOjb")).loadRepositoryDescriptor(repositoryLocation);
+				// Need the OJB persistence service because it is the only one ever using the database repository files
+		    	KNSServiceLocator.getPersistenceServiceOjb().loadRepositoryDescriptor(repositoryLocation);
 			}
 		}
 	}

@@ -17,6 +17,7 @@
 // Created on Dec 14, 2005
 package edu.iu.uis.eden.applicationconstants;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.workflow.test.KEWTestCase;
 import org.springframework.transaction.TransactionStatus;
@@ -28,6 +29,9 @@ import edu.iu.uis.eden.applicationconstants.dao.ApplicationConstantsDAO;
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+
+// Just ignoring until we turn on JPA
+@Ignore
 public class ApplicationConstantsMixedOjbAndJpaTest extends KEWTestCase {
 	
 	private ApplicationConstantsDAO jpaDao;

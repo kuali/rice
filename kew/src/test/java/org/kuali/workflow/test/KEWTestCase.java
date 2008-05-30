@@ -116,32 +116,21 @@ public abstract class KEWTestCase extends RiceTestCase {
 		}
 	}
 
-	@Before
+	/**
+	 * Override the RiceTestCase setUpInternal in order to set a system property beforehand,
+	 * and load test data afterwards
+	 * @see org.kuali.rice.test.RiceTestCase#setUpInternal()
+	 */
 	@Override
-	public void setUp() throws Exception {
-		try {
-			System.setProperty(EdenConstants.BOOTSTRAP_SPRING_FILE, "org/kuali/workflow/resources/TestKewSpringBeans.xml");
-			configureLogging();
-			final long initTime = System.currentTimeMillis();
-			if (!SUITE_LIFE_CYCLES_RAN) {
-				this.suiteLifeCycles = getSuiteLifecycles();
-				startLifecycles(this.suiteLifeCycles);
-				SUITE_LIFE_CYCLES_RAN = true;
-			}
-			this.perTestLifeCycles = getPerTestLifecycles();
-			startLifecycles(this.perTestLifeCycles);
-			report("Time to start all Lifecycles: " + (System.currentTimeMillis() - initTime));
-			loadTestDataInternal();
-			boolean needsTransaction = getClass().isAnnotationPresent(KEWTransactionalTest.class);
-			if (needsTransaction) {
-				transactionalLifecycle = new TransactionalLifecycle();
-				transactionalLifecycle.setTransactionManager(KEWServiceLocator.getPlatformTransactionManager());
-				transactionalLifecycle.start();
-			}
-		} catch (Throwable e) {
-			LOG.error("An error was thrown from test setup, calling tearDown()", e);
-			tearDown();
-			throw new RuntimeException(e);
+	public void setUpInternal() throws Exception {
+	    System.setProperty(EdenConstants.BOOTSTRAP_SPRING_FILE, "org/kuali/workflow/resources/TestKewSpringBeans.xml");
+	    super.setUpInternal();
+	    loadTestDataInternal();
+	    boolean needsTransaction = getClass().isAnnotationPresent(KEWTransactionalTest.class);
+		if (needsTransaction) {
+			transactionalLifecycle = new TransactionalLifecycle();
+			transactionalLifecycle.setTransactionManager(KEWServiceLocator.getPlatformTransactionManager());
+			transactionalLifecycle.start();
 		}
 	}
 	

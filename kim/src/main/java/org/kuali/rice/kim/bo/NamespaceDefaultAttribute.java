@@ -75,8 +75,8 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
         propMap.put("attributeTypeId", getAttributeTypeId());
         propMap.put("attributeName", getAttributeName());
         propMap.put("value", getDescription());
-        propMap.put("required", getRequired());
-        propMap.put("active", getActive());
+        propMap.put("required", isRequired());
+        propMap.put("active", isActive());
         return propMap;
 	}
 
@@ -100,7 +100,7 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
         this.description = description;
     }
 
-    public boolean getRequired() {
+    public boolean isRequired() {
         return this.required;
     }
 
@@ -108,7 +108,7 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
         this.required = required;
     }
 
-    public boolean getActive() {
+    public boolean isActive() {
         return this.active;
     }
 
@@ -140,13 +140,13 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
      */
     public static NamespaceDefaultAttributeDTO toDTO(final NamespaceDefaultAttribute nda) {
         final NamespaceDefaultAttributeDTO dto = new NamespaceDefaultAttributeDTO();
-        dto.setActive(nda.getActive());
+        dto.setActive(nda.isActive());
         dto.setAttributeName(nda.getAttributeName());
         dto.setAttributeTypeId(nda.getAttributeTypeId());
         dto.setDescription(nda.getDescription());
         dto.setId(nda.getId());
         dto.setNamespaceId(nda.getNamespaceId());
-        dto.setRequired(nda.getRequired());
+        dto.setRequired(nda.isRequired());
         return dto;
     }
 }

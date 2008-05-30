@@ -116,13 +116,11 @@
   <bean id="NamespaceDefaultAttribute-required" parent="NamespaceDefaultAttribute-required-parentBean" />
 
   <bean id="NamespaceDefaultAttribute-required-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="true" />
+    <property name="forceUppercase" value="false" />
     <property name="shortLabel" value="Required" />
-    <property name="maxLength" value="3" />
+    <property name="maxLength" value="1" />
     <property name="control" >
-      <bean parent="SelectControlDefinition"
-            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"
-            p:includeKeyInLabel="false" />
+      <bean parent="CheckboxControlDefinition" />
     </property>
     <property name="name" value="required" />
     <property name="label" value="Required" />
@@ -130,13 +128,11 @@
   <bean id="NamespaceDefaultAttribute-active" parent="NamespaceDefaultAttribute-active-parentBean" />
 
   <bean id="NamespaceDefaultAttribute-active-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="true" />
+    <property name="forceUppercase" value="false" />
     <property name="shortLabel" value="Active" />
-    <property name="maxLength" value="3" />
+    <property name="maxLength" value="1" />
     <property name="control" >
-      <bean parent="SelectControlDefinition"
-            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.IndicatorYNOnlyValuesFinder"
-            p:includeKeyInLabel="false" />
+      <bean parent="CheckboxControlDefinition" />
     </property>
     <property name="name" value="active" />
     <property name="label" value="Active" />

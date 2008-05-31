@@ -453,7 +453,6 @@
             <displayName>Test Admin 1</displayName>
             <givenName>Test</givenName>
             <lastName>Admin 1</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>TestAdmin2</workflowId>
@@ -464,7 +463,6 @@
             <displayName>Test Admin 2</displayName>
             <givenName>Test</givenName>
             <lastName>Admin 2</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>TestUser1</workflowId>
@@ -475,7 +473,6 @@
             <displayName>Test User 1</displayName>
             <givenName>Test</givenName>
             <lastName>User 1</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>TestUser2</workflowId>
@@ -486,7 +483,6 @@
             <displayName>Test User 2</displayName>
             <givenName>Test</givenName>
             <lastName>User 2</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>TestUser3</workflowId>
@@ -497,7 +493,6 @@
             <displayName>Test User 3</displayName>
             <givenName>Test</givenName>
             <lastName>User 3</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>TestUser4</workflowId>
@@ -508,7 +503,6 @@
             <displayName>Test User 4</displayName>
             <givenName>Test</givenName>
             <lastName>User 4</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>TestUser5</workflowId>
@@ -519,7 +513,6 @@
             <displayName>Test User 5</displayName>
             <givenName>Test</givenName>
             <lastName>User 5</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>TestUser6</workflowId>
@@ -530,7 +523,6 @@
             <displayName>Test User 6</displayName>
             <givenName>Test</givenName>
             <lastName>User 6</lastName>
-            <dtype>user</dtype>
         </user>
         
         <!-- WORKFLOW USERS (STANDARD WORKFLOW QUICKSTART USERS) -->
@@ -543,7 +535,6 @@
             <displayName>Quick Start</displayName>
             <givenName>Quick</givenName>
             <lastName>Start</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>user1</workflowId>
@@ -554,7 +545,6 @@
             <displayName>User One</displayName>
             <givenName>User</givenName>
             <lastName>One</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>user2</workflowId>
@@ -565,7 +555,6 @@
             <displayName>User Two</displayName>
             <givenName>User</givenName>
             <lastName>Two</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>user3</workflowId>
@@ -576,7 +565,6 @@
             <displayName>User Three</displayName>
             <givenName>User</givenName>
             <lastName>Three</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>user4</workflowId>
@@ -587,7 +575,6 @@
             <displayName>User 4</displayName>
             <givenName>user4</givenName>
             <lastName>user4</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>edna</workflowId>
@@ -598,7 +585,6 @@
             <displayName>Edna Employee</displayName>
             <givenName>Edna</givenName>
             <lastName>Employee</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>eric</workflowId>
@@ -609,7 +595,6 @@
             <displayName>Eric Employee</displayName>
             <givenName>Eric</givenName>
             <lastName>Employee</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>earl</workflowId>
@@ -620,7 +605,6 @@
             <displayName>Earl Employee</displayName>
             <givenName>Earl</givenName>
             <lastName>Employee</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>erin</workflowId>
@@ -631,7 +615,6 @@
             <displayName>Erin Employee</displayName>
             <givenName>Erin</givenName>
             <lastName>Employee</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>fred</workflowId>
@@ -642,7 +625,6 @@
             <displayName>Fred FiscalOfficer</displayName>
             <givenName>Fred</givenName>
             <lastName>FiscalOfficer</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>fran</workflowId>
@@ -653,7 +635,6 @@
             <displayName>Fran FiscalOfficer</displayName>
             <givenName>Fran</givenName>
             <lastName>FiscalOfficer</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>frank</workflowId>
@@ -664,7 +645,6 @@
             <displayName>Frank FiscalOfficer</displayName>
             <givenName>Frank</givenName>
             <lastName>FiscalOfficer</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>doug</workflowId>
@@ -675,7 +655,6 @@
             <displayName>Doug Neidermeyer</displayName>
             <givenName>Doug</givenName>
             <lastName>Neidermeyer</lastName>
-            <dtype>user</dtype>
         </user>
     
 
@@ -695,9 +674,103 @@
             <displayName>Administrator</displayName>
             <givenName>admin</givenName>
             <lastName>admin</lastName>
-            <dtype>user</dtype>
         </user>
     
+
+
+        <!-- users elements from /Users/ag266/Documents/workspace/rice-0.9.3//kim/src/main/config/xml/KIMBootstrap.xml -->
+
+        <user>
+            <workflowId>idm1</workflowId>
+            <emplId>idm1</emplId>
+            <authenticationId>idm1</authenticationId>
+            <uuId>idm1</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Identity Manager One</displayName>
+            <givenName>Identity</givenName>
+            <lastName>Manager One</lastName>
+        </user>
+        <user>
+            <workflowId>idm2</workflowId>
+            <emplId>idm2</emplId>
+            <authenticationId>idm2</authenticationId>
+            <uuId>idm2</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Identity Manager Two</displayName>
+            <givenName>Identity</givenName>
+            <lastName>Manager Two</lastName>
+        </user>
+        <user>
+            <workflowId>idm3</workflowId>
+            <emplId>idm3</emplId>
+            <authenticationId>idm3</authenticationId>
+            <uuId>idm3</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Identity Manager Three</displayName>
+            <givenName>Identity</givenName>
+            <lastName>Manager Three</lastName>
+        </user>
+        <user>
+            <workflowId>admin1</workflowId>
+            <emplId>admin1</emplId>
+            <authenticationId>admin1</authenticationId>
+            <uuId>admin1</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Admin One</displayName>
+            <givenName>Admin</givenName>
+            <lastName>One</lastName>
+        </user>
+        <user>
+            <workflowId>admin2</workflowId>
+            <emplId>admin2</emplId>
+            <authenticationId>admin2</authenticationId>
+            <uuId>admin2</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Admin Two</displayName>
+            <givenName>Admin</givenName>
+            <lastName>Two</lastName>
+        </user>
+        <user>
+            <workflowId>test1</workflowId>
+            <emplId>test1</emplId>
+            <authenticationId>test1</authenticationId>
+            <uuId>test1</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Tester One</displayName>
+            <givenName>Tester</givenName>
+            <lastName>One</lastName>
+        </user>
+        <user>
+            <workflowId>test2</workflowId>
+            <emplId>test2</emplId>
+            <authenticationId>test2</authenticationId>
+            <uuId>test2</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Tester Two</displayName>
+            <givenName>Tester</givenName>
+            <lastName>Two</lastName>
+        </user>
+        <user>
+            <workflowId>dev1</workflowId>
+            <emplId>dev1</emplId>
+            <authenticationId>dev1</authenticationId>
+            <uuId>dev1</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Developer One</displayName>
+            <givenName>Developer</givenName>
+            <lastName>One</lastName>
+        </user>
+        <user>
+            <workflowId>dev2</workflowId>
+            <emplId>dev2</emplId>
+            <authenticationId>dev2</authenticationId>
+            <uuId>dev2</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Developer Two</displayName>
+            <givenName>Developer</givenName>
+            <lastName>Two</lastName>
+        </user>
+	
 
 
         <!-- users elements from /Users/ag266/Documents/workspace/rice-0.9.3//ken/src/main/config/xml/KENBootstrap.xml -->
@@ -712,7 +785,6 @@
             <displayName>Notification System</displayName>
             <givenName>Notification</givenName>
             <lastName>System</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>NotSysAdm</workflowId>
@@ -723,7 +795,6 @@
             <displayName>Notification System Admin</displayName>
             <givenName>Notification</givenName>
             <lastName>System Admin</lastName>
-            <dtype>user</dtype>
         </user>
     
 
@@ -741,7 +812,6 @@
             <displayName>User 4</displayName>
             <givenName>user4</givenName>
             <lastName>user4</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>newAccountUser</workflowId>
@@ -752,7 +822,6 @@
             <displayName>New Account User</displayName>
             <givenName>newAccountUser</givenName>
             <lastName>newAccountUser</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>supervisor</workflowId>
@@ -763,7 +832,6 @@
             <displayName>Supervisor User</displayName>
             <givenName>supervisor</givenName>
             <lastName>supervisor</lastName>
-            <dtype>user</dtype>
             <createDate>01/01/2000</createDate>
             <lastUpdateDate>12/31/2005</lastUpdateDate>
             <identificationMissingIndicator>false(true)</identificationMissingIndicator>
@@ -777,7 +845,6 @@
             <displayName>Director User</displayName>
             <givenName>director</givenName>
             <lastName>director</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>quickstart</workflowId>
@@ -788,7 +855,6 @@
             <displayName>quickstart</displayName>
             <givenName>quickstart</givenName>
             <lastName>quickstart</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>KULUSER</workflowId>
@@ -799,7 +865,6 @@
             <displayName>KULUSER 4</displayName>
             <givenName>KULUSER</givenName>
             <lastName>KULUSER</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>fred</workflowId>
@@ -810,7 +875,6 @@
             <displayName>fred</displayName>
             <givenName>fred</givenName>
             <lastName>fred</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>fran</workflowId>
@@ -821,7 +885,6 @@
             <displayName>fran</displayName>
             <givenName>fran</givenName>
             <lastName>fran</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>frank</workflowId>
@@ -832,7 +895,6 @@
             <displayName>frank</displayName>
             <givenName>frank</givenName>
             <lastName>frank</lastName>
-            <dtype>user</dtype>
         </user>
         <user>
             <workflowId>employee</workflowId>
@@ -843,7 +905,6 @@
             <displayName>employee</displayName>
             <givenName>employee</givenName>
             <lastName>employee</lastName>
-            <dtype>user</dtype>
         </user>
     
 
@@ -957,6 +1018,42 @@
             </members>
         </workgroup>
     
+
+
+        <!-- workgroups elements from /Users/ag266/Documents/workspace/rice-0.9.3//kim/src/main/config/xml/KIMBootstrap.xml -->
+
+        <workgroup allowOverwrite="true">
+            <workgroupName>Kuali Identity Managers</workgroupName>
+            <description>Kuali Identity Managers</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>idm1</workflowId>
+                <workflowId>idm2</workflowId>
+                <workflowId>idm3</workflowId>
+            </members>
+        </workgroup>
+        <workgroup allowOverwrite="true">
+            <workgroupName>Kuali Administrators</workgroupName>
+            <description>Kuali Administrators</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>admin1</workflowId>
+                <workflowId>admin2</workflowId>
+            </members>
+        </workgroup>
+        <workgroup allowOverwrite="true">
+            <workgroupName>Kuali Developers</workgroupName>
+            <description>Kuali Developers</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>dev1</workflowId>
+                <workflowId>dev2</workflowId>
+            </members>
+        </workgroup>
+	
 
 
         <!-- workgroups elements from /Users/ag266/Documents/workspace/rice-0.9.3//ken/src/main/config/xml/KENBootstrap.xml -->

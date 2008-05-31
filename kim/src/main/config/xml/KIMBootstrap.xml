@@ -1,6 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
-  <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+  <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
+        <user>
+            <workflowId>idm1</workflowId>
+            <emplId>idm1</emplId>
+            <authenticationId>idm1</authenticationId>
+            <uuId>idm1</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Identity Manager One</displayName>
+            <givenName>Identity</givenName>
+            <lastName>Manager One</lastName>
+        </user>
+        <user>
+            <workflowId>idm2</workflowId>
+            <emplId>idm2</emplId>
+            <authenticationId>idm2</authenticationId>
+            <uuId>idm2</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Identity Manager Two</displayName>
+            <givenName>Identity</givenName>
+            <lastName>Manager Two</lastName>
+        </user>
+        <user>
+            <workflowId>idm3</workflowId>
+            <emplId>idm3</emplId>
+            <authenticationId>idm3</authenticationId>
+            <uuId>idm3</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Identity Manager Three</displayName>
+            <givenName>Identity</givenName>
+            <lastName>Manager Three</lastName>
+        </user>
+        <user>
+            <workflowId>admin1</workflowId>
+            <emplId>admin1</emplId>
+            <authenticationId>admin1</authenticationId>
+            <uuId>admin1</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Admin One</displayName>
+            <givenName>Admin</givenName>
+            <lastName>One</lastName>
+        </user>
+        <user>
+            <workflowId>admin2</workflowId>
+            <emplId>admin2</emplId>
+            <authenticationId>admin2</authenticationId>
+            <uuId>admin2</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Admin Two</displayName>
+            <givenName>Admin</givenName>
+            <lastName>Two</lastName>
+        </user>
+        <user>
+            <workflowId>test1</workflowId>
+            <emplId>test1</emplId>
+            <authenticationId>test1</authenticationId>
+            <uuId>test1</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Tester One</displayName>
+            <givenName>Tester</givenName>
+            <lastName>One</lastName>
+        </user>
+        <user>
+            <workflowId>test2</workflowId>
+            <emplId>test2</emplId>
+            <authenticationId>test2</authenticationId>
+            <uuId>test2</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Tester Two</displayName>
+            <givenName>Tester</givenName>
+            <lastName>Two</lastName>
+        </user>
+        <user>
+            <workflowId>dev1</workflowId>
+            <emplId>dev1</emplId>
+            <authenticationId>dev1</authenticationId>
+            <uuId>dev1</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Developer One</displayName>
+            <givenName>Developer</givenName>
+            <lastName>One</lastName>
+        </user>
+        <user>
+            <workflowId>dev2</workflowId>
+            <emplId>dev2</emplId>
+            <authenticationId>dev2</authenticationId>
+            <uuId>dev2</uuId>
+            <emailAddress>kuali-rice-dev@googlegroups.com</emailAddress>
+            <displayName>Developer Two</displayName>
+            <givenName>Developer</givenName>
+            <lastName>Two</lastName>
+        </user>
+	</users>
+
+	<workgroups xmlns="ns:workflow/Workgroup" xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
+        <workgroup allowOverwrite="true">
+            <workgroupName>Kuali Identity Managers</workgroupName>
+            <description>Kuali Identity Managers</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>idm1</workflowId>
+                <workflowId>idm2</workflowId>
+                <workflowId>idm3</workflowId>
+            </members>
+        </workgroup>
+        <workgroup allowOverwrite="true">
+            <workgroupName>Kuali Administrators</workgroupName>
+            <description>Kuali Administrators</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>admin1</workflowId>
+                <workflowId>admin2</workflowId>
+            </members>
+        </workgroup>
+        <workgroup allowOverwrite="true">
+            <workgroupName>Kuali Developers</workgroupName>
+            <description>Kuali Developers</description>
+            <activeInd>true</activeInd>
+            <workgroupType>W</workgroupType>
+            <members>
+                <workflowId>dev1</workflowId>
+                <workflowId>dev2</workflowId>
+            </members>
+        </workgroup>
+	</workgroups>
+  
+   <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
    <documentType>
       <name>KIMPrincipalMaintenanceDocument</name>
       <description>Create or Update a Principal</description>

@@ -1,4 +1,4 @@
--- Fri May 30 14:52:23 EDT 2008
+-- Sat May 31 13:28:31 EDT 2008
 -- This file has been auto-generated from dball.groovy
 -- It contains the master rice bootstrap sql from rice_db_bootstrap.sql
 -- As well as sample data contributed by modules and the rice_sample_create.sql
@@ -3012,10 +3012,24 @@ INSERT INTO kr_qrtz_locks values('STATE_ACCESS')
 INSERT INTO kr_qrtz_locks values('MISFIRE_ACCESS')
 /
 -- Concatenating KIMBootstrap.sql
+-- Default Attribute Types --
+INSERT INTO KIM_ATTRIBUTE_TYPES_T (ID, NAME, DESCRIPTION) values (1, 'Text', 'This attribute type is for general text fields.')
+/
+INSERT INTO KIM_ATTRIBUTE_TYPES_T (ID, NAME, DESCRIPTION) values (2, 'Phone Number', 'This attribute type is for phone number fields.')
+/
+INSERT INTO KIM_ATTRIBUTE_TYPES_T (ID, NAME, DESCRIPTION) values (3, 'Email Address', 'This attribute type is for email address fields.')
+/
+
 -- Default Namespaces --
 INSERT INTO KIM_NAMESPACES_T (ID, NAME, DESCRIPTION) VALUES (1, 'KIM', 'This record represents the actual KIM system and must always be loaded by default in order for the system to work properly.')
 /
 INSERT INTO KIM_NAMESPACES_T (ID, NAME, DESCRIPTION) VALUES (2, 'Global', 'This record represents the global shared namespace that should house entity attributes and permissions global across all namespaces and not specific to any one namespace.')
+/
+INSERT INTO KIM_NAMESPACE_DFLT_ATTRIBS_T (ID, NAMESPACE_ID, ATTRIBUTE_NAME, ATTRIBUTE_TYPE_ID, DESCRIPTION, REQUIRED, ACTIVE) values (1, 2, 'First Name', 1, 'This is the first name for this entity.', 'Y', 'Y')
+/
+INSERT INTO KIM_NAMESPACE_DFLT_ATTRIBS_T (ID, NAMESPACE_ID, ATTRIBUTE_NAME, ATTRIBUTE_TYPE_ID, DESCRIPTION, REQUIRED, ACTIVE) values (2, 2, 'Last Name', 1, 'This is the last name for this entity.', 'Y', 'Y')
+/
+INSERT INTO KIM_NAMESPACE_DFLT_ATTRIBS_T (ID, NAMESPACE_ID, ATTRIBUTE_NAME, ATTRIBUTE_TYPE_ID, DESCRIPTION, REQUIRED, ACTIVE) values (3, 2, 'Email Address', 3, 'This is the email address for this entity.', 'Y', 'Y')
 /
 
 -- Default Entity Types --

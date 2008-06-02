@@ -11,6 +11,7 @@ create table EN_USR_T (
         USR_LST_UPDT_DT                  DATE,
         PRSN_ID_MSNG_IND                 NUMBER(1) DEFAULT 0,
 	    DB_LOCK_VER_NBR	                 NUMBER(8) DEFAULT 0,
+        DTYPE                            VARCHAR2(50),
   CONSTRAINT EN_USR_T_PK PRIMARY KEY (PRSN_EN_ID) USING INDEX
 )
 /

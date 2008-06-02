@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.iu.uis.eden.database.platform;
+package org.kuali.rice.database.platform;
 
 /**
  * This allows us to use Oracle9i as an alias for the Oracle platform.  Oracle9i is one

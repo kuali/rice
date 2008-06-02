@@ -23,12 +23,12 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 
 import org.kuali.rice.core.Core;
+import org.kuali.rice.database.platform.Platform;
 import org.kuali.rice.jpa.annotations.Sequence;
-
-//import edu.iu.uis.eden.KEWServiceLocator;
-//import edu.iu.uis.eden.database.platform.Platform;
+import org.kuali.rice.resourceloader.GlobalResourceLoader;
 
 /**
  * A utility for common ORM related functions.
@@ -40,17 +40,6 @@ public class OrmUtils {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(OrmUtils.class);
 	
 	private static Map<String, Boolean> cache = new HashMap<String, Boolean>();
-	
-	public static Long getNextAutoIncValue(Sequence sequence) {
-		Long value = -1L;
-		try {
-			//Platform platform = (Platform) GlobalResourceLoader.getService(KEWServiceLocator.DB_PLATFORM);
-			//value = platform.getNextValSQL(sequence.name(), KNSServiceLocator.getEntityManagerFactory().createEntityManager());
-		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
-		}
-		return value;
-	}
 
 	public static void populateAutoIncValue(Object entity, Long value) {
     	try {	    		
@@ -65,11 +54,22 @@ public class OrmUtils {
     	}
 	}
 
-	public static void populateAutoIncValue(Object entity) {
+	public static void populateAutoIncValue(Object entity, EntityManager manager) {
 		if (entity.getClass().isAnnotationPresent(Sequence.class)) {
 			Sequence sequence = entity.getClass().getAnnotation(Sequence.class); 
-			populateAutoIncValue(entity, getNextAutoIncValue(sequence));
+			populateAutoIncValue(entity, getNextAutoIncValue(sequence, manager));
 		} 
+	}
+	
+	private static Long getNextAutoIncValue(Sequence sequence, EntityManager manager) {
+		Long value = -1L;
+		try {
+			Platform platform = (Platform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
+			value = platform.getNextValSQL(sequence.name(), manager);
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+		}
+		return value;
 	}
 	
     public static void reattach(Object attached, Object detached) {

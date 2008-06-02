@@ -196,8 +196,6 @@ public final class KEWServiceLocator {
 
 	public static final String DB_TABLES_LOADER = "enDbTablesLoader";
 
-	public static final String DB_PLATFORM = "enDbPlatform";
-
 	public static final String ROUTE_NODE_SERVICE = "enRouteNodeService";
 
 	public static final String WORKFLOW_ENGINE = "workflowEngine";

@@ -11,7 +11,7 @@
 
 	<!-- set some datasource defaults -->
 	<param name="datasource.ojb.platform">Oracle9i</param>
-	<param name="datasource.platform">edu.iu.uis.eden.database.platform.OraclePlatform</param>
+	<param name="datasource.platform">org.kuali.rice.database.platform.OraclePlatform</param>
 	<param name="datasource.url">jdbc:oracle:thin:@localhost:1521:XE</param>
 	<param name="datasource.username">*** username ***</param>
 	<param name="datasource.password">*** password ***</param>

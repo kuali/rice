@@ -23,10 +23,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.kuali.rice.database.platform.Platform;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.util.RiceConstants;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.database.platform.Platform;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.useroptions.UserOptions;
 
@@ -40,7 +40,7 @@ public class UserOptionsDaoJpaImpl implements UserOptionsDAO {
     }
 
 	protected Platform getPlatform() {
-    	return (Platform) GlobalResourceLoader.getService(KEWServiceLocator.DB_PLATFORM);
+    	return (Platform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
     }
 
     public List findByUserQualified(WorkflowUser user, String likeString) {

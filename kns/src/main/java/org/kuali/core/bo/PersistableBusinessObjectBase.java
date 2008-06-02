@@ -199,7 +199,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     @PrePersist
     public void beforeInsert() {
     	if (!isAutoIncrementSet()) {
-    		OrmUtils.populateAutoIncValue(this);
+    		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
     		setAutoIncrementSet(true);
     	}
     	setObjectId(new Guid().toString());

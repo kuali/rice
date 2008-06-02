@@ -30,7 +30,7 @@
 	<param name="datasource.url">jdbc:oracle:thin:@esdb12-k.uits.indiana.edu:1521:KUALI</param>
 	<param name="datasource.username">KRDEV</param>
 	<param name="datasource.ojb.platform">Oracle9i</param>
-	<param name="datasource.platform">edu.iu.uis.eden.database.platform.OraclePlatform</param>
+	<param name="datasource.platform">org.kuali.rice.database.platform.OraclePlatform</param>
 	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
 	<param name="datasource.pool.validationQuery">select 1 from dual</param>
 	<param name="datasource.pool.maxWait">30000</param>

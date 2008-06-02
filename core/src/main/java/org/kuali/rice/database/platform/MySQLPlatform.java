@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.iu.uis.eden.database.platform;
+package org.kuali.rice.database.platform;
 
 import java.math.BigInteger;
 import java.sql.Connection;
@@ -26,8 +26,6 @@ import javax.persistence.EntityManager;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
-
-import edu.iu.uis.eden.exception.WorkflowRuntimeException;
 
 public class MySQLPlatform extends ANSISqlPlatform {
 
@@ -46,13 +44,13 @@ public class MySQLPlatform extends ANSISqlPlatform {
   			resultSet = statement.executeQuery();
 
   			if (!resultSet.next()) {
-  				throw new WorkflowRuntimeException("Error retrieving next option id for action list from sequence.");
+  				throw new RuntimeException("Error retrieving next option id for action list from sequence.");
   			}
   			return new Long(resultSet.getLong(1));
   		} catch (SQLException e) {
-  			throw new WorkflowRuntimeException("Error retrieving next option id for action list from sequence.", e);
+  			throw new RuntimeException("Error retrieving next option id for action list from sequence.", e);
   		} catch (LookupException e) {
-  			throw new WorkflowRuntimeException("Error retrieving next option id for action list from sequence.", e);
+  			throw new RuntimeException("Error retrieving next option id for action list from sequence.", e);
   		} finally {
   			if (statement != null) {
   				try {

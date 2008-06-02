@@ -201,7 +201,7 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 
 	protected void configurePlatform(Config config) {
 		if (!StringUtils.isBlank(this.platform)) {
-			String platformClassName = "edu.iu.uis.eden.database.platform."+this.platform+"Platform";
+			String platformClassName = "org.kuali.rice.database.platform."+this.platform+"Platform";
 			config.getProperties().setProperty(Config.DATASOURCE_PLATFORM, platformClassName);
 			config.getProperties().setProperty(Config.OJB_PLATFORM, this.platform);
 		}

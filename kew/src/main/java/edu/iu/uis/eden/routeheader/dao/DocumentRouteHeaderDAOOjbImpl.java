@@ -32,7 +32,9 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
+import org.kuali.rice.database.platform.Platform;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.util.RiceConstants;
 import org.springframework.dao.CannotAcquireLockException;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
@@ -42,7 +44,6 @@ import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.actionitem.ActionItem;
 import edu.iu.uis.eden.actionlist.ActionListService;
-import edu.iu.uis.eden.database.platform.Platform;
 import edu.iu.uis.eden.docsearch.SearchableAttributeValue;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.exception.LockingException;
@@ -145,7 +146,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     }
 
     protected Platform getPlatform() {
-    	return (Platform)GlobalResourceLoader.getService(KEWServiceLocator.DB_PLATFORM);
+    	return (Platform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
     }
 
     public Collection findPendingByResponsibilityIds(Set responsibilityIds) {

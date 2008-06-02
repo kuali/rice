@@ -218,7 +218,7 @@ def userhomeconfigtext() {
 	<param name="datasource.username"></param>
 	<param name="datasource.password"></param>
 	<param name="datasource.ojb.platform">Oracle9i</param>
-	<param name="datasource.platform">edu.iu.uis.eden.database.platform.OraclePlatform</param>
+	<param name="datasource.platform">org.kuali.rice.database.platform.OraclePlatform</param>
 	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
 	<param name="datasource.pool.validationQuery">select 1 from dual</param>
 	<param name="datasource.pool.maxWait">30000</param>
@@ -328,7 +328,7 @@ def userhometestconfigtext() {
 	<param name="datasource.username"></param>
 	<param name="datasource.password"></param>
 	<param name="datasource.ojb.platform">Oracle9i</param>
-	<param name="datasource.platform">edu.iu.uis.eden.database.platform.OraclePlatform</param>
+	<param name="datasource.platform">org.kuali.rice.database.platform.OraclePlatform</param>
 	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
 	<param name="datasource.pool.validationQuery">select 1 from dual</param>
 	<param name="datasource.pool.maxWait">30000</param>

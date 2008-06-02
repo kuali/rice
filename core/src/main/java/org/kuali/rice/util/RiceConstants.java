@@ -27,6 +27,8 @@ public class RiceConstants extends JSTLConstants {
 
     private static final long serialVersionUID = 3625085403351858951L;
 
+	public static final String DB_PLATFORM = "enDbPlatform";
+
     public static final String RICE_JPA_ENABLED = "rice.jpa.enabled";
     
     public static final String SERVICES_TO_CACHE = "rice.resourceloader.servicesToCache";

@@ -173,8 +173,8 @@ diff -u -r1.2 DocumentSearchDAOOjbImpl.java
  
  import edu.iu.uis.eden.EdenConstants;
  import edu.iu.uis.eden.KEWServiceLocator;
--import edu.iu.uis.eden.database.platform.Platform.DocSearchResult;
-+import edu.iu.uis.eden.database.platform.Platform;
+-import org.kuali.rice.database.platform.Platform.DocSearchResult;
++import org.kuali.rice.database.platform.Platform;
  import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
  import edu.iu.uis.eden.docsearch.DocSearchVO;
 +import edu.iu.uis.eden.docsearch.DocumentSearchExecutor;
@@ -302,7 +302,7 @@ diff -u -r1.3 SqlUtil.java
 +++ embedded-src/edu/iu/uis/eden/database/platform/SqlUtil.java	28 Mar 2007 15:31:05 -0000
 @@ -13,7 +13,8 @@
  import edu.iu.uis.eden.KEWServiceLocator;
- import edu.iu.uis.eden.database.platform.Platform.DocSearchResult;
+ import org.kuali.rice.database.platform.Platform.DocSearchResult;
  import edu.iu.uis.eden.docsearch.DocSearchCriteriaVO;
 -import edu.iu.uis.eden.docsearch.dao.SearchableAttributeSql;
 +import edu.iu.uis.eden.docsearch.QueryComponent;

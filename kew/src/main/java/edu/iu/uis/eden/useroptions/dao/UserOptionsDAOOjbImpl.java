@@ -23,12 +23,12 @@ import java.util.List;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
+import org.kuali.rice.database.platform.Platform;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.util.RiceConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.database.platform.Platform;
 import edu.iu.uis.eden.user.WorkflowUser;
 import edu.iu.uis.eden.useroptions.UserOptions;
 
@@ -43,7 +43,7 @@ public class UserOptionsDAOOjbImpl extends PersistenceBrokerDaoSupport implement
     }
 
 	protected Platform getPlatform() {
-    	return (Platform)GlobalResourceLoader.getService(KEWServiceLocator.DB_PLATFORM);
+    	return (Platform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
     }
 
     public List findByUserQualified(WorkflowUser user, String likeString) {

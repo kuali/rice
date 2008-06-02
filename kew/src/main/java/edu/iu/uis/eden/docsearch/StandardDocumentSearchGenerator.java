@@ -142,7 +142,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     /* (non-Javadoc)
-     * @see edu.iu.uis.eden.docsearch.DocumentSearchGenerator#executeSearch(edu.iu.uis.eden.docsearch.DocSearchCriteriaVO, edu.iu.uis.eden.database.platform.Platform)
+     * @see edu.iu.uis.eden.docsearch.DocumentSearchGenerator#executeSearch(edu.iu.uis.eden.docsearch.DocSearchCriteriaVO, org.kuali.rice.database.platform.Platform)
      */
     public String generateSearchSql(DocSearchCriteriaVO searchCriteria) throws EdenUserNotFoundException {
     	setCriteria(searchCriteria);

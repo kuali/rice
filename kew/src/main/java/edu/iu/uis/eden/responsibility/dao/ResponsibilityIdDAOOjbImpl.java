@@ -17,12 +17,11 @@
 package edu.iu.uis.eden.responsibility.dao;
 
 import org.apache.ojb.broker.PersistenceBroker;
+import org.kuali.rice.database.platform.Platform;
 import org.kuali.rice.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.util.RiceConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
-
-import edu.iu.uis.eden.KEWServiceLocator;
-import edu.iu.uis.eden.database.platform.Platform;
 
 public class ResponsibilityIdDAOOjbImpl extends PersistenceBrokerDaoSupport implements ResponsibilityIdDAO {
 
@@ -35,7 +34,7 @@ public class ResponsibilityIdDAOOjbImpl extends PersistenceBrokerDaoSupport impl
     }
 
 	protected Platform getPlatform() {
-    	return (Platform)GlobalResourceLoader.getService(KEWServiceLocator.DB_PLATFORM);
+    	return (Platform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
     }
 
 }

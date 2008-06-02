@@ -34,7 +34,7 @@ public class HelpDaoJpaImpl implements HelpDAO {
     
     public void save(HelpEntry helpEntry) {
         if (helpEntry.getHelpId() == null) {
-        	OrmUtils.populateAutoIncValue(helpEntry);
+        	OrmUtils.populateAutoIncValue(helpEntry, entityManager);
             entityManager.persist(helpEntry);
         } else {
             entityManager.merge(helpEntry);

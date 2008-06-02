@@ -44,39 +44,6 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         loadXmlFile("SearchAttributeConfig.xml");
     }
 
-//    private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {
-//    	SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(key,value,key);
-//    	Field field = getFieldByFormKey(docType, key);
-//    	if (field != null) {
-//        	sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
-//        	sacc.setRangeSearch(field.isMemberOfRange());
-//        	sacc.setAllowWildcards(field.isAllowingWildcards());
-//        	sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
-//        	sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
-//        	sacc.setCaseSensitive(field.isCaseSensitive());
-//        	sacc.setSearchInclusive(field.isInclusive());
-//            sacc.setSearchable(field.isSearchable());
-//            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-//    	}
-//    	return sacc;
-//    }
-//    
-//    private Field getFieldByFormKey(DocumentType docType, String formKey) {
-//    	if (docType == null) {
-//    		return null;
-//    	}
-//		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
-//			for (Row row : searchableAttribute.getSearchingRows()) {
-//				for (Field field : row.getFields()) {
-//					if (field.getPropertyName().equals(formKey)) {
-//						return field;
-//					}
-//				}
-//			}
-//		}
-//		return null;
-//    }
-
     @Test public void testCustomDocumentSearchGeneratorUse() throws Exception {
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName("SearchDocType");
     	assertTrue("The document search Generator class should be of type CustomDocumentSearchGenerator",(ClassLoaderUtils.unwrapFromProxy(docType.getDocumentSearchGenerator()) instanceof StandardDocumentSearchGenerator));

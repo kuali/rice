@@ -4,7 +4,7 @@ if (args.length < 2 || args.length > 6) {
 }
 
 PROJECT_DIR = '/java/projects'
-RICE_DIR = '/java/projects/rice' 
+RICE_DIR = '/java/projects/rice'
 
 count = 0
 for (arg in args) {
@@ -16,17 +16,20 @@ for (arg in args) {
 
 PROJECT_PATH = PROJECT_DIR + '/' + PROJECT_NAME
 
+TEMPLATE_BINDING = ["\${PROJECT_NAME}":"$PROJECT_NAME", "\${RICE_VERSION}":"0.9.3-SNAPSHOT", "\${USER_HOME}":System.getProperty('user.home')] 
+
 println warningtext()
+
 input = new BufferedReader(new InputStreamReader(System.in))
 answer = input.readLine()
 if (!"yes".equals(answer.trim().toLowerCase())) {
 	System.exit(2)
 }
 
-removeFile("${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME.toLowerCase()}-config.xml")
-removeFile("${System.getProperty('user.home')}/kuali/test/dev/${PROJECT_NAME.toLowerCase()}-test-config.xml")
-removeFile("${System.getProperty('user.home')}/kuali/main/dev/ricekeystore")
-removeFile("${System.getProperty('user.home')}/kuali/test/dev/ricekeystore")
+removeFile("${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME}-config.xml")
+removeFile("${System.getProperty('user.home')}/kuali/test/dev/${PROJECT_NAME}-test-config.xml")
+removeFile("${System.getProperty('user.home')}/kuali/main/dev/rice.keystore")
+removeFile("${System.getProperty('user.home')}/kuali/test/dev/rice.keystore")
 
 buildDir("${System.getProperty('user.home')}/kuali/main/dev/")
 buildDir("${System.getProperty('user.home')}/kuali/test/dev/")
@@ -35,18 +38,21 @@ buildDir("${PROJECT_DIR}")
 ant = new AntBuilder() 
 
 ant.delete(dir:PROJECT_PATH) 
+
+// Copy the Sample Application Files
+
 ant.copy(todir:PROJECT_PATH + '/src/main/java/edu') { 
-    fileset(dir:RICE_DIR + '/kns/src/test/java/edu', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
-}
-ant.copy(todir:PROJECT_PATH + '/src/test/java/org/kuali/rice') { 
-    fileset(dir:RICE_DIR + '/kns/src/test/java/org/kuali/rice', includes:'**/*', excludes:'.svn,CVS*,.cvs*,**/KualiMaintainableTest*') 
+    fileset(dir:RICE_DIR + '/server/src/test/java/edu')
 }
 ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
-    fileset(dir:RICE_DIR + '/kns/src/test/resources', includes:'**/*', excludes:'.svn,CVS*,.cvs*,db/, **/sample-app-test-config.xml') 
+    fileset(dir:RICE_DIR + '/server/src/test/resources', includes:'**/*', excludes:'.svn,CVS*,.cvs*,db/, **/standalone/**/*, **/SampleAppBeans-test.xml, **/ServerDefault*, **/sample-app-test-config.xml')
+    fileset(dir:RICE_DIR + '/server/src/main/resources', includes:'**/*', excludes:'.svn,CVS*,.cvs*,db/, **/standalone/**/*, **/SampleAppBeans-test.xml, **/ServerDefault*, **/sample-app-test-config.xml') 
 }
+
 ant.copy(todir:PROJECT_PATH + '/src/test/resources') { 
-    fileset(dir:RICE_DIR + '/kns/src/test/resources', includes:'**/sample-app-test-config.xml') 
+    fileset(dir:RICE_DIR + '/server/src/test/resources', includes:'**/sample-app-test-config.xml') 
 }
+
 ant.copy(todir:PROJECT_PATH + '/src/main/config/ddl') { 
     fileset(dir:RICE_DIR + '/kns/src/main/config/ddl', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
 }
@@ -59,51 +65,61 @@ ant.copy(todir:PROJECT_PATH + '/src/main/config/sql') {
 ant.copy(todir:PROJECT_PATH + '/src/main/config/xml') { 
     fileset(dir:RICE_DIR + '/kns/src/main/config/xml', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
 }
+
 ant.copy(todir:PROJECT_PATH + '/src/main/webapp') { 
-    fileset(dir:RICE_DIR + '/kns/src/test/webapp', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
+    fileset(dir:RICE_DIR + '/server/src/main/webapp', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
 }
+
 ant.copy(todir:"${System.getProperty('user.home')}/kuali/main/dev") { 
-    fileset(dir:RICE_DIR + '/security', includes:'ricekeystore', excludes:'.svn,CVS*,.cvs*') 
+    fileset(dir:RICE_DIR + '/security', includes:'rice.keystore', excludes:'.svn,CVS*,.cvs*') 
 }
 ant.copy(todir:"${System.getProperty('user.home')}/kuali/test/dev") { 
-    fileset(dir:RICE_DIR + '/security', includes:'ricekeystore', excludes:'.svn,CVS*,.cvs*') 
+    fileset(dir:RICE_DIR + '/security', includes:'rice.keystore', excludes:'.svn,CVS*,.cvs*') 
 }
 ant.delete(dir:PROJECT_PATH + '/src/main/resources/org')
+
+// create the initial POM file
 
 pom = new File(PROJECT_PATH + '/pom.xml')
 pom << pomtext()
 
-classpath = new File(PROJECT_PATH + '/.classpath')
-classpath << classpathtext()
-
-project = new File(PROJECT_PATH + '/.project')
-project << projecttext()
+// TODO generate .classpath file using eclipse:eclipse from maven somehow, this old way won't cut it anymore after getting rid of maven plugin
+// classpath = new File(PROJECT_PATH + '/.classpath')
+// classpath << classpathtext()
+// TODO generate .project file using eclipse:eclipse from maven showhow
+//project = new File(PROJECT_PATH + '/.project')
+//project << projecttext()
 
 launch = new File(PROJECT_PATH + '/Launch Web App.launch')
 launch << launchtext()
 
-config = new File("${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME.toLowerCase()}-config.xml")
+config = new File("${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME}-config.xml")
 config << userhomeconfigtext()
-config = new File("${System.getProperty('user.home')}/kuali/test/dev/${PROJECT_NAME.toLowerCase()}-test-config.xml")
-config << userhometestconfigtext()
 
 config = new File(PROJECT_PATH + '/src/main/resources/META-INF/sample-app-config.xml')
 configtext = ""
-config.eachLine { line -> configtext += line.replace('sample-app', "${PROJECT_NAME.toLowerCase()}") + "\n" }
+config.eachLine { line -> configtext += line.replace('sample-app', "${PROJECT_NAME}") + "\n" }
 config.delete()
-config = new File(PROJECT_PATH + "/src/main/resources/META-INF/${PROJECT_NAME.toLowerCase()}-config.xml")
+config = new File(PROJECT_PATH + "/src/main/resources/META-INF/${PROJECT_NAME}-config.xml")
 config << configtext
 	
 config = new File(PROJECT_PATH + '/src/test/resources/META-INF/sample-app-test-config.xml')
 configtext = ""
-config.eachLine { line -> configtext += line.replace('sample-app', "${PROJECT_NAME.toLowerCase()}") + "\n" }
+config.eachLine { line -> configtext += line.replace('sample-app', "${PROJECT_NAME}") + "\n" }
 config.delete()
-config = new File(PROJECT_PATH + "/src/test/resources/META-INF/${PROJECT_NAME.toLowerCase()}-test-config.xml")
+config = new File(PROJECT_PATH + "/src/test/resources/META-INF/${PROJECT_NAME}-test-config.xml")
 config << configtext
 
+// Rename SampleAppSpringBeans.xml to SpringBeans.xml
 spring = new File(PROJECT_PATH + '/src/main/resources/SpringBeans.xml')
+sampleAppSpring = new File(PROJECT_PATH + '/src/main/resources/SampleAppBeans.xml')
+if ( !sampleAppSpring.renameTo( spring ) ) {
+	println 'Failed to rename SampleAppSpringBeans.xml to SpringBeans.xml'
+	System.exit(1)
+}
+	
 springtext = ""
-spring.eachLine { line -> springtext += line.replace('sample-app', "${PROJECT_NAME.toLowerCase()}") + "\n" }
+spring.eachLine { line -> springtext += line.replace('sample-app', "${PROJECT_NAME}") + "\n" }
 spring.delete()
 spring = new File(PROJECT_PATH + "/src/main/resources/SpringBeans.xml")
 spring << springtext
@@ -112,7 +128,7 @@ index = new File(PROJECT_PATH + '/src/main/webapp/index.html')
 indextext = ""
 index.eachLine { 
     line -> 
-	    line = line.replace('kr-dev', "${PROJECT_NAME.toLowerCase()}-dev")
+	    line = line.replace('kr-dev', "${PROJECT_NAME}-dev")
 	    line = line.replace('-dev/portal.do', "-dev/index.html")
     	indextext += line + "\n" 
 }
@@ -122,29 +138,14 @@ index << indextext
 
 ingest = new File(PROJECT_PATH + '/src/main/config/xml/RiceSampleAppWorkflowBootstrap.xml')
 ingesttext = ""
-ingest.eachLine { line -> ingesttext += line.replace('kr-dev', "${PROJECT_NAME.toLowerCase()}-dev") + "\n" }
+ingest.eachLine { line -> ingesttext += line.replace('kr-dev', "${PROJECT_NAME}-dev") + "\n" }
 ingest.delete()
 ingest = new File(PROJECT_PATH + "/src/main/config/xml/RiceSampleAppWorkflowBootstrap.xml")
 ingest << ingesttext
 
-testbase = new File(PROJECT_PATH + '/src/test/java/org/kuali/rice/TestBase.java')
-testbasetext = ""
-testbase.eachLine { 
-    line -> 
-		line = line.replace('return "kns"', 'return ""')
-		line = line.replace('"/src/test/webapp"', '"/src/main/webapp"')
-		line = line.replace('sample-app', "${PROJECT_NAME.toLowerCase()}")
-    	testbasetext += line + "\n" 
-}
-testbase.delete()
-testbase = new File(PROJECT_PATH + "/src/test/java/org/kuali/rice/TestBase.java")
-testbase << testbasetext
-
 println instructionstext()
 
 System.exit(0)
-
-
 
 def removeFile(path) {
 	if (new File(path).exists()) {
@@ -158,240 +159,28 @@ def buildDir(path) {
 	}
 }
 
+def pomtext() {
+	return templateReplace(new File(RICE_DIR + '/scripts/templates/createproject.pom.template.xml'))
+}
 
 def launchtext() {
-"""<?xml version="1.0" encoding="UTF-8"?>
-<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.kuali.rice.web.jetty.JettyServer"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="8080 &quot;/${PROJECT_NAME.toLowerCase()}-dev&quot; &quot;/src/main/webapp&quot;"/>
-<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
-<listEntry value="4"/>
-</listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="${PROJECT_NAME}"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx256M"/>
-<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
-<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
-<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
-</listAttribute>
-<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/${PROJECT_NAME}"/>
-</listAttribute>
-<booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
-</launchConfiguration>"""
+	return templateReplace(new File(RICE_DIR + '/scripts/templates/createproject.launch.template.xml'))
 }
 
 def userhomeconfigtext() {
-'''<config>
-	<!-- App specific parameters -->
-	<param name="app.code">''' + PROJECT_NAME.toLowerCase() + '''</param>
-	<param name="app.context.name">${app.code}-${environment}</param>
-	<param name="production.environment.code">PRD</param>
-	<param name="externalizable.help.url">/${app.context.name}/kr/static/help/</param>
-	<param name="externalizable.images.url">/${app.context.name}/kr/static/images/</param>
-	<param name="kr.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
-	<param name="travel.externalizable.images.url">/${app.context.name}/static/images/</param>
-	<param name="kr.url">/${app.context.name}/kr</param>
-	<param name="attachments.pending.directory">${java.io.tmpdir}</param>
-	<param name="attachments.directory">${java.io.tmpdir}</param>
-
-	<!-- Misc parameters -->
-	<param name="institution">iu</param>
-	<param name="version">03/19/2007 01:59 PM</param>
-	<param name="security.directory">/usr/local/rice/</param>
-	<param name="settings.directory">/usr/local/rice/</param>
-
-	<param name="transaction.timeout">3600</param>
-	<param name="memory.monitor.threshold">.85</param>
-	<param name="production.environment.code">prd</param>
-	<param name="maintain.users.locally">true</param>
-
-    <param name="rice.user">true</param>
-
-	<param name="log4j.reload.minutes">5</param>
-	<param name="log4j.settings.path">classpath:log4j.properties</param>
-
-	<param name="workflow.url">http://localhost:8080/${app.context.name}/en</param>
-	<param name="application.url">http://localhost:8080/${app.context.name}</param>
-	<param name="serviceServletUrl">http://localhost:8080/${app.context.name}/remoting/</param>
-
-	<param name="datasource.url"></param>
-	<param name="datasource.username"></param>
-	<param name="datasource.password"></param>
-	<param name="datasource.ojb.platform">Oracle9i</param>
-	<param name="datasource.platform">org.kuali.rice.database.platform.OraclePlatform</param>
-	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
-	<param name="datasource.pool.validationQuery">select 1 from dual</param>
-	<param name="datasource.pool.maxWait">30000</param>
-	<param name="datasource.pool.size">5</param>
-
-	<param name="keystore.alias">rice</param>
-	<param name="keystore.location">''' + System.getProperty('user.home') + '''/kuali/main/dev/ricekeystore</param>
-	<param name="keystore.password">r1c3pw</param>
-
-	<param name="dev.mode">true</param>
-	<param name="message.persistence">false</param>
-	<param name="message.delivery">asynchronous</param>
-	<param name="useQuartzDatabase">false</param>
-	<param name="Routing.ImmediateExceptionRouting">true</param>
-    <param name="bam.enabled">false</param>
-
-	<!-- XML ingester directories -->
-	<param name="data.xml.root.location">/opt/ears/${environment}/en/xml</param>
-	<param name="data.xml.pending.location">${data.xml.root.location}pending</param>
-	<param name="data.xml.loaded.location">${data.xml.root.location}loaded</param>
-	<param name="data.xml.problem.location">${data.xml.root.location}problem</param>
-	<param name="attachment.dir.location">/opt/ears/</param>
-	<param name="data.xml.pollIntervalSecs">30</param>
-	<param name="initialDelaySecs">10</param>
-	<param name="workgroup.url">Workgroup.do</param>
-	<param name="workgroup.report.url">Workgroup.do</param>
-	<param name="user.url">WorkflowUser.do</param>
-	<param name="user.report.url">WorkflowUserReport.do</param>
-
-	<!-- Kuali parameters -->
-	<param name="mail.relay.server">mail.relay.server</param>
-	<param name="mailing.list.batch">mailing.list.batch</param>
-	<param name="encryption.key">7IC64w6ksLU</param>
-	<param name="kfsLocator.useAppContext">true</param>
-	<param name="production.environment.code">prd</param>
-
-    <!-- Ken stuffs... -->
-    <!-- stock notification system configuration properties -->
-
-    <!-- Quartz Jobs (MS = Milli Seconds) -->
-    <param name="notification.resolveMessageDeliveriesJob.startDelayMS">5000</param>
-    <param name="notification.resolveMessageDeliveriesJob.intervalMS">10000</param>
-
-    <param name="notification.processUndeliveredJob.startDelayMS">10000</param>
-    <param name="notification.processUndeliveredJob.intervalMS">10000</param>
-
-    <param name="notification.processAutoRemovalJob.startDelayMS">60000</param>
-    <param name="notification.processAutoRemovalJob.intervalMS">60000</param>
-
-    <param name="notification.quartz.autostartup">true</param>
-    <param name="notification.concurrent.jobs">true</param>
-
-    <param name="notification.basewebappurl">http://localhost:8080/kr-dev/ken</param>
-    
-    <param name="notification.ojb.platform">Oracle</param>
-    
-    <!-- Email Plugin Properties -->
-    <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
-    
-
-    <param name="css.files">kr/css/kuali.css</param>
-    <param name="javascript.files">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/documents.js,kr/scripts/my_common.js,kr/scripts/objectInfo.js</param>
-</config>'''	
+	return templateReplace(new File(RICE_DIR + '/scripts/templates/createproject.config.template.xml'))
 }
 
-def userhometestconfigtext() {
-'''<config>
-	<!-- App specific parameters -->
-	<param name="app.code">''' + PROJECT_NAME.toLowerCase() + '''</param>
-	<param name="app.context.name">${app.code}-${environment}</param>
-	<param name="production.environment.code">PRD</param>
-	<param name="externalizable.help.url">/${app.context.name}/kr/static/help/</param>
-	<param name="externalizable.images.url">/${app.context.name}/kr/static/images/</param>
-	<param name="kr.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
-	<param name="travel.externalizable.images.url">/${app.context.name}/static/images/</param>
-	<param name="kr.url">/${app.context.name}/kr</param>
-	<param name="use.clearDatabaseLifecycle">true</param>
-	<param name="use.kewXmlmlDataLoaderLifecycle">true</param>
-	<param name="use.sqlDataLoaderLifecycle">true</param>
-	<param name="test.mode">true</param>
-	<param name="attachments.pending.directory">${java.io.tmpdir}</param>
-	<param name="attachments.directory">${java.io.tmpdir}</param>
-
-	<!-- Misc parameters -->
-	<param name="institution">iu</param>
-	<param name="version">03/19/2007 01:59 PM</param>
-	<param name="security.directory">/usr/local/rice/</param>
-	<param name="settings.directory">/usr/local/rice/</param>
-
-	<param name="transaction.timeout">3600</param>
-	<param name="memory.monitor.threshold">.85</param>
-	<param name="production.environment.code">prd</param>
-	<param name="maintain.users.locally">true</param>
-
-    <param name="kns.test.port">9916</param>
-
-    <param name="rice.user">true</param>
-
-	<param name="log4j.reload.minutes">5</param>
-	<param name="log4j.settings.path">classpath:log4j.properties</param>
-
-	<param name="workflow.url">http://localhost:9912/${app.context.name}/en</param>
-	<param name="application.url">http://localhost:9912/${app.context.name}</param>
-	<param name="serviceServletUrl">http://localhost:9912/${app.context.name}/remoting/</param>
-
-	<param name="datasource.url"></param>
-	<param name="datasource.username"></param>
-	<param name="datasource.password"></param>
-	<param name="datasource.ojb.platform">Oracle9i</param>
-	<param name="datasource.platform">org.kuali.rice.database.platform.OraclePlatform</param>
-	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
-	<param name="datasource.pool.validationQuery">select 1 from dual</param>
-	<param name="datasource.pool.maxWait">30000</param>
-	<param name="datasource.pool.size">5</param>
-
-	<param name="keystore.alias">rice</param>
-	<param name="keystore.location">''' + System.getProperty('user.home') + '''/kuali/test/dev/ricekeystore</param>
-	<param name="keystore.password">r1c3pw</param>
-
-	<param name="dev.mode">true</param>
-	<param name="message.persistence">false</param>
-	<param name="message.delivery">asynchronous</param>
-	<param name="useQuartzDatabase">false</param>
-	<param name="Routing.ImmediateExceptionRouting">true</param>
-    <param name="bam.enabled">false</param>
-
-	<!-- XML ingester directories -->
-	<param name="data.xml.root.location">/opt/ears/${environment}/en/xml</param>
-	<param name="data.xml.pending.location">${data.xml.root.location}pending</param>
-	<param name="data.xml.loaded.location">${data.xml.root.location}loaded</param>
-	<param name="data.xml.problem.location">${data.xml.root.location}problem</param>
-	<param name="attachment.dir.location">/opt/ears/</param>
-	<param name="data.xml.pollIntervalSecs">30</param>
-	<param name="initialDelaySecs">10</param>
-	<param name="workgroup.url">Workgroup.do</param>
-	<param name="workgroup.report.url">Workgroup.do</param>
-	<param name="user.url">WorkflowUser.do</param>
-	<param name="user.report.url">WorkflowUserReport.do</param>
-
-	<!-- Kuali parameters -->
-	<param name="mail.relay.server">mail.relay.server</param>
-	<param name="mailing.list.batch">mailing.list.batch</param>
-	<param name="encryption.key">7IC64w6ksLU</param>
-	<param name="kfsLocator.useAppContext">true</param>
-	<param name="production.environment.code">prd</param>
-
-    <!-- Ken stuffs... -->
-    <!-- stock notification system configuration properties -->
-
-    <!-- Quartz Jobs (MS = Milli Seconds) -->
-    <param name="notification.resolveMessageDeliveriesJob.startDelayMS">5000</param>
-    <param name="notification.resolveMessageDeliveriesJob.intervalMS">10000</param>
-
-    <param name="notification.processUndeliveredJob.startDelayMS">10000</param>
-    <param name="notification.processUndeliveredJob.intervalMS">10000</param>
-
-    <param name="notification.processAutoRemovalJob.startDelayMS">60000</param>
-    <param name="notification.processAutoRemovalJob.intervalMS">60000</param>
-
-    <param name="notification.quartz.autostartup">true</param>
-    <param name="notification.concurrent.jobs">true</param>
-
-    <param name="notification.basewebappurl">http://localhost:8080/kr-dev/ken</param>
-    
-    <param name="notification.ojb.platform">Oracle</param>
-    
-    <!-- Email Plugin Properties -->
-    <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
-    
-
-    <param name="css.files">kr/css/kuali.css</param>
-    <param name="javascript.files">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/documents.js,kr/scripts/my_common.js,kr/scripts/objectInfo.js</param>
-</config>'''	
+def templateReplace(file) {
+	def replaced = ""
+	file.eachLine { 
+    line -> 
+    	for ( binding in TEMPLATE_BINDING ) {
+          line = line.replace(binding.key, binding.value)
+        }
+    	replaced += line + "\n" 
+	}
+	return replaced
 }
 
 def instructionstext() {
@@ -400,9 +189,9 @@ def instructionstext() {
         Instructions to complete Rice Template Install
 ==================================================================
 1. Import ${PROJECT_PATH} as an 'existing' eclipse project.
-2. Update ${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME.toLowerCase()}-config.xml 
+2. Update ${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME}-config.xml 
    with application runtime database information.
-3. Update ${System.getProperty('user.home')}/kuali/test/dev/${PROJECT_NAME.toLowerCase()}-test-config.xml 
+3. Update ${System.getProperty('user.home')}/kuali/test/dev/${PROJECT_NAME}-test-config.xml 
    with unit testing database information.
 4. Run the /src/main/config/sql/rice_db_bootstrap.sql file if you 
    have a fresh database.  If you need to drop all tables first, run
@@ -410,232 +199,12 @@ def instructionstext() {
 5. Start the application using the eclipse launch configuration.
    In the eclipse Run menu, choose 'Run...' and select the the
    configuration named 'Launch Web App'
-6. Open a brower to http://localhost:8080/${PROJECT_NAME.toLowerCase()}-dev/index.html
+6. Open a brower to http://localhost:8080/${PROJECT_NAME}-dev/index.html
 7. Finish bootstrapping by ingesting the workflow xml.  From the 
    start screen, go to the workflow portal and log in as quickstart.
    Go to the 'XML Ingester' link and ingest the following file: 
    /src/main/config/xml/RiceSampleAppWorkflowBootstrap.xml
 """
-}
-
-def projecttext() {
-"""<?xml version="1.0" encoding="UTF-8"?>
-<projectDescription>
-	<name>${PROJECT_NAME}</name>
-	<comment></comment>
-	<projects>
-	</projects>
-	<buildSpec>
-		<buildCommand>
-			<name>org.eclipse.jdt.core.javabuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
-			<name>com.ibm.sse.model.structuredbuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
-			<name>org.maven.ide.eclipse.maven2Builder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-	</buildSpec>
-	<natures>
-		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>org.maven.ide.eclipse.maven2Nature</nature>
-	</natures>
-</projectDescription>"""	
-}
-
-def classpathtext() {
-"""<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="src" path="src/main/resources"/>
-	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry kind="src" path="src/test/resources"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
-	<classpathentry kind="output" path="target/classes"/>
-</classpath>"""	
-}
-
-def pomtext() {
-"""<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  	<modelVersion>4.0.0</modelVersion>
-	<groupId>${PROJECT_NAME.toLowerCase()}-group-id</groupId>
-	<artifactId>${PROJECT_NAME.toLowerCase()}-artifact-id</artifactId>
-	<packaging>war</packaging>
-	<name>${PROJECT_NAME.toLowerCase()}</name>
-	<version>SNAPSHOT-0.1</version>
-	<url>http://kuali.org</url>
-	<profiles>
-		<profile>
-			<id>war</id>
-			<activation>
-				<property>
-					<name>war</name>
-					<value>true</value>
-				</property>
-			</activation>
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-				</plugins>
-			</build>
-			<dependencies>
-				<dependency>
-					<groupId>javax.servlet</groupId>
-					<artifactId>servlet-api</artifactId>
-					<version>2.4</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>javax.servlet</groupId>
-					<artifactId>servlet-api</artifactId>
-					<version>2.3</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.mortbay.jetty</groupId>
-					<artifactId>jetty</artifactId>
-					<version>6.1.1</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>tomcat</groupId>
-					<artifactId>jasper-compiler</artifactId>
-					<version>5.5.15</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>tomcat</groupId>
-					<artifactId>jasper-runtime</artifactId>
-					<version>5.5.15</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>tomcat</groupId>
-					<artifactId>jasper-compiler-jdt</artifactId>
-					<version>5.5.15</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.activemq</groupId>
-					<artifactId>activemq-core</artifactId>
-					<version>4.1.1</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.derby</groupId>
-					<artifactId>derby</artifactId>
-					<version>10.2.2.0</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.kuali.rice</groupId>
-					<artifactId>rice-kns</artifactId>
-					<version>0.9.3-SNAPSHOT</version>
-					<exclusions>
-						<exclusion>
-							<groupId>junit</groupId>
-							<artifactId>junit</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>htmlunit</groupId>
-							<artifactId>htmlunit</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>jmock</groupId>
-							<artifactId>jmock</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>nekohtml</groupId>
-							<artifactId>nekohtml</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>org.apache.activemq</groupId>
-							<artifactId>activemq-core</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>org.apache.derby</groupId>
-							<artifactId>derby</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>org.springframework</groupId>
-							<artifactId>spring-mock</artifactId>
-						</exclusion>
-					</exclusions>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>default</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-			<plugin>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<configuration>
-							<source>1.5</source>
-							<target>1.5</target>
-						</configuration>
-					</plugin>
-					<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<useFile>false</useFile>
-					<testFailureIgnore>true</testFailureIgnore>
-					<includes>
-						<include>**/*Test.java</include>
-					</includes>
-					<forkMode>once</forkMode>
-					<reportFormat>plain</reportFormat>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-			<dependencies>
-				<dependency>
-					<groupId>org.kuali.rice</groupId>
-					<artifactId>rice-kns</artifactId>
-					<version>0.9.3-SNAPSHOT</version>
-				</dependency>
-			</dependencies>
-		</profile>
-	</profiles>
-	<repositories>
-		<repository>
-			<id>connector</id>
-			<name>Connector</name>
-			<url>http://julien.dubois.free.fr/maven2/</url>
-		</repository>
-		<repository>
-			<id>kuali</id>
-			<name>Kuali Repository</name>
-			<url>https://test.kuali.org/maven</url>
-		</repository>
-	</repositories>
-	<reporting>
-		<plugins>
-			<plugin>
-				<artifactId>maven-surefire-report-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</reporting>
-</project>"""
 }
 
 def warningtext() {
@@ -648,10 +217,10 @@ with a new project:
     ${PROJECT_PATH}
 
 It will also create or replace the following files in USER_HOME:
-    1) ${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME.toLowerCase()}-config.xml
-    2) ${System.getProperty('user.home')}/kuali/test/dev/${PROJECT_NAME.toLowerCase()}-test-config.xml
-    3) ${System.getProperty('user.home')}/kuali/main/dev/ricekeystore
-    4) ${System.getProperty('user.home')}/kuali/test/dev/ricekeystore
+    1) ${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME}-config.xml
+    2) ${System.getProperty('user.home')}/kuali/test/dev/${PROJECT_NAME}-test-config.xml
+    3) ${System.getProperty('user.home')}/kuali/main/dev/rice.keystore
+    4) ${System.getProperty('user.home')}/kuali/test/dev/rice.keystore
 
 If this is not what you want, please supply more information:
     usage: groovy createproject -name PROJECT_NAME [-pdir PROJECT_DIR] [-rdir RICE_DIR]

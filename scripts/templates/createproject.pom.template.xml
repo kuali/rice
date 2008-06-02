@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>${PROJECT_NAME}-group-id</groupId>
+	<artifactId>${PROJECT_NAME}-artifact-id</artifactId>
+	<packaging>war</packaging>
+	<name>${PROJECT_NAME}</name>
+	<version>0.1-SNAPSHOT</version>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty</artifactId>
+			<version>6.1.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-kns</artifactId>
+			<version>${RICE_VERSION}</version>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>kuali</id>
+			<name>Kuali Repository</name>
+			<url>https://test.kuali.org/maven</url>
+		</repository>
+	</repositories>
+</project>

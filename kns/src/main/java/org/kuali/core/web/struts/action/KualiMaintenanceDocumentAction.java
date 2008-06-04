@@ -65,6 +65,7 @@ import org.kuali.rice.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.jpa.metadata.FieldDescriptor;
 import org.kuali.rice.jpa.metadata.MetadataManager;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.util.OrmUtils;
 import org.kuali.rice.util.RiceConstants;
 
 import edu.iu.uis.eden.clientapp.IDocHandler;
@@ -200,23 +201,25 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             }
             
             // Temp solution for loading extension objects - need to find a better way
-            if (oldBusinessObject.getExtension() != null) {
-            	PersistableBusinessObjectExtension boe = oldBusinessObject.getExtension();
-            	EntityDescriptor entity = MetadataManager.getEntityDescriptor(oldBusinessObject.getExtension().getClass());
-            	org.kuali.rice.jpa.criteria.Criteria extensionCriteria = new org.kuali.rice.jpa.criteria.Criteria(boe.getClass().getName());
-            	for (FieldDescriptor fieldDescriptor : entity.getPrimaryKeys()) {
-            		try {
-            			Field field = oldBusinessObject.getClass().getDeclaredField(fieldDescriptor.getName());
-            			field.setAccessible(true);
-            			extensionCriteria.eq(fieldDescriptor.getName(), field.get(oldBusinessObject));
-            		} catch (Exception e) {
-            			LOG.error(e.getMessage(),e);
-            		}
-            	}				
-            	try {
-            		boe = (PersistableBusinessObjectExtension) new org.kuali.rice.jpa.criteria.QueryByCriteria(KNSServiceLocator.getEntityManagerFactory().createEntityManager(), extensionCriteria).toQuery().getSingleResult();
-            	} catch (PersistenceException e) {}
-            	oldBusinessObject.setExtension(boe);
+            if (OrmUtils.isJpaEnabled() && OrmUtils.isJpaAnnotated(oldBusinessObject.getClass()) && OrmUtils.isJpaAnnotated(oldBusinessObject.getExtension().getClass())) {
+	            if (oldBusinessObject.getExtension() != null) {
+	            	PersistableBusinessObjectExtension boe = oldBusinessObject.getExtension();
+	            	EntityDescriptor entity = MetadataManager.getEntityDescriptor(oldBusinessObject.getExtension().getClass());
+	            	org.kuali.rice.jpa.criteria.Criteria extensionCriteria = new org.kuali.rice.jpa.criteria.Criteria(boe.getClass().getName());
+	            	for (FieldDescriptor fieldDescriptor : entity.getPrimaryKeys()) {
+	            		try {
+	            			Field field = oldBusinessObject.getClass().getDeclaredField(fieldDescriptor.getName());
+	            			field.setAccessible(true);
+	            			extensionCriteria.eq(fieldDescriptor.getName(), field.get(oldBusinessObject));
+	            		} catch (Exception e) {
+	            			LOG.error(e.getMessage(),e);
+	            		}
+	            	}				
+	            	try {
+	            		boe = (PersistableBusinessObjectExtension) new org.kuali.rice.jpa.criteria.QueryByCriteria(KNSServiceLocator.getEntityManagerFactory().createEntityManager(), extensionCriteria).toQuery().getSingleResult();
+	            	} catch (PersistenceException e) {}
+	            	oldBusinessObject.setExtension(boe);
+	            }
             }
                         
             PersistableBusinessObject newBusinessObject = (PersistableBusinessObject) ObjectUtils.deepCopy(oldBusinessObject);

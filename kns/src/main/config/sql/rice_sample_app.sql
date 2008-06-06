@@ -77,11 +77,6 @@ insert into TRV_ACCT (acct_num, acct_name, acct_fo_id) values ('a2', 'a2', 2)
 insert into TRV_ACCT (acct_num, acct_name, acct_fo_id) values ('a3', 'a3', 3)
 /
 
-insert into en_usr_t (PRSN_EN_ID, PRSN_UNIV_ID, PRSN_NTWRK_ID, PRSN_UNVL_USR_ID, PRSN_EMAIL_ADDR, PRSN_NM, PRSN_GVN_NM, PRSN_LST_NM, USR_CRTE_DT, USR_LST_UPDT_DT, DB_LOCK_VER_NBR) values ('quickstart','quickstart','quickstart','quickstart','quickstart@localhost','quickstart','quickstart','quickstart',to_date('01/01/2000', 'dd/mm/yyyy'),to_date('01/01/2100', 'dd/mm/yyyy'),0)
-/
-insert into EN_WRKGRP_MBR_T (WRKGRP_MBR_PRSN_EN_ID, WRKGRP_ID, WRKGRP_MBR_TYP, WRKGRP_VER_NBR, DB_LOCK_VER_NBR) values ('quickstart', 1, 'U', 1, 0)
-/
-
 INSERT INTO FP_DOC_GROUP_T (FDOC_GRP_CD, OBJ_ID, VER_NBR, FDOC_GRP_NM, FDOC_CLASS_CD) VALUES ('TR', '054EDFB3B260C8D2E043814FD881C8D2', 1,  'Travel Documents', null)
 /
 insert into FP_DOC_TYPE_T (FDOC_TYP_CD, OBJ_ID, VER_NBR, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD, FDOC_TYP_ACTIVE_CD, FDOC_RTNG_RULE_CD, FDOC_AUTOAPRV_DAYS, FDOC_BALANCED_CD, TRN_SCRBBR_OFST_GEN_IND) values ('TRAV', '1A6FEB2501C7607EE043814FD881607E', 1, 'TR', 'TRAV ACCNT', 'N', 'Y', 'N', 0, 'N', 'N')

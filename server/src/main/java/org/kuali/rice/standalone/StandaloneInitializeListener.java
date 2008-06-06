@@ -50,6 +50,7 @@ public class StandaloneInitializeListener implements ServletContextListener {
     private static final Logger LOG = Logger.getLogger(StandaloneInitializeListener.class);
 
     private static final String DEFAULT_SPRING_BEANS = "org/kuali/rice/standalone/config/StandaloneSpringBeans.xml";
+    private static final String DEFAULT_SPRING_BEANS_REPLACEMENT_VALUE = "${bootstrap.spring.file}";
     public static final String RICE_BASE = "rice.base";
     public static final String CATALINA_BASE = "catalina.base";
     public static final String RICE_STANDALONE_EXECUTE_MESSAGE_FETCHER = "rice.standalone.execute.messageFetcher";
@@ -87,8 +88,12 @@ public class StandaloneInitializeListener implements ServletContextListener {
         if (!StringUtils.isBlank(System.getProperty(EdenConstants.BOOTSTRAP_SPRING_FILE))) {
             bootstrapSpringBeans = System.getProperty(EdenConstants.BOOTSTRAP_SPRING_FILE);
         } else if (!StringUtils.isBlank(sce.getServletContext().getInitParameter(EdenConstants.BOOTSTRAP_SPRING_FILE))) {
-            bootstrapSpringBeans = sce.getServletContext().getInitParameter(EdenConstants.BOOTSTRAP_SPRING_FILE);
-            LOG.info("Found bootstrap Spring Beans file defined in servlet context: " + bootstrapSpringBeans);
+            String bootstrapSpringInitParam = sce.getServletContext().getInitParameter(EdenConstants.BOOTSTRAP_SPRING_FILE);
+            // if the value comes through as ${bootstrap.spring.beans}, we ignore it
+            if (!DEFAULT_SPRING_BEANS_REPLACEMENT_VALUE.equals(bootstrapSpringInitParam)) {
+            	bootstrapSpringBeans = bootstrapSpringInitParam;
+            	LOG.info("Found bootstrap Spring Beans file defined in servlet context: " + bootstrapSpringBeans);
+            }
         }
         try {
             String basePath = findBasePath(sce.getServletContext());

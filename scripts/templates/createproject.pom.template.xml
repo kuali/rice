@@ -32,7 +32,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.kuali.rice</groupId>
-			<artifactId>rice-kns</artifactId>
+			<artifactId>rice-server</artifactId>
 			<version>${RICE_VERSION}</version>
 		</dependency>
 	</dependencies>

@@ -1,0 +1,21 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	 
+	<bean id="sampleAppModule" class="org.kuali.core.KualiModule">
+		<property name="moduleId" value="sa"/>
+		<property name="moduleName" value="Sample App"/>
+		<property name="moduleCode" value="sa"/>
+		<property name="initializeDataDictionary" value="true"/>
+		<property name="dataDictionaryPackages">
+			<list>
+				<value>classpath:edu/sampleu/travel/datadictionary</value>
+            </list>
+		</property>
+		<property name="databaseRepositoryFilePaths">
+			<list>
+				<value>OJB-repository-sampleapp.xml</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

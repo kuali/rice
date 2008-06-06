@@ -7,6 +7,12 @@
       <param-name>environment</param-name>
       <param-value>dev</param-value>
     </context-param>
+    
+    <!-- Change this if you want to use a different Spring file -->
+    <context-param>
+      <param-name>kew.bootstrap.spring.file</param-name>
+      <param-value>${bootstrap.spring.file}</param-value>
+    </context-param>
 
 	<filter>
         <filter-name>HideWebInfFilter</filter-name>

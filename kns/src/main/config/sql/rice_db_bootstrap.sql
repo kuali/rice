@@ -3066,9 +3066,12 @@ INSERT INTO FP_DOC_TYPE_T (FDOC_TYP_CD, FDOC_GRP_CD, FDOC_NM, FIN_ELIM_ELGBL_CD,
 -- we are in a situation where KEN unit tests test against tables that are populated with bootstrap data
 -- so we need to make sure that they are re-populated in tests, but that the repopulation doesn't lead to
 -- constraint violations the first time around...so we pre-emptively delete beforehand
-DELETE FROM NOTIFICATION_PRIORITIES /
-DELETE FROM NOTIFICATION_CONTENT_TYPES /
-DELETE FROM NOTIFICATION_PRODUCERS /
+DELETE FROM NOTIFICATION_PRIORITIES
+/
+DELETE FROM NOTIFICATION_CONTENT_TYPES
+/
+DELETE FROM NOTIFICATION_PRODUCERS
+/
 
 -- KEN Core Producers --
 INSERT INTO NOTIFICATION_PRODUCERS

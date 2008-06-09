@@ -31,7 +31,7 @@
         <bean parent="AuthorizationDefinition">
           <property name="authorizedGroups" >
             <set>
-              <value>kualiUniversalGroup</value>
+              <value>Kuali Developers</value>
             </set>
           </property>
           <property name="action" value="initiate" />

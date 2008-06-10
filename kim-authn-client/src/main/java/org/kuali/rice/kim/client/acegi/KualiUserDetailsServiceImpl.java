@@ -25,7 +25,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
- * Populates a UserDetails object with username and Authentication Method
+ * Populates a UserDetails object with ticket or username and 
+ * Authentication Method
  *  
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
@@ -36,20 +37,47 @@ public class KualiUserDetailsServiceImpl implements KualiUserDetailsService, Ini
 
     public void afterPropertiesSet() throws Exception {}
     
+    /**
+     * This overridden method appends the Distributed Session Ticket to the
+     * granted authorities
+     * 
+     * @see org.kuali.rice.kim.client.acegi.KualiUserDetailsService#loadUserByTicketResponse(org.kuali.rice.kim.client.acegi.KualiTicketResponse)
+     */
     public UserDetails loadUserByTicketResponse(KualiTicketResponse response) {
         GrantedAuthority[] authorities = new GrantedAuthority[1];
-        authorities[0]= new GrantedAuthorityImpl("ROLE_" + response.getAuthenticationSource());
-              
+        authorities[0]= new GrantedAuthorityImpl(response.getDistributedSessionToken());
+        if (logger.isDebugEnabled()) {
+            logger.debug("loadUserByTicketResponse:" + response.getDistributedSessionToken());
+        }
         return loadUserByUsernameAndAuthorities(response.getUser(), authorities); 
     }
 
+    /**
+     * This overridden method ...
+     * 
+     * @see org.acegisecurity.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
+     */
     public UserDetails loadUserByUsername(String username)
     {
+        if (logger.isDebugEnabled()) {
+            logger.debug("loadUserByUsername");
+        }
         return loadUserByUsernameAndAuthorities(username, new GrantedAuthority[0]);        
     }
     
+    /**
+     * This method is necessary for loading users by the ticket response
+     * 
+     * @param username
+     * @param authorities
+     * @return the UserDetails
+     */
     public UserDetails loadUserByUsernameAndAuthorities(String username, GrantedAuthority[] authorities) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("loadUserByUsernameAndAuthorities");
+        }
         GrantedAuthority[] newAuthorities = new GrantedAuthority[authorities.length+1];
+        System.arraycopy(authorities, 0, newAuthorities, 0, authorities.length);
         newAuthorities[authorities.length]= new GrantedAuthorityImpl("ROLE_KUALI_USER");
         logger.warn("setting granted authorities:" + newAuthorities.toString());
         UserDetails user = new User(username, "empty_password", true, true, true, true, newAuthorities);    

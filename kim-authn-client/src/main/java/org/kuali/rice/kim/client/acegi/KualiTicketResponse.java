@@ -22,7 +22,8 @@ import org.acegisecurity.providers.cas.TicketResponse;
 
 
 /**
- * Adds <code>AuthenticationSource</code> to the <code>TicketResponse</code>.
+ * Adds <code>distributedSessionToken</code> to the 
+ * <code>TicketResponse</code>.
  *  
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
@@ -30,7 +31,7 @@ import org.acegisecurity.providers.cas.TicketResponse;
 public class KualiTicketResponse extends TicketResponse{
     //~ Instance fields ================================================================================================
 
-    private String authenticationSource;
+    private String distributedSessionToken;
 
     //~ Constructors ===================================================================================================
   
@@ -41,7 +42,7 @@ public class KualiTicketResponse extends TicketResponse{
      * If <code>null</code> is passed into the <code>proxyList</code> or
      * <code>proxyGrantingTicketIou</code>, suitable defaults are established.
      * However, <code>null</code> cannot be passed for the <code>user</code>
-     * or <code>authenticationSource</code>arguments.
+     * or <code>distributedSessionToken</code>arguments.
      * </p>
      *
      * @param user the user as indicated by CAS (cannot be <code>null</code> or
@@ -49,32 +50,37 @@ public class KualiTicketResponse extends TicketResponse{
      * @param proxyList as provided by CAS (may be <code>null</code>)
      * @param proxyGrantingTicketIou as provided by CAS (may be
      *        <code>null</code>)
-     * @param authenticationSource as provided by CAS (may be
+     * @param distributedSessionToken as provided by CAS (may be
      *        <code>null</code>)
      *
      * @throws IllegalArgumentException DOCUMENT ME!
      */
-    public KualiTicketResponse(String user, List proxyList, String proxyGrantingTicketIou, String authenticationSource) {
+    public KualiTicketResponse(String user, List proxyList, String proxyGrantingTicketIou, String distributedSessionToken) {
         super(user,proxyList,proxyGrantingTicketIou);
 
-        if ((authenticationSource == null) || "".equals(authenticationSource)) {
-            throw new IllegalArgumentException("Cannot pass null or empty String for AuthenticationSource");
+        if ((distributedSessionToken == null) || "".equals(distributedSessionToken)) {
+            throw new IllegalArgumentException("Cannot pass null or empty String for distributedSessionToken");
         }
         
-        this.authenticationSource = authenticationSource;
+        this.distributedSessionToken = distributedSessionToken;
     }
 
     //~ Methods ========================================================================================================
 
    
-    public String getAuthenticationSource() {
-        return authenticationSource;
+    /**
+     * Returns the distributed session token
+     * 
+     * @return
+     */
+    public String getDistributedSessionToken() {
+        return distributedSessionToken;
     }
 
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append(super.toString());
-        sb.append("; Authentication Source: " + this.authenticationSource);
+        sb.append("; SessionID: " + this.distributedSessionToken);
 
         return sb.toString();
     }

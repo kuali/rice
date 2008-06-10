@@ -27,6 +27,7 @@ import org.acegisecurity.providers.cas.TicketResponse;
 import org.acegisecurity.providers.cas.ticketvalidator.CasProxyTicketValidator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.kim.sesn.DistributedSession;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -36,7 +37,9 @@ import edu.yale.its.tp.cas.client.ProxyTicketValidator;
 
 
 /**
- * Uses CAS' <code>ProxyTicketValidator</code> to validate a service ticket.
+ * Uses CAS' <code>ProxyTicketValidator</code> to validate a service ticket.  
+ * Creates the distributed session.  Session principal is currently 
+ * user@method.
  *  
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
@@ -46,23 +49,20 @@ public class KualiCasProxyTicketValidator extends CasProxyTicketValidator {
 
     private static final Log logger = LogFactory.getLog(KualiCasProxyTicketValidator.class);
 
+    private DistributedSession distributedSession;
     //~ Instance fields ================================================================================================
 
+
     /**
-     * Perform the actual remote invocation. Gets the <code>Authentication Method</code> from the
-     * attribute list of the validator response and stores it in the TicketResponse.  Protected to 
-     * enable replacement during tests.
-     *
-     * @param pv the populated <code>ProxyTicketValidator</code>
-     *
-     * @return the <code>TicketResponse</code> as a <code>KualiTicketResponse</code>
-     *
-     * @throws AuthenticationServiceException if<code>ProxyTicketValidator</code> internally fails
-     * @throws BadCredentialsException DOCUMENT ME!
+     * This overridden method gets the authentication source and 
+     * Distributed Session Ticket from the response
+     * 
+     * @see org.acegisecurity.providers.cas.ticketvalidator.CasProxyTicketValidator#validateNow(edu.yale.its.tp.cas.client.ProxyTicketValidator)
      */
     protected TicketResponse validateNow(ProxyTicketValidator pv)
         throws AuthenticationServiceException, BadCredentialsException {
-		String					sAuthenticationSource = "unknown";
+		String					sAuthenticationSource = null;
+		String                  sDST = null;
 
         try {
             pv.validate();
@@ -74,9 +74,12 @@ public class KualiCasProxyTicketValidator extends CasProxyTicketValidator {
             throw new BadCredentialsException(pv.getErrorCode() + ": " + pv.getErrorMessage());
         }
         
-        logger.warn("PROXY RESPONSE: " + pv.getResponse());
+        logger.debug("PROXY RESPONSE: " + pv.getResponse());
         
-        
+        if (logger.isDebugEnabled()) {
+            logger.debug("DEBUG");
+        }
+                
         try {
 			DocumentBuilderFactory	factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder			builder = factory.newDocumentBuilder();
@@ -86,17 +89,41 @@ public class KualiCasProxyTicketValidator extends CasProxyTicketValidator {
 			Element 				head = doc.getDocumentElement();
 			NodeList 				attrs = head.getElementsByTagName("cas:attribute");
 			for (int i=0; i<attrs.getLength(); i++) {
-				logger.warn(("Field name:" + ((Element)attrs.item(i)).getAttribute("name")) + "=" + ((Element)attrs.item(i)).getAttribute("value"));
+				logger.debug(("Field name:" + ((Element)attrs.item(i)).getAttribute("name")) + "=" + ((Element)attrs.item(i)).getAttribute("value"));
 				if ( ((Element)attrs.item(i)).getAttribute("name").equals("authenticationMethod") ) {
 					sAuthenticationSource = ((Element)attrs.item(i)).getAttribute("value");
+				} else if ( ((Element)attrs.item(i)).getAttribute("name").equals("DST") ) {
+				    sDST = ((Element)attrs.item(i)).getAttribute("value");
 				}
-			}			
+			}
+			if (sAuthenticationSource != null && sDST != null) {
+                String sPrincipal = pv.getUser() + "@" + sAuthenticationSource;
+
+                if (logger.isDebugEnabled()) {
+			        logger.debug("Updating session: " + sDST + " " + sPrincipal);
+			    }
+// Touching here may be overkill since it should happen in the filter
+                distributedSession.touchSesn(sDST);
+              //  distributedSession.addPrincipalToSesn(sDST, sPrincipal);
+			} else {
+			    if (logger.isDebugEnabled()) {
+                    logger.debug("Incomplete data from CAS:" + sAuthenticationSource + ":" + sDST);
+                }
+			}
         } catch (Exception e) {
-        	logger.warn("Error parsing CAS Result", e);
+        	logger.error("Error parsing CAS Result", e);
         }
         
-        logger.warn("Authentication Method:" + sAuthenticationSource);
-        return new KualiTicketResponse(pv.getUser(), pv.getProxyList(), pv.getPgtIou(), sAuthenticationSource);
+        logger.debug("Authentication Method:" + sAuthenticationSource);
+        return new KualiTicketResponse(pv.getUser(), pv.getProxyList(), pv.getPgtIou(), sDST);
+    }
+
+
+    /**
+     * @param distributedSession the distributedSession to set
+     */
+    public void setDistributedSession(DistributedSession distributedSession) {
+        this.distributedSession = distributedSession;
     }
     
 

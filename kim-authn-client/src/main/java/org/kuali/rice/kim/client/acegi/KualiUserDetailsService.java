@@ -24,13 +24,13 @@ import org.springframework.dao.DataAccessException;
 
 
 /**
- * Defines an interface for implementations that wish to provide data access
- * services to the {@link DaoAuthenticationProvider}.
+ * Defines an interface for implementations that wish to provide data 
+ * access services to the {@link DaoAuthenticationProvider}.
  *
  * <p>
  * Kuali Requires CAS to provide the <code>Authentication Source</code> so
- * a method is require to get user based on the <code>response</code> object
- * </p>
+ * a method is require to get user based on the <code>response</code> 
+ * object </p>
  *  
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

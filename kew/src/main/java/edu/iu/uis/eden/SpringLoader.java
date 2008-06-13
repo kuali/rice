@@ -53,6 +53,12 @@ public final class SpringLoader extends BaseLifecycle implements ServiceLocator 
     private static final SpringLoader INSTANCE = new SpringLoader();
 
     /**
+     * Separator character for list of Spring files.
+     * <p>Value is ','
+     */
+    public static final String SPRING_SEPARATOR_CHARACTER = ",";
+
+    /**
      * Condition that indicates whether Spring has completed initialization
      */
     private final ContextualConfigLock SPRING_INIT_COMPLETE= new ContextualConfigLock("Spring has completed initialization");
@@ -93,9 +99,16 @@ public final class SpringLoader extends BaseLifecycle implements ServiceLocator 
         }
         SPRING_INIT_STARTED.fire();
 
-        LOG.info("Initializing Spring from resources: " + getContextFiles());
+        LOG.info("Initializing Spring from resources: ");
         try {
-        	appContext = new ClassPathXmlApplicationContext(getContextFiles());
+            if ( -1 == getContextFiles().indexOf( SPRING_SEPARATOR_CHARACTER ) ) {
+                LOG.info( getContextFiles() );
+                appContext = new ClassPathXmlApplicationContext(getContextFiles());
+            } else {
+                String[] contextFileLocations = getContextFiles().split( SPRING_SEPARATOR_CHARACTER );
+                LOG.info( contextFileLocations );
+                appContext = new ClassPathXmlApplicationContext( contextFileLocations );
+            }
         	appContext.getBeanFactory().preInstantiateSingletons();
         } finally {
             // if an exception occurs we need to signal that init is complete

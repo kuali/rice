@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.client.acegi;
 
-import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.providers.AbstractAuthenticationToken;
 
 /**
@@ -37,7 +36,6 @@ public class KualiDistributedSessionExpiredAuthentication extends AbstractAuthen
      * 
      * @see org.acegisecurity.Authentication#getCredentials()
      */
-    @Override
     public Object getCredentials() {
         // TODO lsymms - THIS METHOD NEEDS JAVADOCS
         return null;
@@ -48,7 +46,6 @@ public class KualiDistributedSessionExpiredAuthentication extends AbstractAuthen
      * 
      * @see org.acegisecurity.Authentication#getPrincipal()
      */
-    @Override
     public Object getPrincipal() {
         // TODO lsymms - THIS METHOD NEEDS JAVADOCS
         return null;

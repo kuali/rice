@@ -29,7 +29,6 @@ public class DisabledTimeoutHandler implements TimeoutHandler{
      * @return false
      * @see org.kuali.rice.kim.client.timeouthandlers.TimeoutHandler#hasTimedOut(java.lang.Object[])
      */
-    @Override
     public boolean hasTimedOut(Map<String,Object> args) {
         // TODO lsymms - THIS METHOD NEEDS JAVADOCS
         return false;

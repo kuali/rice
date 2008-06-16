@@ -689,4 +689,161 @@ public abstract class KualiAction extends DispatchAction {
         return kualiModuleService;
     }
 
+    /**
+     * Constant defined to match with TextArea.jsp and updateTextArea function in core.js
+     * <p>Value is textAreaFieldName
+     */
+    public static final String TEXT_AREA_FIELD_NAME="textAreaFieldName";
+    /**
+     * Constant defined to match with TextArea.jsp and updateTextArea function in core.js
+     * <p>Value is textAreaFieldLabel
+    */
+    public static final String TEXT_AREA_FIELD_LABEL="textAreaFieldLabel";
+    /**
+     * Constant defined to match with TextArea.jsp and updateTextArea function in core.js
+     * <p>Value is textAreaFieldAnchor
+    */
+    public static final String TEXT_AREA_FIELD_ANCHOR="textAreaFieldAnchor";
+    /**
+     * Constant defined to match with TextArea.jsp and updateTextArea function in core.js
+     * <p>Value is htmlFormAction
+    */
+    public static final String FORM_ACTION="htmlFormAction";
+    /**
+     * Constant defined to match input parameter from URL and from TextArea.jsp.
+     * <p>Value is methodToCall
+    */
+    public static final String METHOD_TO_CALL="methodToCall";
+    /**
+     * Constant defined to match with global forwarding in struts-config.xml
+     * for Text Area Update.
+     * <p>Value is updateTextArea
+    */
+    public static final String FORWARD_TEXT_AREA_UPDATE="updateTextArea";
+    /**
+     * Constant defined to match with local forwarding in struts-config.xml
+     * for the parent of the Updated Text Area.
+     * <p>Value is forwardNext
+    */
+    public static final String FORWARD_NEXT="forwardNext";
+
+    /**
+     * This method is invoked when Java Script is turned off from the web browser. It
+     * setup the information that the update text area requires for copying current text
+     * in the calling page text area and returning to the calling page. The information
+     * is passed to the JSP through Http Request attributes. All other parameters are
+     * forwarded 
+     *  
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public ActionForward updateTextArea(ActionMapping mapping,
+            ActionForm form,
+            HttpServletRequest request,
+            HttpServletResponse response)  {
+        if (LOG.isTraceEnabled()) {
+            String lm=String.format("ENTRY %s%n%s", form.getClass().getSimpleName(),
+                    request.getRequestURI());
+            LOG.trace(lm);
+        }
+                                
+        // parse out the important strings from our methodToCall parameter
+        String fullParameter = (String) request.getAttribute(
+                KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
+
+        // parse textfieldname:htmlformaction
+        String parameterFields = StringUtils.substringBetween(fullParameter,
+                KNSConstants.METHOD_TO_CALL_PARM2_LEFT_DEL,
+                KNSConstants.METHOD_TO_CALL_PARM2_RIGHT_DEL);
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug( "fullParameter: " + fullParameter );
+            LOG.debug( "parameterFields: " + parameterFields );
+        }
+        String[] keyValue = null;
+        if (StringUtils.isNotBlank(parameterFields)) {
+            String[] textAreaParams = parameterFields.split(
+                    KNSConstants.FIELD_CONVERSIONS_SEPERATOR);
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug( "lookupParams: " + textAreaParams );
+            }
+            for (int i = 0; i < textAreaParams.length; i++) {
+                keyValue = textAreaParams[i].split(
+                        KNSConstants.FIELD_CONVERSION_PAIR_SEPERATOR);
+
+                if ( LOG.isDebugEnabled() ) {
+                    LOG.debug( "keyValue[0]: " + keyValue[0] );
+                    LOG.debug( "keyValue[1]: " + keyValue[1] );
+                }
+            }
+        }
+        
+        request.setAttribute(TEXT_AREA_FIELD_NAME, keyValue[0]);
+        request.setAttribute(FORM_ACTION,keyValue[1]);
+        request.setAttribute(TEXT_AREA_FIELD_LABEL,keyValue[2]);
+        if (form instanceof KualiForm && StringUtils.isNotEmpty(((KualiForm) form).getAnchor())) {
+            request.setAttribute(TEXT_AREA_FIELD_ANCHOR,((KualiForm) form).getAnchor());
+        }
+
+        // Set document related parameter
+        String docWebScope=(String)request.getAttribute(KNSConstants.DOCUMENT_WEB_SCOPE);
+        if (docWebScope != null && docWebScope.trim().length() >= 0) {
+            request.setAttribute(KNSConstants.DOCUMENT_WEB_SCOPE, docWebScope);
+        }
+        String docFormKey=(String)request.getAttribute(KNSConstants.DOC_FORM_KEY);
+        if (docFormKey != null && docFormKey.trim().length() >= 0) {
+            request.setAttribute(KNSConstants.DOC_FORM_KEY, docFormKey);
+        }
+        
+        ActionForward forward=mapping.findForward(FORWARD_TEXT_AREA_UPDATE);
+
+        if (LOG.isTraceEnabled()) {
+            String lm=String.format("EXIT %s", (forward==null)?"null":forward.getPath());
+            LOG.trace(lm);
+        }
+                        
+        return forward;
+
+    }
+    /**
+     * This method is invoked from the TextArea.jsp for posting its value to the parent
+     * page that called the extended text area page. The invocation is done through
+     * Struts action. The default forwarding id is RiceContants.MAPPING_BASIC. This
+     * can be overridden using the parameter key FORWARD_NEXT.
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public ActionForward postTextAreaToParent(ActionMapping mapping,
+            ActionForm form,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+        
+        if (LOG.isTraceEnabled()) {
+            String lm=String.format("ENTRY %s%n%s", form.getClass().getSimpleName(),
+                    request.getRequestURI());
+            LOG.trace(lm);
+        }
+                        
+        String forwardingId=request.getParameter(FORWARD_NEXT);
+        if (forwardingId == null) {
+            forwardingId=RiceConstants.MAPPING_BASIC;
+        }
+        ActionForward forward=mapping.findForward(forwardingId);
+             
+        if (LOG.isTraceEnabled()) {
+            String lm=String.format("EXIT %s", (forward==null)?"null":forward.getPath());
+            LOG.trace(lm);
+        }
+                        
+        return forward;
+    }
+
 }

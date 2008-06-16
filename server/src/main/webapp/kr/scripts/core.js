@@ -177,4 +177,38 @@ function resizeTheRouteLogFrame() {
   window.open(baseUrl+"/kr/directInquiry.do?"+queryString, "_blank", "width=640, height=600, scrollbars=yes");
 }
  
+function textAreaPop(textAreaName,
+                     htmlFormAction,
+                     textAreaLabel,
+                     docFormKey,
+                     sessionDocument) {
+  var documentWebScope
+  if (sessionDocument == "true") {
+      documentWebScope="session"
+  }
+  url=window.location.href
+  pathname=window.location.pathname
+  idx1=url.indexOf(pathname);
+  idx2=url.indexOf("/",idx1+1);
+  baseUrl=url.substr(0,idx2)
+  window.open(baseUrl+"/updateTextArea.do?&textAreaFieldName="+textAreaName+"&htmlFormAction="+htmlFormAction+"&textAreaFieldLabel="+textAreaLabel+"&docFormKey="+docFormKey+"&documentWebScope="+documentWebScope);
+}
+
+var textAreaFieldName;
+function setTextArea() {
+  passData=document.location.search.substring(1);
+  var idx=passData.indexOf("&textAreaFieldName=");
+  var idx2=passData.indexOf("&htmlFormAction=");
+  textAreaFieldName=passData.substring(idx+19,idx2);
+  var ta = window.opener.document.getElementsByName(textAreaFieldName)[0];
+  text = ta.value;
+  document.getElementsByName(textAreaFieldName)[0].value = text;
+  
+}
+
+function postValueToParentWindow() {
+  opener.document.getElementsByName(textAreaFieldName)[0].value = document.getElementsByName(textAreaFieldName)[0].value;
+  self.close();
+}
+
 

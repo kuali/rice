@@ -398,7 +398,44 @@
                 </requests>
             </routeNodes>
         </documentType>
+        
+        <documentType>
+            <name>UnresolvableRoleRecipsDocType</name>
+            <description>UnresolvableRoleRecipsDocType</description>
+            <label>DocType for testUnresolvableRoleAttributeRecipients</label>
+            <postProcessorName>edu.iu.uis.eden.postprocessor.DefaultPostProcessor</postProcessorName>
+            <docHandler>about:blank</docHandler>
+            <superUserWorkgroupName>TestWorkgroup</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>TestWorkgroup</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>TestWorkgroup</defaultExceptionWorkgroupName>
+            <policies>
+                <policy>
+                    <name>PRE_APPROVE</name>
+                    <value>false</value>
+                </policy>
+                <policy>
+                    <name>DEFAULT_APPROVE</name>
+                    <value>true</value>
+                </policy>
+            </policies>
+            <routePaths>
+                <routePath>
+                    <start name="AdHoc" nextNode="Node1" />
+                    <requests name="Node1" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="AdHoc">
+                    <activationType>P</activationType>
+                </start>
+                <requests name="Node1">
+                    <activationType>S</activationType>
+                    <ruleTemplate>Node1Template</ruleTemplate>
+                </requests>
+            </routeNodes>
+        </documentType>
 	</documentTypes>
+
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>DRDocType</documentType>
@@ -558,6 +595,20 @@
 				</responsibility>
 			</responsibilities>
 		</rule>
+        
+        <rule>
+            <documentType>UnresolvableRoleRecipsDocType</documentType>
+            <ruleTemplate>Node1Template</ruleTemplate>
+            <description>Rule with role attribute that doesn't produce a valid recipient</description>
+            <ignorePrevious>false</ignorePrevious>
+            <responsibilities>
+                <responsibility>
+                    <role>edu.iu.uis.eden.routetemplate.MockRole!group:IAmAGroupThatDoesNotExist</role>
+                    <actionRequested>A</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
 
 	</rules>
 

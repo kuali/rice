@@ -26,6 +26,7 @@ import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.KEWServiceLocator;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
+import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.test.TestUtilities;
 
 /**
@@ -287,6 +288,18 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 			}
 		}
 		
+	}
+	
+	// see: https://test.kuali.org/jira/browse/KULRICE-2001
+	@Test public void testUnresolvableRoleAttributeRecipients() throws WorkflowException {
+        WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("user1"), "UnresolvableRoleRecipsDocType");
+        document.routeDocument("");
+        
+        // this doc has a rule with a role that produces an invalid recipient id
+        // this should not generate a bogus request that can never actually be fulfilled
+        List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
+        assertEquals(0, actionRequests.size());
+	    
 	}
 	
 }

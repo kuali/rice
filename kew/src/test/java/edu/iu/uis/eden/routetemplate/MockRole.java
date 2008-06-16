@@ -19,9 +19,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
+import edu.iu.uis.eden.Id;
 import edu.iu.uis.eden.engine.RouteContext;
 import edu.iu.uis.eden.exception.EdenUserNotFoundException;
 import edu.iu.uis.eden.user.AuthenticationUserId;
+import edu.iu.uis.eden.workgroup.GroupNameId;
 
 
 /**
@@ -63,7 +67,20 @@ public class MockRole extends UnqualifiedRoleAttribute {
         String[] ids = roleName.split("[,\\s+]");
         ResolvedQualifiedRole rqr = new ResolvedQualifiedRole();
         for (String id: ids) {
-            rqr.getRecipients().add(new AuthenticationUserId(id));
+            String type = "user";
+            String[] components = id.split(":", 2);
+            if (components.length > 1 && !StringUtils.isEmpty(components[0])) {
+                type = components[0].trim();
+            }
+            Id recipientId;
+            if ("user".equals(type)) {
+                recipientId = new AuthenticationUserId(id);
+            } else if ("group".equals(type)) {
+                recipientId = new GroupNameId(id);
+            } else {
+                throw new RuntimeException("Unknown role recipient type: '" + type + "'. Must be 'user' or 'group'.");
+            }
+            rqr.getRecipients().add(recipientId);
         }
         rqr.setQualifiedRoleLabel("Recipients from parsing mock role: " + roleName);
         rqr.setAnnotation("Recipients from parsing mock role: " + roleName);

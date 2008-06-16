@@ -231,6 +231,7 @@ public class ActionRequestFactory {
 
     	ActionRequestValue requestGraph = createActionRequest(actionRequested, priority, role, description, responsibilityId, ignorePrevious, approvePolicy, ruleId, null);
     	if (role != null && role.getResolvedQualifiedRole() != null && role.getResolvedQualifiedRole().getRecipients() != null) {
+    	    int legitimateTargets = 0;
     	for (Iterator iter = role.getResolvedQualifiedRole().getRecipients().iterator(); iter.hasNext();) {
 			Id recipientId = (Id) iter.next();
 			if (recipientId.isEmpty()) {
@@ -241,10 +242,16 @@ public class ActionRequestFactory {
 			} else {
 				role.setTarget(KEWServiceLocator.getWorkgroupService().getWorkgroup((GroupId) recipientId));
 			}
-			ActionRequestValue request = createActionRequest(actionRequested, priority, role, description, responsibilityId, ignorePrevious, null, ruleId, null);
-			request.setParentActionRequest(requestGraph);
-			requestGraph.getChildrenRequests().add(request);
+			if (role.getTarget() != null) {
+                legitimateTargets++;
+                ActionRequestValue request = createActionRequest(actionRequested, priority, role, description, responsibilityId, ignorePrevious, null, ruleId, null);
+                request.setParentActionRequest(requestGraph);
+                requestGraph.getChildrenRequests().add(request);
+			}
 	     }
+    	if (legitimateTargets == 0) {
+            LOG.warn("Role did not yield any legitimate recipients");
+        }
     	} else {
     		LOG.warn("Didn't create action requests for action request description '" + description + "' because of null role or null part of role object graph.");
     	}

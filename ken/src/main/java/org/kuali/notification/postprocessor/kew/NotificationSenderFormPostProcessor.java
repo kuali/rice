@@ -23,7 +23,7 @@ import org.kuali.notification.core.GlobalNotificationServiceLocator;
 import org.kuali.notification.document.kew.NotificationWorkflowDocument;
 import org.kuali.notification.service.NotificationMessageContentService;
 import org.kuali.notification.service.NotificationService;
-import org.kuali.notification.util.NotificationConstants;
+import org.kuali.notification.util.Util;
 import org.kuali.rice.dao.GenericDao;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -32,7 +32,7 @@ import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
 import edu.iu.uis.eden.clientapp.vo.DeleteEventVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
-import edu.iu.uis.eden.clientapp.vo.WorkflowIdVO;
+import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
 
 /**
  * This class is the post processor that gets run when the general notification 
@@ -99,7 +99,7 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
 		    ".  We are now calling the NotificationService.sendNotification() service.");
 	    
 	    // obtain a workflow user object first
-	    WorkflowIdVO proxyUser = new WorkflowIdVO(NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER);
+	    NetworkIdVO proxyUser = new NetworkIdVO(Util.getNotificationSystemUser());
 	        
 	    // now construct the workflow document, which will interact with workflow
 	    NotificationWorkflowDocument document;

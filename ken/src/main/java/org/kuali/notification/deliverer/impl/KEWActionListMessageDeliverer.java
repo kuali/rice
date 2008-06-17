@@ -30,6 +30,7 @@ import org.kuali.notification.exception.NotificationAutoRemoveException;
 import org.kuali.notification.exception.NotificationMessageDeliveryException;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.notification.util.Util;
 
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.exception.WorkflowException;
@@ -66,7 +67,7 @@ public class KEWActionListMessageDeliverer implements NotificationMessageDeliver
             // make the call to actually generate and ad-hoc route a workflow document
             Long workflowDocId = notificationWorkflowDocumentService.createAndAdHocRouteNotificationWorkflowDocument(
                     messageDelivery,
-                    NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER,
+                    Util.getNotificationSystemUser(),
                     messageDelivery.getUserRecipientId(),
                     NotificationConstants.KEW_CONSTANTS.GENERIC_DELIVERY_ANNOTATION);
 

@@ -87,6 +87,8 @@
     <param name="data.xml.pollIntervalSecs">30</param>
     <param name="initialDelaySecs">10</param>
     
+    <param name="ken.system.user">NotSys</param>
+    
     <param name="log4j.reload.minutes">5</param>
     <param name="log4j.settings.path">classpath:log4j.properties</param>
 </config>

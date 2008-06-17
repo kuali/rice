@@ -27,6 +27,7 @@ import org.kuali.notification.deliverer.impl.KEWActionListMessageDeliverer;
 import org.kuali.notification.service.NotificationMessageDeliveryService;
 import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.util.NotificationConstants;
+import org.kuali.notification.util.Util;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.PostProcessorRemote;
@@ -121,7 +122,7 @@ public class NotificationPostProcessor implements PostProcessorRemote {
 
                 LOG.info("Dismissing message id " + nmd.getId() + " due to cause: " + cause);
                 notificationService.dismissNotificationMessageDelivery(nmd.getId(),
-                        NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER,
+                        Util.getNotificationSystemUser(),
                         cause);
             } catch(Exception e) {
                 throw new RuntimeException("Error dismissing message", e);

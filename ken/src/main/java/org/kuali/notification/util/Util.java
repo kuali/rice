@@ -53,6 +53,7 @@ import org.kuali.notification.bo.NotificationProducer;
 import org.kuali.notification.bo.NotificationRecipient;
 import org.kuali.notification.bo.NotificationSender;
 import org.kuali.notification.service.NotificationContentTypeService;
+import org.kuali.rice.core.Core;
 import org.kuali.rice.dao.GenericDao;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -92,6 +93,17 @@ public final class Util {
         DATEFORMAT_ZULU.setTimeZone(TimeZone.getTimeZone("UTC"));
         // set the timezone for current time
          
+    }
+
+    /**
+     * @return the name of the user configured to be the Notification system user
+     */
+    public static String getNotificationSystemUser() {
+        String system_user = Core.getCurrentContextConfig().getProperty(NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER_NAME);
+        if (system_user == null) {
+            system_user = NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER;
+        }
+        return system_user;
     }
 
     /**

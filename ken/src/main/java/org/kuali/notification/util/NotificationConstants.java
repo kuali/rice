@@ -216,6 +216,7 @@ public class NotificationConstants {
         public static final String NOTIFICATION_DOC_TYPE = "KualiNotification";
         public static final String NOTIFICATION_SYSTEM_USER = "NotSys";
         public static final String NOTIFICATION_SYSTEM_USER_NAME = "Notification System";
+        public static final String NOTIFICATION_SYSTEM_USER_PARAM = "ken.system.user";
         public static final String FYI_AD_HOC_ROUTE = EdenConstants.ACTION_REQUEST_FYI_REQ;
         public static final String ACK_AD_HOC_ROUTE = EdenConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
         public static final String GENERIC_DELIVERY_ANNOTATION = "The notification message has been delivered by the Notification System.";

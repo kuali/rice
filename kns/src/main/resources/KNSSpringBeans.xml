@@ -195,6 +195,55 @@
 		<property name="host" value="${mail.relay.server}" />
 	</bean>
 
+	<bean id="knsExceptionIncidentService" class="org.kuali.core.service.impl.KualiExceptionIncidentServiceImpl">
+	  <property name="mailService"><ref bean="mailService"/></property>
+	  <property name="messageTemplate">
+        <bean class="org.kuali.core.mail.MailMessage">
+          <!-- The property place holder below must be specified in          -->
+          <!-- common-config-default.xml or any other KNS configuration file -->
+          <property name="fromAddress"><value>${MailMessage.from}</value></property>
+        </bean>
+	  </property>
+	  <property name="kualiExceptionNames">
+	    <list>
+	      <value>AuthorizationException</value>
+	      <value>BeanComparisonException</value>
+	      <value>BusinessObjectNotFoundException</value>
+	      <value>ClassNotPersistableException</value>
+	      <value>DocumentAuthorizationException</value>
+	      <value>DocumentInitiationAuthorizationException</value>
+	      <value>DocumentTypeAuthorizationException</value>
+	      <value>DuplicateKeyException</value>
+	      <value>FileUploadLimitExceededException</value>
+	      <value>GroupNotFoundException</value>
+	      <value>IllegalObjectStateException</value>
+	      <value>InactiveDocumentTypeAuthorizationException</value>
+	      <value>InfrastructureException</value>
+	      <value>IntrospectionException</value>
+	      <value>MaintenanceNewCopyAuthorizationException</value>
+	      <value>MetadataException</value>
+	      <value>ModuleAuthorizationException</value>
+	      <value>ObjectNotABusinessObjectException</value>
+	      <value>ObjectNotABusinessObjectRuntimeException</value>
+	      <value>PropertiesException</value>
+	      <value>ReferenceAttributeDoesntExistException</value>
+	      <value>ReferenceAttributeNotAnOjbReferenceException</value>
+	      <value>ReferentialIntegrityException</value>
+	      <value>UnknownBusinessClassAttributeException</value>
+	      <value>UnknownBusinessClassException</value>
+	      <value>UnknownDocumentIdException</value>
+	      <value>UnknownDocumentTypeException</value>
+	      <value>UserNotFoundException</value>
+	      <value>ValidationException</value>
+	    </list>
+	  </property>
+	  <property name="additionalExceptionNameList">
+        <!-- The property place holder below must be specified in          -->
+        <!-- common-config-default.xml or any other KNS configuration file -->
+	    <value>${KualiExceptionIncidentServiceImpl.additionalExceptionNameList}</value>
+	  </property>
+	</bean>
+	
 	<bean id="workflowGroupService" class="org.kuali.core.workflow.service.impl.WorkflowGroupServiceImpl"></bean>
 
 	<bean id="workflowInfoService" class="org.kuali.core.workflow.service.impl.KualiWorkflowInfoImpl" />

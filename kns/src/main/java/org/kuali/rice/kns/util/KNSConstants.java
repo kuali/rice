@@ -234,7 +234,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String MAPPING_CLOSE = "close";
     public static final String MAPPING_DISAPPROVE = "disapprove";
 //    public static final String MAPPING_DELETE = "delete";
-//    public static final String MAPPING_ERROR = "error";
+    // Activate the MAPPING_ERROR define for use in Exception incident and handling
+    public static final String MAPPING_ERROR = "error";
     public static final String MAPPING_PORTAL = "portal";
 //    public static final String MAPPING_MULTIPLE_VALUE_LOOKUP = "multipleValueLookup";
     public static final String MAPPING_ROUTE_REPORT = "route_report";

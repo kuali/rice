@@ -89,6 +89,17 @@
     
     <param name="ken.system.user">NotSys</param>
     
+    <!-- Configuration for Exception Incident handling and reporting -->
+    <param name="KualiExceptionHandlerAction.EXCEPTION_INCIDENT_REPORT_SERVICE">knsExceptionIncidentService</param>
+      <!-- property place holders for knsExceptionIncidentService bean defined in KNSSpringBean.xml -->
+      <param name="MailMessage.from">admin@kuali.org</param>
+      <!-- Id of bean of type java.util.List for adding Kuali exception types -->
+      <param name="KualiExceptionIncidentServiceImpl.additionalExceptionNameList"></param>
+      <!-- Email of report receivers separated by KNSConstants.FIELD_CONVERSION_SEPARATOR ',' -->
+      <param name="KualiExceptionIncidentServiceImpl.REPORT_MAIL_LIST"></param>
+      <!-- End of property place holders -->
+    <!-- End of Exception Incident handling and reporting -->
+    
     <param name="log4j.reload.minutes">5</param>
     <param name="log4j.settings.path">classpath:log4j.properties</param>
 </config>

@@ -220,6 +220,8 @@
 		<field-descriptor name="attributeName" column="ATTRIBUTE_NAME" jdbc-type="VARCHAR" />
 		<field-descriptor name="value" column="ATTRIBUTE_VALUES" jdbc-type="VARCHAR" />
 
+
+
 		<!-- common fields -->
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
@@ -333,5 +335,9 @@
 			<foreignkey field-ref="namespaceId" />
 		</reference-descriptor>
 	</class-descriptor>
+
+
+
+
 
 </descriptor-repository>

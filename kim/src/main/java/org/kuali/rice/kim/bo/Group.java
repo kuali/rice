@@ -37,6 +37,7 @@ public class Group extends KIMPersistableBusinessObjectBase {
 	private ArrayList<Principal> memberPrincipals;
     private ArrayList<Role> groupRoles;
     private ArrayList<GroupAttribute> groupAttributes;
+
     private GroupType groupType;
 
     /**

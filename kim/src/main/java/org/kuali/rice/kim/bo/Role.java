@@ -268,9 +268,9 @@ public class Role extends KIMPersistableBusinessObjectBase {
 	    dto.setPermissions(permissions);
 
 	    final HashMap<String, GroupDTO> groups = new HashMap<String, GroupDTO>();
-	    for (Group group : role.getGroups()) {
-	        groups.put(group.getName(), Group.toDTO(group));
-	    }
+	//    for (Group group : role.getGroups()) {
+	  //      groups.put(group.getName(), Group.toDTO(group));
+	   // }
 	    dto.setGroups(groups);
 
 	    final HashMap<String, PrincipalDTO> principals = new HashMap<String, PrincipalDTO>();

@@ -17,11 +17,16 @@ package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.GroupAttribute;
+import org.kuali.rice.kim.bo.Principal;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.dto.EntityDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.PersonDTO;
@@ -62,7 +67,12 @@ public class GroupServiceImpl implements GroupService {
      */
     public List<GroupDTO> getAllGroups() {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
+        final Collection<Group> groups = KNSServiceLocator.getBusinessObjectService().findAll(Group.class);
+        final ArrayList<GroupDTO> groupDtos = new ArrayList<GroupDTO>(groups.size());
+        for (Group g : groups) {
+        	groupDtos.add(Group.toDTO(g));
+        }
+        return groupDtos;
     }
 
     /**
@@ -71,8 +81,21 @@ public class GroupServiceImpl implements GroupService {
      * @see org.kuali.rice.kim.service.GroupService#getGroupMemberNames(java.lang.String)
      */
     public List<String> getGroupMemberNames(String groupName) {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
+        final HashMap<String, String> criteria= new HashMap<String, String>();
+        criteria.put("NAME", groupName);
+        final Collection<Group> groups 			= KNSServiceLocator.getBusinessObjectService().findMatching(Group.class,criteria);
+        final ArrayList<Group> memberGroups 	= new ArrayList<Group>();
+        final ArrayList<String> memberGroupNames= new ArrayList<String>(memberGroups.size());
+        
+        for (Group g : groups) {
+        	memberGroups.addAll(g.getMemberGroups());
+        }
+
+        for (Group mg : memberGroups) {
+        	memberGroupNames.add(mg.getName());
+        }        
+    	return memberGroupNames;
+
     }
 
     /**
@@ -82,7 +105,20 @@ public class GroupServiceImpl implements GroupService {
      */
     public List<GroupDTO> getGroupMembers(String groupName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
+        final HashMap<String, String> criteria= new HashMap<String, String>();
+        criteria.put("NAME", groupName);
+        final Collection<Group> groups 		= KNSServiceLocator.getBusinessObjectService().findMatching(Group.class,criteria);
+        final ArrayList<Group> memberGroups = new ArrayList<Group>();
+        final ArrayList<GroupDTO> memberGroupDtos = new ArrayList<GroupDTO>(memberGroups.size());
+        
+        for (Group g : groups) {
+        	memberGroups.addAll(g.getMemberGroups());
+        }
+
+        for (Group mg : memberGroups) {
+        	memberGroupDtos.add(Group.toDTO(mg));
+        }        
+    	return memberGroupDtos;
     }
     
     /**
@@ -92,7 +128,20 @@ public class GroupServiceImpl implements GroupService {
      */
     public List<String> getGroupParentNames(String groupName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
+        final HashMap<String, String> criteria= new HashMap<String, String>();
+        criteria.put("NAME", groupName);
+        final Collection<Group> groups 			= KNSServiceLocator.getBusinessObjectService().findMatching(Group.class,criteria);
+        final ArrayList<Group> parentGroups 	= new ArrayList<Group>();
+        final ArrayList<String> parentGroupNames= new ArrayList<String>(parentGroups.size());
+        
+        for (Group g : groups) {
+        	parentGroups.addAll(g.getParentGroups());
+        }
+
+        for (Group pg : parentGroups) {
+        	parentGroupNames.add(pg.getName());
+        }        
+    	return parentGroupNames;
     }
 
     /**
@@ -102,7 +151,20 @@ public class GroupServiceImpl implements GroupService {
      */
     public List<GroupDTO> getGroupParents(String groupName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
+        final HashMap<String, String> criteria= new HashMap<String, String>();
+        criteria.put("NAME", groupName);
+        final Collection<Group> groups 		= KNSServiceLocator.getBusinessObjectService().findMatching(Group.class,criteria);
+        final ArrayList<Group> parentGroups = new ArrayList<Group>();
+        final ArrayList<GroupDTO> parentGroupDtos = new ArrayList<GroupDTO>(parentGroups.size());
+        
+        for (Group g : groups) {
+        	parentGroups.addAll(g.getParentGroups());
+        }
+
+        for (Group mg : parentGroups) {
+        	parentGroupDtos.add(Group.toDTO(mg));
+        }        
+    	return parentGroupDtos;
     }
 
     /**
@@ -111,9 +173,22 @@ public class GroupServiceImpl implements GroupService {
      * @see org.kuali.rice.kim.service.GroupService#getGroupNamesWithAttributes(java.util.Map)
      */
     public List<String> getGroupNamesWithAttributes(Map<String, String> groupAttributes) {
+    	
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
+    	
+        final Collection<Group> groups 							= KNSServiceLocator.getBusinessObjectService().findAll(Group.class);
+        final ArrayList<String> groupNamesWithAttributes		= new ArrayList<String>();
+        
+        for (Group g : groups) {
+        	List<GroupAttribute> gaList = g.getGroupAttributes();
+        	if(areAllAttributesExist(groupAttributes,gaList))
+        		groupNamesWithAttributes.add(g.getName());
+        }
+
+    	return groupNamesWithAttributes;
     }
+    
+    
 
     /**
      * This overridden method ...
@@ -122,9 +197,150 @@ public class GroupServiceImpl implements GroupService {
      */
     public List<GroupDTO> getGroupsWithAttributes(Map<String, String> groupAttributes) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
+        
+        final Collection<Group> groups 							= KNSServiceLocator.getBusinessObjectService().findAll(Group.class);
+        final ArrayList<GroupDTO> groupsWithAttributes		= new ArrayList<GroupDTO>();
+        
+        for (Group g : groups) {
+        	List<GroupAttribute> gaList = g.getGroupAttributes();
+        	if(areAllAttributesExist(groupAttributes,gaList))
+        		groupsWithAttributes.add(Group.toDTO(g));
+        }
+
+    	return groupsWithAttributes;
     }
 
+
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.kim.service.GroupService#getPrincipalMemberNames(java.lang.String)
+     */
+    public List<String> getPrincipalMemberNames(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+    	
+        final HashMap<String, String> criteria= new HashMap<String, String>();
+        criteria.put("NAME", groupName);
+        final Collection<Group> groups 		= KNSServiceLocator.getBusinessObjectService().findMatching(Group.class,criteria);
+        final ArrayList<String> principalGroupNames= new ArrayList<String>();
+        
+        for (Group g : groups) {
+        	List<Principal> prinicapals = g.getMemberPrincipals();
+        	for(Principal p:prinicapals){
+        		principalGroupNames.add(p.getName());
+        	}
+        }
+    	return principalGroupNames;
+
+    	
+        
+    }
+
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.kim.service.GroupService#getPrincipalMembers(java.lang.String)
+     */
+    public List<PrincipalDTO> getPrincipalMembers(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        final HashMap<String, String> criteria= new HashMap<String, String>();
+        criteria.put("NAME", groupName);
+        final Collection<Group> groups 		= KNSServiceLocator.getBusinessObjectService().findMatching(Group.class,criteria);
+        final ArrayList<PrincipalDTO> principalGroupDtos= new ArrayList<PrincipalDTO>();
+        
+        for (Group g : groups) {
+        	List<Principal> prinicapals = g.getMemberPrincipals();
+        	for(Principal p:prinicapals){
+        		principalGroupDtos.add(Principal.toDTO(p));
+        	}
+        }
+    	return principalGroupDtos;
+
+
+    }
+
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.kim.service.GroupService#getRoleNamesForGroup(java.lang.String)
+     */
+    public List<String> getRoleNamesForGroup(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        final HashMap<String, String> criteria= new HashMap<String, String>();
+        criteria.put("NAME", groupName);
+        final Collection<Group> groups 		= KNSServiceLocator.getBusinessObjectService().findMatching(Group.class,criteria);
+        final ArrayList<String> roleNames= new ArrayList<String>();
+        
+        for (Group g : groups) {
+        	List<Role> roles = g.getGroupRoles();
+        	for(Role r:roles){
+        		roleNames.add(r.getName());
+        	}
+        }
+    	return roleNames;
+    }
+
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.kim.service.GroupService#getRolesForGroup(java.lang.String)
+     */
+    public List<RoleDTO> getRolesForGroup(String groupName) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        final HashMap<String, String> criteria= new HashMap<String, String>();
+        criteria.put("NAME", groupName);
+        final Collection<Group> groups 		= KNSServiceLocator.getBusinessObjectService().findMatching(Group.class,criteria);
+        final ArrayList<RoleDTO> roleDtos= new ArrayList<RoleDTO>();
+        
+        for (Group g : groups) {
+        	List<Role> roles= g.getGroupRoles();
+        	for(Role r:roles){
+        		roleDtos.add(Role.toDTO(r));
+        	}
+        }
+    	return roleDtos;
+    }
+
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.kim.service.GroupService#hasAttributes(java.lang.String, java.util.Map)
+     */
+    public boolean hasAttributes(String groupName, Map<String, String> groupAttributes) {
+        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
+        boolean returnValue = false;
+        final HashMap<String, String> criteria= new HashMap<String, String>();
+        criteria.put("NAME", groupName);
+
+        final Collection<Group> groups 							= KNSServiceLocator.getBusinessObjectService().findMatching(Group.class,criteria);
+        for (Group g : groups) {
+        	List<GroupAttribute> gaList = g.getGroupAttributes();
+        	returnValue = areAllAttributesExist(groupAttributes,gaList);
+        }
+    	return returnValue;
+    }
+
+    
+    private boolean areAllAttributesExist(Map<String,String> groupAttributes,List<GroupAttribute> gaList){
+    	boolean attributesExist= false;
+    	
+    	Iterator I = groupAttributes.keySet().iterator();
+    	while(I.hasNext()){
+    		String key 		= (String)I.next();
+    		String value 	= groupAttributes.get(key);
+        	for(GroupAttribute ga: gaList ){
+        		if(ga.getAttributeName().equals(key) && ga.getValue().equals(value)){
+        			attributesExist = true;
+        		}
+        	}
+        	if(attributesExist==false) break;
+        	
+    	}
+    	return attributesExist;
+    }
+
+    
+    
     /**
      * This overridden method ...
      *
@@ -142,57 +358,8 @@ public class GroupServiceImpl implements GroupService {
      */
     public List<PersonDTO> getPersonMembers(String groupName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
-    }
+    	return null;
 
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.kim.service.GroupService#getPrincipalMemberNames(java.lang.String)
-     */
-    public List<String> getPrincipalMemberNames(String groupName) {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
-    }
-
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.kim.service.GroupService#getPrincipalMembers(java.lang.String)
-     */
-    public List<PrincipalDTO> getPrincipalMembers(String groupName) {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
-    }
-
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.kim.service.GroupService#getRoleNamesForGroup(java.lang.String)
-     */
-    public List<String> getRoleNamesForGroup(String groupName) {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
-    }
-
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.kim.service.GroupService#getRolesForGroup(java.lang.String)
-     */
-    public List<RoleDTO> getRolesForGroup(String groupName) {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
-    }
-
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.kim.service.GroupService#hasAttributes(java.lang.String, java.util.Map)
-     */
-    public boolean hasAttributes(String groupName, Map<String, String> groupAttributes) {
-        // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return false;
     }
 
     /**
@@ -212,8 +379,9 @@ public class GroupServiceImpl implements GroupService {
      */
     public List<EntityDTO> getEntityMembers(String groupName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
+
+    	
+    	return null;
     }
-    
     
 }

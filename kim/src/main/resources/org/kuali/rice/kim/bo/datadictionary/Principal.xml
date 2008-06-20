@@ -96,12 +96,8 @@
   <bean id="Principal-entityId-parentBean" abstract="true" parent="Entity-id">
     <property name="shortLabel" value="Entity" />
     <property name="control" >
-      <bean parent="SelectControlDefinition"
-            p:businessObjectClass="org.kuali.rice.kim.bo.Entity"
-            p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
-            p:includeKeyInLabel="true"
-            p:keyAttribute="id"
-            p:labelAttribute="EntityType.name" />
+      <bean parent="TextControlDefinition"
+            p:size="50" />
     </property>
     <property name="name" value="entityId" />
     <property name="label" value="Entity" />

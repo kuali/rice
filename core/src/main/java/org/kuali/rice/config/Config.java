@@ -100,9 +100,13 @@ public interface Config {
 
 	public static final String NODE_PROPERTIES_PATH = "node.properties.path";
 
+	public static final String DATASOURCE_OJB_SEQUENCE_MANAGER = "datasource.ojb.sequenceManager";
+	public static final String DATASOURCE_OJB_SEQUENCE_MANAGER_CLASS = "datasource.ojb.sequenceManager.className";
 	public static final String DATASOURCE_DRIVER_NAME = "datasource.driver.name";
 	public static final String DATASOURCE_URL = "datasource.url";
 	public static final String DATASOURCE_POOL_SIZE = "datasource.pool.size";
+	public static final String DATASOURCE_POOL_MIN_SIZE = "datasource.pool.minSize";
+	public static final String DATASOURCE_POOL_MAX_SIZE = "datasource.pool.maxSize";
 	public static final String DATASOURCE_POOL_MAXWAIT = "datasource.pool.maxWait";
 	public static final String DATASOURCE_POOL_VALIDATION_QUERY = "datasource.pool.validationQuery";
 	public static final String DATASOURCE_USERNAME = "datasource.username";

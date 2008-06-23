@@ -119,7 +119,7 @@ public class StandaloneInitializeListener implements ServletContextListener {
             SimpleConfig config = new SimpleConfig(baseProps);
             config.parseConfig();
             Core.init(config);
-
+            
             context = new ClassPathXmlApplicationContext(bootstrapSpringBeans);
             context.start();
 

@@ -63,7 +63,7 @@ public abstract class BaseConfig implements Config {
     public BaseConfig(List<String> fileLocs) {
         this.fileLocs = fileLocs;
     }
-
+    
     protected void parseWithConfigParserImpl() throws IOException {
         ConfigParserImpl cp = new ConfigParserImpl();
         Map p = new Properties();
@@ -94,42 +94,43 @@ public abstract class BaseConfig implements Config {
     }
 
     public void parseConfig() throws IOException {
-        LOG.info("Loading Rice configs: " + StringUtils.join(fileLocs, ", "));
-        Map<String, Object> baseObjects = getBaseObjects();
-        if (baseObjects != null) {
-            this.objects.putAll(baseObjects);
-        }
-        configureBuiltIns(this.propertiesUsed);
-        Properties baseProperties = getBaseProperties();
-        if (baseProperties != null) {
-            this.propertiesUsed.putAll(baseProperties);
-        }
+    	LOG.info("Loading Rice configs: " + StringUtils.join(fileLocs, ", "));
+    	Map<String, Object> baseObjects = getBaseObjects();
+    	if (baseObjects != null) {
+    		this.objects.putAll(baseObjects);
+    	}
+    	configureBuiltIns(this.propertiesUsed);
+    	Properties baseProperties = getBaseProperties();
+    	if (baseProperties != null) {
+    		this.propertiesUsed.putAll(baseProperties);
+    	}
 
-        parseWithConfigParserImpl();
-        //parseWithHierarchicalConfigParser();
+    	parseWithConfigParserImpl();
+    	//parseWithHierarchicalConfigParser();
 
-        //if (!fileLocs.isEmpty()) {
-            LOG.info("");
-            LOG.info("####################################");
-            LOG.info("#");
-            LOG.info("# Properties used after config override/replacement");
-            LOG.info("# " + StringUtils.join(fileLocs, ", "));
-            LOG.info("#");
-            LOG.info("####################################");
-            LOG.info("");
-            Map<String, String> safePropsUsed = ConfigLogger.getDisplaySafeConfig(this.propertiesUsed);
-            Set<Map.Entry<String,String>> entrySet = safePropsUsed.entrySet();
-            // sort it for display
-            SortedSet<Map.Entry<String,String>> sorted = new TreeSet<Map.Entry<String,String>>(new Comparator<Map.Entry<String,String>>() {
-                public int compare(Map.Entry<String,String> a, Map.Entry<String,String> b) {
-                    return a.getKey().compareTo(b.getKey());
-                }
-            });
-            sorted.addAll(entrySet);
-            for (Map.Entry<String, String> propUsed: sorted) {
-                LOG.info("Using config Prop " + propUsed.getKey() + "=[" + propUsed.getValue() + "]");
-            }
-        //}
+    	//if (!fileLocs.isEmpty()) {
+    	LOG.info("");
+    	LOG.info("####################################");
+    	LOG.info("#");
+    	LOG.info("# Properties used after config override/replacement");
+    	LOG.info("# " + StringUtils.join(fileLocs, ", "));
+    	LOG.info("#");
+    	LOG.info("####################################");
+    	LOG.info("");
+    	Map<String, String> safePropsUsed = ConfigLogger.getDisplaySafeConfig(this.propertiesUsed);
+    	Set<Map.Entry<String,String>> entrySet = safePropsUsed.entrySet();
+    	// sort it for display
+    	SortedSet<Map.Entry<String,String>> sorted = new TreeSet<Map.Entry<String,String>>(new Comparator<Map.Entry<String,String>>() {
+    		public int compare(Map.Entry<String,String> a, Map.Entry<String,String> b) {
+    			return a.getKey().compareTo(b.getKey());
+    		}
+    	});
+    	sorted.addAll(entrySet);
+    	for (Map.Entry<String, String> propUsed: sorted) {
+    		LOG.info("Using config Prop " + propUsed.getKey() + "=[" + propUsed.getValue() + "]");
+    	}
+    	//}
+    	loadDefaults();
     }
 
     protected void putPropertiesInPropsUsed(Map properties, String fileName) {
@@ -145,6 +146,76 @@ public abstract class BaseConfig implements Config {
             this.propertiesUsed.put(key, value);
         }
     }
+
+	private void loadDefaults() {
+		// Load defaults if not set in config files : KULRICE-1067
+        // This code is just terribly unmaintainable... better way?
+		Properties p = getProperties();
+        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_POOL_MIN_SIZE))) {
+        	p.setProperty(Config.DATASOURCE_POOL_MIN_SIZE, "0");
+        }
+        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_POOL_MAX_SIZE))) {
+        	p.setProperty(Config.DATASOURCE_POOL_MAX_SIZE, "5");
+        }
+        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_POOL_SIZE))) {
+        	p.setProperty(Config.DATASOURCE_POOL_SIZE, "5");
+        }
+        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_POOL_MAXWAIT))) {
+        	p.setProperty(Config.DATASOURCE_POOL_MAXWAIT, "30000");
+        }
+        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_POOL_VALIDATION_QUERY))) {
+        	p.setProperty(Config.DATASOURCE_POOL_VALIDATION_QUERY, "select 1 from dual");
+        }
+        if (StringUtils.isNotEmpty(p.getProperty(Config.OJB_PLATFORM)) && p.getProperty(Config.OJB_PLATFORM).trim().startsWith("Oracle")) {
+	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_DRIVER_NAME))) {
+	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "oracle.jdbc.driver.OracleDriver");
+	        }
+	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
+	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.database.platform.OraclePlatform");
+	        }	        
+        } else if (StringUtils.isNotEmpty(p.getProperty(Config.OJB_PLATFORM)) && p.getProperty(Config.OJB_PLATFORM).trim().startsWith("MySQL")) {
+	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_DRIVER_NAME))) {
+	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "com.mysql.jdbc.Driver");
+	        }
+	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
+	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.database.platform.MySQLPlatform");
+	        }
+	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER))) {
+	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER, "org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl");
+	        }
+	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER_CLASS))) {
+	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER_CLASS, "org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl");
+	        }
+        } else if (StringUtils.isNotEmpty(p.getProperty(Config.OJB_PLATFORM)) && p.getProperty(Config.OJB_PLATFORM).trim().startsWith("Derby")) {
+	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_DRIVER_NAME))) {
+	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "org.apache.derby.jdbc.EmbeddedDriver");
+	        }
+	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
+	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.database.platform.DerbyPlatform");
+	        }
+	        /* TODO: Implement these for Derby
+	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER))) {
+	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER, "");
+	        }
+	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER_CLASS))) {
+	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER_CLASS, "");
+	        }
+	        */
+        } else if (StringUtils.isNotEmpty(p.getProperty(Config.OJB_PLATFORM)) && p.getProperty(Config.OJB_PLATFORM).trim().startsWith("McKoi	")) {
+	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_DRIVER_NAME))) {
+	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "com.mckoi.JDBCDriver");
+	        }
+	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
+	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.database.platform.MckoiPlatform");
+	        }
+	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER))) {
+	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER, "org.apache.ojb.broker.platforms.PlatformMckoiImpl");
+	        }
+	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER_CLASS))) {
+	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER_CLASS, "org.apache.ojb.broker.platforms.PlatformMckoiImpl");
+	        }
+        }
+	}
 
     public void overrideProperty(String name, String value) {
         this.propertiesUsed.put(name, value);

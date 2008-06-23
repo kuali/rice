@@ -126,11 +126,11 @@ public abstract class BaseConfig implements Config {
     		}
     	});
     	sorted.addAll(entrySet);
+    	//}
+    	loadDefaults();
     	for (Map.Entry<String, String> propUsed: sorted) {
     		LOG.info("Using config Prop " + propUsed.getKey() + "=[" + propUsed.getValue() + "]");
     	}
-    	//}
-    	loadDefaults();
     }
 
     protected void putPropertiesInPropsUsed(Map properties, String fileName) {

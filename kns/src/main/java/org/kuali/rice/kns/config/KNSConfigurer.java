@@ -68,8 +68,10 @@ public class KNSConfigurer extends ModuleConfigurer implements BeanFactoryAware 
 				public void start() throws Exception {
 					KualiModule kualiModule = new KualiModule();
 					kualiModule.setDatabaseRepositoryFilePaths(getDatabaseRepositoryFilePaths());
-					kualiModule.setDataDictionaryPackages(getDataDictionaryPackages());
-					kualiModule.setInitializeDataDictionary(true);
+					if (getDataDictionaryPackages() != null && !getDataDictionaryPackages().isEmpty()) {
+						kualiModule.setDataDictionaryPackages(getDataDictionaryPackages());
+						kualiModule.setInitializeDataDictionary(true);
+					}
 					kualiModule.setModuleAuthorizer(new KualiModuleAuthorizerBase());
 					kualiModule.setModuleCode(Core.getCurrentContextConfig().getMessageEntity());
 					kualiModule.setModuleId(Core.getCurrentContextConfig().getMessageEntity());

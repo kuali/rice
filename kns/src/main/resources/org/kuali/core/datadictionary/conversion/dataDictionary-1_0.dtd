@@ -699,7 +699,7 @@
                     exact regex patterns.
                     e.g. validationPatternRegex.date for regex used in date validation.
                 -->
-                <!ELEMENT validationPattern (alpha|numeric|alphaNumeric|anyCharacter|charset|javaClass|floatingPoint|fixedPoint|zipcode|date|year|month|emailAddress|phoneNumber|timestamp)>
+                <!ELEMENT validationPattern (alpha|numeric|alphaNumeric|anyCharacter|charset|javaClass|floatingPoint|fixedPoint|zipcode|date|year|month|emailAddress|phoneNumber|timestamp|regex)>
                     <!-- character-level patterns -->
                     <!-- ............  alpha element  ............
 
@@ -871,6 +871,18 @@
                         DD: See PhoneNumberValidationPattern.java
                     -->
                     <!ELEMENT phoneNumber EMPTY>
+
+                    <!-- ............  regex element  ............
+
+                        The regex element defines a regular expression for validating
+                        an attribute value. e.g. "[0-9]".
+
+                        DD: See RegexValidationPattern.java
+                    -->
+                    <!ELEMENT regex EMPTY>
+                    <!ATTLIST regex
+                        pattern CDATA #REQUIRED
+                    >
 
                 <!-- ............  required element  ............
 

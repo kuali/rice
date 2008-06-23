@@ -111,4 +111,12 @@
 
         <set-next-rule methodname="setValidationPattern" />
     </pattern>
+
+    <pattern value="regex">
+        <object-create-rule classname="org.kuali.core.datadictionary.validation.charlevel.RegexValidationPattern" />
+        <set-properties-rule />
+
+        <set-next-rule methodname="setValidationPattern" />
+    </pattern>
+
 </pattern>

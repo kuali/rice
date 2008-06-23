@@ -214,6 +214,10 @@
         class="org.kuali.core.datadictionary.MaintainableSectionDefinition"
         abstract="true"
     />
+    <bean id="RegexValidationPattern"
+        class="org.kuali.core.datadictionary.validation.charlevel.RegexValidationPattern"
+        abstract="true"
+    />
 
 </beans>
 

@@ -75,4 +75,9 @@ public class MckoiPlatform extends ANSISqlPlatform {
     public String toString() {
         return "[MckoiPlatform]";
     }
+    
+    public String getSelectForUpdateSuffix(long waitMillis) {
+    	throw new UnsupportedOperationException("Implement me!");
+    }
+
 }

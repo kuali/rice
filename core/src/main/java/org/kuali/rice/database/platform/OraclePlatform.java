@@ -100,4 +100,23 @@ public class OraclePlatform extends ANSISqlPlatform {
     	}
     	return DEFAULT_TIMEOUT_SECONDS;
     }
+    
+    /**
+     * @see org.kuali.notification.database.Platform#getSelectForUpdateSuffix(long)
+     */
+    public String getSelectForUpdateSuffix(long waitMillis) {
+        String sql = "for update";
+        if (WAIT_FOREVER == waitMillis) {
+            // do nothing
+            LOG.warn("Selecting for update and waiting forever...");
+        } else if (NO_WAIT == waitMillis) {
+            sql += " nowait";
+        } else {
+            // Oracle only supports wait time in seconds...
+            long seconds = waitMillis / 1000;
+            if (seconds == 0) seconds = 1;
+            sql += " wait " + seconds;
+        }
+        return sql;
+    }
 }

@@ -79,5 +79,9 @@ public class MySQLPlatform extends ANSISqlPlatform {
     public String toString() {
         return "[MySQLPlatform]";
     }
+    
+    public String getSelectForUpdateSuffix(long waitMillis) {
+        return "for update";
+    }
 
 }

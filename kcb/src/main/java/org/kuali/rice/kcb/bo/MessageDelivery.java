@@ -15,6 +15,16 @@
  */
 package org.kuali.rice.kcb.bo;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
@@ -23,6 +33,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * they have an instance of this entity.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="KCB_MSG_DELIVS")
 public class MessageDelivery extends BaseLockable {
     private static final Integer ZERO = Integer.valueOf(0);
 
@@ -35,21 +47,31 @@ public class MessageDelivery extends BaseLockable {
     public static final String DELIVERY_STATUS = "deliveryStatus";
     public static final String PROCESS_COUNT = "processCount";
     
-    private Long id;
-    private String delivererTypeName;
-    private String delivererSystemId;  // can hold an identifier from the endpoint deliverer mechanism system (i.e. workflow id, SMS id, etc)
+    @Id
+	@Column(name="ID")
+	private Long id;
+    @Column(name="DELIVERER_TYPE_NAME", nullable=false)
+	private String delivererTypeName;
+    @Column(name="DELIVERER_SYSTEM_ID", nullable=true)
+	private String delivererSystemId;  // can hold an identifier from the endpoint deliverer mechanism system (i.e. workflow id, SMS id, etc)
+    @Column(name="DELIVERY_STATUS", nullable=true)
     private String deliveryStatus = MessageDeliveryStatus.UNDELIVERED.name();
+    @Column(name="PROCESS_COUNT", nullable=true)
     private Integer processCount = ZERO;
 
     /**
      * This delivery's message
      */
-    private Message message;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="MESSAGE_ID")
+	private Message message;
 
     /**
      * Lock column for OJB optimistic locking
      */
-    private Integer lockVerNbr;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
     
     /**
      * Constructs a MessageDelivery instance.

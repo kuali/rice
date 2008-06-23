@@ -25,9 +25,10 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
+import org.kuali.rice.config.Config;
+import org.kuali.rice.core.Core;
 import org.kuali.rice.dao.GenericDao;
-import org.kuali.rice.database.OraclePlatform;
-import org.kuali.rice.database.Platform;
+import org.kuali.rice.database.platform.Platform;
 import org.kuali.rice.ojb.SuffixableQueryByCriteria;
 import org.springframework.dao.DataAccessException;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -42,8 +43,6 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements GenericDao {
     private static final Logger LOG = Logger.getLogger(GenericDaoOjb.class);
 
-    // not configurable at the moment as we only support Oracle anyway
-    private Platform platform = new OraclePlatform();
     private boolean useSelectForUpdate = true;
 
     /**
@@ -229,6 +228,13 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
         if (selectForUpdate && useSelectForUpdate) {
             SuffixableQueryByCriteria q = new SuffixableQueryByCriteria(clazz, criteria);
             // XXX: hax
+            Config config = Core.getCurrentContextConfig();
+            Platform platform = null;
+			try {
+				platform = (Platform) Class.forName(config.getProperty(Config.DATASOURCE_PLATFORM)).newInstance();
+			} catch (Exception e) {
+				throw new RuntimeException(e.getMessage(), e);
+			}
             q.setQuerySuffix(" " + platform.getSelectForUpdateSuffix(wait));
             query = q;            
         } else {

@@ -23,7 +23,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
-import org.kuali.rice.database.Platform;
+import org.kuali.rice.database.platform.Platform;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.bo.MessageDeliveryStatus;

@@ -17,6 +17,15 @@ package org.kuali.rice.kcb.bo;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -26,6 +35,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 // this class could possibly just extend the MessageVO
+@Entity
+@Table(name="KCB_MESSAGES")
 public class Message {
     /**
      * Field names
@@ -33,25 +44,41 @@ public class Message {
     public static final String ID_FIELD = "id";
     public static final String ORIGINID_FIELD = "originId";
 
-    private Long id;
+    @Id
+	@Column(name="ID")
+	private Long id;
     /**
      * The origin id is an id provided by the originating system that creates the message
      */
-    private String originId;
-    private String deliveryType;
-    private String channel;
-    private String producer;
+    @Column(name="ORIGIN_ID", nullable=false)
+	private String originId;
+    @Column(name="DELIVERY_TYPE", nullable=false)
+	private String deliveryType;
+    @Column(name="CHANNEL", nullable=false)
+	private String channel;
+    @Column(name="PRODUCER", nullable=true)
+	private String producer;
+    @Column(name="CREATED_DATETIME", nullable=false)
     private Timestamp creationDateTime = new Timestamp(System.currentTimeMillis());
-    private String title;
-    private String content;
-    private String contentType;
-    private String url;
-    private String recipient;
+    @Column(name="TITLE", nullable=true)
+	private String title;
+    @Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(name="CONTENT", nullable=false)
+	private String content;
+    @Column(name="CONTENT_TYPE", nullable=true)
+	private String contentType;
+    @Column(name="URL", nullable=true)
+	private String url;
+    @Column(name="USER_RECIPIENT_ID", nullable=false)
+	private String recipient;
 
     /**
      * Lock column for OJB optimistic locking
      */
-    private Integer lockVerNbr;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
 
     /**
      * Normal no-arg constructor

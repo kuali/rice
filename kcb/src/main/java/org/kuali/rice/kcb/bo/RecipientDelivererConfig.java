@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.kcb.bo;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
@@ -24,6 +30,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * deliverer type (delivererName) for that user.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="KCB_RECIP_DELIVS")
 public class RecipientDelivererConfig {
     /**
      * Field names for queries
@@ -31,14 +39,21 @@ public class RecipientDelivererConfig {
     public static final String RECIPIENT_ID = "recipientId";
     public static final String CHANNEL = "channel";
     
-    private Long id;
-    private String recipientId;
-    private String delivererName;
-    private String channel;
+    @Id
+	@Column(name="ID")
+	private Long id;
+    @Column(name="RECIPIENT_ID", nullable=false)
+	private String recipientId;
+    @Column(name="DELIVERER_NAME", nullable=false)
+	private String delivererName;
+    @Column(name="CHANNEL", nullable=false)
+	private String channel;
     /**
      * Lock column for OJB optimistic locking
      */
-    private Integer lockVerNbr;
+    @Version
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
 
     /**
      * Gets the id attribute. 

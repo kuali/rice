@@ -16,6 +16,8 @@
 package org.kuali.rice.kom.bo;
 
 import java.util.ArrayList;
+
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -53,9 +55,13 @@ public class Organization extends PersistableBusinessObjectBase {
     @Column(name="ACTIVE")
 	private String active;
 
+    @Transient
     private ArrayList<Organization> organizationParents = new ArrayList<Organization>(0);
+    @Transient
     private OrganizationCategory organizationCategory;
+    @Transient
     private Organization parent;
+    @Transient
     private ArrayList<OrganizationsContexts> organizationsContexts = new ArrayList<OrganizationsContexts>(0);
 
     public OrganizationCategory getOrganizationCategory() {

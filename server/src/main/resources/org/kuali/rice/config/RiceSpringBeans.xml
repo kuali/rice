@@ -55,18 +55,20 @@
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/EntityTypeMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/EntityMaintenanceDocument.xml</value>
 							<value>classpath:org/kuali/rice/kim/document/datadictionary/GroupTypeMaintenanceDocument.xml</value>
-                            <value>classpath:org/kuali/rice/kom/bo/datadictionary/Organization.xml</value>
-                            <value>classpath:org/kuali/rice/kom/bo/datadictionary/OrganizationCategory.xml</value>
-                            <value>classpath:org/kuali/rice/kom/bo/datadictionary/OrganizationContext.xml</value>
-                            <value>classpath:org/kuali/rice/kom/document/datadictionary/OrganizationMaintenanceDocument.xml</value>
-                            <value>classpath:org/kuali/rice/kom/document/datadictionary/OrganizationContextMaintenanceDocument.xml</value>
-                            <value>classpath:org/kuali/rice/kom/document/datadictionary/OrganizationCategoryMaintenanceDocument.xml</value>
+              <!--  
+              <value>classpath:org/kuali/rice/kom/bo/datadictionary/Organization.xml</value>
+              <value>classpath:org/kuali/rice/kom/bo/datadictionary/OrganizationCategory.xml</value>
+              <value>classpath:org/kuali/rice/kom/bo/datadictionary/OrganizationContext.xml</value>
+              <value>classpath:org/kuali/rice/kom/document/datadictionary/OrganizationMaintenanceDocument.xml</value>
+              <value>classpath:org/kuali/rice/kom/document/datadictionary/OrganizationContextMaintenanceDocument.xml</value>
+              <value>classpath:org/kuali/rice/kom/document/datadictionary/OrganizationCategoryMaintenanceDocument.xml</value>
+              -->
  						</list>
 					</property>
 				</bean>
 				<bean class="org.kuali.rice.kim.config.KIMConfigurer" />
-				<bean class="org.kuali.rice.kom.config.KOMConfigurer" />
-                <bean class="org.kuali.notification.config.KENConfigurer" />
+				<!-- <bean class="org.kuali.rice.kom.config.KOMConfigurer" /> -->
+        <bean class="org.kuali.notification.config.KENConfigurer" />
 			</list>
 		</property>
 	</bean>

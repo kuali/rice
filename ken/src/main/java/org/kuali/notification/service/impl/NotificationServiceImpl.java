@@ -35,7 +35,7 @@ import org.kuali.notification.service.NotificationService;
 import org.kuali.notification.service.NotificationWorkflowDocumentService;
 import org.kuali.notification.util.NotificationConstants;
 import org.kuali.rice.dao.GenericDao;
-import org.kuali.rice.database.Platform;
+import org.kuali.rice.database.platform.Platform;
 
 /**
  * NotificationService implementation - this is the default out-of-the-box implementation of the service.

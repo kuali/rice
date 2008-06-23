@@ -17,17 +17,22 @@ package org.kuali.rice.kcb.bo;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+
 /**
  * Simple BO base class that implements Lockable interface 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@MappedSuperclass
 public class BaseLockable implements Lockable {
     /**
      * Field names
      */
     public static final String LOCKED_DATE = "lockedDate";
 
+    @Column(name="LOCKED_DATE", nullable=true)
     protected Timestamp lockedDate;
 
     /**

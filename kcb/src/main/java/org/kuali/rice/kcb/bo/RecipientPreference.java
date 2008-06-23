@@ -15,12 +15,10 @@
  */
 package org.kuali.rice.kcb.bo;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -33,7 +31,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Table(name="RECIPIENT_PREFERENCES")
+@Table(name="KCB_RECIP_PREFS")
 public class RecipientPreference {
 
 	/**
@@ -42,24 +40,22 @@ public class RecipientPreference {
     public static final String RECIPIENT_FIELD = "recipientId";
     public static final String PROPERTY_FIELD = "property";
     
-    @Id
+	@Id
 	@Column(name="ID")
 	private Long id;
-    @Column(name="RECIPIENT_TYPE", nullable=false)
-	private String recipientType;
-    @Column(name="RECIPIENT_ID", nullable=false)
+	@Column(name="RECIPIENT_ID", nullable=false)
 	private String recipientId;
-    @Column(name="PROPERTY", nullable=false)
+	@Column(name="PROPERTY", nullable=false)
 	private String property;
-    @Column(name="VALUE", nullable=false)
+	@Column(name="VALUE", nullable=true)
 	private String value;
 
     /**
      * Lock column for OJB optimistic locking
      */
     @Version
-    @Column(name="DB_LOCK_VER_NBR")
-    private Integer lockVerNbr;
+	@Column(name="DB_LOCK_VER_NBR")
+	private Integer lockVerNbr;
 
     /**
      * Gets the id attribute. 

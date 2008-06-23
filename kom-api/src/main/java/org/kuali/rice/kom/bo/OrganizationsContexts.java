@@ -20,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.CascadeType;
 import javax.persistence.Table;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 import java.util.LinkedHashMap;
 
@@ -46,7 +47,9 @@ public class OrganizationsContexts extends PersistableBusinessObjectBase {
 	private Long contextId;
     @Column(name="ACTIVE")
 	private String active;
+    @Transient
     private Organization organization;
+    @Transient
     private OrganizationContext organizationContext;
 
     public Long getId() {

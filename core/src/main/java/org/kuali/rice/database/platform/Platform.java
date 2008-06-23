@@ -30,6 +30,9 @@ import org.apache.ojb.broker.PersistenceBroker;
  */
 public interface Platform {
 
+	// TODO: Refactor constants out of the interface
+    public static final long WAIT_FOREVER = -1;
+    public static final long NO_WAIT = 0;
     /**
      * Supplies a parameterized sequence incrementation query
      * @param sequenceName name of the sequence to be incremented
@@ -55,4 +58,12 @@ public interface Platform {
      */
     String getDateSQL(String date, String time);
 
+    /**
+     * Returns the suffix to append to a SQL query in order to perform
+     * a "select for update" lock on the table
+     * 
+     * @param waitMillis the milliseconds to wait, -1 forever, 0 if no wait
+     * @return the suffix to append to a SQL query in order to perform a "select for update" lock on the table
+     */
+    String getSelectForUpdateSuffix(long waitMillis);
 }

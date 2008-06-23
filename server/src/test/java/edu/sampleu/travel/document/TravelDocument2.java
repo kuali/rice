@@ -19,21 +19,41 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.kuali.core.document.SessionDocument;
 import org.kuali.core.document.TransactionalDocumentBase;
 
 import edu.sampleu.travel.bo.TravelAccount;
 
 
-
+@Entity
+@Table(name="TRV_DOC_2")
 public class TravelDocument2 extends TransactionalDocumentBase implements SessionDocument {
 
+    @Column(name="traveler")
     private String traveler;
+    @Column(name="org")
     private String origin;
+    @Column(name="dest")
     private String destination;
+    @Column(name="request_trav")
     private String requestType;
+    @Transient
     private String accountType;
 
+    @ManyToMany(fetch = FetchType.EAGER)    // Do not use cascade here or it will try to update the TravelAccounts
+    @JoinTable(name="TRAV_DOC_2_ACCOUNTS", 
+	           joinColumns={@JoinColumn(name="fdoc_nbr", referencedColumnName="fdoc_nbr", unique=false)},         // Goes with this class: TravelDocument2
+	           inverseJoinColumns={@JoinColumn(name="acct_num", referencedColumnName="acct_num", unique=false)}   // Goes with that class: TravelAccount
+    )
     private List<TravelAccount> travelAccounts;
 
     public TravelDocument2() {

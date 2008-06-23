@@ -44,4 +44,8 @@ public class DerbyPlatform extends ANSISqlPlatform {
         return nextVal++;
     }
     
+    public String getSelectForUpdateSuffix(long waitMillis) {
+    	throw new UnsupportedOperationException("Implement me!");
+    }
+
 }

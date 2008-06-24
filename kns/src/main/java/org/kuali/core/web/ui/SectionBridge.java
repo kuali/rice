@@ -387,7 +387,9 @@ public class SectionBridge {
 
                         /* If the collection line is pending (meaning added by this document) the isNewCollectionRecord will be set to true. In this
                            case we give an option to delete the line. The parameters for the delete action method are embedded into the button name. */
-                        if (lineBusinessObject instanceof PersistableBusinessObject && ((PersistableBusinessObject) lineBusinessObject).isNewCollectionRecord()) {
+                        if (lineBusinessObject instanceof PersistableBusinessObject && 
+                        		(((PersistableBusinessObject) lineBusinessObject).isNewCollectionRecord() 
+                        				|| collectionDefinition.isAlwaysAllowCollectionDeletion())) {
                             containerField.getContainerRows().add(new Row(getDeleteRowButtonField(parents + collectionDefinition.getName(), (new Integer(i)).toString())));
                         }
 

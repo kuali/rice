@@ -82,6 +82,10 @@ public class InquiryCollectionDefinition extends FieldDefinition implements
 		return false;
 	}
 
+	public boolean isAlwaysAllowCollectionDeletion() {
+		return false;
+	}
+	
 	public boolean hasSummaryField(String key) {
 		return summaryFieldMap.containsKey(key);
 	}

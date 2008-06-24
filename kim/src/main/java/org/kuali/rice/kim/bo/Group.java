@@ -19,12 +19,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.GroupAttributeDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
 
-public class Group extends KIMPersistableBusinessObjectBase {
+public class Group extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 4974576362491778342L;
 

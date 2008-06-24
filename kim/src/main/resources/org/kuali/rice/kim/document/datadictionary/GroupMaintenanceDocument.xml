@@ -85,6 +85,7 @@
           <property name="sourceAttributeName" value="parentGroups" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Group" />
           <property name="includeAddLine" value="false" />
+          <property name="alwaysAllowCollectionDeletion" value="true" />
           <property name="summaryTitle" value="Parent Groups" />
           <property name="maintainableFields" >
             <list>
@@ -118,6 +119,7 @@
           <property name="sourceAttributeName" value="memberGroups" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Group" />
           <property name="includeAddLine" value="false" />
+          <property name="alwaysAllowCollectionDeletion" value="true" />
           <property name="summaryTitle" value="Member Groups" />
           <property name="maintainableFields" >
             <list>
@@ -151,6 +153,7 @@
           <property name="sourceAttributeName" value="memberPrincipals" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Principal" />
           <property name="includeAddLine" value="false" />
+          <property name="alwaysAllowCollectionDeletion" value="true" />
           <property name="summaryTitle" value="Principal" />
           <property name="summaryFields" >
             <list>
@@ -190,6 +193,7 @@
           <property name="sourceAttributeName" value="groupRoles" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Role" />
           <property name="includeAddLine" value="false" />
+          <property name="alwaysAllowCollectionDeletion" value="true" />
           <property name="summaryTitle" value="Assigned Roles" />
           <property name="maintainableFields" >
             <list>

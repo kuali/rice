@@ -28,4 +28,5 @@ public interface CollectionDefinitionI {
     public Class<? extends BusinessObject> getBusinessObjectClass();
     public boolean hasSummaryField(String key);
     public List<? extends FieldDefinitionI> getSummaryFields();
+    public boolean isAlwaysAllowCollectionDeletion();
 }

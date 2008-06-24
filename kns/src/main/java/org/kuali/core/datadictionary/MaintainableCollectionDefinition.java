@@ -41,6 +41,7 @@ public class MaintainableCollectionDefinition extends MaintainableItemDefinition
 
     private boolean includeAddLine = true;
     private boolean includeMultipleLookupLine = true;
+    private boolean alwaysAllowCollectionDeletion = false;
 
     private Map<String,MaintainableFieldDefinition> maintainableFieldMap = new HashMap<String, MaintainableFieldDefinition>();
     private Map<String,MaintainableCollectionDefinition> maintainableCollectionMap = new HashMap<String, MaintainableCollectionDefinition>();
@@ -289,5 +290,18 @@ public class MaintainableCollectionDefinition extends MaintainableItemDefinition
         }
         this.duplicateIdentificationFields = duplicateIdentificationFields;
     }
+
+
+
+	public boolean isAlwaysAllowCollectionDeletion() {
+		return this.alwaysAllowCollectionDeletion;
+	}
+
+
+
+	public void setAlwaysAllowCollectionDeletion(
+			boolean alwaysAllowCollectionDeletion) {
+		this.alwaysAllowCollectionDeletion = alwaysAllowCollectionDeletion;
+	}
     
 }

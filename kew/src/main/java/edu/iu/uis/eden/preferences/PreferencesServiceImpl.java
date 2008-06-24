@@ -119,7 +119,7 @@ public class PreferencesServiceImpl implements PreferencesService {
         UserOptionsService optionSrv = getUserOptionService();
         UserOptions option =  optionSrv.findByOptionId(optionKey, user);
         if (option == null) {
-            LOG.info("User option '" + optionKey + "' on user " +  user.getAuthenticationUserId() + " has no stored value.  Preferences will require save.");
+            LOG.debug("User option '" + optionKey + "' on user " +  user.getAuthenticationUserId() + " has no stored value.  Preferences will require save.");
             option = new UserOptions();
             option.setWorkflowId(user.getWorkflowUserId().getWorkflowId());
             option.setOptionId(optionKey);

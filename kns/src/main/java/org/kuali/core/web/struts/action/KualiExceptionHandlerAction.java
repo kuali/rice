@@ -106,13 +106,17 @@ public class KualiExceptionHandlerAction extends KualiAction {
         
         ActionForward forward;
         if (methodToCall == null) {
+            // Process the exception
             forward=executeException(mapping, form, request, response);
         } else {
             String next=(String)request.getAttribute(FORWARD_NEXT);
             if (next == null) {
-                request.setAttribute(FORWARD_NEXT, FORWARD_NEXT);
+                // Process the exception
+                forward=executeException(mapping, form, request, response);
+            } else {
+                //  Delegate to parent
+                forward=super.execute(mapping, form, request, response);
             }
-            forward=super.execute(mapping, form, request, response);
         }
         
         if (LOG.isTraceEnabled()) {

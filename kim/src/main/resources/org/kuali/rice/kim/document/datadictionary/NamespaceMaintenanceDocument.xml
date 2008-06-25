@@ -32,7 +32,7 @@
           <property name="authorizedGroups" >
             <set>
               <value>Kuali Developers</value>
-              <value>Kuali Identity Managers</value>
+              <!-- value>Kuali Identity Managers</value -->
             </set>
           </property>
           <property name="action" value="initiate" />

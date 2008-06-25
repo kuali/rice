@@ -272,8 +272,6 @@
     <property name="maintainableItems" >
       <list>
         <bean parent="MaintainableCollectionDefinition">
-          <property name="sourceClassName" value="org.kuali.rice.kim.bo.RoleAttribute" />
-          <property name="sourceAttributeName" value="roleAttributes" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.RoleAttribute" />
           <property name="summaryTitle" value="Role Attributes" />
           <property name="maintainableFields" >

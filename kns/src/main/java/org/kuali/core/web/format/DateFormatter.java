@@ -115,4 +115,27 @@ public class DateFormatter extends Formatter {
         }
         return dateTimeService;
     }
+
+    /**
+     * This method is invoked to validate a date string using the KNS Service
+     * DateTimeService.
+     * 
+     * @param dateString
+     * @return
+     */
+    public boolean validate(String dateString) {
+        boolean isValid=false;
+        
+        DateTimeService service=getDateTimeService();
+        try {
+            service.convertToSqlDate(dateString);
+            isValid=true;
+        } catch (Exception e) {
+            
+        }
+        
+        return isValid;
+        
+    }
+
 }

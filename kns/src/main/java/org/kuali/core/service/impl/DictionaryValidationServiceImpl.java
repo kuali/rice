@@ -17,6 +17,7 @@ package org.kuali.core.service.impl;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Iterator;
@@ -56,6 +57,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class DictionaryValidationServiceImpl implements DictionaryValidationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DictionaryValidationServiceImpl.class);
 
+    /**
+     * Constant defines a validation method for an attribute value.
+     * <p>Value is "validate"
+     */
+    public static final String VALIDATE_METHOD="validate";
+    
     private DataDictionaryService dataDictionaryService;
     private BusinessObjectService businessObjectService;
     private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
@@ -269,7 +276,26 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," + attributeName + "," + validationExpression + ")");
 
                 if (!validationExpression.matcher(attributeValue).matches()) {
-                    GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_INVALID_FORMAT, new String[] { errorLabel, attributeValue });
+                    boolean isError=true;
+                    // Calling formatter class
+                    Class<?> formatterClass=getDataDictionaryService().getAttributeFormatter(
+                            objectClassName, attributeName);
+                    if (formatterClass != null) {
+                        try {
+                            Method validatorMethod=formatterClass.getDeclaredMethod(
+                                    VALIDATE_METHOD, new Class<?>[] {String.class});
+                            Object o=validatorMethod.invoke(
+                                    formatterClass.newInstance(), attributeValue);
+                            if (o instanceof Boolean) {
+                                isError=!((Boolean)o).booleanValue();
+                            }
+                        } catch (Exception e) {
+                            LOG.debug(e.getMessage(), e);
+                        }
+                    }
+                    if (isError) {
+                        GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_INVALID_FORMAT, new String[] { errorLabel, attributeValue });
+                    }
                     return;
                 }
             }

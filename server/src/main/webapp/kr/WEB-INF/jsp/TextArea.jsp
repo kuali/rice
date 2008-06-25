@@ -14,7 +14,7 @@
  limitations under the License.
 --%>
 <%@ page
-	import="org.kuali.core.web.struts.action.KualiAction,org.kuali.RiceConstants,java.util.Map"%>
+	import="org.kuali.core.web.struts.action.KualiAction,org.kuali.rice.util.RiceConstants,org.kuali.rice.kns.util.KNSConstants,java.util.Map"%>
 <%@ include file="tldHeader.jsp"%>
 <html>
 
@@ -54,22 +54,22 @@ if (textAreaFieldLabel == null) {
 </c:if>
 <c:if test="${empty documentWebScope}">
 	<c:set var="documentWebScope"
-		value="<%=request.getAttribute(RiceConstants.DOCUMENT_WEB_SCOPE)%>" />
+		value="<%=request.getAttribute(KNSConstants.DOCUMENT_WEB_SCOPE)%>" />
 </c:if>
 <c:if test="${empty documentWebScope}">
 	<c:set var="documentWebScope"
-		value="<%=request.getParameter(RiceConstants.DOCUMENT_WEB_SCOPE)%>" />
+		value="<%=request.getParameter(KNSConstants.DOCUMENT_WEB_SCOPE)%>" />
 </c:if>
 <c:if test="${empty documentWebScope}">
 	<c:set var="documentWebScope" value="request" />
 </c:if>
 <c:if test="${empty docFormKey}">
 	<c:set var="docFormKey"
-		value="<%=request.getAttribute(RiceConstants.DOC_FORM_KEY)%>" />
+		value="<%=request.getAttribute(KNSConstants.DOC_FORM_KEY)%>" />
 </c:if>
 <c:if test="${empty docFormKey}">
 	<c:set var="docFormKey"
-		value="<%=request.getParameter(RiceConstants.DOC_FORM_KEY)%>" />
+		value="<%=request.getParameter(KNSConstants.DOC_FORM_KEY)%>" />
 </c:if>
 <c:if test="${empty docFormKey}">
 	<c:set var="docFormKey"	value="88888888" />

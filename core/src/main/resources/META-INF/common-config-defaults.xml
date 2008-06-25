@@ -51,20 +51,22 @@
     -->
 
 	<!-- below used by atomikos data sources -->
-  <!-- below are dbcp properties used for non-JTA datasources needed by KSB in some instances -->
-  <param name="datasource.pool.maxActive">50</param>
-  <param name="datasource.minIdle">7</param>
-  <param name="datasource.accessToUnderlyingConnectionAllowed">true</param>
-  <param name="datasource.initialSize">7</param>
-  	<!--  These are now being defaulted based on ojb.platform : KULRICE-1067
+    <!-- below are dbcp properties used for non-JTA datasources needed by KSB in some instances -->
+    <param name="datasource.pool.maxActive">50</param>
+    <param name="datasource.minIdle">7</param>
+    <param name="datasource.accessToUnderlyingConnectionAllowed">true</param>
+    <param name="datasource.initialSize">7</param>
+    
+    <!-- NOT NEEDED B/C THEY ARE DEFAULTED BY WORK DONE IN KULRICE-1067
   	<param name="datasource.pool.size">5</param>
     <param name="datasource.pool.maxWait">30000</param>
     <param name="datasource.ojb.platform">Oracle9i</param>
     <param name="datasource.platform">org.kuali.rice.database.platform.OraclePlatform</param>
     <param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
     <param name="datasource.pool.validationQuery">select 1 from dual</param>
-    <param name="transaction.timeout">30000</param>
     -->
+    
+    <param name="transaction.timeout">30000</param>
     <param name="encryption.key">7IC64w6ksLU</param>
 
     <param name="mail.transport.protocol">smtp</param>

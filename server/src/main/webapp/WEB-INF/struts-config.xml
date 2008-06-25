@@ -7,7 +7,6 @@
     <form-beans>
     	<!-- Begin required KNS forms -->
         <form-bean name="KualiForm" type="org.kuali.core.web.struts.form.KualiForm" />
-        <form-bean name="KualiForm" type="org.kuali.core.web.struts.form.KualiForm" />
         <form-bean name="KualiExceptionIncidentForm" type="org.kuali.core.web.struts.form.KualiExceptionIncidentForm" />
     	<!-- End required KNS forms -->
 	    <form-bean name="TravelDocumentForm2" type="edu.sampleu.travel.web.form.TravelDocumentForm2" />
@@ -70,9 +69,6 @@
 			scope="request" parameter="methodToCall" validate="true" attribute="KualiForm">
 			<forward name="basic" path="/WEB-INF/jsp/travelDocument2.jsp" />
 		</action>
-        <action path="/testAction" name="KualiForm" type="org.kuali.core.web.struts.action.KualiSimpleActionTest">
-            <forward name="basic" path="/index.html" />
-        </action>        
     </action-mappings>
 
     <controller processorClass="org.kuali.core.web.struts.action.KualiRequestProcessor" />

@@ -43,7 +43,7 @@
             p:valuesFinderClass="org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
             p:includeKeyInLabel="false"
             p:keyAttribute="id"
-            p:labelAttribute="id" />
+            p:labelAttribute="name" />
     </property>
     <property name="label" value="Id" />
   </bean>

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.GroupAttribute;
 import org.kuali.rice.kim.bo.Principal;
@@ -348,7 +349,18 @@ public class GroupServiceImpl implements GroupService {
      */
     public List<Long> getPersonMemberIds(String groupName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
+    	List<PrincipalDTO> principals  = this.getPrincipalMembers(groupName);
+    	ArrayList<Long> personIds=new ArrayList<Long>();
+    	for(PrincipalDTO principalDTO:principals){
+    		if(principalDTO.getEntityTypeId()==1){
+    			// Eliminate Duplicates
+    			if(personIds.contains(principalDTO.getId()))
+    				continue;
+    			else
+    				personIds.add( principalDTO.getId());
+    		}
+    	}
+    	return personIds;
     }
 
     /**
@@ -356,9 +368,31 @@ public class GroupServiceImpl implements GroupService {
      *
      * @see org.kuali.rice.kim.service.GroupService#getPersonMembers(java.lang.String)
      */
+    
+    // HOW to get PerosonDTO???
     public List<PersonDTO> getPersonMembers(String groupName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-    	return null;
+    	List<PrincipalDTO> principals  = this.getPrincipalMembers(groupName);
+    	ArrayList<Long> personIds=new ArrayList<Long>();
+    	ArrayList<PersonDTO> personDtos=new ArrayList<PersonDTO>();
+    	for(PrincipalDTO principalDTO:principals){
+    		if(principalDTO.getEntityTypeId()==1){
+    			// Eliminate Duplicates
+    			if(personIds.contains(principalDTO.getId()))
+    				continue;
+    			else{
+    				personIds.add( principalDTO.getId());
+    				PersonDTO personDto = new PersonDTO();
+    				
+    				personDto.setId(principalDTO.getId());
+    				personDto.setEntityType(principalDTO.getEntityTypeDto());
+    				personDto.setEntityTypeId(principalDTO.getEntityTypeId());
+    				personDtos.add(personDto);
+    			}
+    		}
+    	}
+    	
+    	return personDtos;
 
     }
 
@@ -369,7 +403,17 @@ public class GroupServiceImpl implements GroupService {
      */
     public List<Long> getEntityMemberIds(String groupName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-        return null;
+
+    	List<PrincipalDTO> principals  = this.getPrincipalMembers(groupName);
+    	ArrayList<Long> entityIds=new ArrayList<Long>();
+    	for(PrincipalDTO principalDTO:principals){
+   			// Eliminate Duplicates
+    		if(entityIds.contains(principalDTO.getId()))
+   				continue;
+   			else
+   				entityIds.add( principalDTO.getId());
+       	}
+       	return entityIds;
     }
 
     /**
@@ -379,9 +423,18 @@ public class GroupServiceImpl implements GroupService {
      */
     public List<EntityDTO> getEntityMembers(String groupName) {
         // TODO ag266 - THIS METHOD NEEDS JAVADOCS
-
-    	
-    	return null;
+    	List<Long> entityIds = getEntityMemberIds(groupName);
+    	ArrayList<Entity> entities = new ArrayList<Entity>();
+    	for(Long entityId:entityIds){
+            HashMap<String, Long> criteria= new HashMap<String, Long>();
+    		criteria.put("ID", entityId);
+    		entities.addAll(KNSServiceLocator.getBusinessObjectService().findMatching(Entity.class,criteria));
+    	}
+    	ArrayList<EntityDTO> entityDtos = new ArrayList<EntityDTO>();
+    	for(Entity entity:entities){
+    		entityDtos.add(Entity.toDTO(entity));
+    	}
+    	return entityDtos;
     }
     
 }

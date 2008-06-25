@@ -127,7 +127,7 @@
                     p:attributeName="description" />
             </list>
           </property>
-          <property name="title" value="Header Text" />
+          <property name="title" value="Namespace Info" />
         </bean>
         <bean parent="InquirySectionDefinition">
           <property name="numberOfColumns" value="1" />
@@ -156,7 +156,7 @@
               </bean>
             </list>
           </property>
-          <property name="title" value="Default Namespace Attributes" />
+          <property name="title" value="Namespace Default Attributes" />
         </bean>
         <bean parent="InquirySectionDefinition">
           <property name="numberOfColumns" value="1" />
@@ -187,8 +187,6 @@
   </bean>
 
 <!-- Business Object Lookup Definition -->
-
-
   <bean id="Namespace-lookupDefinition" parent="Namespace-lookupDefinition-parentBean" />
 
   <bean id="Namespace-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">

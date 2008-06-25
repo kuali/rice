@@ -17,6 +17,11 @@ package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.kuali.rice.kim.dto.GroupAttributeDTO;
 
 /**
@@ -27,10 +32,14 @@ import org.kuali.rice.kim.dto.GroupAttributeDTO;
  *
  * @author Kuali Rice Team (kuali-rice@googleroles.com)
  */
+@Entity
+@Table(name="KIM_GROUP_ATTRIBUTES_T")
 public class GroupAttribute extends AbstractAttributeBase {
 	private static final long serialVersionUID = 5512700461635442326L;
 
-    private Long groupId;
+    @Column(name="GROUP_ID")
+	private Long groupId;
+    @Transient
 	private Group group;
 
 	/**
@@ -90,3 +99,4 @@ public class GroupAttribute extends AbstractAttributeBase {
 	    return dto;
 	}
 }
+

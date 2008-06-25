@@ -17,16 +17,25 @@ package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 /**
  * Business object that represents a single qualified role attribute record associated with a principal.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="KIM_PRNCPL_QLFD_ROLES_T")
 public class PrincipalQualifiedRoleAttribute extends AbstractQualifiedRoleAttribute {
     private static final long serialVersionUID = 6701917498866245651L;
 
-    private Long principalId;
+    @Column(name="PRINCIPAL_ID")
+	private Long principalId;
 
+	@Transient
     private Principal principal;
 
     /**

@@ -17,6 +17,11 @@ package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kim.dto.EntityTypeDTO;
 
@@ -26,11 +31,17 @@ import org.kuali.rice.kim.dto.EntityTypeDTO;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="KIM_ENTITY_TYPES_T")
 public class EntityType extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 4459950167476366438L;
 
-    private Long id;
+    @Id
+	@Column(name="ID")
+	private Long id;
+	@Column(name="NAME")
 	private String name;
+	@Column(name="DESCRIPTION")
 	private String description;
 
 	/**
@@ -117,3 +128,4 @@ public class EntityType extends PersistableBusinessObjectBase {
     }
 
 }
+

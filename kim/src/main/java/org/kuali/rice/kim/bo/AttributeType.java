@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.kim.bo;
 
-import javax.persistence.Version;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
-import javax.persistence.Entity;
+
 import java.util.LinkedHashMap;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kim.dto.AttributeTypeDTO;
@@ -130,3 +130,4 @@ public class AttributeType extends PersistableBusinessObjectBase {
 	    return dto;
 	}
 }
+

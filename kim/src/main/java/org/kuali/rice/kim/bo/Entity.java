@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.EntityAttributeDTO;
 import org.kuali.rice.kim.dto.EntityDTO;
@@ -30,10 +33,18 @@ import org.kuali.rice.kim.dto.PrincipalDTO;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@javax.persistence.Entity
+@Table(name="KIM_ENTITYS_T")
 public class Entity extends AbstractEntityBase {
 	private static final long serialVersionUID = 2232201572169570616L;
 
+	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+    //       targetEntity=org.kuali.rice.kim.bo.EntityAttribute.class, mappedBy="entity")
+	@Transient
 	private ArrayList<EntityAttribute> entityAttributes;
+	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+    //       targetEntity=org.kuali.rice.kim.bo.Principal.class, mappedBy="entity")
+	@Transient
 	private ArrayList<Principal> principals;
 
 
@@ -109,3 +120,4 @@ public class Entity extends AbstractEntityBase {
         return dto;
     }
 }
+

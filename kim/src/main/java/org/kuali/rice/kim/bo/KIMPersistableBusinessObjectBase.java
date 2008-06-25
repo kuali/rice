@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.bo;
 
+import javax.persistence.MappedSuperclass;
+
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 
 /**
@@ -24,6 +26,7 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@MappedSuperclass
 public abstract class KIMPersistableBusinessObjectBase extends PersistableBusinessObjectBase {
 
     /**

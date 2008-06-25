@@ -18,6 +18,14 @@ package org.kuali.rice.kim.bo;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.util.TypedArrayList;
 
@@ -30,14 +38,24 @@ import org.kuali.core.util.TypedArrayList;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@Entity
+@Table(name="KIM_GROUP_TYPES_T")
 public class GroupType extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 9118112248900436184L;
+	@Id
+	@Column(name="ID")
 	private Long id;
+	@Column(name="NAME")
 	private String name;
+	@Column(name="DESCRIPTION")
 	private String description;
+	@Column(name="WORKFLOW_DOCUMENT_TYPE")
 	private String workflowDocumentType;
 
-    private ArrayList<GroupTypeDefaultAttribute> groupTypeDefaultAttributes;
+    //@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+    //       targetEntity=org.kuali.rice.kim.bo.GroupTypeDefaultAttribute.class, mappedBy="groupType")
+	@Transient
+	private ArrayList<GroupTypeDefaultAttribute> groupTypeDefaultAttributes;
 
     /**
      * This constructs a GroupType business object instance.
@@ -143,3 +161,4 @@ public class GroupType extends PersistableBusinessObjectBase {
         return propMap;
 	}
 }
+

@@ -17,6 +17,13 @@ package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.kuali.rice.kim.dto.EntityAttributeDTO;
 
 /**
@@ -26,14 +33,22 @@ import org.kuali.rice.kim.dto.EntityAttributeDTO;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@javax.persistence.Entity
+@Table(name="KIM_ENTITY_ATTRIBUTES_T")
 public class EntityAttribute extends AbstractAttributeBase {
 
 	private static final long serialVersionUID = 2861440911751860350L;
+	@Column(name="ENTITY_ID")
 	private Long entityId;
+	@Column(name="SPONSOR_NAMESPACE_ID")
 	private Long namespaceId;
 
-    private Entity entity;
-    private Namespace namespace;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="ENTITY_ID", insertable=false, updatable=false)
+	private Entity entity;
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="SPONSOR_NAMESPACE_ID", insertable=false, updatable=false)
+	private Namespace namespace;
 
 	public Long getNamespaceId() {
 		return namespaceId;
@@ -116,3 +131,4 @@ public class EntityAttribute extends AbstractAttributeBase {
         return dto;
     }
 }
+

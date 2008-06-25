@@ -19,27 +19,68 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.GroupAttributeDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
 
+@Entity
+@Table(name="KIM_GROUPS_T")
 public class Group extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 4974576362491778342L;
 
+	@Id
+	@Column(name="ID")
 	private Long id;
+	@Column(name="NAME")
 	private String name;
+	@Column(name="DESCRIPTION")
 	private String description;
+	@Column(name="GROUP_TYPE_ID")
 	private Long groupTypeId;
+	//@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_GROUPS_GROUPS_T", 
+	//           joinColumns=@JoinColumn(name="PARENT_GROUP_ID"), 
+	//           inverseJoinColumns=@JoinColumn(name="MEMBER_GROUP_ID"))
+	@Transient
 	private ArrayList<Group> memberGroups;
+	//@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_GROUPS_GROUPS_T", 
+	//           joinColumns=@JoinColumn(name="MEMBER_GROUP_ID"), 
+	//           inverseJoinColumns=@JoinColumn(name="PARENT_GROUP_ID"))
+	@Transient
 	private ArrayList<Group> parentGroups;
+	//@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_GROUPS_PRINCIPALS_T", 
+	//           joinColumns=@JoinColumn(name="GROUP_ID"), 
+	//           inverseJoinColumns=@JoinColumn(name="PRINCIPAL_ID"))
+	@Transient
 	private ArrayList<Principal> memberPrincipals;
-    private ArrayList<Role> groupRoles;
+    //@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_ROLES_GROUPS_T", 
+	//           joinColumns=@JoinColumn(name="GROUP_ID"), 
+	//           inverseJoinColumns=@JoinColumn(name="ROLE_ID"))
+	@Transient
+	private ArrayList<Role> groupRoles;
+    //@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+    //       targetEntity=org.kuali.rice.kim.bo.GroupAttribute.class, mappedBy="ERROR: See log")
+	@Transient
     private ArrayList<GroupAttribute> groupAttributes;
 
-    private GroupType groupType;
+    //@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	//@JoinColumn(name="GROUP_TYPE_ID", insertable=false, updatable=false)
+	@Transient
+	private GroupType groupType;
 
     /**
      */
@@ -251,3 +292,4 @@ public class Group extends PersistableBusinessObjectBase {
         return dto;
     }
 }
+

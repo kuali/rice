@@ -18,6 +18,18 @@ package org.kuali.rice.kim.bo;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.PrincipalDTO;
 
@@ -25,21 +37,39 @@ import org.kuali.rice.kim.dto.PrincipalDTO;
  * This class represents the Principal data structure
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="KIM_PRINCIPALS_T")
 public class Principal extends AbstractEntityBase implements java.security.Principal {
     private static final long serialVersionUID = -5021417605671339853L;
-    private Long entityId;
-    private String name;
+    @Column(name="ENTITY_ID")
+	private Long entityId;
+    @Column(name="NAME")
+	private String name;
 
-   private Entity entity;
-   private ArrayList<Group> groups;
-   private ArrayList<Role> roles;
+    //@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+	//@JoinColumn(name="ENTITY_ID", insertable=false, updatable=false)
+	@Transient
+	private Entity entity;
+    //@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_GROUPS_PRINCIPALS_T", 
+	//           joinColumns=@JoinColumn(name="PRINCIPAL_ID"), 
+	//           inverseJoinColumns=@JoinColumn(name="GROUP_ID"))
+	@Transient
+	private ArrayList<Group> groups;
+    //@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_ROLES_PRINCIPALS_T", 
+	//           joinColumns=@JoinColumn(name="PRINCIPAL_ID"), 
+	//           inverseJoinColumns=@JoinColumn(name="ROLE_ID"))
+	@Transient
+	private ArrayList<Role> roles;
    
-   //this list is used for rendering the UI appropriately using the maintenance document framework
-   //this can be considered essentially a form object
-   private ArrayList<RoleQualificationForPrincipal> roleQualificationsForPrincipal;
+    //this list is used for rendering the UI appropriately using the maintenance document framework
+    //this can be considered essentially a form object
+    private ArrayList<RoleQualificationForPrincipal> roleQualificationsForPrincipal;
    
-   //this list is what actually gets persisted for principal role qualifications
-   private ArrayList<PrincipalQualifiedRoleAttribute> principalQualifiedRoleAttributes;
+    //this list is what actually gets persisted for principal role qualifications
+    //@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+    //       targetEntity=org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute.class, mappedBy="ERROR: See log")
+	@Transient
+	private ArrayList<PrincipalQualifiedRoleAttribute> principalQualifiedRoleAttributes;
 
     /**
      * Constructs a Principal instance.
@@ -182,3 +212,4 @@ public class Principal extends AbstractEntityBase implements java.security.Princ
         return dto;
     }
 }
+

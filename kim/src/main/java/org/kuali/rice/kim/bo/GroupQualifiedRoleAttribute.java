@@ -17,16 +17,24 @@ package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 /**
  * Business object that represents a single qualified role attribute record associated with a group.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Entity
+@Table(name="KIM_GROUP_QLFD_ROLES_T")
 public class GroupQualifiedRoleAttribute extends AbstractQualifiedRoleAttribute {
     private static final long serialVersionUID = 6701917498866245651L;
 
-    private Long groupId;
-
+    @Column(name="GROUP_ID")
+	private Long groupId;
+    @Transient
     private Group group;
 
     /**

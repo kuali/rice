@@ -20,20 +20,40 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.NamespaceDTO;
 import org.kuali.rice.kim.dto.NamespaceDefaultAttributeDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
 
+@Entity
+@Table(name="KIM_NAMESPACES_T")
 public class Namespace extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 9118112248900436184L;
+	@Id
+	@Column(name="ID")
 	private Long id;
+	@Column(name="NAME")
 	private String name;
+	@Column(name="DESCRIPTION")
 	private String description;
 
-    private ArrayList<NamespaceDefaultAttribute> namespaceAttributes;
-    private ArrayList<Permission> namespacePermissions;
+    //@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+    //       targetEntity=org.kuali.rice.kim.bo.NamespaceDefaultAttribute.class, mappedBy="namespace")
+	@Transient
+	private ArrayList<NamespaceDefaultAttribute> namespaceAttributes;
+    //@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+    //       targetEntity=org.kuali.rice.kim.bo.Permission.class, mappedBy="namespace")
+	@Transient
+	private ArrayList<Permission> namespacePermissions;
 
     public Namespace() {
         this.namespaceAttributes = new TypedArrayList(NamespaceDefaultAttribute.class);
@@ -123,3 +143,4 @@ public class Namespace extends PersistableBusinessObjectBase {
 
 
 }
+

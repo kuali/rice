@@ -17,6 +17,11 @@ package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 
 /**
@@ -25,13 +30,20 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@MappedSuperclass
 public abstract class AbstractQualifiedRoleAttribute extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = -5155126090045426553L;
+	@Id
+	@Column(name="ID")
     private Long id;
+	@Column(name="ATTRIBUTE_NAME")
     private String attributeName;
+	@Column(name="ATTRIBUTE_VALUE")
     private String attributeValue;
+	@Column(name="ROLE_ID")
     private Long roleId;
-    private Role role;
+	@Transient
+	private Role role;
 
     /**
      * @return the roleId

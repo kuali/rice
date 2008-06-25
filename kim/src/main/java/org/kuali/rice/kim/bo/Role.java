@@ -19,7 +19,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
@@ -33,23 +44,52 @@ import org.kuali.rice.kim.dto.RoleDTO;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@Entity
+@Table(name="KIM_ROLES_T")
 public class Role extends KIMPersistableBusinessObjectBase {
 	private static final long serialVersionUID = -8535955276605020423L;
+	@Id
+	@Column(name="ID")
 	private Long id;
+	@Column(name="NAME")
 	private String name;
+	@Column(name="DESCRIPTION")
 	private String description;
+	//@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_ROLES_PERMISSIONS_T", 
+	//           joinColumns=@JoinColumn(name="ROLE_ID"), 
+	//           inverseJoinColumns=@JoinColumn(name="PERMISSION_ID"))
+	@Transient
 	private ArrayList<Permission> permissions;
+	//@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_ROLES_GROUPS_T", 
+	//           joinColumns=@JoinColumn(name="ROLE_ID"), 
+	//           inverseJoinColumns=@JoinColumn(name="GROUP_ID"))
+	@Transient
 	private ArrayList<Group> groups;
+	//@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_ROLES_PRINCIPALS_T", 
+	//           joinColumns=@JoinColumn(name="ROLE_ID"), 
+	//           inverseJoinColumns=@JoinColumn(name="PRINCIPAL_ID"))
+	@Transient
 	private ArrayList<Principal> principals;
+	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+    //       targetEntity=org.kuali.rice.kim.bo.RoleAttribute.class, mappedBy="ERROR: See log")
+	@Transient
 	private ArrayList<RoleAttribute> roleAttributes;
 	
 	//these lists are used for rendering the UI appropriately using the maintenance document framework
 	//these can be considered essentially form objects
+	@Transient
 	private ArrayList<GroupQualifiedRole> groupQualifiedRoles;
+	@Transient
 	private ArrayList<PrincipalQualifiedRole> principalQualifiedRoles;
 	
 	//these lists are what actually get persisted for group and principal qualifications
+	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+    //       targetEntity=org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute.class, mappedBy="ERROR: See log")
+	@Transient
 	private ArrayList<GroupQualifiedRoleAttribute> groupQualifiedRoleAttributes;
+	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+    //       targetEntity=org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute.class, mappedBy="ERROR: See log")
+	@Transient
 	private ArrayList<PrincipalQualifiedRoleAttribute> principalQualifiedRoleAttributes;
 
 	/**
@@ -288,3 +328,4 @@ public class Role extends KIMPersistableBusinessObjectBase {
         return dto;
 	}
 }
+

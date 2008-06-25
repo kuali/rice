@@ -5,10 +5,10 @@ import java.util.regex.Pattern
 /* Begin User Configurable Fields */
 
 def repositories = [
-    '../kcb/src/main/resources/OJB-repository-kcb.xml'
+    //'../kcb/src/main/resources/OJB-repository-kcb.xml'
     //'../ken/src/main/resources/OJB-repository-ken.xml', 
     //'../kew/src/main/resources/org/kuali/workflow/ojb/OJB-repository-kew.xml'
-    //'../kim/src/main/resources/OJB-repository-kim.xml',
+    '../kim/src/main/resources/OJB-repository-kim.xml'
     //'../kns/src/main/resources/OJB-repository-kns.xml',
     //'../kom/src/main/resources/OJB-repository-kom.xml',
     //'../ksb/src/main/resources/OJB-repository-ksb.xml',
@@ -16,29 +16,29 @@ def repositories = [
 ]
 
 def sourceDirectories = [
-    '../kcb/src/main/java/' 
+    //'../kcb/src/main/java/' 
     //'../ken/src/main/java/', 
     //'../kew/src/main/java/',
-    //'../kim/src/main/java/',
+    '../kim/src/main/java/',
     //'../kns/src/main/java/',
     //'../kom/src/main/java/',
     //'../ksb/src/main/java/',
     //'../kns/src/test/java/',
     //'../ken-api/src/main/java/', 
     //'../kew-api/src/main/java/'
-    //'../kim-api/src/main/java/',
+    '../kim-api/src/main/java/'
     //'../kns-api/src/main/java/'
     //'../kom-api/src/main/java/',
     //'../ksb-api/src/main/java/'
 ]
 
-def mysql = true
+def mysql = false
 def persistenceXml = false
 def persistenceUnitName = "rice"
 def schemaName = "RICE093DEV"
 def pkClassesOnly = false
 def clean = false
-def dry = true
+def dry = false
 def verbose = true
 
 /* End User Configurable Fields */

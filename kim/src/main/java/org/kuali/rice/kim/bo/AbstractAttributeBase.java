@@ -17,7 +17,11 @@ package org.kuali.rice.kim.bo;
 
 import java.io.Serializable;
 
-import org.kuali.core.bo.PersistableBusinessObjectBase;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
 import org.kuali.rice.kim.dto.AbstractAttributeBaseDTO;
 
 /**
@@ -25,12 +29,19 @@ import org.kuali.rice.kim.dto.AbstractAttributeBaseDTO;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@MappedSuperclass
 public abstract class AbstractAttributeBase extends KIMPersistableBusinessObjectBase implements Serializable {
 
-    private Long id;
+	@Id
+	@Column(name="ID")
+	private Long id;
+	@Column(name="ATTRIBUTE_TYPE_ID")
     private Long attributeTypeId;
+	@Column(name="ATTRIBUTE_NAME")
     private String attributeName;
+	@Column(name="ATTRIBUTE_VALUE")
     private String value;
+    @Transient
     private AttributeType attributeType;
 
     /**

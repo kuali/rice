@@ -1,0 +1,165 @@
+Index: /rice-0.9.3/core/src/main/java/org/kuali/rice/web/jetty/JettyServer.java
+===================================================================
+--- /rice-0.9.3/core/src/main/java/org/kuali/rice/web/jetty/JettyServer.java	(revision 3870)
++++ /rice-0.9.3/core/src/main/java/org/kuali/rice/web/jetty/JettyServer.java	(working copy)
+@@ -21,6 +21,7 @@
+ import org.apache.commons.lang.builder.ToStringBuilder;
+ import org.kuali.rice.lifecycle.Lifecycle;
+ import org.mortbay.jetty.Server;
++import org.mortbay.jetty.security.SslSocketConnector;
+ import org.mortbay.jetty.servlet.Context;
+ import org.mortbay.jetty.servlet.ServletHolder;
+ import org.mortbay.jetty.webapp.WebAppContext;
+@@ -34,6 +35,7 @@
+     public static final String JETTYSERVER_TESTMODE_ATTRIB = "JETTYSERVER_TESTMODE";
+ 
+ 	private int port;
++	private int sslPort;
+ 	private String contextName;	
+ 	private String relativeWebappRoot;
+ 	private Class servletClass;
+@@ -46,31 +48,53 @@
+ 	private boolean testMode = false;
+ 
+ 	public JettyServer() {
+-		this(8080);
++		this(8080, -1);
+ 	}
+ 
+ 	public JettyServer(int port) {
+-		this(port, null, null, null);
+-	}
++        this(port, -1, null, null, null);
++    }
+ 
++	public JettyServer(int port, int sslPort) {
++        this(port, sslPort, null, null, null);
++    }
++
+ 	public JettyServer(int port, String contextName) {
+-		this(port, contextName, null, null);
+-	}
+-	
+-	public JettyServer(int port, String contextName, String relativeWebappRoot) {
+-        this(port, contextName, relativeWebappRoot, null);
++        this(port, -1, contextName, null, null);
++    }
++    
++	public JettyServer(int port, int sslPort, String contextName) {
++        this(port, sslPort, contextName, null, null);
++    }
++    
++    public JettyServer(int port, String contextName, String relativeWebappRoot) {
++        this(port, -1, contextName, relativeWebappRoot, null);
+ 	}	
+ 
++    public JettyServer(int port, int sslPort, String contextName, String relativeWebappRoot) {
++        this(port, sslPort, contextName, relativeWebappRoot, null);
++    }   
++    
+     public JettyServer(int port, String contextName, Class servletClass) {
+-        this(port, contextName, null, servletClass);
++        this(port, -1, contextName, null, servletClass);
+     }   
+ 
++    public JettyServer(int port, int sslPort, String contextName, Class servletClass) {
++        this(port, sslPort, contextName, null, servletClass);
++    }   
++
+     public JettyServer(int port, String contextName, String relativeWebappRoot, Class servletClass) {
++        this(port, -1, contextName, relativeWebappRoot, servletClass);
++    }
++    
++    public JettyServer(int port, int sslPort, String contextName, String relativeWebappRoot, Class servletClass) {
+         this.port = port;
++        this.sslPort = sslPort;
+         this.contextName = contextName;
+         this.relativeWebappRoot = relativeWebappRoot;
+         this.servletClass = servletClass;
+     }   
++   
+ 
+     public void setTestMode(boolean t) {
+ 	    this.testMode = t;
+@@ -111,6 +135,18 @@
+ 			    webAppContext.setAttribute(JETTYSERVER_TESTMODE_ATTRIB, String.valueOf(isTestMode()));
+ 			    context = webAppContext;
+ 	            server.addHandler(context);
++
++	            if (isSslPortValid()) {
++    	            SslSocketConnector sslConnector =  new SslSocketConnector();
++    	            sslConnector.setPort(getSslPort());
++    	            sslConnector.setMaxIdleTime(30000);
++    	            sslConnector.setKeystore("C:\\data\\devlopment\\SUN\\java\\jre1.6.0_03\\lib\\security\\cacerts");
++    	            sslConnector.setTruststore("C:\\data\\devlopment\\SUN\\java\\jre1.6.0_03\\lib\\security\\cacerts");
++    	            sslConnector.setPassword("changeit");
++    	            sslConnector.setKeyPassword("changeit");
++    	            sslConnector.setTrustPassword("changeit");
++    	            server.addConnector (sslConnector);
++	            }
+ 			} else {
+ 			    Context root = new Context(server,"/",Context.SESSIONS);
+ 			    root.addServlet(new ServletHolder(servletClass), getContextName());
+@@ -123,7 +159,17 @@
+ 		return server;
+ 	}
+ 
+-	protected void setBaseDirSystemProperty() {
++	/**
++     * This method checks if a valid ssl port was supplied.  
++     * It is used to determine if an ssl socket port should be opened
++     * 
++     * @returns false if sslPort is < 1 (default is -1)
++     */
++    private boolean isSslPortValid() {
++        return (sslPort > 0);
++    }
++
++    protected void setBaseDirSystemProperty() {
+ 		if (System.getProperty("basedir") == null) {
+ 			System.setProperty("basedir", System.getProperty("user.dir"));
+ 		}
+@@ -169,12 +215,39 @@
+ 
+     public static void main(String[] args) {
+         int port = args.length > 0 ? Integer.parseInt(args[0]) : 8080;
+-        String contextName = args.length > 1 ? args[1] : null;
+-        String relativeWebappRoot = args.length > 2 ? args[2] : null;
++        int sslPort = -1;
++        String contextName = null;
++        String relativeWebappRoot = null;
++        if (args.length > 1) {
++            try {
++                sslPort = Integer.parseInt(args[1]);
++                contextName = args.length > 2 ? args[2] : null;
++                relativeWebappRoot = args.length > 3 ? args[3] : null;
++            }
++            catch (NumberFormatException nfe) {
++                contextName = args[1];
++                relativeWebappRoot = args.length > 2 ? args[2] : null;
++            }
++        }
++         
+         try {
+-            new JettyServer(port, contextName, relativeWebappRoot).start();
++            new JettyServer(port, sslPort, contextName, relativeWebappRoot).start();
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+     }
++
++    /**
++     * @return the sslPort
++     */
++    public int getSslPort() {
++        return this.sslPort;
++    }
++
++    /**
++     * @param sslPort the sslPort to set
++     */
++    public void setSslPort(int sslPort) {
++        this.sslPort = sslPort;
++    }
+ }
+\ No newline at end of file

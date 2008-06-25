@@ -31,6 +31,11 @@
       <artifactId>rice-kom</artifactId>
       <version>0.9.3-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <artifactId>rice-kim-authn-client</artifactId>
+      <version>0.9.3-SNAPSHOT</version>
+    </dependency>
 
     <dependency>
         <groupId>commons-io</groupId>

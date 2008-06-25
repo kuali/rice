@@ -5,7 +5,7 @@
     <version>0.9.3-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>rice-authn-client</artifactId>
+  <artifactId>rice-kim-authn-client</artifactId>
   <name>kim-authn-client</name>
   <dependencies>
     <dependency>
@@ -22,6 +22,11 @@
       <groupId>cas</groupId>
       <artifactId>casclient</artifactId>
       <version>2.0.11</version>
+    </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <artifactId>rice-kim-authn-sesn</artifactId>
+      <version>0.9.3-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

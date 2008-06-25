@@ -145,6 +145,8 @@ public class RoleMaintainable extends KualiMaintainableImpl {
             
             ArrayList<GroupQualifiedRoleAttribute> gqrAttribs = gqr.getQualifiedRoleAttributes();
             for(GroupQualifiedRoleAttribute gqrAttrib : gqrAttribs) {
+            	gqrAttrib.setGroupId(gqr.getId());
+            	gqrAttrib.setRoleId(role.getId());
                 role.getGroupQualifiedRoleAttributes().add(gqrAttrib);
             }
         }
@@ -168,9 +170,11 @@ public class RoleMaintainable extends KualiMaintainableImpl {
             p.setId(pqr.getId());
             role.getPrincipals().add(p);
             
-            ArrayList<PrincipalQualifiedRoleAttribute> gqrAttribs = pqr.getQualifiedRoleAttributes();
-            for(PrincipalQualifiedRoleAttribute gqrAttrib : gqrAttribs) {
-                role.getPrincipalQualifiedRoleAttributes().add(gqrAttrib);
+            ArrayList<PrincipalQualifiedRoleAttribute> pqrAttribs = pqr.getQualifiedRoleAttributes();
+            for(PrincipalQualifiedRoleAttribute pqrAttrib : pqrAttribs) {
+            	pqrAttrib.setPrincipalId(pqr.getId());
+            	pqrAttrib.setRoleId(role.getId());
+                role.getPrincipalQualifiedRoleAttributes().add(pqrAttrib);
             }
         }
     }

@@ -110,11 +110,15 @@ public class KualiExceptionHandlerAction extends KualiAction {
             forward=executeException(mapping, form, request, response);
         } else {
             String next=(String)request.getAttribute(FORWARD_NEXT);
-            if (next == null) {
+            // Enable Extended TextArea implementation by checking the methodToCall, "notify"
+            if (next == null &&
+               !methodToCall.equalsIgnoreCase(KualiAction.FORWARD_TEXT_AREA_UPDATE) &&
+               !methodToCall.equalsIgnoreCase(KualiAction.POST_TEXT_AREA_TO_PARENT)) {
                 // Process the exception
                 forward=executeException(mapping, form, request, response);
             } else {
                 //  Delegate to parent
+                request.setAttribute(FORWARD_NEXT, FORWARD_NEXT);
                 forward=super.execute(mapping, form, request, response);
             }
         }

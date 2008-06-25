@@ -721,6 +721,11 @@ public abstract class KualiAction extends DispatchAction {
     */
     public static final String FORWARD_TEXT_AREA_UPDATE="updateTextArea";
     /**
+     * Constant defined to match with method to call in TextArea.jsp.
+     * <p>Value is postTextAreaToParent
+    */
+    public static final String POST_TEXT_AREA_TO_PARENT="postTextAreaToParent";
+    /**
      * Constant defined to match with local forwarding in struts-config.xml
      * for the parent of the Updated Text Area.
      * <p>Value is forwardNext

@@ -20,8 +20,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.kuali.RicePropertyConstants;
-import org.kuali.rice.kim.bo.Entity;
-import org.kuali.rice.kim.bo.NamespaceDefaultAttribute;
 import org.kuali.rice.kim.service.NamespaceAttributeService;
 
 
@@ -51,11 +49,6 @@ public class NamespaceAttributeServiceImpl implements NamespaceAttributeService 
     
     public void setPropertyList(List<String> propertyList) {
         this.propertyList = propertyList;
-    }
-
-    
-    public NamespaceDefaultAttribute getNamespaceattribute(Entity entity) {
-        return null;
     }
 
 }

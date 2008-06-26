@@ -28,6 +28,16 @@ import org.kuali.rice.kim.service.NamespaceService;
 public class NamespaceServiceImpl implements NamespaceService {
 
     /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.NamespaceService#getNamespaces()
+     */
+    public List<Namespace> getNamespaces() {
+        final List<Namespace> namespaces = (List<Namespace>) KNSServiceLocator.getBusinessObjectService().findAll(Namespace.class);
+        return namespaces;
+    }
+
+    /**
      * This method returns a list of the Namespaces names
      *
      * @see org.kuali.rice.kim.service.NamespaceService#getAllNamespaceNames()

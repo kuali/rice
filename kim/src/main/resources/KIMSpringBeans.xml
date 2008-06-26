@@ -62,6 +62,8 @@
 				<idref local="namespaceService" />
 				<idref local="qualifiedRoleService" />
 				<idref local="roleService" />
+				<idref local="entityService" />
+				<idref local="namespaceAttributeService" />
 			</list>
 		</property>
 	</bean>
@@ -71,6 +73,8 @@
 	<bean id="namespaceService" class="org.kuali.rice.kim.service.impl.NamespaceServiceImpl" />
 	<bean id="qualifiedRoleService" class="org.kuali.rice.kim.service.impl.QualifiedRoleServiceImpl" />
 	<bean id="roleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl" />
+	<bean id="entityService" class="org.kuali.rice.kim.service.impl.EntityServiceImpl" />
+	<bean id="namespaceAttributeService" class="org.kuali.rice.kim.service.impl.NamespaceAttributeServiceImpl" />
  
     <bean id="kimModule" class="org.kuali.core.KualiModule">
 		<property name="moduleId" value="kim"/>

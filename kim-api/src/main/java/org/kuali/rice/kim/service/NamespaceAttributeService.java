@@ -16,22 +16,15 @@
 package org.kuali.rice.kim.service;
 
 import java.util.List;
-
-
-import org.kuali.rice.kim.bo.Entity;
-import org.kuali.rice.kim.bo.NamespaceDefaultAttribute;
-import java.io.Serializable;
 /**
- * This is a description of what this class does - KFS_Developer_1 don't forget to fill this in. 
- * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface NamespaceAttributeService extends Serializable {
+public interface NamespaceAttributeService {
     
     
     public List<String> getPropertyList();
     
-    public NamespaceDefaultAttribute getNamespaceattribute(Entity entity);
+    //public NamespaceDefaultAttribute getNamespaceattribute(Entity entity);
 
 }

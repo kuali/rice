@@ -93,8 +93,7 @@ public class Group extends PersistableBusinessObjectBase {
 		parentGroups = new TypedArrayList(Group.class);
 		groupRoles = new TypedArrayList(Role.class);
 		groupAttributes = new TypedArrayList(GroupAttribute.class);
-		setQualifiedRoleAttributes(new TypedArrayList(
-				GroupQualifiedRoleAttribute.class));
+		qualifiedRoleAttributes = new TypedArrayList(GroupQualifiedRoleAttribute.class);
         groupTypeAttributes = new TypedArrayList(GroupAttribute.class);
         nonGroupTypeAttributes = new TypedArrayList(GroupAttribute.class);
 	}
@@ -283,6 +282,35 @@ public class Group extends PersistableBusinessObjectBase {
 	 */
 	public ArrayList<GroupQualifiedRoleAttribute> getQualifiedRoleAttributes() {
 		return qualifiedRoleAttributes;
+	}
+	
+	/**
+	 * @return the groupTypeAttributes
+	 */
+	public ArrayList<GroupAttribute> getGroupTypeAttributes() {
+		return this.groupTypeAttributes;
+	}
+
+	/**
+	 * @param groupTypeAttributes the groupTypeAttributes to set
+	 */
+	public void setGroupTypeAttributes(ArrayList<GroupAttribute> groupTypeAttributes) {
+		this.groupTypeAttributes = groupTypeAttributes;
+	}
+
+	/**
+	 * @return the nonGroupTypeAttributes
+	 */
+	public ArrayList<GroupAttribute> getNonGroupTypeAttributes() {
+		return this.nonGroupTypeAttributes;
+	}
+
+	/**
+	 * @param nonGroupTypeAttributes the nonGroupTypeAttributes to set
+	 */
+	public void setNonGroupTypeAttributes(
+			ArrayList<GroupAttribute> nonGroupTypeAttributes) {
+		this.nonGroupTypeAttributes = nonGroupTypeAttributes;
 	}
 
 	/**

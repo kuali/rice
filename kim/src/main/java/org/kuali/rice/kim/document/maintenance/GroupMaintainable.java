@@ -39,6 +39,23 @@ import org.kuali.rice.kim.lookup.valuefinder.NextAttributeTypeIdFinder;
  */
 public class GroupMaintainable extends KualiMaintainableImpl {
 	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterNew(org.kuali.core.document.MaintenanceDocument, java.util.Map)
+	 */
+	@Override
+	public void processAfterNew(MaintenanceDocument document,
+			Map<String, String[]> parameters) {
+//		Group oldGroupBO = (Group)document.getOldMaintainableObject().getBusinessObject();
+//        populateAttributeFormObjects(oldGroupBO);
+//
+//        Group newGroupBO = (Group)document.getNewMaintainableObject().getBusinessObject();
+//        populateAttributeFormObjects(newGroupBO);
+        
+		super.processAfterNew(document, parameters);
+	}
+
+	/**
      * This overridden method ...
      * 
      * @see org.kuali.core.maintenance.KualiMaintainableImpl#processAfterEdit(org.kuali.core.document.MaintenanceDocument, java.util.Map)

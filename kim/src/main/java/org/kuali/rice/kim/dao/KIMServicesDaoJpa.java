@@ -31,14 +31,7 @@ import org.kuali.rice.kim.bo.PrincipalQualifiedRole;
  */
 public class KIMServicesDaoJpa implements KIMServicesDao {
 
-	/**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.kim.dao.KIMServicesDao#findAllPersons()
-	 */
-	@Override
 	public Collection<Principal> findAllPersons() {
-		// TODO lindholm - THIS METHOD NEEDS JAVADOCS
 		return null;
 	}
 

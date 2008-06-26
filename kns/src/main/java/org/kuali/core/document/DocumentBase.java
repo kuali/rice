@@ -400,7 +400,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         }
         transInfo.setDocumentInitiator(initiatior);
         KualiDocumentXmlMaterializer xmlWrapper = new KualiDocumentXmlMaterializer();
-        xmlWrapper.setDocument(getDocumentRepresentationForSerialization());
+        xmlWrapper.setDocument(this);
         xmlWrapper.setKualiTransactionalDocumentInformation(transInfo);
         return xmlWrapper;
     }
@@ -439,21 +439,6 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         return "document";
     }
     
-    /**
-     * This method was added because of performance problems with the default workflow xml serialization strategy.
-     * This allows individual "big" document implementations to defer to a service that can be overriden for translation
-     * of the real document into a much smaller object structure for serialization.
-     * 
-     * @return the Document instance that should be used to generate the xml for workflow
-     * @deprecated As of rice 0.9.2.1, document implementations wishing to generate a smaller workflow XML file should instead
-     * use the data dictionary to define &lt;workflowProperties&gt; that specify which properties of a Document should be
-     * serialized, rather than serializing all properties of a document
-     */
-    @Deprecated
-    protected Document getDocumentRepresentationForSerialization() {
-	return this;
-    }
-
     /**
      * @see org.kuali.core.document.Document#getDocumentHeader()
      */

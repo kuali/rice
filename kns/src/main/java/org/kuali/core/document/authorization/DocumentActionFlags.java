@@ -36,7 +36,6 @@ public class DocumentActionFlags implements Serializable {
     private boolean canSupervise;
     private boolean canCopy;
     private boolean canPerformRouteReport;
-    private boolean hasAmountTotal;
 
 
     /**
@@ -66,7 +65,6 @@ public class DocumentActionFlags implements Serializable {
         this.canSupervise = flags.canSupervise;
         this.canCopy = flags.canCopy;
         this.canPerformRouteReport = flags.canPerformRouteReport;
-        this.hasAmountTotal = flags.hasAmountTotal;
     }
 
     /**
@@ -286,22 +284,6 @@ public class DocumentActionFlags implements Serializable {
         this.canPerformRouteReport = canPerformRouteReport;
     }
     
-    /**
-     * Gets the hasAmountTotal attribute. 
-     * @return Returns the hasAmountTotal.
-     */
-    public boolean isHasAmountTotal() {
-        return hasAmountTotal;
-    }
-
-    /**
-     * Sets the hasAmountTotal attribute value.
-     * @param hasAmountTotal The hasAmountTotal to set.
-     */
-    public void setHasAmountTotal(boolean hasAmountTotal) {
-        this.hasAmountTotal = hasAmountTotal;
-    }
-
     /**
      * Debugging method, simplifies comparing another instance of this class to this one
      * 

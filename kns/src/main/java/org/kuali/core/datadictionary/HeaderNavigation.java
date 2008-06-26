@@ -15,16 +15,23 @@
  */
 package org.kuali.core.datadictionary;
 
+/**
+            The headerNavigation element defines a set of additional
+            tabs which will appear on the document.
+ *
+ *                The headerNavigationTab defines an additional tab which
+                will appear on the document.
 
+ */
 public class HeaderNavigation extends DataDictionaryDefinitionBase {
 
-    private String headerTabMethodToCall;
-    private String headerTabNavigateTo;
-    private String headerTabDisplayName;
-    private HelpDefinition helpDefinition;
-    private boolean disabled = false;
+    protected String headerTabMethodToCall;
+    protected String headerTabNavigateTo;
+    protected String headerTabDisplayName;
+    protected HelpDefinition helpDefinition;
+    protected boolean disabled = false;
     
-    public HeaderNavigation() {};
+    public HeaderNavigation() {}
 
     public HeaderNavigation(String headerTabNavigateTo, String headerTabDisplayName) {
         this.headerTabNavigateTo = headerTabNavigateTo;
@@ -59,9 +66,7 @@ public class HeaderNavigation extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * Sets the navigationStyle attribute value.
-     * 
-     * @param navigationStyle The navigationStyle to set.
+     * The displayName element is the name of the additional tab.
      */
     public void setHeaderTabDisplayName(String headerTabDisplayName) {
         this.headerTabDisplayName = headerTabDisplayName;
@@ -80,14 +85,24 @@ public class HeaderNavigation extends DataDictionaryDefinitionBase {
         return helpDefinition;
     }
 
+    /**
+     * The pageHelp element provides the keys to
+                    obtain a help description from the database.
+
+                    On document JSP pages, a help icon may be rendered.  If this tag is specified, then
+                    the filename of this page will be located in the value of the parameter specified by the namespace, detail type, and name.
+
+                    The value of the parameter is relative to the value of the "externalizable.help.url" property in KualiConfigurationService (see KualiHelpAction).
+                    parameterNamespace: namespace of the parameter that has the path to the help page
+                    parameterName: name of the parameter that has the path to the help page
+                    parameterDetailType: detail type of the parameter that has the path to the help page
+     */
     public void setHelpDefinition(HelpDefinition helpDefinition) {
         this.helpDefinition = helpDefinition;
     }
 
     /**
-     * Sets the suffix attribute value.
-     * 
-     * @param suffix The suffix to set.
+     * The navigateTo element is the forward name in the struts-config file.
      */
     public void setHeaderTabNavigateTo(String suffix) {
         this.headerTabNavigateTo = suffix;

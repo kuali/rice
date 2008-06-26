@@ -16,20 +16,15 @@
 
 package org.kuali.core.datadictionary.control;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
- * A single HTML radiobutton control.
- * 
- * 
+                        The radio element will render an HTML radio control.
+                        The valuesFinderClass will have a getKeyValues() method
+                        that returns a list of KeyLabelPair objects.
  */
 public class RadioControlDefinition extends MultivalueControlDefinitionBase {
-    // logger
-    private static Log LOG = LogFactory.getLog(RadioControlDefinition.class);
 
     public RadioControlDefinition() {
-        LOG.debug("creating new HiddenControlDefinition");
     }
 
     /**

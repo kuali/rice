@@ -27,9 +27,9 @@ public class FixedPointValidationPattern extends FieldLevelValidationPattern {
     public static final String PATTERN_TYPE_PRECISION = "fixedPoint.precision";
     public static final String PATTERN_TYPE_SCALE = "fixedPoint.scale";
 
-    private boolean allowNegative;
-    private int precision;
-    private int scale;
+    protected boolean allowNegative;
+    protected int precision;
+    protected int scale;
 
     /**
      * @return Returns the precision.
@@ -115,21 +115,5 @@ public class FixedPointValidationPattern extends FieldLevelValidationPattern {
         exportMap.set("scale", Integer.toString(scale));
 
         return exportMap;
-    }
-
-
-    /**
-     * @see org.kuali.core.datadictionary.validation.ValidationPattern#getPatternXml()
-     */
-    public String getPatternXml() {
-        StringBuffer xml = new StringBuffer("<fixedPoint ");
-        if (allowNegative) {
-            xml.append("allowNegative=\"true\" ");
-        }
-        xml.append("precision=\"" + precision + "\" ");
-        xml.append("scale=\"" + scale + "\" ");
-        xml.append("/>");
-
-        return xml.toString();
     }
 }

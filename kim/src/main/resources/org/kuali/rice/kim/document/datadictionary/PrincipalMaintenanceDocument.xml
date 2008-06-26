@@ -76,7 +76,6 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Group" />
-          <property name="sourceAttributeName" value="groups" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Group" />
           <property name="includeAddLine" value="false" />
           <property name="summaryTitle" value="Group" />
@@ -114,7 +113,6 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Role" />
-          <property name="sourceAttributeName" value="roleQualificationsForPrincipal" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.RoleQualificationForPrincipal" />
           <property name="includeAddLine" value="false" />
           <property name="summaryTitle" value="Assigned Role" />

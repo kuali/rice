@@ -17,15 +17,34 @@ package org.kuali.core.datadictionary;
 
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
 
+/**
+    Support attributes define additional attributes that can be used to generate
+    lookup field conversions and lookup parameters.
+
+    Field conversions and lookup parameters are normally generated using foreign key relationships
+    defined within OJB and the DD.  Because UniversalUser objects are linked in a special way (i.e. they may
+    come from an external data source and not from the DB, such as LDAP), it is often necessary to define
+    extra fields that are related to each other, sort of like a supplemental foreign key.
+
+    sourceName is the name of the POJO property of the business object
+    targetName is the name of attribute that corresponds to the sourceName in the looked up BO
+    identifier when true, only the field marked as an identifier will be passed in as a lookup parameter
+               at most one supportAttribute for each relationship should be defined as identifier="true"
+ */
 public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
 
-    private boolean identifier;
+    protected boolean identifier;
     
     public SupportAttributeDefinition() {}
 
     public boolean isIdentifier() {
         return identifier;
     }
+    
+    /**
+     * identifier when true, only the field marked as an identifier will be passed in as a lookup parameter
+               at most one supportAttribute for each relationship should be defined as identifier="true"
+     */
     public void setIdentifier(boolean identifier) {
         this.identifier = identifier;
     }

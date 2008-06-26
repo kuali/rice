@@ -17,29 +17,26 @@ package org.kuali.rice.kim.document.maintenance;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 
 import org.kuali.core.datadictionary.MaintainableFieldDefinition;
 import org.kuali.core.datadictionary.MaintainableSectionDefinition;
 import org.kuali.core.datadictionary.MaintainableSubSectionHeaderDefinition;
 import org.kuali.core.document.MaintenanceDocument;
-import org.kuali.core.service.KualiModuleUserPropertyService;
-import org.kuali.core.web.ui.Section;
-import org.kuali.core.web.ui.SectionBridge;
-import org.kuali.rice.KNSServiceLocator;
 import org.kuali.core.maintenance.KualiMaintainableImpl;
 import org.kuali.core.maintenance.Maintainable;
-import org.kuali.rice.kim.service.EntityService;
-import org.kuali.rice.kim.service.NamespaceService;
+import org.kuali.core.web.ui.Section;
+import org.kuali.core.web.ui.SectionBridge;
+import org.kuali.rice.kim.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.EntityAttribute;
+import org.kuali.rice.kim.bo.NamespaceDefaultAttribute;
 import org.kuali.rice.kim.dto.NamespaceDTO;
 import org.kuali.rice.kim.dto.NamespaceDefaultAttributeDTO;
-import org.kuali.rice.kim.bo.NamespaceDefaultAttribute;
+import org.kuali.rice.kim.service.EntityService;
+import org.kuali.rice.kim.service.NamespaceService;
 
 
 
@@ -146,8 +143,8 @@ public class EntityMaintainable extends KualiMaintainableImpl {
     
     private void initStatics() {
         if ( namespaceService == null ) { // they're all set at the same time, so only need one check
-            entityService = KNSServiceLocator.getEntityService();
-            namespaceService = KNSServiceLocator.getNamespaceService();
+            entityService = KIMServiceLocator.getEntityService();
+            namespaceService = KIMServiceLocator.getNamespaceService();
         }
     }
 

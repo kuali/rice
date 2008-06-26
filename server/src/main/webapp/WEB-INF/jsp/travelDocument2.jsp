@@ -25,7 +25,7 @@
 	showTabButtons="true"
 	auditCount="0">
 
- 	<kul:hiddenDocumentFields isTransactionalDocument="false" isFinancialDocument="true" excludePostingYear="true"/>
+ 	<kul:hiddenDocumentFields />
 
 	<kul:documentOverview editingMode="${KualiForm.editingMode}" />
 	<kul:tab tabTitle="Travel Stuff" defaultOpen="true" tabErrorKey="document.traveler,document.origin,document.destination,document.requestType,travelAccount.number">

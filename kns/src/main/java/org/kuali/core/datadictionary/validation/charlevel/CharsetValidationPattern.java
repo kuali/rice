@@ -27,7 +27,7 @@ import org.kuali.core.datadictionary.validation.CharacterLevelValidationPattern;
  * 
  */
 public class CharsetValidationPattern extends CharacterLevelValidationPattern {
-    private String validChars;
+    protected String validChars;
 
     /**
      * @return String containing all valid chars for this charset
@@ -80,17 +80,5 @@ public class CharsetValidationPattern extends CharacterLevelValidationPattern {
         exportMap.set("type", "charset");
 
         exportMap.set("validChars", getValidChars());
-    }
-
-
-    /**
-     * @see org.kuali.core.datadictionary.validation.ValidationPattern#getPatternXml()
-     */
-    public String getPatternXml() {
-        StringBuffer xml = new StringBuffer("<charSet ");
-        xml.append(validChars);
-        xml.append("/>");
-
-        return xml.toString();
     }
 }

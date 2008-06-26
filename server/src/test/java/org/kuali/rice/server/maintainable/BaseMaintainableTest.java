@@ -29,7 +29,7 @@ public class BaseMaintainableTest extends ServerTestBase {
     @Test public void testMaintainable() throws Exception {
         HtmlPage maintPage = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL + "/kr/maintenance.do?businessObjectClassName=edu.sampleu.travel.bo.TravelAccount&methodToCall=start#topOfForm");        
         HtmlForm maintForm = (HtmlForm)maintPage.getFormByName("KualiForm");
-        maintForm.getInputByName("document.documentHeader.financialDocumentDescription").setValueAttribute("description");
+        maintForm.getInputByName("document.documentHeader.documentDescription").setValueAttribute("description");
         maintForm.getInputByName("document.newMaintainableObject.number").setValueAttribute("a6");
         maintForm.getInputByName("document.newMaintainableObject.name").setValueAttribute("myaccount");
         maintForm.getInputByName("document.newMaintainableObject.foId").setValueAttribute("1");

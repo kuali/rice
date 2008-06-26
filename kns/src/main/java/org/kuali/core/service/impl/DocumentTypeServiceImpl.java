@@ -23,7 +23,6 @@ import org.kuali.core.exceptions.UnknownDocumentTypeException;
 import org.kuali.core.service.BusinessObjectService;
 import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.service.DocumentTypeService;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class is the service implementation for the DocumentType structure. This is the default implementation, delivered with Kuali
@@ -93,9 +92,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
      * @see org.kuali.core.service.DocumentTypeService#getDocumentTypeByCode(java.lang.String)
      */
     public DocumentType getDocumentTypeByCode(String documentTypeCode) {
-        DocumentType documentType = new DocumentType();
-        documentType.setFinancialDocumentTypeCode(documentTypeCode);
-        documentType = (DocumentType) businessObjectService.retrieve(documentType);
+        DocumentType documentType = getPotentialDocumentTypeByCode(documentTypeCode);
         if (documentType == null) {
             LOG.error("Document type code " + documentTypeCode + " is invalid");
             throw new UnknownDocumentTypeException("Document type code " + documentTypeCode + " is invalid");
@@ -107,6 +104,20 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
      * @see org.kuali.core.service.DocumentTypeService#getClassByName(java.lang.String)
      */
     public DocumentType getDocumentTypeByName(String documentTypeName) {
+        return getDocumentTypeByCode(getDocumentTypeCode(documentTypeName));
+    }
+
+    public DocumentType getPotentialDocumentTypeByCode(String documentTypeCode) {
+        DocumentType documentType = new DocumentType();
+        documentType.setDocumentTypeCode(documentTypeCode);
+        return (DocumentType) businessObjectService.retrieve(documentType);
+    }
+
+    public DocumentType getPotentialDocumentTypeByName(String documentTypeName) {
+        return getPotentialDocumentTypeByCode(getDocumentTypeCode(documentTypeName));
+    }
+    
+    private String getDocumentTypeCode(String documentTypeName) {
         if (StringUtils.isBlank(documentTypeName)) {
             throw new IllegalArgumentException("invalid (blank) documentTypeName");
         }
@@ -117,7 +128,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         if (StringUtils.isBlank(typeCode)) {
             throw new UnknownDocumentTypeException("blank documentTypeCode for documentTypeName '" + documentTypeName + "'");
         }
-        return getDocumentTypeByCode(typeCode);
+        return typeCode;
     }
 
     /**

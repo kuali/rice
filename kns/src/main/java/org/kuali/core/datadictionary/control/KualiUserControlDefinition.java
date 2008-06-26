@@ -16,20 +16,35 @@
 package org.kuali.core.datadictionary.control;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
+/**
+                        The kualiUser element defines a control that identifies
+                        a Kuali user. As an example, consider a person with the
+                        following:
+                            * User ID = JPJONES
+                            * Universal User ID = 3583663872
+                            * Employee ID = 0000123456
+                            * Name = JONES,JOHN p
+                        This control defines a field in which the user can enter the User Id or choose a
+                        user using the magnifying glass lookup.  After a user is selected, user name
+                        will be displayed under the User ID.
+
+                        When using this control, the names of other attributes must be specified
+                        to allow the control to function:
+                            * universalIdAttributeName  -
+                                attribute that provides the Universal User Id - e.g. 3583663872
+                            * userIdAttributeName -
+                                attribute that provides the User Id - e.g. JPJONES
+                            * personNameAttributeName -
+                                attribute that provides the User Name - e.g. JONES,JOHN P
+ */
 public class KualiUserControlDefinition extends ControlDefinitionBase {
 
-    // logger
-    private static Log LOG = LogFactory.getLog(KualiUserControlDefinition.class);
-
-    private String universalIdAttributeName;
-    private String userIdAttributeName;
-    private String personNameAttributeName;
+    protected String universalIdAttributeName;
+    protected String userIdAttributeName;
+    protected String personNameAttributeName;
 
     public KualiUserControlDefinition() {
-        LOG.debug("creating new KualiUserControlDefinition");
     }
 
     /**
@@ -58,12 +73,10 @@ public class KualiUserControlDefinition extends ControlDefinitionBase {
     }
 
     /**
-     * Sets the personNameAttributeName attribute value.
-     * 
-     * @param personNameAttributeName The personNameAttributeName to set.
+     * personNameAttributeName -
+                                attribute that provides the User Name - e.g. JONES,JOHN P
      */
     public void setPersonNameAttributeName(String personNameAttributeName) {
-        LOG.debug("calling setPersonNameAttributeName '" + personNameAttributeName + "'");
         if (StringUtils.isBlank(personNameAttributeName)) {
             throw new IllegalArgumentException("invalid (blank) personNameAttributeName");
         }
@@ -80,12 +93,10 @@ public class KualiUserControlDefinition extends ControlDefinitionBase {
     }
 
     /**
-     * Sets the universalIdAttributeName attribute value.
-     * 
-     * @param universalIdAttributeName The universalIdAttributeName to set.
+     * universalIdAttributeName  -
+                                attribute that provides the Universal User Id - e.g. 3583663872
      */
     public void setUniversalIdAttributeName(String universalIdAttributeName) {
-        LOG.debug("calling setUniversalIdAttributeName '" + universalIdAttributeName + "'");
         if (StringUtils.isBlank(universalIdAttributeName)) {
             throw new IllegalArgumentException("invalid (blank) universalIdAttributeName");
         }
@@ -102,12 +113,10 @@ public class KualiUserControlDefinition extends ControlDefinitionBase {
     }
 
     /**
-     * Sets the userIdAttributeName attribute value.
-     * 
-     * @param userIdAttributeName The userIdAttributeName to set.
+     * userIdAttributeName -
+                                attribute that provides the User Id - e.g. JPJONES
      */
     public void setUserIdAttributeName(String userIdAttributeName) {
-        LOG.debug("calling setUserIdAttributeName '" + userIdAttributeName + "'");
         if (StringUtils.isBlank(userIdAttributeName)) {
             throw new IllegalArgumentException("invalid (blank) userIdAttributeName");
         }

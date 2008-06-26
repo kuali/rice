@@ -281,6 +281,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         int j = 0;
         for (ActionItemVO actionItemVO : matchingActionitems) {
             returnActionItems[j] = actionItemVO;
+            j++;
         }
         return returnActionItems;
     }
@@ -479,15 +480,30 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return false;
     }
 
+    
+    /**
+     * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO, String[], boolean)} instead
+     * 
+     * @see edu.iu.uis.eden.server.WorkflowUtility#documentWillHaveAtLeastOneActionRequest(edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO, java.lang.String[])
+     */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes) throws RemoteException {
-    	try {
+        return documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, actionRequestedCodes, false);
+    }
+
+    /**
+     * @see edu.iu.uis.eden.server.WorkflowUtility#documentWillHaveAtLeastOneActionRequest(edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO, java.lang.String[], boolean)
+     */
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests) throws RemoteException {
+        try {
 	        SimulationEngine simulationEngine = new SimulationEngine();
 	        SimulationCriteria criteria = BeanConverter.convertReportCriteriaVO(reportCriteriaVO);
 	        // set activate requests to true by default so ignore previous works correctly
 	        criteria.setActivateRequests(Boolean.TRUE);
 	        SimulationResults results = simulationEngine.runSimulation(criteria);
             List actionRequestsToProcess = results.getSimulatedActionRequests();
-            actionRequestsToProcess.addAll(results.getDocument().getActionRequests());
+            if (!ignoreCurrentActionRequests) {
+                actionRequestsToProcess.addAll(results.getDocument().getActionRequests());
+            }
             for (Iterator iter = actionRequestsToProcess.iterator(); iter.hasNext();) {
 				ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
                 if (actionRequest.isDone()) {

@@ -30,12 +30,4 @@ public class TimestampValidationPattern extends FieldLevelValidationPattern {
     protected String getPatternTypeName() {
         return "timestamp";
     }
-
-
-    /**
-     * @see org.kuali.core.datadictionary.validation.ValidationPattern#getPatternXml()
-     */
-    public String getPatternXml() {
-        return "<timestamp />";
-    }
 }

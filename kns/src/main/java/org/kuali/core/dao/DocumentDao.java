@@ -19,7 +19,6 @@ package org.kuali.core.dao;
  * Created on Jan 13, 2005
  */
 
-import java.util.Collection;
 import java.util.List;
 
 import org.kuali.core.document.Document;
@@ -36,8 +35,6 @@ public interface DocumentDao {
 
     public List findByDocumentHeaderIds(Class clazz, List idList);
 
-    public Collection findByDocumentHeaderStatusCode(Class clazz, String statusCode);
-    
     public BusinessObjectDao getBusinessObjectDao();
 
 }

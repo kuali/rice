@@ -20,18 +20,13 @@
         <ref bean="AttributeReferenceDummy-genericAmount" />
         <ref bean="AttributeReferenceDummy-genericBigText" />
         <ref bean="AttributeReferenceDummy-emailAddress" />
-        <ref bean="AttributeReferenceDummy-universityFiscalAccountingPeriod" />
-        <ref bean="AttributeReferenceDummy-transactionEntrySequenceId" />
-        <ref bean="AttributeReferenceDummy-genericFiscalYear" />
         <ref bean="AttributeReferenceDummy-versionNumber" />
         <ref bean="AttributeReferenceDummy-objectId" />
         <ref bean="AttributeReferenceDummy-createDate" />
         <ref bean="AttributeReferenceDummy-initiatorNetworkId" />
         <ref bean="AttributeReferenceDummy-percent" />
-        <ref bean="AttributeReferenceDummy-maxDollarAmount" />
-        <ref bean="AttributeReferenceDummy-minDollarAmount" />
-        <ref bean="AttributeReferenceDummy-totalDollarAmount" />
         <ref bean="AttributeReferenceDummy-newCollectionRecord" />
+        <ref bean="AttributeReferenceDummy-workflowDocumentStatus" />
       </list>
     </property>
   </bean>
@@ -225,61 +220,6 @@
     <property name="label" value="Email" />
     <property name="description" value="The email address of the university user." />
   </bean>
-  <bean id="AttributeReferenceDummy-universityFiscalAccountingPeriod" parent="AttributeReferenceDummy-universityFiscalAccountingPeriod-parentBean" />
-
-  <bean id="AttributeReferenceDummy-universityFiscalAccountingPeriod-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="true" />
-    <property name="shortLabel" value="Period" />
-    <property name="maxLength" value="2" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern"
-            p:exactLength="2" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="2" />
-    </property>
-    <property name="summary" value="&amp;nbsp;" />
-    <property name="name" value="universityFiscalAccountingPeriod" />
-    <property name="label" value="University Fiscal Accounting Period" />
-    <property name="description" value="University Fiscal Accounting Period" />
-  </bean>
-  <bean id="AttributeReferenceDummy-transactionEntrySequenceId" parent="AttributeReferenceDummy-transactionEntrySequenceId-parentBean" />
-
-  <bean id="AttributeReferenceDummy-transactionEntrySequenceId-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="true" />
-    <property name="shortLabel" value="Seq #" />
-    <property name="maxLength" value="4" />
-    <property name="validationPattern" >
-      <bean parent="NumericValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="4" />
-    </property>
-    <property name="summary" value="&amp;nbsp;" />
-    <property name="name" value="transactionEntrySequenceId" />
-    <property name="label" value="Transaction Entry Sequence Id" />
-    <property name="description" value="The sequential entry Id for the transaction." />
-  </bean>
-  <bean id="AttributeReferenceDummy-genericFiscalYear" parent="AttributeReferenceDummy-genericFiscalYear-parentBean" />
-
-  <bean id="AttributeReferenceDummy-genericFiscalYear-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="true" />
-    <property name="shortLabel" value="Year" />
-    <property name="maxLength" value="4" />
-    <property name="validationPattern" >
-      <bean parent="YearValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="4" />
-    </property>
-    <property name="summary" value="&amp;nbsp;" />
-    <property name="name" value="genericFiscalYear" />
-    <property name="label" value="University Fiscal Year" />
-    <property name="description" value="The institutional Fiscal Year." />
-  </bean>
   <bean id="AttributeReferenceDummy-versionNumber" parent="AttributeReferenceDummy-versionNumber-parentBean" />
 
   <bean id="AttributeReferenceDummy-versionNumber-parentBean" abstract="true" parent="AttributeDefinition">
@@ -357,51 +297,6 @@
     <property name="label" value="Percent" />
     <property name="description" value="Percent for ICR percent." />
   </bean>
-  <bean id="AttributeReferenceDummy-maxDollarAmount" parent="AttributeReferenceDummy-maxDollarAmount-parentBean" />
-
-  <bean id="AttributeReferenceDummy-maxDollarAmount-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Max Amt" />
-    <property name="maxLength" value="20" />
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="10" />
-    </property>
-    <property name="summary" value="&amp;nbsp;" />
-    <property name="name" value="maxDollarAmount" />
-    <property name="label" value="Maximum Amount" />
-    <property name="description" value="Maximum amount for dollar range." />
-  </bean>
-  <bean id="AttributeReferenceDummy-minDollarAmount" parent="AttributeReferenceDummy-minDollarAmount-parentBean" />
-
-  <bean id="AttributeReferenceDummy-minDollarAmount-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Min Amt" />
-    <property name="maxLength" value="20" />
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="10" />
-    </property>
-    <property name="summary" value="&amp;nbsp;" />
-    <property name="name" value="minDollarAmount" />
-    <property name="label" value="Minimum Amount" />
-    <property name="description" value="Minimum amount for dollar range." />
-  </bean>
-  <bean id="AttributeReferenceDummy-totalDollarAmount" parent="AttributeReferenceDummy-totalDollarAmount-parentBean" />
-
-  <bean id="AttributeReferenceDummy-totalDollarAmount-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Total Amt" />
-    <property name="maxLength" value="20" />
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="10" />
-    </property>
-    <property name="summary" value="&amp;nbsp;" />
-    <property name="name" value="totalDollarAmount" />
-    <property name="label" value="Total Amount" />
-    <property name="description" value="Total dollar amount." />
-  </bean>
   <bean id="AttributeReferenceDummy-newCollectionRecord" parent="AttributeReferenceDummy-newCollectionRecord-parentBean" />
 
   <bean id="AttributeReferenceDummy-newCollectionRecord-parentBean" abstract="true" parent="AttributeDefinition">
@@ -416,5 +311,20 @@
     <property name="name" value="newCollectionRecord" />
     <property name="label" value="New Collection Record Indicator" />
     <property name="description" value="This attribute indicates whether the object is a new record for a collection." />
+  </bean>
+  <bean id="AttributeReferenceDummy-workflowDocumentStatus" parent="AttributeReferenceDummy-workflowDocumentStatus-parentBean" />
+
+  <bean id="AttributeReferenceDummy-workflowDocumentStatus-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Status" />
+    <property name="maxLength" value="2" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="2" />
+    </property>
+    <property name="summary" value="The status code for this document." />
+    <property name="name" value="workflowDocumentStatus" />
+    <property name="label" value="Document Status" />
+    <property name="description" value="This represents the status of this document." />
   </bean>
 </beans>

@@ -36,6 +36,7 @@ import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.service.DateTimeService;
 import org.kuali.core.service.DictionaryValidationService;
 import org.kuali.core.service.DocumentAuthorizationService;
+import org.kuali.core.service.DocumentHeaderService;
 import org.kuali.core.service.DocumentSerializerService;
 import org.kuali.core.service.DocumentService;
 import org.kuali.core.service.DocumentTypeService;
@@ -72,10 +73,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
-
-import org.kuali.rice.kim.service.EntityService;
-import org.kuali.rice.kim.service.NamespaceService;
-
 
 public class KNSServiceLocator<T extends Object> {
 
@@ -175,6 +172,12 @@ public class KNSServiceLocator<T extends Object> {
 
     public static DocumentService getDocumentService() {
 	return (DocumentService) getService(DOCUMENT_SERVICE);
+    }
+
+    public static final String DOCUMENT_HEADER_SERVICE = "documentHeaderService";
+
+    public static DocumentHeaderService getDocumentHeaderService() {
+    return (DocumentHeaderService) getService(DOCUMENT_HEADER_SERVICE);
     }
 
     public static final String POST_PROCESSOR_SERVICE = "postProcessorService";
@@ -427,20 +430,6 @@ public class KNSServiceLocator<T extends Object> {
         return (DocumentSerializerService) getService(DOCUMENT_SERIALIZER_SERVICE);
     }
     
-public static final String KIM_ENTITY_SERVICE = "entityService";
-    
-    public static EntityService getEntityService() {
-       
-        return (EntityService) getService(KIM_ENTITY_SERVICE);
-    }
-    
-public static final String KIM_NAMESPACE_SERVICE = "namespaceService";
-    
-    public static NamespaceService getNamespaceService() {
-       
-        return (NamespaceService) getService(KIM_NAMESPACE_SERVICE);
-    }
-
     public static final String ENTITY_MANAGER_FACTORY = "entityManagerFactory";
 
     public static EntityManagerFactory getEntityManagerFactory() {

@@ -283,19 +283,16 @@ table.grid
 
 #workarea td.tab-subhead-import
 {
-	font-weight: bold;
-	background-color: #C3C3C3;
-	padding: 2px;
-	height: 18px;
-	text-align: right;
-	border-top: 1px solid #999999;
-	border-right: 1px solid #999999;
-	border-bottom: 1px solid #999999;
+	background-color:#C3C3C3;
+	font-weight:bold;
+	height:18px;
+	padding:2px;
+	text-align:right;
 }
 
 #workarea table
 {
-	width: 98%;
+	width: 100%;
 	border-right-width: 1px;
 	border-right-style: solid;
 	border-right-color: #999999;
@@ -309,12 +306,11 @@ table.grid
 
 #workarea td.subhead
 {
-	font-weight: bold;
-	background-color: #6b6b6b;
-	padding: 2px 6px;
-	border: 1px solid #999999;
-	height: 18px;
-	color: #FFFFFF;
+	background-color:#6B6B6B;
+	color:#FFFFFF;
+	font-weight:bold;
+	height:18px;
+	padding:2px 6px; 
 }
 
 #globalactions div { text-align: center; }
@@ -514,30 +510,26 @@ img.helpicon
 	color: #626262;
 }
 
-
-
-#workarea div.h2-container
-{
-	background-color: #6b6b6b;
-	height: 18px;
-	text-align: left;
-	margin: 0px;
-	width: 98%;
-	border-top: 1px solid #666666;
-	border-bottom: 1px solid #666666;
-}
-
 #workarea h2
 {
-	font-weight: bold;
-	color: #FFFFFF;
+	display:inline; 
+	color: #666666; 
+	padding-left:0px;
 	font-size: 100%;
-	text-align: left;
-	padding-top: 1px;
-	padding-right: 0px;
-	padding-bottom: 0px;
-	padding-left: 5px;
-	margin: 0px;
+}
+
+#workarea div.tab-container h3
+{
+	background-color:#6B6B6B;
+	border-bottom:1px solid #666666;
+	border-top:1px solid #666666;
+	color:#FFFFFF;
+	font-size:100%;
+	font-weight:bold;
+	height:18px;
+	margin:0px;
+	padding:2px 0px 0px 6px;
+	text-align:left;
 }
 
 #workarea div.pretable
@@ -550,16 +542,13 @@ img.helpicon
 
 #workarea div.tab-container
 {
-	background-color: #e4e4e4;
-	border-left-width: 1px;
-	border-left-style: solid;
-	border-left-color: #666666;
-	background-image: url("../images/tab-sideright1.gif");
-	background-repeat: repeat-y;
-	background-position: right;
-	width: 100%;
-	padding-top: 10px;
-	padding-bottom: 10px;
+	background-color:#E4E4E4;
+	background-image:url(../images/tab-sideright1.gif);
+	background-position:right center;
+	background-repeat:repeat-y;
+	border-left:1px solid #666666;
+	margin:0px -1px 0px 0px;
+	padding:10px;
 }
 
 #workarea div.tab-container-error

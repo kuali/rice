@@ -48,17 +48,17 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     // logger
     //private static Log LOG = LogFactory.getLog(BusinessObjectEntry.class);
 
-    private Class<? extends BusinessObject> businessObjectClass;
+    protected Class<? extends BusinessObject> businessObjectClass;
 
-    private boolean boNotesEnabled = false;
+    protected boolean boNotesEnabled = false;
     
-    private InquiryDefinition inquiryDefinition;
-    private LookupDefinition lookupDefinition;
-    private HelpDefinition helpDefinition;
+    protected InquiryDefinition inquiryDefinition;
+    protected LookupDefinition lookupDefinition;
+    protected HelpDefinition helpDefinition;
 
-    private String titleAttribute;
-    private String objectLabel;
-    private String objectDescription;
+    protected String titleAttribute;
+    protected String objectLabel;
+    protected String objectDescription;
 
 
     public BusinessObjectEntry() {}
@@ -233,6 +233,9 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     }
 
     /**
+           The objectLabel provides a short name of the business
+           object for use on help screens.
+     * 
      * @param objectLabel The objectLabel to set.
      */
     public void setObjectLabel(String objectLabel) {
@@ -247,6 +250,9 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     }
 
     /**
+           The objectDescription provides a brief description
+           of the business object for use on help screens.
+     * 
      * @param description The description to set.
      */
     public void setObjectDescription(String objectDescription) {
@@ -264,6 +270,13 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
 
     /**
      * Sets the helpDefinition attribute value.
+     * 
+           The objectHelp element provides the keys to
+           obtain a help description from the system parameters table.
+
+           parameterNamespace the namespace of the parameter containing help information
+           parameterName the name of the parameter containing help information
+           parameterDetailType the detail type of the parameter containing help information
      * 
      * @param helpDefinition The helpDefinition to set.
      */

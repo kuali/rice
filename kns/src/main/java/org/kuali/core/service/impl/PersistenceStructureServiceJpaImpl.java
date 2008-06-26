@@ -581,6 +581,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 		EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(boClass);
 		Map<String, Class> references = new HashMap();
 		for (org.kuali.rice.jpa.metadata.ObjectDescriptor od : descriptor.getObjectRelationships()) {
+			// TODO look at implementation done in PersistenceStructureServiceJpaImpl for this which uses an OJB specific hack
 			references.put(od.getAttributeName(), od.getTargetEntity());
 		}
 

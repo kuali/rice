@@ -31,7 +31,7 @@
 	    	<include method="getUniversalUserByAuthenticationUserId" />
 	    </create>
 	   	<convert converter="bean" match="org.kuali.core.bo.DocumentType">
-	   		<param name="include" value="financialDocumentTypeCode,financialDocumentGroupCode,financialDocumentName,finDocumentTypeActiveIndicator" />
+	   		<param name="include" value="documentTypeCode,documentName,documentTypeActiveIndicator" />
 	   	</convert>
 	    <create creator="spring" javascript="DocumentTypeService">
 	    	<param name="beanName" value="documentTypeService" />

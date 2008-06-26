@@ -31,11 +31,4 @@ public class EmailAddressValidationPattern extends FieldLevelValidationPattern {
         return "emailAddress";
     }
 
-
-    /**
-     * @see org.kuali.core.datadictionary.validation.ValidationPattern#getPatternXml()
-     */
-    public String getPatternXml() {
-        return "<emailAddress />";
-    }
 }

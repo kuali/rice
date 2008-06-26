@@ -16,25 +16,23 @@
 
 package org.kuali.core.datadictionary.control;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
- * A single HTML text control.
- * 
- * 
+                        The currency element defines an HTML text control for
+                        entering dollar and cents amounts.  Only two decimals to
+                        the right of the decimal point are allowed.  Formatted
+                        value is displayed with commas.
+                        
+                        Used Properties: size, formattedMaxLength
  */
 public class CurrencyControlDefinition extends ControlDefinitionBase {
-    // logger
-    private static Log LOG = LogFactory.getLog(CurrencyControlDefinition.class);
     /**
      * the maxLength for text that has been formatted. ie if maxLength=5. [12345]. but after going through the formatter the value
      * is [12,345.00] and will no longer fit in a field whos maxLength=5. formattedMaxLength solves this problem.
      */
-    private Integer formattedMaxLength;
+    protected Integer formattedMaxLength;
 
     public CurrencyControlDefinition() {
-        LOG.debug("creating new CurrencyControlDefinition");
     }
 
     /**
@@ -60,12 +58,10 @@ public class CurrencyControlDefinition extends ControlDefinitionBase {
     }
 
     /**
-     * Sets the formattedMaxLength parameter for currency controls.
-     * 
-     * @param formattedMaxLength.
+     * the maxLength for text that has been formatted. ie if maxLength=5. [12345]. but after going through the formatter the value
+     * is [12,345.00] and will no longer fit in a field whos maxLength=5. formattedMaxLength solves this problem.
      */
     public void setFormattedMaxLength(Integer formattedMaxLength) {
-        LOG.debug("calling setFormattedMaxLength '" + formattedMaxLength + "'");
         this.formattedMaxLength = formattedMaxLength;
     }
 

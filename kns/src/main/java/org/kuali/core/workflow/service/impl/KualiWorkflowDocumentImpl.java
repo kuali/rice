@@ -17,10 +17,14 @@ package org.kuali.core.workflow.service.impl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.core.bo.user.UniversalUser;
+import org.kuali.core.exceptions.UserNotFoundException;
+import org.kuali.core.service.UniversalUserService;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.KNSServiceLocator;
@@ -28,6 +32,7 @@ import org.kuali.rice.KNSServiceLocator;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
+import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
 import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 import edu.iu.uis.eden.clientapp.vo.UserIdVO;
 import edu.iu.uis.eden.clientapp.vo.UserVO;
@@ -576,5 +581,26 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument {
         b.append(")");
 
         return b.toString();
+    }
+
+    /**
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getAllPriorApprovers()
+     */
+    public Set<UniversalUser> getAllPriorApprovers() throws WorkflowException, UserNotFoundException {
+        UniversalUserService universalUserService = KNSServiceLocator.getUniversalUserService();
+        ActionTakenVO[] actionsTaken = workflowDocument.getActionsTaken();
+        Set<String> universalUserIds = new HashSet<String>();
+        Set<UniversalUser> universalUsers = new HashSet<UniversalUser>();
+        
+        for (ActionTakenVO actionTaken : actionsTaken) {
+            if (EdenConstants.ACTION_TAKEN_APPROVED_CD.equals(actionTaken.getActionTaken())) {
+                String universalUserId = actionTaken.getUserVO().getUuId();
+                if (!universalUserIds.contains(universalUserId)) {
+                    universalUserIds.add(universalUserId);
+                    universalUsers.add(universalUserService.getUniversalUser(universalUserId));
+                }
+            }
+        }
+        return universalUsers;
     }
 }

@@ -24,10 +24,19 @@ import org.kuali.rice.kns.util.KNSConstants;
 /**
  * This object allows for grouping of related {@link WorkflowProperty} objects.  It defines a base path to which all {@link WorkflowProperty} are
  * relative. See {@link #getBasePath()} for a explanation of the meaning of the base path
+ * 
+ *                 This element is used to define a set of workflowProperty tags, which are used to
+                specify which document properties should be serialized during the document serialization
+                process.  This element allows for all the nested workflowProperty tags to be relative
+                to some base path.  This base path itself is relative to the object being serialized
+                during the document serialization process (which is not necessarily the document itself,
+                but a wrapper around the document).
+                
+                If blank/missing, the base path will be assumed to be the property path to the document
  */
 public class WorkflowPropertyGroup {
-    private String basePath = KNSConstants.EMPTY_STRING;
-    private List<WorkflowProperty> workflowProperties = new ArrayList<WorkflowProperty>();
+    protected String basePath = KNSConstants.EMPTY_STRING;
+    protected List<WorkflowProperty> workflowProperties = new ArrayList<WorkflowProperty>();
         
     /**
      * Returns the list of added {@link WorkflowProperty} objects.
@@ -50,7 +59,12 @@ public class WorkflowPropertyGroup {
     }
 
     /**
-     * Sets the base path, for more details, see {@link #getBasePath()}
+     * This element allows for all the nested workflowProperty tags to be relative
+                to some base path.  This base path itself is relative to the object being serialized
+                during the document serialization process (which is not necessarily the document itself,
+                but a wrapper around the document).
+                
+                If blank/missing, the base path will be assumed to be the property path to the document
      * 
      * @param basePath see description of {@link #getBasePath()}
      */

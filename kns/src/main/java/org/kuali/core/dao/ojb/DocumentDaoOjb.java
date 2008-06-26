@@ -16,7 +16,6 @@
 package org.kuali.core.dao.ojb;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -92,22 +91,6 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
 
         QueryByCriteria query = QueryFactory.newQuery(clazz, criteria);
         ArrayList <Document> tempList = new ArrayList(this.getPersistenceBrokerTemplate().getCollectionByQuery(query));
-        for (Document doc : tempList) addAdHocs(doc);
-        return tempList;
-    }
-
-    /**
-     * Retrieves a collection of documents with type of given Class, and with the passed status code.
-     * 
-     * @see org.kuali.core.dao.DocumentDao#findByDocumentHeaderStatusCode(java.lang.Class, java.lang.String)
-     */
-    public Collection findByDocumentHeaderStatusCode(Class clazz, String statusCode) {
-        Criteria criteria = new Criteria();
-        criteria.addEqualTo(KNSPropertyConstants.DOCUMENT_HEADER + "." + KNSPropertyConstants.FINANCIAL_DOCUMENT_STATUS_CODE, statusCode);
-
-        QueryByCriteria query = QueryFactory.newQuery(clazz, criteria);
-
-        ArrayList <Document> tempList =  new ArrayList(this.getPersistenceBrokerTemplate().getCollectionByQuery(query));
         for (Document doc : tempList) addAdHocs(doc);
         return tempList;
     }

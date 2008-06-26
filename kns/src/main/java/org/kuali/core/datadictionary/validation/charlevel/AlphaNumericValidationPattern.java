@@ -24,8 +24,8 @@ import org.kuali.core.datadictionary.validation.CharacterLevelValidationPattern;
  * 
  */
 public class AlphaNumericValidationPattern extends CharacterLevelValidationPattern {
-    private boolean allowWhitespace = false;
-    private boolean allowUnderscore = false;
+    protected boolean allowWhitespace = false;
+    protected boolean allowUnderscore = false;
 
 
     /**
@@ -88,22 +88,5 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
         if (allowUnderscore) {
             exportMap.set("allowUnderscore", "true");
         }
-    }
-
-
-    /**
-     * @see org.kuali.core.datadictionary.validation.ValidationPattern#getPatternXml()
-     */
-    public String getPatternXml() {
-        StringBuffer xml = new StringBuffer("<alphaNumeric ");
-        if (allowWhitespace) {
-            xml.append("allowWhitespace=\"true\" ");
-        }
-        if (allowUnderscore) {
-            xml.append("allowUnderscore=\"true\" ");
-        }
-        xml.append("/>");
-
-        return xml.toString();
     }
 }

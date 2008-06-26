@@ -17,13 +17,9 @@ CREATE TABLE FP_DOC_HEADER_T (
         FDOC_NBR                       VARCHAR2(14) CONSTRAINT FP_DOC_HEADER_TN1 NOT NULL,
         OBJ_ID                         VARCHAR2(36) DEFAULT SYS_GUID() CONSTRAINT FP_DOC_HEADER_TN2 NOT NULL,
         VER_NBR                        NUMBER(8) DEFAULT 1 CONSTRAINT FP_DOC_HEADER_TN3 NOT NULL,
-        FDOC_STATUS_CD                 VARCHAR2(2),
         FDOC_DESC                      VARCHAR2(40),
-        FDOC_TOTAL_AMT                 NUMBER(19, 2),
         ORG_DOC_NBR                    VARCHAR2(10),
-        FDOC_IN_ERR_NBR                VARCHAR2(14),
         FDOC_TMPL_NBR                  VARCHAR2(14),
-        TEMP_DOC_FNL_DT                DATE,
         FDOC_EXPLAIN_TXT               VARCHAR2(400),
      CONSTRAINT FP_DOC_HEADER_TP1 PRIMARY KEY (
         FDOC_NBR) ,

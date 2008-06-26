@@ -349,6 +349,14 @@
 				<authenticationId>employee</authenticationId>
 			</members>
 		</workgroup>
+		<workgroup>
+			<id>5555</id>
+			<workgroupName>KUALI_ROLE_SUPERVISOR</workgroupName>
+			<description>KUALI_ROLE_SUPERVISOR</description>
+			<members>
+				<authenticationId>admin</authenticationId>
+			</members>
+		</workgroup>
 	</workgroups>
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate allowOverwrite="true">

@@ -15,9 +15,6 @@
  */
 package org.kuali.core.dao.proxy;
 
-import java.sql.Date;
-import java.util.Collection;
-
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.dao.DocumentHeaderDao;
 import org.kuali.rice.util.OrmUtils;
@@ -34,13 +31,9 @@ public class DocumentHeaderDaoProxy implements DocumentHeaderDao {
     	return getDao(DocumentHeader.class).getByDocumentHeaderId(id);
     }
 
-    public DocumentHeader getCorrectingDocumentHeader(String documentId) {
-    	return getDao(DocumentHeader.class).getCorrectingDocumentHeader(documentId);
-    }
-
-    public Collection getByDocumentFinalDate(Date documentFinalDate) {
-    	return getDao(DocumentHeader.class).getByDocumentFinalDate(documentFinalDate);
-    }
+	public Class getDocumentHeaderBaseClass() {
+		return getDao(DocumentHeader.class).getDocumentHeaderBaseClass();
+	}
 
 	public void setDocumentHeaderDaoJpa(DocumentHeaderDao documentHeaderDaoJpa) {
 		this.documentHeaderDaoJpa = documentHeaderDaoJpa;

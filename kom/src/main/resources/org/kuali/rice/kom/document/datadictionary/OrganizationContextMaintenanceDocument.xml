@@ -73,7 +73,6 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kom.bo.Organization" />
-          <property name="sourceAttributeName" value="organizations" />
           <property name="businessObjectClass" value="org.kuali.rice.kom.bo.Organization" />
           <property name="summaryTitle" value="Organizations" />
           <property name="maintainableFields" >

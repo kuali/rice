@@ -17,8 +17,6 @@
 package org.kuali.core.datadictionary.control;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.datadictionary.DataDictionaryDefinitionBase;
 import org.kuali.core.datadictionary.exception.CompletionException;
@@ -33,29 +31,30 @@ import org.kuali.core.lookup.keyvalues.KeyValuesFinder;
  */
 public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase implements ControlDefinition {
 
-    // logger
-    private static Log LOG = LogFactory.getLog(ControlDefinitionBase.class);
-
-    private boolean datePicker;
-    private String script;
-    private Class<? extends KeyValuesFinder> valuesFinderClass;
-    private Class<? extends BusinessObject> businessObjectClass;
-    private String keyAttribute;
-    private String labelAttribute;
-    private Boolean includeKeyInLabel;
-    private Integer size;
-    private Integer rows;
-    private Integer cols;
+    protected boolean datePicker;
+    protected String script;
+    protected Class<? extends KeyValuesFinder> valuesFinderClass;
+    protected Class<? extends BusinessObject> businessObjectClass;
+    protected String keyAttribute;
+    protected String labelAttribute;
+    protected Boolean includeKeyInLabel;
+    protected Integer size;
+    protected Integer rows;
+    protected Integer cols;
 
 
     public ControlDefinitionBase() {
-        LOG.debug("creating new ControlDefinition");
     }
 
     public boolean isDatePicker() {
         return datePicker;
     }
 
+    /** Whether this control should have a date picker button next to the field.
+     *  Valid for text fields.
+     *  
+     * @see org.kuali.core.datadictionary.control.ControlDefinition#setDatePicker(boolean)
+     */
     public void setDatePicker(boolean datePicker) {
         this.datePicker=datePicker;
     }
@@ -167,6 +166,11 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     }
 
     /**
+     * Used by a PersistableBusinessObjectValuesFinder to automatically query and display a list
+     * of business objects as part of a select list or set of radio buttons.
+     * 
+     * The keyAttribute, labelAttribute, and includeKeyInLabel are used with this property.
+     * 
      * @param businessObjectClass the businessObjectClass to set
      */
     public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
@@ -185,7 +189,7 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     }
 
     /**
-     * @param includeKeyInLabel the includeKeyInLabel to set
+     * Whether to include the key in the label for select lists and radio buttons.
      */
     public void setIncludeKeyInLabel(Boolean includeKeyInLabel) {
         this.includeKeyInLabel = includeKeyInLabel;
@@ -199,7 +203,8 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     }
 
     /**
-     * @param keyAttribute the keyAttribute to set
+     * Attribute of the given businessObjectClass to use as the value of a select list 
+     * or set of radio buttons. 
      */
     public void setKeyAttribute(String keyAttribute) {
         this.keyAttribute = keyAttribute;
@@ -213,7 +218,8 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     }
 
     /**
-     * @param labelAttribute the labelAttribute to set
+     * Attribute of the given businessObjectClass to use as the displayed label on a select list 
+     * or set of radio buttons. 
      */
     public void setLabelAttribute(String labelAttribute) {
         this.labelAttribute = labelAttribute;
@@ -227,11 +233,11 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     }
 
     /**
+     * Size of a text control.
+     * 
      * @see org.kuali.core.datadictionary.control.ControlDefinition#setSize(int)
      */
     public void setSize(Integer size) {
-        LOG.debug("calling setSize '" + size + "'");
-
         this.size = size;
     }
 
@@ -250,11 +256,11 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     }
 
     /**
+     * Number of rows to display on a text-area widget.
+     * 
      * @see org.kuali.core.datadictionary.control.ControlDefinition#setRows(int)
      */
     public void setRows(Integer rows) {
-        LOG.debug("calling setRows '" + rows + "'");
-
         this.rows = rows;
     }
 
@@ -266,11 +272,11 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     }
 
     /**
+     * Number of columns to display on a text-area widget.
+     * 
      * @see org.kuali.core.datadictionary.control.ControlDefinition#setCols(int)
      */
     public void setCols(Integer cols) {
-        LOG.debug("calling setCols '" + cols + "'");
-
         this.cols = cols;
     }
 
@@ -300,9 +306,10 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     }
 
     /**
+     * JavaScript script to run when a select control's value is changed.
+     * 
      * @see org.kuali.core.datadictionary.control.ControlDefinition#setScript()
      */
-
     public void setScript(String script) {
         this.script = script;
     }

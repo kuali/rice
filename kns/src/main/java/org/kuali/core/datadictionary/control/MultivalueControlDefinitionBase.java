@@ -16,13 +16,10 @@
 
 package org.kuali.core.datadictionary.control;
 
-import org.kuali.core.datadictionary.exception.ClassValidationException;
 import org.kuali.core.datadictionary.exception.CompletionException;
-import org.kuali.core.lookup.keyvalues.KeyValuesFinder;
 
 /**
- * A single HTML select control.
- * 
+ * Base class for control which provide a list of values to choose between. 
  */
 public abstract class MultivalueControlDefinitionBase extends ControlDefinitionBase {
     /**
@@ -34,9 +31,6 @@ public abstract class MultivalueControlDefinitionBase extends ControlDefinitionB
         Class valuesFinder = getValuesFinderClass();
         if (valuesFinder == null) {
             throw new CompletionException("error validating " + rootBusinessObjectClass.getName() + " control: keyValuesFinder was never set (" + "" + ")");
-        }
-        if (!KeyValuesFinder.class.isAssignableFrom(valuesFinder)) {
-            throw new ClassValidationException("error validating " + rootBusinessObjectClass.getName() + " control: class '" + valuesFinder.getName() + "' is not a KeyValuesFinder subclass (" + "" + ")");
         }
     }
 }

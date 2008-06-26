@@ -71,7 +71,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String WORKFLOW_URL_KEY = "workflow.url";
     public static final String PROD_ENVIRONMENT_CODE_KEY = "production.environment.code";
     public static final String MAINTAIN_USERS_LOCALLY_KEY = "maintain.users.locally";
-    public static final String DOCHANDLER_DO_URL = "/DocHandler.do?docId=";
+    public static final String DOC_HANDLER_ACTION = "DocHandler.do";
+    public static final String DOCHANDLER_DO_URL = "/" + DOC_HANDLER_ACTION + "?docId=";
     public static final String DOCHANDLER_URL_CHUNK = "&command=displayDocSearchView";
 
 //    public static final String DATABASE_REPOSITORY_FILES_LIST_NAME = "databaseRepositoryFilePaths";
@@ -111,7 +112,6 @@ public class KNSConstants extends JSTLConstants {
 //    public static final String DOCUMENT_DELETE_QUESTION = "DocDelete";
     public static final String DOCUMENT_DISAPPROVE_QUESTION = "DocDisapprove";
 //    public static final String DOCUMENT_HEADER_ID = "documentHeaderId";
-//    public static final String DOCUMENT_HEADER_DOCUMENT_STATUS_CODE_PROPERTY_NAME = "financialDocumentStatusCode";
     public static final String DOCUMENT_HEADER_PROPERTY_NAME = "documentHeader";
     public static final String DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION = "DocSaveBeforeClose";
 //    public static final String EMPLOYEE_ACTIVE_STATUS = "A";
@@ -212,7 +212,6 @@ public class KNSConstants extends JSTLConstants {
     public static final String LOOKUPABLE_IMPL_ATTRIBUTE_NAME = "lookupableImplServiceName";
     public static final String LOOKUP_RESULTS_SEQUENCE = "LOOKUP_RESULT_SEQUENCE_NBR_SEQ";
     public static final String KUALI_LOOKUPABLE_IMPL = "kualiLookupable";
-//    public static final String DOC_HANDLER_ACTION = "DocHandler.do";
     public static final String DOC_HANDLER_METHOD = "docHandler";
     public static final String PARAMETER_DOC_ID = "docId";
     public static final String PARAMETER_COMMAND = "command";
@@ -403,25 +402,6 @@ public class KNSConstants extends JSTLConstants {
     // websession
     public static final String DOCUMENT_WEB_SCOPE = "documentWebScope";
     public static final String SESSION_SCOPE = "session";
-
-    public static class DocumentStatusCodes {
-        public static final String INITIATED = "?";
-        public static final String CANCELLED = "X";
-        public static final String ENROUTE = "R";
-        public static final String DISAPPROVED = "D";
-        public static final String APPROVED = "A";
-
-//        public static class CashReceipt {
-//            // once a CashReceipt gets approved, its financialDocumentStatus goes to "verified"
-//            public static final String VERIFIED = "V";
-//
-//            // when a CashReceipt associated with a Deposit, its financialDocumentStatus changes to "interim" or "final"
-//            public static final String INTERIM = "I";
-//            public static final String FINAL = "F";
-//
-//            // when the CMDoc is finalized, the CRs of its Deposits change to status "approved"
-//        }
-    }
 
     public static final String ALLOWED_EMPLOYEE_STATUS_RULE = "ACTIVE_EMPLOYEE_STATUSES";
 

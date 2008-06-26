@@ -29,12 +29,4 @@ public class ZipcodeValidationPattern extends FieldLevelValidationPattern {
     protected String getPatternTypeName() {
         return "zipcode";
     }
-
-
-    /**
-     * @see org.kuali.core.datadictionary.validation.ValidationPattern#getPatternXml()
-     */
-    public String getPatternXml() {
-        return "<zipcode />";
-    }
 }

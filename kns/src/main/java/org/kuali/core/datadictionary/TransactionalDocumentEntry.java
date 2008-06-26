@@ -21,10 +21,14 @@ package org.kuali.core.datadictionary;
  */
 public class TransactionalDocumentEntry extends DocumentEntry {
 
-    private boolean allowsErrorCorrection = false;
+    protected boolean allowsErrorCorrection = false;
 
     public TransactionalDocumentEntry() {}
 
+    /**
+            This field contains a value of true or false.
+            If true, then error correction is allowed for the document.
+     */
     public void setAllowsErrorCorrection(boolean allowsErrorCorrection) {
         this.allowsErrorCorrection = allowsErrorCorrection;
     }

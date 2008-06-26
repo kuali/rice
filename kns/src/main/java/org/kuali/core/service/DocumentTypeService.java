@@ -49,8 +49,9 @@ public interface DocumentTypeService {
 
     /**
      * Given a documentClass, returns the associated documentTypeCode listed in its data dictionary file. Note that this will not
-     * work properly for maintenance documents, because the data dictionary maps all the maintenance document types to the same
-     * MaintenanceDocumentBase class (which is not really a base class because it has no subclasses).
+     * always work properly for maintenance documents, because the data dictionary maps most maintenance document types to the same
+     * MaintenanceDocumentBase class (which is in most cases not really a base class because it has very few subclasses... mostly only
+     * client specific subclasses).
      * 
      * @param documentClass
      * @return
@@ -77,4 +78,22 @@ public interface DocumentTypeService {
      * @throws UnknownDocumentTypeException if the given documentTypeCode isn't mapped to a DocumentType
      */
     public DocumentType getDocumentTypeByName(String documentTypeName);
+
+    /**
+     * Given a documentTypeCode, returns the associated DocumentType from the database.
+     * 
+     * @param documentTypeCode
+     * @return DocumentType
+     */
+    public DocumentType getPotentialDocumentTypeByCode(String documentTypeCode);
+
+    /**
+     * Given a documentTypeName, returns from the database the DocumentType which is associated with that documentTypeName in the
+     * data dictionary via its documentTypeCode.
+     * 
+     * @param documentTypeName
+     * @return DocumentType
+     */
+    public DocumentType getPotentialDocumentTypeByName(String documentTypeName);
+
 }

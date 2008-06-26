@@ -160,21 +160,14 @@
 <c:set var="docHeaderAttributes" value="${DataDictionary.DocumentHeader.attributes}" />
 <c:set var="dummyAttributes" value="${DataDictionary.AttributeReferenceDummy.attributes}" />
 <c:if test="${showDocumentInfo}">
-    <c:choose>
-        <c:when test="${!empty KualiForm.document.documentHeader.financialDocumentInErrorNumber}">
-            <c:set var="secondDocAttribute" value="${docHeaderAttributes.financialDocumentInErrorNumber}" />
-            <c:set var="secondDocId" value="${KualiForm.document.documentHeader.financialDocumentInErrorNumber}" />
-            <c:set var="addColumn" value="true" />
-        </c:when>
-        <c:when test="${!empty KualiForm.document.documentHeader.financialDocumentTemplateNumber}">
-            <c:set var="secondDocAttribute" value="${docHeaderAttributes.financialDocumentTemplateNumber}" />
-            <c:set var="secondDocId" value="${KualiForm.document.documentHeader.financialDocumentTemplateNumber}" />
-            <c:set var="addColumn" value="true" />
-        </c:when>
-    </c:choose>
-    <c:if test="${!empty KualiForm.document.documentHeader.correctedByDocumentId}">
-        <c:set var="thirdDocAttribute" value="${docHeaderAttributes.correctedByDocumentId}" />
-        <c:set var="thirdDocId" value="${KualiForm.document.documentHeader.correctedByDocumentId}" />
+    <c:if test="${!empty KualiForm.document.documentHeader.additionalDocId1.label}">
+        <c:set var="secondDocAttributeName" value="${KualiForm.document.documentHeader.additionalDocId1.key}" />
+        <c:set var="secondDocId" value="${KualiForm.document.documentHeader.additionalDocId1.label}" />
+        <c:set var="addColumn" value="true" />
+    </c:if>
+    <c:if test="${!empty KualiForm.document.documentHeader.additionalDocId2.label}">
+        <c:set var="thirdDocAttributeName" value="${KualiForm.document.documentHeader.additionalDocId2.key}" />
+        <c:set var="thirdDocId" value="${KualiForm.document.documentHeader.additionalDocId2.label}" />
         <c:set var="addColumn" value="true" />
     </c:if>
     <c:set var="headerClass" value="headerinfo"/>
@@ -201,11 +194,11 @@
         <tr>
             <kul:htmlAttributeHeaderCell attributeEntry="${docHeaderAttributes.documentNumber}" horizontal="true" scope="row" />
             <td>${KualiForm.document.documentHeader.documentNumber}</td>
-            <kul:htmlAttributeHeaderCell attributeEntry="${docHeaderAttributes.financialDocumentStatusCode}" horizontal="true" scope="row" />
+            <kul:htmlAttributeHeaderCell attributeEntry="${dummyAttributes.workflowDocumentStatus}" horizontal="true" scope="row" />
             <td>${KualiForm.document.documentHeader.workflowDocument.statusDisplayValue}</td>
 
             <c:if test="${addColumn}">
-                <kul:htmlAttributeHeaderCell attributeEntry="${secondDocAttribute}" horizontal="true" scope="row"/>
+                <kul:htmlAttributeHeaderCell attributeEntryName="${secondDocAttributeName}" horizontal="true" scope="row"/>
                 <td>
 					<c:choose>
 						<c:when test="${lookup}" >
@@ -233,7 +226,7 @@
             <kul:htmlAttributeHeaderCell attributeEntry="${dummyAttributes.createDate}" horizontal="true" scope="row" />
             <td><fmt:formatDate value="${KualiForm.document.documentHeader.workflowDocument.createDate}" pattern="hh:mm a MM/dd/yyyy" /></td>
             <c:if test="${addColumn}">
-                <kul:htmlAttributeHeaderCell attributeEntry="${thirdDocAttribute}" horizontal="true" scope="row"/>
+                <kul:htmlAttributeHeaderCell attributeEntryName="${thirdDocAttributeName}" horizontal="true" scope="row"/>
                 <td>
 
 					<c:choose>

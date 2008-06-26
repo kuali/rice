@@ -26,16 +26,14 @@ import org.kuali.core.datadictionary.exception.AttributeValidationException;
  * 
  */
 public class CollectionDefinition extends DataDictionaryDefinitionBase {
-    // logger
-    //private static Log LOG = LogFactory.getLog(CollectionDefinition.class);
 
-    private String name;
-    private String label;
-    private String shortLabel;
-    private String elementLabel;
+    protected String name;
+    protected String label;
+    protected String shortLabel;
+    protected String elementLabel;
     
-    private String summary;
-    private String description;
+    protected String summary;
+    protected String description;
 
     public CollectionDefinition() {}
 
@@ -65,7 +63,7 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
      * @return the shortLabel, or the label if no shortLabel has been set
      */
     public String getShortLabel() {
-        return (shortLabel != null) ? shortLabel : getLabel();
+        return (shortLabel != null) ? shortLabel : label;
     }
 
     public void setShortLabel(String shortLabel) {
@@ -84,8 +82,9 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * Sets the elementLabel attribute value.
-     * @param elementLabel The elementLabel to set.
+ The elementLabel defines the name to be used for a single object
+                within the collection.  For example: "Address" may be the name
+                of one object within the "Addresses" collection.
      */
     public void setElementLabel(String elementLabel) {
         this.elementLabel = elementLabel;
@@ -95,6 +94,10 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
         return summary;
     }
 
+    /**
+                      The summary element is used to provide a short description of the
+                      attribute or collection.  This is designed to be used for help purposes.
+     */
     public void setSummary(String summary) {
         this.summary = summary;
     }
@@ -103,6 +106,10 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
         return description;
     }
 
+    /**
+                      The description element is used to provide a long description of the
+                      attribute or collection.  This is designed to be used for help purposes.
+     */
     public void setDescription(String description) {
         this.description = description;
     }

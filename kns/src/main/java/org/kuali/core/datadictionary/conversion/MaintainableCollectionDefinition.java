@@ -38,7 +38,6 @@ public class MaintainableCollectionDefinition extends MaintainableItemDefinition
     private Class<? extends BusinessObject> businessObjectClass;
 
     private String sourceClassName;
-    private String sourceAttributeName;
     private String summaryTitle;
     private String attributeToHighlightOnDuplicateKey;
 
@@ -174,12 +173,13 @@ public class MaintainableCollectionDefinition extends MaintainableItemDefinition
 
 
     public String getSourceAttributeName() {
-        return sourceAttributeName;
+        // do nothing.  The sourceAttributeName attribute is obsolete as of rice 0.9.3
+        return null;
     }
 
 
     public void setSourceAttributeName(String sourceAttributeName) {
-        this.sourceAttributeName = sourceAttributeName;
+        // do nothing.  The sourceAttributeName attribute is obsolete as of rice 0.9.3
     }
 
 

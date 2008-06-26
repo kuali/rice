@@ -53,13 +53,6 @@ public class DocumentDaoProxy implements DocumentDao {
 	}
 
 	/**
-	 * @see org.kuali.core.dao.DocumentDao#findByDocumentHeaderStatusCode(java.lang.Class, java.lang.String)
-	 */
-	public Collection findByDocumentHeaderStatusCode(Class clazz, String statusCode) {
-		return getDao(clazz).findByDocumentHeaderStatusCode(clazz, statusCode);
-	}
-
-	/**
 	 * @see org.kuali.core.dao.DocumentDao#getBusinessObjectDao()
 	 */
 	public BusinessObjectDao getBusinessObjectDao() {

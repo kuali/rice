@@ -18,11 +18,19 @@ package org.kuali.core.datadictionary.control;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.core.lookup.keyvalues.ApcValuesFinder;
 
+/**
+    The apcSelect element will render an HTML select control.
+    The values for the select control are obtained from
+    parameter table in the database.
+    
+    paramNamespace, parameterDetailType, and parameterName uniquely identify the parameter from which the select's
+        values will be derived
+ */
 public class ApcSelectControlDefinition extends SelectControlDefinition {
 
-    private String parameterNamespace;
-    private String parameterDetailType;
-    private String parameterName;
+    protected String parameterNamespace;
+    protected String parameterDetailType;
+    protected String parameterName;
 
     public ApcSelectControlDefinition() {
         super();
@@ -33,6 +41,9 @@ public class ApcSelectControlDefinition extends SelectControlDefinition {
         return parameterNamespace;
     }
 
+    /**
+     * Used by the ApcSelectControlDefinition to pull the needed parameter from the ParameterService.
+     */
     public void setParameterNamespace(String parameterNamespace) {
         if (StringUtils.isBlank(parameterNamespace)) {
             throw new IllegalArgumentException("invalid (blank) parameterNamespace in <apcSelect>");
@@ -44,6 +55,9 @@ public class ApcSelectControlDefinition extends SelectControlDefinition {
         return parameterName;
     }
 
+    /**
+     * Used by the ApcSelectControlDefinition to pull the needed parameter from the ParameterService.
+     */
     public void setParameterName(String parameterName) {
         if (StringUtils.isBlank(parameterName)) {
             throw new IllegalArgumentException("invalid (blank) parameterName in <apcSelect>");
@@ -59,6 +73,9 @@ public class ApcSelectControlDefinition extends SelectControlDefinition {
 		return this.parameterDetailType;
 	}
 
+    /**
+     * Used by the ApcSelectControlDefinition to pull the needed parameter from the ParameterService.
+     */
 	public void setParameterDetailType(String parameterDetailType) {
         if (StringUtils.isBlank(parameterDetailType)) {
             throw new IllegalArgumentException("invalid (blank) parameterDetailType in <apcSelect>");

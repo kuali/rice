@@ -15,9 +15,6 @@
  */
 package org.kuali.core.dao;
 
-import java.sql.Date;
-import java.util.Collection;
-
 import org.kuali.core.bo.DocumentHeader;
 
 /**
@@ -26,18 +23,9 @@ import org.kuali.core.bo.DocumentHeader;
  * 
  */
 public interface DocumentHeaderDao {
+
+    public Class getDocumentHeaderBaseClass();
+
     public DocumentHeader getByDocumentHeaderId(String id);
 
-    /**
-     * @param id
-     * @return documentHeader of the document which corrects the document with the given documentId
-     */
-    public DocumentHeader getCorrectingDocumentHeader(String documentId);
-
-    /**
-     * Retrieves a collection of DocumentHeaders that were finalized on a given date
-     * 
-     * @param documentFinalDate
-     */
-    public Collection getByDocumentFinalDate(Date documentFinalDate);
 }

@@ -48,7 +48,7 @@ public class DocumentAuthorizerBase implements DocumentAuthorizer {
     private static AuthorizationService authorizationService;
     private static KualiWorkflowInfo kualiWorkflowInfo;
     private static KualiConfigurationService kualiConfigurationService;
-    
+
     /**
      * @see org.kuali.core.authorization.DocumentAuthorizer#getEditMode(org.kuali.core.document.Document,
      *      org.kuali.core.bo.user.KualiUser)

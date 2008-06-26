@@ -20,13 +20,13 @@ import java.sql.Timestamp;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.LookupResults;
 import org.kuali.core.bo.SelectedObjectIds;
 import org.kuali.core.dao.PersistedLookupMetadataDao;
 import org.kuali.rice.jpa.criteria.Criteria;
 import org.kuali.rice.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 public class PersistedLookupMetadataDaoJpa implements PersistedLookupMetadataDao {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersistedLookupMetadataDaoJpa.class);
@@ -39,7 +39,7 @@ public class PersistedLookupMetadataDaoJpa implements PersistedLookupMetadataDao
      */
     public void deleteOldLookupResults(Timestamp expirationDate) {
         Criteria criteria = new Criteria(LookupResults.class.getName());
-        criteria.lt(RicePropertyConstants.LOOKUP_DATE, expirationDate);
+        criteria.lt(KNSPropertyConstants.LOOKUP_DATE, expirationDate);
         new QueryByCriteria(entityManager, criteria, QueryByCriteriaType.DELETE).toQuery().executeUpdate();
     }
 
@@ -48,7 +48,7 @@ public class PersistedLookupMetadataDaoJpa implements PersistedLookupMetadataDao
      */
     public void deleteOldSelectedObjectIds(Timestamp expirationDate) {
         Criteria criteria = new Criteria(SelectedObjectIds.class.getName());
-        criteria.lt(RicePropertyConstants.LOOKUP_DATE, expirationDate);
+        criteria.lt(KNSPropertyConstants.LOOKUP_DATE, expirationDate);
         new QueryByCriteria(entityManager, criteria, QueryByCriteriaType.DELETE).toQuery().executeUpdate();
     }
 }

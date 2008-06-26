@@ -22,22 +22,31 @@ import org.kuali.core.datadictionary.exception.CompletionException;
 
 
 /**
- * An authorization definition consists of an action (String) and a set of groups authorized to perform that action.
- * 
- * 
+                The authorization element defines the workgroups which are
+                authorized to perform a specified action on a document.
+
+                DD: See AuthorizationDefinition.java.
+
+                JSTL: authorization is a Map which is accessed using a key which is the
+                name of the action.  Each entry contains the following keys:
+                    * workgroup name of first workgroup
+                    * workgroup name of second workgroup
+                    etc.
+                The corresponding value for each entry is a workgroup ExportMap
  */
 public class AuthorizationDefinition extends DataDictionaryDefinitionBase {
 
-    private String action;
+    protected String action;
 
-    private Set<String> authorizedGroups;
+    protected Set<String> authorizedGroups;
 
 
     public AuthorizationDefinition() {}
 
 
     /**
-     * @param action
+     * The type of action which is restricted to the contained workgroups.
+     * Currently, the only valid action is "initiate"
      */
     public void setAction(String action) {
         this.action = action;
@@ -75,6 +84,22 @@ public class AuthorizationDefinition extends DataDictionaryDefinitionBase {
     }
 
 
+    /*
+                  The workgroups element contains workgroup elements.
+                    These define the workgroups that are allowed to take various
+                    actions on a document.
+
+                    JSTL: workgroups is a Map which is accessed by a key of "workgroups".
+                    This map contains entries with the following keys:
+                        * "0"
+                        * "1"
+                        etc.
+                    The corresponding value for each entry is a workgroup name.
+
+                    The workgroup element defines the name of a workgroup.
+                    Members of that workgroup are allowed to perform
+                    the authorization-specified action on the document.
+     */
     public void setAuthorizedGroups(Set<String> authorizedGroups) {
         // validate non-empty group list
         if (authorizedGroups.isEmpty()) {

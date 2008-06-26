@@ -137,7 +137,12 @@ public class DataDictionary {
         String[] configFileLocationsArray = new String[configFileLocations.size()];
         configFileLocationsArray = configFileLocations.toArray( configFileLocationsArray );
         configFileLocations.clear(); // empty the list out so other items can be added
-        xmlReader.loadBeanDefinitions( configFileLocationsArray );
+        try {
+            xmlReader.loadBeanDefinitions( configFileLocationsArray );
+        } catch (Exception e) {
+            LOG.error("Error loading bean definitions", e);
+            throw new DataDictionaryException("Error loading bean definitions: " + e.getLocalizedMessage());
+        }
         LOG.info( "Completed DD XML File Load" );
         if ( allowConcurrentValidation ) {
             Thread t = new Thread( new DDValidationRunnable() );

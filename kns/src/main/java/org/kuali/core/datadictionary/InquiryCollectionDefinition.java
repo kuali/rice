@@ -22,31 +22,52 @@ import java.util.Map;
 
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.datadictionary.exception.DuplicateEntryException;
+/**
+   The inquiryCollection defines a collection within the Business Object which contains
+   data that should be displayed with the BO when the inquiry is performed.
 
+   Each inquiryCollection defines a set of data fields, nested inquiryCollections
+   and summaryFields.  The summaryFields will be reported in the header of
+   this inquiryCollection, .
+
+   DD: See InquiryCollectionDefinition.java
+   JSTL: The inquiryCollection element is a Map with the following keys:
+       * name (String)
+       * businessObjectClass (String)
+       * numberOfColumns (String)
+       * inquiryFields (Map)
+       * inquiryCollections (Map, optional)
+       * summaryTitle (String)
+       * summaryFields (Map, optional)
+ */
 public class InquiryCollectionDefinition extends FieldDefinition implements
 		CollectionDefinitionI {
 
-	private Class<? extends BusinessObject> businessObjectClass;
+	protected Class<? extends BusinessObject> businessObjectClass;
 
-	private Integer numberOfColumns;
+	protected Integer numberOfColumns = 1;
 
-	private Map<String,FieldDefinition> inquiryFieldMap = new HashMap<String, FieldDefinition>();
-	private Map<String,InquiryCollectionDefinition> inquiryCollectionMap = new HashMap<String, InquiryCollectionDefinition>();
-    private Map<String,FieldDefinitionI> summaryFieldMap = new HashMap<String, FieldDefinitionI>();
-    private List<FieldDefinition> inquiryFields = new ArrayList<FieldDefinition>();
-    private List<InquiryCollectionDefinition> inquiryCollections = new ArrayList<InquiryCollectionDefinition>();
-    private List<FieldDefinition> summaryFields = new ArrayList<FieldDefinition>();
+	protected Map<String,FieldDefinition> inquiryFieldMap = new HashMap<String, FieldDefinition>();
+	protected Map<String,InquiryCollectionDefinition> inquiryCollectionMap = new HashMap<String, InquiryCollectionDefinition>();
+	protected Map<String,FieldDefinitionI> summaryFieldMap = new HashMap<String, FieldDefinitionI>();
+	protected List<FieldDefinition> inquiryFields = new ArrayList<FieldDefinition>();
+	protected List<InquiryCollectionDefinition> inquiryCollections = new ArrayList<InquiryCollectionDefinition>();
+	protected List<FieldDefinition> summaryFields = new ArrayList<FieldDefinition>();
 
-	private String summaryTitle;
+	protected String summaryTitle;
 
 
 	public InquiryCollectionDefinition() {}
 
-	public Class getBusinessObjectClass() {
+	public Class<? extends BusinessObject> getBusinessObjectClass() {
 		return businessObjectClass;
 	}
 
-	public void setBusinessObjectClass(Class businessObjectClass) {
+	/**
+            This attribute is used in many contexts, for example, in maintenance docs, it's used to specify the classname
+            of the BO being maintained.
+	 */
+	public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
 		this.businessObjectClass = businessObjectClass;
 	}
 
@@ -90,6 +111,10 @@ public class InquiryCollectionDefinition extends FieldDefinition implements
 		return summaryFieldMap.containsKey(key);
 	}
 
+	/**
+                The title element is used specify the title that will appear in the header
+                of an Inquiry or Lookup screen.
+	 */
 	public void setSummaryTitle(String summaryTitle) {
 		this.summaryTitle = summaryTitle;
 	}
@@ -164,6 +189,10 @@ public class InquiryCollectionDefinition extends FieldDefinition implements
         return inquiryCollections;
     }
 
+    /**
+                inquirySections allows inquiry to be presented in sections.
+                Each section can have a different format.
+     */
     public void setInquiryCollections(List<InquiryCollectionDefinition> inquiryCollections) {
         inquiryCollectionMap.clear();
         for ( InquiryCollectionDefinition inquiryCollection : inquiryCollections ) {

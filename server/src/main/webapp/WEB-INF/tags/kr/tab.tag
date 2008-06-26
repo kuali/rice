@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<%@ attribute name="tabTitle" required="true" %>
+<%@ attribute name="tabTitle" required="false" %>
 <%@ attribute name="spanForLongTabTitle" required="false" %>
 <%@ attribute name="tabDescription" required="false" %>
 <%@ attribute name="defaultOpen" required="true" %>
@@ -98,7 +98,7 @@
             <td class="tabtable1-left" colspan="${tabTitleSpan}">
               <img src="${leftTabImage}" alt="" width="12" height="29" align="absmiddle" />
               <c:if test="${not empty leftSideHtmlProperty and not empty leftSideHtmlAttribute}"><kul:htmlControlAttribute property="${leftSideHtmlProperty}" attributeEntry="${leftSideHtmlAttribute}" disabled="${leftSideHtmlDisabled}" /></c:if>
-              <a name="${tabKey}" ></a> ${tabTitle}
+              <a name="${tabKey}" ></a> <h2><c:out value="${tabTitle}" /></h2>
               <c:if test="${highlightTab}">
                 &nbsp;<img src="${ConfigProperties.kr.externalizable.images.url}asterisk_orange.png" alt="changed"/>
               </c:if>

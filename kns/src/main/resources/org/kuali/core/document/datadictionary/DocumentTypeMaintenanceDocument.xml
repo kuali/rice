@@ -12,11 +12,12 @@
     <property name="maintainableSections" >
       <list>
         <ref bean="KualiDocumentTypeMaintenanceDocument-EditDocumentType" />
+        <ref bean="KualiDocumentTypeMaintenanceDocument-EditDocumentTypeAttributes" />
       </list>
     </property>
     <property name="lockingKeys" >
       <list>
-        <value>financialDocumentTypeCode</value>
+        <value>documentTypeCode</value>
       </list>
     </property>
     <property name="shortLabel" value="Document Type" />
@@ -56,32 +57,58 @@
       <list>
         <bean parent="MaintainableFieldDefinition"
               p:required="true"
-              p:name="financialDocumentTypeCode" />
+              p:name="documentTypeCode" />
         <bean parent="MaintainableFieldDefinition"
               p:required="true"
-              p:name="financialDocumentGroupCode" />
+              p:name="documentName" />
         <bean parent="MaintainableFieldDefinition"
-              p:required="true"
-              p:name="financialDocumentName" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="finEliminationsEligibilityIndicator" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="finDocumentTypeActiveIndicator" />
-        <bean parent="MaintainableFieldDefinition"
-              p:required="true"
-              p:name="finDocumentRoutingRuleCode" />
-        <bean parent="MaintainableFieldDefinition"
-              p:required="true"
-              p:name="finDocAutomaticApprovalDays" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="financialDocumentBalancedIndicator" />
-        <bean parent="MaintainableFieldDefinition"
-              p:name="transactionScrubberOffsetGenerationIndicator" />
+              p:name="documentTypeActiveIndicator" />
         <bean parent="MaintainableFieldDefinition"
               p:name="versionNumber" />
       </list>
     </property>
     <property name="id" value="Edit Document Type" />
     <property name="title" value="Edit Document Type" />
+  </bean>
+
+  <bean id="KualiDocumentTypeMaintenanceDocument-EditDocumentTypeAttributes" parent="KualiDocumentTypeMaintenanceDocument-EditDocumentTypeAttributes-parentBean" />
+
+  <bean id="KualiDocumentTypeMaintenanceDocument-EditDocumentTypeAttributes-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableCollectionDefinition">
+          <property name="businessObjectClass" value="org.kuali.core.bo.DocumentTypeAttribute" />
+          <property name="maintainableFields" >
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:template="id"
+                    p:name="id" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:template="key"
+                    p:name="key" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:template="label"
+                    p:name="label" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:template="value"
+                    p:name="value" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:template="active"
+                    p:name="active" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:name="versionNumber" />
+            </list>
+          </property>
+          <property name="name" value="documentTypeAttributes" />
+        </bean>
+      </list>
+    </property>
+    <property name="id" value="Document Type Attributes" />
+    <property name="title" value="Document Type Attributes" />
   </bean>
 </beans>

@@ -16,20 +16,19 @@
 
 package org.kuali.core.datadictionary.control;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
- * A single HTML select control.
- * 
- * 
+    The select element will render an HTML select control.
+    The valuesFinderClass will have a getKeyValues() method
+    that returns a list of KeyLabelPair objects.
+
+    An optional script attribute allows java script code to be
+    entered.  This code will be run when the user selects a new
+    value.
  */
 public class SelectControlDefinition extends MultivalueControlDefinitionBase {
-    // logger
-    private static Log LOG = LogFactory.getLog(SelectControlDefinition.class);
 
     public SelectControlDefinition() {
-        LOG.debug("creating new SelectControlDefinition");
     }
 
     /**

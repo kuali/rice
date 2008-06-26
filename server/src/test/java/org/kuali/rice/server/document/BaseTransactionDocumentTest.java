@@ -29,7 +29,7 @@ public class BaseTransactionDocumentTest extends ServerTestBase {
     @Test public void testTransactionDocumentRoute() throws Exception {
         HtmlPage transDocPage = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL + "/travelDocument2.do?methodToCall=docHandler&command=initiate&docTypeName=TravelRequest");
         HtmlForm form = transDocPage.getFormByName("KualiForm");
-        form.getInputByName("document.documentHeader.financialDocumentDescription").setValueAttribute("description");
+        form.getInputByName("document.documentHeader.documentDescription").setValueAttribute("description");
         ((HtmlTextArea)form.getTextAreasByName("document.documentHeader.explanation").get(0)).setText("justification");
         form.getInputByName("document.traveler").setValueAttribute("traveler");
         form.getInputByName("document.origin").setValueAttribute("origin");

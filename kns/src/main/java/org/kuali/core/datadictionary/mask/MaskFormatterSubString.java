@@ -18,19 +18,20 @@ package org.kuali.core.datadictionary.mask;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Mask a value using the specified char up to a given length.
- * 
- * 
+  The maskTo element is to used hide the beginning part of the
+  value for unauthorized users.  The number of leading characters
+  to hide and the replacement character can be specified.
  */
 public class MaskFormatterSubString implements MaskFormatter {
-    private String maskCharacter;
-    private int maskLength;
+    protected String maskCharacter = "*";
+    protected int maskLength;
 
     public String maskValue(Object value) {
         if (value == null) {
             return null;
         }
 
+        // TODO: MOVE TO UNIT TEST: move this validation into the unit tests
         if (maskCharacter == null) {
             throw new RuntimeException("Mask character not specified. Check DD maskTo attribute.");
         }
@@ -53,9 +54,7 @@ public class MaskFormatterSubString implements MaskFormatter {
     }
 
     /**
-     * Sets the maskCharacter attribute value.
-     * 
-     * @param maskCharacter The maskCharacter to set.
+     * Specify the character with which to mask the original value.
      */
     public void setMaskCharacter(String maskCharacter) {
         this.maskCharacter = maskCharacter;
@@ -71,7 +70,7 @@ public class MaskFormatterSubString implements MaskFormatter {
     }
 
     /**
-     * Sets the maskLength attribute value.
+     * Set the number of characters to mask at the beginning of the string.
      * 
      * @param maskLength The maskLength to set.
      */

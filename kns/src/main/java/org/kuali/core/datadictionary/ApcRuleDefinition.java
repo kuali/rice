@@ -18,13 +18,26 @@ package org.kuali.core.datadictionary;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
 
+/**
+    The apcRule element is used to specifiy legal values
+    for an attribute.  This is done by specifiying the key
+    to the System Parameters table that indicates
+    the allowable values.
+
+    JSTL: apcRules are Maps with the following keys:
+    * attributeName (String)
+    * parameterNamespace (String)
+    * parameterDetailType (String)
+    * parameterName (String)
+    * errorMessage (String) a property key usually defined in ApplicationResources.properties
+ */
 public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
 
-    private String attributeName;
-    private String parameterNamespace;
-    private String parameterDetailType;
-    private String parameterName;
-    private String errorMessage;
+    protected String attributeName;
+    protected String parameterNamespace;
+    protected String parameterDetailType;
+    protected String parameterName;
+    protected String errorMessage;
 
 
     public ApcRuleDefinition() {
@@ -60,6 +73,17 @@ public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
     public String getParameterName() {
         return parameterName;
     }
+    
+    /**
+
+     * attributeName is the name of an attribute for
+         which the rule applies
+
+     * parameterNamespace, parameterDetailType, and parameterName identify the parameter
+
+     * errorMessage is the text that is to be displayed when
+         the error is detected.
+      */
     void setParameterName(String parameterName) {
         if (StringUtils.isBlank(parameterName)) {
             throw new IllegalArgumentException("invalid (blank) parameterName");
@@ -71,6 +95,16 @@ public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
         return attributeName;
     }
 
+    /**
+
+    * attributeName is the name of an attribute for
+        which the rule applies
+
+    * parameterNamespace, parameterDetailType, and parameterName identify the parameter
+
+    * errorMessage is the text that is to be displayed when
+        the error is detected.
+     */
     public void setAttributeName(String attributeName) {
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
@@ -100,6 +134,16 @@ public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
 		return this.parameterDetailType;
 	}
 
+    /**
+
+	    * attributeName is the name of an attribute for
+	        which the rule applies
+
+	    * parameterNamespace, parameterDetailType, and parameterName identify the parameter
+
+	    * errorMessage is the text that is to be displayed when
+	        the error is detected.
+	     */
 	public void setParameterDetailType(String parameterDetailType) {
         if (StringUtils.isBlank(parameterDetailType)) {
             throw new IllegalArgumentException("invalid (blank) parameterDetailType");

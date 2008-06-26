@@ -29,6 +29,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ojb.broker.PersistenceBroker;
+import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.RiceKeyConstants;
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.GlobalBusinessObject;
@@ -39,7 +41,6 @@ import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.rule.event.KualiDocumentEvent;
 import org.kuali.core.rule.event.SaveDocumentEvent;
-import org.kuali.core.service.DataDictionaryService;
 import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
@@ -140,7 +141,7 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
             documentTitle = "New ";
         }
         documentTitle += truncatedClassName + " - ";
-        documentTitle += this.getDocumentHeader().getFinancialDocumentDescription() + " ";
+        documentTitle += this.getDocumentHeader().getDocumentDescription() + " ";
         // TODO: talk with Aaron about the getKeysName replacement
         // HashMap keyVals = (HashMap) newMaintainableObject.getKeysNameAndValuePairs();
         // Set list = keyVals.keySet();
@@ -640,10 +641,9 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
 
         // build the link URL for the blocking document
         Properties parameters = new Properties();
-        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
         parameters.put(KNSConstants.PARAMETER_DOC_ID, blockingDocId);
         parameters.put(KNSConstants.PARAMETER_COMMAND, KNSConstants.METHOD_DISPLAY_DOC_SEARCH_VIEW);
-        String blockingUrl = UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
+        String blockingUrl = UrlFactory.parameterizeUrl(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + "/" + KNSConstants.DOC_HANDLER_ACTION, parameters);
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("blockingUrl = '" + blockingUrl + "'");
             LOG.debug("Maintenance record: " + lockedDocument.getDocumentHeader().getDocumentNumber() + "is locked.");
@@ -681,7 +681,7 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
         }
 
         // if the blocking document hasn't been routed, we can ignore it
-        return KNSConstants.DocumentStatusCodes.INITIATED.equals(documentHeader.getFinancialDocumentStatusCode());
+        return documentHeader.getWorkflowDocument().stateIsInitiated();
     }
 
     /**
@@ -725,4 +725,94 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
         WorkflowProperties workflowProperties = documentEntry.getWorkflowProperties();
         return createPropertySerializabilityEvaluator(workflowProperties);
     }
+
+    /**
+     * This overridden method ...
+     * 
+     * TODO delyea - THIS METHOD NEEDS JAVADOCS
+     * 
+     * @see org.kuali.core.bo.PersistableBusinessObjectBase#afterDelete(org.apache.ojb.broker.PersistenceBroker)
+     */
+    @Override
+    public void afterDelete(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+        KNSServiceLocator.getDocumentHeaderService().deleteDocumentHeader(getDocumentHeader());
+        super.afterDelete(persistenceBroker);
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * TODO delyea - THIS METHOD NEEDS JAVADOCS
+     * 
+     * @see org.kuali.core.bo.PersistableBusinessObjectBase#afterInsert(org.apache.ojb.broker.PersistenceBroker)
+     */
+    @Override
+    public void afterInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+        super.afterInsert(persistenceBroker);
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * TODO delyea - THIS METHOD NEEDS JAVADOCS
+     * 
+     * @see org.kuali.core.bo.PersistableBusinessObjectBase#afterLookup(org.apache.ojb.broker.PersistenceBroker)
+     */
+    @Override
+    public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+        setDocumentHeader(KNSServiceLocator.getDocumentHeaderService().getDocumentHeaderById(getDocumentNumber()));
+        super.afterLookup(persistenceBroker);
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * TODO delyea - THIS METHOD NEEDS JAVADOCS
+     * 
+     * @see org.kuali.core.bo.PersistableBusinessObjectBase#afterUpdate(org.apache.ojb.broker.PersistenceBroker)
+     */
+    @Override
+    public void afterUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+        // TODO delyea - THIS METHOD NEEDS JAVADOCS
+        super.afterUpdate(persistenceBroker);
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * TODO delyea - THIS METHOD NEEDS JAVADOCS
+     * 
+     * @see org.kuali.core.bo.PersistableBusinessObjectBase#beforeDelete(org.apache.ojb.broker.PersistenceBroker)
+     */
+    @Override
+    public void beforeDelete(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+        super.beforeDelete(persistenceBroker);
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * TODO delyea - THIS METHOD NEEDS JAVADOCS
+     * 
+     * @see org.kuali.core.bo.PersistableBusinessObjectBase#beforeInsert(org.apache.ojb.broker.PersistenceBroker)
+     */
+    @Override
+    public void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+        KNSServiceLocator.getDocumentHeaderService().saveDocumentHeader(getDocumentHeader());
+        super.beforeInsert(persistenceBroker);
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * TODO delyea - THIS METHOD NEEDS JAVADOCS
+     * 
+     * @see org.kuali.core.bo.PersistableBusinessObjectBase#beforeUpdate(org.apache.ojb.broker.PersistenceBroker)
+     */
+    @Override
+    public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+        KNSServiceLocator.getDocumentHeaderService().saveDocumentHeader(getDocumentHeader());
+        super.beforeUpdate(persistenceBroker);
+    }
+
 }

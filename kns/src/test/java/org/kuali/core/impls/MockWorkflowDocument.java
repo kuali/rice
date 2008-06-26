@@ -16,8 +16,10 @@
 package org.kuali.core.impls;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 import org.kuali.core.bo.user.UniversalUser;
+import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.service.DocumentService;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 
@@ -578,4 +580,12 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
         LOG.debug("Using MockWorkflowDocument");
         return null;
 }
+
+    /**
+     * @see org.kuali.core.workflow.service.KualiWorkflowDocument#getAllPriorApprovers()
+     */
+    public Set<UniversalUser> getAllPriorApprovers() throws WorkflowException, UserNotFoundException {
+        return null;
+    }
+    
 }

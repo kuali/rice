@@ -16,20 +16,16 @@
 
 package org.kuali.core.datadictionary.control;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
- * A single HTML text control.
- * 
- * 
+    The text element defines an HTML text control element.
+    The size attribute defines the size of the field.
+    If the datePicker option is entered, then  the user will be able
+    to select a date from a popup calendar.
  */
 public class TextControlDefinition extends ControlDefinitionBase {
-    // logger
-    private static Log LOG = LogFactory.getLog(TextControlDefinition.class);
 
     public TextControlDefinition() {
-        LOG.debug("creating new TextControlDefinition");
     }
 
     /**

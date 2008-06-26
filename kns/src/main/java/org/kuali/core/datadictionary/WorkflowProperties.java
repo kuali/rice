@@ -19,10 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An object that contains a list of {@link WorkflowPropertyGroup} objects
+            This element is used to define a set of workflowPropertyGroups, which are used to
+            specify which document properties should be serialized during the document serialization
+            process.
  */
 public class WorkflowProperties {
-    private List<WorkflowPropertyGroup> workflowPropertyGroups;
+    protected List<WorkflowPropertyGroup> workflowPropertyGroups;
     
     public WorkflowProperties() {
         workflowPropertyGroups = new ArrayList<WorkflowPropertyGroup>();
@@ -38,6 +40,11 @@ public class WorkflowProperties {
         return this.workflowPropertyGroups;
     }
 
+    /**
+            This element is used to define a set of workflowPropertyGroups, which are used to
+            specify which document properties should be serialized during the document serialization
+            process.
+     */
     public void setWorkflowPropertyGroups(List<WorkflowPropertyGroup> workflowPropertyGroups) {
         this.workflowPropertyGroups = workflowPropertyGroups;
     }

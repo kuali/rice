@@ -16,17 +16,15 @@
 
 package org.kuali.core.datadictionary.control;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
- * A single HTML hidden field with a lookup control.
+ *  The lookupHidden control element creates a field with a magnifying
+                        glass, but no value showing.  This can be used to do a lookup to
+                        return a value which will appear in another field.
  */
 public class LookupHiddenControlDefinition extends ControlDefinitionBase {
-    private static Log LOG = LogFactory.getLog(LookupHiddenControlDefinition.class);
 
     public LookupHiddenControlDefinition() {
-        LOG.debug("creating new LookupHiddenControlDefinition");
     }
 
     /**

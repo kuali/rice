@@ -212,16 +212,16 @@ public class KualiHelpForm extends KualiForm {
     }
 
     /**
-     * Form field accessor for financial system parameter help.
+     * Form field accessor for system parameter help.
      * 
-     * @return HelpDefinition
+     * @return helpDefinition
      */
     public HelpDefinition getHelpDefinition() {
         return helpDefinition;
     }
 
     /**
-     * Form field accessor for financial system parameter help.
+     * Form field accessor for system parameter help.
      * 
      * @param helpDefinition
      */

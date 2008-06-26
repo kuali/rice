@@ -16,12 +16,12 @@
 package org.kuali.core.datadictionary.mask;
 
 /**
- * Mask a value using a literal string.
- * 
- * 
+      The maskLiteral element is used to completely hide the field
+      value for unauthorized users.  The specified literal will be
+      shown instead of the field value.
  */
 public class MaskFormatterLiteral implements MaskFormatter {
-    private String literal;
+    protected String literal;
 
     public String maskValue(Object value) {
         return literal;
@@ -37,9 +37,7 @@ public class MaskFormatterLiteral implements MaskFormatter {
     }
 
     /**
-     * Sets the literalString attribute value.
-     * 
-     * @param literal The literal String to set.
+     * Specify the string that will be shown instead of the actual value when masked.
      */
     public void setLiteral(String literal) {
         this.literal = literal;

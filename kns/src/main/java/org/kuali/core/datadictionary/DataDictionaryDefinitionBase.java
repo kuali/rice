@@ -24,9 +24,8 @@ package org.kuali.core.datadictionary;
  * 
  */
 abstract public class DataDictionaryDefinitionBase implements DataDictionaryDefinition {
-    //private static Log LOG = LogFactory.getLog(DataDictionaryDefinitionBase.class);
 
-    private String id;
+    protected String id;
     
     public DataDictionaryDefinitionBase() {
     }
@@ -35,6 +34,9 @@ abstract public class DataDictionaryDefinitionBase implements DataDictionaryDefi
         return this.id;
     }
 
+    /**
+     * A unique identifier for this data dictionary element.
+     */
     public void setId(String id) {
         this.id = id;
     }

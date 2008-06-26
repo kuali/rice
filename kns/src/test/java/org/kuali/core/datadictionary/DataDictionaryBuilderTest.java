@@ -16,6 +16,7 @@
 
 package org.kuali.core.datadictionary;
 
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +30,9 @@ import org.kuali.test.KNSWithTestSpringContext;
  */
 @KNSWithTestSpringContext
 public class DataDictionaryBuilderTest extends KNSTestBase {
-	static final String PACKAGE_CORE_BO = "org/kuali/core/bo/datadictionary/";
+    protected final Logger LOG = Logger.getLogger(getClass());
+
+    static final String PACKAGE_CORE_BO = "org/kuali/core/bo/datadictionary/";
 
 	static final String PACKAGE_CORE_DOCUMENT = "org/kuali/core/document/datadictionary/";
 
@@ -112,8 +115,11 @@ public class DataDictionaryBuilderTest extends KNSTestBase {
 		try {
 			dd.addConfigFileLocation(INPUT_FILE);
 			dd.parseDataDictionaryConfigurationFiles( false );
-		} catch (Exception e) {
+		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
+		} catch (Exception e) {
+            LOG.error("Error loading DD files", e);
+		    fail("Data Dictionary file load failed but with wrong exception type '" + e.getClass().getName() + "'");
 		}
 
 		assertTrue(failedAsExpected);
@@ -128,8 +134,11 @@ public class DataDictionaryBuilderTest extends KNSTestBase {
 		try {
 			dd.addConfigFileLocation(INPUT_FILE);
 			dd.parseDataDictionaryConfigurationFiles( false );
-		} catch (Exception e) {
+		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
+        } catch (Exception e) {
+            LOG.error("Error loading DD files", e);
+            fail("Data Dictionary file load failed but with wrong exception type '" + e.getClass().getName() + "'");
 		}
 
 		assertTrue(failedAsExpected);

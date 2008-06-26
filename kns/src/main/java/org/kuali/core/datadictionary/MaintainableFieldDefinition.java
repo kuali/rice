@@ -22,30 +22,56 @@ import org.kuali.core.datadictionary.mask.Mask;
 import org.kuali.core.lookup.valueFinder.ValueFinder;
 
 /**
- * MaintainableFieldDefinition
- * 
- * 
+    The maintainableField element defines the specifications
+    for one data field.
+    JSTL: maintainableField is a Map accessed by the field name.
+    It contains entries with the following keys:
+        * field (boolean String)
+        * name (String)
+        * required (boolean String)
+
+    * name is the name of the field
+    * required is true if the field must contain a non-null value
+    * readOnly is true if it cannot be updated
+    * template documentation from MaintenanceUtils.java:
+        Field templates are used in relation to multiple value lookups.
+        When doing a MV lookup on a collection, the returned BOs
+        are not necessarily of the same type as the elements of the
+        collection. Therefore, a means of mapping between the fields
+        for the 2 BOs are necessary. The template attribute of
+        <maintainableField> contained within <maintainableCollection>
+        tells us this mapping.
+        Example:
+        <maintainableField name="collectionAttrib" template="lookupBOAttrib">
+        means that when a list of BOs are returned, the lookupBOAttrib value
+        of the looked up BO will be placed into the collectionAttrib
+        value of the BO added to the collection
+    * webUILeaveFieldFunction is the name of a javascript function to called when
+        when the user tabs out of the field.
+    * webUILeaveFieldCallbackFunction
+        This is the call javascript function related to the webUILeaveFieldFunction.
+    * readOnlyAfterAdd
+        This is used to indicate that the field is read-only after the record has been
+        initially created.
  */
 public class MaintainableFieldDefinition extends MaintainableItemDefinition implements FieldDefinitionI{
-    // logger
-    //private static Log LOG = LogFactory.getLog(MaintainableFieldDefinition.class);
 
-    private boolean required = false;
-    private boolean readOnly = false;
-    private boolean readOnlyAfterAdd = false; 
+    protected boolean required = false;
+    protected boolean readOnly = false;
+    protected boolean readOnlyAfterAdd = false; 
 
-    private String defaultValue;
-    private String template;
-    private Class<? extends ValueFinder> defaultValueFinderClass;
+    protected String defaultValue;
+    protected String template;
+    protected Class<? extends ValueFinder> defaultValueFinderClass;
 
-    private String displayEditMode;
-    private Mask displayMask;
+    protected String displayEditMode;
+    protected Mask displayMask;
 
-    private String webUILeaveFieldFunction = "";
-    private String webUILeaveFieldCallbackFunction = "";
+    protected String webUILeaveFieldFunction = "";
+    protected String webUILeaveFieldCallbackFunction = "";
     
-    private Class<? extends BusinessObject> overrideLookupClass;
-    private String overrideFieldConversions;
+    protected Class<? extends BusinessObject> overrideLookupClass;
+    protected String overrideFieldConversions;
     
     public MaintainableFieldDefinition() {}
 
@@ -57,9 +83,7 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
     }
 
     /**
-     * Sets isRequired to the given value
-     * 
-     * @param isRequired
+required is true if the field must contain a non-null value
      */
     public void setRequired(boolean required) {
         this.required = required;
@@ -74,7 +98,9 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
 
 
     /**
-     * @param defaultValue The defaultValue to set.
+     * 
+                       The defaultValue element will pre-load the specified value
+                       into the lookup field.
      */
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
@@ -96,7 +122,7 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
     }
 
     /**
-     * @param readOnly The readOnly to set.
+     * readOnly is true if it cannot be updated
      */
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
@@ -114,9 +140,17 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
 
 
     /**
-     * Sets the displayEditMode attribute value.
-     * 
-     * @param displayEditMode The displayEditMode to set.
+     * The document authorizer classes have a method getEditMode, which is a map of edit mode to
+                        value mappings.  Depending on the context, the value of the mapping may be relevant, and the logic determining
+                        whether the value is relevant is often implemented in the JSP/tag layer.
+
+                        Fields on a document (particularily maintenance documents) may be associated with
+                        an edit mode.  If the edit mode is mapped to a relevant value, then the all fields associated with the edit mode
+                        will be rendered unhidden.
+
+                        The displayEditMode element is used to specify the edit mode that will be associated with the field.
+                        If the document authorizer returns a map with this edit mode mapped to a proper value, then the field will be unhidden to the user.
+                    
      */
     public void setDisplayEditMode(String displayEditMode) {
         this.displayEditMode = displayEditMode;
@@ -134,9 +168,9 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
 
 
     /**
-     * Sets the displayMask attribute value.
-     * 
-     * @param displayMask The displayMask to set.
+     * The displayMask element specifies the type of masking to
+                    be used to hide the value from un-authorized users.
+                    There are three types of masking.
      */
     public void setDisplayMask(Mask displayMask) {
         this.displayMask = displayMask;
@@ -152,8 +186,20 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
 
 
     /**
-     * Sets the overrideFieldConversions attribute value.
-     * @param overrideFieldConversions The overrideFieldConversions to set.
+     * Single value lookups expect field conversions to be passed in as a HTTP parameter when the lookups is invoked from a quickfinder icon (i.e. magnifying glass on page).
+                        Field conversions are normally used to determine which fields will be returned when the "return value" link is clicked.
+
+                        For example, if we're performing a quickfinder lookup and the field conversion string "a:document.someObject.a1,b:document.someObject.b1" is passed into the lookup,
+                        this means that when we click on a lookup result row to be returned:
+
+                        * the value of property "a" from the selected result bo will be passed as the value of the HTTP parameter named "document.someObject.a1",
+                          which, in turn, populates the POJO property of the same name on the form
+                        * the value of property "b" from the selected result bo will be passed as the value of the HTTP parameter named "document.someObject.b1",
+                          which, in turn, populates the POJO property of the same name on the form
+
+                        Normally, the field conversion string is automatically computed by the framework to return all of the primary key values of the looked up BO into the corresponding
+                        foreign key values of the destination BO (i.e. document.someObject in the example above).  However, putting in this element will allow for the overriding of the
+                        field conversions string.
      */
     public void setOverrideFieldConversions(String overrideFieldConversions) {
         this.overrideFieldConversions = overrideFieldConversions;
@@ -164,7 +210,7 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
      * Gets the overrideLookupClass attribute. 
      * @return Returns the overrideLookupClass.
      */
-    public Class getOverrideLookupClass() {
+    public Class<? extends BusinessObject> getOverrideLookupClass() {
         return overrideLookupClass;
     }
 
@@ -210,6 +256,21 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
     }
 
 
+    /**
+template documentation from MaintenanceUtils.java:
+                            Field templates are used in relation to multiple value lookups.
+                            When doing a MV lookup on a collection, the returned BOs
+                            are not necessarily of the same type as the elements of the
+                            collection. Therefore, a means of mapping between the fields
+                            for the 2 BOs are necessary. The template attribute of
+                            <maintainableField> contained within <maintainableCollection>
+                            tells us this mapping.
+                            Example:
+                            <maintainableField name="collectionAttrib" template="lookupBOAttrib">
+                            means that when a list of BOs are returned, the lookupBOAttrib value
+                            of the looked up BO will be placed into the collectionAttrib
+                            value of the BO added to the collection
+ */
     public void setTemplate(String template) {
         this.template = template;
     }
@@ -220,6 +281,10 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
     }
 
 
+    /**
+                        * webUILeaveFieldCallbackFunction
+                            This is the call javascript function related to the webUILeaveFieldFunction.
+     */
     public void setWebUILeaveFieldCallbackFunction(String webUILeaveFieldCallbackFunction) {
         this.webUILeaveFieldCallbackFunction = webUILeaveFieldCallbackFunction;
     }
@@ -230,6 +295,10 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
     }
 
 
+    /**
+                        * webUILeaveFieldFunction is the name of a javascript function to called when
+                            when the user tabs out of the field.
+     */
     public void setWebUILeaveFieldFunction(String webUILeaveFieldFunction) {
         this.webUILeaveFieldFunction = webUILeaveFieldFunction;
     }
@@ -240,16 +309,31 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
     }
 
 
+    /**
+     * This is used to indicate that the field is read-only after the record has been
+                            initially created.
+     */
     public void setReadOnlyAfterAdd(boolean readOnlyAfterAdd) {
         this.readOnlyAfterAdd = readOnlyAfterAdd;
     }
 
 
+    /**
+The defaultValueFinderClass specifies the java class that will be
+                      used to determine the default value of a lookup field.  The classname
+                      specified in this field must implement org.kuali.core.lookup.valueFinder.ValueFinder
+   */
     public void setDefaultValueFinderClass(Class<? extends ValueFinder> defaultValueFinderClass) {
         this.defaultValueFinderClass = defaultValueFinderClass;
     }
 
 
+    /**
+     * The overrideLookupClass element is used to indicate the
+                        class that should be used for the magnifying glass lookup.
+                        The specified class must be a subclass of the business object
+                        class.
+     */
     public void setOverrideLookupClass(Class<? extends BusinessObject> overrideLookupClass) {
         this.overrideLookupClass = overrideLookupClass;
     }

@@ -59,19 +59,18 @@ public class MaintenanceUtils {
         }
         Map<String, String> template = null;
 
-        String name = definition.getSourceAttributeName();
-        if (name != null) {
-            template = new HashMap<String, String>();
-            for (MaintainableFieldDefinition maintainableField : definition.getMaintainableFields()) {
-                String templateString = maintainableField.getTemplate();
-                if (StringUtils.isNotBlank(templateString)) {
-                    template.put(maintainableField.getName(), templateString);
+        for (MaintainableFieldDefinition maintainableField : definition.getMaintainableFields()) {
+            String templateString = maintainableField.getTemplate();
+            if (StringUtils.isNotBlank(templateString)) {
+                if (template == null) {
+                    template = new HashMap<String, String>();
                 }
+                template.put(maintainableField.getName(), templateString);
             }
         }
         return template;
     }
-
+    
     /**
      * Finds the MaintainableCollectionDefinition corresponding to the given collection name. For example, if the collection name is
      * "A.B.C", it will attempt to find the MaintainableCollectionDefinition for C that is nested in B that is nested under A. This

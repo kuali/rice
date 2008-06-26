@@ -31,15 +31,13 @@ import org.kuali.core.exceptions.ValidationException;
  * 
  */
 abstract public class DataDictionaryEntryBase implements DataDictionaryEntry {
-    // logger
-    //private static Log LOG = LogFactory.getLog(DataDictionaryEntryBase.class);
 
-    private List<AttributeDefinition> attributes;
-    private List<CollectionDefinition> collections;
-    private List<RelationshipDefinition> relationships;
-    private Map<String, AttributeDefinition> attributeMap;
-    private Map<String, CollectionDefinition> collectionMap;
-    private Map<String, RelationshipDefinition> relationshipMap;
+    protected List<AttributeDefinition> attributes;
+    protected List<CollectionDefinition> collections;
+    protected List<RelationshipDefinition> relationships;
+    protected Map<String, AttributeDefinition> attributeMap;
+    protected Map<String, CollectionDefinition> collectionMap;
+    protected Map<String, RelationshipDefinition> relationshipMap;
     
     public DataDictionaryEntryBase() {
         this.attributes = new ArrayList<AttributeDefinition>();

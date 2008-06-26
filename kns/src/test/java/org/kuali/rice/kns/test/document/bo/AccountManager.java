@@ -30,6 +30,7 @@ public class AccountManager extends PersistableBusinessObjectBase {
 	
 	private String userName;
 	private Long amId;
+	private String defaultType;
 	private List<Account> accounts;
 
 	public void setUserName(String userId) {
@@ -40,7 +41,15 @@ public class AccountManager extends PersistableBusinessObjectBase {
 		return userName;
 	}
 
-	public final boolean equals(Object o) {
+	public String getDefaultType() {
+        return this.defaultType;
+    }
+
+    public void setDefaultType(String defaultType) {
+        this.defaultType = defaultType;
+    }
+
+    public final boolean equals(Object o) {
         if (o == null) return false;
         if (!(o instanceof AccountManager)) return false;
         AccountManager am = (AccountManager) o;

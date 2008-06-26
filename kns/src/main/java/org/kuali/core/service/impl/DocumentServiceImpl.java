@@ -18,8 +18,6 @@ package org.kuali.core.service.impl;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -27,11 +25,11 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.core.bo.AdHocRouteRecipient;
 import org.kuali.core.bo.DocumentHeader;
+import org.kuali.core.bo.DocumentType;
 import org.kuali.core.bo.Note;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.dao.DocumentDao;
-import org.kuali.core.dao.DocumentHeaderDao;
 import org.kuali.core.document.Document;
 import org.kuali.core.document.MaintenanceDocumentBase;
 import org.kuali.core.document.authorization.DocumentActionFlags;
@@ -50,6 +48,7 @@ import org.kuali.core.service.BusinessObjectService;
 import org.kuali.core.service.DateTimeService;
 import org.kuali.core.service.DictionaryValidationService;
 import org.kuali.core.service.DocumentAuthorizationService;
+import org.kuali.core.service.DocumentHeaderService;
 import org.kuali.core.service.DocumentService;
 import org.kuali.core.service.DocumentTypeService;
 import org.kuali.core.service.KualiRuleService;
@@ -76,7 +75,6 @@ import edu.iu.uis.eden.exception.WorkflowException;
 @Transactional
 public class DocumentServiceImpl implements DocumentService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentServiceImpl.class);
-    private DocumentHeaderDao documentHeaderDao;
     private DocumentTypeService documentTypeService;
     private DateTimeService dateTimeService;
     private KualiRuleService kualiRuleService;
@@ -87,6 +85,8 @@ public class DocumentServiceImpl implements DocumentService {
     protected BusinessObjectService businessObjectService;
     protected DocumentAuthorizationService documentAuthorizationService;
     protected DocumentDao documentDao;
+    private DataDictionaryServiceImpl dataDictionaryService;
+    private DocumentHeaderService documentHeaderService;
     
 
     /**
@@ -372,13 +372,12 @@ public class DocumentServiceImpl implements DocumentService {
         }
         else {
             // look for docHeaderId, since that fails without breaking the transaction
-            return documentHeaderDao.getByDocumentHeaderId(documentHeaderId) != null;
+            return documentHeaderService.getDocumentHeaderById(documentHeaderId) != null;
         }
 
         return exists;
     }
-
-
+    
     /**
      * Creates a new document by class.
      * 
@@ -388,8 +387,14 @@ public class DocumentServiceImpl implements DocumentService {
         if (documentClass == null) {
             throw new IllegalArgumentException("invalid (null) documentClass");
         }
+        if (!Document.class.isAssignableFrom(documentClass)) {
+            throw new IllegalArgumentException("invalid (non-Document) documentClass");
+        }
 
-        String documentTypeName = documentTypeService.getDocumentTypeNameByClass(documentClass);
+        String documentTypeName = dataDictionaryService.getDocumentTypeNameByClass(documentClass);
+        if (StringUtils.isBlank(documentTypeName)) {
+            throw new UnknownDocumentTypeException("unable to get documentTypeName for unknown documentClass '" + documentClass.getName() + "'");
+        }
         return getNewDocument(documentTypeName);
     }
 
@@ -411,16 +416,14 @@ public class DocumentServiceImpl implements DocumentService {
         }
 
         // get the class for this docTypeName
-        Class documentClass = documentTypeService.getClassByName(documentTypeName);
-        if (documentClass == null) {
-            throw new UnknownDocumentTypeException("unknown document type '" + documentTypeName + "'");
-        }
+        Class documentClass = getDocumentClassByTypeName(documentTypeName);
 
         // get the current user
         UniversalUser currentUser = GlobalVariables.getUserSession().getUniversalUser();
 
         // document must be maint doc or finanancial doc
-        if (!documentTypeService.getDocumentTypeByName(documentTypeName).isFinDocumentTypeActiveIndicator()) {
+        DocumentType documentType = documentTypeService.getPotentialDocumentTypeByName(documentTypeName);
+        if ( (ObjectUtils.isNotNull(documentType)) && (!documentType.isDocumentTypeActiveIndicator()) ) {
             throw new InactiveDocumentTypeAuthorizationException("initiate", documentTypeName);
         }
 
@@ -436,28 +439,49 @@ public class DocumentServiceImpl implements DocumentService {
         GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
 
         // create a new document header object
-        DocumentHeader documentHeader = new DocumentHeader();
-        documentHeader.setWorkflowDocument(workflowDocument);
-        documentHeader.setDocumentNumber(workflowDocument.getRouteHeaderId().toString());
-        // status and notes are initialized correctly in the constructor
+        DocumentHeader documentHeader = null;
+        try {
+            // create a new document header object
+            Class documentHeaderClass = documentHeaderService.getDocumentHeaderBaseClass();
+            documentHeader = (DocumentHeader) documentHeaderClass.newInstance();
+            documentHeader.setWorkflowDocument(workflowDocument);
+            documentHeader.setDocumentNumber(workflowDocument.getRouteHeaderId().toString());
+            // status and notes are initialized correctly in the constructor
+        }
+        catch (IllegalAccessException e) {
+            throw new RuntimeException("Error instantiating DocumentHeader", e);
+        }
+        catch (InstantiationException e) {
+            throw new RuntimeException("Error instantiating DocumentHeader", e);
+        }
 
         // build Document of specified type
         Document document = null;
         try {
             // all maintenance documents have same class
-            if (documentClass.equals(MaintenanceDocumentBase.class)) {
-                document = new MaintenanceDocumentBase(documentTypeName);
-            }
-            else {
+            if (MaintenanceDocumentBase.class.isAssignableFrom(documentClass)) {
+                Class[] defaultConstructor = new Class[]{String.class};
+                Constructor cons = documentClass.getConstructor(defaultConstructor);
+                if (ObjectUtils.isNull(cons)) {
+                    throw new ConfigurationException("Could not find constructor with document type name parameter needed for Maintenance Document Base class");
+                }
+                document = (Document) cons.newInstance(documentTypeName);
+            } else {
                 // non-maintenance document
                 document = (Document) documentClass.newInstance();
             }
-        }
-        catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-        catch (InstantiationException e) {
-            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Error instantiating Document", e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException("Error instantiating Document", e);
+        } catch (SecurityException e) {
+            throw new RuntimeException("Error instantiating Maintenance Document", e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Error instantiating Maintenance Document: No constructor with String parameter found", e);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Error instantiating Maintenance Document", e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException("Error instantiating Maintenance Document", e);
         }
 
         document.setDocumentHeader(documentHeader);
@@ -466,7 +490,7 @@ public class DocumentServiceImpl implements DocumentService {
         t0.log();
         return document;
     }
-
+    
     /**
      * This is temporary until workflow 2.0 and reads from a table to get documents whose status has changed to A (approved - no
      * outstanding approval actions requested)
@@ -489,24 +513,23 @@ public class DocumentServiceImpl implements DocumentService {
             workflowDocument = workflowDocumentService.createWorkflowDocument(Long.valueOf(documentHeaderId), GlobalVariables.getUserSession().getUniversalUser());
             GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
 
-        Class documentClass = documentTypeService.getClassByName(workflowDocument.getDocumentType());
+        Class documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
 
         // retrieve the Document
         Document document = documentDao.findByDocumentHeaderId(documentClass, documentHeaderId);
         return postProcessDocument(documentHeaderId, workflowDocument, document);
     }
-
-    /**
-     * @see org.kuali.core.service.DocumentService#findByDocumentHeaderStatusCode(java.lang.Class, java.lang.String)
-     */
-    public Collection findByDocumentHeaderStatusCode(Class clazz, String statusCode) throws WorkflowException {
-        Collection foundDocuments = documentDao.findByDocumentHeaderStatusCode(clazz, statusCode);
-        Collection returnDocuments = new ArrayList();
-        for (Iterator iter = foundDocuments.iterator(); iter.hasNext();) {
-            Document doc = (Document) iter.next();
-            returnDocuments.add(getByDocumentHeaderId(doc.getDocumentNumber()));
+    
+    private Class getDocumentClassByTypeName(String documentTypeName) {
+        if (StringUtils.isBlank(documentTypeName)) {
+            throw new IllegalArgumentException("invalid (blank) documentTypeName");
         }
-        return returnDocuments;
+
+        Class clazz = dataDictionaryService.getDocumentClassByTypeName(documentTypeName);
+        if (clazz == null) {
+            throw new UnknownDocumentTypeException("unable to get class for unknown documentTypeName '" + documentTypeName + "'");
+        }
+        return clazz;
     }
 
     /**
@@ -519,19 +542,8 @@ public class DocumentServiceImpl implements DocumentService {
     private Document postProcessDocument(String documentHeaderId, KualiWorkflowDocument workflowDocument, Document document) {
         if (document != null) {
             document.getDocumentHeader().setWorkflowDocument(workflowDocument);
-
-            // set correctedByDocumentId manually, since OJB doesn't maintain that relationship
-            DocumentHeader correctingDocumentHeader = documentHeaderDao.getCorrectingDocumentHeader(documentHeaderId);
-            if (correctingDocumentHeader != null) {
-                document.getDocumentHeader().setCorrectedByDocumentId(correctingDocumentHeader.getDocumentNumber());
-            }
-
-            // set the ad hoc route recipients too, since OJB doesn't maintain that relationship
-            // TODO - see KULNRVSYS-1054
-
             document.processAfterRetrieve();
         }
-
         return document;
     }
 
@@ -580,20 +592,6 @@ public class DocumentServiceImpl implements DocumentService {
 
         return documents;
     }
-
-    /**
-     * @see org.kuali.core.service.DocumentService#getFinalDocumentHeadersByDate(Date documentFinalDate)
-     */
-    public Collection getFinalDocumentHeadersByDate(Date documentFinalDate) throws WorkflowException {
-        Collection finalDocumentHeaders = documentHeaderDao.getByDocumentFinalDate(new java.sql.Date(documentFinalDate.getTime()));
-        Iterator finalDocumentHeaderItr = finalDocumentHeaders.iterator();
-        while (finalDocumentHeaderItr.hasNext()) {
-            DocumentHeader finalDocumentHeader = (DocumentHeader) finalDocumentHeaderItr.next();
-            finalDocumentHeader.setWorkflowDocument(workflowDocumentService.createWorkflowDocument(Long.valueOf(finalDocumentHeader.getDocumentNumber()), GlobalVariables.getUserSession().getUniversalUser()));
-        }
-        return finalDocumentHeaders;
-    }
-
 
     /* Helper Methods */
 
@@ -762,15 +760,6 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     /**
-     * dao injected by spring
-     * 
-     * @param documentHeaderDao
-     */
-    public void setDocumentHeaderDao(DocumentHeaderDao documentHeaderDao) {
-        this.documentHeaderDao = documentHeaderDao;
-    }
-
-    /**
      * Sets the maintenanceDocumentService attribute value.
      * 
      * @param maintenanceDocumentService The maintenanceDocumentService to set.
@@ -823,5 +812,20 @@ public class DocumentServiceImpl implements DocumentService {
         this.documentDao = documentDao;
     }
 
+    /**
+     * Sets the dataDictionaryService attribute value.
+     * 
+     * @param dataDictionaryService
+     */
+    public void setDataDictionaryService(DataDictionaryServiceImpl dataDictionaryService) {
+        this.dataDictionaryService = dataDictionaryService;
+    }
+
+    /**
+     * @param documentHeaderService the documentHeaderService to set
+     */
+    public void setDocumentHeaderService(DocumentHeaderService documentHeaderService) {
+        this.documentHeaderService = documentHeaderService;
+    }
 
 }

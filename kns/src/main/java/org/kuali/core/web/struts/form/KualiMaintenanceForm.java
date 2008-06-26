@@ -15,6 +15,8 @@
  */
 package org.kuali.core.web.struts.form;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,12 +35,15 @@ import org.kuali.core.document.MaintenanceDocumentBase;
 import org.kuali.core.document.authorization.DocumentAuthorizer;
 import org.kuali.core.document.authorization.MaintenanceDocumentAuthorizations;
 import org.kuali.core.document.authorization.MaintenanceDocumentAuthorizer;
+import org.kuali.core.exceptions.UnknownDocumentTypeException;
 import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.service.DocumentAuthorizationService;
 import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.util.FieldUtils;
 import org.kuali.core.util.GlobalVariables;
+import org.kuali.core.util.ObjectUtils;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -96,7 +101,38 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 
         if (StringUtils.isNotBlank(docTypeName)) {
             setDocTypeName(docTypeName);
-            setDocument(new MaintenanceDocumentBase(docTypeName));
+            Class documentClass = KNSServiceLocator.getDataDictionaryService().getDocumentClassByTypeName(docTypeName);
+            if (documentClass == null) {
+                throw new UnknownDocumentTypeException("unable to get class for unknown documentTypeName '" + docTypeName + "'");
+            }
+            if (!MaintenanceDocumentBase.class.isAssignableFrom(documentClass)) {
+                throw new ConfigurationException("Document class '" + documentClass + "' is not assignable to '" + MaintenanceDocumentBase.class + "'");
+            }
+            Document document = null;
+            try {
+                Class[] defaultConstructor = new Class[]{String.class};
+                Constructor cons = documentClass.getConstructor(defaultConstructor);
+                if (ObjectUtils.isNull(cons)) {
+                    throw new ConfigurationException("Could not find constructor with document type name parameter needed for Maintenance Document Base class");
+                }
+                document = (Document) cons.newInstance(docTypeName);
+            } catch (SecurityException e) {
+                throw new RuntimeException("Error instantiating Maintenance Document", e);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException("Error instantiating Maintenance Document: No constructor with String parameter found", e);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Error instantiating Maintenance Document", e);
+            } catch (InstantiationException e) {
+                throw new RuntimeException("Error instantiating Maintenance Document", e);
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Error instantiating Maintenance Document", e);
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException("Error instantiating Maintenance Document", e);
+            }
+            if (document == null) {
+                throw new RuntimeException("Unable to instantiate document with type name '" + docTypeName + "' and document class '" + documentClass + "'");
+            }
+            setDocument(document);
         }
     }
 

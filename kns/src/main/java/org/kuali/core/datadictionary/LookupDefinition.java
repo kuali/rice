@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.core.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -56,33 +54,24 @@ import org.kuali.rice.kns.util.KNSConstants;
  *
  */
 public class LookupDefinition extends DataDictionaryDefinitionBase {
-    // logger
-    private static Log LOG = LogFactory.getLog(LookupDefinition.class);
 
-    private String lookupableID;
-    private String title;
-    private String menubar;
-    private String instructions;
-    private SortDefinition defaultSort;
+    protected String lookupableID;
+    protected String title;
+    protected String menubar;
+    protected String instructions;
+    protected SortDefinition defaultSort;
 
-    private List<FieldDefinition> lookupFields;
-    private Map<String,FieldDefinition> lookupFieldMap;
-    private List<FieldDefinition> resultFields;
-    private Map<String,FieldDefinition> resultFieldMap;
+    protected List<FieldDefinition> lookupFields = new ArrayList<FieldDefinition>();
+    protected Map<String,FieldDefinition> lookupFieldMap = new LinkedHashMap<String, FieldDefinition>();
+    protected List<FieldDefinition> resultFields = new ArrayList<FieldDefinition>();
+    protected Map<String,FieldDefinition> resultFieldMap = new LinkedHashMap<String, FieldDefinition>();
 
-    private Integer resultSetLimit;
+    protected Integer resultSetLimit = null;
 
-    private String extraButtonSource;
-    private String extraButtonParams;
+    protected String extraButtonSource;
+    protected String extraButtonParams;
 
-    public LookupDefinition() {
-        LOG.debug("creating new LookupDefinition");
-
-        lookupFields = new ArrayList<FieldDefinition>();
-        resultFields = new ArrayList<FieldDefinition>();
-        lookupFieldMap = new LinkedHashMap<String, FieldDefinition>();
-        resultFieldMap = new LinkedHashMap<String, FieldDefinition>();
-    }
+    public LookupDefinition() {}
 
     /**
 
@@ -179,7 +168,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
     /**
                 The instructions element is used to display instructions to the
                 user on how to use the lookup screen.  It appears that this field
-                is not currently being used on the Kuali Financials lookup screens.
+                is not currently being used on the Kuali Rice lookup screens.
      * @throws IllegalArgumentException if the given instructions are blank
      */
     public void setInstructions(String instructions) {
@@ -206,7 +195,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
     /**
                 The defaultSort element specifies the sequence in which the
                 lookup search results should be displayed.  It contains an
-                ascending/descending indicator and a list of attribut names.
+                ascending/descending indicator and a list of attribute names.
 
                 DD: See SortDefinition.java
 
@@ -283,7 +272,8 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * @param resultSetLimit the resultSetLimit to set
+        The resultSetLimit element specifies the maximum number of records that will be listed
+        as a result of the lookup search.
      */
     public void setResultSetLimit(Integer resultSetLimit) {
         this.resultSetLimit = resultSetLimit;

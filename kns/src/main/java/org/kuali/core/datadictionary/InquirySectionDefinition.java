@@ -41,15 +41,14 @@ import org.kuali.core.datadictionary.exception.DuplicateEntryException;
  */
 public class InquirySectionDefinition extends DataDictionaryDefinitionBase {
 
-    private String title;
-    private List<FieldDefinition> inquiryFields = new ArrayList<FieldDefinition>();
-    private Map<String, FieldDefinition> inquiryFieldMap = new LinkedHashMap<String, FieldDefinition>();
-    private Map inquiryCollections;
+    protected String title;
+    protected List<FieldDefinition> inquiryFields = new ArrayList<FieldDefinition>();
+    protected Map<String, FieldDefinition> inquiryFieldMap = new LinkedHashMap<String, FieldDefinition>();
+    protected Map inquiryCollections;
     
-    private Integer numberOfColumns;
+    protected Integer numberOfColumns = 1;
 
-    public InquirySectionDefinition() {
-    }
+    public InquirySectionDefinition() {}
 
 
     /**
@@ -66,9 +65,6 @@ public class InquirySectionDefinition extends DataDictionaryDefinitionBase {
      * @throws IllegalArgumentException if the given title is blank
      */
     public void setTitle(String title) {
-        if (StringUtils.isBlank(title)) {
-            throw new IllegalArgumentException("invalid (blank) title");
-        }
         this.title = title;
     }
 
@@ -163,7 +159,6 @@ public class InquirySectionDefinition extends DataDictionaryDefinitionBase {
                   The inquirySubSectionHeader allows a separator containing text to
                   separate groups of fields.  The name attribute is the displayed text.
 
-                  DD:   See InquirySubSectionHeaderDefinition.
                   JSTL: inquirySubSectionHeader appears in the inquiryFields map as:
                       * key = "attributeName"
                       * value = name of inquirySubSectionHeader
@@ -186,8 +181,6 @@ public class InquirySectionDefinition extends DataDictionaryDefinitionBase {
 
                 maxLength = the maximum allowable length of the field in the lookup result fields.  In other contexts,
                 like inquiries, this field has no effect.
-
-     *
      */
     public void setInquiryFields(List<FieldDefinition> inquiryFields) {
         inquiryFieldMap.clear();

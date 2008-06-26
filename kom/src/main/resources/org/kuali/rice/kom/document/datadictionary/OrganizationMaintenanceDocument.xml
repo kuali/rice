@@ -87,7 +87,6 @@
     <property name="maintainableItems" >
       <list>
         <bean parent="MaintainableCollectionDefinition">
-          <property name="sourceAttributeName" value="organizationsContexts" />
           <property name="businessObjectClass" value="org.kuali.rice.kom.bo.OrganizationsContexts" />
           <property name="summaryTitle" value="Organizations Contexts" />
           <property name="maintainableFields" >

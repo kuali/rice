@@ -52,6 +52,7 @@ public class ExtensionAttributeTest extends KNSTestBase {
 		dd.addConfigFileLocation("classpath:org/kuali/core/bo/datadictionary");
 		dd.addConfigFileLocation("classpath:org/kuali/core/document/datadictionary");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/test/document");
+        dd.parseDataDictionaryConfigurationFiles( false );
 	}
 
 	@After
@@ -131,7 +132,7 @@ public class ExtensionAttributeTest extends KNSTestBase {
 	MaintenanceDocument document = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getNewDocument(
 		"AccountMaintenanceDocument");
         assertNotNull( "new document must not be null", document );
-        document.getDocumentHeader().setFinancialDocumentDescription( getClass().getSimpleName() + "test" );
+        document.getDocumentHeader().setDocumentDescription( getClass().getSimpleName() + "test" );
         document.getOldMaintainableObject().setBusinessObject(null);
         document.getOldMaintainableObject().setBoClass(ta.getClass());
         document.getNewMaintainableObject().setBusinessObject(ta);

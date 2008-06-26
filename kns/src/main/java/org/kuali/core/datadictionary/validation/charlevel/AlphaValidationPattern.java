@@ -24,7 +24,7 @@ import org.kuali.core.datadictionary.validation.CharacterLevelValidationPattern;
  * 
  */
 public class AlphaValidationPattern extends CharacterLevelValidationPattern {
-    private boolean allowWhitespace = false;
+    protected boolean allowWhitespace = false;
 
 
     /**
@@ -66,19 +66,5 @@ public class AlphaValidationPattern extends CharacterLevelValidationPattern {
         if (allowWhitespace) {
             exportMap.set("allowWhitespace", "true");
         }
-    }
-
-
-    /**
-     * @see org.kuali.core.datadictionary.validation.ValidationPattern#getPatternXml()
-     */
-    public String getPatternXml() {
-        StringBuffer xml = new StringBuffer("<alpha ");
-        if (allowWhitespace) {
-            xml.append("allowWhitespace=\"true\" ");
-        }
-        xml.append("/>");
-
-        return xml.toString();
     }
 }

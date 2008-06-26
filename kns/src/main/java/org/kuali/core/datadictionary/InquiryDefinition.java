@@ -23,14 +23,19 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.core.inquiry.Inquirable;
 
 /**
- * Contains inquiry-related information relating to the parent BusinessObject.
- * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
+    The inquiry element is used to specify the fields that will be displayed on the
+    inquiry screen for this business object and the order in which they will appear.
+
+    JSTL: The inquiry element is a Map which is accessed using
+    a key of "inquiry".  This map contains the following keys:
+        * title (String)
+        * inquiryFields (Map)
  */
 public class InquiryDefinition extends DataDictionaryDefinitionBase {
 
-    private String title;
-    private List<InquirySectionDefinition> inquirySections = new ArrayList<InquirySectionDefinition>();
-    private Class<? extends Inquirable> inquirableClass;
+    protected String title;
+    protected List<InquirySectionDefinition> inquirySections = new ArrayList<InquirySectionDefinition>();
+    protected Class<? extends Inquirable> inquirableClass;
 
     public InquiryDefinition() {
     }

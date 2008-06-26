@@ -39,7 +39,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
     public String getDocumentTitle(MaintenanceDocument document);
 
     /**
-     * Sets the financial document number
+     * Sets the document number
      * 
      * @param documentNumber - the Document's documentNumber
      * 

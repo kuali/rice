@@ -237,11 +237,19 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     }
     
     /**
-     *  @see org.kuali.core.workflow.service.KualiWorkflowInfo#documentWillHaveAtLeastOneActionRequest(java.lang.Long, java.lang.String, java.lang.String[])
+     * @deprecated
+     * @see org.kuali.core.workflow.service.KualiWorkflowInfo#documentWillHaveAtLeastOneActionRequest(edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO, java.lang.String[])
      */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes) throws WorkflowException {
+        return documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, actionRequestedCodes, false);
+    }
+
+    /**
+     * @see org.kuali.core.workflow.service.KualiWorkflowInfo#documentWillHaveAtLeastOneActionRequest(edu.iu.uis.eden.clientapp.vo.ReportCriteriaVO, java.lang.String[], boolean)
+     */
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes, boolean ignoreCurrentlyActiveRequests) throws WorkflowException {
         try {
-            return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, actionRequestedCodes);
+            return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, actionRequestedCodes, ignoreCurrentlyActiveRequests);
         }
         catch (Exception e) {
             throw new WorkflowException(e);

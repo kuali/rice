@@ -24,14 +24,13 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.core.dao.MaintenanceDocumentDao;
-import org.kuali.core.document.MaintenanceDocumentBase;
+import org.kuali.core.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.core.document.MaintenanceLock;
+import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
  * This class is the OJB implementation of the MaintenanceDocumentDao interface.
- * 
- * 
  */
 public class MaintenanceDocumentDaoOjb extends PlatformAwareDaoBaseOjb implements MaintenanceDocumentDao {
 
@@ -73,17 +72,18 @@ public class MaintenanceDocumentDaoOjb extends PlatformAwareDaoBaseOjb implement
         criteria.addLike("lockingRepresentation", "%" + businessObjectClass.getName() + "%");
 
         Collection maintenanceLocks = getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(MaintenanceLock.class, criteria));
-        
+
         if (!maintenanceLocks.isEmpty()) {
             criteria = new Criteria();
             Collection<String> documentNumbers = new ArrayList();
-            
+
             for (Object maintenanceLock : maintenanceLocks) {
                 documentNumbers.add(((MaintenanceLock) maintenanceLock).getDocumentNumber());
             }
             criteria.addIn("documentNumber", documentNumbers);
-            
-            return getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(MaintenanceDocumentBase.class, criteria));
+
+            MaintenanceDocumentEntry entry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getMaintenanceDocumentEntryForBusinessObjectClass(businessObjectClass);
+            return getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(entry.getStandardDocumentBaseClass(), criteria));
         } else {
             return maintenanceLocks;
         }

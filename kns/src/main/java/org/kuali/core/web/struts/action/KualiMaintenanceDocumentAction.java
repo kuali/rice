@@ -27,16 +27,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.persistence.PersistenceException;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.authorization.FieldAuthorization;
 import org.kuali.core.bo.PersistableBusinessObject;
@@ -65,6 +64,7 @@ import org.kuali.rice.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.jpa.metadata.FieldDescriptor;
 import org.kuali.rice.jpa.metadata.MetadataManager;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.util.OrmUtils;
 import org.kuali.rice.util.RiceConstants;
 
@@ -117,7 +117,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      */
     public ActionForward copy(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         // check for copy document number
-        if (request.getParameter("document." + RicePropertyConstants.DOCUMENT_NUMBER) == null) { // object copy
+        if (request.getParameter("document." + KNSPropertyConstants.DOCUMENT_NUMBER) == null) { // object copy
             return setupMaintenance(mapping, form, request, response, KNSConstants.MAINTENANCE_COPY_ACTION);
         }
         else { // document copy

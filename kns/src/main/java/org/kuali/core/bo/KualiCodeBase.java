@@ -101,7 +101,7 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
     /**
      * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
      */
-    final protected LinkedHashMap toStringMapper() {
+    protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
 
         m.put("code", getCode());

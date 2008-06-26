@@ -17,7 +17,6 @@ package org.kuali.core.web.struts.form;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -25,11 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.kuali.RiceKeyConstants;
-import org.kuali.core.UserSession;
 import org.kuali.core.authorization.AuthorizationConstants;
 import org.kuali.core.bo.AdHocRoutePerson;
 import org.kuali.core.bo.AdHocRouteRecipient;

@@ -22,19 +22,24 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Contains section-related information relating to the parent MaintainableDocument.
- * 
- * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
- * 
- * 
+    The maintainableSection element defines one section of the
+    maintenance document.
+
+    JSTL: maintainableSection is a Map which is accessed by an
+    integer representing the sequential occurrence of the section.
+    e.g. "0", "1", etc.  This map contains entries with the following
+    keys:
+        * index (String) - e.g. "0" for first section, etc.
+        * title (String)
+        * maintainableItems (Map)
  */
 public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase {
 
-    private String title;
+    protected String title;
 
-    private List<MaintainableItemDefinition> maintainableItems = new ArrayList<MaintainableItemDefinition>();
+    protected List<MaintainableItemDefinition> maintainableItems = new ArrayList<MaintainableItemDefinition>();
     
-    private boolean hidden = false;
+    protected boolean hidden = false;
 
     public MaintainableSectionDefinition() {}
 
@@ -52,17 +57,16 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
      */
     @Override
     public String getId() {
-        if ( super.getId() == null ) {
-            return title;
+        if ( id == null ) {
+            id = title;
         }
-        return super.getId();
+        return id;
     }
 
 
     /**
-     * Sets title to the given value.
+     * Sets title of the Section.
      * 
-     * @param title
      * @throws IllegalArgumentException if the given title is blank
      */
     public void setTitle(String title) {
@@ -103,11 +107,48 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
     }
 
 
+    /** Whether to hide the entire section, tab and all. */
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
 
 
+    /**
+        The maintainableItems element defines the components of a
+        section.  These may include fields, sub-section headers,
+        and fields.
+
+        JSTL: maintainableItems is a Map which is accessed by a
+        key of "maintainableItems".  This map contains entries with
+        the following keys:
+            * name of first item in the section
+            * name of second item in the section
+            * etc.
+        The corresponding value is an ExportMap which is dependent
+        upon the type of the item as follows:
+
+        subSectionHeader ExportMap
+            In this case, the ExportMap contains the following
+            keys and values:
+                **Key**     **Value**
+                name        name of subSectionHeader
+
+        maintainableField ExportMap
+            In this case, the ExportMap contains the following
+            keys and values:
+                **Key**     **Value**
+                field       true
+                name        name of maintainableField
+                required    true or false
+
+        maintainableCollection ExportMap
+            In this case, the ExportMap contains the following
+            keys and values:
+                **Key**                **Value**
+                collection             true
+                name                   name of collection
+                businessObjectClass    name of collection class
+     */
     public void setMaintainableItems(List<MaintainableItemDefinition> maintainableItems) {
         for ( MaintainableItemDefinition maintainableItem : maintainableItems ) {
             if (maintainableItem == null) {

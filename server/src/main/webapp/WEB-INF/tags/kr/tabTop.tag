@@ -43,7 +43,7 @@
 <table width="100%" class="tab" cellpadding=0 cellspacing=0 summary="">
 	<tr>
 		<td class="tabtable1-left">
-		    <img src="${ConfigProperties.kr.externalizable.images.url}tab-topleft.gif" alt=""	width=12 height=29 align=middle>${tabTitle}
+		    <img src="${ConfigProperties.kr.externalizable.images.url}tab-topleft.gif" alt=""	width=12 height=29 align=middle><h2><c:out value="${tabTitle}" /></h2>
 		</td>
 		<td class="tabtable1-mid">
             <c:if test="${isOpen == 'true' || isOpen == 'TRUE'}">

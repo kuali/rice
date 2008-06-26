@@ -30,12 +30,4 @@ public class DateValidationPattern extends FieldLevelValidationPattern {
     protected String getPatternTypeName() {
         return "date";
     }
-
-
-    /**
-     * @see org.kuali.core.datadictionary.validation.ValidationPattern#getPatternXml()
-     */
-    public String getPatternXml() {
-        return "<date />";
-    }
 }

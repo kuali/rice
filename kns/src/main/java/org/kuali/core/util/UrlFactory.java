@@ -90,29 +90,4 @@ public class UrlFactory {
             throw new RuntimeException( "Unable to encode value: " + value, ex );
         }
     }
-    
-    /**
-     * Constructs a document action URL from the given documentTypeName, with the given Properties as URL parameters.
-     * 
-     * @param documentTypeName
-     * @param urlParams
-     * @return document action URL
-     */
-    public static String buildDocumentActionUrl(String documentTypeName, Properties urlParams) {
-        if (StringUtils.isBlank(documentTypeName)) {
-            throw new IllegalArgumentException("invalid (blank) documentTypeName");
-        }
-
-        if (!documentTypeName.startsWith("Kuali")) {
-            throw new IllegalArgumentException("documentTypeName '" + documentTypeName + "' doesn't start with the literal string 'Kuali'");
-        }
-        if (!documentTypeName.endsWith("Document")) {
-            throw new IllegalArgumentException("documentTypeName '" + documentTypeName + "' doesn't end with the literal string 'Document'");
-        }
-
-        String actionBase = "financial" + StringUtils.substringBetween(documentTypeName, "Kuali", "Document") + ".do";
-        String actionUrl = parameterizeUrl(actionBase, urlParams);
-
-        return actionUrl;
-    }
 }

@@ -46,8 +46,6 @@ import org.kuali.core.web.ui.SectionBridge;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.util.RiceConstants;
 
 /**
  * Kuali inquirable implementation. Implements methods necessary to retrieve the business object and render the ui.
@@ -70,7 +68,12 @@ public class KualiInquirableImpl implements Inquirable {
 
     private Map<String, Boolean> inactiveRecordDisplay;
     
-    public static List<Class> HACK_LIST = new ArrayList<Class>();
+    /**
+     * A list that can be used to define classes that are superclasses or superinterfaces of kuali objects where those
+     * objects' inquiry URLs need to use the name of the superclass or superinterface as the business object class attribute
+     * (see {@link RiceConstants#BUSINESS_OBJECT_CLASS_ATTRIBUTE) 
+     */
+    public static List<Class> SUPER_CLASS_TRANSLATOR_LIST = new ArrayList<Class>();
 
     /**
      * Default constructor, initializes services from spring
@@ -160,7 +163,7 @@ public class KualiInquirableImpl implements Inquirable {
                 // "someAttribute", then an inquiry link is provided to the "referenceObject".  If it does have a primitive reference, then
                 // the inquiry link is directed towards it instead
                 String nestedReferenceName = ObjectUtils.getNestedAttributePrefix(attributeName);
-                Object nestedReferenceObject = ObjectUtils.getPropertyValue(businessObject, nestedReferenceName);
+                Object nestedReferenceObject = ObjectUtils.getNestedValue(businessObject, nestedReferenceName);
                 
                 if (ObjectUtils.isNotNull(nestedReferenceObject) && nestedReferenceObject instanceof BusinessObject) {
                     nestedBusinessObject = (BusinessObject) nestedReferenceObject;
@@ -204,8 +207,8 @@ public class KualiInquirableImpl implements Inquirable {
             return KNSConstants.EMPTY_STRING;
         }
 
-        synchronized (HACK_LIST) {
-            for (Class clazz : HACK_LIST) {
+        synchronized (SUPER_CLASS_TRANSLATOR_LIST) {
+            for (Class clazz : SUPER_CLASS_TRANSLATOR_LIST) {
                 if (clazz.isAssignableFrom(inquiryBusinessObjectClass)) {
                     inquiryBusinessObjectClass = clazz;
                     break;

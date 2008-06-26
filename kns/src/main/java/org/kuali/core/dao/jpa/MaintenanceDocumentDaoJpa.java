@@ -23,13 +23,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.dao.MaintenanceDocumentDao;
 import org.kuali.core.document.MaintenanceDocumentBase;
 import org.kuali.core.document.MaintenanceLock;
 import org.kuali.rice.jpa.criteria.Criteria;
 import org.kuali.rice.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
  * This class is the JPA implementation of the MaintenanceDocumentDao interface.
@@ -54,7 +54,7 @@ public class MaintenanceDocumentDaoJpa implements MaintenanceDocumentDao {
 		// if a docHeaderId is specified, then it will be excluded from the
 		// locking representation test.
 		if (StringUtils.isNotBlank(documentNumber)) {
-			criteria.ne(RicePropertyConstants.DOCUMENT_NUMBER, documentNumber);
+			criteria.ne(KNSPropertyConstants.DOCUMENT_NUMBER, documentNumber);
 		}
 
 		// attempt to retrieve a document based off this criteria

@@ -18,15 +18,10 @@ package org.kuali.core.datadictionary;
 
 
 /**
- * Contains section-related information relating to the parent MaintainableDocument.
- * 
- * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
- * 
- * 
+    The subSectionHeader allows the section to be separated
+    into sub-sections, each with its own name.
  */
 public class MaintainableSubSectionHeaderDefinition extends MaintainableItemDefinition implements SubSectionHeaderDefinitionI{
-    // logger
-    //private static Log LOG = LogFactory.getLog(MaintainableSubSectionHeaderDefinition.class);
 
     public MaintainableSubSectionHeaderDefinition() {
     }

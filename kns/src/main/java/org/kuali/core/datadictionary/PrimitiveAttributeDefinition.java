@@ -20,16 +20,24 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
 
 /**
- * Contains field-related information for DataDictionary entries.
- * 
- * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
- * 
- * 
+                    The primitiveAttribute element identifies one pair of
+                    corresponding fields in the primary business object and
+                    the related business object.
+
+                    JSTL: primitiveAttribute is a Map which is accessed by the
+                    sequential key of "0", "1", etc.  Each entry contains the following
+                    keys:
+                        * sourceName (String)
+                        * targetName (String)
+                    The value corresponding to the sourceName key is the attribute name defined
+                    for the primary business object.
+                    The value corresponding to the targetName key is the attribute name for
+                    the object being referenced by objectAttributeName.
  */
 public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
 
-    private String sourceName;
-    private String targetName;
+    protected String sourceName;
+    protected String targetName;
 
     public PrimitiveAttributeDefinition() {}
 
@@ -42,9 +50,8 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * Sets sourceName to the given value.
+     * sourceName is the name of the POJO property of the business object
      * 
-     * @param sourceName
      * @throws IllegalArgumentException if the given sourceName is blank
      */
     public void setSourceName(String sourceName) {
@@ -64,9 +71,8 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * Sets targetName to the given value.
+     * targetName is the name of attribute that corresponds to the sourceName in the looked up BO
      * 
-     * @param targetName
      * @throws IllegalArgumentException if the given targetName is blank
      */
     public void setTargetName(String targetName) {

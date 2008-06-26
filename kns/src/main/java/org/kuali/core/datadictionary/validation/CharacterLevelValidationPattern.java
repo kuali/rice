@@ -25,8 +25,10 @@ import org.kuali.core.datadictionary.exporter.ExportMap;
  * 
  */
 abstract public class CharacterLevelValidationPattern extends ValidationPattern {
-    private int maxLength = -1;
-    private int exactLength = -1;
+    protected Pattern regexPattern;
+
+    protected int maxLength = -1;
+    protected int exactLength = -1;
 
     /**
      * Sets maxLength parameter for the associated regex.
@@ -74,25 +76,27 @@ abstract public class CharacterLevelValidationPattern extends ValidationPattern 
      * @return regular expression Pattern generated using the individual ValidationPattern subclass
      */
     final public Pattern getRegexPattern() {
-        String regexString = getRegexString();
-
-        StringBuffer completeRegex = new StringBuffer("^");
-        completeRegex.append(getRegexString());
-
-        if (maxLength != -1) {
-            completeRegex.append("{0," + maxLength + "}");
+        if ( regexPattern == null ) {
+            String regexString = getRegexString();
+    
+            StringBuffer completeRegex = new StringBuffer("^");
+            completeRegex.append(getRegexString());
+    
+            if (maxLength != -1) {
+                completeRegex.append("{0," + maxLength + "}");
+            }
+            else if (exactLength != -1) {
+                completeRegex.append("{" + exactLength + "}");
+            }
+            else {
+                completeRegex.append("*");
+            }
+    
+            completeRegex.append("$");
+    
+            regexPattern = Pattern.compile(completeRegex.toString());
         }
-        else if (exactLength != -1) {
-            completeRegex.append("{" + exactLength + "}");
-        }
-        else {
-            completeRegex.append("*");
-        }
-
-        completeRegex.append("$");
-
-        Pattern pattern = Pattern.compile(completeRegex.toString());
-        return pattern;
+        return regexPattern;
     }
 
 

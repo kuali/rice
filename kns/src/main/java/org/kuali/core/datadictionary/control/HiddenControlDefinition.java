@@ -16,20 +16,14 @@
 
 package org.kuali.core.datadictionary.control;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
- * A single HTML hidden field control.
- * 
- * 
+    The hidden element will cause the attribute to not
+    be displayed.
  */
 public class HiddenControlDefinition extends ControlDefinitionBase {
-    // logger
-    private static Log LOG = LogFactory.getLog(HiddenControlDefinition.class);
 
     public HiddenControlDefinition() {
-        LOG.debug("creating new HiddenControlDefinition");
     }
 
     /**

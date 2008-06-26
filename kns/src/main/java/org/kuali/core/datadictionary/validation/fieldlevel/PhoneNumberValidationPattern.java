@@ -30,12 +30,4 @@ public class PhoneNumberValidationPattern extends FieldLevelValidationPattern {
     protected String getPatternTypeName() {
         return "phoneNumber";
     }
-
-
-    /**
-     * @see org.kuali.core.datadictionary.validation.ValidationPattern#getPatternXml()
-     */
-    public String getPatternXml() {
-        return "<phoneNumber />";
-    }
 }

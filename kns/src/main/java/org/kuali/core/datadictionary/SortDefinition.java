@@ -24,16 +24,23 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
 
 /**
- * Contains sorting-related information for DataDictionary entries.
- * 
- * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
- * 
- * 
+                The defaultSort element specifies the sequence in which the
+                lookup search results should be displayed.  It contains an
+                ascending/descending indicator and a list of attribut names.
+
+                DD: See SortDefinition.java
+
+                JSTL: defaultSort is a Map with the following keys:
+                * sortAscending (boolean String)
+                * sortAttributes (Map)
+
+                By the time JSTL export occurs, the optional attributeName from the defaultSort
+                tag will have been converted into the first contained sortAttribute
  */
 public class SortDefinition extends DataDictionaryDefinitionBase {
 
-    private boolean sortAscending = true;
-    private List<String> attributeNames = new ArrayList<String>();
+    protected boolean sortAscending = true;
+    protected List<String> attributeNames = new ArrayList<String>();
 
     public SortDefinition() {}
 
@@ -80,11 +87,6 @@ public class SortDefinition extends DataDictionaryDefinitionBase {
         return sortAscending;
     }
 
-    /**
-     * Sets sortAscending to the given value
-     * 
-     * @param sortAscending
-     */
     public void setSortAscending(boolean sortAscending) {
         this.sortAscending = sortAscending;
     }

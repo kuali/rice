@@ -23,15 +23,13 @@ import org.kuali.core.util.documentserializer.PropertySerializabilityEvaluator;
  * by the {@link PropertySerializabilityEvaluator} that evaluates whether a property is serializable. 
  */
 public class WorkflowProperty {
-    private String path;
+    protected String path = null;
     
     /**
      * Default constructor, sets path to null
      * 
      */
-    public WorkflowProperty() {
-        path = null;
-    }
+    public WorkflowProperty() {}
 
     /**
      * Returns the path to the property that is serializable, relative to the {@link WorkflowPropertyGroup} that contains this object

@@ -99,7 +99,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
         public MockDocument(UniversalUser initiator, boolean isApprovalRequested) {
             this();
             this.documentNumber = "1234567890";
-            this.documentHeader.setWorkflowDocument(new MockWorkflowDocument(initiator, isApprovalRequested));
+            getDocumentHeader().setWorkflowDocument(new MockWorkflowDocument(initiator, isApprovalRequested));
         }
 
         @Override
@@ -107,7 +107,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
             LinkedHashMap map = new LinkedHashMap();
             map.put("class", "MockDocument");
             map.put(KNSPropertyConstants.DOCUMENT_NUMBER, documentNumber);
-            map.put("initiator", documentHeader.getWorkflowDocument().getInitiatorNetworkId());
+            map.put("initiator", getDocumentHeader().getWorkflowDocument().getInitiatorNetworkId());
             return map;
         }
 

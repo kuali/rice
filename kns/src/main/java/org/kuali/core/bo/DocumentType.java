@@ -16,18 +16,17 @@
 
 package org.kuali.core.bo;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
-import javax.persistence.Version;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
-import javax.persistence.Entity;
-
 import java.util.LinkedHashMap;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.kuali.core.util.TypedArrayList;
 
 /**
  * 
@@ -40,232 +39,75 @@ public class DocumentType extends PersistableBusinessObjectBase {
 
     @Id
 	@Column(name="FDOC_TYP_CD")
-	private String financialDocumentTypeCode;
-    @Column(name="FDOC_GRP_CD")
-	private String financialDocumentGroupCode;
+	private String documentTypeCode;
     @Column(name="FDOC_NM")
-	private String financialDocumentName;
-    @Column(name="FIN_ELIM_ELGBL_CD")
-	private boolean finEliminationsEligibilityIndicator;
+	private String documentName;
     @Column(name="FDOC_TYP_ACTIVE_CD")
-	private boolean finDocumentTypeActiveIndicator;
-    @Column(name="FDOC_RTNG_RULE_CD")
-	private String finDocumentRoutingRuleCode;
-    @Column(name="FDOC_AUTOAPRV_DAYS")
-	private Integer finDocAutomaticApprovalDays;
-    @Column(name="FDOC_BALANCED_CD")
-	private boolean financialDocumentBalancedIndicator;
-    @Column(name="TRN_SCRBBR_OFST_GEN_IND")
-	private boolean transactionScrubberOffsetGenerationIndicator;
-
-    @OneToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="FDOC_GRP_CD", insertable=false, updatable=false)
-	private DocumentGroup documentGroup;
+	private boolean documentTypeActiveIndicator;
+    @OneToMany(cascade={CascadeType.PERSIST})
+	private List<DocumentTypeAttribute> documentTypeAttributes;
     
     /**
      * Default no-arg constructor.
      */
     public DocumentType() {
-
+        documentTypeAttributes = new TypedArrayList(DocumentTypeAttribute.class);
     }
 
     /**
-     * Gets the financialDocumentTypeCode attribute.
-     * 
-     * @return Returns the financialDocumentTypeCode
-     * 
+     * @return the documentTypeCode
      */
-    public String getFinancialDocumentTypeCode() {
-        return financialDocumentTypeCode;
-    }
-
-
-    /**
-     * Sets the financialDocumentTypeCode attribute.
-     * 
-     * @param financialDocumentTypeCode The financialDocumentTypeCode to set.
-     * 
-     */
-    public void setFinancialDocumentTypeCode(String financialDocumentTypeCode) {
-        this.financialDocumentTypeCode = financialDocumentTypeCode;
+    public String getDocumentTypeCode() {
+        return this.documentTypeCode;
     }
 
     /**
-     * Gets the financialDocumentGroupCode attribute.
-     * 
-     * @return Returns the financialDocumentGroupCode
-     * 
+     * @param documentTypeCode the documentTypeCode to set
      */
-    public String getFinancialDocumentGroupCode() {
-        return financialDocumentGroupCode;
-    }
-
-
-    /**
-     * Sets the financialDocumentGroupCode attribute.
-     * 
-     * @param financialDocumentGroupCode The financialDocumentGroupCode to set.
-     * 
-     */
-    public void setFinancialDocumentGroupCode(String financialDocumentGroupCode) {
-        this.financialDocumentGroupCode = financialDocumentGroupCode;
+    public void setDocumentTypeCode(String documentTypeCode) {
+        this.documentTypeCode = documentTypeCode;
     }
 
     /**
-     * Gets the financialDocumentName attribute.
-     * 
-     * @return Returns the financialDocumentName
-     * 
+     * @return the documentName
      */
-    public String getFinancialDocumentName() {
-        return financialDocumentName;
-    }
-
-
-    /**
-     * Sets the financialDocumentName attribute.
-     * 
-     * @param financialDocumentName The financialDocumentName to set.
-     * 
-     */
-    public void setFinancialDocumentName(String financialDocumentName) {
-        this.financialDocumentName = financialDocumentName;
+    public String getDocumentName() {
+        return this.documentName;
     }
 
     /**
-     * Gets the finEliminationsEligibilityIndicator attribute.
-     * 
-     * @return Returns the finEliminationsEligibilityIndicator
-     * 
+     * @param documentName the documentName to set
      */
-    public boolean isFinEliminationsEligibilityIndicator() {
-        return finEliminationsEligibilityIndicator;
-    }
-
-
-    /**
-     * Sets the finEliminationsEligibilityIndicator attribute.
-     * 
-     * @param finEliminationsEligibilityIndicator The finEliminationsEligibilityIndicator to set.
-     * 
-     */
-    public void setFinEliminationsEligibilityIndicator(boolean finEliminationsEligibilityIndicator) {
-        this.finEliminationsEligibilityIndicator = finEliminationsEligibilityIndicator;
+    public void setDocumentName(String documentName) {
+        this.documentName = documentName;
     }
 
     /**
-     * Gets the finDocumentTypeActiveIndicator attribute.
-     * 
-     * @return Returns the finDocumentTypeActiveIndicator
-     * 
+     * @return the documentTypeActiveIndicator
      */
-    public boolean isFinDocumentTypeActiveIndicator() {
-        return finDocumentTypeActiveIndicator;
-    }
-
-
-    /**
-     * Sets the finDocumentTypeActiveIndicator attribute.
-     * 
-     * @param finDocumentTypeActiveIndicator The finDocumentTypeActiveIndicator to set.
-     * 
-     */
-    public void setFinDocumentTypeActiveIndicator(boolean finDocumentTypeActiveIndicator) {
-        this.finDocumentTypeActiveIndicator = finDocumentTypeActiveIndicator;
+    public boolean isDocumentTypeActiveIndicator() {
+        return this.documentTypeActiveIndicator;
     }
 
     /**
-     * Gets the finDocumentRoutingRuleCode attribute.
-     * 
-     * @return Returns the finDocumentRoutingRuleCode
-     * 
+     * @param documentTypeActiveIndicator the documentTypeActiveIndicator to set
      */
-    public String getFinDocumentRoutingRuleCode() {
-        return finDocumentRoutingRuleCode;
-    }
-
-
-    /**
-     * Sets the finDocumentRoutingRuleCode attribute.
-     * 
-     * @param finDocumentRoutingRuleCode The finDocumentRoutingRuleCode to set.
-     * 
-     */
-    public void setFinDocumentRoutingRuleCode(String finDocumentRoutingRuleCode) {
-        this.finDocumentRoutingRuleCode = finDocumentRoutingRuleCode;
+    public void setDocumentTypeActiveIndicator(boolean documentTypeActiveIndicator) {
+        this.documentTypeActiveIndicator = documentTypeActiveIndicator;
     }
 
     /**
-     * Gets the finDocAutomaticApprovalDays attribute.
-     * 
-     * @return Returns the finDocAutomaticApprovalDays
-     * 
+     * @return the documentTypeAttributes
      */
-    public Integer getFinDocAutomaticApprovalDays() {
-        return finDocAutomaticApprovalDays;
-    }
-
-
-    /**
-     * Sets the finDocAutomaticApprovalDays attribute.
-     * 
-     * @param finDocAutomaticApprovalDays The finDocAutomaticApprovalDays to set.
-     * 
-     */
-    public void setFinDocAutomaticApprovalDays(Integer finDocAutomaticApprovalDays) {
-        this.finDocAutomaticApprovalDays = finDocAutomaticApprovalDays;
+    public List<DocumentTypeAttribute> getDocumentTypeAttributes() {
+        return this.documentTypeAttributes;
     }
 
     /**
-     * Gets the financialDocumentBalancedIndicator attribute.
-     * 
-     * @return Returns the financialDocumentBalancedIndicator
-     * 
+     * @param documentTypeAttributes the documentTypeAttributes to set
      */
-    public boolean isFinancialDocumentBalancedIndicator() {
-        return financialDocumentBalancedIndicator;
-    }
-
-
-    /**
-     * Sets the financialDocumentBalancedIndicator attribute.
-     * 
-     * @param financialDocumentBalancedIndicator The financialDocumentBalancedIndicator to set.
-     * 
-     */
-    public void setFinancialDocumentBalancedIndicator(boolean financialDocumentBalancedIndicator) {
-        this.financialDocumentBalancedIndicator = financialDocumentBalancedIndicator;
-    }
-
-    /**
-     * @return Returns the transactionScrubberOffsetGenerationIndicator.
-     */
-    public boolean isTransactionScrubberOffsetGenerationIndicator() {
-        return transactionScrubberOffsetGenerationIndicator;
-    }
-
-    /**
-     * @param transactionScrubberOffsetGenerationIndicator The transactionScrubberOffsetGenerationIndicator to set.
-     */
-    public void setTransactionScrubberOffsetGenerationIndicator(boolean transactionScrubberOffsetGenerationIndicator) {
-        this.transactionScrubberOffsetGenerationIndicator = transactionScrubberOffsetGenerationIndicator;
-    }
-
-    /**
-     * Gets the documentGroup attribute. 
-     * @return Returns the documentGroup.
-     */
-    public DocumentGroup getDocumentGroup() {
-        return documentGroup;
-    }
-
-    /**
-     * Sets the documentGroup attribute value.
-     * @param documentGroup The documentGroup to set.
-     * @deprecated
-     */
-    public void setDocumentGroup(DocumentGroup documentGroup) {
-        this.documentGroup = documentGroup;
+    public void setDocumentTypeAttributes(List<DocumentTypeAttribute> documentTypeAttributes) {
+        this.documentTypeAttributes = documentTypeAttributes;
     }
 
     /**
@@ -273,10 +115,9 @@ public class DocumentType extends PersistableBusinessObjectBase {
      */
     protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
-        m.put("financialDocumentTypeCode", this.financialDocumentTypeCode);
+        m.put("documentTypeCode", this.documentTypeCode);
         return m;
     }
-
 
 }
 

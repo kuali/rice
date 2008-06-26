@@ -21,9 +21,6 @@
         class="org.kuali.core.datadictionary.validation.fieldlevel.ZipcodeValidationPattern"
         abstract="true"
     />
-    <bean id="MaskFormatterCustom"
-        class="org.kuali.core.datadictionary.mask.MaskFormatterCustom" abstract="true"
-    />
     <bean id="AuthorizationDefinition"
         class="org.kuali.core.datadictionary.AuthorizationDefinition" abstract="true"
     />
@@ -90,9 +87,6 @@
     <bean id="MonthValidationPattern"
         class="org.kuali.core.datadictionary.validation.fieldlevel.MonthValidationPattern"
         abstract="true"
-    />
-    <bean id="FieldPairDefinition"
-        class="org.kuali.core.datadictionary.FieldPairDefinition" abstract="true"
     />
     <bean id="ApcSelectControlDefinition"
         class="org.kuali.core.datadictionary.control.ApcSelectControlDefinition"

@@ -18,12 +18,22 @@ package org.kuali.core.datadictionary;
 import org.apache.commons.lang.StringUtils;
 
 /**
+            The help element provides the keys to obtain a
+            help description from the database.
+
+            On document JSP pages, a help icon may be rendered.  If this tag is specified, then
+            the filename of this page will be located in the value of the parameter specified by the namespace, detail type, and name.
+
+            The value of the parameter is relative to the value of the "externalizable.help.url" property in KualiConfigurationService (see KualiHelpAction).
+            parameterNamespace: namespace of the parameter that has the path to the help page
+            parameterName: name of the parameter that has the path to the help page
+            parameterDetailType: detail type of the parameter that has the path to the help page
  */
 public class HelpDefinition extends DataDictionaryDefinitionBase {
 
-    private String parameterNamespace;
-    private String parameterDetailType;
-    private String parameterName;
+    protected String parameterNamespace;
+    protected String parameterDetailType;
+    protected String parameterName;
 
     /**
      * Constructs a HelpDefinition.
@@ -46,7 +56,7 @@ public class HelpDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * @param parameterName
+     * parameterName: name of the parameter that has the path to the help page
      */
     public void setParameterName(String parameterName) {
         if (StringUtils.isBlank(parameterName)) {
@@ -63,7 +73,7 @@ public class HelpDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * @param parameterNamespace
+     * parameterNamespace: namespace of the parameter that has the path to the help page
      */
     public void setParameterNamespace(String parameterNamespace) {
         if (StringUtils.isBlank(parameterNamespace)) {
@@ -76,6 +86,9 @@ public class HelpDefinition extends DataDictionaryDefinitionBase {
 		return this.parameterDetailType;
 	}
 
+	/**
+	 * parameterDetailType: detail type of the parameter that has the path to the help page
+	 */
 	public void setParameterDetailType(String parameterDetailType) {
         if (StringUtils.isBlank(parameterDetailType)) {
             throw new IllegalArgumentException("invalid (blank) parameterDetailType");

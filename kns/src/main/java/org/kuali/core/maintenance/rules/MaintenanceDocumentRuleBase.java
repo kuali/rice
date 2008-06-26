@@ -59,6 +59,7 @@ import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.core.workflow.service.WorkflowDocumentService;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 import edu.iu.uis.eden.exception.WorkflowException;
 
@@ -654,7 +655,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         boolean success = true;
 
         // require a document description field
-        success &= checkEmptyDocumentField("documentHeader.financialDocumentDescription", document.getDocumentHeader().getFinancialDocumentDescription(), "Description");
+        success &= checkEmptyDocumentField(KNSPropertyConstants.DOCUMENT_HEADER + "." + KNSPropertyConstants.DOCUMENT_DESCRIPTION, document.getDocumentHeader().getDocumentDescription(), "Description");
 
         // enforce authorization restrictions on fields
         success &= checkAuthorizationRestrictions(document);

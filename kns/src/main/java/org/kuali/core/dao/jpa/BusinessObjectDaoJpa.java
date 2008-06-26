@@ -25,7 +25,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.PersistableBusinessObjectExtension;
 import org.kuali.core.dao.BusinessObjectDao;
@@ -34,6 +33,7 @@ import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.OjbCollectionHelper;
 import org.kuali.rice.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.jpa.metadata.MetadataManager;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.util.OrmUtils;
 import org.springframework.dao.DataAccessException;
 
@@ -257,7 +257,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 
 	private org.kuali.rice.jpa.criteria.Criteria buildActiveJpaCriteria(Class clazz) {
 		org.kuali.rice.jpa.criteria.Criteria criteria = new org.kuali.rice.jpa.criteria.Criteria(clazz.getName());
-		criteria.eq(RicePropertyConstants.ACTIVE, true);
+		criteria.eq(KNSPropertyConstants.ACTIVE, true);
 		return criteria;
 	}
 

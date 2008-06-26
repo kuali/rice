@@ -19,8 +19,6 @@ import javax.persistence.MappedSuperclass;
 
 import org.kuali.rice.KNSServiceLocator;
 
-import edu.iu.uis.eden.exception.WorkflowException;
-
 /**
  * This is the base class implementation for all transaction processing eDocs. 
  */
@@ -42,32 +40,6 @@ public abstract class TransactionalDocumentBase extends DocumentBase implements 
      */
     public boolean getAllowsCopy() {
         return KNSServiceLocator.getTransactionalDocumentDictionaryService().getAllowsCopy(this).booleanValue() && this instanceof Copyable;
-    }
-
-    /**
-     * @see org.kuali.core.document.TransactionalDocument#getAllowsErrorCorrection()
-     * Checks if error correction is set to true in data dictionary and the document instance implements
-     * Correctable. Furthermore, a document cannot be error corrected twice.
-     */
-    public boolean getAllowsErrorCorrection() {
-        boolean allowErrorCorrection = KNSServiceLocator.getTransactionalDocumentDictionaryService().getAllowsErrorCorrection(this).booleanValue() && this instanceof Correctable;
-        allowErrorCorrection = allowErrorCorrection && getDocumentHeader().getCorrectedByDocumentId() == null;
-
-        return allowErrorCorrection;
-    }
-
-    /**
-     * @see org.kuali.core.document.Correctable#toErrorCorrection()
-     */
-    public void toErrorCorrection() throws WorkflowException, IllegalStateException {
-        if (!this.getAllowsErrorCorrection()) {
-            throw new IllegalStateException(this.getClass().getName() + " does not support document-level error correction");
-        }
-
-        String sourceDocumentHeaderId = getDocumentNumber();
-        setNewDocumentHeader();
-        getDocumentHeader().setFinancialDocumentInErrorNumber(sourceDocumentHeaderId);
-        addCopyErrorDocumentNote("error-correction for document " + sourceDocumentHeaderId);
     }
 
     /**

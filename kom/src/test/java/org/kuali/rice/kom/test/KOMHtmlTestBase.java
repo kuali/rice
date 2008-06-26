@@ -29,7 +29,7 @@ public abstract class KOMHtmlTestBase extends KOMTestCase {
 			+ "/kr/maintenance.do?businessObjectClassName=edu.sampleu.travel.bo.TravelAccount&methodToCall=start#topOfForm");
 
 	HtmlForm maintForm = (HtmlForm) maintPage.getFormByName("KualiForm");
-	maintForm.getInputByName("document.documentHeader.financialDocumentDescription").setValueAttribute("description");
+	maintForm.getInputByName("document.documentHeader.documentDescription").setValueAttribute("description");
 	maintForm.getInputByName("document.newMaintainableObject.number").setValueAttribute("a6");
 	maintForm.getInputByName("document.newMaintainableObject.name").setValueAttribute("myaccount");
 	maintForm.getInputByName("document.newMaintainableObject.foId").setValueAttribute("1");

@@ -24,7 +24,7 @@ import org.kuali.core.datadictionary.validation.FieldLevelValidationPattern;
  * 
  */
 public class FloatingPointValidationPattern extends FieldLevelValidationPattern {
-    private boolean allowNegative;
+    protected boolean allowNegative;
 
     /**
      * @return allowNegative
@@ -75,19 +75,5 @@ public class FloatingPointValidationPattern extends FieldLevelValidationPattern 
         }
 
         return exportMap;
-    }
-
-
-    /**
-     * @see org.kuali.core.datadictionary.validation.ValidationPattern#getPatternXml()
-     */
-    public String getPatternXml() {
-        StringBuffer xml = new StringBuffer("<floatingPoint ");
-        if (allowNegative) {
-            xml.append("allowNegative=\"true\" ");
-        }
-        xml.append("/>");
-
-        return xml.toString();
     }
 }

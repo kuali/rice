@@ -84,7 +84,6 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Group" />
-          <property name="sourceAttributeName" value="parentGroups" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Group" />
           <property name="includeAddLine" value="false" />
           <property name="alwaysAllowCollectionDeletion" value="true" />
@@ -118,7 +117,6 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Group" />
-          <property name="sourceAttributeName" value="memberGroups" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Group" />
           <property name="includeAddLine" value="false" />
           <property name="alwaysAllowCollectionDeletion" value="true" />
@@ -152,7 +150,6 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Principal" />
-          <property name="sourceAttributeName" value="memberPrincipals" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Principal" />
           <property name="includeAddLine" value="false" />
           <property name="alwaysAllowCollectionDeletion" value="true" />
@@ -192,7 +189,6 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Role" />
-          <property name="sourceAttributeName" value="groupRoles" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Role" />
           <property name="includeAddLine" value="false" />
           <property name="alwaysAllowCollectionDeletion" value="true" />

@@ -31,12 +31,4 @@ public class JavaClassValidationPattern extends FieldLevelValidationPattern {
     protected String getPatternTypeName() {
         return "javaClass";
     }
-
-
-    /**
-     * @see org.kuali.core.datadictionary.validation.ValidationPattern#getPatternXml()
-     */
-    public String getPatternXml() {
-        return "<javaClass />";
-    }
 }

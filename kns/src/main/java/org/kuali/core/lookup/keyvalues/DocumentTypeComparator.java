@@ -29,7 +29,7 @@ public class DocumentTypeComparator implements Comparator {
 
         DocumentType dt1 = (DocumentType) o1;
         DocumentType dt2 = (DocumentType) o2;
-        return dt1.getFinancialDocumentTypeCode().compareToIgnoreCase(dt2.getFinancialDocumentTypeCode());
+        return dt1.getDocumentTypeCode().compareToIgnoreCase(dt2.getDocumentTypeCode());
     }
 
 }

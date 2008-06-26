@@ -54,7 +54,7 @@ public class DocumentTypeValueFinder extends KeyValuesBase {
 
         for (Iterator iter = docTypes.iterator(); iter.hasNext();) {
             DocumentType docType = (DocumentType) iter.next();
-            labels.add(new KeyLabelPair(docType.getFinancialDocumentTypeCode(), docType.getFinancialDocumentTypeCode() + " - " + docType.getFinancialDocumentName()));
+            labels.add(new KeyLabelPair(docType.getDocumentTypeCode(), docType.getDocumentTypeCode() + " - " + docType.getDocumentName()));
         }
 
         return labels;

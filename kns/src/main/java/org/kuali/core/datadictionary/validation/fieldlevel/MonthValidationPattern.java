@@ -30,12 +30,4 @@ public class MonthValidationPattern extends FieldLevelValidationPattern {
     protected String getPatternTypeName() {
         return "month";
     }
-
-
-    /**
-     * @see org.kuali.core.datadictionary.validation.ValidationPattern#getPatternXml()
-     */
-    public String getPatternXml() {
-        return "<month />";
-    }
 }

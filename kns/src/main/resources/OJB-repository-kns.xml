@@ -105,11 +105,12 @@
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="xmlDocumentContents" column="DOCUMENT_CONTENTS" jdbc-type="CLOB"
 			conversion="org.kuali.core.util.OjbKualiEncryptDecryptFieldConversion" />
-		<!--  object references -->
+<!-- 
 		<reference-descriptor name="documentHeader" class-ref="org.kuali.core.bo.DocumentHeader" auto-retrieve="true" auto-update="object"
 			auto-delete="object">
 			<foreignkey field-ref="documentNumber" />
 		</reference-descriptor>
+-->
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.core.document.MaintenanceLock" table="FP_MAINT_LOCK_T">
@@ -124,27 +125,10 @@
 		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="financialDocumentStatusCode" column="FDOC_STATUS_CD" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="financialDocumentDescription" column="FDOC_DESC" jdbc-type="VARCHAR" />
-		<field-descriptor name="financialDocumentTotalAmount" column="FDOC_TOTAL_AMT" jdbc-type="DECIMAL"
-			conversion="org.kuali.core.util.OjbKualiDecimalFieldConversion" />
+		<field-descriptor name="documentDescription" column="FDOC_DESC" jdbc-type="VARCHAR" />
 		<field-descriptor name="organizationDocumentNumber" column="ORG_DOC_NBR" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="financialDocumentInErrorNumber" column="FDOC_IN_ERR_NBR" jdbc-type="VARCHAR" />
-		<field-descriptor name="financialDocumentTemplateNumber" column="FDOC_TMPL_NBR" jdbc-type="VARCHAR" />
-		<!-- TODO: remove following field from here, BO, and database after workflow API to retrieve this is implemented -->
-		<field-descriptor name="documentFinalDate" column="TEMP_DOC_FNL_DT" jdbc-type="DATE" />
+		<field-descriptor name="documentTemplateNumber" column="FDOC_TMPL_NBR" jdbc-type="VARCHAR" />
 		<field-descriptor name="explanation" column="FDOC_EXPLAIN_TXT" jdbc-type="VARCHAR" />
-		<reference-descriptor name="documentStatus" class-ref="org.kuali.core.bo.DocumentStatus" auto-retrieve="true" auto-update="none"
-			auto-delete="none" proxy="true">
-			<foreignkey field-ref="financialDocumentStatusCode" />
-		</reference-descriptor>
-	</class-descriptor>
-
-	<class-descriptor class="org.kuali.core.bo.DocumentStatus" table="FP_DOC_STATUS_T">
-		<field-descriptor name="financialDocumentStatusCode" column="FDOC_STATUS_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="financialDocumentStatusName" column="FDOC_STATUS_NM" jdbc-type="VARCHAR" />
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.core.bo.Note" table="SH_NTE_T">
@@ -193,33 +177,29 @@
 
 
 	<class-descriptor class="org.kuali.core.bo.DocumentType" table="FP_DOC_TYPE_T">
-		<field-descriptor name="financialDocumentTypeCode" column="FDOC_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
+		<field-descriptor name="documentTypeCode" column="FDOC_TYP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="financialDocumentGroupCode" column="FDOC_GRP_CD" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="financialDocumentName" column="FDOC_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="finEliminationsEligibilityIndicator" column="FIN_ELIM_ELGBL_CD" jdbc-type="VARCHAR"
+		<field-descriptor name="documentName" column="FDOC_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="documentTypeActiveIndicator" column="FDOC_TYP_ACTIVE_CD" jdbc-type="VARCHAR"
 			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
-		<field-descriptor name="finDocumentTypeActiveIndicator" column="FDOC_TYP_ACTIVE_CD" jdbc-type="VARCHAR"
-			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
-		<field-descriptor name="finDocumentRoutingRuleCode" column="FDOC_RTNG_RULE_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="finDocAutomaticApprovalDays" column="FDOC_AUTOAPRV_DAYS" jdbc-type="INTEGER" />
-		<field-descriptor name="financialDocumentBalancedIndicator" column="FDOC_BALANCED_CD" jdbc-type="VARCHAR"
-			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
-		<field-descriptor name="transactionScrubberOffsetGenerationIndicator" column="TRN_SCRBBR_OFST_GEN_IND" jdbc-type="CHAR"
-			conversion="org.kuali.core.util.OjbCharBooleanConversion" />
-		<reference-descriptor name="documentGroup" class-ref="org.kuali.core.bo.DocumentGroup" auto-retrieve="true" auto-update="none"
-			auto-delete="none" proxy="true">
-			<foreignkey field-ref="financialDocumentGroupCode" />
-		</reference-descriptor>
+
+		<collection-descriptor name="documentTypeAttributes" element-class-ref="org.kuali.core.bo.DocumentTypeAttribute" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
+			<inverse-foreignkey field-ref="documentTypeCode" />
+		</collection-descriptor>
+
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.core.bo.DocumentGroup" table="FP_DOC_GROUP_T">
-		<field-descriptor name="financialDocumentGroupCode" column="FDOC_GRP_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
+	<class-descriptor class="org.kuali.core.bo.DocumentTypeAttribute" table="FP_DOC_TYPE_ATTR_T">
+		<field-descriptor name="id" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" autoincrement="true" sequence-name="FP_DOC_TYPE_ATTR_ID_SEQ" />
+		<field-descriptor name="key" column="DOC_TYP_ATTR_CD" jdbc-type="VARCHAR"/>
+		<field-descriptor name="documentTypeCode" column="FDOC_TYP_CD" jdbc-type="VARCHAR"/>
+		<field-descriptor name="value" column="DOC_TYP_ATTR_VAL" jdbc-type="VARCHAR" />
+		<field-descriptor name="label" column="DOC_TYP_ATTR_LBL" jdbc-type="VARCHAR" />
+
+		<field-descriptor name="active" column="ACTIVE_IND" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbCharBooleanConversion" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="financialDocumentGroupName" column="FDOC_GRP_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="financialDocumentClassCode" column="FDOC_CLASS_CD" jdbc-type="VARCHAR" />
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.core.bo.ParameterNamespace" table="SH_PARM_NMSPC_T">

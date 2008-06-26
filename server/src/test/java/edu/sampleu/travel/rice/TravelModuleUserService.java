@@ -18,12 +18,12 @@ package edu.sampleu.travel.rice;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.user.KualiModuleUser;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.service.impl.KualiModuleUserServiceBaseImpl;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.springframework.beans.factory.InitializingBean;
 
 public class TravelModuleUserService extends KualiModuleUserServiceBaseImpl implements InitializingBean {
@@ -47,7 +47,7 @@ public class TravelModuleUserService extends KualiModuleUserServiceBaseImpl impl
 
     public void afterPropertiesSet() throws Exception {
         List<String> properties = new ArrayList<String>();
-        properties.add(RicePropertyConstants.ACTIVE);
+        properties.add(KNSPropertyConstants.ACTIVE);
         super.setPropertyList(properties);
     }
 

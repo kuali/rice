@@ -1,3 +1,62 @@
 ------------------ KNS UPGRADE -----------------------
 alter table SH_NTE_T modify NTE_AUTH_ID VARCHAR2(30)
 /
+CREATE SEQUENCE FP_DOC_TYPE_ATTR_ID_SEQ INCREMENT BY 1 START WITH 1000
+/
+CREATE TABLE FP_DOC_TYPE_ATTR_T (
+        ID                             NUMBER(8) CONSTRAINT FP_DOC_TYPE_ATTR_TN1 NOT NULL,
+        OBJ_ID                         VARCHAR2(36) DEFAULT SYS_GUID() CONSTRAINT FP_DOC_TYPE_ATTR_TN3 NOT NULL,
+        VER_NBR                        NUMBER(8) DEFAULT 1 CONSTRAINT FP_DOC_TYPE_ATTR_TN4 NOT NULL,
+        ACTIVE_IND                     CHAR(1) DEFAULT 'Y' CONSTRAINT FP_DOC_TYPE_ATTR_TN5 NOT NULL,
+        DOC_TYP_ATTR_CD                VARCHAR2(100) CONSTRAINT FP_DOC_TYPE_ATTR_TN2 NOT NULL,
+        DOC_TYP_ATTR_VAL               VARCHAR2(400),
+        DOC_TYP_ATTR_LBL               VARCHAR2(400),
+        FDOC_TYP_CD                    VARCHAR2(4) CONSTRAINT FP_DOC_TYPE_ATTR_TN5 NOT NULL,
+     CONSTRAINT FP_DOC_TYPE_ATTR_TP1 PRIMARY KEY (
+        ID) ,
+     CONSTRAINT FP_DOC_TYPE_ATTR_TC0 UNIQUE (OBJ_ID) 
+)
+/
+ALTER TABLE FP_DOC_TYPE_ATTR_T
+ADD CONSTRAINT FP_DOC_TYPE_ATTR_TR1 FOREIGN KEY
+(
+FDOC_TYP_CD
+)
+REFERENCES FP_DOC_TYPE_T
+(
+FDOC_TYP_CD
+) ENABLE
+/
+---- FP_DOC_HEADER_T ADJUSTMENTS ----
+drop index FP_DOC_HEADER_TI4
+/
+alter table FP_DOC_HEADER_T drop column FDOC_STATUS_CD
+/
+alter table FP_DOC_HEADER_T drop column FDOC_TOTAL_AMT
+/
+alter table FP_DOC_HEADER_T drop column FDOC_IN_ERR_NBR
+/
+alter table FP_DOC_HEADER_T drop column TEMP_DOC_FNL_DT
+/
+---- FP_DOC_TYPE_T ADJUSTMENTS ----
+drop index FP_DOC_TYPE_TI2
+/
+alter table FP_DOC_TYPE_T drop constraint FP_DOC_TYPE_TR1
+/
+alter table FP_DOC_TYPE_T drop column FDOC_GRP_CD
+/
+alter table FP_DOC_TYPE_T drop column FIN_ELIM_ELGBL_CD
+/
+alter table FP_DOC_TYPE_T drop column FDOC_RTNG_RULE_CD
+/
+alter table FP_DOC_TYPE_T drop column FDOC_AUTOAPRV_DAYS
+/
+alter table FP_DOC_TYPE_T drop column FDOC_BALANCED_CD
+/
+alter table FP_DOC_TYPE_T drop column TRN_SCRBBR_OFST_GEN_IND
+/
+---- KNS TABLE REMOVALS ----
+drop table FP_DOC_GROUP_T
+/
+drop table FP_DOC_STATUS_T
+/

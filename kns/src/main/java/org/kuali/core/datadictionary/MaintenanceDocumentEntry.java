@@ -24,6 +24,7 @@ import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
 import org.kuali.core.datadictionary.exception.ClassValidationException;
 import org.kuali.core.datadictionary.exception.DuplicateEntryException;
+import org.kuali.core.document.Document;
 import org.kuali.core.document.MaintenanceDocumentBase;
 import org.kuali.core.document.authorization.DocumentAuthorizerBase;
 import org.kuali.core.maintenance.Maintainable;
@@ -34,29 +35,34 @@ import org.kuali.core.maintenance.Maintainable;
  * 
  */
 public class MaintenanceDocumentEntry extends DocumentEntry {
-    // logger
-    //private static Log LOG = LogFactory.getLog(MaintenanceDocumentEntry.class);
 
-    private Class<? extends BusinessObject> businessObjectClass;
-    private Class<? extends Maintainable> maintainableClass;
+    protected Class<? extends BusinessObject> businessObjectClass;
+    protected Class<? extends Maintainable> maintainableClass;
 
-    private List<MaintainableSectionDefinition> maintainableSections = new ArrayList<MaintainableSectionDefinition>();
-    private List<String> lockingKeys = new ArrayList<String>();
-    private List<ReferenceDefinition> defaultExistenceChecks = new ArrayList<ReferenceDefinition>();
-    private List<ApcRuleDefinition> apcRules = new ArrayList<ApcRuleDefinition>();
-    private Map<String,MaintainableSectionDefinition> maintainableSectionMap = new LinkedHashMap<String, MaintainableSectionDefinition>();
-    private Map<String,ReferenceDefinition> defaultExistenceCheckMap = new LinkedHashMap<String, ReferenceDefinition>();
-    private Map<String,ApcRuleDefinition> apcRuleMap = new LinkedHashMap<String, ApcRuleDefinition>();
+    protected List<MaintainableSectionDefinition> maintainableSections = new ArrayList<MaintainableSectionDefinition>();
+    protected List<String> lockingKeys = new ArrayList<String>();
+    protected List<ReferenceDefinition> defaultExistenceChecks = new ArrayList<ReferenceDefinition>();
+    protected List<ApcRuleDefinition> apcRules = new ArrayList<ApcRuleDefinition>();
+    protected Map<String,MaintainableSectionDefinition> maintainableSectionMap = new LinkedHashMap<String, MaintainableSectionDefinition>();
+    protected Map<String,ReferenceDefinition> defaultExistenceCheckMap = new LinkedHashMap<String, ReferenceDefinition>();
+    protected Map<String,ApcRuleDefinition> apcRuleMap = new LinkedHashMap<String, ApcRuleDefinition>();
     
-    private boolean allowsNewOrCopy = true;
-    private String additionalSectionsFile;
+    protected boolean allowsNewOrCopy = true;
+    protected String additionalSectionsFile;
 
     public MaintenanceDocumentEntry() {
         super();
-        setDocumentClass(MaintenanceDocumentBase.class);
+        setDocumentClass(getStandardDocumentBaseClass());
     }
 
+    public Class<? extends Document> getStandardDocumentBaseClass() {
+        return MaintenanceDocumentBase.class;
+    }
 
+    /*
+            This attribute is used in many contexts, for example, in maintenance docs, it's used to specify the classname
+            of the BO being maintained.
+     */
     public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
         if (businessObjectClass == null) {
             throw new IllegalArgumentException("invalid (null) businessObjectClass");
@@ -70,6 +76,12 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     }
 
 
+    /*
+            The maintainableClass element specifies the name of the
+            java class which is responsible for implementing the
+            maintenance logic.
+            The normal one is KualiMaintainableImpl.java.
+     */
     public void setMaintainableClass(Class<? extends Maintainable> maintainableClass) {
         if (maintainableClass == null) {
             throw new IllegalArgumentException("invalid (null) maintainableClass");
@@ -151,8 +163,9 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
 
 
     /**
-     * Sets the allowsNewOrCopy attribute value.
-     * @param allowsNewOrCopy The allowsNewOrCopy to set.
+            The allowsNewOrCopy element contains a value of true or false.
+            If true, this indicates the maintainable should allow the
+            new and/or copy maintenance actions.
      */
     public void setAllowsNewOrCopy(boolean allowsNewOrCopy) {
         this.allowsNewOrCopy = allowsNewOrCopy;
@@ -206,6 +219,12 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     }
 
 
+    /*
+            The additionalSectionsFile element specifies the name of the location
+            of an additional JSP file to include in the maintenance document
+            after the generation sections but before the notes.
+            The location semantics are those of jsp:include.
+     */
     public void setAdditionalSectionsFile(String additionalSectionsFile) {
         this.additionalSectionsFile = additionalSectionsFile;
     }
@@ -216,6 +235,11 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     }
 
 
+    /*
+            The lockingKeys element specifies a list of fields
+            that comprise a unique key.  This is used for record locking
+            during the file maintenance process.
+     */
     public void setLockingKeys(List<String> lockingKeys) {
         for ( String lockingKey : lockingKeys ) {
             if (lockingKey == null) {
@@ -226,6 +250,19 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     }
 
 
+    /**
+            The maintainableSections elements allows the maintenance document to
+            be presented in sections.  Each section can have a different title.
+
+            JSTL: maintainbleSections is a Map whichis accessed by a key
+            of "maintainableSections".  This map contains entries with the
+            following keys:
+                * "0"   (for first section)
+                * "1"   (for second section)
+                etc.
+            The corresponding value for each entry is a maintainableSection ExportMap.
+            See MaintenanceDocumentEntryMapper.java.
+     */
     public void setMaintainableSections(List<MaintainableSectionDefinition> maintainableSections) {
         maintainableSectionMap.clear();
         for ( MaintainableSectionDefinition maintainableSectionDefinition : maintainableSections ) {
@@ -244,6 +281,14 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     }
 
 
+    /*
+            The defaultExistenceChecks element contains a list of
+            reference object names which are required to exist when maintaining a BO.
+            Optionally, the reference objects can be required to be active.
+
+            JSTL: defaultExistenceChecks is a Map of Reference elements,
+            whose entries are keyed by attributeName
+     */
     public void setDefaultExistenceChecks(List<ReferenceDefinition> defaultExistenceChecks) {
         defaultExistenceCheckMap.clear();
         for ( ReferenceDefinition reference : defaultExistenceChecks  ) {
@@ -262,6 +307,21 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     }
 
 
+    /*
+                    The apcRule element is used to specifiy legal values
+                    for an attribute.  This is done by specifiying the key
+                    to the System Parameters table that indicates
+                    the allowable values.
+
+                    JSTL: apcRules are Maps with the following keys:
+                    * attributeName (String)
+                    * parameterNamespace (String)
+                    * parameterDetailType (String)
+                    * parameterName (String)
+                    * errorMessage (String) a property key usually defined in ApplicationResources.properties
+
+                    See DictionaryValidationService.validateApcRule
+     */
     public void setApcRules(List<ApcRuleDefinition> apcRules) {
         apcRuleMap.clear();
         for ( ApcRuleDefinition apcRule : apcRules ) {

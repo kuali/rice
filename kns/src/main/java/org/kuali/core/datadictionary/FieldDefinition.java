@@ -22,7 +22,7 @@ import org.kuali.core.datadictionary.mask.Mask;
 import org.kuali.core.lookup.valueFinder.ValueFinder;
 
 /**
- * Contains field-related information for DataDictionary entries.
+ * Contains field-related information for DataDictionary entries.  Used by lookups and inquiries.
  * 
  * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
  * 
@@ -30,19 +30,19 @@ import org.kuali.core.lookup.valueFinder.ValueFinder;
  */
 public class FieldDefinition extends DataDictionaryDefinitionBase implements FieldDefinitionI {
  
-    private String attributeName;
-    private boolean required = false;
-    private boolean forceInquiry = false;
-    private boolean noInquiry = false;
-    private boolean forceLookup = false;
-    private boolean noLookup = false;
-    private String defaultValue;
-    private Class<? extends ValueFinder> defaultValueFinderClass;
+    protected String attributeName;
+    protected boolean required = false;
+    protected boolean forceInquiry = false;
+    protected boolean noInquiry = false;
+    protected boolean forceLookup = false;
+    protected boolean noLookup = false;
+    protected String defaultValue;
+    protected Class<? extends ValueFinder> defaultValueFinderClass;
 
-    private Integer maxLength = null;
+    protected Integer maxLength = null;
 
-    private String displayEditMode;
-    private Mask displayMask;
+    protected String displayEditMode;
+    protected Mask displayMask;
 
     public FieldDefinition() {
     }
@@ -78,9 +78,8 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 
 
     /**
-     * Sets required to the given value.
-     * 
-     * @param required
+                    required = true means that the user must enter something
+                        into the search criterion lookup field
      */
     public void setRequired(boolean required) {
         this.required = required;
@@ -96,7 +95,8 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 
 
     /**
-     * @param forceInquiry The forceInquiry to set.
+     * forceInquiry = true means that the displayed field value will
+                    always be made inquirable (this attribute is not used within the code).
      */
     public void setForceInquiry(boolean forceInquiry) {
         this.forceInquiry = forceInquiry;
@@ -110,7 +110,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     }
 
     /**
-     * @param forceLookup The forceLookup to set.
+     * forceLookup = this attribute is not used
      */
     public void setForceLookup(boolean forceLookup) {
         this.forceLookup = forceLookup;
@@ -124,7 +124,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     }
 
     /**
-     * @param noInquiry The noInquiry to set.
+     * noInquiry = true means that the displayed field will never be made inquirable.
      */
     public void setNoInquiry(boolean noInquiry) {
         this.noInquiry = noInquiry;
@@ -138,7 +138,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     }
 
     /**
-     * @param noLookup The noLookup to set.
+     * noLookup = true means that field should not include magnifying glass (i.e. quickfinder)
      */
     public void setNoLookup(boolean noLookup) {
         this.noLookup = noLookup;
@@ -211,6 +211,18 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     }
 
 
+    /*
+                        The document authorizer classes have a method getEditMode, which is a map of edit mode to
+                        value mappings.  Depending on the context, the value of the mapping may be relevant, and the logic determining
+                        whether the value is relevant is often implemented in the JSP/tag layer.
+
+                        Fields on a document (particularily maintenance documents) may be associated with
+                        an edit mode.  If the edit mode is mapped to a relevant value, then the all fields associated with the edit mode
+                        will be rendered unhidden.
+
+                        The displayEditMode element is used to specify the edit mode that will be associated with the field.
+                        If the document authorizer returns a map with this edit mode mapped to a proper value, then the field will be unhidden to the user.
+     */
     public void setDisplayEditMode(String displayEditMode) {
         this.displayEditMode = displayEditMode;
     }
@@ -221,6 +233,11 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     }
 
 
+    /**
+     * The displayMask element specifies the type of masking to
+                    be used to hide the value from un-authorized users.
+                    There are three types of masking.
+     */
     public void setDisplayMask(Mask displayMask) {
         this.displayMask = displayMask;
     }
@@ -241,8 +258,8 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 
 
     /**
-     * Sets the maxLength attribute value.
-     * @param maxLength The maxLength to set.
+     * maxLength = the maximum allowable length of the field in the lookup result fields.  In other contexts,
+                    like inquiries, this field has no effect.
      */
     public void setMaxLength(Integer maxLength) {
         this.maxLength = maxLength;

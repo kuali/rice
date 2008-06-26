@@ -15,8 +15,6 @@
  */
 package org.kuali.core.service;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.kuali.core.UserSession;
 import org.kuali.core.util.ErrorMap;
@@ -36,14 +34,14 @@ public class DictionaryValidationServiceTest extends TestBase {
     public DictionaryValidationServiceTest() {
     }
 
-    @Before
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         GlobalVariables.setErrorMap(new ErrorMap());
         GlobalVariables.setUserSession(new UserSession("quickstart"));
     }
 
-    @After
+    @Override
     public void tearDown() throws Exception {
         GlobalVariables.setErrorMap(new ErrorMap());
         GlobalVariables.setUserSession(null);
@@ -58,7 +56,7 @@ public class DictionaryValidationServiceTest extends TestBase {
     @Test public void testRecursiveValidation() throws Exception {
         AccountRequestDocument travelDocument = (AccountRequestDocument) KNSServiceLocator.getDocumentService().getNewDocument("AccountRequest");
         // set all required fields except 1
-        travelDocument.getDocumentHeader().setFinancialDocumentDescription("test document");
+        travelDocument.getDocumentHeader().setDocumentDescription("test document");
         travelDocument.setReason1("reason1");
         travelDocument.setReason2("reason2");
         travelDocument.setRequester("requester");
@@ -79,7 +77,7 @@ public class DictionaryValidationServiceTest extends TestBase {
     @Test public void testRecursiveValidationMultiple() throws Exception {
         AccountRequestDocument travelDocument = (AccountRequestDocument) KNSServiceLocator.getDocumentService().getNewDocument("AccountRequest");
         // set all required fields except 1
-        travelDocument.getDocumentHeader().setFinancialDocumentDescription("test document");
+        travelDocument.getDocumentHeader().setDocumentDescription("test document");
         travelDocument.setReason1("reason1");
         travelDocument.setReason2("reason2");
         travelDocument.setRequester("requester");

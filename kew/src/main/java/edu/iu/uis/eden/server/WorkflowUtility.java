@@ -105,6 +105,13 @@ public interface WorkflowUtility extends Remote {
     public String[] getPreviousRouteNodeNames(Long documentId) throws RemoteException, WorkflowException;
 
     // 2.4
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests) throws RemoteException;
+
+    /**
+     * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO, String[], boolean)} instead
+     * 
+     * This method assumes both existing and generated requests should be taken into account
+     */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes) throws RemoteException;
 
     /**

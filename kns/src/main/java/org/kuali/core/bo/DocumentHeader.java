@@ -16,73 +16,67 @@
 
 package org.kuali.core.bo;
 
-import java.sql.Date;
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.RicePropertyConstants;
-import org.kuali.core.util.KualiDecimal;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
-import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 
 /**
- * Document Header Business Object
+ * Interface for {@link DocumentHeaderBase} 
  * 
- * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
 @Table(name="FP_DOC_HEADER_T")
 public class DocumentHeader extends PersistableBusinessObjectBase {
-    private static final long serialVersionUID = 8330320294549662887L;
 
     @Id
 	@Column(name="FDOC_NBR")
 	private String documentNumber;
-    @Column(name="FDOC_STATUS_CD")
-	private String financialDocumentStatusCode;
     @Column(name="FDOC_DESC")
-	private String financialDocumentDescription;
-    @Column(name="FDOC_TOTAL_AMT")
-	private KualiDecimal financialDocumentTotalAmount;
+	private String documentDescription;
     @Column(name="ORG_DOC_NBR")
 	private String organizationDocumentNumber;
-    @Column(name="FDOC_IN_ERR_NBR")
-	private String financialDocumentInErrorNumber;
     @Column(name="FDOC_TMPL_NBR")
-	private String financialDocumentTemplateNumber;
-    // TODO: remove following field from here, OJB, and database after workflow API to retrieve this is implemented
-    //@Temporal(TemporalType.DATE)
-	@Column(name="TEMP_DOC_FNL_DT")
-	private Date documentFinalDate;
+	private String documentTemplateNumber;
     @Column(name="FDOC_EXPLAIN_TXT")
 	private String explanation;
     
     @Transient
     private transient KualiWorkflowDocument workflowDocument;
-    @OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="FDOC_STATUS_CD", insertable=false, updatable=false)
-	private DocumentStatus documentStatus;
-    
-    @Transient
-    private String correctedByDocumentId;
 
     /**
      * Constructor - creates empty instances of dependent objects
      * 
      */
     public DocumentHeader() {
-		financialDocumentStatusCode = KNSConstants.DocumentStatusCodes.INITIATED;
+        super();
+    }
+
+    /**
+     * @return null if {@link #getDocumentTemplateNumber()} returns a non-blank value
+     */
+    public KeyLabelPair getAdditionalDocId1() {
+        if (StringUtils.isNotBlank(getDocumentTemplateNumber())) {
+            return new KeyLabelPair("DataDictionary.DocumentHeader.attributes.documentTemplateNumber", getDocumentTemplateNumber());
+        }
+        return null;
+    }
+
+    /**
+     * @return null
+     */
+    public KeyLabelPair getAdditionalDocId2() {
+        return null;
     }
 
     /**
@@ -114,129 +108,59 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
     }
 
     /**
-     * 
-     * @return documentDescription
-     */
-    public String getFinancialDocumentDescription() {
-        return financialDocumentDescription;
-    }
-
-    /**
-     * 
-     * @param documentDescription
-     */
-    public void setFinancialDocumentDescription(String financialDocumentDescription) {
-        this.financialDocumentDescription = financialDocumentDescription;
-    }
-
-    /**
-     * 
-     * @return documentHeaderId
+     * @return the documentNumber
      */
     public String getDocumentNumber() {
-        return documentNumber;
+        return this.documentNumber;
     }
 
     /**
-     * 
-     * @param documentHeaderId
+     * @param documentNumber the documentNumber to set
      */
     public void setDocumentNumber(String documentNumber) {
         this.documentNumber = documentNumber;
     }
 
     /**
-     * 
-     * @return
+     * @return the documentDescription
      */
-    public String getOrganizationDocumentNumber() {
-        return organizationDocumentNumber;
+    public String getDocumentDescription() {
+        return this.documentDescription;
     }
 
     /**
-     * 
-     * @param organizationDocumentNumber
+     * @param documentDescription the documentDescription to set
+     */
+    public void setDocumentDescription(String documentDescription) {
+        this.documentDescription = documentDescription;
+    }
+
+    /**
+     * @return the organizationDocumentNumber
+     */
+    public String getOrganizationDocumentNumber() {
+        return this.organizationDocumentNumber;
+    }
+
+    /**
+     * @param organizationDocumentNumber the organizationDocumentNumber to set
      */
     public void setOrganizationDocumentNumber(String organizationDocumentNumber) {
         this.organizationDocumentNumber = organizationDocumentNumber;
     }
 
-
     /**
-     * @return documentHeaderId of the document from which this document was copied
+     * @return the documentTemplateNumber
      */
-    public String getFinancialDocumentTemplateNumber() {
-        return financialDocumentTemplateNumber;
+    public String getDocumentTemplateNumber() {
+        return this.documentTemplateNumber;
     }
 
     /**
-     * @param copiedFromDocumentId
+     * @param documentTemplateNumber the documentTemplateNumber to set
      */
-    public void setFinancialDocumentTemplateNumber(String setFinancialDocumentTemplateNumber) {
-        this.financialDocumentTemplateNumber = setFinancialDocumentTemplateNumber;
-    }
-
-    /**
-     * @return documentHeaderId of the document which corrects this document
-     */
-    public String getCorrectedByDocumentId() {
-        return correctedByDocumentId;
-    }
-
-    /**
-     * @param correctedByDocumentId
-     */
-    public void setCorrectedByDocumentId(String correctedByDocumentId) {
-        this.correctedByDocumentId = correctedByDocumentId;
-    }
-
-    /**
-     * @return documentHeaderId of the document which this document corrects
-     */
-    public String getFinancialDocumentInErrorNumber() {
-        return financialDocumentInErrorNumber;
-    }
-
-    /**
-     * @param correctedDocumentId
-     */
-    public void setFinancialDocumentInErrorNumber(String financialDocumentInErrorNumber) {
-        this.financialDocumentInErrorNumber = financialDocumentInErrorNumber;
-    }
-
-
-    /**
-     * @return Returns the documentStatusCode.
-     */
-    public String getFinancialDocumentStatusCode() {
-        return financialDocumentStatusCode;
-    }
-
-    /**
-     * @param documentStatusCode The documentStatusCode to set.
-     */
-    public void setFinancialDocumentStatusCode(String financialDocumentStatusCode) {
-        this.financialDocumentStatusCode = financialDocumentStatusCode;
-    }
-
-    /**
-     * Gets the financialDocumentTotalAmount attribute.
-     * 
-     * @return Returns the financialDocumentTotalAmount
-     * 
-     */
-    public KualiDecimal getFinancialDocumentTotalAmount() {
-        return financialDocumentTotalAmount;
-    }
-
-    /**
-     * Sets the financialDocumentTotalAmount attribute.
-     * 
-     * @param financialDocumentTotalAmount The financialDocumentTotalAmount to set.
-     * 
-     */
-    public void setFinancialDocumentTotalAmount(KualiDecimal financialDocumentTotalAmount) {
-        this.financialDocumentTotalAmount = financialDocumentTotalAmount;
+    public void setDocumentTemplateNumber(String documentTemplateNumber) {
+        this.documentTemplateNumber = documentTemplateNumber;
     }
 
     /**
@@ -248,24 +172,6 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
         m.put(KNSPropertyConstants.DOCUMENT_NUMBER, documentNumber);
 
         return m;
-    }
-
-    /**
-     * Gets the documentFinalDate attribute.
-     * 
-     * @return Returns the documentFinalDate.
-     */
-    public Date getDocumentFinalDate() {
-        return documentFinalDate;
-    }
-
-    /**
-     * Sets the documentFinalDate attribute value.
-     * 
-     * @param documentFinalDate The documentFinalDate to set.
-     */
-    public void setDocumentFinalDate(Date documentFinalDate) {
-        this.documentFinalDate = documentFinalDate;
     }
 
     /**
@@ -282,23 +188,6 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
      */
     public void setExplanation(String explanation) {
         this.explanation = explanation;
-    }
-
-    /**
-     * Gets the documentStatus attribute. 
-     * @return Returns the documentStatus.
-     */
-    public DocumentStatus getDocumentStatus() {
-        return documentStatus;
-    }
-
-    /**
-     * Sets the documentStatus attribute value.
-     * @param documentStatus The documentStatus to set.
-     * @deprecated
-     */
-    public void setDocumentStatus(DocumentStatus documentStatus) {
-        this.documentStatus = documentStatus;
     }
 
 }

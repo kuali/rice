@@ -15,8 +15,6 @@
  */
 package org.kuali.core.service;
 
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import org.kuali.core.bo.Note;
@@ -43,7 +41,6 @@ public interface DocumentService {
      * @return true if a document with the given documentHeaderId exists
      */
     public boolean documentExists(String documentHeaderId);
-
 
     /**
      * get a new blank document instance based on the document type name
@@ -75,16 +72,6 @@ public interface DocumentService {
      */
     public Document getByDocumentHeaderId(String documentHeaderId) throws WorkflowException;
 
-
-    /**
-     * Retrieves a collection of documents with type of given Class, and with the passed status code.
-     *
-     * @param clazz
-     * @param statusCode
-     * @return
-     */
-    public Collection findByDocumentHeaderStatusCode(Class clazz, String statusCode) throws WorkflowException;
-
     /**
      * This method retrieves a list of fully-populated documents given a list of document header id values.
      *
@@ -96,15 +83,6 @@ public interface DocumentService {
     public List getDocumentsByListOfDocumentHeaderIds(Class clazz, List documentHeaderIds) throws WorkflowException;
 
     /**
-     * Retrieves a collection of DocumentHeaders by the date that they were finalized.
-     *
-     * @param documentFinalDate
-     * @return Collection of DocumentHeaders
-     * @throws WorkflowException
-     */
-    public Collection getFinalDocumentHeadersByDate(Date documentFinalDate) throws WorkflowException;
-
-    /**
      *
      * This method is to allow for documents to be updated which is currently used to update the document status as well as to allow
      * for locked docs to be unlocked
@@ -112,17 +90,6 @@ public interface DocumentService {
      * @param document
      */
     public void updateDocument(Document document);
-
-    /**
-     * Calls validation methods to validate against the dictionary and run through the rules engine. If validation succeeds, the
-     * document is persisted and control returns back to the route action.
-     *
-     * @param document
-     * @param event
-     * @throws WorkflowException
-     * @throws ValidationException
-     */
-//    public void validateAndPersistDocument(Document document, KualiDocumentEvent event) throws WorkflowException, ValidationException;
 
     /**
      * This is a helper method that performs the same as the {@link #saveDocument(Document, Class)} method.  The convenience

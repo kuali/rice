@@ -16,7 +16,6 @@
 package org.kuali.core.datadictionary.exporter;
 
 import org.kuali.core.datadictionary.FieldDefinition;
-import org.kuali.core.datadictionary.FieldPairDefinition;
 
 /**
  * Defines utility methods associated with mapping Entries et al
@@ -44,18 +43,4 @@ public class MapperUtils {
         return buildAttributeMap(field.getAttributeName());
     }
 
-    /**
-     * @param index
-     * @param fieldPair
-     * @return ExportMap containing the standard entries associated with an indexed FieldPairDefinition
-     */
-    public static ExportMap buildFieldPairMap(FieldPairDefinition fieldPair, int index) {
-        ExportMap fieldPairMap = new ExportMap(Integer.toString(index));
-
-        fieldPairMap.set("index", Integer.toString(index));
-        fieldPairMap.set("fieldTo", fieldPair.getFieldTo());
-        fieldPairMap.set("fieldFrom", fieldPair.getFieldFrom());
-
-        return fieldPairMap;
-    }
 }

@@ -28,24 +28,13 @@ public class NumericValidationPattern extends CharacterLevelValidationPattern {
      * @see org.kuali.core.datadictionary.validation.ValidationPattern#getRegexString()
      */
     protected String getRegexString() {
-        StringBuffer regexString = new StringBuffer("[0-9]");
-
-        return regexString.toString();
+        return "[0-9]";
     }
-
 
     /**
      * @see org.kuali.core.datadictionary.validation.CharacterLevelValidationPattern#extendExportMap(org.kuali.bo.datadictionary.exporter.ExportMap)
      */
     public void extendExportMap(ExportMap exportMap) {
         exportMap.set("type", "numeric");
-    }
-
-
-    /**
-     * @see org.kuali.core.datadictionary.validation.ValidationPattern#getPatternXml()
-     */
-    public String getPatternXml() {
-        return "<numeric />";
     }
 }

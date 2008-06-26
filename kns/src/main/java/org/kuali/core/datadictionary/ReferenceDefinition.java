@@ -19,16 +19,30 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.core.bo.BusinessObject;
 import org.kuali.core.datadictionary.exception.AttributeValidationException;
 
+/**
+ *                     The reference element specifies the name of a reference
+                    object that is required to exist in order for the primary
+                    business object to be created or modified on a BO.
+
+                    DD: See ReferenceDefinition.java
+
+                    JSTL: references are Maps with the following keys:
+                    * attributeName (String)
+                    * activeIndicatorAttributeName (String)
+                    * activeIndicatorReversed (boolean String)
+                    * attributeToHighlightOnFail (String)
+                    * displayFieldName (String)
+
+ *
+ */
 public class ReferenceDefinition extends DataDictionaryDefinitionBase {
-
-
-    private String attributeName;
-    private String activeIndicatorAttributeName;
-    private boolean activeIndicatorReversed = false;
-    private String attributeToHighlightOnFail;
-    private String displayFieldName;
-    private String collection;
-    private Class<? extends BusinessObject> collectionBusinessObjectClass;
+    protected String attributeName;
+    protected String activeIndicatorAttributeName;
+    protected boolean activeIndicatorReversed = false;
+    protected String attributeToHighlightOnFail;
+    protected String displayFieldName;
+    protected String collection;
+    protected Class<? extends BusinessObject> collectionBusinessObjectClass;
     
     public ReferenceDefinition() {}
 
@@ -40,9 +54,11 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * Sets attributeName to the given value.
+     * attributeName is the name of a reference object that
+                        must exist and not be null.  In the case of a collection,
+                        then this is the name of a reference object within the
+                        collection element.
      * 
-     * @param attributeName
      * @throws IllegalArgumentException if the given attributeName is blank
      */
     public void setAttributeName(String attributeName) {
@@ -60,9 +76,11 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * Sets activeIndicatorAttributeName to the given value.
-     * 
-     * @param attributeName
+     * activeIndicatorAttributeName is the name of field
+                        in the reference object ( or collection attribute)
+                        that is used to determine if the reference object
+                        is active
+                        
      * @throws IllegalArgumentException if the given activeIndicatorAttributeName is blank
      */
     public void setActiveIndicatorAttributeName(String activeIndicatorAttributeName) {
@@ -79,9 +97,13 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * Sets the activeIndicatorReversed attribute value.
-     * 
-     * @param activeIndicatorReversed The activeIndicatorReversed to set.
+     * activeIndicatorReversed = true means that the field
+                        specified by the activeIndicatorAttributeName will
+                        contain a false value to indicate active.
+
+                      activeIndicatorReversed = false means that the field
+                        specified by the activeIndicatorAttributeName will
+                        contain a true value to indicate active.
      */
     public void setActiveIndicatorReversed(boolean activeIndicatorReversed) {
         this.activeIndicatorReversed = activeIndicatorReversed;
@@ -97,9 +119,9 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * Sets the attributeToHighlightOnFail attribute value.
-     * 
-     * @param attributeToHighlightOnFail The attributeToHighlightOnFail to set.
+            attributeToHighlightOnFail is the name of the busines
+                        object attribute which will be highlighted when
+                        the default existence check fails.
      */
     public void setAttributeToHighlightOnFail(String attributeToHighlightOnFail) {
         if (StringUtils.isBlank(attributeToHighlightOnFail)) {
@@ -118,9 +140,8 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * Sets the displayFieldName attribute value.
-     * 
-     * @param displayFieldName The displayFieldName to set.
+        displayFieldName is the name of the field to pull the label as it will
+                        appear in an error message.  e.g. "chartOfAccountsCode".
      */
     public void setDisplayFieldName(String displayFieldName) {
         this.displayFieldName = displayFieldName;
@@ -147,6 +168,9 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         return collection;
     }
 
+    /**
+        collection is the name of a collection that must exist
+     */
     public void setCollection(String collection) {
         this.collection = collection;
     }
@@ -159,6 +183,9 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         return collectionBusinessObjectClass;
     }
 
+    /** Class that the specified collection represents.  Does not need to be set.  The DD
+     * Will set this attribute through introspection.
+     */
     public void setCollectionBusinessObjectClass(Class<? extends BusinessObject> collectionBusinessObjectClass) {
         this.collectionBusinessObjectClass = collectionBusinessObjectClass;
     }

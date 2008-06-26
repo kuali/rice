@@ -15,9 +15,6 @@
  */
 package org.kuali.core.dao.ojb;
 
-import java.sql.Date;
-import java.util.Collection;
-
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.core.bo.DocumentHeader;
@@ -39,6 +36,14 @@ public class DocumentHeaderDaoOjb extends PlatformAwareDaoBaseOjb implements Doc
         super();
     }
 
+    /**
+     * @see org.kuali.core.dao.DocumentHeaderDao#getDocumentHeaderBaseClass()
+     */
+    public Class getDocumentHeaderBaseClass() {
+        LOG.debug("Method getDocumentHeaderBaseClass() returning class " + DocumentHeader.class.getName());
+        return DocumentHeader.class;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -46,29 +51,9 @@ public class DocumentHeaderDaoOjb extends PlatformAwareDaoBaseOjb implements Doc
      */
     public DocumentHeader getByDocumentHeaderId(String id) {
         Criteria criteria = new Criteria();
-        criteria.addEqualTo("FDOC_NBR", id);
+        criteria.addEqualTo(KNSPropertyConstants.DOCUMENT_NUMBER, id);
 
-        return (DocumentHeader) getPersistenceBrokerTemplate().getObjectByQuery(QueryFactory.newQuery(DocumentHeader.class, criteria));
+        return (DocumentHeader) getPersistenceBrokerTemplate().getObjectByQuery(QueryFactory.newQuery(getDocumentHeaderBaseClass(), criteria));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.kuali.dao.DocumentHeaderDao#getCorrectingDocumentHeader(java.lang.Long)
-     */
-    public DocumentHeader getCorrectingDocumentHeader(String documentId) {
-        Criteria correctedByCriteria = new Criteria();
-        correctedByCriteria.addEqualTo("financialDocumentInErrorNumber", documentId);
-
-        return (DocumentHeader) getPersistenceBrokerTemplate().getObjectByQuery(QueryFactory.newQuery(DocumentHeader.class, correctedByCriteria));
-    }
-
-    /**
-     * @see org.kuali.core.dao.DocumentHeaderDao#getByDocumentFinalDate(Date documentFinalDate)
-     */
-    public Collection getByDocumentFinalDate(Date documentFinalDate) {
-        Criteria criteria = new Criteria();
-        criteria.addEqualTo(KNSPropertyConstants.DOCUMENT_FINAL_DATE, documentFinalDate);
-        return getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(DocumentHeader.class, criteria));
-    }
 }

@@ -27,8 +27,6 @@ import org.kuali.rice.KNSServiceLocator;
 import org.kuali.test.KNSTestBase;
 import org.kuali.test.KNSWithTestSpringContext;
 
-import edu.iu.uis.eden.KEWServiceLocator;
-
 @KNSWithTestSpringContext
 public class AuthorizationStoreTest extends KNSTestBase {
     private static final String NAME_OF_WORKGROUP_WITH_NO_MEMBERS = "KUALI_PED";

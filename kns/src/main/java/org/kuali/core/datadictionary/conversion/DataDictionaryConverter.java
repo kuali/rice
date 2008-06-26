@@ -59,7 +59,6 @@ import org.kuali.core.datadictionary.control.TextareaControlDefinition;
 import org.kuali.core.datadictionary.control.WorkflowWorkgroupControlDefinition;
 import org.kuali.core.datadictionary.mask.Mask;
 import org.kuali.core.datadictionary.mask.MaskFormatter;
-import org.kuali.core.datadictionary.mask.MaskFormatterCustom;
 import org.kuali.core.datadictionary.mask.MaskFormatterLiteral;
 import org.kuali.core.datadictionary.mask.MaskFormatterSubString;
 import org.kuali.core.datadictionary.validation.charlevel.AlphaNumericValidationPattern;
@@ -161,7 +160,6 @@ public class DataDictionaryConverter {
         // TODO: validation beans
         templateBeanNames.put(Mask.class, Mask.class.getSimpleName());
         templateBeanNames.put(MaskFormatter.class, MaskFormatter.class.getSimpleName());
-        templateBeanNames.put(MaskFormatterCustom.class, MaskFormatterCustom.class.getSimpleName());
         templateBeanNames.put(MaskFormatterLiteral.class, MaskFormatterLiteral.class.getSimpleName());
         templateBeanNames.put(MaskFormatterSubString.class, MaskFormatterSubString.class.getSimpleName());
 

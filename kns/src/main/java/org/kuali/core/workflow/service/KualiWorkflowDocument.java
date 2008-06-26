@@ -16,6 +16,7 @@
 package org.kuali.core.workflow.service;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 import org.kuali.core.bo.user.UniversalUser;
 
@@ -325,4 +326,11 @@ public interface KualiWorkflowDocument {
      * {@link DocumentRouteHeaderValue#CURRENT_ROUTE_NODE_NAME_DELIMITER}
      */
     public String getCurrentRouteNodeNames();
+    
+    /**
+     * This method returns a set of all approvers of this document.
+     * 
+     * @return a set of all approvers
+     */
+    public Set<UniversalUser> getAllPriorApprovers() throws WorkflowException, org.kuali.core.exceptions.UserNotFoundException;
 }

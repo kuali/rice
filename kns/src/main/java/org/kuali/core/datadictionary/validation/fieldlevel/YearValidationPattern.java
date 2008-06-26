@@ -29,12 +29,4 @@ public class YearValidationPattern extends FieldLevelValidationPattern {
     protected String getPatternTypeName() {
         return "year";
     }
-
-
-    /**
-     * @see org.kuali.core.datadictionary.validation.ValidationPattern#getPatternXml()
-     */
-    public String getPatternXml() {
-        return "<year />";
-    }
 }

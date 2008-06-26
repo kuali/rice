@@ -39,42 +39,11 @@ public class AttributeReferenceDummy extends PersistableBusinessObjectBase {
     private KualiDecimal genericAmount;
     private String genericBigText;
     private String emailAddress;
-    private Integer transactionEntrySequenceId;
-    private String universityFiscalAccountingPeriod;
-    private Integer genericFiscalYear;
-    private String documentExplanation;
+    private KualiPercent percent;
+    private boolean newCollectionRecord;
+    private String workflowDocumentStatus;
     private Date createDate;
     private String initiatorNetworkId;
-    private KualiPercent percent;
-    private String maxDollarAmount;
-    private String minDollarAmount;
-    private String totalDollarAmount;
-    private boolean newCollectionRecord;
-
-
-    public String getMinDollarAmount() {
-        return minDollarAmount;
-    }
-
-    public void setMinDollarAmount(String minDollarAmount) {
-        this.minDollarAmount = minDollarAmount;
-    }
-
-    public String getTotalDollarAmount() {
-        return totalDollarAmount;
-    }
-
-    public void setTotalDollarAmount(String totalDollarAmount) {
-        this.totalDollarAmount = totalDollarAmount;
-    }
-
-    public String getMaxDollarAmount() {
-        return maxDollarAmount;
-    }
-
-    public void setMaxDollarAmount(String maxDollarAmount) {
-        this.maxDollarAmount = maxDollarAmount;
-    }
 
     /**
      * 
@@ -82,6 +51,34 @@ public class AttributeReferenceDummy extends PersistableBusinessObjectBase {
      * 
      */
     public AttributeReferenceDummy() {
+    }
+
+    /**
+     * @return the createDate
+     */
+    public Date getCreateDate() {
+        return this.createDate;
+    }
+
+    /**
+     * @param createDate the createDate to set
+     */
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    /**
+     * @return the initiatorNetworkId
+     */
+    public String getInitiatorNetworkId() {
+        return this.initiatorNetworkId;
+    }
+
+    /**
+     * @param initiatorNetworkId the initiatorNetworkId to set
+     */
+    public void setInitiatorNetworkId(String initiatorNetworkId) {
+        this.initiatorNetworkId = initiatorNetworkId;
     }
 
     /**
@@ -274,104 +271,6 @@ public class AttributeReferenceDummy extends PersistableBusinessObjectBase {
     }
 
     /**
-     * @return Integer
-     */
-    public Integer getTransactionEntrySequenceId() {
-        return transactionEntrySequenceId;
-    }
-
-    /**
-     * @param transactionEntrySequenceId
-     */
-    public void setTransactionEntrySequenceId(Integer transactionEntrySequenceId) {
-        this.transactionEntrySequenceId = transactionEntrySequenceId;
-    }
-
-    /**
-     * @return String
-     */
-    public String getUniversityFiscalAccountingPeriod() {
-        return universityFiscalAccountingPeriod;
-    }
-
-    /**
-     * @param universityFiscalAccountingPeriod
-     */
-    public void setUniversityFiscalAccountingPeriod(String universityFiscalAccountingPeriod) {
-        this.universityFiscalAccountingPeriod = universityFiscalAccountingPeriod;
-    }
-
-    /**
-     * @return Integer
-     */
-    public Integer getGenericFiscalYear() {
-        return genericFiscalYear;
-    }
-
-    /**
-     * @param universityFiscalYear
-     */
-    public void setGenericFiscalYear(Integer universityFiscalYear) {
-        this.genericFiscalYear = universityFiscalYear;
-    }
-
-
-    /**
-     * Gets the documentExplanation attribute.
-     * 
-     * @return Returns the documentExplanation.
-     */
-    public String getDocumentExplanation() {
-        return documentExplanation;
-    }
-
-    /**
-     * Sets the documentExplanation attribute value.
-     * 
-     * @param documentExplanation The documentExplanation to set.
-     */
-    public void setDocumentExplanation(String documentExplanation) {
-        this.documentExplanation = documentExplanation;
-    }
-
-    /**
-     * Gets the createDate attribute.
-     * 
-     * @return Returns the createDate.
-     */
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    /**
-     * Sets the createDate attribute value.
-     * 
-     * @param createDate The createDate to set.
-     */
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    /**
-     * Gets the initiatorNetworkId attribute.
-     * 
-     * @return Returns the initiatorNetworkId.
-     */
-    public String getInitiatorNetworkId() {
-        return initiatorNetworkId;
-    }
-
-    /**
-     * Sets the initiatorNetworkId attribute value.
-     * 
-     * @param initiatorNetworkId The initiatorNetworkId to set.
-     */
-    public void setInitiatorNetworkId(String initiatorNetworkId) {
-        this.initiatorNetworkId = initiatorNetworkId;
-    }
-    
-
-    /**
      * Gets the newCollectionRecord attribute. 
      * @return Returns the newCollectionRecord.
      */
@@ -385,6 +284,20 @@ public class AttributeReferenceDummy extends PersistableBusinessObjectBase {
      */
     public void setNewCollectionRecord(boolean newCollectionRecord) {
         this.newCollectionRecord = newCollectionRecord;
+    }
+
+    /**
+     * @return the workflowDocumentStatus
+     */
+    public String getWorkflowDocumentStatus() {
+        return this.workflowDocumentStatus;
+    }
+
+    /**
+     * @param workflowDocumentStatus the workflowDocumentStatus to set
+     */
+    public void setWorkflowDocumentStatus(String workflowDocumentStatus) {
+        this.workflowDocumentStatus = workflowDocumentStatus;
     }
 
     /**

@@ -40,45 +40,45 @@ import org.kuali.core.rule.PreRulesCheck;
  */
 abstract public class DocumentEntry extends DataDictionaryEntryBase {
 
-    private Class<? extends Document> documentClass;
-    private Class<? extends BusinessRule> businessRulesClass;
-    private Class<? extends PreRulesCheck> preRulesCheckClass;
+    protected Class<? extends Document> documentClass;
+    protected Class<? extends BusinessRule> businessRulesClass;
+    protected Class<? extends PreRulesCheck> preRulesCheckClass;
 
-    private String documentTypeName;
-    private String documentTypeCode;
+    protected String documentTypeName;
+    protected String documentTypeCode;
 
-    private String label;
-    private String shortLabel;
+    protected String label;
+    protected String shortLabel;
 
-    private HelpDefinition helpDefinition;
+    protected HelpDefinition helpDefinition;
 
-    private boolean allowsNoteDelete = false;
-    private boolean allowsNoteAttachments = true;
-    private Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass;
-    private boolean displayTopicFieldInNotes = false;
+    protected boolean allowsNoteDelete = false;
+    protected boolean allowsNoteAttachments = true;
+    protected Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass;
+    protected boolean displayTopicFieldInNotes = false;
     
-    private String summary;
-    private String description;
-    private List<String> webScriptFiles = new ArrayList<String>( 3 );
+    protected String summary;
+    protected String description;
+    protected List<String> webScriptFiles = new ArrayList<String>( 3 );
 
     protected Class<? extends DocumentAuthorizer> documentAuthorizerClass;
-    private List<AuthorizationDefinition> authorizations = new ArrayList<AuthorizationDefinition>();
-    private List<HeaderNavigation> headerNavigationList = new ArrayList<HeaderNavigation>();
+    protected List<AuthorizationDefinition> authorizations = new ArrayList<AuthorizationDefinition>();
+    protected List<HeaderNavigation> headerNavigationList = new ArrayList<HeaderNavigation>();
 
-    private boolean allowsCopy = false;
-    private WorkflowProperties workflowProperties;   
+    protected boolean allowsCopy = false;
+    protected WorkflowProperties workflowProperties;   
 
     /**
      * @see org.kuali.core.datadictionary.DataDictionaryEntry#getJstlKey()
      */
     public String getJstlKey() {
-        if (StringUtils.isBlank(documentTypeName)) {
-            throw new IllegalStateException("unable to generate JSTL key: documentTypeName is blank");
-        }
-
         return documentTypeName;
     }
 
+    /**
+            The documentClass element is the name of the java class
+            associated with the document.
+     */
     public void setDocumentClass(Class<? extends Document> documentClass) {
         if (documentClass == null) {
             throw new IllegalArgumentException("invalid (null) documentClass");
@@ -91,6 +91,10 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return documentClass;
     }
 
+    /**
+            The businessRulesClass element is the full class name of the java
+            class which contains the business rules for a document.
+     */
     public void setBusinessRulesClass(Class<? extends BusinessRule> businessRulesClass) {
         this.businessRulesClass = businessRulesClass;
     }
@@ -99,6 +103,11 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return businessRulesClass;
     }
 
+    /**
+            The documentAuthorizerClass element is the full class name of the
+            java class which will determine what features are available to the
+            user based on the user role and document state.
+     */
     public void setDocumentAuthorizerClass(Class<? extends DocumentAuthorizer> documentAuthorizerClass) {
         this.documentAuthorizerClass = documentAuthorizerClass;
     }
@@ -115,7 +124,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * @param preRulesCheckClass The preRulesCheckClass to set.
+            The preRulesCheckClass element is the full class name of the java
+            class which contains the pre-rules for a document.  The pre-rules
+            are run before the window is drawn and may change field values.
      */
     public void setPreRulesCheckClass(Class<? extends PreRulesCheck> preRulesCheckClass) {
         this.preRulesCheckClass = preRulesCheckClass;
@@ -129,6 +140,11 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return authorizations;
     }
 
+    /**
+            The documentTypeName element is the name of the document
+            as defined in the workflow system.
+            Example: "AddressTypeMaintenanceDocument"
+     */
     public void setDocumentTypeName(String documentTypeName) {
         if (StringUtils.isBlank(documentTypeName)) {
             throw new IllegalArgumentException("invalid (blank) documentTypeName");
@@ -140,6 +156,12 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return this.documentTypeName;
     }
 
+    /**
+            The documentTypeCode element is the unique identifier of the
+            document as defined in the KFS system. The DocumentType table
+            contains additional data about the document including whether or
+            not the document type is currently active.
+     */
     public void setDocumentTypeCode(String documentTypeCode) {
         if (StringUtils.isBlank(documentTypeCode)) {
             throw new IllegalArgumentException("invalid (blank) documentTypeCode");
@@ -155,6 +177,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return label;
     }
 
+    /**
+     * The displayed label for this document.  Usually a properly formatted version of the documentTypeName.
+     */
     public void setLabel(String label) {
         if (StringUtils.isBlank(label)) {
             throw new IllegalArgumentException("invalid (blank) label");
@@ -169,6 +194,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return (shortLabel != null) ? shortLabel : label;
     }
 
+    /**
+     * A shorter version of the label for this document.
+     */
     public void setShortLabel(String shortLabel) {
         if (StringUtils.isBlank(shortLabel)) {
             throw new IllegalArgumentException("invalid (blank) shortLabel");
@@ -180,6 +208,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return summary;
     }
 
+    /**
+     * A summary of this document's purpose.
+     */
     public void setSummary(String summary) {
         this.summary = summary;
     }
@@ -188,6 +219,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return description;
     }
 
+    /**
+     * A detailed description of this document's functionality.
+     */
     public void setDescription(String description) {
         this.description = description;
     }
@@ -246,14 +280,25 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * @param financialSystemParameterHelp
+            The help element provides the keys to obtain a
+            help description from the database.
+
+            On document JSP pages, a help icon may be rendered.  If this tag is specified, then
+            the filename of this page will be located in the value of the parameter specified by the namespace, detail type, and name.
+
+            The value of the parameter is relative to the value of the "externalizable.help.url" property in KualiConfigurationService (see KualiHelpAction).
+            parameterNamespace: namespace of the parameter that has the path to the help page
+            parameterName: name of the parameter that has the path to the help page
+            parameterDetailType: detail type of the parameter that has the path to the help page
      */
     public void setHelpDefinition(HelpDefinition helpDefinition) {
         this.helpDefinition = helpDefinition;
     }
 
     /**
-     * @param allowsNoteDelete
+            The allowsNoteDelete element contains a true or false value.
+            If true, then a maintenance screen user is allowed to delete
+            a document note.
      */
     public void setAllowsNoteDelete(boolean allowsNoteDelete) {
         this.allowsNoteDelete = allowsNoteDelete;
@@ -278,16 +323,17 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * 
-     * This method...
-     * @param displayTopicFieldInNotes
+            This field contains a value of true or false.
+            If true, then the "Notes and Attachments" tab will render a column for a note topic.
      */
     public void setDisplayTopicFieldInNotes(boolean displayTopicFieldInNotes) {
         this.displayTopicFieldInNotes = displayTopicFieldInNotes;
     }
 
     /**
-     * @see org.kuali.core.datadictionary.control.ControlDefinition#setKeyValuesFinder(java.lang.String)
+        The attachmentTypesValuesFinderClass specifies the name of a values finder
+        class. This is used to determine the set of file types that are allowed
+        to be attached to the document.
      */
     public void setAttachmentTypesValuesFinderClass(Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass) {
         if (attachmentTypesValuesFinderClass == null) {
@@ -304,6 +350,11 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return attachmentTypesValuesFinderClass;
     }
 
+    /**
+            The allowsCopy element contains a true or false value.
+            If true, then a user is allowed to make a copy of the
+            record using the maintenance screen.
+     */
     public void setAllowsCopy(boolean allowsCopy) {
         this.allowsCopy = allowsCopy;
     }
@@ -320,6 +371,11 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return webScriptFiles;
     }
 
+    /**
+            The webScriptFile element defines the name of javascript files
+            that are necessary for processing the document.  The specified
+            javascript files will be included in the generated html.
+     */
     public void setWebScriptFiles(List<String> webScriptFiles) {
         this.webScriptFiles = webScriptFiles;
     }
@@ -332,7 +388,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * @param allowsNoteAttachments the allowsNoteAttachments to set
+            The allowsNoteAttachements element contains a true or false value.
+            If true, then a document screen includes notes with attachments. Otherwise,
+            only notes is displayed.
      */
     public void setAllowsNoteAttachments(boolean allowsNoteAttachments) {
         this.allowsNoteAttachments = allowsNoteAttachments;
@@ -342,10 +400,19 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return this.workflowProperties;
     }
 
+    /**
+            This element is used to define a set of workflowPropertyGroups, which are used to
+            specify which document properties should be serialized during the document serialization
+            process.
+     */
     public void setWorkflowProperties(WorkflowProperties workflowProperties) {
         this.workflowProperties = workflowProperties;
     }
 
+    /**
+            The headerNavigation element defines a set of additional
+            tabs which will appear on the document.
+     */
     public void setHeaderNavigationList(List<HeaderNavigation> headerNavigationList) {
         this.headerNavigationList = headerNavigationList;
     }
@@ -354,6 +421,18 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return this.authorizations;
     }
 
+    /**
+            The authorizations element contains authorization elements.
+            These define the workgroups that are allowed to take various
+            actions on a document.
+
+            JSTL: authorizations is a Map which is accessed by a key of "authorizations".
+            This map contains entries with the following keys:
+                * action for first authorization
+                * action for second authorization
+                etc.
+            The corresponding value for each entry is an authorization ExportMap.
+     */
     public void setAuthorizations(List<AuthorizationDefinition> authorizations) {
         Set<String> actions = new HashSet<String>();
         for ( AuthorizationDefinition authorizationDefinition : authorizations ) {

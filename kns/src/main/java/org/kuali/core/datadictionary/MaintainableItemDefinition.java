@@ -18,9 +18,7 @@ package org.kuali.core.datadictionary;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * MaintainableItemDefinition
- * 
- * 
+ * Abstract superclass for all maintainable fields and collections.  Never used directly.
  */
 public abstract class MaintainableItemDefinition extends DataDictionaryDefinitionBase {
 

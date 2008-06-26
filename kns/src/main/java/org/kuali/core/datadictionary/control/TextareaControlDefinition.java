@@ -16,20 +16,14 @@
 
 package org.kuali.core.datadictionary.control;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
- * A single HTML textarea control.
- * 
- * 
+    The textarea element defines an HTML textarea control element.
+    The rows and cols attributes define the size of the field.
  */
 public class TextareaControlDefinition extends ControlDefinitionBase {
-    // logger
-    private static Log LOG = LogFactory.getLog(TextareaControlDefinition.class);
 
     public TextareaControlDefinition() {
-        LOG.debug("creating new TextAreaControlDefinition");
     }
 
     /**

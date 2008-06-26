@@ -74,9 +74,6 @@ public class PostProcessorServiceImpl implements PostProcessorService {
                 // workflow state change, without reloading the form.
                 if (!document.getDocumentHeader().getWorkflowDocument().stateIsSaved()) {
                     document.handleRouteStatusChange();
-                    if (document.getDocumentHeader().getWorkflowDocument().stateIsCanceled() || document.getDocumentHeader().getWorkflowDocument().stateIsDisapproved() || document.getDocumentHeader().getWorkflowDocument().stateIsFinal()) {
-                        document.getDocumentHeader().setDocumentFinalDate(dateTimeService.getCurrentSqlDate());
-                    }
                     documentService.updateDocument(document);
                 }
                 document.doRouteStatusChange(statusChangeEvent);

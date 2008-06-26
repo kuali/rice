@@ -151,11 +151,6 @@ public class KualiRuleServiceImpl implements KualiRuleService {
 
             businessRulesClass = transactionalDocumentDictionaryService.getBusinessRulesClass(transactionalDocument);
         }
-//        else if (document instanceof AccountingDocument) {
-//            AccountingDocument financialDocument = (AccountingDocument) document;
-//
-//            businessRulesClass = transactionalDocumentDictionaryService.getBusinessRulesClass(financialDocument);
-//        }
         else if (document instanceof MaintenanceDocument) {
             MaintenanceDocument maintenanceDocument = (MaintenanceDocument) document;
 

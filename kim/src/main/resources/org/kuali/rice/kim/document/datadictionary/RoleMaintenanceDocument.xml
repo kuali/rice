@@ -78,7 +78,6 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Permission" />
-          <property name="sourceAttributeName" value="permissions" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Permission" />
           <property name="includeAddLine" value="false" />
           <property name="summaryTitle" value="Permissions for Role" />
@@ -113,7 +112,6 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Principal" />
-          <property name="sourceAttributeName" value="principalQualifiedRoles" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.PrincipalQualifiedRole" />
           <property name="includeAddLine" value="false" />
           <property name="summaryTitle" value="Assigned Principal" />
@@ -193,7 +191,6 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Group" />
-          <property name="sourceAttributeName" value="groupQualifiedRoles" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupQualifiedRole" />
           <property name="includeAddLine" value="false" />
           <property name="summaryTitle" value="Assigned Group" />

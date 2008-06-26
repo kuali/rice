@@ -56,7 +56,6 @@ import org.kuali.core.workflow.DocumentInitiator;
 import org.kuali.core.workflow.KualiDocumentXmlMaterializer;
 import org.kuali.core.workflow.KualiTransactionalDocumentInformation;
 import org.kuali.rice.KNSServiceLocator;
-import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
@@ -89,9 +88,19 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * Constructs a DocumentBase.java.
      */
     public DocumentBase() {
-        setDocumentHeader(new DocumentHeader());
-        adHocRoutePersons = new ArrayList();
-        adHocRouteWorkgroups = new ArrayList();
+        try {
+            // create a new document header object
+            Class documentHeaderClass = KNSServiceLocator.getDocumentHeaderService().getDocumentHeaderBaseClass();
+            setDocumentHeader((DocumentHeader) documentHeaderClass.newInstance());
+            adHocRoutePersons = new ArrayList();
+            adHocRouteWorkgroups = new ArrayList();
+        }
+        catch (IllegalAccessException e) {
+            throw new RuntimeException("Error instantiating DocumentHeader", e);
+        }
+        catch (InstantiationException e) {
+            throw new RuntimeException("Error instantiating DocumentHeader", e);
+        }
     }
 
     /**
@@ -115,7 +124,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
             documentTypeLabel = "";
         }
 
-        String description = this.getDocumentHeader().getFinancialDocumentDescription();
+        String description = this.getDocumentHeader().getDocumentDescription();
         if (null == description) {
             description = "";
         }
@@ -233,14 +242,10 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * If the document has a total amount, call method on document to get the total and set in doc header.
-     * 
      * @see org.kuali.core.document.Document#prepareForSave()
      */
     public void prepareForSave() {
-        if (this instanceof AmountTotaling) {
-            getDocumentHeader().setFinancialDocumentTotalAmount(((AmountTotaling) this).getTotalDollarAmount());
-    }
+        // do nothing
     }
 
     /**
@@ -249,17 +254,17 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.core.document.Document#processAfterRetrieve()
      */
     public void processAfterRetrieve() {
-	// KULRNE-5692 - force a refresh of the attachments
-	// they are not (non-updateable) references and don't seem to update properly upon load
-	DocumentHeader dh = getDocumentHeader();
-	if ( dh != null ) {
-	    List<Note> notes = dh.getBoNotes();
-	    if ( notes != null ) {
-		for ( Note note : notes ) {
-		    note.refreshReferenceObject( "attachment" );
-		}
-	    }
-	}
+        // KULRNE-5692 - force a refresh of the attachments
+        // they are not (non-updateable) references and don't seem to update properly upon load
+        DocumentHeader dh = getDocumentHeader();
+        if (dh != null) {
+            List<Note> notes = dh.getBoNotes();
+            if (notes != null) {
+                for (Note note : notes) {
+                    note.refreshReferenceObject("attachment");
+                }
+            }
+        }
     }
 
     /**
@@ -268,19 +273,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.core.document.Document#handleRouteStatusChange()
      */
     public void handleRouteStatusChange() {
-        if (getDocumentHeader().getWorkflowDocument().stateIsCanceled()) {
-            getDocumentHeader().setFinancialDocumentStatusCode(KNSConstants.DocumentStatusCodes.CANCELLED);
-        }
-        else if (getDocumentHeader().getWorkflowDocument().stateIsEnroute()) {
-            getDocumentHeader().setFinancialDocumentStatusCode(KNSConstants.DocumentStatusCodes.ENROUTE);
-        }
-        if (getDocumentHeader().getWorkflowDocument().stateIsDisapproved()) {
-            getDocumentHeader().setFinancialDocumentStatusCode(KNSConstants.DocumentStatusCodes.DISAPPROVED);
-        }
-        if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
-            getDocumentHeader().setFinancialDocumentStatusCode(KNSConstants.DocumentStatusCodes.APPROVED);
-        }
-        LOG.info("Status is: " + getDocumentHeader().getFinancialDocumentStatusCode());
+        // do nothing
     }
 
     /**
@@ -312,7 +305,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         
         getDocumentBusinessObject().getBoNotes();
         
-        getDocumentHeader().setFinancialDocumentTemplateNumber(sourceDocumentHeaderId);
+        getDocumentHeader().setDocumentTemplateNumber(sourceDocumentHeaderId);
 
         addCopyErrorDocumentNote("copied from document " + sourceDocumentHeaderId);
     }
@@ -324,7 +317,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      */
     protected void setNewDocumentHeader() throws WorkflowException {
         TransactionalDocument newDoc = (TransactionalDocument) KNSServiceLocator.getDocumentService().getNewDocument(getDocumentHeader().getWorkflowDocument().getDocumentType());
-        newDoc.getDocumentHeader().setFinancialDocumentDescription(getDocumentHeader().getFinancialDocumentDescription());
+        newDoc.getDocumentHeader().setDocumentDescription(getDocumentHeader().getDocumentDescription());
         newDoc.getDocumentHeader().setOrganizationDocumentNumber(getDocumentHeader().getOrganizationDocumentNumber());
 
         try {
@@ -369,7 +362,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.core.document.Document#populateDocumentForRouting()
      */
     public void populateDocumentForRouting() {
-        documentHeader.getWorkflowDocument().setApplicationContent(serializeDocumentToXml());
+        getDocumentHeader().getWorkflowDocument().setApplicationContent(serializeDocumentToXml());
     }
     
     /**

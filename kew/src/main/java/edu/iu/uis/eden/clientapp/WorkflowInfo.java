@@ -659,9 +659,24 @@ public class WorkflowInfo implements java.io.Serializable {
      * Checks whether a document would product at least one action request under the specified criteria
      * @param reportCriteriaVO criteria under which to perform the check
      * @param actionRequestedCodes the types of action requests to check for
+     * @param ignoreCurrentActionRequests determines if method should look only at simulation generated requests 
+     *        or both simulation generated requests and requests that are currently active on the document
      * @return whether a document would product at least one action request under the specified criteria
      * @throws WorkflowException if an error occurs
-     * @see WorkflowUtility#documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO, String[])
+     * @see WorkflowUtility#documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO, String[], boolean)
+     */
+    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests) throws WorkflowException {
+        try {
+            return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaVO, actionRequestedCodes, ignoreCurrentActionRequests);
+        } catch (Exception e) {
+            throw handleException(e);
+        }
+    }
+
+    /**
+     * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO, String[], boolean)} instead
+     * 
+     * This method assumes both existing and generated requests should be taken into account
      */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaVO reportCriteriaVO, String[] actionRequestedCodes) throws WorkflowException {
         try {

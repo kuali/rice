@@ -16,17 +16,15 @@
 
 package org.kuali.core.datadictionary.control;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
- * A single HTML readonly field with lookup control.
+    The lookupReadonly control element creates a field with a magnifying
+    glass and a read-only value.  This forces the user to change the value
+    of the field only by use of the magnifying glass.
  */
 public class LookupReadonlyControlDefinition extends ControlDefinitionBase {
-    private static Log LOG = LogFactory.getLog(LookupReadonlyControlDefinition.class);
 
     public LookupReadonlyControlDefinition() {
-        LOG.debug("creating new LookupReadonlyControlDefinition");
     }
 
     /**

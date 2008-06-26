@@ -19,8 +19,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.kuali.RicePropertyConstants;
+import org.kuali.rice.kim.bo.Entity;
+import org.kuali.rice.kim.bo.NamespaceDefaultAttribute;
 import org.kuali.rice.kim.service.NamespaceAttributeService;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 
 public class NamespaceAttributeServiceImpl implements NamespaceAttributeService {
@@ -37,7 +39,7 @@ public class NamespaceAttributeServiceImpl implements NamespaceAttributeService 
         this.namespaceName = namespaceName;
         List<String> properties = new ArrayList<String>();   
         properties.add("attributeName");
-        properties.add(RicePropertyConstants.ACTIVE);
+        properties.add(KNSPropertyConstants.ACTIVE);
         properties.add("required");   
         setPropertyList(properties);
     }

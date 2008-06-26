@@ -15,13 +15,9 @@
  */
 package org.kuali.core.dao.jpa;
 
-import java.sql.Date;
-import java.util.Collection;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.kuali.RicePropertyConstants;
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.dao.DocumentHeaderDao;
 
@@ -34,6 +30,14 @@ public class DocumentHeaderDaoJpa implements DocumentHeaderDao {
 
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	/**
+     * @see org.kuali.core.dao.DocumentHeaderDao#getDocumentHeaderBaseClass()
+     */
+    public Class getDocumentHeaderBaseClass() {
+        LOG.debug("Method getDocumentHeaderBaseClass() returning class " + DocumentHeader.class.getName());
+        return DocumentHeader.class;
+    }
 	
     /**
      * @see org.kuali.dao.DocumentHeaderDao#getByDocumentHeaderId(java.lang.Long)
@@ -51,15 +55,6 @@ public class DocumentHeaderDaoJpa implements DocumentHeaderDao {
 		org.kuali.rice.jpa.criteria.Criteria criteria = new org.kuali.rice.jpa.criteria.Criteria(DocumentHeader.class.getName());
 		criteria.eq("financialDocumentInErrorNumber", documentId);		
 		return (DocumentHeader) new org.kuali.rice.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
-    }
-
-    /**
-     * @see org.kuali.core.dao.DocumentHeaderDao#getByDocumentFinalDate(Date documentFinalDate)
-     */
-    public Collection getByDocumentFinalDate(Date documentFinalDate) {
-		org.kuali.rice.jpa.criteria.Criteria criteria = new org.kuali.rice.jpa.criteria.Criteria(DocumentHeader.class.getName());
-		criteria.eq(RicePropertyConstants.DOCUMENT_FINAL_DATE, documentFinalDate);		
-		return new org.kuali.rice.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getResultList();
     }
 
 }

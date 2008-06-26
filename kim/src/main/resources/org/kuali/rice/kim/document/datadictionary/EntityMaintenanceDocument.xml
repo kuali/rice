@@ -75,7 +75,6 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Principal" />
-          <property name="sourceAttributeName" value="principals" />
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Principal" />
           <property name="includeAddLine" value="false" />
           <property name="summaryTitle" value="Associated Principals" />

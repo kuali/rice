@@ -15,30 +15,24 @@
  */
 package org.kuali.core.datadictionary.mask;
 
-
-
 /**
- * Contains a mask configuration and method to mask a data value.
- * 
- * 
+    The displayMask element specifies the type of masking to
+    be used to hide the value from un-authorized users.
+    There are three types of masking.
  */
 public class Mask {   
-    private MaskFormatter maskFormatter;
-    private Class<? extends MaskFormatter> maskFormatterClass;
+    protected MaskFormatter maskFormatter;
+    protected Class<? extends MaskFormatter> maskFormatterClass;
 
     /**
      * Masks a data value with the configured maskFormatter;
-     * 
-     * @param value
-     * @return
      */
     public String maskValue(Object value) {
         if (maskFormatter == null) {
             if (maskFormatterClass != null) {
                 try {
                     maskFormatter = (MaskFormatter) maskFormatterClass.newInstance();
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     throw new RuntimeException("Unable to create instance of mask formatter class: " + maskFormatterClass.getName());
                 }
             }
@@ -60,9 +54,7 @@ public class Mask {
     }
 
     /**
-     * Sets the maskFormatter attribute value.
-     * 
-     * @param maskFormatter The maskFormatter to set.
+     * Instance of an object implementing the MaskFormatter interface to be used for masking field values.
      */
     public void setMaskFormatter(MaskFormatter maskFormatter) {
         this.maskFormatter = maskFormatter;
@@ -78,10 +70,10 @@ public class Mask {
     }
 
     /**
-     * Sets the maskFormatterClass attribute value.
-     * 
-     * @param maskFormatterClass The maskFormatterClass to set.
-     */
+      The maskFormatterClass element is used when a custom masking
+      algorithm is desired.  This element specifies the name of a
+      class that will perform the masking for unauthorized users.
+    */
     public void setMaskFormatterClass(Class<? extends MaskFormatter> maskFormatterClass) {
         this.maskFormatterClass = maskFormatterClass;
     }

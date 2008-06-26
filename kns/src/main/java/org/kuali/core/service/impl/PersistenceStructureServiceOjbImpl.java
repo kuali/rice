@@ -31,6 +31,7 @@ import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.CollectionDescriptor;
 import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
+import org.apache.ojb.broker.metadata.SuperReferenceDescriptor;
 import org.kuali.core.bo.BusinessObjectRelationship;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.user.UniversalUser;
@@ -612,7 +613,14 @@ public class PersistenceStructureServiceOjbImpl extends PersistenceServiceImplBa
 		Collection<ObjectReferenceDescriptor> referenceDescriptors = classDescriptor.getObjectReferenceDescriptors(true);
 
 		for (ObjectReferenceDescriptor referenceDescriptor : referenceDescriptors) {
-			references.put(referenceDescriptor.getAttributeName(), referenceDescriptor.getItemClass());
+			/*
+             * Below check is performed for OJB specific inheritance implementation. For more information see the OJB
+             * documentation: http://db.apache.org/ojb/docu/guides/advanced-technique.html#table-per-subclass
+             */
+            String superReferenceDescriptor = referenceDescriptor.getAttributeName();
+            if (!SuperReferenceDescriptor.SUPER_FIELD_INTERNAL_NAME.equals(superReferenceDescriptor)) {
+                references.put(superReferenceDescriptor, referenceDescriptor.getItemClass());
+            }
 		}
 		
 		return references;

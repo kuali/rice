@@ -16,20 +16,14 @@
 
 package org.kuali.core.datadictionary.control;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
- * A single HTML checkbox control
- * 
- * 
+                        The checkbox element is used to render an HTML checkbox
+                        control.  It is used for boolean fields.
  */
 public class CheckboxControlDefinition extends ControlDefinitionBase {
-    // logger
-    private static Log LOG = LogFactory.getLog(CheckboxControlDefinition.class);
 
     public CheckboxControlDefinition() {
-        LOG.debug("creating new CheckboxControl");
     }
 
     /**

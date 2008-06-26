@@ -1,0 +1,116 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="DocumentTypeAttribute" parent="DocumentTypeAttribute-parentBean" />
+
+  <bean id="DocumentTypeAttribute-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.core.bo.DocumentTypeAttribute" />
+    <property name="titleAttribute" value="id" />
+    <property name="attributes" >
+      <list>
+        <ref bean="DocumentTypeAttribute-id" />
+        <ref bean="DocumentTypeAttribute-key" />
+        <ref bean="DocumentTypeAttribute-value" />
+        <ref bean="DocumentTypeAttribute-label" />
+        <ref bean="DocumentTypeAttribute-documentTypeCode" />
+        <ref bean="DocumentTypeAttribute-active" />
+        <ref bean="DocumentTypeAttribute-versionNumber" />
+      </list>
+    </property>
+  </bean>
+
+<!-- Attribute Definitions -->
+
+  <bean id="DocumentTypeAttribute-id" parent="DocumentTypeAttribute-id-parentBean" />
+
+  <bean id="DocumentTypeAttribute-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Id" />
+    <property name="maxLength" value="8" />
+    <property name="validationPattern" >
+      <bean parent="NumericValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="HiddenControlDefinition"
+            p:size="8" />
+    </property>
+    <property name="name" value="id" />
+    <property name="label" value="Id" />
+  </bean>
+  <bean id="DocumentTypeAttribute-key" parent="DocumentTypeAttribute-key-parentBean" />
+
+  <bean id="DocumentTypeAttribute-key-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true" />
+    <property name="shortLabel" value="Attribute Code" />
+    <property name="maxLength" value="50" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="false" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="30" />
+    </property>
+    <property name="summary" value="Code identifying the attribute of the document type." />
+    <property name="name" value="key" />
+    <property name="label" value="Document Type Attribute Code" />
+    <property name="description" value="Code identifying the attribute of the document type." />
+  </bean>
+  <bean id="DocumentTypeAttribute-value" parent="DocumentTypeAttribute-value-parentBean" />
+
+  <bean id="DocumentTypeAttribute-value-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Attribute Value" />
+    <property name="maxLength" value="400" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="required" value="true" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="40" />
+    </property>
+    <property name="summary" value="The value of the attribute for the document type." />
+    <property name="name" value="value" />
+    <property name="label" value="Document Type Attribute Value" />
+    <property name="description" value="The value of the attribute for the document type." />
+  </bean>
+  <bean id="DocumentTypeAttribute-label" parent="DocumentTypeAttribute-label-parentBean" />
+
+  <bean id="DocumentTypeAttribute-label-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Attribute Label" />
+    <property name="maxLength" value="400" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="required" value="false" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="40" />
+    </property>
+    <property name="summary" value="The label of the attribute for the document type." />
+    <property name="name" value="label" />
+    <property name="label" value="Document Type Attribute Label" />
+    <property name="description" value="The label of the attribute for the document type." />
+  </bean>
+  <bean id="DocumentTypeAttribute-documentTypeCode" parent="DocumentTypeAttribute-documentTypeCode-parentBean" />
+
+  <bean id="DocumentTypeAttribute-documentTypeCode-parentBean" abstract="true" parent="DocumentType-documentTypeCode">
+  </bean>
+  <bean id="DocumentTypeAttribute-active" parent="DocumentTypeAttribute-active-parentBean" />
+
+  <bean id="DocumentTypeAttribute-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
+    <property name="name" value="active" />
+  </bean>
+  <bean id="DocumentTypeAttribute-versionNumber" parent="DocumentTypeAttribute-versionNumber-parentBean" />
+
+  <bean id="DocumentTypeAttribute-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+
+</beans>

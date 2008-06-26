@@ -16,17 +16,19 @@
 
 package org.kuali.core.datadictionary.control;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
- * A text box with workflow lookup control.
+ *                         The workflowWorkgroup element control is used to identify
+                        the field as being a Workgroup Name field.  The magnifying
+                        glass will do a WorkGroup Lookup into the workflow system.
+                        The Workgroup Name will be returned from the lookup.
+
+                        This control also displays some special icons next to the
+                        magnifying glass.
+
  */
 public class WorkflowWorkgroupControlDefinition extends ControlDefinitionBase {
-    private static Log LOG = LogFactory.getLog(WorkflowWorkgroupControlDefinition.class);
 
     public WorkflowWorkgroupControlDefinition() {
-        LOG.debug("creating new WorkflowWorkgroupControlDefinition");
     }
 
     /**

@@ -259,14 +259,14 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     /**
      * Accessor method for contained <code>{@link HelpDefinition}</code>
      * 
-     * @return HelpDefinition
+     * @return helpDefinition
      */
     public HelpDefinition getHelpDefinition() {
         return helpDefinition;
     }
 
     /**
-     * @param financialSystemParameterHelp
+     * @param helpDefinition
      */
     public void setHelpDefinition(HelpDefinition helpDefinition) {
         this.helpDefinition = helpDefinition;

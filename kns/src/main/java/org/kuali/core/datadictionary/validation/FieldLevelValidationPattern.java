@@ -26,6 +26,8 @@ import org.kuali.rice.KNSServiceLocator;
  * 
  */
 abstract public class FieldLevelValidationPattern extends ValidationPattern {
+    protected Pattern regexPattern;
+    
     /**
      * Uses the key returned by getConfigurationRegexKey to fetch the validationPattern's regex string from the
      * KualiConfigurationService
@@ -47,11 +49,13 @@ abstract public class FieldLevelValidationPattern extends ValidationPattern {
      * @return regular expression Pattern generated using the individual ValidationPattern subclass
      */
     public final Pattern getRegexPattern() {
-        StringBuffer completeRegex = new StringBuffer("^");
-        completeRegex.append(getRegexString());
-        completeRegex.append("$");
-
-        return Pattern.compile(completeRegex.toString());
+        if ( regexPattern == null ) {
+            StringBuffer completeRegex = new StringBuffer("^");
+            completeRegex.append(getRegexString());
+            completeRegex.append("$");
+            regexPattern = Pattern.compile(completeRegex.toString()); 
+        }
+        return regexPattern; 
     }
 
 

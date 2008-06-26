@@ -33,7 +33,8 @@
 <%@ attribute name="forceRequired" required="false" description="indicate the field is required despite the DataDictionary" %>
 <%@ attribute name="hideRequiredAsterisk" required="false" description="if set to true, this will hide the required asterisk symbol under all situations" %>
 <%@ attribute name="anchor" required="false" description="adds a named anchor inside the header cell" %>
- 
+<%@ attribute name="nowrap" required="false" description="add the 'nowrap' clause to the TH" %>
+
 <c:set var="scopeAttribute" value='scope="${scope}"'/>  <%-- this works for HTML output (but not for JSP execution) --%>
 <c:set var="alignAttribute" value='align="${align}"'/>
 <c:set var="widthAttribute" value='width="${width}"'/>
@@ -44,6 +45,7 @@
     ${empty scope ? '' : scopeAttribute}
     ${empty align ? (!horizontal ? '' : 'align="right"') : alignAttribute}
     ${empty width ? '' : widthAttribute}
+    ${empty nowrap ? '' : 'nowrap'}
     >&nbsp;
     <c:if test="${not empty anchor}">
     	<a name="${anchor}"></a>

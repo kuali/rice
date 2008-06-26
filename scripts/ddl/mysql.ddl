@@ -1,3 +1,8 @@
+CREATE TABLE seq_searchable_attribute_value (
+  a INT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (a)
+) AUTO_INCREMENT=1000, ENGINE=MyISAM
+;
 CREATE TABLE seq_acct_fo_id (
   a INT NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (a)

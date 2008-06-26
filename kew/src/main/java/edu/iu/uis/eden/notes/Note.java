@@ -41,7 +41,7 @@ import edu.iu.uis.eden.WorkflowPersistable;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Entity(name="KEWNote")
+@Entity
 @Table(name="EN_DOC_NTE_T")
 public class Note implements WorkflowPersistable {
 

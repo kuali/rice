@@ -32,7 +32,7 @@ import edu.iu.uis.eden.routetemplate.RuleAttribute;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Entity(name="KEW_ROLE_ATTRIBUTE")
+@Entity
 @Table(name="EN_ROLE_ATTRIB_T")
 public class RoleAttribute implements java.io.Serializable {
 

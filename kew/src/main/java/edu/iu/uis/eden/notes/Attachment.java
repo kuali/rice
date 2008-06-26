@@ -36,7 +36,7 @@ import javax.persistence.Version;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Entity(name="KEWAttachment")
+@Entity
 @Table(name="EN_ATTACHMENT_T")
 public class Attachment {
 

@@ -31,8 +31,8 @@ import javax.persistence.Version;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Entity(name="KEW_ROLE")
-@Table(name="EN_ROLE_T")
+@Entity
+@Table
 public class Role implements Serializable {
 
 	@Id

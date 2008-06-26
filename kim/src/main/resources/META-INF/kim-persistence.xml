@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence 
+    version="1.0" 
+    xmlns="http://java.sun.com/xml/ns/persistence" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  
+  <persistence-unit name="kim-unit" transaction-type="JTA">
+    <mapping-file>META-INF/kim-orm.xml</mapping-file>
+    <class>org.kuali.rice.kim.bo.AttributeType</class>
+    <class>org.kuali.rice.kim.bo.Principal</class>
+    <class>org.kuali.rice.kim.bo.Group</class>
+    <class>org.kuali.rice.kim.bo.GroupTypeDefaultAttribute</class>
+    <class>org.kuali.rice.kim.bo.GroupType</class>
+    <class>org.kuali.rice.kim.bo.Role</class>
+    <class>org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute</class>
+    <class>org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute</class>
+    <class>org.kuali.rice.kim.bo.RoleAttribute</class>
+    <class>org.kuali.rice.kim.bo.GroupAttribute</class>
+    <class>org.kuali.rice.kim.bo.NamespaceDefaultAttribute</class>
+    <class>org.kuali.rice.kim.bo.Namespace</class>
+    <class>org.kuali.rice.kim.bo.Permission</class>
+    <class>org.kuali.rice.kim.bo.EntityType</class>
+    <class>org.kuali.rice.kim.bo.Entity</class>
+    <class>org.kuali.rice.kim.bo.EntityAttribute</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+  </persistence-unit>
+
+</persistence>

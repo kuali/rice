@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence 
+    version="1.0" 
+    xmlns="http://java.sun.com/xml/ns/persistence" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  
+  <persistence-unit name="ken-unit" transaction-type="JTA">
+    <mapping-file>META-INF/ken-orm.xml</mapping-file>
+    <class>org.kuali.notification.bo.Notification</class>
+    <class>org.kuali.notification.bo.NotificationChannel</class>
+    <class>org.kuali.notification.bo.NotificationContentType</class>
+    <class>org.kuali.notification.bo.NotificationPriority</class>
+    <class>org.kuali.notification.bo.NotificationProducer</class>
+    <class>org.kuali.notification.bo.NotificationChannelReviewer</class>
+    <class>org.kuali.notification.bo.NotificationRecipient</class>
+    <class>org.kuali.notification.bo.NotificationRecipientList</class>
+    <class>org.kuali.notification.bo.NotificationSender</class>
+    <class>org.kuali.notification.bo.UserChannelSubscription</class>
+    <class>org.kuali.notification.bo.NotificationMessageDelivery</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+  </persistence-unit>
+
+</persistence>

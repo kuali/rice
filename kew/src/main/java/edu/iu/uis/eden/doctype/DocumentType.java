@@ -75,7 +75,7 @@ import edu.iu.uis.eden.workgroup.Workgroup;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Entity(name="KEWDocumentType")
+@Entity
 @Table(name="EN_DOC_TYP_T")
 public class DocumentType implements WorkflowPersistable {
 

@@ -43,11 +43,17 @@
               p:label="Group Roles"
               p:description="Roles of this group" />
         <bean parent="CollectionDefinition"
+              p:shortLabel="Group Type Attributes"
+              p:summary="Group Type Attributes"
+              p:name="groupTypeAttributes"
+              p:label="Group Type Attributes"
+              p:description="Data attributes attached to this group required by the chosen group type." />
+        <bean parent="CollectionDefinition"
               p:shortLabel="Group Attributes"
               p:summary="Group Attributes"
-              p:name="groupAttributes"
+              p:name="nonGroupTypeAttributes"
               p:label="Group Attributes"
-              p:description="Data attributes attached to this group." />
+              p:description="Arbitrary data attributes attached to this group." />
       </list>
     </property>
     <property name="attributes" >

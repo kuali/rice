@@ -99,4 +99,3 @@ public class GroupAttribute extends AbstractAttributeBase {
 	    return dto;
 	}
 }
-

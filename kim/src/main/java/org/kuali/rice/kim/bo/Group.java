@@ -81,8 +81,13 @@ public class Group extends PersistableBusinessObjectBase {
 	//@JoinColumn(name="GROUP_TYPE_ID", insertable=false, updatable=false)
 	@Transient
 	private GroupType groupType;
+    
+    //these are essentially form objects only used for rendering
+    private ArrayList<GroupAttribute> groupTypeAttributes;
+    private ArrayList<GroupAttribute> nonGroupTypeAttributes;
 
     /**
+     * Instantiates a new Group.
      */
 	public Group() {
 	    memberGroups = new TypedArrayList(Group.class);
@@ -90,6 +95,8 @@ public class Group extends PersistableBusinessObjectBase {
 	    parentGroups = new TypedArrayList(Group.class);
         groupRoles = new TypedArrayList(Role.class);
         groupAttributes = new TypedArrayList(GroupAttribute.class);
+        groupTypeAttributes = new TypedArrayList(GroupAttribute.class);
+        nonGroupTypeAttributes = new TypedArrayList(GroupAttribute.class);
 	}
 
 	/**
@@ -253,6 +260,36 @@ public class Group extends PersistableBusinessObjectBase {
 	public void setMemberPrincipals(ArrayList<Principal> memberPrincipals) {
 		this.memberPrincipals = memberPrincipals;
 	}
+	
+	/**
+	 * @return the groupTypeAttributes
+	 */
+	public ArrayList<GroupAttribute> getGroupTypeAttributes() {
+		return this.groupTypeAttributes;
+	}
+
+	/**
+	 * @param groupTypeAttributes the groupTypeAttributes to set
+	 */
+	public void setGroupTypeAttributes(
+			ArrayList<GroupAttribute> groupTypeAttributes) {
+		this.groupTypeAttributes = groupTypeAttributes;
+	}
+
+	/**
+	 * @return the nonGroupTypeAttributes
+	 */
+	public ArrayList<GroupAttribute> getNonGroupTypeAttributes() {
+		return this.nonGroupTypeAttributes;
+	}
+
+	/**
+	 * @param nonGroupTypeAttributes the nonGroupTypeAttributes to set
+	 */
+	public void setNonGroupTypeAttributes(
+			ArrayList<GroupAttribute> nonGroupTypeAttributes) {
+		this.nonGroupTypeAttributes = nonGroupTypeAttributes;
+	}
 
 	/**
      *
@@ -292,4 +329,3 @@ public class Group extends PersistableBusinessObjectBase {
         return dto;
     }
 }
-

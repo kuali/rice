@@ -8,7 +8,7 @@
 
   <bean id="KIMGroupMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Group" />
-    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    <property name="maintainableClass" value="org.kuali.rice.kim.document.maintenance.GroupMaintainable" />
     <property name="maintainableSections" >
       <list>
         <ref bean="KIMGroupMaintenanceDocument-EditGroup" />
@@ -16,6 +16,7 @@
         <ref bean="KIMGroupMaintenanceDocument-MemberGroups" />
         <ref bean="KIMGroupMaintenanceDocument-MemberPrincipals" />
         <ref bean="KIMGroupMaintenanceDocument-AssignedRoles" />
+        <ref bean="KIMGroupMaintenanceDocument-GroupTypeAttributes" />
         <ref bean="KIMGroupMaintenanceDocument-GroupAttributes" />
       </list>
     </property>
@@ -64,7 +65,8 @@
               p:name="name" />
         <bean parent="MaintainableFieldDefinition"
               p:required="true"
-              p:name="groupTypeId" />
+              p:name="groupTypeId" 
+              p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.GroupTypeDefaultValueFinder" />
         <bean parent="MaintainableFieldDefinition"
               p:required="true"
               p:name="description" />
@@ -218,6 +220,41 @@
     <property name="id" value="Assigned Roles" />
     <property name="title" value="Assigned Roles" />
   </bean>
+  <bean id="KIMGroupMaintenanceDocument-GroupTypeAttributes" parent="KIMGroupMaintenanceDocument-GroupTypeAttributes-parentBean" />
+
+  <bean id="KIMGroupMaintenanceDocument-GroupTypeAttributes-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+    <property name="maintainableItems" >
+      <list>
+        <bean parent="MaintainableCollectionDefinition">
+          <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupAttribute" />
+          <property name="includeAddLine" value="false" />
+          <property name="summaryTitle" value="Group Type Attributes" />
+          <property name="maintainableFields" >
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+		            p:name="id"
+		            p:readOnly="true" 
+		            p:required="true" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:name="attributeName" 
+                    p:readOnly="true" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:name="attributeTypeId" 
+                    p:readOnly="true" />
+              <bean parent="MaintainableFieldDefinition"
+                    p:required="true"
+                    p:name="value" />
+            </list>
+          </property>
+          <property name="name" value="groupTypeAttributes" />
+        </bean>
+      </list>
+    </property>
+    <property name="id" value="Group Type Attributes" />
+    <property name="title" value="Group Type Attributes" />
+  </bean>
   <bean id="KIMGroupMaintenanceDocument-GroupAttributes" parent="KIMGroupMaintenanceDocument-GroupAttributes-parentBean" />
 
   <bean id="KIMGroupMaintenanceDocument-GroupAttributes-parentBean" abstract="true" parent="MaintainableSectionDefinition">
@@ -225,6 +262,7 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupAttribute" />
+          <property name="summaryTitle" value="Group Attributes" />
           <property name="maintainableFields" >
             <list>
               <bean parent="MaintainableFieldDefinition"
@@ -245,7 +283,7 @@
                     p:name="newCollectionRecord" />
             </list>
           </property>
-          <property name="name" value="groupAttributes" />
+          <property name="name" value="nonGroupTypeAttributes" />
         </bean>
       </list>
     </property>

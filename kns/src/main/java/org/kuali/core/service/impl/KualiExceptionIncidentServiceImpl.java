@@ -266,7 +266,7 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
         if (additionalExceptionNameList != null &&
             additionalExceptionNameList.length() > 0 &&
             KNSServiceLocator.isSingleton(additionalExceptionNameList)) {
-            List<String> names=KNSServiceLocator.getBean(
+            List<String> names=KNSServiceLocator.getNervousSystemContextBean (
                     List.class, additionalExceptionNameList);
             exceptionNames.addAll(names);
         }

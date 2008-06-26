@@ -85,20 +85,20 @@ public class KNSServiceLocator<T extends Object> {
 	return GlobalResourceLoader.getService(serviceName);
     }
 
-    public static <T> T getBean(Class<T> type) {
+    public static <T> T getNervousSystemContextBean(Class<T> type) {
 	Collection<T> beansOfType = getBeansOfType(type).values();
 	if (beansOfType.isEmpty()) {
 	    throw new NoSuchBeanDefinitionException("No beans of this type in the KNS application context: "
 		    + type.getName());
 	}
 	if (beansOfType.size() > 1) {
-	    return getBean(type, type.getSimpleName().substring(0, 1).toLowerCase() + type.getSimpleName().substring(1));
+	    return getNervousSystemContextBean(type, type.getSimpleName().substring(0, 1).toLowerCase() + type.getSimpleName().substring(1));
 	}
 	return beansOfType.iterator().next();
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T getBean(Class<T> type, String name) {
+    public static <T> T getNervousSystemContextBean(Class<T> type, String name) {
 	return (T) KNSResourceLoaderFactory.getSpringResourceLoader().getContext().getBean(name);
     }
 

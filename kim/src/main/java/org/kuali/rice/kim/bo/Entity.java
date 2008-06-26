@@ -38,11 +38,11 @@ import org.kuali.rice.kim.dto.PrincipalDTO;
 public class Entity extends AbstractEntityBase {
 	private static final long serialVersionUID = 2232201572169570616L;
 
-	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
     //       targetEntity=org.kuali.rice.kim.bo.EntityAttribute.class, mappedBy="entity")
 	@Transient
 	private ArrayList<EntityAttribute> entityAttributes;
-	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
     //       targetEntity=org.kuali.rice.kim.bo.Principal.class, mappedBy="entity")
 	@Transient
 	private ArrayList<Principal> principals;

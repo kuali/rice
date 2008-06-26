@@ -105,10 +105,10 @@ public abstract class AbstractAttributeBase extends KIMPersistableBusinessObject
      * @param dto
      * @param bo
      */
-    public static void fillInDTO(final AbstractAttributeBaseDTO dto, final AbstractAttributeBase bo) {
-        dto.setAttributeType(AttributeType.toDTO(bo.getAttributeType()));
+    protected static void fillInDTO(final AbstractAttributeBaseDTO dto, final AbstractAttributeBase bo) {
         dto.setAttributeTypeId(bo.getAttributeTypeId());
         dto.setId(bo.getId());
         dto.setValue(bo.getValue());
+        dto.setAttributeName(bo.getAttributeName());
     }
 }

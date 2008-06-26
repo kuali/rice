@@ -16,22 +16,29 @@
 package org.kuali.rice.kim.bo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import org.kuali.core.util.TypedArrayList;
+import org.kuali.rice.kim.dto.PrincipalQualifiedRoleAttributeDTO;
+import org.kuali.rice.kim.dto.PrincipalQualifiedRoleDTO;
 
 /**
- * Primarily a helper business object that provides a list of qualified role attributes for 
+ * Primarily a helper business object that provides a list of qualified role attributes for
  * a specific principal and role.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class PrincipalQualifiedRole extends Principal {
     private static final long serialVersionUID = 6701917498866245651L;
-    
+
     private Long roleId;
-    
+    private Long principalId;
+
+    private Role role;
+    private Principal principal;
+
     private ArrayList<PrincipalQualifiedRoleAttribute> qualifiedRoleAttributes;
 
     public PrincipalQualifiedRole() {
@@ -54,6 +61,48 @@ public class PrincipalQualifiedRole extends Principal {
     }
 
     /**
+	 * @param role the role to set
+	 */
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	/**
+	 * @param principal the principal to set
+	 */
+	public void setPrincipal(Principal principal) {
+		this.principal = principal;
+	}
+
+	/**
+	 * @return the principal
+	 */
+	public Principal getPrincipal() {
+		return principal;
+	}
+
+	/**
+	 * @param principalId the principalId to set
+	 */
+	public void setPrincipalId(Long principalId) {
+		this.principalId = principalId;
+	}
+
+	/**
+	 * @return the principalId
+	 */
+	public Long getPrincipalId() {
+		return principalId;
+	}
+
+	/**
+	 * @return the role
+	 */
+	public Role getRole() {
+		return role;
+	}
+
+	/**
      * @return the qualifiedRoleAttributes
      */
     public ArrayList<PrincipalQualifiedRoleAttribute> getQualifiedRoleAttributes() {
@@ -69,11 +118,27 @@ public class PrincipalQualifiedRole extends Principal {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
      */
     @Override
     protected LinkedHashMap toStringMapper() {
         return null;
+    }
+
+    public static PrincipalQualifiedRoleDTO toDTO(final PrincipalQualifiedRole pqr) {
+      PrincipalQualifiedRoleDTO dto = new PrincipalQualifiedRoleDTO();
+      dto.setPrincipalId(pqr.getId());
+      dto.setPrincipalDto(Principal.toDTO(pqr));
+
+      dto.setRoleId(pqr.getRoleId());
+      dto.setRoleDto(Role.toDTO(pqr.getRole()));
+
+      final HashMap<String,PrincipalQualifiedRoleAttributeDTO> qualifiedRoleAttributeDtos = new HashMap<String,PrincipalQualifiedRoleAttributeDTO>();
+      for (PrincipalQualifiedRoleAttribute attr : pqr.getQualifiedRoleAttributes()) {
+    	  qualifiedRoleAttributeDtos.put(attr.getAttributeName(), PrincipalQualifiedRoleAttribute.toDTO(attr));
+      }
+      dto.setQualifiedRoleAttributeDtos(qualifiedRoleAttributeDtos);
+      return dto;
     }
 }

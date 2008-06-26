@@ -25,6 +25,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.dto.EntityAttributeDTO;
+import org.kuali.rice.kim.dto.PersonAttributeDTO;
 
 /**
  * This class represents an instance of a meta-data attribute hanging off of an Entity in the system.
@@ -124,11 +125,35 @@ public class EntityAttribute extends AbstractAttributeBase {
      */
     public static EntityAttributeDTO toDTO(final EntityAttribute ea) {
         final EntityAttributeDTO dto = new EntityAttributeDTO();
-        AbstractAttributeBase.fillInDTO(dto, ea);
-        dto.setNamespaceId(ea.getNamespaceId());
-        dto.setEntityId(ea.getEntityId());
+        fillInDTO(ea, dto);
 
         return dto;
+    }
+
+	/**
+	 * This method fills in a DTO
+	 *
+	 * @param ea
+	 * @param dto
+	 */
+	protected static void fillInDTO(final EntityAttribute ea,
+			final EntityAttributeDTO dto) {
+		AbstractAttributeBase.fillInDTO(dto, ea);
+        dto.setNamespaceId(ea.getNamespaceId());
+        dto.setEntityId(ea.getEntityId());
+	}
+
+	/**
+	 *
+	 * This method creates a DTO from a BO
+	 *
+	 * @param ea EntityAttribute
+	 * @return
+	 */
+    public static PersonAttributeDTO toPersonDTO(final EntityAttribute ea) {
+    	final PersonAttributeDTO dto = new PersonAttributeDTO();
+    	fillInDTO(ea, dto);
+    	return dto;
     }
 }
 

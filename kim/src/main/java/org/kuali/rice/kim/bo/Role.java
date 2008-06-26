@@ -26,6 +26,7 @@ import javax.persistence.Transient;
 
 import org.kuali.core.util.TypedArrayList;
 import org.kuali.rice.kim.dto.GroupDTO;
+import org.kuali.rice.kim.dto.PermissionDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
 import org.kuali.rice.kim.dto.RoleAttributeDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
@@ -48,39 +49,39 @@ public class Role extends KIMPersistableBusinessObjectBase {
 	private String name;
 	@Column(name="DESCRIPTION")
 	private String description;
-	//@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_ROLES_PERMISSIONS_T", 
-	//           joinColumns=@JoinColumn(name="ROLE_ID"), 
+	//@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_ROLES_PERMISSIONS_T",
+	//           joinColumns=@JoinColumn(name="ROLE_ID"),
 	//           inverseJoinColumns=@JoinColumn(name="PERMISSION_ID"))
 	@Transient
 	private ArrayList<Permission> permissions;
-	//@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_ROLES_GROUPS_T", 
-	//           joinColumns=@JoinColumn(name="ROLE_ID"), 
+	//@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_ROLES_GROUPS_T",
+	//           joinColumns=@JoinColumn(name="ROLE_ID"),
 	//           inverseJoinColumns=@JoinColumn(name="GROUP_ID"))
 	@Transient
 	private ArrayList<Group> groups;
-	//@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_ROLES_PRINCIPALS_T", 
-	//           joinColumns=@JoinColumn(name="ROLE_ID"), 
+	//@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_ROLES_PRINCIPALS_T",
+	//           joinColumns=@JoinColumn(name="ROLE_ID"),
 	//           inverseJoinColumns=@JoinColumn(name="PRINCIPAL_ID"))
 	@Transient
 	private ArrayList<Principal> principals;
-	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
     //       targetEntity=org.kuali.rice.kim.bo.RoleAttribute.class, mappedBy="ERROR: See log")
 	@Transient
 	private ArrayList<RoleAttribute> roleAttributes;
-	
+
 	//these lists are used for rendering the UI appropriately using the maintenance document framework
-	//these can be considered essentially form objects
+	// these can be considered essentially form objects
 	@Transient
 	private ArrayList<GroupQualifiedRole> groupQualifiedRoles;
 	@Transient
 	private ArrayList<PrincipalQualifiedRole> principalQualifiedRoles;
-	
+
 	//these lists are what actually get persisted for group and principal qualifications
-	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
     //       targetEntity=org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute.class, mappedBy="ERROR: See log")
 	@Transient
 	private ArrayList<GroupQualifiedRoleAttribute> groupQualifiedRoleAttributes;
-	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
     //       targetEntity=org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute.class, mappedBy="ERROR: See log")
 	@Transient
 	private ArrayList<PrincipalQualifiedRoleAttribute> principalQualifiedRoleAttributes;
@@ -91,11 +92,11 @@ public class Role extends KIMPersistableBusinessObjectBase {
 	 *
 	 */
 	public Role() {
-	    this.permissions = new TypedArrayList(Permission.class);
-	    this.groups = new TypedArrayList(Group.class);
-	    this.principals = new TypedArrayList(Principal.class);
-	    this.roleAttributes = new TypedArrayList(RoleAttribute.class);
-	    this.groupQualifiedRoles = new TypedArrayList(GroupQualifiedRole.class);
+		this.permissions = new TypedArrayList(Permission.class);
+		this.groups = new TypedArrayList(Group.class);
+		this.principals = new TypedArrayList(Principal.class);
+		this.roleAttributes = new TypedArrayList(RoleAttribute.class);
+		this.groupQualifiedRoles = new TypedArrayList(GroupQualifiedRole.class);
 	    this.principalQualifiedRoles = new TypedArrayList(PrincipalQualifiedRole.class);
 	    this.groupQualifiedRoleAttributes = new TypedArrayList(GroupQualifiedRoleAttribute.class);
 	    this.principalQualifiedRoleAttributes = new TypedArrayList(PrincipalQualifiedRoleAttribute.class);
@@ -131,7 +132,8 @@ public class Role extends KIMPersistableBusinessObjectBase {
 	/**
 	 * This method sets the id (PK) of the role instance.
 	 *
-	 * @param id Long
+	 * @param id
+	 *            Long
 	 */
 	public void setId(Long id) {
 		this.id = id;
@@ -156,129 +158,141 @@ public class Role extends KIMPersistableBusinessObjectBase {
 	}
 
 	/**
-     * @return the groups
-     */
-    public ArrayList<Group> getGroups() {
-        return this.groups;
-    }
+	 * @return the groups
+	 */
+	public ArrayList<Group> getGroups() {
+		return this.groups;
+	}
 
-    /**
-     * @param groups the groups to set
-     */
-    public void setGroups(ArrayList<Group> groups) {
-        this.groups = groups;
-    }
+	/**
+	 * @param groups
+	 *            the groups to set
+	 */
+	public void setGroups(ArrayList<Group> groups) {
+		this.groups = groups;
+	}
 
-    /**
-     * @return the principals
-     */
-    public ArrayList<Principal> getPrincipals() {
-        return this.principals;
-    }
+	/**
+	 * @return the principals
+	 */
+	public ArrayList<Principal> getPrincipals() {
+		return this.principals;
+	}
 
-    /**
-     * @param principals the principals to set
-     */
-    public void setPrincipals(ArrayList<Principal> principals) {
-        this.principals = principals;
-    }
+	/**
+	 * @param principals
+	 *            the principals to set
+	 */
+	public void setPrincipals(ArrayList<Principal> principals) {
+		this.principals = principals;
+	}
 
-    /**
-     * @return the permissions
-     */
-    public ArrayList<Permission> getPermissions() {
-        return this.permissions;
-    }
+	/**
+	 * @return the permissions
+	 */
+	public ArrayList<Permission> getPermissions() {
+		return this.permissions;
+	}
 
-    /**
-     * @param permissions the permissions to set
-     */
-    public void setPermissions(ArrayList<Permission> permissions) {
-        this.permissions = permissions;
-    }
+	/**
+	 * @param permissions
+	 *            the permissions to set
+	 */
+	public void setPermissions(ArrayList<Permission> permissions) {
+		this.permissions = permissions;
+	}
 
-    /**
-     * @return the roleAttributes
-     */
-    public ArrayList<RoleAttribute> getRoleAttributes() {
-        return this.roleAttributes;
-    }
+	/**
+	 * @return the roleAttributes
+	 */
+	public ArrayList<RoleAttribute> getRoleAttributes() {
+		return this.roleAttributes;
+	}
 
-    /**
-     * @param roleAttributes the roleAttributes to set
-     */
-    public void setRoleAttributes(ArrayList<RoleAttribute> roleAttributes) {
-        this.roleAttributes = roleAttributes;
-    }
-    
-    /**
-     * @return the groupQualifiedRoles
-     */
-    public ArrayList<GroupQualifiedRole> getGroupQualifiedRoles() {
-        return this.groupQualifiedRoles;
-    }
+	/**
+	 * @param roleAttributes
+	 *            the roleAttributes to set
+	 */
+	public void setRoleAttributes(ArrayList<RoleAttribute> roleAttributes) {
+		this.roleAttributes = roleAttributes;
+	}
 
-    /**
-     * @param groupQualifiedRoles the groupQualifiedRoles to set
-     */
-    public void setGroupQualifiedRoles(ArrayList<GroupQualifiedRole> groupQualifiedRoles) {
-        this.groupQualifiedRoles = groupQualifiedRoles;
-    }
+	/**
+	 * @return the groupQualifiedRoles
+	 */
+	public ArrayList<GroupQualifiedRole> getGroupQualifiedRoles() {
+		return this.groupQualifiedRoles;
+	}
 
-    /**
-     * @return the principalQualifiedRoles
-     */
-    public ArrayList<PrincipalQualifiedRole> getPrincipalQualifiedRoles() {
-        return this.principalQualifiedRoles;
-    }
+	/**
+	 * @param groupQualifiedRoles
+	 *            the groupQualifiedRoles to set
+	 */
+	public void setGroupQualifiedRoles(
+			ArrayList<GroupQualifiedRole> groupQualifiedRoles) {
+		this.groupQualifiedRoles = groupQualifiedRoles;
+	}
 
-    /**
-     * @param principalQualifiedRoles the principalQualifiedRoles to set
-     */
-    public void setPrincipalQualifiedRoles(ArrayList<PrincipalQualifiedRole> principalQualifiedRoles) {
-        this.principalQualifiedRoles = principalQualifiedRoles;
-    }
-    
-    /**
-     * @return the groupQualifiedRoleAttributes
-     */
-    public ArrayList<GroupQualifiedRoleAttribute> getGroupQualifiedRoleAttributes() {
-        return this.groupQualifiedRoleAttributes;
-    }
+	/**
+	 * @return the principalQualifiedRoles
+	 */
+	public ArrayList<PrincipalQualifiedRole> getPrincipalQualifiedRoles() {
+		return this.principalQualifiedRoles;
+	}
 
-    /**
-     * @param groupQualifiedRoleAttributes the groupQualifiedRoleAttributes to set
-     */
-    public void setGroupQualifiedRoleAttributes(ArrayList<GroupQualifiedRoleAttribute> groupQualifiedRoleAttributes) {
-        this.groupQualifiedRoleAttributes = groupQualifiedRoleAttributes;
-    }
-    
-    /**
-     * @return the principalQualifiedRoleAttributes
-     */
-    public ArrayList<PrincipalQualifiedRoleAttribute> getPrincipalQualifiedRoleAttributes() {
-        return this.principalQualifiedRoleAttributes;
-    }
+	/**
+	 * @param principalQualifiedRoles
+	 *            the principalQualifiedRoles to set
+	 */
+	public void setPrincipalQualifiedRoles(
+			ArrayList<PrincipalQualifiedRole> principalQualifiedRoles) {
+		this.principalQualifiedRoles = principalQualifiedRoles;
+	}
 
-    /**
-     * @param principalQualifiedRoleAttributes the principalQualifiedRoleAttributes to set
-     */
-    public void setPrincipalQualifiedRoleAttributes(ArrayList<PrincipalQualifiedRoleAttribute> principalQualifiedRoleAttributes) {
-        this.principalQualifiedRoleAttributes = principalQualifiedRoleAttributes;
-    }
+	/**
+	 * @return the groupQualifiedRoleAttributes
+	 */
+	public ArrayList<GroupQualifiedRoleAttribute> getGroupQualifiedRoleAttributes() {
+		return this.groupQualifiedRoleAttributes;
+	}
 
+	/**
+	 * @param groupQualifiedRoleAttributes
+	 *            the groupQualifiedRoleAttributes to set
+	 */
+	public void setGroupQualifiedRoleAttributes(
+			ArrayList<GroupQualifiedRoleAttribute> groupQualifiedRoleAttributes) {
+		this.groupQualifiedRoleAttributes = groupQualifiedRoleAttributes;
+	}
 
-    /**
-	 * This overridden method retrieves a string representation of an instance of a Role.
+	/**
+	 * @return the principalQualifiedRoleAttributes
+	 */
+	public ArrayList<PrincipalQualifiedRoleAttribute> getPrincipalQualifiedRoleAttributes() {
+		return this.principalQualifiedRoleAttributes;
+	}
+
+	/**
+	 * @param principalQualifiedRoleAttributes
+	 *            the principalQualifiedRoleAttributes to set
+	 */
+	public void setPrincipalQualifiedRoleAttributes(
+			ArrayList<PrincipalQualifiedRoleAttribute> principalQualifiedRoleAttributes) {
+		this.principalQualifiedRoleAttributes = principalQualifiedRoleAttributes;
+	}
+
+	/**
+	 * This overridden method retrieves a string representation of an instance
+	 * of a Role.
 	 *
 	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
 	 */
 	protected LinkedHashMap<String, Object> toStringMapper() {
-        LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-        propMap.put("id", getId());
-        propMap.put("name", getName());
-        propMap.put("description", getDescription());
-        return propMap;
+		LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
+		propMap.put("id", getId());
+		propMap.put("name", getName());
+		propMap.put("description", getDescription());
+		return propMap;
 	}
 
 	/**
@@ -289,36 +303,61 @@ public class Role extends KIMPersistableBusinessObjectBase {
 	 * @return RoleDTO
 	 */
 	public static RoleDTO toDTO(final Role role) {
-	    final RoleDTO dto = new RoleDTO();
-	    dto.setDescription(role.getDescription());
-	    dto.setId(role.getId());
-	    dto.setName(role.getName());
+		final RoleDTO dto = new RoleDTO();
+		fillInDTO(role, dto, false);
+		return dto;
+	}
 
-	    final HashMap<String, GroupDTO> permissions = new HashMap<String, GroupDTO>();
-//	    for (Group group : role.getPermissions()) {
-//	        permissions.put(group.getName(), Group.toDTO(group));
-//	    }
-	    dto.setPermissions(permissions);
+	/**
+	 *
+	 * This method returns a DTO for the BO
+	 *
+	 * @param role
+	 * @param shallowCopy
+	 * @return
+	 */
+	public static RoleDTO toDTO(final Role role, final boolean shallowCopy) {
+		final RoleDTO dto = new RoleDTO();
+		fillInDTO(role, dto, shallowCopy);
+		return dto;
+	}
 
-	    final HashMap<String, GroupDTO> groups = new HashMap<String, GroupDTO>();
-	//    for (Group group : role.getGroups()) {
-	  //      groups.put(group.getName(), Group.toDTO(group));
-	   // }
-	    dto.setGroups(groups);
+	/**
+	 * This method ...
+	 *
+	 * @param role
+	 * @param dto
+	 */
+	protected static void fillInDTO(final Role role, final RoleDTO dto,
+			final boolean shallowCopy) {
+		dto.setDescription(role.getDescription());
+		dto.setId(role.getId());
+		dto.setName(role.getName());
 
-	    final HashMap<String, PrincipalDTO> principals = new HashMap<String, PrincipalDTO>();
-        for (Principal principal : role.getPrincipals()) {
-            principals.put(principal.getName(), Principal.toDTO(principal));
-        }
-        dto.setPrincipals(principals);
+		final HashMap<String, PermissionDTO> permissions = new HashMap<String, PermissionDTO>();
+		for (Permission permission : role.getPermissions()) {
+			permissions.put(permission.getName(), Permission.toDTO(permission));
+		}
+		dto.setPermissions(permissions);
 
-	    final HashMap<String, RoleAttributeDTO> attrs = new HashMap<String, RoleAttributeDTO>();
-	    for (RoleAttribute attr : role.getRoleAttributes()) {
-	        attrs.put(attr.getAttributeName(), RoleAttribute.toDTO(attr));
-	    }
-	    dto.setRoles(attrs);
+		if (!shallowCopy) {
+			final HashMap<String, GroupDTO> groups = new HashMap<String, GroupDTO>();
+			for (Group group : role.getGroups()) {
+				groups.put(group.getName(), Group.toDTO(group, shallowCopy));
+			}
+			dto.setGroups(groups);
+		}
 
-        return dto;
+		final HashMap<String, PrincipalDTO> principals = new HashMap<String, PrincipalDTO>();
+		for (Principal principal : role.getPrincipals()) {
+			principals.put(principal.getName(), Principal.toDTO(principal));
+		}
+		dto.setPrincipals(principals);
+
+		final HashMap<String, RoleAttributeDTO> attrs = new HashMap<String, RoleAttributeDTO>();
+		for (RoleAttribute attr : role.getRoleAttributes()) {
+			attrs.put(attr.getAttributeName(), RoleAttribute.toDTO(attr));
+		}
+		dto.setRoles(attrs);
 	}
 }
-

@@ -21,9 +21,11 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.kuali.rice.kim.dto.GroupQualifiedRoleAttributeDTO;
+
 /**
  * Business object that represents a single qualified role attribute record associated with a group.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @javax.persistence.Entity
@@ -34,7 +36,7 @@ public class GroupQualifiedRoleAttribute extends AbstractQualifiedRoleAttribute 
     @Column(name="GROUP_ID")
 	private Long groupId;
     @Transient
-    private Group group;
+	private Group group;
 
     /**
      * @return the groupId
@@ -52,9 +54,9 @@ public class GroupQualifiedRoleAttribute extends AbstractQualifiedRoleAttribute 
     }
 
     /**
-     * 
+     *
      * This method ...
-     * 
+     *
      * @return Group
      */
     public Group getGroup() {
@@ -62,9 +64,9 @@ public class GroupQualifiedRoleAttribute extends AbstractQualifiedRoleAttribute 
     }
 
     /**
-     * 
+     *
      * This method ...
-     * 
+     *
      * @param group
      */
     public void setGroup(Group group) {
@@ -73,7 +75,7 @@ public class GroupQualifiedRoleAttribute extends AbstractQualifiedRoleAttribute 
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.bo.AbstractQualifiedRole#toStringMapper()
      */
     protected LinkedHashMap<String, Object> toStringMapper() {
@@ -81,4 +83,14 @@ public class GroupQualifiedRoleAttribute extends AbstractQualifiedRoleAttribute 
         propMap.put("group", getGroup().toStringMapper());
         return propMap;
     }
+
+	public static GroupQualifiedRoleAttributeDTO toDTO(final GroupQualifiedRoleAttribute att) {
+		final GroupQualifiedRoleAttributeDTO dto = new GroupQualifiedRoleAttributeDTO();
+		dto.setAttributeName(att.getAttributeName());
+		dto.setAttributeValue(att.getAttributeValue());
+		dto.setGroupId(att.getGroupId());
+		dto.setId(att.getId());
+		dto.setRoleId(att.getRoleId());
+		return dto;
+	}
 }

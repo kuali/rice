@@ -21,9 +21,11 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.kuali.rice.kim.dto.PrincipalQualifiedRoleAttributeDTO;
+
 /**
  * Business object that represents a single qualified role attribute record associated with a principal.
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @javax.persistence.Entity
@@ -32,7 +34,7 @@ public class PrincipalQualifiedRoleAttribute extends AbstractQualifiedRoleAttrib
     private static final long serialVersionUID = 6701917498866245651L;
 
     @Column(name="PRINCIPAL_ID")
-	private Long principalId;
+    private Long principalId;
 
 	@Transient
     private Principal principal;
@@ -53,9 +55,9 @@ public class PrincipalQualifiedRoleAttribute extends AbstractQualifiedRoleAttrib
     }
 
     /**
-     * 
+     *
      * This method ...
-     * 
+     *
      * @return Principal
      */
     public Principal getPrincipal() {
@@ -63,9 +65,9 @@ public class PrincipalQualifiedRoleAttribute extends AbstractQualifiedRoleAttrib
     }
 
     /**
-     * 
+     *
      * This method ...
-     * 
+     *
      * @param principal
      */
     public void setPrincipal(Principal principal) {
@@ -74,12 +76,27 @@ public class PrincipalQualifiedRoleAttribute extends AbstractQualifiedRoleAttrib
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.bo.AbstractQualifiedRole#toStringMapper()
      */
     protected LinkedHashMap<String, Object> toStringMapper() {
         LinkedHashMap<String, Object> propMap = super.toStringMapper();
         propMap.put("principal", getPrincipal().toStringMapper());
         return propMap;
+    }
+
+    public static PrincipalQualifiedRoleAttributeDTO toDTO(final PrincipalQualifiedRoleAttribute attr) {
+    	PrincipalQualifiedRoleAttributeDTO dto = new PrincipalQualifiedRoleAttributeDTO();
+    	dto.setAttributeName(attr.getAttributeName());
+    	dto.setAttributeValue(attr.getAttributeValue());
+    	dto.setId(attr.getId());
+
+    	dto.setRoleId(attr.getRoleId());
+    	dto.setRoleDto(Role.toDTO(attr.getRole()));
+
+    	dto.setPrincipalId(attr.getPrincipalId());
+    	dto.setPrincipalDto(Principal.toDTO(attr.getPrincipal()));
+
+    	return dto;
     }
 }

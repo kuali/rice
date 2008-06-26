@@ -23,6 +23,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.kuali.core.util.TypedArrayList;
+import org.kuali.rice.kim.dto.PersonDTO;
 import org.kuali.rice.kim.dto.PrincipalDTO;
 
 /**
@@ -41,7 +42,7 @@ public class Principal extends AbstractEntityBase implements java.security.Princ
     //@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	//@JoinColumn(name="ENTITY_ID", insertable=false, updatable=false)
 	@Transient
-	private org.kuali.rice.kim.bo.Entity entity;
+	private Entity entity;
     //@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_GROUPS_PRINCIPALS_T",
 	//           joinColumns=@JoinColumn(name="PRINCIPAL_ID"),
 	//           inverseJoinColumns=@JoinColumn(name="GROUP_ID"))
@@ -150,14 +151,14 @@ public class Principal extends AbstractEntityBase implements java.security.Princ
     /**
      * @return the entity
      */
-    public org.kuali.rice.kim.bo.Entity getEntity() {
+    public Entity getEntity() {
         return this.entity;
     }
 
     /**
      * @param entity the entity to set
      */
-    public void setEntity(org.kuali.rice.kim.bo.Entity entity) {
+    public void setEntity(Entity entity) {
         this.entity = entity;
     }
 
@@ -193,15 +194,39 @@ public class Principal extends AbstractEntityBase implements java.security.Princ
      *
      * This method creates a DTO from a BO
      *
-     * @param principal
+     * @param principal BO
      * @return PrincipalDTO
      */
     public static PrincipalDTO toDTO(final Principal principal) {
         final PrincipalDTO dto = new PrincipalDTO();
-        dto.setId(principal.getId());
-        dto.setName(principal.getName());
+        return fillInDTO(principal, dto);
+    }
 
-        return dto;
+    protected static PrincipalDTO fillInDTO(final Principal principal,
+        final PrincipalDTO dto) {
+      dto.setId(principal.getId());
+      dto.setName(principal.getName());
+      dto.setEntityTypeId(principal.getEntityId());
+      // TODO lindholm dto.setEntityType(EntityType.toDTO(principal.getEntityType())); OJB mapping can't resolve entityTypeId ???
+
+      return dto;
+    }
+
+    /**
+     *
+     * This method creates a Person DTO from a principal BO
+     *
+     * @param person BO
+     * @return DTO
+     */
+    public static PersonDTO toPersonDTO(final Principal person) {
+      final PersonDTO dto = new PersonDTO();
+      dto.setId(person.getId());
+      dto.setEntityTypeId(person.getEntityId());
+      // TODO lindholm dto.setEntityType(EntityType.toDTO(person.getEntityType())); OJB mapping can't resolve entityTypeId ???
+      dto.setPersonAttributesDtos(null); // TODO lindholm need filling in
+
+      return dto;
     }
 }
 

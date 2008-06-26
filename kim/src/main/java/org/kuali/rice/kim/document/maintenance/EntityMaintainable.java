@@ -37,7 +37,8 @@ import org.kuali.rice.kim.service.EntityService;
 import org.kuali.rice.kim.service.NamespaceService;
 import org.kuali.rice.kim.bo.Entity;
 import org.kuali.rice.kim.bo.EntityAttribute;
-import org.kuali.rice.kim.bo.Namespace;
+import org.kuali.rice.kim.dto.NamespaceDTO;
+import org.kuali.rice.kim.dto.NamespaceDefaultAttributeDTO;
 import org.kuali.rice.kim.bo.NamespaceDefaultAttribute;
 
 
@@ -63,11 +64,11 @@ public class EntityMaintainable extends KualiMaintainableImpl {
         List<Section> sections = new ArrayList<Section>();
         Entity entity = (Entity)getBusinessObject();
         
-        List<Namespace> namespaces = namespaceService.getNamespaces();
+        List<NamespaceDTO> namespaces = namespaceService.getAllNamespaces();
       //  DataDictionaryDefinitionBase.isParsingFile = false; // prevents from attempting to retrieve file name and line number (which throws an exception)
             
       // iterate over Namespaces - create a section for each        
-        for ( Namespace namespace : namespaces ) {
+        for ( NamespaceDTO namespace : namespaces ) {
             MaintainableSectionDefinition sectionDef = new MaintainableSectionDefinition();
             MaintainableSectionDefinition entitySubsectionDef = new MaintainableSectionDefinition();
             sectionDef.setTitle( namespace.getName() + " Attributes " );
@@ -77,9 +78,16 @@ public class EntityMaintainable extends KualiMaintainableImpl {
               namespaceAttribute = entity.getNamespaceAttribute( namespace.getName() );
             } **/
             
-            List<NamespaceDefaultAttribute> namespaceAttributes = namespace.getNamespaceAttributes();
+            Collection<NamespaceDefaultAttributeDTO> namespaceAttributes = namespace.getNamespaceAttributes().values();
+            Iterator<NamespaceDefaultAttributeDTO> i = namespaceAttributes.iterator();
             
-            List<String>  namespaceAttributePropertyNames = namespace.getNamespaceAttributeService().getPropertyList();
+         //   List<String>  namespaceAttributePropertyNames = namespace.getNamespaceAttributeService().getPropertyList();
+            
+        //property names should come from the spring bean file 
+            List<String>  namespaceAttributePropertyNames = new ArrayList<String>();  // for testing
+            namespaceAttributePropertyNames.add("attributeName");
+            namespaceAttributePropertyNames.add("active");
+            namespaceAttributePropertyNames.add("required");
                  
             if ( namespaceAttributes.size() == 0 ) {
                 continue;
@@ -108,10 +116,11 @@ public class EntityMaintainable extends KualiMaintainableImpl {
                 entitySubsectionDef.getMaintainableItems().add(fieldDef);
             }
                   
-            for (NamespaceDefaultAttribute NamespaceAttribute : namespaceAttributes) {
+          //  for (NamespaceDefaultAttribute NamespaceAttribute : namespaceAttributes) {
+            while (i.hasNext()){
                             
             try {
-                Section section = SectionBridge.toSection(sectionDef,entitySubsectionDef, NamespaceAttribute,entityaAtribute, this, oldMaintainable, getMaintenanceAction(), isGenerateDefaultValues(), isGenerateBlankRequiredValues(), namespaceAttributePropertyNames,entityAttributePropertyNames);
+                Section section = SectionBridge.toSection(sectionDef,entitySubsectionDef, NamespaceDefaultAttribute.toBO(i.next()),entityaAtribute, this, oldMaintainable, getMaintenanceAction(), isGenerateDefaultValues(), isGenerateBlankRequiredValues(), namespaceAttributePropertyNames,entityAttributePropertyNames);
                 //Section section = SectionBridge.toSection(sectionDef, NamespaceAttribute, this, oldMaintainable, getMaintenanceAction(), isGenerateDefaultValues(), isGenerateBlankRequiredValues(), namespaceAttributePropertyNames);
                
                 LOG.info("Updated Error key for section : " + section.getSectionTitle() + " is " + section.getErrorKey());

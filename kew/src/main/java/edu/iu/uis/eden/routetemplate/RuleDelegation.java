@@ -50,7 +50,7 @@ public class RuleDelegation implements WorkflowPersistable {
 	private Long ruleResponsibilityId;
     @Column(name="DLGN_RULE_BASE_VAL_ID")
 	private Long delegateRuleId;
-    @Transient
+    @Column(name="DLGN_TYP")
     private String delegationType = EdenConstants.DELEGATION_PRIMARY;
     @Version
 	@Column(name="DB_LOCK_VER_NBR")

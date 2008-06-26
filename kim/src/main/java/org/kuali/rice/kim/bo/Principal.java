@@ -18,15 +18,7 @@ package org.kuali.rice.kim.bo;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -37,7 +29,7 @@ import org.kuali.rice.kim.dto.PrincipalDTO;
  * This class represents the Principal data structure
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Entity
+@javax.persistence.Entity
 @Table(name="KIM_PRINCIPALS_T")
 public class Principal extends AbstractEntityBase implements java.security.Principal {
     private static final long serialVersionUID = -5021417605671339853L;

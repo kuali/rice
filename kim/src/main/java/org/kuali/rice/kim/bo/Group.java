@@ -19,15 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -37,7 +30,7 @@ import org.kuali.rice.kim.dto.GroupAttributeDTO;
 import org.kuali.rice.kim.dto.GroupDTO;
 import org.kuali.rice.kim.dto.RoleDTO;
 
-@Entity
+@javax.persistence.Entity
 @Table(name="KIM_GROUPS_T")
 public class Group extends PersistableBusinessObjectBase {
 
@@ -83,8 +76,10 @@ public class Group extends PersistableBusinessObjectBase {
 	private GroupType groupType;
     
     //these are essentially form objects only used for rendering
-    private ArrayList<GroupAttribute> groupTypeAttributes;
-    private ArrayList<GroupAttribute> nonGroupTypeAttributes;
+	@Transient
+	private ArrayList<GroupAttribute> groupTypeAttributes;
+	@Transient
+	private ArrayList<GroupAttribute> nonGroupTypeAttributes;
 
     /**
      * Instantiates a new Group.

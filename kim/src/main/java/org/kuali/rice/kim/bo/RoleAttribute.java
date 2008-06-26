@@ -18,7 +18,6 @@ package org.kuali.rice.kim.bo;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -30,7 +29,7 @@ import org.kuali.rice.kim.dto.RoleAttributeDTO;
  *
  * @author Kuali Rice Team (kuali-rice@googleroles.com)
  */
-@Entity
+@javax.persistence.Entity
 @Table(name="KIM_ROLE_ATTRIBUTES_T")
 public class RoleAttribute extends AbstractAttributeBase {
 

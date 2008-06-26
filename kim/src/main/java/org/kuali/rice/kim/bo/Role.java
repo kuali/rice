@@ -19,15 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -44,7 +37,7 @@ import org.kuali.rice.kim.dto.RoleDTO;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@Entity
+@javax.persistence.Entity
 @Table(name="KIM_ROLES_T")
 public class Role extends KIMPersistableBusinessObjectBase {
 	private static final long serialVersionUID = -8535955276605020423L;

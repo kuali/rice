@@ -18,11 +18,8 @@ package org.kuali.rice.kim.bo;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -38,7 +35,7 @@ import org.kuali.core.util.TypedArrayList;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@Entity
+@javax.persistence.Entity
 @Table(name="KIM_GROUP_TYPES_T")
 public class GroupType extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 9118112248900436184L;

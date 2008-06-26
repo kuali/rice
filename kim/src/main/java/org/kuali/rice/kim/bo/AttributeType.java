@@ -19,7 +19,6 @@ package org.kuali.rice.kim.bo;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -34,7 +33,7 @@ import org.kuali.rice.kim.dto.AttributeTypeDTO;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Entity
+@javax.persistence.Entity
 @Table(name="KIM_ATTRIBUTE_TYPES_T")
 public class AttributeType extends PersistableBusinessObjectBase {
 

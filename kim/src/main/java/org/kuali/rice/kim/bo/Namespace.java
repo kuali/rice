@@ -20,11 +20,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -36,7 +33,7 @@ import org.kuali.rice.kim.dto.PermissionDTO;
 import org.kuali.rice.kim.service.NamespaceAttributeService;
 import org.kuali.rice.kim.service.impl.NamespaceAttributeServiceImpl;
 
-@Entity
+@javax.persistence.Entity
 @Table(name="KIM_NAMESPACES_T")
 public class Namespace extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 9118112248900436184L;
@@ -56,6 +53,7 @@ public class Namespace extends PersistableBusinessObjectBase {
     //       targetEntity=org.kuali.rice.kim.bo.Permission.class, mappedBy="namespace")
 	@Transient
 	private ArrayList<Permission> namespacePermissions;
+	@Transient
 	private NamespaceAttributeService namespaceAttributeService;
 
     public Namespace() {

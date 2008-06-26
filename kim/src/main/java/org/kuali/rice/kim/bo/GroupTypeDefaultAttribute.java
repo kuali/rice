@@ -16,14 +16,8 @@ package org.kuali.rice.kim.bo;
 
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -36,7 +30,7 @@ import org.kuali.core.bo.PersistableBusinessObjectBase;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Entity
+@javax.persistence.Entity
 @Table(name="KIM_GRP_TYP_DFLT_ATTRIBS_T")
 public class GroupTypeDefaultAttribute extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = -8332284694172302250L;

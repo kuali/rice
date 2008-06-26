@@ -43,7 +43,7 @@ public class DemonstrationGradeEncryptionServiceImplTest extends ServerTestBase 
 
     @Test
     public void testEncrypt() throws Exception {
-        assertEquals(KNSServiceLocator.getBean(EncryptionService.class).decrypt(KNSServiceLocator.getBean(EncryptionService.class).encrypt(TEST_VALUE)), TEST_VALUE);
+        assertEquals(KNSServiceLocator.getNervousSystemContextBean(EncryptionService.class).decrypt(KNSServiceLocator.getNervousSystemContextBean(EncryptionService.class).encrypt(TEST_VALUE)), TEST_VALUE);
         EncryptionService encryptionService = new DemonstrationGradeEncryptionServiceImpl();
         ((DemonstrationGradeEncryptionServiceImpl) encryptionService).setSecretKey(NOT_SO_SECRET_KEY_ONLY_INTENDED_FOR_TESTING);
 
@@ -63,13 +63,13 @@ public class DemonstrationGradeEncryptionServiceImplTest extends ServerTestBase 
         System.err.println("This should be unintelligible: " + encrypted);
         System.err.println("Here is a freshly generated secret key: " + ((DemonstrationGradeEncryptionServiceImpl) encryptionService).generateEncodedKey());
 
-        encryptionService = KNSServiceLocator.getBean(EncryptionService.class);
+        encryptionService = KNSServiceLocator.getNervousSystemContextBean(EncryptionService.class);
         valueToHide = "999999999";
         // valueToHide = StringUtils.rightPad(valueToHide, 16);
         encrypted = encryptionService.encrypt(valueToHide) + EncryptionService.ENCRYPTION_POST_PREFIX;
         System.out.print(encrypted);
         encrypted = StringUtils.stripEnd(encrypted, EncryptionService.ENCRYPTION_POST_PREFIX);
-        clearText = KNSServiceLocator.getBean(EncryptionService.class).decrypt(encrypted);
+        clearText = KNSServiceLocator.getNervousSystemContextBean(EncryptionService.class).decrypt(encrypted);
         assertTrue(clearText.equals(valueToHide));
 
         valueToHide = "My friend Joe";

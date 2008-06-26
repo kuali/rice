@@ -24,7 +24,9 @@
                            http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
-                           
+
+    <bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer" />
+
 	<bean id="userTransaction" class="org.kuali.rice.jta.UserTransactionFactoryBean" lazy-init="true" />
 
 	<bean id="jtaTransactionManager" class="org.kuali.rice.jta.TransactionManagerFactoryBean" lazy-init="true" />
@@ -73,6 +75,29 @@
 		</property>
 	</bean>
 
+
+    <bean id="dbPlatformFactory" class="org.kuali.core.dbplatform.ConfigurableKualiDBPlatformFactory">
+        <property name="ojbPlatform" value="${datasource.ojb.platform}" />
+        <property name="dataSource" ref="kimDataSource" />
+    </bean>
+
+    <bean id="dbPlatform" factory-bean="dbPlatformFactory" factory-method="getPlatform" />
+
+    <bean id="platformAwareDao" abstract="true" class="org.kuali.core.dao.ojb.PlatformAwareDaoBaseOjb">
+        <property name="jcdAlias" value="kimDataSource" />
+        <property name="dbPlatform" ref="dbPlatform" />
+    </bean>
+
+
+    <bean id="kimServicesDao" class="org.kuali.rice.kim.dao.KIMServicesDaoProxy">
+        <property name="kimServicesDaoJpa" ref="kimServicesDaoJpa" />
+        <property name="kimServicesDaoOjb" ref="kimServicesDaoOjb" />
+    </bean>
+
+    <bean id="kimServicesDaoJpa" class="org.kuali.rice.kim.dao.KIMServicesDaoJpa" />
+
+    <bean id="kimServicesDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kim.dao.KIMServicesDaoOjb" />
+
 	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
 		<property name="interceptorNames">
 			<list>
@@ -86,20 +111,72 @@
 				<idref local="namespaceService" />
 				<idref local="qualifiedRoleService" />
 				<idref local="roleService" />
+                <idref local="principalService" />
 				<idref local="entityService" />
 				<idref local="namespaceAttributeService" />
 			</list>
 		</property>
 	</bean>
 
-	<bean id="personService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl" />
+	<bean id="personService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl" >
+        <property name="kimServicesDao" ref="kimServicesDao"/>
+    </bean>
 	<bean id="groupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl" />
 	<bean id="namespaceService" class="org.kuali.rice.kim.service.impl.NamespaceServiceImpl" />
-	<bean id="qualifiedRoleService" class="org.kuali.rice.kim.service.impl.QualifiedRoleServiceImpl" />
-	<bean id="roleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl" />
-	<bean id="entityService" class="org.kuali.rice.kim.service.impl.EntityServiceImpl" />
+	<bean id="qualifiedRoleService" class="org.kuali.rice.kim.service.impl.QualifiedRoleServiceImpl" >
+        <property name="kimServicesDao" ref="kimServicesDao"/>
+    </bean>
+	<bean id="roleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl"  >
+        <property name="kimServicesDao" ref="kimServicesDao"/>
+    </bean>
+    <bean id="entityService" class="org.kuali.rice.kim.service.impl.EntityServiceImpl"  >
+        <property name="kimServicesDao" ref="kimServicesDao"/>
+    </bean>
+    <bean id="principalService" class="org.kuali.rice.kim.service.impl.PrincipalServiceImpl" >
+        <property name="kimServicesDao" ref="kimServicesDao"/>
+    </bean>
+
 	<bean id="namespaceAttributeService" class="org.kuali.rice.kim.service.impl.NamespaceAttributeServiceImpl" />
- 
+
+    <bean id="kimSoapService" class="edu.iu.uis.eden.messaging.SOAPServiceDefinition" abstract="true">
+       <property name="serviceNameSpaceURI" value="KIM"/>
+       <property name="priority" value="3" />
+       <property name="retryAttempts" value="0" />
+       <property name="busSecurity" value="false"/>
+    </bean>
+
+    <bean id="kimService" class="edu.iu.uis.eden.messaging.JavaServiceDefinition" abstract="true">
+      <property name="serviceNameSpaceURI" value="KIM" />
+      <property name="retryAttempts" value="0" />
+    </bean>
+
+     <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean parent="kimSoapService">
+          <property name="service" ref="entityService" />
+          <property name="localServiceName" value="entitySoapService" />
+        </bean>
+      </property>
+    </bean>
+
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean parent="kimService">
+          <property name="service" ref="entityService" />
+          <property name="localServiceName" value="entityService" />
+        </bean>
+      </property>
+    </bean>
+
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean parent="kimSoapService">
+          <property name="service" ref="principalService" />
+          <property name="localServiceName" value="principalSoapService" />
+        </bean>
+      </property>
+    </bean>
+
     <bean id="kimModule" class="org.kuali.core.KualiModule">
 		<property name="moduleId" value="kim"/>
 		<property name="moduleName" value="KIM"/>
@@ -136,7 +213,7 @@
 				<value>classpath:org/kuali/rice/kim/document/datadictionary/EntityTypeMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/rice/kim/document/datadictionary/EntityMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/rice/kim/document/datadictionary/GroupTypeMaintenanceDocument.xml</value>
-                <!--  
+                <!--
                 <value>classpath:org/kuali/rice/kom/bo/datadictionary/Organization.xml</value>
                 <value>classpath:org/kuali/rice/kom/bo/datadictionary/OrganizationCategory.xml</value>
                 <value>classpath:org/kuali/rice/kom/bo/datadictionary/OrganizationContext.xml</value>
@@ -147,51 +224,101 @@
             </list>
 		</property>
 	</bean>
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean parent="kimService">
+          <property name="service" ref="principalService" />
+          <property name="localServiceName" value="principalService" />
+        </bean>
+      </property>
+    </bean>
 
     <bean class="edu.iu.uis.eden.messaging.KSBExporter">
       <property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+        <bean parent="kimSoapService">
           <property name="service" ref="groupService" />
-          <property name="serviceNameSpaceURI" value="KIM"/>
           <property name="localServiceName" value="groupSoapService" />
-          <property name="priority" value="3" />
-          <property name="retryAttempts" value="0" />
-          <property name="busSecurity" value="false"/>
         </bean>
       </property>
     </bean>
 
     <bean class="edu.iu.uis.eden.messaging.KSBExporter">
       <property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean parent="kimService">
           <property name="service" ref="groupService" />
-          <property name="serviceNameSpaceURI" value="KIM"/>
           <property name="localServiceName" value="groupService" />
-          <property name="retryAttempts" value="0" />
         </bean>
       </property>
     </bean>
 
     <bean class="edu.iu.uis.eden.messaging.KSBExporter">
       <property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.SOAPServiceDefinition">
+        <bean parent="kimSoapService">
           <property name="service" ref="namespaceService" />
-          <property name="serviceNameSpaceURI" value="KIM"/>
           <property name="localServiceName" value="namespaceSoapService" />
-          <property name="priority" value="3" />
-          <property name="retryAttempts" value="0" />
-          <property name="busSecurity" value="false"/>
         </bean>
       </property>
     </bean>
 
     <bean class="edu.iu.uis.eden.messaging.KSBExporter">
       <property name="serviceDefinition">
-        <bean class="edu.iu.uis.eden.messaging.JavaServiceDefinition">
+        <bean parent="kimService">
           <property name="service" ref="namespaceService" />
-          <property name="serviceNameSpaceURI" value="KIM"/>
           <property name="localServiceName" value="namespaceService" />
-          <property name="retryAttempts" value="0" />
+        </bean>
+      </property>
+    </bean>
+
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean parent="kimSoapService">
+          <property name="service" ref="personService" />
+          <property name="localServiceName" value="personSoapService" />
+        </bean>
+      </property>
+    </bean>
+
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean parent="kimService">
+          <property name="service" ref="personService" />
+          <property name="localServiceName" value="personService" />
+        </bean>
+      </property>
+    </bean>
+
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean parent="kimSoapService">
+          <property name="service" ref="qualifiedRoleService" />
+          <property name="localServiceName" value="qualifiedRoleSoapService" />
+        </bean>
+      </property>
+    </bean>
+
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean parent="kimService">
+          <property name="service" ref="qualifiedRoleService" />
+          <property name="localServiceName" value="qualifiedRoleService" />
+        </bean>
+      </property>
+    </bean>
+
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean parent="kimSoapService">
+          <property name="service" ref="roleService" />
+          <property name="localServiceName" value="roleSoapService" />
+        </bean>
+      </property>
+    </bean>
+
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean parent="kimService">
+          <property name="service" ref="roleService" />
+          <property name="localServiceName" value="roleService" />
         </bean>
       </property>
     </bean>
@@ -201,17 +328,17 @@
   <!-- Used for @PersistenceContext auto-injection -->
   <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 
-  <bean id="entityManagerFactory" class="org.kuali.rice.jpa.spring.RiceEntityManagerProxyFactoryBean">    
+  <bean id="entityManagerFactory" class="org.kuali.rice.jpa.spring.RiceEntityManagerProxyFactoryBean">
     <constructor-arg value="rice.kim"/>
     <constructor-arg ref="kimDataSource"/>
   </bean>
 
   <!-- Used for @Transactional so you don't have to wire services up in here -->
   <tx:annotation-driven transaction-manager="transactionManager"/>
-  
+
   <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.jpa.spring.NoResultExceptionInterceptor" />
 
-  <!-- 
+  <!--
   <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
     <property name="interceptorNames">
       <list>
@@ -220,11 +347,11 @@
     </property>
     <property name="beanNames">
       <list>
-        <idref local="..."/>        
+        <idref local="..."/>
       </list>
     </property>
   </bean>
   -->
-  
+
   <!-- END JPA CONFIGURATION -->
 </beans>

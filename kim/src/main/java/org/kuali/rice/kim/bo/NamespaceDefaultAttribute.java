@@ -170,5 +170,23 @@ public class NamespaceDefaultAttribute extends PersistableBusinessObjectBase {
         dto.setRequired(nda.isRequired());
         return dto;
     }
+    
+    /**
+     * This method creates a NamespaceDefaultAttribute from a NamespaceDefaultAttributeDTO
+     *
+     * @param ndaDTO
+     * @return NamespaceDefaultAttribute
+     */
+    public static NamespaceDefaultAttribute toBO(final NamespaceDefaultAttributeDTO ndaDTO) {
+        final NamespaceDefaultAttribute bo = new NamespaceDefaultAttribute();
+        bo.setActive(ndaDTO.getActive());
+        bo.setAttributeName(ndaDTO.getAttributeName());
+        bo.setAttributeTypeId(ndaDTO.getAttributeTypeId());
+        bo.setDescription(ndaDTO.getDescription());
+        bo.setId(ndaDTO.getId());
+        bo.setNamespaceId(ndaDTO.getNamespaceId());
+        bo.setRequired(ndaDTO.getRequired());
+        return bo;
+    }
 }
 

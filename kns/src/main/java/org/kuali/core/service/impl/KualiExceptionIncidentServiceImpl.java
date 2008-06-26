@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.kuali.core.exceptions.ExceptionIncident;
@@ -107,6 +108,7 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
      * @return
      * @exception
      */
+    @SuppressWarnings("unchecked")
     private MailMessage createMailMessage(String subject, String message)
                 throws Exception{
         if (LOG.isTraceEnabled()) {
@@ -127,15 +129,21 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
         msg.setBccAddresses(messageTemplate.getBccAddresses());
         msg.setCcAddresses(messageTemplate.getCcAddresses());
         msg.setFromAddress(messageTemplate.getFromAddress());
-        String mailingList=KNSServiceLocator.getKualiConfigurationService().
-                                    getPropertyString(REPORT_MAIL_LIST);
-        if (mailingList == null || mailingList.trim().length() == 0) {
-            String em=REPORT_MAIL_LIST+"?";
-            LOG.error(em);
-            throw new KualiException(em);
+        // First check if message template already define mailing list
+        Set emails=messageTemplate.getToAddresses();
+        if (emails == null || emails.isEmpty()) {
+            String mailingList=KNSServiceLocator.getKualiConfigurationService().
+            getPropertyString(REPORT_MAIL_LIST);
+            if (mailingList == null || mailingList.trim().length() == 0) {
+                String em=REPORT_MAIL_LIST+"?";
+                LOG.error(em);
+                throw new KualiException(em);
+            } else {
+                msg.setToAddresses(new HashSet<String>(split(mailingList,
+                        KNSConstants.FIELD_CONVERSIONS_SEPERATOR)));
+            }
         } else {
-            msg.setToAddresses(new HashSet<String>(split(mailingList,
-                    KNSConstants.FIELD_CONVERSIONS_SEPERATOR)));
+            msg.setToAddresses(emails);
         }
 
         // Set mail message subject

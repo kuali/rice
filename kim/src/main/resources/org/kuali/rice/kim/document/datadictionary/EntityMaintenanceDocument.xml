@@ -8,12 +8,14 @@
 
   <bean id="KIMEntityMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Entity" />
-    <property name="maintainableClass" value="org.kuali.core.maintenance.KualiMaintainableImpl" />
+    
+    <property name="maintainableClass" value="org.kuali.rice.kim.document.maintenance.EntityMaintainable" />
+    
     <property name="maintainableSections" >
       <list>
         <ref bean="KIMEntityMaintenanceDocument-EditEntity" />
         <ref bean="KIMEntityMaintenanceDocument-EntityPrincipal" />
-        <ref bean="KIMEntityMaintenanceDocument-EntityAttributes" />
+<!--    <ref bean="KIMEntityMaintenanceDocument-EntityAttributes" />  --> 
       </list>
     </property>
     <property name="lockingKeys" >

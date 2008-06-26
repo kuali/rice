@@ -27,9 +27,15 @@ import org.apache.commons.lang.StringUtils;
  * Members of this class are, like BigDecimal, immutable; even methods which
  * might be expected to change the value (like setScale, for example) actually
  * just return a new instance with the new value.
+ * 
+ * The earlier inheritance was Number and implementing Comparable. This was changed to
+ * inheriting BigDecimal to avoid casting problem and leveraging BigDecimal API. The
+ * internal parameter "value" was kept to insure compatibility to previous usages.
  */
-public class KualiDecimal extends Number implements Comparable {
-	public static final KualiDecimal ZERO = new KualiDecimal(0);
+public class KualiDecimal extends BigDecimal {
+	private static final long serialVersionUID = 7602854373328394490L;
+
+    public static final KualiDecimal ZERO = new KualiDecimal(0);
 
 	// Default rounding behavior is Banker's Rounding. This means that
 	// it rounds towards the "nearest neighbor" unless both neighbors
@@ -49,18 +55,28 @@ public class KualiDecimal extends Number implements Comparable {
 	 *             if the given String is null
 	 */
 	public KualiDecimal(String value) {
-		if (value == null) {
-			throw new IllegalArgumentException(
-					"invalid (null) String in KualiDecimal constructor");
-		}
+	    super(value);
+	    this.setScale(SCALE, ROUND_BEHAVIOR);
+	    // Not needed, BigDecimal would throw exception anyway
+//		if (value == null) {
+//			throw new IllegalArgumentException(
+//					"invalid (null) String in KualiDecimal constructor");
+//		}
+	    // This is kept for compatibility to previous usages
 		this.value = new BigDecimal(value).setScale(SCALE, ROUND_BEHAVIOR);
 	}
 
 	public KualiDecimal(int value) {
+	    super(value);
+        this.setScale(SCALE, ROUND_BEHAVIOR);
+        // This is kept for compatibility to previous usages
 	    this.value = new BigDecimal(value).setScale(SCALE, ROUND_BEHAVIOR);
 	}
 
 	public KualiDecimal(double value) {
+	    super(value);
+        this.setScale(SCALE, ROUND_BEHAVIOR);
+        // This is kept for compatibility to previous usages
 	    this.value = new BigDecimal(value).setScale(SCALE, ROUND_BEHAVIOR);
 	}
 
@@ -160,7 +176,8 @@ public class KualiDecimal extends Number implements Comparable {
 		if (addend == null) {
 			throw new IllegalArgumentException("invalid (null) addend");
 		}
-
+		
+        // This is kept for compatibility to previous usages
 		BigDecimal sum = this.value.add(addend.value);
 		return new KualiDecimal(sum);
 	}
@@ -180,6 +197,7 @@ public class KualiDecimal extends Number implements Comparable {
 			throw new IllegalArgumentException("invalid (null) subtrahend");
 		}
 
+        // This is kept for compatibility to previous usages
 		BigDecimal difference = this.value.subtract(subtrahend.value);
 		return new KualiDecimal(difference);
 	}
@@ -199,6 +217,7 @@ public class KualiDecimal extends Number implements Comparable {
 			throw new IllegalArgumentException("invalid (null) multiplier");
 		}
 
+        // This is kept for compatibility to previous usages
 		BigDecimal product = this.value.multiply(multiplier.value);
 		return new KualiDecimal(product);
 	}
@@ -250,6 +269,7 @@ public class KualiDecimal extends Number implements Comparable {
 	 * @return KualiDecimal instance set to the given scale, rounded with the
 	 *         default rounding behavior (if necessary)
 	 */
+    @Override
 	public KualiDecimal setScale(int scale) {
 		BigDecimal scaled = this.value.setScale(scale, ROUND_BEHAVIOR);
 		return new KualiDecimal(scaled);
@@ -267,7 +287,7 @@ public class KualiDecimal extends Number implements Comparable {
 	}
 
 	/**
-	 * @return a KualiDecimal with the same scale and a negated value (iff the
+	 * @return a KualiDecimal with the same scale and a negated value (if the
 	 *         value is non-zero)
 	 */
 	public KualiDecimal negated() {
@@ -277,6 +297,7 @@ public class KualiDecimal extends Number implements Comparable {
 	/**
 	 * @return a KualiDecimal with the same scale and the absolute value
 	 */
+	@Override
 	public KualiDecimal abs() {
 		KualiDecimal absolute = null;
 
@@ -358,9 +379,9 @@ public class KualiDecimal extends Number implements Comparable {
 	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	public int compareTo(Object o) {
-		return compareTo((KualiDecimal) o);
-	}
+//	public int compareTo(Object o) {
+//		return compareTo((KualiDecimal) o);
+//	}
 
 	/**
 	 * Returns the result of comparing the values of this KualiDecimal and the

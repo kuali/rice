@@ -49,24 +49,24 @@ public class Principal extends AbstractEntityBase implements java.security.Princ
     //@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	//@JoinColumn(name="ENTITY_ID", insertable=false, updatable=false)
 	@Transient
-	private Entity entity;
-    //@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_GROUPS_PRINCIPALS_T", 
-	//           joinColumns=@JoinColumn(name="PRINCIPAL_ID"), 
+	private org.kuali.rice.kim.bo.Entity entity;
+    //@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_GROUPS_PRINCIPALS_T",
+	//           joinColumns=@JoinColumn(name="PRINCIPAL_ID"),
 	//           inverseJoinColumns=@JoinColumn(name="GROUP_ID"))
 	@Transient
 	private ArrayList<Group> groups;
-    //@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_ROLES_PRINCIPALS_T", 
-	//           joinColumns=@JoinColumn(name="PRINCIPAL_ID"), 
+    //@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})@JoinTable(name="KIM_ROLES_PRINCIPALS_T",
+	//           joinColumns=@JoinColumn(name="PRINCIPAL_ID"),
 	//           inverseJoinColumns=@JoinColumn(name="ROLE_ID"))
 	@Transient
 	private ArrayList<Role> roles;
-   
+
     //this list is used for rendering the UI appropriately using the maintenance document framework
     //this can be considered essentially a form object
     private ArrayList<RoleQualificationForPrincipal> roleQualificationsForPrincipal;
-   
+
     //this list is what actually gets persisted for principal role qualifications
-    //@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, 
+    //@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
     //       targetEntity=org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute.class, mappedBy="ERROR: See log")
 	@Transient
 	private ArrayList<PrincipalQualifiedRoleAttribute> principalQualifiedRoleAttributes;
@@ -158,14 +158,14 @@ public class Principal extends AbstractEntityBase implements java.security.Princ
     /**
      * @return the entity
      */
-    public Entity getEntity() {
+    public org.kuali.rice.kim.bo.Entity getEntity() {
         return this.entity;
     }
 
     /**
      * @param entity the entity to set
      */
-    public void setEntity(Entity entity) {
+    public void setEntity(org.kuali.rice.kim.bo.Entity entity) {
         this.entity = entity;
     }
 

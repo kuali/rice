@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.kuali.rice.kim.dto.NamespaceDTO;
 import org.kuali.rice.kim.dto.PermissionDTO;
-import org.kuali.rice.kim.bo.Namespace;
 
 /**
  * Service API for accessing KIM Namespace services.  This contract should be used by all 
@@ -36,19 +35,6 @@ public interface NamespaceService {
      * 
      */
     public List<NamespaceDTO> getAllNamespaces();
-    
-    
-    
-    
-    /**
-     * KIM service API method that returns the complete collection of Namespace objects
-     * 
-     * @return         List of Namespace objects
-     * 
-     */
-    public List<Namespace> getNamespaces();
-    
-    
 
     /**
      * KIM service API method that returns associated List of names for all Namespace objects

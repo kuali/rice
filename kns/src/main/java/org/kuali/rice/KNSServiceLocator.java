@@ -73,6 +73,10 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
+import org.kuali.rice.kim.service.EntityService;
+import org.kuali.rice.kim.service.NamespaceService;
+
+
 public class KNSServiceLocator<T extends Object> {
 
     public static final String VALIDATION_COMPLETION_UTILS = "validationCompletionUtils";
@@ -421,6 +425,20 @@ public class KNSServiceLocator<T extends Object> {
     
     public static DocumentSerializerService getDocumentSerializerService() {
         return (DocumentSerializerService) getService(DOCUMENT_SERIALIZER_SERVICE);
+    }
+    
+public static final String KIM_ENTITY_SERVICE = "entityService";
+    
+    public static EntityService getEntityService() {
+       
+        return (EntityService) getService(KIM_ENTITY_SERVICE);
+    }
+    
+public static final String KIM_NAMESPACE_SERVICE = "namespaceService";
+    
+    public static NamespaceService getNamespaceService() {
+       
+        return (NamespaceService) getService(KIM_NAMESPACE_SERVICE);
     }
 
     public static final String ENTITY_MANAGER_FACTORY = "entityManagerFactory";

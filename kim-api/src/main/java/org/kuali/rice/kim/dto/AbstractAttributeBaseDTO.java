@@ -28,7 +28,6 @@ public abstract class AbstractAttributeBaseDTO implements Serializable {
     private Long attributeTypeId;
     private String attributeName;
     private String value;
-    private AttributeTypeDTO attributeType;
 
     /**
      * This constructs an AttributeBase object instance.
@@ -68,19 +67,5 @@ public abstract class AbstractAttributeBaseDTO implements Serializable {
 
     public void setValue(String value) {
     	this.value = value;
-    }
-
-    /**
-     * @return the attributeType
-     */
-    public AttributeTypeDTO getAttributeType() {
-        return this.attributeType;
-    }
-
-    /**
-     * @param attributeType the attributeType to set
-     */
-    public void setAttributeType(AttributeTypeDTO attributeType) {
-        this.attributeType = attributeType;
     }
 }

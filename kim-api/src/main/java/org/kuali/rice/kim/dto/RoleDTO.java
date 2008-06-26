@@ -32,7 +32,7 @@ public class RoleDTO implements Serializable {
 	private String name;
 	private String description;
 
-	private HashMap<String, GroupDTO> permissions;
+	private HashMap<String, PermissionDTO> permissions;
 	private HashMap<String, GroupDTO> groups = new HashMap<String, GroupDTO>();
 	private HashMap<String, PrincipalDTO> principals = new HashMap<String, PrincipalDTO>();
 	private HashMap<String, RoleAttributeDTO> roles = new HashMap<String, RoleAttributeDTO>();
@@ -64,14 +64,14 @@ public class RoleDTO implements Serializable {
     /**
      * @return the permissions
      */
-    public HashMap<String, GroupDTO> getPermissions() {
+    public HashMap<String, PermissionDTO> getPermissions() {
         return this.permissions;
     }
 
     /**
      * @param permissions the permissions to set
      */
-    public void setPermissions(HashMap<String, GroupDTO> permissions) {
+    public void setPermissions(HashMap<String, PermissionDTO> permissions) {
         this.permissions = permissions;
     }
 

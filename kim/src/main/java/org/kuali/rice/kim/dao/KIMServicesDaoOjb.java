@@ -27,8 +27,7 @@ import org.kuali.rice.kim.bo.Principal;
 import org.kuali.rice.kim.bo.PrincipalQualifiedRole;
 
 /**
- * This is a description of what this class does - lindholm don't forget to fill
- * this in.
+ * Implements DAO queries for KIM objects for better performance
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

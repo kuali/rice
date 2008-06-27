@@ -202,13 +202,13 @@ CREATE TABLE seq_document_type_attribute (
 CREATE TABLE KR_QRTZ_TEXT_TRIGGERS (
     TRIGGER_NAME VARCHAR(80) NOT NULL,
     TRIGGER_GROUP VARCHAR(80) NOT NULL,
-    TEXT_DATA TEXT NULL,
+    TEXT_DATA mediumtext NULL,
     PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP)
 )
 ;
 CREATE TABLE KR_QRTZ_CALENDARS (
     CALENDAR_NAME  VARCHAR(80) NOT NULL,
-    CALENDAR TEXT NOT NULL,
+    CALENDAR mediumtext NOT NULL,
     PRIMARY KEY (CALENDAR_NAME)
 )
 ;
@@ -245,7 +245,7 @@ CREATE TABLE KR_QRTZ_JOB_DETAILS (
     IS_VOLATILE VARCHAR(1) NOT NULL,
     IS_STATEFUL VARCHAR(1) NOT NULL,
     REQUESTS_RECOVERY VARCHAR(1) NOT NULL,
-    JOB_DATA TEXT NULL,
+    JOB_DATA mediumtext NULL,
     PRIMARY KEY (JOB_NAME,JOB_GROUP)
 )
 ;
@@ -305,7 +305,7 @@ CREATE TABLE KR_QRTZ_TRIGGERS (
     END_TIME BIGINT NULL,
     CALENDAR_NAME VARCHAR(80) NULL,
     MISFIRE_INSTR BIGINT NULL,
-    JOB_DATA TEXT NULL,
+    JOB_DATA mediumtext NULL,
     PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP)
 )
 ;
@@ -336,9 +336,9 @@ create table EN_ACTN_TKN_T (ACTN_TKN_ID bigint not null, ACTN_TKN_DT datetime, A
 create table EN_APPL_CNST_T (APPL_CNST_NM varchar(255) not null, APPL_CNST_VAL_TXT varchar(255), DB_LOCK_VER_NBR integer, primary key (APPL_CNST_NM)) ;
 create table EN_ATTACHMENT_T (ATTACHMENT_ID bigint not null, FILE_LOC varchar(255), FILE_NM varchar(255), DB_LOCK_VER_NBR integer, MIME_TYP varchar(255), NTE_ID bigint, primary key (ATTACHMENT_ID)) ;
 create table EN_BAM_PARAM_T (BAM_PARAM_ID bigint not null, PARAM varchar(255), BAM_ID bigint, primary key (BAM_PARAM_ID)) ;
-create table EN_BAM_T (BAM_ID bigint not null, CALL_DT datetime, callback tinyblob, EXCEPTION_MSG text, EXCEPTION_TO_STRING varchar(255), METHOD_NM varchar(255), SRVR_IND_IND char(1), SERVICE_NM varchar(255), SERVICE_URL varchar(255), TARGET_TO_STRING varchar(255), THREAD_NM varchar(255), primary key (BAM_ID)) ;
+create table EN_BAM_T (BAM_ID bigint not null, CALL_DT datetime, callback tinyblob, EXCEPTION_MSG mediumtext, EXCEPTION_TO_STRING varchar(255), METHOD_NM varchar(255), SRVR_IND_IND char(1), SERVICE_NM varchar(255), SERVICE_URL varchar(255), TARGET_TO_STRING varchar(255), THREAD_NM varchar(255), primary key (BAM_ID)) ;
 create table EN_DLGN_RSP_T (DLGN_RULE_ID bigint not null, DLGN_RULE_BASE_VAL_ID bigint, DLGN_TYP varchar(255), DB_LOCK_VER_NBR integer, RULE_RSP_ID bigint, primary key (DLGN_RULE_ID)) ;
-create table EN_DOC_HDR_CNTNT_T (DOC_HDR_ID bigint not null, DOC_CNTNT_TXT text, primary key (DOC_HDR_ID)) ;
+create table EN_DOC_HDR_CNTNT_T (DOC_HDR_ID bigint not null, DOC_CNTNT_TXT mediumtext, primary key (DOC_HDR_ID)) ;
 create table EN_DOC_HDR_EXT_DT_T (DOC_HDR_EXT_ID bigint not null, DOC_HDR_ID bigint, DOC_HDR_EXT_VAL_KEY varchar(255), DOC_HDR_EXT_VAL datetime, primary key (DOC_HDR_EXT_ID)) ;
 create table EN_DOC_HDR_EXT_FLT_T (DOC_HDR_EXT_ID bigint not null, DOC_HDR_ID bigint, DOC_HDR_EXT_VAL_KEY varchar(255), DOC_HDR_EXT_VAL decimal(19,2), primary key (DOC_HDR_EXT_ID)) ;
 create table EN_DOC_HDR_EXT_LONG_T (DOC_HDR_EXT_ID bigint not null, DOC_HDR_ID bigint, DOC_HDR_EXT_VAL_KEY varchar(255), DOC_HDR_EXT_VAL bigint, primary key (DOC_HDR_EXT_ID)) ;
@@ -348,15 +348,15 @@ create table EN_DOC_NTE_T (DOC_NTE_ID bigint not null, DB_LOCK_VER_NBR integer, 
 create table EN_DOC_TYP_ATTRIB_T (DOC_TYP_ATTRIB_ID bigint not null, DOC_TYP_ID bigint, ORD_INDX integer, RULE_ATTRIB_ID bigint, primary key (DOC_TYP_ATTRIB_ID)) ;
 create table EN_DOC_TYP_PLCY_RELN_T (DOC_TYP_ID bigint not null, DOC_PLCY_NM varchar(255) not null, DB_LOCK_VER_NBR integer, DOC_PLCY_VAL char(1), primary key (DOC_TYP_ID, DOC_PLCY_NM)) ;
 create table EN_DOC_TYP_PROC_T (DOC_TYP_PROC_ID bigint not null, INIT_IND char(1), DB_LOCK_VER_NBR integer, PROC_NM varchar(255), INIT_RTE_NODE_ID bigint, DOC_TYP_ID bigint, primary key (DOC_TYP_PROC_ID)) ;
-create table EN_DOC_TYP_T (DOC_TYP_ID bigint not null, DOC_TYP_ACTV_IND char(1), BLNKT_APPR_PLCY varchar(255), BLNKT_APPR_WRKGRP_ID bigint, DOC_TYP_CUR_IND char(1), DOC_TYP_EMAIL_XSL varchar(255), DOC_TYP_DESC varchar(255), DOC_TYP_HDLR_URL_ADDR varchar(255), DOC_TYP_PARNT_ID bigint, DOC_TYP_SECURITY_XML text, DOC_TYP_LBL_TXT varchar(255), DB_LOCK_VER_NBR integer, MESSAGE_ENTITY_NM varchar(255), DOC_TYP_NM varchar(255), DOC_TYP_NOTIFY_ADDR varchar(255), DOC_TYP_POST_PRCSR_NM varchar(255), DOC_TYP_PREV_VER bigint, DOC_HDR_ID bigint, DOC_TYP_RTE_VER_NBR varchar(255), DOC_TYP_VER_NBR integer, WRKGRP_ID bigint, primary key (DOC_TYP_ID)) ;
+create table EN_DOC_TYP_T (DOC_TYP_ID bigint not null, DOC_TYP_ACTV_IND char(1), BLNKT_APPR_PLCY varchar(255), BLNKT_APPR_WRKGRP_ID bigint, DOC_TYP_CUR_IND char(1), DOC_TYP_EMAIL_XSL varchar(255), DOC_TYP_DESC varchar(255), DOC_TYP_HDLR_URL_ADDR varchar(255), DOC_TYP_PARNT_ID bigint, DOC_TYP_SECURITY_XML mediumtext, DOC_TYP_LBL_TXT varchar(255), DB_LOCK_VER_NBR integer, MESSAGE_ENTITY_NM varchar(255), DOC_TYP_NM varchar(255), DOC_TYP_NOTIFY_ADDR varchar(255), DOC_TYP_POST_PRCSR_NM varchar(255), DOC_TYP_PREV_VER bigint, DOC_HDR_ID bigint, DOC_TYP_RTE_VER_NBR varchar(255), DOC_TYP_VER_NBR integer, WRKGRP_ID bigint, primary key (DOC_TYP_ID)) ;
 create table EN_EDL_DMP_T (DOC_HDR_ID bigint not null, DOC_CRTE_DT datetime, DOC_CRNT_NODE_NM varchar(255), DOC_TTL varchar(255), DOC_INITR_ID varchar(255), DOC_MDFN_DT datetime, DOC_RTE_STAT_CD varchar(255), DOC_TYP_NM varchar(255), DB_LOCK_VER_NBR integer, primary key (DOC_HDR_ID)) ;
 create table EN_EDL_FIELD_DMP_T (EDL_FIELD_DMP_ID bigint not null, DOC_HDR_ID bigint, FLD_NM varchar(255), FLD_VAL varchar(255), DB_LOCK_VER_NBR integer, primary key (EDL_FIELD_DMP_ID)) ;
 create table EN_EDOCLT_ASSOC_T (edoclt_assoc_id bigint not null, edoclt_assoc_actv_ind char(1), edoclt_assoc_def_nm varchar(255), edoclt_assoc_doctype_nm varchar(255), db_lock_ver_nbr integer, edoclt_assoc_style_nm varchar(255), primary key (edoclt_assoc_id)) ;
-create table EN_EDOCLT_DEF_T (edoclt_def_id bigint not null, edoclt_def_actv_ind char(1), db_lock_ver_nbr integer, edoclt_def_nm varchar(255), edoclt_def_xml text, primary key (edoclt_def_id)) ;
-create table EN_EDOCLT_STYLE_T (edoclt_style_id bigint not null, edoclt_style_actv_ind char(1), db_lock_ver_nbr integer, edoclt_style_nm varchar(255), edoclt_style_xml text, primary key (edoclt_style_id)) ;
+create table EN_EDOCLT_DEF_T (edoclt_def_id bigint not null, edoclt_def_actv_ind char(1), db_lock_ver_nbr integer, edoclt_def_nm varchar(255), edoclt_def_xml mediumtext, primary key (edoclt_def_id)) ;
+create table EN_EDOCLT_STYLE_T (edoclt_style_id bigint not null, edoclt_style_actv_ind char(1), db_lock_ver_nbr integer, edoclt_style_nm varchar(255), edoclt_style_xml mediumtext, primary key (edoclt_style_id)) ;
 create table EN_HLP_T (EN_HLP_ID bigint not null, EN_HLP_KY varchar(255), EN_HLP_NM varchar(255), EN_HLP_TXT varchar(255), DB_LOCK_VER_NBR integer, primary key (EN_HLP_ID)) ;
 create table EN_INIT_RTE_NODE_INSTN_T (DOC_HDR_ID bigint not null, RTE_NODE_INSTN_ID bigint not null) ;
-create table EN_MSG_PAYLOAD_T (MESSAGE_QUE_ID bigint not null, MESSAGE_PAYLOAD text, primary key (MESSAGE_QUE_ID)) ;
+create table EN_MSG_PAYLOAD_T (MESSAGE_QUE_ID bigint not null, MESSAGE_PAYLOAD mediumtext, primary key (MESSAGE_QUE_ID)) ;
 create table EN_MSG_QUE_T (MESSAGE_QUE_ID bigint not null, MESSAGE_EXP_DT datetime, MESSAGE_QUE_IP_NBR varchar(255), DB_LOCK_VER_NBR integer, MESSAGE_ENTITY_NM varchar(255), SERVICE_METHOD_NM varchar(255), MESSAGE_QUE_DT datetime, MESSAGE_QUE_PRIO_NBR integer, MESSAGE_QUE_STAT_CD varchar(255), MESSAGE_QUE_RTRY_CNT integer, MESSAGE_SERVICE_NM varchar(255), VAL_ONE varchar(255), VAL_TWO varchar(255), primary key (MESSAGE_QUE_ID)) ;
 create table EN_QUAL_ROLE_EXT_T (QUAL_ROLE_EXT_ID bigint not null, DB_LOCK_VER_NBR integer, QUAL_ROLE_ID bigint, ROLE_ATTRIB_ID bigint, primary key (QUAL_ROLE_EXT_ID)) ;
 create table EN_QUAL_ROLE_EXT_VAL_T (QUAL_ROLE_EXT_VAL_ID bigint not null, EXT_KEY varchar(255), DB_LOCK_VER_NBR integer, QUAL_ROLE_EXT_ID bigint, EXT_VAL varchar(255), primary key (QUAL_ROLE_EXT_VAL_ID)) ;
@@ -376,7 +376,7 @@ create table EN_RTE_NODE_INSTN_ST_T (RTE_NODE_INSTN_ST_ID bigint not null, ST_KE
 create table EN_RTE_NODE_INSTN_T (RTE_NODE_INSTN_ID bigint not null, ACTV_IND char(1), CMPLT_IND char(1), DOC_ID bigint, INIT_IND char(1), DB_LOCK_VER_NBR integer, PROC_RTE_NODE_INSTN_ID bigint, RTE_NODE_ID bigint, BRCH_ID bigint, primary key (RTE_NODE_INSTN_ID)) ;
 create table EN_RTE_NODE_LNK_T (TO_RTE_NODE_ID bigint not null, FROM_RTE_NODE_ID bigint not null) ;
 create table EN_RTE_NODE_T (RTE_NODE_ID bigint not null, DOC_ACTVN_TYP_TXT varchar(255), DOC_TYP_ID bigint, WRKGRP_ID bigint, DOC_FNL_APRVR_IND char(1), DB_LOCK_VER_NBR integer, DOC_MNDTRY_RTE_IND char(1), RTE_NODE_TYP varchar(255), DOC_RTE_MTHD_CD varchar(255), DOC_RTE_MTHD_NM varchar(255), RTE_NODE_NM varchar(255), BRCH_PROTO_ID bigint, primary key (RTE_NODE_ID)) ;
-create table EN_RULE_ATTRIB_T (RULE_ATTRIB_ID bigint not null, RULE_ATTRIB_CLS_NM varchar(255), RULE_ATTRIB_DESC varchar(255), RULE_ATTRIB_LBL_TXT varchar(255), DB_LOCK_VER_NBR integer, MESSAGE_ENTITY_NM varchar(255), RULE_ATTRIB_NM varchar(255), RULE_ATTRIB_TYP varchar(255), RULE_ATTRIB_XML_RTE_TXT text, primary key (RULE_ATTRIB_ID)) ;
+create table EN_RULE_ATTRIB_T (RULE_ATTRIB_ID bigint not null, RULE_ATTRIB_CLS_NM varchar(255), RULE_ATTRIB_DESC varchar(255), RULE_ATTRIB_LBL_TXT varchar(255), DB_LOCK_VER_NBR integer, MESSAGE_ENTITY_NM varchar(255), RULE_ATTRIB_NM varchar(255), RULE_ATTRIB_TYP varchar(255), RULE_ATTRIB_XML_RTE_TXT mediumtext, primary key (RULE_ATTRIB_ID)) ;
 create table EN_RULE_BASE_VAL_T (RULE_BASE_VAL_ID bigint not null, RULE_BASE_VAL_ACTVN_DT datetime, RULE_BASE_VAL_ACTV_IND char(1), RULE_BASE_VAL_CUR_IND char(1), RULE_BASE_VAL_DACTVN_DT datetime, RULE_BASE_VAL_DLGN_IND char(1), RULE_BASE_VAL_DESC varchar(255), DOC_TYP_NM varchar(255), RULE_BASE_VAL_FRM_DT datetime, RULE_BASE_VAL_IGNR_PRVS char(1), DB_LOCK_VER_NBR integer, RULE_NM varchar(255), RULE_BASE_VAL_PREV_VER bigint, DOC_HDR_ID bigint, RULE_TMPL_ID bigint, TMPL_RULE_IND char(1), RULE_BASE_VAL_TO_DT datetime not null, RULE_BASE_VAL_VER_NBR integer, RULE_EXPR_ID bigint, primary key (RULE_BASE_VAL_ID)) ;
 create table EN_RULE_EXPR_T (RULE_EXPR_ID bigint not null, RULE_EXPR varchar(255), RULE_EXPR_TYP varchar(255), primary key (RULE_EXPR_ID)) ;
 create table EN_RULE_EXT_T (RULE_EXT_ID bigint not null, DB_LOCK_VER_NBR integer, RULE_BASE_VAL_ID bigint, RULE_TMPL_ATTRIB_ID bigint, primary key (RULE_EXT_ID)) ;
@@ -385,7 +385,7 @@ create table EN_RULE_RSP_T (RULE_RSP_ID bigint not null, ACTION_RQST_CD varchar(
 create table EN_RULE_TMPL_ATTRIB_T (RULE_TMPL_ATTRIB_ID bigint not null, ACTV_IND char(1), DFLT_VAL varchar(255), DSPL_ORD integer, DB_LOCK_VER_NBR integer, REQ_IND char(1), RULE_ATTRIB_ID bigint, RULE_TMPL_ID bigint, primary key (RULE_TMPL_ATTRIB_ID)) ;
 create table EN_RULE_TMPL_OPTN_T (RULE_TMPL_OPTN_ID bigint not null, RULE_TMPL_OPTN_KEY varchar(255), DB_LOCK_VER_NBR integer, RULE_TMPL_ID bigint, RULE_TMPL_OPTN_VAL varchar(255), primary key (RULE_TMPL_OPTN_ID)) ;
 create table EN_RULE_TMPL_T (RULE_TMPL_ID bigint not null, DLGN_RULE_TMPL_ID bigint, RULE_TMPL_DESC varchar(255), DB_LOCK_VER_NBR integer, RULE_TMPL_NM varchar(255), primary key (RULE_TMPL_ID)) ;
-create table EN_SERVICE_DEF_DUEX_T (SERVICE_DEF_ID bigint not null, SERVICE_ALIVE char(1), SERVICE_URL varchar(255), DB_LOCK_VER_NBR integer, MESSAGE_ENTITY_NM varchar(255), SERVICE_DEFINITION text, SERVER_IP varchar(255), SERVICE_NM varchar(255), primary key (SERVICE_DEF_ID)) ;
+create table EN_SERVICE_DEF_DUEX_T (SERVICE_DEF_ID bigint not null, SERVICE_ALIVE char(1), SERVICE_URL varchar(255), DB_LOCK_VER_NBR integer, MESSAGE_ENTITY_NM varchar(255), SERVICE_DEFINITION mediumtext, SERVER_IP varchar(255), SERVICE_NM varchar(255), primary key (SERVICE_DEF_ID)) ;
 create table EN_USR_OPTN_T (PRSN_OPTN_ID varchar(255) not null, PRSN_EN_ID varchar(255) not null, DB_LOCK_VER_NBR integer, PRSN_OPTN_VAL varchar(255), primary key (PRSN_OPTN_ID, PRSN_EN_ID)) ;
 create table EN_USR_T (DTYPE varchar(31), PRSN_EN_ID varchar(255) not null, PRSN_NTWRK_ID varchar(255), USR_CRTE_DT datetime, PRSN_NM varchar(255), PRSN_EMAIL_ADDR varchar(255), PRSN_UNIV_ID varchar(255), PRSN_GVN_NM varchar(255), PRSN_LST_NM varchar(255), USR_LST_UPDT_DT datetime, DB_LOCK_VER_NBR integer, PRSN_UNVL_USR_ID varchar(255), OBJ_ID varchar(255), VER_NBR bigint, primary key (PRSN_EN_ID)) ;
 create table EN_WRKGRP_EXT_DTA_T (WRKGRP_EXT_DTA_ID bigint not null, EXT_KEY varchar(255), DB_LOCK_VER_NBR integer, EXT_VAL varchar(255), WRKGRP_EXT_ID bigint, primary key (WRKGRP_EXT_DTA_ID)) ;
@@ -410,22 +410,22 @@ CREATE TABLE FP_DOC_TYPE_ATTR_T (
      PRIMARY KEY (ID)
 )
 ;
-create table FP_MAINTENANCE_DOCUMENT_T (FDOC_NBR varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, DOCUMENT_CONTENTS text, primary key (FDOC_NBR)) ;
+create table FP_MAINTENANCE_DOCUMENT_T (FDOC_NBR varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, DOCUMENT_CONTENTS mediumtext, primary key (FDOC_NBR)) ;
 create table FP_MAINT_LOCK_T (LOCK_REPRESENTATION_TXT varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, FDOC_NBR varchar(255), primary key (LOCK_REPRESENTATION_TXT)) ;
 create table FS_ADHOC_RTE_ACTN_RECP_T (ACTN_RQST_RECP_ID varchar(255) not null, ACTN_RQST_CD varchar(255) not null, ACTN_RQST_RECP_TYP_CD integer not null, OBJ_ID varchar(255), VER_NBR bigint, FDOC_NBR varchar(255), primary key (ACTN_RQST_RECP_ID, ACTN_RQST_CD, ACTN_RQST_RECP_TYP_CD)) ;
-create table FS_LOOKUP_RESULTS_MT (LOOKUP_RESULT_SEQUENCE_NBR varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, PERSON_UNVL_ID varchar(255), SERIALIZED_LOOKUP_RESULTS text, primary key (LOOKUP_RESULT_SEQUENCE_NBR)) ;
-create table FS_LOOKUP_SELECTIONS_MT (LOOKUP_RESULT_SEQUENCE_NBR varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, PERSON_UNVL_ID varchar(255), SELECTED_OBJ_IDS text, primary key (LOOKUP_RESULT_SEQUENCE_NBR)) ;
+create table FS_LOOKUP_RESULTS_MT (LOOKUP_RESULT_SEQUENCE_NBR varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, PERSON_UNVL_ID varchar(255), SERIALIZED_LOOKUP_RESULTS mediumtext, primary key (LOOKUP_RESULT_SEQUENCE_NBR)) ;
+create table FS_LOOKUP_SELECTIONS_MT (LOOKUP_RESULT_SEQUENCE_NBR varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, PERSON_UNVL_ID varchar(255), SELECTED_OBJ_IDS mediumtext, primary key (LOOKUP_RESULT_SEQUENCE_NBR)) ;
 create table FS_UNIVERSAL_USR_T (PERSON_UNVL_ID varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, PRSN_AFLT_IND char(1), CAMPUS_CD varchar(255), EMP_STAT_CD varchar(255), EMP_TYPE_CD varchar(255), PRSN_FAC_IND char(1), FS_ENCRPTD_PWD_TXT varchar(255), PRSN_BASE_SLRY_AMT tinyblob, PRSN_CMP_ADDR varchar(255), PRSN_EMAIL_ADDR varchar(255), PRSN_1ST_NM varchar(255), PRSN_LST_NM varchar(255), PRSN_LOC_PHN_NBR varchar(255), PRSN_MID_NM varchar(255), PERSON_NM varchar(255), PRSN_PYRL_ID varchar(255), PRSN_TAX_ID varchar(255), PRSN_TAX_ID_TYP_CD varchar(255), PERSON_USER_ID varchar(255), EMP_PRM_DEPT_CD varchar(255), PRSN_STAFF_IND char(1), PRSN_STU_IND char(1), primary key (PERSON_UNVL_ID)) ;
-create table KCB_MESSAGES (ID bigint not null, CHANNEL varchar(255) not null, CONTENT text not null, CONTENT_TYPE varchar(255), CREATED_DATETIME datetime not null, DELIVERY_TYPE varchar(255) not null, DB_LOCK_VER_NBR integer, ORIGIN_ID varchar(255) not null, PRODUCER varchar(255), USER_RECIPIENT_ID varchar(255) not null, TITLE varchar(255), URL varchar(255), primary key (ID)) ;
+create table KCB_MESSAGES (ID bigint not null, CHANNEL varchar(255) not null, CONTENT mediumtext not null, CONTENT_TYPE varchar(255), CREATED_DATETIME datetime not null, DELIVERY_TYPE varchar(255) not null, DB_LOCK_VER_NBR integer, ORIGIN_ID varchar(255) not null, PRODUCER varchar(255), USER_RECIPIENT_ID varchar(255) not null, TITLE varchar(255), URL varchar(255), primary key (ID)) ;
 create table KCB_MSG_DELIVS (ID bigint not null, LOCKED_DATE datetime, DELIVERER_SYSTEM_ID varchar(255), DELIVERER_TYPE_NAME varchar(255) not null, DELIVERY_STATUS varchar(255), DB_LOCK_VER_NBR integer, PROCESS_COUNT integer, MESSAGE_ID bigint, primary key (ID)) ;
 create table KCB_RECIP_DELIVS (ID bigint not null, CHANNEL varchar(255) not null, DELIVERER_NAME varchar(255) not null, DB_LOCK_VER_NBR integer, RECIPIENT_ID varchar(255) not null, primary key (ID)) ;
 create table KCB_RECIP_PREFS (ID bigint not null, DB_LOCK_VER_NBR integer, PROPERTY varchar(255) not null, RECIPIENT_ID varchar(255) not null, VALUE varchar(255), primary key (ID)) ;
 create table KIM_ATTRIBUTE_TYPES_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, NAME varchar(255), DESCRIPTION varchar(255), primary key (ID)) ;
 create table KIM_ENTITYS_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, ENTITY_TYPE_ID bigint, primary key (ID)) ;
-create table KIM_ENTITY_ATTRIBUTES_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, ATTRIBUTE_NAME varchar(255), ATTRIBUTE_TYPE_ID bigint, ATTRIBUTE_VALUE varchar(255), ATTRIBUTE_VALUES text, ENTITY_ID bigint, SPONSOR_NAMESPACE_ID bigint, primary key (ID)) ;
+create table KIM_ENTITY_ATTRIBUTES_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, ATTRIBUTE_NAME varchar(255), ATTRIBUTE_TYPE_ID bigint, ATTRIBUTE_VALUE varchar(255), ATTRIBUTE_VALUES mediumtext, ENTITY_ID bigint, SPONSOR_NAMESPACE_ID bigint, primary key (ID)) ;
 create table KIM_ENTITY_TYPES_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, DESCRIPTION varchar(255), NAME varchar(255), primary key (ID)) ;
 create table KIM_GROUPS_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, DESCRIPTION varchar(255), GROUP_TYPE_ID bigint, NAME varchar(255), primary key (ID)) ;
-create table KIM_GROUP_ATTRIBUTES_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, ATTRIBUTE_NAME varchar(255), ATTRIBUTE_TYPE_ID bigint, ATTRIBUTE_VALUE varchar(255), ATTRIBUTE_VALUES text, GROUP_ID bigint, primary key (ID)) ;
+create table KIM_GROUP_ATTRIBUTES_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, ATTRIBUTE_NAME varchar(255), ATTRIBUTE_TYPE_ID bigint, ATTRIBUTE_VALUE varchar(255), ATTRIBUTE_VALUES mediumtext, GROUP_ID bigint, primary key (ID)) ;
 create table KIM_GROUP_QLFD_ROLES_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, ATTRIBUTE_NAME varchar(255), ATTRIBUTE_VALUE varchar(255), ROLE_ID bigint, GROUP_ID bigint, primary key (ID)) ;
 create table KIM_GROUP_TYPES_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, DESCRIPTION varchar(255), NAME varchar(255), WORKFLOW_DOCUMENT_TYPE varchar(255), primary key (ID)) ;
 create table KIM_GRP_TYP_DFLT_ATTRIBS_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, ACTIVE char(1), ATTRIBUTE_NAME varchar(255), ATTRIBUTE_TYPE_ID bigint, DESCRIPTION varchar(255), GROUP_TYPE_ID bigint, REQUIRED char(1), primary key (ID)) ;
@@ -480,10 +480,10 @@ create table KOM_ORGANIZATIONS_CONTEXTS_T (ID bigint not null, OBJ_ID varchar(25
 create table KOM_ORGANIZATIONS_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, ACTIVE varchar(255), CATEGORY_ID bigint, NAME varchar(255), PARENT_ORGANIZATION_ID bigint, SHORT_NAME varchar(255), primary key (ID)) ;
 create table KOM_ORGANIZATION_CATEGORIES_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, NAME varchar(255), primary key (ID)) ;
 create table KOM_ORGANIZATION_CONTEXTS_T (ID bigint not null, OBJ_ID varchar(255), VER_NBR bigint, DESCRIPTION varchar(255), NAME varchar(255), organizations tinyblob, primary key (ID)) ;
-create table NOTIFICATIONS (ID bigint not null, AUTO_REMOVE_DATETIME datetime, CONTENT text not null, CREATED_DATETIME datetime not null, DELIVERY_TYPE varchar(255) not null, DB_LOCK_VER_NBR integer, LOCKED_DATE datetime, PROCESSING_FLAG varchar(255) not null, SEND_DATETIME datetime, TITLE varchar(255), NOTIFICATION_CHANNEL_ID bigint, PRIORITY_ID bigint, CONTENT_TYPE_ID bigint, PRODUCER_ID bigint, primary key (ID)) ;
+create table NOTIFICATIONS (ID bigint not null, AUTO_REMOVE_DATETIME datetime, CONTENT mediumtext not null, CREATED_DATETIME datetime not null, DELIVERY_TYPE varchar(255) not null, DB_LOCK_VER_NBR integer, LOCKED_DATE datetime, PROCESSING_FLAG varchar(255) not null, SEND_DATETIME datetime, TITLE varchar(255), NOTIFICATION_CHANNEL_ID bigint, PRIORITY_ID bigint, CONTENT_TYPE_ID bigint, PRODUCER_ID bigint, primary key (ID)) ;
 create table NOTIFICATION_CHANNELS (ID bigint not null, DESCRIPTION varchar(255) not null, NAME varchar(255) not null, SUBSCRIBABLE char(1) not null, primary key (ID)) ;
 create table NOTIFICATION_CHANNEL_PRODUCERS (PRODUCER_ID bigint not null, CHANNEL_ID bigint not null) ;
-create table NOTIFICATION_CONTENT_TYPES (ID bigint not null, DESCRIPTION varchar(255) not null, NAME varchar(255) not null, NAMESPACE varchar(255) not null, XSD text not null, XSL text not null, primary key (ID)) ;
+create table NOTIFICATION_CONTENT_TYPES (ID bigint not null, DESCRIPTION varchar(255) not null, NAME varchar(255) not null, NAMESPACE varchar(255) not null, XSD mediumtext not null, XSL mediumtext not null, primary key (ID)) ;
 create table NOTIFICATION_MSG_DELIVS (ID bigint not null, DELIVERY_SYSTEM_ID varchar(255), DB_LOCK_VER_NBR integer, LOCKED_DATE datetime, MESSAGE_DELIVERY_STATUS varchar(255) not null, USER_RECIPIENT_ID varchar(255) not null, NOTIFICATION_ID bigint, primary key (ID)) ;
 create table NOTIFICATION_PRIORITIES (ID bigint not null, DESCRIPTION varchar(255) not null, NAME varchar(255) not null, PRIORITY_ORDER integer not null, primary key (ID)) ;
 create table NOTIFICATION_PRODUCERS (ID bigint not null, CONTACT_INFO varchar(255) not null, DESCRIPTION varchar(255) not null, NAME varchar(255) not null, primary key (ID)) ;
@@ -500,7 +500,7 @@ create table SH_NTE_T (NTE_ID bigint not null, OBJ_ID varchar(255), VER_NBR bigi
 create table SH_NTE_TYP_T (NTE_TYP_CD varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, NTE_TYP_ACTV_IND char(1), NTE_TYP_DESC varchar(255), primary key (NTE_TYP_CD)) ;
 create table SH_PARM_DTL_TYP_T (SH_PARM_DTL_TYP_CD varchar(255) not null, SH_PARM_NMSPC_CD varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, ACTIVE_IND char(1), SH_PARM_DTL_TYP_NM varchar(255), primary key (SH_PARM_DTL_TYP_CD, SH_PARM_NMSPC_CD)) ;
 create table SH_PARM_NMSPC_T (SH_PARM_NMSPC_CD varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, ACTIVE_IND char(1), SH_PARM_NMSPC_NM varchar(255), primary key (SH_PARM_NMSPC_CD)) ;
-create table SH_PARM_T (SH_PARM_DTL_TYP_CD varchar(255) not null, SH_PARM_NM varchar(255) not null, SH_PARM_NMSPC_CD varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, SH_PARM_CONS_CD varchar(255), SH_PARM_DESC text, SH_PARM_TYP_CD varchar(255), SH_PARM_TXT varchar(255), WRKGRP_NM varchar(255), primary key (SH_PARM_DTL_TYP_CD, SH_PARM_NM, SH_PARM_NMSPC_CD)) ;
+create table SH_PARM_T (SH_PARM_DTL_TYP_CD varchar(255) not null, SH_PARM_NM varchar(255) not null, SH_PARM_NMSPC_CD varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, SH_PARM_CONS_CD varchar(255), SH_PARM_DESC mediumtext, SH_PARM_TYP_CD varchar(255), SH_PARM_TXT varchar(255), WRKGRP_NM varchar(255), primary key (SH_PARM_DTL_TYP_CD, SH_PARM_NM, SH_PARM_NMSPC_CD)) ;
 create table SH_PARM_TYP_T (SH_PARM_TYP_CD varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, ACTIVE_IND char(1), SH_PARM_TYP_NM varchar(255), primary key (SH_PARM_TYP_CD)) ;
 create table SH_USR_PROP_T (APPL_MOD_ID varchar(255) not null, USR_PROP_NM varchar(255) not null, PERSON_UNVL_ID varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, USR_PROP_VAL varchar(255), primary key (APPL_MOD_ID, USR_PROP_NM, PERSON_UNVL_ID)) ;
 create table TRAV_DOC_2_ACCOUNTS (fdoc_nbr varchar(255) not null, acct_num varchar(255) not null) ;

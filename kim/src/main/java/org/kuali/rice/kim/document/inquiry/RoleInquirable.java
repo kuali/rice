@@ -24,6 +24,9 @@ import org.kuali.core.web.ui.Field;
 import org.kuali.core.web.ui.Row;
 import org.kuali.core.web.ui.Section;
 import org.kuali.core.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.GroupQualifiedRole;
+import org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute;
 import org.kuali.rice.kim.bo.Principal;
 import org.kuali.rice.kim.bo.PrincipalQualifiedRole;
 import org.kuali.rice.kim.bo.PrincipalQualifiedRoleAttribute;
@@ -52,11 +55,40 @@ public class RoleInquirable extends KualiInquirableImpl{
 			if(bo instanceof Role){
 				 Role role = (Role)bo;
 				 populatePrincipalQualifiedRoles(role);
+				 populateGroupQualifiedRoles(role);
 			 }
 		}
 		return bo;
 	}
 
+
+	
+    /**
+     * This method is responsible for taking the persisted group qualified role attributes and pushing them into 
+     * the appropriate value added helper bos for displaying in the maintenance document user interface.
+     * 
+     * @param role
+     */
+    private void populateGroupQualifiedRoles(Role role) {
+            role.getGroupQualifiedRoles().clear();
+
+            ArrayList<Group> groups = role.getGroups();
+            for (Group g : groups) {
+                GroupQualifiedRole gqr = new GroupQualifiedRole();
+                gqr.setId(g.getId());
+                gqr.setName(g.getName());
+                gqr.setRoleId(role.getId());
+
+                ArrayList<GroupQualifiedRoleAttribute> gqrAttribs = role.getGroupQualifiedRoleAttributes();
+                for(GroupQualifiedRoleAttribute gqrAttrib : gqrAttribs) {
+                    if(gqrAttrib.getGroupId().equals(gqr.getId())) {
+                        gqr.getQualifiedRoleAttributes().add(gqrAttrib);
+                    }
+                }
+                
+                role.getGroupQualifiedRoles().add(gqr);
+            }
+    }
 
 	
 	 

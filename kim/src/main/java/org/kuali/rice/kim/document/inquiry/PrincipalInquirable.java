@@ -49,13 +49,13 @@ public class PrincipalInquirable extends KualiInquirableImpl{
 	public BusinessObject getBusinessObject(Map fieldValues) {
 		// TODO vrk4 - THIS METHOD NEEDS JAVADOCS
 		BusinessObject bo = super.getBusinessObject(fieldValues);
-		if(bo==null) return bo;
 		
-		if(bo instanceof Principal){
-			 Principal principal = (Principal)bo;
-			 populateRoleQualifications(principal);
-		 }
-		
+		if(bo!=null){
+			if(bo instanceof Principal){
+				 Principal principal = (Principal)bo;
+				 populateRoleQualifications(principal);
+			 }
+		}
 		return bo;
 	}
 

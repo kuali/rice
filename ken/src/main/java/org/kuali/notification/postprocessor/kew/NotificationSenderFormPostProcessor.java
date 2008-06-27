@@ -29,6 +29,8 @@ import org.kuali.rice.dao.GenericDao;
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.PostProcessorRemote;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
+import edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO;
+import edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO;
 import edu.iu.uis.eden.clientapp.vo.DeleteEventVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
@@ -124,5 +126,19 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
 	
 	LOG.debug("LEAVING NotificationSenderFormPostProcessor.doRouteStatusChange() for Notification Sender Form with route header ID: " + arg0.getRouteHeaderId());
 	return true;
+    }
+
+    /**
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#beforeProcess(edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO)
+     */
+    public boolean beforeProcess(BeforeProcessEventVO beforeProcessEvent) throws Exception {
+        return true;
+    }
+
+    /**
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#afterProcess(edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO)
+     */
+    public boolean afterProcess(AfterProcessEventVO afterProcessEvent) throws Exception {
+        return true;
     }
 }

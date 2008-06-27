@@ -40,9 +40,11 @@ import org.kuali.core.exceptions.DocumentAuthorizationException;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.web.format.NoOpStringFormatter;
 import org.kuali.core.web.format.TimestampAMPMFormatter;
+import org.kuali.core.web.ui.HeaderField;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.springframework.util.AutoPopulatingList;
 
 import edu.iu.uis.eden.EdenConstants;
@@ -133,32 +135,77 @@ public abstract class KualiDocumentFormBase extends KualiForm {
     public void populate(HttpServletRequest request) {
         super.populate(request);
 
+        KualiWorkflowDocument workflowDocument = null;
+
         if (hasDocumentId()) {
             // populate workflowDocument in documentHeader, if needed
             try {
-                KualiWorkflowDocument workflowDocument = null;
                 if (GlobalVariables.getUserSession().getWorkflowDocument(getDocument().getDocumentNumber()) != null) {
                     workflowDocument = GlobalVariables.getUserSession().getWorkflowDocument(getDocument().getDocumentNumber());
-                }
-                else {
-                    // gets the workflow document from doc service, doc service will also set the workflow document in the user's session
+                } else {
+                    // gets the workflow document from doc service, doc service will also set the workflow document in the
+                    // user's session
                     Document retrievedDocument = KNSServiceLocator.getDocumentService().getByDocumentHeaderId(getDocument().getDocumentNumber());
                     if (retrievedDocument == null) {
                         throw new WorkflowException("Unable to get retrieve document # " + getDocument().getDocumentNumber() + " from document service getByDocumentHeaderId");
-                }
+                    }
                     workflowDocument = retrievedDocument.getDocumentHeader().getWorkflowDocument();
-            }
+                }
 
                 getDocument().getDocumentHeader().setWorkflowDocument(workflowDocument);
-            }
-            catch (WorkflowException e) {
+            } catch (WorkflowException e) {
                 LOG.warn("Error while instantiating workflowDoc", e);
                 throw new RuntimeException("error populating documentHeader.workflowDocument", e);
             }
-        }
+        } 
+
+        //Populate Document Header attributes
+        populateHeaderFields(workflowDocument);
     }
+    
+    private String getInquiryUrl(String businessObjectClassName, String id, String linkBody) {
+        StringBuffer urlBuffer = new StringBuffer();
+        
+        if(StringUtils.isNotEmpty(id) && StringUtils.isNotEmpty(linkBody) ) {
+            UniversalUser user = new UniversalUser();
+            user.setPersonUniversalIdentifier(id);
+            String inquiryUrlSection = KNSServiceLocator.getKualiInquirable().getInquiryUrl(user, KNSPropertyConstants.KUALI_USER_PERSON_UNIVERSAL_IDENTIFIER, false);
+            urlBuffer.append("<a href='");
+            urlBuffer.append(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
+            urlBuffer.append("/kr/");
+            urlBuffer.append(inquiryUrlSection);
+            urlBuffer.append("' ");
+            urlBuffer.append("target='_blank'>");
+            urlBuffer.append(linkBody);
+            urlBuffer.append("</a>");
+        }
+        
+        return urlBuffer.toString();
+    }
+    
+    protected void populateHeaderFields(KualiWorkflowDocument workflowDocument) {
+        //Document Number
+        HeaderField docNumber = new HeaderField("DataDictionary.DocumentHeader.attributes.documentNumber", workflowDocument != null? getDocument().getDocumentNumber() : null);
+        HeaderField docStatus = new HeaderField("DataDictionary.DocumentHeader.attributes.financialDocumentStatusCode", workflowDocument != null? workflowDocument.getStatusDisplayValue() : null);
+        String inquiryUrl = getInquiryUrl("org.kuali.core.bo.user.UniversalUser", workflowDocument != null? workflowDocument.getRouteHeader().getInitiator().getUuId() : null, workflowDocument != null? workflowDocument.getInitiatorNetworkId() : null);
 
+        HeaderField docInitiator = new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.initiatorNetworkId", 
+        workflowDocument != null? workflowDocument.getInitiatorNetworkId() : null, workflowDocument != null? inquiryUrl : null);
+        
+        String createDateStr = null;
+        if(workflowDocument != null && workflowDocument.getCreateDate() != null) {
+            createDateStr = KNSServiceLocator.getDateTimeService().toString(workflowDocument.getCreateDate(), "hh:mm a MM/dd/yyyy");
+        }
+        
+        HeaderField docCreateDate = new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.createDate", createDateStr);
 
+        getDocInfo().clear();
+        getDocInfo().add(docNumber);
+        getDocInfo().add(docStatus);
+        getDocInfo().add(docInitiator);
+        getDocInfo().add(docCreateDate);
+    }
+    
     /**
      * Updates authorization-related form fields based on the current form contents
      */
@@ -198,8 +245,11 @@ public abstract class KualiDocumentFormBase extends KualiForm {
      */
     protected void useDocumentAuthorizer(DocumentAuthorizer documentAuthorizer) {
         UniversalUser kualiUser = GlobalVariables.getUserSession().getUniversalUser();
-
-        setEditingMode(documentAuthorizer.getEditMode(document, kualiUser));
+        Map editMode = documentAuthorizer.getEditMode(document, kualiUser);
+        if (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking()) {
+            editMode = documentAuthorizer.establishLocks(document, editMode, kualiUser);
+        }
+        setEditingMode(editMode);
         setDocumentActionFlags(documentAuthorizer.getDocumentActionFlags(document, kualiUser));
     }
 
@@ -396,6 +446,9 @@ public abstract class KualiDocumentFormBase extends KualiForm {
      */
     public void setDocument(Document document) {
         this.document = document;
+        if(document != null && StringUtils.isNotEmpty(document.getDocumentNumber())) {
+            populateHeaderFields(document.getDocumentHeader().getWorkflowDocument());
+        }
     }
 
     /**

@@ -17,6 +17,8 @@
 package edu.iu.uis.eden.routemanager;
 
 import edu.iu.uis.eden.ActionTakenEvent;
+import edu.iu.uis.eden.AfterProcessEvent;
+import edu.iu.uis.eden.BeforeProcessEvent;
 import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.EdenConstants;
@@ -29,7 +31,9 @@ public class ExceptionRoutingTestPostProcessor implements PostProcessor {
 	public static boolean THROW_ROUTE_STATUS_CHANGE_EXCEPTION;
 	public static boolean THROW_ROUTE_STATUS_LEVEL_EXCEPTION;
 	public static boolean THROW_ROUTE_DELETE_ROUTE_HEADER_EXCEPTION;
-	public static boolean THROW_DO_ACTION_TAKEN_EXCEPTION;
+    public static boolean THROW_DO_ACTION_TAKEN_EXCEPTION;
+    public static boolean THROW_BEFORE_PROCESS_EXCEPTION;
+    public static boolean THROW_AFTER_PROCESS_EXCEPTION;
 	public static boolean TRANSITIONED_OUT_OF_EXCEPTION_ROUTING = false;
 	
 	public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
@@ -67,5 +71,19 @@ public class ExceptionRoutingTestPostProcessor implements PostProcessor {
 		}
 		return new ProcessDocReport(true, "");
 	}
+
+    public ProcessDocReport beforeProcess(BeforeProcessEvent event) throws Exception {
+        if (THROW_BEFORE_PROCESS_EXCEPTION) {
+            throw new RuntimeException("I am the beforeProcess exploder");
+        }
+        return new ProcessDocReport(true, "");
+    }
+
+    public ProcessDocReport afterProcess(AfterProcessEvent event) throws Exception {
+        if (THROW_AFTER_PROCESS_EXCEPTION) {
+            throw new RuntimeException("I am the afterProcess exploder");
+        }
+        return new ProcessDocReport(true, "");
+    }
 
 }

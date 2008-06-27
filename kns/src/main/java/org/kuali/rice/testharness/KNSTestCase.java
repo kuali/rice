@@ -39,6 +39,7 @@ public abstract class KNSTestCase extends RiceTestCase {
 	protected List<Lifecycle> getSuiteLifecycles() {
 		List<Lifecycle> lifecycles = super.getSuiteLifecycles();
 		lifecycles.add(new Lifecycle() {
+		    JettyServerLifecycle jettyLifecycle = null;
 			boolean started = false;
 
 			public boolean isStarted() {
@@ -48,12 +49,16 @@ public abstract class KNSTestCase extends RiceTestCase {
 			public void start() throws Exception {
 				//ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();
                 new SQLDataLoaderLifecycle(getSqlFilename(), getSqlDelimiter()).start();
-				new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
+                jettyLifecycle = new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot());
+                jettyLifecycle.start();
 				new KEWXmlDataLoaderLifecycle(getXmlFilename()).start();
 				this.started = true;
 			}
 
 			public void stop() throws Exception {
+			    if (jettyLifecycle != null && jettyLifecycle.isStarted()) {
+			        jettyLifecycle.stop();
+			    }
 				this.started = false;
 			}
 

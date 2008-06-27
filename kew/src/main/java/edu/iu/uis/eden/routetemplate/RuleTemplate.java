@@ -38,7 +38,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.WorkflowPersistable;
-import edu.iu.uis.eden.exception.ResourceUnavailableException;
 
 /**
  * A model bean which represents a template upon which a rule is created.
@@ -179,19 +178,11 @@ public class RuleTemplate implements WorkflowPersistable {
     }
 
     public RuleTemplateAttribute getRuleTemplateAttribute(int index) {
-        // TODO delyea - does this need to check active only attributes?
         while (getRuleTemplateAttributes().size() <= index) {
             getRuleTemplateAttributes().add(new RuleTemplateAttribute());
         }
         return (RuleTemplateAttribute) getRuleTemplateAttributes().get(index);
     }
-
-//    public RuleTemplateOption getRuleTemplateOption(int index) {
-//        while (getRuleTemplateOptions().size() <= index) {
-//            getRuleTemplateOptions().add(new RuleTemplateOption());
-//        }
-//        return (RuleTemplateOption) getRuleTemplateOptions().get(index);
-//    }
 
     public List<RuleTemplateAttribute> getRuleTemplateAttributes() {
         return ruleTemplateAttributes;
@@ -207,33 +198,6 @@ public class RuleTemplate implements WorkflowPersistable {
         }
         return activeAttributes;
     }
-
-    /**
-     * Returns a List of all WorkflowAttribute objects on this template.
-     * 
-     * @throws ResourceUnavailableException if one of the WorkflowAttributes cannot be instantiated
-     */
-//    public List getWorkflowAttributes() throws ResourceUnavailableException {
-//    	List workflowAttributes = new ArrayList();
-//    	for (Iterator iter = getRuleTemplateAttributes().iterator(); iter.hasNext();) {
-//            RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iter.next();
-//            Object attribute = templateAttribute.getAttribute();
-//            if (attribute instanceof WorkflowAttribute) {
-//            	workflowAttributes.add(attribute);
-//            }
-//        }
-//    	return workflowAttributes;
-//    }
-    
-//    public RoleAttribute getRoleAttributeByName(String className) throws ResourceUnavailableException {
-//        for (Iterator iter = getWorkflowAttributes().iterator(); iter.hasNext();) {
-//            WorkflowAttribute attribute = (WorkflowAttribute)iter.next();
-//            if (className.equals(attribute.getClass().getName())) {
-//                return (RoleAttribute) attribute;
-//            }
-//        }
-//        throw new RuntimeException("Didn't locate RoleAttribute " + className);
-//    }
 
     public void setRuleTemplateAttributes(List<RuleTemplateAttribute> ruleTemplateAttributes) {
         this.ruleTemplateAttributes = ruleTemplateAttributes;

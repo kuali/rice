@@ -153,8 +153,10 @@ public class JettyServerLifecycle implements Lifecycle {
 	public void stop() throws Exception {
 	    LOG.info("Shutting down jetty: " + jettyServer);
 	    try {
-	        jettyServer.stop();
-	        WEBAPP_CONFIGS.remove(jettyServer.getPort());
+	    	if (jettyServer != null && jettyServer.isStarted()) {
+	    		jettyServer.stop();
+	    		WEBAPP_CONFIGS.remove(jettyServer.getPort());
+	    	}
 	    } catch (Exception e) {
 	        LOG.error("Error shutting down Jetty " + jettyServer.getContextName() + " " + jettyServer.getRelativeWebappRoot(), e);
 	    }

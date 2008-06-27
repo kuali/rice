@@ -42,6 +42,7 @@ import org.kuali.core.util.ExceptionUtils;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.Timer;
 import org.kuali.core.util.WebUtils;
+import org.kuali.core.web.struts.form.KualiForm;
 import org.kuali.core.web.struts.pojo.PojoForm;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.Core;
@@ -70,11 +71,18 @@ public class KualiRequestProcessor extends RequestProcessor {
 
 	LOG.info(new StringBuffer("Started processing request: '").append(request.getRequestURI()).append(
 		"' w/ query string: '").append(request.getQueryString()).append("'"));
-	super.process(request, response);
+	   
+	try {
+	        super.process(request, response);
+    } finally {
+        GlobalVariables.setKualiForm(null); 
+    }
+	    
+
 	LOG.info(new StringBuffer("Finished processing request: '").append(request.getRequestURI()).append(
 		"' w/ query string: '").append(request.getQueryString()).append("'"));
 	t0.log();
-    }
+    }  
 
     /**
          * override of the pre process for all struts requests which will ensure that we have the appropriate state for user
@@ -146,6 +154,13 @@ public class KualiRequestProcessor extends RequestProcessor {
 	    ActionMapping mapping) throws ServletException {
 
 	Timer t0 = new Timer("KualiRequestProcessor.processPopulate");
+	
+    if (form instanceof KualiForm) {
+         // Add the ActionForm to GlobalVariables
+         // This will allow developers to retrieve both the Document and any request parameters that are not
+         // part of the Form and make them available in ValueFinder classes and other places where they are needed.
+         GlobalVariables.setKualiForm((KualiForm)form);  
+     }     
 
 	// if not PojoForm, call struts populate
 	if (!(form instanceof PojoForm)) {

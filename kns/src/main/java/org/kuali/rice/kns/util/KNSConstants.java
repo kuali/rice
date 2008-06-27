@@ -51,7 +51,8 @@ public class KNSConstants extends JSTLConstants {
 
     public static final String SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM = "SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS";
     public static final String ATTACHMENT_MAX_FILE_SIZE_PARM_NM = "MAX_FILE_SIZE_ATTACHMENT";
-
+    public static final String DOCUMENT_HTTP_SESSION_KEY = "documentHttpSessionKey";
+    
 //    public static final String CONFIGURATION_FILE_NAME = "configuration";
     public static final String ENVIRONMENT_KEY = "environment";
 //    public static final String VERSION_KEY = "version";
@@ -212,7 +213,6 @@ public class KNSConstants extends JSTLConstants {
     public static final String LOOKUPABLE_IMPL_ATTRIBUTE_NAME = "lookupableImplServiceName";
     public static final String LOOKUP_RESULTS_SEQUENCE = "LOOKUP_RESULT_SEQUENCE_NBR_SEQ";
     public static final String KUALI_LOOKUPABLE_IMPL = "kualiLookupable";
-    public static final String DOC_HANDLER_METHOD = "docHandler";
     public static final String PARAMETER_DOC_ID = "docId";
     public static final String PARAMETER_COMMAND = "command";
 //    public static final String LOOKUP_METHOD = "performLookup";
@@ -271,7 +271,13 @@ public class KNSConstants extends JSTLConstants {
     public static final String METHOD_TO_CALL_PARM13_LEFT_DEL = "(:::;";
     public static final String METHOD_TO_CALL_PARM13_RIGHT_DEL = ";:::)";
     // if more strings needed, then add more colons to the PARM11 strings above, e.g. (::; (:::;, etc.
-
+    
+    // Pessimistic Locking Constants
+    public static final String PESSIMISTIC_LOCK_ADMIN_GROUP_PARM_NM = "PESSIMISTIC_LOCK_ADMIN_GROUP";
+    public static final String SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM = "SESSION_TIMEOUT_WARNING_MESSAGE_TIME";
+    public static final String SESSION_TIMEOUT_WARNING_MILLISECONDS = "SESSION_TIMEOUT_WARNING_MILLISECONDS";
+    public static final String SESSION_TIMEOUT_WARNING_MINUTES = "SESSION_TIMEOUT_WARNING_MINUTES";
+    
     public static final String ANCHOR = "anchor";
     public static final String ANCHOR_TOP_OF_FORM = "topOfForm";
     public static final String QUESTION_ANCHOR = "questionAnchor";
@@ -300,7 +306,22 @@ public class KNSConstants extends JSTLConstants {
     public static final String RETURN_METHOD_TO_CALL = "refresh";
 //    public static final String ROUTE_METHOD = "route";
     // below field used in tag files
+
+    // KualiDocumentActionBase Method Names
+    public static final String ROUTE_METHOD = "route";
     public static final String SAVE_METHOD = "save";
+    public static final String APPROVE_METHOD = "approve";
+    public static final String BLANKET_APPROVE_METHOD = "blanketApprove";
+    public static final String DOC_HANDLER_METHOD = "docHandler";
+    public static final String CLOSE_METHOD = "close";
+    public static final String CANCEL_METHOD = "cancel";
+    public static final String LOAD_DOCUMENT_METHOD = "loadDocument";
+    public static final String CREATE_DOCUMENT_METHOD = "createDocument";
+    public static final String DISAPPROVE_METHOD = "disapprove";
+    public static final String FYI_METHOD = "fyi";
+    public static final String ACKNOWLEDGE_METHOD = "acknowledge";
+    // specialized method 'delete' used only for PessimisticLocks currently
+    public static final String DELETE_METHOD = "delete";
     public static final String START_METHOD = "start";
 //    public static final String SEARCH_METHOD = "search";
 //    public static final String COPY_METHOD = "copy";
@@ -324,6 +345,7 @@ public class KNSConstants extends JSTLConstants {
 
     public static final String GLOBAL_ERRORS = "GLOBAL_ERRORS";
     public static final String GLOBAL_MESSAGES = "GlobalMessages";
+    public static final String PESSIMISTIC_LOCK_MESSAGES = "DocumentPessimisticLockMessages";
     public static final String AD_HOC_ROUTE_PERSON_ERRORS = "newAdHocRoutePerson*,adHocRoutePerson*";
     public static final String AD_HOC_ROUTE_WORKGROUP_ERRORS = "newAdHocRouteWorkgroup*,adHocRouteWorkgroup*";
     public static final String AD_HOC_ROUTE_ERRORS = AD_HOC_ROUTE_PERSON_ERRORS + "," + AD_HOC_ROUTE_WORKGROUP_ERRORS;

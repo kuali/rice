@@ -24,6 +24,8 @@ import java.util.List;
 
 import org.apache.log4j.MDC;
 
+import edu.iu.uis.eden.AfterProcessEvent;
+import edu.iu.uis.eden.BeforeProcessEvent;
 import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.EdenConstants;
@@ -89,8 +91,14 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 			LOG.debug("Aquired lock on document " + documentId);
 			LOG.info("Processing document: " + documentId + " : " + nodeInstanceId);
-			DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId);
-			if (!document.isRoutable()) {
+			DocumentRouteHeaderValue document = null;
+			try {
+	            document = notifyPostProcessorBeforeProcess(documentId, nodeInstanceId);
+            } catch (Exception e) {
+                LOG.warn("Problems contacting PostProcessor before engine process", e);
+                throw new RouteManagerException("Problems contacting PostProcessor:  " + e.getMessage());
+            }
+            if (!document.isRoutable()) {
 				LOG.debug("Document not routable so returning with doing no action");
 				return;
 			}
@@ -126,6 +134,12 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			}
 		} finally {
 			LOG.info((success ? "Successfully processed" : "Failed to process") + " document: " + documentId + " : " + nodeInstanceId);
+			try {
+	            notifyPostProcessorAfterProcess(documentId, nodeInstanceId, success);
+            } catch (Exception e) {
+                LOG.warn("Problems contacting PostProcessor after engine process", e);
+                throw new RouteManagerException("Problems contacting PostProcessor:  " + e.getMessage());
+            }
 			RouteContext.clearCurrentRouteContext();
 			MDC.remove("docID");
 		}
@@ -535,6 +549,78 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		}
 		return document;
 	}
+	
+    /**
+     * TODO get the routeContext in this method - it should be a better object
+     * than the nodeInstance
+     */
+	private DocumentRouteHeaderValue notifyPostProcessorBeforeProcess(Long documentId, Long nodeInstanceId) {
+        DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId);
+	    return notifyPostProcessorBeforeProcess(document, nodeInstanceId, new BeforeProcessEvent(documentId,document.getAppDocId(),nodeInstanceId));
+	}
+
+    /**
+     * TODO get the routeContext in this method - it should be a better object
+     * than the nodeInstance
+     */
+    private DocumentRouteHeaderValue notifyPostProcessorBeforeProcess(DocumentRouteHeaderValue document, Long nodeInstanceId, BeforeProcessEvent event) {
+        ProcessDocReport report = null;
+        try {
+            PostProcessor postProcessor = null;
+            // use the document's post processor unless specified by the runPostProcessorLogic not to
+            if (!isRunPostProcessorLogic()) {
+                postProcessor = new DefaultPostProcessor();
+            } else {
+                postProcessor = document.getDocumentType().getPostProcessor();
+            }
+            report = postProcessor.beforeProcess(event);
+        } catch (Exception e) {
+            LOG.warn("Problems contacting PostProcessor", e);
+            throw new RouteManagerException("Problems contacting PostProcessor:  " + e.getMessage());
+        }
+        document = getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
+        if (!report.isSuccess()) {
+            LOG.error("PostProcessor rejected route level change::" + report.getMessage(), report.getProcessException());
+            throw new RouteManagerException("Route Level change failed in post processor::" + report.getMessage());
+        }
+        return document;
+    }
+    
+    /**
+     * TODO get the routeContext in this method - it should be a better object
+     * than the nodeInstance
+     */
+    private DocumentRouteHeaderValue notifyPostProcessorAfterProcess(Long documentId, Long nodeInstanceId, boolean successfullyProcessed) {
+        DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId);
+        return notifyPostProcessorAfterProcess(document, nodeInstanceId, new AfterProcessEvent(documentId,document.getAppDocId(),nodeInstanceId,successfullyProcessed));
+    }
+
+    /**
+     * TODO get the routeContext in this method - it should be a better object
+     * than the nodeInstance
+     */
+    private DocumentRouteHeaderValue notifyPostProcessorAfterProcess(DocumentRouteHeaderValue document, Long nodeInstanceId, AfterProcessEvent event) {
+        ProcessDocReport report = null;
+        try {
+            PostProcessor postProcessor = null;
+            // use the document's post processor unless specified by the runPostProcessorLogic not to
+            if (!isRunPostProcessorLogic()) {
+                postProcessor = new DefaultPostProcessor();
+            } else {
+                postProcessor = document.getDocumentType().getPostProcessor();
+            }
+            report = postProcessor.afterProcess(event);
+        } catch (Exception e) {
+            LOG.warn("Problems contacting PostProcessor", e);
+            throw new RouteManagerException("Problems contacting PostProcessor:  " + e.getMessage());
+        }
+        document = getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
+        if (!report.isSuccess()) {
+            LOG.error("PostProcessor rejected route level change::" + report.getMessage(), report.getProcessException());
+            throw new RouteManagerException("Route Level change failed in post processor::" + report.getMessage());
+        }
+        return document;
+    }
 
 	/**
 	 * This method initializes the document by materializing and activating the

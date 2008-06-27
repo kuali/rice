@@ -51,7 +51,7 @@ public final class SpringLoader extends BaseLifecycle implements ServiceLocator 
      */
 
     private static final SpringLoader INSTANCE = new SpringLoader();
-
+    
     /**
      * Separator character for list of Spring files.
      * <p>Value is ','

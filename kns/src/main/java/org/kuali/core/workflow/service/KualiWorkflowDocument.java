@@ -20,6 +20,7 @@ import java.util.Set;
 
 import org.kuali.core.bo.user.UniversalUser;
 
+import edu.iu.uis.eden.clientapp.vo.ReturnPointVO;
 import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 import edu.iu.uis.eden.clientapp.vo.UserIdVO;
 import edu.iu.uis.eden.clientapp.vo.WorkflowAttributeDefinitionVO;
@@ -28,6 +29,7 @@ import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
 import edu.iu.uis.eden.exception.WorkflowException;
 import edu.iu.uis.eden.routeheader.DocumentRouteHeaderValue;
+import edu.iu.uis.eden.server.WorkflowDocumentActions;
 
 public interface KualiWorkflowDocument {
 
@@ -221,6 +223,26 @@ public interface KualiWorkflowDocument {
     public abstract void complete(String annotation) throws WorkflowException;
 
     /**
+     * Performs the 'returnToPrevious' action on the document this WorkflowDocument represents.  If this is a new document,
+     * the document is created first.
+     * @param annotation the message to log for the action
+     * @param nodeName the node to return to
+     * @throws WorkflowException in case an error occurs returning to previous node
+     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdVO, RouteHeaderVO, ReturnPointVO, String)
+     */
+    public void returnToPreviousNode(String annotation, String nodeName) throws WorkflowException;
+
+    /**
+     * Performs the 'returnToPrevious' action on the document this WorkflowDocument represents.  If this is a new document,
+     * the document is created first.
+     * @param annotation the message to log for the action
+     * @param ReturnPointVO the node to return to
+     * @throws WorkflowException in case an error occurs returning to previous node
+     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdVO, RouteHeaderVO, ReturnPointVO, String)
+     */
+    public void returnToPreviousNode(String annotation, ReturnPointVO returnPoint) throws WorkflowException;
+
+    /**
      * @param annotation
      * @param destRouteLevel
      * @throws WorkflowException
@@ -333,4 +355,10 @@ public interface KualiWorkflowDocument {
      * @return a set of all approvers
      */
     public Set<UniversalUser> getAllPriorApprovers() throws WorkflowException, org.kuali.core.exceptions.UserNotFoundException;
+       
+    public void setReceiveFutureRequests() throws WorkflowException;
+    
+    public void setDoNotReceiveFutureRequests() throws WorkflowException;
+    
+    public void setClearFutureRequests() throws WorkflowException;
 }

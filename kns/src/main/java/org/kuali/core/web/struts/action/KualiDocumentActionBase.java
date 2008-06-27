@@ -15,9 +15,13 @@
  */
 package org.kuali.core.web.struts.action;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +50,8 @@ import org.kuali.core.document.Document;
 import org.kuali.core.document.SessionDocument;
 import org.kuali.core.document.authorization.DocumentActionFlags;
 import org.kuali.core.document.authorization.DocumentAuthorizer;
+import org.kuali.core.document.authorization.DocumentAuthorizerBase;
+import org.kuali.core.document.authorization.PessimisticLock;
 import org.kuali.core.exceptions.AuthorizationException;
 import org.kuali.core.exceptions.DocumentAuthorizationException;
 import org.kuali.core.exceptions.ModuleAuthorizationException;
@@ -66,6 +72,7 @@ import org.kuali.core.util.UrlFactory;
 import org.kuali.core.util.WebUtils;
 import org.kuali.core.web.struts.form.BlankFormFile;
 import org.kuali.core.web.struts.form.KualiDocumentFormBase;
+import org.kuali.core.web.struts.form.KualiMaintenanceForm;
 import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.core.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.KNSServiceLocator;
@@ -138,22 +145,31 @@ public class KualiDocumentActionBase extends KualiAction {
             }
         }
 
-        // populates authorization-related fields in KualiDocumentFormBase instances, which are derived from
-        // information which is contained in the form but which may be unavailable until this point
         if (form instanceof KualiDocumentFormBase) {
             KualiDocumentFormBase formBase = (KualiDocumentFormBase) form;
+            // check to see if document is a pessimistic lock document
+            if (isFormRepresentingLockObject(formBase)) {
+                // form represents a document using the BO class PessimisticLock so we need to skip the authorizations in the next logic check
+                LOG.debug("Form " + formBase + " represents a PessimisticLock BO object");
+            } else {
+        // populates authorization-related fields in KualiDocumentFormBase instances, which are derived from
+        // information which is contained in the form but which may be unavailable until this point
             Document document = formBase.getDocument();
             DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
             formBase.populateAuthorizationFields(documentAuthorizer);
             UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
             if (document instanceof SessionDocument) {
+                    String formKey = formBase.getFormKey();
                 if (StringUtils.isBlank(formBase.getFormKey()) || userSession.retrieveObject(formBase.getFormKey()) == null) {
                 // generate doc form key here if it does not exist
-                    formBase.setFormKey(GlobalVariables.getUserSession().addObject(form));
+                        formKey = GlobalVariables.getUserSession().addObject(form);
+                        formBase.setFormKey(formKey);
                 //}  else {
                    // GlobalVariables.getUserSession().addObject(formBase.getFormKey(),form);                    
                 }
             }
+                // below used by KualiHttpSessionListener to handle lock expiration
+                request.getSession().setAttribute(KNSConstants.DOCUMENT_HTTP_SESSION_KEY, document.getDocumentNumber());
             // set returnToActionList flag, if needed
             if ("displayActionListView".equals(formBase.getCommand())) {
                 formBase.setReturnToActionList(true);
@@ -171,12 +187,73 @@ public class KualiDocumentActionBase extends KualiAction {
             if (attachementEnabled != null) {
                 entry.setAllowsNoteAttachments(Boolean.parseBoolean(attachementEnabled));
             }
-
+			// pessimistic locking
+                String methodCalledViaDispatch = (String) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY);
+                if ( (StringUtils.isNotBlank(methodCalledViaDispatch)) && (exitingDocument()) ) {
+                    GlobalVariables.getUserSession().removeObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY);
+                    attemptLockRelease(document, methodCalledViaDispatch);
+                }
+                setupPessimisticLockMessages(document, request);
+                if (!document.getPessimisticLocks().isEmpty()) {
+                    KualiConfigurationService configService = KNSServiceLocator.getKualiConfigurationService();
+                    String warningMinutes = configService.getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM);
+                    request.setAttribute(KNSConstants.SESSION_TIMEOUT_WARNING_MINUTES, warningMinutes);
+                    request.setAttribute(KNSConstants.SESSION_TIMEOUT_WARNING_MILLISECONDS, (request.getSession().getMaxInactiveInterval() - (Integer.valueOf(warningMinutes) * 60)) * 1000);
+                }
+            }
         }
 
         t0.log();
 
         return returnForward;
+    }
+
+    protected boolean isFormRepresentingLockObject(KualiDocumentFormBase form) throws Exception {
+        if (form instanceof KualiMaintenanceForm) {
+            KualiMaintenanceForm maintForm = (KualiMaintenanceForm) form;
+            if (ObjectUtils.isNotNull(maintForm.getBusinessObjectClassName())) {
+                return PessimisticLock.class.isAssignableFrom(Class.forName(((KualiMaintenanceForm) form).getBusinessObjectClassName()));
+            }
+        }
+        return false;
+    }
+
+    protected void attemptLockRelease(Document document, String methodToCall) {
+        if ( (document != null) && (!document.getPessimisticLocks().isEmpty()) ) {
+            releaseLocks(document, methodToCall);
+            // refresh pessimistic locks in case custom add/remove changes were made
+            document.refreshPessimisticLocks();
+        }
+    }
+    
+    protected void releaseLocks(Document document, String methodToCall) {
+        // first check if the method to call is listed as required lock clearing
+        if (document.getLockClearningMethodNames().contains(methodToCall)) {
+            // find all locks for the current user and remove them
+            KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(document.getPessimisticLocks(), GlobalVariables.getUserSession().getUniversalUser());
+        }
+    }
+    
+    protected void setupPessimisticLockMessages(Document document, HttpServletRequest request) {
+        List<String> lockMessages = new ArrayList<String>();
+        for (PessimisticLock lock : document.getPessimisticLocks()) {
+            // if lock is owned by current user, do not display message for it
+            if (!lock.isOwnedByUser(GlobalVariables.getUserSession().getUniversalUser())) {
+                lockMessages.add(generatePessimisticLockMessage(lock));
+            }
+        }
+        request.setAttribute(KNSConstants.PESSIMISTIC_LOCK_MESSAGES, lockMessages);
+    }
+    
+    protected String generatePessimisticLockMessage(PessimisticLock lock) {
+        String descriptor = (lock.getLockDescriptor() != null) ? lock.getLockDescriptor() : "";
+        return "This document currently has a " + descriptor + " lock owned by " + lock.getOwnedByUser().getPersonName() + " as of " + RiceConstants.getDefaultTimeFormat().format(lock.getGeneratedTimestamp()) + " on " + RiceConstants.getDefaultDateFormat().format(lock.getGeneratedTimestamp());
+    }
+    
+    private void saveMessages(HttpServletRequest request) {
+        if (!GlobalVariables.getMessageList().isEmpty()) {
+            request.setAttribute(KNSConstants.GLOBAL_MESSAGES, GlobalVariables.getMessageList());
+        }
     }
 
     /**
@@ -453,6 +530,27 @@ public class KualiDocumentActionBase extends KualiAction {
     }
 
     /**
+     * This method will verify that the form is representing a {@link PessimisticLock} object and delete it if possible
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return ActionForward
+     * @throws Exception
+     */
+    public ActionForward delete(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        if (isFormRepresentingLockObject(kualiDocumentFormBase)) {
+            Map fieldValues = new HashMap();
+            String idValue = request.getParameter(KNSPropertyConstants.ID);
+            KNSServiceLocator.getPessimisticLockService().delete(idValue);
+            return returnToSender(mapping, kualiDocumentFormBase);
+        }
+        throw buildAuthorizationException(KNSConstants.DELETE_METHOD, kualiDocumentFormBase.getDocument());
+    }
+    
+    /**
      * route the document using the document service
      *
      * @param mapping
@@ -540,6 +638,7 @@ public class KualiDocumentActionBase extends KualiAction {
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL);
         kualiDocumentFormBase.setAnnotation("");
 
+        GlobalVariables.getUserSession().addObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY,Boolean.TRUE);
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -868,6 +967,31 @@ public class KualiDocumentActionBase extends KualiAction {
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
+    /**
+     * 
+     * Handy method to stream the byte array to response object
+     * @param attachmentDataSource
+     * @param response
+     * @throws Exception
+     */
+    protected void streamToResponse(byte[] fileContents, String fileName, String fileContentType,HttpServletResponse response) throws Exception{
+        ByteArrayOutputStream baos = null;
+        try{
+            baos = new ByteArrayOutputStream(fileContents.length);
+            baos.write(fileContents);
+            WebUtils.saveMimeOutputStreamAsFile(response, fileContentType, baos, fileName);
+        }finally{
+            try{
+                if(baos!=null){
+                    baos.close();
+                    baos = null;
+                }
+            }catch(IOException ioEx){
+                LOG.error("Error while downloading attachment");
+                throw new RuntimeException("IOException occurred while downloading attachment", ioEx);
+            }
+        }
+    }
 
     /**
      * Downloads the selected attachment to the user's browser
@@ -1266,6 +1390,14 @@ public class KualiDocumentActionBase extends KualiAction {
         return new DocumentAuthorizationException(GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), action, document.getDocumentNumber());
     }
 
+    protected boolean exitingDocument() {
+        Boolean isMethodComplete = (Boolean) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY);
+        return isMethodComplete != null && isMethodComplete;
+    }
+
+    protected void setupDocumentExit() {
+        GlobalVariables.getUserSession().addObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY,Boolean.TRUE);
+    }
 
     /**
      * If the given form has returnToActionList set to true, this method returns an ActionForward that should take the user back to
@@ -1287,6 +1419,7 @@ public class KualiDocumentActionBase extends KualiAction {
             dest = mapping.findForward(KNSConstants.MAPPING_PORTAL);
         }
 
+        setupDocumentExit();
         return dest;
     }
 }

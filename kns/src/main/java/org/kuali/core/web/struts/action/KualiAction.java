@@ -29,6 +29,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
 import org.kuali.core.authorization.AuthorizationType;
+import org.kuali.core.document.authorization.DocumentAuthorizerBase;
 import org.kuali.core.exceptions.AuthorizationException;
 import org.kuali.core.exceptions.ModuleAuthorizationException;
 import org.kuali.core.service.KualiModuleService;
@@ -46,6 +47,12 @@ import org.kuali.rice.util.RiceConstants;
  * This class is the base action class for all kuali actions. Overrides execute to set methodToCall for image submits. Other setup
  * for framework calls.
  *
+ *
+ */
+/**
+ * This is a description of what this class does - ctdang don't forget to fill this in. 
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public abstract class KualiAction extends DispatchAction {
@@ -66,10 +73,8 @@ public abstract class KualiAction extends DispatchAction {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionForward returnForward = null;
 
-        String methodToCall;
+        String methodToCall = findMethodToCall(form, request);
         if (form instanceof KualiForm && StringUtils.isNotEmpty(((KualiForm) form).getMethodToCall())) {
-            methodToCall = ((KualiForm) form).getMethodToCall();
-
             if (StringUtils.isNotBlank(getImageContext(request, KNSConstants.ANCHOR))) {
                 ((KualiForm) form).setAnchor(getImageContext(request, KNSConstants.ANCHOR));
             }
@@ -80,15 +85,10 @@ public abstract class KualiAction extends DispatchAction {
                 ((KualiForm) form).setAnchor(KNSConstants.ANCHOR_TOP_OF_FORM);
             }
         }
-        else {
-            // call utility method to parse the methodToCall from the request.
-            methodToCall = WebUtils.parseMethodToCall(request);
-        }
-
         // if found methodToCall, pass control to that method, else return the basic forward
         if (StringUtils.isNotBlank(methodToCall)) {
             LOG.debug("methodToCall: " + methodToCall);
-            returnForward = this.dispatchMethod(mapping, form, request, response, methodToCall);
+            returnForward = dispatchMethod(mapping, form, request, response, methodToCall);
         }
         else {
             returnForward = mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -105,9 +105,29 @@ public abstract class KualiAction extends DispatchAction {
         // Add the ActionForm to GlobalVariables
         // This will allow developers to retrieve both the Document and any request parameters that are not
         // part of the Form and make them available in ValueFinder classes and other places where they are needed.
+        if(GlobalVariables.getKualiForm() == null) {
         GlobalVariables.setKualiForm((KualiForm)form);
+        }
 
         return returnForward;
+    }
+
+    @Override
+    protected ActionForward dispatchMethod(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response, String methodToCall) throws Exception {
+        GlobalVariables.getUserSession().addObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY, (Object)methodToCall);
+        return super.dispatchMethod(mapping, form, request, response, methodToCall);
+    }
+    
+    protected String findMethodToCall(ActionForm form, HttpServletRequest request) throws Exception {
+        String methodToCall;
+        if (form instanceof KualiForm && StringUtils.isNotEmpty(((KualiForm) form).getMethodToCall())) {
+            methodToCall = ((KualiForm) form).getMethodToCall();
+        }
+        else {
+            // call utility method to parse the methodToCall from the request.
+            methodToCall = WebUtils.parseMethodToCall(request);
+        }
+        return methodToCall;
     }
 
     /**
@@ -650,7 +670,7 @@ public abstract class KualiAction extends DispatchAction {
         // a new location.
         String headerTabDispatch = getHeaderTabDispatch(request);
         if (StringUtils.isNotEmpty(headerTabDispatch)) {
-            ActionForward forward = this.dispatchMethod(mapping, form, request, response, headerTabDispatch);
+            ActionForward forward = dispatchMethod(mapping, form, request, response, headerTabDispatch);
             if (GlobalVariables.getErrorMap().size() > 0) {
                 return mapping.findForward(RiceConstants.MAPPING_BASIC);
             }
@@ -659,8 +679,7 @@ public abstract class KualiAction extends DispatchAction {
                 return forward;
             }
         }
-
-        return this.dispatchMethod(mapping, form, request, response, getHeaderTabNavigateTo(request));
+        return dispatchMethod(mapping, form, request, response, getHeaderTabNavigateTo(request));
     }
 
     /**

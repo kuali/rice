@@ -551,7 +551,7 @@ public class ObjectUtils {
      * 
      * @param bo1
      * @param bo2
-     * 
+     *  
      * @return boolean indicating whether the two objects are equal.
      */
     public static boolean equalByKeys(BusinessObject bo1, BusinessObject bo2) {
@@ -575,9 +575,11 @@ public class ObjectUtils {
                     if (!bo1Keys.get(keyName).toString().equals(bo2Keys.get(keyName).toString())) {
                         equal = false;
                     }
+                } else {
+                    equal = false;
                 }
             }
-        }
+        }  
 
 
         return equal;

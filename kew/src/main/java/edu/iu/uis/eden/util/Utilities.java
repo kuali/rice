@@ -171,7 +171,12 @@ public class Utilities {
             if (value == 0) {
                 value = ActionRequestValue.compareActionCode(ar1.getActionRequested(), ar2.getActionRequested());
                 if (value == 0) {
-                    value = ar1.getActionRequestId().compareTo(ar2.getActionRequestId());
+                    if ( (ar1.getActionRequestId() != null) && (ar2.getActionRequestId() != null) ) {
+                        value = ar1.getActionRequestId().compareTo(ar2.getActionRequestId());
+                    } else {
+                        // if even one action request id is null at this point return that the two are equal
+                        value = 0;
+                    }
                 }
             }
             return value;

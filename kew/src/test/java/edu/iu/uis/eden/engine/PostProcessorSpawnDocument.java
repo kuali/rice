@@ -18,14 +18,11 @@ package edu.iu.uis.eden.engine;
 
 import org.apache.commons.lang.StringUtils;
 
-import edu.iu.uis.eden.ActionTakenEvent;
-import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.EdenConstants;
-import edu.iu.uis.eden.clientapp.DeleteEvent;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.postprocessor.PostProcessor;
+import edu.iu.uis.eden.postprocessor.DefaultPostProcessor;
 import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 
 /**
@@ -33,9 +30,10 @@ import edu.iu.uis.eden.postprocessor.ProcessDocReport;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class PostProcessorSpawnDocument implements PostProcessor {
+public class PostProcessorSpawnDocument extends DefaultPostProcessor {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PostProcessorSpawnDocument.class);
 
+	@Override
     public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
     	LOG.info("Moving document " + statusChangeEvent.getRouteHeaderId() + " from status '" + statusChangeEvent.getOldRouteStatus() + "' to status '" + statusChangeEvent.getNewRouteStatus() + "'");
     	if (StringUtils.equals(EdenConstants.ROUTE_HEADER_PROCESSED_CD, statusChangeEvent.getNewRouteStatus())) {
@@ -43,18 +41,6 @@ public class PostProcessorSpawnDocument implements PostProcessor {
         	WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "SpawnedDocumentType");
         	document.routeDocument("");
     	}
-        return new ProcessDocReport(true, "");
-    }
-
-    public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) throws Exception {
-        return new ProcessDocReport(true, "");
-    }
-
-    public ProcessDocReport doDeleteRouteHeader(DeleteEvent event) throws Exception {
-        return new ProcessDocReport(false, "");
-    }
-
-    public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
         return new ProcessDocReport(true, "");
     }
 

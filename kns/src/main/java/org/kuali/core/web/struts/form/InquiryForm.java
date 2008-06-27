@@ -85,8 +85,8 @@ public class InquiryForm extends KualiForm {
         if (request.getParameter("returnLocation") != null) {
             setBackLocation(request.getParameter("returnLocation"));
         }
-        if (request.getParameter("docFormKey") != null) {
-            setFormKey(request.getParameter("docFormKey"));
+        if (request.getParameter(KNSConstants.DOC_FORM_KEY) != null) {
+            setFormKey(request.getParameter(KNSConstants.DOC_FORM_KEY));
         }
 
         inquirable = getInquirable(getBusinessObjectClassName());

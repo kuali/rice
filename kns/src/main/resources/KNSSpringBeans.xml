@@ -124,6 +124,7 @@
                 <value>classpath:org/kuali/core/bo/datadictionary/ParameterDetailType.xml</value>
                 <value>classpath:org/kuali/core/bo/datadictionary/Parameter.xml</value>
 
+                <value>classpath:org/kuali/core/bo/datadictionary/PessimisticLock.xml</value>
 				<value>classpath:org/kuali/core/bo/datadictionary/Note.xml</value>
 				<value>classpath:org/kuali/core/bo/datadictionary/NoteType.xml</value>
 				<value>classpath:org/kuali/core/bo/datadictionary/UniversalUser.xml</value>
@@ -499,6 +500,12 @@
 			<ref bean="dateTimeService" />
 		</property>
 	</bean>
+	
+	<bean id="pessimisticLockService" class="org.kuali.core.service.impl.PessimisticLockServiceImpl">
+		<property name="businessObjectService">
+			<ref bean="businessObjectService" />
+		</property>
+	</bean>
 
 	<bean id="universalUserService" class="org.kuali.core.service.impl.UniversalUserServiceImpl">
 		<property name="universalUserDao">
@@ -661,6 +668,45 @@
 		</property>
 	</bean>
 
+	<bean id="pessimisticLockLookupable" class="org.kuali.core.lookup.KualiLookupableImpl" scope="prototype">
+		<property name="lookupableHelperService">
+			<ref bean="pessimisticLockLookupableHelperService" />
+		</property>
+	</bean>
+    
+	<bean id="pessimisticLockLookupableHelperService" class="org.kuali.core.lookup.PessimisticLockLookupableHelperServiceImpl" scope="prototype">
+		<property name="persistenceStructureService">
+			<ref bean="persistenceStructureService" />
+		</property>
+		<property name="businessObjectDictionaryService">
+			<ref bean="businessObjectDictionaryService" />
+		</property>
+		<property name="dataDictionaryService">
+			<ref bean="dataDictionaryService" />
+		</property>
+		<property name="encryptionService">
+			<ref bean="encryptionService" />
+		</property>
+		<property name="universalUserService">
+			<ref bean="universalUserService" />
+		</property>
+		<property name="lookupService">
+			<ref bean="lookupService" />
+		</property>
+		<property name="businessObjectMetaDataService">
+			<ref bean="businessObjectMetaDataService" />
+		</property>
+		<property name="sequenceAccessorService">
+			<ref bean="sequenceAccessorService" />
+		</property>
+		<property name="businessObjectService">
+			<ref bean="businessObjectService" />
+		</property>
+		<property name="lookupResultsService">
+			<ref bean="lookupResultsService" />
+		</property>
+	</bean>
+
 	<!-- Since these beans are not a singletons, Spring does not inject their static
 		members until the first one is created. This bean causes one to be created.
 	-->
@@ -811,7 +857,6 @@
 
 	<bean id="businessObjectDaoOjb" parent="platformAwareDao" class="org.kuali.core.dao.ojb.BusinessObjectDaoOjb">
 		<property name="persistenceStructureService" ref="persistenceStructureService" />
-		<property name="ojbCollectionHelper" ref="ojbCollectionHelper" />
 	</bean>
 	
 	

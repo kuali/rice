@@ -453,7 +453,7 @@ public class ActionListServiceImpl implements ActionListService {
         try {
             if (KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getUser()).isUsingOutbox()
                     && Core.getCurrentContextConfig().getOutBoxOn()
-                    && getActionListDAO().getOutboxByDocumentId(actionItem.getRouteHeaderId()) == null
+                    && getActionListDAO().getOutboxByDocumentIdUserId(actionItem.getRouteHeaderId(), actionItem.getUser().getWorkflowId()) == null
                     && !actionItem.getRouteHeader().getDocRouteStatus().equals(EdenConstants.ROUTE_HEADER_SAVED_CD)) {
                 // only create an outbox item if this user has taken action on the document
                 ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(

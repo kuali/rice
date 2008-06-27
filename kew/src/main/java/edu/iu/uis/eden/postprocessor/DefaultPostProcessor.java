@@ -17,6 +17,8 @@
 package edu.iu.uis.eden.postprocessor;
 
 import edu.iu.uis.eden.ActionTakenEvent;
+import edu.iu.uis.eden.AfterProcessEvent;
+import edu.iu.uis.eden.BeforeProcessEvent;
 import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.clientapp.DeleteEvent;
@@ -44,6 +46,14 @@ public class DefaultPostProcessor implements PostProcessor {
     }
 
     public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
+        return new ProcessDocReport(true, "");
+    }
+
+    public ProcessDocReport beforeProcess(BeforeProcessEvent event) throws Exception {
+        return new ProcessDocReport(true, "");
+    }
+
+    public ProcessDocReport afterProcess(AfterProcessEvent event) throws Exception {
         return new ProcessDocReport(true, "");
     }
 

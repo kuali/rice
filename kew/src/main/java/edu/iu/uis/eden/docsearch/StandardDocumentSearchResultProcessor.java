@@ -149,21 +149,18 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 	public List<Column> constructColumnList(DocSearchCriteriaVO criteria) {
 		List<Column> tempColumns = new ArrayList<Column>();
 		List<Column> customDisplayColumnNames = getAndSetUpCustomDisplayColumns(criteria);
-//		if (!customDisplayColumnNames.isEmpty()) {
-            if ((!getShowAllStandardFields()) && (getOverrideSearchableAttributes())) {
-				// use only what is contained in displayColumns
-				this.addAllCustomColumns(tempColumns, criteria, customDisplayColumnNames);
-			} else if (getShowAllStandardFields() && (getOverrideSearchableAttributes())) {
-				// do standard fields and use displayColumns for searchable attributes
-				this.addStandardSearchColumns(tempColumns);
-//				this.addCustomSearchAttributeColumns(tempColumns, criteria, customDisplayColumnNames);
-				this.addAllCustomColumns(tempColumns, criteria, customDisplayColumnNames);
-			} else if ((!getShowAllStandardFields()) && (!getOverrideSearchableAttributes())) {
-				// do displayColumns and then do standard searchable attributes
-				this.addCustomStandardCriteriaColumns(tempColumns, criteria, customDisplayColumnNames);
-				this.addSearchableAttributeColumnsNoOverrides(tempColumns,criteria);
-			}
-//		}
+        if ((!getShowAllStandardFields()) && (getOverrideSearchableAttributes())) {
+			// use only what is contained in displayColumns
+			this.addAllCustomColumns(tempColumns, criteria, customDisplayColumnNames);
+		} else if (getShowAllStandardFields() && (getOverrideSearchableAttributes())) {
+			// do standard fields and use displayColumns for searchable attributes
+			this.addStandardSearchColumns(tempColumns);
+			this.addAllCustomColumns(tempColumns, criteria, customDisplayColumnNames);
+		} else if ((!getShowAllStandardFields()) && (!getOverrideSearchableAttributes())) {
+			// do displayColumns and then do standard searchable attributes
+			this.addCustomStandardCriteriaColumns(tempColumns, criteria, customDisplayColumnNames);
+			this.addSearchableAttributeColumnsNoOverrides(tempColumns,criteria);
+		}
 		if (tempColumns.isEmpty()) {
 			// do default
 			this.addStandardSearchColumns(tempColumns);
@@ -195,55 +192,32 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 
 	public void addSearchableAttributeColumnsNoOverrides(List<Column> columns,DocSearchCriteriaVO criteria) {
         this.addSearchableAttributeColumnsBasedOnFields(columns, criteria, null);
-//		Set alreadyProcessedFieldKeys = new HashSet();
-//		List<Field> fields = this.getFields(criteria, null);
-//		for (Field field : fields) {
-//			if ( (field.getSavablePropertyName() == null) || (!alreadyProcessedFieldKeys.contains(field.getSavablePropertyName())) ) {
-//				if (field.isColumnVisible()) {
-//					for (Iterator iter = Field.SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.iterator(); iter.hasNext();) {
-//						String displayableFieldType = (String) iter.next();
-//						if (field.getFieldType().equals(displayableFieldType)) {
-//                            String resultFieldLabel = field.getFieldLabel();
-//                            if (field.isMemberOfRange()) {
-//                                resultFieldLabel = field.getMainFieldLabel();
-//                            }
-//							this.addSearchableAttributeColumnUsingKey(columns, field.getSavablePropertyName(), resultFieldLabel, getSortableByKey().get(field.getSavablePropertyName()), Boolean.TRUE);
-//							if (field.getSavablePropertyName() != null) {
-//								alreadyProcessedFieldKeys.add(field.getSavablePropertyName());
-//							}
-//							break;
-//						}
-//					}
-//				}
-//			}
-//		}
 	}
 
     protected void addSearchableAttributeColumnsBasedOnFields(List<Column> columns,DocSearchCriteriaVO criteria,List<String> searchAttributeFieldNames) {
-	Set alreadyProcessedFieldKeys = new HashSet();
-	List<Field> fields = this.getFields(criteria, searchAttributeFieldNames);
-	for (Field field : fields) {
-	    if ( (field.getSavablePropertyName() == null) || (!alreadyProcessedFieldKeys.contains(field.getSavablePropertyName())) ) {
-		if (field.isColumnVisible()) {
-		    if (Field.SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.contains(field.getFieldType())) {
-			String resultFieldLabel = field.getFieldLabel();
-			if (field.isMemberOfRange()) {
-			    resultFieldLabel = field.getMainFieldLabel();
-			}
-			this.addSearchableAttributeColumnUsingKey(columns, field.getDisplayParameters(), field.getSavablePropertyName(), resultFieldLabel, getSortableByKey().get(field.getSavablePropertyName()), Boolean.TRUE);
-			if (field.getSavablePropertyName() != null) {
-			    alreadyProcessedFieldKeys.add(field.getSavablePropertyName());
-			}
+        Set<String> alreadyProcessedFieldKeys = new HashSet<String>();
+        List<Field> fields = this.getFields(criteria, searchAttributeFieldNames);
+        for (Field field : fields) {
+            if ( (field.getSavablePropertyName() == null) || (!alreadyProcessedFieldKeys.contains(field.getSavablePropertyName())) ) {
+                if (field.isColumnVisible()) {
+                    if (Field.SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.contains(field.getFieldType())) {
+                        String resultFieldLabel = field.getFieldLabel();
+                        if (field.isMemberOfRange()) {
+                            resultFieldLabel = field.getMainFieldLabel();
+                        }
+                        this.addSearchableAttributeColumnUsingKey(columns, field.getDisplayParameters(), field.getSavablePropertyName(), resultFieldLabel, getSortableByKey().get(field.getSavablePropertyName()), Boolean.TRUE);
+                        if (field.getSavablePropertyName() != null) {
+                            alreadyProcessedFieldKeys.add(field.getSavablePropertyName());
+                        }
                     }
                 }
             }
         }
     }
 
-    protected void addSearchableAttributeColumnUsingField() {
-
-    }
-
+//    protected void addSearchableAttributeColumnUsingField(Field field) {
+//    }
+//
 	public void addAllCustomColumns(List<Column> columns,DocSearchCriteriaVO criteria,List<Column> customDisplayColumns) {
 		for (Column customColumn : customDisplayColumns) {
 			this.addCustomColumn(columns,customColumn);
@@ -257,14 +231,6 @@ public class StandardDocumentSearchResultProcessor implements DocumentSearchResu
 			}
 		}
 	}
-
-//	public void addCustomSearchAttributeColumns(List<Column> columns,DocSearchCriteriaVO criteria,List<Column> customDisplayColumns) {
-//		for (Column customColumn : customDisplayColumns) {
-//			if (!KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_SET.contains(customColumn.getKey())) {
-//				this.addCustomColumn(columns,customColumn);
-//			}
-//		}
-//	}
 
 	public void addCustomColumn(List<Column> columns,Column customColumn) {
 		Boolean sortable = null;

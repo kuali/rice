@@ -54,7 +54,9 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	 * @see org.kuali.core.dao.BusinessObjectDao#delete(org.kuali.core.bo.PersistableBusinessObject)
 	 */
 	public void delete(PersistableBusinessObject bo) {
-		getDao(bo.getClass()).delete(bo);
+		if (bo != null) {
+			getDao(bo.getClass()).delete(bo);
+		}
 	}
 
 	/**

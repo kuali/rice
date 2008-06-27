@@ -19,10 +19,12 @@ import java.util.List;
 
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.PersistableBusinessObject;
+import org.kuali.core.document.authorization.PessimisticLock;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.rule.event.KualiDocumentEvent;
 import org.kuali.core.service.DocumentSerializerService;
 import org.kuali.core.util.documentserializer.PropertySerializabilityEvaluator;
+import org.kuali.core.web.struts.action.KualiDocumentActionBase;
 import org.kuali.core.workflow.KualiDocumentXmlMaterializer;
 
 import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
@@ -100,6 +102,18 @@ public interface Document extends PersistableBusinessObject{
      * method to integrate with workflow where we will be able to perform logic for an action taken being performed on a document
      */
     public void doActionTaken(ActionTakenEventVO event);
+    
+    /**
+     * This method will be called after the Workflow engine has completely finished processing a document.
+     * 
+     * @param successfullyProcessed - true if the document was processed successfully, false otherwise
+     */
+    public void afterWorkflowEngineProcess(boolean successfullyProcessed);
+    
+    /**
+     * This method will be called before the Workflow engine has begun processing a document.
+     */
+    public void beforeWorkflowEngineProcess();
 
     /**
      * Getter method to get the document title as it will appear in and be searchable in workflow.
@@ -205,14 +219,43 @@ public interface Document extends PersistableBusinessObject{
     public PersistableBusinessObject getDocumentBusinessObject();
     
     /**
-     * When documents are serialized for workflow XML routing, it may be the case that the root object being serialized (i.e. the top level node)
-     * is not the document itself (e.g. see {@link #wrapDocumentWithMetadataForXmlSerialization()}).  If this is the case, then this method returns a POJO property
-     * name that represents the document relative to the root object.  If the document is the root object being serialized, then this method is serialized.
+     * This method gets a list of the {@link PessimisticLock} objects associated with this document
      * 
-     * @return if the document is the root object being serialized, an empty string.  If not the root object, then the POJO property name that can be
-     * applied on the root object to retrieve the document
-     * @see KualiDocumentXmlMaterializer
      */
+    public List<PessimisticLock> getPessimisticLocks();
+    
+    /**
+     * This method updates the list of {@link PessimisticLock} objects on the document if changes could
+     * have been made
+     */
+    public void refreshPessimisticLocks();
+    
+    /**
+     * This method adds a new {@link PessimisticLock} to the document
+     * 
+     * NOTE: LOCKS ADDED VIA THIS METHOD WILL NOT BE SAVED WITH THE DOCUMENT
+     * 
+     * @param lock - the lock to add to the document
+     */
+    public void addPessimisticLock(PessimisticLock lock);
+    
+    /**
+     * This is a method that is used by Kuali Pessimistic Locking to get the names (method to call values)
+     * of the {@link KualiDocumentActionBase} methods that should release locks
+     * 
+     * @return the list of method names of an action that should clear locks for the current user
+     */
+    public List<String> getLockClearningMethodNames();
+    /**
+     * Returns an evaluator object that determines whether a given property relative to the root object ({@link #wrapDocumentWithMetadataForXmlSerialization()}
+     * is serializable during the document serialization process.
+     * 
+     * @return a fully initialized evaluator object, ready to be used for workflow routing
+     * 
+     * @see DocumentSerializerService
+     * @see #wrapDocumentWithMetadataForXmlSerialization()
+     */
+    
     public String getBasePathToDocumentDuringSerialization();
     
     /**

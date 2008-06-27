@@ -57,6 +57,7 @@ public class KNSPropertyConstants extends JSTLConstants {
     public static final String DOCUMENT_HEADER = "documentHeader";
     public static final String DOCUMENT_NUMBER = "documentNumber";
     public static final String DOCUMENT_TEMPLATE_NUMBER = "documentTemplateNumber";
+    public static final String DOCUMENT_TYPE_CODE = "documentTypeCode";
     public static final String EMAIL_ADDRESS = "emailAddress";
     public static final String EMPLOYEE_STATUS_CODE = "employeeStatusCode";
     public static final String EMPLOYEE_TYPE_CODE = "employeeTypeCode";
@@ -70,6 +71,8 @@ public class KNSPropertyConstants extends JSTLConstants {
     public static final String GROUPS = "groups";
     public static final String ID = "id";
     public static final String INITIATOR_NETWORK_ID = "initiatorNetworkId";
+    public static final String KUALI_USER_PERSON_UNIVERSAL_IDENTIFIER = "personUniversalIdentifier";
+    public static final String KUALI_USER_PERSON_USER_IDENTIFIER = "personUserIdentifier";
     public static final String LOOKUP_DATE = "lookupDate";
     public static final String NAME = "name";
     public static final String NEW_DOCUMENT_NOTE = "newDocumentNote";
@@ -79,6 +82,8 @@ public class KNSPropertyConstants extends JSTLConstants {
     public static final String OBJECT_ID = "objectId";
     public static final String OLD_MAINTAINABLE_OBJECT = "oldMaintainableObject";
     public static final String ONE_DIGIT_TEXT_CODE = "oneDigitTextCode";
+    public static final String OWNED_BY_PERSON_UNIVERSAL_ID = "ownedByPersonUniversalIdentifier";
+    public static final String OWNED_BY_USER = "ownedByUser";
     public static final String PERCENT = "percent";
     public static final String PERSON_BASE_SALARY_AMOUNT = "personBaseSalaryAmount";
     public static final String PERSON_CAMPUS_ADDRESS = "personCampusAddress";
@@ -97,7 +102,5 @@ public class KNSPropertyConstants extends JSTLConstants {
     public static final String VERSION_NUMBER = "versionNumber";
     public static final String WORKFLOW_DOCUMENT = "workflowDocument";
     public static final String XML_DOCUMENT_CONTENTS = "xmlDocumentContents";
-
-    public static final String DOCUMENT_TYPE_CODE = "documentTypeCode";
 
 }

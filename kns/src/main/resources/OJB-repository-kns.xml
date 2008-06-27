@@ -111,8 +111,22 @@
 			<foreignkey field-ref="documentNumber" />
 		</reference-descriptor>
 -->
+		<reference-descriptor name="attachment" class-ref="org.kuali.core.bo.DocumentAttachment" auto-retrieve="true" auto-update="object"
+			auto-delete="object">
+			<foreignkey field-ref="documentNumber" />
+		</reference-descriptor>
 	</class-descriptor>
 
+	<class-descriptor class="org.kuali.core.bo.DocumentAttachment" table="FP_MAINT_DOC_ATTACHMENT_T">
+		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />  
+		<field-descriptor name="attachmentContent" column="ATTACHMENT" jdbc-type="LONGVARBINARY"/>
+		<field-descriptor name="fileName" column="FILE_NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="contentType" column="CONTENT_TYPE" jdbc-type="VARCHAR"/>
+		  
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />  
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+	</class-descriptor>
+	
 	<class-descriptor class="org.kuali.core.document.MaintenanceLock" table="FP_MAINT_LOCK_T">
 		<field-descriptor name="lockingRepresentation" column="LOCK_REPRESENTATION_TXT" jdbc-type="VARCHAR" primarykey="true" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
@@ -129,6 +143,17 @@
 		<field-descriptor name="organizationDocumentNumber" column="ORG_DOC_NBR" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="documentTemplateNumber" column="FDOC_TMPL_NBR" jdbc-type="VARCHAR" />
 		<field-descriptor name="explanation" column="FDOC_EXPLAIN_TXT" jdbc-type="VARCHAR" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.core.document.authorization.PessimisticLock" table="KNS_PESSIMISTIC_LOCK_T">
+		<field-descriptor name="id" column="LOCK_ID" jdbc-type="BIGINT" primarykey="true" index="true"  autoincrement="true"
+			sequence-name="LOCK_ID_SEQ" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" />
+		<field-descriptor name="ownedByPersonUniversalIdentifier" column="PERSON_UNVL_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="generatedTimestamp" column="LOCK_GENERATED_TS" jdbc-type="TIMESTAMP" />
+		<field-descriptor name="lockDescriptor" column="LOCK_DESCRIPTOR" jdbc-type="VARCHAR" />
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.core.bo.Note" table="SH_NTE_T">

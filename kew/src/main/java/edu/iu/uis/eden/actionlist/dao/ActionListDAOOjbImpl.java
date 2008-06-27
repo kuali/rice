@@ -21,7 +21,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,19 +96,19 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         if (filter.getCreateDateFrom() != null || filter.getCreateDateTo() != null) {
             if (filter.isExcludeCreateDate()) {
                 if (filter.getCreateDateFrom() != null && filter.getCreateDateTo() != null) {
-                    crit.addNotBetween("routeHeader.createDate", new Timestamp(filter.getCreateDateFrom().getTime()), new Timestamp(filter.getCreateDateTo().getTime()));
+                    crit.addNotBetween("routeHeader.createDate", new Timestamp(beginningOfDay(filter.getCreateDateFrom()).getTime()), new Timestamp(endOfDay(filter.getCreateDateTo()).getTime()));
                 } else if (filter.getCreateDateFrom() != null && filter.getCreateDateTo() == null) {
-                    crit.addLessOrEqualThan("routeHeader.createDate", new Timestamp(filter.getCreateDateFrom().getTime()));
+                    crit.addLessOrEqualThan("routeHeader.createDate", new Timestamp(beginningOfDay(filter.getCreateDateFrom()).getTime()));
                 } else if (filter.getCreateDateFrom() == null && filter.getCreateDateTo() != null) {
-                    crit.addGreaterOrEqualThan("routeHeader.createDate", new Timestamp(filter.getCreateDateTo().getTime()));
+                    crit.addGreaterOrEqualThan("routeHeader.createDate", new Timestamp(endOfDay(filter.getCreateDateTo()).getTime()));
                 }
             } else {
                 if (filter.getCreateDateFrom() != null && filter.getCreateDateTo() != null) {
-                    crit.addBetween("routeHeader.createDate", new Timestamp(filter.getCreateDateFrom().getTime()), new Timestamp(filter.getCreateDateTo().getTime()));
+                    crit.addBetween("routeHeader.createDate", new Timestamp(beginningOfDay(filter.getCreateDateFrom()).getTime()), new Timestamp(endOfDay(filter.getCreateDateTo()).getTime()));
                 } else if (filter.getCreateDateFrom() != null && filter.getCreateDateTo() == null) {
-                    crit.addGreaterOrEqualThan("routeHeader.createDate", new Timestamp(filter.getCreateDateFrom().getTime()));
+                    crit.addGreaterOrEqualThan("routeHeader.createDate", new Timestamp(beginningOfDay(filter.getCreateDateFrom()).getTime()));
                 } else if (filter.getCreateDateFrom() == null && filter.getCreateDateTo() != null) {
-                    crit.addLessOrEqualThan("routeHeader.createDate", new Timestamp(filter.getCreateDateTo().getTime()));
+                    crit.addLessOrEqualThan("routeHeader.createDate", new Timestamp(endOfDay(filter.getCreateDateTo()).getTime()));
                 }
             }
             filteredByItems += filteredByItems.length() > 0 ? ", " : "";
@@ -151,19 +153,19 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         if (filter.getLastAssignedDateFrom() != null || filter.getLastAssignedDateTo() != null) {
             if (filter.isExcludeLastAssignedDate()) {
                 if (filter.getLastAssignedDateFrom() != null && filter.getLastAssignedDateTo() != null) {
-                    crit.addNotBetween("dateAssigned", new Timestamp(filter.getLastAssignedDateFrom().getTime()), new Timestamp(filter.getLastAssignedDateTo().getTime()));
+                    crit.addNotBetween("dateAssigned", new Timestamp(beginningOfDay(filter.getLastAssignedDateFrom()).getTime()), new Timestamp(endOfDay(filter.getLastAssignedDateTo()).getTime()));
                 } else if (filter.getLastAssignedDateFrom() != null && filter.getLastAssignedDateTo() == null) {
-                    crit.addLessOrEqualThan("dateAssigned", new Timestamp(filter.getLastAssignedDateFrom().getTime()));
+                    crit.addLessOrEqualThan("dateAssigned", new Timestamp(beginningOfDay(filter.getLastAssignedDateFrom()).getTime()));
                 } else if (filter.getLastAssignedDateFrom() == null && filter.getLastAssignedDateTo() != null) {
-                    crit.addGreaterOrEqualThan("dateAssigned", new Timestamp(filter.getLastAssignedDateTo().getTime()));
+                    crit.addGreaterOrEqualThan("dateAssigned", new Timestamp(endOfDay(filter.getLastAssignedDateTo()).getTime()));
                 }
             } else {
                 if (filter.getLastAssignedDateFrom() != null && filter.getLastAssignedDateTo() != null) {
-                    crit.addBetween("dateAssigned", new Timestamp(filter.getLastAssignedDateFrom().getTime()), new Timestamp(filter.getLastAssignedDateTo().getTime()));
+                    crit.addBetween("dateAssigned", new Timestamp(beginningOfDay(filter.getLastAssignedDateFrom()).getTime()), new Timestamp(endOfDay(filter.getLastAssignedDateTo()).getTime()));
                 } else if (filter.getLastAssignedDateFrom() != null && filter.getLastAssignedDateTo() == null) {
-                    crit.addGreaterOrEqualThan("dateAssigned", new Timestamp(filter.getLastAssignedDateFrom().getTime()));
+                    crit.addGreaterOrEqualThan("dateAssigned", new Timestamp(beginningOfDay(filter.getLastAssignedDateFrom()).getTime()));
                 } else if (filter.getLastAssignedDateFrom() == null && filter.getLastAssignedDateTo() != null) {
-                    crit.addLessOrEqualThan("dateAssigned", new Timestamp(filter.getLastAssignedDateTo().getTime()));
+                    crit.addLessOrEqualThan("dateAssigned", new Timestamp(endOfDay(filter.getLastAssignedDateTo()).getTime()));
                 }
             }
             filteredByItems += filteredByItems.length() > 0 ? ", " : "";
@@ -370,4 +372,35 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         crit.addEqualTo("routeHeaderId", documentId);
         return (OutboxItemActionListExtension)getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
     }
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see edu.iu.uis.eden.actionlist.dao.ActionListDAO#getOutboxByDocumentIdUserId(java.lang.Long)
+     */
+    public OutboxItemActionListExtension getOutboxByDocumentIdUserId(Long documentId, String userId) {
+        Criteria crit = new Criteria();
+        crit.addEqualTo("routeHeaderId", documentId);
+        crit.addEqualTo("workflowId", userId);
+        return (OutboxItemActionListExtension)getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
+    }
+    
+    private Date beginningOfDay(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        return cal.getTime();
+    }
+    
+    private Date endOfDay(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        return cal.getTime();        
+    }
+    
 }

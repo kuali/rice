@@ -32,6 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
+import edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO;
+import edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO;
 import edu.iu.uis.eden.clientapp.vo.DeleteEventVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
@@ -140,6 +142,56 @@ public class PostProcessorServiceImpl implements PostProcessorService {
         }
         catch (Exception e) {
             logAndRethrow("do action taken", e);
+        }
+        return true;
+    }
+
+    /**
+     * This method first checks to see if the document can be retrieved by the {@link DocumentService}. If the document is
+     * found the {@link Document#afterWorkflowEngineProcess(boolean)} method will be invoked on it
+     * 
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#afterProcess(edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO)
+     */
+    public boolean afterProcess(AfterProcessEventVO event) throws Exception {
+        try {
+            LOG.debug(new StringBuffer("started after process method for document ").append(event.getRouteHeaderId()));
+            establishGlobalVariables();
+            Document document = documentService.getByDocumentHeaderId(event.getRouteHeaderId().toString());
+            if (ObjectUtils.isNull(document)) {
+                // no way to verify if this is the processing as a result of a cancel so assume null document is ok to process
+                LOG.warn("afterProcess() Unable to load document with id " + event.getRouteHeaderId() + "... ignoring post processing");
+            } else {
+                document.afterWorkflowEngineProcess(event.isSuccessfullyProcessed());
+                LOG.debug(new StringBuffer("finished after process method for document ").append(event.getRouteHeaderId()));
+            }
+        }
+        catch (Exception e) {
+            logAndRethrow("after process", e);
+        }
+        return true;
+    }
+
+    /**
+     * This method first checks to see if the document can be retrieved by the {@link DocumentService}. If the document is
+     * found the {@link Document#beforeWorkflowEngineProcess()} method will be invoked on it
+     * 
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#beforeProcess(edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO)
+     */
+    public boolean beforeProcess(BeforeProcessEventVO event) throws Exception {
+        try {
+            LOG.debug(new StringBuffer("started before process method for document ").append(event.getRouteHeaderId()));
+            establishGlobalVariables();
+            Document document = documentService.getByDocumentHeaderId(event.getRouteHeaderId().toString());
+            if (ObjectUtils.isNull(document)) {
+                // no way to verify if this is the processing as a result of a cancel so assume null document is ok to process
+                LOG.warn("beforeProcess() Unable to load document with id " + event.getRouteHeaderId() + "... ignoring post processing");
+            } else {
+                document.beforeWorkflowEngineProcess();
+                LOG.debug(new StringBuffer("finished before process method for document ").append(event.getRouteHeaderId()));
+            }
+        }
+        catch (Exception e) {
+            logAndRethrow("before process", e);
         }
         return true;
     }

@@ -148,6 +148,10 @@ public class FieldUtils {
                 fieldType = Field.WORKFLOW_WORKGROUP;
             }
 
+            if (control.isFile()) {
+                fieldType = Field.FILE;
+            }
+            
             if (control.isTextarea()) {
                 fieldType = Field.TEXT_AREA;
             }

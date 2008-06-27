@@ -26,6 +26,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts.upload.FormFile;
 import org.kuali.RiceKeyConstants;
 import org.kuali.core.authorization.AuthorizationConstants;
 import org.kuali.core.bo.user.UniversalUser;
@@ -42,6 +43,7 @@ import org.kuali.core.service.MaintenanceDocumentDictionaryService;
 import org.kuali.core.util.FieldUtils;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
+import org.kuali.core.web.format.FormatException;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.config.ConfigurationException;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -134,6 +136,24 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             }
             setDocument(document);
         }
+        
+        MaintenanceDocumentBase maintenanceDocument = (MaintenanceDocumentBase) getDocument();
+        
+        //Handling the Multi-Part Attachment
+        for ( Object obj : requestParameters.entrySet() ) {
+            String parameter = (String)((Map.Entry)obj).getKey(); 
+            if (parameter.toUpperCase().startsWith(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.toUpperCase())) {
+                String propertyName = parameter.substring(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
+                Object propertyValue = requestParameters.get(parameter);
+                
+                if(propertyValue != null && propertyValue instanceof FormFile) {
+                    if(StringUtils.isNotEmpty(((FormFile)propertyValue).getFileName())) {
+                        maintenanceDocument.setFileAttachment((FormFile) propertyValue);
+                    }
+                    maintenanceDocument.setAttachmentPropertyName(propertyName);
+                }
+            }
+        }
     }
 
     /**
@@ -160,6 +180,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
                     localNewMaintainableValues.put(propertyName, request.getParameter(parameter));
                 }
             }
+            
             // now, get all add lines and store them to a separate map
             // for use in a separate call to the maintainable
             for ( Object obj : localNewMaintainableValues.entrySet() ) {
@@ -185,6 +206,11 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             GlobalVariables.getErrorMap().addToErrorPath("document.newMaintainableObject");
             // update the main object
             Map cachedValues = maintenanceDocument.getNewMaintainableObject().populateBusinessObject(localNewMaintainableValues);
+            
+            if(maintenanceDocument.getFileAttachment() != null) {
+                populateAttachmentPropertyForBO(maintenanceDocument);
+            }
+            
             // update add lines
             localNewCollectionValues = KNSServiceLocator.getUniversalUserService().resolveUserIdentifiersToUniversalIdentifiers(maintenanceDocument.getNewMaintainableObject().getBusinessObject(), localNewCollectionValues);
             cachedValues.putAll( maintenanceDocument.getNewMaintainableObject().populateNewCollectionLines( localNewCollectionValues ) );
@@ -201,6 +227,21 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         }
     }
 
+    private void populateAttachmentPropertyForBO(MaintenanceDocumentBase maintenanceDocument) {
+        try {
+            Class type = ObjectUtils.easyGetPropertyType(maintenanceDocument.getNewMaintainableObject().getBusinessObject(), maintenanceDocument.getAttachmentPropertyName());
+            ObjectUtils.setObjectProperty(maintenanceDocument.getNewMaintainableObject().getBusinessObject(), maintenanceDocument.getAttachmentPropertyName(), type, maintenanceDocument.getFileAttachment());
+        } catch (FormatException e) {
+            throw new RuntimeException("Exception occurred while setting attachment property on NewMaintainable bo", e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Exception occurred while setting attachment property on NewMaintainable bo", e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Exception occurred while setting attachment property on NewMaintainable bo", e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException("Exception occurred while setting attachment property on NewMaintainable bo", e);
+        }
+    }
+    
     /**
      * Merges rows of old and new for each section (tab) of the ui. Also, renames fields to prevent naming conflicts and does
      * setting of read only fields.
@@ -437,6 +478,5 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         }
         return null;
     }
-
 
 }

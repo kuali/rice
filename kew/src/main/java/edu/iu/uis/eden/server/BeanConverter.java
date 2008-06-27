@@ -40,6 +40,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import edu.iu.uis.eden.ActionTakenEvent;
+import edu.iu.uis.eden.AfterProcessEvent;
+import edu.iu.uis.eden.BeforeProcessEvent;
 import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.EdenConstants;
@@ -57,6 +59,8 @@ import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
 import edu.iu.uis.eden.clientapp.vo.AdHocRevokeVO;
+import edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO;
+import edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO;
 import edu.iu.uis.eden.clientapp.vo.DeleteEventVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentContentVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentDetailVO;
@@ -1108,6 +1112,29 @@ public class BeanConverter {
         actionTakenEventVO.setAppDocId(actionTakenEvent.getAppDocId());
         actionTakenEventVO.setActionTaken(convertActionTaken(actionTakenEvent.getActionTaken()));
         return actionTakenEventVO;
+    }
+
+    public static BeforeProcessEventVO convertBeforeProcessEvent(BeforeProcessEvent event) throws EdenUserNotFoundException {
+        if (event == null) {
+            return null;
+        }
+        BeforeProcessEventVO beforeProcessEvent = new BeforeProcessEventVO();
+        beforeProcessEvent.setRouteHeaderId(event.getRouteHeaderId());
+        beforeProcessEvent.setAppDocId(event.getAppDocId());
+        beforeProcessEvent.setNodeInstanceId(event.getNodeInstanceId());
+        return beforeProcessEvent;
+    }
+
+    public static AfterProcessEventVO convertAfterProcessEvent(AfterProcessEvent event) throws EdenUserNotFoundException {
+        if (event == null) {
+            return null;
+        }
+        AfterProcessEventVO afterProcessEvent = new AfterProcessEventVO();
+        afterProcessEvent.setRouteHeaderId(event.getRouteHeaderId());
+        afterProcessEvent.setAppDocId(event.getAppDocId());
+        afterProcessEvent.setNodeInstanceId(event.getNodeInstanceId());
+        afterProcessEvent.setSuccessfullyProcessed(event.isSuccessfullyProcessed());
+        return afterProcessEvent;
     }
 
     public static AttributeDefinition convertWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionVO definitionVO, edu.iu.uis.eden.doctype.DocumentType documentType) {

@@ -15,6 +15,7 @@
  */
 package org.kuali.core.document;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.LinkedHashMap;
@@ -31,9 +32,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
+import org.apache.struts.upload.FormFile;
 import org.kuali.RiceKeyConstants;
+import org.kuali.core.bo.DocumentAttachment;
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.GlobalBusinessObject;
+import org.kuali.core.bo.PersistableAttachment;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.datadictionary.DocumentEntry;
 import org.kuali.core.datadictionary.WorkflowProperties;
@@ -83,7 +87,28 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
     protected boolean fieldsClearedOnCopy;
     @Transient
     protected boolean displayTopicFieldInNotes = false;
+
+    private transient FormFile fileAttachment;
+    private String attachmentPropertyName;
     
+    private DocumentAttachment attachment;
+    
+    public FormFile getFileAttachment() {
+        return this.fileAttachment;
+    }
+
+    public void setFileAttachment(FormFile fileAttachment) {
+        this.fileAttachment = fileAttachment;
+    }
+
+    public String getAttachmentPropertyName() {
+        return this.attachmentPropertyName;
+    }
+
+    public void setAttachmentPropertyName(String attachmentPropertyName) {
+        this.attachmentPropertyName = attachmentPropertyName;
+    }
+
     public MaintenanceDocumentBase() {
         super();
         fieldsClearedOnCopy = false;
@@ -390,12 +415,25 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
         if (workflowDocument.stateIsProcessed()) {
             String documentNumber = getDocumentHeader().getDocumentNumber();
             newMaintainableObject.setDocumentNumber(documentNumber);
+            
+            //Populate Attachment Property
+            if(newMaintainableObject.getBusinessObject() instanceof PersistableAttachment) {
+                populateAttachmentForBO();
+            }
+            
             newMaintainableObject.saveBusinessObject();
+            
+            //Attachment should be deleted from Maintenance Document attachment table
+            deleteDocumentAttachment();  
+            
             KNSServiceLocator.getMaintenanceDocumentService().deleteLocks(documentNumber);
         }
 
         // unlock the document when its canceled or disapproved
         if (workflowDocument.stateIsCanceled() || workflowDocument.stateIsDisapproved()) {
+            //Attachment should be deleted from Maintenance Document attachment table
+            deleteDocumentAttachment();  
+            
             String documentNumber = getDocumentHeader().getDocumentNumber();
             KNSServiceLocator.getMaintenanceDocumentService().deleteLocks(documentNumber);
         }
@@ -418,7 +456,8 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
      */
     @Override
     public void processAfterRetrieve() {
-	super.processAfterRetrieve();
+        super.processAfterRetrieve();
+        
         populateMaintainablesFromXmlDocumentContents();
         if (newMaintainableObject != null) {
             newMaintainableObject.processAfterRetrieve();
@@ -557,9 +596,70 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
     @Override
     public void prepareForSave(KualiDocumentEvent event) {
         super.prepareForSave(event);
+        populateDocumentAttachment();
         populateXmlDocumentContentsFromMaintainables();
-}
-/**
+    }
+    
+    private void populateAttachmentForBO() {
+        if(attachment == null) {
+            this.refreshReferenceObject("attachment");
+        }
+        
+        PersistableAttachment boAttachment = (PersistableAttachment) newMaintainableObject.getBusinessObject();
+        
+        if(attachment != null) {
+            byte[] fileContents;
+            fileContents = attachment.getAttachmentContent();
+            if (fileContents.length > 0) {
+                boAttachment.setAttachmentContent(fileContents);
+                boAttachment.setFileName(attachment.getFileName());
+                boAttachment.setContentType(attachment.getContentType());
+            }
+       }  
+       
+    }
+    
+    public void populateDocumentAttachment() {
+        if(attachment == null) {
+            this.refreshReferenceObject("attachment");
+        }
+        
+        if(fileAttachment != null && StringUtils.isNotEmpty(fileAttachment.getFileName())) {
+            //Populate DocumentAttachment BO
+            if(attachment == null) {
+                attachment = new DocumentAttachment();
+            }
+            
+            byte[] fileContents;
+            try {
+                fileContents = fileAttachment.getFileData();
+                if (fileContents.length > 0) {
+                    attachment.setFileName(fileAttachment.getFileName());
+                    attachment.setContentType(fileAttachment.getContentType());
+                    attachment.setAttachmentContent(fileAttachment.getFileData());
+                    attachment.setDocumentNumber(getDocumentNumber());
+                }
+            }catch (FileNotFoundException e) {
+                LOG.error("Error while populating the Document Attachment", e);
+                throw new RuntimeException("Could not populate DocumentAttachment object", e);
+            }catch (IOException e) {
+                LOG.error("Error while populating the Document Attachment", e);
+                throw new RuntimeException("Could not populate DocumentAttachment object", e);
+            } 
+            
+        } 
+//        else if(attachment != null) {
+//            //Attachment has been deleted - Need to delete the Attachment Reference Object
+//            deleteAttachment();
+//        }
+    }
+    
+    public void deleteDocumentAttachment() { 
+        KNSServiceLocator.getBusinessObjectService().delete(attachment);
+        attachment = null;     
+    }
+    
+    /**
      * Explicitly NOT calling super here.  This is a complete override of the validation 
      * rules behavior.
      * 
@@ -725,7 +825,15 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
         WorkflowProperties workflowProperties = documentEntry.getWorkflowProperties();
         return createPropertySerializabilityEvaluator(workflowProperties);
     }
+    
+    public DocumentAttachment getAttachment() {
+        return this.attachment;
+    }
 
+    public void setAttachment(DocumentAttachment attachment) {
+        this.attachment = attachment;
+    }
+    
     /**
      * This overridden method ...
      * 

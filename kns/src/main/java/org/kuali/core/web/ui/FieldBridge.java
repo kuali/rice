@@ -37,6 +37,7 @@ import org.kuali.core.datadictionary.mask.Mask;
 import org.kuali.core.lookup.LookupUtils;
 import org.kuali.core.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.core.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.core.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.core.lookup.valueFinder.ValueFinder;
 import org.kuali.core.maintenance.Maintainable;
 import org.kuali.core.util.FieldUtils;
@@ -200,6 +201,13 @@ public class FieldBridge {
             }
         }
 
+        // KULRICE-1808 : PersistableBusinessObjectValuesFinder is not working for inquiries that have child objects with ValuesFinder populated select lists
+        if (finder instanceof PersistableBusinessObjectValuesFinder) {
+            ((PersistableBusinessObjectValuesFinder) finder).setBusinessObjectClass(fieldControl.getBusinessObjectClass());
+            ((PersistableBusinessObjectValuesFinder) finder).setKeyAttributeName(fieldControl.getKeyAttribute());
+            ((PersistableBusinessObjectValuesFinder) finder).setLabelAttributeName(fieldControl.getLabelAttribute());
+            ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(fieldControl.getIncludeKeyInLabel());
+        }
         List keyValues = finder.getKeyValues();
         if (prop != null) {
             for (Iterator iter = keyValues.iterator(); iter.hasNext();) {

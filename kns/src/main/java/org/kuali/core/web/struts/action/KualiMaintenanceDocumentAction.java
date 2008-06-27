@@ -17,6 +17,7 @@ package org.kuali.core.web.struts.action;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,12 +39,16 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.core.authorization.AuthorizationType;
 import org.kuali.core.authorization.FieldAuthorization;
+import org.kuali.core.bo.DocumentAttachment;
+import org.kuali.core.bo.PersistableAttachment;
 import org.kuali.core.bo.PersistableBusinessObject;
 import org.kuali.core.bo.PersistableBusinessObjectExtension;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.datadictionary.DocumentEntry;
 import org.kuali.core.datadictionary.MaintainableCollectionDefinition;
+import org.kuali.core.document.Document;
 import org.kuali.core.document.MaintenanceDocument;
+import org.kuali.core.document.MaintenanceDocumentBase;
 import org.kuali.core.document.authorization.MaintenanceDocumentAuthorizations;
 import org.kuali.core.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.core.exceptions.AuthorizationException;
@@ -57,6 +62,7 @@ import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.GlobalVariables;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.web.format.Formatter;
+import org.kuali.core.web.struts.form.KualiDocumentFormBase;
 import org.kuali.core.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.core.service.EncryptionService;
@@ -91,10 +97,13 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             super.checkAuthorization(form, methodToCall);
         }
         else {
-            AuthorizationType documentAuthorizationType = new AuthorizationType.Document(((MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument()).getDocumentBusinessObject().getClass(), ((KualiMaintenanceForm) form).getDocument());
-            if (!KNSServiceLocator.getKualiModuleService().isAuthorized(GlobalVariables.getUserSession().getUniversalUser(), documentAuthorizationType)) {
-                LOG.error("User not authorized to use this document: " + ((MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument()).getDocumentBusinessObject().getClass().getName());
-                throw new ModuleAuthorizationException(GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), documentAuthorizationType, getKualiModuleService().getResponsibleModule(((MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument()).getDocumentBusinessObject().getClass()));
+            Document document = (MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument();
+            if (document != null) {
+                AuthorizationType documentAuthorizationType = new AuthorizationType.Document(document.getDocumentBusinessObject().getClass(), ((KualiMaintenanceForm) form).getDocument());
+                if (!KNSServiceLocator.getKualiModuleService().isAuthorized(GlobalVariables.getUserSession().getUniversalUser(), documentAuthorizationType)) {
+                    LOG.error("User not authorized to use this document: " + ((MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument()).getDocumentBusinessObject().getClass().getName());
+                    throw new ModuleAuthorizationException(GlobalVariables.getUserSession().getUniversalUser().getPersonUserIdentifier(), documentAuthorizationType, getKualiModuleService().getResponsibleModule(((MaintenanceDocument) ((KualiMaintenanceForm) form).getDocument()).getDocumentBusinessObject().getClass()));
+                }
             }
         }
     }
@@ -331,6 +340,47 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         doProcessingAfterPost( (KualiMaintenanceForm) form, request );
         return super.save(mapping, form, request, response);
     }
+    
+    /**
+     * Downloads the attachment to the user's browser
+     *
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return ActionForward
+     * @throws Exception
+     */
+    public ActionForward downloadAttachment(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        KualiDocumentFormBase documentForm = (KualiDocumentFormBase) form;
+        MaintenanceDocumentBase document = (MaintenanceDocumentBase) documentForm.getDocument();
+        document.refreshReferenceObject("attachment");
+        DocumentAttachment attachment = document.getAttachment();
+        if(attachment != null) {
+            streamToResponse(attachment.getAttachmentContent(), attachment.getFileName(), attachment.getContentType(), response); 
+        }
+        return null;
+    }
+
+    
+    /**
+     * 
+     * This method used to replace the attachment
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    public ActionForward replaceAttachment(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        KualiDocumentFormBase documentForm = (KualiDocumentFormBase) form;
+        MaintenanceDocumentBase document = (MaintenanceDocumentBase) documentForm.getDocument();
+        document.refreshReferenceObject("attachment");
+        KNSServiceLocator.getBusinessObjectService().delete(document.getAttachment());
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
 
     /**
      * route the document using the document service
@@ -345,9 +395,18 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
     @Override
     public ActionForward route(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         doProcessingAfterPost( (KualiMaintenanceForm) form, request );
-        return super.route(mapping, form, request, response);
+        
+        KualiDocumentFormBase documentForm = (KualiDocumentFormBase) form;
+        MaintenanceDocumentBase document = (MaintenanceDocumentBase) documentForm.getDocument();
+        
+        ActionForward forward = super.route(mapping, form, request, response);
+        if(document.getNewMaintainableObject().getBusinessObject() instanceof PersistableAttachment) {
+            PersistableAttachment bo = (PersistableAttachment) KNSServiceLocator.getBusinessObjectService().retrieve(document.getNewMaintainableObject().getBusinessObject());
+            request.setAttribute("fileName", bo.getFileName());
+        }
+        
+        return forward;
     }
-
 
     /**
      * Calls the document service to blanket approve the document
@@ -393,6 +452,14 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             if (kualiMaintenanceForm.getDocument() instanceof MaintenanceDocument) {
                 kualiMaintenanceForm.setReadOnly(true);
                 kualiMaintenanceForm.setMaintenanceAction(((MaintenanceDocument) kualiMaintenanceForm.getDocument()).getNewMaintainableObject().getMaintenanceAction());
+                
+                //Retrieving the FileName from BO table
+                Maintainable tmpMaintainable = ((MaintenanceDocument) kualiMaintenanceForm.getDocument()).getNewMaintainableObject();
+                if(tmpMaintainable.getBusinessObject() instanceof PersistableAttachment) {
+                    PersistableAttachment bo = (PersistableAttachment) KNSServiceLocator.getBusinessObjectService().retrieve(tmpMaintainable.getBusinessObject());
+                    if(bo != null)
+                        request.setAttribute("fileName", bo.getFileName());
+                }
             }
             else {
                 LOG.error("Illegal State: document is not a maintenance document");

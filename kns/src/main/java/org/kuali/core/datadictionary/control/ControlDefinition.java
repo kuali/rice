@@ -87,6 +87,11 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public boolean isWorkflowWorkgroup();
 
     /**
+     * @return true if this ControlDefinition instance represents an HTML File control
+     */
+    public boolean isFile();
+    
+    /**
      * @return true if the ControlDefinition instance represents a lookupHidden control
      */
     public boolean isLookupHidden();

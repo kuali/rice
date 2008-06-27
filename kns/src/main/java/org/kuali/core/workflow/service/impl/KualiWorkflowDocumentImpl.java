@@ -33,6 +33,7 @@ import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.ActionRequestVO;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenVO;
+import edu.iu.uis.eden.clientapp.vo.ReturnPointVO;
 import edu.iu.uis.eden.clientapp.vo.RouteHeaderVO;
 import edu.iu.uis.eden.clientapp.vo.UserIdVO;
 import edu.iu.uis.eden.clientapp.vo.UserVO;
@@ -41,6 +42,7 @@ import edu.iu.uis.eden.clientapp.vo.WorkgroupIdVO;
 import edu.iu.uis.eden.exception.InvalidActionTakenException;
 import edu.iu.uis.eden.exception.ResourceUnavailableException;
 import edu.iu.uis.eden.exception.WorkflowException;
+import edu.iu.uis.eden.server.WorkflowDocumentActions;
 
 public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument {
 
@@ -380,6 +382,30 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument {
     }
 
     /**
+     * Performs the 'returnToPrevious' action on the document this WorkflowDocument represents.  If this is a new document,
+     * the document is created first.
+     * @param annotation the message to log for the action
+     * @param nodeName the node to return to
+     * @throws WorkflowException in case an error occurs returning to previous node
+     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdVO, RouteHeaderVO, ReturnPointVO, String)
+     */
+    public void returnToPreviousNode(String annotation, String nodeName) throws WorkflowException {
+        workflowDocument.returnToPreviousNode(annotation, nodeName);
+    }
+
+    /**
+     * Performs the 'returnToPrevious' action on the document this WorkflowDocument represents.  If this is a new document,
+     * the document is created first.
+     * @param annotation the message to log for the action
+     * @param ReturnPointVO the node to return to
+     * @throws WorkflowException in case an error occurs returning to previous node
+     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdVO, RouteHeaderVO, ReturnPointVO, String)
+     */
+    public void returnToPreviousNode(String annotation, ReturnPointVO returnPoint) throws WorkflowException {
+        workflowDocument.returnToPreviousNode(annotation, returnPoint);
+    }
+
+    /**
      * @param annotation
      * @param destRouteLevel
      * @throws WorkflowException
@@ -522,6 +548,18 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument {
         return workflowDocument.isActionCodeValidForDocument(EdenConstants.ACTION_TAKEN_SAVED_CD);
     }
 
+    public void setReceiveFutureRequests() throws WorkflowException {
+        workflowDocument.setReceiveFutureRequests();
+    }
+    
+    public void setDoNotReceiveFutureRequests() throws WorkflowException {
+        workflowDocument.setDoNotReceiveFutureRequests();
+    }
+    
+    public void setClearFutureRequests() throws WorkflowException {
+        workflowDocument.setClearFutureRequests();  
+    }
+    
     /**
      * @see java.lang.Object#toString()
      */

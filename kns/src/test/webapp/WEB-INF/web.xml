@@ -11,6 +11,10 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+    
+    <listener>
+		<listener-class>org.kuali.core.web.listener.KualiHttpSessionListener</listener-class>
+	</listener>
 
 </web-app>
 

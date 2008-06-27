@@ -15,6 +15,7 @@
  */
 package org.kuali.core.web.struts.form;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ import org.kuali.core.util.TypedArrayList;
 import org.kuali.core.util.WebUtils;
 import org.kuali.core.web.struts.pojo.PojoFormBase;
 import org.kuali.core.web.ui.ExtraButton;
+import org.kuali.core.web.ui.HeaderField;
 import org.kuali.core.web.ui.KeyLabelPair;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -53,6 +55,25 @@ public class KualiForm extends PojoFormBase {
     private KeyLabelPair additionalDocInfo1;
     private KeyLabelPair additionalDocInfo2;
     private boolean fieldLevelHelpEnabled;
+    
+    private List<HeaderField> docInfo;
+    private int numColumns = 2;
+    
+    public int getNumColumns() {
+        return this.numColumns;
+    }
+
+    public void setNumColumns(int numColumns) {
+        this.numColumns = numColumns;
+    }
+
+    public List<HeaderField> getDocInfo() {
+        return this.docInfo;
+    }
+
+    public void setDocInfo(List<HeaderField> docInfo) {
+        this.docInfo = docInfo;
+    }
 
     /**
      * no args constructor which must init our tab states list
@@ -60,6 +81,7 @@ public class KualiForm extends PojoFormBase {
     public KualiForm() {
         this.tabStates = new HashMap<String, String>();
         this.actionFormUtilMap = new ActionFormUtilMap();
+        this.docInfo = new ArrayList<HeaderField>();
     }
 
     /**
@@ -249,6 +271,9 @@ public class KualiForm extends PojoFormBase {
      */
     public void setAdditionalDocInfo1(KeyLabelPair additionalDocInfo1) {
         this.additionalDocInfo1 = additionalDocInfo1;
+        if(this.getDocInfo().size() >= 4) {
+            this.getDocInfo().add(4, new HeaderField(getAdditionalDocInfo1().getKey().toString(), getAdditionalDocInfo1().getLabel()));
+        }
     }
 
     /**
@@ -267,6 +292,9 @@ public class KualiForm extends PojoFormBase {
      */
     public void setAdditionalDocInfo2(KeyLabelPair additionalDocInfo2) {
         this.additionalDocInfo2 = additionalDocInfo2;
+        if(this.getDocInfo().size() >= 4) {
+            this.getDocInfo().add(new HeaderField(getAdditionalDocInfo2().getKey().toString(), getAdditionalDocInfo2().getLabel()));
+        } 
     }
 
     public String getAnchor() {

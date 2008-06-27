@@ -16,29 +16,15 @@
  */
 package edu.iu.uis.eden.docsearch.xml;
 
-import edu.iu.uis.eden.ActionTakenEvent;
-import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.DocumentRouteStatusChange;
-import edu.iu.uis.eden.clientapp.DeleteEvent;
 import edu.iu.uis.eden.clientapp.WorkflowDocument;
 import edu.iu.uis.eden.clientapp.vo.NetworkIdVO;
-import edu.iu.uis.eden.postprocessor.PostProcessor;
+import edu.iu.uis.eden.postprocessor.DefaultPostProcessor;
 import edu.iu.uis.eden.postprocessor.ProcessDocReport;
 
-public class StandardGenericXMLSearchableAttributePostProcessor implements PostProcessor {
-
-	public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
-		return new ProcessDocReport(true);
-	}
-
-	public ProcessDocReport doDeleteRouteHeader(DeleteEvent event) throws Exception {
-		return new ProcessDocReport(true);
-	}
-
-	public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) throws Exception {
-		return new ProcessDocReport(true);
-	}
-
+public class StandardGenericXMLSearchableAttributePostProcessor extends DefaultPostProcessor {
+    
+    @Override
 	public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
 		WorkflowDocument doc = new WorkflowDocument(new NetworkIdVO("rkirkend"), statusChangeEvent.getRouteHeaderId());
 		doc.setTitle("I'm a title - I should increment the lockVersion Number of this document");

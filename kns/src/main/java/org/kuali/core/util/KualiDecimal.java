@@ -17,8 +17,6 @@ package org.kuali.core.util;
 
 import java.math.BigDecimal;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * This class is a wrapper around java.math.BigDecimal. It exposes the only the
  * needed functionality of BigDecimal and uses a standard SCALE of 2 and
@@ -27,25 +25,15 @@ import org.apache.commons.lang.StringUtils;
  * Members of this class are, like BigDecimal, immutable; even methods which
  * might be expected to change the value (like setScale, for example) actually
  * just return a new instance with the new value.
- * 
- * The earlier inheritance was Number and implementing Comparable. This was changed to
- * inheriting BigDecimal to avoid casting problem and leveraging BigDecimal API. The
- * internal parameter "value" was kept to insure compatibility to previous usages.
  */
-public class KualiDecimal extends BigDecimal {
-	private static final long serialVersionUID = 7602854373328394490L;
+public class KualiDecimal extends AbstractKualiDecimal<KualiDecimal> {
 
-    public static final KualiDecimal ZERO = new KualiDecimal(0);
+    private static final long serialVersionUID = 899528391396696786L;
 
-	// Default rounding behavior is Banker's Rounding. This means that
-	// it rounds towards the "nearest neighbor" unless both neighbors
-	// are equidistant, in which case, round towards the even neighbor.
-	public static final int ROUND_BEHAVIOR = BigDecimal.ROUND_HALF_UP;
-
-	public static final int SCALE = 2;
-
-	private final BigDecimal value;
-
+    public static final KualiDecimal ZERO = new KualiDecimal(new BigDecimal(0));
+    
+    public static final int SCALE = 2;
+    
 	/**
 	 * This is the base constructor, used by constructors that take other types
 	 * 
@@ -55,379 +43,64 @@ public class KualiDecimal extends BigDecimal {
 	 *             if the given String is null
 	 */
 	public KualiDecimal(String value) {
-	    super(value);
-	    this.setScale(SCALE, ROUND_BEHAVIOR);
-	    // Not needed, BigDecimal would throw exception anyway
-//		if (value == null) {
-//			throw new IllegalArgumentException(
-//					"invalid (null) String in KualiDecimal constructor");
-//		}
-	    // This is kept for compatibility to previous usages
-		this.value = new BigDecimal(value).setScale(SCALE, ROUND_BEHAVIOR);
+		super(value, SCALE);
 	}
 
 	public KualiDecimal(int value) {
-	    super(value);
-        this.setScale(SCALE, ROUND_BEHAVIOR);
-        // This is kept for compatibility to previous usages
-	    this.value = new BigDecimal(value).setScale(SCALE, ROUND_BEHAVIOR);
+		super(value, SCALE);
 	}
 
 	public KualiDecimal(double value) {
-	    super(value);
-        this.setScale(SCALE, ROUND_BEHAVIOR);
-        // This is kept for compatibility to previous usages
-	    this.value = new BigDecimal(value).setScale(SCALE, ROUND_BEHAVIOR);
+		super(value, SCALE);
 	}
 
 	public KualiDecimal(BigDecimal value) {
-		this(value.toPlainString());
+		super(value, SCALE);
 	}
-
-	/**
-	 * @param operand
-	 * @return true if this KualiDecimal is less than the given KualiDecimal
-	 */
-	public boolean isLessThan(KualiDecimal operand) {
-		if (operand == null) {
-			throw new IllegalArgumentException("invalid (null) operand");
-		}
-
-		return (this.compareTo(operand) == -1);
-	}
-
-	/**
-	 * @param operand
-	 * @return true if this KualiDecimal is greater than the given KualiDecimal
-	 */
-	public boolean isGreaterThan(KualiDecimal operand) {
-		if (operand == null) {
-			throw new IllegalArgumentException("invalid (null) operand");
-		}
-
-		return (this.compareTo(operand) == 1);
-	}
-
-	/**
-	 * @param operand
-	 * @return true if this KualiDecimal is less than or equal to the given
-	 *         KualiDecimal
-	 */
-	public boolean isLessEqual(KualiDecimal operand) {
-		if (operand == null) {
-			throw new IllegalArgumentException("invalid (null) operand");
-		}
-
-		return !isGreaterThan(operand);
-	}
-
-	/**
-	 * @param operand
-	 * @return true if this KualiDecimal is greater than or equal to the given
-	 *         KualiDecimal
-	 */
-	public boolean isGreaterEqual(KualiDecimal operand) {
-		if (operand == null) {
-			throw new IllegalArgumentException("invalid (null) operand");
-		}
-
-		return !isLessThan(operand);
-	}
-
-	/**
-	 * @return true if this KualiDecimal is less than zero
-	 */
-	public boolean isNegative() {
-		return (this.compareTo(ZERO) == -1);
-	}
-
-	/**
-	 * @return true if this KualiDecimal is greater than zero
-	 */
-	public boolean isPositive() {
-		return (this.compareTo(ZERO) == 1);
-	}
-
-	/**
-	 * @return true if this KualiDecimal is equal to zero
-	 */
-	public boolean isZero() {
-		return (this.compareTo(ZERO) == 0);
-	}
-
-	/**
-	 * @return true if this KualiDecimal is not equal to zero
-	 */
-	public boolean isNonZero() {
-		return !this.isZero();
-	}
-
-	/**
-	 * Wraps BigDecimal's add method to accept and return KualiDecimal instances
-	 * instead of BigDecimals, so that users of the class don't have to typecast
-	 * the return value.
-	 * 
-	 * @param addend
-	 * @return result of adding the given addend to this value
-	 * @throws IllegalArgumentException
-	 *             if the given addend is null
-	 */
-	public KualiDecimal add(KualiDecimal addend) {
-		if (addend == null) {
-			throw new IllegalArgumentException("invalid (null) addend");
-		}
-		
-        // This is kept for compatibility to previous usages
-		BigDecimal sum = this.value.add(addend.value);
-		return new KualiDecimal(sum);
-	}
-
-	/**
-	 * Wraps BigDecimal's subtract method to accept and return KualiDecimal
-	 * instances instead of BigDecimals, so that users of the class don't have
-	 * to typecast the return value.
-	 * 
-	 * @param subtrahend
-	 * @return result of the subtracting the given subtrahend from this value
-	 * @throws IllegalArgumentException
-	 *             if the given subtrahend is null
-	 */
-	public KualiDecimal subtract(KualiDecimal subtrahend) {
-		if (subtrahend == null) {
-			throw new IllegalArgumentException("invalid (null) subtrahend");
-		}
-
-        // This is kept for compatibility to previous usages
-		BigDecimal difference = this.value.subtract(subtrahend.value);
-		return new KualiDecimal(difference);
-	}
-
-	/**
-	 * Wraps BigDecimal's multiply method to accept and return KualiDecimal
-	 * instances instead of BigDecimals, so that users of the class don't have
-	 * to typecast the return value.
-	 * 
-	 * @param multiplicand
-	 * @return result of multiplying this value by the given multiplier
-	 * @throws IllegalArgumentException
-	 *             if the given multiplier is null
-	 */
-	public KualiDecimal multiply(KualiDecimal multiplier) {
-		if (multiplier == null) {
-			throw new IllegalArgumentException("invalid (null) multiplier");
-		}
-
-        // This is kept for compatibility to previous usages
-		BigDecimal product = this.value.multiply(multiplier.value);
-		return new KualiDecimal(product);
-	}
-
-	/**
-	 * This method calculates the mod between to KualiDecimal values by first
-	 * casting to doubles and then by performing the % operation on the two
-	 * primitives.
-	 * 
-	 * @param modulus
-	 *            The other value to apply the mod to.
-	 * @return result of performing the mod calculation
-	 * @throws IllegalArgumentException
-	 *             if the given modulus is null
-	 */
-	public KualiDecimal mod(KualiDecimal modulus) {
-		if (modulus == null) {
-			throw new IllegalArgumentException("invalid (null) modulus");
-		}
-
-		double difference = this.value.doubleValue() % modulus.doubleValue();
-
-		return new KualiDecimal(new BigDecimal(difference).setScale(SCALE,
-				BigDecimal.ROUND_UNNECESSARY));
-	}
-
-	/**
-	 * Wraps BigDecimal's divide method to enforce the default Kuali rounding
-	 * behavior
-	 * 
-	 * @param divisor
-	 * @return result of dividing this value by the given divisor
-	 * @throws an
-	 *             IllegalArgumentException if the given divisor is null
-	 */
-	public KualiDecimal divide(KualiDecimal divisor) {
-		if (divisor == null) {
-			throw new IllegalArgumentException("invalid (null) divisor");
-		}
-
-		BigDecimal quotient = this.value.divide(divisor.value, ROUND_BEHAVIOR);
-		return new KualiDecimal(quotient);
-	}
-
-	/**
-	 * Wraps BigDecimal's setScale method to enforce the default Kuali rounding
-	 * behavior.
-	 * 
-	 * @return KualiDecimal instance set to the given scale, rounded with the
-	 *         default rounding behavior (if necessary)
-	 */
-    @Override
-	public KualiDecimal setScale(int scale) {
-		BigDecimal scaled = this.value.setScale(scale, ROUND_BEHAVIOR);
-		return new KualiDecimal(scaled);
-	}
-
-	/**
-	 * Simplified wrapper over the setScale() method, this one has no arguments.
-	 * When used with no arguments, it defaults to the Kuali default Scale and
-	 * Rounding.
-	 * 
-	 * @return a rounded, scaled, KualiDecimal
-	 */
+	
 	public KualiDecimal setScale() {
-		return setScale(SCALE);
+		return new KualiDecimal(value, SCALE);
 	}
 
-	/**
-	 * @return a KualiDecimal with the same scale and a negated value (if the
-	 *         value is non-zero)
-	 */
-	public KualiDecimal negated() {
-		return multiply(new KualiDecimal("-1"));
+	protected KualiDecimal(String value, int scale) {
+		super(value, scale);
 	}
 
-	/**
-	 * @return a KualiDecimal with the same scale and the absolute value
-	 */
+	protected KualiDecimal(int value, int scale) {
+		super(value, scale);
+	}
+
+	protected KualiDecimal(double value, int scale) {
+		super(value, scale);
+	}
+
+	protected KualiDecimal(BigDecimal value, int scale) {
+		super(value, scale);
+	}
+
 	@Override
-	public KualiDecimal abs() {
-		KualiDecimal absolute = null;
-
-		if (isNegative()) {
-			absolute = negated();
-		} else {
-			absolute = this;
-		}
-
-		return absolute;
+	protected KualiDecimal newInstance(String value) {
+		return new KualiDecimal(value);
 	}
 
-	/**
-	 * @return true if the given String can be used to construct a valid
-	 *         KualiDecimal
-	 */
-	public static boolean isNumeric(String s) {
-		boolean isValid = false;
-
-		if (!StringUtils.isBlank(s)) {
-			try {
-				new KualiDecimal(s);
-				isValid = true;
-			} catch (NumberFormatException e) {
-			}
-		}
-
-		return isValid;
-	}
-
-	// Number methods
-	/**
-	 * @see java.lang.Number#doubleValue()
-	 */
 	@Override
-	public double doubleValue() {
-		return this.value.doubleValue();
+	protected KualiDecimal newInstance(double value) {
+		return new KualiDecimal(value);
 	}
 
-	/**
-	 * @see java.lang.Number#floatValue()
-	 */
+    @Override
+    protected KualiDecimal newInstance(double value, int scale) {
+        return new KualiDecimal(value, scale);
+    }  
+
 	@Override
-	public float floatValue() {
-		return this.value.floatValue();
+	protected KualiDecimal newInstance(BigDecimal value) {
+		return new KualiDecimal(value);
 	}
 
-	/**
-	 * @see java.lang.Number#intValue()
-	 */
 	@Override
-	public int intValue() {
-		return this.value.intValue();
+	protected KualiDecimal newInstance(BigDecimal value, int scale) {
+		return new KualiDecimal(value, scale);
 	}
 
-	/**
-	 * @see java.lang.Number#longValue()
-	 */
-	@Override
-	public long longValue() {
-		return this.value.longValue();
-	}
-
-	/**
-	 * @return the value of this instance as a BigDecimal.
-	 */
-	public BigDecimal bigDecimalValue() {
-		return this.value;
-	}
-
-	// Comparable methods
-	/**
-	 * Compares this KualiDecimal with the specified Object. If the Object is a
-	 * KualiDecimal, this method behaves like
-	 * java.lang.Comparable#compareTo(java.lang.Object).
-	 * 
-	 * Otherwise, it throws a <tt>ClassCastException</tt> (as KualiDecimals
-	 * are comparable only to other KualiDecimals).
-	 * 
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-//	public int compareTo(Object o) {
-//		return compareTo((KualiDecimal) o);
-//	}
-
-	/**
-	 * Returns the result of comparing the values of this KualiDecimal and the
-	 * given KualiDecimal.
-	 * 
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	public int compareTo(KualiDecimal k) {
-		return this.value.compareTo(k.value);
-	}
-
-	// Object methods
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		boolean equals = false;
-
-		if (obj instanceof KualiDecimal) {
-			KualiDecimal k = (KualiDecimal) obj;
-
-			// using KualiDecimal.compareTo instead of BigDecimal.equals since
-			// BigDecimal.equals only returns true if the
-			// scale and precision are equal, rather than comparing the actual
-			// (scaled) values
-			equals = (this.compareTo(k) == 0);
-		}
-
-		return equals;
-	}
-
-	/**
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		return this.value.hashCode();
-	}
-
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return this.value.toString();
-	}
 }

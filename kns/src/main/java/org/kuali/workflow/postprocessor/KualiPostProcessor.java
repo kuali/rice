@@ -23,6 +23,8 @@ import org.kuali.rice.KNSServiceLocator;
 
 import edu.iu.uis.eden.clientapp.PostProcessorRemote;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
+import edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO;
+import edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO;
 import edu.iu.uis.eden.clientapp.vo.DeleteEventVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
@@ -78,4 +80,17 @@ public class KualiPostProcessor implements PostProcessorRemote {
         return KNSServiceLocator.getPostProcessorService().doRouteLevelChange(levelChangeEvent);
     }
 
+    /**
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#beforeProcess(edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO)
+     */
+    public boolean beforeProcess(BeforeProcessEventVO beforeProcessEvent) throws Exception {
+        return KNSServiceLocator.getPostProcessorService().beforeProcess(beforeProcessEvent);
+    }
+
+    /**
+     * @see edu.iu.uis.eden.clientapp.PostProcessorRemote#afterProcess(edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO)
+     */
+    public boolean afterProcess(AfterProcessEventVO afterProcessEvent) throws Exception {
+        return KNSServiceLocator.getPostProcessorService().afterProcess(afterProcessEvent);
+    }
  }

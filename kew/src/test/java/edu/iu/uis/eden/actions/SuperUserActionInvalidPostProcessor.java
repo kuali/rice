@@ -16,6 +16,8 @@
 package edu.iu.uis.eden.actions;
 
 import edu.iu.uis.eden.ActionTakenEvent;
+import edu.iu.uis.eden.AfterProcessEvent;
+import edu.iu.uis.eden.BeforeProcessEvent;
 import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.clientapp.DeleteEvent;
@@ -34,14 +36,15 @@ import edu.iu.uis.eden.postprocessor.ProcessDocReport;
  */
 public class SuperUserActionInvalidPostProcessor implements PostProcessor {
 
+    private static final String USER_AUTH_ID = "rkirkend";
+    
     /**
      * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
      */
     public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
-        if (isDocumentPostProcessable(new WorkflowDocument(new NetworkIdVO("rkirkend"), event.getRouteHeaderId()))) {
+        if (isDocumentPostProcessable(new WorkflowDocument(new NetworkIdVO(USER_AUTH_ID), event.getRouteHeaderId()))) {
             return new ProcessDocReport(true, "");
         }
-//        return new ProcessDocReport(true, "");
         throw new WorkflowRuntimeException("Post Processor should never be called in this instance");
     }
 
@@ -49,10 +52,9 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
      * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
      */
     public ProcessDocReport doDeleteRouteHeader(DeleteEvent event) throws Exception {
-        if (isDocumentPostProcessable(new WorkflowDocument(new NetworkIdVO("rkirkend"), event.getRouteHeaderId()))) {
+        if (isDocumentPostProcessable(new WorkflowDocument(new NetworkIdVO(USER_AUTH_ID), event.getRouteHeaderId()))) {
             return new ProcessDocReport(true, "");
         }
-//        return new ProcessDocReport(true, "");
         throw new WorkflowRuntimeException("Post Processor should never be called in this instance");
     }
 
@@ -60,13 +62,12 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
      * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
      */
     public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) throws Exception {
-        if (isDocumentPostProcessable(new WorkflowDocument(new NetworkIdVO("rkirkend"), levelChangeEvent.getRouteHeaderId()))) {
+        if (isDocumentPostProcessable(new WorkflowDocument(new NetworkIdVO(USER_AUTH_ID), levelChangeEvent.getRouteHeaderId()))) {
             return new ProcessDocReport(true, "");
         }
         if ("WorkflowDocument2".equals(levelChangeEvent.getNewNodeName())) {
             return new ProcessDocReport(true, "");
         }
-//        return new ProcessDocReport(true, "");
         throw new WorkflowRuntimeException("Post Processor should never be called in this instance");
     }
 
@@ -74,10 +75,29 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
      * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
      */
     public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
-        if (isDocumentPostProcessable(new WorkflowDocument(new NetworkIdVO("rkirkend"), statusChangeEvent.getRouteHeaderId()))) {
+        if (isDocumentPostProcessable(new WorkflowDocument(new NetworkIdVO(USER_AUTH_ID), statusChangeEvent.getRouteHeaderId()))) {
             return new ProcessDocReport(true, "");
         }
-//        return new ProcessDocReport(true, "");
+        throw new WorkflowRuntimeException("Post Processor should never be called in this instance");
+    }
+    
+    /**
+     * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
+     */
+    public ProcessDocReport beforeProcess(BeforeProcessEvent beforeProcessEvent) throws Exception {
+        if (isDocumentPostProcessable(new WorkflowDocument(new NetworkIdVO(USER_AUTH_ID), beforeProcessEvent.getRouteHeaderId()))) {
+            return new ProcessDocReport(true, "");
+        }
+        throw new WorkflowRuntimeException("Post Processor should never be called in this instance");
+    }
+    
+    /**
+     * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
+     */
+    public ProcessDocReport afterProcess(AfterProcessEvent afterProcessEvent) throws Exception {
+        if (isDocumentPostProcessable(new WorkflowDocument(new NetworkIdVO(USER_AUTH_ID), afterProcessEvent.getRouteHeaderId()))) {
+            return new ProcessDocReport(true, "");
+        }
         throw new WorkflowRuntimeException("Post Processor should never be called in this instance");
     }
     

@@ -17,6 +17,8 @@
 package mocks;
 
 import edu.iu.uis.eden.ActionTakenEvent;
+import edu.iu.uis.eden.AfterProcessEvent;
+import edu.iu.uis.eden.BeforeProcessEvent;
 import edu.iu.uis.eden.DocumentRouteLevelChange;
 import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.clientapp.DeleteEvent;
@@ -27,8 +29,10 @@ public class MockPostProcessor implements PostProcessor {
 
     private boolean processDocReportResult = true;
     private boolean actionTakenResult = true;
+    private boolean processMethodsDocReportResult = true;
     
     public MockPostProcessor() {
+        this(true);
     }
     
     public MockPostProcessor(boolean processDocReportResult) {
@@ -36,7 +40,13 @@ public class MockPostProcessor implements PostProcessor {
     }
     
     public MockPostProcessor(boolean processDocReportResult, boolean actionTakenResult) {
+        this(processDocReportResult, actionTakenResult, true);
+    }
+        
+    public MockPostProcessor(boolean processDocReportResult, boolean actionTakenResult, boolean processMethodsDocReportResult) {
         this.processDocReportResult = processDocReportResult;
+        this.actionTakenResult = actionTakenResult;
+        this.processMethodsDocReportResult = processMethodsDocReportResult;
     }
         
     public ProcessDocReport doDeleteRouteHeader(DeleteEvent event) throws Exception {
@@ -53,14 +63,24 @@ public class MockPostProcessor implements PostProcessor {
     	return new ProcessDocReport(actionTakenResult, "testing");
 	}
 
-	public void setProcessDocReportResult(boolean processDocReportResult) {
+    public ProcessDocReport beforeProcess(BeforeProcessEvent event) throws Exception {
+        return new ProcessDocReport(processMethodsDocReportResult, "testing");
+    }
+
+    public ProcessDocReport afterProcess(AfterProcessEvent event) throws Exception {
+        return new ProcessDocReport(processMethodsDocReportResult, "testing");
+    }
+
+    public void setProcessDocReportResult(boolean processDocReportResult) {
         this.processDocReportResult = processDocReportResult;
     }
 
 	public void setActionTakenResult(boolean actionTakenResult) {
 		this.actionTakenResult = actionTakenResult;
 	}
-	
-	
+
+    public void setProcessMethodsDocReportResult(boolean processMethodsDocReportResult) {
+        this.processMethodsDocReportResult = processMethodsDocReportResult;
+    }
 
 }

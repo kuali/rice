@@ -93,6 +93,10 @@
 		<listener-class>org.kuali.core.web.listener.JstlConstantsInitListener</listener-class>
 	</listener>
 	
+	<listener>
+		<listener-class>org.kuali.core.web.listener.KualiHttpSessionListener</listener-class>
+	</listener>
+	
 	<servlet>
 		<servlet-name>action</servlet-name>
 		<servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
@@ -249,6 +253,10 @@
 		<url-pattern>/en/EDocLite</url-pattern>
 	</servlet-mapping>
 
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
+	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
         <welcome-file>index.jsp</welcome-file>

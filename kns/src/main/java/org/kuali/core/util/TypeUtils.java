@@ -29,7 +29,8 @@ import java.util.HashMap;
 public class TypeUtils {
     private static final Class[] BOOLEAN_CLASSES = { Boolean.class, Boolean.TYPE };
     private static final Class[] INTEGRAL_CLASSES = { Byte.class, Byte.TYPE, Short.class, Short.TYPE, Integer.class, Integer.TYPE, Long.class, Long.TYPE, BigInteger.class, KualiInteger.class };
-    private static final Class[] DECIMAL_CLASSES = { Float.class, Float.TYPE, Double.class, Double.TYPE, BigDecimal.class, KualiDecimal.class, KualiPercent.class };
+    // KRACOEUS-1493 : add AbstractKualiDecimal for budgetdecimal
+    private static final Class[] DECIMAL_CLASSES = { Float.class, Float.TYPE, Double.class, Double.TYPE, BigDecimal.class, KualiDecimal.class, KualiPercent.class, AbstractKualiDecimal.class };
     private static final Class[] TEMPORAL_CLASSES = { java.util.Date.class, java.sql.Date.class, java.sql.Timestamp.class };
     private static final Class[] STRING_CLASSES = { String.class };
 

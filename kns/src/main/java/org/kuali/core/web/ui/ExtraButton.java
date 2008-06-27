@@ -32,6 +32,8 @@ public class ExtraButton {
 
 	private String extraButtonProperty = "";
 
+	private String extraButtonOnclick = "";
+	 
 	public String getExtraButtonAltText() {
 		return extraButtonAltText;
 	}
@@ -58,6 +60,14 @@ public class ExtraButton {
 
 	public String getExtraButtonSource() {
 		return extraButtonSource;
+	}
+	    
+	public String getExtraButtonOnclick() {
+	    return this.extraButtonOnclick;
+	}
+	 
+	public void setExtraButtonOnclick(String extraButtonOnclick) {
+	    this.extraButtonOnclick = extraButtonOnclick;
 	}
 
 	public void setExtraButtonSource(String extraButtonSource) {

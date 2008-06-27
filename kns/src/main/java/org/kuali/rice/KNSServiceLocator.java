@@ -53,6 +53,7 @@ import org.kuali.core.service.MaintenanceDocumentService;
 import org.kuali.core.service.NoteService;
 import org.kuali.core.service.PersistenceService;
 import org.kuali.core.service.PersistenceStructureService;
+import org.kuali.core.service.PessimisticLockService;
 import org.kuali.core.service.PostProcessorService;
 import org.kuali.core.service.SequenceAccessorService;
 import org.kuali.core.service.TransactionalDocumentDictionaryService;
@@ -422,6 +423,12 @@ public class KNSServiceLocator<T extends Object> {
 
     public static TransactionTemplate getTransactionTemplate() {
 	return (TransactionTemplate) getService(TRANSACTION_TEMPLATE);
+    }
+        
+    public static final String PESSIMISTIC_LOCK_SERVICE = "pessimisticLockService";
+    
+    public static PessimisticLockService getPessimisticLockService() {
+        return (PessimisticLockService) getService(PESSIMISTIC_LOCK_SERVICE);
     }
     
     public static final String DOCUMENT_SERIALIZER_SERVICE = "documentSerializerService";

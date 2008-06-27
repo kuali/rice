@@ -20,6 +20,8 @@ import java.rmi.RemoteException;
 
 import edu.iu.uis.eden.DocumentRouteStatusChange;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
+import edu.iu.uis.eden.clientapp.vo.AfterProcessEventVO;
+import edu.iu.uis.eden.clientapp.vo.BeforeProcessEventVO;
 import edu.iu.uis.eden.clientapp.vo.DeleteEventVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
@@ -94,4 +96,21 @@ public interface PostProcessorRemote {
    */
   public boolean doActionTaken(ActionTakenEventVO event) throws RemoteException;
   
+  /**
+   * The document is about to be processed by the Workflow engine.
+   * 
+   * @param event - holder for data from the engine's process
+   * @return true if the method is successful, false otherwise
+   * @throws java.lang.Exception A general Exception will cause EDEN to put the document into Exception routing
+   */
+  public boolean beforeProcess(BeforeProcessEventVO event) throws Exception;
+
+  /**
+   * The document has just completed processing by the Workflow engine.
+   * 
+   * @param event - holder for data from the engine's process including whether the engine was successful or not
+   * @return true if the method is successful, false otherwise
+   * @throws java.lang.Exception A general Exception will cause EDEN to put the document into Exception routing
+   */
+  public boolean afterProcess(AfterProcessEventVO event) throws Exception;
 }

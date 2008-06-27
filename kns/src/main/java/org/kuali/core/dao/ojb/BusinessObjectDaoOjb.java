@@ -29,7 +29,7 @@ import org.kuali.core.dao.BusinessObjectDao;
 import org.kuali.core.service.PersistenceStructureService;
 import org.kuali.core.util.ObjectUtils;
 import org.kuali.core.util.OjbCollectionAware;
-import org.kuali.core.util.OjbCollectionHelper;
+import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.springframework.dao.DataAccessException;
 
@@ -41,7 +41,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectDaoOjb.class);
 
     private PersistenceStructureService persistenceStructureService;
-    private OjbCollectionHelper ojbCollectionHelper;
+
     /**
      * @see org.kuali.core.dao.BusinessObjectDao#findByPrimaryKey(java.lang.Class, java.util.Map)
      */
@@ -185,8 +185,9 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 					savedBo.refreshReferenceObject(boCollection);
 				}
 			}
-		}
-		getOjbCollectionHelper().processCollections(this, bo, savedBo);
+            KNSServiceLocator.getOjbCollectionHelper().processCollections(this, bo, savedBo); 
+        }
+        
 		getPersistenceBrokerTemplate().store(bo);	
 	}
     
@@ -318,14 +319,5 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
         this.persistenceStructureService = persistenceStructureService;
     }
-
-    public OjbCollectionHelper getOjbCollectionHelper() {
-        return this.ojbCollectionHelper;
-    }
-
-    public void setOjbCollectionHelper(OjbCollectionHelper ojbCollectionHelper) {
-        this.ojbCollectionHelper = ojbCollectionHelper;
-    }
-    
     
 }

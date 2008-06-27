@@ -31,6 +31,8 @@ public abstract class DocumentEventVO implements Serializable {
     public static final String ROUTE_STATUS_CHANGE = "rt_status_change";
     public static final String DELETE_CHANGE = "delete_document";
     public static final String ACTION_TAKEN = "action_taken";
+    public static final String BEFORE_PROCESS = "before_process";
+    public static final String AFTER_PROCESS = "after_process";
 
     private String documentEventCode;
     private Long routeHeaderId;

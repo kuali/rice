@@ -134,6 +134,13 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     }
 
     /**
+     * @see org.kuali.core.datadictionary.control.ControlDefinition#isFile()
+     */
+    public boolean isFile() {
+        return false;
+    }
+
+    /**
      * @see org.kuali.core.datadictionary.control.ControlDefinition#isLookupHidden()
      */
     public boolean isLookupHidden() {
@@ -293,7 +300,7 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
      * @see org.kuali.core.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-        if (!isCheckbox() && !isHidden() && !isRadio() && !isSelect() && !isApcSelect() && !isText() && !isTextarea() && !isCurrency() && !isKualiUser() && !isLookupHidden() && !isLookupReadonly() && !isWorkflowWorkgroup()) {
+        if (!isCheckbox() && !isHidden() && !isRadio() && !isSelect() && !isApcSelect() && !isText() && !isTextarea() && !isCurrency() && !isKualiUser() && !isLookupHidden() && !isLookupReadonly() && !isWorkflowWorkgroup() && !isFile()) {
             throw new CompletionException("error validating " + rootBusinessObjectClass.getName() + " control: unknown control type in control definition (" + "" + ")");
         }
     }

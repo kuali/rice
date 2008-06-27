@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -277,8 +278,8 @@ public class KualiCasFilter implements Filter {
      * @throws java.io.IOException
      */
     private String validate(HttpServletRequest hrequest, String ticket) throws java.io.IOException {
-        URL url = new URL(validationURL + "?ticket=" + ticket + "&service=" + hrequest.getRequestURL().toString());
-        return StringUtils.substringBetween(getFullTextResponseForUrlRequest(url), "<cas:user>", "</cas:user>");
+        URL url = new URL(validationURL + "?jsessionid=" + hrequest.getRequestedSessionId() + "&ticket=" + ticket + "&service=" + hrequest.getRequestURL().toString());
+        return StringUtils.substringBetween(getFullTextResponseForUrlRequest(url, hrequest), "<cas:user>", "</cas:user>");
     }
 
     /**
@@ -288,8 +289,12 @@ public class KualiCasFilter implements Filter {
      * @return
      * @throws IOException
      */
-    private String getFullTextResponseForUrlRequest(URL url) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+    private String getFullTextResponseForUrlRequest(URL url, HttpServletRequest hrequest) throws IOException {
+        URLConnection con = url.openConnection();
+        con.setDoInput(true);
+        con.setRequestProperty("Cookie", "JSESSIONID=" + hrequest.getRequestedSessionId() + ";"); 
+            
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String textLine = "";
         String fullText = "";
         while ((textLine = in.readLine()) != null) {

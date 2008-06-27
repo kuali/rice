@@ -32,6 +32,8 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.ojb.broker.PersistenceBroker;
+import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.core.bo.DocumentHeader;
 import org.kuali.core.bo.Note;
 import org.kuali.core.bo.PersistableBusinessObject;
@@ -40,6 +42,8 @@ import org.kuali.core.bo.user.AuthenticationUserId;
 import org.kuali.core.bo.user.UniversalUser;
 import org.kuali.core.datadictionary.DocumentEntry;
 import org.kuali.core.datadictionary.WorkflowProperties;
+import org.kuali.core.document.authorization.DocumentAuthorizer;
+import org.kuali.core.document.authorization.PessimisticLock;
 import org.kuali.core.exceptions.UserNotFoundException;
 import org.kuali.core.exceptions.ValidationException;
 import org.kuali.core.rule.event.KualiDocumentEvent;
@@ -56,8 +60,10 @@ import org.kuali.core.workflow.DocumentInitiator;
 import org.kuali.core.workflow.KualiDocumentXmlMaterializer;
 import org.kuali.core.workflow.KualiTransactionalDocumentInformation;
 import org.kuali.rice.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
+import edu.iu.uis.eden.EdenConstants;
 import edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteLevelChangeVO;
 import edu.iu.uis.eden.clientapp.vo.DocumentRouteStatusChangeVO;
@@ -78,6 +84,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     protected DocumentHeader documentHeader;
     @Transient
     protected transient PersistableBusinessObject documentBusinessObject; //here for reflection
+    private List<PessimisticLock> pessimisticLocks;
 
     @Transient
     private List adHocRoutePersons;
@@ -92,6 +99,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
             // create a new document header object
             Class documentHeaderClass = KNSServiceLocator.getDocumentHeaderService().getDocumentHeaderBaseClass();
             setDocumentHeader((DocumentHeader) documentHeaderClass.newInstance());
+            pessimisticLocks = new ArrayList<PessimisticLock>();
             adHocRoutePersons = new ArrayList();
             adHocRouteWorkgroups = new ArrayList();
         }
@@ -290,7 +298,46 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.core.document.Document#doActionTaken(edu.iu.uis.eden.clientapp.vo.ActionTakenEventVO)
      */
     public void doActionTaken(ActionTakenEventVO event) {
-        // do nothing
+        if ( (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getClass().getName()).getUseWorkflowPessimisticLocking()) && (!getNonLockingActionTakenCodes().contains(event.getActionTaken().getActionTaken())) ) {
+            DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(this);
+            documentAuthorizer.establishWorkflowPessimisticLocking(this);
+        }
+    }
+    
+    protected List<String> getNonLockingActionTakenCodes() {
+        List<String> actionTakenStatusCodes = new ArrayList<String>();
+        actionTakenStatusCodes.add(EdenConstants.ACTION_TAKEN_SAVED_CD);
+        actionTakenStatusCodes.add(EdenConstants.ACTION_TAKEN_ACKNOWLEDGED_CD);
+        actionTakenStatusCodes.add(EdenConstants.ACTION_TAKEN_FYI_CD);
+        actionTakenStatusCodes.add(EdenConstants.ACTION_TAKEN_DENIED_CD);
+        actionTakenStatusCodes.add(EdenConstants.ACTION_TAKEN_CANCELED_CD);
+        actionTakenStatusCodes.add(EdenConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD);
+        return actionTakenStatusCodes;
+    }
+
+    /**
+     * The the default implementation for afterWorkflowEngineProcess does nothing, but is meant to provide a hook for
+     * documents to implement for other needs.
+     * 
+     * @see org.kuali.core.document.Document#afterWorkflowEngineProcess(boolean)
+     */
+    public void afterWorkflowEngineProcess(boolean successfullyProcessed) {
+        if (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getClass().getName()).getUseWorkflowPessimisticLocking()) {
+            if (successfullyProcessed) {
+                DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(this);
+                documentAuthorizer.releaseWorkflowPessimisticLocking(this);
+            }
+        }
+    }
+
+    /**
+     * The the default implementation for beforeWorkflowEngineProcess does nothing, but is meant to provide a hook for
+     * documents to implement for other needs.
+     * 
+     * @see org.kuali.core.document.Document#beforeWorkflowEngineProcess()
+     */
+    public void beforeWorkflowEngineProcess() {
+    // do nothing
     }
 
     /**
@@ -431,6 +478,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public String getBasePathToDocumentDuringSerialization() {
         return "document";
     }
+    
     
     /**
      * @see org.kuali.core.document.Document#getDocumentHeader()
@@ -582,4 +630,54 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         return documentBusinessObject;
 
     }
+
+    @Override
+    public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+        super.afterLookup(persistenceBroker);
+        refreshPessimisticLocks();
+    }
+
+    /**
+     * @see org.kuali.core.document.Document#getPessimisticLocks()
+     */
+    public List<PessimisticLock> getPessimisticLocks() {
+        return this.pessimisticLocks;
+    }
+    
+    /**
+     * @see org.kuali.core.document.Document#refreshPessimisticLocks()
+     */
+    public void refreshPessimisticLocks() {
+        this.pessimisticLocks.clear();
+        this.pessimisticLocks = KNSServiceLocator.getPessimisticLockService().getPessimisticLocksForDocument(this.documentNumber);
+    }
+
+    /**
+     * @param pessimisticLocks the PessimisticLock objects to set
+     */
+    public void setPessimisticLocks(List<PessimisticLock> pessimisticLocks) {
+        this.pessimisticLocks = pessimisticLocks;
+    }
+    
+    /**
+     * @see org.kuali.core.document.Document#addPessimisticLock(org.kuali.core.document.authorization.PessimisticLock)
+     */
+    public void addPessimisticLock(PessimisticLock lock) {
+        this.pessimisticLocks.add(lock);
+    }
+    
+    /**
+     * @see org.kuali.core.document.Document#getLockClearningMethodNames()
+     */
+    public List<String> getLockClearningMethodNames() {
+        List<String> methodToCalls = new ArrayList<String>();
+        methodToCalls.add(KNSConstants.CLOSE_METHOD);
+        methodToCalls.add(KNSConstants.CANCEL_METHOD);
+//        methodToCalls.add(RiceConstants.BLANKET_APPROVE_METHOD);
+        methodToCalls.add(KNSConstants.ROUTE_METHOD);
+        methodToCalls.add(KNSConstants.APPROVE_METHOD);
+        methodToCalls.add(KNSConstants.DISAPPROVE_METHOD);
+        return methodToCalls;
+    }
+
 }

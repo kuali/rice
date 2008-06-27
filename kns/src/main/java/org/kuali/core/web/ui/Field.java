@@ -47,6 +47,7 @@ public class Field implements java.io.Serializable {
     public static final String TEXT = "text";
     public static final String CURRENCY = "currency";
     public static final String TEXT_AREA = "textarea";
+    public static final String FILE = "file";
     public static final String IMAGE_SUBMIT = "imagesubmit";
     public static final String CONTAINER = "container";
     public static final String KUALIUSER = "kualiuser";
@@ -349,6 +350,13 @@ public class Field implements java.io.Serializable {
      */
     public String getKUALIUSER() {
         return KUALIUSER;
+    }
+
+    /**
+     * @return Returns the FILE.
+     */
+    public String getFILE() {
+        return FILE;
     }
 
     /**

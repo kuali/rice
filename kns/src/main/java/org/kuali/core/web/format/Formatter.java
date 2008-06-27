@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.core.util.AbstractKualiDecimal;
 import org.kuali.core.util.KualiDecimal;
 import org.kuali.core.util.KualiInteger;
 import org.kuali.core.util.KualiPercent;
@@ -96,11 +97,12 @@ public class Formatter implements Serializable {
     
     protected Class propertyType;
 
-    static {
+    static { 
     	// begin Kuali Foundation modification
         registerFormatter(String.class, Formatter.class);
         registerFormatter(String[].class, Formatter.class);
-        registerFormatter(KualiDecimal.class, CurrencyFormatter.class);
+        registerFormatter(AbstractKualiDecimal.class, BigDecimalFormatter.class);
+        registerFormatter(KualiDecimal.class, CurrencyFormatter.class); 
         registerFormatter(KualiInteger.class, KualiIntegerCurrencyFormatter.class);
         registerFormatter(KualiPercent.class, PercentageFormatter.class);
         registerFormatter(BigDecimal.class, BigDecimalFormatter.class);
@@ -215,7 +217,9 @@ public class Formatter implements Serializable {
         while (typeIter.hasNext()) {
             Class currType = (Class) typeIter.next();
             if (currType.isAssignableFrom(type)) {
-                return (Class) registry.get(currType);
+                Class currFormatter = (Class) registry.get(currType);
+                registerFormatter(type, currFormatter);
+                return currFormatter;
             }
         }
 

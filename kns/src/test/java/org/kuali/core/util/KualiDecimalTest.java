@@ -15,15 +15,23 @@
  */
 package org.kuali.core.util;
 
+import java.math.BigDecimal;
+
 import org.junit.Test;
-import org.kuali.rice.testharness.KNSTestCase;
+import org.kuali.core.web.format.CurrencyFormatter;
+import org.kuali.core.web.format.FormatException;
+import org.kuali.core.web.format.Formatter;
+import org.kuali.rice.test.BaseRiceTestCase;
 
 /**
  * This class tests the KualiDecimal methods.
  */
-public class KualiDecimalTest extends KNSTestCase {
+public class KualiDecimalTest extends BaseRiceTestCase {
     private static final int OPERAND_VALUE = 25;
 
+    private KualiDecimal decimalValue1;
+    private KualiDecimal decimalValue2;  
+    private KualiDecimal result;
 
     private KualiDecimal operand;
 
@@ -31,6 +39,8 @@ public class KualiDecimalTest extends KNSTestCase {
     public void setUp() throws Exception {
         super.setUp();
 
+        decimalValue1 = new KualiDecimal("15.97"); 
+        decimalValue2 = new KualiDecimal("11.23");
         operand = new KualiDecimal(OPERAND_VALUE);
     }
 
@@ -48,7 +58,7 @@ public class KualiDecimalTest extends KNSTestCase {
             String s = null;
             new KualiDecimal(s);
         }
-        catch (IllegalArgumentException e) {
+        catch (NullPointerException e) {
             failedAsExpected = true;
         }
 
@@ -633,4 +643,172 @@ public class KualiDecimalTest extends KNSTestCase {
     @Test public void testIsNumeric_negativeDecimalZero() {
         assertTrue(KualiDecimal.isNumeric("-0.00"));
     }
+    
+    @Test 
+    public void testKualiDecimal_Add() throws Exception {
+        result = decimalValue1.add(decimalValue2);
+        assertEquals(new BigDecimal("27.2").setScale(2), result.value);
+        
+        KualiDecimal modifiedResult = new KualiDecimal(result.doubleValue(), 3);
+        assertEquals(new BigDecimal("27.2").setScale(3), modifiedResult.value);
+    }
+
+    @Test 
+    public void testKualiDecimal_Subtract() throws Exception {
+        result = decimalValue1.subtract(decimalValue2);
+        assertEquals(new BigDecimal("4.74").setScale(2), result.value);
+        
+        KualiDecimal modifiedResult = new KualiDecimal(result.doubleValue(), 3);
+        assertEquals(new BigDecimal("4.74").setScale(3), modifiedResult.value);
+    }
+
+    @Test 
+    public void testKualiDecimal_Multiply() throws Exception {
+        result = decimalValue1.multiply(decimalValue2);
+        assertEquals(new BigDecimal("179.3431").setScale(2, AbstractKualiDecimal.ROUND_BEHAVIOR), result.value);
+        
+        KualiDecimal modifiedResult = new KualiDecimal(result.doubleValue(), 3);
+        assertEquals(new BigDecimal("179.3431").setScale(2, AbstractKualiDecimal.ROUND_BEHAVIOR).setScale(3), modifiedResult.value);
+    }
+
+    @Test 
+    public void testKualiDecimal_Divide() throws Exception {
+        result = decimalValue1.divide(decimalValue2);
+        assertEquals(new BigDecimal("1.4220").setScale(2, AbstractKualiDecimal.ROUND_BEHAVIOR), result.value);
+        
+        KualiDecimal modifiedResult = new KualiDecimal(result.doubleValue(), 3);
+        assertEquals(new BigDecimal("1.4220").setScale(2, AbstractKualiDecimal.ROUND_BEHAVIOR).setScale(3), modifiedResult.value);
+    }
+
+    @Test 
+    public void testKualiDecimal_Divide_Overridden() throws Exception {
+        KualiDecimal operand1 = new KualiDecimal("100", 3);
+        KualiDecimal operand2 = new KualiDecimal("365", 3); 
+        result = operand1.divide(operand2, false).multiply(operand2, false); 
+        assertEquals(new KualiDecimal("100.01"), new KualiDecimal(result.bigDecimalValue().setScale(2, BigDecimal.ROUND_HALF_UP), 2));
+    }
+
+    @Test 
+    public void testKualiDecimal_Mod() throws Exception {
+        result = decimalValue1.mod(decimalValue2);
+        assertEquals(new BigDecimal("4.74").setScale(2), result.value);
+        
+        KualiDecimal modifiedResult = new KualiDecimal(result.doubleValue(), 3);
+        assertEquals(new BigDecimal("4.74").setScale(3), modifiedResult.value);
+    }
+
+    @Test 
+    public void testKualiDecimal_Negated() throws Exception {
+        result = decimalValue1.negated();
+        assertEquals(new BigDecimal("-15.97").setScale(2), result.value);
+        
+        KualiDecimal modifiedResult = new KualiDecimal(result.doubleValue(), 3);
+        assertEquals(new BigDecimal("-15.97").setScale(3), modifiedResult.value);
+    }
+
+    @Test 
+    public void testKualiDecimal_isNegative() throws Exception {
+        result = decimalValue1.negated();
+        assertEquals(new BigDecimal("-15.97").setScale(2), result.value);
+        assertEquals(true, result.isNegative());
+    }
+
+    @Test 
+    public void testKualiDecimal_isPositive() throws Exception {  
+        assertEquals(true, decimalValue1.isPositive());
+    }
+
+    @Test 
+    public void testKualiDecimal_isZero() throws Exception {
+        assertEquals(false, decimalValue1.isZero());
+        
+        result = decimalValue1.multiply(KualiDecimal.ZERO);
+        assertEquals(true, result.isZero());
+    }
+
+    @Test 
+    public void testKualiDecimal_abs() throws Exception {
+        result = decimalValue1.abs();
+        assertEquals(result.value, decimalValue1.value);
+        
+        result = decimalValue1.negated().abs();    
+        assertEquals(decimalValue1.value, result.value);
+    }
+
+    @Test 
+    public void testKualiDecimal_isNonZero() throws Exception {
+        assertEquals(true, decimalValue1.isNonZero());
+        
+        result = decimalValue1.multiply(KualiDecimal.ZERO);
+        assertEquals(false, result.isNonZero());
+    }
+
+    @Test 
+    public void testKualiDecimal_isLessThan() throws Exception {
+        assertEquals(false, decimalValue1.isLessThan(decimalValue2));
+        
+        result = decimalValue1.negated();
+        assertEquals(true, result.isLessThan(decimalValue1));
+    }
+
+    @Test 
+    public void testKualiDecimal_isGreaterThan() throws Exception {
+        assertEquals(true, decimalValue1.isGreaterThan(decimalValue2));
+        assertEquals(false, decimalValue2.isGreaterThan(decimalValue1));
+   }
+    
+    @Test 
+    public void testKualiDecimal_isLessEqual() throws Exception {
+        assertEquals(false, decimalValue1.isLessEqual(decimalValue2));
+        assertEquals(true, decimalValue2.isLessEqual(decimalValue1));
+        assertEquals(true, decimalValue1.isLessEqual(decimalValue1));
+    }    
+
+    @Test 
+    public void testKualiDecimal_isGreaterEqual() throws Exception {
+        assertEquals(true, decimalValue1.isGreaterEqual(decimalValue2));
+        assertEquals(false, decimalValue2.isGreaterEqual(decimalValue1));
+        assertEquals(true, decimalValue1.isGreaterEqual(decimalValue1));
+    }    
+
+    @Test 
+    public void testKualiDecimal_isNumeric() throws Exception {
+        assertEquals(true, KualiDecimal.isNumeric("10.234"));
+        assertEquals(false, KualiDecimal.isNumeric("10.df"));
+    }    
+
+    @Test 
+    public void testKualiDecimal_compareTo() throws Exception {
+        assertEquals(1, decimalValue1.compareTo(decimalValue2));
+        assertEquals(0, decimalValue1.compareTo(decimalValue1));
+        assertEquals(-1, decimalValue2.compareTo(decimalValue1));
+    }    
+
+    @Test 
+    public void testKualiDecimal_displayFormat() throws Exception {
+        Formatter testFormatter = Formatter.getFormatter(KualiDecimal.class, null);
+        System.out.println(testFormatter); 
+        
+        KualiDecimal operand1;
+        KualiDecimal operand2;
+        
+        operand1 = new KualiDecimal("100");
+        operand2 = new KualiDecimal("365"); 
+        result = operand1.divide(operand2).multiply(operand2);
+        assertEquals(result.toString(), testFormatter.format(result));
+        CurrencyFormatter currencyFormatter = new CurrencyFormatter();
+        assertEquals(currencyFormatter.format(result), testFormatter.format(result));
+        
+        operand1 = new KualiDecimal("100", 3);
+        operand2 = new KualiDecimal("365", 3); 
+        result = operand1.divide(operand2, false).multiply(operand2, false);
+        
+        //CurrencyDecimal cannot be used with KualiDecimal objects of scale > 2.
+        try {
+            currencyFormatter.format(result);
+        } catch (FormatException e) {
+            assertEquals("parsing, error.currency.decimal["+ result.bigDecimalValue() + "]", e.getMessage());
+        }
+    }    
+
 }

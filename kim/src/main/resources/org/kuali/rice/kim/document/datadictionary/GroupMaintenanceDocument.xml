@@ -189,27 +189,72 @@
       <list>
         <bean parent="MaintainableCollectionDefinition">
           <property name="sourceClassName" value="org.kuali.rice.kim.bo.Role" />
-          <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Role" />
+          <property name="businessObjectClass" value="org.kuali.rice.kim.bo.RoleQualificationForGroup" />
           <property name="includeAddLine" value="false" />
-          <property name="alwaysAllowCollectionDeletion" value="true" />
-          <property name="summaryTitle" value="Assigned Roles" />
+          <property name="summaryTitle" value="Assigned Role" />
+          <property name="summaryFields" >
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+                    p:name="name" />
+            </list>
+          </property>
           <property name="maintainableFields" >
             <list>
               <bean parent="MaintainableFieldDefinition"
                     p:required="true"
+                    p:readOnlyAfterAdd="true"
                     p:template="id"
-                    p:name="id"
-                    p:readOnly="true" />
+                    p:name="id" />
               <bean parent="MaintainableFieldDefinition"
-                    p:required="true"
                     p:template="name"
                     p:name="name"
                     p:readOnly="true" />
-              <bean parent="MaintainableFieldDefinition"
-                    p:name="newCollectionRecord" />
             </list>
           </property>
-          <property name="name" value="groupRoles" />
+          <property name="maintainableCollections" >
+            <list>
+              <bean parent="MaintainableCollectionDefinition">
+                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute" />
+                <property name="summaryTitle" value="Qualification" />
+                <property name="summaryFields" >
+                  <list>
+                    <bean parent="MaintainableFieldDefinition"
+                          p:name="attributeName" />
+                  </list>
+                </property>
+                <property name="maintainableFields" >
+                  <list>
+                    <bean parent="MaintainableFieldDefinition"
+			              p:name="id"
+			              p:required="true"
+			              p:readOnly="true"
+			              p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextGroupQualifiedRoleAttributeIdFinder">
+			        </bean>
+                    <bean parent="MaintainableFieldDefinition"
+                          p:required="true"
+                          p:name="attributeName" />
+                    <bean parent="MaintainableFieldDefinition"
+                          p:required="true"
+                          p:name="attributeValue" />
+                    <bean parent="MaintainableFieldDefinition"
+                          p:name="groupId"
+                          p:readOnly="true" />
+                    <bean parent="MaintainableFieldDefinition"
+                          p:name="roleId"
+                          p:readOnly="true" />
+                    <bean parent="MaintainableFieldDefinition"
+                          p:name="versionNumber"
+                          p:readOnly="true" />
+                    <bean parent="MaintainableFieldDefinition"
+                          p:name="objectId"
+                          p:readOnly="true" />
+                  </list>
+                </property>
+                <property name="name" value="qualifiedRoleAttributes" />
+              </bean>
+            </list>
+          </property>
+          <property name="name" value="roleQualificationsForGroup" />
         </bean>
       </list>
     </property>

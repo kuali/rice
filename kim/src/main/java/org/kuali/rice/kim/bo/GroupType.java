@@ -16,6 +16,8 @@
 package org.kuali.rice.kim.bo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
@@ -25,6 +27,9 @@ import javax.persistence.Transient;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
 import org.kuali.core.util.TypedArrayList;
+import org.kuali.rice.kim.dto.GroupTypeDTO;
+import org.kuali.rice.kim.dto.GroupTypeDefaultAttributeDTO;
+import org.kuali.rice.kim.dto.PermissionDTO;
 
 /**
  * A GroupType represents a type of Group in the system.  This can be used to drive 
@@ -157,5 +162,27 @@ public class GroupType extends PersistableBusinessObjectBase {
         propMap.put("workflowDocumentType", getWorkflowDocumentType());
         return propMap;
 	}
+	
+	/**
+     * This method creates a GroupTypeDTO from a GroupType
+     * 
+     * @param groupType
+     * @return GroupTypeDTO
+     */
+    public static GroupTypeDTO toDTO(final GroupType groupType) {
+        final GroupTypeDTO dto = new GroupTypeDTO();
+        dto.setDescription(groupType.getDescription());
+        dto.setId(groupType.getId());
+        dto.setName(groupType.getName());
+        dto.setWorkflowDocumentType(groupType.getWorkflowDocumentType());
+        final HashMap<String, GroupTypeDefaultAttributeDTO> groupTypeDefaultAttributes = new HashMap<String, GroupTypeDefaultAttributeDTO>();
+        final Iterator<GroupTypeDefaultAttribute> i = groupType.getGroupTypeDefaultAttributes().iterator();
+        while (i.hasNext()) {
+            final GroupTypeDefaultAttribute gtda = i.next();
+            groupTypeDefaultAttributes.put(gtda.getAttributeName(), GroupTypeDefaultAttribute.toDTO(gtda));
+        }
+        dto.setGroupTypeDefaultAttributes(groupTypeDefaultAttributes);
+        return dto;
+    }
 }
 

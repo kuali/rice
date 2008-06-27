@@ -114,6 +114,7 @@
                 <idref local="principalService" />
 				<idref local="entityService" />
 				<idref local="namespaceAttributeService" />
+				<idref local="groupTypeService" />
 			</list>
 		</property>
 	</bean>
@@ -122,6 +123,7 @@
         <property name="kimServicesDao" ref="kimServicesDao"/>
     </bean>
 	<bean id="groupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl" />
+	<bean id="groupTypeService" class="org.kuali.rice.kim.service.impl.GroupTypeServiceImpl" />
 	<bean id="namespaceService" class="org.kuali.rice.kim.service.impl.NamespaceServiceImpl" />
 	<bean id="qualifiedRoleService" class="org.kuali.rice.kim.service.impl.QualifiedRoleServiceImpl" >
         <property name="kimServicesDao" ref="kimServicesDao"/>
@@ -173,6 +175,24 @@
         <bean parent="kimSoapService">
           <property name="service" ref="principalService" />
           <property name="localServiceName" value="principalSoapService" />
+        </bean>
+      </property>
+    </bean>
+    
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean parent="kimSoapService">
+          <property name="service" ref="groupTypeService" />
+          <property name="localServiceName" value="groupTypeSoapService" />
+        </bean>
+      </property>
+    </bean>
+
+    <bean class="edu.iu.uis.eden.messaging.KSBExporter">
+      <property name="serviceDefinition">
+        <bean parent="kimService">
+          <property name="service" ref="groupTypeService" />
+          <property name="localServiceName" value="groupTypeService" />
         </bean>
       </property>
     </bean>

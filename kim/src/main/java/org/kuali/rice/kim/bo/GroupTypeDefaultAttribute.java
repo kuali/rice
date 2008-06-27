@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.kuali.core.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kim.dto.GroupTypeDefaultAttributeDTO;
 
 /**
  * A NamespaceDefaultAttribute represents a single meta-data attribute in the system that shows up on
@@ -201,6 +202,24 @@ public class GroupTypeDefaultAttribute extends PersistableBusinessObjectBase {
         propMap.put("active", isActive());
         return propMap;
 	}
+	
+	/**
+     * This method creates a GroupTypeDefaultAttributeDTO from a GroupTypeDefaultAttribute
+     *
+     * @param gtda
+     * @return GroupTypeDefaultAttributeDTO
+     */
+    public static GroupTypeDefaultAttributeDTO toDTO(final GroupTypeDefaultAttribute gtda) {
+        final GroupTypeDefaultAttributeDTO dto = new GroupTypeDefaultAttributeDTO();
+        dto.setActive(gtda.isActive());
+        dto.setAttributeName(gtda.getAttributeName());
+        dto.setAttributeTypeId(gtda.getAttributeTypeId());
+        dto.setDescription(gtda.getDescription());
+        dto.setId(gtda.getId());
+        dto.setGroupTypeId(gtda.getGroupTypeId());
+        dto.setRequired(gtda.isRequired());
+        return dto;
+    }
 
 }
 

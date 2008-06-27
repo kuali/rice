@@ -85,7 +85,7 @@
 			<fk-pointing-to-this-class column="MEMBER_GROUP_ID"/>
      		<fk-pointing-to-element-class column="PARENT_GROUP_ID"/>
 		</collection-descriptor>
-		<collection-descriptor name="groupRoles" element-class-ref="org.kuali.rice.kim.bo.Role" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="link" auto-delete="link"
+		<collection-descriptor name="roles" element-class-ref="org.kuali.rice.kim.bo.Role" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="link" auto-delete="link"
 			indirection-table="KIM_ROLES_GROUPS_T">
 			<fk-pointing-to-this-class column="GROUP_ID"/>
      		<fk-pointing-to-element-class column="ROLE_ID"/>

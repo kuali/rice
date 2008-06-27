@@ -39,7 +39,7 @@
         <bean parent="CollectionDefinition"
               p:shortLabel="Roles"
               p:summary="Group Roles"
-              p:name="groupRoles"
+              p:name="roles"
               p:label="Group Roles"
               p:description="Roles of this group" />
         <bean parent="CollectionDefinition"
@@ -243,7 +243,7 @@
           <property name="inquiryFields" >
             <list>
               <bean parent="InquiryCollectionDefinition">
-                <property name="attributeName" value="groupRoles" />
+                <property name="attributeName" value="roles" />
                 <property name="businessObjectClass" value="org.kuali.rice.kim.bo.Role" />
                 <property name="numberOfColumns" value="1" />
                 <property name="inquiryFields" >

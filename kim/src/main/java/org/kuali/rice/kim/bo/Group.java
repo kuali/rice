@@ -65,16 +65,19 @@ public class Group extends PersistableBusinessObjectBase {
 	//           joinColumns=@JoinColumn(name="GROUP_ID"),
 	//           inverseJoinColumns=@JoinColumn(name="ROLE_ID"))
 	@Transient
-	private ArrayList<Role> groupRoles;
+	private ArrayList<Role> roles;
     //@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
     //       targetEntity=org.kuali.rice.kim.bo.GroupAttribute.class, mappedBy="ERROR: See log")
 	@Transient
 	private ArrayList<GroupAttribute> groupAttributes;
-
     //@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	//@JoinColumn(name="GROUP_TYPE_ID", insertable=false, updatable=false)
 	@Transient
 	private GroupType groupType;
+	//@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+    //       targetEntity=org.kuali.rice.kim.bo.GroupQualifiedRoleAttribute.class, mappedBy="ERROR: See log")
+	@Transient
+	private ArrayList<GroupQualifiedRoleAttribute> qualifiedRoleAttributes;
 
     //these are essentially form objects only used for rendering
 	@Transient
@@ -82,7 +85,7 @@ public class Group extends PersistableBusinessObjectBase {
 	@Transient
 	private ArrayList<GroupAttribute> nonGroupTypeAttributes;
 	@Transient
-	private ArrayList<GroupQualifiedRoleAttribute> qualifiedRoleAttributes;
+	private ArrayList<RoleQualificationForGroup> roleQualificationsForGroup;
 
 	/**
      * Instantiates a new Group.
@@ -91,11 +94,12 @@ public class Group extends PersistableBusinessObjectBase {
 		memberGroups = new TypedArrayList(Group.class);
 		memberPrincipals = new TypedArrayList(Principal.class);
 		parentGroups = new TypedArrayList(Group.class);
-		groupRoles = new TypedArrayList(Role.class);
+		roles = new TypedArrayList(Role.class);
 		groupAttributes = new TypedArrayList(GroupAttribute.class);
 		qualifiedRoleAttributes = new TypedArrayList(GroupQualifiedRoleAttribute.class);
         groupTypeAttributes = new TypedArrayList(GroupAttribute.class);
         nonGroupTypeAttributes = new TypedArrayList(GroupAttribute.class);
+        roleQualificationsForGroup = new TypedArrayList(RoleQualificationForGroup.class);
 	}
 
 	/**
@@ -181,16 +185,16 @@ public class Group extends PersistableBusinessObjectBase {
 	/**
 	 * @return the groupRoles
 	 */
-	public ArrayList<Role> getGroupRoles() {
-		return this.groupRoles;
+	public ArrayList<Role> getRoles() {
+		return this.roles;
 	}
 
 	/**
 	 * @param groupRoles
 	 *            the groupRoles to set
 	 */
-	public void setGroupRoles(ArrayList<Role> groupRoles) {
-		this.groupRoles = groupRoles;
+	public void setRoles(ArrayList<Role> groupRoles) {
+		this.roles = groupRoles;
 	}
 
 	/**
@@ -312,6 +316,21 @@ public class Group extends PersistableBusinessObjectBase {
 			ArrayList<GroupAttribute> nonGroupTypeAttributes) {
 		this.nonGroupTypeAttributes = nonGroupTypeAttributes;
 	}
+	
+	/**
+	 * @return the roleQualificationsForGroup
+	 */
+	public ArrayList<RoleQualificationForGroup> getRoleQualificationsForGroup() {
+		return this.roleQualificationsForGroup;
+	}
+
+	/**
+	 * @param roleQualificationsForGroup the roleQualificationsForGroup to set
+	 */
+	public void setRoleQualificationsForGroup(
+			ArrayList<RoleQualificationForGroup> roleQualificationsForGroup) {
+		this.roleQualificationsForGroup = roleQualificationsForGroup;
+	}
 
 	/**
 	 *
@@ -347,7 +366,7 @@ public class Group extends PersistableBusinessObjectBase {
 		dto.setName(group.getName());
 
 		final HashMap<String, RoleDTO> roles = new HashMap<String, RoleDTO>();
-		for (Role role : group.getGroupRoles()) {
+		for (Role role : group.getRoles()) {
 			roles.put(role.getName(), Role.toDTO(role, true));
 		}
 		dto.setGroupRoleDtos(roles);

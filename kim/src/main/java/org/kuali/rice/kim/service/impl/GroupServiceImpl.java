@@ -273,7 +273,7 @@ public class GroupServiceImpl implements GroupService {
         final ArrayList<String> roleNames= new ArrayList<String>();
         
         for (Group g : groups) {
-        	List<Role> roles = g.getGroupRoles();
+        	List<Role> roles = g.getRoles();
         	for(Role r:roles){
         		roleNames.add(r.getName());
         	}
@@ -294,7 +294,7 @@ public class GroupServiceImpl implements GroupService {
         final ArrayList<RoleDTO> roleDtos= new ArrayList<RoleDTO>();
         
         for (Group g : groups) {
-        	List<Role> roles= g.getGroupRoles();
+        	List<Role> roles= g.getRoles();
         	for(Role r:roles){
         		roleDtos.add(Role.toDTO(r));
         	}

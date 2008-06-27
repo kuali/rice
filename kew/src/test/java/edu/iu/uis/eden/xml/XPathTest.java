@@ -24,17 +24,22 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.junit.Test;
-import org.kuali.core.workflow.WorkflowUtils;
-import org.kuali.workflow.test.KEWTestCase;
+import org.kuali.rice.test.BaseRiceTestCase;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import edu.iu.uis.eden.routeheader.DocumentContent;
 import edu.iu.uis.eden.routeheader.StandardDocumentContent;
+import edu.iu.uis.eden.routetemplate.xmlrouting.XPathHelper;
 
-public class XPathTest extends KEWTestCase {
+public class XPathTest extends BaseRiceTestCase {
 
+	private static final String XSTREAM_SAFE_PREFIX = "wf:xstreamsafe('";
+	private static final String XSTREAM_SAFE_SUFFIX = "')";
+    public static final String XSTREAM_MATCH_ANYWHERE_PREFIX = "//";
+    public static final String XSTREAM_MATCH_RELATIVE_PREFIX = "./";
+	
     private static final String TEST_DOC = "<root name=\"root\">\n" +
                                            "  <child name=\"child1\">\n" +
                                            "    <child_1 name=\"child1_1\">\n" +
@@ -144,8 +149,8 @@ public class XPathTest extends KEWTestCase {
     }
     
     @Test public void testBooleanTranslation() throws Exception {
-        String KUALI_CAMPUS_TYPE_ACTIVE_INDICATOR_XSTREAMSAFE = WorkflowUtils.XSTREAM_SAFE_PREFIX + WorkflowUtils.XSTREAM_MATCH_ANYWHERE_PREFIX + "campus/campusType/dataObjectMaintenanceCodeActiveIndicator" + WorkflowUtils.XSTREAM_SAFE_SUFFIX;
-        String KUALI_INITIATOR_UNIVERSAL_USER_STUDENT_INDICATOR_XSTREAMSAFE = WorkflowUtils.XSTREAM_SAFE_PREFIX + WorkflowUtils.XSTREAM_MATCH_ANYWHERE_PREFIX + "kualiTransactionalDocumentInformation/documentInitiator/universalUser/student" + WorkflowUtils.XSTREAM_SAFE_SUFFIX;
+        String KUALI_CAMPUS_TYPE_ACTIVE_INDICATOR_XSTREAMSAFE = XSTREAM_SAFE_PREFIX + XSTREAM_MATCH_ANYWHERE_PREFIX + "campus/campusType/dataObjectMaintenanceCodeActiveIndicator" + XSTREAM_SAFE_SUFFIX;
+        String KUALI_INITIATOR_UNIVERSAL_USER_STUDENT_INDICATOR_XSTREAMSAFE = XSTREAM_SAFE_PREFIX + XSTREAM_MATCH_ANYWHERE_PREFIX + "kualiTransactionalDocumentInformation/documentInitiator/universalUser/student" + XSTREAM_SAFE_SUFFIX;
         DocumentContent docContent = new StandardDocumentContent(
               "<documentContent><applicationContent><org.kuali.core.workflow.KualiDocumentXmlMaterializer>" + 
               "  <kualiTransactionalDocumentInformation>" + 
@@ -167,7 +172,7 @@ public class XPathTest extends KEWTestCase {
               "</org.kuali.core.workflow.KualiDocumentXmlMaterializer></applicationContent></documentContent>"
               );
 //        DocumentContent docContent = KualiAttributeTestUtil.getDocumentContentFromXmlFileAndPath(KualiAttributeTestUtil.PURCHASE_ORDER_DOCUMENT, KualiAttributeTestUtil.RELATIVE_PATH_IN_PROJECT_WORKFLOW, "PurchaseOrderDocument");
-        XPath xpath = WorkflowUtils.getXPath(docContent.getDocument());
+        XPath xpath = XPathHelper.newXPath(docContent.getDocument());
 
         String valueForTrue = "Yes";
         String valueForFalse = "No";
@@ -185,21 +190,21 @@ public class XPathTest extends KEWTestCase {
         assertEquals("Using translated xpath expression '" + xpathExpression + "'", valueForFalse, xpathResult);
 
         // test filled in date field translates to 'Yes'
-        String expression = WorkflowUtils.XSTREAM_SAFE_PREFIX + WorkflowUtils.XSTREAM_MATCH_ANYWHERE_PREFIX + "document/purchaseOrderCreateDate" + WorkflowUtils.XSTREAM_SAFE_SUFFIX;
+        String expression = XSTREAM_SAFE_PREFIX + XSTREAM_MATCH_ANYWHERE_PREFIX + "document/purchaseOrderCreateDate" + XSTREAM_SAFE_SUFFIX;
         xpathConditionStatement = "boolean(" + expression + ") and not(" + expression + " = '')";
         xpathExpression = constructXpathExpression(valueForTrue, valueForFalse, xpathConditionStatement);
         xpathResult = (String) xpath.evaluate(xpathExpression, docContent.getDocument(), XPathConstants.STRING);
         assertEquals("Using translated xpath expression '" + xpathExpression + "'", valueForTrue, xpathResult);
 
         // test empty date field translates to 'No'
-        expression = WorkflowUtils.XSTREAM_SAFE_PREFIX + WorkflowUtils.XSTREAM_MATCH_ANYWHERE_PREFIX + "document/oldPurchaseOrderCreateDate" + WorkflowUtils.XSTREAM_SAFE_SUFFIX;
+        expression = XSTREAM_SAFE_PREFIX + XSTREAM_MATCH_ANYWHERE_PREFIX + "document/oldPurchaseOrderCreateDate" + XSTREAM_SAFE_SUFFIX;
         xpathConditionStatement = "boolean(" + expression + ") and not(" + expression + " = '')";
         xpathExpression = constructXpathExpression(valueForTrue, valueForFalse, xpathConditionStatement);
         xpathResult = (String) xpath.evaluate(xpathExpression, docContent.getDocument(), XPathConstants.STRING);
         assertEquals("Using translated xpath expression '" + xpathExpression + "'", valueForFalse, xpathResult);
 
         // test non-existent date field translates to 'No'
-        expression = WorkflowUtils.XSTREAM_SAFE_PREFIX + WorkflowUtils.XSTREAM_MATCH_ANYWHERE_PREFIX + "document/newPurchaseOrderCreateDate" + WorkflowUtils.XSTREAM_SAFE_SUFFIX;
+        expression = XSTREAM_SAFE_PREFIX + XSTREAM_MATCH_ANYWHERE_PREFIX + "document/newPurchaseOrderCreateDate" + XSTREAM_SAFE_SUFFIX;
         xpathConditionStatement = "boolean(" + expression + ") and not(" + expression + " = '')";
         xpathExpression = constructXpathExpression(valueForTrue, valueForFalse, xpathConditionStatement);
         xpathResult = (String) xpath.evaluate(xpathExpression, docContent.getDocument(), XPathConstants.STRING);

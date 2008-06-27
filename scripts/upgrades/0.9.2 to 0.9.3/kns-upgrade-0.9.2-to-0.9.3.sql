@@ -60,3 +60,9 @@ drop table FP_DOC_GROUP_T
 /
 drop table FP_DOC_STATUS_T
 /
+alter table SH_LOCK_T drop constraint SH_LOCK_TR1
+/
+drop table SH_LOCK_TYP_DESC_T
+/
+drop table SH_LOCK_T
+/

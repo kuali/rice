@@ -236,6 +236,17 @@
 
     <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
 
+        <user>
+            <workflowId>KULUSER</workflowId>
+            <emplId>KULUSER</emplId>
+            <authenticationId>KULUSER</authenticationId>
+            <uuId>KULUSER</uuId>
+            <emailAddress>KULUSER@indiana.edu</emailAddress>
+            <displayName>KULUSER</displayName>
+            <givenName>KULUSER</givenName>
+            <lastName>KULUSER</lastName>
+        </user>
+    
         <!-- users elements from C:\venkat\kuali\rice-0.9.3/kew/src/main/config/xml/KEWBootstrap.xml -->
 
         <!-- Core admin user -->

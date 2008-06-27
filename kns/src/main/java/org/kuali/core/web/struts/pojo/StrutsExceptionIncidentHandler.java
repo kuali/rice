@@ -80,6 +80,8 @@ public class StrutsExceptionIncidentHandler extends ExceptionHandler {
             String message=String.format("ENTRY %s", exception.getMessage());
             LOG.trace(message);
         }
+        
+        LOG.error("Exception being handled by Exception Handler", exception);
 
         // Create properties of form and user for additional information
         // to be displayed or passing through JSP
@@ -87,7 +89,9 @@ public class StrutsExceptionIncidentHandler extends ExceptionHandler {
         String documentId="";
         if (form instanceof KualiDocumentFormBase) {
             KualiDocumentFormBase docForm=(KualiDocumentFormBase)form;
-            documentId=docForm.getDocument().getDocumentNumber();
+            if (docForm.getDocument() != null) {
+            	documentId=docForm.getDocument().getDocumentNumber();
+            }
         }
         properties.put(KualiExceptionIncident.DOCUMENT_ID, documentId);
         String userEmail="";

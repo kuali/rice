@@ -1,3 +1,8 @@
+CREATE TABLE FP_DOC_TYPE_ATTR_ID_SEQ (
+  a INT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (a)
+) AUTO_INCREMENT=1000, ENGINE=MyISAM
+;
 CREATE TABLE seq_kim_attribute_types_id (
   a INT NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (a)
@@ -332,9 +337,7 @@ create table EN_APPL_CNST_T (APPL_CNST_NM varchar(255) not null, APPL_CNST_VAL_T
 create table EN_ATTACHMENT_T (ATTACHMENT_ID bigint not null, FILE_LOC varchar(255), FILE_NM varchar(255), DB_LOCK_VER_NBR integer, MIME_TYP varchar(255), NTE_ID bigint, primary key (ATTACHMENT_ID)) ;
 create table EN_BAM_PARAM_T (BAM_PARAM_ID bigint not null, PARAM varchar(255), BAM_ID bigint, primary key (BAM_PARAM_ID)) ;
 create table EN_BAM_T (BAM_ID bigint not null, CALL_DT datetime, callback tinyblob, EXCEPTION_MSG text, EXCEPTION_TO_STRING varchar(255), METHOD_NM varchar(255), SRVR_IND_IND char(1), SERVICE_NM varchar(255), SERVICE_URL varchar(255), TARGET_TO_STRING varchar(255), THREAD_NM varchar(255), primary key (BAM_ID)) ;
-
 create table EN_DLGN_RSP_T (DLGN_RULE_ID bigint not null, DLGN_RULE_BASE_VAL_ID bigint, DLGN_TYP varchar(255), DB_LOCK_VER_NBR integer, RULE_RSP_ID bigint, primary key (DLGN_RULE_ID)) ;
-
 create table EN_DOC_HDR_CNTNT_T (DOC_HDR_ID bigint not null, DOC_CNTNT_TXT text, primary key (DOC_HDR_ID)) ;
 create table EN_DOC_HDR_EXT_DT_T (DOC_HDR_EXT_ID bigint not null, DOC_HDR_ID bigint, DOC_HDR_EXT_VAL_KEY varchar(255), DOC_HDR_EXT_VAL datetime, primary key (DOC_HDR_EXT_ID)) ;
 create table EN_DOC_HDR_EXT_FLT_T (DOC_HDR_EXT_ID bigint not null, DOC_HDR_ID bigint, DOC_HDR_EXT_VAL_KEY varchar(255), DOC_HDR_EXT_VAL decimal(19,2), primary key (DOC_HDR_EXT_ID)) ;
@@ -395,6 +398,18 @@ create table FP_DOC_GROUP_T (FDOC_GRP_CD varchar(255) not null, OBJ_ID varchar(2
 create table FP_DOC_HEADER_T (FDOC_NBR varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, TEMP_DOC_FNL_DT date, FDOC_EXPLAIN_TXT varchar(255), FDOC_DESC varchar(255), FDOC_IN_ERR_NBR varchar(255), FDOC_STATUS_CD varchar(255), FDOC_TMPL_NBR varchar(255), FDOC_TOTAL_AMT tinyblob, ORG_DOC_NBR varchar(255), primary key (FDOC_NBR)) ;
 create table FP_DOC_STATUS_T (FDOC_STATUS_CD varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, FDOC_STATUS_NM varchar(255), primary key (FDOC_STATUS_CD)) ;
 create table FP_DOC_TYPE_T (FDOC_TYP_CD varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, FDOC_AUTOAPRV_DAYS integer, FDOC_RTNG_RULE_CD varchar(255), FDOC_TYP_ACTIVE_CD char(1), FIN_ELIM_ELGBL_CD char(1), FDOC_BALANCED_CD char(1), FDOC_GRP_CD varchar(255), FDOC_NM varchar(255), TRN_SCRBBR_OFST_GEN_IND char(1), primary key (FDOC_TYP_CD)) ;
+CREATE TABLE FP_DOC_TYPE_ATTR_T (
+        ID                             bigint NOT NULL,
+        OBJ_ID                         VARCHAR(36) NOT NULL,
+        VER_NBR                        bigint NOT NULL,
+        ACTIVE_IND                     VARCHAR(1) NOT NULL,
+        DOC_TYP_ATTR_CD                VARCHAR(100) NOT NULL,
+        DOC_TYP_ATTR_VAL               VARCHAR(400),
+        DOC_TYP_ATTR_LBL               VARCHAR(400),
+        FDOC_TYP_CD                    VARCHAR(4) NOT NULL,
+     PRIMARY KEY (ID)
+)
+;
 create table FP_MAINTENANCE_DOCUMENT_T (FDOC_NBR varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, DOCUMENT_CONTENTS text, primary key (FDOC_NBR)) ;
 create table FP_MAINT_LOCK_T (LOCK_REPRESENTATION_TXT varchar(255) not null, OBJ_ID varchar(255), VER_NBR bigint, FDOC_NBR varchar(255), primary key (LOCK_REPRESENTATION_TXT)) ;
 create table FS_ADHOC_RTE_ACTN_RECP_T (ACTN_RQST_RECP_ID varchar(255) not null, ACTN_RQST_CD varchar(255) not null, ACTN_RQST_RECP_TYP_CD integer not null, OBJ_ID varchar(255), VER_NBR bigint, FDOC_NBR varchar(255), primary key (ACTN_RQST_RECP_ID, ACTN_RQST_CD, ACTN_RQST_RECP_TYP_CD)) ;

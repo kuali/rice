@@ -22,9 +22,7 @@ import org.junit.Test;
 import org.kuali.rice.KNSServiceLocator;
 import org.kuali.rice.TestBase;
 import org.kuali.rice.kns.test.document.bo.Account;
-
-import edu.sampleu.travel.bo.FiscalOfficer;
-import edu.sampleu.travel.bo.TravelAccount;
+import org.kuali.rice.kns.test.document.bo.AccountManager;
 
 /**
  * This class tests KULRICE-1666: missing Spring mapping for ojbCollectionHelper
@@ -47,7 +45,7 @@ public class BusinessObjectServiceTest extends TestBase {
         BusinessObjectService businessObjectService = KNSServiceLocator.getBusinessObjectService();
         
         AccountManager am = new AccountManager();
-        fo.setUserName("bhutchin");
+        am.setUserName("bhutchin");
         List<Account> accounts = new ArrayList<Account>();
         Account account1 = new Account();
         account1.setNumber("1");

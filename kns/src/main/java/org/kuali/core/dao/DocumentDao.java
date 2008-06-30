@@ -26,15 +26,15 @@ import org.kuali.core.document.Document;
 /**
  * This is the data access interface for Document objects.
  * 
- * 
  */
 public interface DocumentDao {
-    void save(Document document);
 
-    public Document findByDocumentHeaderId(Class clazz, String id);
+	void save(Document document);
 
-    public List findByDocumentHeaderIds(Class clazz, List idList);
+	public Document findByDocumentHeaderId(Class clazz, String id);
 
-    public BusinessObjectDao getBusinessObjectDao();
+	public List findByDocumentHeaderIds(Class clazz, List idList);
+
+	public BusinessObjectDao getBusinessObjectDao();
 
 }

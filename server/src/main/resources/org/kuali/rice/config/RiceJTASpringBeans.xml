@@ -2,6 +2,14 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
+	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean">
+      <property name="defaultTimeout" value="${transaction.timeout}"/>
+    </bean>
+    
+    <alias name="jotm" alias="jtaTransactionManager"/>
+    <alias name="jotm" alias="jtaUserTransaction"/>
+
+<!--
 	<bean id="jtaTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init" destroy-method="close">
 	  <property name="forceShutdown" value="true"/>
 	  <property name="transactionTimeout" value="${transaction.timeout}"/>
@@ -10,5 +18,5 @@
     <bean id="jtaUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
       <property name="transactionTimeout" value="${transaction.timeout}"/>
     </bean>
-
+-->
 </beans>

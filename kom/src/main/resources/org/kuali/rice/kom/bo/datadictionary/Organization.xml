@@ -241,7 +241,7 @@
                     p:attributeName="parentOrganizationId" />
             </list>
           </property>
-          <property name="title" value="Header Text" />
+          <property name="title" value="" />
         </bean>
         <bean parent="InquirySectionDefinition">
           <property name="numberOfColumns" value="1" />

@@ -53,7 +53,7 @@ public class KualiXmlAttributeHelper {
     private static final String testVal2 = "/[^/]+/" + "*";// have to do this or the compiler gets confused by end comment.
     private static final String cleanVal = "[^/\']+";// get rid of / and ' in the resulting term.
     private static final String ruledataVal = "ruledata[^\']*\'([^\']*)";
-    // TODO delyea - enter JIRA
+    // TODO - enter JIRA
     // below removes wf:xstreamsafe( and )
     // below separates each wf:xstreamsafe() section into separate 'finds'
     private static final Pattern xPathPattern = Pattern.compile(testVal);
@@ -139,7 +139,7 @@ public class KualiXmlAttributeHelper {
                      * to create the configXML.
                      */
                     for (int j = 0; j < xPathTerms.size(); j++) {// build the configXML based on the Xpath
-                        // TODO delyea - fix this and enter JIRA Phase 2A
+                        // TODO - Fix the document content element generation
                         iterNode.appendChild(xmlDoc.createElement(xPathTerms.get(j)));
                         xmlDoc.normalize();
 

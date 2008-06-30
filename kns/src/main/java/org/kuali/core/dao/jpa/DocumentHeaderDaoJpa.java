@@ -48,13 +48,4 @@ public class DocumentHeaderDaoJpa implements DocumentHeaderDao {
 		return (DocumentHeader) new org.kuali.rice.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
     }
 
-    /**
-     * @see org.kuali.dao.DocumentHeaderDao#getCorrectingDocumentHeader(java.lang.Long)
-     */
-    public DocumentHeader getCorrectingDocumentHeader(String documentId) {
-		org.kuali.rice.jpa.criteria.Criteria criteria = new org.kuali.rice.jpa.criteria.Criteria(DocumentHeader.class.getName());
-		criteria.eq("financialDocumentInErrorNumber", documentId);		
-		return (DocumentHeader) new org.kuali.rice.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
-    }
-
 }

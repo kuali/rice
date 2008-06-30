@@ -47,7 +47,7 @@ public class RouteHeaderServiceTest extends KEWTestCase {
      * Tests the saving of a document with large XML content.  This verifies that large CLOBs (> 4000 bytes)
      * can be saved by OJB.  This can cause paticular issues with Oracle and OJB has to unwrap the native jdbc
      * Connections and Statements from the pooled connection.  We need to make sure this is working for our
-     * pooling software of choice (Atomikos in this case).
+     * pooling software of choice.
      */
     @Test
     public void testLargeDocumentContent() throws Exception {

@@ -18,27 +18,22 @@
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="properties" ref="configProperties" />
 	</bean>
-	
-	<bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init" destroy-method="close">
-	<property name="forceShutdown" value="true"/>
-	<property name="transactionTimeout" value="${transaction.timeout}"/>
-  </bean>
-  
-  <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
-    <property name="transactionTimeout" value="${transaction.timeout}"/>
-  </bean>
 
-  <bean id="dataSource" class="com.atomikos.jdbc.nonxa.NonXADataSourceBean">
-  	<property name="uniqueResourceName" value="testClient2DataSource"/>
-  	<property name="driverClassName" value="${datasource.driver.name}"/>
-  	<property name="url" value="${datasource.url}"/>
-  	<property name="poolSize" value="${datasource.pool.size}"/>
-  	<property name="connectionTimeout" value="${datasource.pool.maxWait}"/>
-  	<property name="validatingQuery" value="${datasource.pool.validationQuery}"/>
-  	<property name="testOnBorrow" value="true"/>
-  	<property name="user" value="${datasource.username}"/>
-  	<property name="password" value="${datasource.password}"/>
-  </bean>
+	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean">
+      <property name="defaultTimeout" value="${transaction.timeout}"/>
+    </bean>
+
+	<bean id="dataSource" class="org.kuali.rice.database.XAPoolDataSource">
+		<property name="transactionManager" ref="jotm" />
+		<property name="driverClassName" value="${datasource.driver.name}" />
+		<property name="url" value="${datasource.url}" />
+		<property name="maxSize" value="${datasource.pool.maxSize}" />
+		<property name="minSize" value="${datasource.pool.minSize}" />
+		<property name="maxWait" value="${datasource.pool.maxWait}" />
+		<property name="validationQuery" value="${datasource.pool.validationQuery}" />
+		<property name="username" value="${datasource.username}" />
+		<property name="password" value="${datasource.password}" />
+	</bean>
 
     <bean id="client2NonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${datasource.driver.name}"/>
@@ -63,8 +58,8 @@
 	<bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
 		<property name="dataSource" ref="dataSource" />
 		<property name="nonTransactionalDataSource" ref="client2NonTransactionalDataSource" />
-		<property name="transactionManager" ref="atomikosTransactionManager" />
-		<property name="userTransaction" ref="atomikosUserTransaction" />
+		<property name="transactionManager" ref="jotm" />
+		<property name="userTransaction" ref="jotm" />
 		<property name="credentialsSourceFactory" ref="credentialsSourceFactory" />
 		<property name="rootConfig" ref="config" />
 		<property name="messageEntity" value="TestCl2" />

@@ -24,36 +24,43 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
 /**
  * This class is the OJB implementation of the DocumentHeaderDao interface.
  * 
- * 
  */
 public class DocumentHeaderDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentHeaderDao {
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentHeaderDaoOjb.class);
+	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentHeaderDaoOjb.class);
 
-    /**
-     * 
-     */
-    public DocumentHeaderDaoOjb() {
-        super();
-    }
+	private Class documentHeaderBaseClass = DocumentHeader.class;
 
-    /**
-     * @see org.kuali.core.dao.DocumentHeaderDao#getDocumentHeaderBaseClass()
-     */
-    public Class getDocumentHeaderBaseClass() {
-        LOG.debug("Method getDocumentHeaderBaseClass() returning class " + DocumentHeader.class.getName());
-        return DocumentHeader.class;
-    }
+	/**
+	 * Default constructor
+	 */
+	public DocumentHeaderDaoOjb() {
+		super();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.kuali.dao.DocumentHeaderDao#getByDocumentHeaderId(java.lang.Long)
-     */
-    public DocumentHeader getByDocumentHeaderId(String id) {
-        Criteria criteria = new Criteria();
-        criteria.addEqualTo(KNSPropertyConstants.DOCUMENT_NUMBER, id);
+	/**
+	 * @see org.kuali.core.dao.DocumentHeaderDao#getByDocumentHeaderId(java.lang.String)
+	 */
+	public DocumentHeader getByDocumentHeaderId(String id) {
+		Criteria criteria = new Criteria();
+		criteria.addEqualTo(KNSPropertyConstants.DOCUMENT_NUMBER, id);
 
-        return (DocumentHeader) getPersistenceBrokerTemplate().getObjectByQuery(QueryFactory.newQuery(getDocumentHeaderBaseClass(), criteria));
-    }
+		return (DocumentHeader) getPersistenceBrokerTemplate().getObjectByQuery(QueryFactory.newQuery(getDocumentHeaderBaseClass(), criteria));
+	}
+
+	/**
+	 * Method used to define the {@link DocumentHeader} object to use in case clients need to override the class.  Default value is {@link DocumentHeader}.
+	 * 
+	 * @see org.kuali.core.dao.DocumentHeaderDao#getDocumentHeaderBaseClass()
+	 */
+	public Class getDocumentHeaderBaseClass() {
+		return this.documentHeaderBaseClass;
+	}
+
+	/**
+	 * @param documentHeaderBaseClass the documentHeaderBaseClass to set
+	 */
+	public void setDocumentHeaderBaseClass(Class documentHeaderBaseClass) {
+		this.documentHeaderBaseClass = documentHeaderBaseClass;
+	}
 
 }

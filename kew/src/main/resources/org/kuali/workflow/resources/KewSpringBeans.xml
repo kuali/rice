@@ -387,10 +387,25 @@
 
 	<bean id="enEmailService" class="edu.iu.uis.eden.mail.DefaultEmailService"  lazy-init="true"/>
 
+<!--
     <bean id="enEmailContentService" class="edu.iu.uis.eden.mail.HardCodedEmailContentServiceImpl"  lazy-init="true"/>
+    <bean id="enActionListEmailService" class="edu.iu.uis.eden.mail.ActionListEmailServiceImpl">
+      <property name="deploymentEnvironment">
+        <value>${environment}</value>
+      </property>
+    </bean>
+-->
+	<bean id="enEmailContentService" class="edu.iu.uis.eden.mail.StyleableEmailContentServiceImpl" lazy-init="true">
+        <property name="styleService" ref="enStyleService"/>
+    </bean>
+    <bean id="enActionListEmailService" class="edu.iu.uis.eden.mail.CustomizableActionListEmailServiceImpl">
+        <property name="deploymentEnvironment">
+            <value>${environment}</value>
+        </property>
+        <property name="emailContentGenerator" ref="enEmailContentService"/>
+    </bean>
 
 	<bean id="enNotificationService" class="edu.iu.uis.eden.notification.KCBNotificationService"  lazy-init="true"/>
-
 <!-- 
     <bean id="enNotificationService" class="edu.iu.uis.eden.notification.DefaultNotificationService"  lazy-init="true"/>
 -->
@@ -615,17 +630,6 @@
 
     <bean id="workgroupTypeService" class="org.kuali.workflow.workgroup.WorkgroupTypeServiceImpl">
       <property name="workgroupTypeDAO" ref="workgroupTypeDAO"/>
-    </bean>
-
-    <bean id="enActionListEmailService" class="edu.iu.uis.eden.mail.CustomizableActionListEmailServiceImpl">
-        <property name="deploymentEnvironment">
-            <value>${environment}</value>
-        </property>
-        <property name="emailContentGenerator">
-            <bean class="edu.iu.uis.eden.mail.StyleableEmailContentServiceImpl">
-              <property name="styleService" ref="enStyleService"/>
-            </bean>
-        </property>
     </bean>
 
     <bean id="enRemoveReplaceDocumentService" class="edu.iu.uis.eden.removereplace.RemoveReplaceDocumentServiceImpl">

@@ -24,6 +24,7 @@ import java.sql.Statement;
 import javax.sql.DataSource;
 
 import org.apache.derby.drda.NetworkServerControl;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.test.BaseRiceTestCase;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -38,6 +39,7 @@ import org.springframework.transaction.support.TransactionTemplate;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Ignore("Test was written to verify that Atomikos can handle a situation that will fail under JOTM/XAPool.  System is not back to using JOTM/XAPool so test will always fail.")
 public class JtaTest extends BaseRiceTestCase {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(JtaTest.class);

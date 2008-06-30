@@ -20,12 +20,18 @@ import org.kuali.core.bo.DocumentHeader;
 /**
  * This is the data access interface for DocumentHeader objects.
  * 
- * 
  */
 public interface DocumentHeaderDao {
 
+    /**
+     * @return the class to be used when creating new instances of DocumentHeader objects
+     */
     public Class getDocumentHeaderBaseClass();
 
+    /**
+     * @param id
+     * @return documentHeader realted to the give document header id
+     */
     public DocumentHeader getByDocumentHeaderId(String id);
 
 }

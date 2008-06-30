@@ -112,7 +112,7 @@
                     p:attributeName="rowActiveIndicator" />
             </list>
           </property>
-          <property name="title" value="Header Text" />
+          <property name="title" value="" />
         </bean>
       </list>
     </property>

@@ -13,8 +13,8 @@
     <bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
         <property name="messageEntity" value="KCB" />
         <property name="dataSource" ref="dataSource" />
-        <property name="transactionManager" ref="atomikosTransactionManager" />
-        <property name="userTransaction" ref="atomikosUserTransaction" />
+        <property name="transactionManager" ref="jotm" />
+        <property name="userTransaction" ref="jotm" />
         <property name="rootConfig" ref="config" />
         <property name="modules">
             <list>

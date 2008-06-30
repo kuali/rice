@@ -835,9 +835,7 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
     }
     
     /**
-     * This overridden method ...
-     * 
-     * TODO delyea - THIS METHOD NEEDS JAVADOCS
+     * This overridden method is used to delete the {@link DocumentHeader} object due to the system not being able to manage the {@link DocumentHeader} object via mapping files
      * 
      * @see org.kuali.core.bo.PersistableBusinessObjectBase#afterDelete(org.apache.ojb.broker.PersistenceBroker)
      */
@@ -848,21 +846,7 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
     }
 
     /**
-     * This overridden method ...
-     * 
-     * TODO delyea - THIS METHOD NEEDS JAVADOCS
-     * 
-     * @see org.kuali.core.bo.PersistableBusinessObjectBase#afterInsert(org.apache.ojb.broker.PersistenceBroker)
-     */
-    @Override
-    public void afterInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-        super.afterInsert(persistenceBroker);
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * TODO delyea - THIS METHOD NEEDS JAVADOCS
+     * This overridden method is used to retrieve the {@link DocumentHeader} object due to the system not being able to manage the {@link DocumentHeader} object via mapping files
      * 
      * @see org.kuali.core.bo.PersistableBusinessObjectBase#afterLookup(org.apache.ojb.broker.PersistenceBroker)
      */
@@ -873,34 +857,7 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
     }
 
     /**
-     * This overridden method ...
-     * 
-     * TODO delyea - THIS METHOD NEEDS JAVADOCS
-     * 
-     * @see org.kuali.core.bo.PersistableBusinessObjectBase#afterUpdate(org.apache.ojb.broker.PersistenceBroker)
-     */
-    @Override
-    public void afterUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-        // TODO delyea - THIS METHOD NEEDS JAVADOCS
-        super.afterUpdate(persistenceBroker);
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * TODO delyea - THIS METHOD NEEDS JAVADOCS
-     * 
-     * @see org.kuali.core.bo.PersistableBusinessObjectBase#beforeDelete(org.apache.ojb.broker.PersistenceBroker)
-     */
-    @Override
-    public void beforeDelete(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-        super.beforeDelete(persistenceBroker);
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * TODO delyea - THIS METHOD NEEDS JAVADOCS
+     * This overridden method is used to insert the {@link DocumentHeader} object due to the system not being able to manage the {@link DocumentHeader} object via mapping files
      * 
      * @see org.kuali.core.bo.PersistableBusinessObjectBase#beforeInsert(org.apache.ojb.broker.PersistenceBroker)
      */
@@ -911,9 +868,7 @@ public final class MaintenanceDocumentBase extends DocumentBase implements Maint
     }
 
     /**
-     * This overridden method ...
-     * 
-     * TODO delyea - THIS METHOD NEEDS JAVADOCS
+     * This overridden method is used to save the {@link DocumentHeader} object due to the system not being able to manage the {@link DocumentHeader} object via mapping files
      * 
      * @see org.kuali.core.bo.PersistableBusinessObjectBase#beforeUpdate(org.apache.ojb.broker.PersistenceBroker)
      */

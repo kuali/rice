@@ -2,6 +2,19 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
+	<bean id="riceDataSource" class="org.kuali.rice.database.XAPoolDataSource">
+		<property name="transactionManager" ref="jotm" />
+		<property name="driverClassName" value="${datasource.driver.name}" />
+		<property name="url" value="${datasource.url}" />
+		<property name="maxSize" value="${datasource.pool.maxSize}" />
+		<property name="minSize" value="${datasource.pool.minSize}" />
+		<property name="maxWait" value="${datasource.pool.maxWait}" />
+		<property name="validationQuery" value="${datasource.pool.validationQuery}" />
+		<property name="username" value="${datasource.username}" />
+		<property name="password" value="${datasource.password}" />
+	</bean>
+
+<!--
     <bean id="riceDataSource" class="com.atomikos.jdbc.nonxa.NonXADataSourceBean">
   	  <property name="uniqueResourceName" value="riceRiceDataSource"/>
   	  <property name="driverClassName" value="${datasource.driver.name}"/>
@@ -13,6 +26,7 @@
   	  <property name="user" value="${datasource.username}"/>
   	  <property name="password" value="${datasource.password}"/>
     </bean>
+-->
 
     <bean id="riceNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${datasource.driver.name}"/>

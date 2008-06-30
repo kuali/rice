@@ -17,8 +17,12 @@ package org.kuali.core.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * This class is the object used to set attributes on the {@link DocumentType} object
@@ -42,6 +46,9 @@ public class DocumentTypeAttribute extends PersistableBusinessObjectBase {
 	protected boolean active;
 	@Column(name="FDOC_TYP_CD")
 	protected String documentTypeCode;
+	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="FDOC_TYP_CD", insertable=false, updatable=false)
+	protected DocumentType documentType;
 
     /**
      * @return the id
@@ -128,6 +135,20 @@ public class DocumentTypeAttribute extends PersistableBusinessObjectBase {
     }
 
     /**
+	 * @return the documentType
+	 */
+	public DocumentType getDocumentType() {
+		return this.documentType;
+	}
+
+	/**
+	 * @param documentType the documentType to set
+	 */
+	public void setDocumentType(DocumentType documentType) {
+		this.documentType = documentType;
+	}
+
+	/**
      * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
      */
     @Override
